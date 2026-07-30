@@ -7,6 +7,7 @@
 
 #include <QJsonDocument>
 #include <QLoggingCategory>
+#include <QNetworkReply>
 
 #include "addrecipientjob.h"
 #include "addsourcejob.h"
@@ -56,6 +57,16 @@ const QList<Share *> &SharingController::shares() const
     return _shares;
 }
 
+bool SharingController::creatingShare() const
+{
+    return _creatingShare;
+}
+
+QString SharingController::shareCreationError() const
+{
+    return _shareCreationError;
+}
+
 void SharingController::initialize(const QString &fileId)
 {
     if (!_account) {
@@ -89,16 +100,35 @@ void SharingController::createShare(const QString &fileId)
         return;
     }
 
+    if (fileId.isEmpty()) {
+        qCWarning(lcSharingController) << "attempted to create a new share without a file ID";
+        return;
+    }
+
+    if (_creatingShare) {
+        qCDebug(lcSharingController) << "ignoring attempt to create a share while another creation is in progress";
+        return;
+    }
+
+    setShareCreationError({});
+    setCreatingShare(true);
+
     const auto job = new CreateShareJob{_account};
     connect(job, &CreateShareJob::shareCreated, this, [this, fileId](QPointer<Share> share) -> void {
-        if (!share) {
+        if (!share || share->id().isEmpty()) {
             qCWarning(lcSharingController) << "share created without a valid Share object";
+            failShareCreation(tr("The server returned an invalid share."), share);
             return;
         }
 
-        _shares.append(share);
-        Q_EMIT sharesChanged();
-        addSourceAfterCreation(*share, fileId);
+        share->setParent(this);
+        addSourceAfterCreation(share, fileId);
+    });
+    connect(job, &CreateShareJob::ocsError, this, [this](int, const QString &message) {
+        failShareCreation(message.isEmpty() ? tr("Could not create the share.") : message);
+    });
+    connect(job, &CreateShareJob::networkError, this, [this](const QNetworkReply *reply) {
+        failShareCreation(reply ? reply->errorString() : tr("Could not create the share."));
     });
     job->start();
 }
@@ -198,10 +228,73 @@ bool SharingController::containsShare(const Share *share) const
     return share && _shares.contains(share);
 }
 
-void SharingController::addSourceAfterCreation(Share &share, const QString &fileId)
+void SharingController::addSourceAfterCreation(QPointer<Share> share, const QString &fileId)
 {
-    const auto job = new AddSourceJob{_account, share, fileId};
+    if (!share) {
+        failShareCreation(tr("The newly created share is no longer available."));
+        return;
+    }
+
+    const auto job = new AddSourceJob{_account, *share, fileId};
+    connect(job, &AddSourceJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
+        if (!updatedShare) {
+            failShareCreation(tr("The newly created share is no longer available."));
+            return;
+        }
+        finishShareCreation(updatedShare);
+    });
+    connect(job, &AddSourceJob::ocsError, this, [this, share](int, const QString &message) {
+        failShareCreation(message.isEmpty() ? tr("Could not attach the item to the share.") : message, share);
+    });
+    connect(job, &AddSourceJob::networkError, this, [this, share](const QNetworkReply *reply) {
+        failShareCreation(reply ? reply->errorString() : tr("Could not attach the item to the share."), share);
+    });
     job->start();
+}
+
+void SharingController::finishShareCreation(QPointer<Share> share)
+{
+    _shares.append(share);
+    setCreatingShare(false);
+    Q_EMIT sharesChanged();
+}
+
+void SharingController::failShareCreation(const QString &error, QPointer<Share> share)
+{
+    if (!_creatingShare) {
+        return;
+    }
+
+    setShareCreationError(error);
+    setCreatingShare(false);
+
+    if (!share) {
+        return;
+    }
+
+    if (!share->id().isEmpty()) {
+        const auto cleanupJob = new DestroyShareJob{_account, share->id()};
+        cleanupJob->start();
+    }
+    delete share.data();
+}
+
+void SharingController::setCreatingShare(bool creatingShare)
+{
+    if (_creatingShare == creatingShare) {
+        return;
+    }
+    _creatingShare = creatingShare;
+    Q_EMIT creatingShareChanged();
+}
+
+void SharingController::setShareCreationError(const QString &error)
+{
+    if (_shareCreationError == error) {
+        return;
+    }
+    _shareCreationError = error;
+    Q_EMIT shareCreationErrorChanged();
 }
 
 void SharingController::replaceShares(const QList<Share *> &shares)
