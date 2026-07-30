@@ -20,6 +20,7 @@
 #include "setpermissionjob.h"
 #include "setpermissionpresetjob.h"
 #include "setpropertyjob.h"
+#include "setsharestatejob.h"
 #include "share.h"
 #include "sharingconstants.h"
 
@@ -268,6 +269,42 @@ void SharingController::setProperty(Share *share, const QString &propertyClass, 
     });
     connect(job, &SetPropertyJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
         Q_EMIT propertyUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the sharing setting."));
+    });
+    job->start();
+}
+
+void SharingController::activateShare(Share *share)
+{
+    if (!_account) {
+        qCWarning(lcSharingController) << "attempted to activate a share without an account set";
+        return;
+    }
+
+    if (!containsShare(share)) {
+        qCWarning(lcSharingController) << "attempted to activate a share not owned by this controller";
+        return;
+    }
+
+    if (share->state() != Share::ShareState::Draft) {
+        qCDebug(lcSharingController) << "ignoring attempt to activate a share that is not a draft";
+        return;
+    }
+
+    const auto guardedShare = QPointer<Share>{share};
+    const auto job = new SetShareStateJob{_account, *share, Share::ShareState::Active};
+    connect(job, &SetShareStateJob::shareUpdated, this, [this, guardedShare](QPointer<Share> updatedShare) {
+        if (updatedShare && updatedShare->state() == Share::ShareState::Active) {
+            Q_EMIT shareActivated(updatedShare);
+            return;
+        }
+
+        Q_EMIT shareActivationFailed(guardedShare, tr("The server did not activate the share."));
+    });
+    connect(job, &SetShareStateJob::ocsError, this, [this, guardedShare](int, const QString &message) {
+        Q_EMIT shareActivationFailed(guardedShare, message.isEmpty() ? tr("Could not send the share.") : message);
+    });
+    connect(job, &SetShareStateJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
+        Q_EMIT shareActivationFailed(guardedShare, reply ? reply->errorString() : tr("Could not send the share."));
     });
     job->start();
 }
