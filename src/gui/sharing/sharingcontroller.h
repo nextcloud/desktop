@@ -67,6 +67,9 @@ public:
     Q_INVOKABLE void setPermissionPreset(Share *share, const QString &permissionPreset);
     Q_INVOKABLE void setProperty(Share *share, const QString &propertyClass, const QString &value);
 
+    /** @brief Activates a draft share, making it available to its recipients. */
+    Q_INVOKABLE void activateShare(Share *share);
+
 Q_SIGNALS:
     void accountChanged();
     void sharesChanged();
@@ -88,6 +91,12 @@ Q_SIGNALS:
 
     /** @brief Emitted when updating a share property failed. */
     void propertyUpdateFailed(Share *share, const QString &error);
+
+    /** @brief Emitted after a draft share was activated. */
+    void shareActivated(Share *share);
+
+    /** @brief Emitted when activating a draft share failed. */
+    void shareActivationFailed(Share *share, const QString &error);
 
 private:
     AccountPtr _account;
