@@ -383,6 +383,28 @@ struct Build: AsyncParsableCommand {
                 "FinderSyncExt.appex": entitlementsDirectory.appendingPathComponent("FinderSyncExt.entitlements"),
             ]
 
+            // The FinderSync broker login item. Its wrapper filename has to equal its bundle
+            // identifier, which carries the branded reverse domain -- and that is not something
+            // mac-crafter is told, so the dictionary key cannot be constructed here. Discover it
+            // from the built bundle instead; there is exactly one manifest for login items.
+            let loginItemsLocation = clientAppURL
+                .appendingPathComponent("Contents")
+                .appendingPathComponent("Library")
+                .appendingPathComponent("LoginItems")
+
+            if let loginItems = try? FileManager.default.contentsOfDirectory(
+                at: loginItemsLocation, includingPropertiesForKeys: nil
+            ) {
+                let loginItemEntitlements = entitlementsDirectory
+                    .appendingPathComponent("FinderSyncBroker.entitlements")
+
+                for loginItem in loginItems where loginItem.pathExtension == "app" {
+                    entitlements[loginItem.lastPathComponent] = loginItemEntitlements
+                }
+            } else {
+                Log.info("No LoginItems directory in the built bundle; skipping login item entitlements.")
+            }
+
             // The File Provider extension and its UI extension -- and their entitlement
             // manifests -- are only produced by CMake when BUILD_FILE_PROVIDER_MODULE is
             // enabled (see shell_integration/MacOSX/CMakeLists.txt). Reference them only
@@ -409,7 +431,11 @@ struct Build: AsyncParsableCommand {
                 }
             }
 
-            try await Signer.signMainBundle(at: clientAppURL, codeSignIdentity: codeSignIdentity, entitlements: entitlements)
+            try await Signer.signMainBundle(
+                at: clientAppURL,
+                codeSignIdentity: codeSignIdentity,
+                entitlements: entitlements
+            )
         }
         
         Log.info("Placing Nextcloud Desktop Client in \(productPath)...")

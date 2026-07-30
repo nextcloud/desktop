@@ -40,6 +40,7 @@
 #elif defined(Q_OS_MACOS)
 #include "macOS/fileprovider.h"
 #include "macOS/fileprovidersettingscontroller.h"
+#include "macOS/findersyncbrokerregistrar.h"
 #include "macOS/findersyncxpc.h"
 #include "macOS/findersyncservice.h"
 #endif
@@ -116,6 +117,25 @@ namespace {
         }
 #endif
     }
+
+#if defined(Q_OS_MACOS)
+    /**
+     * @brief Normalise a sync folder path for FinderSync registration.
+     *
+     * Folder::path() always carries a trailing slash. The shell integration protocol does not
+     * want one: SocketApi::broadcastStatusPushMessage even asserts its absence, so registering
+     * the slashed form makes the registered directory set and the pushed status paths disagree.
+     * Relying on NSURL to normalise it away instead only works while the directory still
+     * exists, which is exactly not the case when a folder is being removed.
+     */
+    QString finderSyncRegistrationPath(QString path)
+    {
+        while (path.endsWith(QLatin1Char('/'))) {
+            path.chop(1);
+        }
+        return path;
+    }
+#endif
 }
 
 // ----------------------------------------------------------------------------------
@@ -539,8 +559,45 @@ Application::Application(int &argc, char **argv)
     _finderSyncService = std::make_unique<Mac::FinderSyncService>(this);
     _finderSyncService->setSocketApi(FolderMan::instance()->socketApi());
 
+    // Reconcile the broker login item before the listener needs it. Its registration lives in
+    // the system's Background Task Management database rather than in our config, so it can
+    // already be registered from a previous version, or switched off by the user — neither of
+    // which we can assume either way.
+    qCInfo(lcApplication) << "FinderSync broker login item is"
+                          << Mac::FinderSyncBrokerRegistrar::describe(Mac::FinderSyncBrokerRegistrar::status());
+
+    switch (Mac::FinderSyncBrokerRegistrar::ensureRegistered()) {
+    case Mac::FinderSyncBrokerRegistrar::Status::Enabled:
+        break;
+    case Mac::FinderSyncBrokerRegistrar::Status::RequiresApproval:
+        qCWarning(lcApplication) << "FinderSync broker login item needs approval in System Settings; "
+                                    "Finder badges and the context menu will not work until then";
+        break;
+    case Mac::FinderSyncBrokerRegistrar::Status::NotFound:
+    case Mac::FinderSyncBrokerRegistrar::Status::NotRegistered:
+        // Not fatal: FinderSyncXPC retries and, if the registration is merely missing, repairs it.
+        qCWarning(lcApplication) << "FinderSync broker login item is not available yet; "
+                                    "the endpoint publish will retry";
+        break;
+    }
+
     _finderSyncXPC = std::make_unique<Mac::FinderSyncXPC>(this);
-    _finderSyncXPC->startListener(_finderSyncService.get());
+
+    if (!_finderSyncXPC->startListener(_finderSyncService.get())) {
+        qCCritical(lcApplication) << "Could not start the FinderSync listener; "
+                                     "Finder badges and the context menu will not work";
+    }
+
+    // Report the broker link honestly. The extension can only reach us through it, so when it
+    // is down there is no Finder integration at all — and nothing else would say so.
+    connect(_finderSyncXPC.get(), &Mac::FinderSyncXPC::brokerReachableChanged, this, [](bool reachable) {
+        if (reachable) {
+            qCInfo(lcApplication) << "FinderSync broker is reachable; the extension can connect";
+        } else {
+            qCCritical(lcApplication) << "FinderSync broker is not reachable; Finder badges and the "
+                                         "context menu will not work until it is";
+        }
+    });
 
     // Push all currently-registered sync folder paths to a newly-connected extension.
     // The extension has no prior knowledge of active folders when it first connects,
@@ -548,11 +605,18 @@ Application::Application(int &argc, char **argv)
     connect(_finderSyncXPC.get(), &Mac::FinderSyncXPC::extensionConnected, this, [this] {
         qCDebug(lcApplication) << "FinderSync extension connected, registering paths...";
 
+        // Seed the bookkeeping as well as registering. Without this the first
+        // folderListChanged below diffs against an empty set and unregisters nothing, so a
+        // folder removed between connecting and that signal stays registered forever.
+        QSet<QString> currentPaths;
         for (const auto folder : FolderMan::instance()->map()) {
             if (folder->canSync()) {
-                _finderSyncXPC->registerPath(folder->path());
+                const auto path = finderSyncRegistrationPath(folder->path());
+                currentPaths.insert(path);
+                _finderSyncXPC->registerPath(path);
             }
         }
+        _registeredFinderSyncPaths = currentPaths;
     });
 
     // Keep extensions in sync as folders are added or removed at runtime.
@@ -563,8 +627,9 @@ Application::Application(int &argc, char **argv)
         QSet<QString> currentPaths;
         for (const auto folder : std::as_const(folderMap)) {
             if (folder->canSync()) {
-                currentPaths.insert(folder->path());
-                _finderSyncXPC->registerPath(folder->path());
+                const auto path = finderSyncRegistrationPath(folder->path());
+                currentPaths.insert(path);
+                _finderSyncXPC->registerPath(path);
             }
         }
 
