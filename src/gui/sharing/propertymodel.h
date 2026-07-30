@@ -6,14 +6,23 @@
 #pragma once
 
 #include "abstractsharemodel.h"
+#include "property.h"
+
+#include <QPointer>
 #include <qqmlintegration.h>
 
 namespace OCC::Gui::Sharing {
 
+/**
+ * @brief Exposes the normal or advanced properties of one share to QML.
+ *
+ * Properties are ordered from highest to lowest server-provided priority.
+ */
 class PropertyModel : public AbstractShareModel
 {
     Q_OBJECT
     QML_ELEMENT
+    Q_PROPERTY(bool advanced READ advanced WRITE setAdvanced NOTIFY advancedChanged)
 
 public:
     enum Roles {
@@ -22,12 +31,20 @@ public:
         TypeRole,
         PlaceholderRole,
         ValueRole,
+        RequiredRole,
+        AdvancedRole,
+        ValidValuesRole,
+        MinimumRole,
+        MaximumRole,
     };
 
     enum FieldTypes {
-        Switch,
-        TextField,
-        TextArea,
+        Unknown,
+        Boolean,
+        Date,
+        Enum,
+        Password,
+        String,
     };
     Q_ENUM(FieldTypes)
 
@@ -35,14 +52,24 @@ public:
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
     QHash<int, QByteArray> roleNames() const override;
 
+    /** @brief Returns whether the model exposes advanced instead of normal properties. */
+    [[nodiscard]] bool advanced() const;
+    /** @brief Selects whether the model exposes advanced instead of normal properties. */
+    void setAdvanced(bool advanced);
+    /** @brief Sets the share whose properties are exposed. */
     void setShare(Share* share) override;
 
+Q_SIGNALS:
+    /** @brief Emitted when the advanced-property filter changes. */
+    void advancedChanged();
+
 private:
-    QVariantMap _fieldValues;
+    void resetProperties();
+
+    QList<QPointer<Property>> _properties;
+    bool _advanced = false;
 };
 
 }

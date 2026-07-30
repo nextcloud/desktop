@@ -154,7 +154,7 @@ Page {
 
                     text: qsTr("Sharing settings")
                     font.weight: Font.DemiBold
-                    visible: propertyList.count > 0
+                    visible: propertyList.count > 0 || advancedPropertyList.count > 0
                 }
 
                 ListView {
@@ -166,12 +166,44 @@ Page {
                     spacing: Style.standardSpacing
 
                     model: PropertyModel {
-                        // TODO: only show properties with prio=1
                         share: root.share
                     }
 
                     delegate: FieldDelegate {
                         width: propertyList.width
+                        height: item ? item.implicitHeight : 0
+
+                        onValueEdited: (propertyClass, value) => {
+                            root.propertyUpdateError = ""
+                            root.sharingController.setProperty(root.share, propertyClass, value)
+                        }
+                    }
+                }
+
+                EnforcedPlainTextLabel {
+                    Layout.fillWidth: true
+                    Layout.topMargin: Style.standardSpacing
+
+                    text: qsTr("Advanced settings")
+                    font.weight: Font.DemiBold
+                    visible: advancedPropertyList.count > 0
+                }
+
+                ListView {
+                    id: advancedPropertyList
+
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: contentHeight
+                    interactive: false
+                    spacing: Style.standardSpacing
+
+                    model: PropertyModel {
+                        share: root.share
+                        advanced: true
+                    }
+
+                    delegate: FieldDelegate {
+                        width: advancedPropertyList.width
                         height: item ? item.implicitHeight : 0
 
                         onValueEdited: (propertyClass, value) => {
