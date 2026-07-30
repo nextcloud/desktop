@@ -14,6 +14,9 @@
 #include "lockwatcher.h"
 #include <syncengine.h>
 #include <localdiscoverytracker.h>
+#include "discoveryphase.h"
+#include <QThreadPool>
+#include <atomic>
 
 using namespace OCC;
 
@@ -127,6 +130,58 @@ private slots:
         QVERIFY(!watcher.contains(tmpFile));
 #endif
         QVERIFY(tmp.remove());
+    }
+
+    void testLockRunsOffMainThread()
+    {
+        // Regression guard for #10464: the lock access must run on the worker thread, not the GUI thread
+        QTemporaryDir tmp;
+        QVERIFY(tmp.isValid());
+        for (const auto &name : { QStringLiteral("locked.bin"), QStringLiteral("test.txt") }) {
+            QFile tmpFile(tmp.filePath(name));
+            QVERIFY(tmpFile.open(QIODevice::WriteOnly));
+            tmpFile.write("x");
+        }
+        QVERIFY(QDir(tmp.path()).mkdir(QStringLiteral("subdir")));
+
+        const auto mainThread = QThread::currentThread();
+        std::atomic<QThread *> workerThread{nullptr};
+        std::atomic<bool> directoryProbed{false};
+
+        const auto job = new DiscoverySingleLocalDirectoryJob({}, tmp.path(), nullptr, false);
+        job->setIsFileLockedOverride([&workerThread, &directoryProbed](const QString &absoluteLocalPath) {
+            workerThread.store(QThread::currentThread());
+            if (absoluteLocalPath.endsWith(QStringLiteral("subdir"))) {
+                directoryProbed.store(true);
+            }
+            return absoluteLocalPath.endsWith(QStringLiteral("locked.bin"));
+        });
+
+        QSignalSpy finishedSpy(job, &DiscoverySingleLocalDirectoryJob::finished);
+        QThreadPool::globalInstance()->start(job);
+        QTRY_COMPARE_WITH_TIMEOUT(finishedSpy.count(), 1, 5000);
+
+        // it ran off the GUI thread
+        QVERIFY(workerThread.load() != nullptr);
+        QVERIFY(workerThread.load() != mainThread);
+
+        // Directories are skipped entirely, not just precomputed as unlocked
+        QVERIFY(!directoryProbed.load());
+
+        // The precomputed flag reflects the access result per entry
+        const auto results = finishedSpy.takeFirst().at(0).value<QVector<OCC::LocalInfo>>();
+        QCOMPARE(results.size(), 3);
+        for (const auto &info : results) {
+            if (info.name == QStringLiteral("locked.bin")) {
+                QVERIFY(info.isLocked);
+                continue;
+            }
+
+            QVERIFY(!info.isLocked);
+            if (info.name == QStringLiteral("subdir")) {
+                QVERIFY(info.isDirectory);
+            }
+        }
     }
 
 #ifdef Q_OS_WIN
