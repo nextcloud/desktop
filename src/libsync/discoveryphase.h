@@ -23,7 +23,6 @@
 #include <QWaitCondition>
 #include <QRunnable>
 #include <deque>
-#include <functional>
 
 class ExcludedFiles;
 
@@ -85,9 +84,6 @@ public:
                                               QObject *parent = nullptr);
 
     void run() override;
-
-    // Only used for testing the lock access; defaults to FileSystem::isFileLocked.
-    void setIsFileLockedOverride(std::function<bool(const QString &absoluteLocalPath)> isFileLockedOverride);
 signals:
     void finished(QVector<OCC::LocalInfo> result);
     void finishedFatalError(QString errorString);
@@ -101,7 +97,6 @@ private:
     AccountPtr _account;
     OCC::Vfs* _vfs;
     bool _fileSystemReliablePermissions = false;
-    std::function<bool(const QString &absoluteLocalPath)> _isFileLockedOverride;
 public:
 };
 
