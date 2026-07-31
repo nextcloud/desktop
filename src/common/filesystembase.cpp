@@ -702,6 +702,12 @@ Utility::Handle lockFile(const QString &fileName, FileSystem::LockMode mode)
                                                FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS, nullptr)};
 
         if (out) {
+            if (attr & FILE_ATTRIBUTE_DIRECTORY) {
+                // LockFile() is unsupported for directory handles and always fails there,
+                // and opening the directory already ruled out a sharing violation.
+                return out;
+            }
+
             LARGE_INTEGER start;
             start.QuadPart = 0;
             LARGE_INTEGER end;
