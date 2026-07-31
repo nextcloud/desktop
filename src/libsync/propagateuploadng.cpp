@@ -391,6 +391,10 @@ void PropagateUploadFileNG::startNextChunk()
     connect(job, &PUTFileJob::uploadProgress,
         devicePtr, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
+    connect(job, &AbstractNetworkJob::transferStalled, this, [this]() {
+        qCWarning(lcPropagateUploadNG) << "Upload stalled for" << _item->_file << "- scheduling retry.";
+        abortWithError(SyncFileItem::SoftError, tr("Upload stalled: no data was transferred. The upload will be retried."));
+    });
     job->start();
     propagator()->_activeJobList.append(this);
     _currentChunk++;
