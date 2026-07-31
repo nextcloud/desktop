@@ -108,6 +108,27 @@
     </message>
 </context>
 <context>
+    <name>ActivityFileMenu</name>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="25"/>
+        <source>File details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="32"/>
+        <source>File actions</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ActivityFileMenuButton</name>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenuButton.qml" line="34"/>
+        <source>Open file details</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ActivityItem</name>
     <message>
         <location filename="../src/gui/activity/qml/ActivityItem.qml" line="32"/>
@@ -123,25 +144,25 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="186"/>
+        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="203"/>
+        <location filename="../src/gui/activity/activitydata.cpp" line="314"/>
+        <source>Dismiss</source>
+        <translation>Avfärda</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="182"/>
         <source>Open file details</source>
         <translation>Öppna filinformation</translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="200"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>File details</source>
         <translation>Filinformation</translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="209"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>File actions</source>
         <translation>Filåtgärder</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="232"/>
-        <location filename="../src/gui/activity/activitydata.cpp" line="314"/>
-        <source>Dismiss</source>
-        <translation>Avfärda</translation>
     </message>
 </context>
 <context>
@@ -782,7 +803,7 @@
         <translation>Nya aktiviteter</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="792"/>
         <source>Assistant</source>
         <translation>Assistent</translation>
     </message>
@@ -1286,6 +1307,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1550"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="742"/>
         <source>Log in</source>
         <translation>Logga in</translation>
     </message>
@@ -1535,199 +1557,199 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="292"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="294"/>
         <source>Will require local storage</source>
         <translation>Kräver lokal lagring</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="672"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="674"/>
         <source>Proxy settings are incomplete.</source>
         <translation>Proxyinställningarna är ofullständiga.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="679"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="681"/>
         <source>Server address does not seem to be valid</source>
         <translation>Serveradressen verkar vara ogiltig</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="700"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="702"/>
         <source>Username must not be empty.</source>
         <translation>Användarnamnet får inte vara tomt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="706"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1024"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="708"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1026"/>
         <source>Checking account access</source>
         <translation>Kontrollerar kontoåtkomst</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="784"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="786"/>
         <source>Checking server address</source>
         <translation>Kontrollerar serveradressen</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="849"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="851"/>
         <source>Preparing browser login</source>
         <translation>Förbereder inloggning i webbläsaren</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="870"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="872"/>
         <source>Invalid URL</source>
         <translation>Ogiltig URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="872"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="874"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>Det gick inte att ansluta till %1 på %2:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="888"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="890"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Försök att ansluta till %1 på %2 tog för lång tid.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="975"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Det går inte att öppna webbläsaren, kopiera länken till din webbläsare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1000"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1005"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1002"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1007"/>
         <source>Waiting for authorization</source>
         <translation>Väntar på auktorisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1010"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1012"/>
         <source>Starting authorization</source>
         <translation>Startar auktorisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1015"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1017"/>
         <source>Link copied to clipboard.</source>
         <translation>Länken kopierad till urklipp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1070"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1100"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1102"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Det kom ett felaktigt svar på en autentiserad WebDAV-begäran</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1087"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1089"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Den autentiserade begäran till servern omdirigerades till &quot;%1&quot;. URL:en är felaktig, servern är felkonfigurerad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1095"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1097"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Servern nekade åtkomst. Öppna tjänsten i webbläsaren för att kontrollera att du har rätt behörighet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1113"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1115"/>
         <source>Account connected.</source>
         <translation>Kontot anslöts.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1188"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1190"/>
         <source>Will require %1 of storage</source>
         <translation>Kräver %1 lagringsutrymme</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1361"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 ledigt utrymme</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1371"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1373"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Det finns inte tillräckligt med ledigt utrymme i den lokala mappen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1388"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1390"/>
         <source>Please choose a local sync folder.</source>
         <translation>Välj en lokal synkroniseringsmapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1393"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1395"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Välj en tom lokal synkroniseringsmapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1458"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1460"/>
         <source>Could not create local folder %1</source>
         <translation>Kunde inte skapa lokal mapp %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1472"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1474"/>
         <source>Checking remote folder</source>
         <translation>Kontrollerar fjärrmappen</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1518"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1520"/>
         <source>No remote folder specified!</source>
         <translation>Ingen fjärrmapp har angetts!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1527"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1529"/>
         <source>Error: %1</source>
         <translation>Fel: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1532"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1534"/>
         <source>Creating remote folder</source>
         <translation>Skapar fjärrmapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1551"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1553"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Skapande av mapp resulterade i HTTP felkod %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1553"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>Fjärrmappen kunde inte skapas eftersom de angivna inloggningsuppgifterna är felaktiga. Gå tillbaka och kontrollera uppgifterna.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1557"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Misslyckades skapa fjärrmapp %1 med fel &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1579"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Kontokonfigurationen misslyckades när synkroniseringsmappen skapades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1606"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1608"/>
         <source>Could not create the sync folder.</source>
         <translation>Det gick inte att skapa synkroniseringsmappen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1696"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1698"/>
         <source>Local Sync Folder</source>
         <translation>Lokal mapp för synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1943"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1960"/>
         <source>Select a certificate</source>
         <translation>Välj ett certifikat</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1945"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1962"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Certifikatfiler (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1953"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1973"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1970"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1990"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Det gick inte att öppna den valda certifikatfilen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1989"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2006"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Kunde inte läsa in certifikatet. Felaktigt lösenord?</translation>
     </message>
@@ -2366,23 +2388,23 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="48"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Inget %1 konto konfigurerat</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="177"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="184"/>
         <source>Timeout</source>
         <translation>Timeout</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="165"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="168"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Autentiseringsfel: Användarnamn eller lösenord är felaktigt</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="214"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation>De angivna uppgifterna stämmer inte</translation>
     </message>
@@ -5202,33 +5224,33 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
         <translation>Lokal fil ändrades under synkronisering. Den kommer återupptas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="446"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="462"/>
         <source>Local file changed during sync.</source>
         <translation>Lokal fil ändrades under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="456"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="472"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>Kunde inte låsa upp krypterad mapp.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="743"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="759"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>Det gick inte att ladda upp ett objekt med ogiltiga tecken</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="831"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="847"/>
         <source>Error updating metadata: %1</source>
         <translation>Ett fel uppstod när metadata skulle uppdateras: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="834"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="850"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 används för närvarande</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="292"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="737"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="753"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Uppladdningen av %1 överstiger kvoten för mappen</translation>
     </message>
@@ -5978,19 +6000,19 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="211"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="477"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="220"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="221"/>
         <source>Offline</source>
         <translation>Offline</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1706"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1707"/>
         <source>You need to accept the terms of service</source>
         <translation>Du behöver acceptera användarvillkoren</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1699"/>
         <source>Reauthorization required</source>
         <translation>Ny autentisering krävs</translation>
     </message>
@@ -6008,7 +6030,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1717"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Vissa filer kunde inte synkroniseras!</translation>
     </message>
@@ -6034,7 +6056,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1719"/>
         <source>Some files could not be synced!</source>
         <translation>Vissa filer kunde inte synkroniseras!</translation>
     </message>
@@ -6078,7 +6100,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="610"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="827"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="870"/>
         <source>Add account</source>
         <translation>Lägg till konto</translation>
     </message>
@@ -6102,7 +6124,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="617"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="836"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="879"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
@@ -6127,7 +6149,7 @@ Servern svarade med fel: %2</translation>
         <translation>Återuppta synkronisering för alla</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="843"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="886"/>
         <source>Quit</source>
         <translation>Avsluta</translation>
     </message>
@@ -6231,86 +6253,86 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="572"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>End-to-end-certifikatet måste migreras till ett nytt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="574"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>Trigger the migration</source>
         <translation>Initiera migreringen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="675"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="676"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n avisering</numerusform><numerusform>%n aviseringar</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="918"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="957"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="919"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="958"/>
         <source>“%1” was not synchronized</source>
         <translation>“%1” synkroniserades inte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="959"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="960"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>Otillräckligt lagringsutrymme på servern. Filen kräver %1 men endast %2 är tillgängligt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="962"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="963"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>Otillräckligt lagringsutrymme på servern. Filen kräver %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="965"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="966"/>
         <source>Insufficient storage on the server.</source>
         <translation>Otillräckligt lagringsutrymme på servern.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1001"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Det finns inte tillräckligt med utrymme på servern för vissa uppladdningar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1017"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1383"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
         <source>Retry all uploads</source>
         <translation>Försök ladda upp igen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1434"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1596"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1435"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1597"/>
         <source>Resolve conflict</source>
         <translation>Lös konflikt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1586"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1587"/>
         <source>Rename file</source>
         <translation>Byt namn på fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1691"/>
         <source>Sync conflicts</source>
         <translation>Synkroniseringskonflikter</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1820"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1834"/>
         <source>Public Share Link</source>
         <translation>Offentlig delningslänk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1932"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1946"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Öppna %1 assistenten</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2030"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2044"/>
         <source>Assistant is not available for this account.</source>
         <translation>Assistenten är inte tillgänglig för detta konto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2036"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2050"/>
         <source>Assistant is already processing a request.</source>
         <translation>Assistenten behandlar redan en begäran.</translation>
     </message>
@@ -6320,37 +6342,37 @@ Servern svarade med fel: %2</translation>
         <translation>Skickar din begäran...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2073"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2087"/>
         <source>Sending your request …</source>
         <translation>Skickar din förfrågan …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2146"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2160"/>
         <source>No response yet. Please try again later.</source>
         <translation>Inget svar ännu. Försök igen senare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2165"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
         <source>No supported assistant task types were returned.</source>
         <translation>Inga supporterade assistentuppgiftstyper returnerades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2247"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2261"/>
         <source>Waiting for the assistant response…</source>
         <translation>Väntar på svar från assistenten...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2269"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2283"/>
         <source>Assistant request failed (%1).</source>
         <translation>Förfrågan till assistenten misslyckades (%1).</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2344"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2358"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kvoten har uppdaterats; %1 procent av det totala utrymmet är använt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2364"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2378"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Kvotvarning - %1 procent eller mer av lagringsutrymmet används</translation>
     </message>
@@ -6358,32 +6380,32 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2796"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
         <source>Confirm Account Removal</source>
         <translation>Bekräfta radering an kontot</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2797"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2811"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen ta bort anslutningen till konto &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;OBS:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; att radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2801"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
         <source>Remove connection</source>
         <translation>Ta bort anslutning</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2802"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2816"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2888"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
         <source>Leave share</source>
         <translation>Lämna delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2888"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
         <source>Remove account</source>
         <translation>Ta bort konto</translation>
     </message>
@@ -6820,32 +6842,32 @@ Servern svarade med fel: %2</translation>
         <translation>Det gick inte att flytta felsökningsarkivet till den valda platsen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="490"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="491"/>
         <source>Answer</source>
         <translation>Svar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1515"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1516"/>
         <source>You renamed %1</source>
         <translation>Du döpte om %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1517"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1518"/>
         <source>You deleted %1</source>
         <translation>Du raderade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1519"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
         <source>You created %1</source>
         <translation>Du skapade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1521"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
         <source>You changed %1</source>
         <translation>Du ändrade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1545"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1546"/>
         <source>Synced %1</source>
         <translation>Synkroniserade %1</translation>
     </message>
@@ -7303,47 +7325,47 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>TrayAccountPopup</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="584"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="594"/>
         <source>No apps available</source>
         <translation>Inga appar tillgängliga</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="624"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="634"/>
         <source>Notifications</source>
         <translation>Aviseringar</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="648"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="658"/>
         <source>Open</source>
         <translation>Öppna</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="661"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="671"/>
         <source>Recent activity</source>
         <translation>Senaste aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="668"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
         <source>No recent activity</source>
         <translation>Ingen senaste aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="686"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="696"/>
         <source>More activity…</source>
         <translation>Mer aktivitet …</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="717"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="760"/>
         <source>Resolve: %1</source>
         <translation>Åtgärda: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="724"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
         <source>User status</source>
         <translation>Användarstatus</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="757"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="800"/>
         <source>Search</source>
         <translation>Sök</translation>
     </message>
@@ -7381,7 +7403,8 @@ Servern svarade med fel: %2</translation>
         <translation>Användargrupp och meny för lokala mappar</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="740"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="730"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="783"/>
         <source>Local folder</source>
         <translation>Lokal mapp</translation>
     </message>
@@ -7404,7 +7427,7 @@ Servern svarade med fel: %2</translation>
         <translation>Öppna %1 i webbläsare</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="765"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
         <source>Apps</source>
         <translation>Appar</translation>
     </message>
@@ -7568,26 +7591,26 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="54"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="210"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="222"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="211"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="223"/>
         <source>Online</source>
         <translation>Online</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="65"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="212"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
         <source>Away</source>
         <translation>Borta</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="77"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="214"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
         <source>Busy</source>
         <translation>Upptagen</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="88"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="216"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
         <source>Do not disturb</source>
         <translation>Stör ej</translation>
     </message>
@@ -7598,7 +7621,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="101"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="218"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
         <source>Invisible</source>
         <translation>Osynlig</translation>
     </message>

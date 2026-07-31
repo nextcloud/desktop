@@ -4675,33 +4675,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="446"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="462"/>
         <source>Local file changed during sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="456"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="472"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="743"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="759"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="831"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="847"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="834"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="850"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="292"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="737"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="753"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation type="unfinished"></translation>
     </message>
