@@ -177,8 +177,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     , _userInfo(accountState, false, true)
 {
     _ui->setupUi(this);
-    this->setAutoFillBackground(true);
-    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
 
     _model->setAccountState(_accountState);
     _model->setParent(this);
@@ -197,8 +195,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
-
-    _ui->_folderList->setFont(WLTheme.settingsFontDefault());
 
     _ui->_folderList->header()->hide();
     _ui->_folderList->setAutoFillBackground(false);
@@ -249,26 +245,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connectionSettingsLayout->addWidget(networkSettings, 1);
     connectionSettingsPanelContents->setLayout(connectionSettingsLayout);
 
-    const auto connectionSettingsTabIndex = _ui->tabWidget->indexOf(connectionSettingsTab);
-    if (connectionSettingsTabIndex >= 0) {
-        _ui->tabWidget->removeTab(connectionSettingsTabIndex);
-    }
-    _ui->tabWidget->setCurrentIndex(0);
-#ifndef BUILD_FILE_PROVIDER_MODULE
-    _ui->tabWidget->tabBar()->hide();
-#endif
-
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
     mouseCursorChanger->model = _model;
     _ui->_folderList->setMouseTracking(true);
     _ui->_folderList->setAttribute(Qt::WA_Hover, true);
     _ui->_folderList->installEventFilter(mouseCursorChanger);
-
-#ifdef Q_OS_MAC
-    _ui->expandMemoryButton->setAutoDefault(false);
-    _ui->expandMemoryButton->setFocusPolicy(Qt::NoFocus);
-#endif
 
     connect(this, &AccountSettings::removeAccountFolders, AccountManager::instance(), &AccountManager::removeAccountFolders);
     connect(_ui->_folderList, &QWidget::customContextMenuRequested, this, &AccountSettings::slotCustomContextMenuRequested);
@@ -310,8 +292,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
 
     // Connect E2E stuff
-    _ui->encryptionMessage->setVisible(false);
-    _ui->encryptionMessage->hide();
     if (_accountState->isConnected()) {
         setupE2eEncryption();
     } else {
@@ -329,8 +309,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     slotAccountStateChanged();
 
     connect(&_userInfo, &UserInfo::quotaUpdated, this, &AccountSettings::slotUpdateQuota);
-
-    connect(_ui->expandMemoryButton, &QAbstractButton::clicked, this, &AccountSettings::slotExpandMemoryClicked);
 
     customizeStyle();
 
@@ -1925,15 +1903,6 @@ void AccountSettings::customizeStyle()
     const auto color = palette().highlight().color();
     const auto toolTipStyle =
         QStringLiteral("QToolTip { color: %1; background-color: %2; border: 1px solid %1; }").arg(WLTheme.titleColor(), WLTheme.dialogBackgroundColor());
-    _ui->quotaProgressBar->setStyleSheet(progressBarStyle().arg(WLTheme.dialogBackgroundColor(), WLTheme.quotaProgressColor()) + toolTipStyle);
-
-    _ui->quotaInfoLabel->setStyleSheet(
-        QStringLiteral("QLabel { %1 } %2")
-            .arg(WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()),
-                 toolTipStyle));
-
-    _ui->quotaInfo2Label->setStyleSheet(
-        WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsSmallTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor()));
 
     _ui->_folderList->setStyleSheet(
         QStringLiteral("background: %1; %2;")
@@ -2034,15 +2003,6 @@ void AccountSettings::setupE2eEncryptionMessage()
 
     auto *const actionSetupE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionSetupEncryptionId);
     connect(actionSetupE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
-}
-
-void AccountSettings::disguiseTabWidget() const
-{
-    // Ensure all elements of the tab widget are hidden.
-    // Document mode lets the child view take up the whole view.
-    _ui->fileProviderPanel->setVisible(false);
-    _ui->tabWidget->setDocumentMode(true);
-    _ui->tabWidget->tabBar()->hide();
 }
 
 void AccountSettings::setEncryptionMessageIcon(const QIcon &icon)
