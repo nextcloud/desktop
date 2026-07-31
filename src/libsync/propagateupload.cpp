@@ -434,13 +434,29 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         return slotOnErrorStartFolderUnlock(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
     }
 
+    // for new uploads also ensure the file sizes stays the same, relying on the mtime alone is not always reliable
+    const auto prevFileToUploadSize = _fileToUpload._size;
+    const auto prevItemSize = _item->_size;
     _fileToUpload._size = FileSystem::getSize(fullFilePath);
     _item->_size = FileSystem::getSize(originalFilePath);
+
+    auto fileSizesChangedForNewItem = _item->_instruction == CSYNC_INSTRUCTION_NEW
+        && !(prevItemSize == 0 && prevFileToUploadSize == 0) // file conflict items created during propagation may not have a file size, ignore those
+        && !(prevFileToUploadSize == _fileToUpload._size && prevItemSize == _item->_size);
+    if (fileSizesChangedForNewItem) {
+        qCWarning(lcPropagateUpload).nospace() << "File sizes changed between discovery and propagation phase"
+            << " fileToUpload.path=" << _fileToUpload._path
+            << " fileToUpload.size=" << _fileToUpload._size
+            << " prevFileToUploadSize=" << prevFileToUploadSize
+            << " item.file=" << _item->_file
+            << " item.size=" << _item->_size
+            << " prevItemSize=" << prevItemSize;
+    }
 
     // But skip the file if the mtime is too close to 'now'!
     // That usually indicates a file that is still being changed
     // or not yet fully copied to the destination.
-    if (fileIsStillChanging(*_item)) {
+    if (fileIsStillChanging(*_item) || fileSizesChangedForNewItem) {
         propagator()->_anotherSyncNeeded = true;
         return slotOnErrorStartFolderUnlock(SyncFileItem::SoftError, tr("Local file changed during sync."));
     }
