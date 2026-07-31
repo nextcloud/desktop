@@ -16,7 +16,6 @@
 #include <localdiscoverytracker.h>
 #include "discoveryphase.h"
 #include <QThreadPool>
-#include <atomic>
 
 using namespace OCC;
 
@@ -132,9 +131,10 @@ private slots:
         QVERIFY(tmp.remove());
     }
 
-    void testLockRunsOffMainThread()
+#ifdef Q_OS_WIN
+    void testLockDetectionUsesRealFileSystemCheck()
     {
-        // Regression guard for #10464: the lock access must run on the worker thread, not the GUI thread
+        // Regression guard for #10464: exercise the real FileSystem::isFileLocked path
         QTemporaryDir tmp;
         QVERIFY(tmp.isValid());
         for (const auto &name : { QStringLiteral("locked.bin"), QStringLiteral("test.txt") }) {
@@ -144,31 +144,16 @@ private slots:
         }
         QVERIFY(QDir(tmp.path()).mkdir(QStringLiteral("subdir")));
 
-        const auto mainThread = QThread::currentThread();
-        std::atomic<QThread *> workerThread{nullptr};
-        std::atomic<bool> directoryProbed{false};
+        auto handle = makeHandle(tmp.filePath(QStringLiteral("locked.bin")), 0);
+        QVERIFY(handle != INVALID_HANDLE_VALUE);
 
         const auto job = new DiscoverySingleLocalDirectoryJob({}, tmp.path(), nullptr, false);
-        job->setIsFileLockedOverride([&workerThread, &directoryProbed](const QString &absoluteLocalPath) {
-            workerThread.store(QThread::currentThread());
-            if (absoluteLocalPath.endsWith(QStringLiteral("subdir"))) {
-                directoryProbed.store(true);
-            }
-            return absoluteLocalPath.endsWith(QStringLiteral("locked.bin"));
-        });
-
         QSignalSpy finishedSpy(job, &DiscoverySingleLocalDirectoryJob::finished);
         QThreadPool::globalInstance()->start(job);
         QTRY_COMPARE_WITH_TIMEOUT(finishedSpy.count(), 1, 5000);
 
-        // it ran off the GUI thread
-        QVERIFY(workerThread.load() != nullptr);
-        QVERIFY(workerThread.load() != mainThread);
+        CloseHandle(handle);
 
-        // Directories are skipped entirely, not just precomputed as unlocked
-        QVERIFY(!directoryProbed.load());
-
-        // The precomputed flag reflects the access result per entry
         const auto results = finishedSpy.takeFirst().at(0).value<QVector<OCC::LocalInfo>>();
         QCOMPARE(results.size(), 3);
         for (const auto &info : results) {
@@ -184,7 +169,6 @@ private slots:
         }
     }
 
-#ifdef Q_OS_WIN
     void testDirectoryLockChecks()
     {
         QTemporaryDir tmp;

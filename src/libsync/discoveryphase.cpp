@@ -339,14 +339,8 @@ DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const Account
     , _account{account}
     , _vfs{vfs}
     , _fileSystemReliablePermissions{fileSystemReliablePermissions}
-    , _isFileLockedOverride{}
 {
     qRegisterMetaType<QVector<OCC::LocalInfo> >("QVector<OCC::LocalInfo>");
-}
-
-void DiscoverySingleLocalDirectoryJob::setIsFileLockedOverride(std::function<bool(const QString &absoluteLocalPath)> isFileLockedOverride)
-{
-    _isFileLockedOverride  = std::move(isFileLockedOverride);
 }
 
 // Use as QRunnable
@@ -414,8 +408,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         // Access lock state on the worker thread so a blocking open cannot freeze the GUI #10464
         if (!i.isSymLink && !i.isVirtualFile && !i.isDirectory) {
             const auto absoluteLocalPath = localPath + QLatin1Char('/') + i.name;
-            i.isLocked = _isFileLockedOverride ? _isFileLockedOverride(absoluteLocalPath)
-                                                : FileSystem::isFileLocked(absoluteLocalPath, FileSystem::LockMode::SharedRead);
+            i.isLocked = FileSystem::isFileLocked(absoluteLocalPath, FileSystem::LockMode::SharedRead);
             qCDebug(lcDiscovery) << "File" << absoluteLocalPath << "isLocked" << i.isLocked;
         }
 
