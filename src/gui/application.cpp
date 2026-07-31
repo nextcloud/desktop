@@ -1108,7 +1108,7 @@ void Application::setupTranslations()
         // into every translation file.
         if (!choosenLanguage.startsWith(QLatin1String("en")) && fallbackTranslator->load(QLatin1String("client_en"), trPath)
             && !fallbackTranslator->isEmpty()) {
-            installTranslator(fallbackTranslator);
+            installTranslator(fallbackTranslator.release());
         }
 
         const QString qtTrPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
