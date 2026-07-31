@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-  <layout class="QGridLayout" name="gridLayout_2">
     <class>FolderWizardSourcePage</class>
     <widget class="QWidget" name="FolderWizardSourcePage">
         <property name="geometry">

@@ -8,19 +8,20 @@
 #define CONFIGFILE_H
 
 #include "owncloudlib.h"
-#include <memory>
-#include <QSharedPointer>
 #include <QSettings>
+#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
-#include <chrono>
 #include <QVersionNumber>
+#include <chrono>
+#include <memory>
 
 class QWidget;
 class QHeaderView;
 class ExcludedFiles;
 
-namespace OCC {
+namespace OCC
+{
 
 class AbstractCredentials;
 
@@ -33,8 +34,7 @@ class OWNCLOUDSYNC_EXPORT ConfigFile
 public:
     ConfigFile();
 
-    enum Scope { UserScope,
-        SystemScope, LegacyScope };
+    enum Scope { UserScope, SystemScope, LegacyScope };
 
     [[nodiscard]] QString configPath() const;
     [[nodiscard]] QString configFile() const;
@@ -112,10 +112,11 @@ public:
 
     // proxy settings
     void setProxyType(int proxyType,
-        const QString &host = QString(),
-        int port = 0, bool needsAuth = false,
-        const QString &user = QString(),
-        const QString &pass = QString());
+                      const QString &host = QString(),
+                      int port = 0,
+                      bool needsAuth = false,
+                      const QString &user = QString(),
+                      const QString &pass = QString());
 
     [[nodiscard]] int proxyType() const;
     [[nodiscard]] QString proxyHostName() const;
@@ -273,36 +274,7 @@ public:
     void setFileProviderDomainsAppSandboxMigrationCompleted(bool completed);
 
     /// Helper function for migration/upgrade proccess
-    enum MigrationPhase {
-        NotStarted,
-        SetupConfigFile,
-        SetupUsers,
-        SetupFolders,
-        Done
-    };
-    [[nodiscard]] bool isUpgrade() const;
-    [[nodiscard]] bool isDowngrade() const;
-    [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
-    [[nodiscard]] bool isUnbrandedToBrandedMigrationInProgress() const;
-    [[nodiscard]] bool shouldTryToMigrate() const;
-    /// Does the current app has a different version of the config version
-    [[nodiscard]] bool hasVersionChanged() const;
-    [[nodiscard]] bool isMigrationInProgress() const;
-    [[nodiscard]] MigrationPhase migrationPhase() const;
-    void setMigrationPhase(const MigrationPhase phase);
-    static constexpr char unbrandedAppName[] = "Nextcloud";
-    static constexpr char legacyAppName[] = "Owncloud";
-
-    static constexpr char clientVersionC[] = "clientVersion";
-
-    /// Helper function for migration/upgrade proccess
-    enum MigrationPhase {
-        NotStarted,
-        SetupConfigFile,
-        SetupUsers,
-        SetupFolders,
-        Done
-    };
+    enum MigrationPhase { NotStarted, SetupConfigFile, SetupUsers, SetupFolders, Done };
     [[nodiscard]] bool isUpgrade() const;
     [[nodiscard]] bool isDowngrade() const;
     [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
@@ -348,8 +320,7 @@ protected:
     [[nodiscard]] bool dataExists(const QString &group, const QString &key) const;
 
 private:
-    [[nodiscard]] QVariant getValue(const QString &param, const QString &group = QString(),
-        const QVariant &defaultValue = QVariant()) const;
+    [[nodiscard]] QVariant getValue(const QString &param, const QString &group = QString(), const QVariant &defaultValue = QVariant()) const;
     void setValue(const QString &key, const QVariant &value);
 
     [[nodiscard]] QString keychainProxyPasswordKey() const;
