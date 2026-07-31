@@ -922,7 +922,7 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     customizeStyle();
 
     // Close the wizard if initial folder selection is canceled
-    connect(_folderWizardSourcePage, &FolderWizardLocalPath::initialFolderSelectionCanceled,
+    connect(_folderWizardSourcePage, &FolderWizardLocalPath::initialFolderSelectionCanceled, this, &FolderWizard::reject);
 }
 
 FolderWizard::~FolderWizard() = default;
@@ -975,6 +975,5 @@ void FolderWizard::customizeStyle()
 void FolderWizard::adjustWizardSize()
 {
     setFixedSize(QSize(WLTheme.wizardFixedWidth(), WLTheme.wizardFixedHeight()));
-}
 }
 } // end namespace
