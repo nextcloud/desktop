@@ -353,7 +353,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         }
     }
 
-    if (excluded == CSYNC_NOT_EXCLUDED && OCC::FileSystem::isFileLocked(_discoveryData->_localDir + path, OCC::FileSystem::LockMode::SharedRead) &&
+    // Lock state was accessed off the GUI thread during discovery, so this read cannot block
+    if (excluded == CSYNC_NOT_EXCLUDED && entries.localEntry.isLocked &&
         (!entries.dbEntry.isValid() || !entries.serverEntry.isValid() || entries.serverEntry.etag == entries.dbEntry._etag)) {
         qCInfo(lcDisco) << _discoveryData->_localDir + path << "is locked" << "exluding it from sync";
         excluded = CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED;
