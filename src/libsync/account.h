@@ -602,6 +602,7 @@ private:
     bool _serverHasValidSubscription = false;
     UpdateChannel _enterpriseUpdateChannel = UpdateChannel::Invalid;
     QByteArray _encryptionCertificateFingerprint;
+
 #ifdef BUILD_FILE_PROVIDER_MODULE
     QString _fileProviderDomainIdentifier;
     QByteArray _lastRootETag; // Runtime-only, not persisted

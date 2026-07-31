@@ -291,6 +291,7 @@ IF(BUILD_UPDATER)
 endif()
 
 add_subdirectory(search)
+add_subdirectory(sharing)
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
@@ -581,9 +582,6 @@ target_link_libraries(nextcloudCore
   Qt::QuickWidgets
   KF6::Archive
   KDAB::kdsingleapplication
-
-  nextcloudGuiSearch
-  nextcloudGuiSearchplugin
   )
 
 if(KF6GuiAddons_FOUND)
@@ -695,7 +693,13 @@ set_target_properties(nextcloud PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
 
-target_link_libraries(nextcloud PRIVATE nextcloudCore)
+target_link_libraries(nextcloud PRIVATE
+    nextcloudGuiSearch
+    nextcloudGuiSearchplugin
+    nextcloudGuiSharing
+    nextcloudGuiSharingplugin
+    nextcloudCore
+)
 
 if(TARGET PkgConfig::CLOUDPROVIDERS)
     message("Building with libcloudproviderssupport")

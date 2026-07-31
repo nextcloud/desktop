@@ -1,0 +1,77 @@
+# SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+add_library(nextcloudGuiSharing STATIC)
+
+target_sources(nextcloudGuiSharing
+  PRIVATE
+    abstractsharemodel.h
+    abstractsharemodel.cpp
+    sharingconstants.h
+    unifiedsharingrequest.h
+    unifiedsharingrequest.cpp
+    createsharejob.h
+    createsharejob.cpp
+    destroysharejob.h
+    destroysharejob.cpp
+    generatesecretjob.h
+    generatesecretjob.cpp
+    getsharejob.h
+    getsharejob.cpp
+    getsharesjob.h
+    getsharesjob.cpp
+    searchrecipientsjob.h
+    searchrecipientsjob.cpp
+    updatesharejob.h
+    updatesharejob.cpp
+    addsourcejob.h
+    addsourcejob.cpp
+    removesourcejob.h
+    removesourcejob.cpp
+    addrecipientjob.h
+    addrecipientjob.cpp
+    removerecipientjob.h
+    removerecipientjob.cpp
+    setpropertyjob.h
+    setpropertyjob.cpp
+    setpermissionjob.h
+    setpermissionjob.cpp
+    setpermissionpresetjob.h
+    setpermissionpresetjob.cpp
+    setrecipientsecretjob.h
+    setrecipientsecretjob.cpp
+    setsharestatejob.h
+    setsharestatejob.cpp
+    permission.h
+    permission.cpp
+    permissionmodel.h
+    permissionmodel.cpp
+    property.h
+    property.cpp
+    propertymodel.h
+    propertymodel.cpp
+    recipient.h
+    recipient.cpp
+    recipientmodel.h
+    recipientmodel.cpp
+    recipientsearchmodel.h
+    recipientsearchmodel.cpp
+    share.h
+    share.cpp
+    sharingcontroller.h
+    sharingcontroller.cpp
+)
+
+ecm_add_qml_module(nextcloudGuiSharing
+  URI com.nextcloud.desktopclient.sharing
+  GENERATE_PLUGIN_SOURCE
+  QML_FILES
+    FieldDelegate.qml
+    MainPage.qml
+    RecipientSearchField.qml
+    ShareDetailsPage.qml
+    ShareEntry.qml
+    ShareDialog.qml
+)
+
+target_link_libraries(nextcloudGuiSharing PRIVATE nextcloudCore)

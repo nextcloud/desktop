@@ -4,22 +4,23 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "systray.h"
+#include "accessmanager.h"
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "activity/syncstatussummary.h"
-#include "systray.h"
-#include "theme.h"
-#include "config.h"
+#include "callstatechecker.h"
+#include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
-#include "tray/svgimageprovider.h"
+#include "config.h"
+#include "configfile.h"
+#include "guiutility.h"
 #include "search/unifiedsearchresultslistmodel.h"
+#include "theme.h"
+#include "tray/svgimageprovider.h"
+#include "tray/trayimageprovider.h"
 #include "tray/usermodel.h"
 #include "wheelhandler.h"
-#include "tray/trayimageprovider.h"
-#include "configfile.h"
-#include "accessmanager.h"
-#include "callstatechecker.h"
-#include "guiutility.h"
 
 #ifdef Q_OS_MACOS
 #include "foregroundbackground_interface.h"
@@ -842,14 +843,14 @@ bool Systray::raiseFileDetailDialogs(const QString &localPath)
     return !_fileDetailDialogs.empty();
 }
 
-void Systray::createFileDetailsDialog(const QString &localPath)
+void Systray::createFileDetailsDialog(const QString &localPath, const QString &fileId)
 {
     if (raiseFileDetailDialogs(localPath)) {
         qCDebug(lcSystray) << "Reopening an existing file details dialog for " << localPath;
         return;
     }
 
-    qCDebug(lcSystray) << "Opening new file details dialog for " << localPath;
+    qCDebug(lcSystray).nospace() << "Opening new file details dialog localPath=" << localPath << " fileId=" << fileId;
 
     if (!_trayEngine) {
         qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "as no tray engine was available";
@@ -859,6 +860,49 @@ void Systray::createFileDetailsDialog(const QString &localPath)
     const auto folder = FolderMan::instance()->folderForPath(localPath);
     if (!folder) {
         qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "no responsible folder found";
+        return;
+    }
+
+    auto resolvedFileId = fileId;
+    if (resolvedFileId.isEmpty()) {
+        const auto relativePath = localPath.mid(folder->cleanPath().length() + 1);
+        auto fileRecord = SyncJournalFileRecord{};
+        if (folder->journalDb()->getFileRecord(relativePath, &fileRecord)) {
+            resolvedFileId = QString::fromUtf8(fileRecord._fileId);
+        }
+    }
+
+    if (folder->accountState()->account()->capabilities().unifiedSharingAvailable()) {
+        // we have a server with the new unified sharing system, let's show the new fancy one
+        // TODO: reduce code duplication
+
+        const QVariantMap initialProperties{
+            {"account", QVariant::fromValue(folder->accountState()->account())},
+            {"localPath", localPath},
+            {"fileId", resolvedFileId},
+        };
+
+        QQmlComponent fileDetailsDialog(trayEngine(), "com.nextcloud.desktopclient.sharing"_L1, "ShareDialog"_L1);
+
+        if (fileDetailsDialog.isError()) {
+            qCWarning(lcSystray) << fileDetailsDialog.errorString();
+            return;
+        }
+
+        const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);
+        const auto dialog = qobject_cast<QQuickWindow*>(createdDialog);
+
+        if (!dialog) {
+            qCWarning(lcSystray) << "File details dialog window resulted in creation of object that was not a window!";
+            return;
+        }
+
+        _fileDetailDialogs.append(dialog);
+
+        dialog->show();
+        dialog->raise();
+        dialog->requestActivate();
+
         return;
     }
 
@@ -889,9 +933,9 @@ void Systray::createFileDetailsDialog(const QString &localPath)
     }
 }
 
-void Systray::createShareDialog(const QString &localPath)
+void Systray::createShareDialog(const QString &localPath, const QString &fileId)
 {
-    createFileDetailsDialog(localPath);
+    createFileDetailsDialog(localPath, fileId);
     Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Sharing);
 }
 
