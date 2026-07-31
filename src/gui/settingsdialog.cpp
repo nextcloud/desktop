@@ -6,52 +6,53 @@
 
 #include "settingsdialog.h"
 
-#include "folderman.h"
-#include "theme.h"
-#include "whitelabeltheme.h"
-#include "generalsettings.h"
-#include "networksettings.h"
+#include "accountmanager.h"
 #include "accountsettings.h"
 #include "configfile.h"
-#include "progressdispatcher.h"
+#include "folderman.h"
+#include "generalsettings.h"
+#include "networksettings.h"
 #include "owncloudgui.h"
-#include "accountmanager.h"
+#include "progressdispatcher.h"
+#include "theme.h"
+#include "whitelabeltheme.h"
 
-#include <QLabel>
-#include <QStandardItemModel>
-#include <QStackedWidget>
-#include <QPushButton>
-#include <QSettings>
-#include <QToolBar>
-#include <QToolButton>
-#include <QLayout>
-#include <QVBoxLayout>
-#include <QPixmap>
+#include <QActionGroup>
 #include <QImage>
-#include <QWidgetAction>
+#include <QLabel>
+#include <QLayout>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QPainterPath>
+#include <QPixmap>
+#include <QPushButton>
 #include <QQuickView>
-#include <QActionGroup>
 #include <QScopedValueRollback>
 #include <QScrollArea>
+#include <QSettings>
 #include <QSizePolicy>
+#include <QStackedWidget>
+#include <QStandardItemModel>
 #include <QTimer>
-#include <QMouseEvent>
+#include <QToolBar>
+#include <QToolButton>
+#include <QVBoxLayout>
+#include <QWidgetAction>
 #include <QWindow>
 #include <QtGlobal>
 
 using namespace Qt::StringLiterals;
 
 #ifdef Q_OS_WIN
-    // "light" looks too bright on dark mode on Windows only
-    #define BACKGROUND_PALETTE "alternate-base"
+// "light" looks too bright on dark mode on Windows only
+#define BACKGROUND_PALETTE "alternate-base"
 #else
-    // ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
-    #define BACKGROUND_PALETTE "light"
+// ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
+#define BACKGROUND_PALETTE "light"
 #endif
 
-namespace {
+namespace
+{
 class CurrentPageSizeStackedWidget : public QStackedWidget
 {
 public:
@@ -88,17 +89,32 @@ public:
         }
         return QStackedWidget::heightForWidth(width);
     }
-
 };
 
+#ifdef IONOS
+constexpr auto TOOLBAR_CSS = QLatin1String(
+    "QToolBar { background: %1; border: none; border-bottom: 1px solid %2; } "
+    "QToolBar QToolButton { background: %1; border: none; margin: 2px 0px 7px 12px; padding: 10px 4px 4px 4px; border-radius: %5; %8; } "
+    "QToolBar QToolButton:checked { background: %7; color: %4; }"
+    "QToolBar QToolButton:hover { background: %3; }"
+    "QToolBar QToolButton:pressed { background: %6; color: %4; }"
+    "QToolBar::separator { height: 100%; width: 1px; background: %2; margin-left: 12px; } " // Style for the separator
+    "QToolBarExtension#qt_toolbar_ext_button {margin: 0 0 7px 0; padding: 0;}" // Style overflow button
+    "QMenu { background: %1; color: %4; }" // Style overflow menu
+    "QMenu::item::checked { background: %7; color: %4; }"
+    "QMenu::item::selected { background: %3; color: %4; }"
+    "QMenu::item::pressed { background: %6; color: %4; }"
+    "QToolTip { color: %4; background-color: %1; border: 1px solid %2; }")
+#else
 constexpr auto TOOLBAR_CSS = QLatin1String(
     "QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
     "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 8px 12px; font-size: 14px; border-radius: 8px; } "
     "QToolBar QToolBarExtension { padding: 0; } "
-    "QToolBar QToolButton:checked { background: palette(highlight); color: palette(highlighted-text); }"
-);
+    "QToolBar QToolButton:checked { background: palette(highlight); color: palette(highlighted-text); }");
 
-const float buttonSizeRatio = 1.618f; // golden ratio
+#endif
+
+    const float buttonSizeRatio = 1.618f; // golden ratio
 constexpr auto settingsDialogDefaultWidth = 950;
 constexpr auto settingsDialogDefaultHeight = 500;
 
@@ -124,8 +140,8 @@ QString shortDisplayNameForSettings(OCC::Account *account, int width)
 }
 }
 
-
-namespace OCC {
+namespace OCC
+{
 
 class WindowDragHandle : public QWidget
 {
@@ -177,11 +193,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     //: This name refers to the application name e.g Nextcloud
     setWindowTitle(tr("%1 Settings").arg(Theme::instance()->appNameGUI()));
 
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &SettingsDialog::accountAdded);
-    connect(AccountManager::instance(), &AccountManager::accountRemoved,
-        this, &SettingsDialog::accountRemoved);
-
+    connect(AccountManager::instance(), &AccountManager::accountAdded, this, &SettingsDialog::accountAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, &SettingsDialog::accountRemoved);
 
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
@@ -191,7 +204,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->addAction(newAccountAction);
     _toolBar->addAction(newAccountAction);
     connect(newAccountAction, &QAction::triggered, _gui, &ownCloudGui::slotNewAccountWizard);
-    
+
 #ifndef IONOS_BUILD
     // Adds space between users + activities and general + network actions
     auto *spacer = new QWidget();
@@ -247,17 +260,16 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     setWindowFlag(Qt::Window, true);
     cfg.restoreGeometry(this);
-    resize(width() > WLTheme.minimalSettingsDialogWidth() + 50 ? width(): WLTheme.minimalSettingsDialogWidth() + 50, 
-        (height() > generalSettings->sizeHint().height() + 100 ? height(): generalSettings->sizeHint().height()) + 100);
+    resize(width() > WLTheme.minimalSettingsDialogWidth() + 50 ? width() : WLTheme.minimalSettingsDialogWidth() + 50,
+           (height() > generalSettings->sizeHint().height() + 100 ? height() : generalSettings->sizeHint().height()) + 100);
     setMinimumSize(WLTheme.minimalSettingsDialogWidth() + 50, generalSettings->sizeHint().height() + 100);
-
 }
 
 SettingsDialog::~SettingsDialog()
 {
 }
 
-QWidget* SettingsDialog::currentPage()
+QWidget *SettingsDialog::currentPage()
 {
     return _stack->currentWidget();
 }
@@ -301,7 +313,7 @@ void SettingsDialog::changeEvent(QEvent *e)
         emit styleChanged();
         break;
     case QEvent::ActivationChange:
-        if(isActiveWindow())
+        if (isActiveWindow())
             emit onActivate();
         break;
     default:
@@ -362,7 +374,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     const auto accountAction = createColorAwareAction(WLTheme.avatarIcon("qtwidget"), actionText);
     updateAccountAvatar(s->account().data());
-    
+
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), static_cast<int>(height * buttonSizeRatio)));
@@ -373,7 +385,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
     accountSettings->setObjectName(objectName);
-    _stack->insertWidget(0 , accountSettings);
+    _stack->insertWidget(0, accountSettings);
 
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
@@ -381,8 +393,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     accountAction->trigger();
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotComputeOverallSyncStatus);
-    connect(accountSettings, &AccountSettings::openFolderAlias,
-        _gui, &ownCloudGui::slotFolderOpenAction);
+    connect(accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
@@ -493,27 +504,20 @@ void SettingsDialog::customizeStyle()
     QString highlightTextColor(palette["highlightedText"].value<QColor>().name());
 
     QString toolbarActionBorderRadius(WLTheme.toolbarActionBorderRadius());
-    QString toolbarSideMargin (WLTheme.toolbarSideMargin());
-    QString toolButtonFont (
-        WLTheme.fontConfigurationCss(
-                WLTheme.settingsFont(),
-                WLTheme.settingsTextSize(),
-                WLTheme.settingsTextWeight(),
-                WLTheme.menuTextColor()
-        )
-    );
+    QString toolbarSideMargin(WLTheme.toolbarSideMargin());
+    QString toolButtonFont(
+        WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.menuTextColor()));
 
     _toolBar->setStyleSheet(
-        TOOLBAR_CSS().arg(white, borderColor, hoverColor, highlightTextColor, toolbarActionBorderRadius, pressedColor, selectedColor, toolButtonFont)
-    );
+        QString(TOOLBAR_CSS).arg(white, borderColor, hoverColor, highlightTextColor, toolbarActionBorderRadius, pressedColor, selectedColor, toolButtonFont));
 
     for (const auto a : _actionGroup->actions()) {
         QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), this->palette());
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
         if (btn) {
-            Q_FOREACH (auto ai, AccountManager::instance()->accounts()){
-                if (a->text().contains(ai->account()->displayName())){
+            Q_FOREACH (auto ai, AccountManager::instance()->accounts()) {
+                if (a->text().contains(ai->account()->displayName())) {
                     btn->setFixedWidth(164);
                 }
             }
@@ -528,32 +532,31 @@ void SettingsDialog::customizeStyle()
     if (_updatingStyle) {
         return;
     }
-    
+
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
     _toolBar->setStyleSheet(TOOLBAR_CSS);
 
-    setStyleSheet(QStringLiteral(
-        "#Settings { background: palette(window); border-radius: 0; }"
+    setStyleSheet(
+        QStringLiteral("#Settings { background: palette(window); border-radius: 0; }"
 
-        /* Navigation */
-        "#settings_navigation_scroll { background: palette(" BACKGROUND_PALETTE "); border-radius: 12px; padding: 4px; }"
-        "#settings_navigation { background: transparent; border: none; padding: 0px; }"
+                       /* Navigation */
+                       "#settings_navigation_scroll { background: palette(" BACKGROUND_PALETTE "); border-radius: 12px; padding: 4px; }"
+                       "#settings_navigation { background: transparent; border: none; padding: 0px; }"
 
-        /* Content area */
-        "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
+                       /* Content area */
+                       "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
 
-        /* Panels */
-        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
-        "#accountStatusPanel, #connectionSettingsPanel, #fileProviderPanel, #syncFoldersPanel {"
-        " background: palette(" BACKGROUND_PALETTE ");"
-        " border-radius: 10px;"
-        " margin: 0px;"
-        " padding: 6px;"
-        " }"
-        "#generalGroupBoxTitle, #advancedGroupBoxTitle, #aboutAndUpdatesGroupBoxTitle {"
-        " margin-bottom: 6px;"
-        " }"
-    ));
+                       /* Panels */
+                       "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
+                       "#accountStatusPanel, #connectionSettingsPanel, #fileProviderPanel, #syncFoldersPanel {"
+                       " background: palette(" BACKGROUND_PALETTE ");"
+                       " border-radius: 10px;"
+                       " margin: 0px;"
+                       " padding: 6px;"
+                       " }"
+                       "#generalGroupBoxTitle, #advancedGroupBoxTitle, #aboutAndUpdatesGroupBoxTitle {"
+                       " margin-bottom: 6px;"
+                       " }"));
 
     const auto &allActions = _actionGroup->actions();
     for (const auto a : allActions) {
@@ -575,7 +578,6 @@ public:
         setText(text);
         setIcon(icon);
     }
-
 
     QWidget *createWidget(QWidget *parent) override
     {
