@@ -596,6 +596,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
     const auto relativeLocalPath = pathString.mid(rootPath.length() + 1);
     const auto serverPath = QString{remoteSyncRootPath + relativeLocalPath}.mid(1);
 
+#if 0
     qCDebug(lcCfApiWrapper) << "fetch placeholder:" << path << serverPath << relativeLocalPath << requestId;
 
     QEventLoop localEventLoop;
@@ -607,27 +608,25 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
 
     QList<OCC::PlaceholderCreateInfo> newEntries;
 
-    QObject::connect(&lsPropFutureWatcher, &QFutureWatcher<QStringList>::finished, &localEventLoop, [&localEventLoop]() {
-        qCInfo(lcCfApiWrapper()) << "ls prop finished";
-        localEventLoop.quit();
-    });
+    QObject::connect(&lsPropFutureWatcher, &QFutureWatcher<QStringList>::finished,
+                     &localEventLoop, [&localEventLoop] () {
+                         qCInfo(lcCfApiWrapper()) << "ls prop finished";
+                         localEventLoop.quit();
+                     });
 
-    QObject::connect(&lsPropFutureWatcher, &QFutureWatcher<QStringList>::resultReadyAt, &localEventLoop, [&newEntries, &lsPropFutureWatcher](int resultIndex) {
-        qCInfo(lcCfApiWrapper()) << "ls prop result at index" << resultIndex;
-        const auto &newResultEntries = lsPropFutureWatcher.resultAt(resultIndex);
-        newEntries.append(newResultEntries);
-    });
+    QObject::connect(&lsPropFutureWatcher, &QFutureWatcher<QStringList>::resultReadyAt,
+                     &localEventLoop, [&newEntries, &lsPropFutureWatcher] (int resultIndex) {
+                         qCInfo(lcCfApiWrapper()) << "ls prop result at index" << resultIndex;
+                         const auto &newResultEntries = lsPropFutureWatcher.resultAt(resultIndex);
+                         newEntries.append(newResultEntries);
+                     });
 
-    QObject::connect(&lsPropFutureWatcher, &QFutureWatcher<QStringList>::started, &localEventLoop, []() {
-        qCInfo(lcCfApiWrapper()) << "ls prop started";
-    });
+    QObject::connect(&lsPropFutureWatcher, &QFutureWatcher<QStringList>::started,
+                     &localEventLoop, [] () {
+                         qCInfo(lcCfApiWrapper()) << "ls prop started";
+                     });
 
-    QMetaObject::invokeMethod(vfs->params().account.data(),
-                              &OCC::Account::listRemoteFolder,
-                              &lsPropPromise,
-                              remoteSyncRootPath,
-                              serverPath,
-                              vfs->params().journal);
+    QMetaObject::invokeMethod(vfs->params().account.data(), &OCC::Account::listRemoteFolder, &lsPropPromise, remoteSyncRootPath, serverPath, vfs->params().journal);
 
     qCInfo(lcCfApiWrapper()) << "ls prop requested" << path << serverPath;
 
@@ -638,13 +637,10 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
     sendTransferInfo(newEntries, serverPath);
 
     auto newPlaceholdersResult = 0;
-    const auto invokeFinalizeResult = QMetaObject::invokeMethod(
-        vfs,
-        [&newPlaceholdersResult, vfs, &newEntries, &relativeLocalPath]() -> int {
-            return vfs->finalizeNewPlaceholders(newEntries, relativeLocalPath);
-        },
-        Qt::BlockingQueuedConnection,
-        qReturnArg(newPlaceholdersResult));
+    const auto invokeFinalizeResult = QMetaObject::invokeMethod(vfs,
+                                                                [&newPlaceholdersResult, vfs, &newEntries, &relativeLocalPath] () -> int { return vfs->finalizeNewPlaceholders(newEntries, relativeLocalPath); },
+                                                                Qt::BlockingQueuedConnection,
+                                                                qReturnArg(newPlaceholdersResult));
     if (!invokeFinalizeResult) {
         qCritical(lcCfApiWrapper) << "Failed to finalize hydration job for" << path << requestId;
         sendTransferError();
@@ -654,7 +650,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
     if (!newPlaceholdersResult) {
         sendTransferError();
     }
-
+#endif
     qCInfo(lcCfApiWrapper) << "call for finalizeNewPlaceholders succeeded";
 }
 
