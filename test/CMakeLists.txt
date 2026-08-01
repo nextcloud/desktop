@@ -60,6 +60,10 @@ endif()
 
 nextcloud_add_test(Utility)
 
+if (APPLE)
+    add_subdirectory(macOS)
+endif()
+
 if (NOT APPLE)
     nextcloud_add_test(SyncEngine)
     nextcloud_add_test(SyncVirtualFiles)

@@ -31,6 +31,9 @@
 		AA7F17E12E7017230000E928 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA7F17E02E7017230000E928 /* Authentication.storyboard */; };
 		AA7F17E32E70173E0000E928 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F17E22E70173E0000E928 /* AuthenticationViewController.swift */; };
 		AABBD8972F3CB64800662E00 /* FinderSyncXPCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AABBD8962F3CB64800662E00 /* FinderSyncXPCManager.m */; };
+		AABF00082F4A000100662E00 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABF00022F4A000100662E00 /* main.swift */; };
+		AABF00092F4A000100662E00 /* Broker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABF00032F4A000100662E00 /* Broker.swift */; };
+		AABF000A2F4A000100662E00 /* PeerRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABF00042F4A000100662E00 /* PeerRequirement.swift */; };
 		AABBD8B12F3CB80100662E00 /* FileProviderExtStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBD8B02F3CB80100662E00 /* FileProviderExtStub.swift */; };
 		AAC00D2A2E37B29D006010FE /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AAC00D292E37B29D006010FE /* Localizable.xcstrings */; };
 		AAF19A682E8D5B4E005FE5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */; };
@@ -117,6 +120,14 @@
 		AABBD8962F3CB64800662E00 /* FinderSyncXPCManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FinderSyncXPCManager.m; sourceTree = "<group>"; };
 		AABBD8982F3CB65800662E00 /* FinderSyncAppProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSyncAppProtocol.h; sourceTree = "<group>"; };
 		AABBD8992F3CB65800662E00 /* FinderSyncProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSyncProtocol.h; sourceTree = "<group>"; };
+		AABF00022F4A000100662E00 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		AABF00032F4A000100662E00 /* Broker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Broker.swift; sourceTree = "<group>"; };
+		AABF00042F4A000100662E00 /* PeerRequirement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerRequirement.swift; sourceTree = "<group>"; };
+		AABF00052F4A000100662E00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AABF00062F4A000100662E00 /* FinderSyncBroker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FinderSyncBroker-Bridging-Header.h"; sourceTree = "<group>"; };
+		AABF00072F4A000100662E00 /* FinderSyncBroker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinderSyncBroker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AABF00122F4A000100662E00 /* FinderSyncBrokerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSyncBrokerProtocol.h; sourceTree = "<group>"; };
+		AABF00132F4A000100662E00 /* FinderSyncBrokerClientProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSyncBrokerClientProtocol.h; sourceTree = "<group>"; };
 		AABBD8B02F3CB80100662E00 /* FileProviderExtStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtStub.swift; sourceTree = "<group>"; };
 		AAC00D292E37B29D006010FE /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -136,6 +147,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		AABF000C2F4A000100662E00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		538E396427F4765000FA63D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -263,8 +281,22 @@
 			children = (
 				AABBD8982F3CB65800662E00 /* FinderSyncAppProtocol.h */,
 				AABBD8992F3CB65800662E00 /* FinderSyncProtocol.h */,
+				AABF00132F4A000100662E00 /* FinderSyncBrokerClientProtocol.h */,
+				AABF00122F4A000100662E00 /* FinderSyncBrokerProtocol.h */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		AABF00012F4A000100662E00 /* FinderSyncBroker */ = {
+			isa = PBXGroup;
+			children = (
+				AABF00032F4A000100662E00 /* Broker.swift */,
+				AABF00062F4A000100662E00 /* FinderSyncBroker-Bridging-Header.h */,
+				AABF00052F4A000100662E00 /* Info.plist */,
+				AABF00022F4A000100662E00 /* main.swift */,
+				AABF00042F4A000100662E00 /* PeerRequirement.swift */,
+			);
+			path = FinderSyncBroker;
 			sourceTree = "<group>";
 		};
 		C2B573941B1CD88000303B36 = {
@@ -274,6 +306,7 @@
 				C2B573B31B1CD91E00303B36 /* desktopclient */,
 				AA0A6B1C2E8EA948007F4A7A /* NextcloudDev */,
 				C2B573D81B1CD9CE00303B36 /* FinderSyncExt */,
+				AABF00012F4A000100662E00 /* FinderSyncBroker */,
 				538E396B27F4765000FA63D5 /* FileProviderExt */,
 				53B9797F2B84C81F002DA742 /* FileProviderUIExt */,
 				538E396827F4765000FA63D5 /* Frameworks */,
@@ -286,6 +319,7 @@
 			children = (
 				C2B573B11B1CD91E00303B36 /* desktopclient.app */,
 				C2B573D71B1CD9CE00303B36 /* FinderSyncExt.appex */,
+				AABF00072F4A000100662E00 /* FinderSyncBroker.app */,
 				538E396727F4765000FA63D5 /* FileProviderExt.appex */,
 				53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */,
 			);
@@ -398,6 +432,23 @@
 			productName = FileProviderUIExt;
 			productReference = 53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		AABF000E2F4A000100662E00 /* FinderSyncBroker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AABF00112F4A000100662E00 /* Build configuration list for PBXNativeTarget "FinderSyncBroker" */;
+			buildPhases = (
+				AABF000B2F4A000100662E00 /* Sources */,
+				AABF000C2F4A000100662E00 /* Frameworks */,
+				AABF000D2F4A000100662E00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FinderSyncBroker;
+			productName = FinderSyncBroker;
+			productReference = AABF00072F4A000100662E00 /* FinderSyncBroker.app */;
+			productType = "com.apple.product-type.application";
 		};
 		C2B573B01B1CD91E00303B36 /* desktopclient */ = {
 			isa = PBXNativeTarget;
@@ -598,6 +649,7 @@
 			targets = (
 				C2B573B01B1CD91E00303B36 /* desktopclient */,
 				C2B573D61B1CD9CE00303B36 /* FinderSyncExt */,
+				AABF000E2F4A000100662E00 /* FinderSyncBroker */,
 				538E396627F4765000FA63D5 /* FileProviderExt */,
 				53B9797D2B84C81F002DA742 /* FileProviderUIExt */,
 				AA0A62F22E8EA929007F4A7A /* NextcloudDev */,
@@ -606,6 +658,13 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		AABF000D2F4A000100662E00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		538E396527F4765000FA63D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -670,6 +729,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		AABF000B2F4A000100662E00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AABF00092F4A000100662E00 /* Broker.swift in Sources */,
+				AABF00082F4A000100662E00 /* main.swift in Sources */,
+				AABF000A2F4A000100662E00 /* PeerRequirement.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		538E396327F4765000FA63D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -736,6 +805,85 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		AABF000F2F4A000100662E00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = "$(CURRENT_PROJECT_VERSION)";
+				DEAD_CODE_STRIPPING = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FinderSyncBroker/Info.plist;
+				INFOPLIST_OUTPUT_FORMAT = "same-as-input";
+				INFOPLIST_PREPROCESS = NO;
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME:rfc1034identifier)";
+				EXECUTABLE_NAME = "$(OC_APPLICATION_NAME)FinderIntegration";
+				PRODUCT_MODULE_NAME = FinderSyncBroker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FinderSyncBroker/FinderSyncBroker-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/FinderSyncExt/Services";
+			};
+			name = Debug;
+		};
+		AABF00102F4A000100662E00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = "$(CURRENT_PROJECT_VERSION)";
+				DEAD_CODE_STRIPPING = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FinderSyncBroker/Info.plist;
+				INFOPLIST_OUTPUT_FORMAT = "same-as-input";
+				INFOPLIST_PREPROCESS = NO;
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME:rfc1034identifier)";
+				EXECUTABLE_NAME = "$(OC_APPLICATION_NAME)FinderIntegration";
+				PRODUCT_MODULE_NAME = FinderSyncBroker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "FinderSyncBroker/FinderSyncBroker-Bridging-Header.h";
+				SWIFT_VERSION = 6.0;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/FinderSyncExt/Services";
+			};
+			name = Release;
+		};
 		538E397727F4765000FA63D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1305,6 +1453,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		AABF00112F4A000100662E00 /* Build configuration list for PBXNativeTarget "FinderSyncBroker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AABF000F2F4A000100662E00 /* Debug */,
+				AABF00102F4A000100662E00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		538E397927F4765000FA63D5 /* Build configuration list for PBXNativeTarget "FileProviderExt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
