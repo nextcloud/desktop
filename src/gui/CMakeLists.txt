@@ -340,6 +340,12 @@ IF( APPLE )
     list(APPEND client_SRCS
         ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncProtocol.h
         ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncAppProtocol.h
+        ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncBrokerProtocol.h
+        ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncBrokerClientProtocol.h
+        macOS/findersyncbrokeridentity.h
+        macOS/findersyncbrokeridentity.cpp
+        macOS/findersyncbrokerregistrar.h
+        macOS/findersyncbrokerregistrar_mac.mm
         macOS/findersyncxpc.h
         macOS/findersyncxpc_mac.mm
         macOS/findersyncservice.h
@@ -756,6 +762,9 @@ if (APPLE)
         target_link_libraries(nextcloudCore PUBLIC "-framework UserNotifications")
     endif()
     target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework Foundation" "-framework Network")
+    # ServiceManagement for SMAppService, used to register the FinderSync broker login item.
+    # src/csync links it too, for utility_mac.mm, but PRIVATE — so it does not propagate here.
+    target_link_libraries(nextcloudCore PRIVATE "-framework ServiceManagement")
     target_compile_definitions(nextcloudCore PRIVATE NEXTCLOUD_HAS_NATIVE_SOUND_BACKEND)
 endif()
 

@@ -68,10 +68,6 @@
 #ifdef Q_OS_MACOS
 #include <CoreFoundation/CoreFoundation.h>
 #include "common/utility_mac_sandbox.h"
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "macOS/findersyncxpc.h"
-#include "application.h"
-#endif
 #endif
 
 #ifdef HAVE_KGUIADDONS
@@ -458,11 +454,30 @@ void SocketApi::slotRegisterPath(const QString &alias)
 
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
-        const QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+        const QString path = removeTrailingSlash(f->path());
+        const QString message = buildRegisterPathMessage(path);
         for (const auto &listener : std::as_const(_listeners)) {
             qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener->socket;
             listener->sendMessage(message);
         }
+
+#if defined(Q_OS_MACOS)
+        // _listeners is always empty on macOS, so the loop above reaches nobody. This is the only
+        // path that registers a folder which has *become* syncable rather than one that already
+        // was: FolderMan::slotFolderCanSyncChanged() calls us when the account finishes connecting.
+        //
+        // Missing this bridge is why Finder integration was invisible after every login. The
+        // extension connects long before the account is connected, so the bootstrap registration
+        // on connect finds canSync() false for every folder and registers nothing; the account
+        // then connects, this slot fires, and the message went nowhere. Restarting Finder appeared
+        // to fix it only because a fresh extension re-triggers the bootstrap, by which time the
+        // account is connected.
+        if (auto app = qobject_cast<Application *>(qApp)) {
+            if (auto finderSyncXPC = app->finderSyncXPC()) {
+                finderSyncXPC->registerPath(path);
+            }
+        }
+#endif
     }
 
     _registeredAliases.insert(alias);
@@ -476,9 +491,19 @@ void SocketApi::slotUnregisterPath(const QString &alias)
 
     auto folder = FolderMan::instance()->folder(alias);
     if (folder) {
-        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"),
-                                      removeTrailingSlash(folder->path()),
-                                      QString()));
+        const QString path = removeTrailingSlash(folder->path());
+        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), path, QString()));
+
+#if defined(Q_OS_MACOS)
+        // Same reason as slotRegisterPath: broadcastMessage only reaches _listeners, which is
+        // empty on macOS. Without this a folder that stops being syncable — paused, or the account
+        // disconnecting — keeps its badges and context menu in Finder.
+        if (auto app = qobject_cast<Application *>(qApp)) {
+            if (auto finderSyncXPC = app->finderSyncXPC()) {
+                finderSyncXPC->unregisterPath(path);
+            }
+        }
+#endif
     }
 
     _registeredAliases.remove(alias);
@@ -486,9 +511,16 @@ void SocketApi::slotUnregisterPath(const QString &alias)
 
 void SocketApi::slotUpdateFolderView(Folder *f)
 {
+    // Deliberately not gated on _listeners being non-empty. On macOS that container is always
+    // empty — the shell extension talks over XPC, not the local socket — so bailing out here
+    // silently dropped the sync folder's own root badge and the post-sync view refresh, which
+    // both happen below via broadcastStatusPushMessage/broadcastMessage. Those two now bridge
+    // to XPC themselves, so reaching them is what matters.
+#if !defined(Q_OS_MACOS)
     if (_listeners.isEmpty()) {
         return;
     }
+#endif
 
     if (f) {
         // do only send UPDATE_VIEW for a couple of status
@@ -502,6 +534,17 @@ void SocketApi::slotUpdateFolderView(Folder *f)
             broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
 
             broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), rootPath));
+
+#if defined(Q_OS_MACOS)
+            // broadcastMessage only reaches _listeners, which is always empty on macOS. Tell the
+            // FinderSync extension over its own channel instead, or Finder keeps showing the
+            // pre-sync state until something else happens to invalidate it.
+            if (auto app = qobject_cast<Application *>(qApp)) {
+                if (auto finderSyncXPC = app->finderSyncXPC()) {
+                    finderSyncXPC->updateViewAtPath(rootPath);
+                }
+            }
+#endif
         } else {
             qCDebug(lcSocketApi) << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
         }
