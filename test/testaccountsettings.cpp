@@ -8,6 +8,7 @@
  */
 
 #include <QtTest>
+#include <QGroupBox>
 
 #include "account.h"
 #include "testhelper.h"
@@ -52,6 +53,23 @@ private slots:
         auto accountState = new FakeAccountState(account);
         QCOMPARE_EQ(accountState->state(), OCC::AccountState::Connected);
         AccountSettings a(accountState);
+    }
+
+    void test_panelsUseGroupBoxes()
+    {
+        auto account = Account::create();
+        auto accountState = new FakeAccountState(account);
+        AccountSettings settings(accountState);
+
+        const auto panelNames = {
+            QStringLiteral("accountStatusPanel"),
+            QStringLiteral("encryptionPanel"),
+            QStringLiteral("syncFoldersPanel"),
+            QStringLiteral("accountActionsPanel"),
+        };
+        for (const auto &panelName : panelNames) {
+            QVERIFY(settings.findChild<QGroupBox *>(panelName));
+        }
     }
 };
 
