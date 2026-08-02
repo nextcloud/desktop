@@ -1865,71 +1865,71 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="200"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Vissa inställningar har konfigurerats i %1 versioner av den här klienten och använder funktioner som inte är tillgängliga i den här versionen.&lt;br&gt;&lt;br&gt;Att fortsätta kommer att betyda &lt;b&gt;%2 dessa inställningar&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Den aktuella konfigurationsfilen har redan säkerhetskopierats till &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>nyare</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>äldre</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="207"/>
         <source>ignoring</source>
         <translation>ignorera</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="207"/>
         <source>deleting</source>
         <translation>radera</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="209"/>
         <source>Quit</source>
         <translation>Avsluta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="210"/>
         <source>Continue</source>
         <translation>Fortsätt</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="632"/>
+        <location filename="../src/gui/application.cpp" line="697"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 konton</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="633"/>
+        <location filename="../src/gui/application.cpp" line="698"/>
         <source>1 account</source>
         <translation>1 konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="635"/>
+        <location filename="../src/gui/application.cpp" line="700"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mappar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="636"/>
+        <location filename="../src/gui/application.cpp" line="701"/>
         <source>1 folder</source>
         <translation>1 mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="638"/>
+        <location filename="../src/gui/application.cpp" line="703"/>
         <source>Legacy import</source>
         <translation>Import från äldre version</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="639"/>
+        <location filename="../src/gui/application.cpp" line="704"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1937,12 +1937,12 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="759"/>
+        <location filename="../src/gui/application.cpp" line="824"/>
         <source>Error accessing the configuration file</source>
         <translation>Kunde inte komma åt konfigurationsfilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="760"/>
+        <location filename="../src/gui/application.cpp" line="825"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Ett fel uppstod vid läsning av konfigurationsfilen vid %1. Kontrollera att filen kan nås av ditt datorkonto.</translation>
     </message>
@@ -3919,22 +3919,22 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="865"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
         <source>Password for share required</source>
         <translation>Lösenord för delning krävs</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="866"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
         <source>Please enter a password for your link share:</source>
         <translation>Ange ett lösenord för din länkdelning:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="892"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="935"/>
         <source>Sharing error</source>
         <translation>Fel vid delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="893"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="936"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5546,48 +5546,48 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="833"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="876"/>
         <source>Context menu share</source>
         <translation>Delningsmeny</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1152"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>I shared something with you</source>
         <translation>Jag delade något med dig</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1165"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1208"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
         <source>Share options</source>
         <translation>Delningsalternativ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1170"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1213"/>
         <source>Send private link by email …</source>
         <translation>Skicka privat länk med e-post ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1169"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1212"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopiera privat länk till urklipp</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="554"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="597"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Det gick inte att kryptera mappen &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="598"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>Kontot %1 har inte ände-till-ände-kryptering konfigurerad. Konfigurera detta i dina kontoinställningar för att aktivera mappkryptering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="574"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
         <source>Failed to encrypt folder</source>
         <translation>Kunde inte kryptera mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="575"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="618"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5596,116 +5596,116 @@ Server replied with error: %2</source>
 Servern svarade med fel: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="582"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="625"/>
         <source>Folder encrypted successfully</source>
         <translation>Mappen har krypterats</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="626"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>Följande mapp krypterades: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1084"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1127"/>
         <source>Select new location …</source>
         <translation>Välj ny plats …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1166"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1229"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1272"/>
         <source>File actions</source>
         <translation>Filåtgärder</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1167"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1410"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1210"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1453"/>
         <source>Activity</source>
         <translation>Aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1238"/>
         <source>Leave this share</source>
         <translation>Lämna denna delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1201"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
         <source>Resharing this file is not allowed</source>
         <translation>Vidaredelning av denna fil är inte tillåtet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1201"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Vidaredelning av denna mapp är inte tillåtet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1262"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
         <source>Encrypt</source>
         <translation>Kryptera</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1273"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1316"/>
         <source>Lock file</source>
         <translation>Lås fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1276"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1319"/>
         <source>Unlock file</source>
         <translation>Lås upp fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1292"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1335"/>
         <source>Locked by %1</source>
         <translation>Låst av %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1296"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1339"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Går ut om %1 minut</numerusform><numerusform>Går ut om %1 minuter</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1348"/>
         <source>Apply labels</source>
         <translation>Tillämpa etiketter</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1447"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1490"/>
         <source>Resolve conflict …</source>
         <translation>Lös konflikt …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1451"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1494"/>
         <source>Move and rename …</source>
         <translation>Flytta och byt namn …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1454"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1497"/>
         <source>Move, rename and upload …</source>
         <translation>Flytta, byt namn och ladda upp …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1456"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1499"/>
         <source>Delete local changes</source>
         <translation>Radera lokala ändringar</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1462"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1505"/>
         <source>Move and upload …</source>
         <translation>Flytta och ladda upp …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1463"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1506"/>
         <source>Delete</source>
         <translation>Ta bort</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
         <source>Copy internal link</source>
         <translation>Kopiera intern länk</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1416"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1418"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1459"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1461"/>
         <source>Open in browser</source>
         <translation>Öppna i webbläsare</translation>
     </message>

@@ -1864,71 +1864,71 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="200"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Niektoré nastavenia boli nakonfigurované v %1 verziách tohto klienta a používajú funkcie, ktoré nie sú dostupné v tejto verzii.&lt;br&gt;&lt;br&gt;Pokračovanie bude znamenať &lt;b&gt;%2 týchto nastavení&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Aktuálny konfiguračný súbor už bol zálohovaný do &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>novšie</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>staršie</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="207"/>
         <source>ignoring</source>
         <translation>ignorujem</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="207"/>
         <source>deleting</source>
         <translation>odstraňujem</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="209"/>
         <source>Quit</source>
         <translation>Ukončiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="210"/>
         <source>Continue</source>
         <translation>Pokračovať</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="632"/>
+        <location filename="../src/gui/application.cpp" line="697"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 účty</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="633"/>
+        <location filename="../src/gui/application.cpp" line="698"/>
         <source>1 account</source>
         <translation>1 účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="635"/>
+        <location filename="../src/gui/application.cpp" line="700"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 priečinkov</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="636"/>
+        <location filename="../src/gui/application.cpp" line="701"/>
         <source>1 folder</source>
         <translation>1 priečinok</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="638"/>
+        <location filename="../src/gui/application.cpp" line="703"/>
         <source>Legacy import</source>
         <translation>Starý import</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="639"/>
+        <location filename="../src/gui/application.cpp" line="704"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1936,12 +1936,12 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="759"/>
+        <location filename="../src/gui/application.cpp" line="824"/>
         <source>Error accessing the configuration file</source>
         <translation>Chyba pri prístupe ku konfiguračnému súboru</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="760"/>
+        <location filename="../src/gui/application.cpp" line="825"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Pri prístupe ku konfiguračnému súboru na %1 sa vyskytla chyba. Uistite sa, že váš používateľ má prístup k súboru.</translation>
     </message>
@@ -3918,22 +3918,22 @@ Prechod na nižšiu verziu nie je možný okamžite: zmena zo stabilnej na podni
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="865"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
         <source>Password for share required</source>
         <translation>Pre zdieľanie je potrebné heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="866"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
         <source>Please enter a password for your link share:</source>
         <translation>Zadajte heslo pre zdieľanie pomocou odkazu:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="892"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="935"/>
         <source>Sharing error</source>
         <translation>Chyba zdieľania</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="893"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="936"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5538,48 +5538,48 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="833"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="876"/>
         <source>Context menu share</source>
         <translation>Kontextové menu zdieľania</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1152"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>I shared something with you</source>
         <translation>Niečo som vám zdieľal</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1165"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1208"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
         <source>Share options</source>
         <translation>Možnosti zdieľania</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1170"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1213"/>
         <source>Send private link by email …</source>
         <translation>Odoslať privátny odkaz e-mailom…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1169"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1212"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopírovať privátny odkaz do schránky</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="554"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="597"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Nepodarilo sa zašifrovať adresár na adrese &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="598"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>Účet %1 nemá nakonfigurované šifrovanie end-to-end. Prosím, nakonfigurujte ho v nastaveniach vášho účtu, aby ste povolili šifrovanie adresárov.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="574"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
         <source>Failed to encrypt folder</source>
         <translation>Nepodarilo sa zašifrovať priečinok</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="575"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="618"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5588,116 +5588,116 @@ Server replied with error: %2</source>
 Server odpovedal chybou: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="582"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="625"/>
         <source>Folder encrypted successfully</source>
         <translation>Priečinok bol úspešne zašifrovaný</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="626"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>Tento adresár bol úspešne zašifrovaný: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1084"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1127"/>
         <source>Select new location …</source>
         <translation>Zadajte novú polohu ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1166"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1229"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1272"/>
         <source>File actions</source>
         <translation>Akcie súboru</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1167"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1410"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1210"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1453"/>
         <source>Activity</source>
         <translation>Aktivity</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1238"/>
         <source>Leave this share</source>
         <translation>Opustiť toto zdieľanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1201"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
         <source>Resharing this file is not allowed</source>
         <translation>Opätovné zdieľanie tohto súboru je zakázané</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1201"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Opätovné zdieľanie tohto priečinka je zakázané</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1262"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
         <source>Encrypt</source>
         <translation>Zašifrovať</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1273"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1316"/>
         <source>Lock file</source>
         <translation>Zamknúť súbor</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1276"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1319"/>
         <source>Unlock file</source>
         <translation>Odomknúť súbor</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1292"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1335"/>
         <source>Locked by %1</source>
         <translation>Zamknuté od %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1296"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1339"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Vyprší za %1 minútu</numerusform><numerusform>Vyprší za %1 minút</numerusform><numerusform>Vyprší za %1 minút</numerusform><numerusform>Vyprší za %1 minúty</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1348"/>
         <source>Apply labels</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1447"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1490"/>
         <source>Resolve conflict …</source>
         <translation>Vyriešiť konflikt ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1451"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1494"/>
         <source>Move and rename …</source>
         <translation>Presunúť a premenovať ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1454"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1497"/>
         <source>Move, rename and upload …</source>
         <translation>Presunúť. remenovať a nahrať ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1456"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1499"/>
         <source>Delete local changes</source>
         <translation>Zrušiť lokálne zmeny</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1462"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1505"/>
         <source>Move and upload …</source>
         <translation>Presunúť a nahrať ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1463"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1506"/>
         <source>Delete</source>
         <translation>Zmazať</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
         <source>Copy internal link</source>
         <translation>Kopírovať interný odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1416"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1418"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1459"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1461"/>
         <source>Open in browser</source>
         <translation>Otvoriť v prehliadači</translation>
     </message>

@@ -112,12 +112,12 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="25"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>Sonraí comhaid</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="32"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Gníomhartha comhaid</translation>
     </message>
 </context>
 <context>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenuButton.qml" line="34"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Sonraí comhaid oscailte</translation>
     </message>
 </context>
 <context>
@@ -684,32 +684,32 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
-        <translation type="unfinished"/>
+        <translation>Sannadh lipéid don chomhad chun a bheartais íogaireachta, coinneála agus coinneála dlíthiúla a bhainistiú.</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
         <source>Sensitivity labels</source>
-        <translation type="unfinished"/>
+        <translation>Lipéid íogaireachta</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
         <source>Retention labels</source>
-        <translation type="unfinished"/>
+        <translation>Lipéid choinneála</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
         <source>Legal hold labels</source>
-        <translation type="unfinished"/>
+        <translation>Lipéid choinneála dlíthiúla</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Athshocraigh</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Cuir isteach</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
@@ -732,7 +732,7 @@
     <message>
         <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
         <source>Local Network access is disabled. Enable it to connect to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Tá rochtain ar an Líonra Áitiúil díchumasaithe. Cumasaigh é chun ceangal leis an bhfreastalaí.</translation>
     </message>
 </context>
 <context>
@@ -1865,71 +1865,71 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="200"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Cumraigh roinnt socruithe i leaganacha % 1 den chliant seo agus úsáideann siad gnéithe nach bhfuil ar fáil sa leagan seo.&lt;br&gt;&lt;br&gt;Ciallaíonn leanúint ar aghaidh &lt;b&gt;%2 na socruithe seo&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Bhí cúltaca ag an gcomhad cumraíochta reatha go  &lt;i&gt;%3&lt;/i&gt;cheana féin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>níos nuaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>níos sine</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="207"/>
         <source>ignoring</source>
         <translation>neamhaird</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="207"/>
         <source>deleting</source>
         <translation>ag scriosadh</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="209"/>
         <source>Quit</source>
         <translation>Scoir</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="210"/>
         <source>Continue</source>
         <translation>Lean ar aghaidh</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="632"/>
+        <location filename="../src/gui/application.cpp" line="697"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>% 1 cuntas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="633"/>
+        <location filename="../src/gui/application.cpp" line="698"/>
         <source>1 account</source>
         <translation>1 chuntas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="635"/>
+        <location filename="../src/gui/application.cpp" line="700"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>% 1 fillteán</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="636"/>
+        <location filename="../src/gui/application.cpp" line="701"/>
         <source>1 folder</source>
         <translation>1 fillteán</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="638"/>
+        <location filename="../src/gui/application.cpp" line="703"/>
         <source>Legacy import</source>
         <translation>Iompórtáil oidhreachta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="639"/>
+        <location filename="../src/gui/application.cpp" line="704"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1937,12 +1937,12 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 % 3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="759"/>
+        <location filename="../src/gui/application.cpp" line="824"/>
         <source>Error accessing the configuration file</source>
         <translation>Earráid agus an comhad cumraíochta á rochtain</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="760"/>
+        <location filename="../src/gui/application.cpp" line="825"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Tharla earráid agus an comhad cumraíochta ag % 1 á rochtain. Cinntigh le do thoil gur féidir an comhad a rochtain ag do chuntas córais.</translation>
     </message>
@@ -3919,22 +3919,22 @@ Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó chobhsa
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="865"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
         <source>Password for share required</source>
         <translation>Pasfhocal le haghaidh roinnte ag teastáil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="866"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
         <source>Please enter a password for your link share:</source>
         <translation>Cuir isteach pasfhocal le haghaidh do chomhroinnt naisc le do thoil:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="892"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="935"/>
         <source>Sharing error</source>
         <translation>Earráid roinnte</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="893"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="936"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5545,48 +5545,48 @@ Tabhair faoi deara go sárófar an socrú seo trí úsáid a bhaint as aon rogha
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="833"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="876"/>
         <source>Context menu share</source>
         <translation>Comhthéacs roghchláir a roinnt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1152"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>I shared something with you</source>
         <translation>Roinn mé rud éigin leat</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1165"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1208"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
         <source>Share options</source>
         <translation>Comhroinn roghanna</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1170"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1213"/>
         <source>Send private link by email …</source>
         <translation>Seol nasc príobháideach trí ríomhphost…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1169"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1212"/>
         <source>Copy private link to clipboard</source>
         <translation>Cóipeáil nasc príobháideach chuig an ngearrthaisce</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="554"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="597"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Theip ar an bhfillteán a chriptiú ag &quot;% 1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="598"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>Níl criptiú ceann go ceann cumraithe ag cuntas % 1. Cumraigh é seo i socruithe do chuntais chun criptiú fillteán a chumasú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="574"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
         <source>Failed to encrypt folder</source>
         <translation>Theip ar an bhfillteán a chriptiú</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="575"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="618"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5595,116 +5595,116 @@ Server replied with error: %2</source>
 D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="582"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="625"/>
         <source>Folder encrypted successfully</source>
         <translation>D&apos;éirigh leis an bhfillteán criptithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="626"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>D&apos;éirigh leis an bhfillteán seo a leanas a chriptiú: &quot;% 1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1084"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1127"/>
         <source>Select new location …</source>
         <translation>Roghnaigh suíomh nua…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1166"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1229"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1272"/>
         <source>File actions</source>
         <translation>Gníomhartha comhaid</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1167"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1410"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1210"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1453"/>
         <source>Activity</source>
         <translation>Gníomhaíocht</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1238"/>
         <source>Leave this share</source>
         <translation>Fág an sciar seo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1201"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
         <source>Resharing this file is not allowed</source>
         <translation>Ní cheadaítear an comhad seo a chomhroinnt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1201"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Ní cheadaítear an fillteán seo a athroinnt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1262"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
         <source>Encrypt</source>
         <translation>Criptigh</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1273"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1316"/>
         <source>Lock file</source>
         <translation>Comhad faoi ghlas</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1276"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1319"/>
         <source>Unlock file</source>
         <translation>Díghlasáil an comhad</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1292"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1335"/>
         <source>Locked by %1</source>
         <translation>Faoi ghlas le % 1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1296"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1339"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Éagaíonn i %1 nóiméad</numerusform><numerusform>Éagaíonn i %1 nóiméad</numerusform><numerusform>Éagaíonn i %1 nóiméad</numerusform><numerusform>Éagaíonn i %1 nóiméad</numerusform><numerusform>Éagaíonn i %1 nóiméad</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1348"/>
         <source>Apply labels</source>
         <translation>Cuir lipéid i bhfeidhm</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1447"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1490"/>
         <source>Resolve conflict …</source>
         <translation>Réitigh coinbhleacht…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1451"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1494"/>
         <source>Move and rename …</source>
         <translation>Bog agus athainmnigh…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1454"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1497"/>
         <source>Move, rename and upload …</source>
         <translation>Bog, athainmnigh agus uaslódáil…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1456"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1499"/>
         <source>Delete local changes</source>
         <translation>Scrios athruithe áitiúla</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1462"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1505"/>
         <source>Move and upload …</source>
         <translation>Bog agus uaslódáil…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1463"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1506"/>
         <source>Delete</source>
         <translation>Scrios</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
         <source>Copy internal link</source>
         <translation>Cóipeáil an nasc inmheánach</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1416"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1418"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1459"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1461"/>
         <source>Open in browser</source>
         <translation>Oscail sa bhrabhsálaí</translation>
     </message>
