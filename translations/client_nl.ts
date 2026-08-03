@@ -131,11 +131,11 @@
         <source>Syncing %1 of %2</source>
         <translation>Synchroniseren %1 van %2</translation>
     </message>
-<message>
+    <message>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>ConflictDelegate</name>
     <message>
@@ -232,10 +232,6 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <source>Activity</source>
-        <translation type="obsolete">Activiteit</translation>
-    </message>
-    <message>
         <source>Dismiss</source>
         <translation type="unfinished" />
     </message>
@@ -290,7 +286,7 @@
         <source>Copy Link</source>
         <translation type="unfinished">Kopiëren link </translation>
     </message>
-<message>
+    <message>
         <source>Logo</source>
         <translation>Logo</translation>
     </message>
@@ -298,7 +294,7 @@
         <source>Switch to your browser to connect your account</source>
         <translation>Schakel over naar je browser om je account te verbinden</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>FolderWizardSelectiveSync</name>
     <message>
@@ -316,7 +312,7 @@
         <source>&amp;Choose</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Add Folder Sync</source>
         <translation type="unfinished" />
     </message>
@@ -328,7 +324,7 @@
         <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
@@ -339,7 +335,7 @@
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Create folder</source>
         <translation>Maak map</translation>
     </message>
@@ -358,37 +354,6 @@
     <message>
         <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished" />
-    </message>
-    </context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Cancel</source>
-        <translation>Annuleren</translation>
-    </message>
-    <message>
-        <source>Issue with account %1</source>
-        <translation>Probleem met account %1</translation>
-    </message>
-    <message>
-        <source>Issues with several accounts</source>
-        <translation>Problemen met diverse accounts</translation>
-    </message>
-    <message>
-        <source>New activities</source>
-        <translation>Nieuwe activiteiten</translation>
-    </message>
-    <message>
-        <source>New conversation</source>
-        <translation>Nieuwe conversatie</translation>
-    </message>
-    <message>
-        <source>Start new conversation?</source>
-        <translation>Start nieuwe conversatie?</translation>
-    </message>
-    <message>
-        <source>This will clear the existing conversation.</source>
-        <translation>Dit zal het bestaande gesprek wissen</translation>
     </message>
 </context>
 <context>
@@ -1403,11 +1368,11 @@ Would you like to do this now?</source>
         <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::DataProtectionSettingsPage</name>
     <message>
@@ -2147,10 +2112,6 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished" />
     </message>
     <message>
-        <source>Add Folder Sync Connection</source>
-        <translation type="obsolete">Toevoegen mapsynchronisatie verbinding</translation>
-    </message>
-    <message>
         <source>File</source>
         <translation>Bestand</translation>
     </message>
@@ -2158,11 +2119,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <source>Grant access</source>
         <translation>Geef toegang</translation>
     </message>
-<message>
+    <message>
         <source>Synchronize any other local folder with your %1</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
@@ -2332,7 +2293,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <source>Choose</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Click to select a local folder to sync.</source>
         <translation>Klikken om een lokale map te selecteren voor synchronisatie</translation>
     </message>
@@ -2352,7 +2313,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
@@ -2561,7 +2522,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <source>More Information</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Move removed files to trash</source>
         <translation>Verplaats verwijderde bestanden naar de prullenbak</translation>
     </message>
@@ -2700,7 +2661,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <source>stable</source>
         <translation>stabiel</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::GETFileJob</name>
     <message>
@@ -4191,11 +4152,11 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <source>Success</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Warning</source>
         <translation type="unfinished">Waarschuwing</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
@@ -4507,7 +4468,7 @@ Server antwoordde met fout: %2</translation>
         <source>The connection is not secure</source>
         <translation>De verbinding is niet veilig</translation>
     </message>
-<message>
+    <message>
         <source>This connection is NOT secure as it is not encrypted.</source>
         <translation type="unfinished" />
     </message>
@@ -4515,7 +4476,7 @@ Server antwoordde met fout: %2</translation>
         <source>This connection is encrypted using %1 bit %2.</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::SslErrorDialog</name>
     <message>
@@ -4844,11 +4805,11 @@ Server antwoordde met fout: %2</translation>
         <source>Privacy-Link</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Privacy-Link_STRATO</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
@@ -5283,10 +5244,6 @@ Server antwoordde met fout: %2</translation>
 <context>
     <name>OwncloudSetupPage</name>
     <message>
-        <source>Logo</source>
-        <translation type="obsolete">Logo</translation>
-    </message>
-    <message>
         <source>Server address</source>
         <translation>Serveradres</translation>
     </message>
@@ -5529,7 +5486,7 @@ Server antwoordde met fout: %2</translation>
         <source>The directory %1 cannot be part of your sync directory. Please choose another folder.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation type="unfinished" />
     </message>
@@ -5633,7 +5590,7 @@ Server antwoordde met fout: %2</translation>
         <source>now</source>
         <translation>nu</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ResolveConflictsDialog</name>
     <message numerus="yes">
@@ -5686,11 +5643,11 @@ Server antwoordde met fout: %2</translation>
         <source>Open local or team folders</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Website</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>ShareDelegate</name>
     <message>
@@ -5939,7 +5896,7 @@ Server antwoordde met fout: %2</translation>
         <source>Account switcher and settings menu</source>
         <translation type="unfinished">Wisselen van gebruiker en instellingsmenu</translation>
     </message>
-<message>
+    <message>
         <source>Add account</source>
         <translation type="unfinished" />
     </message>
@@ -5975,7 +5932,7 @@ Server antwoordde met fout: %2</translation>
         <source>Settings</source>
         <translation type="unfinished">Instellingen</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>TrayWindowHeader</name>
     <message>
@@ -6001,7 +5958,7 @@ Server antwoordde met fout: %2</translation>
         <source>Open %1 in browser</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Open Nextcloud in browser</source>
         <translation type="unfinished" />
     </message>
@@ -6013,7 +5970,7 @@ Server antwoordde met fout: %2</translation>
         <source>Website</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
@@ -6074,14 +6031,6 @@ Server antwoordde met fout: %2</translation>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>Current account status is do not disturb</source>
-        <translation type="obsolete">Huidige gebruikersstatus is Niet Storen</translation>
-    </message>
-    <message>
-        <source>Current account status is online</source>
-        <translation type="obsolete">Huidige gebruikersstatus is Online</translation>
-    </message>
-    <message>
         <source>Log in</source>
         <translation>Meld u aan</translation>
     </message>
@@ -6092,10 +6041,6 @@ Server antwoordde met fout: %2</translation>
     <message>
         <source>Remove account</source>
         <translation type="unfinished" />
-    </message>
-    <message>
-        <source>Status message</source>
-        <translation type="obsolete">Status bericht</translation>
     </message>
     <message>
         <source>Switch to account</source>

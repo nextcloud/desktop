@@ -131,11 +131,11 @@
         <source>Syncing %1 of %2</source>
         <translation>Synchronisiere %1 von %2</translation>
     </message>
-<message>
+    <message>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished">Synchronisiere %1 von %2  (%3 übrig)</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ConflictDelegate</name>
     <message>
@@ -232,10 +232,6 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <source>Activity</source>
-        <translation type="obsolete">Aktivität</translation>
-    </message>
-    <message>
         <source>Dismiss</source>
         <translation type="unfinished">Ablehnen</translation>
     </message>
@@ -290,7 +286,7 @@
         <source>Copy Link</source>
         <translation type="unfinished">Link kopieren</translation>
     </message>
-<message>
+    <message>
         <source>Logo</source>
         <translation>Logo</translation>
     </message>
@@ -298,7 +294,7 @@
         <source>Switch to your browser to connect your account</source>
         <translation>Wechseln Sie zu Ihrem Browser, um Ihr Konto zu verbinden</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>FolderWizardSelectiveSync</name>
     <message>
@@ -316,7 +312,7 @@
         <source>&amp;Choose</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Add Folder Sync</source>
         <translation type="unfinished" />
     </message>
@@ -328,7 +324,7 @@
         <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
@@ -339,7 +335,7 @@
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Create folder</source>
         <translation>Ordner erstellen</translation>
     </message>
@@ -358,57 +354,6 @@
     <message>
         <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished" />
-    </message>
-    </context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Ask Assistant…</source>
-        <translation>Den Assistenten fragen …</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Abbrechen</translation>
-    </message>
-    <message>
-        <source>Issue with account %1</source>
-        <translation>Probleme mit dem Konto %1</translation>
-    </message>
-    <message>
-        <source>Issues with several accounts</source>
-        <translation>Probleme mit mehreren Konten</translation>
-    </message>
-    <message>
-        <source>Main content</source>
-        <translation>Hauptinhalt</translation>
-    </message>
-    <message>
-        <source>New activities</source>
-        <translation>Neue Aktivitäten</translation>
-    </message>
-    <message>
-        <source>New conversation</source>
-        <translation>Neue Unterhaltung</translation>
-    </message>
-    <message>
-        <source>Send assistant question</source>
-        <translation>Frage an Assistenten senden</translation>
-    </message>
-    <message>
-        <source>Start a new assistant chat</source>
-        <translation>Einen neuen Assistenten-Chat starten</translation>
-    </message>
-    <message>
-        <source>Start new conversation?</source>
-        <translation>Neue Unterhaltung beginnen?</translation>
-    </message>
-    <message>
-        <source>This will clear the existing conversation.</source>
-        <translation>Dadurch wird die bestehende Unterhaltung geleert.</translation>
-    </message>
-    <message>
-        <source>Unified search results list</source>
-        <translation>Einheitliche Suchergebnisliste</translation>
     </message>
 </context>
 <context>
@@ -1426,11 +1371,11 @@ Möchten Sie dies jetzt tun?</translation>
         <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::DataProtectionSettingsPage</name>
     <message>
@@ -2173,10 +2118,6 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
         <translation type="unfinished" />
     </message>
     <message>
-        <source>Add Folder Sync Connection</source>
-        <translation type="obsolete">Ordner-Synchronisierung hinzufügen</translation>
-    </message>
-    <message>
         <source>File</source>
         <translation>Datei</translation>
     </message>
@@ -2184,11 +2125,11 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
         <source>Grant access</source>
         <translation>Zugriff gewähren</translation>
     </message>
-<message>
+    <message>
         <source>Synchronize any other local folder with your %1</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
@@ -2357,7 +2298,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
         <source>Choose</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Click to select a local folder to sync.</source>
         <translation>Hier klicken, um einen lokalen Ordner zum Synchronisieren auszuwählen.</translation>
     </message>
@@ -2377,7 +2318,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
         <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
@@ -2591,7 +2532,7 @@ Ein Downgrade von Versionen ist nicht sofort möglich: Der Wechsel von Beta auf 
         <source>More Information</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Move removed files to trash</source>
         <translation>Entfernte Dateien in den Papierkorb verschieben</translation>
     </message>
@@ -2731,7 +2672,7 @@ Ein Downgrade von Versionen ist nicht sofort möglich: Der Wechsel von Beta auf 
         <source>stable</source>
         <translation>Stabil</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::GETFileJob</name>
     <message>
@@ -4222,11 +4163,11 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <source>Success</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Warning</source>
         <translation type="unfinished">Warnung</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
@@ -4538,7 +4479,7 @@ Server antwortete mit Fehler: %2</translation>
         <source>The connection is not secure</source>
         <translation>Die Verbindung ist nicht sicher</translation>
     </message>
-<message>
+    <message>
         <source>This connection is NOT secure as it is not encrypted.</source>
         <translation type="unfinished" />
     </message>
@@ -4546,7 +4487,7 @@ Server antwortete mit Fehler: %2</translation>
         <source>This connection is encrypted using %1 bit %2.</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::SslErrorDialog</name>
     <message>
@@ -4875,11 +4816,11 @@ Server antwortete mit Fehler: %2</translation>
         <source>Privacy-Link</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Privacy-Link_STRATO</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
@@ -5314,10 +5255,6 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>OwncloudSetupPage</name>
     <message>
-        <source>Logo</source>
-        <translation type="obsolete">Logo</translation>
-    </message>
-    <message>
         <source>Server address</source>
         <translation>Serveradresse</translation>
     </message>
@@ -5560,7 +5497,7 @@ Server antwortete mit Fehler: %2</translation>
         <source>The directory %1 cannot be part of your sync directory. Please choose another folder.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>Die Datei ist zu groß zum Hochladen. Wählen Sie eine kleinere Datei aus oder wenden Sie sich für Hilfe an Ihre Serveradministration.</translation>
     </message>
@@ -5664,7 +5601,7 @@ Server antwortete mit Fehler: %2</translation>
         <source>now</source>
         <translation>jetzt</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ResolveConflictsDialog</name>
     <message numerus="yes">
@@ -5717,11 +5654,11 @@ Server antwortete mit Fehler: %2</translation>
         <source>Open local or team folders</source>
         <translation type="unfinished">Lokale Ordner oder Team-Ordner öffnen</translation>
     </message>
-<message>
+    <message>
         <source>Website</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>ShareDelegate</name>
     <message>
@@ -5970,7 +5907,7 @@ Server antwortete mit Fehler: %2</translation>
         <source>Account switcher and settings menu</source>
         <translation type="unfinished">Konto-Umschalter und Einstellungsmenü</translation>
     </message>
-<message>
+    <message>
         <source>Add account</source>
         <translation type="unfinished">Konto hinzufügen</translation>
     </message>
@@ -6006,7 +5943,7 @@ Server antwortete mit Fehler: %2</translation>
         <source>Settings</source>
         <translation type="unfinished">Einstellungen</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>TrayWindowHeader</name>
     <message>
@@ -6032,7 +5969,7 @@ Server antwortete mit Fehler: %2</translation>
         <source>Open %1 in browser</source>
         <translation type="unfinished">%1 im Browser öffnen</translation>
     </message>
-<message>
+    <message>
         <source>Open Nextcloud in browser</source>
         <translation type="unfinished" />
     </message>
@@ -6044,7 +5981,7 @@ Server antwortete mit Fehler: %2</translation>
         <source>Website</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
@@ -6105,14 +6042,6 @@ Server antwortete mit Fehler: %2</translation>
         <translation>Der Kontosynchronisierungsstatus erfordert Aufmerksamkeit</translation>
     </message>
     <message>
-        <source>Current account status is do not disturb</source>
-        <translation type="obsolete">Aktueller Kontostatus ist &quot;Nicht stören&quot;</translation>
-    </message>
-    <message>
-        <source>Current account status is online</source>
-        <translation type="obsolete">Aktueller Kontostatus ist &quot;Online&quot;</translation>
-    </message>
-    <message>
         <source>Log in</source>
         <translation>Anmelden</translation>
     </message>
@@ -6123,10 +6052,6 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <source>Remove account</source>
         <translation type="unfinished">Konto entfernen</translation>
-    </message>
-    <message>
-        <source>Status message</source>
-        <translation type="obsolete">Statusnachricht</translation>
     </message>
     <message>
         <source>Switch to account</source>
