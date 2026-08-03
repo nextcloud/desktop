@@ -1,0 +1,21 @@
+#!/bin/sh
+# Runs after a CONFLICT-FREE `git merge` / `git pull`. Git does NOT invoke this
+# hook if the merge produced conflicts - see .githooks/post-commit for that case.
+#
+# If the merge brought in a stable-* branch (the NC release base), automatically
+# re-run the STRATO/IONOS translation merge (translation_scripts/merge_translation.py)
+# against that branch so translations/client_*.ts stay in sync.
+#
+# Enable once per clone with:
+#   git config core.hooksPath .githooks
+
+# $1 is 1 for a squash merge (no merge commit / message to inspect) - skip.
+if [ "$1" = "1" ]; then
+    exit 0
+fi
+
+repo_root=$(git rev-parse --show-toplevel)
+. "$repo_root/.githooks/lib-translation-merge.sh"
+translation_merge_run_if_stable "post-merge" "$(git log -1 --pretty=%B)"
+
+exit 0

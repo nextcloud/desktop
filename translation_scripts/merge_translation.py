@@ -1,5 +1,6 @@
 import sys
 import os
+import shutil
 import tempfile
 import subprocess
 import xml.etree.ElementTree as ET
@@ -417,14 +418,20 @@ def run_lupdate_from_branch(ts_files, nc_branch):
     against it, and the worktree is cleaned up afterwards.
     """
     repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    worktree_dir = os.path.join(tempfile.gettempdir(), "nc_lupdate_worktree")
-    
-    # Clean up any leftover worktree from a previous failed run
-    if os.path.exists(worktree_dir):
-        print(f"Cleaning up leftover worktree at {worktree_dir}...")
-        subprocess.run(["git", "worktree", "remove", "--force", worktree_dir],
-                        cwd=repo_root, check=False)
-    
+
+    # Prune any stale worktree bookkeeping left over from a previous
+    # interrupted run before registering a new one.
+    subprocess.run(["git", "worktree", "prune"], cwd=repo_root, check=False)
+
+    # A collision-proof unique directory. A fixed or PID-based name isn't
+    # enough on Windows: PIDs of short-lived processes get recycled quickly
+    # under process churn, so a same-named leftover from an earlier run whose
+    # cleanup didn't fully land (e.g. a lingering file lock) can still be
+    # sitting there when a later run reuses that same PID/name and collides
+    # with it. mkdtemp() hands out a fresh, guaranteed-unique empty directory
+    # every time, which `git worktree add` accepts as a checkout target.
+    worktree_dir = tempfile.mkdtemp(prefix="nc_lupdate_worktree_")
+
     try:
         # Create worktree for the NC branch
         print(f"Creating temporary worktree for branch '{nc_branch}'...")
@@ -464,6 +471,7 @@ def run_lupdate_from_branch(ts_files, nc_branch):
         print("Removing temporary worktree...")
         subprocess.run(["git", "worktree", "remove", "--force", worktree_dir],
                         cwd=repo_root, check=False)
+        shutil.rmtree(worktree_dir, ignore_errors=True)
 
 def run_lupdate(ts_files, mode="default"):
     craft_root = r"C:\CraftRoot" if os.path.isdir(r"C:\CraftRoot") else r"C:\Craft64"
@@ -557,8 +565,8 @@ if __name__ == "__main__":
 
     if len(args) == 0:
         print("Usage: python merge_translation.py <step> [nc_branch] [--auto-commit]")
-        print("  step: 0-5 or 'all'")
-        print("  nc_branch: required for step 0 (e.g. stable-4.0)")
+        print("  step: 0-5, 'all' (0-5, needs nc_branch), or 'auto' (1-5, no nc_branch/worktree needed)")
+        print("  nc_branch: required for step 0 / 'all' (e.g. stable-4.0)")
         print("  --auto-commit: automatically commit after each step")
         sys.exit()
     
@@ -589,7 +597,7 @@ if __name__ == "__main__":
             for ts_file in ts_files:
                 keys_after_step0[ts_file] = get_source_keys(ts_file)
         
-        if step == "1" or step == "all":
+        if step == "1" or step == "all" or step == "auto":
             # Step 1 lupdate Nextcloud in our latest change state, keep obsolete
             run_lupdate(ts_files)
         
@@ -605,7 +613,7 @@ if __name__ == "__main__":
             for ts_file in ts_files:
                 keys_after_step1[ts_file] = get_source_keys(ts_file)
                                  
-        if step == "2" or step == "all":            
+        if step == "2" or step == "all" or step == "auto":
             run_lupdate(ts_files, "no_obs")
             for ts_file in ts_files:        
                 sort_and_repair(ts_file)  
@@ -614,7 +622,7 @@ if __name__ == "__main__":
             auto_commit(ts_files, "Step 2", auto_commit_enabled)
                 
             # Step 3 merge diff into
-        if step == "3" or step == "all":
+        if step == "3" or step == "all" or step == "auto":
            
             for ts_file in ts_files:        
                 merge(diff_files[ts_files.index(ts_file)], ts_file)
@@ -623,7 +631,7 @@ if __name__ == "__main__":
             validate_ts_files(ts_files, "Step 3")
             auto_commit(ts_files, "Step 3", auto_commit_enabled)
 
-        if step == "4" or step == "all":            
+        if step == "4" or step == "all" or step == "auto":
             run_lupdate(ts_files)
             for ts_file in ts_files:        
                 pop_vanished(ts_file)   
@@ -632,7 +640,7 @@ if __name__ == "__main__":
             validate_ts_files(ts_files, "Step 4")
             auto_commit(ts_files, "Step 4", auto_commit_enabled)
             
-        if step == "5" or step == "all":            
+        if step == "5" or step == "all" or step == "auto":
             run_lupdate(ts_files, "location")
             for ts_file in ts_files:        
                 sort_and_repair(ts_file)  

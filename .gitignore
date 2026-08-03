@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: 2011 ownCloud GmbH
 # SPDX-License-Identifier: GPL-2.0-or-later
 .gitmodules
+.githooks/post-merge.log
 *build*/
 *flymake*
 CMakeLists.txt.user*

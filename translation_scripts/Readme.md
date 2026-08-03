@@ -20,6 +20,21 @@ Um in einem Release zu erstellen und einen valider PR zur Übersetzung zu haben 
 
 Das Rebasedn der Translation-Branches lohnt sich eigentlich nicht, weil der nextcloud master sich relativ häufig ändert, was zu vielen Konflikten führen würde.
 
+## Automatisierung: post-merge Hook
+
+Beim Mergen eines `stable-x.y`-Branches (neue NC-Basisversion) in einen Feature-/Entwicklungs-Branch müssen die STRATO/IONOS-Übersetzungen erneut gegen die aktualisierte NC-Basis gemerged werden. Damit das nicht vergessen wird, gibt es den Hook `.githooks/post-merge`:
+
+- Läuft automatisch nach jedem lokalen `git merge`/`git pull`.
+- Erkennt anhand der Merge-Commit-Message, ob ein `stable-x.y`-Branch gemerged wurde (z.B. `Merge branch 'stable-33.0' into ...`).
+- Führt in diesem Fall automatisch `merge_translation.py all <branch>` aus (**ohne** `--auto-commit`).
+- Änderungen an `translations/client_*.ts` liegen danach ungestaged im Working Directory und müssen manuell geprüft und committet werden.
+
+**Einmalige Aktivierung pro Clone:**
+
+```
+git config core.hooksPath .githooks
+```
+
 ## Allgemeines
 
 Die Lokalisierung erfolgt in mehreren Schritten. 
