@@ -1194,6 +1194,28 @@ bool Systray::anySyncFolders() const
     return _anySyncFolders;
 }
 
+Systray::SyncControlState Systray::syncControlState() const
+{
+    if (!anySyncFolders()) {
+        return SyncControlState::Unavailable;
+    }
+    return syncIsPaused() ? SyncControlState::Resume : SyncControlState::Pause;
+}
+
+void Systray::toggleSyncPaused()
+{
+    switch (syncControlState()) {
+    case SyncControlState::Pause:
+        setSyncIsPaused(true);
+        break;
+    case SyncControlState::Resume:
+        setSyncIsPaused(false);
+        break;
+    case SyncControlState::Unavailable:
+        break;
+    }
+}
+
 /********************************************************************************************/
 /* Helper functions for cross-platform tray icon position and taskbar orientation detection */
 /********************************************************************************************/
