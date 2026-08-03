@@ -21,7 +21,7 @@
         <source>File actions</source>
         <translation>Filåtgärder</translation>
     </message>
-<message>
+    <message>
         <source>File details</source>
         <translation>Filinformation</translation>
     </message>
@@ -29,7 +29,7 @@
         <source>Open file details</source>
         <translation>Öppna filinformation</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ActivityList</name>
     <message>
@@ -132,8 +132,8 @@
         <translation>Synkroniserar %1 av %2</translation>
     </message>
 <message>
-        <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished" />
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation type="unfinished">Synkroniserar %1 av %2 (%3 kvar)</translation>
     </message>
     </context>
 <context>
@@ -233,11 +233,11 @@
     <name>FileDetailsPage</name>
     <message>
         <source>Activity</source>
-        <translation type="unfinished">Aktivitet</translation>
+        <translation type="obsolete">Aktivitet</translation>
     </message>
     <message>
-        <source>Sharing</source>
-        <translation type="unfinished" />
+        <source>Dismiss</source>
+        <translation type="unfinished">Avfärda</translation>
     </message>
 </context>
 <context>
@@ -287,6 +287,10 @@
         <translation>Webbläsarautentisering</translation>
     </message>
     <message>
+        <source>Copy Link</source>
+        <translation type="unfinished">Kopiera länk</translation>
+    </message>
+<message>
         <source>Logo</source>
         <translation>Logotyp</translation>
     </message>
@@ -294,21 +298,48 @@
         <source>Switch to your browser to connect your account</source>
         <translation>Använd din webbläsare för att få åtkomst till ditt konto</translation>
     </message>
+    </context>
+<context>
+    <name>FolderWizardSelectiveSync</name>
+    <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Step 3 of 3: Selektive Synchronisation</source>
+        <translation type="unfinished" />
+    </message>
 </context>
 <context>
     <name>FolderWizardSourcePage</name>
     <message>
-        <source>&amp;Choose …</source>
+        <source>&amp;Choose</source>
         <translation type="unfinished" />
     </message>
 <message>
-        <source>Pick a local folder on your computer to sync</source>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished" />
     </message>
     </context>
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>Create folder</source>
         <translation>Skapa mapp</translation>
     </message>
@@ -317,14 +348,18 @@
         <translation>Mappar</translation>
     </message>
     <message>
+        <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Refresh</source>
         <translation>Uppdatera</translation>
     </message>
     <message>
-        <source>Select a remote destination folder</source>
+        <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished" />
     </message>
-</context>
+    </context>
 <context>
     <name>MainWindow</name>
     <message>
@@ -351,7 +386,7 @@
         <source>New activities</source>
         <translation>Nya aktiviteter</translation>
     </message>
-<message>
+    <message>
         <source>New conversation</source>
         <translation>Ny konversation</translation>
     </message>
@@ -375,7 +410,7 @@
         <source>Unified search results list</source>
         <translation>Sammanlagda sökresultat</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
@@ -741,15 +776,15 @@ Ska kontot importeras?</translation>
         <translation>Det finns mappar som har vuxit i storlek större än %1MB: %2</translation>
     </message>
     <message>
-        <source>There are folders that were not synchronized because they are external storages: </source>
+        <source>There are folders that were not synchronized because they are external storages:</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>There are folders that were not synchronized because they are too big or external storages: </source>
+        <source>There are folders that were not synchronized because they are too big or external storages:</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>There are folders that were not synchronized because they are too big: </source>
+        <source>There are folders that were not synchronized because they are too big:</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -790,7 +825,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <source>Virtual files</source>
         <translation>Virtuella filer</translation>
     </message>
-<message>
+    <message>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
@@ -818,7 +853,7 @@ Vill du konfigurera den nu?</translation>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation>Det verkar som att funktionen &quot;Virtuella filer&quot; är aktiverad för denna mapp. För närvarande är det inte möjligt att ladda ner virtuella filer som är end-to-end-krypterade. För att använda virtuella filer med ände-till-ände-kryptering, säkerställ att &quot;Gör alltid tillgänglig lokalt&quot; är aktiverat på den krypterade mappen.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::AccountSetupFromCommandLineJob</name>
     <message>
@@ -902,7 +937,7 @@ Vill du konfigurera den nu?</translation>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Browse …</source>
         <translation type="unfinished" />
     </message>
@@ -934,7 +969,7 @@ Vill du konfigurera den nu?</translation>
         <source>This server probably requires a SSL client certificate.</source>
         <translation>Denna server kräver förmodligen ett SSL klientcertifikat</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::Application</name>
     <message>
@@ -1368,11 +1403,69 @@ Vill du konfigurera den nu?</translation>
         <source>The provided credentials are not correct</source>
         <translation type="unfinished">De angivna uppgifterna stämmer inte</translation>
     </message>
-<message>
+    <message>
         <source>Timeout</source>
         <translation>Timeout</translation>
     </message>
+</context>
+<context>
+    <name>OCC::DataProtectionPage</name>
+    <message>
+        <source>Agree</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulär</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Inställningar</translation>
+    </message>
+    <message>
+        <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source>
+        <translation type="unfinished" />
+    </message>
     </context>
+<context>
+    <name>OCC::DataProtectionSettingsPage</name>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished">Tillbaka</translation>
+    </message>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulär</translation>
+    </message>
+    <message>
+        <source>Necessary data</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Required to ensure that the software can be used as expected</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Save Settings</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Send anonymous use</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</source>
+        <translation type="unfinished" />
+    </message>
+</context>
 <context>
     <name>OCC::DiscoveryPhase</name>
     <message>
@@ -1682,6 +1775,10 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
         <translation>Kopiera länk</translation>
     </message>
     <message>
+        <source>Error</source>
+        <translation type="unfinished">Fel</translation>
+    </message>
+    <message>
         <source>Link copied to clipboard.</source>
         <translation>Länken kopierad till urklipp.</translation>
     </message>
@@ -1696,6 +1793,10 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
     <message>
         <source>Starting authorization</source>
         <translation>Startar auktorisering</translation>
+    </message>
+    <message>
+        <source>Switch to your browser to connect your account</source>
+        <translation type="unfinished">Använd din webbläsare för att få åtkomst till ditt konto</translation>
     </message>
     <message>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
@@ -1801,8 +1902,7 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
         <translation>%1 är för närvarande låst.</translation>
     </message>
     <message>
-        <source>A folder from an external storage has been added.
-</source>
+        <source>A folder from an external storage has been added.</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -1828,8 +1928,7 @@ Vänligen bekräfta om du vill fortsätta med dessa lösningar.
 Alternativt kan du återställa alla lösta filer, om du hämtar dem från servern.</translation>
     </message>
     <message>
-        <source>A new folder larger than %1 MB has been added: %2.
-</source>
+        <source>A new folder larger than %1 MB has been added: %2.</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -1916,6 +2015,10 @@ Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar ome
 <context>
     <name>OCC::FolderCreationDialog</name>
     <message>
+        <source>%1 Create new folder</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Could not create a folder! Check your write permissions.</source>
         <translation>Kunde inte skapa mappen! Kontrollera skrivrättigheterna.</translation>
     </message>
@@ -1943,11 +2046,11 @@ Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar ome
         <translation>%1 (synkronisering pausad)</translation>
     </message>
     <message>
-        <source> (backup %1)</source>
+        <source>(backup %1)</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source> (backup)</source>
+        <source>(backup)</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -2066,8 +2169,12 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished">Lägg till synkroniseringskoppling för map</translation>
+        <translation type="obsolete">Lägg till synkroniseringskoppling för map</translation>
     </message>
     <message>
         <source>File</source>
@@ -2077,7 +2184,11 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <source>Grant access</source>
         <translation>Ge åtkomst</translation>
     </message>
-</context>
+<message>
+        <source>Synchronize any other local folder with your %1</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
@@ -2239,6 +2350,14 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>Click to select a local folder to sync.</source>
         <translation>Klicka för att välja en lokal mapp att synkronisera.</translation>
     </message>
@@ -2247,15 +2366,31 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <translation>Ange sökvägen till den lokala mappen.</translation>
     </message>
     <message>
+        <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Select the source folder</source>
         <translation>Välj källmapp</translation>
     </message>
-</context>
+    <message>
+        <source>Step 1 of 3: Select local folder</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Authentication failed accessing %1</source>
         <translation>Autentisering misslyckades att komma åt %1</translation>
+    </message>
+    <message>
+        <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Choose this to sync the entire account</source>
@@ -2264,6 +2399,10 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     <message>
         <source>Create Remote Folder</source>
         <translation>Skapa fjärrmapp</translation>
+    </message>
+    <message>
+        <source>Create folder</source>
+        <translation type="unfinished">Skapa mapp</translation>
     </message>
     <message>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
@@ -2286,6 +2425,18 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <translation>Välj en annan plats. %1 synkroniseras redan till %2.</translation>
     </message>
     <message>
+        <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Uppdatera</translation>
+    </message>
+    <message>
+        <source>Step 2 of 3: Directory in your %1</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>Du synkroniserar redan undermappen %1 på %2.</translation>
     </message>
@@ -2295,6 +2446,14 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     <message>
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
+    </message>
+    <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Step 3 of 3: Selektive Synchronisation</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Use virtual files instead of downloading content immediately %1</source>
@@ -2388,6 +2547,10 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>Skapa felsökningsarkiv</translation>
     </message>
     <message>
+        <source>Data Protection</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Debug Archive Created</source>
         <translation>Felsökningsarkiv skapat</translation>
     </message>
@@ -2408,14 +2571,10 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>För  aktivitetsfältet</translation>
     </message>
     <message>
-        <source>General settings</source>
+        <source>General Settings</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>Info</source>
-        <translation type="unfinished" />
-    </message>
-<message>
         <source>Legal Notice</source>
         <translation>Rättsligt meddelande</translation>
     </message>
@@ -2429,16 +2588,36 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>MB</translation>
     </message>
     <message>
+        <source>More Information</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>Move removed files to trash</source>
         <translation>Flytta borttagna filer till papperskorgen</translation>
+    </message>
+    <message>
+        <source>Necessary data</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Meddela när synkroniserade mappar växer sig större än den angivna gränsen</translation>
     </message>
     <message>
+        <source>Open Source Software</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Privacy Policy</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Redigera information som anses känslig innan du delar! Felsökningsarkiv skapat på %1</translation>
+    </message>
+    <message>
+        <source>Required to ensure that the software can be used as expected</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Restore &amp;Default</source>
@@ -2447,6 +2626,10 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
     <message>
         <source>Restore to &amp;%1</source>
         <translation>Återställ till &amp;%1</translation>
+    </message>
+    <message>
+        <source>Send anonymous use</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Server notifications that require attention.</source>
@@ -2502,8 +2685,16 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>Inloggningen har registrerats men behöver ditt godkännande för att bli aktiv. Öppna Systeminställningar → Allmänt → Inloggningsobjekt och aktivera %1 där.</translation>
     </message>
     <message>
+        <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Update channel</source>
         <translation>Uppdateringskanal</translation>
+    </message>
+    <message>
+        <source>Updates</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Usage Documentation</source>
@@ -2625,20 +2816,16 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <source>Sync hidden files</source>
         <translation>Synkronisera dolda filer</translation>
     </message>
-<message>
+    <message>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
         <translation>Denna post hanteras av systemet &apos;%1&apos; och kan inte ändras i denna vy.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::IgnoreListTableWidget</name>
     <message>
         <source>Add</source>
         <translation>Lägg till</translation>
-    </message>
-    <message>
-        <source>Add Ignore Pattern</source>
-        <translation type="unfinished" />
     </message>
     <message>
         <source>Add a new ignore pattern:</source>
@@ -2663,6 +2850,10 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Filer eller mappar som matchar ett mönster kommer inte att synkroniseras.
 
 Objekt där radering är tillåten raderas om de förhindrar att en katalog tas bort. Detta är användbart för metadata.</translation>
+    </message>
+    <message>
+        <source>Ignore Pattern</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Pattern</source>
@@ -2747,7 +2938,7 @@ Objekt där radering är tillåten raderas om de förhindrar att en katalog tas 
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
         <translation>Filen kunde inte synkroniseras då den innehåller tecken som är ogiltiga under detta system.</translation>
     </message>
-<message>
+    <message>
         <source>The following basenames are not allowed: %1</source>
         <translation>Följande basnamn är inte tillåtna: %1</translation>
     </message>
@@ -2775,7 +2966,7 @@ Objekt där radering är tillåten raderas om de förhindrar att en katalog tas 
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>Du har inte behörighet att byta namn på den här filen. Be ägaren till filen att byta namn på den.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::LegacyAccountSelectionDialog</name>
     <message>
@@ -2939,11 +3130,11 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
         <source>Use system proxy</source>
         <translation>Använd systemets proxyinställning</translation>
     </message>
-<message>
+    <message>
         <source>Username for proxy server</source>
         <translation>Användarnamn för proxyserver</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
@@ -4023,6 +4214,21 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     </message>
 </context>
 <context>
+    <name>OCC::sesSnackBar</name>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Fel</translation>
+    </message>
+    <message>
+        <source>Success</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>Warning</source>
+        <translation type="unfinished">Varning</translation>
+    </message>
+    </context>
+<context>
     <name>OCC::SettingsDialog</name>
     <message>
         <source>%1 Settings</source>
@@ -4036,6 +4242,10 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <source>General</source>
         <translation>Allmänt</translation>
+    </message>
+    <message>
+        <source>New account</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Settings</source>
@@ -4330,13 +4540,11 @@ Servern svarade med fel: %2</translation>
         <translation>Anslutningen är inte säker</translation>
     </message>
 <message>
-        <source>This connection is NOT secure as it is not encrypted.
-</source>
+        <source>This connection is NOT secure as it is not encrypted.</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>This connection is encrypted using %1 bit %2.
-</source>
+        <source>This connection is encrypted using %1 bit %2.</source>
         <translation type="unfinished" />
     </message>
     </context>
@@ -4390,7 +4598,7 @@ Servern svarade med fel: %2</translation>
         <source>Trust this certificate anyway</source>
         <translation>Lita på detta certifikat i alla fall</translation>
     </message>
-<message>
+    <message>
         <source>Unit: %1</source>
         <translation>Enhet: %1</translation>
     </message>
@@ -4402,7 +4610,7 @@ Servern svarade med fel: %2</translation>
         <source>with Certificate %1</source>
         <translation>med Certifikat %1</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::SyncEngine</name>
     <message>
@@ -4529,11 +4737,11 @@ Servern svarade med fel: %2</translation>
         <source>Syncing file %1 of %2</source>
         <translation>Synkroniserar fil %1 av %2</translation>
     </message>
-<message>
+    <message>
         <source>You need to accept the terms of service</source>
         <translation>Du behöver acceptera användarvillkoren</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::Systray</name>
     <message>
@@ -4571,7 +4779,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <source>Resume sync for all</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Återuppta synkronisering för alla</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4596,11 +4804,11 @@ Servern svarade med fel: %2</translation>
         <source>Polling</source>
         <translation>Periodisk kontroll</translation>
     </message>
-<message>
+    <message>
         <source>Waiting for terms to be accepted</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::Theme</name>
     <message>
@@ -4616,7 +4824,63 @@ Servern svarade med fel: %2</translation>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Denna release levererades av %1.&lt;/p&gt;</translation>
     </message>
-</context>
+    <message>
+        <source>ExpandMemory-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>ExpandMemory-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Help-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Help-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>LegalNotice-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>LegalNotice-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Login_URL</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Login_URL_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>MoreInformation-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>MoreInformation-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>OpenSource-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>OpenSource-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Privacy-Link</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>Privacy-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
@@ -4720,7 +4984,7 @@ Servern svarade med fel: %2</translation>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Kvotvarning - %1 procent eller mer av lagringsutrymmet används</translation>
     </message>
-<message>
+    <message>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kvoten har uppdaterats; %1 procent av det totala utrymmet är använt.</translation>
     </message>
@@ -4748,7 +5012,7 @@ Servern svarade med fel: %2</translation>
         <source>Waiting for the assistant response…</source>
         <translation>Väntar på svar från assistenten...</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::UserModel</name>
     <message>
@@ -4771,11 +5035,11 @@ Servern svarade med fel: %2</translation>
         <source>Remove account</source>
         <translation>Ta bort konto</translation>
     </message>
-<message>
+    <message>
         <source>Remove connection</source>
         <translation>Ta bort anslutning</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message numerus="yes">
@@ -4926,16 +5190,12 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <source>You have been logged out of your account %1 at %2. Please login again.</source>
+        <source>&lt;b&gt;You have been logged out of your account %1 at %2. Please login again.&lt;/b&gt;</source>
         <translation type="unfinished" />
     </message>
 </context>
 <context>
     <name>OCC::WelcomePage</name>
-    <message>
-        <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished" />
-    </message>
     <message>
         <source>Form</source>
         <translation>Formulär</translation>
@@ -4951,14 +5211,6 @@ Servern svarade med fel: %2</translation>
     <message>
         <source>Log in</source>
         <translation>Logga in</translation>
-    </message>
-    <message>
-        <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished" />
     </message>
     <message>
         <source>Sign up with provider</source>
@@ -5004,10 +5256,6 @@ Servern svarade med fel: %2</translation>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om den här rutan är markerad kommer befintligt innehåll i den lokala mappen att raderas för att starta en ren synkronisering från servern.&lt;/p&gt;&lt;p&gt;Markera inte den här om det lokala innehållet ska laddas upp till servermappen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>Ask before syncing external storages</source>
-        <translation type="unfinished" />
-    </message>
-<message>
         <source>Ask before syncing folders larger than</source>
         <translation>Fråga innan synkronisering av mappar större än</translation>
     </message>
@@ -5052,7 +5300,7 @@ Servern svarade med fel: %2</translation>
         <source>Username</source>
         <translation>Användarnamn</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OwncloudHttpCredsPage</name>
     <message>
@@ -5068,9 +5316,9 @@ Servern svarade med fel: %2</translation>
     <name>OwncloudSetupPage</name>
     <message>
         <source>Logo</source>
-        <translation type="unfinished">Logotyp</translation>
+        <translation type="obsolete">Logotyp</translation>
     </message>
-<message>
+    <message>
         <source>Server address</source>
         <translation>Serveradress</translation>
     </message>
@@ -5078,7 +5326,7 @@ Servern svarade med fel: %2</translation>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
         <translation>Länken %1 används för att nå ditt webgränssnitt i din webläsare.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>progress</name>
     <message>
@@ -5289,7 +5537,7 @@ Servern svarade med fel: %2</translation>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Sökvägar som börjar med tecknet &apos;#&apos; stöds inte i VFS-läge.</translation>
     </message>
-<message>
+    <message>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>Serverfiler ändrades medan du arbetade. Försök att synkronisera igen. Kontakta din serveradministratör om problemet kvarstår.</translation>
     </message>
@@ -5310,6 +5558,10 @@ Servern svarade med fel: %2</translation>
         <translation>Adressen som användes för begäran är för lång för att servern ska kunna hantera den. Försök att förkorta informationen du skickar, eller kontakta din serveradministratör för hjälp.</translation>
     </message>
     <message>
+        <source>The directory %1 cannot be part of your sync directory. Please choose another folder.</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>Filen är för stor för att laddas upp. Du kan behöva välja en mindre fil eller kontakta din serveradministratör för hjälp.</translation>
     </message>
@@ -5450,10 +5702,36 @@ Servern svarade med fel: %2</translation>
     </message>
 </context>
 <context>
+    <name>SesErrorBox</name>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Fel</translation>
+    </message>
+</context>
+<context>
+    <name>SesTrayHeader</name>
+    <message>
+        <source>Open Nextcloud in browser</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Open local or team folders</source>
+        <translation type="unfinished">Öppna lokala eller teammappar</translation>
+    </message>
+<message>
+        <source>Website</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
+<context>
     <name>ShareDelegate</name>
     <message>
         <source>Copied!</source>
         <translation>Kopierad!</translation>
+    </message>
+    <message>
+        <source>Share options</source>
+        <translation type="unfinished">Delningsalternativ</translation>
     </message>
 </context>
 <context>
@@ -5479,7 +5757,7 @@ Servern svarade med fel: %2</translation>
         <translation>Kopiera delningslänk</translation>
     </message>
     <message>
-        <source>Edit share</source>
+        <source>Custom Permissions</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -5505,10 +5783,6 @@ Servern svarade med fel: %2</translation>
     <message>
         <source>Set expiration date</source>
         <translation>Välj utgångsdatum</translation>
-    </message>
-    <message>
-        <source>Share label</source>
-        <translation type="unfinished" />
     </message>
     <message>
         <source>Share link copied!</source>
@@ -5627,7 +5901,7 @@ Servern svarade med fel: %2</translation>
         <source>Error occurred during sync</source>
         <translation>Ett fel uppstod under synkroniseringen</translation>
     </message>
-<message>
+    <message>
         <source>Preparing to sync</source>
         <translation type="unfinished" />
     </message>
@@ -5659,9 +5933,13 @@ Servern svarade med fel: %2</translation>
         <source>Waiting to start syncing</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>TrayFoldersMenuButton</name>
+    <message>
+        <source>Files</source>
+        <translation type="unfinished" />
+    </message>
     <message>
         <source>Open %1 in file explorer</source>
         <translation>Öppna %1 i filutforskaren</translation>
@@ -5688,6 +5966,49 @@ Servern svarade med fel: %2</translation>
     </message>
 </context>
 <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+        <source>Account switcher and settings menu</source>
+        <translation type="unfinished">Kontobytare och inställningsmeny</translation>
+    </message>
+<message>
+        <source>Add account</source>
+        <translation type="unfinished">Lägg till konto</translation>
+    </message>
+    <message>
+        <source>Current account</source>
+        <translation type="unfinished">Nuvarande konto</translation>
+    </message>
+    <message>
+        <source>Current account avatar</source>
+        <translation type="unfinished">Avatar för aktuellt konto</translation>
+    </message>
+    <message>
+        <source>Current account status is do not disturb</source>
+        <translation type="unfinished">Aktuell kontostatus är stör ej</translation>
+    </message>
+    <message>
+        <source>Current account status is online</source>
+        <translation type="unfinished">Aktuell kontostatus är online</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="unfinished">Avsluta</translation>
+    </message>
+    <message>
+        <source>Pause sync for all</source>
+        <translation type="unfinished">Pausa synkronisering för alla</translation>
+    </message>
+    <message>
+        <source>Resume sync for all</source>
+        <translation type="unfinished">Återuppta synkronisering för alla</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Inställningar</translation>
+    </message>
+    </context>
+<context>
     <name>TrayWindowHeader</name>
     <message>
         <source>More apps</source>
@@ -5702,6 +6023,29 @@ Servern svarade med fel: %2</translation>
         <translation>Öppna lokala eller teammappar</translation>
     </message>
 </context>
+<context>
+    <name>TrayWindowHeaderBar</name>
+    <message>
+        <source>More apps</source>
+        <translation type="unfinished">Fler appar</translation>
+    </message>
+    <message>
+        <source>Open %1 in browser</source>
+        <translation type="unfinished">Öppna %1 i webbläsare</translation>
+    </message>
+<message>
+        <source>Open Nextcloud in browser</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Open local or team folders</source>
+        <translation type="unfinished">Öppna lokala eller teammappar</translation>
+    </message>
+    <message>
+        <source>Website</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
@@ -5763,11 +6107,11 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished">Aktuell kontostatus är stör ej</translation>
+        <translation type="obsolete">Aktuell kontostatus är stör ej</translation>
     </message>
     <message>
         <source>Current account status is online</source>
-        <translation type="unfinished">Aktuell kontostatus är online</translation>
+        <translation type="obsolete">Aktuell kontostatus är online</translation>
     </message>
     <message>
         <source>Log in</source>
@@ -5778,12 +6122,12 @@ Servern svarade med fel: %2</translation>
         <translation>Logga ut</translation>
     </message>
     <message>
-        <source>Set status</source>
-        <translation type="unfinished" />
+        <source>Remove account</source>
+        <translation type="unfinished">Ta bort konto</translation>
     </message>
     <message>
         <source>Status message</source>
-        <translation type="unfinished">Statusmeddelande</translation>
+        <translation type="obsolete">Statusmeddelande</translation>
     </message>
     <message>
         <source>Switch to account</source>

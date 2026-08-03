@@ -21,7 +21,7 @@
         <source>File actions</source>
         <translation>File actions</translation>
     </message>
-<message>
+    <message>
         <source>File details</source>
         <translation>File details</translation>
     </message>
@@ -29,7 +29,7 @@
         <source>Open file details</source>
         <translation>Open file details</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ActivityList</name>
     <message>
@@ -132,8 +132,8 @@
         <translation>Syncing %1 of %2</translation>
     </message>
 <message>
-        <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished" />
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation type="unfinished">Syncing %1 of %2 (%3 left)</translation>
     </message>
     </context>
 <context>
@@ -233,11 +233,11 @@
     <name>FileDetailsPage</name>
     <message>
         <source>Activity</source>
-        <translation type="unfinished">Activity</translation>
+        <translation type="obsolete">Activity</translation>
     </message>
     <message>
-        <source>Sharing</source>
-        <translation type="unfinished" />
+        <source>Dismiss</source>
+        <translation type="unfinished">Dismiss</translation>
     </message>
 </context>
 <context>
@@ -287,6 +287,10 @@
         <translation>Browser Authentication</translation>
     </message>
     <message>
+        <source>Copy Link</source>
+        <translation type="unfinished">Copy Link</translation>
+    </message>
+<message>
         <source>Logo</source>
         <translation>Logo</translation>
     </message>
@@ -294,21 +298,48 @@
         <source>Switch to your browser to connect your account</source>
         <translation>Switch to your browser to connect your account</translation>
     </message>
+    </context>
+<context>
+    <name>FolderWizardSelectiveSync</name>
+    <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Step 3 of 3: Selektive Synchronisation</source>
+        <translation type="unfinished" />
+    </message>
 </context>
 <context>
     <name>FolderWizardSourcePage</name>
     <message>
-        <source>&amp;Choose …</source>
+        <source>&amp;Choose</source>
         <translation type="unfinished" />
     </message>
 <message>
-        <source>Pick a local folder on your computer to sync</source>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished" />
     </message>
     </context>
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>Create folder</source>
         <translation>Create folder</translation>
     </message>
@@ -317,14 +348,18 @@
         <translation>Folders</translation>
     </message>
     <message>
+        <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Refresh</source>
         <translation>Refresh</translation>
     </message>
     <message>
-        <source>Select a remote destination folder</source>
+        <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished" />
     </message>
-</context>
+    </context>
 <context>
     <name>MainWindow</name>
     <message>
@@ -351,7 +386,7 @@
         <source>New activities</source>
         <translation>New activities</translation>
     </message>
-<message>
+    <message>
         <source>New conversation</source>
         <translation>New conversation</translation>
     </message>
@@ -375,7 +410,7 @@
         <source>Unified search results list</source>
         <translation>Unified search results list</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
@@ -741,15 +776,15 @@ Should the account be imported?</translation>
         <translation>There are folders that have grown in size beyond %1MB: %2</translation>
     </message>
     <message>
-        <source>There are folders that were not synchronized because they are external storages: </source>
+        <source>There are folders that were not synchronized because they are external storages:</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>There are folders that were not synchronized because they are too big or external storages: </source>
+        <source>There are folders that were not synchronized because they are too big or external storages:</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>There are folders that were not synchronized because they are too big: </source>
+        <source>There are folders that were not synchronized because they are too big:</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -790,7 +825,7 @@ This action will abort any currently running synchronization.</translation>
         <source>Virtual files</source>
         <translation>Virtual files</translation>
     </message>
-<message>
+    <message>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
@@ -818,7 +853,7 @@ Would you like to do this now?</translation>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::AccountSetupFromCommandLineJob</name>
     <message>
@@ -902,7 +937,7 @@ Would you like to do this now?</translation>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Browse …</source>
         <translation type="unfinished" />
     </message>
@@ -934,7 +969,7 @@ Would you like to do this now?</translation>
         <source>This server probably requires a SSL client certificate.</source>
         <translation>This server probably requires a SSL client certificate.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::Application</name>
     <message>
@@ -1368,11 +1403,69 @@ Would you like to do this now?</translation>
         <source>The provided credentials are not correct</source>
         <translation type="unfinished">The provided credentials are not correct</translation>
     </message>
-<message>
+    <message>
         <source>Timeout</source>
         <translation>Timeout</translation>
     </message>
+</context>
+<context>
+    <name>OCC::DataProtectionPage</name>
+    <message>
+        <source>Agree</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Form</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Settings</translation>
+    </message>
+    <message>
+        <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source>
+        <translation type="unfinished" />
+    </message>
     </context>
+<context>
+    <name>OCC::DataProtectionSettingsPage</name>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished">Back</translation>
+    </message>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Form</translation>
+    </message>
+    <message>
+        <source>Necessary data</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Required to ensure that the software can be used as expected</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Save Settings</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Send anonymous use</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</source>
+        <translation type="unfinished" />
+    </message>
+</context>
 <context>
     <name>OCC::DiscoveryPhase</name>
     <message>
@@ -1682,6 +1775,10 @@ This can be an issue with your OpenSSL libraries.</translation>
         <translation>Copy Link</translation>
     </message>
     <message>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
         <source>Link copied to clipboard.</source>
         <translation>Link copied to clipboard.</translation>
     </message>
@@ -1696,6 +1793,10 @@ This can be an issue with your OpenSSL libraries.</translation>
     <message>
         <source>Starting authorization</source>
         <translation>Starting authorization</translation>
+    </message>
+    <message>
+        <source>Switch to your browser to connect your account</source>
+        <translation type="unfinished">Switch to your browser to connect your account</translation>
     </message>
     <message>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
@@ -1801,8 +1902,7 @@ This can be an issue with your OpenSSL libraries.</translation>
         <translation>%1 is currently locked.</translation>
     </message>
     <message>
-        <source>A folder from an external storage has been added.
-</source>
+        <source>A folder from an external storage has been added.</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -1828,8 +1928,7 @@ Bitte bestätigen Sie, ob Sie mit diesen Löschungen fortfahren möchten.
 Alternativ können Sie alle gelöschten Dateien wiederherstellen, indem Sie sie vom Server herunterladen.</translation>
     </message>
     <message>
-        <source>A new folder larger than %1 MB has been added: %2.
-</source>
+        <source>A new folder larger than %1 MB has been added: %2.</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -1916,6 +2015,10 @@ This means that the synchronization client might not upload local changes immedi
 <context>
     <name>OCC::FolderCreationDialog</name>
     <message>
+        <source>%1 Create new folder</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Could not create a folder! Check your write permissions.</source>
         <translation>Could not create a folder! Check your write permissions.</translation>
     </message>
@@ -1943,11 +2046,11 @@ This means that the synchronization client might not upload local changes immedi
         <translation>%1 (Sync is paused)</translation>
     </message>
     <message>
-        <source> (backup %1)</source>
+        <source>(backup %1)</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source> (backup)</source>
+        <source>(backup)</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -2066,8 +2169,12 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished">Add Folder Sync Connection</translation>
+        <translation type="obsolete">Add Folder Sync Connection</translation>
     </message>
     <message>
         <source>File</source>
@@ -2077,7 +2184,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <source>Grant access</source>
         <translation>Grant access</translation>
     </message>
-</context>
+<message>
+        <source>Synchronize any other local folder with your %1</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
@@ -2239,6 +2350,14 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>Click to select a local folder to sync.</source>
         <translation>Click to select a local folder to sync.</translation>
     </message>
@@ -2247,15 +2366,31 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Enter the path to the local folder.</translation>
     </message>
     <message>
+        <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Select the source folder</source>
         <translation>Select the source folder</translation>
     </message>
-</context>
+    <message>
+        <source>Step 1 of 3: Select local folder</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Authentication failed accessing %1</source>
         <translation>Authentication failed accessing %1</translation>
+    </message>
+    <message>
+        <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Choose this to sync the entire account</source>
@@ -2264,6 +2399,10 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <source>Create Remote Folder</source>
         <translation>Create Remote Folder</translation>
+    </message>
+    <message>
+        <source>Create folder</source>
+        <translation type="unfinished">Create folder</translation>
     </message>
     <message>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
@@ -2286,6 +2425,18 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Please choose a different location. %1 is already being synced to %2.</translation>
     </message>
     <message>
+        <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Refresh</translation>
+    </message>
+    <message>
+        <source>Step 2 of 3: Directory in your %1</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>You are already syncing the subfolder %1 at %2.</translation>
     </message>
@@ -2295,6 +2446,14 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <source>(experimental)</source>
         <translation>(experimental)</translation>
+    </message>
+    <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Step 3 of 3: Selektive Synchronisation</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Use virtual files instead of downloading content immediately %1</source>
@@ -2388,6 +2547,10 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Create Debug Archive</translation>
     </message>
     <message>
+        <source>Data Protection</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Debug Archive Created</source>
         <translation>Debug Archive Created</translation>
     </message>
@@ -2408,14 +2571,10 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>For System Tray</translation>
     </message>
     <message>
-        <source>General settings</source>
+        <source>General Settings</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>Info</source>
-        <translation type="unfinished" />
-    </message>
-<message>
         <source>Legal Notice</source>
         <translation>Legal Notice</translation>
     </message>
@@ -2429,16 +2588,36 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>MB</translation>
     </message>
     <message>
+        <source>More Information</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>Move removed files to trash</source>
         <translation>Move removed files to trash</translation>
+    </message>
+    <message>
+        <source>Necessary data</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Notify when synchronised folders grow larger than specified limit</translation>
     </message>
     <message>
+        <source>Open Source Software</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Privacy Policy</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Redact information deemed sensitive before sharing! Debug archive created at %1</translation>
+    </message>
+    <message>
+        <source>Required to ensure that the software can be used as expected</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Restore &amp;Default</source>
@@ -2447,6 +2626,10 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <source>Restore to &amp;%1</source>
         <translation>Restore to &amp;%1</translation>
+    </message>
+    <message>
+        <source>Send anonymous use</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Server notifications that require attention.</source>
@@ -2502,8 +2685,16 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</translation>
     </message>
     <message>
+        <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Update channel</source>
         <translation>Update channel</translation>
+    </message>
+    <message>
+        <source>Updates</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Usage Documentation</source>
@@ -2625,20 +2816,16 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <source>Sync hidden files</source>
         <translation>Sync hidden files</translation>
     </message>
-<message>
+    <message>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
         <translation>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::IgnoreListTableWidget</name>
     <message>
         <source>Add</source>
         <translation>Add</translation>
-    </message>
-    <message>
-        <source>Add Ignore Pattern</source>
-        <translation type="unfinished" />
     </message>
     <message>
         <source>Add a new ignore pattern:</source>
@@ -2663,6 +2850,10 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</translation>
+    </message>
+    <message>
+        <source>Ignore Pattern</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Pattern</source>
@@ -2747,7 +2938,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
         <translation>The file could not be synced because its name contains characters which are not allowed on this system.</translation>
     </message>
-<message>
+    <message>
         <source>The following basenames are not allowed: %1</source>
         <translation>The following basenames are not allowed: %1</translation>
     </message>
@@ -2775,7 +2966,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::LegacyAccountSelectionDialog</name>
     <message>
@@ -2939,11 +3130,11 @@ Note that using any logging command line options will override this setting.</tr
         <source>Use system proxy</source>
         <translation>Use system proxy</translation>
     </message>
-<message>
+    <message>
         <source>Username for proxy server</source>
         <translation>Username for proxy server</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
@@ -4023,6 +4214,21 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
 </context>
 <context>
+    <name>OCC::sesSnackBar</name>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <source>Success</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>Warning</source>
+        <translation type="unfinished">Warning</translation>
+    </message>
+    </context>
+<context>
     <name>OCC::SettingsDialog</name>
     <message>
         <source>%1 Settings</source>
@@ -4036,6 +4242,10 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <source>General</source>
         <translation>General</translation>
+    </message>
+    <message>
+        <source>New account</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Settings</source>
@@ -4330,13 +4540,11 @@ Server replied with error: %2</translation>
         <translation>The connection is not secure</translation>
     </message>
 <message>
-        <source>This connection is NOT secure as it is not encrypted.
-</source>
+        <source>This connection is NOT secure as it is not encrypted.</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>This connection is encrypted using %1 bit %2.
-</source>
+        <source>This connection is encrypted using %1 bit %2.</source>
         <translation type="unfinished" />
     </message>
     </context>
@@ -4390,7 +4598,7 @@ Server replied with error: %2</translation>
         <source>Trust this certificate anyway</source>
         <translation>Trust this certificate anyway</translation>
     </message>
-<message>
+    <message>
         <source>Unit: %1</source>
         <translation>Unit: %1</translation>
     </message>
@@ -4402,7 +4610,7 @@ Server replied with error: %2</translation>
         <source>with Certificate %1</source>
         <translation>with Certificate %1</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::SyncEngine</name>
     <message>
@@ -4529,11 +4737,11 @@ Server replied with error: %2</translation>
         <source>Syncing file %1 of %2</source>
         <translation>Syncing file %1 of %2</translation>
     </message>
-<message>
+    <message>
         <source>You need to accept the terms of service</source>
         <translation>You need to accept the terms of service</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::Systray</name>
     <message>
@@ -4596,11 +4804,11 @@ Server replied with error: %2</translation>
         <source>Polling</source>
         <translation>Polling</translation>
     </message>
-<message>
+    <message>
         <source>Waiting for terms to be accepted</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::Theme</name>
     <message>
@@ -4616,7 +4824,63 @@ Server replied with error: %2</translation>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</translation>
     </message>
-</context>
+    <message>
+        <source>ExpandMemory-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>ExpandMemory-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Help-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Help-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>LegalNotice-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>LegalNotice-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Login_URL</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Login_URL_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>MoreInformation-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>MoreInformation-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>OpenSource-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>OpenSource-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Privacy-Link</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>Privacy-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
@@ -4720,7 +4984,7 @@ Server replied with error: %2</translation>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Quota Warning - %1 percent or more storage in use</translation>
     </message>
-<message>
+    <message>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Quota is updated; %1 percent of the total space is used.</translation>
     </message>
@@ -4748,7 +5012,7 @@ Server replied with error: %2</translation>
         <source>Waiting for the assistant response…</source>
         <translation>Waiting for the assistant response…</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::UserModel</name>
     <message>
@@ -4771,11 +5035,11 @@ Server replied with error: %2</translation>
         <source>Remove account</source>
         <translation>Remove account</translation>
     </message>
-<message>
+    <message>
         <source>Remove connection</source>
         <translation>Remove connection</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message numerus="yes">
@@ -4926,16 +5190,12 @@ Server replied with error: %2</translation>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <source>You have been logged out of your account %1 at %2. Please login again.</source>
+        <source>&lt;b&gt;You have been logged out of your account %1 at %2. Please login again.&lt;/b&gt;</source>
         <translation type="unfinished" />
     </message>
 </context>
 <context>
     <name>OCC::WelcomePage</name>
-    <message>
-        <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished" />
-    </message>
     <message>
         <source>Form</source>
         <translation>Form</translation>
@@ -4951,14 +5211,6 @@ Server replied with error: %2</translation>
     <message>
         <source>Log in</source>
         <translation>Log in</translation>
-    </message>
-    <message>
-        <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished" />
     </message>
     <message>
         <source>Sign up with provider</source>
@@ -5004,10 +5256,6 @@ Server replied with error: %2</translation>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>Ask before syncing external storages</source>
-        <translation type="unfinished" />
-    </message>
-<message>
         <source>Ask before syncing folders larger than</source>
         <translation>Ask before syncing folders larger than</translation>
     </message>
@@ -5052,7 +5300,7 @@ Server replied with error: %2</translation>
         <source>Username</source>
         <translation>Username</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OwncloudHttpCredsPage</name>
     <message>
@@ -5068,9 +5316,9 @@ Server replied with error: %2</translation>
     <name>OwncloudSetupPage</name>
     <message>
         <source>Logo</source>
-        <translation type="unfinished">Logo</translation>
+        <translation type="obsolete">Logo</translation>
     </message>
-<message>
+    <message>
         <source>Server address</source>
         <translation>Server address</translation>
     </message>
@@ -5078,7 +5326,7 @@ Server replied with error: %2</translation>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
         <translation>This is the link to your %1 web interface when you open it in the browser.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>progress</name>
     <message>
@@ -5289,7 +5537,7 @@ Server replied with error: %2</translation>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</translation>
     </message>
-<message>
+    <message>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</translation>
     </message>
@@ -5310,6 +5558,10 @@ Server replied with error: %2</translation>
         <translation>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</translation>
     </message>
     <message>
+        <source>The directory %1 cannot be part of your sync directory. Please choose another folder.</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</translation>
     </message>
@@ -5450,10 +5702,36 @@ Server replied with error: %2</translation>
     </message>
 </context>
 <context>
+    <name>SesErrorBox</name>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+</context>
+<context>
+    <name>SesTrayHeader</name>
+    <message>
+        <source>Open Nextcloud in browser</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Open local or team folders</source>
+        <translation type="unfinished">Open local or team folders</translation>
+    </message>
+<message>
+        <source>Website</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
+<context>
     <name>ShareDelegate</name>
     <message>
         <source>Copied!</source>
         <translation>Copied!</translation>
+    </message>
+    <message>
+        <source>Share options</source>
+        <translation type="unfinished">Share options</translation>
     </message>
 </context>
 <context>
@@ -5479,7 +5757,7 @@ Server replied with error: %2</translation>
         <translation>Copy share link</translation>
     </message>
     <message>
-        <source>Edit share</source>
+        <source>Custom Permissions</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -5505,10 +5783,6 @@ Server replied with error: %2</translation>
     <message>
         <source>Set expiration date</source>
         <translation>Set expiration date</translation>
-    </message>
-    <message>
-        <source>Share label</source>
-        <translation type="unfinished" />
     </message>
     <message>
         <source>Share link copied!</source>
@@ -5627,7 +5901,7 @@ Server replied with error: %2</translation>
         <source>Error occurred during sync</source>
         <translation>Error occurred during sync</translation>
     </message>
-<message>
+    <message>
         <source>Preparing to sync</source>
         <translation type="unfinished" />
     </message>
@@ -5659,9 +5933,13 @@ Server replied with error: %2</translation>
         <source>Waiting to start syncing</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>TrayFoldersMenuButton</name>
+    <message>
+        <source>Files</source>
+        <translation type="unfinished" />
+    </message>
     <message>
         <source>Open %1 in file explorer</source>
         <translation>Open %1 in file explorer</translation>
@@ -5688,6 +5966,49 @@ Server replied with error: %2</translation>
     </message>
 </context>
 <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+        <source>Account switcher and settings menu</source>
+        <translation type="unfinished">Account switcher and settings menu</translation>
+    </message>
+<message>
+        <source>Add account</source>
+        <translation type="unfinished">Add account</translation>
+    </message>
+    <message>
+        <source>Current account</source>
+        <translation type="unfinished">Current account</translation>
+    </message>
+    <message>
+        <source>Current account avatar</source>
+        <translation type="unfinished">Current account avatar</translation>
+    </message>
+    <message>
+        <source>Current account status is do not disturb</source>
+        <translation type="unfinished">Current account status is do not disturb</translation>
+    </message>
+    <message>
+        <source>Current account status is online</source>
+        <translation type="unfinished">Current account status is online</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="unfinished">Exit</translation>
+    </message>
+    <message>
+        <source>Pause sync for all</source>
+        <translation type="unfinished">Pause sync for all</translation>
+    </message>
+    <message>
+        <source>Resume sync for all</source>
+        <translation type="unfinished">Resume sync for all</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Settings</translation>
+    </message>
+    </context>
+<context>
     <name>TrayWindowHeader</name>
     <message>
         <source>More apps</source>
@@ -5702,6 +6023,29 @@ Server replied with error: %2</translation>
         <translation>Open local or team folders</translation>
     </message>
 </context>
+<context>
+    <name>TrayWindowHeaderBar</name>
+    <message>
+        <source>More apps</source>
+        <translation type="unfinished">More apps</translation>
+    </message>
+    <message>
+        <source>Open %1 in browser</source>
+        <translation type="unfinished">Open %1 in browser</translation>
+    </message>
+<message>
+        <source>Open Nextcloud in browser</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Open local or team folders</source>
+        <translation type="unfinished">Open local or team folders</translation>
+    </message>
+    <message>
+        <source>Website</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
@@ -5763,11 +6107,11 @@ Server replied with error: %2</translation>
     </message>
     <message>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished">Current account status is do not disturb</translation>
+        <translation type="obsolete">Current account status is do not disturb</translation>
     </message>
     <message>
         <source>Current account status is online</source>
-        <translation type="unfinished">Current account status is online</translation>
+        <translation type="obsolete">Current account status is online</translation>
     </message>
     <message>
         <source>Log in</source>
@@ -5778,12 +6122,12 @@ Server replied with error: %2</translation>
         <translation>Log out</translation>
     </message>
     <message>
-        <source>Set status</source>
-        <translation type="unfinished" />
+        <source>Remove account</source>
+        <translation type="unfinished">Remove account</translation>
     </message>
     <message>
         <source>Status message</source>
-        <translation type="unfinished">Status message</translation>
+        <translation type="obsolete">Status message</translation>
     </message>
     <message>
         <source>Switch to account</source>

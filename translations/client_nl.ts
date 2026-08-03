@@ -21,7 +21,7 @@
         <source>File actions</source>
         <translation>Bestandsacties</translation>
     </message>
-<message>
+    <message>
         <source>File details</source>
         <translation>Bestandsdetails</translation>
     </message>
@@ -29,7 +29,7 @@
         <source>Open file details</source>
         <translation>Bestandsdetails openen</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ActivityList</name>
     <message>
@@ -132,7 +132,7 @@
         <translation>Synchroniseren %1 van %2</translation>
     </message>
 <message>
-        <source>Syncing %1 of %2  (%3 left)</source>
+        <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished" />
     </message>
     </context>
@@ -233,10 +233,10 @@
     <name>FileDetailsPage</name>
     <message>
         <source>Activity</source>
-        <translation type="unfinished">Activiteit</translation>
+        <translation type="obsolete">Activiteit</translation>
     </message>
     <message>
-        <source>Sharing</source>
+        <source>Dismiss</source>
         <translation type="unfinished" />
     </message>
 </context>
@@ -287,6 +287,10 @@
         <translation>Browserauthenticatie</translation>
     </message>
     <message>
+        <source>Copy Link</source>
+        <translation type="unfinished">Kopiëren link </translation>
+    </message>
+<message>
         <source>Logo</source>
         <translation>Logo</translation>
     </message>
@@ -294,21 +298,48 @@
         <source>Switch to your browser to connect your account</source>
         <translation>Schakel over naar je browser om je account te verbinden</translation>
     </message>
+    </context>
+<context>
+    <name>FolderWizardSelectiveSync</name>
+    <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Step 3 of 3: Selektive Synchronisation</source>
+        <translation type="unfinished" />
+    </message>
 </context>
 <context>
     <name>FolderWizardSourcePage</name>
     <message>
-        <source>&amp;Choose …</source>
+        <source>&amp;Choose</source>
         <translation type="unfinished" />
     </message>
 <message>
-        <source>Pick a local folder on your computer to sync</source>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished" />
     </message>
     </context>
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>Create folder</source>
         <translation>Maak map</translation>
     </message>
@@ -317,20 +348,20 @@
         <translation>Mappen</translation>
     </message>
     <message>
+        <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Refresh</source>
         <translation>Vernieuwen</translation>
     </message>
     <message>
-        <source>Select a remote destination folder</source>
+        <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished" />
     </message>
-</context>
+    </context>
 <context>
     <name>MainWindow</name>
-    <message>
-        <source>Ask Assistant…</source>
-        <translation type="unfinished" />
-    </message>
     <message>
         <source>Cancel</source>
         <translation>Annuleren</translation>
@@ -344,24 +375,12 @@
         <translation>Problemen met diverse accounts</translation>
     </message>
     <message>
-        <source>Main content</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
         <source>New activities</source>
         <translation>Nieuwe activiteiten</translation>
     </message>
-<message>
+    <message>
         <source>New conversation</source>
         <translation>Nieuwe conversatie</translation>
-    </message>
-    <message>
-        <source>Send assistant question</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <source>Start a new assistant chat</source>
-        <translation type="unfinished" />
     </message>
     <message>
         <source>Start new conversation?</source>
@@ -371,11 +390,7 @@
         <source>This will clear the existing conversation.</source>
         <translation>Dit zal het bestaande gesprek wissen</translation>
     </message>
-    <message>
-        <source>Unified search results list</source>
-        <translation type="unfinished" />
-    </message>
-    </context>
+</context>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
@@ -740,15 +755,15 @@ Should the account be imported?</source>
         <translation>Er zijn bestanden die groter zijn geworden dan %1MB: %2</translation>
     </message>
     <message>
-        <source>There are folders that were not synchronized because they are external storages: </source>
+        <source>There are folders that were not synchronized because they are external storages:</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>There are folders that were not synchronized because they are too big or external storages: </source>
+        <source>There are folders that were not synchronized because they are too big or external storages:</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>There are folders that were not synchronized because they are too big: </source>
+        <source>There are folders that were not synchronized because they are too big:</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -789,7 +804,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
         <source>Virtual files</source>
         <translation>Virtuele bestanden</translation>
     </message>
-<message>
+    <message>
         <source>Warning</source>
         <translation>Waarschuwing</translation>
     </message>
@@ -815,7 +830,7 @@ Would you like to do this now?</source>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation>Het lijkt erop dat de functie Virtuele bestanden voor deze map is ingeschakeld. Momenteel is het niet mogelijk om impliciet virtuele bestanden te downloaden die eind-tot-eind versleuteld zijn. Om de beste ervaring met virtuele bestanden en begin-tot-eind versleuteling te krijgen, moet je ervoor zorgen dat de versleutelde map is gemarkeerd met &quot;Altijd lokaal beschikbaar maken&quot;.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::AccountSetupFromCommandLineJob</name>
     <message>
@@ -899,7 +914,7 @@ Would you like to do this now?</source>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Browse …</source>
         <translation type="unfinished" />
     </message>
@@ -931,7 +946,7 @@ Would you like to do this now?</source>
         <source>This server probably requires a SSL client certificate.</source>
         <translation>De server vereist vermoedelijk een SSL client certificaat.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::Application</name>
     <message>
@@ -1371,6 +1386,64 @@ Would you like to do this now?</source>
     </message>
 </context>
 <context>
+    <name>OCC::DataProtectionPage</name>
+    <message>
+        <source>Agree</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulier</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Instellingen</translation>
+    </message>
+    <message>
+        <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
+<context>
+    <name>OCC::DataProtectionSettingsPage</name>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished">Terug</translation>
+    </message>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulier</translation>
+    </message>
+    <message>
+        <source>Necessary data</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Required to ensure that the software can be used as expected</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Save Settings</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Send anonymous use</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</source>
+        <translation type="unfinished" />
+    </message>
+</context>
+<context>
     <name>OCC::DiscoveryPhase</name>
     <message>
         <source>Error while canceling deletion of %1</source>
@@ -1679,6 +1752,10 @@ Dit kan een probleem zijn met je OpenSSL-bibliotheken.</translation>
         <translation>Kopiëren link </translation>
     </message>
     <message>
+        <source>Error</source>
+        <translation type="unfinished">Fout</translation>
+    </message>
+    <message>
         <source>Link copied to clipboard.</source>
         <translation>Link gekopieerd naar het klembord.</translation>
     </message>
@@ -1693,6 +1770,10 @@ Dit kan een probleem zijn met je OpenSSL-bibliotheken.</translation>
     <message>
         <source>Starting authorization</source>
         <translation>Starten autorisatie</translation>
+    </message>
+    <message>
+        <source>Switch to your browser to connect your account</source>
+        <translation type="unfinished">Schakel over naar je browser om je account te verbinden</translation>
     </message>
     <message>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
@@ -1798,8 +1879,7 @@ Dit kan een probleem zijn met je OpenSSL-bibliotheken.</translation>
         <translation>%1 is momenteel op slot.</translation>
     </message>
     <message>
-        <source>A folder from an external storage has been added.
-</source>
+        <source>A folder from an external storage has been added.</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -1825,8 +1905,7 @@ Bevestig alstublieft of u door wilt gaan met deze verwijderingen.
 U kunt ook alle verwijderde bestanden herstellen door ze van de server te downloaden.</translation>
     </message>
     <message>
-        <source>A new folder larger than %1 MB has been added: %2.
-</source>
+        <source>A new folder larger than %1 MB has been added: %2.</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -1913,6 +1992,10 @@ Dit betekent dat de synchronisatieclient misschien niet meteen lokale wijziginge
 <context>
     <name>OCC::FolderCreationDialog</name>
     <message>
+        <source>%1 Create new folder</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Could not create a folder! Check your write permissions.</source>
         <translation>Kan map niet aanmaken! Controleer je schrijfmachtiging.</translation>
     </message>
@@ -1940,11 +2023,11 @@ Dit betekent dat de synchronisatieclient misschien niet meteen lokale wijziginge
         <translation>%1 (Synchronisatie onderbroken)</translation>
     </message>
     <message>
-        <source> (backup %1)</source>
+        <source>(backup %1)</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source> (backup)</source>
+        <source>(backup)</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -2060,8 +2143,12 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished">Toevoegen mapsynchronisatie verbinding</translation>
+        <translation type="obsolete">Toevoegen mapsynchronisatie verbinding</translation>
     </message>
     <message>
         <source>File</source>
@@ -2071,7 +2158,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <source>Grant access</source>
         <translation>Geef toegang</translation>
     </message>
-</context>
+<message>
+        <source>Synchronize any other local folder with your %1</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
@@ -2234,6 +2325,14 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>Click to select a local folder to sync.</source>
         <translation>Klikken om een lokale map te selecteren voor synchronisatie</translation>
     </message>
@@ -2242,15 +2341,31 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Geef het pad op naar de lokale map.</translation>
     </message>
     <message>
+        <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Select the source folder</source>
         <translation>Selecteer de bronmap</translation>
     </message>
-</context>
+    <message>
+        <source>Step 1 of 3: Select local folder</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Authentication failed accessing %1</source>
         <translation>Authenticatie mislukt bij benaderen %1</translation>
+    </message>
+    <message>
+        <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Choose this to sync the entire account</source>
@@ -2259,6 +2374,10 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <source>Create Remote Folder</source>
         <translation>Externe map aanmaken</translation>
+    </message>
+    <message>
+        <source>Create folder</source>
+        <translation type="unfinished">Maak map</translation>
     </message>
     <message>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
@@ -2281,6 +2400,18 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished" />
     </message>
     <message>
+        <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Vernieuwen</translation>
+    </message>
+    <message>
+        <source>Step 2 of 3: Directory in your %1</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation type="unfinished" />
     </message>
@@ -2290,6 +2421,14 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <source>(experimental)</source>
         <translation>(experimenteel)</translation>
+    </message>
+    <message>
+        <source>Add Folder Sync</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Step 3 of 3: Selektive Synchronisation</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Use virtual files instead of downloading content immediately %1</source>
@@ -2378,6 +2517,10 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Debugarchief maken</translation>
     </message>
     <message>
+        <source>Data Protection</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Debug Archive Created</source>
         <translation>Debugarchief Aangemaakt</translation>
     </message>
@@ -2398,14 +2541,10 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Voor systeemvak</translation>
     </message>
     <message>
-        <source>General settings</source>
+        <source>General Settings</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>Info</source>
-        <translation type="unfinished" />
-    </message>
-<message>
         <source>Legal Notice</source>
         <translation>Juridische bepalingen</translation>
     </message>
@@ -2419,15 +2558,35 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>MB</translation>
     </message>
     <message>
+        <source>More Information</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>Move removed files to trash</source>
         <translation>Verplaats verwijderde bestanden naar de prullenbak</translation>
+    </message>
+    <message>
+        <source>Necessary data</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Melding als gesynchroniseerde mappen groter worden dan de opgegeven limiet</translation>
     </message>
     <message>
+        <source>Open Source Software</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Privacy Policy</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Required to ensure that the software can be used as expected</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -2436,6 +2595,10 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     </message>
     <message>
         <source>Restore to &amp;%1</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Send anonymous use</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -2490,8 +2653,16 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished" />
     </message>
     <message>
+        <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
         <source>Update channel</source>
         <translation>Bijwerkkanaal</translation>
+    </message>
+    <message>
+        <source>Updates</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Usage Documentation</source>
@@ -2613,20 +2784,16 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <source>Sync hidden files</source>
         <translation>Synchroniseer verborgen bestanden</translation>
     </message>
-<message>
+    <message>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
         <translation>Dit gegeven is door het systeem vastgelegd op &quot;%1&quot; en kan niet worden aangepast in deze weergave.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::IgnoreListTableWidget</name>
     <message>
         <source>Add</source>
         <translation>Toevoegen</translation>
-    </message>
-    <message>
-        <source>Add Ignore Pattern</source>
-        <translation type="unfinished" />
     </message>
     <message>
         <source>Add a new ignore pattern:</source>
@@ -2651,6 +2818,10 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Bestanden of mappen die overeenkomen met dit patroon worden niet gesynchroniseerd.
 
 Objecten die verwijderd mogen worden, worden verwijderd als ze zouden verhinderen dat een map verwijderd wordt. Dit is nuttig voor metadata.</translation>
+    </message>
+    <message>
+        <source>Ignore Pattern</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Pattern</source>
@@ -2735,7 +2906,7 @@ Objecten die verwijderd mogen worden, worden verwijderd als ze zouden verhindere
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
         <translation>Dit bestand kon niet worden gesynchroniseerd omdat het symbolen bevat die niet toegestaan zijn op dit systeem.</translation>
     </message>
-<message>
+    <message>
         <source>The following basenames are not allowed: %1</source>
         <translation>De volgende basisnamen zijn  niet toegestaan: %1</translation>
     </message>
@@ -2763,7 +2934,7 @@ Objecten die verwijderd mogen worden, worden verwijderd als ze zouden verhindere
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>Je bent niet gemachtigd om dit bestand te hernoemen. Vraag de auteur van het bestand om het te hernoemen.</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::LegacyAccountSelectionDialog</name>
     <message>
@@ -2927,11 +3098,11 @@ Merk op dat het gebruik van logging-opdrachtregel opties deze instelling zal ove
         <source>Use system proxy</source>
         <translation>Gebruik systeem proxy</translation>
     </message>
-<message>
+    <message>
         <source>Username for proxy server</source>
         <translation>Gebruikersnaam voor proxyserver</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
@@ -4011,6 +4182,21 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     </message>
 </context>
 <context>
+    <name>OCC::sesSnackBar</name>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Fout</translation>
+    </message>
+    <message>
+        <source>Success</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>Warning</source>
+        <translation type="unfinished">Waarschuwing</translation>
+    </message>
+    </context>
+<context>
     <name>OCC::SettingsDialog</name>
     <message>
         <source>%1 Settings</source>
@@ -4024,6 +4210,10 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <source>General</source>
         <translation>Algemeen</translation>
+    </message>
+    <message>
+        <source>New account</source>
+        <translation type="unfinished" />
     </message>
     <message>
         <source>Settings</source>
@@ -4318,13 +4508,11 @@ Server antwoordde met fout: %2</translation>
         <translation>De verbinding is niet veilig</translation>
     </message>
 <message>
-        <source>This connection is NOT secure as it is not encrypted.
-</source>
+        <source>This connection is NOT secure as it is not encrypted.</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <source>This connection is encrypted using %1 bit %2.
-</source>
+        <source>This connection is encrypted using %1 bit %2.</source>
         <translation type="unfinished" />
     </message>
     </context>
@@ -4378,7 +4566,7 @@ Server antwoordde met fout: %2</translation>
         <source>Trust this certificate anyway</source>
         <translation>Vertrouw dit certificaat alsnog</translation>
     </message>
-<message>
+    <message>
         <source>Unit: %1</source>
         <translation>Unit: %1</translation>
     </message>
@@ -4390,7 +4578,7 @@ Server antwoordde met fout: %2</translation>
         <source>with Certificate %1</source>
         <translation>met certificaat %1</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::SyncEngine</name>
     <message>
@@ -4517,11 +4705,11 @@ Server antwoordde met fout: %2</translation>
         <source>Syncing file %1 of %2</source>
         <translation>Bestand %1 van %2 synchroniseren</translation>
     </message>
-<message>
+    <message>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::Systray</name>
     <message>
@@ -4584,11 +4772,11 @@ Server antwoordde met fout: %2</translation>
         <source>Polling</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Waiting for terms to be accepted</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::Theme</name>
     <message>
@@ -4604,7 +4792,63 @@ Server antwoordde met fout: %2</translation>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Deze release is geleverd door %1&lt;/p&gt;</translation>
     </message>
-</context>
+    <message>
+        <source>ExpandMemory-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>ExpandMemory-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Help-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Help-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>LegalNotice-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>LegalNotice-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Login_URL</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Login_URL_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>MoreInformation-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>MoreInformation-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>OpenSource-Link</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>OpenSource-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Privacy-Link</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>Privacy-Link_STRATO</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
@@ -4691,7 +4935,7 @@ Server antwoordde met fout: %2</translation>
         <source>No response yet. Please try again later.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>No supported assistant task types were returned.</source>
         <translation type="unfinished" />
     </message>
@@ -4736,7 +4980,7 @@ Server antwoordde met fout: %2</translation>
         <source>Waiting for the assistant response…</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::UserModel</name>
     <message>
@@ -4759,11 +5003,11 @@ Server antwoordde met fout: %2</translation>
         <source>Remove account</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Remove connection</source>
         <translation>Verwijderen verbinding</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message numerus="yes">
@@ -4773,7 +5017,7 @@ Server antwoordde met fout: %2</translation>
             <numerusform />
         </translation>
     </message>
-<message numerus="yes">
+    <message numerus="yes">
         <source>%n hour(s)</source>
         <translation type="unfinished">
             <numerusform />
@@ -4839,7 +5083,7 @@ Server antwoordde met fout: %2</translation>
         <source>Today</source>
         <translation type="unfinished">Vandaag</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OCC::Vfs</name>
     <message>
@@ -4914,16 +5158,12 @@ Server antwoordde met fout: %2</translation>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <source>You have been logged out of your account %1 at %2. Please login again.</source>
+        <source>&lt;b&gt;You have been logged out of your account %1 at %2. Please login again.&lt;/b&gt;</source>
         <translation type="unfinished" />
     </message>
 </context>
 <context>
     <name>OCC::WelcomePage</name>
-    <message>
-        <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished" />
-    </message>
     <message>
         <source>Form</source>
         <translation>Formulier</translation>
@@ -4939,14 +5179,6 @@ Server antwoordde met fout: %2</translation>
     <message>
         <source>Log in</source>
         <translation>Aanmelden</translation>
-    </message>
-    <message>
-        <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished" />
     </message>
     <message>
         <source>Sign up with provider</source>
@@ -4992,10 +5224,6 @@ Server antwoordde met fout: %2</translation>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Als deze checkbox is aangevinkt zullen bestaande bestanden in de lokale map worden gewist om een schone sync vanaf de server te starten.&lt;/p&gt;&lt;p&gt;Vink dit niet aan als de lokale bestanden naar de map op de server zouden moeten worden geüploadet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>Ask before syncing external storages</source>
-        <translation type="unfinished" />
-    </message>
-<message>
         <source>Ask before syncing folders larger than</source>
         <translation>Vraag bevestiging voor synchronisatie van mappen groter dan</translation>
     </message>
@@ -5040,7 +5268,7 @@ Server antwoordde met fout: %2</translation>
         <source>Username</source>
         <translation>Gebruikersnaam</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>OwncloudHttpCredsPage</name>
     <message>
@@ -5056,9 +5284,9 @@ Server antwoordde met fout: %2</translation>
     <name>OwncloudSetupPage</name>
     <message>
         <source>Logo</source>
-        <translation type="unfinished">Logo</translation>
+        <translation type="obsolete">Logo</translation>
     </message>
-<message>
+    <message>
         <source>Server address</source>
         <translation>Serveradres</translation>
     </message>
@@ -5066,7 +5294,7 @@ Server antwoordde met fout: %2</translation>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
         <translation>De link naar je %1 web interface wanneer je die opent in de browser. </translation>
     </message>
-    </context>
+</context>
 <context>
     <name>progress</name>
     <message>
@@ -5277,7 +5505,7 @@ Server antwoordde met fout: %2</translation>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation type="unfinished" />
     </message>
-<message>
+    <message>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation type="unfinished" />
     </message>
@@ -5298,6 +5526,10 @@ Server antwoordde met fout: %2</translation>
         <translation type="unfinished" />
     </message>
     <message>
+        <source>The directory %1 cannot be part of your sync directory. Please choose another folder.</source>
+        <translation type="unfinished" />
+    </message>
+<message>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation type="unfinished" />
     </message>
@@ -5438,10 +5670,36 @@ Server antwoordde met fout: %2</translation>
     </message>
 </context>
 <context>
+    <name>SesErrorBox</name>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Fout</translation>
+    </message>
+</context>
+<context>
+    <name>SesTrayHeader</name>
+    <message>
+        <source>Open Nextcloud in browser</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Open local or team folders</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>Website</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
+<context>
     <name>ShareDelegate</name>
     <message>
         <source>Copied!</source>
         <translation>Gekopieerd!</translation>
+    </message>
+    <message>
+        <source>Share options</source>
+        <translation type="unfinished">Deelopties</translation>
     </message>
 </context>
 <context>
@@ -5467,7 +5725,7 @@ Server antwoordde met fout: %2</translation>
         <translation>Copy share link</translation>
     </message>
     <message>
-        <source>Edit share</source>
+        <source>Custom Permissions</source>
         <translation type="unfinished" />
     </message>
     <message>
@@ -5493,10 +5751,6 @@ Server antwoordde met fout: %2</translation>
     <message>
         <source>Set expiration date</source>
         <translation>Instellen vervaldatum</translation>
-    </message>
-    <message>
-        <source>Share label</source>
-        <translation type="unfinished" />
     </message>
     <message>
         <source>Share link copied!</source>
@@ -5615,7 +5869,7 @@ Server antwoordde met fout: %2</translation>
         <source>Error occurred during sync</source>
         <translation>Er trad een fout op tijdens synchronisatie</translation>
     </message>
-<message>
+    <message>
         <source>Preparing to sync</source>
         <translation type="unfinished" />
     </message>
@@ -5647,9 +5901,13 @@ Server antwoordde met fout: %2</translation>
         <source>Waiting to start syncing</source>
         <translation type="unfinished" />
     </message>
-    </context>
+</context>
 <context>
     <name>TrayFoldersMenuButton</name>
+    <message>
+        <source>Files</source>
+        <translation type="unfinished" />
+    </message>
     <message>
         <source>Open %1 in file explorer</source>
         <translation>Open %1 in bestandsverkenner</translation>
@@ -5676,6 +5934,49 @@ Server antwoordde met fout: %2</translation>
     </message>
 </context>
 <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+        <source>Account switcher and settings menu</source>
+        <translation type="unfinished">Wisselen van gebruiker en instellingsmenu</translation>
+    </message>
+<message>
+        <source>Add account</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Current account</source>
+        <translation type="unfinished">Huidige gebruiker</translation>
+    </message>
+    <message>
+        <source>Current account avatar</source>
+        <translation type="unfinished">Huidige gebruiker avatar</translation>
+    </message>
+    <message>
+        <source>Current account status is do not disturb</source>
+        <translation type="unfinished">Huidige gebruikersstatus is Niet Storen</translation>
+    </message>
+    <message>
+        <source>Current account status is online</source>
+        <translation type="unfinished">Huidige gebruikersstatus is Online</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="unfinished">Verlaat</translation>
+    </message>
+    <message>
+        <source>Pause sync for all</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Resume sync for all</source>
+        <translation type="unfinished">Synchronisatie hervatten voor alles</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Instellingen</translation>
+    </message>
+    </context>
+<context>
     <name>TrayWindowHeader</name>
     <message>
         <source>More apps</source>
@@ -5690,6 +5991,29 @@ Server antwoordde met fout: %2</translation>
         <translation type="unfinished" />
     </message>
 </context>
+<context>
+    <name>TrayWindowHeaderBar</name>
+    <message>
+        <source>More apps</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Open %1 in browser</source>
+        <translation type="unfinished" />
+    </message>
+<message>
+        <source>Open Nextcloud in browser</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Open local or team folders</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <source>Website</source>
+        <translation type="unfinished" />
+    </message>
+    </context>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
@@ -5751,11 +6075,11 @@ Server antwoordde met fout: %2</translation>
     </message>
     <message>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished">Huidige gebruikersstatus is Niet Storen</translation>
+        <translation type="obsolete">Huidige gebruikersstatus is Niet Storen</translation>
     </message>
     <message>
         <source>Current account status is online</source>
-        <translation type="unfinished">Huidige gebruikersstatus is Online</translation>
+        <translation type="obsolete">Huidige gebruikersstatus is Online</translation>
     </message>
     <message>
         <source>Log in</source>
@@ -5766,12 +6090,12 @@ Server antwoordde met fout: %2</translation>
         <translation>Afmelden</translation>
     </message>
     <message>
-        <source>Set status</source>
+        <source>Remove account</source>
         <translation type="unfinished" />
     </message>
     <message>
         <source>Status message</source>
-        <translation type="unfinished">Status bericht</translation>
+        <translation type="obsolete">Status bericht</translation>
     </message>
     <message>
         <source>Switch to account</source>
