@@ -1206,13 +1206,41 @@ Vill du konfigurera den nu?</translation>
         <translation>ignorera</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190" />
+        <location filename="../src/gui/advancedsettings.cpp" line="398"/>
+        <source>Failed to Access File</source>
+        <translation>Det gick inte att öppna filen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="399"/>
+        <source>Could not access the selected location. Please try again or choose a different location.</source>
+        <translation>Det gick inte att komma åt den valda platsen. Vänligen försök igen eller välj en annan plats.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="408"/>
+        <source>Debug Archive Created</source>
+        <translation>Felsökningsarkiv skapat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="409"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation>Redigera information som anses känslig innan du delar! Felsökningsarkiv skapat på %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Application</name>
+    <message>
+        <location filename="../src/gui/application.cpp" line="200"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation>Vissa inställningar har konfigurerats i %1 versioner av den här klienten och använder funktioner som inte är tillgängliga i den här versionen.&lt;br&gt;&lt;br&gt;Att fortsätta kommer att betyda &lt;b&gt;%2 dessa inställningar&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Den aktuella konfigurationsfilen har redan säkerhetskopierats till &lt;i&gt;%3&lt;/i&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>nyare</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190" />
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>äldre</translation>
@@ -1221,17 +1249,75 @@ Vill du konfigurera den nu?</translation>
 <context>
     <name>OCC::AuthenticationDialog</name>
     <message>
-        <location filename="../src/gui/authenticationdialog.cpp" line="30" />
-        <source>&amp;Password:</source>
-        <translation>&amp;Lösenord:</translation>
+        <location filename="../src/gui/application.cpp" line="207"/>
+        <source>ignoring</source>
+        <translation>ignorera</translation>
     </message>
     <message>
-        <location filename="../src/gui/authenticationdialog.cpp" line="29" />
-        <source>&amp;Username:</source>
-        <translation>&amp;Användarnamn:</translation>
+        <location filename="../src/gui/application.cpp" line="207"/>
+        <source>deleting</source>
+        <translation>radera</translation>
     </message>
     <message>
-        <location filename="../src/gui/authenticationdialog.cpp" line="22" />
+        <location filename="../src/gui/application.cpp" line="209"/>
+        <source>Quit</source>
+        <translation>Avsluta</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="210"/>
+        <source>Continue</source>
+        <translation>Fortsätt</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="697"/>
+        <source>%1 accounts</source>
+        <comment>number of accounts imported</comment>
+        <translation>%1 konton</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="698"/>
+        <source>1 account</source>
+        <translation>1 konto</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="700"/>
+        <source>%1 folders</source>
+        <comment>number of folders imported</comment>
+        <translation>%1 mappar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="701"/>
+        <source>1 folder</source>
+        <translation>1 mapp</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="703"/>
+        <source>Legacy import</source>
+        <translation>Import från äldre version</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="704"/>
+        <source>Imported %1 and %2 from a legacy desktop client.
+%3</source>
+        <comment>number of accounts and folders imported. list of users.</comment>
+        <translation>Importerade %1 och %2 från en äldre skrivbordsklient.
+%3</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="824"/>
+        <source>Error accessing the configuration file</source>
+        <translation>Kunde inte komma åt konfigurationsfilen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="825"/>
+        <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
+        <translation>Ett fel uppstod vid läsning av konfigurationsfilen vid %1. Kontrollera att filen kan nås av ditt datorkonto.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AuthenticationDialog</name>
+    <message>
+        <location filename="../src/gui/authenticationdialog.cpp" line="22"/>
         <source>Authentication Required</source>
         <translation>Autentisering krävs</translation>
     </message>
@@ -1711,9 +1797,9 @@ Vill du konfigurera den nu?</translation>
 <context>
     <name>OCC::DataProtectionSettingsPage</name>
     <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.cpp" line="52" />
-        <source>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</source>
-        <translation type="unfinished">Vi samlar in anonymiserade data för att optimera vår app. Vi använder mjukvarulösningar från olika partners för detta ändamål. Vi vill ge dig full insyn och valfrihet när det gäller insamling och behandling av din anonymiserade användning. Du kan när som helst ändra dina inställningar under menyalternativet Dataskydd.</translation>
+        <location filename="../src/libsync/discoveryphase.cpp" line="192"/>
+        <source>Error while canceling deletion of a file</source>
+        <translation>Ett fel uppstod när radering av en fil skulle avbrytas</translation>
     </message>
 <message>
         <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="83" />
@@ -1721,40 +1807,7 @@ Vill du konfigurera den nu?</translation>
         <translation type="unfinished">Tillbaka</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="20" />
-        <source>Form</source>
-        <translation type="unfinished">Formulär</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="35" />
-        <source>Necessary data</source>
-        <translation type="unfinished">Nödvändiga uppgifter</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="45" />
-        <source>Required to ensure that the software can be used as expected</source>
-        <translation type="unfinished">Krävs för att säkerställa att programvaran kan användas som förväntat</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="90" />
-        <source>Save Settings</source>
-        <translation type="unfinished">Spara inställningar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="59" />
-        <source>Send anonymous use</source>
-        <translation type="unfinished">Skicka anonym användning</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="69" />
-        <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
-        <translation type="unfinished">Detta hjälper oss att optimera programvaran och att bättre identifiera systemkrascher och oväntade fel.</translation>
-    </message>
-    </context>
-<context>
-    <name>OCC::DiscoveryPhase</name>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="192" />
+        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
         <source>Error while canceling deletion of %1</source>
         <translation>Ett fel uppstod när radering av %1 skulle avbrytas</translation>
     </message>
@@ -1767,46 +1820,51 @@ Vill du konfigurera den nu?</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="634" />
-        <location filename="../src/libsync/discoveryphase.cpp" line="688" />
-        <source>Encrypted metadata setup error!</source>
-        <translation>Fel i installationen av krypterade metadata!</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="667" />
-        <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation>Fel vid inställning av krypterade metadata: den ursprungliga signaturen från servern är tom.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="573" />
+        <location filename="../src/libsync/discoveryphase.cpp" line="583"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Serverfel: PROPFIND-svar är inte XML-formaterat!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="603" />
+        <location filename="../src/libsync/discoveryphase.cpp" line="613"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Servern returnerade ett oväntat svar som inte kunde läsas. Kontakta din serveradministratör.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="644"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="698"/>
+        <source>Encrypted metadata setup error!</source>
+        <translation>Inställningsfel för krypterad metadata!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
+        <source>Encrypted metadata setup error: initial signature from server is empty.</source>
+        <translation>Inställningsfel för krypterad metadata: initial signatur från servern är tom.</translation>
     </message>
 </context>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="356" />
-        <source>Directory not accessible on client, permission denied</source>
-        <translation>Mappen kan inte öppnas av klienten, åtkomst nekad</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="360" />
-        <source>Directory not found: %1</source>
-        <translation>Mappen hittades inte: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="354" />
+        <location filename="../src/libsync/discoveryphase.cpp" line="355"/>
         <source>Error while opening directory %1</source>
         <translation>Fel uppstod när mappen %1 öppnades</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="412" />
+        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
+        <source>Directory not accessible on client, permission denied</source>
+        <translation>Mappen kan inte öppnas av klienten, åtkomst nekad</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="361"/>
+        <source>Directory not found: %1</source>
+        <translation>Mappen hittades inte: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="393"/>
+        <source>Filename encoding is not valid</source>
+        <translation>Filnamnets teckenuppsättning är ogiltig</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="422"/>
         <source>Error while reading directory %1</source>
         <translation>Ett fel uppstod när mappen %1 skulle öppnas</translation>
     </message>
@@ -3358,28 +3416,28 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="845" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
+        <source>Password for share required</source>
+        <translation>Lösenord för delning krävs</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
+        <source>Please enter a password for your link share:</source>
+        <translation>Ange ett lösenord för din länkdelning:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="935"/>
+        <source>Sharing error</source>
+        <translation>Fel vid delning</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="936"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
         <translation>Kunde inte hämta eller skapa den offentliga länkdelningen. Fel:
 
 %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="817" />
-        <source>Password for share required</source>
-        <translation>Lösenord för delning krävs</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="818" />
-        <source>Please enter a password for your link share:</source>
-        <translation>Ange ett lösenord för din länkdelning:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="844" />
-        <source>Sharing error</source>
-        <translation>Fel vid delning</translation>
     </message>
 </context>
 <context>
@@ -4194,402 +4252,217 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="729" />
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Filleverantörsbaserat konto %1 har skapats!&lt;/b&gt;&lt;/font&gt;</translation>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
+        <source>Symbolic links are not supported in syncing.</source>
+        <translation>Symboliska länkar kan ej synkroniseras.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="771" />
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokal synkroniseringsmapp %1 skapad!&lt;/b&gt;&lt;/font&gt;</translation>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <source>File is locked by another application.</source>
+        <translation>Filen är låst av ett annat program.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="290" />
-        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Lyckades ansluta till %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="654" />
-        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Misslyckades skapa fjärrmappen, troligen p.g.a felaktiga inloggningsuppgifter.&lt;/font&gt;&lt;br/&gt;Kontrollera dina inloggningsuppgifter.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="674" />
-        <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>En synkroniseringskoppling från %1 till extern mapp %2 har skapats.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="471" />
-        <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Åtkomst förbjuden av servern. För att bekräfta att du har korrekta rättigheter, &lt;a href=&quot;%1&quot;&gt;klicka här&lt;/a&gt; för att ansluta till tjänsten med din webb-läsare.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="700" />
-        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Kan inte ta bort och göra en säkerhetskopia av mappen på grund av att mappen eller en fil i den används av ett annat program. Stäng mappen eller filen och försök igen eller avbryt installationen.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="686" />
-        <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>Anslutningen till %1 kunde inte etableras. Vänligen kontrollera och försök igen.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="545" />
-        <source>Could not create local folder %1</source>
-        <translation>Kunde inte skapa lokal mapp %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="537" />
-        <source>Creating local sync folder %1 …</source>
-        <translation>Skapar lokal synkroniseringsmapp %1 ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="611" />
-        <source>Error: %1</source>
-        <translation>Fel: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322" />
-        <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>Misslyckades att ansluta till %1 vid %2:&lt;br/&gt;%3</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="699" />
-        <source>Folder rename failed</source>
-        <translation>Omdöpning av mapp misslyckades</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="320" />
-        <source>Invalid URL</source>
-        <translation>Ogiltig webbadress</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534" />
-        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Den lokala synkroniseringsmappen % 1 finns redan, aktiverar den för synkronisering.&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="605" />
-        <source>No remote folder specified!</source>
-        <translation>Ingen fjärrmapp specificerad! </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="541" />
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="629" />
-        <source>Remote folder %1 created successfully.</source>
-        <translation>Fjärrmapp %1 har skapats.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="659" />
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="660" />
-        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Misslyckades skapa fjärrmapp %1 med fel &lt;tt&gt;%2&lt;/tt&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="679" />
-        <source>Successfully connected to %1!</source>
-        <translation>Ansluten till %1!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="457" />
-        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Den autentiserade begäran till servern omdirigerades till &quot;%1&quot;. URL:n är felaktig, servern är felkonfigurerad.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="646" />
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="648" />
-        <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Skapande av mapp resulterade i HTTP felkod %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644" />
-        <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Fjärrmappen %1 finns redan. Ansluter den för synkronisering.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="650" />
-        <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Det gick inte att skapa mappen efter som du inte har tillräckliga rättigheter!&lt;br/&gt;Vänligen återvänd och kontrollera dina rättigheter.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="480" />
-        <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Det var ett ogiltigt svar på en verifierad WebDAV-begäran</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="340" />
-        <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>Försök att ansluta till %1 på %2 tog för lång tid.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="367" />
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="390" />
-        <source>Trying to connect to %1 at %2 …</source>
-        <translation>Försöker ansluta till %1 på %2 ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="624" />
-        <source>creating folder on Nextcloud: %1</source>
-        <translation>skapar mapp på Nextcloud: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543" />
-        <source>failed.</source>
-        <translation>misslyckades.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudWizard</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108" />
-        <source>Add %1 account</source>
-        <translation>Lägg till %1 konto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="117" />
-        <source>Back</source>
-        <comment>Next button text in new account wizard</comment>
-        <translation>Tillbaka</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="113" />
-        <source>Cancel</source>
-        <translation>Avbryt</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="532" />
-        <source>Enable experimental feature?</source>
-        <translation>Aktivera experimentell funktion?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="547" />
-        <source>Enable experimental placeholder mode</source>
-        <translation>Aktivera experimentellt platshållarläge</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="116" />
-        <source>Next</source>
-        <comment>Next button text in new account wizard</comment>
-        <translation>Nästa</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="114" />
-        <source>Proxy Settings</source>
-        <comment>Proxy Settings button text in new account wizard</comment>
-        <translation>Proxyinställningar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="112" />
-        <source>Skip folders configuration</source>
-        <translation>Hoppa över konfiguration av mappar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="548" />
-        <source>Stay safe</source>
-        <translation>Var försiktig</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="533" />
-        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
-
-The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
-
-Switching to this mode will abort any currently running synchronization.
-
-This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>När läget &quot;virtuella filer&quot; är aktiverat kommer inga filer att laddas ner initialt. Istället kommer en liten &quot;%1&quot;-fil att skapas för varje fil som finns på servern. Innehållet kan laddas ner genom att köra dessa filer eller genom att använda klientens snabbmeny.
-
-Läget för virtuella filer är ömsesidigt uteslutande med selektiv synkronisering. Befintliga omarkerade mappar kommer att översättas till mappar som endast är online och dina selektiva synkroniseringsinställningar återställs.
-
-Om du byter till det här läget avbryts all pågående synkronisering.
-
-Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda det, rapportera eventuella problem som dyker upp.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::PasswordInputDialog</name>
-    <message>
-        <location filename="../src/gui/passwordinputdialog.ui" line="23" />
-        <source>Password for share required</source>
-        <translation>Lösenord krävs för delning</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/passwordinputdialog.ui" line="35" />
-        <source>Please enter a password for your share:</source>
-        <translation>Ange ett lösenord för din delning:</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::PollJob</name>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="143" />
-        <source>Invalid JSON reply from the poll URL</source>
-        <translation>Ogiltigt JSON-svar från hämtningswebbadressen</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ProcessDirectoryJob</name>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="425" />
-        <location filename="../src/libsync/discovery.cpp" line="432" />
-        <location filename="../src/libsync/discovery.cpp" line="439" />
-        <location filename="../src/libsync/discovery.cpp" line="481" />
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>Kan inte bytas namn på eller laddas upp.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1935" />
-        <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
-        <translation>Det går inte att ändra det krypterade objektet eftersom det valda certifikatet är ogiltigt.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1231" />
-        <source>Cannot sync due to invalid modification time</source>
-        <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="457" />
-        <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation>Skiftlägeskonflikt: Serverfilen har laddats ner och döpts om för att undvika konflikt.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="453" />
-        <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Konflikt: Serverversion hämtad, lokal kopia omdöpt och inte uppladdad.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1266" />
-        <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation>Kunde inte ladda upp filen eftersom den är öppen i &quot;%1&quot;.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1319" />
-        <source>Error while deleting file record %1 from the database</source>
-        <translation>Fel vid borttagning av filpost %1 från databasen</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="2265" />
-        <source>Error while reading the database</source>
-        <translation>Fel uppstod när databasen skulle läsas</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="622" />
-        <source>File has extension reserved for virtual files.</source>
-        <translation>Filens ändelse är reserverad för virtuella filer.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="391" />
+        <location filename="../src/libsync/discovery.cpp" line="399"/>
         <source>File is listed on the ignore list.</source>
         <translation>Filen är listad i undantagslistan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="795" />
-        <source>File is not accessible on the server.</source>
-        <comment>server error</comment>
-        <translation>Filen är inte åtkomlig på servern.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="412" />
-        <source>File name contains at least one invalid character</source>
-        <translation>Filnamnet innehåller minst ett ogiltigt tecken</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="416" />
-        <source>File name is a reserved name on this file system.</source>
-        <translation>Filnamnet är ett reserverat namn i detta filsystem.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="408" />
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
-        <translation>Filnamn som innehåller tecknet &quot;%1&quot; stöds inte i detta filsystem.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="395" />
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Filnamn som slutar med en punkt stöds inte på detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447" />
-        <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Filen/mappen ignoreras eftersom den är dold.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="436" />
-        <source>Filename contains leading and trailing spaces.</source>
-        <translation>Filnamnet innehåller blanksteg i början och slutet.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="429" />
-        <source>Filename contains leading spaces.</source>
-        <translation>Filnamnet innehåller inledande blanksteg.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="422" />
-        <source>Filename contains trailing spaces.</source>
-        <translation>Filnamnet innehåller inledande blanksteg.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="443" />
-        <source>Filename is too long.</source>
-        <translation>Filnamnet är för långt.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="794" />
-        <source>Folder is not accessible on the server.</source>
-        <comment>server error</comment>
-        <translation>Mappen är inte åtkomlig på servern.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="411" />
-        <source>Folder name contains at least one invalid character</source>
-        <translation>Mappnamnet innehåller minst ett ogiltigt tecken</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="415" />
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation>Mappnamnet är ett reserverat namn i detta filsystem.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="407" />
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Mappnamn som innehåller tecknet &quot;%1&quot; stöds inte i detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2004" />
-        <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Ignorerad eftersom den är svartlistad i &quot;välj vad som ska synkroniseras&quot; </translation>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation>Filnamn som innehåller tecknet &quot;%1&quot; stöds inte i detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1607" />
-        <location filename="../src/libsync/discovery.cpp" line="2080" />
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <source>Folder name contains at least one invalid character</source>
+        <translation>Mappnamnet innehåller minst ett ogiltigt tecken</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Filnamnet innehåller minst ett ogiltigt tecken</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="423"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation>Mappnamnet är ett reserverat namn i detta filsystem.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="424"/>
+        <source>File name is a reserved name on this file system.</source>
+        <translation>Filnamnet är ett reserverat namn i detta filsystem.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="430"/>
+        <source>Filename contains trailing spaces.</source>
+        <translation>Filnamnet innehåller inledande blanksteg.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
+        <location filename="../src/libsync/discovery.cpp" line="489"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>Kan inte bytas namn på eller laddas upp.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <source>Filename contains leading spaces.</source>
+        <translation>Filnamnet innehåller inledande blanksteg.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
+        <source>Filename contains leading and trailing spaces.</source>
+        <translation>Filnamnet innehåller blanksteg i början och slutet.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <source>Filename is too long.</source>
+        <translation>Filnamnet är för långt.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="455"/>
+        <source>File/Folder is ignored because it&apos;s hidden.</source>
+        <translation>Filen/mappen ignoreras eftersom den är dold.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="458"/>
+        <source>Stat failed.</source>
+        <translation>Status misslyckades.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="461"/>
+        <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
+        <translation>Konflikt: Serverversion hämtad, lokal kopia omdöpt och inte uppladdad.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="465"/>
+        <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
+        <translation>Skiftlägeskonflikt: Serverfilen har laddats ner och döpts om för att undvika konflikt.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="469"/>
+        <source>The filename cannot be encoded on your file system.</source>
+        <translation>Filnamnet kan inte avkodas på ditt filsystem.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="472"/>
+        <source>The filename is blacklisted on the server.</source>
+        <translation>Filnamnet är svartlistat på servern.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="475"/>
+        <source>Reason: the entire filename is forbidden.</source>
+        <translation> Orsak: hela filnamnet är förbjudet.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="478"/>
+        <source>Reason: the filename has a forbidden base name (filename start).</source>
+        <translation> Orsak: filnamnet har ett förbjudet basnamn (filnamnsstart).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="481"/>
+        <source>Reason: the file has a forbidden extension (.%1).</source>
+        <translation>Orsak: filen har ett förbjudet tillägg (.%1).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="484"/>
+        <source>Reason: the filename contains a forbidden character (%1).</source>
+        <translation>Orsak: filnamnet innehåller ett förbjudet tecken (%1).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="630"/>
+        <source>File has extension reserved for virtual files.</source>
+        <translation>Filens ändelse är reserverad för virtuella filer.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="802"/>
+        <source>Folder is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation>Mappen är inte åtkomlig på servern.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="803"/>
+        <source>File is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation>Filen är inte åtkomlig på servern.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1239"/>
+        <source>Cannot sync due to invalid modification time</source>
+        <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1255"/>
+        <source>Upload of %1 exceeds %2 of space left in personal files.</source>
+        <translation>Uppladdningen av %1 överskrider %2 av återstående utrymme i personliga filer.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1258"/>
+        <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
+        <translation>Uppladdningen av %1 överskrider %2 av återstående utrymme i mappen %3.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1274"/>
+        <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
+        <translation>Kunde inte ladda upp filen eftersom den är öppen i &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1327"/>
+        <source>Error while deleting file record %1 from the database</source>
+        <translation>Fel vid borttagning av filpost %1 från databasen</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1614"/>
+        <location filename="../src/libsync/discovery.cpp" line="2085"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Flyttade till ogiltigt mål, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2044" />
-        <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Otillåtet eftersom du inte har rättigheter att lägga till filer i den mappen.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="1942"/>
+        <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
+        <translation>Det går inte att ändra det krypterade objektet eftersom det valda certifikatet är ogiltigt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2038" />
+        <location filename="../src/libsync/discovery.cpp" line="2009"/>
+        <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
+        <translation>Ignorerad eftersom den är svartlistad i &quot;välj vad som ska synkroniseras&quot; </translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="2043"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till undermappar i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2094" />
+        <location filename="../src/libsync/discovery.cpp" line="2049"/>
+        <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
+        <translation>Otillåtet eftersom du inte har rättigheter att lägga till filer i den mappen.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="2063"/>
+        <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
+        <translation>Inte tillåtet att ladda upp denna fil eftersom den är skrivskyddad på servern, återställer</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="2099"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Borttagning tillåts ej, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2058" />
-        <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Inte tillåtet att ladda upp denna fil eftersom den är skrivskyddad på servern, återställer</translation>
+        <location filename="../src/libsync/discovery.cpp" line="2270"/>
+        <source>Error while reading the database</source>
+        <translation>Fel uppstod när databasen skulle läsas</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="467" />
@@ -5307,28 +5180,48 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1119" />
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1354" />
-        <source>Activity</source>
-        <translation>Aktivitet</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="785" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="876"/>
         <source>Context menu share</source>
         <translation>Delningsmeny</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1159" />
-        <source>Copy internal link</source>
-        <translation>Kopiera intern länk</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
+        <source>I shared something with you</source>
+        <translation>Jag delade något med dig</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1121" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1208"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
+        <source>Share options</source>
+        <translation>Delningsalternativ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1213"/>
+        <source>Send private link by email …</source>
+        <translation>Skicka privat länk med e-post ...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1212"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopiera privat länk till urklipp</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="559" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="597"/>
+        <source>Failed to encrypt folder at &quot;%1&quot;</source>
+        <translation>Det gick inte att kryptera mappen &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="598"/>
+        <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
+        <translation>Kontot %1 har inte ände-till-ände-kryptering konfigurerad. Konfigurera detta i dina kontoinställningar för att aktivera mappkryptering.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
+        <source>Failed to encrypt folder</source>
+        <translation>Kunde inte kryptera mapp</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="618"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5337,19 +5230,19 @@ Server replied with error: %2</source>
 Servern svarade med fel: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1407" />
-        <source>Delete</source>
-        <translation>Ta bort</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="625"/>
+        <source>Folder encrypted successfully</source>
+        <translation>Mappen har krypterats</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1400" />
-        <source>Delete local changes</source>
-        <translation>Radera lokala ändringar</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="626"/>
+        <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
+        <translation>Följande mapp krypterades: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1214" />
-        <source>Encrypt</source>
-        <translation>Kryptera</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1127"/>
+        <source>Select new location …</source>
+        <translation>Välj ny plats …</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1248" />
@@ -5361,112 +5254,103 @@ Servern svarade med fel: %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="558" />
-        <source>Failed to encrypt folder</source>
-        <translation>Kunde inte kryptera mapp</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="538" />
-        <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation>Det gick inte att kryptera mappen &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1118" />
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1181" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1272"/>
         <source>File actions</source>
         <translation>Filåtgärder</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="566" />
-        <source>Folder encrypted successfully</source>
-        <translation>Mappen har krypterats</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1210"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1453"/>
+        <source>Activity</source>
+        <translation>Aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1104" />
-        <source>I shared something with you</source>
-        <translation>Jag delade något med dig</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1147" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1238"/>
         <source>Leave this share</source>
         <translation>Lämna denna delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1225" />
-        <source>Lock file</source>
-        <translation>Lås fil</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244" />
-        <source>Locked by %1</source>
-        <translation>Låst av %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1395" />
-        <source>Move and rename …</source>
-        <translation>Flytta och byt namn …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1406" />
-        <source>Move and upload …</source>
-        <translation>Flytta och ladda upp …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1398" />
-        <source>Move, rename and upload …</source>
-        <translation>Flytta, byt namn och ladda upp …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1361" />
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1363" />
-        <source>Open in browser</source>
-        <translation>Öppna i webbläsare</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1153" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
         <source>Resharing this file is not allowed</source>
         <translation>Vidaredelning av denna fil är inte tillåtet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1153" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Vidaredelning av denna mapp är inte tillåtet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1391" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
+        <source>Encrypt</source>
+        <translation>Kryptera</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1316"/>
+        <source>Lock file</source>
+        <translation>Lås fil</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1319"/>
+        <source>Unlock file</source>
+        <translation>Lås upp fil</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1335"/>
+        <source>Locked by %1</source>
+        <translation>Låst av %1</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1339"/>
+        <source>Expires in %1 minutes</source>
+        <comment>remaining time before lock expires</comment>
+        <translation><numerusform>Går ut om %1 minut</numerusform><numerusform>Går ut om %1 minuter</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1348"/>
+        <source>Apply labels</source>
+        <translation>Tillämpa etiketter</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1490"/>
         <source>Resolve conflict …</source>
         <translation>Lös konflikt …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1036" />
-        <source>Select new location …</source>
-        <translation>Välj ny plats …</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1494"/>
+        <source>Move and rename …</source>
+        <translation>Flytta och byt namn …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1122" />
-        <source>Send private link by email …</source>
-        <translation>Skicka privat länk med e-post ...</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1497"/>
+        <source>Move, rename and upload …</source>
+        <translation>Flytta, byt namn och ladda upp …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1117" />
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1155" />
-        <source>Share options</source>
-        <translation>Delningsalternativ</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1499"/>
+        <source>Delete local changes</source>
+        <translation>Radera lokala ändringar</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="539" />
-        <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation>Kontot %1 har inte ände-till-ände-kryptering konfigurerad. Konfigurera detta i dina kontoinställningar för att aktivera mappkryptering.</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1505"/>
+        <source>Move and upload …</source>
+        <translation>Flytta och ladda upp …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="567" />
-        <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation>Följande mapp krypterades: &quot;%1&quot;</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1506"/>
+        <source>Delete</source>
+        <translation>Ta bort</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1228" />
-        <source>Unlock file</source>
-        <translation>Lås upp fil</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
+        <source>Copy internal link</source>
+        <translation>Kopiera intern länk</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1459"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1461"/>
+        <source>Open in browser</source>
+        <translation>Öppna i webbläsare</translation>
     </message>
 </context>
 <context>

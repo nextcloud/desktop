@@ -1203,13 +1203,41 @@ Would you like to do this now?</source>
         <translation>negeren</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190" />
+        <location filename="../src/gui/advancedsettings.cpp" line="398"/>
+        <source>Failed to Access File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="399"/>
+        <source>Could not access the selected location. Please try again or choose a different location.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="408"/>
+        <source>Debug Archive Created</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="409"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::Application</name>
+    <message>
+        <location filename="../src/gui/application.cpp" line="200"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation>Sommige instellingen zijn geconfigureerd in nieuwere versies van deze cliënt en maken gebruik van functies die niet beschikbaar zijn in deze versie.&lt;br&gt;&lt;br&gt;Doorgaan betekent &lt;br&gt;%2 van deze instellingen&lt;/br&gt;. Van het huidige configuratiebestand is al een back-up gemaakt naar &lt;i&gt;%3&lt;/i&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>recenter</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190" />
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>ouder</translation>
@@ -1218,17 +1246,75 @@ Would you like to do this now?</source>
 <context>
     <name>OCC::AuthenticationDialog</name>
     <message>
-        <location filename="../src/gui/authenticationdialog.cpp" line="30" />
-        <source>&amp;Password:</source>
-        <translation>&amp;Wachtwoord:</translation>
+        <location filename="../src/gui/application.cpp" line="207"/>
+        <source>ignoring</source>
+        <translation>negeren</translation>
     </message>
     <message>
-        <location filename="../src/gui/authenticationdialog.cpp" line="29" />
-        <source>&amp;Username:</source>
-        <translation>&amp;Gebruikersnaam:</translation>
+        <location filename="../src/gui/application.cpp" line="207"/>
+        <source>deleting</source>
+        <translation>verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/gui/authenticationdialog.cpp" line="22" />
+        <location filename="../src/gui/application.cpp" line="209"/>
+        <source>Quit</source>
+        <translation>Stoppen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="210"/>
+        <source>Continue</source>
+        <translation>Doorgaan</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="697"/>
+        <source>%1 accounts</source>
+        <comment>number of accounts imported</comment>
+        <translation>%1 accounts</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="698"/>
+        <source>1 account</source>
+        <translation>1 account</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="700"/>
+        <source>%1 folders</source>
+        <comment>number of folders imported</comment>
+        <translation>%1 mappen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="701"/>
+        <source>1 folder</source>
+        <translation>1 map</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="703"/>
+        <source>Legacy import</source>
+        <translation>Legacy import</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="704"/>
+        <source>Imported %1 and %2 from a legacy desktop client.
+%3</source>
+        <comment>number of accounts and folders imported. list of users.</comment>
+        <translation> %1 and %2 geïmporteerd van een legacy desktop client.
+%3</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="824"/>
+        <source>Error accessing the configuration file</source>
+        <translation>Fout bij benaderen configuratiebestand</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="825"/>
+        <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
+        <translation>Fout bij het benaderen van het configuratiebestand op %1. Zorg ervoor dat het bestand door je systeemaccount kan worden benaderd.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AuthenticationDialog</name>
+    <message>
+        <location filename="../src/gui/authenticationdialog.cpp" line="22"/>
         <source>Authentication Required</source>
         <translation>Authenticatie vereist</translation>
     </message>
@@ -1708,9 +1794,9 @@ Would you like to do this now?</source>
 <context>
     <name>OCC::DataProtectionSettingsPage</name>
     <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.cpp" line="52" />
-        <source>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</source>
-        <translation type="unfinished">We verzamelen geanonimiseerde gegevens om onze app te optimaliseren. Hiervoor gebruiken we softwareoplossingen van verschillende partners. We willen je volledige transparantie en keuzevrijheid geven met betrekking tot het verzamelen en verwerken van je geanonimiseerde gebruik. Je kunt je instellingen op elk gewenst moment wijzigen onder het menu-item Gegevensbescherming.</translation>
+        <location filename="../src/libsync/discoveryphase.cpp" line="192"/>
+        <source>Error while canceling deletion of a file</source>
+        <translation>Fout bij het annuleren van verwijdering van een bestand</translation>
     </message>
 <message>
         <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="83" />
@@ -1718,40 +1804,7 @@ Would you like to do this now?</source>
         <translation type="unfinished">Terug</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="20" />
-        <source>Form</source>
-        <translation type="unfinished">Formulier</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="35" />
-        <source>Necessary data</source>
-        <translation type="unfinished">Noodzakelijke gegevens</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="45" />
-        <source>Required to ensure that the software can be used as expected</source>
-        <translation type="unfinished">Vereist om ervoor te zorgen dat de software kan worden gebruikt zoals verwacht</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="90" />
-        <source>Save Settings</source>
-        <translation type="unfinished">Instellingen opslaan</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="59" />
-        <source>Send anonymous use</source>
-        <translation type="unfinished">Anoniem gebruik verzenden</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/dataprotectionsettingspage.ui" line="69" />
-        <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
-        <translation type="unfinished">Dit helpt ons om de software te optimaliseren en om systeemcrashes en onverwachte fouten beter te identificeren.</translation>
-    </message>
-    </context>
-<context>
-    <name>OCC::DiscoveryPhase</name>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="192" />
+        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
         <source>Error while canceling deletion of %1</source>
         <translation>Fout bij annuleren verwijderen van %1</translation>
     </message>
@@ -1764,46 +1817,51 @@ Would you like to do this now?</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="634" />
-        <location filename="../src/libsync/discoveryphase.cpp" line="688" />
-        <source>Encrypted metadata setup error!</source>
-        <translation>Encrypted metadata setup error!</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="667" />
-        <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation>Fout bij opzetten versleutelde metagegevens: initiële handtekening van server is leeg.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="573" />
+        <location filename="../src/libsync/discoveryphase.cpp" line="583"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Serverfout: PROPFIND-antwoord heeft geen XML-opmaak!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="603" />
+        <location filename="../src/libsync/discoveryphase.cpp" line="613"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
-        <translation type="unfinished" />
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="644"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="698"/>
+        <source>Encrypted metadata setup error!</source>
+        <translation>Fout bij instellen versleutelde metadata!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
+        <source>Encrypted metadata setup error: initial signature from server is empty.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="356" />
-        <source>Directory not accessible on client, permission denied</source>
-        <translation>Map niet toegankelijk op client, toegang geweigerd</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="360" />
-        <source>Directory not found: %1</source>
-        <translation>Map niet gevonden: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="354" />
+        <location filename="../src/libsync/discoveryphase.cpp" line="355"/>
         <source>Error while opening directory %1</source>
         <translation>Fout bij het openen van map %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="412" />
+        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
+        <source>Directory not accessible on client, permission denied</source>
+        <translation>Map niet toegankelijk op client, toegang geweigerd</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="361"/>
+        <source>Directory not found: %1</source>
+        <translation>Map niet gevonden: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="393"/>
+        <source>Filename encoding is not valid</source>
+        <translation>Bestandsnaamcodering is niet geldig</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="422"/>
         <source>Error while reading directory %1</source>
         <translation>Fout tijdens lezen van map %1</translation>
     </message>
@@ -3346,28 +3404,28 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="845" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
+        <source>Password for share required</source>
+        <translation>Wachtwoord voor deellink vereist</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
+        <source>Please enter a password for your link share:</source>
+        <translation>Voer het wachtwoord in voor je deellink:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="935"/>
+        <source>Sharing error</source>
+        <translation>Fout bij delen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="936"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
         <translation>Kan de openbare deellink niet ophalen of creëren. Fout:
 
 %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="817" />
-        <source>Password for share required</source>
-        <translation>Wachtwoord voor deellink vereist</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="818" />
-        <source>Please enter a password for your link share:</source>
-        <translation>Voer het wachtwoord in voor je deellink:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="844" />
-        <source>Sharing error</source>
-        <translation>Fout bij delen</translation>
     </message>
 </context>
 <context>
@@ -4422,212 +4480,217 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="425" />
-        <location filename="../src/libsync/discovery.cpp" line="432" />
-        <location filename="../src/libsync/discovery.cpp" line="439" />
-        <location filename="../src/libsync/discovery.cpp" line="481" />
-        <source>Cannot be renamed or uploaded.</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1935" />
-        <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1231" />
-        <source>Cannot sync due to invalid modification time</source>
-        <translation>Kan niet synchroniseren door ongeldig wijzigingstijdstip</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="457" />
-        <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="453" />
-        <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Bestandsconflict: serverversie is gedownload, de lokale kopie is hernoemd en niet geüpload</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1266" />
-        <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation>Kan bestand niet uploaden, omdat het geopend is in &quot;%1&quot;.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1319" />
-        <source>Error while deleting file record %1 from the database</source>
-        <translation>Fout tijdens verwijderen bestandsrecord %1 uit de database</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="2265" />
-        <source>Error while reading the database</source>
-        <translation>Fout bij lezen database</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="622" />
-        <source>File has extension reserved for virtual files.</source>
-        <translation>Bestand heeft een extensie gereserveerd voor virtuele bestanden.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="391" />
-        <source>File is listed on the ignore list.</source>
-        <translation>Het bestand is opgenomen op de negeerlijst.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="795" />
-        <source>File is not accessible on the server.</source>
-        <comment>server error</comment>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="412" />
-        <source>File name contains at least one invalid character</source>
-        <translation>De bestandsnaam bevat ten minste één ongeldig teken</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="416" />
-        <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="408" />
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="395" />
-        <source>File names ending with a period are not supported on this file system.</source>
-        <translation>Bestandsnamen die eindigen met een punt worden niet ondersteund door het bestandssysteem.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="447" />
-        <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Bestand/Map is genegeerd omdat het verborgen is. </translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="436" />
-        <source>Filename contains leading and trailing spaces.</source>
-        <translation>De bestandsnaam bevat spaties vooraan en achteraan.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="429" />
-        <source>Filename contains leading spaces.</source>
-        <translation>De bestandsnaam bevat spaties vooraan.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="422" />
-        <source>Filename contains trailing spaces.</source>
-        <translation>De bestandsnaam bevat spaties achteraan.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="443" />
-        <source>Filename is too long.</source>
-        <translation>De bestandsnaam is te lang.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="794" />
-        <source>Folder is not accessible on the server.</source>
-        <comment>server error</comment>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="411" />
-        <source>Folder name contains at least one invalid character</source>
-        <translation>Mapnaam bevat minimaal één ongeldig karakter</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="415" />
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="407" />
-        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="2004" />
-        <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Genegeerd vanwege de &quot;wat synchroniseren&quot; negeerlijst</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1607" />
-        <location filename="../src/libsync/discovery.cpp" line="2080" />
-        <source>Moved to invalid target, restoring</source>
-        <translation>Verplaatst naar ongeldig doel, herstellen</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="2044" />
-        <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Niet toegestaan omdat je geen machtiging hebt om bestanden in die map toe te voegen</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="2038" />
-        <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Niet toegestaan, omdat je geen machtiging hebt om submappen aan die map toe te voegen</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="2094" />
-        <source>Not allowed to remove, restoring</source>
-        <translation>Niet toegestaan om te verwijderen, herstellen</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="2058" />
-        <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Niet toegestaan om dit bestand te uploaden, omdat het alleen-lezen is op de server, herstellen</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="467" />
-        <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="473" />
-        <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="476" />
-        <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="470" />
-        <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="450" />
-        <source>Stat failed.</source>
-        <translation>Stat mislukt.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="382" />
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symbolische links worden niet ondersteund bij het synchroniseren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="461" />
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <source>File is locked by another application.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="399"/>
+        <source>File is listed on the ignore list.</source>
+        <translation>Het bestand is opgenomen op de negeerlijst.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
+        <source>File names ending with a period are not supported on this file system.</source>
+        <translation>Bestandsnamen die eindigen met een punt worden niet ondersteund door het bestandssysteem.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <source>Folder name contains at least one invalid character</source>
+        <translation>Mapnaam bevat minimaal één ongeldig karakter</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>De bestandsnaam bevat ten minste één ongeldig teken</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="423"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="424"/>
+        <source>File name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="430"/>
+        <source>Filename contains trailing spaces.</source>
+        <translation>De bestandsnaam bevat spaties achteraan.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
+        <location filename="../src/libsync/discovery.cpp" line="489"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <source>Filename contains leading spaces.</source>
+        <translation>De bestandsnaam bevat spaties vooraan.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
+        <source>Filename contains leading and trailing spaces.</source>
+        <translation>De bestandsnaam bevat spaties vooraan en achteraan.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <source>Filename is too long.</source>
+        <translation>De bestandsnaam is te lang.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="455"/>
+        <source>File/Folder is ignored because it&apos;s hidden.</source>
+        <translation>Bestand/Map is genegeerd omdat het verborgen is. </translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="458"/>
+        <source>Stat failed.</source>
+        <translation>Stat mislukt.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="461"/>
+        <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
+        <translation>Bestandsconflict: serverversie is gedownload, de lokale kopie is hernoemd en niet geüpload</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="465"/>
+        <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="469"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>De bestandsnaam kan op je bestandssysteem niet worden gecodeerd.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="464" />
+        <location filename="../src/libsync/discovery.cpp" line="472"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>De bestandsnaam staat op de negeerlijst van de server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1250" />
-        <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished" />
+        <location filename="../src/libsync/discovery.cpp" line="475"/>
+        <source>Reason: the entire filename is forbidden.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1247" />
+        <location filename="../src/libsync/discovery.cpp" line="478"/>
+        <source>Reason: the filename has a forbidden base name (filename start).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="481"/>
+        <source>Reason: the file has a forbidden extension (.%1).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="484"/>
+        <source>Reason: the filename contains a forbidden character (%1).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="630"/>
+        <source>File has extension reserved for virtual files.</source>
+        <translation>Bestand heeft een extensie gereserveerd voor virtuele bestanden.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="802"/>
+        <source>Folder is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="803"/>
+        <source>File is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1239"/>
+        <source>Cannot sync due to invalid modification time</source>
+        <translation>Kan niet synchroniseren door ongeldig wijzigingstijdstip</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1255"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1258"/>
+        <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1274"/>
+        <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
+        <translation>Kan bestand niet uploaden, omdat het geopend is in &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1327"/>
+        <source>Error while deleting file record %1 from the database</source>
+        <translation>Fout tijdens verwijderen bestandsrecord %1 uit de database</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1614"/>
+        <location filename="../src/libsync/discovery.cpp" line="2085"/>
+        <source>Moved to invalid target, restoring</source>
+        <translation>Verplaatst naar ongeldig doel, herstellen</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1942"/>
+        <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="2009"/>
+        <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
+        <translation>Genegeerd vanwege de &quot;wat synchroniseren&quot; negeerlijst</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="2043"/>
+        <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
+        <translation>Niet toegestaan, omdat je geen machtiging hebt om submappen aan die map toe te voegen</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="2049"/>
+        <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
+        <translation>Niet toegestaan omdat je geen machtiging hebt om bestanden in die map toe te voegen</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="2063"/>
+        <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
+        <translation>Niet toegestaan om dit bestand te uploaden, omdat het alleen-lezen is op de server, herstellen</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="2099"/>
+        <source>Not allowed to remove, restoring</source>
+        <translation>Niet toegestaan om te verwijderen, herstellen</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="2270"/>
+        <source>Error while reading the database</source>
+        <translation>Fout bij lezen database</translation>
     </message>
 </context>
 <context>
@@ -5295,28 +5358,48 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1119" />
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1354" />
-        <source>Activity</source>
-        <translation>Activiteit</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="785" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="876"/>
         <source>Context menu share</source>
         <translation>Contextmenu delen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1159" />
-        <source>Copy internal link</source>
-        <translation>Kopieer interne link</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
+        <source>I shared something with you</source>
+        <translation>Ik deelde iets met u</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1121" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1208"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
+        <source>Share options</source>
+        <translation>Deelopties</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1213"/>
+        <source>Send private link by email …</source>
+        <translation>Verstuur privélink per e-mail ---</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1212"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopieer privé-link  naar klembord</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="559" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="597"/>
+        <source>Failed to encrypt folder at &quot;%1&quot;</source>
+        <translation>Kon een map niet versleutelen in %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="598"/>
+        <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
+        <translation>Het account %1 heeft geen begin-tot-eind versleuteling ingesteld. Ga naar je accountinstellingen om mapversleuteling in te stellen.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
+        <source>Failed to encrypt folder</source>
+        <translation>Kon de map niet versleutelen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="618"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5325,19 +5408,19 @@ Server replied with error: %2</source>
 Server antwoordde met fout: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1407" />
-        <source>Delete</source>
-        <translation>Verwijderen</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="625"/>
+        <source>Folder encrypted successfully</source>
+        <translation>Map succesvol versleuteld</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1400" />
-        <source>Delete local changes</source>
-        <translation>Verwijder lokale aanpassingen</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="626"/>
+        <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
+        <translation>De volgende map was succesvol versleuteld: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1214" />
-        <source>Encrypt</source>
-        <translation>Versleutel</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1127"/>
+        <source>Select new location …</source>
+        <translation>Selecteer nieuwe locatie ...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1248" />
@@ -5349,112 +5432,103 @@ Server antwoordde met fout: %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="558" />
-        <source>Failed to encrypt folder</source>
-        <translation>Kon de map niet versleutelen</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="538" />
-        <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation>Kon een map niet versleutelen in %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1118" />
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1181" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1272"/>
         <source>File actions</source>
         <translation type="unfinished">Bestandsacties</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="566" />
-        <source>Folder encrypted successfully</source>
-        <translation>Map succesvol versleuteld</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1210"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1453"/>
+        <source>Activity</source>
+        <translation>Activiteit</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1104" />
-        <source>I shared something with you</source>
-        <translation>Ik deelde iets met u</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1147" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1238"/>
         <source>Leave this share</source>
         <translation>Verlaat deze gedeelde locatie</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1225" />
-        <source>Lock file</source>
-        <translation>Vergrendel bestand</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244" />
-        <source>Locked by %1</source>
-        <translation>Vergrendeld door %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1395" />
-        <source>Move and rename …</source>
-        <translation>Verplaatsen en hernoemen ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1406" />
-        <source>Move and upload …</source>
-        <translation>Verplaatsen en uploaden ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1398" />
-        <source>Move, rename and upload …</source>
-        <translation>Verplaatsen, hernoemen en uploaden ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1361" />
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1363" />
-        <source>Open in browser</source>
-        <translation>Openen in browser</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1153" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
         <source>Resharing this file is not allowed</source>
         <translation>Opnieuw delen van dit bestand is niet toegestaan</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1153" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Opnieuw delen van deze map is niet toegestaan</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1391" />
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
+        <source>Encrypt</source>
+        <translation>Versleutel</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1316"/>
+        <source>Lock file</source>
+        <translation>Vergrendel bestand</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1319"/>
+        <source>Unlock file</source>
+        <translation>Ontgrendel bestand</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1335"/>
+        <source>Locked by %1</source>
+        <translation>Vergrendeld door %1</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1339"/>
+        <source>Expires in %1 minutes</source>
+        <comment>remaining time before lock expires</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1348"/>
+        <source>Apply labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1490"/>
         <source>Resolve conflict …</source>
         <translation>Oplossen conflict ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1036" />
-        <source>Select new location …</source>
-        <translation>Selecteer nieuwe locatie ...</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1494"/>
+        <source>Move and rename …</source>
+        <translation>Verplaatsen en hernoemen ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1122" />
-        <source>Send private link by email …</source>
-        <translation>Verstuur privélink per e-mail ---</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1497"/>
+        <source>Move, rename and upload …</source>
+        <translation>Verplaatsen, hernoemen en uploaden ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1117" />
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1155" />
-        <source>Share options</source>
-        <translation>Deelopties</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1499"/>
+        <source>Delete local changes</source>
+        <translation>Verwijder lokale aanpassingen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="539" />
-        <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation>Het account %1 heeft geen begin-tot-eind versleuteling ingesteld. Ga naar je accountinstellingen om mapversleuteling in te stellen.</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1505"/>
+        <source>Move and upload …</source>
+        <translation>Verplaatsen en uploaden ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="567" />
-        <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation>De volgende map was succesvol versleuteld: &quot;%1&quot;</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1506"/>
+        <source>Delete</source>
+        <translation>Verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1228" />
-        <source>Unlock file</source>
-        <translation>Ontgrendel bestand</translation>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
+        <source>Copy internal link</source>
+        <translation>Kopieer interne link</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1459"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1461"/>
+        <source>Open in browser</source>
+        <translation>Openen in browser</translation>
     </message>
 </context>
 <context>
