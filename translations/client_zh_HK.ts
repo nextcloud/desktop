@@ -108,6 +108,27 @@
     </message>
 </context>
 <context>
+    <name>ActivityFileMenu</name>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="25"/>
+        <source>File details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="32"/>
+        <source>File actions</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ActivityFileMenuButton</name>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenuButton.qml" line="34"/>
+        <source>Open file details</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ActivityItem</name>
     <message>
         <location filename="../src/gui/activity/qml/ActivityItem.qml" line="32"/>
@@ -123,25 +144,25 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="186"/>
+        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="203"/>
+        <location filename="../src/gui/activity/activitydata.cpp" line="314"/>
+        <source>Dismiss</source>
+        <translation>撤銷</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="182"/>
         <source>Open file details</source>
         <translation>打開檔案細節</translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="200"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>File details</source>
         <translation>檔案細節</translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="209"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>File actions</source>
         <translation>檔案操作</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="232"/>
-        <location filename="../src/gui/activity/activitydata.cpp" line="314"/>
-        <source>Dismiss</source>
-        <translation>撤銷</translation>
     </message>
 </context>
 <context>
@@ -782,7 +803,7 @@
         <translation>新活動紀錄</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="792"/>
         <source>Assistant</source>
         <translation>助理</translation>
     </message>
@@ -1288,6 +1309,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1550"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="742"/>
         <source>Log in</source>
         <translation>登入</translation>
     </message>
@@ -1537,199 +1559,199 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="292"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="294"/>
         <source>Will require local storage</source>
         <translation>需要使用本機儲存空間</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="672"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="674"/>
         <source>Proxy settings are incomplete.</source>
         <translation>代理伺服器設定不完整。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="679"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="681"/>
         <source>Server address does not seem to be valid</source>
         <translation>伺服器位址似乎無效</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="700"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="702"/>
         <source>Username must not be empty.</source>
         <translation>使用者名稱不能留空。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="706"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1024"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="708"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1026"/>
         <source>Checking account access</source>
         <translation>正在檢查帳戶存取權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="784"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="786"/>
         <source>Checking server address</source>
         <translation>正在檢查伺服器位址</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="849"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="851"/>
         <source>Preparing browser login</source>
         <translation>正在準備瀏覽器登入</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="870"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="872"/>
         <source>Invalid URL</source>
         <translation>無效的 URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="872"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="874"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>無法連線至 %1（位於 %2）：
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="888"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="890"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>嘗試連線至 %1（位於 %2）時逾時。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="975"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>無法開啟瀏覽器，請將連結複製到瀏覽器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1000"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1005"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1002"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1007"/>
         <source>Waiting for authorization</source>
         <translation>正在等待授權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1010"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1012"/>
         <source>Starting authorization</source>
         <translation>正在開始授權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1015"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1017"/>
         <source>Link copied to clipboard.</source>
         <translation>連結已複製到剪貼簿。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1070"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1100"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1102"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>已驗證身分的 WebDAV 要求傳回無效回應</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1087"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1089"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>向伺服器發出的已驗證要求被重新導向至「%1」。URL 有誤，或伺服器設定錯誤。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1095"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1097"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>伺服器禁止存取。要確認你擁有適當的存取權，請在瀏覽器中開啟此服務。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1113"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1115"/>
         <source>Account connected.</source>
         <translation>帳戶已連線。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1188"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1190"/>
         <source>Will require %1 of storage</source>
         <translation>需要 %1 儲存空間</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1361"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>可用空間：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1371"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1373"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>本機資料夾沒有足夠可用空間！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1388"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1390"/>
         <source>Please choose a local sync folder.</source>
         <translation>請選擇本機同步資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1393"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1395"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>請選擇空白的本機同步資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1458"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1460"/>
         <source>Could not create local folder %1</source>
         <translation>無法建立本機資料夾 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1472"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1474"/>
         <source>Checking remote folder</source>
         <translation>正在檢查遠端資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1518"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1520"/>
         <source>No remote folder specified!</source>
         <translation>未指定遠端資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1527"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1529"/>
         <source>Error: %1</source>
         <translation>錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1532"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1534"/>
         <source>Creating remote folder</source>
         <translation>正在建立遠端資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1551"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1553"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>建立資料夾時傳回 HTTP 錯誤代碼 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1553"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>由於提供的憑證不正確，無法建立遠端資料夾。請返回並檢查你的憑證。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1557"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>建立遠端資料夾 %1 失敗，錯誤：&lt;tt&gt;%2&lt;/tt&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1579"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>建立同步資料夾時帳戶設定失敗。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1606"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1608"/>
         <source>Could not create the sync folder.</source>
         <translation>無法建立同步資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1696"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1698"/>
         <source>Local Sync Folder</source>
         <translation>本機同步資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1943"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1960"/>
         <source>Select a certificate</source>
         <translation>選擇憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1945"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1962"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>憑證檔案 (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1953"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1973"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1970"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1990"/>
         <source>Could not access the selected certificate file.</source>
         <translation>無法存取所選的憑證檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1989"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2006"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>無法載入憑證。密碼可能不正確？</translation>
     </message>
@@ -2370,23 +2392,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="48"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>未配置 %1 帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="177"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="184"/>
         <source>Timeout</source>
         <translation>逾時</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="165"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="168"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>驗證錯誤︰用戶名稱或是密碼錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="214"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation>提供的憑證不正確</translation>
     </message>
@@ -5204,33 +5226,33 @@ Note that using any logging command line options will override this setting.</so
         <translation>近端端的檔案在同步的過程中被更改，此檔案將會被還原。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="446"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="462"/>
         <source>Local file changed during sync.</source>
         <translation>近端端的檔案在同步過程中被更改。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="456"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="472"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>無法解鎖加密資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="743"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="759"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>無法上傳包含無效字符的項目</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="831"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="847"/>
         <source>Error updating metadata: %1</source>
         <translation>更新元數據時出錯：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="834"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="850"/>
         <source>The file %1 is currently in use</source>
         <translation>檔案 %1 正在使用中</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="292"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="737"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="753"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>上傳%1將會超過資料夾的大小限制</translation>
     </message>
@@ -5980,19 +6002,19 @@ Server replied with error: %2</source>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="211"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="477"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="220"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="221"/>
         <source>Offline</source>
         <translation>離線</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1706"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1707"/>
         <source>You need to accept the terms of service</source>
         <translation>您需要接受服務條款</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1699"/>
         <source>Reauthorization required</source>
         <translation>需要重新授權</translation>
     </message>
@@ -6010,7 +6032,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1717"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>部分文件無法同步！</translation>
     </message>
@@ -6036,7 +6058,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1719"/>
         <source>Some files could not be synced!</source>
         <translation>部份檔案無法同步！</translation>
     </message>
@@ -6080,7 +6102,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="610"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="827"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="870"/>
         <source>Add account</source>
         <translation>新增帳戶</translation>
     </message>
@@ -6104,7 +6126,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="617"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="836"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="879"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
@@ -6129,7 +6151,7 @@ Server replied with error: %2</source>
         <translation>恢復所有同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="843"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="886"/>
         <source>Quit</source>
         <translation>結束</translation>
     </message>
@@ -6233,86 +6255,86 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="572"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>端到端證書需要遷移到新的證書</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="574"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>Trigger the migration</source>
         <translation>觸發遷移</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="675"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="676"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n 個通知</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="918"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="957"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="919"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="958"/>
         <source>“%1” was not synchronized</source>
         <translation>「%1」未能同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="959"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="960"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>伺服器儲存空間不足。此檔案需要 %1，但目前只有 %2 可用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="962"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="963"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>伺服器儲存空間不足。此檔案需要 %1。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="965"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="966"/>
         <source>Insufficient storage on the server.</source>
         <translation>伺服器儲存空間不足。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1001"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>伺服器可用空間不足，部分上傳無法完成。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1017"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1383"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
         <source>Retry all uploads</source>
         <translation>重試所有上傳</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1434"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1596"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1435"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1597"/>
         <source>Resolve conflict</source>
         <translation>解決抵觸</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1586"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1587"/>
         <source>Rename file</source>
         <translation>重新命名檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1691"/>
         <source>Sync conflicts</source>
         <translation>同步衝突</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1820"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1834"/>
         <source>Public Share Link</source>
         <translation>公共分享連結</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1932"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1946"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>打開 %1 Assistant</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2030"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2044"/>
         <source>Assistant is not available for this account.</source>
         <translation>此帳戶無法使用 Assistant。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2036"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2050"/>
         <source>Assistant is already processing a request.</source>
         <translation>Assistant 正在處理另一個請求。</translation>
     </message>
@@ -6322,37 +6344,37 @@ Server replied with error: %2</source>
         <translation>正在發送你的請求 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2073"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2087"/>
         <source>Sending your request …</source>
         <translation>正在傳送你的請求…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2146"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2160"/>
         <source>No response yet. Please try again later.</source>
         <translation>尚未收到回應，請稍後再試。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2165"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
         <source>No supported assistant task types were returned.</source>
         <translation>未返回任何支援的 Assistant 任務類型。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2247"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2261"/>
         <source>Waiting for the assistant response…</source>
         <translation>正在等待 Assistant 回應 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2269"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2283"/>
         <source>Assistant request failed (%1).</source>
         <translation>Assistant 請求失敗（%1）。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2344"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2358"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>已更新配額；已使用總空間的百分之 %1。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2364"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2378"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>配額警告，已使用百分之 %1 或更多的儲存空間</translation>
     </message>
@@ -6360,32 +6382,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2796"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
         <source>Confirm Account Removal</source>
         <translation>請確認移除帳戶</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2797"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2811"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您確定要移除&lt;i&gt;%1&lt;/i&gt;的連線嗎？&lt;/p&gt;&lt;p&gt;&lt;b&gt;提示：&lt;/b&gt;這項操作不會刪除任何檔案&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2801"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
         <source>Remove connection</source>
         <translation>移除連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2802"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2816"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2888"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
         <source>Leave share</source>
         <translation>離開分享</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2888"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
         <source>Remove account</source>
         <translation>移除帳戶</translation>
     </message>
@@ -6822,32 +6844,32 @@ Server replied with error: %2</source>
         <translation>無法將除錯封存檔移至所選位置！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="490"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="491"/>
         <source>Answer</source>
         <translation>回答</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1515"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1516"/>
         <source>You renamed %1</source>
         <translation>您已將 %1 重新命名</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1517"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1518"/>
         <source>You deleted %1</source>
         <translation>您刪除了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1519"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
         <source>You created %1</source>
         <translation>您新增了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1521"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
         <source>You changed %1</source>
         <translation>您改變了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1545"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1546"/>
         <source>Synced %1</source>
         <translation>已同步 %1</translation>
     </message>
@@ -7305,47 +7327,47 @@ Server replied with error: %2</source>
 <context>
     <name>TrayAccountPopup</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="584"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="594"/>
         <source>No apps available</source>
         <translation>沒有可用的應用程式</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="624"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="634"/>
         <source>Notifications</source>
         <translation>通知</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="648"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="658"/>
         <source>Open</source>
         <translation>開啟</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="661"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="671"/>
         <source>Recent activity</source>
         <translation>最近活動</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="668"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
         <source>No recent activity</source>
         <translation>沒有最近活動</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="686"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="696"/>
         <source>More activity…</source>
         <translation>更多活動…</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="717"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="760"/>
         <source>Resolve: %1</source>
         <translation>解決：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="724"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
         <source>User status</source>
         <translation>使用者狀態</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="757"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="800"/>
         <source>Search</source>
         <translation>搜尋</translation>
     </message>
@@ -7383,7 +7405,8 @@ Server replied with error: %2</source>
         <translation>用戶群組及近端資料夾選項單</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="740"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="730"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="783"/>
         <source>Local folder</source>
         <translation>本機資料夾</translation>
     </message>
@@ -7406,7 +7429,7 @@ Server replied with error: %2</source>
         <translation>瀏覽器中開啟 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="765"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
         <source>Apps</source>
         <translation>應用程式</translation>
     </message>
@@ -7570,26 +7593,26 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="54"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="210"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="222"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="211"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="223"/>
         <source>Online</source>
         <translation>在線</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="65"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="212"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
         <source>Away</source>
         <translation>離開</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="77"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="214"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
         <source>Busy</source>
         <translation>忙碌</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="88"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="216"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
         <source>Do not disturb</source>
         <translation>請勿打擾</translation>
     </message>
@@ -7600,7 +7623,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="101"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="218"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
         <source>Invisible</source>
         <translation>隱藏</translation>
     </message>

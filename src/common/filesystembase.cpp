@@ -702,6 +702,12 @@ Utility::Handle lockFile(const QString &fileName, FileSystem::LockMode mode)
                                                FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS, nullptr)};
 
         if (out) {
+            if (attr & FILE_ATTRIBUTE_DIRECTORY) {
+                // LockFile() is unsupported for directory handles and always fails there,
+                // and opening the directory already ruled out a sharing violation.
+                return out;
+            }
+
             LARGE_INTEGER start;
             start.QuadPart = 0;
             LARGE_INTEGER end;
@@ -732,7 +738,7 @@ bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
         if (error == ERROR_SHARING_VIOLATION || error == ERROR_LOCK_VIOLATION) {
             return true;
         } else if (error != ERROR_FILE_NOT_FOUND && error != ERROR_PATH_NOT_FOUND) {
-            qCWarning(lcFileSystem()) << Q_FUNC_INFO << Utility::formatWinError(error);
+            qCWarning(lcFileSystem()) << Q_FUNC_INFO << Utility::formatWinError(error) << fileName;
         }
     }
 #else

@@ -4950,36 +4950,35 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="281" />
-        <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="336" />
-        <location filename="../src/libsync/propagateupload.cpp" line="412" />
-        <location filename="../src/libsync/propagateupload.cpp" line="425" />
-        <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="409" />
-        <source>File Removed (start upload) %1</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="446" />
+        <location filename="../src/libsync/propagateupload.cpp" line="462"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="435" />
-        <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished" />
+        <location filename="../src/libsync/propagateupload.cpp" line="472"/>
+        <source>Failed to unlock encrypted folder.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="834" />
+        <location filename="../src/libsync/propagateupload.cpp" line="759"/>
+        <source>Unable to upload an item with invalid characters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="847"/>
+        <source>Error updating metadata: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="850"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished" />
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="753"/>
+        <source>Upload of %1 exceeds the quota for the folder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="743" />

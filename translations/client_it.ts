@@ -8,7 +8,131 @@
         <translation>In %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="31" />
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
+        <source>Connect to %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="179"/>
+        <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="180"/>
+        <source>The secure connection failed. You can add a client certificate and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="201"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="272"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="211"/>
+        <source>Connect without TLS</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="223"/>
+        <source>Use client certificate</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
+        <source>Back</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="289"/>
+        <source>Set up later</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="300"/>
+        <source>Advanced</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="309"/>
+        <source>Sign up</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="319"/>
+        <source>Self-host</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="334"/>
+        <source>Proxy settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <source>Copy link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="396"/>
+        <source>Open</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="398"/>
+        <source>Connect</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="400"/>
+        <source>Done</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="402"/>
+        <source>Log in</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ActivitiesWindow</name>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="20"/>
+        <source>Activities</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="127"/>
+        <source>New activities</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ActivityFileMenu</name>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="25"/>
+        <source>File details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="32"/>
+        <source>File actions</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ActivityFileMenuButton</name>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenuButton.qml" line="34"/>
+        <source>Open file details</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ActivityItem</name>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityItem.qml" line="32"/>
         <source>Open %1 locally</source>
         <translation>Apri %1 localmente</translation>
     </message>
@@ -16,25 +140,25 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="250" />
+        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="203"/>
+        <location filename="../src/gui/activity/activitydata.cpp" line="314"/>
         <source>Dismiss</source>
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="226" />
-        <source>File actions</source>
-        <translation>Azioni sui file</translation>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="182"/>
+        <source>Open file details</source>
+        <translation>Apri i dettagli del file</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="217" />
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>File details</source>
         <translation>Dettagli del file</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="191" />
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="200" />
-        <source>Open file details</source>
-        <translation>Apri i dettagli del file</translation>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
+        <source>File actions</source>
+        <translation>Azioni sui file</translation>
     </message>
 </context>
 <context>
@@ -443,6 +567,117 @@
     </message>
 </context>
 <context>
+    <name>MainWindow</name>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
+        <source>Main content</source>
+        <translation>Contenuto principale</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="324"/>
+        <source>Issue with account %1</source>
+        <translation>Problema con l&apos;account %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="326"/>
+        <source>Issues with several accounts</source>
+        <translation>Problemi con diversi account</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="383"/>
+        <source>Start new conversation?</source>
+        <translation>Vuoi iniziare una nuova conversazione?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="403"/>
+        <source>New conversation</source>
+        <translation>Nuova conversazione</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="407"/>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="428"/>
+        <source>This will clear the existing conversation.</source>
+        <translation>Questo chiuderà la conversazione in corso.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="473"/>
+        <source>Ask Assistant …</source>
+        <translation>Chiedi all&apos;Assistente …</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="501"/>
+        <source>Send assistant question</source>
+        <translation>Invia domanda all&apos;assistente</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="777"/>
+        <source>Unified search results list</source>
+        <translation>Elenco dei risultati di ricerca unificato</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
+        <source>Ask Assistant…</source>
+        <translation>Chiedi all&apos;Assistente…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="522"/>
+        <source>Start a new assistant chat</source>
+        <translation>Avvia una nuova chat con l&apos;assistente</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="691"/>
+        <source>New activities</source>
+        <translation>Nuove attività</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="792"/>
+        <source>Assistant</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>NCContextMenuTextField</name>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="20"/>
+        <source>Undo</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="26"/>
+        <source>Redo</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="34"/>
+        <source>Cut</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="40"/>
+        <source>Copy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="46"/>
+        <source>Paste</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="52"/>
+        <source>Delete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="60"/>
+        <source>Select All</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="329" />
@@ -839,9 +1074,10 @@ L&apos;account deve essere importato?</translation>
         <translation>La versione %1 del server non è supportata! Continua a tuo rischio.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1401" />
-        <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>L&apos;operazione di sincronizzazione è in corso.&lt;br/&gt;Vuoi terminarla?</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1550"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="742"/>
+        <source>Log in</source>
+        <translation>Accedi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1996" />
@@ -1070,52 +1306,203 @@ Vuoi farlo ora?</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="510" />
-        <source>Fetching activities …</source>
-        <translation>Recupero attività …</translation>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="294"/>
+        <source>Will require local storage</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="490" />
-        <source>For more activities please open the Activity app.</source>
-        <translation>Per altre attività, apri l&apos;applicazione Attività.</translation>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="674"/>
+        <source>Proxy settings are incomplete.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="617" />
-        <source>Network error occurred: client will retry syncing.</source>
-        <translation>Errore di rete: il client ritenterà la sincronizzazione.</translation>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="681"/>
+        <source>Server address does not seem to be valid</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::AddCertificateDialog</name>
     <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="34" />
-        <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished">File di certificato (*.p12 *.pfx)</translation>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="702"/>
+        <source>Username must not be empty.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="45" />
-        <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished">Impossibile accedere al file del certificato selezionato.</translation>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="708"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1026"/>
+        <source>Checking account access</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="34" />
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="786"/>
+        <source>Checking server address</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="851"/>
+        <source>Preparing browser login</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="872"/>
+        <source>Invalid URL</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="874"/>
+        <source>Failed to connect to %1 at %2:
+%3</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="890"/>
+        <source>Timeout while trying to connect to %1 at %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1002"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1007"/>
+        <source>Waiting for authorization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1012"/>
+        <source>Starting authorization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1017"/>
+        <source>Link copied to clipboard.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1102"/>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1089"/>
+        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1097"/>
+        <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1115"/>
+        <source>Account connected.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1190"/>
+        <source>Will require %1 of storage</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
+        <source>%1 free space</source>
+        <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1373"/>
+        <source>There isn&apos;t enough free space in the local folder!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1390"/>
+        <source>Please choose a local sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1395"/>
+        <source>Please choose an empty local sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1460"/>
+        <source>Could not create local folder %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1474"/>
+        <source>Checking remote folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1520"/>
+        <source>No remote folder specified!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1529"/>
+        <source>Error: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1534"/>
+        <source>Creating remote folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1553"/>
+        <source>The folder creation resulted in HTTP error code %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
+        <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1557"/>
+        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
+        <source>Account setup failed while creating the sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1608"/>
+        <source>Could not create the sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1698"/>
+        <source>Local Sync Folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1960"/>
         <source>Select a certificate</source>
         <translation>Seleziona un certificato</translation>
     </message>
     <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="79" />
-        <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>Si consiglia vivamente un bundle pkcs12 cifrato poiché una copia sarà archiviata nel file di configurazione.</translation>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1962"/>
+        <source>Certificate files (*.p12 *.pfx)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="51" />
-        <source>Browse …</source>
-        <translation>Sfoglia...</translation>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1970"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1990"/>
+        <source>Could not access the selected certificate file.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="35" />
-        <source>Certificate &amp; Key (pkcs12):</source>
-        <translation>Certificato e chiave (pkcs12):</translation>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2006"/>
+        <source>Could not load certificate. Maybe wrong password?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60" />
@@ -1659,23 +2046,13 @@ Vuoi farlo ora?</translation>
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="165" />
-        <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Errore di autenticazione: nome utente o password errati.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="46" />
+        <location filename="../src/gui/connectionvalidator.cpp" line="48"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Nessun %1 account configurato</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="214" />
-        <source>The provided credentials are not correct</source>
-        <translation>Le credenziali fornite non sono corrette</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="177" />
+        <location filename="../src/gui/connectionvalidator.cpp" line="184"/>
         <source>Timeout</source>
         <translation>Scadenza</translation>
     </message>
@@ -1683,14 +2060,14 @@ Vuoi farlo ora?</translation>
 <context>
     <name>OCC::DataProtectionPage</name>
     <message>
-        <location filename="../src/gui/wizard/dataprotectionpage.cpp" line="56" />
-        <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source>
-        <translation type="unfinished">Questa applicazione utilizza tecnologie di tracciamento. Facendo clic su Accetto, si accetta il trattamento dei propri dati anonimizzati. È possibile modificare le proprie scelte in qualsiasi momento tramite le impostazioni. &lt;br/&gt; &lt;br/&gt;Informazioni sul trattamento dei dati e altro ancora sono disponibili nella nostra &lt;a href=&apos;https://wl.hidrive.com/easy/0035&apos;&gt;politica sulla privacy&lt;/a&gt;.</translation>
+        <location filename="../src/gui/connectionvalidator.cpp" line="168"/>
+        <source>Authentication error: Either username or password are wrong.</source>
+        <translation>Errore di autenticazione: nome utente o password errati.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/dataprotectionpage.cpp" line="54" />
-        <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source>
-        <translation type="unfinished">Questa applicazione utilizza tecnologie di tracciamento. Facendo clic su Accetto, si accetta il trattamento dei propri dati anonimizzati. È possibile modificare le proprie scelte in qualsiasi momento tramite le impostazioni. &lt;br/&gt; &lt;br/&gt;Informazioni sul trattamento dei dati e altro ancora sono disponibili nella nostra &lt;a href=&apos;https://static.hidrive.com/next/1004&apos;&gt;politica sulla privacy&lt;/a&gt;.</translation>
+        <location filename="../src/gui/connectionvalidator.cpp" line="221"/>
+        <source>The provided credentials are not correct</source>
+        <translation>Le credenziali fornite non sono corrette</translation>
     </message>
 <message>
         <location filename="../src/gui/wizard/dataprotectionpage.ui" line="45" />
@@ -4997,28 +5374,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>File rimosso (avvio caricamento) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="446" />
+        <location filename="../src/libsync/propagateupload.cpp" line="462"/>
         <source>Local file changed during sync.</source>
         <translation>Un file locale è cambiato durante la sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="435" />
-        <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>Il file locale è stato modificato durante la sincronizzazione. Sarà ripristinato.</translation>
+        <location filename="../src/libsync/propagateupload.cpp" line="472"/>
+        <source>Failed to unlock encrypted folder.</source>
+        <translation>Sblocco della cartella cifrata non riuscito.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="834" />
-        <source>The file %1 is currently in use</source>
-        <translation>Il file %1 è attualmente in uso</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="743" />
+        <location filename="../src/libsync/propagateupload.cpp" line="759"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>Impossibile caricare un elemento con caratteri non validi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="292" />
-        <location filename="../src/libsync/propagateupload.cpp" line="737" />
+        <location filename="../src/libsync/propagateupload.cpp" line="847"/>
+        <source>Error updating metadata: %1</source>
+        <translation>Errore di invio dei metadati: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="850"/>
+        <source>The file %1 is currently in use</source>
+        <translation>Il file %1 è attualmente in uso</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="753"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Il caricamento di %1 supera la quota per la cartella</translation>
     </message>
@@ -5745,21 +6127,24 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>OCC::SyncStatusSummary</name>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="344" />
-        <source>%1 of %2</source>
-        <translation>%1 di %2</translation>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="211"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="477"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="221"/>
+        <source>Offline</source>
+        <translation>Non in linea</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="340" />
-        <source>%1 of %2 · %3 left</source>
-        <translation>%1 di %2 · %3 rimasti</translation>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1707"/>
+        <source>You need to accept the terms of service</source>
+        <translation>Devi accettare i termini del servizio</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="219" />
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="455" />
-        <location filename="../src/gui/tray/syncstatussummary.h" line="98" />
-        <source>All synced!</source>
-        <translation>Tutto sincronizzato!</translation>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1699"/>
+        <source>Reauthorization required</source>
+        <translation>È necessaria una nuova autorizzazione.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="236" />
@@ -5772,11 +6157,10 @@ Il server ha risposto con errore: %2</translation>
         <translation>Nessuna sincronizzazione configurata</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="152" />
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="202" />
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="449" />
-        <source>Offline</source>
-        <translation>Non in linea</translation>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
+        <source>Some files couldn&apos;t be synced!</source>
+        <translation>Alcuni file non possono essere sincronizzati!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="167" />
@@ -5799,7 +6183,8 @@ Il server ha risposto con errore: %2</translation>
         <translation>Vedi sotto gli avvisi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="255" />
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1719"/>
         <source>Some files could not be synced!</source>
         <translation>Alcuni file non possono essere sincronizzati!</translation>
     </message>
@@ -5847,9 +6232,10 @@ Il server ha risposto con errore: %2</translation>
         <translation>Scarica</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="195" />
-        <source>Exit %1</source>
-        <translation>Esci da %1</translation>
+        <location filename="../src/gui/systray.cpp" line="610"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="870"/>
+        <source>Add account</source>
+        <translation>Aggiungi account</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="194" />
@@ -5880,12 +6266,8 @@ Il server ha risposto con errore: %2</translation>
         <translation>Riprendi la sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="207" />
-        <source>Resume sync for all</source>
-        <translation>Riprendi la sincronizzazione per tutto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/systray.cpp" line="193" />
+        <location filename="../src/gui/systray.cpp" line="617"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="879"/>
         <source>Settings</source>
         <translation>Impostazioni</translation>
     </message>
@@ -5913,9 +6295,9 @@ Il server ha risposto con errore: %2</translation>
         <translation>Sondaggio</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125" />
-        <source>Waiting for terms to be accepted</source>
-        <translation>In attesa che i termini vengano accettati</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="886"/>
+        <source>Quit</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6090,8 +6472,18 @@ Il server ha risposto con errore: %2</translation>
 </context>
 <context>
     <name>OCC::User</name>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
+        <source>End-to-end certificate needs to be migrated to a new one</source>
+        <translation>Il certificato end-to-end deve essere migrato a uno nuovo</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
+        <source>Trigger the migration</source>
+        <translation>Avviare la migrazione</translation>
+    </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="392" />
+        <location filename="../src/gui/tray/usermodel.cpp" line="676"/>
         <source>%n notification(s)</source>
         <translation>
             <numerusform>%n notifica</numerusform>
@@ -6099,71 +6491,73 @@ Il server ha risposto con errore: %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1475" />
-        <source>Assistant is already processing a request.</source>
-        <translation>L&apos;assistente sta già elaborando una richiesta.</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="919"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="958"/>
+        <source>“%1” was not synchronized</source>
+        <translation>“%1” non era sincronizzato</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1469" />
-        <source>Assistant is not available for this account.</source>
-        <translation>L&apos;assistente non è disponibile per questo account.</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="960"/>
+        <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
+        <translation>Spazio di archiviazione insufficiente sul server. Il file richiede%1 ma solo %2 sono disponibili.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1708" />
-        <source>Assistant request failed (%1).</source>
-        <translation>Richiesta di assistenza non riuscita (%1). </translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="963"/>
+        <source>Insufficient storage on the server. The file requires %1.</source>
+        <translation>Spazio di archiviazione insufficiente sul server. Il file richiede %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="311" />
-        <source>End-to-end certificate needs to be migrated to a new one</source>
-        <translation>Il certificato end-to-end deve essere migrato a uno nuovo</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="966"/>
+        <source>Insufficient storage on the server.</source>
+        <translation>Spazio di archiviazione insufficiente sul server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1585" />
-        <source>No response yet. Please try again later.</source>
-        <translation>Nessuna risposta ancora. Riprova più tardi.</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
+        <source>There is insufficient space available on the server for some uploads.</source>
+        <translation>Sul server non è disponibile spazio sufficiente per alcuni caricamenti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1604" />
-        <source>No supported assistant task types were returned.</source>
-        <translation>Non è stato restituita alcun tipo di attività di assistenza supportata.</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
+        <source>Retry all uploads</source>
+        <translation>Riprova tutti i caricamenti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1362" />
+        <location filename="../src/gui/tray/usermodel.cpp" line="1435"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1597"/>
+        <source>Resolve conflict</source>
+        <translation>Risolvi il conflitto</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1587"/>
+        <source>Rename file</source>
+        <translation>Rinominare il file</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1691"/>
+        <source>Sync conflicts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1834"/>
+        <source>Public Share Link</source>
+        <translation>Collegamento di condivisione pubblico</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1946"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>OpRI %1 Assistente</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1257" />
-        <source>Public Share Link</source>
-        <translation>Collegamento di condivisione pubblico</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2044"/>
+        <source>Assistant is not available for this account.</source>
+        <translation>L&apos;assistente non è disponibile per questo account.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1782" />
-        <source>Quota Warning - %1 percent or more storage in use</source>
-        <translation>Avviso di quota - %1 percento o più di spazio di archiviazione in uso</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1762" />
-        <source>Quota is updated; %1 percent of the total space is used.</source>
-        <translation>La quota è aggiornata; %1 percento dello spazio totale è utilizzato.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1115" />
-        <source>Rename file</source>
-        <translation>Rinominare il file</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="963" />
-        <location filename="../src/gui/tray/usermodel.cpp" line="1125" />
-        <source>Resolve conflict</source>
-        <translation>Risolvi il conflitto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="912" />
-        <source>Retry all uploads</source>
-        <translation>Riprova tutti i caricamenti</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2050"/>
+        <source>Assistant is already processing a request.</source>
+        <translation>L&apos;assistente sta già elaborando una richiesta.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1512" />
@@ -6171,40 +6565,70 @@ Il server ha risposto con errore: %2</translation>
         <translation>Invio della richiesta in corso…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="313" />
-        <source>Trigger the migration</source>
-        <translation>Avviare la migrazione</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2087"/>
+        <source>Sending your request …</source>
+        <translation>Invio della richiesta …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1686" />
+        <location filename="../src/gui/tray/usermodel.cpp" line="2160"/>
+        <source>No response yet. Please try again later.</source>
+        <translation>Nessuna risposta ancora. Riprova più tardi.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
+        <source>No supported assistant task types were returned.</source>
+        <translation>Non è stato restituita alcun tipo di attività di assistenza supportata.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2261"/>
         <source>Waiting for the assistant response…</source>
         <translation>In attesa della risposta dell&apos;assistente…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2283"/>
+        <source>Assistant request failed (%1).</source>
+        <translation>Richiesta di assistenza non riuscita (%1). </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2358"/>
+        <source>Quota is updated; %1 percent of the total space is used.</source>
+        <translation>La quota è aggiornata; %1 percento dello spazio totale è utilizzato.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2378"/>
+        <source>Quota Warning - %1 percent or more storage in use</source>
+        <translation>Avviso di quota - %1 percento o più di spazio di archiviazione in uso</translation>
     </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2162" />
-        <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Vuoi davvero rimuovere la connessione all&apos;account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; ciò &lt;b&gt;non&lt;/b&gt; eliminerà alcun file.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2167" />
-        <source>Cancel</source>
-        <translation>Annulla</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2161" />
+        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
         <source>Confirm Account Removal</source>
         <translation>Conferma rimozione account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2256" />
+        <location filename="../src/gui/tray/usermodel.cpp" line="2811"/>
+        <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Vuoi davvero rimuovere la connessione all&apos;account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; ciò &lt;b&gt;non&lt;/b&gt; eliminerà alcun file.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
+        <source>Remove connection</source>
+        <translation>Rimuovi connessione</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2816"/>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
         <source>Leave share</source>
         <translation>Lascia condivisione</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2256" />
+        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
         <source>Remove account</source>
         <translation>Rimuovi account</translation>
     </message>
@@ -6800,42 +7224,34 @@ Il server ha risposto con errore: %2</translation>
         <translation>Impossibile spostare l&apos;archivio di debug nella posizione selezionata!</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="203" />
-        <source>Could not remove existing file at destination!</source>
-        <translation>Impossibile rimuovere il file esistente nella destinazione!</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="491"/>
+        <source>Answer</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="137" />
-        <location filename="../src/gui/generalsettings.cpp" line="190" />
-        <location filename="../src/gui/generalsettings.cpp" line="202" />
-        <location filename="../src/gui/generalsettings.cpp" line="214" />
-        <source>Failed to create debug archive</source>
-        <translation>Impossibile creare archivio con i log per il debug</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1516"/>
+        <source>You renamed %1</source>
+        <translation>Hai rinominato %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1074" />
-        <source>Synced %1</source>
-        <translation>%1 sincronizzato</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1050" />
-        <source>You changed %1</source>
-        <translation>Hai modificato %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1048" />
-        <source>You created %1</source>
-        <translation>Hai creato %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1046" />
+        <location filename="../src/gui/tray/usermodel.cpp" line="1518"/>
         <source>You deleted %1</source>
         <translation>Hai eliminato %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1044" />
-        <source>You renamed %1</source>
-        <translation>Hai rinominato %1</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
+        <source>You created %1</source>
+        <translation>Hai creato %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
+        <source>You changed %1</source>
+        <translation>Hai modificato %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1546"/>
+        <source>Synced %1</source>
+        <translation>%1 sincronizzato</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="568" />
@@ -7270,44 +7686,49 @@ Il server ha risposto con errore: %2</translation>
         <translation>Si è verificato un errore durante la sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="117" />
-        <source>Preparing to sync</source>
-        <translation>Preparazione della sincronizzazione</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="594"/>
+        <source>No apps available</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="120" />
-        <source>Stopping sync</source>
-        <translation>Interruzione della sincronizzazione</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="634"/>
+        <source>Notifications</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="123" />
-        <source>Sync is paused</source>
-        <translation>La sincronizzazione è sospesa</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="658"/>
+        <source>Open</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="102" />
-        <source>Sync is running</source>
-        <translation>La sincronizzazione è in corso</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="671"/>
+        <source>Recent activity</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="96" />
-        <source>Sync status is unknown</source>
-        <translation>Lo stato di sincronizzazione è sconosciuto</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
+        <source>No recent activity</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="105" />
-        <source>Sync was successful</source>
-        <translation>Sincronizzazione riuscita</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="696"/>
+        <source>More activity…</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="108" />
-        <source>Sync was successful but some files were ignored</source>
-        <translation>La sincronizzazione è riuscita ma alcuni file sono stati ignorati</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="760"/>
+        <source>Resolve: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="99" />
-        <source>Waiting to start syncing</source>
-        <translation>In attesa di iniziare la sincronizzazione</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
+        <source>User status</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="800"/>
+        <source>Search</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -7351,9 +7772,10 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>TrayWindowAccountMenu</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="283" />
-        <source>Account switcher and settings menu</source>
-        <translation type="unfinished">Menu di cambio account e impostazioni</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="730"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="783"/>
+        <source>Local folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="128" />
@@ -7432,9 +7854,9 @@ Il server ha risposto con errore: %2</translation>
         <translation type="unfinished">Apri %1 nel browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeaderBar.qml" line="45" />
-        <source>Open Nextcloud in browser</source>
-        <translation type="unfinished">Apri HiDrive Next nel browser</translation>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
+        <source>Apps</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeaderBar.qml" line="65" />
@@ -7579,22 +8001,38 @@ Il server ha risposto con errore: %2</translation>
         <translation>Appari non in linea</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="61" />
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="54"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="211"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="223"/>
+        <source>Online</source>
+        <translation>Online</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="65"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
         <source>Away</source>
         <translation>Assente</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="72" />
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="77"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
         <source>Busy</source>
         <translation>Occupato</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="82" />
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="88"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
         <source>Do not disturb</source>
         <translation>Non disturbare</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="94" />
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="89"/>
+        <source>Mute all notifications</source>
+        <translation>Disattiva tutte le notifiche</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="101"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
         <source>Invisible</source>
         <translation>Invisibile</translation>
     </message>
