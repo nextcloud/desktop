@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <TS version="2.1" language="sv">
-<context>
+<context><name /><message><source>Agree</source><translation>Håller med</translation></message><message><source>Back</source><translation>Tillbaka</translation></message><message><source>Necessary data</source><translation>Nödvändiga uppgifter</translation></message><message><source>Required to ensure that the software can be used as expected</source><translation>Krävs för att säkerställa att programvaran kan användas som förväntat</translation></message><message><source>Save Settings</source><translation>Spara inställningar</translation></message><message><source>Send anonymous use</source><translation>Skicka anonym användning</translation></message><message><source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source><translation>Denna applikation använder spårningsteknik. Genom att klicka på Godkänn accepterar du behandlingen av dina anonymiserade data. Du kan när som helst justera dina val via inställningarna. &lt;br/&gt; &lt;br/&gt;Information om databehandling och mer finns i vår &lt;a href=&apos;https://wl.hidrive.com/easy/1004&apos;&gt;integritetspolicy&lt;/a&gt;.</translation></message><message><source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source><translation>Denna applikation använder spårningsteknik. Genom att klicka på Godkänn accepterar du behandlingen av dina anonymiserade data. Du kan när som helst justera dina val via inställningarna. &lt;br/&gt; &lt;br/&gt;Information om databehandling och mer finns i vår &lt;a href=&apos;https://wl.hidrive.com/easy/1004&apos;&gt;integritetspolicy&lt;/a&gt;.</translation></message><message><source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source><translation>Detta hjälper oss att optimera programvaran och att bättre identifiera systemkrascher och oväntade fel.</translation></message><message><source>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</source><translation>Vi samlar in anonymiserade data för att optimera vår app. Vi använder mjukvarulösningar från olika partners för detta ändamål. Vi vill ge dig full insyn och valfrihet när det gäller insamling och behandling av din anonymiserade användning. Du kan när som helst ändra dina inställningar under menyalternativet Dataskydd.</translation></message></context><context>
     <name>ActivityItem</name>
     <message>
         <source>In %1</source>
@@ -45,7 +45,7 @@
         <translation>Bläddra till toppen</translation>
     </message>
 </context>
-<context>
+<context><name>BasicComboBox</name><message><source>Clear status message menu</source><translation>Meny för att ta bort statusmeddelande</translation></message></context><context>
     <name>CallNotificationDialog</name>
     <message>
         <source>Answer Talk call notification</source>
@@ -243,7 +243,7 @@
         <translation>Filinformation för %1 · %2</translation>
     </message>
 </context>
-<context>
+<context><name>FileProviderFastEnumerationSettings</name><message><source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder.</source><translation>Snabbsynkronisering synkroniserar endast ändringar i filer och mappar inom mappar som har utforskats. Detta kan avsevärt öka svarstiden vid den första konfigurationen av virtuella filer. Det kommer dock att orsaka överflödiga nedladdningar av filer som flyttas till en outforskad mapp.</translation></message></context><context>
     <name>FileProviderFileDelegate</name>
     <message>
         <source>Delete</source>
@@ -252,7 +252,7 @@
 </context>
 <context>
     <name>FileProviderSettings</name>
-    <message>
+    <message><source>Signal file provider domain</source><translation>Domän för leverantör av signalfil</translation></message><message>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
         <translation>Virtuella filer ser ut som vanliga filer, men de använder inte lokalt lagringsutrymme. Innehållet laddas ner automatiskt när du öppnar filen. Virtuella filer och klassisk synkronisering kan inte användas samtidigt.</translation>
     </message>
@@ -261,7 +261,7 @@
         <translation>Inställningar virtuella filer</translation>
     </message>
 </context>
-<context>
+<context><name>FileProviderStorageInfo</name><message><source>Evict local copies...</source><translation>Utesluta lokala kopior...</translation></message></context><context><name>FileProviderSyncStatus</name><message><source>All synced!</source><translation>Allt synkroniserat!</translation></message></context><context>
     <name>FileSystem</name>
     <message>
         <source>Could not remove folder &quot;%1&quot;</source>
@@ -299,18 +299,18 @@
     <name>FolderWizardSelectiveSync</name>
     <message>
         <source>Add Folder Sync</source>
-        <translation type="unfinished" />
+        <translation>Lägg till mappsynkronisering</translation>
     </message>
     <message>
         <source>Step 3 of 3: Selektive Synchronisation</source>
-        <translation type="unfinished" />
+        <translation>Steg 3 av 3: Selektiv synkronisering</translation>
     </message>
 </context>
 <context>
     <name>FolderWizardSourcePage</name>
     <message>
         <source>&amp;Choose</source>
-        <translation type="unfinished" />
+        <translation>&amp;Välj</translation>
     </message>
     <message>
         <source>Add Folder Sync</source>
@@ -318,11 +318,11 @@
     </message>
     <message>
         <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
-        <translation type="unfinished" />
+        <translation>Välj en mapp på din hårddisk som ska vara permanent ansluten till din %1. Alla filer och undermappar laddas upp och synkroniseras automatiskt.</translation>
     </message>
     <message>
         <source>Step 1 of 3: Select local folder</source>
-        <translation type="unfinished" />
+        <translation>Steg 1 av 3: Välj lokal mapp</translation>
     </message>
 </context>
 <context>
@@ -333,7 +333,7 @@
     </message>
     <message>
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
-        <translation type="unfinished" />
+        <translation>De båda mapparna är permanent länkade och respektive innehåll synkroniseras och uppdateras automatiskt.</translation>
     </message>
     <message>
         <source>Create folder</source>
@@ -345,7 +345,7 @@
     </message>
     <message>
         <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
-        <translation type="unfinished" />
+        <translation>Välj eller skapa nu en målmapp i din %1 där innehållet ska laddas upp och synkroniseras.</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -353,7 +353,7 @@
     </message>
     <message>
         <source>Step 2 of 3: Directory in your %1</source>
-        <translation type="unfinished" />
+        <translation>Steg 2 av 3: Katalog i din %1</translation>
     </message>
 </context>
 <context>
@@ -399,7 +399,9 @@
 </context>
 <context>
     <name>OCC::AccountManager</name>
-    <message>
+    <message><source>%1 accounts were detected from a legacy desktop client.
+Should the accounts be imported?</source><translation>%1 konton upptäcktes från en äldre stationär klient.
+Bör kontona importeras?</translation></message><message>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Ett konto upptäcktes från en äldre skrivbordsklient.
@@ -424,7 +426,7 @@ Ska kontot importeras?</translation>
 </context>
 <context>
     <name>OCC::AccountSettings</name>
-    <message>
+    <message><source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source><translation>%1 (%3%) av %2 används. Vissa mappar, inklusive nätverksmonterade eller delade mappar, kan ha andra gränser.</translation></message><message>
         <source>%1 as %2</source>
         <translation>%1 som %2</translation>
     </message>
@@ -592,7 +594,7 @@ Ska kontot importeras?</translation>
         <source>End-to-end encryption mnemonic</source>
         <translation>Krypteringsord för ände-till-ände-kryptering</translation>
     </message>
-    <message>
+    <message><source>Expand Memory</source><translation>Expandera minnet</translation></message><message><source>ExpandMemory-Link</source><translation>https://static.hidrive.com/next/1045</translation></message><message><source>ExpandMemory-Link_STRATO</source><translation>https://static.hidrive.com/next/1044</translation></message><message>
         <source>Folder creation failed</source>
         <translation>Kunde inte skapa mappen</translation>
     </message>
@@ -684,7 +686,7 @@ Ska kontot importeras?</translation>
         <source>Signed out from %1.</source>
         <translation>Utloggad från %1.</translation>
     </message>
-    <message>
+    <message><source>Storage space %1% occupied</source><translation>Förvaringsutrymme %1% upptaget</translation></message><message>
         <source>Sync Running</source>
         <translation>Synkronisering pågår</translation>
     </message>
@@ -722,15 +724,15 @@ Ska kontot importeras?</translation>
     </message>
     <message>
         <source>There are folders that were not synchronized because they are external storages:</source>
-        <translation type="unfinished" />
+        <translation>Det finns mappar som inte synkroniserades eftersom de är externa lagringsutrymmen:</translation>
     </message>
     <message>
         <source>There are folders that were not synchronized because they are too big or external storages:</source>
-        <translation type="unfinished" />
+        <translation>Det finns mappar som inte synkroniserades eftersom de är för stora eller externa lagringsutrymmen:</translation>
     </message>
     <message>
         <source>There are folders that were not synchronized because they are too big:</source>
-        <translation type="unfinished" />
+        <translation>Det finns mappar som inte synkroniserades eftersom de är för stora:</translation>
     </message>
     <message>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
@@ -748,7 +750,9 @@ Den enda fördelen med att inaktivera stödet för virtuella filer är att funkt
 
 Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     </message>
-    <message>
+    <message><source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key.
+&lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source><translation>Detta kommer att kryptera din mapp och alla filer i den. Dessa filer kommer inte längre att vara åtkomliga utan din krypteringsnyckel.
+&lt;b&gt;Den här processen är inte reversibel. Är du säker på att du vill fortsätta?&lt;/b&gt;</translation></message><message>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
         <translation>Detta kommer att kryptera din mapp och alla filer den innehåller. Dessa filer kommer inte längre att vara tillgängliga utan dina krypteringsord.
@@ -758,7 +762,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>För att skydda din kryptografiska identitet krypterar vi den med en minnesfras bestående av 12 ord från en ordlista. Skriv ner den och förvara den säkert. Du kommer att behöva den för att konfigurera synkronisering av krypterade mappar på dina andra enheter.</translation>
     </message>
-    <message>
+    <message><source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source><translation>För att skydda din kryptografiska identitet krypterar vi den med en mnemonik bestående av 12 ordboksord. Anteckna dessa och förvara dem säkert. De kommer att behövas för att lägga till andra enheter till ditt konto (som din mobiltelefon eller bärbara dator).</translation></message><message>
         <source>Unable to connect to %1.</source>
         <translation>Kan inte ansluta till %1.</translation>
     </message>
@@ -1365,7 +1369,7 @@ Vill du konfigurera den nu?</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished">Inställningar</translation>
+        <translation>Inställningar</translation>
     </message>
     <message>
         <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source>
@@ -1848,7 +1852,7 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
     </message>
     <message>
         <source>A folder from an external storage has been added.</source>
-        <translation type="unfinished" />
+        <translation>En mapp från ett externt lagringsutrymme har lagts till.</translation>
     </message>
     <message>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
@@ -1874,7 +1878,7 @@ Alternativt kan du återställa alla lösta filer, om du hämtar dem från serve
     </message>
     <message>
         <source>A new folder larger than %1 MB has been added: %2.</source>
-        <translation type="unfinished" />
+        <translation>En ny mapp som är större än %1 MB har lagts till: %2.</translation>
     </message>
     <message>
         <source>Changes in synchronized folders could not be tracked reliably.
@@ -1961,7 +1965,7 @@ Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar ome
     <name>OCC::FolderCreationDialog</name>
     <message>
         <source>%1 Create new folder</source>
-        <translation type="unfinished" />
+        <translation>%1 Skapa ny mapp</translation>
     </message>
     <message>
         <source>Could not create a folder! Check your write permissions.</source>
@@ -1992,11 +1996,11 @@ Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar ome
     </message>
     <message>
         <source>(backup %1)</source>
-        <translation type="unfinished" />
+        <translation>(säkerhetskopia %1)</translation>
     </message>
     <message>
         <source>(backup)</source>
-        <translation type="unfinished" />
+        <translation>(backup)</translation>
     </message>
     <message>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
@@ -2127,7 +2131,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     </message>
     <message>
         <source>Synchronize any other local folder with your %1</source>
-        <translation type="unfinished" />
+        <translation>Synkronisera en annan lokal mapp med din %1</translation>
     </message>
 </context>
 <context>
@@ -2296,7 +2300,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     </message>
     <message>
         <source>Choose</source>
-        <translation type="unfinished" />
+        <translation>Välj</translation>
     </message>
     <message>
         <source>Click to select a local folder to sync.</source>
@@ -2411,7 +2415,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
 </context>
 <context>
     <name>OCC::GeneralSettings</name>
-    <message>
+    <message><source>&amp;Analysis data collection for needs-based design</source><translation>&amp;Analys av datainsamling för behovsbaserad design</translation></message><message>
         <source>&amp;Automatically check for updates</source>
         <translation>&amp;Automatisk kontroll av uppdateringar</translation>
     </message>
@@ -2489,7 +2493,7 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
     </message>
     <message>
         <source>Data Protection</source>
-        <translation type="unfinished" />
+        <translation>Dataskydd</translation>
     </message>
     <message>
         <source>Debug Archive Created</source>
@@ -2530,7 +2534,7 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
     </message>
     <message>
         <source>More Information</source>
-        <translation type="unfinished" />
+        <translation>Mer information</translation>
     </message>
     <message>
         <source>Move removed files to trash</source>
@@ -2546,11 +2550,11 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
     </message>
     <message>
         <source>Open Source Software</source>
-        <translation type="unfinished" />
+        <translation>Programvara med öppen källkod</translation>
     </message>
     <message>
         <source>Privacy Policy</source>
-        <translation type="unfinished" />
+        <translation>Integritetspolicy</translation>
     </message>
     <message>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
@@ -2635,7 +2639,7 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
     </message>
     <message>
         <source>Updates</source>
-        <translation type="unfinished" />
+        <translation>Uppdateringar</translation>
     </message>
     <message>
         <source>Usage Documentation</source>
@@ -2794,7 +2798,7 @@ Objekt där radering är tillåten raderas om de förhindrar att en katalog tas 
     </message>
     <message>
         <source>Ignore Pattern</source>
-        <translation type="unfinished" />
+        <translation>Ignorera mönster</translation>
     </message>
     <message>
         <source>Pattern</source>
@@ -4031,7 +4035,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     </message>
     <message>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>Uppladdningen av %1 överstiger kvoten för mappen</translation>
+        <translation>Uppladdningen av %1 överskrider kvoten för mappen</translation>
     </message>
 </context>
 <context>
@@ -4162,7 +4166,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     </message>
     <message>
         <source>Success</source>
-        <translation type="unfinished" />
+        <translation>Framgång</translation>
     </message>
     <message>
         <source>Warning</source>
@@ -4186,7 +4190,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     </message>
     <message>
         <source>New account</source>
-        <translation type="unfinished" />
+        <translation>Nytt konto</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4482,11 +4486,11 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <source>This connection is NOT secure as it is not encrypted.</source>
-        <translation type="unfinished" />
+        <translation>Denna anslutning är INTE säker eftersom den inte är krypterad.</translation>
     </message>
     <message>
         <source>This connection is encrypted using %1 bit %2.</source>
-        <translation type="unfinished" />
+        <translation>Denna anslutning är krypterad med %1 bit %2.</translation>
     </message>
 </context>
 <context>
@@ -4775,51 +4779,51 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <source>Help-Link</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1014</translation>
     </message>
     <message>
         <source>Help-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1014</translation>
     </message>
     <message>
         <source>LegalNotice-Link</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1024</translation>
     </message>
     <message>
         <source>LegalNotice-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1024</translation>
     </message>
     <message>
         <source>Login_URL</source>
-        <translation type="unfinished" />
+        <translation>https://storage.ionos.com</translation>
     </message>
     <message>
         <source>Login_URL_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://storage.ionos.com</translation>
     </message>
     <message>
         <source>MoreInformation-Link</source>
-        <translation type="unfinished" />
+        <translation>https://strato.se</translation>
     </message>
     <message>
         <source>MoreInformation-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1014</translation>
     </message>
     <message>
         <source>OpenSource-Link</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1031</translation>
     </message>
     <message>
         <source>OpenSource-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1031</translation>
     </message>
     <message>
         <source>Privacy-Link</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1004</translation>
     </message>
     <message>
         <source>Privacy-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1004</translation>
     </message>
 </context>
 <context>
@@ -4881,7 +4885,7 @@ Servern svarade med fel: %2</translation>
 </context>
 <context>
     <name>OCC::User</name>
-    <message numerus="yes">
+    <message><source>%1 notifications</source><translation>%1 meddelanden</translation></message><message numerus="yes">
         <source>%n notification(s)</source>
         <translation>
             <numerusform>%n avisering</numerusform>
@@ -5132,7 +5136,7 @@ Servern svarade med fel: %2</translation>
     <name>OCC::WebFlowCredentials</name>
     <message>
         <source>&lt;b&gt;You have been logged out of your account %1 at %2. Please login again.&lt;/b&gt;</source>
-        <translation type="unfinished" />
+        <translation>&lt;b&gt;Du har blivit utloggad från ditt konto %1 på %2. Vänligen logga in igen.&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -5358,7 +5362,7 @@ Servern svarade med fel: %2</translation>
         <source>Virtual file created</source>
         <translation>Virtuell fil skapad</translation>
     </message>
-</context>
+<message><source>updating local virtual files metadata</source><translation>Uppdatering av metadata för lokala virtuella filer</translation></message></context>
 <context>
     <name>ProxySettings</name>
     <message>
@@ -5456,7 +5460,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished" />
+        <translation>Misslyckades med att skapa debug-arkiv</translation>
     </message>
     <message>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
@@ -5496,7 +5500,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <source>The directory %1 cannot be part of your sync directory. Please choose another folder.</source>
-        <translation type="unfinished" />
+        <translation>Katalogen %1 kan inte vara en del av din synkroniseringskatalog. Vänligen välj en annan mapp.</translation>
     </message>
     <message>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
@@ -5649,7 +5653,7 @@ Servern svarade med fel: %2</translation>
     <name>SesTrayHeader</name>
     <message>
         <source>Open Nextcloud in browser</source>
-        <translation type="unfinished" />
+        <translation>Öppna HiDrive Next i webbläsaren</translation>
     </message>
     <message>
         <source>Open local or team folders</source>
@@ -5657,7 +5661,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <source>Website</source>
-        <translation type="unfinished" />
+        <translation>Webbplats</translation>
     </message>
 </context>
 <context>
@@ -5695,13 +5699,13 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <source>Custom Permissions</source>
-        <translation type="unfinished" />
+        <translation>Anpassade behörigheter</translation>
     </message>
     <message>
         <source>Enter a note for the recipient</source>
         <translation>Ange en notering till mottagaren</translation>
     </message>
-    <message>
+    <message><source>Enter the note to recipient</source><translation>Ange anteckningen till mottagaren</translation></message><message>
         <source>File drop (upload only)</source>
         <translation>Filinkast (endast uppladdning)</translation>
     </message>
@@ -5875,7 +5879,7 @@ Servern svarade med fel: %2</translation>
     <name>TrayFoldersMenuButton</name>
     <message>
         <source>Files</source>
-        <translation type="unfinished" />
+        <translation>Filer</translation>
     </message>
     <message>
         <source>Open %1 in file explorer</source>
@@ -5910,7 +5914,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <source>Add account</source>
-        <translation type="unfinished">Lägg till konto</translation>
+        <translation>Lägg till konto</translation>
     </message>
     <message>
         <source>Current account</source>
@@ -5934,11 +5938,11 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <source>Pause sync for all</source>
-        <translation type="unfinished">Pausa synkronisering för alla</translation>
+        <translation>Pausa synkronisering för alla</translation>
     </message>
     <message>
         <source>Resume sync for all</source>
-        <translation type="unfinished">Återuppta synkronisering för alla</translation>
+        <translation>Synkronisering av CV för alla</translation>
     </message>
     <message>
         <source>Settings</source>
