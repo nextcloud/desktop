@@ -112,12 +112,12 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="25"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>檔案詳細資訊</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="32"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>檔案動作</translation>
     </message>
 </context>
 <context>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenuButton.qml" line="34"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>開啟檔案詳細資訊</translation>
     </message>
 </context>
 <context>
