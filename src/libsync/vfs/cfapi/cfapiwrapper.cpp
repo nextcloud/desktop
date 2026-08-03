@@ -7,29 +7,29 @@
 
 #include "config.h"
 
-#include "accessmanager.h"
-#include "common/filesystembase.h"
 #include "common/utility.h"
+#include "common/filesystembase.h"
 #include "hydrationjob.h"
 #include "theme.h"
 #include "vfs_cfapi.h"
+#include "accessmanager.h"
 
 #include <QCoreApplication>
-#include <QDir>
 #include <QEventLoop>
-#include <QFileInfo>
+#include <QPromise>
 #include <QFuture>
 #include <QFutureWatcher>
+#include <QDir>
+#include <QFileInfo>
 #include <QLocalSocket>
 #include <QLoggingCategory>
-#include <QPromise>
 #include <QUuid>
 
+#include <sddl.h>
+#include <ntstatus.h>
 #include <cfapi.h>
 #include <comdef.h>
 #include <memory>
-#include <ntstatus.h>
-#include <sddl.h>
 
 Q_LOGGING_CATEGORY(lcCfApiWrapper, "nextcloud.sync.vfs.cfapi.wrapper", QtInfoMsg)
 using namespace Qt::Literals::StringLiterals;
