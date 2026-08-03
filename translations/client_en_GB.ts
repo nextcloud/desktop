@@ -1,6 +1,49 @@
 <?xml version='1.0' encoding='utf-8'?>
 <TS version="2.1" language="en_GB">
-<context><name /><message><source>Agree</source><translation>Agree</translation></message><message><source>Back</source><translation>Back</translation></message><message><source>Necessary data</source><translation>Necessary data</translation></message><message><source>Required to ensure that the software can be used as expected</source><translation>Required to ensure that the software can be used as expected</translation></message><message><source>Save Settings</source><translation>Save Settings</translation></message><message><source>Send anonymous use</source><translation>Send anonymous use</translation></message><message><source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source><translation>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</translation></message><message><source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source><translation>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://static.hidrive.com/next/1006&apos;&gt;privacy policy&lt;/a&gt;.</translation></message><message><source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source><translation>This helps us to optimize the software and to better identify system crashes and unexpected errors.</translation></message><message><source>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</source><translation>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</translation></message></context><context>
+<context>
+    <name />
+    <message>
+        <source>Agree</source>
+        <translation>Agree</translation>
+    </message>
+    <message>
+        <source>Back</source>
+        <translation>Back</translation>
+    </message>
+    <message>
+        <source>Necessary data</source>
+        <translation>Necessary data</translation>
+    </message>
+    <message>
+        <source>Required to ensure that the software can be used as expected</source>
+        <translation>Required to ensure that the software can be used as expected</translation>
+    </message>
+    <message>
+        <source>Save Settings</source>
+        <translation>Save Settings</translation>
+    </message>
+    <message>
+        <source>Send anonymous use</source>
+        <translation>Send anonymous use</translation>
+    </message>
+    <message>
+        <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source>
+        <translation>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source>
+        <translation>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://static.hidrive.com/next/1006&apos;&gt;privacy policy&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
+        <translation>This helps us to optimize the software and to better identify system crashes and unexpected errors.</translation>
+    </message>
+    <message>
+        <source>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</source>
+        <translation>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</translation>
+    </message>
+</context>
+<context>
     <name>ActivityItem</name>
     <message>
         <source>In %1</source>
@@ -45,7 +88,14 @@
         <translation>Scroll to top</translation>
     </message>
 </context>
-<context><name>BasicComboBox</name><message><source>Clear status message menu</source><translation>Delete status message menu</translation></message></context><context>
+<context>
+    <name>BasicComboBox</name>
+    <message>
+        <source>Clear status message menu</source>
+        <translation>Delete status message menu</translation>
+    </message>
+</context>
+<context>
     <name>CallNotificationDialog</name>
     <message>
         <source>Answer Talk call notification</source>
@@ -243,7 +293,14 @@
         <translation>File details of %1 · %2</translation>
     </message>
 </context>
-<context><name>FileProviderFastEnumerationSettings</name><message><source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder.</source><translation>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder.</translation></message></context><context>
+<context>
+    <name>FileProviderFastEnumerationSettings</name>
+    <message>
+        <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder.</source>
+        <translation>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder.</translation>
+    </message>
+</context>
+<context>
     <name>FileProviderFileDelegate</name>
     <message>
         <source>Delete</source>
@@ -252,7 +309,11 @@
 </context>
 <context>
     <name>FileProviderSettings</name>
-    <message><source>Signal file provider domain</source><translation>Signal file provider domain</translation></message><message>
+    <message>
+        <source>Signal file provider domain</source>
+        <translation>Signal file provider domain</translation>
+    </message>
+    <message>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
         <translation>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</translation>
     </message>
@@ -261,7 +322,21 @@
         <translation>Virtual files settings</translation>
     </message>
 </context>
-<context><name>FileProviderStorageInfo</name><message><source>Evict local copies...</source><translation>Evict local copies...</translation></message></context><context><name>FileProviderSyncStatus</name><message><source>All synced!</source><translation>All synced!</translation></message></context><context>
+<context>
+    <name>FileProviderStorageInfo</name>
+    <message>
+        <source>Evict local copies...</source>
+        <translation>Evict local copies...</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderSyncStatus</name>
+    <message>
+        <source>All synced!</source>
+        <translation>All synced!</translation>
+    </message>
+</context>
+<context>
     <name>FileSystem</name>
     <message>
         <source>Could not remove folder &quot;%1&quot;</source>
@@ -314,7 +389,7 @@
     </message>
     <message>
         <source>Add Folder Sync</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Add Folder Sync</translation>
     </message>
     <message>
         <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
@@ -329,7 +404,7 @@
     <name>FolderWizardTargetPage</name>
     <message>
         <source>Add Folder Sync</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Add Folder Sync</translation>
     </message>
     <message>
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
@@ -399,9 +474,13 @@
 </context>
 <context>
     <name>OCC::AccountManager</name>
-    <message><source>%1 accounts were detected from a legacy desktop client.
-Should the accounts be imported?</source><translation>%1 accounts were detected from a legacy desktop client.
-Should the accounts be imported?</translation></message><message>
+    <message>
+        <source>%1 accounts were detected from a legacy desktop client.
+Should the accounts be imported?</source>
+        <translation>%1 accounts were detected from a legacy desktop client.
+Should the accounts be imported?</translation>
+    </message>
+    <message>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>An account was detected from a legacy desktop client.
@@ -426,7 +505,11 @@ Should the account be imported?</translation>
 </context>
 <context>
     <name>OCC::AccountSettings</name>
-    <message><source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source><translation>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</translation></message><message>
+    <message>
+        <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
+        <translation>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</translation>
+    </message>
+    <message>
         <source>%1 as %2</source>
         <translation>%1 as %2</translation>
     </message>
@@ -594,7 +677,19 @@ Should the account be imported?</translation>
         <source>End-to-end encryption mnemonic</source>
         <translation>End-to-end encryption mnemonic</translation>
     </message>
-    <message><source>Expand Memory</source><translation>Expand Memory</translation></message><message><source>ExpandMemory-Link</source><translation>https://wl.hidrive.com/easy/0057</translation></message><message><source>ExpandMemory-Link_STRATO</source><translation>https://static.hidrive.com/next/1046</translation></message><message>
+    <message>
+        <source>Expand Memory</source>
+        <translation>Expand Memory</translation>
+    </message>
+    <message>
+        <source>ExpandMemory-Link</source>
+        <translation>https://wl.hidrive.com/easy/0057</translation>
+    </message>
+    <message>
+        <source>ExpandMemory-Link_STRATO</source>
+        <translation>https://static.hidrive.com/next/1046</translation>
+    </message>
+    <message>
         <source>Folder creation failed</source>
         <translation>Folder creation failed</translation>
     </message>
@@ -686,7 +781,11 @@ Should the account be imported?</translation>
         <source>Signed out from %1.</source>
         <translation>Signed out from %1.</translation>
     </message>
-    <message><source>Storage space %1% occupied</source><translation>Storage space %1% occupied</translation></message><message>
+    <message>
+        <source>Storage space %1% occupied</source>
+        <translation>Storage space %1% occupied</translation>
+    </message>
+    <message>
         <source>Sync Running</source>
         <translation>Sync Running</translation>
     </message>
@@ -760,7 +859,11 @@ This action will abort any currently running synchronization.</translation>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</translation>
     </message>
-    <message><source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source><translation>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</translation></message><message>
+    <message>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</translation>
+    </message>
+    <message>
         <source>Unable to connect to %1.</source>
         <translation>Unable to connect to %1.</translation>
     </message>
@@ -1359,7 +1462,7 @@ Would you like to do this now?</translation>
     <name>OCC::DataProtectionPage</name>
     <message>
         <source>Agree</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Agree</translation>
     </message>
     <message>
         <source>Form</source>
@@ -1371,11 +1474,11 @@ Would you like to do this now?</translation>
     </message>
     <message>
         <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://static.hidrive.com/next/1006&apos;&gt;privacy policy&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1390,27 +1493,27 @@ Would you like to do this now?</translation>
     </message>
     <message>
         <source>Necessary data</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Necessary data</translation>
     </message>
     <message>
         <source>Required to ensure that the software can be used as expected</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Required to ensure that the software can be used as expected</translation>
     </message>
     <message>
         <source>Save Settings</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Save Settings</translation>
     </message>
     <message>
         <source>Send anonymous use</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Send anonymous use</translation>
     </message>
     <message>
         <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">This helps us to optimize the software and to better identify system crashes and unexpected errors.</translation>
     </message>
     <message>
         <source>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</translation>
     </message>
 </context>
 <context>
@@ -2117,7 +2220,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <name>OCC::FolderStatusDelegate</name>
     <message>
         <source>Add Folder Sync</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Add Folder Sync</translation>
     </message>
     <message>
         <source>File</source>
@@ -2294,7 +2397,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <name>OCC::FolderWizardLocalPath</name>
     <message>
         <source>Add Folder Sync</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Add Folder Sync</translation>
     </message>
     <message>
         <source>Choose</source>
@@ -2310,7 +2413,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</translation>
     </message>
     <message>
         <source>Select the source folder</source>
@@ -2318,14 +2421,14 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <source>Step 1 of 3: Select local folder</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Step 1 of 3: Select local folder</translation>
     </message>
 </context>
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
         <source>Add Folder Sync</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Add Folder Sync</translation>
     </message>
     <message>
         <source>Authentication failed accessing %1</source>
@@ -2333,7 +2436,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Both folders are permanently linked and the respective contents are automatically synchronized and updated.</translation>
     </message>
     <message>
         <source>Choose this to sync the entire account</source>
@@ -2369,7 +2472,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -2377,7 +2480,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <source>Step 2 of 3: Directory in your %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Step 2 of 3: Directory in your %1</translation>
     </message>
     <message>
         <source>You are already syncing the subfolder %1 at %2.</source>
@@ -2392,11 +2495,11 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <source>Add Folder Sync</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Add Folder Sync</translation>
     </message>
     <message>
         <source>Step 3 of 3: Selektive Synchronisation</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Step 3 of 3: Selective Synchronisation</translation>
     </message>
     <message>
         <source>Use virtual files instead of downloading content immediately %1</source>
@@ -2413,7 +2516,11 @@ For advanced users: this issue might be related to multiple sync database files 
 </context>
 <context>
     <name>OCC::GeneralSettings</name>
-    <message><source>&amp;Analysis data collection for needs-based design</source><translation>&amp;Analysis data collection for needs-based design</translation></message><message>
+    <message>
+        <source>&amp;Analysis data collection for needs-based design</source>
+        <translation>&amp;Analysis data collection for needs-based design</translation>
+    </message>
+    <message>
         <source>&amp;Automatically check for updates</source>
         <translation>&amp;Automatically check for updates</translation>
     </message>
@@ -2540,7 +2647,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     </message>
     <message>
         <source>Necessary data</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Necessary data</translation>
     </message>
     <message>
         <source>Notify when synchronised folders grow larger than specified limit</source>
@@ -2560,7 +2667,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     </message>
     <message>
         <source>Required to ensure that the software can be used as expected</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Required to ensure that the software can be used as expected</translation>
     </message>
     <message>
         <source>Restore &amp;Default</source>
@@ -2572,7 +2679,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     </message>
     <message>
         <source>Send anonymous use</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Send anonymous use</translation>
     </message>
     <message>
         <source>Server notifications that require attention.</source>
@@ -2629,7 +2736,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     </message>
     <message>
         <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">This helps us to optimize the software and to better identify system crashes and unexpected errors.</translation>
     </message>
     <message>
         <source>Update channel</source>
@@ -4769,11 +4876,11 @@ Server replied with error: %2</translation>
     </message>
     <message>
         <source>ExpandMemory-Link</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">https://wl.hidrive.com/easy/0057</translation>
     </message>
     <message>
         <source>ExpandMemory-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">https://static.hidrive.com/next/1046</translation>
     </message>
     <message>
         <source>Help-Link</source>
@@ -4883,7 +4990,11 @@ Server replied with error: %2</translation>
 </context>
 <context>
     <name>OCC::User</name>
-    <message><source>%1 notifications</source><translation>%1 notifications</translation></message><message numerus="yes">
+    <message>
+        <source>%1 notifications</source>
+        <translation>%1 notifications</translation>
+    </message>
+    <message numerus="yes">
         <source>%n notification(s)</source>
         <translation>
             <numerusform>%n notification</numerusform>
@@ -5360,7 +5471,11 @@ Server replied with error: %2</translation>
         <source>Virtual file created</source>
         <translation>Virtual file created</translation>
     </message>
-<message><source>updating local virtual files metadata</source><translation>Updating local virtual files metadata</translation></message></context>
+    <message>
+        <source>updating local virtual files metadata</source>
+        <translation>Updating local virtual files metadata</translation>
+    </message>
+</context>
 <context>
     <name>ProxySettings</name>
     <message>
@@ -5703,7 +5818,11 @@ Server replied with error: %2</translation>
         <source>Enter a note for the recipient</source>
         <translation>Enter a note for the recipient</translation>
     </message>
-    <message><source>Enter the note to recipient</source><translation>Enter the note to recipient</translation></message><message>
+    <message>
+        <source>Enter the note to recipient</source>
+        <translation>Enter the note to recipient</translation>
+    </message>
+    <message>
         <source>File drop (upload only)</source>
         <translation>File drop (upload only)</translation>
     </message>
@@ -5974,7 +6093,7 @@ Server replied with error: %2</translation>
     </message>
     <message>
         <source>Open Nextcloud in browser</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Open HiDrive Next in browser</translation>
     </message>
     <message>
         <source>Open local or team folders</source>
@@ -5982,7 +6101,7 @@ Server replied with error: %2</translation>
     </message>
     <message>
         <source>Website</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Website</translation>
     </message>
 </context>
 <context>
