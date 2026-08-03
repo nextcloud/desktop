@@ -221,22 +221,16 @@ static os_log_t getFinderSyncLogger(void) {
 		subMenuItem.submenu = subMenu;
 		subMenuItem.image = [[NSBundle mainBundle] imageForResource:@"app.icns"];
 
-		// There is an annoying bug in macOS (at least 10.13.3), it does not use/copy over the representedObject of a menu item
-		// So we have to use tag instead.
 		int idx = 0;
-
 		for (NSArray* item in menuItems) {
 			NSMenuItem *actionItem = [subMenu addItemWithTitle:[item valueForKey:@"text"]
 														action:@selector(subMenuActionClicked:)
 												 keyEquivalent:@""];
-			// Carry the command on the item itself rather than an index into _menuItems. The
-			// menu outlives the array it was built from: a later GET_MENU_ITEMS round trip can
-			// reset and repopulate _menuItems before the user clicks, after which an index
-			// either selects the wrong command or is out of bounds and throws — crashing the
-			// extension. identifier is a plain string property from
-			// NSUserInterfaceItemIdentification, so unlike representedObject it survives
-			// whatever copying Finder does to the menu.
-			actionItem.identifier = [item valueForKey:@"command"];
+
+			// Finder copies the menu into its own process to display it but identifier does not survive it
+			// Carry the command via tag as it was before introducing XPC:
+			// an index into _menuItems that subMenuActionClicked: resolves locally
+			actionItem.tag = idx;
 			[actionItem setTarget:self];
 			NSString *flags = [item valueForKey:@"flags"]; // e.g. "d"
 
@@ -257,7 +251,14 @@ static os_log_t getFinderSyncLogger(void) {
 }
 
 - (void)subMenuActionClicked:(id)sender {
-	NSString *command = [(NSMenuItem *)sender identifier];
+	const NSInteger tag = [(NSMenuItem *)sender tag];
+	NSString *command = nil;
+	[self->_menuIsComplete lock];
+	if (tag >= 0 && tag < (NSInteger)_menuItems.count) {
+		command = _menuItems[tag][@"command"];
+		os_log_debug(_log, "command for menu: %{public}@", command);
+	}
+	[self->_menuIsComplete unlock];
 
 	if (command.length == 0) {
 		os_log_error(_log, "Menu item clicked with no command attached; ignoring");
