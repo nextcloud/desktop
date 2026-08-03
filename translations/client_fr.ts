@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <TS version="2.1" language="fr">
-<context>
+<context><name /><message><source>Agree</source><translation>Accepter</translation></message><message><source>Back</source><translation>Retour</translation></message><message><source>Necessary data</source><translation>Données indispensables</translation></message><message><source>Required to ensure that the software can be used as expected</source><translation>Nécessaire pour s&apos;assurer que le logiciel peut être utilisé comme prévu</translation></message><message><source>Save Settings</source><translation>Sauvegarder les paramètres</translation></message><message><source>Send anonymous use</source><translation>Envoyer utilisation anonyme</translation></message><message><source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source><translation>Cette application utilise des technologies de suivi. En cliquant sur Accepter, vous acceptez le traitement de vos données anonymes. Vous pouvez modifier vos choix à tout moment via les paramètres. &lt;br/&gt; &lt;br/&gt;Des informations sur le traitement des données et autres peuvent être trouvées dans notre &lt;a href=&apos;https://wl.hidrive.com/easy/0025&apos;&gt;politique de confidentialité&lt;/a&gt;.</translation></message><message><source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;._STRATO</source><translation>Cette application utilise des technologies de suivi. En cliquant sur Accepter, vous acceptez le traitement de vos données anonymes. Vous pouvez modifier vos choix à tout moment via les paramètres. &lt;br/&gt; &lt;br/&gt;Des informations sur le traitement des données et autres peuvent être trouvées dans notre &lt;a href=&apos;https://static.hidrive.com/next/1002&apos;&gt;politique de confidentialité&lt;/a&gt;.</translation></message><message><source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source><translation>Cela nous aide à optimiser le logiciel et à mieux identifier les pannes de système et les erreurs inattendues.</translation></message><message><source>We collect anonymized data to optimize our app. We use software solutions from various partners for this purpose. We want to give you full transparency and freedom of choice regarding the collection and processing of your anonymized usage. You can change your settings at any time under the menu item Data Protection.</source><translation>Nous collectons des données anonymes pour optimiser notre application. Nous utilisons à cet effet des solutions logicielles de différents partenaires. Nous souhaitons vous offrir une transparence totale et une liberté de choix en ce qui concerne la collecte et le traitement de votre utilisation anonyme. Vous pouvez modifier vos paramètres à tout moment dans le menu Protection des données.</translation></message></context><context>
     <name>ActivityItem</name>
     <message>
         <source>In %1</source>
@@ -45,7 +45,7 @@
         <translation>Défiler vers le haut</translation>
     </message>
 </context>
-<context>
+<context><name>BasicComboBox</name><message><source>Clear status message menu</source><translation>Menu d&apos;effacement du message de statut</translation></message></context><context>
     <name>CallNotificationDialog</name>
     <message>
         <source>Answer Talk call notification</source>
@@ -144,7 +144,7 @@
     </message>
     <message>
         <source>Server version</source>
-        <translation>Version serveur</translation>
+        <translation>Version du serveur</translation>
     </message>
 </context>
 <context>
@@ -233,7 +233,7 @@
     <name>FileDetailsPage</name>
     <message>
         <source>Dismiss</source>
-        <translation type="unfinished" />
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -243,7 +243,7 @@
         <translation>Détails du fichier de %1 · %2</translation>
     </message>
 </context>
-<context>
+<context><name>FileProviderFastEnumerationSettings</name><message><source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder.</source><translation>La synchronisation rapide va uniquement synchroniser les modifications des fichiers et des dossiers dans les dossiers qui ont été explorés. Ceci peut significativement augmenter la réactivité sur la configuration initiale des fichiers virtuelles. Cependant, cela va causer des téléchargements redondants de fichiers déplacés dans un dossier non exploré.</translation></message></context><context>
     <name>FileProviderFileDelegate</name>
     <message>
         <source>Delete</source>
@@ -252,7 +252,7 @@
 </context>
 <context>
     <name>FileProviderSettings</name>
-    <message>
+    <message><source>Signal file provider domain</source><translation>Indiquer le domaine du fournisseur de fichiers</translation></message><message>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
         <translation>Les fichiers virtuels apparaissent comme des fichiers classiques, sauf qu’ils n’occupent pas d’espace de stockage local. Leur contenu se télécharge automatiquement lors de l’ouverture. Les fichiers virtuels et la synchronisation classique ne peuvent pas être utilisés en même temps.</translation>
     </message>
@@ -261,7 +261,7 @@
         <translation>Paramètres des fichiers virtuels</translation>
     </message>
 </context>
-<context>
+<context><name>FileProviderStorageInfo</name><message><source>Evict local copies...</source><translation>Supprimer les copies locales</translation></message></context><context><name>FileProviderSyncStatus</name><message><source>All synced!</source><translation>Tout est synchronisé !</translation></message></context><context>
     <name>FileSystem</name>
     <message>
         <source>Could not remove folder &quot;%1&quot;</source>
@@ -299,18 +299,18 @@
     <name>FolderWizardSelectiveSync</name>
     <message>
         <source>Add Folder Sync</source>
-        <translation type="unfinished" />
+        <translation>Ajouter une synchronisation de dossiers</translation>
     </message>
     <message>
         <source>Step 3 of 3: Selektive Synchronisation</source>
-        <translation type="unfinished" />
+        <translation>Étape 3 sur 3 : synchronisation sélective</translation>
     </message>
 </context>
 <context>
     <name>FolderWizardSourcePage</name>
     <message>
         <source>&amp;Choose</source>
-        <translation type="unfinished" />
+        <translation>&amp;Choisir</translation>
     </message>
     <message>
         <source>Add Folder Sync</source>
@@ -318,11 +318,11 @@
     </message>
     <message>
         <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
-        <translation type="unfinished" />
+        <translation>Sélectionnez sur votre disque dur un dossier qui doit être en permanence rattaché à votre %1. Tous les fichiers et sous-dossiers sont automatiquement importés et synchronisés.</translation>
     </message>
     <message>
         <source>Step 1 of 3: Select local folder</source>
-        <translation type="unfinished" />
+        <translation>Étape 1 sur 3 : sélectionner un dossier local</translation>
     </message>
 </context>
 <context>
@@ -333,7 +333,7 @@
     </message>
     <message>
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
-        <translation type="unfinished" />
+        <translation>Les deux dossiers sont en permanence rattachés et leur contenu respectif est automatiquement synchronisé et importé.</translation>
     </message>
     <message>
         <source>Create folder</source>
@@ -345,7 +345,7 @@
     </message>
     <message>
         <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
-        <translation type="unfinished" />
+        <translation>À présent, sélectionnez ou créez dans votre %1 un dossier cible dans lequel le contenu doit être importé et synchronisé.</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -353,7 +353,7 @@
     </message>
     <message>
         <source>Step 2 of 3: Directory in your %1</source>
-        <translation type="unfinished" />
+        <translation>Étape 2 sur 3 : répertoire dans votre %1</translation>
     </message>
 </context>
 <context>
@@ -399,7 +399,9 @@
 </context>
 <context>
     <name>OCC::AccountManager</name>
-    <message>
+    <message><source>%1 accounts were detected from a legacy desktop client.
+Should the accounts be imported?</source><translation>%1 comptes ont été détectés à partir d&apos;un ancien client de bureau.
+Doivent-ils être importés ?</translation></message><message>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Un compte a été détecté à partir d’un ancien client de synchronisation bureau. 
@@ -424,7 +426,7 @@ Le compte doit-il être importé ?</translation>
 </context>
 <context>
     <name>OCC::AccountSettings</name>
-    <message>
+    <message><source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source><translation>%1 (%3%) utilisés sur %2. Certains dossiers, montés depuis le réseau ou partagés, peuvent avoir des limites différentes.</translation></message><message>
         <source>%1 as %2</source>
         <translation>%1 avec le compte %2</translation>
     </message>
@@ -592,7 +594,7 @@ Le compte doit-il être importé ?</translation>
         <source>End-to-end encryption mnemonic</source>
         <translation>Phrase secrète du chiffrement de bout en bout</translation>
     </message>
-    <message>
+    <message><source>Expand Memory</source><translation>Augmenter la mémoire</translation></message><message><source>ExpandMemory-Link</source><translation>https://wl.hidrive.com/easy/0077</translation></message><message><source>ExpandMemory-Link_STRATO</source><translation>https://static.hidrive.com/next/1042</translation></message><message>
         <source>Folder creation failed</source>
         <translation>Échec de la création du dossier</translation>
     </message>
@@ -684,7 +686,7 @@ Le compte doit-il être importé ?</translation>
         <source>Signed out from %1.</source>
         <translation>Session sur %1 fermée.</translation>
     </message>
-    <message>
+    <message><source>Storage space %1% occupied</source><translation>Espace de stockage %1% occupé</translation></message><message>
         <source>Sync Running</source>
         <translation>Synchronisation en cours</translation>
     </message>
@@ -723,15 +725,15 @@ Vous prenez vos propres risques.</translation>
     </message>
     <message>
         <source>There are folders that were not synchronized because they are external storages:</source>
-        <translation type="unfinished" />
+        <translation>Certains dossiers n&apos;ont pas été synchronisés parce qu&apos;ils sont localisés sur un stockage externe :</translation>
     </message>
     <message>
         <source>There are folders that were not synchronized because they are too big or external storages:</source>
-        <translation type="unfinished" />
+        <translation>Certains dossiers n&apos;ont pas été synchronisés parce qu&apos;ils sont localisés sur un stockage externe ou qu&apos;ils sont de taille trop importante :</translation>
     </message>
     <message>
         <source>There are folders that were not synchronized because they are too big:</source>
-        <translation type="unfinished" />
+        <translation>Certains dossiers n&apos;ont pas été synchronisés parce qu&apos;ils sont de taille trop importante :</translation>
     </message>
     <message>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
@@ -750,14 +752,14 @@ Cette action entraînera l&apos;interruption de toute synchronisation en cours.<
     <message>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation>Cela va chiffrer votre dossier et tous les fichiers qu&apos;il contient. Ces fichiers ne seront plus accessibles sans votre clé de chiffrement mnémonique. 
-&lt;b&gt;Ce processus n&apos;est pas réversible. Êtes-vous sûr de vouloir le faire ?&lt;/b&gt;</translation>
+        <translation>Cette opération cryptera votre dossier et tous les fichiers qu&apos;il contient. Ces fichiers ne seront plus accessibles sans votre clé mnémonique de cryptage.
+&lt;b&gt;Ce processus n&apos;est pas réversible. Êtes-vous sûr de vouloir continuer ?</translation>
     </message>
     <message>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>Pour protéger votre identité cryptographique, nous la chiffrons avec une phrase secrète de 12 mots du dictionnaire. Veuillez la noter et la garder en sécurité. Elle sera nécessaire pour configurer la synchronisation de dossiers chiffrés sur vos autres appareils.</translation>
     </message>
-    <message>
+    <message><source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source><translation>Pour protéger votre identité cryptographique, nous la chiffrons avec une phrase secrète de 12 mots du dictionnaire. Veuillez la noter et la garder en sécurité. Elle sera nécessaire pour ajouter d’autres appareils à votre compte (comme votre smartphone ou votre ordinateur portable).</translation></message><message>
         <source>Unable to connect to %1.</source>
         <translation>Impossible de se connecter à %1.</translation>
     </message>
@@ -1138,7 +1140,7 @@ Would you like to do this now?</source>
     </message>
     <message>
         <source>Existing file</source>
-        <translation>Fichier existant</translation>
+        <translation>Dossier existant</translation>
     </message>
     <message>
         <source>Filename contains illegal characters: %1</source>
@@ -1182,7 +1184,7 @@ Would you like to do this now?</source>
     </message>
     <message>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Le fichier n&apos;a pas pu être synchronisé parce qu&apos;il génère un conflit de casse avec un fichier existant dans ce système.</translation>
+        <translation>Le fichier n&apos;a pas pu être synchronisé car il génère un conflit de cas avec un fichier existant sur ce système.</translation>
     </message>
     <message>
         <source>Use invalid name</source>
@@ -1362,7 +1364,7 @@ Would you like to do this now?</source>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished">Paramètres</translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href=&apos;https://wl.hidrive.com/easy/0005&apos;&gt;privacy policy&lt;/a&gt;.</source>
@@ -1423,11 +1425,11 @@ Would you like to do this now?</source>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
         <source>Encrypted metadata setup error!</source>
-        <translation>Erreur lors de la configuration des métadonnées chiffrées !</translation>
+        <translation>Erreur de configuration des métadonnées chiffrées !</translation>
     </message>
     <message>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation>Erreur de configuration des métadonnées chiffrées: la signature initiale du serveur est vide.</translation>
+        <translation>Erreur de configuration des métadonnées cryptées : la signature initiale du serveur est vide.</translation>
     </message>
     <message>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
@@ -1845,7 +1847,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
     </message>
     <message>
         <source>A folder from an external storage has been added.</source>
-        <translation type="unfinished" />
+        <translation>Un nouveau dossier localisé sur un stockage externe a été ajouté.</translation>
     </message>
     <message>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
@@ -1857,21 +1859,21 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
         <source>A large number of files in the server have been deleted.
 Please confirm if you&apos;d like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
-        <translation>Un grand nombre de fichiers du serveur ont été supprimés.
+        <translation>Un grand nombre de fichiers ont été supprimés sur le serveur.
 Veuillez confirmer si vous souhaitez procéder à ces suppressions.
-Vous pouvez également restaurer tous les fichiers supprimés en les téléversant depuis le dossier &apos;%1&apos; vers le serveur.</translation>
+Vous pouvez également restaurer tous les fichiers supprimés en les téléchargeant depuis le dossier &apos;%1&apos; vers le serveur.</translation>
     </message>
     <message>
         <source>A large number of files in your local &apos;%1&apos; folder have been deleted.
 Please confirm if you&apos;d like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation>Un grand nombre de fichiers de votre dossier local &apos;%1&apos; ont été supprimés.
+        <translation>Un grand nombre de fichiers de votre dossier local &quot;%1&quot; ont été supprimés.
 Veuillez confirmer si vous souhaitez procéder à ces suppressions.
 Vous pouvez également restaurer tous les fichiers supprimés en les téléchargeant depuis le serveur.</translation>
     </message>
     <message>
         <source>A new folder larger than %1 MB has been added: %2.</source>
-        <translation type="unfinished" />
+        <translation>Un nouveau dossier de taille supérieure à %1 Mo a été ajouté : %2.</translation>
     </message>
     <message>
         <source>Changes in synchronized folders could not be tracked reliably.
@@ -1915,7 +1917,7 @@ Cela signifie que le client de bureau ne va pas téléverser immédiatement les 
     </message>
     <message>
         <source>Remove all files?</source>
-        <translation>Supprimer tous les fichiers ?</translation>
+        <translation>Supprimer tous les fichiers ?</translation>
     </message>
     <message>
         <source>Restore Files from Server</source>
@@ -1958,7 +1960,7 @@ Cela signifie que le client de bureau ne va pas téléverser immédiatement les 
     <name>OCC::FolderCreationDialog</name>
     <message>
         <source>%1 Create new folder</source>
-        <translation type="unfinished" />
+        <translation>%1 Créer un nouveau dossier</translation>
     </message>
     <message>
         <source>Could not create a folder! Check your write permissions.</source>
@@ -1989,11 +1991,11 @@ Cela signifie que le client de bureau ne va pas téléverser immédiatement les 
     </message>
     <message>
         <source>(backup %1)</source>
-        <translation type="unfinished" />
+        <translation>(sauvegarde %1)</translation>
     </message>
     <message>
         <source>(backup)</source>
-        <translation type="unfinished" />
+        <translation>(sauvegarde)</translation>
     </message>
     <message>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
@@ -2124,7 +2126,7 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
     </message>
     <message>
         <source>Synchronize any other local folder with your %1</source>
-        <translation type="unfinished" />
+        <translation>Synchronisez n’importe quel autre dossier local avec votre %1</translation>
     </message>
 </context>
 <context>
@@ -2293,7 +2295,7 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
     </message>
     <message>
         <source>Choose</source>
-        <translation type="unfinished" />
+        <translation>Choisissez</translation>
     </message>
     <message>
         <source>Click to select a local folder to sync.</source>
@@ -2395,7 +2397,7 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
     </message>
     <message>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation>Utiliser les fichiers virtuels au lieu de télécharger le contenu immédiatement %1</translation>
+        <translation>Utiliser les fichiers virtuels %1</translation>
     </message>
     <message>
         <source>Virtual files are not supported at the selected location</source>
@@ -2408,7 +2410,7 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
 </context>
 <context>
     <name>OCC::GeneralSettings</name>
-    <message>
+    <message><source>&amp;Analysis data collection for needs-based design</source><translation>&amp;Collecte des données d’analyse pour une conception basée sur les besoins</translation></message><message>
         <source>&amp;Automatically check for updates</source>
         <translation>&amp;Vérifier automatiquement les mises à jour</translation>
     </message>
@@ -2446,15 +2448,15 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
     </message>
     <message>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Demander confirmation avant de synchroniser des stockages externes </translation>
+        <translation>Confirmation avant de synchroniser des stockages externes</translation>
     </message>
     <message>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Demander confirmation avant de synchroniser les dossiers plus grands que</translation>
+        <translation>Demander la confirmation avant de synchroniser les dossiers plus grands que</translation>
     </message>
     <message>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation>Désactiver automatiquement la synchronisation des dossiers qui dépassent la limite fixée</translation>
+        <translation>Désactiver automatiquement la synchronisation des dossiers qui dépassent la limite</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -2486,7 +2488,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
     </message>
     <message>
         <source>Data Protection</source>
-        <translation type="unfinished" />
+        <translation>Protection des données</translation>
     </message>
     <message>
         <source>Debug Archive Created</source>
@@ -2527,7 +2529,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
     </message>
     <message>
         <source>More Information</source>
-        <translation type="unfinished" />
+        <translation>Plus d’informations</translation>
     </message>
     <message>
         <source>Move removed files to trash</source>
@@ -2543,11 +2545,11 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
     </message>
     <message>
         <source>Open Source Software</source>
-        <translation type="unfinished" />
+        <translation>Logiciel libre</translation>
     </message>
     <message>
         <source>Privacy Policy</source>
-        <translation type="unfinished" />
+        <translation>Politique de confidentialité</translation>
     </message>
     <message>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
@@ -2632,7 +2634,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
     </message>
     <message>
         <source>Updates</source>
-        <translation type="unfinished" />
+        <translation>Mises à jour</translation>
     </message>
     <message>
         <source>Usage Documentation</source>
@@ -2767,7 +2769,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
     </message>
     <message>
         <source>Add a new ignore pattern:</source>
-        <translation>Ajouter un nouveau modèle d&apos;exclusion :</translation>
+        <translation>Ajouter un nouveau motif d&apos;exclusion:</translation>
     </message>
     <message>
         <source>Allow Deletion</source>
@@ -2785,12 +2787,13 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Les fichiers ou dossiers correspondant à un modèle ne seront pas synchronisés.
-Les éléments dont la suppression est autorisée seront supprimés s&apos;ils empêchent la suppression d&apos;un répertoire. Cette fonction est utile pour les métadonnées.</translation>
+        <translation>Les fichiers ou dossiers qui correspondent à ce modèle ne seront pas synchronisés.
+
+Les objets autorisés à être supprimés le seront s&apos;ils empêchent la suppression d&apos;un dossier. Ceci est utile pour les métadonnées.</translation>
     </message>
     <message>
         <source>Ignore Pattern</source>
-        <translation type="unfinished" />
+        <translation>Ignorer le modèle</translation>
     </message>
     <message>
         <source>Pattern</source>
@@ -3900,7 +3903,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     </message>
     <message>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
-        <translation>Le dossier %1 n’a pu être renommé à cause d’un conflit local de nom de fichier ou de dossier !</translation>
+        <translation>Le dossier %1 ne peut pas être renommé en raison d’un conflit de nom avec un fichier ou un dossier local !</translation>
     </message>
     <message>
         <source>The file %1 is currently in use</source>
@@ -4027,7 +4030,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     </message>
     <message>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>Le téléversement de %1 provoque un dépassement du quota du dossier</translation>
+        <translation>L&apos;envoi de %1 amène un dépassement de quota pour le dossier</translation>
     </message>
 </context>
 <context>
@@ -4158,7 +4161,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     </message>
     <message>
         <source>Success</source>
-        <translation type="unfinished" />
+        <translation>Réussite</translation>
     </message>
     <message>
         <source>Warning</source>
@@ -4182,7 +4185,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     </message>
     <message>
         <source>New account</source>
-        <translation type="unfinished" />
+        <translation>Nouveau compte</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4478,11 +4481,11 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <source>This connection is NOT secure as it is not encrypted.</source>
-        <translation type="unfinished" />
+        <translation>Cette connexion n&apos;est PAS sécurisée car elle n&apos;est pas chiffrée.</translation>
     </message>
     <message>
         <source>This connection is encrypted using %1 bit %2.</source>
-        <translation type="unfinished" />
+        <translation>Cette connexion est chiffrée en utilisant %1 bit %2.</translation>
     </message>
 </context>
 <context>
@@ -4771,51 +4774,51 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <source>Help-Link</source>
-        <translation type="unfinished" />
+        <translation>https://wl.hidrive.com/easy/0128</translation>
     </message>
     <message>
         <source>Help-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1012</translation>
     </message>
     <message>
         <source>LegalNotice-Link</source>
-        <translation type="unfinished" />
+        <translation>https://wl.hidrive.com/easy/0024</translation>
     </message>
     <message>
         <source>LegalNotice-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1022</translation>
     </message>
     <message>
         <source>Login_URL</source>
-        <translation type="unfinished" />
+        <translation>https://storage.ionos.fr</translation>
     </message>
     <message>
         <source>Login_URL_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://storage.ionos.fr</translation>
     </message>
     <message>
         <source>MoreInformation-Link</source>
-        <translation type="unfinished" />
+        <translation>https://wl.hidrive.com/easy/0027</translation>
     </message>
     <message>
         <source>MoreInformation-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1012</translation>
     </message>
     <message>
         <source>OpenSource-Link</source>
-        <translation type="unfinished" />
+        <translation>https://wl.hidrive.com/easy/0026</translation>
     </message>
     <message>
         <source>OpenSource-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation> https://static.hidrive.com/next/1031</translation>
     </message>
     <message>
         <source>Privacy-Link</source>
-        <translation type="unfinished" />
+        <translation>https://wl.hidrive.com/easy/0025</translation>
     </message>
     <message>
         <source>Privacy-Link_STRATO</source>
-        <translation type="unfinished" />
+        <translation>https://static.hidrive.com/next/1002</translation>
     </message>
 </context>
 <context>
@@ -4841,7 +4844,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <name>OCC::UpdateE2eeFolderMetadataJob</name>
     <message>
         <source>Failed to finalize item.</source>
-        <translation>Impossible de finaliser l&apos;item.</translation>
+        <translation>Échec de finalisation de l’élément.</translation>
     </message>
     <message>
         <source>Failed to unlock encrypted folder.</source>
@@ -4856,7 +4859,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <name>OCC::UpdateE2eeFolderUsersMetadataJob</name>
     <message>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation>Impossible d’ajouter ou de supprimer l’utilisateur %1 de l’accès au dossier %2</translation>
+        <translation>Impossible de supprimer l’utilisateur %1 au dossier d’accès %2 ou de l’y ajouter</translation>
     </message>
     <message>
         <source>Could not fetch public key for user %1</source>
@@ -4877,7 +4880,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 </context>
 <context>
     <name>OCC::User</name>
-    <message numerus="yes">
+    <message><source>%1 notifications</source><translation>%1 notifications</translation></message><message numerus="yes">
         <source>%n notification(s)</source>
         <translation>
             <numerusform>%n notification</numerusform>
@@ -5128,7 +5131,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <name>OCC::WebFlowCredentials</name>
     <message>
         <source>&lt;b&gt;You have been logged out of your account %1 at %2. Please login again.&lt;/b&gt;</source>
-        <translation type="unfinished" />
+        <translation>&lt;b&gt;Vous avez été déconnecté(e) de votre compte %1 à %2. Veuillez vous reconnecter.&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -5328,7 +5331,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <source>Updated local virtual files metadata</source>
-        <translation>Fichiers locaux virtuels de métadonnées mis à jour</translation>
+        <translation>Métadonnées des fichiers virtuels locaux mises à jour</translation>
     </message>
     <message>
         <source>Updating end-to-end encryption metadata</source>
@@ -5354,7 +5357,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <source>Virtual file created</source>
         <translation>Fichier virtuel créé</translation>
     </message>
-</context>
+<message><source>updating local virtual files metadata</source><translation>Mise à jour des métadonnées des fichiers virtuels locaux</translation></message></context>
 <context>
     <name>ProxySettings</name>
     <message>
@@ -5432,7 +5435,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <source>Could not create debug archive in selected location!</source>
-        <translation>Impossible de créer l&apos;archive de débogage à l&apos;emplacement indiqué !</translation>
+        <translation>Impossible de créer une archive de débogage à l’emplacement sélectionné !</translation>
     </message>
     <message>
         <source>Could not create debug archive in temporary location!</source>
@@ -5452,7 +5455,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <source>Failed to create debug archive</source>
-        <translation>Échec lors de la création de l&apos;archive de débogage</translation>
+        <translation>Échec de création de l’archive de débogage</translation>
     </message>
     <message>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
@@ -5492,7 +5495,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <source>The directory %1 cannot be part of your sync directory. Please choose another folder.</source>
-        <translation type="unfinished" />
+        <translation>La répertoire %1 ne peut pas faire partie de votre répertoire de synchronisation. Veuillez choisir un autre dossier.</translation>
     </message>
     <message>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
@@ -5645,7 +5648,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <name>SesTrayHeader</name>
     <message>
         <source>Open Nextcloud in browser</source>
-        <translation type="unfinished" />
+        <translation>Ouvrir HiDrive Next dans le navigateur</translation>
     </message>
     <message>
         <source>Open local or team folders</source>
@@ -5653,7 +5656,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <source>Website</source>
-        <translation type="unfinished" />
+        <translation>Site Web</translation>
     </message>
 </context>
 <context>
@@ -5687,17 +5690,17 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <source>Copy share link</source>
-        <translation>Copier le lien de partage</translation>
+        <translation>Copier le lien</translation>
     </message>
     <message>
         <source>Custom Permissions</source>
-        <translation type="unfinished" />
+        <translation>Autorisations personnalisées</translation>
     </message>
     <message>
         <source>Enter a note for the recipient</source>
         <translation>Saisir une note pour le destinataire</translation>
     </message>
-    <message>
+    <message><source>Enter the note to recipient</source><translation>Saisir la remarque à l’attention du destinataire</translation></message><message>
         <source>File drop (upload only)</source>
         <translation>Dépôt de fichiers (téléversement seulement)</translation>
     </message>
@@ -5719,7 +5722,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <source>Share link copied!</source>
-        <translation>Lien de partage copié !</translation>
+        <translation>Lien copié !</translation>
     </message>
     <message>
         <source>Unshare</source>
@@ -5871,7 +5874,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <name>TrayFoldersMenuButton</name>
     <message>
         <source>Files</source>
-        <translation type="unfinished" />
+        <translation>Fichiers</translation>
     </message>
     <message>
         <source>Open %1 in file explorer</source>
@@ -5930,11 +5933,11 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <source>Pause sync for all</source>
-        <translation type="unfinished" />
+        <translation>Mettre en pause la synchronisation pour tous</translation>
     </message>
     <message>
         <source>Resume sync for all</source>
-        <translation type="unfinished" />
+        <translation>Reprendre la synchronisation pour tous</translation>
     </message>
     <message>
         <source>Settings</source>
