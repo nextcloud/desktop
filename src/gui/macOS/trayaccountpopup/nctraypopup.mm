@@ -218,10 +218,9 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     const auto syncControlState = OCC::Systray::instance()->syncControlState();
     if (syncControlState != OCC::Systray::SyncControlState::Unavailable) {
         const auto pausesSync = syncControlState == OCC::Systray::SyncControlState::Pause;
-        auto syncControlTitle = OCC::Systray::tr("Pause sync for all");
-        if (!pausesSync) {
-            syncControlTitle = OCC::Systray::tr("Resume sync for all");
-        }
+        const auto syncControlTitle = pausesSync
+            ? OCC::Systray::tr("Pause sync for all")
+            : OCC::Systray::tr("Resume sync for all");
         addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:syncControlTitle.toNSString()
                                                                           width:kPopupWidth
                                                                         enabled:YES
