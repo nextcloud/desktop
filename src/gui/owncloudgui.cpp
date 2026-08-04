@@ -34,6 +34,7 @@
 #include "filedetails/sortedsharemodel.h"
 #include "activity/sortedactivitylistmodel.h"
 #include "activity/syncstatussummary.h"
+#include "tray/trayactivationpolicy.h"
 #include "tray/trayaccountappsmodel.h"
 #include "search/unifiedsearchresultslistmodel.h"
 #include "integration/fileactionsmodel.h"
@@ -244,7 +245,7 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
     const auto currentUser = UserModel::instance()->currentUser();
     if (reason == QSystemTrayIcon::DoubleClick && currentUser && currentUser->hasLocalFolder()) {
         currentUser->openLocalFolder();
-    } else if (reason == QSystemTrayIcon::Trigger) {
+    } else if (TrayActivationPolicy::opensPrimaryPopup(reason)) {
         if (AccountManager::instance()->accounts().isEmpty()) {
             // Without a configured account the tray icon drives the setup wizard
             // directly: open it, or bring the existing one back to front instead
