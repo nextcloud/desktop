@@ -27,6 +27,11 @@ ScrollView {
         scrollingToTop = true
     }
 
+    function positionAtTop() {
+        scrollingToTop = false
+        activityList.positionViewAtBeginning()
+    }
+
     signal openFile(string filePath)
     signal activityItemClicked(int index)
 
@@ -52,6 +57,7 @@ ScrollView {
 
     ListView {
         id: activityList
+        objectName: "activityListView"
 
         Accessible.role: Accessible.List
         Accessible.name: qsTr("Activity list")

@@ -26,6 +26,7 @@ WizardStyledWindow {
     minimumHeight: Style.wizardStandaloneWindowMinimumHeight
 
     function resetActivityList() {
+        activityList.positionAtTop()
         newActivitiesButtonLoader.active = false
     }
 
@@ -84,6 +85,7 @@ WizardStyledWindow {
 
             ActivityList {
                 id: activityList
+                objectName: "activityList"
 
                 anchors.fill: parent
                 activeFocusOnTab: true
@@ -109,6 +111,7 @@ WizardStyledWindow {
 
             Loader {
                 id: newActivitiesButtonLoader
+                objectName: "newActivitiesButtonLoader"
 
                 anchors.top: activityList.top
                 anchors.topMargin: Style.smallSpacing
