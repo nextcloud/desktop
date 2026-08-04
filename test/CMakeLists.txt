@@ -110,6 +110,7 @@ endif()
 nextcloud_add_test(UnifiedSearchListmodel)
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(SortedActivityListModel)
+nextcloud_add_test(ActivitiesWindow)
 nextcloud_add_test(ActivityData)
 add_test(NAME ActivityFileMenuQmlTest
     COMMAND Qt6::qmltestrunner
