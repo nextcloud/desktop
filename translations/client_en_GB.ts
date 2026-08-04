@@ -112,12 +112,12 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="25"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>File details</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="32"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>File actions</translation>
     </message>
 </context>
 <context>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenuButton.qml" line="34"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Open file details</translation>
     </message>
 </context>
 <context>
@@ -684,32 +684,32 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
-        <translation type="unfinished"/>
+        <translation>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
         <source>Sensitivity labels</source>
-        <translation type="unfinished"/>
+        <translation>Sensitivity labels</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
         <source>Retention labels</source>
-        <translation type="unfinished"/>
+        <translation>Retention labels</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
         <source>Legal hold labels</source>
-        <translation type="unfinished"/>
+        <translation>Legal hold labels</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Reset</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Apply</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
@@ -732,7 +732,7 @@
     <message>
         <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
         <source>Local Network access is disabled. Enable it to connect to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Local Network access is disabled. Enable it to connect to the server.</translation>
     </message>
 </context>
 <context>
@@ -813,37 +813,37 @@
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="20"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Undo</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="26"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>Redo</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="34"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>Cut</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="40"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Copy</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="46"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>Paste</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="52"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Delete</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="60"/>
         <source>Select All</source>
-        <translation type="unfinished"/>
+        <translation>Select All</translation>
     </message>
 </context>
 <context>
@@ -965,13 +965,13 @@ Should the account be imported?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="505"/>
         <source>If this account&apos;s files appear stuck, missing, or out of sync in Finder, reset its File Provider storage. Unsynced local changes are preserved.</source>
-        <translation type="unfinished"/>
+        <translation>If this account&apos;s files appear stuck, missing, or out of sync in Finder, reset its File Provider storage. Unsynced local changes are preserved.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="521"/>
         <location filename="../src/gui/accountsettings.cpp" line="2071"/>
         <source>Reset File Provider Domain</source>
-        <translation type="unfinished"/>
+        <translation>Reset File Provider Domain</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="558"/>
@@ -1349,17 +1349,17 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2057"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
-        <translation type="unfinished"/>
+        <translation>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2061"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
-        <translation type="unfinished"/>
+        <translation>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2066"/>
         <source>Reset File Provider Domain for this account?</source>
-        <translation type="unfinished"/>
+        <translation>Reset File Provider Domain for this account?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1969"/>
