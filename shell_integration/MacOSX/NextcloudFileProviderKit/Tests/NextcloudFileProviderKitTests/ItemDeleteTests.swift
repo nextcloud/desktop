@@ -7,6 +7,7 @@ import NextcloudFileProviderKitMocks
 import NextcloudKit
 import RealmSwift
 import TestInterface
+import UniformTypeIdentifiers
 import XCTest
 
 final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
@@ -61,6 +62,40 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(rootItem.children.isEmpty)
 
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.deleted, true)
+    }
+
+    func testDeleteUnexcludedBundlePropagatesToServer() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteBundle = MockRemoteItem(
+            identifier: "bundle-id",
+            name: "ExplicitlyDeleted.key",
+            remotePath: Self.account.davFilesUrl + "/ExplicitlyDeleted.key",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteBundle.parent = rootItem
+        rootItem.children = [remoteBundle]
+
+        var metadata = remoteBundle.toItemMetadata(account: Self.account)
+        metadata.contentType = UTType.bundle.identifier
+        Self.dbManager.addItemMetadata(metadata)
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertTrue(rootItem.children.isEmpty)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId)?.deleted, true)
     }
 
     func testDeleteFolderAndContents() async {
