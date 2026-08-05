@@ -31,7 +31,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedNormalizedFileNameIndexToRealmItemMetadata
+    private static let schemaVersion = SchemaVersion.addedExcludedFromSyncItems
     let logger: FileProviderLogger
     let account: Account
 
@@ -100,7 +100,7 @@ public final class FilesDatabaseManager: Sendable {
                     }
                 }
             },
-            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
+            objectTypes: [RealmItemMetadata.self, RealmExcludedFromSyncItem.self, RemoteFileChunk.self]
         )
 
         Realm.Configuration.defaultConfiguration = configuration
