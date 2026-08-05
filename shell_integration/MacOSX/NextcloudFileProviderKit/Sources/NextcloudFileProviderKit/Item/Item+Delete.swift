@@ -114,14 +114,15 @@ public extension Item {
         return handleMetadataTrashModification()
     }
 
-    private func handleMetadataDeletion() {
+    @discardableResult
+    private func handleMetadataDeletion() -> Bool {
         let ocId = metadata.ocId
 
         if metadata.directory {
-            _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
-        } else {
-            dbManager.deleteItemMetadata(ocId: ocId)
+            return dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId) != nil
         }
+
+        return dbManager.deleteItemMetadata(ocId: ocId)
     }
 
     /// NOTE: the trashing metadata modification procedure here is rough. You SHOULD run a rescan of
