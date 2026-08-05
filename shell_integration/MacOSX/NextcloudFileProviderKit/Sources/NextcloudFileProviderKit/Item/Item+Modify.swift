@@ -380,6 +380,11 @@ public extension Item {
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
 
+            guard dbManager.markItemAsExcludedFromSync(ocId: metadata.ocId) else {
+                logger.error("Unable to persist bundle exclusion state.", [.item: itemIdentifier, .name: filename])
+                return (nil, NSFileProviderError(.cannotSynchronize))
+            }
+
             return (modifiedIgnored, NSFileProviderError(.excludedFromSync))
         }
 

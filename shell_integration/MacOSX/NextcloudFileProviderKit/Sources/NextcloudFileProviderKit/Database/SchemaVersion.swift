@@ -11,4 +11,5 @@ enum SchemaVersion: UInt64 {
     case addedIsLockFileOfLocalOriginToRealmItemMetadata = 202
     case addedCanonicalPathKeysToRealmItemMetadata = 203
     case addedNormalizedFileNameIndexToRealmItemMetadata = 204
+    case addedExcludedFromSyncItems = 205
 }
