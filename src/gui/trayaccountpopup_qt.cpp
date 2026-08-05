@@ -874,6 +874,20 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
         });
     }
 
+    const auto syncControlState = systray->syncControlState();
+    if (syncControlState != Systray::SyncControlState::Unavailable) {
+        const auto pausesSync = syncControlState == Systray::SyncControlState::Pause;
+        const auto syncControlIconUrl = pausesSync ? Theme::instance()->pause() : Theme::instance()->sync();
+        const auto syncControlAction = addMenuAction(menu,
+            templateIconFromIcon(iconFromUrl(syncControlIconUrl), menuIconSize, menuIconPalette),
+            pausesSync ? Systray::tr("Pause sync for all") : Systray::tr("Resume sync for all"));
+        syncControlAction->setObjectName(QStringLiteral("traySyncControlAction"));
+        QObject::connect(syncControlAction, &QAction::triggered, syncControlAction, [systray] {
+            closeTrayPopup();
+            systray->toggleSyncPaused();
+        });
+    }
+
     const auto settingsAction = addMenuAction(menu,
         templateThemeIcon(QStringLiteral("settings.svg"), menuIconSize, menuIconPalette),
         Systray::tr("Settings"));
