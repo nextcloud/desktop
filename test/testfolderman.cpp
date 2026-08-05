@@ -241,21 +241,21 @@ private slots:
         QSignalSpy incomingShareDeletedSignal(this, &TestFolderMan::incomingShareDeleted);
 
         // verify first share gets deleted
-        folderman->leaveShare(fakeFolder.localPath() + firstSharePath);
+        folderman->leaveShare(fakeFolder.localPath() + firstSharePath, FolderMan::UserInteraction::NoUserInteraction);
         QCOMPARE(incomingShareDeletedSignal.count(), 1);
         QVERIFY(!fakeFolder.remoteModifier().find(firstSharePath));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // verify no share gets deleted
-        folderman->leaveShare(fakeFolder.localPath() + "A/B/notsharedwithme_B.data");
+        folderman->leaveShare(fakeFolder.localPath() + "A/B/notsharedwithme_B.data", FolderMan::UserInteraction::NoUserInteraction);
         QCOMPARE(incomingShareDeletedSignal.count(), 1);
         QVERIFY(fakeFolder.remoteModifier().find("A/B/sharedwithme_B.data"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // verify second share gets deleted
-        folderman->leaveShare(fakeFolder.localPath() + secondSharePath);
+        folderman->leaveShare(fakeFolder.localPath() + secondSharePath, FolderMan::UserInteraction::NoUserInteraction);
         QCOMPARE(incomingShareDeletedSignal.count(), 2);
         QVERIFY(!fakeFolder.remoteModifier().find(secondSharePath));
         QVERIFY(fakeFolder.syncOnce());
