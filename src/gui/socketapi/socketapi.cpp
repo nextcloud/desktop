@@ -1132,30 +1132,34 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     // Add back the folder path
     defaultDirAndName = QDir(fileData.folder->path()).filePath(defaultDirAndName);
 
-    // Use getSaveFileUrl for sandbox compatibility
-    const auto targetUrl = QFileDialog::getSaveFileUrl(
-        nullptr,
-        tr("Select new location …"),
-        QUrl::fromLocalFile(defaultDirAndName),
-        QString(), nullptr, QFileDialog::HideNameFilterDetails);
-    if (targetUrl.isEmpty())
-        return;
+    // Show the file dialog outside of the socket read loop. As in command_RESOLVE_CONFLICT,
+    // a nested modal loop from the Qt::DirectConnection dispatch can free the socket under us.
+    QTimer::singleShot(0, this, [localFile, defaultDirAndName] {
+        // Use getSaveFileUrl for sandbox compatibility
+        const auto targetUrl = QFileDialog::getSaveFileUrl(
+            nullptr,
+            SocketApi::tr("Select new location …"),
+            QUrl::fromLocalFile(defaultDirAndName),
+            QString(), nullptr, QFileDialog::HideNameFilterDetails);
+        if (targetUrl.isEmpty())
+            return;
 
 #ifdef Q_OS_MACOS
-    // On macOS with app sandbox, we need to explicitly access the security-scoped resource
-    auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(targetUrl);
-    
-    if (!scopedAccess->isValid()) {
-        qCWarning(lcSocketApi) << "Could not access security-scoped resource for conflict resolution:" << targetUrl;
-        return;
-    }
+        // On macOS with app sandbox, we need to explicitly access the security-scoped resource
+        auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(targetUrl);
+
+        if (!scopedAccess->isValid()) {
+            qCWarning(lcSocketApi) << "Could not access security-scoped resource for conflict resolution:" << targetUrl;
+            return;
+        }
 #endif
 
-    const auto target = targetUrl.toLocalFile();
+        const auto target = targetUrl.toLocalFile();
 
-    ConflictSolver solver;
-    solver.setLocalVersionFilename(localFile);
-    solver.setRemoteVersionFilename(target);
+        ConflictSolver solver;
+        solver.setLocalVersionFilename(localFile);
+        solver.setRemoteVersionFilename(target);
+    });
 }
 
 void SocketApi::command_LOCK_FILE(const QString &localFile, SocketListener *listener)
