@@ -59,7 +59,7 @@
 #include <QPushButton>
 #include <QStyle>
 #include <QFileDialog>
-#include <QFrame>
+#include <QGroupBox>
 
 using namespace Qt::StringLiterals;
 
@@ -180,10 +180,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 {
     _ui->setupUi(this);
 
-    _encryptionPanel = new QFrame(this);
+    _encryptionPanel = new QGroupBox(this);
     _encryptionPanel->setObjectName(QLatin1String("encryptionPanel"));
-    _encryptionPanel->setFrameShape(QFrame::NoFrame);
-    _encryptionPanel->setAttribute(Qt::WA_StyledBackground, true);
     auto *encryptionPanelLayout = new QVBoxLayout(_encryptionPanel);
     encryptionPanelLayout->setContentsMargins(0, 0, 0, 0);
     encryptionPanelLayout->setSpacing(0);
