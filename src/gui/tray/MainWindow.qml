@@ -287,8 +287,9 @@ ApplicationWindow {
             anchors.right:  trayWindowLogoHeaderBackground.right
             anchors.top:    trayWindowLogoHeaderBackground.bottom
         }
-        
-        Rectangle {
+
+        TrayWindowHeader {
+            id: trayWindowHeader
             anchors.left: parent.left
             anchors.right: parent.right
             height: Style.trayWindowHeaderHeight
@@ -389,11 +390,6 @@ ApplicationWindow {
             anchors.topMargin: Style.trayHorizontalMargin
             anchors.leftMargin: Style.trayHorizontalMargin
             anchors.rightMargin: Style.trayHorizontalMargin
-
-                topMargin: Style.trayHorizontalMargin + controlRoot.padding
-                leftMargin: Style.trayHorizontalMargin + controlRoot.padding
-                rightMargin: Style.trayHorizontalMargin + controlRoot.padding
-            }
 
             text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
             readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId

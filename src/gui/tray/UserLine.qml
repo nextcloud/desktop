@@ -170,7 +170,6 @@ AbstractButton {
                 width: Style.sesAccountMenuWidth
                 height: Math.min(implicitHeight, maxMenuHeight)
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-                height: implicitHeight
 
                 bottomInset: 0
                 topInset: 0

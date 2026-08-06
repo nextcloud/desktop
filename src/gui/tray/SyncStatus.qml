@@ -15,6 +15,7 @@ RowLayout {
     id: root
 
     property alias model: syncStatus
+    property color accentColor
 
     spacing: Style.trayHorizontalMargin
 
