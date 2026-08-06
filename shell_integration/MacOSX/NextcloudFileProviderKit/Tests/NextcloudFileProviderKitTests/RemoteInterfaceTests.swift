@@ -15,6 +15,27 @@ struct RemoteInterfaceExtensionTests {
     let testAccount = Account(user: "a1", id: "1", serverUrl: "example.com", password: "pass")
     let otherAccount = Account(user: "a2", id: "2", serverUrl: "example.com", password: "word")
 
+    @Test func chunkedUploadRemotePathComponentsPreserveFilenameCharacters() throws {
+        let serverUrl = "https://cloud.example.com/remote.php/dav/files/user/comics"
+        let fileNames = [
+            "The Nightly News #001 (2011).cbz",
+            "Question?.txt",
+            "Literal%23Name.txt"
+        ]
+
+        for fileName in fileNames {
+            let components = try #require(chunkedUploadRemotePathComponents(from: "\(serverUrl)/\(fileName)"))
+
+            #expect(components.serverUrl == serverUrl)
+            #expect(components.destinationFileName == fileName)
+        }
+    }
+
+    @Test func chunkedUploadRemotePathComponentsRejectInvalidPaths() {
+        #expect(chunkedUploadRemotePathComponents(from: "filename.txt") == nil)
+        #expect(chunkedUploadRemotePathComponents(from: "https://cloud.example.com/") == nil)
+    }
+
     func capabilitiesFromMockJSON(jsonString: String = mockCapabilities) -> (Capabilities, Data) {
         let data = jsonString.data(using: .utf8)!
         let caps = Capabilities(data: data)!
