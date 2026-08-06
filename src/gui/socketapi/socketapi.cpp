@@ -52,6 +52,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFileDialog>
+#include <QTimer>
 
 
 #include <QAction>
@@ -1071,15 +1072,25 @@ void SocketApi::command_RESOLVE_CONFLICT(const QString &localFile, SocketListene
     const auto basePath = dir.filePath(baseRelativePath);
 
     const auto baseName = QFileInfo(basePath).fileName();
+    const auto folderAlias = fileData.folder->alias();
 
 #ifndef OWNCLOUD_TEST
-    ConflictDialog dialog;
-    dialog.setBaseFilename(baseName);
-    dialog.setLocalVersionFilename(conflictedPath);
-    dialog.setRemoteVersionFilename(basePath);
-    if (dialog.exec() == ConflictDialog::Accepted) {
-        fileData.folder->scheduleThisFolderSoon();
-    }
+    // Show the dialog outside of the socket read loop. This handler runs via a
+    // Qt::DirectConnection while SocketApi is still iterating the socket, so a nested
+    // modal loop here can let the socket or the Folder be destroyed underneath us.
+    // Defer to the next event loop iteration and look up the folder again by alias.
+    QTimer::singleShot(0, this, [conflictedPath, basePath, baseName, folderAlias] {
+        ConflictDialog dialog;
+        dialog.setBaseFilename(baseName);
+        dialog.setLocalVersionFilename(conflictedPath);
+        dialog.setRemoteVersionFilename(basePath);
+        if (dialog.exec() != ConflictDialog::Accepted) {
+            return;
+        }
+        if (const auto folder = FolderMan::instance()->folder(folderAlias)) {
+            folder->scheduleThisFolderSoon();
+        }
+    });
 #endif
 }
 
