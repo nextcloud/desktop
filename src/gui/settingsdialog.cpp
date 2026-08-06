@@ -175,11 +175,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     ConfigFile cfg;
 
     setupUi();
-    _toolBar = new QToolBar;
-    _toolBar->setIconSize(QSize(WLTheme.toolbarIconSize(), WLTheme.toolbarIconSize()));
-    _toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    _toolBar->setFixedHeight(94);
-    layout()->setMenuBar(_toolBar);
 
     // People perceive this as a Window, so also make Ctrl+W work
     auto *closeWindowAction = new QAction(this);
