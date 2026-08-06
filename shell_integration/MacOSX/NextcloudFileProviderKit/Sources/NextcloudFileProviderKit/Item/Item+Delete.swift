@@ -30,6 +30,20 @@ public extension Item {
             return await deleteLockFile(domain: domain, dbManager: dbManager)
         }
 
+        if dbManager.isItemExcludedFromSync(ocId: ocId) {
+            logger.info("Item deletion follows an exclusion from sync. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: filename])
+
+            guard handleMetadataDeletion() else {
+                return NSFileProviderError(.cannotSynchronize)
+            }
+
+            guard dbManager.removeExcludedFromSyncMarker(ocId: ocId) else {
+                return NSFileProviderError(.cannotSynchronize)
+            }
+
+            return nil
+        }
+
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
             logger.info("File is in the ignore list. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: filename])
             dbManager.deleteItemMetadata(ocId: ocId)
@@ -114,14 +128,15 @@ public extension Item {
         return handleMetadataTrashModification()
     }
 
-    private func handleMetadataDeletion() {
+    @discardableResult
+    private func handleMetadataDeletion() -> Bool {
         let ocId = metadata.ocId
 
         if metadata.directory {
-            _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
-        } else {
-            dbManager.deleteItemMetadata(ocId: ocId)
+            return dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId) != nil
         }
+
+        return dbManager.deleteItemMetadata(ocId: ocId)
     }
 
     /// NOTE: the trashing metadata modification procedure here is rough. You SHOULD run a rescan of
