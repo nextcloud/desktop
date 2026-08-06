@@ -241,6 +241,7 @@ set(client_SRCS
     tray/asyncimageresponse.cpp
     tray/trayimageprovider.cpp
     tray/trayaccountmenupolicy.h
+    tray/trayactivationpolicy.h
     tray/trayaccountappsmodel.h
     tray/trayaccountappsmodel.cpp
     tray/usermodel.h
