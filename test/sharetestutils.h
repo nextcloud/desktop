@@ -81,7 +81,7 @@ public:
     ShareTestHelper(QObject *parent = nullptr);
     ~ShareTestHelper() override;
 
-    FolderMan fm;
+    FolderMan *fm = nullptr;
     FakeFolder fakeFolder{FileInfo{}};
     FakeFileReplyDefinition fakeFileDefinition;
 

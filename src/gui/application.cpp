@@ -436,7 +436,9 @@ Application::Application(int &argc, char **argv)
     setupAccountsAndFolders();
 
     if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+        if (!AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine()) {
+            qCWarning(lcApplication()) << "setup of the account had some issues and could not be completed";
+        }
         _quitInstance = true;
     }
     AccountSetupCommandLineManager::destroy();
@@ -662,7 +664,7 @@ Application::~Application()
 
 void Application::setupAccountsAndFolders()
 {
-    _folderManager.reset(new FolderMan);
+    _folderManager = FolderMan::instance();
     ConfigFile configFile;
     configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();
@@ -748,7 +750,9 @@ void Application::parseOptionsRemoteCommand(const QStringList &options)
     handleUriFromOptions();
 
     if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+        if (!AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine()) {
+            qCWarning(lcApplication()) << "setup of the account had some issues and could not be completed";
+        }
     }
     AccountSetupCommandLineManager::destroy();
 }
