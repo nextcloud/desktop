@@ -7,6 +7,22 @@ import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
 
+func chunkedUploadRemotePathComponents(from remotePath: String) -> (serverUrl: String, destinationFileName: String)? {
+    guard let separatorIndex = remotePath.lastIndex(of: "/") else {
+        return nil
+    }
+
+    let destinationFileNameIndex = remotePath.index(after: separatorIndex)
+    guard destinationFileNameIndex < remotePath.endIndex else {
+        return nil
+    }
+
+    return (
+        serverUrl: String(remotePath[..<separatorIndex]),
+        destinationFileName: String(remotePath[destinationFileNameIndex...])
+    )
+}
+
 extension NextcloudKit: RemoteInterface {
     public func setDelegate(_ delegate: any NextcloudKitDelegate) {
         setup(delegate: delegate)
@@ -111,7 +127,7 @@ extension NextcloudKit: RemoteInterface {
     ) async -> (account: String, file: NKFile?, nkError: NKError) {
         let logger = FileProviderLogger(category: "NextcloudKit+RemoteInterface", log: log)
 
-        guard let remoteUrl = URL(string: remotePath) else {
+        guard let remotePathComponents = chunkedUploadRemotePathComponents(from: remotePath) else {
             return ("", nil, .urlError)
         }
         let localUrl = URL(fileURLWithPath: localPath)
@@ -136,17 +152,8 @@ extension NextcloudKit: RemoteInterface {
         }
         let fileChunksOutputDirectory = chunksOutputDirectoryUrl.path
         let fileName = localUrl.lastPathComponent
-        let destinationFileName = remoteUrl.lastPathComponent
-        guard let serverUrl = remoteUrl
-            .deletingLastPathComponent()
-            .absoluteString
-            .removingPercentEncoding
-        else {
-            logger.error(
-                "NCKit ext: Could not get server url from \(remotePath)"
-            )
-            return ("", nil, .urlError)
-        }
+        let destinationFileName = remotePathComponents.destinationFileName
+        let serverUrl = remotePathComponents.serverUrl
         let fileChunks = remainingChunks.toNcKitChunks()
 
         logger.info(
