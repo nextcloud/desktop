@@ -31,7 +31,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedNormalizedFileNameIndexToRealmItemMetadata
+    private static let schemaVersion = SchemaVersion.addedExcludedFromSyncItems
     let logger: FileProviderLogger
     let account: Account
 
@@ -100,7 +100,7 @@ public final class FilesDatabaseManager: Sendable {
                     }
                 }
             },
-            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
+            objectTypes: [RealmItemMetadata.self, RealmExcludedFromSyncItem.self, RemoteFileChunk.self]
         )
 
         Realm.Configuration.defaultConfiguration = configuration
@@ -533,6 +533,62 @@ public final class FilesDatabaseManager: Sendable {
             }
         } catch {
             logger.error("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl, .error: error])
+        }
+    }
+
+    /**
+     * @brief Records that the provider returned `.excludedFromSync` for an item.
+     *
+     * The marker is stored separately from item metadata so remote enumeration and
+     * materialization updates cannot overwrite it before the system calls `deleteItem`.
+     *
+     * @param ocId The file provider item identifier to mark.
+     * @return `true` when the marker was stored successfully.
+     */
+    @discardableResult
+    func markItemAsExcludedFromSync(ocId: String) -> Bool {
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                database.add(RealmExcludedFromSyncItem(ocId: ocId), update: .all)
+            }
+            return true
+        } catch {
+            logger.error("Could not mark item as excluded from sync.", [.item: ocId, .error: error])
+            return false
+        }
+    }
+
+    /**
+     * @brief Returns whether an item is awaiting the deletion callback caused by `.excludedFromSync`.
+     * @param ocId The file provider item identifier to look up.
+     */
+    func isItemExcludedFromSync(ocId: String) -> Bool {
+        ncDatabase().object(ofType: RealmExcludedFromSyncItem.self, forPrimaryKey: ocId) != nil
+    }
+
+    /**
+     * @brief Removes the durable exclusion marker after local metadata deletion succeeds.
+     * @param ocId The file provider item identifier whose marker should be removed.
+     * @return `true` when the marker was removed successfully or was already absent.
+     */
+    @discardableResult
+    func removeExcludedFromSyncMarker(ocId: String) -> Bool {
+        let database = ncDatabase()
+
+        guard let marker = database.object(ofType: RealmExcludedFromSyncItem.self, forPrimaryKey: ocId) else {
+            return true
+        }
+
+        do {
+            try database.write {
+                database.delete(marker)
+            }
+            return true
+        } catch {
+            logger.error("Could not remove excluded-from-sync marker.", [.item: ocId, .error: error])
+            return false
         }
     }
 

@@ -724,28 +724,28 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         // We do not yet support modification of folder contents
     }
 
-    /// Verify that a modify operation on a bundle is refused at the file provider boundary
-    /// with `.excludedFromSync` and that the (mock) server is left untouched. Replaces the
-    /// previous `testModifyBundleContents` test, which validated the now-removed recursive-
-    /// mirror code path. See https://github.com/nextcloud/desktop/issues/9827.
-    func testModifyBundleIsExcluded() async {
+    /// Verify the framework callback sequence caused by excluding a remotely synced bundle.
+    func testModifyRemoteBundleExclusionDoesNotDeleteRemoteBundle() async throws {
         let db = Self.dbManager.ncDatabase()
         debugPrint(db)
 
         let bundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
-
-        // Pre-seed: the bundle exists locally + in the DB but never reached the server. This
-        // mirrors what would happen after the create-time exclusion path ran on a fresh drag.
-        var bundleMetadata = SendableItemMetadata(
-            ocId: "test-bundle-id", fileName: bundleFilename, account: Self.account
+        let remoteBundle = MockRemoteItem(
+            identifier: "test-bundle-id",
+            name: bundleFilename,
+            remotePath: Self.account.davFilesUrl + "/" + bundleFilename,
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
         )
-        bundleMetadata.directory = true
-        bundleMetadata.serverUrl = Self.account.davFilesUrl
-        bundleMetadata.classFile = NKTypeClassFile.directory.rawValue
+        remoteBundle.parent = rootItem
+        rootItem.children.append(remoteBundle)
+
+        var bundleMetadata = remoteBundle.toItemMetadata(account: Self.account)
         bundleMetadata.contentType = UTType.bundle.identifier
-        bundleMetadata.uploaded = false
-        bundleMetadata.downloaded = true
         Self.dbManager.addItemMetadata(bundleMetadata)
 
         let bundleItem = Item(
@@ -765,8 +765,31 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNotNil(modifiedItem)
         XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
-        // Mock server stays untouched.
-        XCTAssertNil(rootItem.children.first { $0.name == bundleFilename })
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
+
+        // Returning `.excludedFromSync` makes macOS fetch the package, then call deleteItem.
+        // Replacing the metadata here models writes made while that fetch/materialization runs.
+        var materializedMetadata = remoteBundle.toItemMetadata(account: Self.account)
+        materializedMetadata.contentType = UTType.bundle.identifier
+        materializedMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(materializedMetadata)
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
+
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: bundleMetadata.ocId))
+        let storedBundle = Item(
+            metadata: storedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let deleteError = await storedBundle.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(deleteError)
+        XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteBundle.identifier })
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: bundleMetadata.ocId)?.deleted, true)
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
     }
 
     func testMoveFileToTrash() async throws {
