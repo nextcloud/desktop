@@ -175,7 +175,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     ConfigFile cfg;
 
     setupUi();
-    setupUi();
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(WLTheme.toolbarIconSize(), WLTheme.toolbarIconSize()));
     _toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
