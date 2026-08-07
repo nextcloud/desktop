@@ -135,8 +135,13 @@ set_tests_properties(AssistantQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=of
 nextcloud_add_test(UnifiedSearchPeopleModel)
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(SortedActivityListModel)
-nextcloud_add_test(ActivitiesWindow)
 nextcloud_add_test(ActivityData)
+add_test(NAME ActivitiesWindowQmlTest
+    COMMAND Qt6::qmltestrunner
+        -import "${CMAKE_CURRENT_SOURCE_DIR}/qml/imports"
+        -import "${CMAKE_SOURCE_DIR}/theme"
+        -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/activitieswindow/tst_activitieswindow.qml"
+)
 add_test(NAME ActivityFileMenuQmlTest
     COMMAND Qt6::qmltestrunner
         -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/activityfilemenu/testactivityfilemenu.qml"

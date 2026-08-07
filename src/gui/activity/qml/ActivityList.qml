@@ -29,6 +29,7 @@ ScrollView {
 
     function positionAtTop() {
         scrollingToTop = false
+        activityList.currentIndex = -1
         activityList.positionViewAtBeginning()
     }
 
