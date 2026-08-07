@@ -7,7 +7,9 @@
 
 #include "account.h"
 
+#include <QList>
 #include <QObject>
+#include <QPair>
 #include <QString>
 #include <QUrl>
 
@@ -23,9 +25,8 @@ public:
     AccountSetupFromCommandLineJob(QString appPassword,
                                    QString userId,
                                    QUrl serverUrl,
-                                   QString localDirPath = {},
-                                   bool nonVfsMode = false,
-                                   QString remoteDirPath = QStringLiteral("/"),
+                                   QList<QPair<QString, QString>> folderPaths = {},
+                                   bool isVfsEnabled = false,
                                    QObject *parent = nullptr);
 
 public slots:
@@ -38,7 +39,7 @@ private slots:
 
     void accountSetupFromCommandLinePropfindHandleFailure();
 
-    void setupLocalSyncFolder(OCC::AccountState *accountState);
+    void setupLocalSyncFolders(OCC::AccountState *accountState);
 
     void printAccountSetupFromCommandLineStatusAndExit(const QString &status, bool isFailure);
 
@@ -48,9 +49,9 @@ private:
     QString _appPassword;
     QString _userId;
     QUrl _serverUrl;
-    QString _localDirPath;
-    bool _isVfsEnabled = true;
-    QString _remoteDirPath;
+    QList<QPair<QString, QString>> _folderPaths;
+    bool _isVfsEnabled = false;
+    bool _accountIsNew = false;
 
     AccountPtr _account;
 };
