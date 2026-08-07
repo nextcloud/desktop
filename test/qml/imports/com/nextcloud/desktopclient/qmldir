@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 module com.nextcloud.desktopclient
 singleton Systray 1.0 Systray.qml
 singleton Theme 1.0 Theme.qml
