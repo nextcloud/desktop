@@ -212,21 +212,81 @@ RowLayout {
                         id: fileMoreButtonMenu
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
-                        MenuItem {
-                            height: visible ? implicitHeight : 0
-                            text: qsTr("File details")
-                            font.pixelSize: Style.topLinePixelSize
-                            hoverEnabled: true
-                            onClicked: Systray.presentShareViewInTray(model.openablePath)
+                        background: Rectangle {
+                            radius: Style.sesCornerRadius
+                            color: Style.sesBackgroundColor
+                            border.color: Style.sesBorderColor
                         }
 
                         MenuItem {
+                            id: fileDetailsMenuItem
+
+                            property bool isHovered: fileDetailsMenuItem.hovered || fileDetailsMenuItem.visualFocus
+                            property bool isActive: fileDetailsMenuItem.pressed
+
+                            height: visible ? implicitHeight : 0
+                            text: qsTr("File details")
+                            font.pixelSize: Style.topLinePixelSize
+                            palette.text: Style.sesTrayFontColor
+                            leftPadding: Style.sesMediumMargin
+                            topPadding: Style.sesAccountMenuItemPadding
+                            bottomPadding: Style.sesAccountMenuItemPadding
+                            hoverEnabled: true
+                            onClicked: Systray.presentShareViewInTray(model.openablePath)
+
+                            Component.onCompleted: {
+                                if (contentItem && contentItem.hasOwnProperty("color")) {
+                                    contentItem.color = fileDetailsMenuItem.palette.text
+                                }
+                            }
+
+                            background: Item {
+                                height: parent.height
+                                width: parent.menu.width
+                                Rectangle {
+                                    radius: 0
+                                    anchors.fill: parent
+                                    anchors.margins: 1
+                                    color: fileDetailsMenuItem.isActive ? Style.sesButtonPressed :
+                                           fileDetailsMenuItem.isHovered ? Style.sesAccountMenuHover : "transparent"
+                                }
+                            }
+                        }
+
+                        MenuItem {
+                            id: fileActionsMenuItem
+
+                            property bool isHovered: fileActionsMenuItem.hovered || fileActionsMenuItem.visualFocus
+                            property bool isActive: fileActionsMenuItem.pressed
+
                             visible: model.serverHasIntegration
                             height: visible ? implicitHeight : 0
                             text: qsTr("File actions")
                             font.pixelSize: Style.topLinePixelSize
+                            palette.text: Style.sesTrayFontColor
+                            leftPadding: Style.sesMediumMargin
+                            topPadding: Style.sesAccountMenuItemPadding
+                            bottomPadding: Style.sesAccountMenuItemPadding
                             hoverEnabled: true
                             onClicked: Systray.presentFileActionsViewInSystray(model.openablePath)
+
+                            Component.onCompleted: {
+                                if (contentItem && contentItem.hasOwnProperty("color")) {
+                                    contentItem.color = fileActionsMenuItem.palette.text
+                                }
+                            }
+
+                            background: Item {
+                                height: parent.height
+                                width: parent.menu.width
+                                Rectangle {
+                                    radius: 0
+                                    anchors.fill: parent
+                                    anchors.margins: 1
+                                    color: fileActionsMenuItem.isActive ? Style.sesButtonPressed :
+                                           fileActionsMenuItem.isHovered ? Style.sesAccountMenuHover : "transparent"
+                                }
+                            }
                         }
                     }
                 }
