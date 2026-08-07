@@ -568,6 +568,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var rootTrashItem: MockRemoteItem?
     public var currentChunks: [String: [RemoteFileChunk]] = [:]
     public var completedChunkTransferSize: [String: Int64] = [:]
+
+    /// Overrides the directory where chunked uploads create their local chunk files.
+    public var chunkUploadDirectory: URL?
     public var pagination: Bool
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
@@ -883,13 +886,15 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             return ("", nil, nil, .urlError)
         }
 
-        // Create temp directory for file and create chunks within it
+        // Create the local chunk directory used by the production adapter and populate it below.
         let fm = FileManager.default
-        let tempDirectoryUrl = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let tempDirectoryUrl = chunkUploadDirectory ?? fm.temporaryDirectory
+            .appendingPathComponent(remoteChunkStoreFolderName, isDirectory: true)
         try! fm.createDirectory(atPath: tempDirectoryUrl.path, withIntermediateDirectories: true)
 
         // Access local file and gather metadata
-        let fileSize = try! fm.attributesOfItem(atPath: localPath)[.size] as! Int
+        let localFileData = try! Data(contentsOf: URL(fileURLWithPath: localPath))
+        let fileSize = localFileData.count
 
         var remainingFileSize = fileSize
         let numChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
@@ -906,6 +911,18 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         let preexistingChunks = currentChunks[remoteChunkStoreFolderName] ?? []
         let totalChunks = preexistingChunks + newChunks
         currentChunks[remoteChunkStoreFolderName] = totalChunks
+
+        for chunk in newChunks {
+            guard let chunkNumber = Int(chunk.fileName), chunkNumber > 0 else { continue }
+
+            let startIndex = (chunkNumber - 1) * chunkSize
+            let endIndex = min(startIndex + Int(chunk.size), localFileData.count)
+            guard startIndex < endIndex else { continue }
+
+            let chunkData = localFileData.subdata(in: startIndex ..< endIndex)
+            try! chunkData.write(to: tempDirectoryUrl.appendingPathComponent(chunk.fileName))
+        }
+
         chunkUploadStartHandler(newChunks)
 
         let (_, ocId, etag, date, size, _, remoteError) = await upload(
