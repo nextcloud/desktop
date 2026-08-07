@@ -176,7 +176,7 @@ func upload(
         .where { $0.remoteChunkStoreFolderName == chunkUploadId }
         .toUnmanagedResults()
 
-    let (_, file, nkError) = await remoteInterface.chunkedUpload(
+    let (_, file, chunksDirectory, nkError) = await remoteInterface.chunkedUpload(
         localPath: localFilePath,
         remotePath: remotePath,
         remoteChunkStoreFolderName: chunkUploadId,

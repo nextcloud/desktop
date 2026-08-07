@@ -64,6 +64,7 @@ public protocol RemoteInterface: Sendable {
     ) async -> (
         account: String,
         file: NKFile?,
+        chunksDirectory: URL?,
         nkError: NKError
     )
 
