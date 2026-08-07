@@ -70,9 +70,10 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
     ) async -> (
         account: String,
         file: NKFile?,
+        chunksDirectory: URL?,
         nkError: NKError
     ) {
-        ("", nil, .invalidResponseError)
+        ("", nil, nil, .invalidResponseError)
     }
 
     public func move(

@@ -108,11 +108,11 @@ extension NextcloudKit: RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in },
         progressHandler: @escaping (Progress) -> Void = { _ in },
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
-    ) async -> (account: String, file: NKFile?, nkError: NKError) {
+    ) async -> (account: String, file: NKFile?, chunksDirectory: URL?, nkError: NKError) {
         let logger = FileProviderLogger(category: "NextcloudKit+RemoteInterface", log: log)
 
         guard let remoteUrl = URL(string: remotePath) else {
-            return ("", nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
         let localUrl = URL(fileURLWithPath: localPath)
 
@@ -127,7 +127,7 @@ extension NextcloudKit: RemoteInterface {
                 Could not create temporary directory for chunked files: \(error)
                 """
             )
-            return ("", nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
 
         var directory = localUrl.deletingLastPathComponent().path
@@ -145,7 +145,7 @@ extension NextcloudKit: RemoteInterface {
             logger.error(
                 "NCKit ext: Could not get server url from \(remotePath)"
             )
-            return ("", nil, .urlError)
+            return ("", nil, chunksOutputDirectoryUrl, .urlError)
         }
         let fileChunks = remainingChunks.toNcKitChunks()
 
@@ -195,11 +195,11 @@ extension NextcloudKit: RemoteInterface {
                 }
             )
 
-            return (account, file, .success)
+            return (account, file, chunksOutputDirectoryUrl, .success)
         } catch let nkError as NKError {
-            return (account.ncKitAccount, nil, nkError)
+            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, nkError)
         } catch {
-            return (account.ncKitAccount, nil, NKError.urlError)
+            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, NKError.urlError)
         }
     }
 

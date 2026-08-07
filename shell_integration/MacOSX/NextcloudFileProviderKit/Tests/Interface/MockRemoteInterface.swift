@@ -875,11 +875,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     ) async -> (
         account: String,
         file: NKFile?,
+        chunksDirectory: URL?,
         nkError: NKError
     ) {
         guard let remoteUrl = URL(string: remotePath) else {
             print("Invalid remote path!")
-            return ("", nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
 
         // Create temp directory for file and create chunks within it
@@ -937,7 +938,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         file.creationDate = creationDate ?? Date()
         file.date = date as? Date ?? Date()
 
-        return (account.ncKitAccount, file, remoteError)
+        return (account.ncKitAccount, file, tempDirectoryUrl, remoteError)
     }
 
     public func move(
