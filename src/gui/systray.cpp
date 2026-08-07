@@ -28,6 +28,7 @@
 #include <QCursor>
 #include <QEvent>
 #include <QGuiApplication>
+#include <QMetaObject>
 #include <QMouseEvent>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -280,6 +281,9 @@ void Systray::showActivitiesWindow(int userIndex)
         existingWindow->show();
         existingWindow->raise();
         existingWindow->requestActivate();
+        if (!QMetaObject::invokeMethod(existingWindow.data(), "resetActivityList", Qt::QueuedConnection)) {
+            qCWarning(lcSystray) << "Could not reset the activities window after showing it";
+        }
         user->refreshActivities();
         return;
     }
