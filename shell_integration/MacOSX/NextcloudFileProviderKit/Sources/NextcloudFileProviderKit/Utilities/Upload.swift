@@ -234,7 +234,22 @@ func upload(
         }
     )
 
-    uploadLogger.info("\(localFilePath) successfully uploaded in chunks")
+    if nkError == .success, file != nil {
+        if let chunksDirectory {
+            do {
+                try FileManager.default.removeItem(at: chunksDirectory)
+            } catch CocoaError.fileNoSuchFile {
+                // The temporary directory may already have been removed by the system.
+            } catch {
+                uploadLogger.error(
+                    "Could not remove temporary chunk directory after completed upload.",
+                    [.error: error, .url: chunksDirectory.path]
+                )
+            }
+        }
+
+        uploadLogger.info("File successfully uploaded in chunks.", [.url: remotePath])
+    }
 
     return (file?.ocId, file?.etag, file?.date, file?.size, nkError)
 }
