@@ -286,13 +286,6 @@ ApplicationWindow {
             anchors.left:   trayWindowLogoHeaderBackground.left
             anchors.right:  trayWindowLogoHeaderBackground.right
             anchors.top:    trayWindowLogoHeaderBackground.bottom
-        }
-
-        TrayWindowHeader {
-            id: trayWindowHeader
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: Style.trayWindowHeaderHeight
 
             onFeaturedAppButtonClicked: {
                 if (UserModel.currentUser.isAssistantEnabled) {
@@ -311,7 +304,7 @@ ApplicationWindow {
 
             readonly property color warningIconColor: Style.errorBoxBackgroundColor
 
-            anchors.top: trayWindowHeader.bottom
+            anchors.top: trayWindowHeaderBackground.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
@@ -384,7 +377,7 @@ ApplicationWindow {
 
             anchors.top: trayWindowSyncWarning.visible
                          ? trayWindowSyncWarning.bottom
-                         : trayWindowHeader.bottom
+                         : trayWindowHeaderBackground.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
@@ -603,7 +596,7 @@ ApplicationWindow {
             active: UserModel.currentUser.isAssistantEnabled
                     && trayWindowMainItem.showAssistantPanel
             visible: trayWindowMainItem.showAssistantPanel
-            anchors.top: trayWindowHeader.bottom
+            anchors.top: trayWindowHeaderBackground.bottom
             anchors.bottom: assistantInputContainer.top
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right

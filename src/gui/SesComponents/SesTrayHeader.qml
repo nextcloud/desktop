@@ -15,8 +15,11 @@ import com.strato.hidrivenext.desktopclient
 
 
 Rectangle {
+    id: root
 
-    height:         Style.sesTrayHeaderHeight + Style.sesHeaderTopMargin * 2 
+    signal featuredAppButtonClicked
+
+    height:         Style.sesTrayHeaderHeight + Style.sesHeaderTopMargin * 2
     color:          Style.sesBackgroundColor
     radius: 0.0
     clip: true
@@ -65,6 +68,18 @@ Rectangle {
             Accessible.role: Accessible.Graphic
             Accessible.name: qsTr("Open local or team folders")
             Accessible.onPressAction: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
+        }
+
+        HeaderButton {
+            id: trayWindowFeaturedAppButton
+
+            visible: UserModel.currentUser.isAssistantEnabled
+            icon.source: UserModel.currentUser.featuredAppIcon + "/" + palette.windowText
+            onClicked: root.featuredAppButtonClicked()
+
+            Accessible.role: Accessible.Button
+            Accessible.name: UserModel.currentUser.featuredAppAccessibleName
+            Accessible.onPressAction: trayWindowFeaturedAppButton.clicked()
         }
     }
 }   // Rectangle trayWindowHeaderBackground
