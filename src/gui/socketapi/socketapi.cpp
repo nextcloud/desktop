@@ -52,6 +52,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFileDialog>
+#include <QTimer>
 
 
 #include <QAction>
@@ -1071,15 +1072,25 @@ void SocketApi::command_RESOLVE_CONFLICT(const QString &localFile, SocketListene
     const auto basePath = dir.filePath(baseRelativePath);
 
     const auto baseName = QFileInfo(basePath).fileName();
+    const auto folderAlias = fileData.folder->alias();
 
 #ifndef OWNCLOUD_TEST
-    ConflictDialog dialog;
-    dialog.setBaseFilename(baseName);
-    dialog.setLocalVersionFilename(conflictedPath);
-    dialog.setRemoteVersionFilename(basePath);
-    if (dialog.exec() == ConflictDialog::Accepted) {
-        fileData.folder->scheduleThisFolderSoon();
-    }
+    // Show the dialog outside of the socket read loop. This handler runs via a
+    // Qt::DirectConnection while SocketApi is still iterating the socket, so a nested
+    // modal loop here can let the socket or the Folder be destroyed underneath us.
+    // Defer to the next event loop iteration and look up the folder again by alias.
+    QTimer::singleShot(0, this, [conflictedPath, basePath, baseName, folderAlias] {
+        ConflictDialog dialog;
+        dialog.setBaseFilename(baseName);
+        dialog.setLocalVersionFilename(conflictedPath);
+        dialog.setRemoteVersionFilename(basePath);
+        if (dialog.exec() != ConflictDialog::Accepted) {
+            return;
+        }
+        if (const auto folder = FolderMan::instance()->folder(folderAlias)) {
+            folder->scheduleThisFolderSoon();
+        }
+    });
 #endif
 }
 
@@ -1121,30 +1132,34 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     // Add back the folder path
     defaultDirAndName = QDir(fileData.folder->path()).filePath(defaultDirAndName);
 
-    // Use getSaveFileUrl for sandbox compatibility
-    const auto targetUrl = QFileDialog::getSaveFileUrl(
-        nullptr,
-        tr("Select new location …"),
-        QUrl::fromLocalFile(defaultDirAndName),
-        QString(), nullptr, QFileDialog::HideNameFilterDetails);
-    if (targetUrl.isEmpty())
-        return;
+    // Show the file dialog outside of the socket read loop. As in command_RESOLVE_CONFLICT,
+    // a nested modal loop from the Qt::DirectConnection dispatch can free the socket under us.
+    QTimer::singleShot(0, this, [localFile, defaultDirAndName] {
+        // Use getSaveFileUrl for sandbox compatibility
+        const auto targetUrl = QFileDialog::getSaveFileUrl(
+            nullptr,
+            SocketApi::tr("Select new location …"),
+            QUrl::fromLocalFile(defaultDirAndName),
+            QString(), nullptr, QFileDialog::HideNameFilterDetails);
+        if (targetUrl.isEmpty())
+            return;
 
 #ifdef Q_OS_MACOS
-    // On macOS with app sandbox, we need to explicitly access the security-scoped resource
-    auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(targetUrl);
-    
-    if (!scopedAccess->isValid()) {
-        qCWarning(lcSocketApi) << "Could not access security-scoped resource for conflict resolution:" << targetUrl;
-        return;
-    }
+        // On macOS with app sandbox, we need to explicitly access the security-scoped resource
+        auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(targetUrl);
+
+        if (!scopedAccess->isValid()) {
+            qCWarning(lcSocketApi) << "Could not access security-scoped resource for conflict resolution:" << targetUrl;
+            return;
+        }
 #endif
 
-    const auto target = targetUrl.toLocalFile();
+        const auto target = targetUrl.toLocalFile();
 
-    ConflictSolver solver;
-    solver.setLocalVersionFilename(localFile);
-    solver.setRemoteVersionFilename(target);
+        ConflictSolver solver;
+        solver.setLocalVersionFilename(localFile);
+        solver.setRemoteVersionFilename(target);
+    });
 }
 
 void SocketApi::command_LOCK_FILE(const QString &localFile, SocketListener *listener)
