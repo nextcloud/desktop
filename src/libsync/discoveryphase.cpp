@@ -407,7 +407,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
 
         // Access lock state on the worker thread so a blocking open cannot freeze the GUI #10464
         if (!i.isSymLink && !i.isVirtualFile && !i.isDirectory) {
-            const auto absoluteLocalPath = localPath + QLatin1Char('/') + i.name;
+            const QString absoluteLocalPath = localPath + QLatin1Char('/') + i.name;
             i.isLocked = FileSystem::isFileLocked(absoluteLocalPath, FileSystem::LockMode::SharedRead);
             qCDebug(lcDiscovery) << "File" << absoluteLocalPath << "isLocked" << i.isLocked;
         }

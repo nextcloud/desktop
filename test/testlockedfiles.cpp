@@ -131,6 +131,46 @@ private slots:
         QVERIFY(tmp.remove());
     }
 
+    // Functional check for local directory discovery #10535: DiscoverySingleLocalDirectoryJob
+    // must return every regular file and subdirectory with its name and flags intact.
+    void testLocalDirectoryDiscoveryReturnsAllEntries()
+    {
+        QTemporaryDir tmp;
+        QVERIFY(tmp.isValid());
+        QStringList expectedFiles;
+        for (int i = 0; i < 50; ++i) {
+            // Varied lengths and non ascii, matching the discovery concat path.
+            const QString name = QStringLiteral("entry_%1_ααβγ_%2.txt").arg(i).arg(QString(i % 20, QChar('x')));
+            QFile file(tmp.filePath(name));
+            QVERIFY(file.open(QIODevice::WriteOnly));
+            file.write("data");
+            expectedFiles.append(name);
+        }
+        QVERIFY(QDir(tmp.path()).mkdir(QStringLiteral("subdir")));
+
+        const auto job = new DiscoverySingleLocalDirectoryJob({}, tmp.path(), nullptr, false);
+        QSignalSpy finishedSpy(job, &DiscoverySingleLocalDirectoryJob::finished);
+        QThreadPool::globalInstance()->start(job);
+        QTRY_COMPARE_WITH_TIMEOUT(finishedSpy.count(), 1, 5000);
+
+        const auto results = finishedSpy.takeFirst().at(0).value<QVector<OCC::LocalInfo>>();
+        QCOMPARE(results.size(), expectedFiles.size() + 1);
+
+        QStringList seenFiles;
+        for (const auto &info : results) {
+            QVERIFY(!info.name.isEmpty());
+            if (info.isDirectory) {
+                QCOMPARE(info.name, QStringLiteral("subdir"));
+                continue;
+            }
+            QVERIFY(!info.isLocked);
+            seenFiles.append(info.name);
+        }
+        seenFiles.sort();
+        expectedFiles.sort();
+        QCOMPARE(seenFiles, expectedFiles);
+    }
+
 #ifdef Q_OS_WIN
     void testLockDetectionUsesRealFileSystemCheck()
     {
