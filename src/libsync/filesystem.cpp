@@ -243,7 +243,7 @@ QString FileSystem::filePathLockFilePatternMatch(const QString &path)
     // Adobe lock files (.idlk / .prlock) are identified by extension, not prefix.
     const auto suffix = QFileInfo{pathSplit.last()}.suffix().toLower().toStdString();
     if (adobeLockFileDocumentExtensions.contains(suffix)) {
-        const auto pattern = QStringLiteral(".") + QString::fromStdString(suffix);
+        const QString pattern = QStringLiteral(".") + QString::fromStdString(suffix);
         qCDebug(OCC::lcFileSystem) << "Found an Adobe lock file with extension:" << pattern << "in path:" << path;
         return pattern;
     }

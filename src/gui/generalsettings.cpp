@@ -283,7 +283,7 @@ void GeneralSettings::confirmEnableFileProviderMode()
 
 void GeneralSettings::confirmDisableFileProviderMode()
 {
-    const auto text = tr("File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the \"Locations\" section.")
+    const QString text = tr("File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the \"Locations\" section.")
         + QStringLiteral("\n\n")
         + tr("Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account's settings.");
 
