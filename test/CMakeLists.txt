@@ -106,8 +106,19 @@ nextcloud_add_test(UnifiedSearchListmodel)
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(SortedActivityListModel)
 nextcloud_add_test(ActivityData)
+add_executable(ActivitiesWindowQmlTest
+    qml/activitieswindow/activitieswindowqmltest.cpp
+)
+target_link_libraries(ActivitiesWindowQmlTest PRIVATE
+    nextcloudCore
+    Qt::QuickTest
+)
+set_target_properties(ActivitiesWindowQmlTest PROPERTIES
+    FOLDER Tests
+    RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
+)
 add_test(NAME ActivitiesWindowQmlTest
-    COMMAND Qt6::qmltestrunner
+    COMMAND ActivitiesWindowQmlTest
         -import "${CMAKE_CURRENT_SOURCE_DIR}/qml/imports"
         -import "${CMAKE_SOURCE_DIR}/theme"
         -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/activitieswindow/tst_activitieswindow.qml"

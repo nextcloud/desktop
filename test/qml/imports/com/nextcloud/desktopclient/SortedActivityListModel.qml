@@ -26,7 +26,7 @@ ListModel {
                 displayActions: false,
                 displayLocation: "",
                 displayPath: "",
-                icon: "",
+                icon: "image://svgimage-custom-color/activity.svg",
                 isCurrentUserFileActivity: false,
                 isDismissable: false,
                 linksContextMenu: [],
