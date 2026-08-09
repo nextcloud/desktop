@@ -9,6 +9,7 @@
 
 #include <QByteArray>
 #include <QObject>
+#include <QPointer>
 #include <QQueue>
 #include <QList>
 
@@ -212,6 +213,27 @@ public:
     /** Queues a folder for syncing. */
     void scheduleFolder(Folder *);
 
+    /** Queues a folder after the account reconnected, backing off if its syncs keep failing.
+     *
+     * Scheduling immediately is right when the account was genuinely offline, but a folder
+     * whose sync was killed by the disconnect can otherwise livelock: the retry recreates the
+     * load that caused the drop and is killed at the same point. See the implementation.
+     */
+    void scheduleFolderAfterReconnect(Folder *);
+
+    /** Aborts the running sync of every folder belonging to an account. */
+    void terminateSyncsForAccount(AccountState *accountState);
+
+    /** Whether an account's disconnected state is a transient failure rather than a settled answer. */
+    static bool isTransientConnectionState(const AccountState *accountState);
+
+    /** Delays terminating an account's syncs, in case the connection comes straight back.
+     *
+     * A connection-validator failure is a probe result, not proof the server is gone. See the
+     * implementation for why a running sync should outlive a brief one.
+     */
+    void deferSyncTerminationOnTransientError(AccountState *accountState);
+
     /** Queues a folder for syncing that starts immediately. */
     void scheduleFolderForImmediateSync(Folder *);
 
@@ -391,6 +413,10 @@ private:
 
     /// Scheduled folders that should be synced as soon as possible
     QQueue<Folder *> _scheduledFolders;
+
+    /// Accounts with a grace period running before their syncs are terminated.
+    /// Kept so a flapping connection arms the wait once instead of once per state change.
+    QList<QPointer<AccountState>> _pendingSyncTermination;
 
     /// Picks the next scheduled folder and starts the sync
     QTimer _startScheduledSyncTimer;

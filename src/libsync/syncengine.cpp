@@ -1072,8 +1072,10 @@ void SyncEngine::finishSync()
         _anotherSyncNeeded = ImmediateFollowUp;
     }
 
-    std::sort(_syncItems.begin(), _syncItems.end());
-    Q_ASSERT(std::is_sorted(_syncItems.begin(), _syncItems.end()));
+    // stable_sort, not sort: operator< orders by destination() only, so two distinct items
+    // sharing a destination compare equivalent. Stability keeps them in discovery order
+    // instead of an arbitrary one, so propagation stays reproducible across runs.
+    std::stable_sort(_syncItems.begin(), _syncItems.end());
 
     qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";
 

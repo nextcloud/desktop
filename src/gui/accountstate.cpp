@@ -28,6 +28,7 @@
 #include <QBuffer>
 #include <QRandomGenerator>
 
+#include <chrono>
 #include <cmath>
 
 using namespace Qt::StringLiterals;
@@ -35,6 +36,51 @@ using namespace Qt::StringLiterals;
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountState, "nextcloud.gui.account.state", QtInfoMsg)
+
+namespace {
+
+/// How many connection checks must time out back to back before the account is called down.
+///
+/// A single timeout says only that one request did not come back in time, which a server that
+/// stalls briefly under load produces regularly. Acting on it disconnects the account and
+/// tears down a sync that was making progress on its own requests, throwing away the whole
+/// discovery pass. Requiring several in a row distinguishes "one slow request" from "the
+/// server is gone", at the cost of noticing a genuine outage a couple of checks later --
+/// which costs nothing, since a sync against a server that is really gone fails on its own
+/// request timeouts anyway.
+int connectionTimeoutsBeforeDisconnect()
+{
+    static const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_CONNECTION_TIMEOUT_RETRIES");
+    static constexpr auto defaultTolerated = 3;
+    return qMax(1, configured > 0 ? configured : defaultTolerated);
+}
+
+/// Delay before re-probing after a tolerated timeout. Long enough not to pile another request
+/// onto a server that is already struggling, short enough that a real outage is still noticed
+/// promptly.
+constexpr auto recheckAfterToleratedTimeout = std::chrono::seconds(5);
+
+/// How long a timeout stays "recent" for the purpose of counting consecutive failures.
+///
+/// Without this the count is consecutive in sequence but not in time, so three failures spread
+/// over a quarter of an hour -- a server that stumbled three separate times and recovered in
+/// between -- look identical to a server that has stopped answering. Only failures that keep
+/// arriving inside this window are evidence of an outage; an isolated one that is followed by a
+/// long quiet period is just a stumble, and the count starts over.
+///
+/// The window cannot be short. A check that times out takes as long as its own timeout to do
+/// so -- 60s and upwards, more when the reply trickles and keeps resetting the inactivity timer
+/// -- and only then is the next one scheduled. Consecutive failures are therefore minutes apart
+/// by construction, and a window below that would reset every time, making the count
+/// unreachable and this whole mechanism a no-op.
+std::chrono::seconds connectionTimeoutCountResetAfter()
+{
+    static const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_CONNECTION_TIMEOUT_RESET_SEC");
+    static constexpr auto defaultSeconds = 300;
+    return std::chrono::seconds(qMax(60, configured > 0 ? configured : defaultSeconds));
+}
+
+}
 
 AccountState::AccountState(const AccountPtr &account)
     : QObject()
@@ -363,6 +409,50 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     if (isSignedOut()) {
         qCWarning(lcAccountState) << "Signed out, ignoring" << status << _account->url().toString();
         return;
+    }
+
+    // Absorb isolated check timeouts. Returning here leaves the account exactly as it was --
+    // state, connection status and error list all untouched -- so nothing downstream can tell
+    // a tolerated timeout happened, and in particular no running sync is torn down for it.
+    if (status == ConnectionValidator::Timeout) {
+        // Failures only add up while they keep arriving. One that follows a long quiet spell
+        // says the server recovered in between, so it starts a fresh count rather than
+        // compounding with something that happened a quarter of an hour ago.
+        const auto resetAfter = connectionTimeoutCountResetAfter();
+        if (_lastConnectionTimeout.isValid()
+            && _lastConnectionTimeout.durationElapsed() > resetAfter) {
+            qCInfo(lcAccountState) << "Last connection timeout for" << _account->url().toString()
+                                   << "was"
+                                   << std::chrono::duration_cast<std::chrono::seconds>(
+                                          _lastConnectionTimeout.durationElapsed()).count()
+                                   << "s ago, more than the" << resetAfter.count()
+                                   << "s window; starting the count over";
+            _consecutiveConnectionTimeouts = 0;
+        }
+        _lastConnectionTimeout.start();
+
+        ++_consecutiveConnectionTimeouts;
+        const auto tolerated = connectionTimeoutsBeforeDisconnect();
+        if (_consecutiveConnectionTimeouts < tolerated) {
+            qCInfo(lcAccountState) << "Connection check timed out for" << _account->url().toString()
+                                   << "(" << _consecutiveConnectionTimeouts << "of" << tolerated
+                                   << "); staying connected and re-checking";
+            // The re-check below is the only thing that will reconsider this account, so it must
+            // actually run. checkConnectivity() skips the probe when a recent ETag check
+            // succeeded, and we stay Connected here, so that shortcut would otherwise apply and
+            // leave the account wedged as Connected however long the server stays down.
+            _timeOfLastETagCheck = {};
+            QTimer::singleShot(recheckAfterToleratedTimeout, this, &AccountState::checkConnectivity);
+            return;
+        }
+        qCWarning(lcAccountState) << "Connection check timed out" << _consecutiveConnectionTimeouts
+                                  << "times in a row for" << _account->url().toString()
+                                  << "within" << connectionTimeoutCountResetAfter().count()
+                                  << "s of each other; treating the account as disconnected";
+    } else {
+        // A check that got an answer -- any answer -- ends the run of failures.
+        _consecutiveConnectionTimeouts = 0;
+        _lastConnectionTimeout.invalidate();
     }
 
     const auto oldConnectionValidatorStatus = _lastConnectionValidatorStatus;

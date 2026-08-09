@@ -17,6 +17,7 @@
 
 #include <QBuffer>
 #include <QUrlQuery>
+#include <QXmlStreamReader>
 
 class QUrl;
 class QJsonObject;
@@ -120,15 +121,50 @@ class OWNCLOUDSYNC_EXPORT LsColXMLParser : public QObject
 public:
     explicit LsColXMLParser();
 
+    // Legacy single-shot parsing (backward compatible)
     bool parse(const QByteArray &xml,
                QHash<QString, ExtraFolderInfo> *sizes,
                const QString &expectedPath);
+
+    // Incremental streaming parsing API
+    void begin(const QString &expectedPath, QHash<QString, ExtraFolderInfo> *fileInfo);
+    bool addData(const QByteArray &chunk);
+    bool finalize();
 
 signals:
     void directoryListingSubfolders(const QStringList &items);
     void directoryListingIterated(const QString &name, const QMap<QString, QString> &properties);
     void finishedWithError(QNetworkReply *reply);
     void finishedWithoutError();
+
+private:
+    // Incremental parse state (persistent across addData calls)
+    QXmlStreamReader _reader;
+    QString _expectedPath;
+    QHash<QString, ExtraFolderInfo> *_fileInfo = nullptr;
+
+    QStringList _folders;
+    QString _currentHref;
+    QMap<QString, QString> _currentTmpProperties;
+    QMap<QString, QString> _currentHttp200Properties;
+    bool _currentPropsHaveHttp200 = false;
+    bool _insidePropstat = false;
+    bool _insideProp = false;
+    bool _insideMultiStatus = false;
+    bool _started = false;
+
+    // Chunk-boundary-safe capture state for element text that may span addData() calls
+    bool _capturingHref = false;
+    QString _hrefBuffer;
+    bool _capturingStatus = false;
+    QString _statusBuffer;
+    bool _capturingProperty = false;
+    QString _propertyName;
+    int _propertyLevel = 0;
+    QString _propertyContent;
+
+    // Helper to process parse state — same logic as the loop in parse()
+    bool processReader();
 };
 
 class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob
@@ -161,17 +197,43 @@ public:
     static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result);
 
 signals:
-    void directoryListingSubfolders(const QStringList &items);
+    /**
+     * Emitted once per <d:response> as the body is parsed, i.e. while the reply is still
+     * streaming rather than once at the end.
+     *
+     * A listing may therefore be emitted only partially and still be followed by
+     * finishedWithError() -- if the connection drops or the body is malformed mid-transfer,
+     * whatever was parsed up to that point has already been delivered. Consumers must treat
+     * entries received before finishedWithError() as incomplete and discard them; only a
+     * listing terminated by finishedWithoutError() is the whole directory.
+     *
+     * Exactly one of finishedWithError() / finishedWithoutError() is emitted per job.
+     */
     void directoryListingIterated(const QString &name, const QMap<QString, QString> &properties);
+
+    /// Emitted once, immediately before finishedWithoutError(); never on the error path.
+    void directoryListingSubfolders(const QStringList &items);
+
     void finishedWithError(QNetworkReply *reply);
     void finishedWithoutError();
 
+protected:
+    void newReplyHook(QNetworkReply *reply) override;
+
 private slots:
     bool finished() override;
+    void slotReadyRead();
 
 private:
+    void connectParser();
+
     QList<QByteArray> _properties;
     QUrl _url; // Used instead of path() if the url is specified in the constructor
+    LsColXMLParser _parser;
+    /// Set once the reply's status code and content type have been accepted and the parser fed.
+    bool _headerValid = false;
+    /// Set when the parser rejected the body, so finished() does not report the error twice.
+    bool _parseFailed = false;
 };
 
 /**

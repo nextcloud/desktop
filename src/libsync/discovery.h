@@ -8,6 +8,8 @@
 
 #include <QObject>
 #include <cstdint>
+#include <deque>
+#include <utility>
 #include "csync_exclude.h"
 #include "discoveryphase.h"
 #include "syncfileitem.h"
@@ -169,6 +171,15 @@ private:
 
     /// processFile helper for reconciling local changes
     void processFileAnalyzeLocalInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &, QueryMode recurseQueryServer);
+
+    /** Shared tail of the local-info analysis: settle recursion and hand the item onward.
+     *
+     * A method rather than a lambda because the move decision can complete asynchronously, by
+     * which point references to processFileAnalyzeLocalInfo()'s locals would be dangling.
+     */
+    void finalizeLocalInfoAnalysis(const SyncFileItemPtr &item, PathTuple path,
+                                   const LocalInfo &localEntry, const RemoteInfo &serverEntry,
+                                   const SyncJournalFileRecord &dbEntry, QueryMode recurseQueryServer);
 
     /// processFile helper for local/remote conflicts
     void processFileConflict(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);

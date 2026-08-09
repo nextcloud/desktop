@@ -123,6 +123,12 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
                                                QNetworkRequest req,
                                                QIODevice *requestBody)
 {
+    // Applied here rather than at each call site so redirects and retries, which rebuild the
+    // request from this same path, keep the priority the job was configured with. Only when
+    // the job actually asked for one -- otherwise the request's own priority is preserved.
+    if (_priority) {
+        req.setPriority(*_priority);
+    }
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = requestBody;
     if (_requestBody) {
@@ -137,6 +143,9 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
                                                QNetworkRequest req,
                                                const QByteArray &requestBody)
 {
+    if (_priority) {
+        req.setPriority(*_priority);
+    }
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = nullptr;
     adoptRequest(reply);
@@ -148,6 +157,9 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
                                                QNetworkRequest req,
                                                QHttpMultiPart *requestBody)
 {
+    if (_priority) {
+        req.setPriority(*_priority);
+    }
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = nullptr;
     adoptRequest(reply);

@@ -91,6 +91,10 @@ void UserInfo::slotFetchInfo()
     AccountPtr account = _accountState->account();
     _job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"), this);
     _job->setTimeout(20 * 1000);
+    // Feeds ConnectionValidator, and at 20s this has the tightest budget of any job on the
+    // account -- the first thing a saturated connection pool starves. Jump the queue so a
+    // busy sync cannot turn it into a spurious account-offline.
+    _job->setPriority(QNetworkRequest::HighPriority);
     connect(_job.data(), &JsonApiJob::jsonReceived, this, &UserInfo::slotUpdateLastInfo);
     connect(_job.data(), &AbstractNetworkJob::networkError, this, &UserInfo::slotRequestFailed);
     _job->start();

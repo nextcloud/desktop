@@ -66,6 +66,34 @@ public:
     void setFollowRedirects(bool follow);
     [[nodiscard]] bool followRedirects() const { return _followRedirects; }
 
+    /** Set the queueing priority of this job's request.
+     *
+     * Qt keeps a separate high-priority queue per HTTP connection, so a HighPriority request
+     * is taken next whenever a connection frees up rather than queueing behind everything
+     * already pending. It does not reserve a connection -- a saturated pool still has to free
+     * one -- it only decides who goes first.
+     *
+     * This matters for the jobs that decide whether the account is online. With HTTP/1.1 Qt
+     * opens at most 6 connections per host while a sync can have far more requests
+     * outstanding, so a health check queued behind them can blow its own (shorter) timeout
+     * without ever reaching the wire. That reads as "the server is down" and tears down the
+     * running sync, which is a self-inflicted outage rather than a real one.
+     *
+     * Priority is a queueing hint only, not a reservation: it decides who takes the next
+     * connection to free up, but cannot preempt a request already occupying one. When every
+     * connection is busy with slow requests, even a HighPriority job waits. Reserving spare
+     * connections is what actually bounds that wait; see DiscoveryPhase::networkJobBudget().
+     *
+     * Optional on purpose: several jobs already set a priority on their own QNetworkRequest
+     * (PropfindJob raises itself, the upload/download jobs lower themselves so long transfers
+     * do not block other traffic). Leaving this unset means "keep whatever the request asked
+     * for" -- unconditionally writing a default here would silently undo those.
+     *
+     * Must be called before start().
+     */
+    void setPriority(QNetworkRequest::Priority priority) { _priority = priority; }
+    [[nodiscard]] std::optional<QNetworkRequest::Priority> priority() const { return _priority; }
+
     QByteArray responseTimestamp();
     /* Content of the X-Request-ID header. (Only set after the request is sent) */
     QByteArray requestId();
@@ -196,6 +224,10 @@ protected:
     // Automatically follows redirects. Note that this only works for
     // GET requests that don't set up any HTTP body or other flags.
     bool _followRedirects = true;
+
+    // Queueing priority applied to every request this job sends; see setPriority().
+    // Unset means the request keeps whatever priority it set for itself.
+    std::optional<QNetworkRequest::Priority> _priority;
 
     QString replyStatusString();
 

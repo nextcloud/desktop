@@ -30,7 +30,10 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QFileInfo>
+#include <QTimer>
 
+#include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <cstring>
 
@@ -700,11 +703,87 @@ void PropagateUploadFileCommon::checkResettingErrors()
     }
 }
 
+bool PropagateUploadFileCommon::retryAfterServiceUnavailable(AbstractNetworkJob *job)
+{
+    // A chunked upload can have sibling chunk jobs still in flight. Restarting the item from
+    // underneath them would leave those writing into an upload this job has already walked
+    // away from, so only the last job standing retries; otherwise the item fails as before.
+    if (_jobs.count() > 1) {
+        qCInfo(lcPropagateUpload) << "server replied 503 for" << _item->_file << "but"
+                                  << _jobs.count() - 1
+                                  << "sibling jobs are still running; not retrying";
+        return false;
+    }
+
+    // Same policy and the same env knobs as the download side, deliberately: a server that is
+    // refusing work refuses it in both directions, and one set of numbers is easier to tune.
+    static const auto maxAttempts = [] {
+        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_RETRIES");
+        return qMax(1, configured > 0 ? configured : 3);
+    }();
+    static const auto resetAfter = [] {
+        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_RESET_SEC");
+        return std::chrono::seconds(qMax(1, configured > 0 ? configured : 60));
+    }();
+    static const auto backoffStep = [] {
+        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_BACKOFF_SEC");
+        return std::chrono::seconds(qMax(1, configured > 0 ? configured : 5));
+    }();
+
+    if (_sinceLastServiceUnavailable.isValid()
+        && _sinceLastServiceUnavailable.durationElapsed() > resetAfter) {
+        _serviceUnavailableAttempts = 0;
+    }
+    _sinceLastServiceUnavailable.start();
+    ++_serviceUnavailableAttempts;
+
+    if (_serviceUnavailableAttempts >= maxAttempts) {
+        qCWarning(lcPropagateUpload) << "server replied 503 for" << _item->_file
+                                     << _serviceUnavailableAttempts
+                                     << "times in a row; failing the item";
+        _serviceUnavailableAttempts = 0;
+        _sinceLastServiceUnavailable.invalidate();
+        return false;
+    }
+
+    auto delay = backoffStep * _serviceUnavailableAttempts;
+    if (job && job->reply()) {
+        const auto retryAfter = job->reply()->rawHeader(QByteArrayLiteral("Retry-After")).toInt();
+        if (retryAfter > 0) {
+            delay = std::min(std::chrono::seconds(retryAfter), std::chrono::seconds(60));
+        }
+    }
+
+    qCInfo(lcPropagateUpload) << "server replied 503 for" << _item->_file << "(attempt"
+                              << _serviceUnavailableAttempts << "of" << maxAttempts
+                              << "); retrying in" << delay.count() << "s";
+
+    // Deliberately no abort() here. abort() latches _aborting, which never clears, so the
+    // restarted upload would be a no-op. The sub-job that failed has already finished and
+    // takes itself out of _jobs when it is destroyed.
+    QTimer::singleShot(delay, this, [this] {
+        if (propagator()->_abortRequested) {
+            done(SyncFileItem::SoftError, tr("Sync was aborted"), ErrorCategory::GenericError);
+            return;
+        }
+        start();
+    });
+    return true;
+}
+
 void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
 {
     QByteArray replyContent;
     QString errorString = job->errorStringParsingBody(&replyContent);
     qCWarning(lcPropagateUpload) << replyContent; // display the XML error in the debug
+
+    // A 503 is the server declining to take this upload right now, not a verdict about the
+    // file. Checked before checkResettingErrors() below, so a retried attempt does not spend
+    // the chunked-upload reset budget.
+    if (_item->_httpErrorCode == 503 && !propagator()->_abortRequested
+        && retryAfterServiceUnavailable(job)) {
+        return;
+    }
 
     if (_item->_httpErrorCode == LockFileJob::PRECONDITION_FAILED_ERROR_CODE
         || _item->_httpErrorCode == LockFileJob::LOCKED_HTTP_ERROR_CODE) {

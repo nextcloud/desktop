@@ -272,7 +272,7 @@ void SyncJournalDb::startTransaction()
         }
         _transaction = 1;
         _lastCommitTimer.start();
-        _commitsSinceTransactionStart = 0;
+        _writesSinceLastCommit = 0;
     } else {
         qCDebug(lcDb) << "Database Transaction is running, not starting another one!";
     }
@@ -3259,9 +3259,12 @@ void SyncJournalDb::commitIfNeededAndStartNewTransaction(const QString &context)
 {
     QMutexLocker lock(&_mutex);
     if (_transaction == 1) {
-        _commitsSinceTransactionStart++;
-        bool timeThresholdExceeded = _lastCommitTimer.elapsed() >= COMMIT_BATCH_TIMEOUT_MS;
-        bool countThresholdExceeded = _commitsSinceTransactionStart >= COMMIT_BATCH_WRITE_COUNT;
+        _writesSinceLastCommit++;
+        // An unstarted QElapsedTimer returns a meaningless elapsed(), so treat "never
+        // started" as due for a commit rather than reading uninitialised state.
+        const auto timeThresholdExceeded =
+            !_lastCommitTimer.isValid() || _lastCommitTimer.elapsed() >= COMMIT_BATCH_TIMEOUT_MS;
+        const auto countThresholdExceeded = _writesSinceLastCommit >= COMMIT_BATCH_WRITE_COUNT;
         if (timeThresholdExceeded || countThresholdExceeded) {
             commitInternal(context, true);
         }
@@ -3286,7 +3289,7 @@ void SyncJournalDb::commitInternal(const QString &context, bool startTrans)
 {
     qCDebug(lcDb) << "Transaction commit" << context << (startTrans ? "and starting new transaction" : "");
     commitTransaction();
-    _commitsSinceTransactionStart = 0;
+    _writesSinceLastCommit = 0;
 
     if (startTrans) {
         startTransaction();

@@ -177,136 +177,225 @@ bool MkColJob::finished()
 }
 
 /*********************************************************************************************/
-// supposed to read <D:collection> when pointing to <D:resourcetype><D:collection></D:resourcetype>..
-static QString readContentsAsString(QXmlStreamReader &reader)
-{
-    QString result;
-    int level = 0;
-    do {
-        QXmlStreamReader::TokenType type = reader.readNext();
-        if (type == QXmlStreamReader::StartElement) {
-            level++;
-            result += "<" + reader.name().toString() + ">";
-        } else if (type == QXmlStreamReader::Characters) {
-            result += reader.text();
-        } else if (type == QXmlStreamReader::EndElement) {
-            level--;
-            if (level < 0) {
-                break;
-            }
-            result += "</" + reader.name().toString() + ">";
-        }
-
-    } while (!reader.atEnd());
-    return result;
-}
-
-
 LsColXMLParser::LsColXMLParser() = default;
 
-bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo> *fileInfo, const QString &expectedPath)
+void LsColXMLParser::begin(const QString &expectedPath, QHash<QString, ExtraFolderInfo> *fileInfo)
 {
-    // Parse DAV response
-    QXmlStreamReader reader(xml);
-    reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+    _expectedPath = expectedPath;
+    _fileInfo = fileInfo;
+    _started = true;
 
-    QStringList folders;
-    QString currentHref;
-    QMap<QString, QString> currentTmpProperties;
-    QMap<QString, QString> currentHttp200Properties;
-    bool currentPropsHaveHttp200 = false;
-    bool insidePropstat = false;
-    bool insideProp = false;
-    bool insideMultiStatus = false;
+    // Drop any data, error state and namespace declarations left over from a previous
+    // response. begin() is called again when a request is redirected or retried, and a
+    // reader that still carries the old error would fail every subsequent parse.
+    _reader.clear();
+    _reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
 
-    while (!reader.atEnd()) {
-        QXmlStreamReader::TokenType type = reader.readNext();
-        QString name = reader.name().toString();
-        // Start elements with DAV:
-        if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
-            if (name == QLatin1String("href")) {
-                // We don't use URL encoding in our request URL (which is the expected path) (QNAM will do it for us)
-                // but the result will have URL encoding..
-                QString hrefString = QUrl::fromLocalFile(QUrl::fromPercentEncoding(reader.readElementText().toUtf8()))
+    // Reset parse state
+    _folders.clear();
+    _currentHref.clear();
+    _currentTmpProperties.clear();
+    _currentHttp200Properties.clear();
+    _currentPropsHaveHttp200 = false;
+    _insidePropstat = false;
+    _insideProp = false;
+    _insideMultiStatus = false;
+
+    // Reset chunk-boundary-safe capture state
+    _capturingHref = false;
+    _hrefBuffer.clear();
+    _capturingStatus = false;
+    _statusBuffer.clear();
+    _capturingProperty = false;
+    _propertyName.clear();
+    _propertyLevel = 0;
+    _propertyContent.clear();
+}
+
+bool LsColXMLParser::addData(const QByteArray &chunk)
+{
+    if (!_started) {
+        // Not a silent begin(): _expectedPath would still be empty, and an empty expected
+        // path makes the href prefix check accept everything, i.e. no validation at all.
+        qCWarning(lcLsColJob) << "addData() called before begin()";
+        return false;
+    }
+
+    _reader.addData(chunk);
+    return processReader();
+}
+
+bool LsColXMLParser::processReader()
+{
+    while (!_reader.atEnd()) {
+        const QXmlStreamReader::TokenType type = _reader.readNext();
+        // A view, not toString(): this line runs once per XML token and a QString here
+        // would allocate on every element of a potentially huge PROPFIND response.
+        const QStringView name = _reader.name();
+
+        // Handle chunk-boundary-safe capture of href text (may span multiple addData calls)
+        if (_capturingHref) {
+            if (type == QXmlStreamReader::Characters) {
+                _hrefBuffer += _reader.text();
+                continue;
+            } else if (type == QXmlStreamReader::EndElement && name == QLatin1String("href")) {
+                QString hrefString = QUrl::fromLocalFile(QUrl::fromPercentEncoding(_hrefBuffer.toUtf8()))
                         .adjusted(QUrl::NormalizePathSegments)
                         .path();
-                if (!hrefString.startsWith(expectedPath)) {
-                    qCWarning(lcLsColJob) << "Invalid href" << hrefString << "expected starting with" << expectedPath;
+                if (!hrefString.startsWith(_expectedPath)) {
+                    qCWarning(lcLsColJob) << "Invalid href" << hrefString << "expected starting with" << _expectedPath;
                     return false;
                 }
-                currentHref = hrefString;
-            } else if (name == QLatin1String("response")) {
-            } else if (name == QLatin1String("propstat")) {
-                insidePropstat = true;
-            } else if (name == QLatin1String("status") && insidePropstat) {
-                QString httpStatus = reader.readElementText();
-                if (httpStatus.startsWith("HTTP/1.1 200")) {
-                    currentPropsHaveHttp200 = true;
-                } else {
-                    currentPropsHaveHttp200 = false;
-                }
-            } else if (name == QLatin1String("prop")) {
-                insideProp = true;
-                continue;
-            } else if (name == QLatin1String("multistatus")) {
-                insideMultiStatus = true;
+                _currentHref = hrefString;
+                _capturingHref = false;
                 continue;
             }
         }
 
-        if (type == QXmlStreamReader::StartElement && insidePropstat && insideProp) {
-            // All those elements are properties
-            QString propertyContent = readContentsAsString(reader);
-            if (name == QLatin1String("resourcetype") && propertyContent.contains("collection")) {
-                folders.append(currentHref);
-            } else if (name == QLatin1String("size")) {
-                bool ok = false;
-                auto s = propertyContent.toLongLong(&ok);
-                if (ok && fileInfo) {
-                    (*fileInfo)[currentHref].size = s;
+        // Handle chunk-boundary-safe capture of status text
+        if (_capturingStatus) {
+            if (type == QXmlStreamReader::Characters) {
+                _statusBuffer += _reader.text();
+                continue;
+            } else if (type == QXmlStreamReader::EndElement && name == QLatin1String("status")) {
+                if (_statusBuffer.startsWith("HTTP/1.1 200")) {
+                    _currentPropsHaveHttp200 = true;
+                } else {
+                    _currentPropsHaveHttp200 = false;
                 }
-            } else if (name == QLatin1String("fileid")) {
-                (*fileInfo)[currentHref].fileId = propertyContent.toUtf8();
+                _capturingStatus = false;
+                continue;
             }
-            currentTmpProperties.insert(reader.name().toString(), propertyContent);
+        }
+
+        // Handle chunk-boundary-safe capture of property content
+        if (_capturingProperty) {
+            if (type == QXmlStreamReader::StartElement) {
+                _propertyLevel++;
+                _propertyContent += "<" + name + ">";
+                continue;
+            } else if (type == QXmlStreamReader::Characters) {
+                _propertyContent += _reader.text();
+                continue;
+            } else if (type == QXmlStreamReader::EndElement) {
+                if (_propertyLevel > 0) {
+                    _propertyLevel--;
+                    _propertyContent += "</" + name + ">";
+                    continue;
+                } else {
+                    // Matching end of the property element itself
+                    if (_propertyName == QLatin1String("resourcetype") && _propertyContent.contains("collection")) {
+                        _folders.append(_currentHref);
+                    } else if (_propertyName == QLatin1String("size")) {
+                        bool ok = false;
+                        auto s = _propertyContent.toLongLong(&ok);
+                        if (ok && _fileInfo) {
+                            (*_fileInfo)[_currentHref].size = s;
+                        }
+                    } else if (_propertyName == QLatin1String("fileid") && _fileInfo) {
+                        (*_fileInfo)[_currentHref].fileId = _propertyContent.toUtf8();
+                    }
+                    _currentTmpProperties.insert(_propertyName, _propertyContent);
+                    _capturingProperty = false;
+                    continue;
+                }
+            }
+        }
+
+        // Start elements with DAV:
+        if (type == QXmlStreamReader::StartElement && _reader.namespaceUri() == QLatin1String("DAV:")) {
+            if (name == QLatin1String("href")) {
+                _capturingHref = true;
+                _hrefBuffer.clear();
+                continue;
+            } else if (name == QLatin1String("response")) {
+            } else if (name == QLatin1String("propstat")) {
+                _insidePropstat = true;
+            } else if (name == QLatin1String("status") && _insidePropstat) {
+                _capturingStatus = true;
+                _statusBuffer.clear();
+                continue;
+            } else if (name == QLatin1String("prop")) {
+                _insideProp = true;
+                continue;
+            } else if (name == QLatin1String("multistatus")) {
+                _insideMultiStatus = true;
+                continue;
+            }
+        }
+
+        // Start property content capture (only if not already in another capture mode)
+        if (type == QXmlStreamReader::StartElement && _insidePropstat && _insideProp && !_capturingHref && !_capturingStatus) {
+            _capturingProperty = true;
+            _propertyName = name.toString(); // must outlive this token
+            _propertyLevel = 0;
+            _propertyContent.clear();
+            continue;
         }
 
         // End elements with DAV:
         if (type == QXmlStreamReader::EndElement) {
-            if (reader.namespaceUri() == QLatin1String("DAV:")) {
-                if (reader.name() == QStringLiteral("response")) {
-                    if (currentHref.endsWith('/')) {
-                        currentHref.chop(1);
+            if (_reader.namespaceUri() == QLatin1String("DAV:")) {
+                if (name == QLatin1String("response")) {
+                    if (_currentHref.endsWith('/')) {
+                        _currentHref.chop(1);
                     }
-                    emit directoryListingIterated(currentHref, currentHttp200Properties);
-                    currentHref.clear();
-                    currentHttp200Properties.clear();
-                } else if (reader.name() == QStringLiteral("propstat")) {
-                    insidePropstat = false;
-                    if (currentPropsHaveHttp200) {
-                        currentHttp200Properties = QMap<QString, QString>(currentTmpProperties);
+                    emit directoryListingIterated(_currentHref, _currentHttp200Properties);
+                    _currentHref.clear();
+                    _currentHttp200Properties.clear();
+                } else if (name == QLatin1String("propstat")) {
+                    _insidePropstat = false;
+                    if (_currentPropsHaveHttp200) {
+                        _currentHttp200Properties = QMap<QString, QString>(_currentTmpProperties);
                     }
-                    currentTmpProperties.clear();
-                    currentPropsHaveHttp200 = false;
-                } else if (reader.name() == QStringLiteral("prop")) {
-                    insideProp = false;
+                    _currentTmpProperties.clear();
+                    _currentPropsHaveHttp200 = false;
+                } else if (name == QLatin1String("prop")) {
+                    _insideProp = false;
                 }
             }
         }
     }
 
-    if (reader.hasError()) {
-        // XML Parser error? Whatever had been emitted before will come as directoryListingIterated
-        qCWarning(lcLsColJob) << "ERROR" << reader.errorString() << xml;
+    // Check for errors (excluding PrematureEndOfDocumentError which means "need more data")
+    if (_reader.hasError() && _reader.error() != QXmlStreamReader::PrematureEndOfDocumentError) {
+        qCWarning(lcLsColJob) << "XML parse error:" << _reader.errorString();
         return false;
-    } else if (!insideMultiStatus) {
-        qCWarning(lcLsColJob) << "ERROR no WebDAV response?" << xml;
-        return false;
-    } else {
-        emit directoryListingSubfolders(folders);
-        emit finishedWithoutError();
     }
+
     return true;
+}
+
+bool LsColXMLParser::finalize()
+{
+    // Process any remaining data and finalize the parse
+    if (!processReader()) {
+        return false;
+    }
+
+    // Check if document was properly completed
+    if (_reader.hasError()) {
+        qCWarning(lcLsColJob) << "ERROR: incomplete XML parse:" << _reader.errorString();
+        return false;
+    } else if (!_insideMultiStatus) {
+        qCWarning(lcLsColJob) << "ERROR no WebDAV response?";
+        return false;
+    }
+
+    // Emit final signals
+    emit directoryListingSubfolders(_folders);
+    emit finishedWithoutError();
+    return true;
+}
+
+bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo> *fileInfo, const QString &expectedPath)
+{
+    // Legacy single-shot parsing: use the incremental API for backward compatibility
+    begin(expectedPath, fileInfo);
+    if (!addData(xml)) {
+        return false;
+    }
+    return finalize();
 }
 
 /*********************************************************************************************/
@@ -314,12 +403,37 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo
 LsColJob::LsColJob(AccountPtr account, const QString &path)
     : AbstractNetworkJob(account, path)
 {
+    connectParser();
 }
 
 LsColJob::LsColJob(AccountPtr account, const QUrl &url)
     : AbstractNetworkJob(account, QString())
     , _url(url)
 {
+    connectParser();
+}
+
+void LsColJob::connectParser()
+{
+    // Connected once here rather than in start(): start() is not re-entered on a redirect,
+    // and connecting there would duplicate every forwarded signal if it ever were.
+    connect(&_parser, &LsColXMLParser::directoryListingSubfolders,
+        this, &LsColJob::directoryListingSubfolders);
+    connect(&_parser, &LsColXMLParser::directoryListingIterated,
+        this, &LsColJob::directoryListingIterated);
+    connect(&_parser, &LsColXMLParser::finishedWithError,
+        this, &LsColJob::finishedWithError);
+    connect(&_parser, &LsColXMLParser::finishedWithoutError,
+        this, &LsColJob::finishedWithoutError);
+}
+
+void LsColJob::newReplyHook(QNetworkReply *reply)
+{
+    // Called for the initial request and again for every redirect, so the incremental
+    // parse always follows the reply that actually carries the multistatus body.
+    _headerValid = false;
+    _parseFailed = false;
+    connect(reply, &QIODevice::readyRead, this, &LsColJob::slotReadyRead);
 }
 
 void LsColJob::setProperties(QList<QByteArray> properties)
@@ -527,42 +641,68 @@ void LsColJob::start()
     } else {
         sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
     }
+
+    // No setTimeout() override here on purpose. The inherited timeout is an *inactivity*
+    // timeout: AbstractNetworkJob resets it on every downloadProgress, so it only has to
+    // cover the server's think time before the next chunk, not the duration of the whole
+    // listing. This request is Depth: 1, so that is a single directory, and the body is now
+    // parsed incrementally, so bytes arrive steadily instead of in one blob at the end.
+    // The configured value (OWNCLOUD_TIMEOUT, else 300 s) is therefore sufficient, and
+    // hardcoding a longer one would silently override an administrator's setting.
     AbstractNetworkJob::start();
 }
 
-// TODO: Instead of doing all in this slot, we should iteratively parse in readyRead(). This
-// would allow us to be more asynchronous in processing while data is coming from the network,
-// not all in one big blob at the end.
+void LsColJob::slotReadyRead()
+{
+    if (_parseFailed) {
+        return;
+    }
+
+    if (!_headerValid && reply()) {
+        // Validate headers on first readyRead (headers are guaranteed available by Qt)
+        const auto contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
+        const auto httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        const auto validContentType = contentType.contains("application/xml; charset=utf-8") ||
+                                      contentType.contains("application/xml; charset=\"utf-8\"") ||
+                                      contentType.contains("text/xml; charset=utf-8") ||
+                                      contentType.contains("text/xml; charset=\"utf-8\"");
+
+        if (httpCode != 207 || !validContentType) {
+            // Invalid response, don't bother parsing
+            return;
+        }
+        _headerValid = true;
+
+        // Initialize parser on first valid data
+        const auto expectedPath = reply()->request().url().path();
+        _parser.begin(expectedPath, &_folderInfos);
+    }
+
+    if (_headerValid) {
+        // Read and feed available data to the incremental parser
+        const QByteArray chunk = reply()->readAll();
+        if (!chunk.isEmpty() && !_parser.addData(chunk)) {
+            // Stop feeding the parser, but leave the reply's own connections alone: they
+            // carry AbstractNetworkJob::slotFinished, which is what eventually calls
+            // finished() and deletes this job. finished() reports the error.
+            _parseFailed = true;
+        }
+    }
+}
+
 bool LsColJob::finished()
 {
     qCInfo(lcLsColJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
 
-    const auto contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
-    const auto httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    const auto validContentType = contentType.contains("application/xml; charset=utf-8") ||
-                                  contentType.contains("application/xml; charset=\"utf-8\"") ||
-                                  contentType.contains("text/xml; charset=utf-8") ||
-                                  contentType.contains("text/xml; charset=\"utf-8\"");
+    // Drain any remaining bytes that arrived at or after the finished signal. This is also
+    // the only read for a body small enough to arrive in one go, where readyRead may have
+    // fired before the headers were available.
+    slotReadyRead();
 
-    if (httpCode == 207 && validContentType) {
-        LsColXMLParser parser;
-        connect(&parser, &LsColXMLParser::directoryListingSubfolders,
-            this, &LsColJob::directoryListingSubfolders);
-        connect(&parser, &LsColXMLParser::directoryListingIterated,
-            this, &LsColJob::directoryListingIterated);
-        connect(&parser, &LsColXMLParser::finishedWithError,
-            this, &LsColJob::finishedWithError);
-        connect(&parser, &LsColXMLParser::finishedWithoutError,
-            this, &LsColJob::finishedWithoutError);
-
-        const auto expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/dav/folder"
-        if (!parser.parse(reply()->readAll(), &_folderInfos, expectedPath)) {
-            // XML parse error
-            emit finishedWithError(reply());
-        }
-    } else {
-        // wrong content type, wrong HTTP code or any other network error
+    if (!_headerValid || _parseFailed || !_parser.finalize()) {
+        // Wrong content type, wrong HTTP code, a network error, or a malformed body.
+        // Exactly one error is reported per job regardless of where it was detected.
         emit finishedWithError(reply());
     }
 

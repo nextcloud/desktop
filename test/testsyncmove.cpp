@@ -240,6 +240,69 @@ private slots:
         }
     }
 
+    /** The checksum guard on rename detection, both ways round.
+     *
+     * Rename detection matches on inode, and only reaches the checksum once type, size and
+     * mtime already agree and the old path is gone. The checksum is the last thing standing
+     * between "the same file moved" and "a different file that happens to reuse an inode" --
+     * and getting that wrong means MOVEing the wrong file on the server.
+     *
+     * Pinned separately from testLocalMoveDetection() because the computation is a candidate
+     * for being made asynchronous: if the move decision were ever taken before the checksum
+     * came back, the second half of this test is what would catch it.
+     */
+    void testRenameChecksumGuard()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        auto nPUT = 0;
+        auto nDELETE = 0;
+        auto nMOVE = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op,
+                                          const QNetworkRequest &request,
+                                          QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation) {
+                ++nPUT;
+            }
+            if (op == QNetworkAccessManager::DeleteOperation) {
+                ++nDELETE;
+            }
+            if (request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QLatin1String("MOVE")) {
+                ++nMOVE;
+            }
+            return nullptr;
+        });
+
+        // Give the file a checksum in the database, so the guard actually runs.
+        fakeFolder.localModifier().insert("A/checked");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 1);
+        nPUT = nDELETE = nMOVE = 0;
+
+        // Contents untouched, so the checksum matches: this is a move, and must go over the
+        // wire as a MOVE rather than a re-upload.
+        fakeFolder.localModifier().rename("A/checked", "A/checked_moved");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nMOVE, 1);
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nDELETE, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        nPUT = nDELETE = nMOVE = 0;
+
+        // Now the dangerous one. Rename *and* rewrite the contents, keeping size and mtime
+        // identical so every cheaper guard still says "move". Only the checksum can tell these
+        // apart, so this must come out as upload + delete, never as a MOVE.
+        const auto mtime = fakeFolder.remoteModifier().find("A/checked_moved")->lastModified;
+        fakeFolder.localModifier().rename("A/checked_moved", "A/checked_changed");
+        fakeFolder.localModifier().setContents("A/checked_changed", 'Z');
+        fakeFolder.localModifier().setModTime("A/checked_changed", mtime);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nMOVE, 0);
+        QCOMPARE(nPUT, 1);
+        QCOMPARE(nDELETE, 1);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
     void testLocalMoveDetection()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };

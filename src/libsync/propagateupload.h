@@ -214,6 +214,16 @@ protected:
      */
     bool _aborting BITFIELD(1);
 
+    /// Attempts spent on 503 replies for this upload, and how long since the last one. Same
+    /// policy and env knobs as the download side; see
+    /// PropagateDownloadFile::retryAfterServiceUnavailable().
+    int _serviceUnavailableAttempts = 0;
+    QElapsedTimer _sinceLastServiceUnavailable;
+
+    /// Re-sends the upload after a 503 while this file's retry budget lasts.
+    /// @return true if a retry was scheduled and the caller should stop handling the failure.
+    bool retryAfterServiceUnavailable(AbstractNetworkJob *job);
+
     /* This is a minified version of the SyncFileItem,
      * that holds only the specifics about the file that's
      * being uploaded.

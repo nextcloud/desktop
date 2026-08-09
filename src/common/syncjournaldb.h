@@ -432,7 +432,7 @@ private:
     int _transaction = 0;
     bool _metadataTableIsEmpty = false;
     QElapsedTimer _lastCommitTimer;
-    int _commitsSinceTransactionStart = 0;
+    int _writesSinceLastCommit = 0;
 
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *

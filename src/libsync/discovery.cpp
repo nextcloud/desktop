@@ -1078,10 +1078,12 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             postProcessRename(path);
             done = true;
         } else {
-            // we need to make a request to the server to know that the original file is deleted on the server
+            // we need to know whether the original file is deleted on the server. Resolved from
+            // one listing of its parent directory, shared with every other rename candidate in
+            // that directory, rather than a PROPFIND per file; see lookupRemoteEtag().
             _pendingAsyncJobs++;
-            const auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
+            _discoveryData->lookupRemoteEtag(_discoveryData->_remoteFolder + originalPath, this,
+                                             [=, this](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 if (etag || etag.error().code != 404 ||
@@ -1103,7 +1105,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
                 }
                 processFileFinalize(item, path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
             });
-            job->start();
             done = true; // Ideally, if the origin still exist on the server, we should continue searching...  but that'd be difficult
             async = true;
         }
@@ -1168,6 +1169,100 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
     return _dirItem->_folderQuota.bytesAvailable;
 }
 
+/** Shared tail of the local-info analysis: settle recursion and hand the item onward.
+ *
+ * Was a [&]-capturing lambda inside processFileAnalyzeLocalInfo(). It has to be a method now:
+ * the move decision can complete asynchronously, and by then the references that lambda held
+ * to that function's locals would be dangling.
+ */
+void ProcessDirectoryJob::finalizeLocalInfoAnalysis(const SyncFileItemPtr &item, PathTuple path,
+                                                    const LocalInfo &localEntry, const RemoteInfo &serverEntry,
+                                                    const SyncJournalFileRecord &dbEntry,
+                                                    QueryMode recurseQueryServer)
+{
+    bool recurse = item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory;
+    // Even if we have a local directory: If the remote is a file that's propagated as a
+    // conflict we don't need to recurse into it. (local c1.owncloud, c1/ ; remote: c1)
+    if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT && !item->isDirectory())
+        recurse = false;
+    if (_queryLocal != NormalQuery && _queryServer != NormalQuery)
+        recurse = false;
+
+    if (localEntry.isPermissionsInvalid) {
+        recurse = true;
+    }
+
+    if ((item->_direction == SyncFileItem::Down || item->_instruction == CSYNC_INSTRUCTION_CONFLICT || item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC) &&
+            item->_direction != SyncFileItem::Up &&
+            (item->_modtime <= 0 || item->_modtime >= 0xFFFFFFFF)) {
+        item->_instruction = CSYNC_INSTRUCTION_ERROR;
+        item->_errorString = tr("Cannot sync due to invalid modification time");
+        item->_status = SyncFileItem::Status::NormalError;
+    }
+
+    if (const auto folderQuota = folderBytesAvailable(item,
+                                                      serverEntry.isValid() ? FolderQuota::ServerEntry::Valid
+                                                                            : FolderQuota::ServerEntry::Invalid);
+        item->_size > folderQuota
+        && folderQuota > -1) {
+
+        qCInfo(lcDisco) << "Quota exceeded for item:" << item->_file
+                         << "- item bytes used:" << item->_size
+                         << "- folder bytes available: " << folderQuota;
+
+        item->_instruction = CSYNC_INSTRUCTION_ERROR;
+        if (_currentFolder._server.isEmpty()) {
+            item->_errorString = tr("Upload of %1 exceeds %2 of space left in personal files.").arg(Utility::octetsToString(item->_size),
+                                                                                                    Utility::octetsToString(folderQuota));
+        } else {
+            item->_errorString = tr("Upload of %1 exceeds %2 of space left in folder %3.").arg(Utility::octetsToString(item->_size),
+                                                                                               Utility::octetsToString(folderQuota),
+                                                                                               _currentFolder._server);
+        }
+
+        item->_status = SyncFileItem::Status::NormalError;
+        _discoveryData->_anotherSyncNeeded = true;
+        _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForFilesExceedQuotaSeconds);
+    }
+
+    if (item->_type != CSyncEnums::ItemTypeVirtualFile) {
+        const auto foundEditorsKeepingFileBusy = queryEditorsKeepingFileBusy(item, path);
+        if (!foundEditorsKeepingFileBusy.isEmpty()) {
+            item->_instruction = CSYNC_INSTRUCTION_ERROR;
+            const auto editorsString = foundEditorsKeepingFileBusy.join(", ");
+            qCInfo(lcDisco) << "Failed, because it is open in the editor." << item->_file << "direction" << item->_direction << editorsString;
+            item->_errorString = tr("Could not upload file, because it is open in \"%1\".").arg(editorsString);
+            item->_status = SyncFileItem::Status::SoftError;
+            _discoveryData->_anotherSyncNeeded = true;
+            _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForOpenedForSigningFilesSeconds);
+        }
+    }
+
+    if (dbEntry.isValid() && item->isDirectory()) {
+        item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(dbEntry._e2eEncryptionStatus);
+        if (item->isEncrypted()) {
+            item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
+        }
+        Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::Encrypted);
+        if (item->_e2eEncryptionStatusRemote != SyncFileItem::EncryptionStatus::NotEncrypted) {
+            Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
+        }
+    }
+
+    if (localEntry.isPermissionsInvalid && item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE) {
+        item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+        item->_direction = SyncFileItem::Down;
+    }
+
+    item->isPermissionsInvalid = localEntry.isPermissionsInvalid;
+
+    auto recurseQueryLocal = _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist;
+    if (item->isDirectory() && serverEntry.isValid() && dbEntry.isValid() && serverEntry.etag == dbEntry._etag && serverEntry.remotePerm == dbEntry._remotePerm) {
+        recurseQueryServer = ParentNotChanged;
+    }
+    processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
+}
+
 void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const SyncFileItemPtr &item, PathTuple path, const LocalInfo &localEntry,
     const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry, QueryMode recurseQueryServer)
@@ -1220,89 +1315,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     _childModified |= serverModified;
 
-    auto finalize = [&] {
-        bool recurse = item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory;
-        // Even if we have a local directory: If the remote is a file that's propagated as a
-        // conflict we don't need to recurse into it. (local c1.owncloud, c1/ ; remote: c1)
-        if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT && !item->isDirectory())
-            recurse = false;
-        if (_queryLocal != NormalQuery && _queryServer != NormalQuery)
-            recurse = false;
-
-        if (localEntry.isPermissionsInvalid) {
-            recurse = true;
-        }
-
-        if ((item->_direction == SyncFileItem::Down || item->_instruction == CSYNC_INSTRUCTION_CONFLICT || item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC) &&
-                item->_direction != SyncFileItem::Up &&
-                (item->_modtime <= 0 || item->_modtime >= 0xFFFFFFFF)) {
-            item->_instruction = CSYNC_INSTRUCTION_ERROR;
-            item->_errorString = tr("Cannot sync due to invalid modification time");
-            item->_status = SyncFileItem::Status::NormalError;
-        }
-
-        if (const auto folderQuota = folderBytesAvailable(item,
-                                                          serverEntry.isValid() ? FolderQuota::ServerEntry::Valid
-                                                                                : FolderQuota::ServerEntry::Invalid);
-            item->_size > folderQuota
-            && folderQuota > -1) {
-
-            qCInfo(lcDisco) << "Quota exceeded for item:" << item->_file
-                             << "- item bytes used:" << item->_size
-                             << "- folder bytes available: " << folderQuota;
-
-            item->_instruction = CSYNC_INSTRUCTION_ERROR;
-            if (_currentFolder._server.isEmpty()) {
-                item->_errorString = tr("Upload of %1 exceeds %2 of space left in personal files.").arg(Utility::octetsToString(item->_size),
-                                                                                                        Utility::octetsToString(folderQuota));
-            } else {
-                item->_errorString = tr("Upload of %1 exceeds %2 of space left in folder %3.").arg(Utility::octetsToString(item->_size),
-                                                                                                   Utility::octetsToString(folderQuota),
-                                                                                                   _currentFolder._server);
-            }
-
-            item->_status = SyncFileItem::Status::NormalError;
-            _discoveryData->_anotherSyncNeeded = true;
-            _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForFilesExceedQuotaSeconds);
-        }
-
-        if (item->_type != CSyncEnums::ItemTypeVirtualFile) {
-            const auto foundEditorsKeepingFileBusy = queryEditorsKeepingFileBusy(item, path);
-            if (!foundEditorsKeepingFileBusy.isEmpty()) {
-                item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                const auto editorsString = foundEditorsKeepingFileBusy.join(", ");
-                qCInfo(lcDisco) << "Failed, because it is open in the editor." << item->_file << "direction" << item->_direction << editorsString;
-                item->_errorString = tr("Could not upload file, because it is open in \"%1\".").arg(editorsString);
-                item->_status = SyncFileItem::Status::SoftError;
-                _discoveryData->_anotherSyncNeeded = true;
-                _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForOpenedForSigningFilesSeconds);
-            }
-        }
-
-        if (dbEntry.isValid() && item->isDirectory()) {
-            item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(dbEntry._e2eEncryptionStatus);
-            if (item->isEncrypted()) {
-                item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
-            }
-            Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::Encrypted);
-            if (item->_e2eEncryptionStatusRemote != SyncFileItem::EncryptionStatus::NotEncrypted) {
-                Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
-            }
-        }
-
-        if (localEntry.isPermissionsInvalid && item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE) {
-            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-            item->_direction = SyncFileItem::Down;
-        }
-
-        item->isPermissionsInvalid = localEntry.isPermissionsInvalid;
-
-        auto recurseQueryLocal = _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist;
-        if (item->isDirectory() && serverEntry.isValid() && dbEntry.isValid() && serverEntry.etag == dbEntry._etag && serverEntry.remotePerm == dbEntry._remotePerm) {
-            recurseQueryServer = ParentNotChanged;
-        }
-        processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
-    };
 
     if (!localEntry.isValid()) {
         if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
@@ -1346,7 +1358,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
         }
 
-        finalize();
+        finalizeLocalInfoAnalysis(item, path, localEntry, serverEntry, dbEntry, recurseQueryServer);
         return;
     }
 
@@ -1479,7 +1491,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
         }
 
-        finalize();
+        finalizeLocalInfoAnalysis(item, path, localEntry, serverEntry, dbEntry, recurseQueryServer);
         return;
     }
 
@@ -1490,11 +1502,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // The instruction should already be set correctly.
         ASSERT(item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA);
         ASSERT(item->_type == ItemTypeVirtualFile);
-        finalize();
+        finalizeLocalInfoAnalysis(item, path, localEntry, serverEntry, dbEntry, recurseQueryServer);
         return;
     } else if (serverModified) {
         processFileConflict(item, path, localEntry, serverEntry, dbEntry);
-        finalize();
+        finalizeLocalInfoAnalysis(item, path, localEntry, serverEntry, dbEntry, recurseQueryServer);
         return;
     }
 
@@ -1524,21 +1536,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         return;
     }
-
-    auto postProcessLocalNew = [item, localEntry, path, this]() {
-        if (localEntry.isVirtualFile) {
-            const bool isPlaceHolder = _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
-            if (isPlaceHolder) {
-                qCWarning(lcDisco) << "Wiping virtual file without db entry for" << path._local;
-                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-                item->_direction = SyncFileItem::Down;
-            } else {
-                qCWarning(lcDisco) << "Virtual file without db entry for" << path._local
-                                   << "but looks odd, keeping";
-                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            }
-        }
-    };
 
     // Check if it is a move
     OCC::SyncJournalFileRecord base;
@@ -1579,7 +1576,20 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return false;
         }
 
-        // Verify the checksum where possible
+        if (_discoveryData->isRenamed(originalPath)) {
+            qCInfo(lcDisco) << "Not a move, base path already renamed";
+            return false;
+        }
+
+        // Verify the checksum where possible.
+        //
+        // Deliberately last: it is by far the most expensive check and every cheaper one has to
+        // pass first anyway. It is also synchronous, and on accounts with many moved files it
+        // dominates discovery -- 16.5k hashes, ~200ms each, most of a 65-minute pass. Moving it
+        // to a worker thread was tried and measured 2.5x *slower* per file (0.203s -> 0.503s):
+        // discovery reaches this point one file at a time, so nothing overlaps and the thread
+        // hop plus argument copying is pure overhead. The work is disk-bound regardless
+        // (~120 MB/s of raw files), which threading does not improve.
         if (!base._checksumHeader.isEmpty() && item->_type == ItemTypeFile && base._type == ItemTypeFile) {
             if (computeLocalChecksum(base._checksumHeader, _discoveryData->_localDir + path._original, item)) {
                 qCInfo(lcDisco) << "checking checksum of potential rename " << path._original << item->_checksumHeader << base._checksumHeader;
@@ -1590,14 +1600,26 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
         }
 
-        if (_discoveryData->isRenamed(originalPath)) {
-            qCInfo(lcDisco) << "Not a move, base path already renamed";
-            return false;
-        }
-
         return true;
     };
+
     const auto isMove = moveCheck();
+
+    auto postProcessLocalNew = [item, localEntry, path, this]() {
+        if (localEntry.isVirtualFile) {
+            const bool isPlaceHolder = _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
+            if (isPlaceHolder) {
+                qCWarning(lcDisco) << "Wiping virtual file without db entry for" << path._local;
+                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                item->_direction = SyncFileItem::Down;
+            } else {
+                qCWarning(lcDisco) << "Virtual file without db entry for" << path._local
+                                   << "but looks odd, keeping";
+                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            }
+        }
+    };
+
     const auto isE2eeMove = isMove && (base.isE2eEncrypted() || isInsideEncryptedTree());
     const auto isCfApiVfsMode = _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi;
     const bool isOnlineOnlyItem = isCfApiVfsMode && (localEntry.isDirectory || _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local));
@@ -1631,7 +1653,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
         }
         postProcessLocalNew();
-        finalize();
+        finalizeLocalInfoAnalysis(item, path, localEntry, serverEntry, dbEntry, recurseQueryServer);
         return;
     }
 
@@ -1653,7 +1675,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // If we can create the destination, do that.
         // Permission errors on the destination will be handled by checkPermissions later.
         postProcessLocalNew();
-        finalize();
+        finalizeLocalInfoAnalysis(item, path, localEntry, serverEntry, dbEntry, recurseQueryServer);
 
         // If the destination upload will work, we're fine with the source deletion.
         // If the source deletion can't work, checkPermissions will error.
@@ -1724,8 +1746,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         QString serverOriginalPath = _discoveryData->_remoteFolder + _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
         if (base.isVirtualFile() && isVfsWithSuffix())
             chopVirtualFileSuffix(serverOriginalPath);
-        auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-        connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
+        // Resolved from one listing of the parent directory shared with the other rename
+        // candidates in it, rather than a PROPFIND per file; see lookupRemoteEtag().
+        _discoveryData->lookupRemoteEtag(serverOriginalPath, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
 
 
             if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)
@@ -1746,11 +1769,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             _pendingAsyncJobs--;
             QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
         });
-        job->start();
         return;
     }
 
-    finalize();
+    finalizeLocalInfoAnalysis(item, path, localEntry, serverEntry, dbEntry, recurseQueryServer);
 }
 
 void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, ProcessDirectoryJob::PathTuple path, const LocalInfo &localEntry, const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry)
@@ -2251,44 +2273,54 @@ std::pair<int, int> ProcessDirectoryJob::processSubJobs(int localBudget, int net
 
     int startedLocal = 0, startedNetwork = 0;
 
+    const auto budgetsExhausted = [&] {
+        return startedLocal >= localBudget && startedNetwork >= networkBudget;
+    };
+
     // Recurse into running jobs to continue their work
     for (const auto rj : std::as_const(_runningJobs)) {
-        auto [rl, rn] = rj->processSubJobs(localBudget - startedLocal, networkBudget - startedNetwork);
+        auto [rl, rn] = rj->processSubJobs(std::max(0, localBudget - startedLocal),
+                                           std::max(0, networkBudget - startedNetwork));
         startedLocal += rl;
         startedNetwork += rn;
-        if (startedLocal >= localBudget && startedNetwork >= networkBudget)
+        if (budgetsExhausted())
             return {startedLocal, startedNetwork};
     }
 
-    // Try to start queued jobs, respecting both local and network budgets.
-    // We iterate through the deque but only pop jobs that can actually start
-    // (i.e., have budget for all resources they need).
-    for (auto it = _queuedJobs.begin(); it != _queuedJobs.end(); ) {
-        auto job = *it;
-        bool needsLocal = (job->_queryLocal == ProcessDirectoryJob::NormalQuery);
-        bool needsNetwork = (job->_queryServer == ProcessDirectoryJob::NormalQuery);
-
-        // Check if this job can start given the remaining budgets
-        bool canStart = true;
-        if (needsLocal && startedLocal >= localBudget)
-            canStart = false;
-        if (needsNetwork && startedNetwork >= networkBudget)
-            canStart = false;
-
-        if (canStart) {
-            // Remove from queue, add to running, and start
-            it = _queuedJobs.erase(it);
-            _runningJobs.push_back(job);
-            job->start();
-            if (needsLocal) startedLocal++;
-            if (needsNetwork) startedNetwork++;
-
-            // Check if both budgets are exhausted
-            if (startedLocal >= localBudget && startedNetwork >= networkBudget)
-                break;
-        } else {
-            ++it;  // Skip this job, try the next one
+    // Try to start queued jobs, respecting both local and network budgets. A job whose
+    // resource is already saturated is skipped rather than blocking the ones behind it,
+    // so a saturated local scan queue does not stall network jobs and vice versa.
+    //
+    // _queryLocal/_queryServer are only a hint about what a job will consume: start() may
+    // downgrade _queryLocal to ParentNotChanged and skip the local scan entirely. Charging
+    // the budget from the hint would leak local slots on every unchanged directory -- the
+    // common case -- so the actual cost is measured from the active-job counters instead.
+    // A job that finishes synchronously correctly costs nothing.
+    //
+    // startsRemaining bounds the work done in one pass so that a long queue of
+    // zero-cost jobs cannot be drained in a single synchronous burst.
+    int startsRemaining = localBudget + networkBudget;
+    for (auto it = _queuedJobs.begin(); it != _queuedJobs.end() && startsRemaining > 0;) {
+        const auto job = *it;
+        const bool blockedOnLocal = job->_queryLocal == NormalQuery && startedLocal >= localBudget;
+        const bool blockedOnNetwork = job->_queryServer == NormalQuery && startedNetwork >= networkBudget;
+        if (blockedOnLocal || blockedOnNetwork) {
+            ++it; // no budget for what this job needs; try the next one
+            continue;
         }
+
+        it = _queuedJobs.erase(it);
+        _runningJobs.push_back(job);
+
+        const auto activeLocalBefore = _discoveryData->_currentlyActiveLocalScanJobs;
+        const auto activeNetworkBefore = _discoveryData->_currentlyActiveJobs;
+        job->start();
+        startedLocal += std::max(0, _discoveryData->_currentlyActiveLocalScanJobs - activeLocalBefore);
+        startedNetwork += std::max(0, _discoveryData->_currentlyActiveJobs - activeNetworkBefore);
+        --startsRemaining;
+
+        if (budgetsExhausted())
+            break;
     }
 
     return {startedLocal, startedNetwork};
@@ -2371,6 +2403,10 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
         }
         _discoveryData->_currentlyActiveJobs--;
         _pendingAsyncJobs--;
+        // This slot just freed network budget that pending rename checks share. Hand it to
+        // them here: the paths below reach scheduleMoreJobs() only indirectly, so queued
+        // etag jobs would otherwise idle until some unrelated event pumped the queue.
+        _discoveryData->startQueuedEtagJobs();
         if (results) {
             _serverNormalQueryEntries = *results;
             _serverQueryDone = true;

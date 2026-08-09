@@ -25,7 +25,10 @@
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
+#include <QTimer>
 
+#include <algorithm>
+#include <chrono>
 #include <cmath>
 
 namespace OCC {
@@ -800,6 +803,66 @@ void PropagateDownloadFile::makeParentFolderModifiable(const QString &fileName)
 }
 
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
+bool PropagateDownloadFile::retryAfterServiceUnavailable()
+{
+    static const auto maxAttempts = [] {
+        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_RETRIES");
+        return qMax(1, configured > 0 ? configured : 3);
+    }();
+    // Unlike the connection-check counter, a short window works here: retries are seconds
+    // apart, so a burst of 503s on one file lands well inside it, while one that happens
+    // again much later in the sync is unrelated and starts over.
+    static const auto resetAfter = [] {
+        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_RESET_SEC");
+        return std::chrono::seconds(qMax(1, configured > 0 ? configured : 60));
+    }();
+    static const auto backoffStep = [] {
+        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_BACKOFF_SEC");
+        return std::chrono::seconds(qMax(1, configured > 0 ? configured : 5));
+    }();
+
+    if (_sinceLastServiceUnavailable.isValid()
+        && _sinceLastServiceUnavailable.durationElapsed() > resetAfter) {
+        _serviceUnavailableAttempts = 0;
+    }
+    _sinceLastServiceUnavailable.start();
+    ++_serviceUnavailableAttempts;
+
+    if (_serviceUnavailableAttempts >= maxAttempts) {
+        qCWarning(lcPropagateDownload) << "server replied 503 for" << _item->_file
+                                       << _serviceUnavailableAttempts
+                                       << "times in a row; failing the item";
+        _serviceUnavailableAttempts = 0;
+        _sinceLastServiceUnavailable.invalidate();
+        return false;
+    }
+
+    // Incremental, so a server that is struggling gets more room on each attempt. The server's
+    // own Retry-After wins when it sends one, since that is the interval it asked for.
+    auto delay = backoffStep * _serviceUnavailableAttempts;
+    if (_job && _job->reply()) {
+        const auto retryAfter = _job->reply()->rawHeader(QByteArrayLiteral("Retry-After")).toInt();
+        if (retryAfter > 0) {
+            delay = std::min(std::chrono::seconds(retryAfter), std::chrono::seconds(60));
+        }
+    }
+
+    qCInfo(lcPropagateDownload) << "server replied 503 for" << _item->_file << "(attempt"
+                                << _serviceUnavailableAttempts << "of" << maxAttempts
+                                << "); retrying in" << delay.count() << "s";
+
+    // Off the finishing job's stack: start() builds a new GETFileJob, and the current one is
+    // still executing its own finished handling.
+    QTimer::singleShot(delay, this, [this] {
+        if (propagator()->_abortRequested) {
+            done(SyncFileItem::SoftError, tr("Sync was aborted"), ErrorCategory::GenericError);
+            return;
+        }
+        start();
+    });
+    return true;
+}
+
 void PropagateDownloadFile::slotGetFinished()
 {
     propagator()->_activeJobList.removeOne(this);
@@ -830,6 +893,16 @@ void PropagateDownloadFile::slotGetFinished()
         const bool fileLocked = _item->_httpErrorCode == 423;
         if (fileLocked) {
             qCWarning(lcPropagateDownload) << "server replied 423, file is Locked";
+        }
+
+        // A 503 is the server declining to serve this request right now; it says nothing about
+        // the file. Failing on the first one is enough to end an entire sync, because a 503
+        // whose body looks like maintenance mode is classified fatal, and a server busy under
+        // its own load emits them in bursts. Re-sending a few times usually gets the file, and
+        // the sync keeps the progress it has instead of unwinding.
+        if (_item->_httpErrorCode == 503 && !propagator()->_abortRequested
+            && retryAfterServiceUnavailable()) {
+            return;
         }
 
         // Don't keep the temporary file if it is empty or we

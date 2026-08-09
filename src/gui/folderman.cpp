@@ -35,6 +35,10 @@
 #include <QMutableSetIterator>
 #include <QSet>
 #include <QNetworkProxy>
+#include <QPointer>
+#include <QTimer>
+#include <algorithm>
+#include <chrono>
 
 namespace {
 constexpr auto settingsAccountsC = "Accounts";
@@ -953,20 +957,28 @@ void FolderMan::slotAccountStateChanged()
             if (f
                 && f->canSync()
                 && f->accountState() == accountState) {
-                scheduleFolder(f);
+                scheduleFolderAfterReconnect(f);
             }
         }
     } else {
         qCInfo(lcFolderMan) << "Account" << accountName << "disconnected or paused, "
                                                            "terminating or descheduling sync folders";
 
-        const auto folderValues = _folderMap.values();
-        for (const auto f : folderValues) {
-            if (f
-                && f->isSyncRunning()
-                && f->accountState() == accountState) {
-                f->slotTerminateSync();
-            }
+        // NetworkError and ServiceUnavailable both mean "the server did not serve this request",
+        // not "the server is gone". A probe that timed out, or a single 503 from a server busy
+        // with someone else's work, says nothing about the sync's own requests, which may still
+        // be completing. Terminating throws away the entire discovery pass, and the reconnect
+        // that follows seconds later restarts it from zero -- so against a server that stumbles
+        // now and then, the sync can never finish however long it is left alone. Both have been
+        // seen lasting a single second in practice.
+        //
+        // The remaining states are answers rather than failures: signed out, wrong credentials,
+        // a configuration error, a captive portal, or an administrator putting the server into
+        // maintenance. Those terminate at once, as before.
+        if (isTransientConnectionState(accountState)) {
+            deferSyncTerminationOnTransientError(accountState);
+        } else {
+            terminateSyncsForAccount(accountState);
         }
 
         QMutableListIterator<Folder *> it(_scheduledFolders);
@@ -978,6 +990,121 @@ void FolderMan::slotAccountStateChanged()
         }
         emit scheduleQueueChanged();
     }
+}
+
+void FolderMan::terminateSyncsForAccount(AccountState *accountState)
+{
+    const auto folderValues = _folderMap.values();
+    for (const auto f : folderValues) {
+        if (f
+            && f->isSyncRunning()
+            && f->accountState() == accountState) {
+            f->slotTerminateSync();
+        }
+    }
+}
+
+bool FolderMan::isTransientConnectionState(const AccountState *accountState)
+{
+    if (!accountState) {
+        return false;
+    }
+    const auto state = accountState->state();
+    return state == AccountState::NetworkError || state == AccountState::ServiceUnavailable;
+}
+
+void FolderMan::deferSyncTerminationOnTransientError(AccountState *accountState)
+{
+    // Nothing is running, so there is nothing to protect -- and no reason to hold a timer.
+    const auto folderValues = _folderMap.values();
+    const auto anyRunning = std::any_of(folderValues.cbegin(), folderValues.cend(), [accountState](const Folder *f) {
+        return f && f->isSyncRunning() && f->accountState() == accountState;
+    });
+    if (!anyRunning) {
+        return;
+    }
+
+    // The connection validator keeps probing while we wait, so a server that recovers clears the
+    // error on its own and the sync is never touched. The grace period only has to outlast a
+    // stall long enough to trip the probe; beyond that, waiting costs nothing, because a sync
+    // against a server that is genuinely gone fails on its own request timeouts anyway.
+    static constexpr auto terminationGrace = std::chrono::minutes(2);
+
+    if (_pendingSyncTermination.contains(accountState)) {
+        return; // already waiting on this account; a flapping connection must not stack timers
+    }
+    _pendingSyncTermination.append(accountState);
+
+    qCInfo(lcFolderMan) << "Account" << accountState->account()->displayName()
+                        << "hit a transient connection failure while syncing"
+                        << "(" << AccountState::stateString(accountState->state()) << ");"
+                        << "deferring termination by" << terminationGrace.count()
+                        << "min in case the connection returns";
+
+    QTimer::singleShot(terminationGrace, this, [this, accountState = QPointer<AccountState>(accountState)] {
+        _pendingSyncTermination.removeAll(accountState);
+        if (!accountState) {
+            return; // account went away; its folders went with it
+        }
+        if (accountState->isConnected()) {
+            qCInfo(lcFolderMan) << "Account" << accountState->account()->displayName()
+                                << "recovered within the grace period; leaving its sync running";
+            return;
+        }
+        qCInfo(lcFolderMan) << "Account" << accountState->account()->displayName()
+                            << "still not connected after the grace period; terminating its syncs";
+        terminateSyncsForAccount(accountState);
+    });
+}
+
+void FolderMan::scheduleFolderAfterReconnect(Folder *folder)
+{
+    // The sync was never terminated -- it outlived a transient network error. Rescheduling it
+    // now would only mark a running folder as pending.
+    if (folder->isSyncRunning()) {
+        qCInfo(lcFolderMan) << "Account reconnected and folder" << folder->alias()
+                            << "is still syncing; leaving it alone";
+        return;
+    }
+
+    // A reconnect normally means a real outage ended, so a folder that was syncing fine gets
+    // scheduled straight away -- that is the common case and stays unchanged.
+    //
+    // The exception is a folder whose recent syncs keep failing. Losing the account terminates
+    // the running sync (see the disconnect branch above), and a sync killed part-way through
+    // discovery throws that entire pass away. Rescheduling it the instant the account returns
+    // can then livelock: the retry rebuilds exactly the load that caused the drop, gets killed
+    // at the same point, and reconnect fires again. Each lap costs minutes and makes no
+    // progress. Backing off gives whatever caused the drop time to clear first.
+    const auto failCount = folder->consecutiveFailingSyncs();
+    if (failCount <= 0) {
+        scheduleFolder(folder);
+        return;
+    }
+
+    static constexpr auto reconnectBackoffBase = std::chrono::seconds(30);
+    static constexpr auto reconnectBackoffMax = std::chrono::minutes(10);
+    const auto backoff = std::min<std::chrono::milliseconds>(
+        reconnectBackoffBase * (1 << std::min(failCount - 1, 5)), reconnectBackoffMax);
+
+    const auto sinceLastSync = folder->msecSinceLastSync();
+    if (sinceLastSync >= backoff) {
+        scheduleFolder(folder);
+        return;
+    }
+
+    const auto remaining = backoff - sinceLastSync;
+    qCInfo(lcFolderMan) << "Account reconnected, but folder" << folder->alias()
+                        << "has" << failCount << "consecutive failing syncs; delaying reschedule by"
+                        << remaining.count() << "ms";
+
+    // QPointer: the folder may be removed while we wait. Re-check canSync() on fire because
+    // the account can have gone away again in the meantime.
+    QTimer::singleShot(remaining, this, [this, folder = QPointer<Folder>(folder)] {
+        if (folder && folder->canSync()) {
+            scheduleFolder(folder);
+        }
+    });
 }
 
 // only enable or disable foldermans will schedule and do syncs.

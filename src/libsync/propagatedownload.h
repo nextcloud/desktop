@@ -249,6 +249,11 @@ private slots:
 private:
     void startAfterIsEncryptedIsChecked();
     void deleteExistingFolder();
+
+    /// Re-sends the download after a 503 while this file's retry budget lasts.
+    /// @return true if a retry was scheduled and the caller should stop handling the failure.
+    bool retryAfterServiceUnavailable();
+
     [[nodiscard]] bool isEncrypted() const { return _isEncrypted; }
 
     qint64 _resumeStart = 0;
@@ -261,6 +266,13 @@ private:
     ConflictRecord _conflictRecord;
 
     QElapsedTimer _stopwatch;
+
+    /// Attempts spent on 503 replies for this file, and how long since the last one. A 503 is
+    /// the server declining to serve the request right now, not a verdict about the file, so
+    /// the download is re-sent a few times before the item is failed. Attempts decay, so a file
+    /// that hit one earlier in a long sync starts over instead of inheriting a spent budget.
+    int _serviceUnavailableAttempts = 0;
+    QElapsedTimer _sinceLastServiceUnavailable;
 
     PropagateDownloadEncrypted *_downloadEncryptedHelper = nullptr;
 

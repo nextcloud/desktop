@@ -2564,6 +2564,47 @@ private slots:
         QVERIFY(!fakeFolder.syncEngine().isAnotherSyncNeeded());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    /** A 503 on an upload must be re-sent, not failed.
+     *
+     * The server saying "not right now" says nothing about the file. Failing on the first one
+     * loses the item, and when the 503 body looks like maintenance mode it is classified fatal
+     * and takes the whole sync down with it -- which is how one refused request ended a
+     * two-hour sync in the field.
+     *
+     * The fake server rejects the first PUT and accepts the second, so the file only reaches
+     * the remote if the upload was genuinely retried.
+     */
+    void testUploadRetriesTransientServiceUnavailable()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        // The default is five seconds per attempt; the test needn't sit through that.
+        qputenv("OWNCLOUD_PROPAGATE_503_BACKOFF_SEC", "1");
+
+        auto putAttempts = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op,
+                                          const QNetworkRequest &request,
+                                          QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation
+                && request.url().path().endsWith(QLatin1String("/A/transient"))
+                && ++putAttempts == 1) {
+                return new FakeErrorReply(op, request, this, 503,
+                    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                    "<d:error xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\">\n"
+                    "<s:exception>Sabre\\DAV\\Exception\\ServiceUnavailable</s:exception>\n"
+                    "<s:message>Storage is temporarily not available</s:message>\n"
+                    "</d:error>");
+            }
+            return nullptr;
+        });
+
+        fakeFolder.localModifier().insert("A/transient");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(putAttempts, 2); // refused once, then accepted
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

@@ -20,6 +20,7 @@
 #include <QMap>
 #include <QSet>
 #include <QMutex>
+#include <QPointer>
 #include <QWaitCondition>
 #include <QRunnable>
 #include <deque>
@@ -241,6 +242,71 @@ class DiscoveryPhase : public QObject
      *  Bounded by _syncOptions._parallelLocalScanJobs, independent of network jobs. */
     int _currentlyActiveLocalScanJobs = 0;
 
+    /** Queue a rename-check etag request instead of starting it immediately.
+     *
+     * Rename detection issues one Depth:0 PROPFIND per candidate file. Those requests used
+     * to be start()ed the moment they were created, which put them outside every concurrency
+     * limit: a single directory full of renames dispatched thousands of them at once, and
+     * because ProcessDirectoryJob::process() walks a directory synchronously, merely counting
+     * them would not have bounded the burst. Gating start() does.
+     *
+     * This matters because AbstractNetworkJob arms its timeout timer at dispatch, not when
+     * the request reaches the wire. With HTTP/1.1 (HTTP/2 is off by default) Qt opens at most
+     * 6 connections per host, so over-dispatching leaves requests sitting in QNAM's queue
+     * burning their timeout without ever sending a byte -- they then expire in a batch and
+     * starve the discovery PROPFINDs queued behind them.
+     *
+     * Queued jobs share the _currentlyActiveJobs budget with discovery PROPFINDs rather than
+     * getting a second independent allowance: both are requests to the same host competing for
+     * the same connection pool, so one combined cap is what actually bounds the pool.
+     *
+     * Does not take ownership; the job's QObject parent still owns its memory. The job is
+     * merely start()ed later than the caller would have started it.
+     */
+    void enqueueEtagJob(AbstractNetworkJob *job);
+
+    /// Start queued rename-check jobs while budget allows. Safe to call spuriously.
+    void startQueuedEtagJobs();
+
+    /** How many network jobs discovery may have in flight at once.
+     *
+     * Deliberately below Qt's per-host HTTP/1.1 connection limit so that some connections
+     * stay free for account health checks. Marking those high priority is not enough on its
+     * own: priority decides who takes the *next* free connection but cannot evict a request
+     * already occupying one, so discovery holding every connection still leaves a health
+     * check waiting on the slowest of them.
+     *
+     * Measured before reserving headroom, with discovery allowed all 6 connections: the
+     * ConnectionValidator PROPFIND -- which already sets HighPriority itself -- degraded
+     * 0.2s -> 0.6s -> 13.9s -> 61.6s as discovery went deeper, then blew its 57s budget and
+     * tripped a false account-offline that terminated the sync mid-discovery.
+     */
+    [[nodiscard]] int networkJobBudget() const;
+
+    /** Look up the server etag of a single remote path, for rename detection.
+     *
+     * Result semantics deliberately match the RequestEtagJob this replaces, so callers need
+     * no change in logic: the etag on success, and HttpError{404} when the path does not
+     * exist -- which is exactly what "the original is gone, so this is a rename" relies on.
+     *
+     * The point is how the answer is obtained. Rename candidates arrive in dense clusters
+     * within a directory (measured on a real sync: 2025 lookups spread over just 22
+     * directories, ~92 per directory), and one Depth:1 PROPFIND on the parent answers every
+     * lookup in it. So lookups are grouped by parent directory: the first one for a directory
+     * issues a single listing, later ones either attach to that in-flight listing or are
+     * served from its cached result. A per-file PROPFIND each would be ~92x the requests, and
+     * that volume -- not the concurrency -- is what drives the server slow enough that the
+     * account's own health check times out and the sync gets torn down mid-discovery.
+     *
+     * @a context bounds the callback's lifetime: if it is destroyed first, the callback is
+     * dropped rather than invoked on a dangling capture. The callback is always invoked
+     * asynchronously, even on a cache hit, so callers keep the async contract they had with
+     * RequestEtagJob (notably `_pendingAsyncJobs` accounting around the call).
+     */
+    void lookupRemoteEtag(const QString &remoteFullPath,
+                          QObject *context,
+                          std::function<void(const HttpResult<QByteArray> &)> callback);
+
     // both must contain a sorted list
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
@@ -286,6 +352,58 @@ class DiscoveryPhase : public QObject
     void enqueueDirectoryToDelete(const QString &path, ProcessDirectoryJob* const directoryJob);
 
     bool recursiveCheckForDeletedParents(const QString &itemPath) const;
+
+    /// Rename-check etag jobs created but not yet start()ed; see enqueueEtagJob().
+    /// QPointer so a job destroyed while still queued is skipped rather than dangling.
+    std::deque<QPointer<AbstractNetworkJob>> _queuedEtagJobs;
+
+    /// Cached result of one Depth:1 listing, used to answer lookupRemoteEtag() without a
+    /// per-file request. Only ever populated for directories a rename check asked about.
+    struct RemoteDirListing
+    {
+        /// Child path relative to the listed directory -> its etag. Absent key means the
+        /// child does not exist on the server, which the caller reads as a 404.
+        QHash<QString, QByteArray> childEtags;
+        /// False if the listing itself failed; then every lookup in it reports listingError.
+        bool listingOk = false;
+        HttpError listingError{0, {}};
+    };
+
+    /// Completed listings, keyed by remote directory path (no trailing slash).
+    QHash<QString, RemoteDirListing> _remoteDirListings;
+
+    /// Lookups waiting on a listing that is still in flight, keyed the same way. Presence of
+    /// a key also marks "a listing for this directory has already been started".
+    struct PendingEtagLookup
+    {
+        QString relativePath;
+        QPointer<QObject> context;
+        std::function<void(const HttpResult<QByteArray> &)> callback;
+    };
+    QHash<QString, QList<PendingEtagLookup>> _pendingEtagLookups;
+
+    /// Answer @a lookup from an already-completed listing.
+    void deliverEtagLookup(const PendingEtagLookup &lookup, const RemoteDirListing &listing);
+
+    /// Answer everything waiting on @a dirPath, off the listing job's own stack.
+    void deliverPendingEtagLookups(const QString &dirPath, const RemoteDirListing &listing);
+
+    /// Sends (or re-sends) the Depth:1 listing that answers the lookups parked for @a dirPath.
+    void issueEtagListing(const QString &dirPath);
+
+    /// Retries the listing for @a dirPath while its budget lasts, otherwise fails every lookup
+    /// waiting on it. Every path that ends a listing without a usable result arrives here, so
+    /// parked lookups are always answered and discovery can never wait on a job that is gone.
+    void failEtagListing(const QString &dirPath, const HttpError &error);
+
+    /// Failed attempts at one directory's listing, and how long since the last one. Attempts
+    /// decay, so retries spread across a long run cannot add up to an exhausted budget.
+    struct EtagListingRetry
+    {
+        int attempts = 0;
+        QElapsedTimer sinceLastAttempt;
+    };
+    QHash<QString, EtagListingRetry> _etagListingRetries;
 
     /// contains files/folder names that are requested to be deleted permanently
     QSet<QString> _permanentDeletionRequests;

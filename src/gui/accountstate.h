@@ -216,6 +216,15 @@ private:
     State _state;
     ConnectionStatus _connectionStatus;
     ConnectionStatus _lastConnectionValidatorStatus = ConnectionStatus::Undefined;
+
+    /// Connection checks that have timed out back to back without one succeeding in between.
+    /// The account is only treated as disconnected once this reaches the tolerated limit.
+    int _consecutiveConnectionTimeouts = 0;
+
+    /// Since the most recent check timeout. Failures further apart than the reset window are
+    /// treated as unrelated stumbles rather than one outage, and restart the count above.
+    QElapsedTimer _lastConnectionTimeout;
+
     QStringList _connectionErrors;
     bool _waitingForNewCredentials = false;
     QDateTime _timeOfLastETagCheck;

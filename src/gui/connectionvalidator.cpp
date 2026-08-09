@@ -88,6 +88,9 @@ void ConnectionValidator::slotCheckRedirectCostFreeUrl()
 {
     const auto checkJob = new CheckRedirectCostFreeUrlJob(_account, this);
     checkJob->setTimeout(timeoutToUseMsec);
+    // This job decides whether the account counts as online. Jump the connection queue so a
+    // busy sync cannot starve it into a false "server is down"; see AbstractNetworkJob::setPriority().
+    checkJob->setPriority(QNetworkRequest::HighPriority);
     checkJob->setIgnoreCredentialFailure(true);
     connect(checkJob, &CheckRedirectCostFreeUrlJob::timeout, this, &ConnectionValidator::slotJobTimeout);
     connect(checkJob, &CheckRedirectCostFreeUrlJob::jobFinished, this, &ConnectionValidator::slotCheckRedirectCostFreeUrlFinished);
@@ -98,6 +101,9 @@ void ConnectionValidator::slotCheckServerAndAuth()
 {
     auto *checkJob = new CheckServerJob(_account, this);
     checkJob->setTimeout(timeoutToUseMsec);
+    // This job decides whether the account counts as online. Jump the connection queue so a
+    // busy sync cannot starve it into a false "server is down"; see AbstractNetworkJob::setPriority().
+    checkJob->setPriority(QNetworkRequest::HighPriority);
     checkJob->setIgnoreCredentialFailure(true);
     connect(checkJob, &CheckServerJob::instanceFound, this, &ConnectionValidator::slotStatusFound);
     connect(checkJob, &CheckServerJob::instanceNotFound, this, &ConnectionValidator::slotNoStatusFound);
@@ -200,6 +206,9 @@ void ConnectionValidator::checkAuthentication()
     qCDebug(lcConnectionValidator) << "# Check whether authenticated propfind works.";
     auto *job = new PropfindJob(_account, "/", this);
     job->setTimeout(timeoutToUseMsec);
+    // This job decides whether the account counts as online. Jump the connection queue so a
+    // busy sync cannot starve it into a false "server is down"; see AbstractNetworkJob::setPriority().
+    job->setPriority(QNetworkRequest::HighPriority);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, &PropfindJob::result, this, &ConnectionValidator::slotAuthSuccess);
     connect(job, &PropfindJob::finishedWithError, this, &ConnectionValidator::slotAuthFailed);
@@ -257,6 +266,9 @@ void ConnectionValidator::checkServerCapabilities()
     // The main flow now needs the capabilities
     auto *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
     job->setTimeout(timeoutToUseMsec);
+    // This job decides whether the account counts as online. Jump the connection queue so a
+    // busy sync cannot starve it into a false "server is down"; see AbstractNetworkJob::setPriority().
+    job->setPriority(QNetworkRequest::HighPriority);
     QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotCapabilitiesRecieved);
     job->start();
 }
@@ -420,6 +432,9 @@ void TermsOfServiceChecker::checkServerTermsOfService()
     // The main flow now needs the capabilities
     auto *job = new JsonApiJob(_account, QLatin1String("ocs/v2.php/apps/terms_of_service/terms"), this);
     job->setTimeout(timeoutToUseMsec);
+    // This job decides whether the account counts as online. Jump the connection queue so a
+    // busy sync cannot starve it into a false "server is down"; see AbstractNetworkJob::setPriority().
+    job->setPriority(QNetworkRequest::HighPriority);
     QObject::connect(job, &JsonApiJob::jsonReceived, this, &TermsOfServiceChecker::slotServerTermsOfServiceRecieved);
     QObject::connect(job, &JsonApiJob::networkError, this, [] (QNetworkReply *reply)
                      {
