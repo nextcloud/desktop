@@ -233,7 +233,13 @@ class DiscoveryPhase : public QObject
      */
     [[nodiscard]] bool isRenamed(const QString &p) const;
 
+    /** Count of currently active network (PROPFIND) discovery jobs.
+     *  Bounded by _syncOptions._parallelNetworkJobs to protect the server. */
     int _currentlyActiveJobs = 0;
+
+    /** Count of currently active local filesystem scan jobs.
+     *  Bounded by _syncOptions._parallelLocalScanJobs, independent of network jobs. */
+    int _currentlyActiveLocalScanJobs = 0;
 
     // both must contain a sorted list
     QStringList _selectiveSyncBlackList;

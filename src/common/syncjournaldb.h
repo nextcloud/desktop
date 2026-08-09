@@ -12,6 +12,7 @@
 #include <QHash>
 #include <QMutex>
 #include <QVariant>
+#include <QElapsedTimer>
 #include <functional>
 
 #include "common/utility.h"
@@ -430,6 +431,8 @@ private:
     QMap<QByteArray, int> _checksymTypeCache;
     int _transaction = 0;
     bool _metadataTableIsEmpty = false;
+    QElapsedTimer _lastCommitTimer;
+    int _commitsSinceTransactionStart = 0;
 
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *

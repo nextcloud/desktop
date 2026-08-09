@@ -716,7 +716,7 @@ void PropagateDownloadFile::startDownload()
         pi._tmpfile = tmpFileName;
         pi._valid = true;
         propagator()->_journal->setDownloadInfo(_item->_file, pi);
-        propagator()->_journal->commit("download file start");
+        propagator()->_journal->commitIfNeededAndStartNewTransaction("download file start");
     }
 
     QMap<QByteArray, QByteArray> headers;

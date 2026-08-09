@@ -312,9 +312,14 @@ bool DiscoveryPhase::isRenamed(const QString &p) const
 
 void DiscoveryPhase::scheduleMoreJobs()
 {
-    auto limit = qMax(1, _syncOptions._parallelNetworkJobs);
-    if (_currentRootJob && _currentlyActiveJobs < limit) {
-        _currentRootJob->processSubJobs(limit - _currentlyActiveJobs);
+    auto networkLimit = qMax(1, _syncOptions._parallelNetworkJobs);
+    auto localLimit = qMax(1, _syncOptions._parallelLocalScanJobs);
+    if (_currentRootJob) {
+        int networkBudget = qMax(0, networkLimit - _currentlyActiveJobs);
+        int localBudget = qMax(0, localLimit - _currentlyActiveLocalScanJobs);
+        if (networkBudget > 0 || localBudget > 0) {
+            _currentRootJob->processSubJobs(localBudget, networkBudget);
+        }
     }
 }
 

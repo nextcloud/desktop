@@ -185,7 +185,7 @@ void PropagateLocalRemove::start()
         done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
         return;
     }
-    propagator()->_journal->commit("Local remove");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("Local remove");
     done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }
 
@@ -324,7 +324,7 @@ void PropagateLocalMkdir::startLocalMkdir()
         done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file), ErrorCategory::GenericError);
         return;
     }
-    propagator()->_journal->commit("localMkdir");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("localMkdir");
 
     auto resultStatus = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         ? SyncFileItem::Conflict
@@ -569,7 +569,7 @@ void PropagateLocalRename::start()
         return;
     }
 
-    propagator()->_journal->commit("localRename");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("localRename");
 
     done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }

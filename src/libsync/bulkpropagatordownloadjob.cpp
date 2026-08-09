@@ -128,7 +128,7 @@ bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
         return false;
     }
 
-    propagator()->_journal->commit("download file start2");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("download file start2");
 
     const auto isLockOwnedByCurrentUser = item->_lockOwnerId == propagator()->account()->davUser();
 

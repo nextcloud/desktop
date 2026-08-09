@@ -265,7 +265,7 @@ void PropagateUploadFileNG::startNewUpload()
     pi._contentChecksum = _item->_checksumHeader;
     pi._size = _item->_size;
     propagator()->_journal->setUploadInfo(_item->_file, pi);
-    propagator()->_journal->commit("Upload info");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("Upload info");
     QMap<QByteArray, QByteArray> headers;
 
     // But we should send the temporary (or something) one.
@@ -487,7 +487,7 @@ void PropagateUploadFileNG::slotPutFinished()
         auto uploadInfo = propagator()->_journal->getUploadInfo(_item->_file);
         uploadInfo._errorCount = 0;
         propagator()->_journal->setUploadInfo(_item->_file, uploadInfo);
-        propagator()->_journal->commit("Upload info");
+        propagator()->_journal->commitIfNeededAndStartNewTransaction("Upload info");
     }
     startNextChunk();
 }

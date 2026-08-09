@@ -201,7 +201,7 @@ SyncJournalFileRecord LockFileJob::handleReply()
         if (!result) {
             qCWarning(lcLockFileJob) << "Error when setting the file record to the database" << record._path << result.error();
         }
-        _journal->commit("lock file job");
+        _journal->commitIfNeededAndStartNewTransaction("lock file job");
     }
 
     return record;

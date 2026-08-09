@@ -125,7 +125,7 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         return;
     }
 
-    propagator()->_journal->commit("Remote Remove");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("Remote Remove");
 
     done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }

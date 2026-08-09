@@ -106,8 +106,9 @@ public:
                                  QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent);
 
     void start();
-    /** Start up to nbJobs, return the number of job started; emit finished() when done */
-    int processSubJobs(int nbJobs);
+    /** Start jobs up to the given local and network concurrency budgets.
+     *  Returns {localJobsStarted, networkJobsStarted}; emits finished() when done. */
+    std::pair<int, int> processSubJobs(int localBudget, int networkBudget);
 
     void setInsideEncryptedTree(bool isInsideEncryptedTree)
     {

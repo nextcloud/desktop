@@ -167,7 +167,7 @@ void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
     pi._size = item->_size;
 
     propagator()->_journal->setUploadInfo(item->_file, pi);
-    propagator()->_journal->commit("Upload info");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("Upload info");
 
     auto currentHeaders = headers(item);
     currentHeaders[QByteArrayLiteral("Content-Length")] = QByteArray::number(fileToUpload._size);
@@ -571,7 +571,7 @@ void BulkPropagatorJob::finalizeOneFile(const BulkUploadItem &oneFile)
 
     // Remove from the progress database:
     propagator()->_journal->setUploadInfo(oneFile._item->_file, SyncJournalDb::UploadInfo());
-    propagator()->_journal->commit("upload file start");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("upload file start");
 }
 
 void BulkPropagatorJob::finalize(const QJsonObject &fullReply)
@@ -695,7 +695,7 @@ void BulkPropagatorJob::checkResettingErrors(SyncFileItemPtr item) const
                                         << "is" << uploadInfo._errorCount;
         }
         propagator()->_journal->setUploadInfo(item->_file, uploadInfo);
-        propagator()->_journal->commit("Upload info");
+        propagator()->_journal->commitIfNeededAndStartNewTransaction("Upload info");
     }
 }
 

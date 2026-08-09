@@ -41,6 +41,11 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 
+// Batch commits during propagation: commit every 2 seconds or 100 writes, whichever comes first.
+// This reduces per-file SQLite commit overhead while still keeping the journal reasonably fresh.
+static constexpr int COMMIT_BATCH_TIMEOUT_MS = 2000;
+static constexpr int COMMIT_BATCH_WRITE_COUNT = 100;
+
 #define GET_FILE_RECORD_QUERY \
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
         "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, " \
@@ -266,6 +271,8 @@ void SyncJournalDb::startTransaction()
             return;
         }
         _transaction = 1;
+        _lastCommitTimer.start();
+        _commitsSinceTransactionStart = 0;
     } else {
         qCDebug(lcDb) << "Database Transaction is running, not starting another one!";
     }
@@ -3252,7 +3259,12 @@ void SyncJournalDb::commitIfNeededAndStartNewTransaction(const QString &context)
 {
     QMutexLocker lock(&_mutex);
     if (_transaction == 1) {
-        commitInternal(context, true);
+        _commitsSinceTransactionStart++;
+        bool timeThresholdExceeded = _lastCommitTimer.elapsed() >= COMMIT_BATCH_TIMEOUT_MS;
+        bool countThresholdExceeded = _commitsSinceTransactionStart >= COMMIT_BATCH_WRITE_COUNT;
+        if (timeThresholdExceeded || countThresholdExceeded) {
+            commitInternal(context, true);
+        }
     } else {
         startTransaction();
     }
@@ -3274,6 +3286,7 @@ void SyncJournalDb::commitInternal(const QString &context, bool startTrans)
 {
     qCDebug(lcDb) << "Transaction commit" << context << (startTrans ? "and starting new transaction" : "");
     commitTransaction();
+    _commitsSinceTransactionStart = 0;
 
     if (startTrans) {
         startTransaction();

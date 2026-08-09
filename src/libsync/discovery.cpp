@@ -13,6 +13,7 @@
 #include "progressdispatcher.h"
 #include <QDebug>
 #include <algorithm>
+#include <utility>
 #include <QEventLoop>
 #include <QDir>
 #include <set>
@@ -2226,7 +2227,7 @@ void ProcessDirectoryJob::subJobFinished()
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
-int ProcessDirectoryJob::processSubJobs(int nbJobs)
+std::pair<int, int> ProcessDirectoryJob::processSubJobs(int localBudget, int networkBudget)
 {
     if (_queuedJobs.empty() && _runningJobs.empty() && _pendingAsyncJobs == 0) {
         _pendingAsyncJobs = -1; // We're finished, we don't want to emit finished again
@@ -2248,21 +2249,49 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
         emit finished();
     }
 
-    int started = 0;
+    int startedLocal = 0, startedNetwork = 0;
+
+    // Recurse into running jobs to continue their work
     for (const auto rj : std::as_const(_runningJobs)) {
-        started += rj->processSubJobs(nbJobs - started);
-        if (started >= nbJobs)
-            return started;
+        auto [rl, rn] = rj->processSubJobs(localBudget - startedLocal, networkBudget - startedNetwork);
+        startedLocal += rl;
+        startedNetwork += rn;
+        if (startedLocal >= localBudget && startedNetwork >= networkBudget)
+            return {startedLocal, startedNetwork};
     }
 
-    while (started < nbJobs && !_queuedJobs.empty()) {
-        auto f = _queuedJobs.front();
-        _queuedJobs.pop_front();
-        _runningJobs.push_back(f);
-        f->start();
-        started++;
+    // Try to start queued jobs, respecting both local and network budgets.
+    // We iterate through the deque but only pop jobs that can actually start
+    // (i.e., have budget for all resources they need).
+    for (auto it = _queuedJobs.begin(); it != _queuedJobs.end(); ) {
+        auto job = *it;
+        bool needsLocal = (job->_queryLocal == ProcessDirectoryJob::NormalQuery);
+        bool needsNetwork = (job->_queryServer == ProcessDirectoryJob::NormalQuery);
+
+        // Check if this job can start given the remaining budgets
+        bool canStart = true;
+        if (needsLocal && startedLocal >= localBudget)
+            canStart = false;
+        if (needsNetwork && startedNetwork >= networkBudget)
+            canStart = false;
+
+        if (canStart) {
+            // Remove from queue, add to running, and start
+            it = _queuedJobs.erase(it);
+            _runningJobs.push_back(job);
+            job->start();
+            if (needsLocal) startedLocal++;
+            if (needsNetwork) startedNetwork++;
+
+            // Check if both budgets are exhausted
+            if (startedLocal >= localBudget && startedNetwork >= networkBudget)
+                break;
+        } else {
+            ++it;  // Skip this job, try the next one
+        }
     }
-    return started;
+
+    return {startedLocal, startedNetwork};
 }
 
 void ProcessDirectoryJob::dbError()
@@ -2396,7 +2425,7 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
     QString localPath = _discoveryData->_localDir + _currentFolder._local;
     auto localJob = new DiscoverySingleLocalDirectoryJob(_discoveryData->_account, localPath, _discoveryData->_syncOptions._vfs.data(), _discoveryData->_fileSystemReliablePermissions);
 
-    _discoveryData->_currentlyActiveJobs++;
+    _discoveryData->_currentlyActiveLocalScanJobs++;
     _pendingAsyncJobs++;
 
     connect(localJob, &DiscoverySingleLocalDirectoryJob::itemDiscovered, _discoveryData, &DiscoveryPhase::itemDiscovered);
@@ -2406,7 +2435,7 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
     });
 
     connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedFatalError, this, [this](const QString &msg) {
-        _discoveryData->_currentlyActiveJobs--;
+        _discoveryData->_currentlyActiveLocalScanJobs--;
         _pendingAsyncJobs--;
         if (_serverJob)
             _serverJob->abort();
@@ -2415,7 +2444,7 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
     });
 
     connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedNonFatalError, this, [this](const QString &msg) {
-        _discoveryData->_currentlyActiveJobs--;
+        _discoveryData->_currentlyActiveLocalScanJobs--;
         _pendingAsyncJobs--;
 
         if (_dirItem) {
@@ -2429,7 +2458,7 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
     });
 
     connect(localJob, &DiscoverySingleLocalDirectoryJob::finished, this, [this](const auto &results) {
-        _discoveryData->_currentlyActiveJobs--;
+        _discoveryData->_currentlyActiveLocalScanJobs--;
         _pendingAsyncJobs--;
 
         _localNormalQueryEntries = results;

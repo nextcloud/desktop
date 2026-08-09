@@ -60,6 +60,10 @@ void SyncOptions::fillFromEnvironmentVariables()
     int maxParallel = qgetenv("OWNCLOUD_MAX_PARALLEL").toInt();
     if (maxParallel > 0)
         _parallelNetworkJobs = maxParallel;
+
+    int maxParallelLocalScan = qgetenv("OWNCLOUD_MAX_PARALLEL_LOCAL_SCAN").toInt();
+    if (maxParallelLocalScan > 0)
+        _parallelLocalScanJobs = maxParallelLocalScan;
 }
 
 void SyncOptions::verifyChunkSizes()

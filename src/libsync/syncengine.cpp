@@ -33,6 +33,7 @@
 #include <climits>
 #include <cassert>
 #include <chrono>
+#include <algorithm>
 
 #include <QCoreApplication>
 #include <QSslSocket>
@@ -473,9 +474,8 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     checkErrorBlacklisting(*item);
     _needsUpdate = true;
 
-    // Insert sorted
-    auto it = std::lower_bound( _syncItems.begin(), _syncItems.end(), item ); // the _syncItems is sorted
-    _syncItems.insert( it, item );
+    // Append unsorted; sorting happens once in finishSync() before propagation.
+    _syncItems.append(item);
 
     slotNewItem(item);
 
@@ -1072,6 +1072,7 @@ void SyncEngine::finishSync()
         _anotherSyncNeeded = ImmediateFollowUp;
     }
 
+    std::sort(_syncItems.begin(), _syncItems.end());
     Q_ASSERT(std::is_sorted(_syncItems.begin(), _syncItems.end()));
 
     qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";

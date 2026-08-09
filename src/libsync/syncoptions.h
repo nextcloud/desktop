@@ -12,6 +12,7 @@
 #include <QRegularExpression>
 #include <QSharedPointer>
 #include <QString>
+#include <QThread>
 
 #include <chrono>
 
@@ -55,8 +56,15 @@ public:
      */
     std::chrono::milliseconds _targetChunkUploadDuration = std::chrono::minutes(1);
 
-    /** The maximum number of active jobs in parallel  */
+    /** The maximum number of active network (PROPFIND) jobs in parallel.
+     *  This limit protects the server from being overwhelmed. */
     int _parallelNetworkJobs = 6;
+
+    /** The maximum number of concurrent local filesystem directory scans.
+     *  Independent of _parallelNetworkJobs since local I/O and network I/O
+     *  don't contend for the same resource. Defaults to CPU core count bounded
+     *  between 4 and 16 to avoid excessive parallelism on network-backed storage. */
+    int _parallelLocalScanJobs = qBound(4, QThread::idealThreadCount(), 16);
 
     static constexpr auto chunkV2MinChunkSize = 5LL * 1000LL * 1000LL; // 5 MB
     static constexpr auto chunkV2MaxChunkSize = 5LL * 1000LL * 1000LL * 1000LL; // 5 GB

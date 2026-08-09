@@ -126,7 +126,7 @@ bool PollJob::finished()
                 info._file = _item->_file;
                 // no info._url removes it from the database
                 _journal->setPollInfo(info);
-                _journal->commit("remove poll info");
+                _journal->commitIfNeededAndStartNewTransaction("remove poll info");
             }
             emit finishedSignal();
             return true;
@@ -175,7 +175,7 @@ bool PollJob::finished()
     info._file = _item->_file;
     // no info._url removes it from the database
     _journal->setPollInfo(info);
-    _journal->commit("remove poll info");
+    _journal->commitIfNeededAndStartNewTransaction("remove poll info");
 
     emit finishedSignal();
     return true;
@@ -654,7 +654,7 @@ void PropagateUploadFileCommon::startPollJob(const QString &path)
     }
     info._fileSize = _item->_size;
     propagator()->_journal->setPollInfo(info);
-    propagator()->_journal->commit("add poll info");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("add poll info");
     propagator()->_activeJobList.append(this);
     job->start();
 }
@@ -696,7 +696,7 @@ void PropagateUploadFileCommon::checkResettingErrors()
                                       << "is" << uploadInfo._errorCount;
         }
         propagator()->_journal->setUploadInfo(_item->_file, uploadInfo);
-        propagator()->_journal->commit("Upload info");
+        propagator()->_journal->commitIfNeededAndStartNewTransaction("Upload info");
     }
 }
 
@@ -866,7 +866,7 @@ void PropagateUploadFileCommon::finalize()
 
     // Remove from the progress database:
     propagator()->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
-    propagator()->_journal->commit("upload file start");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("upload file start");
 
     if (_uploadingEncrypted) {
         Q_ASSERT(_item->isEncrypted());

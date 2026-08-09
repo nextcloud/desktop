@@ -135,7 +135,7 @@ void BasePropagateRemoteDeleteEncrypted::slotDeleteRemoteItemFinished()
     if (!_propagator->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
         qCWarning(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Failed to delete file record from local DB" << _item->_originalFile;
     }
-    _propagator->_journal->commit("Remote Remove");
+    _propagator->_journal->commitIfNeededAndStartNewTransaction("Remote Remove");
 
     unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Success);
 }

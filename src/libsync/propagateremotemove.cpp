@@ -309,7 +309,7 @@ void PropagateRemoteMove::finalize()
         }
     }
 
-    propagator()->_journal->commit("Remote Rename");
+    propagator()->_journal->commitIfNeededAndStartNewTransaction("Remote Rename");
     done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }
 

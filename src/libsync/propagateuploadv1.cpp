@@ -65,7 +65,7 @@ void PropagateUploadFileV1::doStartUpload()
         pi._contentChecksum = _item->_checksumHeader;
         pi._size = _item->_size;
         propagator()->_journal->setUploadInfo(_item->_file, pi);
-        propagator()->_journal->commit("Upload info");
+        propagator()->_journal->commitIfNeededAndStartNewTransaction("Upload info");
     }
 
     _currentChunk = 0;
@@ -314,7 +314,7 @@ void PropagateUploadFileV1::slotPutFinished()
         pi._contentChecksum = _item->_checksumHeader;
         pi._size = _item->_size;
         propagator()->_journal->setUploadInfo(_item->_file, pi);
-        propagator()->_journal->commit("Upload info");
+        propagator()->_journal->commitIfNeededAndStartNewTransaction("Upload info");
         startNextChunk();
         return;
     }
