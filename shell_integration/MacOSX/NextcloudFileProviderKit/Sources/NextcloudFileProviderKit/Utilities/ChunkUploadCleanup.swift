@@ -4,6 +4,25 @@
 import Foundation
 import RealmSwift
 
+/// Associates an in-progress chunk upload with existing item metadata.
+func setChunkUploadIdentifier(
+    uploadIdentifier: String,
+    itemIdentifier: String,
+    dbManager: FilesDatabaseManager,
+    logger: FileProviderLogger
+) {
+    let db = dbManager.ncDatabase()
+    guard let metadata = db.object(ofType: RealmItemMetadata.self, forPrimaryKey: itemIdentifier) else {
+        return
+    }
+
+    do {
+        try db.write { metadata.chunkUploadId = uploadIdentifier }
+    } catch {
+        logger.error("Could not associate chunk upload with item metadata.", [.error: error, .item: itemIdentifier])
+    }
+}
+
 /// Removes tracked chunk uploads owned by the supplied items, optionally retaining one upload.
 func discardChunkUploads(
     forItemIdentifiers itemIdentifiers: [String],
