@@ -37,6 +37,37 @@ func removeLocalChunkUpload(
     )
 }
 
+/// Removes tracked uploads that cannot be resumed after extension startup.
+func cleanupAbandonedChunkUploads(
+    usingRemoteInterface remoteInterface: RemoteInterface,
+    dbManager: FilesDatabaseManager,
+    logger: FileProviderLogger
+) {
+    let db = dbManager.ncDatabase()
+    let chunkIdentifiers = db.objects(RemoteFileChunk.self)
+        .map(\.remoteChunkStoreFolderName)
+    let metadata = db.objects(RealmItemMetadata.self)
+    let metadataUploadIdentifiers = metadata.compactMap { $0.chunkUploadId }
+    let knownIdentifiers = Set(chunkIdentifiers).union(
+        metadataUploadIdentifiers
+    )
+    let resumableStatuses = Set([
+        Status.inUpload.rawValue,
+        Status.uploading.rawValue,
+        Status.uploadError.rawValue
+    ])
+    let resumableIdentifiers = Set(metadata.compactMap {
+        !$0.deleted && resumableStatuses.contains($0.status) ? $0.chunkUploadId : nil
+    })
+
+    discardChunkUploads(
+        withIdentifiers: knownIdentifiers.subtracting(resumableIdentifiers),
+        usingRemoteInterface: remoteInterface,
+        dbManager: dbManager,
+        logger: logger
+    )
+}
+
 private func discardChunkUploads(
     withIdentifiers uploadIdentifiers: Set<String>,
     usingRemoteInterface remoteInterface: RemoteInterface,
