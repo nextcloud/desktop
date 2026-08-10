@@ -4,6 +4,44 @@
 import Foundation
 import RealmSwift
 
+/// Removes tracked chunk uploads owned by the supplied items, optionally retaining one upload.
+func discardChunkUploads(
+    forItemIdentifiers itemIdentifiers: [String],
+    excluding retainedChunkUploadIdentifier: String? = nil,
+    usingRemoteInterface remoteInterface: RemoteInterface,
+    dbManager: FilesDatabaseManager,
+    logger: FileProviderLogger
+) {
+    let db = dbManager.ncDatabase()
+    var uploadIdentifiers = Set<String>()
+
+    for itemIdentifier in itemIdentifiers {
+        if let uploadIdentifier = db.object(
+            ofType: RealmItemMetadata.self,
+            forPrimaryKey: itemIdentifier
+        )?.chunkUploadId {
+            uploadIdentifiers.insert(uploadIdentifier)
+        }
+
+        let legacyPrefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
+        let chunkIdentifiers = db.objects(RemoteFileChunk.self)
+            .where { $0.remoteChunkStoreFolderName.starts(with: legacyPrefix) }
+            .map(\.remoteChunkStoreFolderName)
+        uploadIdentifiers.formUnion(chunkIdentifiers)
+    }
+
+    if let retainedChunkUploadIdentifier {
+        uploadIdentifiers.remove(retainedChunkUploadIdentifier)
+    }
+
+    discardChunkUploads(
+        withIdentifiers: uploadIdentifiers,
+        usingRemoteInterface: remoteInterface,
+        dbManager: dbManager,
+        logger: logger
+    )
+}
+
 /// Removes one local chunk upload and its existing bookkeeping.
 func removeLocalChunkUpload(
     uploadIdentifier: String,
