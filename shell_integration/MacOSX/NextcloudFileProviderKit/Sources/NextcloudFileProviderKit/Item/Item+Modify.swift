@@ -202,6 +202,12 @@ public extension Item {
             progressHandler: { $0.copyCurrentStateToProgress(progress) }
         )
 
+        // `metadata` is a value snapshot captured before `upload()`. A partial chunked-upload
+        // failure leaves the current resumable upload identifier in Realm, but the error paths
+        // below write this snapshot back. Refresh the identifier so that write does not replace the
+        // current identifier with its pre-upload value. Successful and non-resumable uploads clear it.
+        metadata.chunkUploadId = dbManager.itemMetadata(ocId: ocId)?.chunkUploadId
+
         guard error == .success else {
             logger.error(
                 """
@@ -323,6 +329,7 @@ public extension Item {
         newMetadata.sessionTaskIdentifier = 0
         newMetadata.downloaded = true
         newMetadata.uploaded = true
+        newMetadata.chunkUploadId = nil
 
         dbManager.addItemMetadata(newMetadata)
 
