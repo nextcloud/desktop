@@ -131,6 +131,7 @@ nextcloud_add_test(FileSystem)
 nextcloud_add_test(FolderStatusModel)
 
 if(NOT BUILD_LIBRARIES_ONLY AND NOT APPLE)
+    nextcloud_add_test(NextcloudCmdInclude)
     nextcloud_add_test(NextcloudCmdProvisioning)
     add_dependencies(NextcloudCmdProvisioningTest nextcloudcmd)
 endif()
