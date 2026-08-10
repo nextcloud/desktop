@@ -64,6 +64,69 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.deleted, true)
     }
 
+    func testDeleteFileDiscardsIncompleteChunkUpload() async throws {
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account,
+            rootItem: rootItem,
+            rootTrashItem: rootTrashItem
+        )
+        let itemIdentifier = "file-with-incomplete-upload"
+        let remoteItem = MockRemoteItem(
+            identifier: itemIdentifier,
+            name: "file.txt",
+            remotePath: Self.account.davFilesUrl + "/file.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteItem.parent = rootItem
+        rootItem.children = [remoteItem]
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: itemIdentifier,
+            fileSize: 8,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+        )
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("deleted-item-chunks-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: chunksDirectory, withIntermediateDirectories: true)
+        try Data([1]).write(to: chunksDirectory.appendingPathComponent("2"))
+        remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let db = Self.dbManager.ncDatabase()
+        try db.write {
+            db.add(RemoteFileChunk(
+                fileName: "2",
+                size: 3,
+                remoteChunkStoreFolderName: chunkUploadId
+            ))
+        }
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertEqual(
+            db.objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+                .count,
+            0
+        )
+    }
+
     func testDeleteUnexcludedBundlePropagatesToServer() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteBundle = MockRemoteItem(
@@ -134,7 +197,62 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: metadata.ocId))
     }
 
-    func testDeleteFolderAndContents() async {
+    func testFailedDeleteKeepsIncompleteChunkUpload() async throws {
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account,
+            rootItem: rootItem,
+            rootTrashItem: rootTrashItem
+        )
+        let itemIdentifier = "file-with-failed-delete"
+        let itemMetadata = SendableItemMetadata(
+            ocId: itemIdentifier,
+            fileName: "missing.txt",
+            account: Self.account
+        )
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: itemIdentifier,
+            fileSize: 8,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+        )
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("failed-delete-chunks-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: chunksDirectory, withIntermediateDirectories: true)
+        try Data([1]).write(to: chunksDirectory.appendingPathComponent("2"))
+        remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let db = Self.dbManager.ncDatabase()
+        try db.write {
+            db.add(RemoteFileChunk(
+                fileName: "2",
+                size: 3,
+                remoteChunkStoreFolderName: chunkUploadId
+            ))
+        }
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNotNil(error)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertEqual(
+            db.objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+                .count,
+            1
+        )
+    }
+
+    func testDeleteFolderAndContents() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteFolder = MockRemoteItem(
             identifier: "folder",
@@ -170,6 +288,27 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
 
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: remoteItem.identifier,
+            fileSize: 8,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+        )
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("deleted-descendant-chunks-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: chunksDirectory, withIntermediateDirectories: true)
+        try Data([1]).write(to: chunksDirectory.appendingPathComponent("2"))
+        remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let db = Self.dbManager.ncDatabase()
+        try db.write {
+            db.add(RemoteFileChunk(
+                fileName: "2",
+                size: 3,
+                remoteChunkStoreFolderName: chunkUploadId
+            ))
+        }
+
         let folder = Item(
             metadata: folderMetadata,
             parentItemIdentifier: .rootContainer,
@@ -184,6 +323,13 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertEqual(
+            db.objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+                .count,
+            0
+        )
     }
 
     func testDeleteWithTrashing() async throws {
