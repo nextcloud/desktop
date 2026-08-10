@@ -150,25 +150,38 @@ func upload(
         """
     )
 
-    // Content-scoped resume (F3): drop any chunk bookkeeping left over from a *different* version of
-    // this same item — a prior interrupted upload whose content has since changed derives a different
-    // id. Keeping those rows would risk resuming against server-side chunks that belong to the old
-    // content and splicing them into the new file. Rows under the current id (a genuine resume of
-    // identical content) share the id and are preserved.
-    let staleChunkPrefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
-    do {
-        let db = dbManager.ncDatabase()
-        let staleChunks = db.objects(RemoteFileChunk.self).where {
-            $0.remoteChunkStoreFolderName.starts(with: staleChunkPrefix)
-                && $0.remoteChunkStoreFolderName != chunkUploadId
+    var completedChunksDirectory: URL?
+    var shouldRemoveLocalChunkUpload = false
+    defer {
+        if shouldRemoveLocalChunkUpload {
+            removeLocalChunkUpload(
+                uploadIdentifier: chunkUploadId,
+                chunksDirectory: completedChunksDirectory,
+                usingRemoteInterface: remoteInterface,
+                dbManager: dbManager,
+                logger: uploadLogger
+            )
         }
-
-        if !staleChunks.isEmpty {
-            try db.write { db.delete(staleChunks) }
-        }
-    } catch {
-        uploadLogger.error("Could not clear stale chunk bookkeeping for item.", [.error: error])
     }
+
+    // A prior interrupted upload of different content has a different identifier. Remove its local
+    // chunks and bookkeeping, while preserving the current identifier for a genuine resume. If local
+    // removal fails, its rows remain so a later attempt can retry the cleanup; the exact-identifier
+    // query below prevents those stale rows from being used for this upload.
+    discardChunkUploads(
+        forItemIdentifiers: [itemIdentifier],
+        excluding: chunkUploadId,
+        usingRemoteInterface: remoteInterface,
+        dbManager: dbManager,
+        logger: uploadLogger
+    )
+
+    setChunkUploadIdentifier(
+        uploadIdentifier: chunkUploadId,
+        itemIdentifier: itemIdentifier,
+        dbManager: dbManager,
+        logger: uploadLogger
+    )
 
     let remainingChunks = dbManager
         .ncDatabase()
@@ -234,20 +247,16 @@ func upload(
         }
     )
 
-    if nkError == .success, file != nil {
-        if let chunksDirectory {
-            do {
-                try FileManager.default.removeItem(at: chunksDirectory)
-            } catch CocoaError.fileNoSuchFile {
-                // The temporary directory may already have been removed by the system.
-            } catch {
-                uploadLogger.error(
-                    "Could not remove temporary chunk directory after completed upload.",
-                    [.error: error, .url: chunksDirectory.path]
-                )
-            }
-        }
+    completedChunksDirectory = chunksDirectory
+    let chunkUploadCompleted = nkError == .success && file != nil
+    let hasRemainingChunks = !dbManager
+        .ncDatabase()
+        .objects(RemoteFileChunk.self)
+        .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+        .isEmpty
+    shouldRemoveLocalChunkUpload = chunkUploadCompleted || !hasRemainingChunks
 
+    if nkError == .success, file != nil {
         uploadLogger.info("File successfully uploaded in chunks.", [.url: remotePath])
     }
 
