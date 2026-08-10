@@ -76,6 +76,8 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         ("", nil, nil, .invalidResponseError)
     }
 
+    public func removeLocalChunks(remoteChunkStoreFolderName _: String) throws {}
+
     public func move(
         remotePathSource _: String,
         remotePathDestination _: String,
