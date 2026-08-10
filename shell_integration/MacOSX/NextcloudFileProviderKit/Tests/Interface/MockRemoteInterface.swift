@@ -569,8 +569,17 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var currentChunks: [String: [RemoteFileChunk]] = [:]
     public var completedChunkTransferSize: [String: Int64] = [:]
 
+    /// Limits completion callbacks to simulate an interrupted chunk upload.
+    public var chunkUploadCompletedChunkCount: Int?
+
     /// Overrides the directory where chunked uploads create their local chunk files.
     public var chunkUploadDirectory: URL?
+
+    /// Maps chunk upload identifiers to the directories used for their local chunk files.
+    public var chunkUploadDirectories: [String: URL] = [:]
+
+    /// When set, local chunk removal fails with this error.
+    public var removeLocalChunksError: (any Error)?
     public var pagination: Bool
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
@@ -890,6 +899,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         let fm = FileManager.default
         let tempDirectoryUrl = chunkUploadDirectory ?? fm.temporaryDirectory
             .appendingPathComponent(remoteChunkStoreFolderName, isDirectory: true)
+        chunkUploadDirectories[remoteChunkStoreFolderName] = tempDirectoryUrl
         try! fm.createDirectory(atPath: tempDirectoryUrl.path, withIntermediateDirectories: true)
 
         // Access local file and gather metadata
@@ -936,7 +946,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             taskHandler: taskHandler,
             progressHandler: progressHandler
         )
-        newChunks.forEach { chunkUploadCompleteHandler($0) }
+        let completedChunks = chunkUploadCompletedChunkCount.map {
+            newChunks.prefix($0)
+        } ?? newChunks[...]
+        completedChunks.forEach { chunkUploadCompleteHandler($0) }
         print(remainingChunks)
         completedChunkTransferSize[remoteChunkStoreFolderName] =
             remainingChunks.reduce(0) { $0 + $1.size }
@@ -959,7 +972,13 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     }
 
     public func removeLocalChunks(remoteChunkStoreFolderName: String) throws {
-        let chunksDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(
+        if let removeLocalChunksError {
+            throw removeLocalChunksError
+        }
+
+        let chunksDirectory = chunkUploadDirectories.removeValue(
+            forKey: remoteChunkStoreFolderName
+        ) ?? FileManager.default.temporaryDirectory.appendingPathComponent(
             remoteChunkStoreFolderName,
             isDirectory: true
         )
