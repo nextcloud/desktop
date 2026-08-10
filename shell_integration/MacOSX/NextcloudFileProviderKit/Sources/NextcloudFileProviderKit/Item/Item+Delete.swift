@@ -5,6 +5,7 @@
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
+import RealmSwift
 
 public extension Item {
     /// > Note: The trashing parameter does not affect whether the server will trash this or not.
@@ -154,11 +155,14 @@ public extension Item {
         let directoryRemotePath = metadata.remotePath()
         let itemAccount = metadata.account
         return dbManager.itemMetadatas
-            .filter {
-                !$0.directory
-                    && $0.account == itemAccount
-                    && ($0.serverUrl == directoryRemotePath
-                        || $0.serverUrl.hasPrefix(directoryRemotePath + "/"))
+            .where {
+                $0.directory == false &&
+                    $0.account == itemAccount &&
+                    RealmItemMetadata.hasServerUrl(
+                        $0,
+                        equalTo: directoryRemotePath,
+                        includingDescendants: true
+                    )
             }
             .map(\.ocId)
     }

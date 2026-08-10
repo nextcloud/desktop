@@ -104,18 +104,23 @@ func cleanupAbandonedChunkUploads(
     let chunkIdentifiers = db.objects(RemoteFileChunk.self)
         .map(\.remoteChunkStoreFolderName)
     let metadata = db.objects(RealmItemMetadata.self)
-    let metadataUploadIdentifiers = metadata.compactMap { $0.chunkUploadId }
+    let metadataUploadIdentifiers = metadata
+        .where { $0.chunkUploadId != nil }
+        .compactMap(\.chunkUploadId)
     let knownIdentifiers = Set(chunkIdentifiers).union(
         metadataUploadIdentifiers
     )
-    let resumableStatuses = Set([
-        Status.inUpload.rawValue,
-        Status.uploading.rawValue,
-        Status.uploadError.rawValue
-    ])
-    let resumableIdentifiers = Set(metadata.compactMap {
-        !$0.deleted && resumableStatuses.contains($0.status) ? $0.chunkUploadId : nil
-    })
+    let resumableIdentifiers = Set(
+        metadata
+            .where {
+                $0.chunkUploadId != nil &&
+                    $0.deleted == false &&
+                    ($0.status == Status.inUpload.rawValue ||
+                        $0.status == Status.uploading.rawValue ||
+                        $0.status == Status.uploadError.rawValue)
+            }
+            .compactMap(\.chunkUploadId)
+    )
 
     discardChunkUploads(
         withIdentifiers: knownIdentifiers.subtracting(resumableIdentifiers),
