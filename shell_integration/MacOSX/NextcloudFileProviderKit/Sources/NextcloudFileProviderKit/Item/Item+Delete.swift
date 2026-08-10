@@ -23,6 +23,19 @@ public extension Item {
             return NSFileProviderError(.directoryNotEmpty)
         }
 
+        let chunkUploadOwnerIdentifiers = chunkUploadItemIdentifiers()
+        var deletionCompleted = false
+        defer {
+            if deletionCompleted {
+                discardChunkUploads(
+                    forItemIdentifiers: chunkUploadOwnerIdentifiers,
+                    usingRemoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    logger: logger
+                )
+            }
+        }
+
         let ocId = itemIdentifier.rawValue
         let relativePath = (metadata.remotePath()).replacingOccurrences(of: metadata.urlBase, with: "")
 
@@ -41,11 +54,13 @@ public extension Item {
                 return NSFileProviderError(.cannotSynchronize)
             }
 
+            deletionCompleted = true
             return nil
         }
 
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
             logger.info("File is in the ignore list. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: filename])
+            deletionCompleted = true
             dbManager.deleteItemMetadata(ocId: ocId)
             return nil
         }
@@ -78,6 +93,7 @@ public extension Item {
                         "Trashbin item no longer present in a fresh trash listing; treating permanent delete as already complete.",
                         [.item: ocId, .name: filename]
                     )
+                    deletionCompleted = true
                     handleMetadataDeletion()
                     return nil
                 case .unresolved:
@@ -111,6 +127,7 @@ public extension Item {
                     "Trashbin item returned 404 on permanent delete; it is already gone, treating as complete.",
                     [.item: ocId, .url: serverFileNameUrl]
                 )
+                deletionCompleted = true
                 handleMetadataDeletion()
                 return nil
             }
@@ -119,6 +136,7 @@ public extension Item {
         }
 
         logger.info("Successfully deleted item.", [.item: ocId, .url: serverFileNameUrl])
+        deletionCompleted = true
 
         guard trashing else {
             handleMetadataDeletion()
@@ -126,6 +144,23 @@ public extension Item {
         }
 
         return handleMetadataTrashModification()
+    }
+
+    private func chunkUploadItemIdentifiers() -> [String] {
+        guard metadata.directory else {
+            return [metadata.ocId]
+        }
+
+        let directoryRemotePath = metadata.remotePath()
+        let itemAccount = metadata.account
+        return dbManager.itemMetadatas
+            .filter {
+                !$0.directory
+                    && $0.account == itemAccount
+                    && ($0.serverUrl == directoryRemotePath
+                        || $0.serverUrl.hasPrefix(directoryRemotePath + "/"))
+            }
+            .map(\.ocId)
     }
 
     @discardableResult
