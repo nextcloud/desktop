@@ -13,6 +13,7 @@
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
+#include "configfile.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
 #include "lockfilejobs.h"
@@ -715,20 +716,11 @@ bool PropagateUploadFileCommon::retryAfterServiceUnavailable(AbstractNetworkJob 
         return false;
     }
 
-    // Same policy and the same env knobs as the download side, deliberately: a server that is
+    // Same policy and the same settings as the download side, deliberately: a server that is
     // refusing work refuses it in both directions, and one set of numbers is easier to tune.
-    static const auto maxAttempts = [] {
-        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_RETRIES");
-        return qMax(1, configured > 0 ? configured : 3);
-    }();
-    static const auto resetAfter = [] {
-        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_RESET_SEC");
-        return std::chrono::seconds(qMax(1, configured > 0 ? configured : 60));
-    }();
-    static const auto backoffStep = [] {
-        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_BACKOFF_SEC");
-        return std::chrono::seconds(qMax(1, configured > 0 ? configured : 5));
-    }();
+    static const auto maxAttempts = ConfigFile().propagateServiceUnavailableRetries();
+    static const auto resetAfter = ConfigFile().propagateServiceUnavailableResetInterval();
+    static const auto backoffStep = ConfigFile().propagateServiceUnavailableBackoff();
 
     if (_sinceLastServiceUnavailable.isValid()
         && _sinceLastServiceUnavailable.durationElapsed() > resetAfter) {

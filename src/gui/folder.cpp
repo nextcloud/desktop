@@ -1274,6 +1274,10 @@ SyncOptions Folder::initializeSyncOptions() const
         opt.setMaxChunkSize(cfgMaxChunkSize);
         opt._initialChunkSize = ::qBound(cfgMinChunkSize, cfgFile.chunkSize(), cfgMaxChunkSize);
     }
+    if (const auto cfgMaxParallelLocalScan = cfgFile.maxParallelLocalScanJobs(); cfgMaxParallelLocalScan > 0) {
+        opt._parallelLocalScanJobs = cfgMaxParallelLocalScan;
+    }
+
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
 

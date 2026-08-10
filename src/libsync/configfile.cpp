@@ -48,6 +48,16 @@ static constexpr char overrideServerUrlC[] = "overrideServerUrl";
 static constexpr char overrideLocalDirC[] = "overrideLocalDir";
 static constexpr char geometryC[] = "geometry";
 static constexpr char timeoutC[] = "timeout";
+static constexpr char discoveryTimeoutC[] = "discoveryTimeout";
+static constexpr char discoveryListingRetriesC[] = "discoveryListingRetries";
+static constexpr char discoveryListingRetryResetIntervalC[] = "discoveryListingRetryResetInterval";
+static constexpr char discoveryListingRetryDelayC[] = "discoveryListingRetryDelay";
+static constexpr char connectionTimeoutRetriesC[] = "connectionTimeoutRetries";
+static constexpr char connectionTimeoutResetIntervalC[] = "connectionTimeoutResetInterval";
+static constexpr char propagateServiceUnavailableRetriesC[] = "propagateServiceUnavailableRetries";
+static constexpr char propagateServiceUnavailableResetIntervalC[] = "propagateServiceUnavailableResetInterval";
+static constexpr char propagateServiceUnavailableBackoffC[] = "propagateServiceUnavailableBackoff";
+static constexpr char maxParallelLocalScanJobsC[] = "maxParallelLocalScanJobs";
 static constexpr char chunkSizeC[] = "chunkSize";
 static constexpr char minChunkSizeC[] = "minChunkSize";
 static constexpr char maxChunkSizeC[] = "maxChunkSize";
@@ -98,6 +108,25 @@ static chrono::milliseconds millisecondsValue(const QSettings &setting, const ch
     chrono::milliseconds defaultValue)
 {
     return chrono::milliseconds(setting.value(QLatin1String(key), qlonglong(defaultValue.count())).toLongLong());
+}
+
+/// Reads a tuning value that may also be given as an environment variable.
+///
+/// The config file is the supported way to set these. The environment variable is kept as an
+/// override so a value can be changed for a single run without editing the config -- which is
+/// what the tests do, and what makes a knob usable as a falsification lever against a running
+/// build. It wins when set, and is ignored otherwise.
+///
+/// A non-positive value from either source means "not configured" and yields the default, so a
+/// stray empty or zero entry cannot turn a retry budget into zero attempts.
+static int tuningValue(const QSettings &settings, const char *key, const char *envVar, int defaultValue,
+    int minimumValue = 1)
+{
+    if (const auto fromEnv = qEnvironmentVariableIntValue(envVar); fromEnv > 0) {
+        return qMax(minimumValue, fromEnv);
+    }
+    const auto configured = settings.value(QLatin1String(key), 0).toInt();
+    return qMax(minimumValue, configured > 0 ? configured : defaultValue);
 }
 
 bool copy_dir_recursive(QString from_dir, QString to_dir)
@@ -238,6 +267,78 @@ int ConfigFile::timeout() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(timeoutC), 300).toInt(); // default to 5 min
+}
+
+chrono::seconds ConfigFile::discoveryTimeout() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return chrono::seconds(tuningValue(settings, discoveryTimeoutC, "OWNCLOUD_DISCOVERY_TIMEOUT", 60));
+}
+
+int ConfigFile::discoveryListingRetries() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return tuningValue(settings, discoveryListingRetriesC, "OWNCLOUD_DISCOVERY_LISTING_RETRIES", 3);
+}
+
+chrono::seconds ConfigFile::discoveryListingRetryResetInterval() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return chrono::seconds(tuningValue(settings, discoveryListingRetryResetIntervalC,
+        "OWNCLOUD_DISCOVERY_LISTING_RETRY_RESET_SEC", 300));
+}
+
+chrono::seconds ConfigFile::discoveryListingRetryDelay() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return chrono::seconds(tuningValue(settings, discoveryListingRetryDelayC,
+        "OWNCLOUD_DISCOVERY_LISTING_RETRY_DELAY_SEC", 5));
+}
+
+int ConfigFile::connectionTimeoutRetries() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return tuningValue(settings, connectionTimeoutRetriesC, "OWNCLOUD_CONNECTION_TIMEOUT_RETRIES", 3);
+}
+
+chrono::seconds ConfigFile::connectionTimeoutResetInterval() const
+{
+    // Floor of 60s, not 1s: a connection check that times out takes as long as its own timeout to
+    // do so, so consecutive failures are minutes apart by construction. A shorter window would
+    // reset the count every time and make the tolerance a no-op.
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return chrono::seconds(tuningValue(settings, connectionTimeoutResetIntervalC,
+        "OWNCLOUD_CONNECTION_TIMEOUT_RESET_SEC", 300, 60));
+}
+
+int ConfigFile::propagateServiceUnavailableRetries() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return tuningValue(settings, propagateServiceUnavailableRetriesC, "OWNCLOUD_PROPAGATE_503_RETRIES", 3);
+}
+
+chrono::seconds ConfigFile::propagateServiceUnavailableResetInterval() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return chrono::seconds(tuningValue(settings, propagateServiceUnavailableResetIntervalC,
+        "OWNCLOUD_PROPAGATE_503_RESET_SEC", 60));
+}
+
+chrono::seconds ConfigFile::propagateServiceUnavailableBackoff() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return chrono::seconds(tuningValue(settings, propagateServiceUnavailableBackoffC,
+        "OWNCLOUD_PROPAGATE_503_BACKOFF_SEC", 5));
+}
+
+int ConfigFile::maxParallelLocalScanJobs() const
+{
+    // 0 means "not configured": SyncOptions keeps its own core-count-derived default in that case.
+    // Unlike the knobs above, the OWNCLOUD_MAX_PARALLEL_LOCAL_SCAN override is not applied here --
+    // SyncOptions::fillFromEnvironmentVariables() already runs after this value is applied, which
+    // is how the chunk-size settings alongside it work too.
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return qMax(0, settings.value(QLatin1String(maxParallelLocalScanJobsC), 0).toInt());
 }
 
 qint64 ConfigFile::chunkSize() const

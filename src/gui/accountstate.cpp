@@ -50,9 +50,8 @@ namespace {
 /// request timeouts anyway.
 int connectionTimeoutsBeforeDisconnect()
 {
-    static const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_CONNECTION_TIMEOUT_RETRIES");
-    static constexpr auto defaultTolerated = 3;
-    return qMax(1, configured > 0 ? configured : defaultTolerated);
+    static const auto configured = ConfigFile().connectionTimeoutRetries();
+    return configured;
 }
 
 /// Delay before re-probing after a tolerated timeout. Long enough not to pile another request
@@ -72,12 +71,12 @@ constexpr auto recheckAfterToleratedTimeout = std::chrono::seconds(5);
 /// so -- 60s and upwards, more when the reply trickles and keeps resetting the inactivity timer
 /// -- and only then is the next one scheduled. Consecutive failures are therefore minutes apart
 /// by construction, and a window below that would reset every time, making the count
-/// unreachable and this whole mechanism a no-op.
+/// unreachable and this whole mechanism a no-op. ConfigFile enforces the 60s floor for that
+/// reason.
 std::chrono::seconds connectionTimeoutCountResetAfter()
 {
-    static const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_CONNECTION_TIMEOUT_RESET_SEC");
-    static constexpr auto defaultSeconds = 300;
-    return std::chrono::seconds(qMax(60, configured > 0 ? configured : defaultSeconds));
+    static const auto configured = ConfigFile().connectionTimeoutResetInterval();
+    return configured;
 }
 
 }

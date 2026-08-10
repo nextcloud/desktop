@@ -13,6 +13,7 @@
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
+#include "configfile.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
 #include <common/asserts.h>
@@ -805,21 +806,12 @@ void PropagateDownloadFile::makeParentFolderModifiable(const QString &fileName)
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
 bool PropagateDownloadFile::retryAfterServiceUnavailable()
 {
-    static const auto maxAttempts = [] {
-        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_RETRIES");
-        return qMax(1, configured > 0 ? configured : 3);
-    }();
+    static const auto maxAttempts = ConfigFile().propagateServiceUnavailableRetries();
     // Unlike the connection-check counter, a short window works here: retries are seconds
     // apart, so a burst of 503s on one file lands well inside it, while one that happens
     // again much later in the sync is unrelated and starts over.
-    static const auto resetAfter = [] {
-        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_RESET_SEC");
-        return std::chrono::seconds(qMax(1, configured > 0 ? configured : 60));
-    }();
-    static const auto backoffStep = [] {
-        const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_PROPAGATE_503_BACKOFF_SEC");
-        return std::chrono::seconds(qMax(1, configured > 0 ? configured : 5));
-    }();
+    static const auto resetAfter = ConfigFile().propagateServiceUnavailableResetInterval();
+    static const auto backoffStep = ConfigFile().propagateServiceUnavailableBackoff();
 
     if (_sinceLastServiceUnavailable.isValid()
         && _sinceLastServiceUnavailable.durationElapsed() > resetAfter) {

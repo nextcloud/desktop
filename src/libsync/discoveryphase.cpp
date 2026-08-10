@@ -55,17 +55,15 @@ namespace {
 /// resetting it. Only a listing producing no data at all is cut short.
 qint64 discoveryListingTimeoutMsec()
 {
-    static const auto configuredSec = qEnvironmentVariableIntValue("OWNCLOUD_DISCOVERY_TIMEOUT");
-    static constexpr auto defaultSec = 60;
-    return qint64{configuredSec > 0 ? configuredSec : defaultSec} * 1000;
+    static const auto configured = ConfigFile().discoveryTimeout();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(configured).count();
 }
 
 /// How many times a directory listing is attempted before the lookups waiting on it are failed.
 int etagListingMaxAttempts()
 {
-    static const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_DISCOVERY_LISTING_RETRIES");
-    static constexpr auto defaultAttempts = 3;
-    return qMax(1, configured > 0 ? configured : defaultAttempts);
+    static const auto configured = ConfigFile().discoveryListingRetries();
+    return configured;
 }
 
 /// How long a failed attempt counts against a directory's retry budget.
@@ -75,18 +73,16 @@ int etagListingMaxAttempts()
 /// so attempts spread thinly across a long run never add up to an exhausted budget.
 std::chrono::seconds etagListingRetryResetAfter()
 {
-    static const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_DISCOVERY_LISTING_RETRY_RESET_SEC");
-    static constexpr auto defaultSeconds = 300;
-    return std::chrono::seconds(qMax(1, configured > 0 ? configured : defaultSeconds));
+    static const auto configured = ConfigFile().discoveryListingRetryResetInterval();
+    return configured;
 }
 
 /// Base delay before re-attempting a failed listing; multiplied by the attempt number so a
 /// server that is struggling is not immediately hit again with the request that just failed.
 std::chrono::seconds etagListingRetryDelay()
 {
-    static const auto configured = qEnvironmentVariableIntValue("OWNCLOUD_DISCOVERY_LISTING_RETRY_DELAY_SEC");
-    static constexpr auto defaultSeconds = 5;
-    return std::chrono::seconds(qMax(1, configured > 0 ? configured : defaultSeconds));
+    static const auto configured = ConfigFile().discoveryListingRetryDelay();
+    return configured;
 }
 
 /// Whether a failed listing is worth sending again.

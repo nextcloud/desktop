@@ -169,6 +169,38 @@ public:
     void setShowInExplorerNavigationPane(bool show);
 
     [[nodiscard]] int timeout() const;
+
+    /* Sync tuning knobs.
+     *
+     * Each of these may also be set through the environment variable named in configfile.cpp,
+     * which overrides the config file for a single run. A missing or non-positive value means
+     * "not configured" and yields the documented default.
+     */
+
+    /** Inactivity timeout for the remote directory listings discovery issues. Default 60s. */
+    [[nodiscard]] std::chrono::seconds discoveryTimeout() const;
+    /** Attempts per directory listing before the lookups waiting on it are failed. Default 3. */
+    [[nodiscard]] int discoveryListingRetries() const;
+    /** How long a failed listing counts against a directory's retry budget. Default 300s. */
+    [[nodiscard]] std::chrono::seconds discoveryListingRetryResetInterval() const;
+    /** Base delay before re-attempting a failed listing, multiplied by attempt. Default 5s. */
+    [[nodiscard]] std::chrono::seconds discoveryListingRetryDelay() const;
+
+    /** Connection checks that must time out back to back before the account is called down. Default 3. */
+    [[nodiscard]] int connectionTimeoutRetries() const;
+    /** How long a check timeout stays "recent" when counting consecutive failures. Default 300s, floor 60s. */
+    [[nodiscard]] std::chrono::seconds connectionTimeoutResetInterval() const;
+
+    /** Retries for a 503 during propagation, both directions. Default 3. */
+    [[nodiscard]] int propagateServiceUnavailableRetries() const;
+    /** How long a 503 counts against an item's retry budget. Default 60s. */
+    [[nodiscard]] std::chrono::seconds propagateServiceUnavailableResetInterval() const;
+    /** Base backoff before retrying after a 503, multiplied by attempt. Default 5s. */
+    [[nodiscard]] std::chrono::seconds propagateServiceUnavailableBackoff() const;
+
+    /** Concurrent local directory scans, or 0 to keep the core-count-derived default. */
+    [[nodiscard]] int maxParallelLocalScanJobs() const;
+
     [[nodiscard]] qint64 chunkSize() const;
     [[nodiscard]] qint64 maxChunkSize() const;
     [[nodiscard]] qint64 minChunkSize() const;
