@@ -958,6 +958,19 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         return (account.ncKitAccount, file, tempDirectoryUrl, remoteError)
     }
 
+    public func removeLocalChunks(remoteChunkStoreFolderName: String) throws {
+        let chunksDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(
+            remoteChunkStoreFolderName,
+            isDirectory: true
+        )
+
+        do {
+            try FileManager.default.removeItem(at: chunksDirectory)
+        } catch CocoaError.fileNoSuchFile {
+            // Nothing remains to clean up.
+        }
+    }
+
     public func move(
         remotePathSource: String,
         remotePathDestination: String,

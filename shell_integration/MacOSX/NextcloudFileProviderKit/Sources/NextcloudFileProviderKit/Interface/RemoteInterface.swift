@@ -68,6 +68,8 @@ public protocol RemoteInterface: Sendable {
         nkError: NKError
     )
 
+    func removeLocalChunks(remoteChunkStoreFolderName: String) throws
+
     func move(
         remotePathSource: String,
         remotePathDestination: String,
