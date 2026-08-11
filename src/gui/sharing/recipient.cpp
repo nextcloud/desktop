@@ -36,6 +36,7 @@ QPointer<Recipient> Recipient::fromJson(const QJsonObject &json)
         recipient->_secretUrl = url.toString();
     }
 
+    recipient->_initiatorDisplayName = json.value("initiator"_L1).toObject().value("display_name"_L1).toString();
     return recipient;
 }
 
@@ -92,4 +93,9 @@ const std::optional<QString> &Recipient::secretValue() const
 const std::optional<QString> &Recipient::secretUrl() const
 {
     return _secretUrl;
+}
+
+QString Recipient::initiatorDisplayName() const
+{
+    return _initiatorDisplayName;
 }

@@ -49,6 +49,7 @@ public:
     /** @brief Returns the public URL associated with the recipient secret, when exposed. */
     [[nodiscard]] const std::optional<QString> &secretUrl() const;
     /** @brief Returns the user-facing name of the user who added the recipient. */
+    [[nodiscard]] QString initiatorDisplayName() const;
 
 private:
     explicit Recipient(QObject *parent = nullptr);
@@ -63,6 +64,7 @@ private:
     bool _secretUpdatable = false;
     std::optional<QString> _secretValue;
     std::optional<QString> _secretUrl;
+    QString _initiatorDisplayName;
 };
 
 }
