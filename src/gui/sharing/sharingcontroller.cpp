@@ -158,7 +158,10 @@ void SharingController::destroyShare(Share *share)
     job->start();
 }
 
-void SharingController::addRecipient(Share *share, const QString &recipientType, const QString &recipientValue)
+void SharingController::addRecipient(Share *share,
+                                     const QString &recipientType,
+                                     const QString &recipientValue,
+                                     const QString &recipientInstance)
 {
     if (!_account) {
         qCWarning(lcSharingController) << "attempted to add a new recipient to a share without an account set";
@@ -171,7 +174,7 @@ void SharingController::addRecipient(Share *share, const QString &recipientType,
     }
 
     const auto guardedShare = QPointer<Share>{share};
-    const auto job = new AddRecipientJob{_account, *share, recipientType, recipientValue};
+    const auto job = new AddRecipientJob{_account, *share, recipientType, recipientValue, optionalString(recipientInstance)};
     connect(job, &AddRecipientJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
         if (updatedShare) {
             Q_EMIT recipientAdded(updatedShare);
@@ -186,10 +189,13 @@ void SharingController::addRecipient(Share *share, const QString &recipientType,
     job->start();
 }
 
-void SharingController::removeRecipient(Share *share, const QString &recipientType, const QString &recipientValue)
+void SharingController::removeRecipient(Share *share,
+                                        const QString &recipientType,
+                                        const QString &recipientValue,
+                                        const QString &recipientInstance)
 {
     if (!_account) {
-        qCWarning(lcSharingController) << "attempted to remove a new recipient to a share without an account set";
+        qCWarning(lcSharingController) << "attempted to remove a recipient from a share without an account set";
         return;
     }
 
@@ -198,7 +204,19 @@ void SharingController::removeRecipient(Share *share, const QString &recipientTy
         return;
     }
 
-    const auto job = new RemoveRecipientJob{_account, *share, recipientType, recipientValue};
+    const auto guardedShare = QPointer<Share>{share};
+    const auto job = new RemoveRecipientJob{_account, *share, recipientType, recipientValue, optionalString(recipientInstance)};
+    connect(job, &RemoveRecipientJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
+        if (updatedShare) {
+            Q_EMIT recipientRemoved(updatedShare);
+        }
+    });
+    connect(job, &RemoveRecipientJob::ocsError, this, [this, guardedShare](int, const QString &message) {
+        Q_EMIT recipientRemovalFailed(guardedShare, message.isEmpty() ? tr("Could not remove the recipient.") : message);
+    });
+    connect(job, &RemoveRecipientJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
+        Q_EMIT recipientRemovalFailed(guardedShare, reply ? reply->errorString() : tr("Could not remove the recipient."));
+    });
     job->start();
 }
 

@@ -30,6 +30,7 @@ public:
         ValueRole,
         DisplayNameRole,
         IconRole,
+        InstanceRole,
     };
 
     explicit RecipientSearchModel(QObject *parent = nullptr);

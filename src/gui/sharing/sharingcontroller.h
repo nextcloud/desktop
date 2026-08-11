@@ -59,9 +59,30 @@ public:
      * @param fileId Server file ID to attach to the new share
      */
     Q_INVOKABLE void createShare(const QString &fileId);
+
+    /** @brief Permanently removes a share managed by this controller. */
     Q_INVOKABLE void destroyShare(Share *share);
-    Q_INVOKABLE void addRecipient(Share *share, const QString &recipientType, const QString &recipientValue);
-    Q_INVOKABLE void removeRecipient(Share *share, const QString &recipientType, const QString &recipientValue);
+
+    /**
+     * @brief Adds a recipient to a share.
+     *
+     * @param recipientInstance Remote server identifying a federated recipient, or an empty string for a local recipient
+     */
+    Q_INVOKABLE void addRecipient(Share *share,
+                                  const QString &recipientType,
+                                  const QString &recipientValue,
+                                  const QString &recipientInstance = {});
+
+    /**
+     * @brief Removes a recipient from a share.
+     *
+     * @param recipientInstance Remote server identifying a federated recipient, or an empty string for a local recipient
+     */
+    Q_INVOKABLE void removeRecipient(Share *share,
+                                     const QString &recipientType,
+                                     const QString &recipientValue,
+                                     const QString &recipientInstance = {});
+
 
     Q_INVOKABLE void setPermission(Share *share, const QString &permissionClass, bool enabled);
     Q_INVOKABLE void setPermissionPreset(Share *share, const QString &permissionPreset);

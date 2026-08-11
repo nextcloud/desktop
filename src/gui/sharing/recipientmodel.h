@@ -21,6 +21,7 @@ public:
         LabelRole = Qt::UserRole,
         ClassNameRole,
         ValueRole,
+        InstanceRole,
     };
 
     explicit RecipientModel(QObject *parent = nullptr);
