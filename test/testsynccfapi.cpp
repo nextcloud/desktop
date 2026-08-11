@@ -430,6 +430,28 @@ private slots:
         QCOMPARE(completeSpy.findItem("new")->_instruction, CSYNC_INSTRUCTION_NEW);
     }
 
+    void testOnlineOnlyVirtualDirectoryRename()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("source");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(dbRecord(fakeFolder, "source").isDirectory());
+
+        ::setPinState(fakeFolder.localPath() + "source", PinState::OnlineOnly, cfapi::NoRecurse);
+        fakeFolder.localModifier().rename("source", "destination");
+        completeSpy.clear();
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.remoteModifier().find("source"));
+        QVERIFY(fakeFolder.remoteModifier().find("destination"));
+        QCOMPARE(completeSpy.findItem("destination")->_instruction, CSYNC_INSTRUCTION_RENAME);
+        QCOMPARE(*vfs->pinState("destination"), PinState::OnlineOnly);
+    }
+
     void testWithNormalSync()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
