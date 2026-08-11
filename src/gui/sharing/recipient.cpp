@@ -21,6 +21,12 @@ QPointer<Recipient> Recipient::fromJson(const QJsonObject &json)
     if (const auto instance = json.value("instance"_L1); instance.isString()) {
         recipient->_instance = instance.toString();
     }
+
+    const auto icon = json.value("icon"_L1).toObject();
+    recipient->_iconSvg = icon.value("svg"_L1).toString();
+    recipient->_iconLight = icon.value("light"_L1).toString();
+    recipient->_iconDark = icon.value("dark"_L1).toString();
+
     return recipient;
 }
 
@@ -47,4 +53,19 @@ QString Recipient::value() const
 const std::optional<QString> &Recipient::instance() const
 {
     return _instance;
+}
+
+QString Recipient::iconSvg() const
+{
+    return _iconSvg;
+}
+
+QString Recipient::iconLight() const
+{
+    return _iconLight;
+}
+
+QString Recipient::iconDark() const
+{
+    return _iconDark;
 }

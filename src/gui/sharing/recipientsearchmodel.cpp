@@ -9,6 +9,7 @@
 #include <QLoggingCategory>
 
 #include "searchrecipientsjob.h"
+#include "recipienticonutils.h"
 
 Q_LOGGING_CATEGORY(lcSharingRecipientShareModel, "nextcloud.gui.sharing.recipientsearchmodel", QtInfoMsg)
 
@@ -41,6 +42,7 @@ int RecipientSearchModel::rowCount(const QModelIndex &parent) const
 QVariant RecipientSearchModel::data(const QModelIndex &index, int role) const
 {
     const auto item = _searchResults.at(index.row());
+    const auto icon = item.value("icon"_L1).toObject();
 
     switch (role) {
     case TypeRole:
@@ -48,11 +50,15 @@ QVariant RecipientSearchModel::data(const QModelIndex &index, int role) const
     case ValueRole:
         return item.toObject().value("value"_L1).toString();
     case DisplayNameRole:
-        return item.toObject().value("display_name"_L1).toString();
-    case IconRole:
-        return "image://tray-image-provider/%1"_L1.arg(item.toObject().value("icon"_L1).toObject().value("light").toString());
+        return item.value("display_name"_L1).toString();
     case InstanceRole:
         return item.value("instance"_L1).toVariant();
+    case IconSvgUrlRole:
+        return RecipientIconUtils::svgDataUrl(icon.value("svg"_L1).toString());
+    case IconLightRole:
+        return icon.value("light"_L1).toString();
+    case IconDarkRole:
+        return icon.value("dark"_L1).toString();
     default:
         return {};
     }
@@ -64,8 +70,10 @@ QHash<int, QByteArray> RecipientSearchModel::roleNames() const
         {TypeRole, "type"_ba},
         {ValueRole, "value"_ba},
         {DisplayNameRole, "displayName"_ba},
-        {IconRole, "iconUrl"_ba},
         {InstanceRole, "instance"_ba},
+        {IconSvgUrlRole, "iconSvgUrl"_ba},
+        {IconLightRole, "iconLight"_ba},
+        {IconDarkRole, "iconDark"_ba},
     };
 };
 
