@@ -27,6 +27,15 @@ QPointer<Recipient> Recipient::fromJson(const QJsonObject &json)
     recipient->_iconLight = icon.value("light"_L1).toString();
     recipient->_iconDark = icon.value("dark"_L1).toString();
 
+    const auto secret = json.value("secret"_L1).toObject();
+    recipient->_secretUpdatable = secret.value("updatable"_L1).toBool();
+    if (const auto value = secret.value("value"_L1); value.isString()) {
+        recipient->_secretValue = value.toString();
+    }
+    if (const auto url = secret.value("url"_L1); url.isString()) {
+        recipient->_secretUrl = url.toString();
+    }
+
     return recipient;
 }
 
@@ -68,4 +77,19 @@ QString Recipient::iconLight() const
 QString Recipient::iconDark() const
 {
     return _iconDark;
+}
+
+bool Recipient::secretUpdatable() const
+{
+    return _secretUpdatable;
+}
+
+const std::optional<QString> &Recipient::secretValue() const
+{
+    return _secretValue;
+}
+
+const std::optional<QString> &Recipient::secretUrl() const
+{
+    return _secretUrl;
 }
