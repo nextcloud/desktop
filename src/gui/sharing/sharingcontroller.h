@@ -116,6 +116,12 @@ Q_SIGNALS:
     /** @brief Emitted when adding a recipient failed. */
     void recipientAdditionFailed(Share *share, const QString &error);
 
+    /** @brief Emitted after a recipient was removed and the Share was updated. */
+    void recipientRemoved(Share *share);
+
+    /** @brief Emitted when removing a recipient failed. */
+    void recipientRemovalFailed(Share *share, const QString &error);
+
     /** @brief Emitted after a recipient secret was generated and applied. */
     void recipientSecretUpdated(Share *share);
 
