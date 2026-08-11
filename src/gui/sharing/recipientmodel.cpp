@@ -53,6 +53,12 @@ QVariant RecipientModel::data(const QModelIndex &index, int role) const
         return recipient->iconLight();
     case IconDarkRole:
         return recipient->iconDark();
+    case SecretUpdatableRole:
+        return recipient->secretUpdatable();
+    case SecretValueRole:
+        return recipient->secretValue() ? QVariant{*recipient->secretValue()} : QVariant{};
+    case SecretUrlRole:
+        return recipient->secretUrl() ? QVariant{*recipient->secretUrl()} : QVariant{};
     default:
         return {};
     }
@@ -68,6 +74,9 @@ QHash<int, QByteArray> RecipientModel::roleNames() const
         { IconSvgUrlRole, "iconSvgUrl"_ba},
         { IconLightRole, "iconLight"_ba},
         { IconDarkRole, "iconDark"_ba},
+        { SecretUpdatableRole, "secretUpdatable"_ba},
+        { SecretValueRole, "secretValue"_ba},
+        { SecretUrlRole, "secretUrl"_ba},
     };
 }
 

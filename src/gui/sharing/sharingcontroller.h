@@ -83,6 +83,15 @@ public:
                                      const QString &recipientValue,
                                      const QString &recipientInstance = {});
 
+    /**
+     * @brief Generates and assigns a new secret to a recipient.
+     *
+     * @param recipientInstance Remote server identifying a federated recipient, or an empty string for a local recipient
+     */
+    Q_INVOKABLE void updateRecipientSecret(Share *share,
+                                           const QString &recipientType,
+                                           const QString &recipientValue,
+                                           const QString &recipientInstance = {});
 
     Q_INVOKABLE void setPermission(Share *share, const QString &permissionClass, bool enabled);
     Q_INVOKABLE void setPermissionPreset(Share *share, const QString &permissionPreset);
@@ -106,6 +115,12 @@ Q_SIGNALS:
 
     /** @brief Emitted when adding a recipient failed. */
     void recipientAdditionFailed(Share *share, const QString &error);
+
+    /** @brief Emitted after a recipient secret was generated and applied. */
+    void recipientSecretUpdated(Share *share);
+
+    /** @brief Emitted when generating or applying a recipient secret failed. */
+    void recipientSecretUpdateFailed(Share *share, const QString &error);
 
     /** @brief Emitted after a share property was updated. */
     void propertyUpdated(Share *share);

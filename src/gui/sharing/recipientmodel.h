@@ -25,6 +25,9 @@ public:
         IconSvgUrlRole,
         IconLightRole,
         IconDarkRole,
+        SecretUpdatableRole,
+        SecretValueRole,
+        SecretUrlRole,
     };
 
     explicit RecipientModel(QObject *parent = nullptr);
