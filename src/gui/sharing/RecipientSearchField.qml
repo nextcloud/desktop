@@ -193,8 +193,10 @@ TextField {
                     required property string type
                     required property string value
                     required property string displayName
-                    required property string iconUrl
                     required property var instance
+                    required property string iconSvgUrl
+                    required property string iconLight
+                    required property string iconDark
 
                     width: recipientListView.contentItem.width
 
@@ -202,7 +204,9 @@ TextField {
 
                     contentItem: RowLayout {
                         Image {
-                            source: recipientDelegate.iconUrl
+                            source: RecipientIcon.source(recipientDelegate.iconSvgUrl,
+                                                         recipientDelegate.iconLight,
+                                                         recipientDelegate.iconDark)
                         }
                         EnforcedPlainTextLabel {
                             text: recipientDelegate.displayName

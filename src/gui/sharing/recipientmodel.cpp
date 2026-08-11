@@ -9,6 +9,7 @@
 
 #include "share.h"
 #include "recipient.h"
+#include "recipienticonutils.h"
 
 using namespace Qt::StringLiterals;
 using namespace OCC;
@@ -46,6 +47,12 @@ QVariant RecipientModel::data(const QModelIndex &index, int role) const
         return recipient->value();
     case InstanceRole:
         return recipient->instance() ? QVariant{*recipient->instance()} : QVariant{};
+    case IconSvgUrlRole:
+        return RecipientIconUtils::svgDataUrl(recipient->iconSvg());
+    case IconLightRole:
+        return recipient->iconLight();
+    case IconDarkRole:
+        return recipient->iconDark();
     default:
         return {};
     }
@@ -58,6 +65,9 @@ QHash<int, QByteArray> RecipientModel::roleNames() const
         { ClassNameRole, "className"_ba},
         { ValueRole, "value"_ba},
         { InstanceRole, "instance"_ba},
+        { IconSvgUrlRole, "iconSvgUrl"_ba},
+        { IconLightRole, "iconLight"_ba},
+        { IconDarkRole, "iconDark"_ba},
     };
 }
 

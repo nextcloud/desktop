@@ -52,6 +52,8 @@ target_sources(nextcloudGuiSharing
     propertymodel.cpp
     recipient.h
     recipient.cpp
+    recipienticonutils.h
+    recipienticonutils.cpp
     recipientmodel.h
     recipientmodel.cpp
     recipientsearchmodel.h
@@ -68,6 +70,7 @@ ecm_add_qml_module(nextcloudGuiSharing
   QML_FILES
     FieldDelegate.qml
     MainPage.qml
+    RecipientIcon.qml
     RecipientSearchField.qml
     ShareDetailsPage.qml
     ShareEntry.qml
