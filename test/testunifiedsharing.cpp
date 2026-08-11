@@ -10,6 +10,9 @@
 #include "gui/sharing/generatesecretjob.h"
 #include "gui/sharing/getsharejob.h"
 #include "gui/sharing/getsharesjob.h"
+#include "gui/sharing/property.h"
+#include "gui/sharing/propertymodel.h"
+#include "gui/sharing/recipientmodel.h"
 #include "gui/sharing/recipientsearchmodel.h"
 #include "gui/sharing/removerecipientjob.h"
 #include "gui/sharing/removesourcejob.h"
@@ -41,6 +44,171 @@ class TestUnifiedSharing : public QObject
     Q_OBJECT
 
 private slots:
+    void recipientsPreserveServerIdentityAndCapabilities()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        const auto share = Share::fromJson(
+            QJsonDocument{QJsonObject{
+                {"ocs"_L1,
+                 QJsonObject{
+                     {"data"_L1,
+                      QJsonObject{
+                          {"id"_L1, "share-1"_L1},
+                          {"recipients"_L1,
+                           QJsonArray{QJsonObject{
+                               {"class"_L1, "federated-user"_L1},
+                               {"display_name"_L1, "Alice"_L1},
+                               {"value"_L1, "alice"_L1},
+                               {"instance"_L1, "cloud.example.com"_L1},
+                               {"icon"_L1,
+                                QJsonObject{
+                                    {"svg"_L1, "<svg/>"_L1},
+                                    {"light"_L1, "https://cloud.example.com/light.svg"_L1},
+                                    {"dark"_L1, "https://cloud.example.com/dark.svg"_L1},
+                                }},
+                               {"secret"_L1,
+                                QJsonObject{
+                                    {"updatable"_L1, true},
+                                    {"value"_L1, "public-secret"_L1},
+                                    {"url"_L1, "https://cloud.example.com/s/public-secret"_L1},
+                                }},
+                               {"initiator"_L1, QJsonObject{{"display_name"_L1, "Bob"_L1}}},
+                           },
+                                      QJsonObject{
+                                          {"class"_L1, "user"_L1},
+                                          {"display_name"_L1, "Carol"_L1},
+                                          {"value"_L1, "carol"_L1},
+                                          {"secret"_L1, QJsonObject{{"updatable"_L1, false}}},
+                                      }}},
+                      }},
+                 }},
+            }},
+            fakeFolder.account());
+
+        QCOMPARE(share->recipients().size(), 2);
+        const auto recipient = share->recipients().constFirst();
+        QCOMPARE(recipient->className(), "federated-user"_L1);
+        QCOMPARE(recipient->value(), "alice"_L1);
+        QCOMPARE(recipient->instance(), std::optional<QString>{"cloud.example.com"_L1});
+        QCOMPARE(recipient->iconSvg(), "<svg/>"_L1);
+        QCOMPARE(recipient->iconLight(), "https://cloud.example.com/light.svg"_L1);
+        QCOMPARE(recipient->iconDark(), "https://cloud.example.com/dark.svg"_L1);
+        QVERIFY(recipient->secretUpdatable());
+        QCOMPARE(recipient->secretValue(), std::optional<QString>{"public-secret"_L1});
+        QCOMPARE(recipient->secretUrl(), std::optional<QString>{"https://cloud.example.com/s/public-secret"_L1});
+        QCOMPARE(recipient->initiatorDisplayName(), "Bob"_L1);
+
+        RecipientModel model;
+        model.setShare(share);
+        QCOMPARE(model.rowCount(), 2);
+        const auto index = model.index(0);
+        QCOMPARE(model.data(index, RecipientModel::InstanceRole).toString(), "cloud.example.com"_L1);
+        QCOMPARE(model.data(index, RecipientModel::IconSvgUrlRole).toString(),
+                 "data:image/svg+xml;base64,PHN2Zy8+"_L1);
+        QVERIFY(model.data(index, RecipientModel::SecretUpdatableRole).toBool());
+        QCOMPARE(model.data(index, RecipientModel::SecretUrlRole).toString(), "https://cloud.example.com/s/public-secret"_L1);
+        QCOMPARE(model.data(index, RecipientModel::InitiatorDisplayNameRole).toString(), "Bob"_L1);
+
+        const auto recipientWithoutLinkIndex = model.index(1);
+        const auto missingSecretUrl = model.data(recipientWithoutLinkIndex, RecipientModel::SecretUrlRole);
+        QVERIFY(missingSecretUrl.isValid());
+        QCOMPARE(missingSecretUrl.toString(), QString{});
+
+        delete share;
+    }
+
+    void sharePropertiesPreserveServerMetadataAndUseTypedFields()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        const auto share = Share::fromJson(
+            QJsonDocument::fromJson(R"json({
+                "ocs": {
+                    "data": {
+                        "id": "share-1",
+                        "properties": [{
+                            "class": "later-string",
+                            "display_name": "Description",
+                            "hint": "Add a description",
+                            "priority": 20,
+                            "required": true,
+                            "advanced": false,
+                            "type": "string",
+                            "min_length": 3,
+                            "max_length": 40,
+                            "value": "Hello"
+                        }, {
+                            "class": "first-enum",
+                            "display_name": "Visibility",
+                            "hint": null,
+                            "priority": 10,
+                            "required": false,
+                            "advanced": true,
+                            "type": "enum",
+                            "valid_values": ["private", "public"],
+                            "value": "private"
+                        }, {
+                            "class": "expiry",
+                            "display_name": "Expiration date",
+                            "hint": null,
+                            "priority": 30,
+                            "required": false,
+                            "advanced": false,
+                            "type": "date",
+                            "min_date": "2026-07-30T00:00:00+00:00",
+                            "max_date": "2026-08-30T00:00:00+00:00",
+                            "value": null
+                        }, {
+                            "class": "protected",
+                            "display_name": "Password",
+                            "hint": null,
+                            "priority": 40,
+                            "required": false,
+                            "advanced": false,
+                            "type": "password",
+                            "value": null
+                        }, {
+                            "class": "notify",
+                            "display_name": "Notify",
+                            "hint": null,
+                            "priority": 50,
+                            "required": false,
+                            "advanced": false,
+                            "type": "boolean",
+                            "value": "true"
+                        }]
+                    }
+                }
+            })json"),
+            fakeFolder.account());
+
+        PropertyModel model;
+        model.setShare(share);
+
+        QCOMPARE(model.rowCount(), 4);
+        const auto stringIndex = model.index(3);
+        QCOMPARE(model.data(stringIndex, PropertyModel::TypeRole).toInt(), static_cast<int>(PropertyModel::String));
+        QCOMPARE(model.data(stringIndex, PropertyModel::RequiredRole).toBool(), true);
+        QCOMPARE(model.data(stringIndex, PropertyModel::MinimumRole).toInt(), 3);
+        QCOMPARE(model.data(stringIndex, PropertyModel::MaximumRole).toInt(), 40);
+
+        const auto dateIndex = model.index(2);
+        QCOMPARE(model.data(dateIndex, PropertyModel::TypeRole).toInt(), static_cast<int>(PropertyModel::Date));
+        QCOMPARE(model.data(dateIndex, PropertyModel::MinimumRole).toString(), "2026-07-30T00:00:00+00:00"_L1);
+        QCOMPARE(model.data(dateIndex, PropertyModel::MaximumRole).toString(), "2026-08-30T00:00:00+00:00"_L1);
+        QCOMPARE(model.data(model.index(1), PropertyModel::TypeRole).toInt(), static_cast<int>(PropertyModel::Password));
+        QCOMPARE(model.data(model.index(0), PropertyModel::TypeRole).toInt(), static_cast<int>(PropertyModel::Boolean));
+
+        model.setAdvanced(true);
+        QCOMPARE(model.rowCount(), 1);
+        const auto enumIndex = model.index(0);
+        QCOMPARE(model.data(enumIndex, PropertyModel::PropertyRole).toString(), "first-enum"_L1);
+        QCOMPARE(model.data(enumIndex, PropertyModel::TypeRole).toInt(), static_cast<int>(PropertyModel::Enum));
+        QCOMPARE(model.data(enumIndex, PropertyModel::AdvancedRole).toBool(), true);
+        QCOMPARE(model.data(enumIndex, PropertyModel::ValidValuesRole).toStringList(), QStringList({"private"_L1, "public"_L1}));
+
+        delete share;
+    }
+
     void requestsAreConfiguredBeforeTheyStart()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
@@ -131,14 +299,20 @@ private slots:
             }
         };
 
-        verifyRequest(new SearchRecipientsJob{account, "ali"_L1, 10, 20, {"user-class"_L1, "group-class"_L1}},
+        verifyRequest(new SearchRecipientsJob{account,
+                                              "ali"_L1,
+                                              10,
+                                              20,
+                                              {"user-class"_L1, "group-class"_L1},
+                                              "share-1"_L1},
                       "GET",
                       "/ocs/v2.php/apps/sharing/api/v1/recipients",
                       {{"query"_L1, "ali"_L1},
                        {"offset"_L1, "10"_L1},
                        {"limit"_L1, "20"_L1},
-                       {"recipientTypeClasses%5B%5D"_L1, "user-class"_L1},
-                       {"recipientTypeClasses%5B%5D"_L1, "group-class"_L1}});
+                       {"filterRecipientTypeClasses%5B%5D"_L1, "user-class"_L1},
+                       {"filterRecipientTypeClasses%5B%5D"_L1, "group-class"_L1},
+                       {"id"_L1, "share-1"_L1}});
         verifyRequest(new GenerateSecretJob{account}, "GET", "/ocs/v2.php/apps/sharing/api/v1/secret");
         verifyRequest(new CreateShareJob{account}, "POST", "/ocs/v2.php/apps/sharing/api/v1/share");
         verifyRequest(new SetShareStateJob{account, *share, Share::ShareState::Active},
@@ -253,6 +427,74 @@ private slots:
         QCOMPARE(requestCount, 1);
     }
 
+    void partialShareUpdatesPreserveOmittedFields()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        const auto share = Share::fromJson(
+            QJsonDocument::fromJson(R"json({
+                "ocs": {
+                    "data": {
+                        "id": "share-1",
+                        "state": "draft",
+                        "permission_preset": "view-preset",
+                        "permissions": [{
+                            "class": "view-permission",
+                            "display_name": "View files",
+                            "enabled": true
+                        }],
+                        "properties": [{
+                            "class": "note-property",
+                            "display_name": "Note to recipients",
+                            "type": "string",
+                            "value": "Hello"
+                        }],
+                        "recipients": [{
+                            "class": "user-class",
+                            "display_name": "Alice",
+                            "value": "alice"
+                        }]
+                    }
+                }
+            })json"),
+            fakeFolder.account());
+
+        share->updateFromJson(QJsonDocument::fromJson(R"json({
+            "ocs": {
+                "data": {
+                    "state": "active",
+                    "recipients": [{
+                        "class": "user-class",
+                        "display_name": "Bob",
+                        "value": "bob"
+                    }]
+                }
+            }
+        })json"));
+
+        QCOMPARE(share->id(), "share-1"_L1);
+        QCOMPARE(share->state(), Share::ShareState::Active);
+        QCOMPARE(share->permissionPreset(), "view-preset"_L1);
+        QCOMPARE(share->permissions().size(), 1);
+        QCOMPARE(share->properties().size(), 1);
+        QCOMPARE(share->properties().constFirst()->displayName(), "Note to recipients"_L1);
+        QCOMPARE(share->recipients().size(), 1);
+        QCOMPARE(share->recipients().constFirst()->displayName(), "Bob"_L1);
+
+        share->updateFromJson(QJsonDocument::fromJson(R"json({
+            "ocs": {
+                "data": {
+                    "properties": []
+                }
+            }
+        })json"));
+
+        QVERIFY(share->properties().isEmpty());
+        QCOMPARE(share->permissions().size(), 1);
+        QCOMPARE(share->recipients().size(), 1);
+
+        delete share;
+    }
+
     void sharingControllerLoadsAllSharesWithoutCreatingOne()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
@@ -300,6 +542,544 @@ private slots:
         QCOMPARE(controller.shares().size(), 2);
         QCOMPARE(controller.shares().at(0)->id(), "share-1"_L1);
         QCOMPARE(controller.shares().at(1)->id(), "share-2"_L1);
+    }
+
+    void sharingControllerCreatesShareAfterAttachingSource()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto requestPaths = QStringList{};
+        auto requestVerbs = QList<QByteArray>{};
+        auto requestBodies = QList<QJsonObject>{};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *outgoingData) {
+            const auto path = request.url().path();
+            auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
+            if (verb.isEmpty() && operation == QNetworkAccessManager::PostOperation) {
+                verb = "POST";
+            }
+            requestPaths.append(path);
+            requestVerbs.append(verb);
+
+            auto body = QJsonObject{};
+            if (outgoingData) {
+                if (!outgoingData->isOpen()) {
+                    outgoingData->open(QIODevice::ReadOnly);
+                }
+                body = QJsonDocument::fromJson(outgoingData->peek(outgoingData->bytesAvailable())).object();
+                outgoingData->reset();
+            }
+            requestBodies.append(body);
+
+            const auto creating = path.endsWith("/api/v1/share"_L1);
+            const auto response = QString{R"json({
+                "ocs": {
+                    "meta": {
+                        "status": "ok",
+                        "statuscode": %1,
+                        "message": "OK"
+                    },
+                    "data": {
+                        "id": "share-1",
+                        "state": "draft"
+                    }
+                }
+            })json"}
+                                      .arg(creating ? 201 : 200)
+                                      .toUtf8();
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        QSignalSpy sharesChangedSpy{&controller, &SharingController::sharesChanged};
+        QSignalSpy creatingShareChangedSpy{&controller, &SharingController::creatingShareChanged};
+
+        controller.createShare("42"_L1);
+
+        QVERIFY(controller.creatingShare());
+        controller.createShare("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+        QCOMPARE(sharesChangedSpy.size(), 1);
+        QCOMPARE(creatingShareChangedSpy.size(), 2);
+        QVERIFY(!controller.creatingShare());
+        QVERIFY(controller.shareCreationError().isEmpty());
+        QCOMPARE(controller.shares().constFirst()->id(), "share-1"_L1);
+        QCOMPARE(requestPaths.size(), 2);
+        QVERIFY(requestPaths.at(0).endsWith("/api/v1/share"_L1));
+        QVERIFY(requestPaths.at(1).endsWith("/api/v1/share/share-1/source"_L1));
+        QCOMPARE(requestVerbs, (QList<QByteArray>{"POST", "POST"}));
+        QCOMPARE(requestBodies.at(0), QJsonObject{});
+        QCOMPARE(requestBodies.at(1),
+                 (QJsonObject{{"class"_L1, SourceTypeClasses::node}, {"value"_L1, "42"_L1}}));
+    }
+
+    void sharingControllerReportsAddedRecipientAndUpdatesShare()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto recipientRequestBody = QJsonObject{};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *outgoingData) {
+            const auto addingRecipient = request.url().path().endsWith("/recipient"_L1);
+            if (addingRecipient && outgoingData) {
+                if (!outgoingData->isOpen()) {
+                    outgoingData->open(QIODevice::ReadOnly);
+                }
+                recipientRequestBody = QJsonDocument::fromJson(outgoingData->peek(outgoingData->bytesAvailable())).object();
+                outgoingData->reset();
+            }
+
+            const auto response = addingRecipient
+                ? QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": {
+                            "id": "share-1",
+                            "state": "active",
+                            "recipients": [{
+                                "class": "user-class",
+                                "display_name": "Alice",
+                                "value": "alice",
+                                "instance": "cloud.example.com"
+                            }]
+                        }
+                    }
+                })json"}
+                : QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": [{
+                            "id": "share-1",
+                            "state": "active",
+                            "properties": [{
+                                "class": "note-property",
+                                "display_name": "Note to recipients",
+                                "type": "string"
+                            }],
+                            "recipients": []
+                        }]
+                    }
+                })json"};
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+
+        auto addedShare = QPointer<Share>{};
+        connect(&controller, &SharingController::recipientAdded, this, [&addedShare](Share *share) {
+            addedShare = share;
+        });
+        controller.addRecipient(controller.shares().constFirst(), "user-class"_L1, "alice"_L1, "cloud.example.com"_L1);
+
+        QTRY_VERIFY(addedShare);
+        QCOMPARE(addedShare, controller.shares().constFirst());
+        QCOMPARE(addedShare->recipients().size(), 1);
+        QCOMPARE(addedShare->recipients().constFirst()->displayName(), "Alice"_L1);
+        QCOMPARE(addedShare->recipients().constFirst()->instance(), std::optional<QString>{"cloud.example.com"_L1});
+        QCOMPARE(addedShare->properties().size(), 1);
+        QCOMPARE(addedShare->properties().constFirst()->displayName(), "Note to recipients"_L1);
+        QCOMPARE(recipientRequestBody,
+                 (QJsonObject{{"class"_L1, "user-class"_L1},
+                              {"value"_L1, "alice"_L1},
+                              {"instance"_L1, "cloud.example.com"_L1}}));
+    }
+
+    void sharingControllerRemovesRecipientAndPreservesItsIdentity()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto removalQuery = QList<QPair<QString, QString>>{};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            const auto removingRecipient = request.url().path().endsWith("/recipient"_L1)
+                && (operation == QNetworkAccessManager::DeleteOperation
+                    || request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "DELETE");
+            if (removingRecipient) {
+                removalQuery = QUrlQuery{request.url()}.queryItems();
+                removalQuery.removeAll({"format"_L1, "json"_L1});
+                std::ranges::sort(removalQuery);
+            }
+
+            const auto response = removingRecipient
+                ? QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": {
+                            "id": "share-1",
+                            "state": "active",
+                            "recipients": []
+                        }
+                    }
+                })json"}
+                : QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": [{
+                            "id": "share-1",
+                            "state": "active",
+                            "recipients": [{
+                                "class": "federated-user",
+                                "display_name": "Alice",
+                                "value": "alice",
+                                "instance": "cloud.example.com"
+                            }]
+                        }]
+                    }
+                })json"};
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+
+        QSignalSpy removedSpy{&controller, &SharingController::recipientRemoved};
+        controller.removeRecipient(controller.shares().constFirst(),
+                                   "federated-user"_L1,
+                                   "alice"_L1,
+                                   "cloud.example.com"_L1);
+
+        QVERIFY(removedSpy.wait());
+        QCOMPARE(controller.shares().constFirst()->recipients().size(), 0);
+        QCOMPARE(removalQuery,
+                 (QList<QPair<QString, QString>>{{"class"_L1, "federated-user"_L1},
+                                                 {"instance"_L1, "cloud.example.com"_L1},
+                                                 {"value"_L1, "alice"_L1}}));
+    }
+
+    void sharingControllerGeneratesAndAppliesRecipientSecret()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto secretRequestBody = QJsonObject{};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *outgoingData) {
+            const auto path = request.url().path();
+            const auto settingSecret = path.endsWith("/recipient/secret"_L1);
+            if (settingSecret && outgoingData) {
+                if (!outgoingData->isOpen()) {
+                    outgoingData->open(QIODevice::ReadOnly);
+                }
+                secretRequestBody = QJsonDocument::fromJson(outgoingData->peek(outgoingData->bytesAvailable())).object();
+                outgoingData->reset();
+            }
+
+            auto data = QJsonValue{QJsonArray{QJsonObject{
+                {"id"_L1, "share-1"_L1},
+                {"state"_L1, "active"_L1},
+                {"recipients"_L1,
+                 QJsonArray{QJsonObject{
+                     {"class"_L1, "federated-user"_L1},
+                     {"display_name"_L1, "Alice"_L1},
+                     {"value"_L1, "alice"_L1},
+                     {"instance"_L1, "cloud.example.com"_L1},
+                     {"secret"_L1, QJsonObject{{"updatable"_L1, true}}},
+                 }}},
+            }}};
+            if (path.endsWith("/secret"_L1) && !settingSecret) {
+                data = "generated-secret"_L1;
+            } else if (settingSecret) {
+                data = QJsonObject{
+                    {"id"_L1, "share-1"_L1},
+                    {"state"_L1, "active"_L1},
+                    {"recipients"_L1,
+                     QJsonArray{QJsonObject{
+                         {"class"_L1, "federated-user"_L1},
+                         {"display_name"_L1, "Alice"_L1},
+                         {"value"_L1, "alice"_L1},
+                         {"instance"_L1, "cloud.example.com"_L1},
+                         {"secret"_L1,
+                          QJsonObject{
+                              {"updatable"_L1, true},
+                              {"url"_L1, "https://cloud.example.com/s/generated-secret"_L1},
+                          }},
+                     }}},
+                };
+            }
+
+            const auto response = QJsonDocument{QJsonObject{
+                {"ocs"_L1,
+                 QJsonObject{
+                     {"meta"_L1,
+                      QJsonObject{
+                          {"status"_L1, "ok"_L1},
+                          {"statuscode"_L1, 200},
+                          {"message"_L1, "OK"_L1},
+                      }},
+                     {"data"_L1, data},
+                 }},
+            }}.toJson(QJsonDocument::Compact);
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+
+        QSignalSpy updatedSpy{&controller, &SharingController::recipientSecretUpdated};
+        controller.updateRecipientSecret(controller.shares().constFirst(),
+                                         "federated-user"_L1,
+                                         "alice"_L1,
+                                         "cloud.example.com"_L1);
+
+        QVERIFY(updatedSpy.wait());
+        QCOMPARE(secretRequestBody,
+                 (QJsonObject{{"class"_L1, "federated-user"_L1},
+                              {"value"_L1, "alice"_L1},
+                              {"secret"_L1, "generated-secret"_L1},
+                              {"instance"_L1, "cloud.example.com"_L1}}));
+        QCOMPARE(controller.shares().constFirst()->recipients().constFirst()->secretUrl(),
+                 std::optional<QString>{"https://cloud.example.com/s/generated-secret"_L1});
+    }
+
+    void sharingControllerReportsRecipientOperationFailures()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            const auto loadingShares = request.url().path().endsWith("/shares"_L1);
+            const auto response = loadingShares
+                ? QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": [{"id": "share-1", "state": "active"}]
+                    }
+                })json"}
+                : QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "failure", "statuscode": 400, "message": "Recipient rejected"},
+                        "data": {}
+                    }
+                })json"};
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+
+        QSignalSpy removalFailedSpy{&controller, &SharingController::recipientRemovalFailed};
+        controller.removeRecipient(controller.shares().constFirst(), "user-class"_L1, "alice"_L1);
+        QVERIFY(removalFailedSpy.wait());
+        QCOMPARE(removalFailedSpy.constFirst().at(1).toString(), "Recipient rejected"_L1);
+
+        QSignalSpy secretFailedSpy{&controller, &SharingController::recipientSecretUpdateFailed};
+        controller.updateRecipientSecret(controller.shares().constFirst(), "user-class"_L1, "alice"_L1);
+        QVERIFY(secretFailedSpy.wait());
+        QCOMPARE(secretFailedSpy.constFirst().at(1).toString(), "Recipient rejected"_L1);
+    }
+
+    void sharingControllerSetsShareProperty()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto propertyRequestBody = QJsonObject{};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *outgoingData) {
+            const auto settingProperty = request.url().path().endsWith("/property"_L1);
+            if (settingProperty && outgoingData) {
+                if (!outgoingData->isOpen()) {
+                    outgoingData->open(QIODevice::ReadOnly);
+                }
+                propertyRequestBody = QJsonDocument::fromJson(outgoingData->peek(outgoingData->bytesAvailable())).object();
+                outgoingData->reset();
+            }
+
+            const auto response = settingProperty
+                ? QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": {
+                            "id": "share-1",
+                            "state": "active",
+                            "properties": [{
+                                "class": "note-property",
+                                "display_name": "Note to recipients",
+                                "type": "string",
+                                "value": "Updated note"
+                            }]
+                        }
+                    }
+                })json"}
+                : QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": [{
+                            "id": "share-1",
+                            "state": "active",
+                            "properties": [{
+                                "class": "note-property",
+                                "display_name": "Note to recipients",
+                                "type": "string",
+                                "value": "Original note"
+                            }]
+                        }]
+                    }
+                })json"};
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+        QCOMPARE(controller.shares().constFirst()->properties().constFirst()->value().toString(), "Original note"_L1);
+
+        QSignalSpy propertyUpdatedSpy{&controller, &SharingController::propertyUpdated};
+        controller.setProperty(controller.shares().constFirst(), "note-property"_L1, "Updated note"_L1);
+
+        QTRY_COMPARE(propertyUpdatedSpy.size(), 1);
+        QCOMPARE(controller.shares().constFirst()->properties().constFirst()->value().toString(), "Updated note"_L1);
+        QCOMPARE(propertyRequestBody,
+                 (QJsonObject{{"class"_L1, "note-property"_L1}, {"value"_L1, "Updated note"_L1}}));
+    }
+
+    void sharingControllerActivatesDraftShare()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto stateRequestBody = QJsonObject{};
+        auto stateRequestVerb = QByteArray{};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *outgoingData) {
+            const auto settingState = request.url().path().endsWith("/state"_L1);
+            if (settingState) {
+                stateRequestVerb = request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
+                if (stateRequestVerb.isEmpty() && operation == QNetworkAccessManager::PutOperation) {
+                    stateRequestVerb = "PUT";
+                }
+                if (outgoingData) {
+                    if (!outgoingData->isOpen()) {
+                        outgoingData->open(QIODevice::ReadOnly);
+                    }
+                    stateRequestBody = QJsonDocument::fromJson(outgoingData->peek(outgoingData->bytesAvailable())).object();
+                    outgoingData->reset();
+                }
+            }
+
+            const auto response = settingState
+                ? QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": {"id": "share-1", "state": "active"}
+                    }
+                })json"}
+                : QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": [{"id": "share-1", "state": "draft"}]
+                    }
+                })json"};
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+        const auto share = controller.shares().constFirst();
+        QCOMPARE(share->state(), Share::ShareState::Draft);
+
+        QSignalSpy activatedSpy{&controller, &SharingController::shareActivated};
+        QSignalSpy activationFailedSpy{&controller, &SharingController::shareActivationFailed};
+        controller.activateShare(share);
+
+        QTRY_COMPARE(activatedSpy.size(), 1);
+        QVERIFY(activationFailedSpy.isEmpty());
+        QCOMPARE(share->state(), Share::ShareState::Active);
+        QCOMPARE(stateRequestVerb, "PUT");
+        QCOMPARE(stateRequestBody, (QJsonObject{{"state"_L1, "active"_L1}}));
+
+        controller.activateShare(share);
+        QTest::qWait(10);
+        QCOMPARE(activatedSpy.size(), 1);
+    }
+
+    void sharingControllerReportsShareActivationFailure()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            const auto settingState = request.url().path().endsWith("/state"_L1);
+            const auto response = settingState
+                ? QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "failure", "statuscode": 400, "message": "Share rejected"},
+                        "data": {}
+                    }
+                })json"}
+                : QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": [{"id": "share-1", "state": "draft"}]
+                    }
+                })json"};
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+        const auto share = controller.shares().constFirst();
+
+        QSignalSpy activatedSpy{&controller, &SharingController::shareActivated};
+        QSignalSpy activationFailedSpy{&controller, &SharingController::shareActivationFailed};
+        controller.activateShare(share);
+
+        QTRY_COMPARE(activationFailedSpy.size(), 1);
+        QVERIFY(activatedSpy.isEmpty());
+        QCOMPARE(share->state(), Share::ShareState::Draft);
+        QCOMPARE(activationFailedSpy.constFirst().at(0).value<Share *>(), share);
+        QCOMPARE(activationFailedSpy.constFirst().at(1).toString(), "Share rejected"_L1);
+    }
+
+    void sharingControllerCleansUpShareWhenAttachingSourceFails()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto requestPaths = QStringList{};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            const auto path = request.url().path();
+            requestPaths.append(path);
+
+            auto statusCode = 200;
+            auto message = "OK"_L1;
+            if (path.endsWith("/api/v1/share"_L1)) {
+                statusCode = 201;
+            } else if (path.endsWith("/source"_L1)) {
+                statusCode = 400;
+                message = "Source rejected"_L1;
+            } else if (path.endsWith("/api/v1/share/share-1"_L1)) {
+                statusCode = 204;
+            }
+
+            const auto response = QString{R"json({
+                "ocs": {
+                    "meta": {
+                        "status": "%1",
+                        "statuscode": %2,
+                        "message": "%3"
+                    },
+                    "data": {
+                        "id": "share-1",
+                        "state": "draft"
+                    }
+                }
+            })json"}
+                                      .arg(statusCode >= 400 ? "failure"_L1 : "ok"_L1)
+                                      .arg(statusCode)
+                                      .arg(message)
+                                      .toUtf8();
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        QSignalSpy sharesChangedSpy{&controller, &SharingController::sharesChanged};
+
+        controller.createShare("42"_L1);
+
+        QTRY_COMPARE(requestPaths.size(), 3);
+        QVERIFY(!controller.creatingShare());
+        QCOMPARE(controller.shareCreationError(), "Source rejected"_L1);
+        QVERIFY(controller.shares().isEmpty());
+        QVERIFY(sharesChangedSpy.isEmpty());
+        QVERIFY(requestPaths.at(0).endsWith("/api/v1/share"_L1));
+        QVERIFY(requestPaths.at(1).endsWith("/api/v1/share/share-1/source"_L1));
+        QVERIFY(requestPaths.at(2).endsWith("/api/v1/share/share-1"_L1));
     }
 
     void operationSpecificStatusCodesAreEnforced()
