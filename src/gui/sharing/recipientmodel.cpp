@@ -53,9 +53,9 @@ QVariant RecipientModel::data(const QModelIndex &index, int role) const
     case SecretUpdatableRole:
         return recipient->secretUpdatable();
     case SecretValueRole:
-        return recipient->secretValue() ? QVariant{*recipient->secretValue()} : QVariant{};
+        return recipient->secretValue().value_or(QString{});
     case SecretUrlRole:
-        return recipient->secretUrl() ? QVariant{*recipient->secretUrl()} : QVariant{};
+        return recipient->secretUrl().value_or(QString{});
     case InitiatorDisplayNameRole:
         return recipient->initiatorDisplayName();
     default:
