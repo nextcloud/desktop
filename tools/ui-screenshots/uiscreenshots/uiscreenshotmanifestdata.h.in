@@ -1,0 +1,16 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+#ifndef UISCREENSHOTMANIFESTDATA_H
+#define UISCREENSHOTMANIFESTDATA_H
+
+namespace OCC::UiScreenshots::ManifestData {
+
+inline constexpr char data[] = R"UI_SCREENSHOT_MANIFEST(
+@ui_screenshot_manifest_content@)UI_SCREENSHOT_MANIFEST";
+
+}
+
+#endif // UISCREENSHOTMANIFESTDATA_H
