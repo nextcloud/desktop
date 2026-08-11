@@ -283,6 +283,18 @@ Page {
             }
         }
 
+        function onRecipientSecretUpdated(share) {
+            if (share === root.share) {
+                root.recipientOperationError = ""
+            }
+        }
+
+        function onRecipientSecretUpdateFailed(share, error) {
+            if (share === root.share) {
+                root.recipientOperationError = error
+            }
+        }
+
         function onPropertyUpdateFailed(share, error) {
             if (share === root.share) {
                 root.propertyUpdateError = error
