@@ -20,7 +20,8 @@ constexpr auto requestTimeoutMsec = 10 * 1000;
 QList<QPair<QString, QString>> searchRecipientsParameters(const QString &query,
                                                           qint64 offset,
                                                           qint64 limit,
-                                                          const QList<QString> &recipientTypeClasses)
+                                                          const QList<QString> &recipientTypeClasses,
+                                                          const std::optional<QString> &shareId)
 {
     auto parameters = QList<QPair<QString, QString>>{
         {"query"_L1, query},
@@ -28,17 +29,25 @@ QList<QPair<QString, QString>> searchRecipientsParameters(const QString &query,
         {"limit"_L1, QString::number(limit)},
     };
     for (const auto &recipientTypeClass : recipientTypeClasses) {
-        parameters.emplaceBack("recipientTypeClasses[]"_L1, recipientTypeClass);
+        parameters.emplaceBack("filterRecipientTypeClasses[]"_L1, recipientTypeClass);
+    }
+    if (shareId) {
+        parameters.emplaceBack("id"_L1, *shareId);
     }
     return parameters;
 }
 }
 
-SearchRecipientsJob::SearchRecipientsJob(AccountPtr account, const QString &query, qint64 offset, qint64 limit, const QList<QString> &recipientTypeClasses)
+SearchRecipientsJob::SearchRecipientsJob(AccountPtr account,
+                                         const QString &query,
+                                         qint64 offset,
+                                         qint64 limit,
+                                         const QList<QString> &recipientTypeClasses,
+                                         const std::optional<QString> &shareId)
     : UnifiedSharingRequest{std::move(account),
                             "/ocs/v2.php/apps/sharing/api/v1/recipients"_L1,
                             "GET"_ba,
-                            {.parameters = searchRecipientsParameters(query, offset, limit, recipientTypeClasses)}}
+                            {.parameters = searchRecipientsParameters(query, offset, limit, recipientTypeClasses, shareId)}}
 {
     setTimeout(requestTimeoutMsec);
     connect(this, &OcsJob::jobFinished, this, [this](const QJsonDocument &json, int) {
