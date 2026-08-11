@@ -44,12 +44,11 @@
 
 namespace
 {
-constexpr QColor darkWarnYellow(63, 63, 0);
 constexpr QColor lightWarnYellow(255, 255, 192);
 
 QPalette yellowWarnWidgetPalette(const QPalette &existingPalette)
 {
-    const auto warnYellow = OCC::Theme::instance()->darkMode() ? darkWarnYellow : lightWarnYellow;
+    const auto warnYellow = lightWarnYellow;
     auto modifiedPalette = existingPalette;
     modifiedPalette.setColor(QPalette::Window, warnYellow);
     modifiedPalette.setColor(QPalette::Base, warnYellow);
