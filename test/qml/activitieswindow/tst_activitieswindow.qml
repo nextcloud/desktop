@@ -111,7 +111,7 @@ Item {
 
             fakeActivityModel.interactiveActivityReceived();
 
-            compare(activityListView.currentIndex, activityListView.count - 1);
+            tryCompare(activityListView, "atYEnd", true);
             tryCompare(activityList, "atYBeginning", false);
             tryCompare(newActivitiesButtonLoader, "active", true);
         }
