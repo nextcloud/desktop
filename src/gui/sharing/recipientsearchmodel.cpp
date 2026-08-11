@@ -41,14 +41,16 @@ int RecipientSearchModel::rowCount(const QModelIndex &parent) const
 
 QVariant RecipientSearchModel::data(const QModelIndex &index, int role) const
 {
-    const auto item = _searchResults.at(index.row());
+    Q_ASSERT(checkIndex(index, CheckIndexOption::IndexIsValid | CheckIndexOption::ParentIsInvalid));
+
+    const auto item = _searchResults.at(index.row()).toObject();
     const auto icon = item.value("icon"_L1).toObject();
 
     switch (role) {
     case TypeRole:
-        return item.toObject().value("class"_L1).toString();
+        return item.value("class"_L1).toString();
     case ValueRole:
-        return item.toObject().value("value"_L1).toString();
+        return item.value("value"_L1).toString();
     case DisplayNameRole:
         return item.value("display_name"_L1).toString();
     case InstanceRole:

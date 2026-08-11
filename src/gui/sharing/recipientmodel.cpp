@@ -25,15 +25,12 @@ int RecipientModel::rowCount(const QModelIndex &parent) const
         return 0;
     }
 
-    qCritical() << "recipients size:" << _share->recipients().size();
     return _share->recipients().size();
 }
 
 QVariant RecipientModel::data(const QModelIndex &index, int role) const
 {
-    if (!_share) {
-        return {};
-    }
+    Q_ASSERT(checkIndex(index, CheckIndexOption::IndexIsValid | CheckIndexOption::ParentIsInvalid));
 
     const auto recipients = _share->recipients();
     const auto recipient = recipients.at(index.row());
