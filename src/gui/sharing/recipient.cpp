@@ -40,3 +40,8 @@ QString Recipient::value() const
 {
     return _value;
 }
+
+const std::optional<QString> &Recipient::instance() const
+{
+    return _instance;
+}
