@@ -44,6 +44,8 @@ QVariant RecipientModel::data(const QModelIndex &index, int role) const
         return recipient->className();
     case ValueRole:
         return recipient->value();
+    case InstanceRole:
+        return recipient->instance() ? QVariant{*recipient->instance()} : QVariant{};
     default:
         return {};
     }
@@ -55,8 +57,9 @@ QHash<int, QByteArray> RecipientModel::roleNames() const
         { LabelRole, "label"_ba},
         { ClassNameRole, "className"_ba},
         { ValueRole, "value"_ba},
+        { InstanceRole, "instance"_ba},
     };
-};
+}
 
 void RecipientModel::setShare(Share *share)
 {

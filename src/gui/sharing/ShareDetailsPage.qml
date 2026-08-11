@@ -45,9 +45,12 @@ Page {
 
                     account: root.sharingController.account
 
-                    onRecipientSelected: (recipientType, recipientValue) => {
-                        root.recipientAdditionError = ""
-                        root.sharingController.addRecipient(root.share, recipientType, recipientValue)
+                    onRecipientSelected: (recipientType, recipientValue, recipientInstance) => {
+                        root.recipientOperationError = ""
+                        root.sharingController.addRecipient(root.share,
+                                                            recipientType,
+                                                            recipientValue,
+                                                            recipientInstance)
                     }
                 }
 

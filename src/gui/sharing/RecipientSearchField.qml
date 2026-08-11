@@ -18,7 +18,7 @@ import Style
 TextField {
     id: root
 
-    signal recipientSelected(string recipientType, string recipientValue)
+    signal recipientSelected(string recipientType, string recipientValue, string recipientInstance)
 
     required property var account
     // property bool isShareeFetchOngoing: recipientModel.fetchOngoing
@@ -193,6 +193,7 @@ TextField {
                     required property string value
                     required property string displayName
                     required property string iconUrl
+                    required property var instance
 
                     width: recipientListView.contentItem.width
 
@@ -206,7 +207,10 @@ TextField {
                             text: recipientDelegate.displayName
                         }
                         EnforcedPlainTextLabel {
-                            text: recipientDelegate.type
+                            Layout.fillWidth: true
+                            text: recipientDelegate.instance || ""
+                            color: palette.placeholderText
+                            elide: Text.ElideRight
                         }
                     }
 
@@ -214,8 +218,9 @@ TextField {
                     // hoverEnabled: model.type !== NC.recipient.LookupServerSearchResults
 
                     function selectSharee() {
-                        console.log(`recipientSelected: ${JSON.stringify([recipientDelegate.type, recipientDelegate.value])})`)
-                        root.recipientSelected(recipientDelegate.type, recipientDelegate.value);
+                        root.recipientSelected(recipientDelegate.type,
+                                               recipientDelegate.value,
+                                               recipientDelegate.instance || "");
                         suggestionsPopup.close();
 
                         root.clear();

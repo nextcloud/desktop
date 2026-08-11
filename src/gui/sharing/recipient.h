@@ -5,10 +5,17 @@
 
 #pragma once
 
+#include <QJsonObject>
 #include <QObject>
+#include <QPointer>
+
+#include <optional>
 
 namespace OCC::Gui::Sharing {
 
+/**
+ * @brief A recipient attached to a unified share.
+ */
 class Recipient : public QObject
 {
     Q_OBJECT
@@ -17,11 +24,17 @@ class Recipient : public QObject
     Q_PROPERTY(QString value READ value CONSTANT)
 
 public:
+    /** @brief Creates a recipient from its unified sharing API representation. */
     [[nodiscard]] static QPointer<Recipient> fromJson(const QJsonObject &json);
 
+    /** @brief Returns the registered server class identifying the recipient type. */
     [[nodiscard]] QString className() const;
+    /** @brief Returns the user-facing recipient name. */
     [[nodiscard]] QString displayName() const;
+    /** @brief Returns the recipient identifier understood by its type. */
     [[nodiscard]] QString value() const;
+    /** @brief Returns the recipient's remote instance, or no value for a local recipient. */
+    [[nodiscard]] const std::optional<QString> &instance() const;
 
 private:
     explicit Recipient(QObject *parent = nullptr);
@@ -29,6 +42,7 @@ private:
     QString _className;
     QString _displayName;
     QString _value;
+    std::optional<QString> _instance;
 };
 
 }
