@@ -42,20 +42,6 @@
 
 #include <cstdlib>
 
-namespace
-{
-constexpr QColor lightWarnYellow(255, 255, 192);
-
-QPalette yellowWarnWidgetPalette(const QPalette &existingPalette)
-{
-    const auto warnYellow = lightWarnYellow;
-    auto modifiedPalette = existingPalette;
-    modifiedPalette.setColor(QPalette::Window, warnYellow);
-    modifiedPalette.setColor(QPalette::Base, warnYellow);
-    return modifiedPalette;
-}
-}
-
 namespace OCC
 {
 
