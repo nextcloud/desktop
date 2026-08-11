@@ -18,7 +18,7 @@ Page {
 
     required property SharingController sharingController
     required property Share share
-    property string recipientAdditionError: ""
+    property string recipientOperationError: ""
     property string propertyUpdateError: ""
     property string shareActivationError: ""
     property bool activatingShare: false
@@ -274,12 +274,25 @@ Page {
         function onRecipientAdded(share) {
             if (share === root.share) {
                 recipientSearch.clear()
+                root.recipientOperationError = ""
             }
         }
 
         function onRecipientAdditionFailed(share, error) {
             if (share === root.share) {
-                root.recipientAdditionError = error
+                root.recipientOperationError = error
+            }
+        }
+
+        function onRecipientRemoved(share) {
+            if (share === root.share) {
+                root.recipientOperationError = ""
+            }
+        }
+
+        function onRecipientRemovalFailed(share, error) {
+            if (share === root.share) {
+                root.recipientOperationError = error
             }
         }
 
