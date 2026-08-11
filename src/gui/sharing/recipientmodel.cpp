@@ -59,6 +59,8 @@ QVariant RecipientModel::data(const QModelIndex &index, int role) const
         return recipient->secretValue() ? QVariant{*recipient->secretValue()} : QVariant{};
     case SecretUrlRole:
         return recipient->secretUrl() ? QVariant{*recipient->secretUrl()} : QVariant{};
+    case InitiatorDisplayNameRole:
+        return recipient->initiatorDisplayName();
     default:
         return {};
     }
@@ -77,6 +79,7 @@ QHash<int, QByteArray> RecipientModel::roleNames() const
         { SecretUpdatableRole, "secretUpdatable"_ba},
         { SecretValueRole, "secretValue"_ba},
         { SecretUrlRole, "secretUrl"_ba},
+        { InitiatorDisplayNameRole, "initiatorDisplayName"_ba},
     };
 }
 
