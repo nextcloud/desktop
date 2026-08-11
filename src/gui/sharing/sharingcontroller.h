@@ -57,7 +57,7 @@ public:
      * call while creation is in progress is ignored.
      *
      * @param fileId Server file ID to attach to the new share
-     */
+    */
     Q_INVOKABLE void createShare(const QString &fileId);
 
     /** @brief Permanently removes a share managed by this controller. */
