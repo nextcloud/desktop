@@ -1484,7 +1484,17 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     Q_ASSERT(!dbEntry.isValid());
 
-    if (localEntry.isVirtualFile && !noServerEntry) {
+    if (localEntry.type == ItemTypeVirtualDirectory && noServerEntry) {
+        // A virtual directory without a database record is a stale placeholder.
+        // A newly created local directory is not a virtual directory, so it can
+        // still follow the normal local-new path below.
+        qCWarning(lcDisco) << "Wiping virtual directory without db entry for" << path._local;
+        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+        item->_direction = SyncFileItem::Down;
+        item->_type = ItemTypeVirtualDirectory;
+        finalize();
+        return;
+    } else if (localEntry.isVirtualFile && !noServerEntry) {
         // Somehow there is a missing DB entry while the virtual file already exists.
         // The instruction should already be set correctly.
         ASSERT(item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA);
