@@ -30,8 +30,10 @@ public:
         TypeRole = Qt::UserRole,
         ValueRole,
         DisplayNameRole,
-        IconRole,
         InstanceRole,
+        IconSvgUrlRole,
+        IconLightRole,
+        IconDarkRole,
     };
 
     explicit RecipientSearchModel(QObject *parent = nullptr);

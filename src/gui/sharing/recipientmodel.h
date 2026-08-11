@@ -22,6 +22,9 @@ public:
         ClassNameRole,
         ValueRole,
         InstanceRole,
+        IconSvgUrlRole,
+        IconLightRole,
+        IconDarkRole,
     };
 
     explicit RecipientModel(QObject *parent = nullptr);

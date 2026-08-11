@@ -35,6 +35,12 @@ public:
     [[nodiscard]] QString value() const;
     /** @brief Returns the recipient's remote instance, or no value for a local recipient. */
     [[nodiscard]] const std::optional<QString> &instance() const;
+    /** @brief Returns a themeable SVG icon supplied by the server, if present. */
+    [[nodiscard]] QString iconSvg() const;
+    /** @brief Returns the light-theme icon URL supplied by the server, if present. */
+    [[nodiscard]] QString iconLight() const;
+    /** @brief Returns the dark-theme icon URL supplied by the server, if present. */
+    [[nodiscard]] QString iconDark() const;
 
 private:
     explicit Recipient(QObject *parent = nullptr);
@@ -43,6 +49,9 @@ private:
     QString _displayName;
     QString _value;
     std::optional<QString> _instance;
+    QString _iconSvg;
+    QString _iconLight;
+    QString _iconDark;
 };
 
 }
