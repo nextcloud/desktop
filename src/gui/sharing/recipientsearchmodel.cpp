@@ -118,13 +118,40 @@ void RecipientSearchModel::setQuery(const QString &query)
     _searchTimer.start();
 }
 
+QString RecipientSearchModel::shareId() const
+{
+    return _shareId;
+}
+
+void RecipientSearchModel::setShareId(const QString &shareId)
+{
+    if (_shareId == shareId) {
+        return;
+    }
+
+    _shareId = shareId;
+    beginResetModel();
+    _searchResults = {};
+    endResetModel();
+    Q_EMIT shareIdChanged();
+    if (!_query.isEmpty()) {
+        _searchTimer.start();
+    }
+}
+
 void RecipientSearchModel::search()
 {
     const auto query = _query;
     const auto account = _account;
-    const auto job = new SearchRecipientsJob{account, query, 0, 10};
-    connect(job, &SearchRecipientsJob::recipientsFound, this, [this, account, query](const QJsonArray &recipients) {
-        if (_account != account || _query != query) {
+    const auto shareId = _shareId;
+    const auto job = new SearchRecipientsJob{account,
+                                             query,
+                                             0,
+                                             10,
+                                             {},
+                                             shareId.isEmpty() ? std::nullopt : std::optional{shareId}};
+    connect(job, &SearchRecipientsJob::recipientsFound, this, [this, account, query, shareId](const QJsonArray &recipients) {
+        if (_account != account || _query != query || _shareId != shareId) {
             return;
         }
 

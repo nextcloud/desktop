@@ -21,10 +21,11 @@ TextField {
     signal recipientSelected(string recipientType, string recipientValue, string recipientInstance)
 
     required property var account
-    // property bool isShareeFetchOngoing: recipientModel.fetchOngoing
+    required property string shareId
     property RecipientSearchModel recipientModel: RecipientSearchModel {
         account: root.account
         query: root.text
+        shareId: root.shareId
     }
 
     readonly property int horizontalPaddingOffset: Style.trayHorizontalMargin
