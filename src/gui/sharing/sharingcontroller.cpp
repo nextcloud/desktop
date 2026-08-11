@@ -15,11 +15,13 @@
 #include "addsourcejob.h"
 #include "createsharejob.h"
 #include "destroysharejob.h"
+#include "generatesecretjob.h"
 #include "getsharesjob.h"
 #include "removerecipientjob.h"
 #include "setpermissionjob.h"
 #include "setpermissionpresetjob.h"
 #include "setpropertyjob.h"
+#include "setrecipientsecretjob.h"
 #include "setsharestatejob.h"
 #include "share.h"
 #include "sharingconstants.h"
@@ -30,6 +32,14 @@ using namespace Qt::StringLiterals;
 
 using namespace OCC;
 using namespace OCC::Gui::Sharing;
+
+namespace
+{
+std::optional<QString> optionalString(const QString &value)
+{
+    return value.isEmpty() ? std::nullopt : std::optional{value};
+}
+}
 
 SharingController::SharingController(QObject *parent)
     : QObject{parent}
@@ -218,6 +228,53 @@ void SharingController::removeRecipient(Share *share,
         Q_EMIT recipientRemovalFailed(guardedShare, reply ? reply->errorString() : tr("Could not remove the recipient."));
     });
     job->start();
+}
+
+void SharingController::updateRecipientSecret(Share *share,
+                                              const QString &recipientType,
+                                              const QString &recipientValue,
+                                              const QString &recipientInstance)
+{
+    if (!_account) {
+        qCWarning(lcSharingController) << "attempted to update a recipient secret without an account set";
+        return;
+    }
+
+    if (!containsShare(share)) {
+        qCWarning(lcSharingController) << "attempted to update a recipient secret on a share not owned by this controller";
+        return;
+    }
+
+    const auto guardedShare = QPointer<Share>{share};
+    const auto instance = optionalString(recipientInstance);
+    const auto generateJob = new GenerateSecretJob{_account};
+    connect(generateJob, &GenerateSecretJob::secretGenerated, this, [this, guardedShare, recipientType, recipientValue, instance](const QString &secret) {
+        if (!guardedShare || secret.isEmpty()) {
+            Q_EMIT recipientSecretUpdateFailed(guardedShare, tr("The server did not generate a valid sharing link."));
+            return;
+        }
+
+        const auto updateJob = new SetRecipientSecretJob{_account, *guardedShare, recipientType, recipientValue, secret, instance};
+        connect(updateJob, &SetRecipientSecretJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
+            if (updatedShare) {
+                Q_EMIT recipientSecretUpdated(updatedShare);
+            }
+        });
+        connect(updateJob, &SetRecipientSecretJob::ocsError, this, [this, guardedShare](int, const QString &message) {
+            Q_EMIT recipientSecretUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the sharing link.") : message);
+        });
+        connect(updateJob, &SetRecipientSecretJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
+            Q_EMIT recipientSecretUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the sharing link."));
+        });
+        updateJob->start();
+    });
+    connect(generateJob, &GenerateSecretJob::ocsError, this, [this, guardedShare](int, const QString &message) {
+        Q_EMIT recipientSecretUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not generate a sharing link.") : message);
+    });
+    connect(generateJob, &GenerateSecretJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
+        Q_EMIT recipientSecretUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not generate a sharing link."));
+    });
+    generateJob->start();
 }
 
 void SharingController::setPermission(Share *share, const QString &permissionClass, bool enabled)
