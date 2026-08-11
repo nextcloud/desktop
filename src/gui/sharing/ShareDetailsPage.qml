@@ -25,6 +25,18 @@ Page {
 
     title: qsTr("Share details")
 
+    function copyToClipboard(value: string): void {
+        clipboardHelper.text = value
+        clipboardHelper.selectAll()
+        clipboardHelper.copy()
+        clipboardHelper.clear()
+    }
+
+    TextEdit {
+        id: clipboardHelper
+        visible: false
+    }
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -58,7 +70,7 @@ Page {
                 EnforcedPlainTextLabel {
                     Layout.fillWidth: true
 
-                    text: root.recipientAdditionError
+                    text: root.recipientOperationError
                     color: Style.wizardErrorText
                     wrapMode: Text.Wrap
                     visible: text.length > 0
@@ -74,12 +86,126 @@ Page {
                         share: root.share
                     }
 
-                    delegate: EnforcedPlainTextLabel {
+                    delegate: ItemDelegate {
+                        id: recipientDelegate
+
                         required property var model
 
                         width: ListView.view.width
-                        text: model.label
-                        elide: Text.ElideRight
+                        hoverEnabled: true
+
+                        contentItem: RowLayout {
+                            spacing: Style.standardSpacing
+
+                            Image {
+                                Layout.preferredWidth: Style.activityListButtonIconSize
+                                Layout.preferredHeight: Style.activityListButtonIconSize
+
+                                source: RecipientIcon.source(recipientDelegate.model.iconSvgUrl,
+                                                             recipientDelegate.model.iconLight,
+                                                             recipientDelegate.model.iconDark)
+                                sourceSize.width: Style.activityListButtonIconSize
+                                sourceSize.height: Style.activityListButtonIconSize
+                                fillMode: Image.PreserveAspectFit
+                                visible: source.toString().length > 0
+                            }
+
+                            ColumnLayout {
+                                Layout.fillWidth: true
+                                spacing: 0
+
+                                EnforcedPlainTextLabel {
+                                    Layout.fillWidth: true
+                                    text: recipientDelegate.model.label
+                                    elide: Text.ElideRight
+                                }
+
+                                EnforcedPlainTextLabel {
+                                    Layout.fillWidth: true
+                                    text: {
+                                        const details = []
+                                        if (recipientDelegate.model.instance) {
+                                            details.push(recipientDelegate.model.instance)
+                                        }
+                                        if (recipientDelegate.model.initiatorDisplayName) {
+                                            details.push(qsTr("Added by %1").arg(recipientDelegate.model.initiatorDisplayName))
+                                        }
+                                        return details.join(" · ")
+                                    }
+                                    color: palette.placeholderText
+                                    elide: Text.ElideRight
+                                    visible: text.length > 0
+                                }
+                            }
+
+                            Button {
+                                Layout.preferredWidth: Style.activityListButtonWidth
+                                Layout.preferredHeight: Style.activityListButtonHeight
+
+                                icon.source: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
+                                icon.width: Style.activityListButtonIconSize
+                                icon.height: Style.activityListButtonIconSize
+                                display: AbstractButton.IconOnly
+                                visible: recipientDelegate.model.secretUrl !== ""
+                                enabled: visible
+
+                                Accessible.name: qsTr("Copy recipient link")
+                                ToolTip.visible: hovered
+                                ToolTip.text: Accessible.name
+
+                                onClicked: root.copyToClipboard(recipientDelegate.model.secretUrl)
+                            }
+
+                            Button {
+                                Layout.preferredWidth: Style.activityListButtonWidth
+                                Layout.preferredHeight: Style.activityListButtonHeight
+
+                                icon.source: "image://svgimage-custom-color/change.svg/" + palette.buttonText
+                                icon.width: Style.activityListButtonIconSize
+                                icon.height: Style.activityListButtonIconSize
+                                display: AbstractButton.IconOnly
+                                visible: recipientDelegate.model.secretUpdatable
+                                enabled: visible
+
+                                Accessible.name: recipientDelegate.model.secretUrl !== ""
+                                                 ? qsTr("Regenerate recipient link")
+                                                 : qsTr("Generate recipient link")
+                                ToolTip.visible: hovered
+                                ToolTip.text: Accessible.name
+
+                                onClicked: {
+                                    root.recipientOperationError = ""
+                                    root.sharingController.updateRecipientSecret(
+                                                root.share,
+                                                recipientDelegate.model.className,
+                                                recipientDelegate.model.value,
+                                                recipientDelegate.model.instance || "")
+                                }
+                            }
+
+                            Button {
+                                Layout.preferredWidth: Style.activityListButtonWidth
+                                Layout.preferredHeight: Style.activityListButtonHeight
+
+                                icon.source: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
+                                icon.width: Style.activityListButtonIconSize
+                                icon.height: Style.activityListButtonIconSize
+                                display: AbstractButton.IconOnly
+
+                                Accessible.name: qsTr("Remove recipient")
+                                ToolTip.visible: hovered
+                                ToolTip.text: Accessible.name
+
+                                onClicked: {
+                                    root.recipientOperationError = ""
+                                    root.sharingController.removeRecipient(
+                                                root.share,
+                                                recipientDelegate.model.className,
+                                                recipientDelegate.model.value,
+                                                recipientDelegate.model.instance || "")
+                                }
+                            }
+                        }
                     }
                 }
 
