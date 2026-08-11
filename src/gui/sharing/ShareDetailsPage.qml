@@ -44,6 +44,7 @@ Page {
                     Layout.fillWidth: true
 
                     account: root.sharingController.account
+                    shareId: root.share.id
 
                     onRecipientSelected: (recipientType, recipientValue, recipientInstance) => {
                         root.recipientOperationError = ""

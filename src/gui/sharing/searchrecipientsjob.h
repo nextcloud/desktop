@@ -10,6 +10,8 @@
 #include <QJsonArray>
 #include <QList>
 
+#include <optional>
+
 namespace OCC::Gui::Sharing
 {
 
@@ -33,8 +35,14 @@ public:
      * @param offset Number of matching entries to skip
      * @param limit Maximum number of matching entries to return
      * @param recipientTypeClasses Registered recipient type classes to search, or empty for all
+     * @param shareId Share whose existing recipients should be excluded, or no value to search without that filter
      */
-    explicit SearchRecipientsJob(AccountPtr account, const QString &query, qint64 offset, qint64 limit, const QList<QString> &recipientTypeClasses = {});
+    explicit SearchRecipientsJob(AccountPtr account,
+                                 const QString &query,
+                                 qint64 offset,
+                                 qint64 limit,
+                                 const QList<QString> &recipientTypeClasses = {},
+                                 const std::optional<QString> &shareId = std::nullopt);
 
 Q_SIGNALS:
     /** @brief Emitted with the matching recipient descriptions after a successful request. */
