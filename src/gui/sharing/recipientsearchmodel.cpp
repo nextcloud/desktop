@@ -51,6 +51,8 @@ QVariant RecipientSearchModel::data(const QModelIndex &index, int role) const
         return item.toObject().value("display_name"_L1).toString();
     case IconRole:
         return "image://tray-image-provider/%1"_L1.arg(item.toObject().value("icon"_L1).toObject().value("light").toString());
+    case InstanceRole:
+        return item.value("instance"_L1).toVariant();
     default:
         return {};
     }
@@ -63,6 +65,7 @@ QHash<int, QByteArray> RecipientSearchModel::roleNames() const
         {ValueRole, "value"_ba},
         {DisplayNameRole, "displayName"_ba},
         {IconRole, "iconUrl"_ba},
+        {InstanceRole, "instance"_ba},
     };
 };
 
