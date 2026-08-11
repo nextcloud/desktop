@@ -18,6 +18,9 @@ QPointer<Recipient> Recipient::fromJson(const QJsonObject &json)
     recipient->_className = json.value("class"_L1).toString();
     recipient->_displayName = json.value("display_name"_L1).toString();
     recipient->_value = json.value("value"_L1).toString();
+    if (const auto instance = json.value("instance"_L1); instance.isString()) {
+        recipient->_instance = instance.toString();
+    }
     return recipient;
 }
 
