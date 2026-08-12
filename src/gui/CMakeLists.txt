@@ -53,7 +53,6 @@ set(client_UI_SRCS
     proxyauthdialog.ui
     mnemonicdialog.ui
     vfsdownloaderrordialog.ui
-    wizard/flow2authwidget.ui
 )
 
 qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
@@ -259,16 +258,12 @@ set(client_SRCS
     creds/flow2auth.cpp
     creds/webflowcredentials.h
     creds/webflowcredentials.cpp
-    creds/webflowcredentialsdialog.h
-    creds/webflowcredentialsdialog.cpp
     wizard/accountwizardcontroller.h
     wizard/accountwizardcontroller.cpp
-    wizard/flow2authwidget.h
-    wizard/flow2authwidget.cpp
-    wizard/providersignuppage.h
-    wizard/providersignuppage.cpp
-    wizard/linklabel.h
-    wizard/linklabel.cpp
+    wizard/browserreauthcontroller.h
+    wizard/browserreauthcontroller.cpp
+    wizard/browserreauthwindow.h
+    wizard/browserreauthwindow.cpp
     integration/fileactionsmodel.h
     integration/fileactionsmodel.cpp
     )
@@ -424,8 +419,6 @@ IF( APPLE )
 ENDIF()
 
 set(3rdparty_SRC
-    ../3rdparty/QProgressIndicator/QProgressIndicator.h
-    ../3rdparty/QProgressIndicator/QProgressIndicator.cpp
     ../3rdparty/kmessagewidget/kmessagewidget.h
     ../3rdparty/kmessagewidget/kmessagewidget.cpp
     ../3rdparty/kirigami/wheelhandler.h
@@ -625,7 +618,6 @@ set_target_properties(nextcloudCore
 
 target_include_directories(nextcloudCore
   PUBLIC
-  ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
   ${CMAKE_SOURCE_DIR}/src/3rdparty/kirigami
   ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
   ${CMAKE_CURRENT_BINARY_DIR}

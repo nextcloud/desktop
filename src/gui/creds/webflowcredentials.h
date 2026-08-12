@@ -10,11 +10,10 @@
 #include <QSslKey>
 #include <QNetworkRequest>
 #include <QQueue>
+#include <QPointer>
 
 #include "creds/abstractcredentials.h"
 
-class QDialog;
-class QLabel;
 class QNetworkReply;
 class QAuthenticator;
 
@@ -29,7 +28,7 @@ namespace KeychainChunk {
     class WriteJob;
 }
 
-class WebFlowCredentialsDialog;
+class BrowserReAuthWindow;
 
 class WebFlowCredentials : public AbstractCredentials
 {
@@ -67,7 +66,7 @@ private slots:
     void slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator);
     void slotFinished(QNetworkReply *reply);
 
-    void slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host);
+    void slotAskFromUserCredentialsProvided(const QString &user, const QString &pass);
     void slotAskFromUserCancelled();
 
     void slotReadClientCertPEMJobDone(OCC::KeychainChunk::ReadJob *readJob);
@@ -126,7 +125,7 @@ protected:
     bool _keychainMigration = false;
     QString _appName;
 
-    WebFlowCredentialsDialog *_askDialog = nullptr;
+    QPointer<BrowserReAuthWindow> _reAuthWindow;
 };
 
 } // namespace OCC
