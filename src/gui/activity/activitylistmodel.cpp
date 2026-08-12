@@ -920,7 +920,13 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
 
     const auto activity = _finalList.at(activityIndex);
     if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
-        displaySingleConflictDialog(activity);
+        if (_conflictsList.size() > 1) {
+            if (const auto systray = Systray::instance()) {
+                systray->createResolveConflictsDialog(allConflicts());
+            }
+        } else {
+            displaySingleConflictDialog(activity);
+        }
 
         return;
     } else if (activity._syncFileItemStatus == SyncFileItem::FileNameClash) {

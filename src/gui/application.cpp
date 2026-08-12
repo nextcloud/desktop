@@ -491,6 +491,12 @@ Application::Application(int &argc, char **argv)
     connect(FolderMan::instance()->socketApi(), &SocketApi::fileActionsCommandReceived,
             _gui.data(), &ownCloudGui::slotShowFileActionsDialog);
 
+    connect(FolderMan::instance()->socketApi(), &SocketApi::resolveConflictCommandReceived,
+            _gui.data(), &ownCloudGui::slotResolveConflict);
+
+    connect(FolderMan::instance()->socketApi(), &SocketApi::moveItemCommandReceived,
+            _gui.data(), &ownCloudGui::slotMoveItem);
+
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
     _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.

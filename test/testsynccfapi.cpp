@@ -399,6 +399,58 @@ private slots:
         cleanup();
     }
 
+    void testStaleVirtualDirectoryWithoutDatabaseEntry()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("stale");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(dbRecord(fakeFolder, "stale")._type, ItemTypeVirtualDirectory);
+        QVERIFY(cfapi::findPlaceholderInfo(fakeFolder.localPath() + "stale"));
+
+        QVERIFY(fakeFolder.syncJournal().deleteFileRecord("stale"));
+        fakeFolder.remoteModifier().remove("stale");
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        completeSpy.clear();
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.remoteModifier().find("stale"), nullptr);
+        QVERIFY(!QFileInfo(fakeFolder.localPath() + "stale").exists());
+        QCOMPARE(completeSpy.findItem("stale")->_instruction, CSYNC_INSTRUCTION_REMOVE);
+        QVERIFY(!dbRecord(fakeFolder, "stale").isValid());
+
+        fakeFolder.localModifier().mkdir("new");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.remoteModifier().find("new"));
+        QCOMPARE(completeSpy.findItem("new")->_instruction, CSYNC_INSTRUCTION_NEW);
+    }
+
+    void testOnlineOnlyVirtualDirectoryRename()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("source");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(dbRecord(fakeFolder, "source").isDirectory());
+
+        ::setPinState(fakeFolder.localPath() + "source", PinState::OnlineOnly, cfapi::NoRecurse);
+        fakeFolder.localModifier().rename("source", "destination");
+        completeSpy.clear();
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.remoteModifier().find("source"));
+        QVERIFY(fakeFolder.remoteModifier().find("destination"));
+        QCOMPARE(completeSpy.findItem("destination")->_instruction, CSYNC_INSTRUCTION_RENAME);
+        QCOMPARE(*vfs->pinState("destination"), PinState::OnlineOnly);
+    }
+
     void testWithNormalSync()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };

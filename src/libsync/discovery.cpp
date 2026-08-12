@@ -1597,6 +1597,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return true;
     };
     const auto isMove = moveCheck();
+    const auto isStaleVirtualDirectory = localEntry.type == ItemTypeVirtualDirectory && noServerEntry;
     const auto isE2eeMove = isMove && (base.isE2eEncrypted() || isInsideEncryptedTree());
     const auto isCfApiVfsMode = _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi;
     const bool isOnlineOnlyItem = isCfApiVfsMode && (localEntry.isDirectory || _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local));
@@ -1629,7 +1630,17 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
             Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
         }
-        postProcessLocalNew();
+        if (isStaleVirtualDirectory && !isMove) {
+            // A virtual directory without a database record is a stale placeholder.
+            // A newly created local directory is not a virtual directory, so it can
+            // still follow the normal local-new path below.
+            qCWarning(lcDisco) << "Wiping virtual directory without db entry for" << path._local;
+            item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+            item->_direction = SyncFileItem::Down;
+            item->_type = ItemTypeVirtualDirectory;
+        } else {
+            postProcessLocalNew();
+        }
         finalize();
         return;
     }
