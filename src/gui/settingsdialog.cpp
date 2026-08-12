@@ -223,7 +223,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 #endif
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
-    _toolBar->addSeparator();
 
     const auto accountsList = AccountManager::instance()->accounts();
     for (const auto &account : accountsList) {
