@@ -1556,6 +1556,7 @@ void SyncEngine::slotScheduleFilesDelayedSync()
         });
 
         addFilesToTimerAndScheduledHash(newTimer);
+        qCDebug(lcEngine) << "automated sync will be fired at" << scheduledSyncTimerMsecs;
         newTimer->start(scheduledSyncTimerMsecs);
         _scheduledSyncTimers.append(newTimer);
     }
