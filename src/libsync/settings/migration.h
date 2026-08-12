@@ -104,7 +104,7 @@ public:
     [[nodiscard]] bool isUpgrade() const;
     [[nodiscard]] bool isDowngrade() const;
     [[nodiscard]] bool versionChanged() const;
-    [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration();
+    [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
     [[nodiscard]] bool isUnbrandedToBrandedMigration() const;
     [[nodiscard]] bool shouldTryToMigrate() const;
     [[nodiscard]] bool isInProgress() const;

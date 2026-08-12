@@ -93,21 +93,16 @@ bool Migration::versionChanged() const
     return isUpgrade() || isDowngrade();
 }
 
-bool Migration::shouldTryUnbrandedToBrandedMigration()
+bool Migration::shouldTryUnbrandedToBrandedMigration() const
 {
-    const auto isUnbrandedToBranded = phase() == Migration::Phase::SetupFolders
-        && Theme::instance()->appName() != ConfigFile::unbrandedAppName 
+    return phase() == Migration::Phase::SetupFolders
+        && Theme::instance()->appName() != ConfigFile::unbrandedAppName
         && !_discoveredLegacyConfigPath.isEmpty();
-
-    if (isUnbrandedToBranded) {
-        setBrandingType(BrandingType::UnbrandedToBranded);
-    }
-    return _brandingType == BrandingType::UnbrandedToBranded;
 }
 
 bool Migration::isUnbrandedToBrandedMigration() const
 {
-    return isInProgress() && brandingType() == BrandingType::UnbrandedToBranded;
+    return isInProgress() && Theme::instance()->appName() != ConfigFile::unbrandedAppName;
 }
 
 bool Migration::shouldTryToMigrate() const
