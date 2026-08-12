@@ -7,16 +7,16 @@
 #ifndef SOCKETAPI_P_H
 #define SOCKETAPI_P_H
 
-#include <functional>
 #include <QBitArray>
 #include <QIODevice>
 #include <QPointer>
-
 #include <QJsonDocument>
 #include <QJsonObject>
-
-#include <memory>
 #include <QTimer>
+#include <QLoggingCategory>
+
+#include <functional>
+#include <memory>
 
 namespace OCC {
 

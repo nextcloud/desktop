@@ -341,3 +341,5 @@ bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QStr
     return true;
 }
 }
+
+#include "moc_propagateremotemove.cpp"

@@ -2560,3 +2560,5 @@ bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item) co
 }
 
 }
+
+#include "moc_discovery.cpp"

@@ -130,3 +130,5 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }
 }
+
+#include "moc_propagateremotedelete.cpp"

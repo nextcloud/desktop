@@ -165,3 +165,5 @@ void BulkPropagatorDownloadJob::abortWithError(SyncFileItemPtr item, SyncFileIte
 }
 
 }
+
+#include "moc_bulkpropagatordownloadjob.cpp"

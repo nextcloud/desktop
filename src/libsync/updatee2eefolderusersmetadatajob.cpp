@@ -365,3 +365,5 @@ const QByteArray UpdateE2eeFolderUsersMetadataJob::folderToken() const
 }
 
 }
+
+#include "moc_updatee2eefolderusersmetadatajob.cpp"

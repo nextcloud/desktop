@@ -4,12 +4,13 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "abstractcredentials.h"
+
 #include <QLoggingCategory>
 #include <QString>
 #include <QCoreApplication>
 
 #include "common/asserts.h"
-#include "creds/abstractcredentials.h"
 
 namespace OCC {
 
@@ -59,3 +60,5 @@ QString AbstractCredentials::keychainKey(const QString &url, const QString &user
     return key;
 }
 } // namespace OCC
+
+#include "moc_abstractcredentials.cpp"
