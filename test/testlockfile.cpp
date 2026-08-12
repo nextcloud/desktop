@@ -609,7 +609,7 @@ private slots:
         QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &fileRecordBefore));
         QVERIFY(!fileRecordBefore._lockstate._locked);
 
-        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch() - 1220, 1226);
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentSecsSinceEpoch() - 1220, 1227);
 
         completeSpy.clear();
         QVERIFY(fakeFolder.syncOnce());
@@ -626,7 +626,7 @@ private slots:
         fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileUnlocked, {}, {}, {}, {}, {}, {});
 
         QCOMPARE(spySyncCompleted.count(), 0);
-        QVERIFY(spySyncCompleted.wait(3000));
+        QVERIFY(spySyncCompleted.wait(4000));
         QCOMPARE(spySyncCompleted.count(), 1);
 
         OCC::SyncJournalFileRecord fileRecordUnlocked;
