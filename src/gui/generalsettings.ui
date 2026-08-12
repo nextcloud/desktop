@@ -28,131 +28,67 @@
                 <number>24</number>
             </property>
             <item>
-                <layout class="QHBoxLayout">
-                    <item alignment="Qt::AlignTop">
-                        <widget class="QGroupBox" name="generalGroupBox">
-                            <property name="title">
-                                <string>General Settings</string>
-                            </property>
-                            <property name="font">
-                                <font>
-                                </font>
-                            </property>
-                            <property name="minimumSize">
-                                <size>
-                                    <width>250</width> 
-                                    <height>0</height>
-                                </size>
-                            </property>
-                            <layout class="QVBoxLayout" name="generalBoxLayout">
-                                <property name="topMargin">
-                                    <number>0</number>
+                <widget class="QGroupBox" name="generalGroupBox">
+                    <property name="title">
+                        <string>General Settings</string>
+                    </property>
+                    <property name="font">
+                        <font>
+                        </font>
+                    </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>250</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                    <layout class="QVBoxLayout" name="generalBoxLayout">
+                        <property name="topMargin">
+                            <number>0</number>
+                        </property>
+                        <item>
+                            <widget class="QCheckBox" name="autostartCheckBox">
+                                <property name="text">
+                                    <string>&amp;Launch on System Startup</string>
                                 </property>
-                                <item>
-                                    <widget class="QCheckBox" name="autostartCheckBox">
-                                        <property name="text">
-                                            <string>&amp;Launch on System Startup</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item>
-                                    <widget class="QCheckBox" name="serverNotificationsCheckBox">
-                                        <property name="text">
-                                            <string>Show Server &amp;Notifications</string>
-                                        </property>
-                                    </widget>
-                                </item>  
-                                <item>
-                                    <widget class="QCheckBox" name="callNotificationsCheckBox">
-                                        <property name="text">
-                                            <string>Show Call Notifications</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item>
-                                    <widget class="QCheckBox" name="monoIconsCheckBox">
-                                        <property name="toolTip">
-                                            <string>For System Tray</string>
-                                        </property>
-                                        <property name="text">
-                                            <string>Use &amp;Monochrome Icons</string>
-                                        </property>
-                                    </widget>
-                                </item>
-								<item>
-								    <widget class="QCheckBox" name="chatNotificationsCheckBox">
-								        <property name="text">
-								         <string>Show Chat Notifications</string>
-								        </property>
-								    </widget>
-                                </item>                                
-                            </layout>
-                        </widget>
-                    </item>
-                    <item>
-                        <spacer name="horizontalSpacer_1">
-                            <property name="orientation">
-                                <enum>Qt::Horizontal</enum>
-                            </property>
-                            <property name="sizeHint" stdset="0">
-                                <size>
-                                    <width>20</width>
-                                    <height>0</height>
-                                </size>
-                            </property>
-                        </spacer>
-                    </item>
-                    <!-- Updates -->
-                    <item alignment="Qt::AlignTop">
-                        <widget class="QGroupBox" name="updateGroupBox">
-                            <property name="title">
-                                <string>Updates</string>
-                            </property>
-                            <property name="font">
-                                <font>
-                                </font>
-                            </property>
-                            <layout class="QVBoxLayout" name="updateGroupBoxLayout">
-                                <property name="topMargin">
-                                    <number>0</number>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QCheckBox" name="serverNotificationsCheckBox">
+                                <property name="text">
+                                    <string>Show Server &amp;Notifications</string>
                                 </property>
-                                <item>
-                                    <widget class="QCheckBox" name="autoCheckForUpdatesCheckBox">
-                                        <property name="sizePolicy">
-                                            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="text">
-                                            <string>&amp;Automatically check for updates</string>
-                                        </property>
-                                        <property name="checked">
-                                            <bool>true</bool>
-                                        </property>
-                                    </widget>             
-                                </item>
-                                <item>
-                                    <widget class="OCC::LinkButton" name="checkUpdateLinkButton">
-                                        <property name="text">
-                                            <string>Check Now</string>
-                                        </property>
-                                    </widget>
-                                </item>   
-                                <item>
-							       <widget class="QCheckBox" name="quotaWarningNotificationsCheckBox">
-							        <property name="text">
-							         <string>Show &amp;Quota Warning Notifications</string>
-							        </property>
-							       </widget>
-							      </item>                           
-                            </layout>
-                        </widget>
-                    </item>
-                </layout>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QCheckBox" name="callNotificationsCheckBox">
+                                <property name="text">
+                                    <string>Show Call Notifications</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QCheckBox" name="monoIconsCheckBox">
+                                <property name="toolTip">
+                                    <string>For System Tray</string>
+                                </property>
+                                <property name="text">
+                                    <string>Use &amp;Monochrome Icons</string>
+                                </property>
+                            </widget>
+                        </item>
+						<item>
+						    <widget class="QCheckBox" name="chatNotificationsCheckBox">
+						        <property name="text">
+						         <string>Show Chat Notifications</string>
+						        </property>
+						    </widget>
+                        </item>
+                    </layout>
+                </widget>
             </item>
             <item>
-                <spacer>
+                <spacer name="verticalSpacer_updates">
                     <property name="orientation">
                         <enum>Qt::Vertical</enum>
                     </property>
@@ -162,22 +98,113 @@
                     <property name="sizeHint" stdset="0">
                         <size>
                             <width>20</width>
-                            <height>5</height>
+                            <height>16</height>
                         </size>
                     </property>
                 </spacer>
             </item>
             <item>
-                <widget class="QLabel" name="updateStateLabel">
-                    <property name="text">
-                        <string />
+                <widget class="QGroupBox" name="dataprotection_groupbox">
+                    <property name="title">
+                        <string>Data Protection</string>
                     </property>
-                    <property name="wordWrap">
-                        <bool>true</bool>
-                    </property>
-                    <property name="openExternalLinks">
-                        <bool>true</bool>
-                    </property>
+                    <layout class="QVBoxLayout" name="dataProtectionBoxLayout">
+                        <property name="topMargin">
+                            <number>0</number>
+                        </property>
+                        <item>
+                            <layout class="QVBoxLayout" name="necessaryDataLayout">
+                                <item>
+                                    <widget class="QCheckBox" name="sendNecessaryData_checkbox">
+                                        <property name="text">
+                                            <string>Necessary data</string>
+                                        </property>
+                                        <property name="checked">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QLabel" name="necessaryDataLabel">
+                                        <property name="text">
+                                            <string>Required to ensure that the software can be used as expected</string>
+                                        </property>
+                                        <property name="wordWrap">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </item>
+                        <item>
+                            <layout class="QVBoxLayout" name="anonymousDataLayout">
+                                <item>
+                                    <widget class="QCheckBox" name="sendAnonymousData_checkbox">
+                                        <property name="text">
+                                            <string>Send anonymous use</string>
+                                        </property>
+                                        <property name="checked">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QLabel" name="anonymousDataLabel">
+                                        <property name="text">
+                                            <string>This helps us to optimize the software and to better identify system crashes and unexpected errors.</string>
+                                        </property>
+                                        <property name="wordWrap">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </item>
+                        <item>
+                            <layout class="QHBoxLayout">
+                                <property name="spacing">
+                                    <number>12</number>
+                                </property>
+                                <property name="topMargin">
+                                    <number>5</number>
+                                </property>
+                                <item>
+                                    <widget class="OCC::LinkButton" name="legalNoticeLinkButton">
+                                        <property name="text">
+                                            <string>Legal Notice</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="OCC::LinkButton" name="privacyLinkButton">
+                                        <property name="text">
+                                            <string>Privacy Policy</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="OCC::LinkButton" name="openSourceLinkButton">
+                                        <property name="text">
+                                            <string>Open Source Software</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <spacer name="horizontalSpacer_6">
+                                        <property name="orientation">
+                                            <enum>Qt::Horizontal</enum>
+                                        </property>
+                                        <property name="sizeHint" stdset="0">
+                                            <size>
+                                                <width>20</width>
+                                                <height>0</height>
+                                            </size>
+                                        </property>
+                                    </spacer>
+                                </item>
+                            </layout>
+                        </item>
+                    </layout>
                 </widget>
             </item>
             <!-- Advanced -->
@@ -437,108 +464,64 @@
                     </property>
                 </spacer>
             </item>
+            <!-- Updates -->
             <item>
-                <widget class="QGroupBox" name="dataprotection_groupbox">
+                <widget class="QGroupBox" name="updateGroupBox">
                     <property name="title">
-                        <string>Data Protection</string>
+                        <string>Updates</string>
                     </property>
-                    <layout class="QVBoxLayout" name="dataProtectionBoxLayout">
+                    <property name="font">
+                        <font>
+                        </font>
+                    </property>
+                    <layout class="QVBoxLayout" name="updateGroupBoxLayout">
                         <property name="topMargin">
                             <number>0</number>
                         </property>
-                        <item>        
-                            <layout class="QVBoxLayout" name="necessaryDataLayout">
-                                <item>                
-                                    <widget class="QCheckBox" name="sendNecessaryData_checkbox">
-                                        <property name="text">
-                                            <string>Necessary data</string>
-                                        </property>
-                                        <property name="checked">
-                                            <bool>true</bool>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item>
-                                    <widget class="QLabel" name="necessaryDataLabel">
-                                        <property name="text">
-                                            <string>Required to ensure that the software can be used as expected</string>
-                                        </property>
-                                        <property name="wordWrap">
-                                            <bool>true</bool>
-                                        </property>
-                                    </widget>
-                                </item>
-                            </layout>
-                        </item>
-                        <item>        
-                            <layout class="QVBoxLayout" name="anonymousDataLayout">
-                                <item>                
-                                    <widget class="QCheckBox" name="sendAnonymousData_checkbox">
-                                        <property name="text">
-                                            <string>Send anonymous use</string>
-                                        </property>
-                                        <property name="checked">
-                                            <bool>true</bool>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item>
-                                    <widget class="QLabel" name="anonymousDataLabel">
-                                        <property name="text">
-                                            <string>This helps us to optimize the software and to better identify system crashes and unexpected errors.</string>
-                                        </property>
-                                        <property name="wordWrap">
-                                            <bool>true</bool>
-                                        </property>
-                                    </widget>
-                                </item>
-                            </layout>
+                        <item>
+                            <widget class="QCheckBox" name="autoCheckForUpdatesCheckBox">
+                                <property name="sizePolicy">
+                                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="text">
+                                    <string>&amp;Automatically check for updates</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
                         </item>
                         <item>
-                            <layout class="QHBoxLayout">
-                                <property name="spacing">
-                                    <number>12</number>
+                            <widget class="OCC::LinkButton" name="checkUpdateLinkButton">
+                                <property name="text">
+                                    <string>Check Now</string>
                                 </property>
-                                <property name="topMargin">
-                                    <number>5</number>
-                                </property>
-                                <item>
-                                    <widget class="OCC::LinkButton" name="legalNoticeLinkButton">
-                                        <property name="text">
-                                            <string>Legal Notice</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item>
-                                    <widget class="OCC::LinkButton" name="privacyLinkButton">
-                                        <property name="text">
-                                            <string>Privacy Policy</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item>
-                                    <widget class="OCC::LinkButton" name="openSourceLinkButton">
-                                        <property name="text">
-                                            <string>Open Source Software</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item>
-                                    <spacer name="horizontalSpacer_6">
-                                        <property name="orientation">
-                                            <enum>Qt::Horizontal</enum>
-                                        </property>
-                                        <property name="sizeHint" stdset="0">
-                                            <size>
-                                                <width>20</width>
-                                                <height>0</height>
-                                            </size>
-                                        </property>
-                                    </spacer>
-                                </item>
-                            </layout>
+                            </widget>
                         </item>
-                    </layout> 
+                        <item>
+					       <widget class="QCheckBox" name="quotaWarningNotificationsCheckBox">
+					        <property name="text">
+					         <string>Show &amp;Quota Warning Notifications</string>
+					        </property>
+					       </widget>
+					      </item>
+                        <item>
+                            <widget class="QLabel" name="updateStateLabel">
+                                <property name="text">
+                                    <string />
+                                </property>
+                                <property name="wordWrap">
+                                    <bool>true</bool>
+                                </property>
+                                <property name="openExternalLinks">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </item>
+                    </layout>
                 </widget>
             </item>
             <!-- verticalSpacer -->
