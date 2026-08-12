@@ -1009,6 +1009,76 @@ private slots:
                  (QJsonObject{{"class"_L1, "note-property"_L1}, {"value"_L1, "Updated note"_L1}}));
     }
 
+    void sharingControllerReportsPermissionUpdateFailures()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            const auto response = request.url().path().endsWith("/shares"_L1)
+                ? QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": [{"id": "share-1", "state": "active"}]
+                    }
+                })json"}
+                : QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "failure", "statuscode": 400, "message": "Permission rejected"},
+                        "data": {}
+                    }
+                })json"};
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+
+        QSignalSpy permissionFailedSpy{&controller, &SharingController::permissionUpdateFailed};
+        const auto share = controller.shares().constFirst();
+        controller.setPermission(share, "permission-class"_L1, true);
+        QTRY_COMPARE(permissionFailedSpy.size(), 1);
+        QCOMPARE(permissionFailedSpy.constFirst().at(0).value<Share *>(), share);
+        QCOMPARE(permissionFailedSpy.constFirst().at(1).toString(), "Permission rejected"_L1);
+
+        controller.setPermissionPreset(share, "preset-class"_L1);
+        QTRY_COMPARE(permissionFailedSpy.size(), 2);
+        QCOMPARE(permissionFailedSpy.constLast().at(0).value<Share *>(), share);
+        QCOMPARE(permissionFailedSpy.constLast().at(1).toString(), "Permission rejected"_L1);
+    }
+
+    void sharingControllerReportsPermissionNetworkFailures()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto requestCount = 0;
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            ++requestCount;
+            if (requestCount == 1) {
+                return static_cast<QNetworkReply *>(new FakePayloadReply{operation,
+                                                                          request,
+                                                                          R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": [{"id": "share-1", "state": "active"}]
+                    }
+                })json",
+                                                                          this});
+            }
+            return static_cast<QNetworkReply *>(new FakeErrorReply{operation, request, this, 500});
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+
+        QSignalSpy permissionFailedSpy{&controller, &SharingController::permissionUpdateFailed};
+        const auto share = controller.shares().constFirst();
+        controller.setPermission(share, "permission-class"_L1, true);
+        QTRY_COMPARE(permissionFailedSpy.size(), 1);
+        QVERIFY(!permissionFailedSpy.constFirst().at(1).toString().isEmpty());
+    }
+
     void sharingControllerActivatesDraftShare()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};

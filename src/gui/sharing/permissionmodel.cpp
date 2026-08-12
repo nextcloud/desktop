@@ -24,13 +24,12 @@ int PermissionModel::rowCount(const QModelIndex &parent) const
         return 0;
     }
 
-    qCritical() << "permissions size:" << _share->permissions().size();
     return _share->permissions().size();
 }
 
 QVariant PermissionModel::data(const QModelIndex &index, int role) const
 {
-    if (!_share) {
+    if (!_share || !checkIndex(index, CheckIndexOption::IndexIsValid)) {
         return {};
     }
 
@@ -53,13 +52,10 @@ QVariant PermissionModel::data(const QModelIndex &index, int role) const
 
 bool PermissionModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    qCritical() << "setData called with" << index << value << role;
-
-    if (role != EnabledRole) {
+    Q_UNUSED(value)
+    if (role != EnabledRole || !checkIndex(index, CheckIndexOption::IndexIsValid)) {
         return false;
     }
-
-    const auto newValue = value.toBool();
 
     Q_EMIT dataChanged(index, index, {EnabledRole});
     return true;
@@ -67,8 +63,7 @@ bool PermissionModel::setData(const QModelIndex &index, const QVariant &value, i
 
 Qt::ItemFlags PermissionModel::flags(const QModelIndex &index) const
 {
-    qCritical() << "flags for" << index << QAbstractListModel::flags(index) << Qt::ItemIsEditable << "returning" << (QAbstractListModel::flags(index) | Qt::ItemIsEditable);
-    return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
+    return checkIndex(index, CheckIndexOption::IndexIsValid) ? QAbstractListModel::flags(index) | Qt::ItemIsEditable : Qt::NoItemFlags;
 }
 
 QHash<int, QByteArray> PermissionModel::roleNames() const

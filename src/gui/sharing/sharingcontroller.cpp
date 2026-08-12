@@ -10,6 +10,7 @@
 #include <QNetworkReply>
 
 #include <optional>
+#include <memory>
 
 #include "addrecipientjob.h"
 #include "addsourcejob.h"
@@ -322,7 +323,23 @@ void SharingController::setPermission(Share *share, const QString &permissionCla
         return;
     }
 
+    const auto guardedShare = QPointer<Share>{share};
+    const auto permissionFailureReported = std::make_shared<bool>(false);
     const auto job = new SetPermissionJob{_account, *share, permissionClass, enabled};
+    connect(job, &SetPermissionJob::ocsError, this, [this, guardedShare, permissionFailureReported](int, const QString &message) {
+        if (*permissionFailureReported) {
+            return;
+        }
+        *permissionFailureReported = true;
+        Q_EMIT permissionUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the permissions.") : message);
+    });
+    connect(job, &SetPermissionJob::networkError, this, [this, guardedShare, permissionFailureReported](const QNetworkReply *reply) {
+        if (*permissionFailureReported) {
+            return;
+        }
+        *permissionFailureReported = true;
+        Q_EMIT permissionUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the permissions."));
+    });
     job->start();
 }
 
@@ -343,7 +360,23 @@ void SharingController::setPermissionPreset(Share *share, const QString &permiss
         return;
     }
 
+    const auto guardedShare = QPointer<Share>{share};
+    const auto permissionFailureReported = std::make_shared<bool>(false);
     const auto job = new SetPermissionPresetJob{_account, *share, permissionPreset};
+    connect(job, &SetPermissionPresetJob::ocsError, this, [this, guardedShare, permissionFailureReported](int, const QString &message) {
+        if (*permissionFailureReported) {
+            return;
+        }
+        *permissionFailureReported = true;
+        Q_EMIT permissionUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the permissions.") : message);
+    });
+    connect(job, &SetPermissionPresetJob::networkError, this, [this, guardedShare, permissionFailureReported](const QNetworkReply *reply) {
+        if (*permissionFailureReported) {
+            return;
+        }
+        *permissionFailureReported = true;
+        Q_EMIT permissionUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the permissions."));
+    });
     job->start();
 }
 
