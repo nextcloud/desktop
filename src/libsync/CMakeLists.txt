@@ -168,6 +168,8 @@ set(libsync_SRCS
     caseclashconflictsolver.cpp
     settings/migration.h
     settings/migration.cpp
+    settings/managedsettings.h
+    settings/managedsettings.cpp
 )
 
 if (WIN32)
