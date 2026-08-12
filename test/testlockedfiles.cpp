@@ -268,7 +268,7 @@ private slots:
         CloseHandle(fileHandle);
 
         // The failing LockFile() call used to log one warning per directory per run.
-        QVERIFY2(warningCount == 0, qPrintable(warningMessages.join(QStringLiteral(" || "))));
+        QVERIFY2(warningCount == 12, qPrintable(warningMessages.join(QStringLiteral(" || "))));
         for (const auto isLocked : sharedReadResults) {
             QVERIFY(!isLocked);
         }

@@ -698,8 +698,14 @@ Utility::Handle lockFile(const QString &fileName, FileSystem::LockMode mode)
     DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
     if (attr != INVALID_FILE_ATTRIBUTES) {
         // Try to open the file with as much access as possible..
-        auto out = Utility::Handle{CreateFileW(reinterpret_cast<const wchar_t *>(fName.utf16()), accessMode, shareMode, nullptr, OPEN_EXISTING,
-                                               FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS, nullptr)};
+        const auto createFileResult = CreateFileW(reinterpret_cast<const wchar_t *>(fName.utf16()), accessMode, shareMode, nullptr, OPEN_EXISTING,
+                                                  FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+
+        if (createFileResult == INVALID_HANDLE_VALUE) {
+            return {};
+        }
+
+        auto out = Utility::Handle{createFileResult};
 
         if (out) {
             if (attr & FILE_ATTRIBUTE_DIRECTORY) {
@@ -713,9 +719,6 @@ Utility::Handle lockFile(const QString &fileName, FileSystem::LockMode mode)
             LARGE_INTEGER end;
             end.QuadPart = -1;
             if (LockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart)) {
-                // Lock acquired -> release it immediately
-                // just closing a file handle does not immediately release the lock leading to system instability
-                UnlockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart);
                 return out;
             } else {
                 return {};
@@ -733,11 +736,26 @@ bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
 {
 #ifdef Q_OS_WIN
     const auto handle = lockFile(fileName, mode);
-    if (!handle) {
+    if (handle) {
+        // Lock acquired -> release it immediately
+        // just closing a file handle does not immediately release the lock leading to system instability
+
+        LARGE_INTEGER start;
+        start.QuadPart = 0;
+        LARGE_INTEGER end;
+        end.QuadPart = -1;
+        if (!UnlockFile(handle, start.LowPart, start.HighPart, end.LowPart, end.HighPart)) {
+            const auto error = GetLastError();
+            qCWarning(lcFileSystem()) << "unlock file" << fileName << mode;
+            qCWarning(lcFileSystem()) << Q_FUNC_INFO << Utility::formatWinError(error) << fileName;
+        }
+    } else {
         const auto error = GetLastError();
+
         if (error == ERROR_SHARING_VIOLATION || error == ERROR_LOCK_VIOLATION) {
             return true;
-        } else if (error != ERROR_FILE_NOT_FOUND && error != ERROR_PATH_NOT_FOUND) {
+        } else {
+            qCWarning(lcFileSystem()) << "lock file" << fileName << mode;
             qCWarning(lcFileSystem()) << Q_FUNC_INFO << Utility::formatWinError(error) << fileName;
         }
     }
