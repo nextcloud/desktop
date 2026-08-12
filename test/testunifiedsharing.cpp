@@ -544,6 +544,85 @@ private slots:
         QCOMPARE(controller.shares().at(1)->id(), "share-2"_L1);
     }
 
+    void sharingControllerDestroysShareAndRemovesItFromTheList()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto destroyRequests = 0;
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            const auto deleting = request.url().path().endsWith("/api/v1/share/share-1"_L1);
+            if (deleting) {
+                ++destroyRequests;
+            }
+
+            const auto response = deleting
+                ? QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 204, "message": "OK"},
+                        "data": {}
+                    }
+                })json"}
+                : QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": [{"id": "share-1", "state": "active"}]
+                    }
+                })json"};
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+
+        QSignalSpy sharesChangedSpy{&controller, &SharingController::sharesChanged};
+        const auto share = controller.shares().constFirst();
+        controller.destroyShare(share);
+        controller.destroyShare(share);
+
+        QTRY_VERIFY(controller.shares().isEmpty());
+        QCOMPARE(destroyRequests, 1);
+        QVERIFY(!controller.destroyingShare());
+        QVERIFY(controller.shareDestructionError().isEmpty());
+        QCOMPARE(sharesChangedSpy.size(), 1);
+    }
+
+    void sharingControllerReportsShareDestructionFailure()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            const auto deleting = request.url().path().endsWith("/api/v1/share/share-1"_L1);
+            const auto response = deleting
+                ? QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "failure", "statuscode": 403, "message": "Not allowed"},
+                        "data": {}
+                    }
+                })json"}
+                : QByteArray{R"json({
+                    "ocs": {
+                        "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                        "data": [{"id": "share-1", "state": "active"}]
+                    }
+                })json"};
+            return new FakePayloadReply{operation, request, response, this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+
+        QSignalSpy sharesChangedSpy{&controller, &SharingController::sharesChanged};
+        const auto share = controller.shares().constFirst();
+        controller.destroyShare(share);
+
+        QTRY_COMPARE(controller.shareDestructionError(), "Not allowed"_L1);
+        QVERIFY(!controller.destroyingShare());
+        QCOMPARE(controller.shares().size(), 1);
+        QVERIFY(sharesChangedSpy.isEmpty());
+    }
+
     void sharingControllerCreatesShareAfterAttachingSource()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
