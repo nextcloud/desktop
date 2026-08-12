@@ -195,10 +195,10 @@ bool AccountManager::restoreFromLegacySettings()
     auto wasLegacyImportDialogDisplayed = false;
     QStringList selectedAccountIds;
     Migration migration;
-    if (const auto legacyData = migration.legacyData(); !legacyData.isNull()) {
-        
+    if (auto legacyData = migration.legacyData(); legacyData) {
+
         const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
-       
+
         auto oCSettings = std::move(legacyData);
 
         oCSettings->beginGroup(QLatin1String(accountsC));
@@ -247,7 +247,7 @@ bool AccountManager::restoreFromLegacySettings()
             selectedAccountIds = childGroups;
         }
 
-        settings.reset(oCSettings.get());
+        settings = std::move(oCSettings);
     }
 
     ConfigFile configFile;

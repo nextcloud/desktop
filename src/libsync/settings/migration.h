@@ -9,6 +9,7 @@
 #include <QVersionNumber>
 #include <QSettings>
 #include <QMap>
+#include <memory>
 #include "owncloudlib.h"
 
 namespace OCC {
@@ -43,7 +44,7 @@ public:
     };
     Q_ENUM(UpgradeType)
 
-    using LegacyData = QSharedPointer<QSettings>;
+    using LegacyData = std::unique_ptr<QSettings>;
 
     [[nodiscard]] QVersionNumber previousVersion() const;
     [[nodiscard]] QVersionNumber currentVersion() const;
@@ -93,9 +94,8 @@ public:
     [[nodiscard]] UpgradeType upgradeType() const;
     void setUpgradeType(const UpgradeType type);
 
-    /// Returns QSettings from a legacy config file
+    /// Returns QSettings from a legacy config file. Ownership is transferred to the caller.
     [[nodiscard]] LegacyData legacyData();
-    void setLegacyData(const LegacyData legacyData);
 
     /// Set during first time migration of legacy accounts in AccountManager
     [[nodiscard]] QString discoveredLegacyConfigPath() const;
@@ -118,7 +118,6 @@ private:
     static BrandingType _brandingType;
     static UpgradeType _upgradeType;
     static QString _discoveredLegacyConfigPath;
-    static LegacyData _legacyData;
 };
 }
 #endif // MIGRATION_H

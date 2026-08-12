@@ -102,7 +102,6 @@ private slots:
         _configFile.setStopSyncingExistingFoldersOverLimit(true);
         _configFile.setConfirmExternalStorage(true);
         _configFile.setMoveToTrash(true);
-        _configFile.setForceLoginV2(true);
         _configFile.setPromptDeleteFiles(true);
         _configFile.setDeleteFilesThreshold(1);
         _configFile.setMonoIcons(true);
@@ -328,6 +327,46 @@ private slots:
         Migration b;
         QCOMPARE(b.phase(), Migration::Phase::SetupUsers);
         QCOMPARE(b.isInProgress(), true);
+    }
+
+    void testLegacyData_discoversAndParsesConfig()
+    {
+        // No current config keys, so legacyData() searches the legacy locations.
+        setupStandardConfigFolder();
+
+        // Place a legacy owncloud.cfg next to the themed config file.
+        const auto configDir = QFileInfo(_configFile.configFile()).absolutePath();
+        const auto legacyConfigPath = configDir + QStringLiteral("/owncloud.cfg");
+        QFile legacyFile(legacyConfigPath);
+        QVERIFY(legacyFile.open(QIODevice::WriteOnly | QIODevice::Text));
+        legacyFile.write(legacyAppConfigContent);
+        legacyFile.close();
+
+        Migration migration;
+        const auto legacy = migration.legacyData();
+
+        // Sole ownership is transferred to the caller and the file is parsed.
+        QVERIFY(legacy != nullptr);
+        QCOMPARE(legacy->value(QStringLiteral("clientVersion")).toString(), QStringLiteral("5.3.2.15463"));
+        legacy->beginGroup(QStringLiteral("Accounts"));
+        QVERIFY(legacy->childGroups().contains(QStringLiteral("0")));
+        legacy->endGroup();
+        QCOMPARE(migration.discoveredLegacyConfigPath(), QFileInfo(legacyConfigPath).canonicalPath());
+    }
+
+    void testLegacyData_returnsNullWhenNoLegacyConfig()
+    {
+        setupStandardConfigFolder();
+        // The config dir is shared between tests, so drop any legacy file a
+        // previous test may have written.
+        const auto configDir = QFileInfo(_configFile.configFile()).absolutePath();
+        QFile::remove(configDir + QStringLiteral("/owncloud.cfg"));
+
+        Migration migration;
+        const auto legacy = migration.legacyData();
+
+        QVERIFY(!legacy);
+        QCOMPARE(migration.discoveredLegacyConfigPath(), QString());
     }
 };
 

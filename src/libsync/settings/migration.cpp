@@ -30,7 +30,6 @@ Migration::Phase Migration::_phase = Phase::NotStarted;
 Migration::BrandingType Migration::_brandingType = BrandingType::UnbrandedToUnbranded;
 Migration::UpgradeType Migration::_upgradeType = UpgradeType::NoChange;
 QString Migration::_discoveredLegacyConfigPath = {};
-Migration::LegacyData Migration::_legacyData = {};
 
 QVersionNumber Migration::currentVersion() const
 {
@@ -137,7 +136,6 @@ void Migration::resetForTesting()
     _brandingType = BrandingType::UnbrandedToUnbranded;
     _upgradeType = UpgradeType::NoChange;
     _discoveredLegacyConfigPath = {};
-    _legacyData = {};
 }
 
 Migration::LegacyData Migration::legacyData()
@@ -192,10 +190,8 @@ Migration::LegacyData Migration::legacyData()
                 configFile.setClientPreviousVersionString(legacyVersion);
                 qCInfo(lcMigration) << "Migrating from legacy version" << legacyVersion;
                 qCDebug(lcMigration) << "Copy settings" << oCSettings->allKeys().join(", ");
-                Migration migration;
-                migration.setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
-                legacyData.reset(oCSettings.get());
-                migration.setLegacyData(legacyData);
+                setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
+                legacyData = std::move(oCSettings);
                 break;
             } else {
                 qCInfo(lcMigration) << "Migrate: could not read old config " << configFileString;
@@ -218,11 +214,6 @@ void Migration::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCon
     }
 
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
-}
-
-void Migration::setLegacyData(const LegacyData legacyData)
-{
-    _legacyData = legacyData;
 }
 
 }
