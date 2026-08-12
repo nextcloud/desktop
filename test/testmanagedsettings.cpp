@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "settings/managedsettings.h"
+#include "settings/managedsettingsschema.h"
 
 using namespace OCC;
 
@@ -134,6 +135,20 @@ private slots:
         QCOMPARE(r.value.toString(), QStringLiteral("beta"));
         QCOMPARE(r.source, SettingSourceKind::UserConfig);
         QVERIFY(!r.isLocked());
+    }
+
+    void testSchemaHasUpdateSettings()
+    {
+        const auto skip = ManagedSettingsSchema::find(QStringLiteral("skipUpdateCheck"));
+        QVERIFY(skip.has_value());
+        QCOMPARE(skip->builtinDefault.toBool(), false);
+        QVERIFY(skip->lockable);
+
+        const auto autoCheck = ManagedSettingsSchema::find(QStringLiteral("autoUpdateCheck"));
+        QVERIFY(autoCheck.has_value());
+        QCOMPARE(autoCheck->builtinDefault.toBool(), true);
+
+        QVERIFY(!ManagedSettingsSchema::find(QStringLiteral("nonexistent")).has_value());
     }
 };
 

@@ -170,6 +170,8 @@ set(libsync_SRCS
     settings/migration.cpp
     settings/managedsettings.h
     settings/managedsettings.cpp
+    settings/managedsettingsschema.h
+    settings/managedsettingsschema.cpp
 )
 
 if (WIN32)
