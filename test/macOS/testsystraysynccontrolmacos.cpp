@@ -32,29 +32,48 @@ private slots:
         _helper.cleanup();
     }
 
-    void globalControlIsUnavailableWithoutClassicFoldersAndTogglesAllFolders()
+    void globalControlIsUnavailableWithoutClassicFoldersAndPausesAndResumesAllFolders()
     {
         const auto systray = Systray::instance();
 
         // An account without classic folders is also the state used by a File Provider-only client.
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Unavailable);
-        systray->toggleSyncPaused();
-        QVERIFY(systray->syncControlState() == Systray::SyncControlState::Unavailable);
 
         QVERIFY(_helper.addClassicFolders());
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
 
-        systray->toggleSyncPaused();
+        systray->setSyncIsPaused(true);
 
         QVERIFY(_helper.firstFolder()->syncPaused());
         QVERIFY(_helper.secondFolder()->syncPaused());
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Resume);
 
-        systray->toggleSyncPaused();
+        systray->setSyncIsPaused(false);
 
         QVERIFY(!_helper.firstFolder()->syncPaused());
         QVERIFY(!_helper.secondFolder()->syncPaused());
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
+    }
+
+    void partiallyPausedFoldersCanPauseAndResumeAll()
+    {
+        const auto systray = Systray::instance();
+
+        _helper.firstFolder()->setSyncPaused(true);
+        QVERIFY(systray->syncControlState() == Systray::SyncControlState::PauseAndResume);
+
+        systray->setSyncIsPaused(false);
+        QVERIFY(!_helper.firstFolder()->syncPaused());
+        QVERIFY(!_helper.secondFolder()->syncPaused());
+        QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
+
+        _helper.firstFolder()->setSyncPaused(true);
+        QVERIFY(systray->syncControlState() == Systray::SyncControlState::PauseAndResume);
+
+        systray->setSyncIsPaused(true);
+        QVERIFY(_helper.firstFolder()->syncPaused());
+        QVERIFY(_helper.secondFolder()->syncPaused());
+        QVERIFY(systray->syncControlState() == Systray::SyncControlState::Resume);
     }
 };
 
