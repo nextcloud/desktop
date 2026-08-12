@@ -6407,127 +6407,116 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>OCC::WelcomePage</name>
     <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="99" />
-        <source>Host your own server</source>
-        <translation>Ospita il tuo server</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="58" />
-        <source>Keep your data secure and under your control</source>
-        <translation>Mantieni i tuoi dati sicuri e sotto il tuo controllo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="20" />
-        <source>Form</source>
-        <translation>Modulo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="188" />
-        <source>Log in</source>
+        <location filename="../src/gui/owncloudgui.cpp" line="428"/>
+        <source>Please sign in</source>
         <translation>Accedi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="201" />
-        <source>Sign up with provider</source>
-        <translation>Registrati a un fornitore</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
+        <source>There are no sync folders configured.</source>
+        <translation>Non è stata configurata alcuna cartella per la sincronizzazione.</translation>
     </message>
 </context>
 <context>
     <name>OCC::WizardProxySettingsDialog</name>
     <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29" />
-        <source>HTTP(S) proxy</source>
-        <translation>Proxy HTTP(S)</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
+        <source>Disconnected from %1</source>
+        <translation>Disconnesso dal %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25" />
-        <source>Hostname of proxy server</source>
-        <translation>Nome host del server proxy</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
+        <source>Unsupported Server Version</source>
+        <translation>Versione del server non supportata</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27" />
-        <source>Password for proxy server</source>
-        <translation>Password per il server proxy</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="296"/>
+        <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
+        <translation>Il server sull&apos;account %1 esegue una versione non supportata %2. L&apos;utilizzo di questo client con versioni del server non supportate non è stato verificato e è potenzialmente pericoloso. Procedi a tuo rischio.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23" />
-        <source>Proxy Settings</source>
-        <comment>Dialog window title for proxy settings</comment>
-        <translation>Impostazioni proxy</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
+        <source>Terms of service</source>
+        <translation>Termini di servizio</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30" />
-        <source>SOCKS5 proxy</source>
-        <translation>Proxy SOCKS5</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
+        <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
+        <translation>Il tuo account %1 richiede di accettare i termini di servizio del tuo server. Verrai reindirizzato a %2 per confermare di averlo letto e di accettarlo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26" />
-        <source>Username for proxy server</source>
-        <translation>Nome utente per il server proxy</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="499"/>
+        <source>%1: %2</source>
+        <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
     <name>OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225" />
-        <source>&amp;Local Folder</source>
-        <translation>Carte&amp;lla locale</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
+        <source>macOS VFS for %1: Sync is running.</source>
+        <translation>macOS VFS per %1: La sincronizzazione è in esecuzione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="674" />
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se questa casella è marcata, il contenuto della cartella locale sarà cancellato per avviare una nuova sincronizzazione dal server.&lt;/p&gt;&lt;p&gt;Non marcarla se il contenuto locale deve essere caricato nella cartella del server.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
+        <source>macOS VFS for %1: Last sync was successful.</source>
+        <translation>macOS VFS per %1: L&apos;ultima sincronizzazione è riuscita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="433" />
-        <source>Ask before syncing folders larger than</source>
-        <translation>Chiedi prima di sincronizzare cartelle più grandi di</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="509"/>
+        <source>macOS VFS for %1: A problem was encountered.</source>
+        <translation>macOS VFS per %1: Si è verificato un problema.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="331" />
-        <source>Choose different folder</source>
-        <translation>Scegli una cartella diversa</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
+        <source>macOS VFS for %1: An error was encountered.</source>
+        <translation>macOS VFS per %1: Si è verificato un errore.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="509" />
-        <source>Choose what to sync</source>
-        <translation>Scegli cosa sincronizzare</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="578"/>
+        <source>Checking for changes in remote &quot;%1&quot;</source>
+        <translation>Controllo delle modifiche in &quot;%1&quot; remoto</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="677" />
-        <source>Erase local folder and start a clean sync</source>
-        <translation>Elimina la cartella locale e inizia una sincronizzazione pulita</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
+        <source>Checking for changes in local &quot;%1&quot;</source>
+        <translation>Controllo delle modifiche in &quot;%1&quot; locale</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="658" />
-        <source>Keep local data</source>
-        <translation>Mantieni i dati locali</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="268" />
-        <source>Local Folder</source>
-        <translation>Cartella locale</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
+        <source>Internal link copied</source>
+        <translation>Link interno copiato</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459" />
-        <source>MB</source>
-        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>MB</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="872"/>
+        <source>The internal link has been copied to the clipboard.</source>
+        <translation>Il link interno è stato copiato negli appunti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="164" />
-        <source>Server address</source>
-        <translation>Indirizzo del server</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="412"/>
+        <source>Disconnected from accounts:</source>
+        <translation>Disconnesso dagli account:</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="193" />
-        <source>Sync Logo</source>
-        <translation>Sincronizza logo</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
+        <source>Account %1: %2</source>
+        <translation>Account %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="380" />
-        <source>Synchronize everything from server</source>
-        <translation>Sincronizza tutto dal server</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="432"/>
+        <source>Account synchronization is disabled</source>
+        <translation>La sincronizzazione dell&apos;account è disabilitata</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="598"/>
+        <source>%1 (%2, %3)</source>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="145" />
