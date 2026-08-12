@@ -74,6 +74,8 @@ signals:
     void fileActivityCommandReceived(const QString &localPath);
     void fileActionsCommandReceived(const QString &localPath);
     void governanceLabelsCommandReceived(OCC::AccountPtr account, const QString &filePath, const QString &fileId);
+    void resolveConflictCommandReceived(const QString &conflictedPath, const QString &basePath, const QString &baseName, const QString &folderAlias);
+    void moveItemCommandReceived(const QString &localPath, const QString &defaultTarget);
 
 private slots:
     void slotNewConnection();

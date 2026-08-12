@@ -6650,6 +6650,11 @@ Servidor respondeu com erro: %2</translation>
         <translation>Verificando alterações na pasta local &quot;%1&quot;</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Internal link copied</source>
         <translation>Link interno copiado</translation>

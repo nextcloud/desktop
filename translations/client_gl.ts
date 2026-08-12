@@ -6651,6 +6651,11 @@ O servidor respondeu co erro: %2</translation>
         <translation>Comprobando os cambios no cartafol local «%1»</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Internal link copied</source>
         <translation>Ligazón interna copiada</translation>
