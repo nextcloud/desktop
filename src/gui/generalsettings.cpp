@@ -877,6 +877,13 @@ void GeneralSettings::customizeStyle()
                         + QStringLiteral("QFrame { font-size: %1; font-weight: %2; color: %3; }")
                               .arg(WLTheme.settingsTextSize(), WLTheme.settingsTitleWeight600(), WLTheme.black()));
 
+    const auto titleStyle = QStringLiteral("QLabel { font-size: %1; font-weight: %2; color: %3; }")
+                                 .arg(WLTheme.settingsTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.black());
+    _ui->generalGroupBoxTitle->setStyleSheet(titleStyle);
+    _ui->advancedGroupBoxTitle->setStyleSheet(titleStyle);
+    _ui->updateGroupBoxTitle->setStyleSheet(titleStyle);
+    _ui->dataProtectionGroupBoxTitle->setStyleSheet(titleStyle);
+
     _ui->sendNecessaryData_checkbox->setChecked(true);
     _ui->sendNecessaryData_checkbox->setStyleSheet(QStringLiteral("QCheckBox { font-size: %1; font-weight: %2; color: %3; }")
                                                        .arg(WLTheme.settingsTextSize(), WLTheme.settingsTitleWeight600(), WLTheme.folderWizardSubtitleColor()));

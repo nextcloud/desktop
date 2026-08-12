@@ -13,7 +13,7 @@
         <property name="windowTitle">
             <string notr="true">Form</string>
         </property>
-        <layout class="QVBoxLayout" name="gridLayout_3">
+        <layout class="QGridLayout" name="gridLayout_3">
             <!-- General Settings -->
             <property name="leftMargin">
                 <number>24</number>
@@ -27,10 +27,13 @@
             <property name="bottomMargin">
                 <number>24</number>
             </property>
-            <item>
+            <property name="spacing">
+                <number>16</number>
+            </property>
+            <item row="0" column="0">
                 <widget class="QGroupBox" name="generalGroupBox">
                     <property name="title">
-                        <string>General Settings</string>
+                        <string/>
                     </property>
                     <property name="font">
                         <font>
@@ -46,6 +49,18 @@
                         <property name="topMargin">
                             <number>0</number>
                         </property>
+                        <item>
+                            <widget class="QLabel" name="generalGroupBoxTitle">
+                                <property name="font">
+                                    <font>
+                                        <bold>true</bold>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>General Settings</string>
+                                </property>
+                            </widget>
+                        </item>
                         <item>
                             <widget class="QCheckBox" name="autostartCheckBox">
                                 <property name="text">
@@ -87,29 +102,25 @@
                     </layout>
                 </widget>
             </item>
-            <item>
-                <spacer name="verticalSpacer_updates">
-                    <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>QSizePolicy::Fixed</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                        <size>
-                            <width>20</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                </spacer>
-            </item>
             <!-- Advanced -->
-            <item>
+            <item row="1" column="0">
                 <widget class="QGroupBox" name="advancedGroupBox">
                     <property name="title">
-                        <string>Advanced</string>
+                        <string/>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout">
+                        <item>
+                            <widget class="QLabel" name="advancedGroupBoxTitle">
+                                <property name="font">
+                                    <font>
+                                        <bold>true</bold>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Advanced</string>
+                                </property>
+                            </widget>
+                        </item>
                         <item>
                             <layout class="QVBoxLayout" name="verticalLayout_4">
                                 <property name="spacing">
@@ -344,27 +355,11 @@
                     </layout>
                 </widget>
             </item>
-            <item>
-                <spacer name="verticalSpacer_1">
-                    <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                        <size>
-                            <width>20</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                    <property name="sizeType" stdset="0">
-                        <enum>QSizePolicy::Minimum</enum>
-                    </property>
-                </spacer>
-            </item>
             <!-- Updates -->
-            <item>
+            <item row="2" column="0">
                 <widget class="QGroupBox" name="updateGroupBox">
                     <property name="title">
-                        <string>Updates</string>
+                        <string/>
                     </property>
                     <property name="font">
                         <font>
@@ -374,6 +369,18 @@
                         <property name="topMargin">
                             <number>0</number>
                         </property>
+                        <item>
+                            <widget class="QLabel" name="updateGroupBoxTitle">
+                                <property name="font">
+                                    <font>
+                                        <bold>true</bold>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Updates</string>
+                                </property>
+                            </widget>
+                        </item>
                         <item>
                             <widget class="QCheckBox" name="autoCheckForUpdatesCheckBox">
                                 <property name="sizePolicy">
@@ -420,25 +427,8 @@
                     </layout>
                 </widget>
             </item>
-            <!-- verticalSpacer -->
-            <item>
-                <spacer name="verticalSpacer_2">
-                    <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>QSizePolicy::Fixed</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                        <size>
-                            <width>20</width>
-                            <height>10</height>
-                        </size>
-                    </property>
-                </spacer>
-            </item>
             <!-- About and Updates -->
-            <item>
+            <item row="3" column="0">
                 <widget class="QFrame" name="updates_frame">
                     <layout class="QVBoxLayout" name="verticalLayout_3">
                         <item>
@@ -602,15 +592,27 @@
                 </widget>
             </item>
             <!-- Data Protection -->
-            <item>
+            <item row="4" column="0">
                 <widget class="QGroupBox" name="dataprotection_groupbox">
                     <property name="title">
-                        <string>Data Protection</string>
+                        <string/>
                     </property>
                     <layout class="QVBoxLayout" name="dataProtectionBoxLayout">
                         <property name="topMargin">
                             <number>0</number>
                         </property>
+                        <item>
+                            <widget class="QLabel" name="dataProtectionGroupBoxTitle">
+                                <property name="font">
+                                    <font>
+                                        <bold>true</bold>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Data Protection</string>
+                                </property>
+                            </widget>
+                        </item>
                         <item>
                             <layout class="QVBoxLayout" name="necessaryDataLayout">
                                 <item>
@@ -707,7 +709,7 @@
                 </widget>
             </item>
             <!-- Footer -->
-            <item>
+            <item row="5" column="0">
                 <widget class="QFrame" name="footer_frame">
                     <layout class="QHBoxLayout">
                         <item>
@@ -745,6 +747,19 @@
                         </item>
                     </layout>
                 </widget>
+            </item>
+            <item row="6" column="0">
+                <spacer name="verticalSpacer">
+                    <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                        <size>
+                            <width>20</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                </spacer>
             </item>
         </layout>
     </widget>
