@@ -83,11 +83,12 @@ public:
     enum class WindowPosition { Default, Center };
     Q_ENUM(WindowPosition);
 
-    /** @brief Action offered by the global tray synchronization control. */
+    /** @brief Actions offered by the global tray synchronization control. */
     enum class SyncControlState {
         Unavailable, //!< No classic synchronization folders are configured.
-        Pause, //!< At least one classic synchronization folder is not paused.
+        Pause, //!< All classic synchronization folders are running.
         Resume, //!< All classic synchronization folders are paused.
+        PauseAndResume, //!< Some classic synchronization folders are paused and others are running.
     };
     Q_ENUM(SyncControlState);
 
@@ -99,7 +100,7 @@ public:
 
     [[nodiscard]] bool syncIsPaused() const;
     [[nodiscard]] bool anySyncFolders() const;
-    /** @brief Returns the action that the global tray synchronization control should offer. */
+    /** @brief Returns the actions that the global tray synchronization control should offer. */
     [[nodiscard]] SyncControlState syncControlState() const;
     [[nodiscard]] bool isOpen() const;
     [[nodiscard]] bool isActivitySurfaceVisible() const;
@@ -169,8 +170,6 @@ public slots:
     void showUserStatusWindow(int userIndex);
 
     void setSyncIsPaused(const bool syncIsPaused);
-    /** @brief Pauses or resumes every configured classic synchronization folder. */
-    void toggleSyncPaused();
     void setIsOpen(const bool isOpen);
 
     void createShareDialog(const QString &localPath);
