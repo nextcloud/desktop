@@ -194,11 +194,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->setExclusive(true);
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
-    QAction *newAccountAction = createColorAwareAction(WLTheme.plusIcon("qtwidget"), tr("New account"));
-    _actionGroup->addAction(newAccountAction);
-    _toolBar->addAction(newAccountAction);
-    connect(newAccountAction, &QAction::triggered, _gui, &ownCloudGui::slotNewAccountWizard);
-
 #ifndef IONOS_BUILD
     // Adds space between users + activities and general + network actions
     auto *spacer = new QWidget();
@@ -335,7 +330,7 @@ void SettingsDialog::showFirstPage()
     }
     QList<QAction *> actions = _toolBar->actions();
     if (!actions.empty()) {
-        actions.at(1)->trigger();
+        actions.first()->trigger();
     }
 }
 
