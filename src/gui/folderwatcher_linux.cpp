@@ -119,6 +119,8 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
     }
 }
 
+// Reads and processes pending inotify events for this watcher, updating
+// watches recursively for created/removed subfolders as needed.
 void FolderWatcherPrivate::slotReceivedNotification(int fd)
 {
     int len = 0;
@@ -127,24 +129,32 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
     int error = 0;
     QVarLengthArray<char, 2048> buffer(2048);
 
-    len = read(fd, buffer.data(), buffer.size());
-    error = errno;
-    /**
-      * From inotify documentation:
-      *
-      * The behavior when the buffer given to read(2) is too
-      * small to return information about the next event
-      * depends on the kernel version: in kernels  before 2.6.21,
-      * read(2) returns 0; since kernel 2.6.21, read(2) fails with
-      * the error EINVAL.
-      */
-    while (len < 0 && error == EINVAL) {
-        // double the buffer size
-        buffer.resize(buffer.size() * 2);
-
-        /* and try again ... */
+    for (;;) {
         len = read(fd, buffer.data(), buffer.size());
+        if (len >= 0) {
+            break;
+        }
+
         error = errno;
+
+        if (error == EINTR) {
+            // Interrupted by a signal; just retry.
+            continue;
+        }
+
+        if (error == EAGAIN || error == EWOULDBLOCK) {
+            // No data available right now (only possible if fd were non-blocking).
+            return;
+        }
+
+        if (error != EINVAL) {
+            qCWarning(lcFolderWatcher)
+                << "Failed to read inotify events:" << strerror(error);
+            return;
+        }
+        
+        // Buffer too small for the next event: grow it and retry.
+        buffer.resize(buffer.size() * 2);
     }
 
     // iterate events in buffer
