@@ -136,6 +136,26 @@ WizardStyledWindow {
                             color: palette.text
                             Layout.fillWidth: true
                         }
+
+                        ToolButton {
+                            visible: dialog.selectedShare !== null
+                            enabled: !sharingController.destroyingShare
+                            display: AbstractButton.IconOnly
+                            icon.source: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
+                            Accessible.name: qsTr("Delete share")
+                            ToolTip.visible: hovered
+                            ToolTip.text: Accessible.name
+
+                            onClicked: deleteShareConfirmation.open()
+                        }
+                    }
+
+                    EnforcedPlainTextLabel {
+                        Layout.fillWidth: true
+                        text: sharingController.shareDestructionError
+                        color: Style.wizardErrorText
+                        wrapMode: Text.Wrap
+                        visible: text.length > 0
                     }
 
                     Item {
@@ -170,6 +190,39 @@ WizardStyledWindow {
         ShareDetailsPage {
             sharingController: sharingController
             share: dialog.selectedShare
+        }
+    }
+
+    Dialog {
+        id: deleteShareConfirmation
+
+        anchors.centerIn: parent
+        modal: true
+        title: qsTr("Delete share?")
+
+        EnforcedPlainTextLabel {
+            width: parent.width
+            text: qsTr("This removes the share and its access for all recipients.")
+            wrapMode: Text.Wrap
+        }
+
+        footer: DialogButtonBox {
+            Button {
+                text: qsTr("Delete")
+                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+                onClicked: deleteShareConfirmation.accept()
+            }
+
+            Button {
+                text: qsTr("Cancel")
+                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+                onClicked: deleteShareConfirmation.reject()
+            }
+        }
+
+        onAccepted: {
+            sharingController.destroyShare(dialog.selectedShare)
+            close()
         }
     }
 

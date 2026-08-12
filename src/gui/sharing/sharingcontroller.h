@@ -26,6 +26,8 @@ class SharingController : public QObject
     Q_PROPERTY(QList<Share *> shares READ shares NOTIFY sharesChanged)
     Q_PROPERTY(bool creatingShare READ creatingShare NOTIFY creatingShareChanged)
     Q_PROPERTY(QString shareCreationError READ shareCreationError NOTIFY shareCreationErrorChanged)
+    Q_PROPERTY(bool destroyingShare READ destroyingShare NOTIFY destroyingShareChanged)
+    Q_PROPERTY(QString shareDestructionError READ shareDestructionError NOTIFY shareDestructionErrorChanged)
 
 public:
     SharingController(QObject *parent = nullptr);
@@ -42,6 +44,12 @@ public:
 
     /** @brief Returns the last share creation error, or an empty string after a new attempt starts. */
     [[nodiscard]] QString shareCreationError() const;
+
+    /** @brief Returns whether a share is currently being deleted. */
+    [[nodiscard]] bool destroyingShare() const;
+
+    /** @brief Returns the last share deletion error, or an empty string after a new attempt starts. */
+    [[nodiscard]] QString shareDestructionError() const;
 
     /**
      * @brief Loads all shares associated with a file without creating a share.
@@ -110,6 +118,12 @@ Q_SIGNALS:
     /** @brief Emitted when shareCreationError changes. */
     void shareCreationErrorChanged();
 
+    /** @brief Emitted when destroyingShare changes. */
+    void destroyingShareChanged();
+
+    /** @brief Emitted when shareDestructionError changes. */
+    void shareDestructionErrorChanged();
+
     /** @brief Emitted after a recipient was added and the Share was updated. */
     void recipientAdded(Share *share);
 
@@ -145,6 +159,8 @@ private:
     QList<Share *> _shares;
     bool _creatingShare = false;
     QString _shareCreationError;
+    bool _destroyingShare = false;
+    QString _shareDestructionError;
 
     [[nodiscard]] bool containsShare(const Share *share) const;
     void addSourceAfterCreation(QPointer<Share> share, const QString &fileId);
@@ -152,6 +168,8 @@ private:
     void failShareCreation(const QString &error, QPointer<Share> share = {});
     void setCreatingShare(bool creatingShare);
     void setShareCreationError(const QString &error);
+    void setDestroyingShare(bool destroyingShare);
+    void setShareDestructionError(const QString &error);
     void replaceShares(const QList<Share *> &shares);
 };
 

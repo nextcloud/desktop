@@ -81,6 +81,16 @@ QString SharingController::shareCreationError() const
     return _shareCreationError;
 }
 
+bool SharingController::destroyingShare() const
+{
+    return _destroyingShare;
+}
+
+QString SharingController::shareDestructionError() const
+{
+    return _shareDestructionError;
+}
+
 void SharingController::initialize(const QString &fileId)
 {
     if (!_account) {
@@ -159,11 +169,34 @@ void SharingController::destroyShare(Share *share)
         return;
     }
 
+    if (_destroyingShare) {
+        qCDebug(lcSharingController) << "ignoring attempt to destroy a share while another deletion is in progress";
+        return;
+    }
+
+    setShareDestructionError({});
+    setDestroyingShare(true);
+    const auto guardedShare = QPointer<Share>{share};
     const auto job = new DestroyShareJob{_account, share->id()};
-    connect(job, &DestroyShareJob::jobFinished, this, [this, share](const QJsonDocument &, int) {
+    connect(job, &DestroyShareJob::jobFinished, this, [this, guardedShare](const QJsonDocument &, int) {
+        if (!guardedShare) {
+            setDestroyingShare(false);
+            return;
+        }
+
+        const auto share = guardedShare.data();
         _shares.removeAll(share);
+        setDestroyingShare(false);
         share->deleteLater();
         Q_EMIT sharesChanged();
+    });
+    connect(job, &DestroyShareJob::ocsError, this, [this](int, const QString &message) {
+        setShareDestructionError(message.isEmpty() ? tr("Could not delete the share.") : message);
+        setDestroyingShare(false);
+    });
+    connect(job, &DestroyShareJob::networkError, this, [this](const QNetworkReply *reply) {
+        setShareDestructionError(reply ? reply->errorString() : tr("Could not delete the share."));
+        setDestroyingShare(false);
     });
     job->start();
 }
@@ -456,6 +489,24 @@ void SharingController::setShareCreationError(const QString &error)
     }
     _shareCreationError = error;
     Q_EMIT shareCreationErrorChanged();
+}
+
+void SharingController::setDestroyingShare(bool destroyingShare)
+{
+    if (_destroyingShare == destroyingShare) {
+        return;
+    }
+    _destroyingShare = destroyingShare;
+    Q_EMIT destroyingShareChanged();
+}
+
+void SharingController::setShareDestructionError(const QString &error)
+{
+    if (_shareDestructionError == error) {
+        return;
+    }
+    _shareDestructionError = error;
+    Q_EMIT shareDestructionErrorChanged();
 }
 
 void SharingController::replaceShares(const QList<Share *> &shares)
