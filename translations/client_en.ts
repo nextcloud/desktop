@@ -16,17 +16,17 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="250" />
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="310" />
         <source>Dismiss</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="226" />
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="264" />
         <source>File actions</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="217" />
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="228" />
         <source>File details</source>
         <translation type="unfinished" />
     </message>
@@ -432,6 +432,69 @@
         <location filename="../src/gui/folderwizardtargetpage.ui" line="53" />
         <source>Step 2 of 3: Directory in your %1</source>
         <translation>Step 2 of 3: Directory in your %1</translation>
+    </message>
+</context>
+<context>
+    <name>MainWindow</name>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="531" />
+        <source>Ask Assistant…</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="465" />
+        <source>Cancel</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="357" />
+        <source>Issue with account %1</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="359" />
+        <source>Issues with several accounts</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="271" />
+        <source>Main content</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="876" />
+        <source>New activities</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="461" />
+        <source>New conversation</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="559" />
+        <source>Send assistant question</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="580" />
+        <source>Start a new assistant chat</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="441" />
+        <source>Start new conversation?</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="486" />
+        <source>This will clear the existing conversation.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="805" />
+        <source>Unified search results list</source>
+        <translation type="unfinished" />
     </message>
 </context>
 <context>
@@ -5160,28 +5223,28 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="194" />
+        <location filename="../src/gui/settingsdialog.cpp" line="188" />
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="374" />
+        <location filename="../src/gui/settingsdialog.cpp" line="368" />
         <source>Account</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="216" />
+        <location filename="../src/gui/settingsdialog.cpp" line="210" />
         <source>General</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="203" />
+        <location filename="../src/gui/settingsdialog.cpp" line="197" />
         <source>New account</source>
         <translation>New Account</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="621" />
+        <location filename="../src/gui/settingsdialog.cpp" line="615" />
         <source>Settings</source>
         <translation type="unfinished">Settings</translation>
     </message>
@@ -7005,17 +7068,17 @@ Server replied with error: %2</source>
 <context>
     <name>SesTrayHeader</name>
     <message>
-        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="51" />
+        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="54" />
         <source>Open Nextcloud in browser</source>
         <translation>Open HiDrive Next in browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="66" />
+        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="69" />
         <source>Open local or team folders</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="46" />
+        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="49" />
         <source>Website</source>
         <translation>Website</translation>
     </message>
@@ -7174,22 +7237,22 @@ Server replied with error: %2</source>
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="124" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="125" />
         <source>Open browser</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="135" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="136" />
         <source>Open settings</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="111" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="112" />
         <source>Resolve conflicts</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="94" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="95" />
         <source>Sync now</source>
         <translation type="unfinished" />
     </message>
@@ -7484,19 +7547,19 @@ Server replied with error: %2</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="208" />
-        <location filename="../src/gui/tray/UserLine.qml" line="219" />
+        <location filename="../src/gui/tray/UserLine.qml" line="207" />
+        <location filename="../src/gui/tray/UserLine.qml" line="218" />
         <source>Log in</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="208" />
-        <location filename="../src/gui/tray/UserLine.qml" line="219" />
+        <location filename="../src/gui/tray/UserLine.qml" line="207" />
+        <location filename="../src/gui/tray/UserLine.qml" line="218" />
         <source>Log out</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="262" />
+        <location filename="../src/gui/tray/UserLine.qml" line="261" />
         <source>Remove account</source>
         <translation type="unfinished" />
     </message>

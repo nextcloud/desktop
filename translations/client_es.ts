@@ -16,17 +16,17 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="250" />
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="310" />
         <source>Dismiss</source>
         <translation>Descartar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="226" />
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="264" />
         <source>File actions</source>
         <translation>Acciones del archivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="217" />
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="228" />
         <source>File details</source>
         <translation>Detalles del archivo</translation>
     </message>
@@ -432,6 +432,69 @@
         <location filename="../src/gui/folderwizardtargetpage.ui" line="53" />
         <source>Step 2 of 3: Directory in your %1</source>
         <translation>Paso 2 de 3: Directorio en su %1</translation>
+    </message>
+</context>
+<context>
+    <name>MainWindow</name>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="531" />
+        <source>Ask Assistant…</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="465" />
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="357" />
+        <source>Issue with account %1</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="359" />
+        <source>Issues with several accounts</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="271" />
+        <source>Main content</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="876" />
+        <source>New activities</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="461" />
+        <source>New conversation</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="559" />
+        <source>Send assistant question</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="580" />
+        <source>Start a new assistant chat</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="441" />
+        <source>Start new conversation?</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="486" />
+        <source>This will clear the existing conversation.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="805" />
+        <source>Unified search results list</source>
+        <translation type="unfinished" />
     </message>
 </context>
 <context>
@@ -5192,28 +5255,28 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="194" />
+        <location filename="../src/gui/settingsdialog.cpp" line="188" />
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation>Configuración de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="374" />
+        <location filename="../src/gui/settingsdialog.cpp" line="368" />
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="216" />
+        <location filename="../src/gui/settingsdialog.cpp" line="210" />
         <source>General</source>
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="203" />
+        <location filename="../src/gui/settingsdialog.cpp" line="197" />
         <source>New account</source>
         <translation>Nueva cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="621" />
+        <location filename="../src/gui/settingsdialog.cpp" line="615" />
         <source>Settings</source>
         <translation>Ajustes</translation>
     </message>
@@ -6409,116 +6472,112 @@ El servidor respondió con el error: %2</translation>
 <context>
     <name>OCC::WelcomePage</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="428"/>
-        <source>Please sign in</source>
-        <translation>Por favor, inicie sesión</translation>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="99" />
+        <source>Host your own server</source>
+        <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
-        <source>There are no sync folders configured.</source>
-        <translation>No hay carpetas configuradas para sincronizar.</translation>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="58" />
+        <source>Keep your data secure and under your control</source>
+        <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
-        <source>Disconnected from %1</source>
-        <translation>Desconectado de %1</translation>
+        <location filename="../src/gui/wizard/welcomepage.ui" line="20" />
+        <source>Form</source>
+        <translation type="unfinished">Formulario</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
-        <source>Unsupported Server Version</source>
-        <translation>Versión del servidor no soportada</translation>
+        <location filename="../src/gui/wizard/welcomepage.ui" line="188" />
+        <source>Log in</source>
+        <translation type="unfinished">Iniciar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="296"/>
-        <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>El servidor en la cuenta %1 usa una versión no soportada %2. El uso de este cliente con versiones de servidor no soportadas no ha sido probado y es potencialmente peligroso. Continúa bajo tu propio riesgo.</translation>
+        <location filename="../src/gui/wizard/welcomepage.ui" line="201" />
+        <source>Sign up with provider</source>
+        <translation type="unfinished" />
     </message>
 </context>
 <context>
     <name>OCC::WizardProxySettingsDialog</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
-        <source>Terms of service</source>
-        <translation>Términos de servicio</translation>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29" />
+        <source>HTTP(S) proxy</source>
+        <translation type="unfinished">Proxy HTTP(S)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
-        <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation>Su cuenta %1 requiere que acepte los términos de servicio de su servidor. Será redirigido a %2 para indicar que los ha leído y está de acuerdo.</translation>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25" />
+        <source>Hostname of proxy server</source>
+        <translation type="unfinished">Nombre del host para servidor proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="499"/>
-        <source>%1: %2</source>
-        <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
-        <translation>%1:%2</translation>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27" />
+        <source>Password for proxy server</source>
+        <translation type="unfinished">Contraseña para el servidor proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
-        <source>macOS VFS for %1: Sync is running.</source>
-        <translation>macOS VFS para %1: Sincronización en progreso.</translation>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23" />
+        <source>Proxy Settings</source>
+        <comment>Dialog window title for proxy settings</comment>
+        <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
-        <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation>macOS VFS para %1: la última sincronización fue exitosa.</translation>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30" />
+        <source>SOCKS5 proxy</source>
+        <translation type="unfinished">Proxy SOCKS5</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="509"/>
-        <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation>macOS VFS para %1: Se ha encontrado un problema.</translation>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26" />
+        <source>Username for proxy server</source>
+        <translation type="unfinished">Nombre de usuario para el servidor proxy</translation>
     </message>
 </context>
 <context>
     <name>OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
-        <source>macOS VFS for %1: An error was encountered.</source>
-        <translation>macOS VFS para %1: Se encontró un error.</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225" />
+        <source>&amp;Local Folder</source>
+        <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="578"/>
-        <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Buscando cambios en carpeta remota &quot;%1&quot;</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="674" />
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si esta casilla está marcada, el contenido existente en la carpeta local se borrará para iniciar una sincronización limpia desde el servidor.&lt;/p&gt;&lt;p&gt;No marque esta casilla si el contenido local debe cargarse en la carpeta de los servidores.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
-        <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Buscando cambios en carpeta local &quot;%1&quot;</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="433" />
+        <source>Ask before syncing folders larger than</source>
+        <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
-        <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="331" />
+        <source>Choose different folder</source>
+        <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
-        <source>Internal link copied</source>
-        <translation>Enlace interno copiado</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="509" />
+        <source>Choose what to sync</source>
+        <translation type="unfinished">Elija qué sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="872"/>
-        <source>The internal link has been copied to the clipboard.</source>
-        <translation>El enlace interno ha sido copiado al portapapeles</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="677" />
+        <source>Erase local folder and start a clean sync</source>
+        <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="412"/>
-        <source>Disconnected from accounts:</source>
-        <translation>Desconectado desde cuentas:</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="658" />
+        <source>Keep local data</source>
+        <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
-        <source>Account %1: %2</source>
-        <translation>Cuenta %1: %2</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="268" />
+        <source>Local Folder</source>
+        <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="432"/>
-        <source>Account synchronization is disabled</source>
-        <translation>La sincronización está deshabilitada</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="598"/>
-        <source>%1 (%2, %3)</source>
-        <translation>%1 (%2, %3)</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459" />
+        <source>MB</source>
+        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
+        <translation type="unfinished">MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="164" />
@@ -7043,17 +7102,17 @@ El servidor respondió con el error: %2</translation>
 <context>
     <name>SesTrayHeader</name>
     <message>
-        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="51" />
+        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="54" />
         <source>Open Nextcloud in browser</source>
         <translation>Abrir HiDrive Next en el navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="66" />
+        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="69" />
         <source>Open local or team folders</source>
         <translation type="unfinished">Abrir carpetas locales o de equipo</translation>
     </message>
     <message>
-        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="46" />
+        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="49" />
         <source>Website</source>
         <translation>Sitio web</translation>
     </message>
@@ -7212,22 +7271,22 @@ El servidor respondió con el error: %2</translation>
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="124" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="125" />
         <source>Open browser</source>
         <translation>Abrir navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="135" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="136" />
         <source>Open settings</source>
         <translation>Abirir ajustes</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="111" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="112" />
         <source>Resolve conflicts</source>
         <translation>Resolver conflictos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="94" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="95" />
         <source>Sync now</source>
         <translation>Sincronizar ahora</translation>
     </message>
@@ -7522,19 +7581,19 @@ El servidor respondió con el error: %2</translation>
         <translation>El estado de sincronización de la cuenta requiere atención</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="208" />
-        <location filename="../src/gui/tray/UserLine.qml" line="219" />
+        <location filename="../src/gui/tray/UserLine.qml" line="207" />
+        <location filename="../src/gui/tray/UserLine.qml" line="218" />
         <source>Log in</source>
         <translation>Iniciar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="208" />
-        <location filename="../src/gui/tray/UserLine.qml" line="219" />
+        <location filename="../src/gui/tray/UserLine.qml" line="207" />
+        <location filename="../src/gui/tray/UserLine.qml" line="218" />
         <source>Log out</source>
         <translation>Cerrar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="262" />
+        <location filename="../src/gui/tray/UserLine.qml" line="261" />
         <source>Remove account</source>
         <translation type="unfinished">Eliminar cuenta</translation>
     </message>
