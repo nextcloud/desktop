@@ -505,12 +505,6 @@ void SettingsDialog::customizeStyle()
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
         if (btn) {
-            Q_FOREACH (auto ai, AccountManager::instance()->accounts()) {
-                if (a->text().contains(ai->account()->displayName())) {
-                    btn->setFixedWidth(164);
-                }
-            }
-
             btn->setIcon(icon);
         }
     }
@@ -580,7 +574,7 @@ public:
         QString objectName = QLatin1String("settingsdialog_toolbutton_");
         objectName += text();
         btn->setObjectName(objectName);
-        btn->setFixedSize(158, 94);
+        btn->setFixedHeight(94);
         btn->setDefaultAction(this);
         btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         btn->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
