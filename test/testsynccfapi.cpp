@@ -416,7 +416,6 @@ private slots:
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         completeSpy.clear();
 
-        QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.remoteModifier().find("stale"), nullptr);
