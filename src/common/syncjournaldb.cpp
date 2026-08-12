@@ -4,6 +4,16 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+
+#include "syncjournaldb.h"
+
+#include "version.h"
+#include "filesystembase.h"
+#include "common/asserts.h"
+#include "common/checksums.h"
+#include "common/preparedsqlquerymanager.h"
+#include "common/c_jhash.h"
+
 #include <QCryptographicHash>
 #include <QFile>
 #include <QJsonArray>
@@ -13,17 +23,10 @@
 #include <QElapsedTimer>
 #include <QUrl>
 #include <QDir>
+
 #include <sqlite3.h>
+
 #include <cstring>
-
-#include "common/syncjournaldb.h"
-#include "version.h"
-#include "filesystembase.h"
-#include "common/asserts.h"
-#include "common/checksums.h"
-#include "common/preparedsqlquerymanager.h"
-
-#include "common/c_jhash.h"
 
 // SQL expression to check whether path.startswith(prefix + '/')
 // Note: '/' + 1 == '0'
@@ -3311,3 +3314,5 @@ QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus
 }
 
 } // namespace OCC
+
+#include "moc_syncjournaldb.cpp"

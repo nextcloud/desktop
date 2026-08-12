@@ -195,3 +195,5 @@ void PropagateUploadEncrypted::slotUploadMetadataFinished(int statusCode, const 
 }
 
 } // namespace OCC
+
+#include "moc_propagateuploadencrypted.cpp"

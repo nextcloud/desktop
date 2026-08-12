@@ -87,3 +87,5 @@ void UpdateMigratedE2eeMetadataJob::addSubJobItem(const QString &key, const Sync
 }
 
 }
+
+#include "moc_updatemigratede2eemetadatajob.cpp"

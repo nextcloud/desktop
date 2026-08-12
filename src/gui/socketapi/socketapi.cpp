@@ -1766,3 +1766,4 @@ void SocketApiJob::reject(const QString &response)
 } // namespace OCC
 
 #include "socketapi.moc"
+#include "moc_socketapi_p.cpp"

@@ -119,3 +119,5 @@ QString PropagateDownloadEncrypted::errorString() const
 }
 
 }
+
+#include "moc_propagatedownloadencrypted.cpp"
