@@ -173,6 +173,14 @@ private slots:
         QCOMPARE(source.read(QStringLiteral("autoUpdateCheck"), QStringLiteral("Accounts"))->toBool(), false);
         QVERIFY(!source.read(QStringLiteral("missing"), QString()).has_value());
     }
+
+    // The platform adapters read real OS stores, so they cannot be exercised on
+    // the Linux test build. This only checks the factory compiles and runs.
+    void testBuildDeviceSourcesReturnsSources()
+    {
+        const auto sources = buildDeviceSources();
+        QVERIFY(!sources.empty());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestManagedSettings)
