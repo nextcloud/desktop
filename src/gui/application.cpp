@@ -167,29 +167,7 @@ bool Application::configVersionMigration()
         return true;
     }
 
-    // 'Launch on system startup' defaults to true > 3.11.x
-    const auto theme = Theme::instance();
-    configFile.setLaunchOnSystemStartup(configFile.launchOnSystemStartup());
-    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), configFile.launchOnSystemStartup());
-
-    // default is now off to displaying dialog warning user of too many files deletion
-    configFile.setPromptDeleteFiles(false);
-
-    // back up all old config files
-    QStringList backupFilesList;
-    QDir configDir(configFile.configPath());
-    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
-    for (const auto &oldConfig : anyConfigFileNameList) {
-        const auto oldConfigFileName = oldConfig.fileName();
-        const auto oldConfigFilePath = oldConfig.filePath();
-        const auto newConfigFileName = configFile.configFile();
-        backupFilesList.append(configFile.backup(oldConfigFileName));
-        if (oldConfigFilePath != newConfigFileName) {
-            if (!QFile::rename(oldConfigFilePath, newConfigFileName)) {
-                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
-            }
-        }
-    }
+    const auto backupFilesList = configFile.backupConfigFiles();
 
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
