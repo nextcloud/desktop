@@ -6651,6 +6651,11 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Ag seiceáil le haghaidh athruithe i logánta &quot;% 1&quot;</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Internal link copied</source>
         <translation>Nasc inmheánach cóipeáilte</translation>
