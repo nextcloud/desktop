@@ -23,10 +23,15 @@ class TestSystraySyncControlQt : public QObject
 
     SystraySyncControlTestHelper _helper;
 
-    static QAction *syncControlAction(QMenu &menu, Systray *systray)
+    static QAction *pauseSyncAction(QMenu &menu, Systray *systray)
     {
         setupQtTrayContextMenu(&menu, systray);
-        return menu.findChild<QAction *>(QStringLiteral("traySyncControlAction"));
+        return menu.findChild<QAction *>(QStringLiteral("trayPauseSyncAction"));
+    }
+
+    static QAction *resumeSyncAction(const QMenu &menu)
+    {
+        return menu.findChild<QAction *>(QStringLiteral("trayResumeSyncAction"));
     }
 
 private slots:
@@ -46,18 +51,18 @@ private slots:
 
         // An account without classic folders is also the state used by a File Provider-only client.
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Unavailable);
-        systray->toggleSyncPaused();
-        QVERIFY(systray->syncControlState() == Systray::SyncControlState::Unavailable);
 
         auto unavailableMenu = QMenu{};
-        QVERIFY(!syncControlAction(unavailableMenu, systray));
+        QVERIFY(!pauseSyncAction(unavailableMenu, systray));
+        QVERIFY(!resumeSyncAction(unavailableMenu));
 
         QVERIFY(_helper.addClassicFolders());
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
 
         auto pauseMenu = QMenu{};
-        const auto pauseAction = syncControlAction(pauseMenu, systray);
+        const auto pauseAction = pauseSyncAction(pauseMenu, systray);
         QVERIFY(pauseAction);
+        QVERIFY(!resumeSyncAction(pauseMenu));
         QCOMPARE(pauseAction->text(), Systray::tr("Pause sync for all"));
         pauseAction->trigger();
 
@@ -66,7 +71,8 @@ private slots:
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Resume);
 
         auto resumeMenu = QMenu{};
-        const auto resumeAction = syncControlAction(resumeMenu, systray);
+        QVERIFY(!pauseSyncAction(resumeMenu, systray));
+        const auto resumeAction = resumeSyncAction(resumeMenu);
         QVERIFY(resumeAction);
         QCOMPARE(resumeAction->text(), Systray::tr("Resume sync for all"));
         resumeAction->trigger();
@@ -74,6 +80,38 @@ private slots:
         QVERIFY(!_helper.firstFolder()->syncPaused());
         QVERIFY(!_helper.secondFolder()->syncPaused());
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
+    }
+
+    void partiallyPausedFoldersOfferPauseAndResume()
+    {
+        const auto systray = Systray::instance();
+
+        _helper.firstFolder()->setSyncPaused(true);
+        QVERIFY(systray->syncControlState() == Systray::SyncControlState::PauseAndResume);
+
+        auto resumeMenu = QMenu{};
+        const auto pauseAction = pauseSyncAction(resumeMenu, systray);
+        const auto resumeAction = resumeSyncAction(resumeMenu);
+        QVERIFY(pauseAction);
+        QVERIFY(resumeAction);
+        QCOMPARE(pauseAction->text(), Systray::tr("Pause sync for all"));
+        QCOMPARE(resumeAction->text(), Systray::tr("Resume sync for all"));
+        resumeAction->trigger();
+
+        QVERIFY(!_helper.firstFolder()->syncPaused());
+        QVERIFY(!_helper.secondFolder()->syncPaused());
+        QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
+
+        _helper.firstFolder()->setSyncPaused(true);
+        auto pauseMenu = QMenu{};
+        const auto mixedPauseAction = pauseSyncAction(pauseMenu, systray);
+        QVERIFY(mixedPauseAction);
+        QVERIFY(resumeSyncAction(pauseMenu));
+        mixedPauseAction->trigger();
+
+        QVERIFY(_helper.firstFolder()->syncPaused());
+        QVERIFY(_helper.secondFolder()->syncPaused());
+        QVERIFY(systray->syncControlState() == Systray::SyncControlState::Resume);
     }
 };
 

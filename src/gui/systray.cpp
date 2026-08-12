@@ -1197,24 +1197,21 @@ bool Systray::anySyncFolders() const
 
 Systray::SyncControlState Systray::syncControlState() const
 {
-    if (!anySyncFolders()) {
+    const auto folders = FolderMan::instance()->map();
+    if (folders.isEmpty()) {
         return SyncControlState::Unavailable;
     }
-    return syncIsPaused() ? SyncControlState::Resume : SyncControlState::Pause;
-}
 
-void Systray::toggleSyncPaused()
-{
-    switch (syncControlState()) {
-    case SyncControlState::Pause:
-        setSyncIsPaused(true);
-        break;
-    case SyncControlState::Resume:
-        setSyncIsPaused(false);
-        break;
-    case SyncControlState::Unavailable:
-        break;
+    const auto anyPaused = std::any_of(std::cbegin(folders), std::cend(folders), [](const Folder *folder) {
+        return folder->syncPaused();
+    });
+    const auto anyRunning = std::any_of(std::cbegin(folders), std::cend(folders), [](const Folder *folder) {
+        return !folder->syncPaused();
+    });
+    if (anyPaused && anyRunning) {
+        return SyncControlState::PauseAndResume;
     }
+    return anyPaused ? SyncControlState::Resume : SyncControlState::Pause;
 }
 
 /********************************************************************************************/

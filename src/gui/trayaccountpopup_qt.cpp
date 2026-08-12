@@ -875,17 +875,32 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
     }
 
     const auto syncControlState = systray->syncControlState();
-    if (syncControlState != Systray::SyncControlState::Unavailable) {
-        const auto pausesSync = syncControlState == Systray::SyncControlState::Pause;
+    const auto addSyncControlAction = [menu, systray, &menuIconPalette](const bool pausesSync) {
         const auto syncControlIconUrl = pausesSync ? Theme::instance()->pause() : Theme::instance()->sync();
         const auto syncControlAction = addMenuAction(menu,
             templateIconFromIcon(iconFromUrl(syncControlIconUrl), menuIconSize, menuIconPalette),
             pausesSync ? Systray::tr("Pause sync for all") : Systray::tr("Resume sync for all"));
-        syncControlAction->setObjectName(QStringLiteral("traySyncControlAction"));
-        QObject::connect(syncControlAction, &QAction::triggered, syncControlAction, [systray] {
+        syncControlAction->setObjectName(pausesSync
+                ? QStringLiteral("trayPauseSyncAction")
+                : QStringLiteral("trayResumeSyncAction"));
+        QObject::connect(syncControlAction, &QAction::triggered, syncControlAction, [systray, pausesSync] {
             closeTrayPopup();
-            systray->toggleSyncPaused();
+            systray->setSyncIsPaused(pausesSync);
         });
+    };
+    switch (syncControlState) {
+    case Systray::SyncControlState::Pause:
+        addSyncControlAction(true);
+        break;
+    case Systray::SyncControlState::Resume:
+        addSyncControlAction(false);
+        break;
+    case Systray::SyncControlState::PauseAndResume:
+        addSyncControlAction(true);
+        addSyncControlAction(false);
+        break;
+    case Systray::SyncControlState::Unavailable:
+        break;
     }
 
     const auto settingsAction = addMenuAction(menu,
