@@ -819,3 +819,5 @@ void BulkPropagatorJob::handleJobDoneErrors(SyncFileItemPtr item,
 }
 
 }
+
+#include "moc_bulkpropagatorjob.cpp"

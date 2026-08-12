@@ -1394,3 +1394,5 @@ void PropagateDownloadFile::abort(PropagatorJob::AbortType abortType)
     }
 }
 }
+
+#include "moc_propagatedownload.cpp"
