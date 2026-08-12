@@ -326,8 +326,7 @@ void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &defaultValue) const
 {
     if (Utility::isWindows()) {
-        Migration migration;
-        const auto appName = migration.isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
+        const auto appName = Migration::isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
         // check for policies first and return immediately if a value is found.
         QSettings userPolicy(QString::fromLatin1(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)").arg(APPLICATION_VENDOR, appName),
             QSettings::NativeFormat);
@@ -381,9 +380,8 @@ QString ConfigFile::excludeFile(Scope scope) const
         return ConfigFile::excludeFileFromSystem();
     }
 
-    Migration migration;
-    const auto excludeFilePath = scope == LegacyScope 
-        ? migration.discoveredLegacyConfigPath()
+    const auto excludeFilePath = scope == LegacyScope
+        ? Migration::discoveredLegacyConfigPath()
         : configPath();
 
     // prefer sync-exclude.lst, but if it does not exist, check for exclude.lst
@@ -860,8 +858,7 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
     const QVariant &defaultValue) const
 {
     QVariant systemSetting;
-    Migration migration;
-    const auto appName = migration.isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
+    const auto appName = Migration::isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
     if (Utility::isMac()) {
         QSettings systemSettings(QLatin1String("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"), QSettings::NativeFormat);
         if (!group.isEmpty()) {
@@ -1375,13 +1372,16 @@ void ConfigFile::setMacFileProviderModeEnabled(const bool enabled)
     settings.sync();
 }
 
-QStringList ConfigFile::backupConfigFiles()
+void ConfigFile::applyMigrationDefaults()
 {
     const auto theme = Theme::instance();
     setLaunchOnSystemStartup(launchOnSystemStartup());
     Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), launchOnSystemStartup());
     setPromptDeleteFiles(false);
+}
 
+QStringList ConfigFile::backupConfigFiles()
+{
     QStringList backupFilesList;
     QDir configDir(configPath());
     const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);

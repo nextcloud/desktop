@@ -31,17 +31,12 @@ Migration::BrandingType Migration::_brandingType = BrandingType::UnbrandedToUnbr
 Migration::UpgradeType Migration::_upgradeType = UpgradeType::NoChange;
 QString Migration::_discoveredLegacyConfigPath = {};
 
-QVersionNumber Migration::currentVersion() const
+QVersionNumber Migration::currentVersion()
 {
     return QVersionNumber::fromString(MIRALL_VERSION_STRING);
 }
 
-QVersionNumber Migration::previousVersion() const
-{
-    return QVersionNumber::fromString(ConfigFile().clientPreviousVersionString());
-}
-
-QVersionNumber Migration::configVersion() const
+QVersionNumber Migration::configVersion()
 {
     return QVersionNumber::fromString(ConfigFile().clientVersionString());
 }
@@ -53,7 +48,7 @@ void Migration::setPhase(const Phase phase)
     }
 }
 
-Migration::Phase Migration::phase() const
+Migration::Phase Migration::phase()
 {
     return _phase;
 }
@@ -63,12 +58,12 @@ void Migration::setBrandingType(const BrandingType type)
     _brandingType = type;
 }
 
-Migration::BrandingType Migration::brandingType() const
+Migration::BrandingType Migration::brandingType()
 {
     return _brandingType;
 }
 
-Migration::UpgradeType Migration::upgradeType() const
+Migration::UpgradeType Migration::upgradeType()
 {
     return _upgradeType;
 }
@@ -78,41 +73,41 @@ void Migration::setUpgradeType(const UpgradeType type)
     _upgradeType = type;
 }
 
-bool Migration::isUpgrade() const
+bool Migration::isUpgrade()
 {
-    return currentVersion() > previousVersion();
+    return currentVersion() > configVersion();
 }
 
-bool Migration::isDowngrade() const
+bool Migration::isDowngrade()
 {
-    return previousVersion() > currentVersion();
+    return configVersion() > currentVersion();
 }
 
-bool Migration::versionChanged() const
+bool Migration::versionChanged()
 {
     return isUpgrade() || isDowngrade();
 }
 
-bool Migration::shouldTryUnbrandedToBrandedMigration() const
+bool Migration::shouldTryUnbrandedToBrandedMigration()
 {
     return phase() == Migration::Phase::SetupFolders
         && Theme::instance()->appName() != ConfigFile::unbrandedAppName
         && !_discoveredLegacyConfigPath.isEmpty();
 }
 
-bool Migration::isUnbrandedToBrandedMigration() const
+bool Migration::isUnbrandedToBrandedMigration()
 {
-    return isInProgress() && Theme::instance()->appName() != ConfigFile::unbrandedAppName;
+    return isInProgress() && !_discoveredLegacyConfigPath.isEmpty() && Theme::instance()->appName() != ConfigFile::unbrandedAppName;
 }
 
-bool Migration::shouldTryToMigrate() const
+bool Migration::shouldTryToMigrate()
 {
     // Migrate when the config was written by a different client version than
     // the one running now, and that difference is an actual up or downgrade.
     return configVersion() != currentVersion() && (isUpgrade() || isDowngrade());
 }
 
-bool Migration::isInProgress() const
+bool Migration::isInProgress()
 {
     const auto currentPhase = phase();
     return currentPhase != Phase::NotStarted
@@ -169,17 +164,12 @@ Migration::LegacyData Migration::legacyData()
         for (const auto &configFileString : std::as_const(legacyLocations)) {
             auto oCSettings = std::make_unique<QSettings>(configFileString, QSettings::IniFormat);
             if (oCSettings->status() != QSettings::Status::NoError) {
-                qCInfo(lcMigration) << "Error reading legacy configuration file" << oCSettings->status();
-                break;
+                qCInfo(lcMigration) << "Error reading legacy configuration file" << configFileString << oCSettings->status();
+                continue;
             }
 
             if (const QFileInfo configFileInfo(configFileString); configFileInfo.exists() && configFileInfo.isReadable()) {
-                ConfigFile configFile;
-                const auto legacyVersion = oCSettings->value(ConfigFile::clientVersionC, {}).toString();
-                configFile.setClientPreviousVersionString(legacyVersion);
-                qCInfo(lcMigration) << "Migrating from legacy version" << legacyVersion;
-                qCDebug(lcMigration) << "Copy settings" << oCSettings->allKeys().join(", ");
-                setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
+                qCInfo(lcMigration) << "Discovered legacy config at" << configFileInfo.canonicalPath();
                 legacyData = std::move(oCSettings);
                 break;
             } else {
@@ -191,7 +181,7 @@ Migration::LegacyData Migration::legacyData()
     return legacyData;
 }
 
-QString Migration::discoveredLegacyConfigPath() const
+QString Migration::discoveredLegacyConfigPath()
 {
     return _discoveredLegacyConfigPath;
 }

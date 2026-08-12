@@ -264,6 +264,7 @@ public:
     void setFileProviderDomainsAppSandboxMigrationCompleted(bool completed);
 
     [[nodiscard]] QStringList backupConfigFiles();
+    void applyMigrationDefaults();
 
     /// App-level macOS File Provider mode: when enabled, every account gets a file
     /// provider domain and classic sync folders are unavailable (the File Provider

@@ -302,10 +302,9 @@ void AccountState::checkConnectivity()
     if (!account()->credentials()->wasFetched()) {
         _waitingForNewCredentials = true;
         ConfigFile configFile;
-        Migration migration;
-        const auto shouldTryUnbrandedToBrandedMigration = migration.shouldTryUnbrandedToBrandedMigration();
+        const auto shouldTryUnbrandedToBrandedMigration = Migration::shouldTryUnbrandedToBrandedMigration();
         qCDebug(lcAccountState) << "shouldTryUnbrandedToBrandedMigration?" << shouldTryUnbrandedToBrandedMigration;
-        qCDebug(lcAccountState) << "migration Phase?" << migration.phase();
+        qCDebug(lcAccountState) << "migration Phase?" << Migration::phase();
         const auto appName = shouldTryUnbrandedToBrandedMigration ? configFile.unbrandedAppName : "";
         account()->credentials()->fetchFromKeychain(appName);
         return;
@@ -500,10 +499,8 @@ void AccountState::slotCredentialsFetched(AbstractCredentials *)
     qCInfo(lcAccountState) << "Fetched credentials for" << _account->url().toString()
                            << "attempting to connect";
     _waitingForNewCredentials = false;
-    ConfigFile configFile;
-    Migration migration;
-    if (migration.isInProgress()) {
-        migration.setPhase(Migration::Phase::Done);
+    if (Migration::isInProgress()) {
+        Migration::setPhase(Migration::Phase::Done);
     }
     checkConnectivity();
 }

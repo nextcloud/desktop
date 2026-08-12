@@ -194,8 +194,7 @@ bool AccountManager::restoreFromLegacySettings()
     auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
     auto wasLegacyImportDialogDisplayed = false;
     QStringList selectedAccountIds;
-    Migration migration;
-    if (auto legacyData = migration.legacyData(); legacyData) {
+    if (auto legacyData = Migration::legacyData(); legacyData) {
 
         const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
 
@@ -247,6 +246,10 @@ bool AccountManager::restoreFromLegacySettings()
             selectedAccountIds = childGroups;
         }
 
+        const QFileInfo legacyConfigInfo(oCSettings->fileName());
+        Migration::setDiscoveredLegacyConfigPath(legacyConfigInfo.canonicalPath());
+        ConfigFile().setClientPreviousVersionString(oCSettings->value(ConfigFile::clientVersionC).toString());
+
         settings = std::move(oCSettings);
     }
 
@@ -293,7 +296,7 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setDownloadLimit(settings->value(ConfigFile::downloadLimitC, configFile.downloadLimit()).toInt());
 
     // Try to load the single account.
-    migration.setPhase(Migration::Phase::SetupUsers);
+    Migration::setPhase(Migration::Phase::SetupUsers);
     if (!settings->childKeys().isEmpty()) {
         settings->beginGroup(accountsC);
         const auto childGroups = selectedAccountIds.isEmpty() ? settings->childGroups() : selectedAccountIds;
@@ -494,8 +497,7 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
     // Override user settings with global (QNetworkProxy::DefaultProxy) settings 
     // if user is set to use global settings
     ConfigFile configFile;
-    Migration migration;
-    if (accountProxyType == QNetworkProxy::DefaultProxy && migration.isInProgress()) {
+    if (accountProxyType == QNetworkProxy::DefaultProxy && Migration::isInProgress()) {
         accountProxyType = static_cast<QNetworkProxy::ProxyType>(configFile.proxyType());
         accountProxyHost = configFile.proxyHostName();
         accountProxyPort = configFile.proxyPort();
@@ -643,9 +645,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
     ConfigFile configFile;
-    Migration migration;
     const auto proxyPasswordKey = QString(acc->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
-    const auto appName = migration.isUnbrandedToBrandedMigration() ? ConfigFile::unbrandedAppName
+    const auto appName = Migration::isUnbrandedToBrandedMigration() ? ConfigFile::unbrandedAppName
         : Theme::instance()->appName();
     const auto job = new QKeychain::ReadPasswordJob(appName, this);
     job->setKey(proxyPasswordKey);

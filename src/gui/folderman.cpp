@@ -440,8 +440,7 @@ int FolderMan::setupFoldersMigration()
     auto configPath = _folderConfigPath;
 
 #if !DISABLE_ACCOUNT_MIGRATION
-    Migration migration;
-    if (const auto legacyConfigPath = migration.discoveredLegacyConfigPath(); !legacyConfigPath.isEmpty()) {
+    if (const auto legacyConfigPath = Migration::discoveredLegacyConfigPath(); !legacyConfigPath.isEmpty()) {
         configPath =  legacyConfigPath;
         qCInfo(lcFolderMan) << "Starting folder migration from legacy path:" << legacyConfigPath;
     }

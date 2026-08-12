@@ -75,7 +75,7 @@ private slots:
         _configFile.setConfDir(standardConfigFolder);
     }
 
-    void setupStandarConfig(const QString &version)
+    void setupStandardConfig(const QString &version)
     {
         setupStandardConfigFolder();
         QSettings settings(_configFile.configFile(), QSettings::IniFormat);
@@ -84,7 +84,6 @@ private slots:
         _configFile.setShowChatNotifications(true);
         _configFile.setShowCallNotifications(true);
         _configFile.setShowInExplorerNavigationPane(true);
-        _configFile.setShowInExplorerNavigationPane(true);
         _configFile.setRemotePollInterval(std::chrono::milliseconds(1000));
         _configFile.setAutoUpdateCheck(true, QString());
         _configFile.setUpdateChannel("beta");
@@ -92,7 +91,6 @@ private slots:
         _configFile.setOverrideLocalDir("A");
         _configFile.setVfsEnabled(true);
         _configFile.setProxyType(0);
-        _configFile.setVfsEnabled(true);
         _configFile.setUseUploadLimit(0);
         _configFile.setUploadLimit(1);
         _configFile.setUseDownloadLimit(0);
@@ -134,7 +132,9 @@ private slots:
         const auto accountState = OCC::AccountManager::instance()->addAccount(account);
         OCC::AccountManager::instance()->saveAccount(accountState->account());
         OCC::FolderDefinition folderDefinition;
-        folderDefinition.localPath = "/standardAppName";
+        const auto localFolder = QString(_temporaryDir.path() + "/syncfolder");
+        QVERIFY(QDir().mkpath(localFolder));
+        folderDefinition.localPath = localFolder;
         folderDefinition.targetPath = "/";
         folderDefinition.alias = standardAppName;
         _folderMan.reset(new FolderMan{});
@@ -160,57 +160,62 @@ private slots:
         settings.sync();
     }
 
+    // Release the folders and accounts created by setupStandardConfig so they
+    // do not leak into the AccountManager singleton across tests.
+    void cleanup()
+    {
+        _folderMan.reset();
+        if (const auto accountManager = AccountManager::instance()) {
+            accountManager->shutdown();
+        }
+    }
+
     void testSetPhase()
     {
-        Migration migration;
-        QCOMPARE(migration.phase(), OCC::Migration::Phase::NotStarted);
-        migration.setPhase(OCC::Migration::Phase::SetupConfigFile);
-        QCOMPARE(migration.phase(), OCC::Migration::Phase::SetupConfigFile);
-        migration.setPhase(OCC::Migration::Phase::SetupUsers);
-        QCOMPARE(migration.phase(), OCC::Migration::Phase::SetupUsers);
-        migration.setPhase(OCC::Migration::Phase::SetupFolders);
-        QCOMPARE(migration.phase(), OCC::Migration::Phase::SetupFolders);
-        migration.setPhase(OCC::Migration::Phase::Done);
-        QCOMPARE(migration.phase(), OCC::Migration::Phase::Done);
+        QCOMPARE(Migration::phase(), OCC::Migration::Phase::NotStarted);
+        Migration::setPhase(OCC::Migration::Phase::SetupConfigFile);
+        QCOMPARE(Migration::phase(), OCC::Migration::Phase::SetupConfigFile);
+        Migration::setPhase(OCC::Migration::Phase::SetupUsers);
+        QCOMPARE(Migration::phase(), OCC::Migration::Phase::SetupUsers);
+        Migration::setPhase(OCC::Migration::Phase::SetupFolders);
+        QCOMPARE(Migration::phase(), OCC::Migration::Phase::SetupFolders);
+        Migration::setPhase(OCC::Migration::Phase::Done);
+        QCOMPARE(Migration::phase(), OCC::Migration::Phase::Done);
     }
 
     void testSetUpgradeType()
     {
-        Migration migration;
-        QCOMPARE(migration.upgradeType(), OCC::Migration::UpgradeType::NoChange);
-        migration.setUpgradeType(OCC::Migration::UpgradeType::Upgrade);
-        QCOMPARE(migration.upgradeType(), OCC::Migration::UpgradeType::Upgrade);
-        migration.setUpgradeType(OCC::Migration::UpgradeType::Downgrade);
-        QCOMPARE(migration.upgradeType(), OCC::Migration::UpgradeType::Downgrade);
+        QCOMPARE(Migration::upgradeType(), OCC::Migration::UpgradeType::NoChange);
+        Migration::setUpgradeType(OCC::Migration::UpgradeType::Upgrade);
+        QCOMPARE(Migration::upgradeType(), OCC::Migration::UpgradeType::Upgrade);
+        Migration::setUpgradeType(OCC::Migration::UpgradeType::Downgrade);
+        QCOMPARE(Migration::upgradeType(), OCC::Migration::UpgradeType::Downgrade);
     }
 
     void testSetBrandingType()
     {
-        Migration migration;
-        QCOMPARE(migration.brandingType(), OCC::Migration::BrandingType::UnbrandedToUnbranded);
-        migration.setBrandingType(OCC::Migration::BrandingType::LegacyToUnbranded);
-        QCOMPARE(migration.brandingType(), OCC::Migration::BrandingType::LegacyToUnbranded);
-        migration.setBrandingType(OCC::Migration::BrandingType::LegacyToBranded);
-        QCOMPARE(migration.brandingType(), OCC::Migration::BrandingType::LegacyToBranded);
-        migration.setBrandingType(OCC::Migration::BrandingType::UnbrandedToBranded);
-        QCOMPARE(migration.brandingType(), OCC::Migration::BrandingType::UnbrandedToBranded);
+        QCOMPARE(Migration::brandingType(), OCC::Migration::BrandingType::UnbrandedToUnbranded);
+        Migration::setBrandingType(OCC::Migration::BrandingType::LegacyToUnbranded);
+        QCOMPARE(Migration::brandingType(), OCC::Migration::BrandingType::LegacyToUnbranded);
+        Migration::setBrandingType(OCC::Migration::BrandingType::LegacyToBranded);
+        QCOMPARE(Migration::brandingType(), OCC::Migration::BrandingType::LegacyToBranded);
+        Migration::setBrandingType(OCC::Migration::BrandingType::UnbrandedToBranded);
+        QCOMPARE(Migration::brandingType(), OCC::Migration::BrandingType::UnbrandedToBranded);
     }
 
     void testSetDiscoveredLegacyConfigPath()
     {
-        Migration migration;
-        QCOMPARE(migration.discoveredLegacyConfigPath(), QString());
+        QCOMPARE(Migration::discoveredLegacyConfigPath(), QString());
         const auto legacyConfigPath = QString("/path/to/legacy/config");
-        migration.setDiscoveredLegacyConfigPath(legacyConfigPath);
-        QCOMPARE(migration.discoveredLegacyConfigPath(), legacyConfigPath);
+        Migration::setDiscoveredLegacyConfigPath(legacyConfigPath);
+        QCOMPARE(Migration::discoveredLegacyConfigPath(), legacyConfigPath);
     }
 
     void testUpgrade()
     {
         // create Nextcloud config with older version
-        setupStandarConfig("1.0.0");
-        Migration migration;
-        QCOMPARE(migration.isUpgrade(), true);
+        setupStandardConfig("1.0.0");
+        QCOMPARE(Migration::isUpgrade(), true);
 
         // backup old config
         const auto backupFilesList = _configFile.backupConfigFiles();
@@ -224,70 +229,64 @@ private slots:
 
     void testIsInProgress_notStarted()
     {
-        Migration migration;
-        QCOMPARE(migration.phase(), Migration::Phase::NotStarted);
-        QCOMPARE(migration.isInProgress(), false);
+        QCOMPARE(Migration::phase(), Migration::Phase::NotStarted);
+        QCOMPARE(Migration::isInProgress(), false);
     }
 
     void testIsInProgress_trueForMidPhases()
     {
-        Migration migration;
-        migration.setPhase(Migration::Phase::SetupConfigFile);
-        QCOMPARE(migration.isInProgress(), true);
+        Migration::setPhase(Migration::Phase::SetupConfigFile);
+        QCOMPARE(Migration::isInProgress(), true);
 
         Migration::resetForTesting();
-        migration.setPhase(Migration::Phase::SetupUsers);
-        QCOMPARE(migration.isInProgress(), true);
+        Migration::setPhase(Migration::Phase::SetupUsers);
+        QCOMPARE(Migration::isInProgress(), true);
 
         Migration::resetForTesting();
-        migration.setPhase(Migration::Phase::SetupFolders);
-        QCOMPARE(migration.isInProgress(), true);
+        Migration::setPhase(Migration::Phase::SetupFolders);
+        QCOMPARE(Migration::isInProgress(), true);
     }
 
     void testIsInProgress_falseWhenDone()
     {
-        Migration migration;
-        migration.setPhase(Migration::Phase::Done);
-        QCOMPARE(migration.isInProgress(), false);
+        Migration::setPhase(Migration::Phase::Done);
+        QCOMPARE(Migration::isInProgress(), false);
     }
 
     void testPhaseRollbackPrevented()
     {
-        Migration migration;
-        migration.setPhase(Migration::Phase::Done);
-        migration.setPhase(Migration::Phase::SetupUsers);  // attempt rollback
-        QCOMPARE(migration.phase(), Migration::Phase::Done);
+        Migration::setPhase(Migration::Phase::Done);
+        Migration::setPhase(Migration::Phase::SetupUsers);  // attempt rollback
+        QCOMPARE(Migration::phase(), Migration::Phase::Done);
     }
 
     void testIsUpgrade_noSideEffects()
     {
-        setupStandarConfig("1.0.0");
-        Migration migration;
+        setupStandardConfig("1.0.0");
 
         // upgrading: current > previous
-        QCOMPARE(migration.isUpgrade(), true);
-        QCOMPARE(migration.isDowngrade(), false);
-        QCOMPARE(migration.versionChanged(), true);
+        QCOMPARE(Migration::isUpgrade(), true);
+        QCOMPARE(Migration::isDowngrade(), false);
+        QCOMPARE(Migration::versionChanged(), true);
 
         // calling isDowngrade after isUpgrade must not corrupt the result
-        QCOMPARE(migration.isUpgrade(), true);
+        QCOMPARE(Migration::isUpgrade(), true);
 
         // upgradeType is not touched by isUpgrade/isDowngrade
-        QCOMPARE(migration.upgradeType(), Migration::UpgradeType::NoChange);
+        QCOMPARE(Migration::upgradeType(), Migration::UpgradeType::NoChange);
     }
 
     void testIsDowngrade_noSideEffects()
     {
-        // simulate a downgrade: the previously installed version was newer than the current binary
-        _configFile.setClientPreviousVersionString("99.0.0");
+        // simulate a downgrade: the config was written by a newer client than the current binary
+        _configFile.setClientVersionString("99.0.0");
 
-        Migration migration;
-        QCOMPARE(migration.isDowngrade(), true);
-        QCOMPARE(migration.isUpgrade(), false);
-        QCOMPARE(migration.versionChanged(), true);
+        QCOMPARE(Migration::isDowngrade(), true);
+        QCOMPARE(Migration::isUpgrade(), false);
+        QCOMPARE(Migration::versionChanged(), true);
 
         // upgradeType is not touched by isDowngrade
-        QCOMPARE(migration.upgradeType(), Migration::UpgradeType::NoChange);
+        QCOMPARE(Migration::upgradeType(), Migration::UpgradeType::NoChange);
     }
 
     void testVersionUnchanged()
@@ -296,17 +295,15 @@ private slots:
         _configFile.setClientVersionString(MIRALL_VERSION_STRING);
         _configFile.setClientPreviousVersionString(MIRALL_VERSION_STRING);
 
-        Migration migration;
-        QCOMPARE(migration.isUpgrade(), false);
-        QCOMPARE(migration.isDowngrade(), false);
-        QCOMPARE(migration.versionChanged(), false);
+        QCOMPARE(Migration::isUpgrade(), false);
+        QCOMPARE(Migration::isDowngrade(), false);
+        QCOMPARE(Migration::versionChanged(), false);
     }
 
     void testShouldTryToMigrate_trueOnUpgrade()
     {
-        setupStandarConfig("1.0.0");
-        Migration migration;
-        QCOMPARE(migration.shouldTryToMigrate(), true);
+        setupStandardConfig("1.0.0");
+        QCOMPARE(Migration::shouldTryToMigrate(), true);
     }
 
     void testShouldTryToMigrate_falseWhenVersionsMatch()
@@ -315,8 +312,7 @@ private slots:
         _configFile.setClientVersionString(MIRALL_VERSION_STRING);
         _configFile.setClientPreviousVersionString(MIRALL_VERSION_STRING);
 
-        Migration migration;
-        QCOMPARE(migration.shouldTryToMigrate(), false);
+        QCOMPARE(Migration::shouldTryToMigrate(), false);
     }
 
     void testShouldTryToMigrate_falseWhenConfigMatchesRunningVersion()
@@ -327,8 +323,7 @@ private slots:
         _configFile.setClientVersionString(MIRALL_VERSION_STRING);
         _configFile.setClientPreviousVersionString(QStringLiteral("1.0.0"));
 
-        Migration migration;
-        QCOMPARE(migration.shouldTryToMigrate(), false);
+        QCOMPARE(Migration::shouldTryToMigrate(), false);
     }
 
     void testShouldTryToMigrate_trueWhenUpgradingFromMatchingVersions()
@@ -339,18 +334,7 @@ private slots:
         _configFile.setClientVersionString(QStringLiteral("1.0.0"));
         _configFile.setClientPreviousVersionString(QStringLiteral("1.0.0"));
 
-        Migration migration;
-        QCOMPARE(migration.shouldTryToMigrate(), true);
-    }
-
-    void testStaticStateSharedAcrossInstances()
-    {
-        Migration a;
-        a.setPhase(Migration::Phase::SetupUsers);
-
-        Migration b;
-        QCOMPARE(b.phase(), Migration::Phase::SetupUsers);
-        QCOMPARE(b.isInProgress(), true);
+        QCOMPARE(Migration::shouldTryToMigrate(), true);
     }
 
     void testLegacyData_discoversAndParsesConfig()
@@ -366,8 +350,7 @@ private slots:
         legacyFile.write(legacyAppConfigContent);
         legacyFile.close();
 
-        Migration migration;
-        const auto legacy = migration.legacyData();
+        const auto legacy = Migration::legacyData();
 
         // Sole ownership is transferred to the caller and the file is parsed.
         QVERIFY(legacy != nullptr);
@@ -375,7 +358,7 @@ private slots:
         legacy->beginGroup(QStringLiteral("Accounts"));
         QVERIFY(legacy->childGroups().contains(QStringLiteral("0")));
         legacy->endGroup();
-        QCOMPARE(migration.discoveredLegacyConfigPath(), QFileInfo(legacyConfigPath).canonicalPath());
+        QVERIFY(Migration::discoveredLegacyConfigPath().isEmpty());
     }
 
     void testLegacyData_returnsNullWhenNoLegacyConfig()
@@ -386,11 +369,10 @@ private slots:
         const auto configDir = QFileInfo(_configFile.configFile()).absolutePath();
         QFile::remove(configDir + QStringLiteral("/owncloud.cfg"));
 
-        Migration migration;
-        const auto legacy = migration.legacyData();
+        const auto legacy = Migration::legacyData();
 
         QVERIFY(!legacy);
-        QCOMPARE(migration.discoveredLegacyConfigPath(), QString());
+        QCOMPARE(Migration::discoveredLegacyConfigPath(), QString());
     }
 };
 

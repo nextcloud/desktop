@@ -18,7 +18,9 @@ class OWNCLOUDSYNC_EXPORT Migration
 {
     Q_GADGET
 public:
-    Migration() { };
+    // All state is process global; this class is a collection of static
+    // helpers and is not meant to be instantiated.
+    Migration() = delete;
 
     enum class Phase {
         NotStarted,
@@ -46,9 +48,8 @@ public:
 
     using LegacyData = std::unique_ptr<QSettings>;
 
-    [[nodiscard]] QVersionNumber previousVersion() const;
-    [[nodiscard]] QVersionNumber currentVersion() const;
-    [[nodiscard]] QVersionNumber configVersion() const;
+    [[nodiscard]] static QVersionNumber currentVersion();
+    [[nodiscard]] static QVersionNumber configVersion();
 
     /**
      * Application::configVersionMigration                     [start]
@@ -85,29 +86,29 @@ public:
      *   |
      *   Phase::Done
      */
-    [[nodiscard]] Phase phase() const;
-    void setPhase(const Phase phase);
+    [[nodiscard]] static Phase phase();
+    static void setPhase(const Phase phase);
 
-    [[nodiscard]] BrandingType brandingType() const;
-    void setBrandingType(const BrandingType type);
+    [[nodiscard]] static BrandingType brandingType();
+    static void setBrandingType(const BrandingType type);
 
-    [[nodiscard]] UpgradeType upgradeType() const;
-    void setUpgradeType(const UpgradeType type);
+    [[nodiscard]] static UpgradeType upgradeType();
+    static void setUpgradeType(const UpgradeType type);
 
     /// Returns QSettings from a legacy config file. Ownership is transferred to the caller.
-    [[nodiscard]] LegacyData legacyData();
+    [[nodiscard]] static LegacyData legacyData();
 
     /// Set during first time migration of legacy accounts in AccountManager
-    [[nodiscard]] QString discoveredLegacyConfigPath() const;
-    void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
-   
-    [[nodiscard]] bool isUpgrade() const;
-    [[nodiscard]] bool isDowngrade() const;
-    [[nodiscard]] bool versionChanged() const;
-    [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
-    [[nodiscard]] bool isUnbrandedToBrandedMigration() const;
-    [[nodiscard]] bool shouldTryToMigrate() const;
-    [[nodiscard]] bool isInProgress() const;
+    [[nodiscard]] static QString discoveredLegacyConfigPath();
+    static void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
+
+    [[nodiscard]] static bool isUpgrade();
+    [[nodiscard]] static bool isDowngrade();
+    [[nodiscard]] static bool versionChanged();
+    [[nodiscard]] static bool shouldTryUnbrandedToBrandedMigration();
+    [[nodiscard]] static bool isUnbrandedToBrandedMigration();
+    [[nodiscard]] static bool shouldTryToMigrate();
+    [[nodiscard]] static bool isInProgress();
 
     /// Resets all shared state to initial values. Only intended for use in unit tests.
     static void resetForTesting();
