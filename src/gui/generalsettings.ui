@@ -57,7 +57,7 @@
                                     </font>
                                 </property>
                                 <property name="text">
-                                    <string>General Settings</string>
+                                    <string>General settings</string>
                                 </property>
                             </widget>
                         </item>
