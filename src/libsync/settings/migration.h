@@ -107,7 +107,6 @@ public:
     [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration();
     [[nodiscard]] bool isUnbrandedToBrandedMigration() const;
     [[nodiscard]] bool shouldTryToMigrate() const;
-    [[nodiscard]] bool isClientVersionSet() const;
     [[nodiscard]] bool isInProgress() const;
 
     /// Resets all shared state to initial values. Only intended for use in unit tests.

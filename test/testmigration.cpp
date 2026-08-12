@@ -319,6 +319,30 @@ private slots:
         QCOMPARE(migration.shouldTryToMigrate(), false);
     }
 
+    void testShouldTryToMigrate_falseWhenConfigMatchesRunningVersion()
+    {
+        // clientVersion already equals the running binary: nothing to migrate,
+        // even though an older previous version is recorded.
+        setupStandardConfigFolder();
+        _configFile.setClientVersionString(MIRALL_VERSION_STRING);
+        _configFile.setClientPreviousVersionString(QStringLiteral("1.0.0"));
+
+        Migration migration;
+        QCOMPARE(migration.shouldTryToMigrate(), false);
+    }
+
+    void testShouldTryToMigrate_trueWhenUpgradingFromMatchingVersions()
+    {
+        // A genuine upgrade in which clientVersion equals clientPreviousVersion
+        // (the previous run settled), so migration must still run.
+        setupStandardConfigFolder();
+        _configFile.setClientVersionString(QStringLiteral("1.0.0"));
+        _configFile.setClientPreviousVersionString(QStringLiteral("1.0.0"));
+
+        Migration migration;
+        QCOMPARE(migration.shouldTryToMigrate(), true);
+    }
+
     void testStaticStateSharedAcrossInstances()
     {
         Migration a;

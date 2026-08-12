@@ -112,15 +112,9 @@ bool Migration::isUnbrandedToBrandedMigration() const
 
 bool Migration::shouldTryToMigrate() const
 {
-    return !isClientVersionSet() && (isUpgrade() || isDowngrade());
-}
-
-bool Migration::isClientVersionSet() const
-{
-    const auto configVersionNumber = configVersion();
-    const auto previousVersionNumber = previousVersion();
-    return !configVersionNumber.isNull() && !previousVersionNumber.isNull()
-        && configVersionNumber == previousVersionNumber;
+    // Migrate when the config was written by a different client version than
+    // the one running now, and that difference is an actual up or downgrade.
+    return configVersion() != currentVersion() && (isUpgrade() || isDowngrade());
 }
 
 bool Migration::isInProgress() const
