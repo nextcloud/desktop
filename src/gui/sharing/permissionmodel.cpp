@@ -5,8 +5,6 @@
 
 #include "permissionmodel.h"
 
-#include <QPointer>
-
 #include "share.h"
 #include "permission.h"
 
@@ -29,11 +27,11 @@ int PermissionModel::rowCount(const QModelIndex &parent) const
 
 QVariant PermissionModel::data(const QModelIndex &index, int role) const
 {
-    if (!_share || !checkIndex(index, CheckIndexOption::IndexIsValid)) {
+    if (!_share || !checkIndex(index, CheckIndexOption::IndexIsValid | CheckIndexOption::ParentIsInvalid)) {
         return {};
     }
 
-    const auto permissions = _share->permissions();
+    const auto &permissions = _share->permissions();
     const auto permission = permissions.at(index.row());
 
     switch (role) {
@@ -50,22 +48,6 @@ QVariant PermissionModel::data(const QModelIndex &index, int role) const
     }
 }
 
-bool PermissionModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-    Q_UNUSED(value)
-    if (role != EnabledRole || !checkIndex(index, CheckIndexOption::IndexIsValid)) {
-        return false;
-    }
-
-    Q_EMIT dataChanged(index, index, {EnabledRole});
-    return true;
-}
-
-Qt::ItemFlags PermissionModel::flags(const QModelIndex &index) const
-{
-    return checkIndex(index, CheckIndexOption::IndexIsValid) ? QAbstractListModel::flags(index) | Qt::ItemIsEditable : Qt::NoItemFlags;
-}
-
 QHash<int, QByteArray> PermissionModel::roleNames() const
 {
     return {
@@ -78,12 +60,17 @@ QHash<int, QByteArray> PermissionModel::roleNames() const
 
 void PermissionModel::setShare(Share *share)
 {
+    if (_share == share) {
+        return;
+    }
+
+    QObject::disconnect(_permissionsChangedConnection);
     AbstractShareModel::setShare(share);
     if (!_share) {
         return;
     }
 
-    connect(_share, &Share::permissionsChanged, this, [this]() -> void {
+    _permissionsChangedConnection = connect(_share, &Share::permissionsChanged, this, [this]() -> void {
         beginResetModel();
         endResetModel();
     });

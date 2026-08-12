@@ -12,6 +12,7 @@
 #include "gui/sharing/getsharesjob.h"
 #include "gui/sharing/property.h"
 #include "gui/sharing/propertymodel.h"
+#include "gui/sharing/permissionmodel.h"
 #include "gui/sharing/recipientmodel.h"
 #include "gui/sharing/recipientsearchmodel.h"
 #include "gui/sharing/removerecipientjob.h"
@@ -207,6 +208,49 @@ private slots:
         QCOMPARE(model.data(enumIndex, PropertyModel::ValidValuesRole).toStringList(), QStringList({"private"_L1, "public"_L1}));
 
         delete share;
+    }
+
+    void permissionModelIsReadOnlyAndTracksOnlyItsCurrentShare()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        const auto shareWithOnePermission = Share::fromJson(
+            QJsonDocument::fromJson(R"json({
+                "ocs": {"data": {
+                    "id": "share-1",
+                    "permissions": [{"class": "view", "display_name": "View files", "enabled": true}]
+                }}
+            })json"),
+            fakeFolder.account());
+        const auto shareWithTwoPermissions = Share::fromJson(
+            QJsonDocument::fromJson(R"json({
+                "ocs": {"data": {
+                    "id": "share-2",
+                    "permissions": [
+                        {"class": "view", "display_name": "View files", "enabled": true},
+                        {"class": "download", "display_name": "Download files", "enabled": false}
+                    ]
+                }}
+            })json"),
+            fakeFolder.account());
+
+        PermissionModel model;
+        model.setShare(shareWithOnePermission);
+        QCOMPARE(model.rowCount(), 1);
+        const auto index = model.index(0);
+        QCOMPARE(model.data(index, PermissionModel::LabelRole).toString(), "View files"_L1);
+        QVERIFY(!(model.flags(index) & Qt::ItemIsEditable));
+        QVERIFY(!model.data(QModelIndex{}, PermissionModel::LabelRole).isValid());
+        QCOMPARE(model.rowCount(model.index(0, 0)), 0);
+
+        model.setShare(shareWithTwoPermissions);
+        QCOMPARE(model.rowCount(), 2);
+        shareWithOnePermission->updateFromJson(QJsonDocument::fromJson(R"json({
+            "ocs": {"data": {"permissions": []}}
+        })json"));
+        QCOMPARE(model.rowCount(), 2);
+
+        delete shareWithOnePermission;
+        delete shareWithTwoPermissions;
     }
 
     void requestsAreConfiguredBeforeTheyStart()
