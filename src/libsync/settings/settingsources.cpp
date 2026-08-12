@@ -14,16 +14,18 @@
 
 namespace OCC {
 
-UserConfigSource::UserConfigSource(QString configFilePath)
+UserConfigSource::UserConfigSource(QString configFilePath, QString group)
     : _configFilePath(std::move(configFilePath))
+    , _group(std::move(group))
 {
 }
 
 std::optional<QVariant> UserConfigSource::read(const QString &key, const QString &group) const
 {
+    const auto effectiveGroup = _group.isEmpty() ? group : _group;
     QSettings settings(_configFilePath, QSettings::IniFormat);
-    if (!group.isEmpty()) {
-        settings.beginGroup(group);
+    if (!effectiveGroup.isEmpty()) {
+        settings.beginGroup(effectiveGroup);
     }
     if (!settings.contains(key)) {
         return std::nullopt;

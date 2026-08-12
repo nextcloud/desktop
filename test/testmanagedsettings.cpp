@@ -5,9 +5,11 @@
 
 #include <QtTest>
 #include <QTemporaryDir>
+#include <QStandardPaths>
 #include <memory>
 #include <optional>
 
+#include "configfile.h"
 #include "settings/managedsettings.h"
 #include "settings/managedsettingsschema.h"
 #include "settings/settingsources.h"
@@ -53,6 +55,11 @@ class TestManagedSettings : public QObject
     }
 
 private slots:
+    void initTestCase()
+    {
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testBuiltinDefaultWhenNoSourceHasValue()
     {
         ManagedSettings resolver;
@@ -180,6 +187,33 @@ private slots:
     {
         const auto sources = buildDeviceSources();
         QVERIFY(!sources.empty());
+    }
+
+    void testUserConfigSourceBakedGroupOverridesReadGroup()
+    {
+        QTemporaryDir dir;
+        const auto path = dir.path() + QStringLiteral("/user.cfg");
+        {
+            QSettings settings(path, QSettings::IniFormat);
+            settings.beginGroup(QStringLiteral("Nextcloud"));
+            settings.setValue(QStringLiteral("skipUpdateCheck"), true);
+            settings.endGroup();
+            settings.sync();
+        }
+        const UserConfigSource source(path, QStringLiteral("Nextcloud"));
+
+        QCOMPARE(source.read(QStringLiteral("skipUpdateCheck"), QStringLiteral("Other"))->toBool(), true);
+    }
+
+    void testConfigFileRoutesSkipUpdateCheckThroughResolver()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        QCOMPARE(config.skipUpdateCheck(), false);
+        config.setSkipUpdateCheck(true, QString());
+        QCOMPARE(config.skipUpdateCheck(), true);
     }
 };
 

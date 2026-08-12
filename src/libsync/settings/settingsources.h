@@ -16,7 +16,8 @@ namespace OCC {
 class OWNCLOUDSYNC_EXPORT UserConfigSource : public SettingSource
 {
 public:
-    explicit UserConfigSource(QString configFilePath);
+    // A non-empty group is always used and overrides the group passed to read().
+    explicit UserConfigSource(QString configFilePath, QString group = {});
 
     [[nodiscard]] std::optional<QVariant> read(const QString &key, const QString &group) const override;
     [[nodiscard]] SettingSourceKind kind() const override;
@@ -25,6 +26,7 @@ public:
 
 private:
     QString _configFilePath;
+    QString _group;
 };
 
 // Reads a native OS store (Windows registry, macOS plist, Linux conf) at a fixed location.

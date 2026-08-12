@@ -15,6 +15,9 @@
 #include "updatechannel.h"
 #include "version.h"
 #include "settings/migration.h"
+#include "settings/managedsettings.h"
+#include "settings/managedsettingsschema.h"
+#include "settings/settingsources.h"
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
@@ -624,12 +627,7 @@ chrono::milliseconds ConfigFile::updateCheckInterval(const QString &connectionGr
 
 bool ConfigFile::skipUpdateCheck(const QString &connectionGroupName) const
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QVariant fallback = getValue(QLatin1String(skipUpdateCheckC), groupName, false);
-    fallback = getValue(QLatin1String(skipUpdateCheckC), QString(), fallback);
-
-    QVariant value = getPolicySetting(QLatin1String(skipUpdateCheckC), fallback);
-    return value.toBool();
+    return resolveManagedBool(QLatin1String(skipUpdateCheckC), connectionGroupName, false);
 }
 
 void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connectionGroupName)
@@ -644,12 +642,21 @@ void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connectionGroupNam
 
 bool ConfigFile::autoUpdateCheck(const QString &connectionGroupName) const
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QVariant fallback = getValue(QLatin1String(autoUpdateCheckC), groupName, true);
-    fallback = getValue(QLatin1String(autoUpdateCheckC), QString(), fallback);
+    return resolveManagedBool(QLatin1String(autoUpdateCheckC), connectionGroupName, true);
+}
 
-    QVariant value = getPolicySetting(QLatin1String(autoUpdateCheckC), fallback);
-    return value.toBool();
+bool ConfigFile::resolveManagedBool(const QString &key, const QString &connectionGroupName, bool builtinDefault) const
+{
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
+    const auto spec = ManagedSettingsSchema::find(key).value_or(SettingSpec{key, builtinDefault, true, SettingScope::User});
+
+    ManagedSettings resolver;
+    for (auto &deviceSource : buildDeviceSources()) {
+        resolver.addSource(std::move(deviceSource));
+    }
+    resolver.addSource(std::make_unique<UserConfigSource>(configFile(), groupName));
+
+    return resolver.resolve(spec).value.toBool();
 }
 
 void ConfigFile::setAutoUpdateCheck(bool autoCheck, const QString &connectionGroupName)

@@ -310,6 +310,7 @@ protected:
 private:
     [[nodiscard]] QVariant getValue(const QString &param, const QString &group = QString(),
         const QVariant &defaultValue = QVariant()) const;
+    [[nodiscard]] bool resolveManagedBool(const QString &key, const QString &connectionGroupName, bool builtinDefault) const;
     void setValue(const QString &key, const QVariant &value);
 
     [[nodiscard]] QString keychainProxyPasswordKey() const;
