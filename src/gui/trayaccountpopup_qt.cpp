@@ -875,7 +875,7 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
     }
 
     const auto syncControlState = systray->syncControlState();
-    const auto addSyncControlAction = [menu, systray, &menuIconPalette](const bool pausesSync) {
+    const auto addSyncControlAction = [menu, systray, &menuIconPalette, &menuIconSize](const bool pausesSync) {
         const auto syncControlIconUrl = pausesSync ? Theme::instance()->pause() : Theme::instance()->sync();
         const auto syncControlAction = addMenuAction(menu,
             templateIconFromIcon(iconFromUrl(syncControlIconUrl), menuIconSize, menuIconPalette),
