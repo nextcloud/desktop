@@ -862,7 +862,7 @@ void GeneralSettings::customizeStyle()
     this->setAutoFillBackground(true);
     setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
 
-    this->setStyleSheet(QStringLiteral("QGroupBox { border: none; font-size: %2; font-weight: %3; color: %4; padding-top: 8px; margin-top: 8px; }")
+    this->setStyleSheet(QStringLiteral("QGroupBox { border: none; font-size: %2; font-weight: %3; color: %4; }")
                             .arg(WLTheme.settingsTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.black()));
 
     this->setStyleSheet(this->styleSheet()
