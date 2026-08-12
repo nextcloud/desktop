@@ -60,4 +60,14 @@ ManagedValue ManagedSettings::resolve(const SettingSpec &spec, const QString &gr
     return {spec.key, winnerValue, winner->kind(), winner->lockState(), true};
 }
 
+QList<ManagedValue> ManagedSettings::resolveAll(const QList<SettingSpec> &specs, const QString &group) const
+{
+    QList<ManagedValue> results;
+    results.reserve(specs.size());
+    for (const auto &spec : specs) {
+        results.append(resolve(spec, group));
+    }
+    return results;
+}
+
 } // namespace OCC

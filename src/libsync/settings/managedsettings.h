@@ -8,6 +8,7 @@
 
 #include <QString>
 #include <QVariant>
+#include <QList>
 
 #include <memory>
 #include <optional>
@@ -75,6 +76,9 @@ public:
     void addSource(std::unique_ptr<SettingSource> source);
 
     [[nodiscard]] ManagedValue resolve(const SettingSpec &spec, const QString &group = {}) const;
+
+    // Resolves every spec, for a diagnostics export of effective values and sources.
+    [[nodiscard]] QList<ManagedValue> resolveAll(const QList<SettingSpec> &specs, const QString &group = {}) const;
 
 private:
     std::vector<std::unique_ptr<SettingSource>> _sources;

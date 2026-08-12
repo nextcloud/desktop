@@ -6,6 +6,7 @@
 #include <QtTest>
 #include <QTemporaryDir>
 #include <QStandardPaths>
+#include <algorithm>
 #include <memory>
 #include <optional>
 
@@ -214,6 +215,22 @@ private slots:
         QCOMPARE(config.skipUpdateCheck(), false);
         config.setSkipUpdateCheck(true, QString());
         QCOMPARE(config.skipUpdateCheck(), true);
+    }
+
+    void testResolveAllReturnsMetadataPerSpec()
+    {
+        ManagedSettings resolver;
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::PlatformPolicy, LockState::Locked, 200,
+            QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}));
+
+        const auto all = resolver.resolveAll(ManagedSettingsSchema::all());
+        QCOMPARE(all.size(), ManagedSettingsSchema::all().size());
+
+        const auto skip = std::find_if(all.cbegin(), all.cend(),
+            [](const ManagedValue &value) { return value.key == QStringLiteral("skipUpdateCheck"); });
+        QVERIFY(skip != all.cend());
+        QVERIFY(skip->isLocked());
+        QCOMPARE(skip->source, SettingSourceKind::PlatformPolicy);
     }
 };
 
