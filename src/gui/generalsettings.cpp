@@ -314,8 +314,8 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     int m1 = 0;
     int m2 = 0;
     int m3 = 0;
-    _ui->horizontalLayout_1->getContentsMargins(&m0, &m1, &m2, &m3);
-    _ui->horizontalLayout_1->setContentsMargins(0, m1, m2, m3);
+    _ui->horizontalLayout_3->getContentsMargins(&m0, &m1, &m2, &m3);
+    _ui->horizontalLayout_3->setContentsMargins(0, m1, m2, m3);
 
     // OEM themes are not obliged to ship mono icons, so there
     // is no point in offering an option
@@ -911,7 +911,7 @@ void GeneralSettings::customizeStyle()
     // SES-4 removed
     _ui->monoIconsCheckBox->hide();
     _ui->callNotificationsCheckBox->hide();
-    _ui->advanced_groupBox->hide();
+    _ui->advancedGroupBox->hide();
     _ui->updates_frame->hide();
 #endif
 
