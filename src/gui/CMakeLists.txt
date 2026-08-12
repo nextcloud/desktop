@@ -304,6 +304,7 @@ IF( APPLE )
         # Shared foundation first, then the base hover view, rows, popups and the
         # public entry point (OCC::showMacOSTrayPopup / hideMacOSTrayPopup).
         macOS/trayaccountpopup/trayaccountpopupmetrics.h
+        macOS/trayaccountpopup/trayaccountpopuppresentation.h
         macOS/trayaccountpopup/trayaccountpopupimageutils.h
         macOS/trayaccountpopup/trayaccountpopupimageutils.mm
         macOS/trayaccountpopup/trayaccountpopupviewutils.h

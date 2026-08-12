@@ -212,9 +212,10 @@ void Systray::showTrayPopup(WindowPosition position)
     }
 
 #ifdef Q_OS_MACOS
-    showMacOSTrayPopup(geometry());
-    setIsOpen(true);
-    UserModel::instance()->fetchCurrentActivityModel();
+    if (showMacOSTrayPopup(geometry())) {
+        setIsOpen(true);
+        UserModel::instance()->fetchCurrentActivityModel();
+    }
 #else
     if (showQtTrayPopup(this, geometry(), position)) {
         setIsOpen(true);
