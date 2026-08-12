@@ -157,6 +157,13 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
             continue;
         }
 
+        if (event->mask & IN_Q_OVERFLOW) {
+            qCWarning(lcFolderWatcher)
+                << "The inotify event queue overflowed; triggering a full local discovery";
+            emit _parent->lostChanges();
+            continue;
+        }
+
         // Fire event for the path that was changed.
         if (event->len == 0 || event->wd <= -1)
             continue;
