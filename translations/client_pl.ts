@@ -6645,6 +6645,11 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Sprawdzanie zmian w lokalnym &quot;%1&quot;</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Internal link copied</source>
         <translation>Skopiowano link wewnętrzny</translation>

@@ -6647,6 +6647,11 @@ Server replied with error: %2</source>
         <translation>正检查本地 &quot;%1&quot; 的更改</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Internal link copied</source>
         <translation>内部链接已复制</translation>
