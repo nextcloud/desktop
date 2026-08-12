@@ -148,6 +148,9 @@ Q_SIGNALS:
     /** @brief Emitted when updating a share property failed. */
     void propertyUpdateFailed(Share *share, const QString &error);
 
+    /** @brief Emitted when updating an individual permission or permission preset failed. */
+    void permissionUpdateFailed(Share *share, const QString &error);
+
     /** @brief Emitted after a draft share was activated. */
     void shareActivated(Share *share);
 

@@ -19,6 +19,7 @@ Page {
     required property SharingController sharingController
     required property Share share
     property string recipientOperationError: ""
+    property string permissionUpdateError: ""
     property string propertyUpdateError: ""
     property string shareActivationError: ""
     property bool activatingShare: false
@@ -250,6 +251,7 @@ Page {
                     onActivated: function(index) {
                         const preset = presetValues[index]
                         if (preset) {
+                            root.permissionUpdateError = ""
                             root.sharingController.setPermissionPreset(root.share, preset)
                         }
                     }
@@ -273,9 +275,19 @@ Page {
                         checked: model.enabled
 
                         onToggled: {
+                            root.permissionUpdateError = ""
                             root.sharingController.setPermission(root.share, model.className, checked)
                         }
                     }
+                }
+
+                EnforcedPlainTextLabel {
+                    Layout.fillWidth: true
+
+                    text: root.permissionUpdateError
+                    color: Style.wizardErrorText
+                    wrapMode: Text.Wrap
+                    visible: text.length > 0
                 }
 
                 EnforcedPlainTextLabel {
@@ -437,6 +449,12 @@ Page {
         function onPropertyUpdateFailed(share, error) {
             if (share === root.share) {
                 root.propertyUpdateError = error
+            }
+        }
+
+        function onPermissionUpdateFailed(share, error) {
+            if (share === root.share) {
+                root.permissionUpdateError = error
             }
         }
 
