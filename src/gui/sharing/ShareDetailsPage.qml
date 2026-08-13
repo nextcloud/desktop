@@ -11,6 +11,8 @@ import QtQuick.Controls
 
 import com.nextcloud.desktopclient
 import Style
+import "qrc:/qml/src/gui"
+import "qrc:/qml/src/gui/wizard/qml"
 
 ColumnLayout {
     id: root
@@ -48,12 +50,10 @@ ColumnLayout {
         }
     }
 
-    EnforcedPlainTextLabel {
+    ErrorBox {
         Layout.fillWidth: true
 
         text: root.recipientOperationError
-        color: Style.wizardErrorText
-        wrapMode: Text.Wrap
         visible: text.length > 0
     }
 
@@ -66,7 +66,7 @@ ColumnLayout {
             share: root.share
         }
 
-        delegate: ItemDelegate {
+        delegate: WizardItemDelegate {
             id: recipientDelegate
 
             required property var model
@@ -95,6 +95,7 @@ ColumnLayout {
                     EnforcedPlainTextLabel {
                         Layout.fillWidth: true
                         text: recipientDelegate.model.label
+                        color: Style.wizardPrimaryText
                         elide: Text.ElideRight
                     }
 
@@ -110,20 +111,18 @@ ColumnLayout {
                             }
                             return details.join(" · ")
                         }
-                        color: palette.placeholderText
+                        color: Style.wizardSecondaryText
                         elide: Text.ElideRight
                         visible: text.length > 0
                     }
                 }
 
-                Button {
-                    Layout.preferredWidth: Style.activityListButtonWidth
-                    Layout.preferredHeight: Style.activityListButtonHeight
-
-                    icon.source: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
-                    icon.width: Style.activityListButtonIconSize
-                    icon.height: Style.activityListButtonIconSize
-                    display: AbstractButton.IconOnly
+                WizardButton {
+                    Layout.preferredWidth: implicitHeight
+                    leftPadding: 0
+                    rightPadding: 0
+                    text: ""
+                    iconSource: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
                     visible: recipientDelegate.model.secretUrl !== ""
                     enabled: visible
 
@@ -134,14 +133,12 @@ ColumnLayout {
                     onClicked: root.copyToClipboard(recipientDelegate.model.secretUrl)
                 }
 
-                Button {
-                    Layout.preferredWidth: Style.activityListButtonWidth
-                    Layout.preferredHeight: Style.activityListButtonHeight
-
-                    icon.source: "image://svgimage-custom-color/change.svg/" + palette.buttonText
-                    icon.width: Style.activityListButtonIconSize
-                    icon.height: Style.activityListButtonIconSize
-                    display: AbstractButton.IconOnly
+                WizardButton {
+                    Layout.preferredWidth: implicitHeight
+                    leftPadding: 0
+                    rightPadding: 0
+                    text: ""
+                    iconSource: "image://svgimage-custom-color/change.svg/" + palette.buttonText
                     visible: recipientDelegate.model.secretUpdatable
                     enabled: visible
 
@@ -155,14 +152,12 @@ ColumnLayout {
                     }
                 }
 
-                Button {
-                    Layout.preferredWidth: Style.activityListButtonWidth
-                    Layout.preferredHeight: Style.activityListButtonHeight
-
-                    icon.source: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
-                    icon.width: Style.activityListButtonIconSize
-                    icon.height: Style.activityListButtonIconSize
-                    display: AbstractButton.IconOnly
+                WizardButton {
+                    Layout.preferredWidth: implicitHeight
+                    leftPadding: 0
+                    rightPadding: 0
+                    text: ""
+                    iconSource: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
 
                     Accessible.name: qsTr("Remove recipient")
                     ToolTip.visible: hovered
@@ -177,30 +172,12 @@ ColumnLayout {
         }
     }
 
-    ComboBox {
+    WizardComboBox {
         id: permissionPresetSelector
         Layout.fillWidth: true
 
         readonly property var presetValues: ["OC\\Core\\Sharing\\Permission\\ViewSharePermissionPreset", "OC\\Core\\Sharing\\Permission\\EditSharePermissionPreset", ""]
-        model: [qsTr("Can view"), qsTr("Can edit"), qsTr("Custom permissions")]
-        delegate: ItemDelegate {
-            id: permissionPresetDelegate
-
-            required property int index
-            required property string modelData
-
-            width: permissionPresetSelector.width
-            text: modelData
-            highlighted: permissionPresetSelector.highlightedIndex === index
-
-            contentItem: EnforcedPlainTextLabel {
-                text: permissionPresetDelegate.text
-                color: permissionPresetDelegate.highlighted ? palette.highlightedText : palette.text
-                verticalAlignment: Text.AlignVCenter
-                elide: Text.ElideRight
-            }
-        }
-        currentIndex: {
+        readonly property int selectedPresetIndex: {
             const preset = root.share.permissionPreset
             if (preset.endsWith("\\ViewSharePermissionPreset")) {
                 return 0
@@ -210,6 +187,22 @@ ColumnLayout {
             }
             return 2
         }
+        model: [
+            {
+                "name": qsTr("Can view"),
+                "isSelected": selectedPresetIndex === 0
+            },
+            {
+                "name": qsTr("Can edit"),
+                "isSelected": selectedPresetIndex === 1
+            },
+            {
+                "name": qsTr("Custom permissions"),
+                "isSelected": selectedPresetIndex === 2
+            }
+        ]
+        textRole: "name"
+        currentIndex: selectedPresetIndex
 
         onActivated: function (index) {
             const preset = presetValues[index]
@@ -244,12 +237,10 @@ ColumnLayout {
         }
     }
 
-    EnforcedPlainTextLabel {
+    ErrorBox {
         Layout.fillWidth: true
 
         text: root.permissionUpdateError
-        color: Style.wizardErrorText
-        wrapMode: Text.Wrap
         visible: text.length > 0
     }
 
@@ -318,12 +309,10 @@ ColumnLayout {
         }
     }
 
-    EnforcedPlainTextLabel {
+    ErrorBox {
         Layout.fillWidth: true
 
         text: root.propertyUpdateError
-        color: Style.wizardErrorText
-        wrapMode: Text.Wrap
         visible: text.length > 0
     }
 
