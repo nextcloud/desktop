@@ -64,6 +64,29 @@ All contributions generated or assisted by this agent must fully comply with:
 
 ## General Guidance
 
+### Collecting desktop-client application logs
+
+For client behaviour bugs, collect the desktop client's own application log rather than relying only on the operating system log or Qt plugin tracing. The client logger supports these command-line options:
+
+- `--logdebug` enables debug-level messages, including the detailed GUI and sync categories.
+- `--logflush` flushes each message promptly so the log is useful while reproducing a failure.
+- `--logfile <path>` writes to the specified file. `--logfile -` writes to standard output.
+- `--logdir <path>` writes rotating timestamped logs to a directory.
+
+On macOS, the application sandbox can prevent the client from opening an arbitrary path such as the Desktop. Capturing standard output and letting the shell write the copy avoids that problem:
+
+```sh
+logfile="$HOME/Desktop/nextcloud-client-$(date +%Y%m%d-%H%M%S).log"
+
+"/path/to/Nextcloud.app/Contents/MacOS/Nextcloud" \
+  --logfile - \
+  --logdebug \
+  --logflush \
+  2>&1 | tee "$logfile"
+```
+
+Quit all existing client instances before starting this command, and reproduce the problem in the instance launched by the command. The client is single-instance: launching another copy can forward the action to an already-running process, leaving the captured process without the relevant application log entries. Stop the capture with `Ctrl-C` after reproducing the issue and attach the resulting file. For a sharing or file-details issue, retain entries from the relevant `nextcloud.gui.*` categories and any warnings or errors around the reproduction.
+
 ### License headers
 
 Every new file must include the correct SPDX license header. For GPL-2.0-or-later (the default for this repository):
