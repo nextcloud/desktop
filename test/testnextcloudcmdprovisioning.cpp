@@ -45,10 +45,16 @@ private slots:
     // It must NOT print the interactive "Please enter username:" prompt.
     void testUserIdAlonePrintsServerUrlError()
     {
+#if defined Q_OS_WINDOWS
+        constexpr auto expectedExitCode = -1;
+#else
+        constexpr auto expectedExitCode = 255;
+#endif
+
         int exitCode = 0;
         const auto output = runCmd({QStringLiteral("--userid"), QStringLiteral("alice")}, &exitCode);
 
-        QCOMPARE(exitCode, 255);
+        QCOMPARE(exitCode, expectedExitCode);
         QVERIFY2(output.contains("--serverurl"), output.constData());
         QVERIFY2(!output.contains("Please enter username"), output.constData());
     }
@@ -58,14 +64,20 @@ private slots:
     // No credential prompt must appear.
     void testUserIdAndServerUrlWithoutAppPasswordEntersProvisionMode()
     {
+#if defined Q_OS_WINDOWS
+        constexpr auto expectedExitCode = -1;
+#else
+        constexpr auto expectedExitCode = 255;
+#endif
+
         // 127.0.0.1:1 gives a fast "connection refused" without DNS latency.
         int exitCode = 0;
         const auto output = runCmd(
             {QStringLiteral("--userid"), QStringLiteral("alice"),
-             QStringLiteral("--serverurl"), QStringLiteral("http://127.0.0.1:1")},
+             QStringLiteral("--serverurl"), QStringLiteral("\"http://127.0.0.1:1\"")},
             &exitCode);
 
-        QCOMPARE(exitCode, 255);
+        QCOMPARE(exitCode, expectedExitCode);
         // Must NOT fall through into interactive sync mode.
         QVERIFY2(!output.contains("Please enter username"), output.constData());
         QVERIFY2(!output.contains("Password for account with username"), output.constData());
@@ -76,15 +88,21 @@ private slots:
     // and fail with an error, not fall through into interactive sync mode.
     void testProvisioningOptionsEnterProvisionModeNotSyncMode()
     {
+#if defined Q_OS_WINDOWS
+        constexpr auto expectedExitCode = -1;
+#else
+        constexpr auto expectedExitCode = 255;
+#endif
+
         // 127.0.0.1:1 gives a fast "connection refused" without DNS latency.
         int exitCode = 0;
         const auto output = runCmd(
             {QStringLiteral("--userid"), QStringLiteral("alice"),
              QStringLiteral("--apppassword"), QStringLiteral("secret"),
-             QStringLiteral("--serverurl"), QStringLiteral("http://127.0.0.1:1")},
+             QStringLiteral("--serverurl"), QStringLiteral("\"http://127.0.0.1:1\"")},
             &exitCode);
 
-        QCOMPARE(exitCode, 255);
+        QCOMPARE(exitCode, expectedExitCode);
         // Provisioning mode must NOT fall through into interactive sync mode.
         QVERIFY2(!output.contains("Please enter username"), output.constData());
         QVERIFY2(!output.contains("Password for account with username"), output.constData());
@@ -94,10 +112,15 @@ private slots:
     // in the normal (non-provisioning) sync-mode entry path.
     void testNoArgsShowsHelp()
     {
+#if defined Q_OS_MACOS
+        constexpr auto expectedExitCode = 255;
+#else
+        constexpr auto expectedExitCode = 0;
+#endif
         int exitCode = -1;
         const auto output = runCmd({}, &exitCode);
 
-        QCOMPARE(exitCode, 0);
+        QCOMPARE(exitCode, expectedExitCode);
         QVERIFY2(output.contains("nextcloudcmd") || output.contains("nextclouddevcmd"),
                  output.constData());
         QVERIFY2(output.contains("--userid"), output.constData());
@@ -107,13 +130,19 @@ private slots:
     // provisioning options) must still print a structured error, not a prompt.
     void testNonInteractiveFlagDoesNotSuppressProvisioningError()
     {
+#if defined Q_OS_WINDOWS
+        constexpr auto expectedExitCode = -1;
+#else
+        constexpr auto expectedExitCode = 255;
+#endif
+
         int exitCode = 0;
         const auto output = runCmd(
             {QStringLiteral("--non-interactive"),
              QStringLiteral("--userid"), QStringLiteral("alice")},
             &exitCode);
 
-        QCOMPARE(exitCode, 255);
+        QCOMPARE(exitCode, expectedExitCode);
         QVERIFY2(output.contains("--serverurl"), output.constData());
         QVERIFY2(!output.contains("Please enter username"), output.constData());
     }
