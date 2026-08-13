@@ -51,7 +51,7 @@ private func readBundleIdentity() -> BundleIdentity? {
     return BundleIdentity(serviceName: serviceName,
                           teamIdentifier: team,
                           applicationRevDomain: revDomain,
-                          version: info["CFBundleVersion"] as? String ?? "0")
+                          version: info["CFBundleShortVersionString"] as? String ?? "")
 }
 
 /// Prove the listener is actually reachable, rather than assuming it is.
