@@ -11,44 +11,6 @@ protocol Signing {
 }
 
 ///
-/// Team identifier verification helpers.
-///
-enum TeamIdentifierVerifier {
-    static func teamIdentifier(from codesignOutput: String) -> String? {
-        let prefix = "TeamIdentifier="
-
-        guard let line = codesignOutput.split(whereSeparator: \.isNewline).first(where: { $0.hasPrefix(prefix) }) else {
-            return nil
-        }
-
-        let teamIdentifier = line.dropFirst(prefix.count).trimmingCharacters(in: .whitespacesAndNewlines)
-        return teamIdentifier == "not set" || teamIdentifier.isEmpty ? nil : teamIdentifier
-    }
-
-    static func validationError(for components: [(location: String, teamIdentifier: String?)]) -> String? {
-        guard let firstComponent = components.first else {
-            return "Signing verification failed because no signed code components were found"
-        }
-
-        guard let expectedTeamIdentifier = firstComponent.teamIdentifier else {
-            return "Signing verification failed because \(firstComponent.location) has no TeamIdentifier"
-        }
-
-        for component in components.dropFirst() {
-            guard let teamIdentifier = component.teamIdentifier else {
-                return "Signing verification failed because \(component.location) has no TeamIdentifier"
-            }
-
-            guard teamIdentifier == expectedTeamIdentifier else {
-                return "Signing verification failed because \(component.location) has TeamIdentifier \(teamIdentifier), expected \(expectedTeamIdentifier) from \(firstComponent.location)"
-            }
-        }
-
-        return nil
-    }
-}
-
-///
 /// Used as a namespace for stateless signing methods.
 ///
 enum Signer: Signing {
@@ -331,112 +293,6 @@ enum Signer: Signing {
         }
     }
 
-    ///
-    /// Find code objects whose signatures must belong to the app's signing team.
-    ///
-    private static func findCodeComponents(at url: URL) throws -> [URL] {
-        let codeBundleExtensions = ["app", "appex", "framework", "xpc"]
-        let codeSearchDirectories = ["/Contents/MacOS/", "/Contents/Frameworks/", "/Contents/PlugIns/"]
-        var components = [url]
-
-        guard let enumerator = FileManager.default.enumerator(
-            at: url,
-            includingPropertiesForKeys: [.isRegularFileKey]
-        ) else {
-            throw MacCrafterError.environmentError("Failed to get enumerator for: \(url.path)")
-        }
-
-        for case let candidate as URL in enumerator {
-            let pathExtension = candidate.pathExtension.lowercased()
-
-            if codeBundleExtensions.contains(pathExtension) || pathExtension == "dylib" {
-                components.append(candidate)
-                continue
-            }
-
-            guard codeSearchDirectories.contains(where: candidate.path.contains),
-                  try candidate.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile == true,
-                  isMachO(candidate)
-            else {
-                continue
-            }
-
-            components.append(candidate)
-        }
-
-        return components.sorted { $0.path < $1.path }
-    }
-
-    ///
-    /// Check whether a file contains a Mach-O code object.
-    ///
-    private static func isMachO(_ file: URL) -> Bool {
-        let task = Process()
-        let outputPipe = Pipe()
-        task.executableURL = URL(fileURLWithPath: "/usr/bin/file")
-        task.arguments = ["-b", file.path]
-        task.standardOutput = outputPipe
-        task.standardError = Pipe()
-
-        do {
-            try task.run()
-        } catch {
-            return false
-        }
-
-        let output = String(data: outputPipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
-        task.waitUntilExit()
-        return task.terminationStatus == 0 && output.contains("Mach-O")
-    }
-
-    ///
-    /// Read the code-signing metadata for a code object.
-    ///
-    private static func codesignDetails(at location: URL) throws -> String {
-        let task = Process()
-        let standardOutput = Pipe()
-        let standardError = Pipe()
-        task.executableURL = URL(fileURLWithPath: "/usr/bin/codesign")
-        task.arguments = ["--display", "--verbose=4", location.path]
-        task.standardOutput = standardOutput
-        task.standardError = standardError
-
-        do {
-            try task.run()
-        } catch {
-            throw MacCrafterError.signing("Unable to inspect the code signature of \(location.path): \(error.localizedDescription)")
-        }
-
-        let outputData = standardOutput.fileHandleForReading.readDataToEndOfFile()
-        let errorData = standardError.fileHandleForReading.readDataToEndOfFile()
-        task.waitUntilExit()
-
-        guard task.terminationStatus == 0 else {
-            let errorOutput = String(data: errorData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "unknown codesign error"
-            throw MacCrafterError.signing("Unable to inspect the code signature of \(location.path): \(errorOutput)")
-        }
-
-        return [outputData, errorData]
-            .compactMap { String(data: $0, encoding: .utf8) }
-            .joined(separator: "\n")
-    }
-
-    private static func verifyTeamIdentifiers(at location: URL) throws {
-        let components = try findCodeComponents(at: location)
-        let signatures = try components.map { component in
-            (
-                location: component.path,
-                teamIdentifier: TeamIdentifierVerifier.teamIdentifier(from: try codesignDetails(at: component))
-            )
-        }
-
-        if let error = TeamIdentifierVerifier.validationError(for: signatures) {
-            throw MacCrafterError.signing(error)
-        }
-
-        Log.info("Verified matching TeamIdentifier for \(signatures.count) code components")
-    }
-
     private static func verify(at location: URL) async throws {
         Log.info("Verifying: \(location.path)")
         let code = await shell("codesign --verify --deep --strict --verbose=2 \"\(location.path)\"")
@@ -445,7 +301,7 @@ enum Signer: Signing {
             throw MacCrafterError.signing("Signing verification failed because the codesign command terminated with code \(code)")
         }
 
-        try verifyTeamIdentifiers(at: location)
+        try CodeSignatureVerifier.verify(at: location)
     }
 
     // MARK: - Public
