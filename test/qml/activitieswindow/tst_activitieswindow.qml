@@ -55,6 +55,7 @@ Item {
         property ActivitiesWindow activitiesWindow
         property var activityList
         property var activityListView
+        property var activityHighlight
         property var newActivitiesButtonLoader
 
         function init()
@@ -103,6 +104,23 @@ Item {
             compare(activitiesWindow.visible, true);
             compare(activityListView.currentIndex, -1);
             tryCompare(activityList, "atYBeginning", true);
+        }
+
+        function test_highlightIsHiddenWithoutCurrentItem()
+        {
+            activityListView.currentIndex = 0;
+            tryVerify(() => activityListView.currentItem !== null);
+            activityHighlight = activityListView.highlightItem;
+            verify(activityHighlight);
+
+            activitiesWindow.requestActivate();
+            activityListView.forceActiveFocus();
+            tryVerify(() => activityListView.activeFocus);
+
+            activitiesWindow.resetActivityList();
+
+            compare(activityListView.currentItem, null);
+            compare(activityHighlight.visible, false);
         }
 
         function test_liveActivityDoesNotResetViewport()
