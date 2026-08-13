@@ -14,36 +14,70 @@ import com.nextcloud.desktopclient
 import Style
 import "qrc:/qml/src/gui"
 import "qrc:/qml/src/gui/tray"
-import "qrc:/qml/src/gui/wizard/qml"
 
 WizardStyledWindow {
     id: dialog
     visible: true
 
-    property var account
+    required property var account
     property string localPath: ""
     property string shortLocalPath: dialog.localPath.split("/").reverse()[0]
     property string fileId: ""
     property Share selectedShare: null
+    property Share sharePendingDeletion: null
+    property bool selectShareAfterCreation: false
+    property bool activatingShare: false
+    property string shareActivationError: ""
 
-    title: qsTr("Share \"%1\"").arg(dialog.shortLocalPath)
+    property FileDetails fileDetails: FileDetails {
+        localPath: dialog.localPath
+    }
+
+    title: qsTr("Share \"%1\"").arg(dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File"))
     width: Style.sharingDialogWidth
     height: Style.sharingDialogHeight
     minimumWidth: Style.sharingDialogMinimumWidth
     minimumHeight: Style.sharingDialogMinimumHeight
 
+    function currentShares() {
+        return sharingController ? Array.from(sharingController.shares || []) : []
+    }
+
     function reconcileSelectedShare() {
-        const shares = sharingController.shares
+        const shares = dialog.currentShares()
         if (dialog.selectedShare && shares.indexOf(dialog.selectedShare) !== -1) {
             return
         }
 
-        dialog.selectedShare = shares.length > 0 ? shares[0] : null
+        dialog.selectedShare = null
+    }
+
+    function shareTitle(share): string {
+        if (!share || !share.recipients) {
+            return qsTr("Share settings")
+        }
+
+        const names = []
+        for (const recipient of Array.from(share.recipients)) {
+            if (recipient && recipient.displayName) {
+                names.push(recipient.displayName)
+            }
+        }
+        return names.length > 0 ? qsTr("Share with %1").arg(names.join(", ")) : qsTr("New share")
+    }
+
+    onSelectedShareChanged: {
+        dialog.activatingShare = false
+        dialog.shareActivationError = ""
     }
 
     SharingController {
         id: sharingController
-        account: dialog.account
+    }
+
+    UnifiedShareListModel {
+        id: shareListModel
+        sharingController: sharingController
     }
 
     Shortcut {
@@ -52,6 +86,7 @@ WizardStyledWindow {
     }
 
     Component.onCompleted: {
+        sharingController.account = dialog.account
         sharingController.initialize(dialog.fileId)
     }
 
@@ -59,7 +94,32 @@ WizardStyledWindow {
         target: sharingController
 
         function onSharesChanged() {
-            dialog.reconcileSelectedShare()
+            if (dialog.selectShareAfterCreation) {
+                const shares = dialog.currentShares()
+                dialog.selectedShare = shares.length > 0 ? shares[shares.length - 1] : null
+                dialog.selectShareAfterCreation = false
+            } else {
+                dialog.reconcileSelectedShare()
+            }
+        }
+
+        function onShareCreationErrorChanged() {
+            if (sharingController.shareCreationError.length > 0) {
+                dialog.selectShareAfterCreation = false
+            }
+        }
+
+        function onShareActivated(share) {
+            if (share === dialog.selectedShare) {
+                dialog.activatingShare = false
+            }
+        }
+
+        function onShareActivationFailed(share, error) {
+            if (share === dialog.selectedShare) {
+                dialog.activatingShare = false
+                dialog.shareActivationError = error
+            }
         }
     }
 
@@ -68,17 +128,46 @@ WizardStyledWindow {
         anchors.topMargin: Style.standardSpacing
         spacing: 0
 
-        EnforcedPlainTextLabel {
+        ColumnLayout {
             Layout.leftMargin: Style.sharingDialogWindowMargin
             Layout.rightMargin: Style.sharingDialogWindowMargin
             Layout.bottomMargin: Style.standardSpacing
+            spacing: Style.smallSpacing
 
-            text: dialog.title
-            elide: Text.ElideRight
-            font.pointSize: Style.titleFontPtSize
-            font.weight: Font.DemiBold
-            color: palette.text
             Layout.fillWidth: true
+
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+
+                text: dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File")
+                elide: Text.ElideRight
+                font.pointSize: Style.titleFontPtSize
+                font.weight: Font.DemiBold
+                color: palette.text
+            }
+
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+
+                text: {
+                    const details = []
+                    if (dialog.fileDetails.sizeString) {
+                        details.push(dialog.fileDetails.sizeString)
+                    }
+                    if (dialog.fileDetails.lastChangedString) {
+                        details.push(dialog.fileDetails.lastChangedString)
+                    }
+                    const owner = dialog.account ? (dialog.account.davDisplayName || dialog.account.davUser) : ""
+                    if (owner) {
+                        details.push(owner)
+                    }
+                    return details.join(" · ")
+                }
+                color: Style.wizardSecondaryText
+                elide: Text.ElideRight
+                font.pointSize: Style.defaultFontPtSize
+                visible: text.length > 0
+            }
         }
 
         Rectangle {
@@ -87,109 +176,220 @@ WizardStyledWindow {
             color: Style.sharingDialogSeparatorColor
         }
 
-        SplitView {
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.leftMargin: Style.sharingDialogWindowMargin
+            Layout.rightMargin: Style.sharingDialogWindowMargin
+            Layout.topMargin: Style.standardSpacing
+            Layout.preferredHeight: Style.sharingDialogPaneHeaderHeight
+
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+
+                text: dialog.selectedShare ? dialog.shareTitle(dialog.selectedShare) : qsTr("Sharing")
+                font.pointSize: Style.subheaderFontPtSize
+                font.weight: Font.DemiBold
+            }
+        }
+
+        StackLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            orientation: Qt.Horizontal
-            handle: Rectangle {
-                implicitWidth: Style.normalBorderWidth
-                color: Style.sharingDialogSeparatorColor
-            }
+            currentIndex: dialog.selectedShare ? 1 : 0
 
-            MainPage {
-                id: mainPage
+            Item {
+                ListView {
+                    id: shareListView
 
-                SplitView.minimumWidth: Style.sharingDialogSidebarMinimumWidth
-                SplitView.preferredWidth: Style.sharingDialogSidebarPreferredWidth
-                SplitView.maximumWidth: Style.sharingDialogSidebarMaximumWidth
+                    anchors.fill: parent
+                    anchors.leftMargin: Style.sharingDialogWindowMargin
+                    anchors.rightMargin: Style.sharingDialogWindowMargin
+                    anchors.bottomMargin: Style.standardSpacing
+                    clip: true
+                    spacing: Style.extraSmallSpacing
+                    model: shareListModel
 
-                sharingController: sharingController
-                fileId: dialog.fileId
-                selectedShare: dialog.selectedShare
+                    header: ColumnLayout {
+                        width: shareListView.width
+                        spacing: Style.standardSpacing
 
-                onShareSelected: share => {
-                    dialog.selectedShare = share
+                        ItemDelegate {
+                            Layout.fillWidth: true
+                            text: sharingController.creatingShare ? qsTr("Creating share…") : qsTr("Create new share")
+                            enabled: !sharingController.creatingShare && dialog.fileId.length > 0
+                            icon.source: "image://svgimage-custom-color/add.svg/" + palette.buttonText
+
+                            onClicked: {
+                                dialog.selectShareAfterCreation = true
+                                sharingController.createShare(dialog.fileId)
+                            }
+                        }
+
+                        EnforcedPlainTextLabel {
+                            Layout.fillWidth: true
+                            text: sharingController.shareCreationError
+                            color: Style.wizardErrorText
+                            wrapMode: Text.Wrap
+                            visible: text.length > 0
+                        }
+
+                        EnforcedPlainTextLabel {
+                            Layout.fillWidth: true
+                            text: sharingController.shareDestructionError
+                            color: Style.wizardErrorText
+                            wrapMode: Text.Wrap
+                            visible: text.length > 0
+                        }
+
+                        EnforcedPlainTextLabel {
+                            Layout.fillWidth: true
+                            text: qsTr("This item has not been shared yet.")
+                            color: palette.placeholderText
+                            wrapMode: Text.Wrap
+                            visible: shareListView.count === 0
+                        }
+                    }
+
+                    section.property: "section"
+                    section.criteria: ViewSection.FullString
+                    section.delegate: EnforcedPlainTextLabel {
+                        required property string section
+
+                        width: shareListView.width
+                        topPadding: Style.standardSpacing
+                        bottomPadding: Style.extraSmallSpacing
+                        text: section === "external" ? qsTr("External shares") : qsTr("Internal shares")
+                        font.weight: Font.DemiBold
+                    }
+
+                    delegate: ShareRow {
+                        width: ListView.view.width
+                        onConfigureRequested: dialog.selectedShare = share
+                    }
+
+                    ScrollBar.vertical: ScrollBar {
+                        parent: shareListView
+                        anchors.top: shareListView.top
+                        anchors.right: shareListView.right
+                        anchors.bottom: shareListView.bottom
+                        policy: ScrollBar.AsNeeded
+                    }
                 }
             }
 
-            Page {
-                SplitView.fillWidth: true
+            ScrollView {
+                id: shareDetailsScrollView
+
+                contentWidth: availableWidth
+                clip: true
 
                 ColumnLayout {
-                    anchors.fill: parent
-                    anchors.leftMargin: Style.standardSpacing
-                    anchors.rightMargin: Style.sharingDialogWindowMargin + Style.standardSpacing
-                    anchors.topMargin: Style.standardSpacing
-                    anchors.bottomMargin: Style.standardSpacing
+                    width: shareDetailsScrollView.availableWidth
 
-                    RowLayout {
+                    Loader {
+                        id: shareDetailsLoader
+
                         Layout.fillWidth: true
-                        Layout.preferredHeight: Style.sharingDialogPaneHeaderHeight
+                        Layout.leftMargin: Style.sharingDialogWindowMargin
+                        Layout.rightMargin: Style.sharingDialogWindowMargin
+                        Layout.bottomMargin: Style.standardSpacing
+                        Layout.preferredHeight: active && item ? item.implicitHeight : 0
+                        active: dialog.selectedShare !== null
+                        visible: active
 
-                        EnforcedPlainTextLabel {
-                            Layout.alignment: Qt.AlignVCenter
-
-                            text: qsTr("Share details")
-                            elide: Text.ElideRight
-                            font.pointSize: Style.subheaderFontPtSize
-                            font.weight: Font.DemiBold
-                            color: palette.text
-                            Layout.fillWidth: true
-                        }
-
-                        ToolButton {
-                            visible: dialog.selectedShare !== null
-                            enabled: !sharingController.destroyingShare
-                            display: AbstractButton.IconOnly
-                            icon.source: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
-                            Accessible.name: qsTr("Delete share")
-                            ToolTip.visible: hovered
-                            ToolTip.text: Accessible.name
-
-                            onClicked: deleteShareConfirmation.open()
+                        sourceComponent: ShareDetailsPage {
+                            sharingController: sharingController
+                            share: dialog.selectedShare
                         }
                     }
+                }
 
-                    EnforcedPlainTextLabel {
-                        Layout.fillWidth: true
-                        text: sharingController.shareDestructionError
-                        color: Style.wizardErrorText
-                        wrapMode: Text.Wrap
-                        visible: text.length > 0
-                    }
+                ScrollBar.horizontal: ScrollBar {
+                    policy: ScrollBar.AlwaysOff
+                }
 
-                    Item {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-
-                        Loader {
-                            anchors.fill: parent
-
-                            active: dialog.selectedShare !== null
-                            sourceComponent: detailsComponent
-                        }
-
-                        EnforcedPlainTextLabel {
-                            anchors.fill: parent
-
-                            text: qsTr("Select a share to view its details.")
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            wrapMode: Text.Wrap
-                            visible: dialog.selectedShare === null
-                        }
-                    }
+                ScrollBar.vertical: ScrollBar {
+                    parent: shareDetailsScrollView
+                    anchors.top: shareDetailsScrollView.top
+                    anchors.right: shareDetailsScrollView.right
+                    anchors.bottom: shareDetailsScrollView.bottom
+                    policy: ScrollBar.AsNeeded
                 }
             }
         }
-    }
 
-    Component {
-        id: detailsComponent
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: Style.smallSpacing
+            visible: dialog.selectedShare !== null
 
-        ShareDetailsPage {
-            sharingController: sharingController
-            share: dialog.selectedShare
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.preferredHeight: Style.normalBorderWidth
+                color: Style.sharingDialogSeparatorColor
+            }
+
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+                Layout.leftMargin: Style.sharingDialogWindowMargin
+                Layout.rightMargin: Style.sharingDialogWindowMargin
+
+                text: dialog.shareActivationError
+                color: Style.wizardErrorText
+                wrapMode: Text.Wrap
+                visible: text.length > 0
+            }
+
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+                Layout.leftMargin: Style.sharingDialogWindowMargin
+                Layout.rightMargin: Style.sharingDialogWindowMargin
+
+                text: qsTr("Changes to this share are applied immediately.")
+                color: palette.placeholderText
+                wrapMode: Text.Wrap
+                visible: dialog.selectedShare && dialog.selectedShare.state === Share.Active
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: Style.sharingDialogWindowMargin
+                Layout.rightMargin: Style.sharingDialogWindowMargin
+                Layout.bottomMargin: Style.standardSpacing
+
+                Button {
+                    text: qsTr("Delete share")
+                    enabled: !sharingController.destroyingShare
+                    flat: true
+                    icon.source: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
+                    onClicked: {
+                        dialog.sharePendingDeletion = dialog.selectedShare
+                        deleteShareConfirmation.open()
+                    }
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                }
+
+                Button {
+                    text: qsTr("Close")
+                    onClicked: dialog.selectedShare = null
+                }
+
+                Button {
+                    text: dialog.activatingShare ? qsTr("Sending…") : qsTr("Send share")
+                    enabled: !dialog.activatingShare
+                    highlighted: true
+                    visible: dialog.selectedShare && dialog.selectedShare.state === Share.Draft
+
+                    onClicked: {
+                        dialog.shareActivationError = ""
+                        dialog.activatingShare = true
+                        sharingController.activateShare(dialog.selectedShare)
+                    }
+                }
+            }
         }
     }
 
@@ -221,9 +421,16 @@ WizardStyledWindow {
         }
 
         onAccepted: {
-            sharingController.destroyShare(dialog.selectedShare)
+            if (dialog.sharePendingDeletion) {
+                if (dialog.selectedShare === dialog.sharePendingDeletion) {
+                    dialog.selectedShare = null
+                }
+                sharingController.destroyShare(dialog.sharePendingDeletion)
+                dialog.sharePendingDeletion = null
+            }
             close()
         }
-    }
 
+        onRejected: dialog.sharePendingDeletion = null
+    }
 }

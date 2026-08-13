@@ -65,6 +65,11 @@ const std::optional<QString> &Recipient::instance() const
     return _instance;
 }
 
+QString Recipient::instanceString() const
+{
+    return _instance.value_or(QString{});
+}
+
 QString Recipient::iconSvg() const
 {
     return _iconSvg;
@@ -93,6 +98,11 @@ const std::optional<QString> &Recipient::secretValue() const
 const std::optional<QString> &Recipient::secretUrl() const
 {
     return _secretUrl;
+}
+
+QString Recipient::secretUrlString() const
+{
+    return _secretUrl.value_or(QString{});
 }
 
 QString Recipient::initiatorDisplayName() const

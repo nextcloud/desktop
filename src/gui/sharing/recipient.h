@@ -22,7 +22,9 @@ class Recipient : public QObject
     Q_PROPERTY(QString className READ className CONSTANT)
     Q_PROPERTY(QString displayName READ displayName CONSTANT)
     Q_PROPERTY(QString value READ value CONSTANT)
+    Q_PROPERTY(QString instance READ instanceString CONSTANT)
     Q_PROPERTY(bool secretUpdatable READ secretUpdatable CONSTANT)
+    Q_PROPERTY(QString secretUrl READ secretUrlString CONSTANT)
 
 public:
     /** @brief Creates a recipient from its unified sharing API representation. */
@@ -36,6 +38,7 @@ public:
     [[nodiscard]] QString value() const;
     /** @brief Returns the recipient's remote instance, or no value for a local recipient. */
     [[nodiscard]] const std::optional<QString> &instance() const;
+    [[nodiscard]] QString instanceString() const;
     /** @brief Returns a themeable SVG icon supplied by the server, if present. */
     [[nodiscard]] QString iconSvg() const;
     /** @brief Returns the light-theme icon URL supplied by the server, if present. */
@@ -48,6 +51,7 @@ public:
     [[nodiscard]] const std::optional<QString> &secretValue() const;
     /** @brief Returns the public URL associated with the recipient secret, when exposed. */
     [[nodiscard]] const std::optional<QString> &secretUrl() const;
+    [[nodiscard]] QString secretUrlString() const;
     /** @brief Returns the user-facing name of the user who added the recipient. */
     [[nodiscard]] QString initiatorDisplayName() const;
 
