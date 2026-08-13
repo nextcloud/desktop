@@ -12,6 +12,7 @@ import QtQuick.Controls
 
 import com.nextcloud.desktopclient
 import Style
+import "qrc:/qml/src/gui/wizard/qml"
 
 Loader {
     id: instantiator
@@ -31,18 +32,18 @@ Loader {
     }
 
     sourceComponent: switch (model.type) {
-        case PropertyModel.Boolean:
-            return booleanComponent
-        case PropertyModel.Date:
-            return dateComponent
-        case PropertyModel.Enum:
-            return enumComponent
-        case PropertyModel.Password:
-            return passwordComponent
-        case PropertyModel.String:
-            return stringComponent
-        default:
-            return unknownComponent
+    case PropertyModel.Boolean:
+        return booleanComponent
+    case PropertyModel.Date:
+        return dateComponent
+    case PropertyModel.Enum:
+        return enumComponent
+    case PropertyModel.Password:
+        return passwordComponent
+    case PropertyModel.String:
+        return stringComponent
+    default:
+        return unknownComponent
     }
 
     Component {
@@ -65,7 +66,7 @@ Loader {
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
-            TextField {
+            WizardTextField {
                 id: dateField
 
                 Layout.fillWidth: true
@@ -73,16 +74,9 @@ Loader {
                 placeholderText: instantiator.model.placeholder || qsTr("ISO 8601 date")
                 inputMethodHints: Qt.ImhDate
 
-                property bool withinMinimum: !instantiator.model.minimum
-                    || !text
-                    || Date.parse(text) > Date.parse(instantiator.model.minimum)
-                property bool withinMaximum: !instantiator.model.maximum
-                    || !text
-                    || Date.parse(text) < Date.parse(instantiator.model.maximum)
-                property bool valid: (!instantiator.model.required || text.length > 0)
-                    && (!text || !isNaN(Date.parse(text)))
-                    && withinMinimum
-                    && withinMaximum
+                property bool withinMinimum: !instantiator.model.minimum || !text || Date.parse(text) > Date.parse(instantiator.model.minimum)
+                property bool withinMaximum: !instantiator.model.maximum || !text || Date.parse(text) < Date.parse(instantiator.model.maximum)
+                property bool valid: (!instantiator.model.required || text.length > 0) && (!text || !isNaN(Date.parse(text))) && withinMinimum && withinMaximum
 
                 onEditingFinished: {
                     if (valid) {
@@ -107,29 +101,16 @@ Loader {
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
-            ComboBox {
+            WizardComboBox {
                 id: enumSelector
 
                 Layout.fillWidth: true
-                model: instantiator.model.validValues
+                model: instantiator.model.validValues.map(value => ({
+                            "name": value,
+                            "isSelected": value === instantiator.model.value
+                        }))
+                textRole: "name"
                 currentIndex: instantiator.model.validValues.indexOf(instantiator.model.value)
-                delegate: ItemDelegate {
-                    id: enumDelegate
-
-                    required property int index
-                    required property string modelData
-
-                    width: enumSelector.width
-                    text: modelData
-                    highlighted: enumSelector.highlightedIndex === index
-
-                    contentItem: EnforcedPlainTextLabel {
-                        text: enumDelegate.text
-                        color: enumDelegate.highlighted ? palette.highlightedText : palette.text
-                        verticalAlignment: Text.AlignVCenter
-                        elide: Text.ElideRight
-                    }
-                }
 
                 onActivated: index => {
                     instantiator.submit(instantiator.model.validValues[index])
@@ -145,7 +126,7 @@ Loader {
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
-            TextField {
+            WizardTextField {
                 Layout.fillWidth: true
                 text: instantiator.model.value ?? ""
                 placeholderText: instantiator.model.placeholder
@@ -167,7 +148,7 @@ Loader {
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
-            TextField {
+            WizardTextField {
                 id: stringField
 
                 Layout.fillWidth: true
@@ -175,8 +156,7 @@ Loader {
                 placeholderText: instantiator.model.placeholder
                 maximumLength: instantiator.model.maximum ?? 32767
 
-                property bool valid: (!instantiator.model.required || text.length > 0)
-                    && (!instantiator.model.minimum || text.length >= instantiator.model.minimum)
+                property bool valid: (!instantiator.model.required || text.length > 0) && (!instantiator.model.minimum || text.length >= instantiator.model.minimum)
 
                 onEditingFinished: {
                     if (valid) {

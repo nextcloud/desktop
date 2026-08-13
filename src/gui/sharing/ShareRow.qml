@@ -9,18 +9,17 @@ import QtQuick.Controls
 
 import com.nextcloud.desktopclient
 import Style
+import "qrc:/qml/src/gui/wizard/qml"
 
-ItemDelegate {
+WizardItemDelegate {
     id: root
 
     required property Share share
     signal configureRequested
 
     implicitHeight: contentItem.implicitHeight + topPadding + bottomPadding
-    hoverEnabled: true
-
     contentItem: RowLayout {
-        spacing: Style.smallSpacing
+        spacing: Style.standardSpacing
 
         Image {
             Layout.preferredWidth: Style.activityListButtonIconSize
@@ -47,24 +46,25 @@ ItemDelegate {
                     }
                     return names.length > 0 ? names.join(", ") : qsTr("New share")
                 }
-                color: palette.text
+                color: Style.wizardPrimaryText
                 elide: Text.ElideRight
             }
 
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
                 text: root.share && root.share.recipients && root.share.recipients.length > 0 ? qsTr("%1 recipient(s)").arg(root.share.recipients.length) : qsTr("Not shared yet")
-                color: palette.placeholderText
+                color: Style.wizardSecondaryText
                 elide: Text.ElideRight
                 visible: text.length > 0
             }
         }
 
-        ToolButton {
-            Layout.preferredWidth: Style.activityListButtonWidth
-            Layout.preferredHeight: Style.activityListButtonHeight
-            display: AbstractButton.IconOnly
-            icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
+        WizardButton {
+            Layout.preferredWidth: implicitHeight
+            leftPadding: 0
+            rightPadding: 0
+            text: ""
+            iconSource: "image://svgimage-custom-color/more.svg/" + palette.buttonText
             Accessible.name: qsTr("Configure share")
             ToolTip.visible: hovered
             ToolTip.text: Accessible.name

@@ -11,11 +11,12 @@ import QtQuick.Controls
 import com.nextcloud.desktopclient
 import com.nextcloud.desktopclient as NC
 import Style
+import "qrc:/qml/src/gui/wizard/qml"
 
 // Based on the old `ShareeSearchField` component from filedetails.
 // While Qt 6.10+ has a `SearchField` type, it's still lacking some features
 // such as a placeholder text.
-TextField {
+WizardTextField {
     id: root
 
     signal recipientSelected(string recipientType, string recipientValue, string recipientInstance)
@@ -32,48 +33,43 @@ TextField {
     readonly property double iconsScaleFactor: 0.6
 
     function triggerSuggestionsVisibility() {
-        recipientListView.count > 0 ? suggestionsPopup.open() : suggestionsPopup.close();
+        recipientListView.count > 0 ? suggestionsPopup.open() : suggestionsPopup.close()
     }
 
     placeholderText: enabled ? qsTr("Search for recipients") : qsTr("Sharing is not available for this folder")
     verticalAlignment: Qt.AlignVCenter
-    implicitHeight: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
-
     onActiveFocusChanged: triggerSuggestionsVisibility()
     onTextChanged: triggerSuggestionsVisibility()
     Keys.onPressed: {
-        if(suggestionsPopup.visible) {
-            switch(event.key) {
+        if (suggestionsPopup.visible) {
+            switch (event.key) {
             case Qt.Key_Escape:
-                suggestionsPopup.close();
-                recipientListView.currentIndex = -1;
-                event.accepted = true;
-                break;
-
+                suggestionsPopup.close()
+                recipientListView.currentIndex = -1
+                event.accepted = true
+                break
             case Qt.Key_Up:
-                recipientListView.decrementCurrentIndex();
-                event.accepted = true;
-                break;
-
+                recipientListView.decrementCurrentIndex()
+                event.accepted = true
+                break
             case Qt.Key_Down:
-                recipientListView.incrementCurrentIndex();
-                event.accepted = true;
-                break;
-
+                recipientListView.incrementCurrentIndex()
+                event.accepted = true
+                break
             case Qt.Key_Enter:
             case Qt.Key_Return:
-                if(recipientListView.currentIndex > -1) {
-                    recipientListView.itemAtIndex(recipientListView.currentIndex).selectItem();
-                    event.accepted = true;
-                    break;
+                if (recipientListView.currentIndex > -1) {
+                    recipientListView.itemAtIndex(recipientListView.currentIndex).selectItem()
+                    event.accepted = true
+                    break
                 }
             }
         } else {
-            switch(event.key) {
+            switch (event.key) {
             case Qt.Key_Down:
-                triggerSuggestionsVisibility();
-                event.accepted = true;
-                break;
+                triggerSuggestionsVisibility()
+                event.accepted = true
+                break
             }
         }
     }
@@ -103,7 +99,7 @@ TextField {
 
         visible: !root.recipientModel.fetchOngoing
     }
-/*
+    /*
     NCBusyIndicator {
         id: busyIndicator
 
@@ -168,14 +164,9 @@ TextField {
             ListView {
                 id: recipientListView
 
-                spacing: 0
+                spacing: Style.extraSmallSpacing
                 currentIndex: -1
                 interactive: true
-
-                highlight: Rectangle {
-                    anchors.fill: recipientListView.currentItem
-                    color: palette.highlight
-                }
                 highlightFollowsCurrentItem: true
                 highlightMoveDuration: 0
                 highlightResizeDuration: 0
@@ -186,7 +177,7 @@ TextField {
                 onCountChanged: root.triggerSuggestionsVisibility()
 
                 model: root.recipientModel
-                delegate: ItemDelegate {
+                delegate: WizardItemDelegate {
                     id: recipientDelegate
                     required property int index
 
@@ -198,23 +189,27 @@ TextField {
                     required property string iconLight
                     required property string iconDark
 
-                    width: recipientListView.contentItem.width
-
-                    text: displayName
+                    width: ListView.view.width
+                    highlighted: ListView.isCurrentItem
 
                     contentItem: RowLayout {
+                        spacing: Style.standardSpacing
+
                         Image {
-                            source: RecipientIcon.source(recipientDelegate.iconSvgUrl,
-                                                         recipientDelegate.iconLight,
-                                                         recipientDelegate.iconDark)
+                            Layout.preferredWidth: Style.activityListButtonIconSize
+                            Layout.preferredHeight: Style.activityListButtonIconSize
+                            source: RecipientIcon.source(recipientDelegate.iconSvgUrl, recipientDelegate.iconLight, recipientDelegate.iconDark)
+                            sourceSize: Qt.size(Style.activityListButtonIconSize, Style.activityListButtonIconSize)
+                            fillMode: Image.PreserveAspectFit
                         }
                         EnforcedPlainTextLabel {
                             text: recipientDelegate.displayName
+                            color: Style.wizardPrimaryText
                         }
                         EnforcedPlainTextLabel {
                             Layout.fillWidth: true
                             text: recipientDelegate.instance || ""
-                            color: palette.placeholderText
+                            color: Style.wizardSecondaryText
                             elide: Text.ElideRight
                         }
                     }
@@ -223,12 +218,10 @@ TextField {
                     // hoverEnabled: model.type !== NC.recipient.LookupServerSearchResults
 
                     function selectSharee() {
-                        root.recipientSelected(recipientDelegate.type,
-                                               recipientDelegate.value,
-                                               recipientDelegate.instance || "");
-                        suggestionsPopup.close();
+                        root.recipientSelected(recipientDelegate.type, recipientDelegate.value, recipientDelegate.instance || "")
+                        suggestionsPopup.close()
 
-                        root.clear();
+                        root.clear()
                     }
 
                     function selectItem() {
@@ -236,24 +229,24 @@ TextField {
                         //     recipientListView.currentIndex = -1
                         //     root.recipientModel.searchGlobally()
                         // } else {
-                            selectSharee()
-                        // }
+                        selectSharee()
+                    // }
                     }
 
                     onHoveredChanged: if (hovered) {
                         // When we set the currentIndex the list view will scroll...
                         // unless we tamper with the preferred highlight points to stop this.
-                        const savedPreferredHighlightBegin = recipientListView.preferredHighlightBegin;
-                        const savedPreferredHighlightEnd = recipientListView.preferredHighlightEnd;
+                        const savedPreferredHighlightBegin = recipientListView.preferredHighlightBegin
+                        const savedPreferredHighlightEnd = recipientListView.preferredHighlightEnd
                         // Set overkill values to make sure no scroll happens when we hover with mouse
-                        recipientListView.preferredHighlightBegin = -suggestionsScrollView.height;
-                        recipientListView.preferredHighlightEnd = suggestionsScrollView.height * 2;
+                        recipientListView.preferredHighlightBegin = -suggestionsScrollView.height
+                        recipientListView.preferredHighlightEnd = suggestionsScrollView.height * 2
 
-                        recipientListView.currentIndex = index
+                        recipientListView.currentIndex = index;
 
                         // Reset original values so keyboard navigation makes list view scroll
-                        recipientListView.preferredHighlightBegin = savedPreferredHighlightBegin;
-                        recipientListView.preferredHighlightEnd = savedPreferredHighlightEnd;
+                        recipientListView.preferredHighlightBegin = savedPreferredHighlightBegin
+                        recipientListView.preferredHighlightEnd = savedPreferredHighlightEnd
                     }
                     onClicked: selectItem()
                 }
