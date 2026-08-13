@@ -11,9 +11,8 @@ import QtQuick.Controls
 
 import com.nextcloud.desktopclient
 import Style
-import "qrc:/qml/src/gui/wizard/qml"
 
-Page {
+ColumnLayout {
     id: root
 
     required property SharingController sharingController
@@ -21,10 +20,8 @@ Page {
     property string recipientOperationError: ""
     property string permissionUpdateError: ""
     property string propertyUpdateError: ""
-    property string shareActivationError: ""
-    property bool activatingShare: false
 
-    title: qsTr("Share details")
+    spacing: Style.standardSpacing
 
     function copyToClipboard(value: string): void {
         clipboardHelper.text = value
@@ -38,372 +35,296 @@ Page {
         visible: false
     }
 
-    ColumnLayout {
-        anchors.fill: parent
+    RecipientSearchField {
+        id: recipientSearch
+        Layout.fillWidth: true
 
-        ScrollView {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
+        account: root.sharingController.account
+        shareId: root.share.id
 
-            contentWidth: availableWidth
-            rightPadding: ScrollBar.vertical.visible ? ScrollBar.vertical.width + Style.standardSpacing : 0
+        onRecipientSelected: (recipientType, recipientValue, recipientInstance) => {
+            root.recipientOperationError = ""
+            root.sharingController.addRecipient(root.share, recipientType, recipientValue, recipientInstance)
+        }
+    }
 
-            ColumnLayout {
-                width: parent.width
+    EnforcedPlainTextLabel {
+        Layout.fillWidth: true
+
+        text: root.recipientOperationError
+        color: Style.wizardErrorText
+        wrapMode: Text.Wrap
+        visible: text.length > 0
+    }
+
+    ListView {
+        Layout.fillWidth: true
+        Layout.preferredHeight: contentHeight
+        interactive: false
+        spacing: Style.extraSmallSpacing
+        model: RecipientModel {
+            share: root.share
+        }
+
+        delegate: ItemDelegate {
+            id: recipientDelegate
+
+            required property var model
+
+            width: ListView.view.width
+            hoverEnabled: true
+
+            contentItem: RowLayout {
                 spacing: Style.standardSpacing
 
-                RecipientSearchField {
-                    id: recipientSearch
+                Image {
+                    Layout.preferredWidth: Style.activityListButtonIconSize
+                    Layout.preferredHeight: Style.activityListButtonIconSize
+
+                    source: RecipientIcon.source(recipientDelegate.model.iconSvgUrl, recipientDelegate.model.iconLight, recipientDelegate.model.iconDark)
+                    sourceSize.width: Style.activityListButtonIconSize
+                    sourceSize.height: Style.activityListButtonIconSize
+                    fillMode: Image.PreserveAspectFit
+                    visible: source.toString().length > 0
+                }
+
+                ColumnLayout {
                     Layout.fillWidth: true
+                    spacing: 0
 
-                    account: root.sharingController.account
-                    shareId: root.share.id
+                    EnforcedPlainTextLabel {
+                        Layout.fillWidth: true
+                        text: recipientDelegate.model.label
+                        elide: Text.ElideRight
+                    }
 
-                    onRecipientSelected: (recipientType, recipientValue, recipientInstance) => {
+                    EnforcedPlainTextLabel {
+                        Layout.fillWidth: true
+                        text: {
+                            const details = []
+                            if (recipientDelegate.model.instance) {
+                                details.push(recipientDelegate.model.instance)
+                            }
+                            if (recipientDelegate.model.initiatorDisplayName) {
+                                details.push(qsTr("Added by %1").arg(recipientDelegate.model.initiatorDisplayName))
+                            }
+                            return details.join(" · ")
+                        }
+                        color: palette.placeholderText
+                        elide: Text.ElideRight
+                        visible: text.length > 0
+                    }
+                }
+
+                Button {
+                    Layout.preferredWidth: Style.activityListButtonWidth
+                    Layout.preferredHeight: Style.activityListButtonHeight
+
+                    icon.source: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
+                    icon.width: Style.activityListButtonIconSize
+                    icon.height: Style.activityListButtonIconSize
+                    display: AbstractButton.IconOnly
+                    visible: recipientDelegate.model.secretUrl !== ""
+                    enabled: visible
+
+                    Accessible.name: qsTr("Copy recipient link")
+                    ToolTip.visible: hovered
+                    ToolTip.text: Accessible.name
+
+                    onClicked: root.copyToClipboard(recipientDelegate.model.secretUrl)
+                }
+
+                Button {
+                    Layout.preferredWidth: Style.activityListButtonWidth
+                    Layout.preferredHeight: Style.activityListButtonHeight
+
+                    icon.source: "image://svgimage-custom-color/change.svg/" + palette.buttonText
+                    icon.width: Style.activityListButtonIconSize
+                    icon.height: Style.activityListButtonIconSize
+                    display: AbstractButton.IconOnly
+                    visible: recipientDelegate.model.secretUpdatable
+                    enabled: visible
+
+                    Accessible.name: recipientDelegate.model.secretUrl !== "" ? qsTr("Regenerate recipient link") : qsTr("Generate recipient link")
+                    ToolTip.visible: hovered
+                    ToolTip.text: Accessible.name
+
+                    onClicked: {
                         root.recipientOperationError = ""
-                        root.sharingController.addRecipient(root.share,
-                                                            recipientType,
-                                                            recipientValue,
-                                                            recipientInstance)
+                        root.sharingController.updateRecipientSecret(root.share, recipientDelegate.model.className, recipientDelegate.model.value, recipientDelegate.model.instance || "")
                     }
                 }
 
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
+                Button {
+                    Layout.preferredWidth: Style.activityListButtonWidth
+                    Layout.preferredHeight: Style.activityListButtonHeight
 
-                    text: root.recipientOperationError
-                    color: Style.wizardErrorText
-                    wrapMode: Text.Wrap
-                    visible: text.length > 0
-                }
+                    icon.source: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
+                    icon.width: Style.activityListButtonIconSize
+                    icon.height: Style.activityListButtonIconSize
+                    display: AbstractButton.IconOnly
 
-                ListView {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: contentHeight
-                    interactive: false
-                    spacing: Style.extraSmallSpacing
+                    Accessible.name: qsTr("Remove recipient")
+                    ToolTip.visible: hovered
+                    ToolTip.text: Accessible.name
 
-                    model: RecipientModel {
-                        share: root.share
+                    onClicked: {
+                        root.recipientOperationError = ""
+                        root.sharingController.removeRecipient(root.share, recipientDelegate.model.className, recipientDelegate.model.value, recipientDelegate.model.instance || "")
                     }
-
-                    delegate: ItemDelegate {
-                        id: recipientDelegate
-
-                        required property var model
-
-                        width: ListView.view.width
-                        hoverEnabled: true
-
-                        contentItem: RowLayout {
-                            spacing: Style.standardSpacing
-
-                            Image {
-                                Layout.preferredWidth: Style.activityListButtonIconSize
-                                Layout.preferredHeight: Style.activityListButtonIconSize
-
-                                source: RecipientIcon.source(recipientDelegate.model.iconSvgUrl,
-                                                             recipientDelegate.model.iconLight,
-                                                             recipientDelegate.model.iconDark)
-                                sourceSize.width: Style.activityListButtonIconSize
-                                sourceSize.height: Style.activityListButtonIconSize
-                                fillMode: Image.PreserveAspectFit
-                                visible: source.toString().length > 0
-                            }
-
-                            ColumnLayout {
-                                Layout.fillWidth: true
-                                spacing: 0
-
-                                EnforcedPlainTextLabel {
-                                    Layout.fillWidth: true
-                                    text: recipientDelegate.model.label
-                                    elide: Text.ElideRight
-                                }
-
-                                EnforcedPlainTextLabel {
-                                    Layout.fillWidth: true
-                                    text: {
-                                        const details = []
-                                        if (recipientDelegate.model.instance) {
-                                            details.push(recipientDelegate.model.instance)
-                                        }
-                                        if (recipientDelegate.model.initiatorDisplayName) {
-                                            details.push(qsTr("Added by %1").arg(recipientDelegate.model.initiatorDisplayName))
-                                        }
-                                        return details.join(" · ")
-                                    }
-                                    color: palette.placeholderText
-                                    elide: Text.ElideRight
-                                    visible: text.length > 0
-                                }
-                            }
-
-                            Button {
-                                Layout.preferredWidth: Style.activityListButtonWidth
-                                Layout.preferredHeight: Style.activityListButtonHeight
-
-                                icon.source: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
-                                icon.width: Style.activityListButtonIconSize
-                                icon.height: Style.activityListButtonIconSize
-                                display: AbstractButton.IconOnly
-                                visible: recipientDelegate.model.secretUrl !== ""
-                                enabled: visible
-
-                                Accessible.name: qsTr("Copy recipient link")
-                                ToolTip.visible: hovered
-                                ToolTip.text: Accessible.name
-
-                                onClicked: root.copyToClipboard(recipientDelegate.model.secretUrl)
-                            }
-
-                            Button {
-                                Layout.preferredWidth: Style.activityListButtonWidth
-                                Layout.preferredHeight: Style.activityListButtonHeight
-
-                                icon.source: "image://svgimage-custom-color/change.svg/" + palette.buttonText
-                                icon.width: Style.activityListButtonIconSize
-                                icon.height: Style.activityListButtonIconSize
-                                display: AbstractButton.IconOnly
-                                visible: recipientDelegate.model.secretUpdatable
-                                enabled: visible
-
-                                Accessible.name: recipientDelegate.model.secretUrl !== ""
-                                                 ? qsTr("Regenerate recipient link")
-                                                 : qsTr("Generate recipient link")
-                                ToolTip.visible: hovered
-                                ToolTip.text: Accessible.name
-
-                                onClicked: {
-                                    root.recipientOperationError = ""
-                                    root.sharingController.updateRecipientSecret(
-                                                root.share,
-                                                recipientDelegate.model.className,
-                                                recipientDelegate.model.value,
-                                                recipientDelegate.model.instance || "")
-                                }
-                            }
-
-                            Button {
-                                Layout.preferredWidth: Style.activityListButtonWidth
-                                Layout.preferredHeight: Style.activityListButtonHeight
-
-                                icon.source: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
-                                icon.width: Style.activityListButtonIconSize
-                                icon.height: Style.activityListButtonIconSize
-                                display: AbstractButton.IconOnly
-
-                                Accessible.name: qsTr("Remove recipient")
-                                ToolTip.visible: hovered
-                                ToolTip.text: Accessible.name
-
-                                onClicked: {
-                                    root.recipientOperationError = ""
-                                    root.sharingController.removeRecipient(
-                                                root.share,
-                                                recipientDelegate.model.className,
-                                                recipientDelegate.model.value,
-                                                recipientDelegate.model.instance || "")
-                                }
-                            }
-                        }
-                    }
-                }
-
-                ComboBox {
-                    id: permissionPresetSelector
-                    Layout.fillWidth: true
-
-                    readonly property var presetValues: [
-                        "OC\\Core\\Sharing\\Permission\\ViewSharePermissionPreset",
-                        "OC\\Core\\Sharing\\Permission\\EditSharePermissionPreset",
-                        ""
-                    ]
-                    model: [qsTr("Can view"), qsTr("Can edit"), qsTr("Custom permissions")]
-                    delegate: ItemDelegate {
-                        id: permissionPresetDelegate
-
-                        required property int index
-                        required property string modelData
-
-                        width: permissionPresetSelector.width
-                        text: modelData
-                        highlighted: permissionPresetSelector.highlightedIndex === index
-
-                        contentItem: EnforcedPlainTextLabel {
-                            text: permissionPresetDelegate.text
-                            color: permissionPresetDelegate.highlighted ? palette.highlightedText : palette.text
-                            verticalAlignment: Text.AlignVCenter
-                            elide: Text.ElideRight
-                        }
-                    }
-                    currentIndex: {
-                        const preset = root.share.permissionPreset
-                        if (preset.endsWith("\\ViewSharePermissionPreset")) {
-                            return 0
-                        }
-                        if (preset.endsWith("\\EditSharePermissionPreset")) {
-                            return 1
-                        }
-                        return 2
-                    }
-
-                    onActivated: function(index) {
-                        const preset = presetValues[index]
-                        if (preset) {
-                            root.permissionUpdateError = ""
-                            root.sharingController.setPermissionPreset(root.share, preset)
-                        }
-                    }
-                }
-
-                ListView {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: visible ? contentHeight : 0
-
-                    interactive: false
-                    visible: permissionPresetSelector.currentIndex === 2
-                    model: PermissionModel {
-                        share: root.share
-                    }
-
-                    delegate: SwitchDelegate {
-                        required property var model
-
-                        width: ListView.view.width
-                        text: model.label
-                        checked: model.enabled
-
-                        onToggled: {
-                            root.permissionUpdateError = ""
-                            root.sharingController.setPermission(root.share, model.className, checked)
-                        }
-                    }
-                }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-
-                    text: root.permissionUpdateError
-                    color: Style.wizardErrorText
-                    wrapMode: Text.Wrap
-                    visible: text.length > 0
-                }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-                    Layout.topMargin: Style.standardSpacing
-
-                    text: qsTr("Sharing settings")
-                    font.weight: Font.DemiBold
-                    visible: propertyList.count > 0 || advancedPropertyList.count > 0
-                }
-
-                ListView {
-                    id: propertyList
-
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: contentHeight
-                    interactive: false
-                    spacing: Style.standardSpacing
-
-                    model: PropertyModel {
-                        share: root.share
-                    }
-
-                    delegate: FieldDelegate {
-                        width: propertyList.width
-                        height: item ? item.implicitHeight : 0
-
-                        onValueEdited: (propertyClass, value) => {
-                            root.propertyUpdateError = ""
-                            root.sharingController.setProperty(root.share, propertyClass, value)
-                        }
-                    }
-                }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-                    Layout.topMargin: Style.standardSpacing
-
-                    text: qsTr("Advanced settings")
-                    font.weight: Font.DemiBold
-                    visible: advancedPropertyList.count > 0
-                }
-
-                ListView {
-                    id: advancedPropertyList
-
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: contentHeight
-                    interactive: false
-                    spacing: Style.standardSpacing
-
-                    model: PropertyModel {
-                        share: root.share
-                        advanced: true
-                    }
-
-                    delegate: FieldDelegate {
-                        width: advancedPropertyList.width
-                        height: item ? item.implicitHeight : 0
-
-                        onValueEdited: (propertyClass, value) => {
-                            root.propertyUpdateError = ""
-                            root.sharingController.setProperty(root.share, propertyClass, value)
-                        }
-                    }
-                }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-
-                    text: root.propertyUpdateError
-                    color: Style.wizardErrorText
-                    wrapMode: Text.Wrap
-                    visible: text.length > 0
                 }
             }
         }
+    }
 
-        EnforcedPlainTextLabel {
-            Layout.fillWidth: true
+    ComboBox {
+        id: permissionPresetSelector
+        Layout.fillWidth: true
 
-            text: root.shareActivationError
-            color: Style.wizardErrorText
-            wrapMode: Text.Wrap
-            visible: text.length > 0
-        }
+        readonly property var presetValues: ["OC\\Core\\Sharing\\Permission\\ViewSharePermissionPreset", "OC\\Core\\Sharing\\Permission\\EditSharePermissionPreset", ""]
+        model: [qsTr("Can view"), qsTr("Can edit"), qsTr("Custom permissions")]
+        delegate: ItemDelegate {
+            id: permissionPresetDelegate
 
-        EnforcedPlainTextLabel {
-            Layout.fillWidth: true
+            required property int index
+            required property string modelData
 
-            text: qsTr("Changes to this share are applied immediately.")
-            color: palette.placeholderText
-            wrapMode: Text.Wrap
-            visible: root.share.state === Share.Active
-        }
+            width: permissionPresetSelector.width
+            text: modelData
+            highlighted: permissionPresetSelector.highlightedIndex === index
 
-        RowLayout {
-            Layout.fillWidth: true
-            visible: root.share.state === Share.Draft
-
-            Item {
-                Layout.fillWidth: true
-            }
-
-            WizardButton {
-                primary: true
-                text: root.activatingShare ? qsTr("Sending…") : qsTr("Send share")
-                enabled: !root.activatingShare
-
-                onClicked: {
-                    root.shareActivationError = ""
-                    root.activatingShare = true
-                    root.sharingController.activateShare(root.share)
-                }
+            contentItem: EnforcedPlainTextLabel {
+                text: permissionPresetDelegate.text
+                color: permissionPresetDelegate.highlighted ? palette.highlightedText : palette.text
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
             }
         }
+        currentIndex: {
+            const preset = root.share.permissionPreset
+            if (preset.endsWith("\\ViewSharePermissionPreset")) {
+                return 0
+            }
+            if (preset.endsWith("\\EditSharePermissionPreset")) {
+                return 1
+            }
+            return 2
+        }
+
+        onActivated: function (index) {
+            const preset = presetValues[index]
+            if (preset) {
+                root.permissionUpdateError = ""
+                root.sharingController.setPermissionPreset(root.share, preset)
+            }
+        }
+    }
+
+    ListView {
+        Layout.fillWidth: true
+        Layout.preferredHeight: visible ? contentHeight : 0
+
+        interactive: false
+        visible: permissionPresetSelector.currentIndex === 2
+        model: PermissionModel {
+            share: root.share
+        }
+
+        delegate: SwitchDelegate {
+            required property var model
+
+            width: ListView.view.width
+            text: model.label
+            checked: model.enabled
+
+            onToggled: {
+                root.permissionUpdateError = ""
+                root.sharingController.setPermission(root.share, model.className, checked)
+            }
+        }
+    }
+
+    EnforcedPlainTextLabel {
+        Layout.fillWidth: true
+
+        text: root.permissionUpdateError
+        color: Style.wizardErrorText
+        wrapMode: Text.Wrap
+        visible: text.length > 0
+    }
+
+    EnforcedPlainTextLabel {
+        Layout.fillWidth: true
+        Layout.topMargin: Style.standardSpacing
+
+        text: qsTr("Sharing settings")
+        font.weight: Font.DemiBold
+        visible: propertyList.count > 0 || advancedPropertyList.count > 0
+    }
+
+    ListView {
+        id: propertyList
+
+        Layout.fillWidth: true
+        Layout.preferredHeight: contentHeight
+        interactive: false
+        spacing: Style.standardSpacing
+
+        model: PropertyModel {
+            share: root.share
+        }
+
+        delegate: FieldDelegate {
+            width: propertyList.width
+            height: item ? item.implicitHeight : 0
+
+            onValueEdited: (propertyClass, value) => {
+                root.propertyUpdateError = ""
+                root.sharingController.setProperty(root.share, propertyClass, value)
+            }
+        }
+    }
+
+    EnforcedPlainTextLabel {
+        Layout.fillWidth: true
+        Layout.topMargin: Style.standardSpacing
+
+        text: qsTr("Advanced settings")
+        font.weight: Font.DemiBold
+        visible: advancedPropertyList.count > 0
+    }
+
+    ListView {
+        id: advancedPropertyList
+
+        Layout.fillWidth: true
+        Layout.preferredHeight: contentHeight
+        interactive: false
+        spacing: Style.standardSpacing
+
+        model: PropertyModel {
+            share: root.share
+            advanced: true
+        }
+
+        delegate: FieldDelegate {
+            width: advancedPropertyList.width
+            height: item ? item.implicitHeight : 0
+
+            onValueEdited: (propertyClass, value) => {
+                root.propertyUpdateError = ""
+                root.sharingController.setProperty(root.share, propertyClass, value)
+            }
+        }
+    }
+
+    EnforcedPlainTextLabel {
+        Layout.fillWidth: true
+
+        text: root.propertyUpdateError
+        color: Style.wizardErrorText
+        wrapMode: Text.Wrap
+        visible: text.length > 0
     }
 
     Connections {
@@ -455,19 +376,6 @@ Page {
         function onPermissionUpdateFailed(share, error) {
             if (share === root.share) {
                 root.permissionUpdateError = error
-            }
-        }
-
-        function onShareActivated(share) {
-            if (share === root.share) {
-                root.activatingShare = false
-            }
-        }
-
-        function onShareActivationFailed(share, error) {
-            if (share === root.share) {
-                root.activatingShare = false
-                root.shareActivationError = error
             }
         }
     }

@@ -10,9 +10,9 @@
 #include "gui/sharing/generatesecretjob.h"
 #include "gui/sharing/getsharejob.h"
 #include "gui/sharing/getsharesjob.h"
+#include "gui/sharing/permissionmodel.h"
 #include "gui/sharing/property.h"
 #include "gui/sharing/propertymodel.h"
-#include "gui/sharing/permissionmodel.h"
 #include "gui/sharing/recipientmodel.h"
 #include "gui/sharing/recipientsearchmodel.h"
 #include "gui/sharing/removerecipientjob.h"
@@ -26,6 +26,7 @@
 #include "gui/sharing/share.h"
 #include "gui/sharing/sharingconstants.h"
 #include "gui/sharing/sharingcontroller.h"
+#include "gui/sharing/unifiedsharelistmodel.h"
 #include "gui/sharing/unifiedsharingrequest.h"
 #include "gui/sharing/updatesharejob.h"
 #include "syncenginetestutils.h"
@@ -48,55 +49,56 @@ private slots:
     void recipientsPreserveServerIdentityAndCapabilities()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        const auto share = Share::fromJson(
-            QJsonDocument{QJsonObject{
-                {"ocs"_L1,
-                 QJsonObject{
-                     {"data"_L1,
-                      QJsonObject{
-                          {"id"_L1, "share-1"_L1},
-                          {"recipients"_L1,
-                           QJsonArray{QJsonObject{
-                               {"class"_L1, "federated-user"_L1},
-                               {"display_name"_L1, "Alice"_L1},
-                               {"value"_L1, "alice"_L1},
-                               {"instance"_L1, "cloud.example.com"_L1},
-                               {"icon"_L1,
-                                QJsonObject{
-                                    {"svg"_L1, "<svg/>"_L1},
-                                    {"light"_L1, "https://cloud.example.com/light.svg"_L1},
-                                    {"dark"_L1, "https://cloud.example.com/dark.svg"_L1},
-                                }},
-                               {"secret"_L1,
-                                QJsonObject{
-                                    {"updatable"_L1, true},
-                                    {"value"_L1, "public-secret"_L1},
-                                    {"url"_L1, "https://cloud.example.com/s/public-secret"_L1},
-                                }},
-                               {"initiator"_L1, QJsonObject{{"display_name"_L1, "Bob"_L1}}},
-                           },
-                                      QJsonObject{
-                                          {"class"_L1, "user"_L1},
-                                          {"display_name"_L1, "Carol"_L1},
-                                          {"value"_L1, "carol"_L1},
-                                          {"secret"_L1, QJsonObject{{"updatable"_L1, false}}},
-                                      }}},
-                      }},
-                 }},
-            }},
-            fakeFolder.account());
+        const auto share = Share::fromJson(QJsonDocument{QJsonObject{
+                                               {"ocs"_L1,
+                                                QJsonObject{
+                                                    {"data"_L1,
+                                                     QJsonObject{
+                                                         {"id"_L1, "share-1"_L1},
+                                                         {"recipients"_L1,
+                                                          QJsonArray{QJsonObject{
+                                                                         {"class"_L1, "federated-user"_L1},
+                                                                         {"display_name"_L1, "Alice"_L1},
+                                                                         {"value"_L1, "alice"_L1},
+                                                                         {"instance"_L1, "cloud.example.com"_L1},
+                                                                         {"icon"_L1,
+                                                                          QJsonObject{
+                                                                              {"svg"_L1, "<svg/>"_L1},
+                                                                              {"light"_L1, "https://cloud.example.com/light.svg"_L1},
+                                                                              {"dark"_L1, "https://cloud.example.com/dark.svg"_L1},
+                                                                          }},
+                                                                         {"secret"_L1,
+                                                                          QJsonObject{
+                                                                              {"updatable"_L1, true},
+                                                                              {"value"_L1, "public-secret"_L1},
+                                                                              {"url"_L1, "https://cloud.example.com/s/public-secret"_L1},
+                                                                          }},
+                                                                         {"initiator"_L1, QJsonObject{{"display_name"_L1, "Bob"_L1}}},
+                                                                     },
+                                                                     QJsonObject{
+                                                                         {"class"_L1, "user"_L1},
+                                                                         {"display_name"_L1, "Carol"_L1},
+                                                                         {"value"_L1, "carol"_L1},
+                                                                         {"secret"_L1, QJsonObject{{"updatable"_L1, false}}},
+                                                                     }}},
+                                                     }},
+                                                }},
+                                           }},
+                                           fakeFolder.account());
 
         QCOMPARE(share->recipients().size(), 2);
         const auto recipient = share->recipients().constFirst();
         QCOMPARE(recipient->className(), "federated-user"_L1);
         QCOMPARE(recipient->value(), "alice"_L1);
         QCOMPARE(recipient->instance(), std::optional<QString>{"cloud.example.com"_L1});
+        QCOMPARE(recipient->instanceString(), "cloud.example.com"_L1);
         QCOMPARE(recipient->iconSvg(), "<svg/>"_L1);
         QCOMPARE(recipient->iconLight(), "https://cloud.example.com/light.svg"_L1);
         QCOMPARE(recipient->iconDark(), "https://cloud.example.com/dark.svg"_L1);
         QVERIFY(recipient->secretUpdatable());
         QCOMPARE(recipient->secretValue(), std::optional<QString>{"public-secret"_L1});
         QCOMPARE(recipient->secretUrl(), std::optional<QString>{"https://cloud.example.com/s/public-secret"_L1});
+        QCOMPARE(recipient->secretUrlString(), "https://cloud.example.com/s/public-secret"_L1);
         QCOMPARE(recipient->initiatorDisplayName(), "Bob"_L1);
 
         RecipientModel model;
@@ -104,8 +106,7 @@ private slots:
         QCOMPARE(model.rowCount(), 2);
         const auto index = model.index(0);
         QCOMPARE(model.data(index, RecipientModel::InstanceRole).toString(), "cloud.example.com"_L1);
-        QCOMPARE(model.data(index, RecipientModel::IconSvgUrlRole).toString(),
-                 "data:image/svg+xml;base64,PHN2Zy8+"_L1);
+        QCOMPARE(model.data(index, RecipientModel::IconSvgUrlRole).toString(), "data:image/svg+xml;base64,PHN2Zy8+"_L1);
         QVERIFY(model.data(index, RecipientModel::SecretUpdatableRole).toBool());
         QCOMPARE(model.data(index, RecipientModel::SecretUrlRole).toString(), "https://cloud.example.com/s/public-secret"_L1);
         QCOMPARE(model.data(index, RecipientModel::InitiatorDisplayNameRole).toString(), "Bob"_L1);
@@ -121,8 +122,7 @@ private slots:
     void sharePropertiesPreserveServerMetadataAndUseTypedFields()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        const auto share = Share::fromJson(
-            QJsonDocument::fromJson(R"json({
+        const auto share = Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {
                     "data": {
                         "id": "share-1",
@@ -180,7 +180,7 @@ private slots:
                     }
                 }
             })json"),
-            fakeFolder.account());
+                                           fakeFolder.account());
 
         PropertyModel model;
         model.setShare(share);
@@ -213,16 +213,14 @@ private slots:
     void permissionModelIsReadOnlyAndTracksOnlyItsCurrentShare()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        const auto shareWithOnePermission = Share::fromJson(
-            QJsonDocument::fromJson(R"json({
+        const auto shareWithOnePermission = Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {"data": {
                     "id": "share-1",
                     "permissions": [{"class": "view", "display_name": "View files", "enabled": true}]
                 }}
             })json"),
-            fakeFolder.account());
-        const auto shareWithTwoPermissions = Share::fromJson(
-            QJsonDocument::fromJson(R"json({
+                                                            fakeFolder.account());
+        const auto shareWithTwoPermissions = Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {"data": {
                     "id": "share-2",
                     "permissions": [
@@ -231,7 +229,7 @@ private slots:
                     ]
                 }}
             })json"),
-            fakeFolder.account());
+                                                             fakeFolder.account());
 
         PermissionModel model;
         model.setShare(shareWithOnePermission);
@@ -343,12 +341,7 @@ private slots:
             }
         };
 
-        verifyRequest(new SearchRecipientsJob{account,
-                                              "ali"_L1,
-                                              10,
-                                              20,
-                                              {"user-class"_L1, "group-class"_L1},
-                                              "share-1"_L1},
+        verifyRequest(new SearchRecipientsJob{account, "ali"_L1, 10, 20, {"user-class"_L1, "group-class"_L1}, "share-1"_L1},
                       "GET",
                       "/ocs/v2.php/apps/sharing/api/v1/recipients",
                       {{"query"_L1, "ali"_L1},
@@ -403,10 +396,7 @@ private slots:
                       {},
                       {{"permissionPresetClass"_L1, "preset-class"_L1}});
         verifyRequest(new DestroyShareJob{account, "share-1"_L1}, "DELETE", "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
-        verifyRequest(new GetShareJob{account,
-                                      "share-1"_L1,
-                                      "secret"_L1,
-                                      QJsonObject{{"argument-class"_L1, QJsonObject{{"key"_L1, "value"_L1}}}}},
+        verifyRequest(new GetShareJob{account, "share-1"_L1, "secret"_L1, QJsonObject{{"argument-class"_L1, QJsonObject{{"key"_L1, "value"_L1}}}}},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1",
                       {},
@@ -421,20 +411,12 @@ private slots:
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/recipient",
                       {},
                       {{"class"_L1, "recipient-class"_L1}, {"value"_L1, "alice"_L1}});
-        verifyRequest(new GetShareJob{account, "share-1"_L1},
-                      "POST",
-                      "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
-        verifyRequest(new UnifiedSharingRequest{account,
-                                                "/ocs/v2.php/apps/sharing/api/v1/share/share-1"_L1,
-                                                "POST"_ba,
-                                                {.body = QJsonObject{}}},
+        verifyRequest(new GetShareJob{account, "share-1"_L1}, "POST", "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
+        verifyRequest(new UnifiedSharingRequest{account, "/ocs/v2.php/apps/sharing/api/v1/share/share-1"_L1, "POST"_ba, {.body = QJsonObject{}}},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
         QCOMPARE(requestContentType, "application/json");
-        verifyRequest(new GetSharesJob{account},
-                      "GET",
-                      "/ocs/v2.php/apps/sharing/api/v1/shares",
-                      {{"limit"_L1, "100"_L1}});
+        verifyRequest(new GetSharesJob{account}, "GET", "/ocs/v2.php/apps/sharing/api/v1/shares", {{"limit"_L1, "100"_L1}});
 
         QCOMPARE(requestCount, 19);
         delete share;
@@ -474,8 +456,7 @@ private slots:
     void partialShareUpdatesPreserveOmittedFields()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        const auto share = Share::fromJson(
-            QJsonDocument::fromJson(R"json({
+        const auto share = Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {
                     "data": {
                         "id": "share-1",
@@ -500,7 +481,7 @@ private slots:
                     }
                 }
             })json"),
-            fakeFolder.account());
+                                           fakeFolder.account());
 
         share->updateFromJson(QJsonDocument::fromJson(R"json({
             "ocs": {
@@ -588,6 +569,71 @@ private slots:
         QCOMPARE(controller.shares().at(1)->id(), "share-2"_L1);
     }
 
+    void unifiedShareListModelGroupsSharesInOneSectionedList()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            return new FakePayloadReply{operation,
+                                        request,
+                                        R"json({
+                "ocs": {
+                    "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                    "data": [{
+                        "id": "external-share",
+                        "state": "active",
+                        "recipients": [{
+                            "class": "email",
+                            "display_name": "alice@example.com",
+                            "value": "alice@example.com"
+                        }]
+                    }, {
+                        "id": "internal-share",
+                        "state": "active",
+                        "recipients": [{
+                            "class": "user",
+                            "display_name": "Bob",
+                            "value": "bob"
+                        }]
+                    }]
+                }
+            })json",
+                                        this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+
+        UnifiedShareListModel model;
+        model.setSharingController(&controller);
+        QSignalSpy modelResetSpy{&model, &QAbstractItemModel::modelReset};
+
+        controller.initialize("42"_L1);
+
+        QTRY_COMPARE(model.rowCount(), 2);
+        QCOMPARE(model.data(model.index(0), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "internal-share"_L1);
+        QCOMPARE(model.data(model.index(0), UnifiedShareListModel::SectionRole).toString(), "internal"_L1);
+        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "external-share"_L1);
+        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::SectionRole).toString(), "external"_L1);
+        QCOMPARE(model.rowCount(model.index(0)), 0);
+        QVERIFY(!model.data({}, UnifiedShareListModel::ShareRole).isValid());
+
+        const auto internalShare = model.data(model.index(0), UnifiedShareListModel::ShareRole).value<Share *>();
+        internalShare->updateFromJson(QJsonDocument::fromJson(R"json({
+            "ocs": {"data": {"recipients": [{
+                "class": "email",
+                "display_name": "bob@example.com",
+                "value": "bob@example.com"
+            }]}}
+        })json"));
+
+        QTRY_COMPARE(modelResetSpy.size(), 2);
+        QCOMPARE(model.data(model.index(0), UnifiedShareListModel::SectionRole).toString(), "external"_L1);
+        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::SectionRole).toString(), "external"_L1);
+
+        model.setSharingController(nullptr);
+        QCOMPARE(model.rowCount(), 0);
+    }
+
     void sharingControllerDestroysShareAndRemovesItFromTheList()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
@@ -598,14 +644,13 @@ private slots:
                 ++destroyRequests;
             }
 
-            const auto response = deleting
-                ? QByteArray{R"json({
+            const auto response = deleting ? QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 204, "message": "OK"},
                         "data": {}
                     }
                 })json"}
-                : QByteArray{R"json({
+                                           : QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": [{"id": "share-1", "state": "active"}]
@@ -636,14 +681,13 @@ private slots:
         FakeFolder fakeFolder{{}, {}, {}, false};
         fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
             const auto deleting = request.url().path().endsWith("/api/v1/share/share-1"_L1);
-            const auto response = deleting
-                ? QByteArray{R"json({
+            const auto response = deleting ? QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "failure", "statuscode": 403, "message": "Not allowed"},
                         "data": {}
                     }
                 })json"}
-                : QByteArray{R"json({
+                                           : QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": [{"id": "share-1", "state": "active"}]
@@ -731,8 +775,7 @@ private slots:
         QVERIFY(requestPaths.at(1).endsWith("/api/v1/share/share-1/source"_L1));
         QCOMPARE(requestVerbs, (QList<QByteArray>{"POST", "POST"}));
         QCOMPARE(requestBodies.at(0), QJsonObject{});
-        QCOMPARE(requestBodies.at(1),
-                 (QJsonObject{{"class"_L1, SourceTypeClasses::node}, {"value"_L1, "42"_L1}}));
+        QCOMPARE(requestBodies.at(1), (QJsonObject{{"class"_L1, SourceTypeClasses::node}, {"value"_L1, "42"_L1}}));
     }
 
     void sharingControllerReportsAddedRecipientAndUpdatesShare()
@@ -749,8 +792,7 @@ private slots:
                 outgoingData->reset();
             }
 
-            const auto response = addingRecipient
-                ? QByteArray{R"json({
+            const auto response = addingRecipient ? QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": {
@@ -765,7 +807,7 @@ private slots:
                         }
                     }
                 })json"}
-                : QByteArray{R"json({
+                                                  : QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": [{
@@ -801,10 +843,7 @@ private slots:
         QCOMPARE(addedShare->recipients().constFirst()->instance(), std::optional<QString>{"cloud.example.com"_L1});
         QCOMPARE(addedShare->properties().size(), 1);
         QCOMPARE(addedShare->properties().constFirst()->displayName(), "Note to recipients"_L1);
-        QCOMPARE(recipientRequestBody,
-                 (QJsonObject{{"class"_L1, "user-class"_L1},
-                              {"value"_L1, "alice"_L1},
-                              {"instance"_L1, "cloud.example.com"_L1}}));
+        QCOMPARE(recipientRequestBody, (QJsonObject{{"class"_L1, "user-class"_L1}, {"value"_L1, "alice"_L1}, {"instance"_L1, "cloud.example.com"_L1}}));
     }
 
     void sharingControllerRemovesRecipientAndPreservesItsIdentity()
@@ -813,16 +852,14 @@ private slots:
         auto removalQuery = QList<QPair<QString, QString>>{};
         fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
             const auto removingRecipient = request.url().path().endsWith("/recipient"_L1)
-                && (operation == QNetworkAccessManager::DeleteOperation
-                    || request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "DELETE");
+                && (operation == QNetworkAccessManager::DeleteOperation || request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "DELETE");
             if (removingRecipient) {
                 removalQuery = QUrlQuery{request.url()}.queryItems();
                 removalQuery.removeAll({"format"_L1, "json"_L1});
                 std::ranges::sort(removalQuery);
             }
 
-            const auto response = removingRecipient
-                ? QByteArray{R"json({
+            const auto response = removingRecipient ? QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": {
@@ -832,7 +869,7 @@ private slots:
                         }
                     }
                 })json"}
-                : QByteArray{R"json({
+                                                    : QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": [{
@@ -856,17 +893,12 @@ private slots:
         QTRY_COMPARE(controller.shares().size(), 1);
 
         QSignalSpy removedSpy{&controller, &SharingController::recipientRemoved};
-        controller.removeRecipient(controller.shares().constFirst(),
-                                   "federated-user"_L1,
-                                   "alice"_L1,
-                                   "cloud.example.com"_L1);
+        controller.removeRecipient(controller.shares().constFirst(), "federated-user"_L1, "alice"_L1, "cloud.example.com"_L1);
 
         QVERIFY(removedSpy.wait());
         QCOMPARE(controller.shares().constFirst()->recipients().size(), 0);
         QCOMPARE(removalQuery,
-                 (QList<QPair<QString, QString>>{{"class"_L1, "federated-user"_L1},
-                                                 {"instance"_L1, "cloud.example.com"_L1},
-                                                 {"value"_L1, "alice"_L1}}));
+                 (QList<QPair<QString, QString>>{{"class"_L1, "federated-user"_L1}, {"instance"_L1, "cloud.example.com"_L1}, {"value"_L1, "alice"_L1}}));
     }
 
     void sharingControllerGeneratesAndAppliesRecipientSecret()
@@ -917,18 +949,19 @@ private slots:
                 };
             }
 
-            const auto response = QJsonDocument{QJsonObject{
-                {"ocs"_L1,
-                 QJsonObject{
-                     {"meta"_L1,
-                      QJsonObject{
-                          {"status"_L1, "ok"_L1},
-                          {"statuscode"_L1, 200},
-                          {"message"_L1, "OK"_L1},
-                      }},
-                     {"data"_L1, data},
-                 }},
-            }}.toJson(QJsonDocument::Compact);
+            const auto response = QJsonDocument{
+                QJsonObject{
+                    {"ocs"_L1,
+                     QJsonObject{
+                         {"meta"_L1,
+                          QJsonObject{
+                              {"status"_L1, "ok"_L1},
+                              {"statuscode"_L1, 200},
+                              {"message"_L1, "OK"_L1},
+                          }},
+                         {"data"_L1, data},
+                     }},
+                }}.toJson(QJsonDocument::Compact);
             return new FakePayloadReply{operation, request, response, this};
         });
 
@@ -938,10 +971,7 @@ private slots:
         QTRY_COMPARE(controller.shares().size(), 1);
 
         QSignalSpy updatedSpy{&controller, &SharingController::recipientSecretUpdated};
-        controller.updateRecipientSecret(controller.shares().constFirst(),
-                                         "federated-user"_L1,
-                                         "alice"_L1,
-                                         "cloud.example.com"_L1);
+        controller.updateRecipientSecret(controller.shares().constFirst(), "federated-user"_L1, "alice"_L1, "cloud.example.com"_L1);
 
         QVERIFY(updatedSpy.wait());
         QCOMPARE(secretRequestBody,
@@ -958,14 +988,13 @@ private slots:
         FakeFolder fakeFolder{{}, {}, {}, false};
         fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
             const auto loadingShares = request.url().path().endsWith("/shares"_L1);
-            const auto response = loadingShares
-                ? QByteArray{R"json({
+            const auto response = loadingShares ? QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": [{"id": "share-1", "state": "active"}]
                     }
                 })json"}
-                : QByteArray{R"json({
+                                                : QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "failure", "statuscode": 400, "message": "Recipient rejected"},
                         "data": {}
@@ -1004,8 +1033,7 @@ private slots:
                 outgoingData->reset();
             }
 
-            const auto response = settingProperty
-                ? QByteArray{R"json({
+            const auto response = settingProperty ? QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": {
@@ -1020,7 +1048,7 @@ private slots:
                         }
                     }
                 })json"}
-                : QByteArray{R"json({
+                                                  : QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": [{
@@ -1049,22 +1077,20 @@ private slots:
 
         QTRY_COMPARE(propertyUpdatedSpy.size(), 1);
         QCOMPARE(controller.shares().constFirst()->properties().constFirst()->value().toString(), "Updated note"_L1);
-        QCOMPARE(propertyRequestBody,
-                 (QJsonObject{{"class"_L1, "note-property"_L1}, {"value"_L1, "Updated note"_L1}}));
+        QCOMPARE(propertyRequestBody, (QJsonObject{{"class"_L1, "note-property"_L1}, {"value"_L1, "Updated note"_L1}}));
     }
 
     void sharingControllerReportsPermissionUpdateFailures()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
         fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
-            const auto response = request.url().path().endsWith("/shares"_L1)
-                ? QByteArray{R"json({
+            const auto response = request.url().path().endsWith("/shares"_L1) ? QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": [{"id": "share-1", "state": "active"}]
                     }
                 })json"}
-                : QByteArray{R"json({
+                                                                              : QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "failure", "statuscode": 400, "message": "Permission rejected"},
                         "data": {}
@@ -1099,14 +1125,14 @@ private slots:
             ++requestCount;
             if (requestCount == 1) {
                 return static_cast<QNetworkReply *>(new FakePayloadReply{operation,
-                                                                          request,
-                                                                          R"json({
+                                                                         request,
+                                                                         R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": [{"id": "share-1", "state": "active"}]
                     }
                 })json",
-                                                                          this});
+                                                                         this});
             }
             return static_cast<QNetworkReply *>(new FakeErrorReply{operation, request, this, 500});
         });
@@ -1144,14 +1170,13 @@ private slots:
                 }
             }
 
-            const auto response = settingState
-                ? QByteArray{R"json({
+            const auto response = settingState ? QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": {"id": "share-1", "state": "active"}
                     }
                 })json"}
-                : QByteArray{R"json({
+                                               : QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": [{"id": "share-1", "state": "draft"}]
@@ -1187,14 +1212,13 @@ private slots:
         FakeFolder fakeFolder{{}, {}, {}, false};
         fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
             const auto settingState = request.url().path().endsWith("/state"_L1);
-            const auto response = settingState
-                ? QByteArray{R"json({
+            const auto response = settingState ? QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "failure", "statuscode": 400, "message": "Share rejected"},
                         "data": {}
                     }
                 })json"}
-                : QByteArray{R"json({
+                                               : QByteArray{R"json({
                     "ocs": {
                         "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
                         "data": [{"id": "share-1", "state": "draft"}]
