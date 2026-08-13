@@ -62,6 +62,8 @@ target_sources(nextcloudGuiSharing
     share.cpp
     sharingcontroller.h
     sharingcontroller.cpp
+    unifiedsharelistmodel.h
+    unifiedsharelistmodel.cpp
 )
 
 ecm_add_qml_module(nextcloudGuiSharing
@@ -69,11 +71,10 @@ ecm_add_qml_module(nextcloudGuiSharing
   GENERATE_PLUGIN_SOURCE
   QML_FILES
     FieldDelegate.qml
-    MainPage.qml
     RecipientIcon.qml
     RecipientSearchField.qml
     ShareDetailsPage.qml
-    ShareEntry.qml
+    ShareRow.qml
     ShareDialog.qml
 )
 

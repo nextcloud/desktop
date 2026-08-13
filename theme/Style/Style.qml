@@ -152,6 +152,7 @@ QtObject {
     readonly property int sharingDialogMinimumHeight: 420
     readonly property int sharingDialogWindowMargin: 2 * standardSpacing
     readonly property int sharingDialogPaneHeaderHeight: iconButtonWidth
+    readonly property int sharingDialogShareListMaximumHeight: 3 * sharingDialogPaneHeaderHeight
     readonly property int sharingDialogSidebarMinimumWidth: sharingDialogWidth / 4
     readonly property int sharingDialogSidebarPreferredWidth: sharingDialogWidth / 3
     readonly property int sharingDialogSidebarMaximumWidth: sharingDialogWidth / 2
