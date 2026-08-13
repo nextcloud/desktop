@@ -5,6 +5,7 @@
 
 import QtQml.Models
 
+// Test replacement for the production C++ type; adapts the fake source model to ActivityItem roles.
 ListModel {
     id: root
 
