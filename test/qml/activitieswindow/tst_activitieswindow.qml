@@ -5,6 +5,7 @@
 
 import QtQuick
 import QtTest
+import QtQuick.Window
 
 import "../../../src/gui/activity/qml"
 
@@ -13,6 +14,14 @@ Item {
 
     width: 200
     height: 100
+
+    Window {
+        id: focusStealingWindow
+
+        width: 100
+        height: 100
+        flags: Qt.Tool
+    }
 
     QtObject {
         id: fakeActivityModel
@@ -75,6 +84,11 @@ Item {
             tryVerify(() => activityListView.contentHeight > activityListView.height);
         }
 
+        function cleanup()
+        {
+            focusStealingWindow.hide();
+        }
+
         function positionAtEnd()
         {
             activityListView.currentIndex = activityListView.count - 1;
@@ -95,13 +109,23 @@ Item {
             tryCompare(activityList, "atYBeginning", true);
         }
 
-        function test_resetWhileVisibleResetsViewport()
+        function test_activationResetsViewport()
         {
             positionAtEnd();
 
-            activitiesWindow.resetActivityList();
+            focusStealingWindow.show();
+            tryCompare(focusStealingWindow, "visible", true);
+            tryCompare(focusStealingWindow, "active", true);
 
-            compare(activitiesWindow.visible, true);
+            if (activitiesWindow.active) {
+                skip("The test platform does not transfer activation between windows");
+                return;
+            }
+
+            tryCompare(activitiesWindow, "active", false);
+
+            activitiesWindow.requestActivate();
+            tryCompare(activitiesWindow, "active", true);
             compare(activityListView.currentIndex, -1);
             tryCompare(activityList, "atYBeginning", true);
         }

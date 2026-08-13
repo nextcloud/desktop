@@ -43,6 +43,12 @@ WizardStyledWindow {
         }
     }
 
+    onActiveChanged: {
+        if (active) {
+            resetActivityList()
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         anchors.leftMargin: Style.wizardWindowMargin
