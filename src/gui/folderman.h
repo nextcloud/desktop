@@ -29,6 +29,7 @@ class TestSyncConflictsModel;
 class TestRemoteWipe;
 class FolderManTestHelper;
 class TestFileActionsModel;
+class TestBrowserReAuthController;
 
 namespace OCC {
 
@@ -416,6 +417,7 @@ private:
     friend class ::TestRemoteWipe;
     friend class ::FolderManTestHelper;
     friend class ::TestFileActionsModel;
+    friend class ::TestBrowserReAuthController;
 };
 
 } // namespace OCC
