@@ -195,9 +195,6 @@ WizardStyledWindow {
                     id: shareListView
 
                     anchors.fill: parent
-                    anchors.leftMargin: Style.sharingDialogWindowMargin
-                    anchors.rightMargin: Style.sharingDialogWindowMargin
-                    anchors.bottomMargin: Style.standardSpacing
                     clip: true
                     spacing: Style.extraSmallSpacing
                     model: shareListModel
@@ -229,6 +226,8 @@ WizardStyledWindow {
 
                         EnforcedPlainTextLabel {
                             Layout.fillWidth: true
+                            Layout.leftMargin: Style.sharingDialogWindowMargin
+                            Layout.rightMargin: Style.sharingDialogWindowMargin
                             text: qsTr("Creating share…")
                             color: Style.wizardSecondaryText
                             visible: sharingController.creatingShare
@@ -236,18 +235,24 @@ WizardStyledWindow {
 
                         ErrorBox {
                             Layout.fillWidth: true
+                            Layout.leftMargin: Style.sharingDialogWindowMargin
+                            Layout.rightMargin: Style.sharingDialogWindowMargin
                             text: sharingController.shareCreationError
                             visible: text.length > 0
                         }
 
                         ErrorBox {
                             Layout.fillWidth: true
+                            Layout.leftMargin: Style.sharingDialogWindowMargin
+                            Layout.rightMargin: Style.sharingDialogWindowMargin
                             text: sharingController.shareDestructionError
                             visible: text.length > 0
                         }
 
                         EnforcedPlainTextLabel {
                             Layout.fillWidth: true
+                            Layout.leftMargin: Style.sharingDialogWindowMargin
+                            Layout.rightMargin: Style.sharingDialogWindowMargin
                             text: qsTr("This item has not been shared yet.")
                             color: palette.placeholderText
                             wrapMode: Text.Wrap
@@ -260,7 +265,8 @@ WizardStyledWindow {
                     section.delegate: EnforcedPlainTextLabel {
                         required property string section
 
-                        width: shareListView.width
+                        x: Style.sharingDialogWindowMargin
+                        width: shareListView.width - Style.sharingDialogWindowMargin * 2
                         topPadding: Style.standardSpacing
                         bottomPadding: Style.extraSmallSpacing
                         text: {
@@ -273,7 +279,8 @@ WizardStyledWindow {
                     }
 
                     delegate: ShareRow {
-                        width: ListView.view.width
+                        x: Style.sharingDialogWindowMargin
+                        width: ListView.view.width - Style.sharingDialogWindowMargin * 2
                         onConfigureRequested: dialog.selectedShare = share
                     }
 
