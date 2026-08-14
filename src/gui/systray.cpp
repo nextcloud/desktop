@@ -875,41 +875,7 @@ void Systray::createFileDetailsDialog(const QString &localPath, const QString &f
     const auto remotePath = QDir(folder->remotePath()).filePath(relativePath);
 
     if (folder->accountState()->account()->capabilities().unifiedSharingAvailable()) {
-        // we have a server with the new unified sharing system, let's show the new fancy one
-        // TODO: reduce code duplication
-
-        const QVariantMap initialProperties{
-            {"account", QVariant::fromValue(folder->accountState()->account())},
-            {"localPath", localPath},
-            {"fileId", resolvedFileId},
-            {"remotePath", remotePath},
-        };
-
-        QQmlComponent fileDetailsDialog(trayEngine(), "com.nextcloud.desktopclient.sharing"_L1, "ShareDialog"_L1);
-
-        if (fileDetailsDialog.isError()) {
-            qCWarning(lcSystray) << fileDetailsDialog.errorString();
-            return;
-        }
-
-        const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);
-        const auto dialog = qobject_cast<QQuickWindow*>(createdDialog);
-
-        if (!dialog) {
-            qCWarning(lcSystray) << "File details dialog window resulted in creation of object that was not a window!";
-            return;
-        }
-
-        _fileDetailDialogs.append(dialog);
-
-#if defined(Q_OS_MACOS)
-        configureMacOSExpandedQuickWindow(dialog);
-#endif
-
-        dialog->show();
-        dialog->raise();
-        dialog->requestActivate();
-
+        createUnifiedSharingDialog(folder->accountState()->account(), localPath, resolvedFileId, remotePath);
         return;
     }
 
@@ -940,6 +906,46 @@ void Systray::createFileDetailsDialog(const QString &localPath, const QString &f
     }
 }
 
+void Systray::createUnifiedSharingDialog(const AccountPtr &account, const QString &localPath, const QString &fileId, const QString &remotePath)
+{
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open unified sharing dialog for" << localPath << "as no tray engine was available";
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"account", QVariant::fromValue(account)},
+        {"localPath", localPath},
+        {"fileId", fileId},
+        {"remotePath", remotePath},
+    };
+
+    QQmlComponent fileDetailsDialog(trayEngine(), "com.nextcloud.desktopclient.sharing"_L1, "ShareDialog"_L1);
+
+    if (fileDetailsDialog.isError()) {
+        qCWarning(lcSystray) << fileDetailsDialog.errorString();
+        return;
+    }
+
+    const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);
+    const auto dialog = qobject_cast<QQuickWindow*>(createdDialog);
+
+    if (!dialog) {
+        qCWarning(lcSystray) << "Unified sharing dialog resulted in creation of object that was not a window!";
+        return;
+    }
+
+    _fileDetailDialogs.append(dialog);
+
+#if defined(Q_OS_MACOS)
+    configureMacOSExpandedQuickWindow(dialog);
+#endif
+
+    dialog->show();
+    dialog->raise();
+    dialog->requestActivate();
+}
+
 void Systray::createShareDialog(const QString &localPath, const QString &fileId)
 {
     createFileDetailsDialog(localPath, fileId);
@@ -962,6 +968,23 @@ void Systray::showFileActionsDialog(const QString &localPath)
 void Systray::slotShowFileProviderFileActionsDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
 {
     createFileProviderFileActionsDialog(fileId, localPath, remoteItemPath, fileProviderDomainIdentifier);
+}
+
+void Systray::slotShowFileProviderUnifiedSharingDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
+{
+    if (raiseFileDetailDialogs(localPath)) {
+        qCDebug(lcSystray) << "Reopening an existing unified sharing dialog for" << localPath;
+        return;
+    }
+
+    const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+    if (!accountState) {
+        qCWarning(lcSystray) << "Could not open unified sharing dialog for" << localPath
+                             << "no account found for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    createUnifiedSharingDialog(accountState->account(), localPath, fileId, remoteItemPath);
 }
 
 void Systray::createFileProviderFileActionsDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)

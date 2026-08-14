@@ -30,6 +30,13 @@ private final class CapturingAppProxy: NSObject, AppProtocol {
         presentedFileActions.append(fileId)
     }
 
+    func presentUnifiedSharing(
+        forItem _: String,
+        localPath _: String,
+        remoteItemPath _: String,
+        forDomainIdentifier _: String
+    ) {}
+
     /// Unused by these tests but required for protocol conformance — see
     /// `FileProviderExtensionOpenInBrowserTests` for the dedicated coverage.
     func openItemInBrowser(_: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
