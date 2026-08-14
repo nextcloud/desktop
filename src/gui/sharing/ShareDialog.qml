@@ -24,6 +24,7 @@ WizardStyledWindow {
     property string localPath: ""
     property string shortLocalPath: dialog.localPath.split("/").reverse()[0]
     property string fileId: ""
+    property string remotePath: ""
     property Share selectedShare: null
     property Share sharePendingDeletion: null
     property bool activatingShare: false
@@ -96,6 +97,14 @@ WizardStyledWindow {
         }
         return ""
     }
+
+    function copyToClipboard(value: string): void {
+        clipboardHelper.text = value
+        clipboardHelper.selectAll()
+        clipboardHelper.copy()
+        clipboardHelper.clear()
+    }
+
     onSelectedShareChanged: {
         dialog.activatingShare = false
         dialog.shareActivationError = ""
@@ -108,6 +117,11 @@ WizardStyledWindow {
     UnifiedShareListModel {
         id: shareListModel
         sharingController: sharingController
+    }
+
+    TextEdit {
+        id: clipboardHelper
+        visible: false
     }
 
     Shortcut {
@@ -129,7 +143,9 @@ WizardStyledWindow {
 
         function onShareCreated(share) {
             dialog.clearNewShareRecipientSearch()
-            dialog.selectedShare = share
+            if (!share.publicLink) {
+                dialog.selectedShare = share
+            }
         }
 
         function onShareActivated(share) {
@@ -143,7 +159,13 @@ WizardStyledWindow {
             if (share === dialog.selectedShare) {
                 dialog.activatingShare = false
                 dialog.shareActivationError = error
+            } else if (share && share.publicLink) {
+                dialog.shareActivationError = error
             }
+        }
+
+        function onInternalLinkResolved(url) {
+            dialog.copyToClipboard(url)
         }
     }
 
@@ -198,7 +220,7 @@ WizardStyledWindow {
             Layout.fillWidth: true
             Layout.preferredHeight: Style.normalBorderWidth
             color: Style.sharingDialogSeparatorColor
-        }   
+        }
 
         EnforcedPlainTextLabel {
             Layout.fillWidth: true
@@ -277,14 +299,20 @@ WizardStyledWindow {
                             visible: text.length > 0
                         }
 
-                        EnforcedPlainTextLabel {
+                        ErrorBox {
                             Layout.fillWidth: true
                             Layout.leftMargin: Style.sharingDialogWindowMargin
                             Layout.rightMargin: Style.sharingDialogWindowMargin
-                            text: qsTr("This item has not been shared yet.")
-                            color: palette.placeholderText
-                            wrapMode: Text.Wrap
-                            visible: shareListView.count === 0
+                            text: sharingController.internalLinkError
+                            visible: text.length > 0
+                        }
+
+                        ErrorBox {
+                            Layout.fillWidth: true
+                            Layout.leftMargin: Style.sharingDialogWindowMargin
+                            Layout.rightMargin: Style.sharingDialogWindowMargin
+                            text: dialog.shareActivationError
+                            visible: !dialog.selectedShare && text.length > 0
                         }
                     }
 
@@ -304,6 +332,9 @@ WizardStyledWindow {
                             if (itemType === UnifiedShareListModel.SectionHeader) {
                                 return sectionHeaderComponent
                             }
+                            if (itemType === UnifiedShareListModel.InternalLink) {
+                                return internalLinkComponent
+                            }
                             if (itemType === UnifiedShareListModel.CreatePublicLink) {
                                 return createPublicLinkComponent
                             }
@@ -314,19 +345,53 @@ WizardStyledWindow {
                             id: sectionHeaderComponent
 
                             ShareSectionHeader {
-                        x: Style.sharingDialogWindowMargin
+                                x: Style.sharingDialogWindowMargin
                                 width: rowLoader.width - Style.sharingDialogWindowMargin * 2
                                 title: dialog.sectionTitle(rowLoader.section)
                                 description: dialog.sectionDescription(rowLoader.section)
                             }
                         }
-                    }
+
+                        Component {
+                            id: internalLinkComponent
+
+                            ShareActionRow {
+                                x: Style.sharingDialogWindowMargin
+                                width: rowLoader.width - Style.sharingDialogWindowMargin * 2
+                                title: qsTr("Internal link")
+                                subtitle: qsTr("For people who already have access")
+                                actionIcon: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
+                                actionName: qsTr("Copy internal link")
+                                actionEnabled: !sharingController.resolvingInternalLink && dialog.remotePath.length > 0
+
+                                onActionRequested: sharingController.requestInternalLink(dialog.remotePath, dialog.fileId)
+                            }
+                        }
+
+                        Component {
+                            id: createPublicLinkComponent
+
+                            ShareActionRow {
+                                x: Style.sharingDialogWindowMargin
+                                width: rowLoader.width - Style.sharingDialogWindowMargin * 2
+                                title: qsTr("Create public link")
+                                subtitle: ""
+                                actionIcon: "image://svgimage-custom-color/add.svg/" + palette.buttonText
+                                actionName: qsTr("Create public link")
+                                actionEnabled: !sharingController.creatingShare && dialog.fileId.length > 0
+
+                                onActionRequested: {
+                                    dialog.shareActivationError = ""
+                                    sharingController.createPublicLink(dialog.fileId)
+                                }
+                            }
+                        }
 
                         Component {
                             id: shareComponent
 
                             ShareRow {
-                        x: Style.sharingDialogWindowMargin
+                                x: Style.sharingDialogWindowMargin
                                 width: rowLoader.width - Style.sharingDialogWindowMargin * 2
                                 share: rowLoader.share
                                 recipientNames: rowLoader.recipientNames
@@ -334,8 +399,8 @@ WizardStyledWindow {
                                 publicLinkUrl: rowLoader.publicLinkUrl
 
                                 onCopyRequested: dialog.copyToClipboard(publicLinkUrl)
-                        onConfigureRequested: dialog.selectedShare = share
-                    }
+                                onConfigureRequested: dialog.selectedShare = share
+                            }
                         }
                     }
 

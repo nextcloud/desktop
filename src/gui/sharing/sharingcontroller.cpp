@@ -9,6 +9,7 @@
 #include <QLoggingCategory>
 #include <QNetworkReply>
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 
@@ -18,6 +19,7 @@
 #include "destroysharejob.h"
 #include "generatesecretjob.h"
 #include "getsharesjob.h"
+#include "networkjobs.h"
 #include "removerecipientjob.h"
 #include "setpermissionjob.h"
 #include "setpermissionpresetjob.h"
@@ -92,6 +94,16 @@ QString SharingController::shareDestructionError() const
     return _shareDestructionError;
 }
 
+bool SharingController::resolvingInternalLink() const
+{
+    return _resolvingInternalLink;
+}
+
+QString SharingController::internalLinkError() const
+{
+    return _internalLinkError;
+}
+
 void SharingController::initialize(const QString &fileId)
 {
     if (!_account) {
@@ -128,34 +140,93 @@ void SharingController::createShareForRecipient(const QString &fileId,
         return;
     }
 
-    startShareCreation(fileId, recipientType, recipientValue, recipientInstance);
+    if (beginShareCreation(fileId)) {
+        startShareCreation(fileId, recipientType, recipientValue, recipientInstance);
+    }
+}
+
+void SharingController::createPublicLink(const QString &fileId)
+{
+    if (std::ranges::any_of(_shares, [](const Share *share) {
+            return share && share->isPublicLink();
+        })) {
+        qCDebug(lcSharingController) << "ignoring attempt to create a second public link";
+        return;
+    }
+
+    if (!beginShareCreation(fileId)) {
+        return;
+    }
+
+    const auto generateJob = new GenerateSecretJob{_account};
+    connect(generateJob, &GenerateSecretJob::secretGenerated, this, [this, fileId](const QString &recipientValue) {
+        if (recipientValue.isEmpty()) {
+            failShareCreation(tr("The server did not generate a valid public-link identifier."));
+            return;
+        }
+        startShareCreation(fileId, QString{RecipientTypeClasses::token}, recipientValue, {}, true);
+    });
+    connect(generateJob, &GenerateSecretJob::ocsError, this, [this](int, const QString &message) {
+        failShareCreation(message.isEmpty() ? tr("Could not create the public link.") : message);
+    });
+    connect(generateJob, &GenerateSecretJob::networkError, this, [this](const QNetworkReply *reply) {
+        failShareCreation(reply ? reply->errorString() : tr("Could not create the public link."));
+    });
+    generateJob->start();
+}
+
+void SharingController::requestInternalLink(const QString &remotePath, const QString &numericFileId)
+{
+    if (!_account || remotePath.isEmpty() || _resolvingInternalLink) {
+        return;
+    }
+
+    setInternalLinkError({});
+    setResolvingInternalLink(true);
+    fetchPrivateLinkUrl(_account, remotePath, numericFileId.toUtf8(), this, [this](const QString &url) {
+        setResolvingInternalLink(false);
+        if (url.isEmpty()) {
+            setInternalLinkError(tr("Could not retrieve the internal link."));
+            return;
+        }
+        Q_EMIT internalLinkResolved(url);
+    });
+}
+
+bool SharingController::beginShareCreation(const QString &fileId)
+{
+    if (!_account) {
+        qCWarning(lcSharingController) << "attempted to create a new share without an account set";
+        return false;
+    }
+
+    if (fileId.isEmpty()) {
+        qCWarning(lcSharingController) << "attempted to create a new share without a file ID";
+        return false;
+    }
+
+    if (_creatingShare) {
+        qCDebug(lcSharingController) << "ignoring attempt to create a share while another creation is in progress";
+        return false;
+    }
+
+    setShareCreationError({});
+    setCreatingShare(true);
+    return true;
 }
 
 void SharingController::startShareCreation(const QString &fileId,
                                            const QString &recipientType,
                                            const QString &recipientValue,
-                                           const QString &recipientInstance)
+                                           const QString &recipientInstance,
+                                           bool activateAfterCreation)
 {
-    if (!_account) {
-        qCWarning(lcSharingController) << "attempted to create a new share without an account set";
+    if (!_creatingShare) {
         return;
     }
-
-    if (fileId.isEmpty()) {
-        qCWarning(lcSharingController) << "attempted to create a new share without a file ID";
-        return;
-    }
-
-    if (_creatingShare) {
-        qCDebug(lcSharingController) << "ignoring attempt to create a share while another creation is in progress";
-        return;
-    }
-
-    setShareCreationError({});
-    setCreatingShare(true);
 
     const auto job = new CreateShareJob{_account};
-    connect(job, &CreateShareJob::shareCreated, this, [this, fileId, recipientType, recipientValue, recipientInstance](QPointer<Share> share) -> void {
+    connect(job, &CreateShareJob::shareCreated, this, [this, fileId, recipientType, recipientValue, recipientInstance, activateAfterCreation](QPointer<Share> share) -> void {
         if (!share || share->id().isEmpty()) {
             qCWarning(lcSharingController) << "share created without a valid Share object";
             failShareCreation(tr("The server returned an invalid share."), share);
@@ -163,7 +234,7 @@ void SharingController::startShareCreation(const QString &fileId,
         }
 
         share->setParent(this);
-        addSourceAfterCreation(share, fileId, recipientType, recipientValue, recipientInstance);
+        addSourceAfterCreation(share, fileId, recipientType, recipientValue, recipientInstance, activateAfterCreation);
     });
     connect(job, &CreateShareJob::ocsError, this, [this](int, const QString &message) {
         failShareCreation(message.isEmpty() ? tr("Could not create the share.") : message);
@@ -505,7 +576,8 @@ void SharingController::addSourceAfterCreation(QPointer<Share> share,
                                                const QString &fileId,
                                                const QString &recipientType,
                                                const QString &recipientValue,
-                                               const QString &recipientInstance)
+                                               const QString &recipientInstance,
+                                               bool activateAfterCreation)
 {
     if (!share) {
         failShareCreation(tr("The newly created share is no longer available."));
@@ -513,18 +585,18 @@ void SharingController::addSourceAfterCreation(QPointer<Share> share,
     }
 
     const auto job = new AddSourceJob{_account, *share, fileId};
-    connect(job, &AddSourceJob::shareUpdated, this, [this, recipientType, recipientValue, recipientInstance](QPointer<Share> updatedShare) {
+    connect(job, &AddSourceJob::shareUpdated, this, [this, recipientType, recipientValue, recipientInstance, activateAfterCreation](QPointer<Share> updatedShare) {
         if (!updatedShare) {
             failShareCreation(tr("The newly created share is no longer available."));
             return;
         }
 
         if (recipientType.isEmpty()) {
-            finishShareCreation(updatedShare);
+            finishShareCreation(updatedShare, activateAfterCreation);
             return;
         }
 
-        addRecipientAfterCreation(updatedShare, recipientType, recipientValue, recipientInstance);
+        addRecipientAfterCreation(updatedShare, recipientType, recipientValue, recipientInstance, activateAfterCreation);
     });
     connect(job, &AddSourceJob::ocsError, this, [this, share](int, const QString &message) {
         failShareCreation(message.isEmpty() ? tr("Could not attach the item to the share.") : message, share);
@@ -538,7 +610,8 @@ void SharingController::addSourceAfterCreation(QPointer<Share> share,
 void SharingController::addRecipientAfterCreation(QPointer<Share> share,
                                                   const QString &recipientType,
                                                   const QString &recipientValue,
-                                                  const QString &recipientInstance)
+                                                  const QString &recipientInstance,
+                                                  bool activateAfterCreation)
 {
     if (!share) {
         failShareCreation(tr("The newly created share is no longer available."));
@@ -546,12 +619,12 @@ void SharingController::addRecipientAfterCreation(QPointer<Share> share,
     }
 
     const auto job = new AddRecipientJob{_account, *share, recipientType, recipientValue, optionalString(recipientInstance)};
-    connect(job, &AddRecipientJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
+    connect(job, &AddRecipientJob::shareUpdated, this, [this, activateAfterCreation](QPointer<Share> updatedShare) {
         if (!updatedShare) {
             failShareCreation(tr("The newly created share is no longer available."));
             return;
         }
-        finishShareCreation(updatedShare);
+        finishShareCreation(updatedShare, activateAfterCreation);
     });
     connect(job, &AddRecipientJob::ocsError, this, [this, share](int, const QString &message) {
         failShareCreation(message.isEmpty() ? tr("Could not add the recipient.") : message, share);
@@ -562,12 +635,15 @@ void SharingController::addRecipientAfterCreation(QPointer<Share> share,
     job->start();
 }
 
-void SharingController::finishShareCreation(QPointer<Share> share)
+void SharingController::finishShareCreation(QPointer<Share> share, bool activateAfterCreation)
 {
     _shares.append(share);
     setCreatingShare(false);
     Q_EMIT shareCreated(share);
     Q_EMIT sharesChanged();
+    if (activateAfterCreation) {
+        startShareActivation(share);
+    }
 }
 
 void SharingController::failShareCreation(const QString &error, QPointer<Share> share)
@@ -668,6 +744,24 @@ void SharingController::setShareDestructionError(const QString &error)
     }
     _shareDestructionError = error;
     Q_EMIT shareDestructionErrorChanged();
+}
+
+void SharingController::setResolvingInternalLink(bool resolvingInternalLink)
+{
+    if (_resolvingInternalLink == resolvingInternalLink) {
+        return;
+    }
+    _resolvingInternalLink = resolvingInternalLink;
+    Q_EMIT resolvingInternalLinkChanged();
+}
+
+void SharingController::setInternalLinkError(const QString &error)
+{
+    if (_internalLinkError == error) {
+        return;
+    }
+    _internalLinkError = error;
+    Q_EMIT internalLinkErrorChanged();
 }
 
 void SharingController::replaceShares(const QList<Share *> &shares)

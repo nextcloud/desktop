@@ -6,6 +6,10 @@
 
 #include "share.h"
 
+#include "sharingconstants.h"
+
+#include <algorithm>
+
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -83,6 +87,21 @@ const QList<QPointer<Property>> &Share::properties() const
 const QList<QPointer<Recipient>> &Share::recipients() const
 {
     return _recipients;
+}
+
+bool Share::isPublicLink() const
+{
+    return std::ranges::any_of(_recipients, [](const QPointer<Recipient> &recipient) {
+        return recipient && recipient->className() == RecipientTypeClasses::token;
+    });
+}
+
+QString Share::publicLinkUrl() const
+{
+    const auto recipient = std::ranges::find_if(_recipients, [](const QPointer<Recipient> &recipient) {
+        return recipient && recipient->className() == RecipientTypeClasses::token;
+    });
+    return recipient == _recipients.cend() || !*recipient ? QString{} : (*recipient)->secretUrlString();
 }
 
 void Share::setId(const QString &id)

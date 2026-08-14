@@ -30,6 +30,8 @@ class SharingController : public QObject
     Q_PROPERTY(QString shareCreationError READ shareCreationError NOTIFY shareCreationErrorChanged)
     Q_PROPERTY(bool destroyingShare READ destroyingShare NOTIFY destroyingShareChanged)
     Q_PROPERTY(QString shareDestructionError READ shareDestructionError NOTIFY shareDestructionErrorChanged)
+    Q_PROPERTY(bool resolvingInternalLink READ resolvingInternalLink NOTIFY resolvingInternalLinkChanged)
+    Q_PROPERTY(QString internalLinkError READ internalLinkError NOTIFY internalLinkErrorChanged)
 
 public:
     SharingController(QObject *parent = nullptr);
@@ -53,6 +55,12 @@ public:
     /** @brief Returns the last share deletion error, or an empty string after a new attempt starts. */
     [[nodiscard]] QString shareDestructionError() const;
 
+    /** @brief Returns whether the item's internal link is currently being resolved. */
+    [[nodiscard]] bool resolvingInternalLink() const;
+
+    /** @brief Returns the last internal-link resolution error. */
+    [[nodiscard]] QString internalLinkError() const;
+
     /**
      * @brief Loads all shares associated with a file without creating a share.
      *
@@ -75,6 +83,17 @@ public:
                                              const QString &recipientType,
                                              const QString &recipientValue,
                                              const QString &recipientInstance = {});
+
+    /** @brief Creates and activates a public-link share for the specified file. */
+    Q_INVOKABLE void createPublicLink(const QString &fileId);
+
+    /**
+     * @brief Resolves the server-provided internal link for the specified file.
+     *
+     * @param remotePath Path of the file relative to the account's WebDAV root
+     * @param numericFileId Numeric file ID used if the server does not expose a private-link property
+     */
+    Q_INVOKABLE void requestInternalLink(const QString &remotePath, const QString &numericFileId);
 
     /** @brief Permanently removes a share managed by this controller. */
     Q_INVOKABLE void destroyShare(Share *share);
@@ -135,6 +154,15 @@ Q_SIGNALS:
     /** @brief Emitted when shareDestructionError changes. */
     void shareDestructionErrorChanged();
 
+    /** @brief Emitted when resolvingInternalLink changes. */
+    void resolvingInternalLinkChanged();
+
+    /** @brief Emitted when internalLinkError changes. */
+    void internalLinkErrorChanged();
+
+    /** @brief Emitted with the server-provided internal link after it is resolved. */
+    void internalLinkResolved(const QString &url);
+
     /** @brief Emitted after a recipient was added and the Share was updated. */
     void recipientAdded(Share *share);
 
@@ -175,25 +203,31 @@ private:
     QString _shareCreationError;
     bool _destroyingShare = false;
     QString _shareDestructionError;
+    bool _resolvingInternalLink = false;
+    QString _internalLinkError;
     QHash<Share *, int> _pendingDraftUpdates;
     QSet<Share *> _activationRequested;
     QSet<Share *> _activationBlocked;
 
     [[nodiscard]] bool containsShare(const Share *share) const;
+    [[nodiscard]] bool beginShareCreation(const QString &fileId);
     void startShareCreation(const QString &fileId,
                             const QString &recipientType,
                             const QString &recipientValue,
-                            const QString &recipientInstance);
+                            const QString &recipientInstance,
+                            bool activateAfterCreation = false);
     void addSourceAfterCreation(QPointer<Share> share,
                                 const QString &fileId,
                                 const QString &recipientType,
                                 const QString &recipientValue,
-                                const QString &recipientInstance);
+                                const QString &recipientInstance,
+                                bool activateAfterCreation);
     void addRecipientAfterCreation(QPointer<Share> share,
                                    const QString &recipientType,
                                    const QString &recipientValue,
-                                   const QString &recipientInstance);
-    void finishShareCreation(QPointer<Share> share);
+                                   const QString &recipientInstance,
+                                   bool activateAfterCreation);
+    void finishShareCreation(QPointer<Share> share, bool activateAfterCreation);
     void failShareCreation(const QString &error, QPointer<Share> share = {});
     void trackDraftUpdate(Share *share, QObject *job);
     void markDraftUpdateFailed(Share *share);
@@ -202,6 +236,8 @@ private:
     void setShareCreationError(const QString &error);
     void setDestroyingShare(bool destroyingShare);
     void setShareDestructionError(const QString &error);
+    void setResolvingInternalLink(bool resolvingInternalLink);
+    void setInternalLinkError(const QString &error);
     void replaceShares(const QList<Share *> &shares);
 };
 
