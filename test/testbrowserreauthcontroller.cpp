@@ -135,14 +135,23 @@ class TestBrowserReAuthController : public QObject
 {
     Q_OBJECT
 
+    std::unique_ptr<FolderMan> _fm;
+
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
         QStandardPaths::setTestModeEnabled(true);
+
         Q_INIT_RESOURCE(resources);
         Q_INIT_RESOURCE(theme);
         qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", UserModel::instance());
         qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
+
+        _fm.reset(new FolderMan{});
+
         Systray::instance()->setTrayEngine(new QQmlApplicationEngine(QCoreApplication::instance()));
     }
 
