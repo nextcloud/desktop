@@ -17,6 +17,8 @@ WizardItemDelegate {
     required property Share share
     signal configureRequested
 
+    readonly property bool pending: share.state === Share.Draft
+
     implicitHeight: contentItem.implicitHeight + topPadding + bottomPadding
     contentItem: RowLayout {
         spacing: Style.standardSpacing
@@ -44,7 +46,10 @@ WizardItemDelegate {
                             }
                         }
                     }
-                    return names.length > 0 ? names.join(", ") : qsTr("New share")
+                    if (names.length > 0) {
+                        return names.join(", ")
+                    }
+                    return root.pending ? qsTr("Unfinished share") : qsTr("Share")
                 }
                 color: Style.wizardPrimaryText
                 elide: Text.ElideRight
@@ -52,7 +57,9 @@ WizardItemDelegate {
 
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
-                text: root.share && root.share.recipients && root.share.recipients.length > 0 ? qsTr("%1 recipient(s)").arg(root.share.recipients.length) : qsTr("Not shared yet")
+                text: root.pending
+                    ? qsTr("Not active — select to finish")
+                    : qsTr("%n recipient(s)", "", root.share.recipients.length)
                 color: Style.wizardSecondaryText
                 elide: Text.ElideRight
                 visible: text.length > 0

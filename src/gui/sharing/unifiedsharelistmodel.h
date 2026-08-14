@@ -18,7 +18,7 @@ class Share;
 class SharingController;
 
 /**
- * @brief Exposes unified shares in the order needed by the categorized sharing list.
+ * @brief Exposes active and pending unified shares in categorized display order.
  */
 class UnifiedShareListModel : public QAbstractListModel
 {
@@ -63,6 +63,8 @@ private:
     QList<QMetaObject::Connection> _shareConnections;
 
     void rebuild();
+    [[nodiscard]] static QString sectionForShare(const Share *share);
+    [[nodiscard]] static int sectionOrder(const Share *share);
     [[nodiscard]] static bool isExternalShare(const Share *share);
 };
 

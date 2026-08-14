@@ -21,6 +21,8 @@ QString stateName(Share::ShareState state)
         return "deleted"_L1;
     case Share::ShareState::Draft:
         return "draft"_L1;
+    case Share::ShareState::Unknown:
+        break;
     }
     Q_UNREACHABLE_RETURN({});
 }

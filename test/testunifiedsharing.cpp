@@ -518,6 +518,13 @@ private slots:
         QCOMPARE(share->recipients().size(), 1);
 
         delete share;
+
+        const auto unknownShare = Share::fromJson(QJsonDocument::fromJson(R"json({
+            "ocs": {"data": {"id": "unknown-share", "state": "paused"}}
+        })json"),
+                                                  fakeFolder.account());
+        QCOMPARE(unknownShare->state(), Share::ShareState::Unknown);
+        delete unknownShare;
     }
 
     void sharingControllerLoadsAllSharesWithoutCreatingOne()
@@ -602,6 +609,15 @@ private slots:
                             "display_name": "Carol",
                             "value": "carol"
                         }]
+                    }, {
+                        "id": "empty-draft",
+                        "state": "draft"
+                    }, {
+                        "id": "deleted-share",
+                        "state": "deleted"
+                    }, {
+                        "id": "unknown-share",
+                        "state": "paused"
                     }]
                 }
             })json",
@@ -617,11 +633,15 @@ private slots:
 
         controller.initialize("42"_L1);
 
-        QTRY_COMPARE(model.rowCount(), 2);
+        QTRY_COMPARE(model.rowCount(), 4);
         QCOMPARE(model.data(model.index(0), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "internal-share"_L1);
         QCOMPARE(model.data(model.index(0), UnifiedShareListModel::SectionRole).toString(), "internal"_L1);
         QCOMPARE(model.data(model.index(1), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "external-share"_L1);
         QCOMPARE(model.data(model.index(1), UnifiedShareListModel::SectionRole).toString(), "external"_L1);
+        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "unfinished-share"_L1);
+        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::SectionRole).toString(), "pending"_L1);
+        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "empty-draft"_L1);
+        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::SectionRole).toString(), "pending"_L1);
         QCOMPARE(model.rowCount(model.index(0)), 0);
         QVERIFY(!model.data({}, UnifiedShareListModel::ShareRole).isValid());
 
@@ -637,6 +657,20 @@ private slots:
         QTRY_COMPARE(modelResetSpy.size(), 2);
         QCOMPARE(model.data(model.index(0), UnifiedShareListModel::SectionRole).toString(), "external"_L1);
         QCOMPARE(model.data(model.index(1), UnifiedShareListModel::SectionRole).toString(), "external"_L1);
+        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::SectionRole).toString(), "pending"_L1);
+        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::SectionRole).toString(), "pending"_L1);
+
+        const auto pendingShare = model.data(model.index(2), UnifiedShareListModel::ShareRole).value<Share *>();
+        pendingShare->updateFromJson(QJsonDocument::fromJson(R"json({
+            "ocs": {"data": {"state": "active"}}
+        })json"));
+
+        QTRY_COMPARE(modelResetSpy.size(), 3);
+        QCOMPARE(model.data(model.index(0), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "unfinished-share"_L1);
+        QCOMPARE(model.data(model.index(0), UnifiedShareListModel::SectionRole).toString(), "internal"_L1);
+        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::SectionRole).toString(), "external"_L1);
+        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::SectionRole).toString(), "external"_L1);
+        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::SectionRole).toString(), "pending"_L1);
 
         model.setSharingController(nullptr);
         QCOMPARE(model.rowCount(), 0);
