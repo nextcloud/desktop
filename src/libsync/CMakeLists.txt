@@ -166,6 +166,8 @@ set(libsync_SRCS
     caseclashconflictsolver.cpp
     settings/migration.h
     settings/migration.cpp
+    chronoelapsedtimer.h
+    chronoelapsedtimer.cpp
 )
 
 if (WIN32)
@@ -207,6 +209,19 @@ set(creds_HEADERS
     creds/abstractcredentials.h
     creds/httpcredentials.h
 )
+
+try_compile(HAS_CLOCK_CAST
+        SOURCE_FROM_CONTENT chrono_test.cpp "
+#include <chrono>
+int main() {
+    std::chrono::clock_cast<std::chrono::system_clock>;
+}"
+)
+message(STATUS "HAS_CLOCK_CAST: ${HAS_CLOCK_CAST}")
+
+if(HAS_CLOCK_CAST)
+    set_source_files_properties(filesystem.cpp PROPERTIES COMPILE_DEFINITIONS HAS_CLOCK_CAST)
+endif()
 
 IF (NOT APPLE)
     INSTALL(

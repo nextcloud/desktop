@@ -227,6 +227,11 @@ namespace Utility {
     // if false, the two cases are two different files.
     OCSYNC_EXPORT bool fsCasePreserving();
 
+    inline auto fsCaseSensitivity()
+    {
+        return fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive;
+    }
+
     // Check if two paths that MUST exist are equal. This function
     // uses QDir::canonicalPath() to judge and cares for the systems
     // case sensitivity.
@@ -324,6 +329,20 @@ namespace Utility {
      * @brief Retrieves current logged-in user name from the OS
      */
     OCSYNC_EXPORT QString getCurrentUserName();
+
+#ifdef Q_OS_LINUX
+    OCSYNC_EXPORT QString appImageLocation();
+    OCSYNC_EXPORT bool runningInAppImage();
+#else
+    inline QString appImageLocation()
+    {
+        Q_UNREACHABLE();
+    };
+    constexpr bool runningInAppImage()
+    {
+        return false;
+    };
+#endif
 
     /**
      * @brief Registers the desktop app as a handler for a custom URI to enable local editing

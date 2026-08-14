@@ -29,6 +29,7 @@
 #include <QSharedPointer>
 #include <QHttpMultiPart>
 #include <QTimer>
+#include <QUuid>
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QPixmap>
@@ -440,6 +441,8 @@ public:
 
     [[nodiscard]] bool serverHasIntegration() const;
 
+    [[nodiscard]] QUuid uuid() const;
+
 public Q_SLOTS:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -609,6 +612,7 @@ private:
 
     void updateServerHasIntegration();
     bool _serverHasIntegration;
+    QUuid _uuid;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
