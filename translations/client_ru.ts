@@ -1,95 +1,103 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ru">
 <context>
+    <name>AccountWizardController</name>
+    <message>
+        <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="166"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="135"/>
         <source>Secure connection failed</source>
         <translation>Безопасное соединение не удалось</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="138"/>
         <source>Connect to %1?</source>
         <translation>Подключиться к %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="179"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="148"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation>Безопасное соединение не удалось. Вы можете повторить попытку без шифрования или добавить сертификат клиента и повторить попытку.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="180"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="149"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation>Безопасное соединение не удалось. Вы можете добавить сертификат клиента и повторить попытку.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="201"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="272"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="170"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="248"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="20"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="211"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="180"/>
         <source>Connect without TLS</source>
         <translation>Подключиться без TLS</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="223"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="192"/>
         <source>Use client certificate</source>
         <translation>Использовать клиентский сертификат</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="289"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="262"/>
         <source>Set up later</source>
         <translation>Настроить позже</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="300"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="273"/>
         <source>Advanced</source>
         <translation>Расширенный</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="309"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="282"/>
         <source>Sign up</source>
         <translation>Зарегистрироваться</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="319"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="292"/>
         <source>Self-host</source>
         <translation>Самостоятельный хостинг</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="334"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
         <source>Proxy settings</source>
         <translation>Настройки прокси</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="27"/>
         <source>Copy link</source>
         <translation>Копировать ссылку</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="396"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="37"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="398"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="358"/>
         <source>Connect</source>
         <translation>Соединиться</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="400"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="360"/>
         <source>Done</source>
         <translation>Завершено</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="402"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="362"/>
         <source>Log in</source>
         <translation>Войти</translation>
     </message>
@@ -293,7 +301,7 @@
 <context>
     <name>BrowserAuthPage</name>
     <message>
-        <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="39"/>
         <source>Switch to your browser</source>
         <translation>Переключиться на свой браузер</translation>
     </message>
@@ -613,29 +621,6 @@
         <location filename="../src/libsync/filesystem.cpp" line="583"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Не удалось удалить папку «%1»</translation>
-    </message>
-</context>
-<context>
-    <name>Flow2AuthWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
-        <source>Browser Authentication</source>
-        <translation>Аутентификация с использованием браузера</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
-        <source>Logo</source>
-        <translation>Логотип</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
-        <source>Switch to your browser to connect your account</source>
-        <translation>Перейдите в браузер, чтобы подключить свою учётную запись</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="232"/>
-        <source>An error occurred while connecting. Please try again.</source>
-        <translation>Ошибка во время установления соединения, попробуйте ещё раз.</translation>
     </message>
 </context>
 <context>
@@ -2777,57 +2762,6 @@ This can be an issue with your OpenSSL libraries.</source>
     </message>
 </context>
 <context>
-    <name>OCC::Flow2AuthWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="101"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="118"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="156"/>
-        <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Не удалось открыть браузер, скопируйте ссылку и перейдите по ней в своём браузере.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="191"/>
-        <source>Waiting for authorization</source>
-        <translation>Ожидание авторизации</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="196"/>
-        <source>Polling for authorization</source>
-        <translation>Получение параметров для авторизации</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="201"/>
-        <source>Starting authorization</source>
-        <translation>Начало авторизации</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="171"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="205"/>
-        <source>Link copied to clipboard.</source>
-        <translation>Ссылка скопирована в буфер обмена.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="95"/>
-        <source>Complete your provider signup in your browser</source>
-        <translation>Завершите провайдерскую регистрацию в браузере</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="96"/>
-        <source>Please complete the provider signup in your browser. After the completion, confirm to open the Nextcloud application popup in your browser.</source>
-        <translation>Пожалуйста, завершите провайдерскую регистрацию в браузере. После завершения подтвердите открытие всплывающего окна приложения Nextcloud в браузере.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="252"/>
-        <source>Open Browser</source>
-        <translation>Открыть проводник</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="254"/>
-        <source>Copy Link</source>
-        <translation>Скопировать ссылку</translation>
-    </message>
-</context>
-<context>
     <name>OCC::Folder</name>
     <message>
         <location filename="../src/gui/folder.cpp" line="505"/>
@@ -3437,12 +3371,12 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="705"/>
+        <location filename="../src/gui/folderwizard.cpp" line="703"/>
         <source>Add Folder Sync Connection</source>
         <translation>Добавление подключения синхронизации папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="707"/>
+        <location filename="../src/gui/folderwizard.cpp" line="705"/>
         <source>Add Sync Connection</source>
         <translation>Добавить подключение для синхронизации</translation>
     </message>
@@ -3460,7 +3394,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Укажите путь к локальному каталогу.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="155"/>
+        <location filename="../src/gui/folderwizard.cpp" line="153"/>
         <source>Select the source folder</source>
         <translation>Выберите папку-источник</translation>
     </message>
@@ -3468,48 +3402,48 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="233"/>
+        <location filename="../src/gui/folderwizard.cpp" line="231"/>
         <source>Create Remote Folder</source>
         <translation>Создать папку на сервере</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="232"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Введите имя папки для создания внутри «%1»:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="263"/>
+        <location filename="../src/gui/folderwizard.cpp" line="261"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Каталог успешно создан на %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="273"/>
+        <location filename="../src/gui/folderwizard.cpp" line="271"/>
         <source>Authentication failed accessing %1</source>
         <translation>Ошибка авторизации при доступе к %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="275"/>
+        <location filename="../src/gui/folderwizard.cpp" line="273"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Невозможно создать каталог по пути %1. Попробуйте создать его вручную.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="293"/>
+        <location filename="../src/gui/folderwizard.cpp" line="291"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Ошибка просмотра папки. Ошибка: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="374"/>
+        <location filename="../src/gui/folderwizard.cpp" line="372"/>
         <source>Choose this to sync the entire account</source>
         <translation>Нажмите здесь для синхронизации всей учётной записи</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="514"/>
-        <location filename="../src/gui/folderwizard.cpp" line="526"/>
+        <location filename="../src/gui/folderwizard.cpp" line="512"/>
+        <location filename="../src/gui/folderwizard.cpp" line="524"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Выберите другое расположение: папка «%1» уже используется для синхронизации %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="521"/>
+        <location filename="../src/gui/folderwizard.cpp" line="519"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>Папка «%1» уже настроена для синхронизации и является вложенной для папки «%2».</translation>
     </message>
@@ -3517,24 +3451,24 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="588"/>
-        <location filename="../src/gui/folderwizard.cpp" line="625"/>
+        <location filename="../src/gui/folderwizard.cpp" line="586"/>
+        <location filename="../src/gui/folderwizard.cpp" line="623"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Использовать виртуальные файлы вместо загрузки %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="588"/>
-        <location filename="../src/gui/folderwizard.cpp" line="625"/>
+        <location filename="../src/gui/folderwizard.cpp" line="586"/>
+        <location filename="../src/gui/folderwizard.cpp" line="623"/>
         <source>(experimental)</source>
         <translation>(экспериментальная функция)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="621"/>
+        <location filename="../src/gui/folderwizard.cpp" line="619"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>В ОС Windows механизм виртуальных файлов не поддерживается для корневой уровня файловой системы. Для продолжения выберите папку на диске, а не сам диск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="646"/>
+        <location filename="../src/gui/folderwizard.cpp" line="644"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation>Использование виртуальных файлов недоступно для выбранной папки</translation>
     </message>
@@ -6571,7 +6505,7 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="150"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="152"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation>Был выполнен выход из учётной записи %1 на сервере %2. Войдите заново.</translation>
     </message>
@@ -8099,6 +8033,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
 </context>
 <context>
+    <name>Flow2AuthWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
+        <source>Browser Authentication</source>
+        <translation>Аутентификация с использованием браузера</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
+        <source>Logo</source>
+        <translation>Логотип</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
+        <source>Switch to your browser to connect your account</source>
+        <translation>Перейдите в браузер, чтобы подключить свою учётную запись</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
+        <source>An error occurred while connecting. Please try again.</source>
+        <translation>Ошибка во время установления соединения, попробуйте ещё раз.</translation>
+    </message>
+</context>
+<context>
     <name>OCC::AddCertificateDialog</name>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
@@ -8144,6 +8101,44 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Не удалось получить доступ к выбранному файлу сертификата.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Flow2AuthWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation>Не удалось открыть браузер, скопируйте ссылку и перейдите по ней в своём браузере.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
+        <source>Waiting for authorization</source>
+        <translation>Ожидание авторизации</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
+        <source>Polling for authorization</source>
+        <translation>Получение параметров для авторизации</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
+        <source>Starting authorization</source>
+        <translation>Начало авторизации</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
+        <source>Link copied to clipboard.</source>
+        <translation>Ссылка скопирована в буфер обмена.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <source>Open Browser</source>
+        <translation>Открыть проводник</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="217"/>
+        <source>Copy Link</source>
+        <translation>Скопировать ссылку</translation>
     </message>
 </context>
 <context>

@@ -1,95 +1,103 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="et_EE">
 <context>
+    <name>AccountWizardController</name>
+    <message>
+        <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="166"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="135"/>
         <source>Secure connection failed</source>
         <translation>Turvalise ühenduse loomine ei õnnestunud</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="138"/>
         <source>Connect to %1?</source>
         <translation>Kas ühendad serveriga %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="179"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="148"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation>Turvalise ühenduse loomine ei õnnestunud. Sa võid ühendada ilma krüptimiseta või lisada kliendisertifikaadi ja siis uuesti proovida.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="180"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="149"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation>Turvalise ühenduse loomine ei õnnestunud. Sa võid lisada kliendisertifikaadi ja siis uuesti proovida.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="201"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="272"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="170"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="248"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="20"/>
         <source>Cancel</source>
         <translation>Katkesta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="211"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="180"/>
         <source>Connect without TLS</source>
         <translation>Ühenda ilma TLS-i kasutamata</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="223"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="192"/>
         <source>Use client certificate</source>
         <translation>Kasuta kliendisertifikaati</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
         <source>Back</source>
         <translation>Tagasi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="289"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="262"/>
         <source>Set up later</source>
         <translation>Seadista hiljem</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="300"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="273"/>
         <source>Advanced</source>
         <translation>Täiendavad seadistused</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="309"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="282"/>
         <source>Sign up</source>
         <translation>Liitu teenusega</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="319"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="292"/>
         <source>Self-host</source>
         <translation>Pane oma server püsti</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="334"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
         <source>Proxy settings</source>
         <translation>Proksiserveri seadistused</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="27"/>
         <source>Copy link</source>
         <translation>Kopeeri link</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="396"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="37"/>
         <source>Open</source>
         <translation>Ava</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="398"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="358"/>
         <source>Connect</source>
         <translation>Ühenda</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="400"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="360"/>
         <source>Done</source>
         <translation>Valmis</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="402"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="362"/>
         <source>Log in</source>
         <translation>Logi sisse</translation>
     </message>
@@ -293,7 +301,7 @@
 <context>
     <name>BrowserAuthPage</name>
     <message>
-        <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="39"/>
         <source>Switch to your browser</source>
         <translation>Vaata nüüd oma veebibrauserisse</translation>
     </message>
@@ -613,29 +621,6 @@
         <location filename="../src/libsync/filesystem.cpp" line="583"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>„%1“ kausta eemaldamine ei õnnestunud</translation>
-    </message>
-</context>
-<context>
-    <name>Flow2AuthWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
-        <source>Browser Authentication</source>
-        <translation>Brauseripõhine autentimine</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
-        <source>Logo</source>
-        <translation>Logo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
-        <source>Switch to your browser to connect your account</source>
-        <translation>Sinu kasutajakonto ühendamiseks ava nüüd oma veebibrauser</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="232"/>
-        <source>An error occurred while connecting. Please try again.</source>
-        <translation>Ühenduse loomisel tekkis viga. Palun proovi uuesti.</translation>
     </message>
 </context>
 <context>
@@ -2776,57 +2761,6 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
     </message>
 </context>
 <context>
-    <name>OCC::Flow2AuthWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="101"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="118"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="156"/>
-        <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Veebibrauseri avamine ei õnnestu, palun kopeeri link veebibrauseri jaoks ja ava ta ise.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="191"/>
-        <source>Waiting for authorization</source>
-        <translation>Ootame autentimist</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="196"/>
-        <source>Polling for authorization</source>
-        <translation>Pollime autentimist</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="201"/>
-        <source>Starting authorization</source>
-        <translation>Alustame autentimisega</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="171"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="205"/>
-        <source>Link copied to clipboard.</source>
-        <translation>Link on kopeeritud lõikelauale.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="95"/>
-        <source>Complete your provider signup in your browser</source>
-        <translation>Lõpeta oma teenusepakkujaga liitumine oma veebibrauseris</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="96"/>
-        <source>Please complete the provider signup in your browser. After the completion, confirm to open the Nextcloud application popup in your browser.</source>
-        <translation>Palun lõpeta teenusepakkujaga liitumine oma veebibrauseris. Peale seda kinnita brauseris Nextcloudi rakenduse hüpikakna avamine.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="252"/>
-        <source>Open Browser</source>
-        <translation>Ava veebilehitseja</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="254"/>
-        <source>Copy Link</source>
-        <translation>Kopeeri link</translation>
-    </message>
-</context>
-<context>
     <name>OCC::Folder</name>
     <message>
         <location filename="../src/gui/folder.cpp" line="505"/>
@@ -3437,12 +3371,12 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="705"/>
+        <location filename="../src/gui/folderwizard.cpp" line="703"/>
         <source>Add Folder Sync Connection</source>
         <translation>Lisa kaustale sünkroonimine</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="707"/>
+        <location filename="../src/gui/folderwizard.cpp" line="705"/>
         <source>Add Sync Connection</source>
         <translation>Lisa sünkroonimine</translation>
     </message>
@@ -3460,7 +3394,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
         <translation>Sisesta kohaliku kausta asukoht.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="155"/>
+        <location filename="../src/gui/folderwizard.cpp" line="153"/>
         <source>Select the source folder</source>
         <translation>Vali algne kaust</translation>
     </message>
@@ -3468,48 +3402,48 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="233"/>
+        <location filename="../src/gui/folderwizard.cpp" line="231"/>
         <source>Create Remote Folder</source>
         <translation>Loo kaugkaust</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="232"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Sisesta uue kausta nimi, mis on loomisel „%1“ alla:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="263"/>
+        <location filename="../src/gui/folderwizard.cpp" line="261"/>
         <source>Folder was successfully created on %1.</source>
         <translation>%1 - kaust on loodud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="273"/>
+        <location filename="../src/gui/folderwizard.cpp" line="271"/>
         <source>Authentication failed accessing %1</source>
         <translation>Ei õnnestunud autentida ligipääsul asukohta „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="275"/>
+        <location filename="../src/gui/folderwizard.cpp" line="273"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Kausta loomine ei õnnestunud - %1. Palun kontrolli käsitsi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="293"/>
+        <location filename="../src/gui/folderwizard.cpp" line="291"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Ei õnnestunud luua kausta sisu loendit. Viga: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="374"/>
+        <location filename="../src/gui/folderwizard.cpp" line="372"/>
         <source>Choose this to sync the entire account</source>
         <translation>Vali see sünkroniseerimine tervele kontole</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="514"/>
-        <location filename="../src/gui/folderwizard.cpp" line="526"/>
+        <location filename="../src/gui/folderwizard.cpp" line="512"/>
+        <location filename="../src/gui/folderwizard.cpp" line="524"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Palun vali muu asukoht. „%1“ jaoks juba on %2 sünkroonimine kasutusel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="521"/>
+        <location filename="../src/gui/folderwizard.cpp" line="519"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>Sa juba sünkroonid „%2“ alamkausta „%1“.</translation>
     </message>
@@ -3517,24 +3451,24 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="588"/>
-        <location filename="../src/gui/folderwizard.cpp" line="625"/>
+        <location filename="../src/gui/folderwizard.cpp" line="586"/>
+        <location filename="../src/gui/folderwizard.cpp" line="623"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Sisu kohese allalaadimise asemel kasuta virtuaalseid faile: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="588"/>
-        <location filename="../src/gui/folderwizard.cpp" line="625"/>
+        <location filename="../src/gui/folderwizard.cpp" line="586"/>
+        <location filename="../src/gui/folderwizard.cpp" line="623"/>
         <source>(experimental)</source>
         <translation>(katseline)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="621"/>
+        <location filename="../src/gui/folderwizard.cpp" line="619"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Virtuaalsed failid pole toetatud Windowsi partitsiooni juurkaustas kohaliku kausta rollis. Palun vali sellelt kettalt mõni alamkaust.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="646"/>
+        <location filename="../src/gui/folderwizard.cpp" line="644"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation>Virtuaalsed faili pole valitud asukohas toetatud</translation>
     </message>
@@ -6571,7 +6505,7 @@ Veateade serveri päringuvastuses: %2</translation>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="150"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="152"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation>Sa oled logitud välja %2 serveri %1 kasutajakontost. Palun logi uuesti sisse.</translation>
     </message>
@@ -6652,7 +6586,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="833"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Vali uus asukoht…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="921"/>
@@ -8099,6 +8033,29 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     </message>
 </context>
 <context>
+    <name>Flow2AuthWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
+        <source>Browser Authentication</source>
+        <translation>Brauseripõhine autentimine</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
+        <source>Logo</source>
+        <translation>Logo</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
+        <source>Switch to your browser to connect your account</source>
+        <translation>Sinu kasutajakonto ühendamiseks ava nüüd oma veebibrauser</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
+        <source>An error occurred while connecting. Please try again.</source>
+        <translation>Ühenduse loomisel tekkis viga. Palun proovi uuesti.</translation>
+    </message>
+</context>
+<context>
     <name>OCC::AddCertificateDialog</name>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
@@ -8144,6 +8101,44 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Valitud sertifikaadifaili polnud võimalik laadida.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Flow2AuthWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation>Veebibrauseri avamine ei õnnestu, palun kopeeri link veebibrauseri jaoks ja ava ta ise.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
+        <source>Waiting for authorization</source>
+        <translation>Ootame autentimist</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
+        <source>Polling for authorization</source>
+        <translation>Pollime autentimist</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
+        <source>Starting authorization</source>
+        <translation>Alustame autentimisega</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
+        <source>Link copied to clipboard.</source>
+        <translation>Link on kopeeritud lõikelauale.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <source>Open Browser</source>
+        <translation>Ava veebilehitseja</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="217"/>
+        <source>Copy Link</source>
+        <translation>Kopeeri link</translation>
     </message>
 </context>
 <context>

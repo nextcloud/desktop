@@ -1,95 +1,103 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_HK">
 <context>
+    <name>AccountWizardController</name>
+    <message>
+        <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="166"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="135"/>
         <source>Secure connection failed</source>
         <translation>安全連線失敗</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="138"/>
         <source>Connect to %1?</source>
         <translation>連線至 %1？</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="179"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="148"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation>安全連線失敗。你可以在不加密的情況下重試，或加入用戶端憑證後再試。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="180"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="149"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation>安全連線失敗。你可以加入用戶端憑證後再試。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="201"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="272"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="170"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="248"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="20"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="211"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="180"/>
         <source>Connect without TLS</source>
         <translation>不使用 TLS 連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="223"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="192"/>
         <source>Use client certificate</source>
         <translation>使用用戶端憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
         <source>Back</source>
         <translation>返回</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="289"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="262"/>
         <source>Set up later</source>
         <translation>稍後設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="300"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="273"/>
         <source>Advanced</source>
         <translation>進階</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="309"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="282"/>
         <source>Sign up</source>
         <translation>註冊</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="319"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="292"/>
         <source>Self-host</source>
         <translation>自行託管</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="334"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
         <source>Proxy settings</source>
         <translation>代理伺服器設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="27"/>
         <source>Copy link</source>
         <translation>複製連結</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="396"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="37"/>
         <source>Open</source>
         <translation>開啟</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="398"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="358"/>
         <source>Connect</source>
         <translation>連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="400"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="360"/>
         <source>Done</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="402"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="362"/>
         <source>Log in</source>
         <translation>登入</translation>
     </message>
@@ -293,7 +301,7 @@
 <context>
     <name>BrowserAuthPage</name>
     <message>
-        <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="39"/>
         <source>Switch to your browser</source>
         <translation>切換至瀏覽器</translation>
     </message>
@@ -613,29 +621,6 @@
         <location filename="../src/libsync/filesystem.cpp" line="583"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>無法移除資料夾 &quot;%1&quot;</translation>
-    </message>
-</context>
-<context>
-    <name>Flow2AuthWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
-        <source>Browser Authentication</source>
-        <translation>瀏覽器驗證</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
-        <source>Logo</source>
-        <translation>標識</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
-        <source>Switch to your browser to connect your account</source>
-        <translation>切換到瀏覽器以連接您的帳戶</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="232"/>
-        <source>An error occurred while connecting. Please try again.</source>
-        <translation>連接時發生錯誤，請重試</translation>
     </message>
 </context>
 <context>
@@ -2779,57 +2764,6 @@ This can be an issue with your OpenSSL libraries.</source>
     </message>
 </context>
 <context>
-    <name>OCC::Flow2AuthWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="101"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="118"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="156"/>
-        <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>無法開啟瀏覽器。請將連結複製到瀏覽器中。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="191"/>
-        <source>Waiting for authorization</source>
-        <translation>等候驗證中</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="196"/>
-        <source>Polling for authorization</source>
-        <translation>輪詢驗證中</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="201"/>
-        <source>Starting authorization</source>
-        <translation>開始驗證</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="171"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="205"/>
-        <source>Link copied to clipboard.</source>
-        <translation>已複製連結至剪貼板</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="95"/>
-        <source>Complete your provider signup in your browser</source>
-        <translation>在瀏覽器中完成供應商註冊</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="96"/>
-        <source>Please complete the provider signup in your browser. After the completion, confirm to open the Nextcloud application popup in your browser.</source>
-        <translation>請在瀏覽器中完成供應商註冊。完成後，請確認在瀏覽器中開啟 Nextcloud 應用程式彈出視窗。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="252"/>
-        <source>Open Browser</source>
-        <translation>開啟瀏覽器</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="254"/>
-        <source>Copy Link</source>
-        <translation>複製連結</translation>
-    </message>
-</context>
-<context>
     <name>OCC::Folder</name>
     <message>
         <location filename="../src/gui/folder.cpp" line="505"/>
@@ -3439,12 +3373,12 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="705"/>
+        <location filename="../src/gui/folderwizard.cpp" line="703"/>
         <source>Add Folder Sync Connection</source>
         <translation>新增資料夾同步功能的連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="707"/>
+        <location filename="../src/gui/folderwizard.cpp" line="705"/>
         <source>Add Sync Connection</source>
         <translation>新增同步連線</translation>
     </message>
@@ -3462,7 +3396,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>請輸入近端資料夾的路徑</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="155"/>
+        <location filename="../src/gui/folderwizard.cpp" line="153"/>
         <source>Select the source folder</source>
         <translation>選擇來源資料夾</translation>
     </message>
@@ -3470,48 +3404,48 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="233"/>
+        <location filename="../src/gui/folderwizard.cpp" line="231"/>
         <source>Create Remote Folder</source>
         <translation>建立遠端資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="232"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>請輸入欲創建在 &quot;%1&quot; 底下的新資料夾名稱：</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="263"/>
+        <location filename="../src/gui/folderwizard.cpp" line="261"/>
         <source>Folder was successfully created on %1.</source>
         <translation>資料夾成功建立在%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="273"/>
+        <location filename="../src/gui/folderwizard.cpp" line="271"/>
         <source>Authentication failed accessing %1</source>
         <translation>存取 %1 認證失敗 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="275"/>
+        <location filename="../src/gui/folderwizard.cpp" line="273"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>在 %1 建立資料夾失敗，請手動檢查</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="293"/>
+        <location filename="../src/gui/folderwizard.cpp" line="291"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>取得資料夾清單失敗，錯誤： %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="374"/>
+        <location filename="../src/gui/folderwizard.cpp" line="372"/>
         <source>Choose this to sync the entire account</source>
         <translation> 請選擇這個功能用來同步整個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="514"/>
-        <location filename="../src/gui/folderwizard.cpp" line="526"/>
+        <location filename="../src/gui/folderwizard.cpp" line="512"/>
+        <location filename="../src/gui/folderwizard.cpp" line="524"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>請選擇其他位置。%1 已同步至 %2。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="521"/>
+        <location filename="../src/gui/folderwizard.cpp" line="519"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>您已經在 %2 同步子資料夾 %1。</translation>
     </message>
@@ -3519,24 +3453,24 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="588"/>
-        <location filename="../src/gui/folderwizard.cpp" line="625"/>
+        <location filename="../src/gui/folderwizard.cpp" line="586"/>
+        <location filename="../src/gui/folderwizard.cpp" line="623"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>使用虛擬檔案，而不是立即下載內容 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="588"/>
-        <location filename="../src/gui/folderwizard.cpp" line="625"/>
+        <location filename="../src/gui/folderwizard.cpp" line="586"/>
+        <location filename="../src/gui/folderwizard.cpp" line="623"/>
         <source>(experimental)</source>
         <translation>（實驗性）</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="621"/>
+        <location filename="../src/gui/folderwizard.cpp" line="619"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Windows分區根目錄不支持將虛擬文件作為近端資料夾使用。請在硬盤驅動器號下選擇一個有效的子資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="646"/>
+        <location filename="../src/gui/folderwizard.cpp" line="644"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation>選定的位置不支援虛擬檔案</translation>
     </message>
@@ -6575,7 +6509,7 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="150"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="152"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation>您已在 %2 退出您的帳戶 %1。請重新登錄。</translation>
     </message>
@@ -8103,6 +8037,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
 </context>
 <context>
+    <name>Flow2AuthWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
+        <source>Browser Authentication</source>
+        <translation>瀏覽器驗證</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
+        <source>Logo</source>
+        <translation>標識</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
+        <source>Switch to your browser to connect your account</source>
+        <translation>切換到瀏覽器以連接您的帳戶</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
+        <source>An error occurred while connecting. Please try again.</source>
+        <translation>連接時發生錯誤，請重試</translation>
+    </message>
+</context>
+<context>
     <name>OCC::AddCertificateDialog</name>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
@@ -8148,6 +8105,44 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
         <translation>無法存取所選取的憑證檔案。</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Flow2AuthWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation>無法開啟瀏覽器。請將連結複製到瀏覽器中。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
+        <source>Waiting for authorization</source>
+        <translation>等候驗證中</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
+        <source>Polling for authorization</source>
+        <translation>輪詢驗證中</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
+        <source>Starting authorization</source>
+        <translation>開始驗證</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
+        <source>Link copied to clipboard.</source>
+        <translation>已複製連結至剪貼板</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <source>Open Browser</source>
+        <translation>開啟瀏覽器</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="217"/>
+        <source>Copy Link</source>
+        <translation>複製連結</translation>
     </message>
 </context>
 <context>
