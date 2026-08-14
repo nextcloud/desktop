@@ -15,6 +15,7 @@ WizardItemDelegate {
     id: root
 
     required property Share share
+    required property string recipientNames
     signal configureRequested
 
     readonly property bool pending: share.state === Share.Draft
@@ -37,20 +38,7 @@ WizardItemDelegate {
 
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
-                text: {
-                    const names = []
-                    if (root.share && root.share.recipients) {
-                        for (const recipient of Array.from(root.share.recipients)) {
-                            if (recipient && recipient.displayName) {
-                                names.push(recipient.displayName)
-                            }
-                        }
-                    }
-                    if (names.length > 0) {
-                        return names.join(", ")
-                    }
-                    return root.pending ? qsTr("Unfinished share") : qsTr("Share")
-                }
+                text: root.recipientNames || (root.pending ? qsTr("Unfinished share") : qsTr("Share"))
                 color: Style.wizardPrimaryText
                 elide: Text.ElideRight
             }
