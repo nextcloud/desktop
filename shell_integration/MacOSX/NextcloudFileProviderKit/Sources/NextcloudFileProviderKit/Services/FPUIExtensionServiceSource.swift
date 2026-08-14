@@ -92,4 +92,45 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
         let completePath = item.serverUrl + "/" + item.fileName
         return completePath.replacingOccurrences(of: baseUrl, with: "") as NSString
     }
+
+    func presentUnifiedSharingDialog(identifier: NSFileProviderItemIdentifier, localPath: NSString) async -> Bool {
+        guard let account = fpExtension.ncAccount else {
+            logger.error("Could not present unified sharing because the account is unavailable.", [.item: identifier])
+            return false
+        }
+
+        guard let dbManager = fpExtension.dbManager,
+              let metadata = dbManager.itemMetadata(identifier),
+              !metadata.fileId.isEmpty
+        else {
+            logger.error("Could not present unified sharing because the item metadata or numeric file id is unavailable.", [.item: identifier])
+            return false
+        }
+
+        let (_, _, responseData, error) = await fpExtension.ncKit.fetchCapabilities(account: account)
+        guard error == .success else {
+            logger.error("Could not determine whether unified sharing is supported.", [.item: identifier, .error: error])
+            return false
+        }
+
+        guard UnifiedSharingCapability.isAvailable(in: responseData) else {
+            logger.info("Unified sharing is not supported; using the legacy sharing interface.", [.item: identifier])
+            return false
+        }
+
+        guard let app = fpExtension.app else {
+            logger.error("Could not present unified sharing because the main app connection is unavailable.", [.item: identifier])
+            return false
+        }
+
+        let domainIdentifier = fpExtension.domain.identifier.rawValue
+        app.presentUnifiedSharing(
+            forItem: metadata.fileId,
+            localPath: localPath as String,
+            remoteItemPath: metadata.path,
+            forDomainIdentifier: domainIdentifier
+        )
+        logger.info("Asked the main app to present unified sharing.", [.item: identifier, .domain: fpExtension.domain.identifier])
+        return true
+    }
 }

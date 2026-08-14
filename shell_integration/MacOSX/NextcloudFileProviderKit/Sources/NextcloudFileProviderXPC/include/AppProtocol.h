@@ -24,6 +24,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)presentFileActions:(NSString *)fileId path:(NSString *)path remoteItemPath:(NSString *)remoteItemPath withDomainIdentifier:(NSString *)domainIdentifier;
 
 /**
+ * @brief The file provider extension asks the main app to present the unified sharing dialog for an item.
+ * @param fileId The numeric server file id, equal to the WebDAV `fileid` property.
+ * @param localPath The local and absolute path of the item.
+ * @param remoteItemPath The server-side path of the item.
+ * @param domainIdentifier The file provider domain identifier for the account that owns the item.
+ */
+- (void)presentUnifiedSharingForItem:(NSString *)fileId
+                          localPath:(NSString *)localPath
+                     remoteItemPath:(NSString *)remoteItemPath
+                forDomainIdentifier:(NSString *)domainIdentifier
+    NS_SWIFT_NAME(presentUnifiedSharing(forItem:localPath:remoteItemPath:forDomainIdentifier:));
+
+/**
  * @brief The file provider extension asks the main app to open the item's page in the user's web browser.
  *
  * The main app resolves the per-item private link via PROPFIND (with the

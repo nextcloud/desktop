@@ -17,6 +17,7 @@ private final class SyncStatusCapturingAppProxy: NSObject, AppProtocol {
 
     // The following are unused by these tests but required for protocol conformance.
     func presentFileActions(_: String, path _: String, remoteItemPath _: String, withDomainIdentifier _: String) {}
+    func presentUnifiedSharing(forItem _: String, localPath _: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
     func openItemInBrowser(_: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
     func copyInternalLink(forItem _: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
     func reportItemExcluded(fromSync _: String, fileName _: String, reason _: String, forDomainIdentifier _: String) {}
