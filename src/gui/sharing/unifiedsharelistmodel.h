@@ -18,7 +18,7 @@ class Share;
 class SharingController;
 
 /**
- * @brief Exposes active and pending unified shares in categorized display order.
+ * @brief Exposes unified sharing section headers, actions, and shares in display order.
  */
 class UnifiedShareListModel : public QAbstractListModel
 {
@@ -28,11 +28,23 @@ class UnifiedShareListModel : public QAbstractListModel
     Q_PROPERTY(SharingController *sharingController READ sharingController WRITE setSharingController NOTIFY sharingControllerChanged)
 
 public:
+    /** @brief Identifies the delegate needed for a list row. */
+    enum class ItemType {
+        SectionHeader,
+        Share,
+        InternalLink,
+        CreatePublicLink,
+    };
+    Q_ENUM(ItemType)
+
     /** @brief Roles exposed to the sharing list delegates. */
     enum Role {
         ShareRole = Qt::UserRole + 1,
         SectionRole,
         RecipientNamesRole,
+        ItemTypeRole,
+        PublicLinkRole,
+        PublicLinkUrlRole,
     };
     Q_ENUM(Role)
 
@@ -45,10 +57,10 @@ public:
     /** @brief Sets the controller whose shares are exposed by this model. */
     void setSharingController(SharingController *sharingController);
 
-    /** @brief Returns the number of shares in the root list. */
+    /** @brief Returns the number of headers, actions, and shares in the root list. */
     [[nodiscard]] int rowCount(const QModelIndex &parent = {}) const override;
 
-    /** @brief Returns the share or section value for a model index. */
+    /** @brief Returns the requested display data for a model index. */
     [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
 
     /** @brief Returns the QML role names exposed by the model. */
@@ -59,13 +71,20 @@ Q_SIGNALS:
     void sharingControllerChanged();
 
 private:
+    struct Item
+    {
+        ItemType type;
+        QString section;
+        QPointer<Share> share;
+    };
+
     QPointer<SharingController> _sharingController;
-    QList<Share *> _shares;
+    QList<Item> _items;
     QList<QMetaObject::Connection> _shareConnections;
 
     void rebuild();
     [[nodiscard]] static QString sectionForShare(const Share *share);
-    [[nodiscard]] static int sectionOrder(const Share *share);
+    [[nodiscard]] static bool isInternalShare(const Share *share);
     [[nodiscard]] static bool isExternalShare(const Share *share);
 };
 

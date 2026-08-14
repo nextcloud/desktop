@@ -29,6 +29,8 @@ class Share : public QObject
     Q_PROPERTY(QList<QPointer<Permission>> permissions READ permissions NOTIFY permissionsChanged)
     Q_PROPERTY(QList<QPointer<Property>> properties READ properties NOTIFY propertiesChanged)
     Q_PROPERTY(QList<QPointer<Recipient>> recipients READ recipients NOTIFY recipientsChanged)
+    Q_PROPERTY(bool publicLink READ isPublicLink NOTIFY recipientsChanged)
+    Q_PROPERTY(QString publicLinkUrl READ publicLinkUrl NOTIFY recipientsChanged)
 
 public:
     [[nodiscard]] static QPointer<Share> fromJson(const QJsonDocument &json, const AccountPtr &account);
@@ -49,6 +51,10 @@ public:
     [[nodiscard]] const QList<QPointer<Permission>> &permissions() const;
     [[nodiscard]] const QList<QPointer<Property>> &properties() const;
     [[nodiscard]] const QList<QPointer<Recipient>> &recipients() const;
+    /** @brief Returns whether this share has the server's public-link recipient type. */
+    [[nodiscard]] bool isPublicLink() const;
+    /** @brief Returns the public URL exposed by the public-link recipient, if available. */
+    [[nodiscard]] QString publicLinkUrl() const;
 
 Q_SIGNALS:
     void idChanged();
