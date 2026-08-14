@@ -32,6 +32,7 @@ public:
     enum Role {
         ShareRole = Qt::UserRole + 1,
         SectionRole,
+        RecipientNamesRole,
     };
     Q_ENUM(Role)
 

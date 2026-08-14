@@ -72,6 +72,20 @@ QVariant UnifiedShareListModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(share);
     case SectionRole:
         return sectionForShare(share);
+    case RecipientNamesRole: {
+        auto recipientNames = QStringList{};
+        for (const auto &recipient : share->recipients()) {
+            if (!recipient) {
+                continue;
+            }
+
+            const auto name = recipient->displayName().isEmpty() ? recipient->value() : recipient->displayName();
+            if (!name.isEmpty()) {
+                recipientNames.append(name);
+            }
+        }
+        return recipientNames.join(", "_L1);
+    }
     default:
         return {};
     }
@@ -82,6 +96,7 @@ QHash<int, QByteArray> UnifiedShareListModel::roleNames() const
     return {
         {ShareRole, "share"},
         {SectionRole, "section"},
+        {RecipientNamesRole, "recipientNames"},
     };
 }
 

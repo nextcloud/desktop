@@ -61,8 +61,11 @@ WizardStyledWindow {
 
         const names = []
         for (const recipient of Array.from(share.recipients)) {
-            if (recipient && recipient.displayName) {
-                names.push(recipient.displayName)
+            if (recipient) {
+                const name = recipient.displayName || recipient.value
+                if (name) {
+                    names.push(name)
+                }
             }
         }
         return names.length > 0 ? qsTr("Share with %1").arg(names.join(", ")) : qsTr("New share")

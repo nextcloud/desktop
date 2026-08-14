@@ -606,7 +606,6 @@ private slots:
                         "state": "draft",
                         "recipients": [{
                             "class": "user",
-                            "display_name": "Carol",
                             "value": "carol"
                         }]
                     }, {
@@ -636,12 +635,16 @@ private slots:
         QTRY_COMPARE(model.rowCount(), 4);
         QCOMPARE(model.data(model.index(0), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "internal-share"_L1);
         QCOMPARE(model.data(model.index(0), UnifiedShareListModel::SectionRole).toString(), "internal"_L1);
+        QCOMPARE(model.data(model.index(0), UnifiedShareListModel::RecipientNamesRole).toString(), "Bob"_L1);
         QCOMPARE(model.data(model.index(1), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "external-share"_L1);
         QCOMPARE(model.data(model.index(1), UnifiedShareListModel::SectionRole).toString(), "external"_L1);
+        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::RecipientNamesRole).toString(), "alice@example.com"_L1);
         QCOMPARE(model.data(model.index(2), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "unfinished-share"_L1);
         QCOMPARE(model.data(model.index(2), UnifiedShareListModel::SectionRole).toString(), "pending"_L1);
+        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::RecipientNamesRole).toString(), "carol"_L1);
         QCOMPARE(model.data(model.index(3), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "empty-draft"_L1);
         QCOMPARE(model.data(model.index(3), UnifiedShareListModel::SectionRole).toString(), "pending"_L1);
+        QVERIFY(model.data(model.index(3), UnifiedShareListModel::RecipientNamesRole).toString().isEmpty());
         QCOMPARE(model.rowCount(model.index(0)), 0);
         QVERIFY(!model.data({}, UnifiedShareListModel::ShareRole).isValid());
 
