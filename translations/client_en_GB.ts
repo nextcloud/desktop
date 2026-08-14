@@ -580,17 +580,17 @@ Should the account be imported?</translation>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1517" />
+        <location filename="../src/gui/accountsettings.cpp" line="1521" />
         <source>%1 as %2</source>
         <translation>%1 as %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1490" />
+        <location filename="../src/gui/accountsettings.cpp" line="1494" />
         <source>%1 in use</source>
         <translation>%1 in use</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1483" />
+        <location filename="../src/gui/accountsettings.cpp" line="1487" />
         <source>%1 of %2 in use</source>
         <translation>%1 of %2 in use</translation>
     </message>
@@ -637,17 +637,17 @@ Should the account be imported?</translation>
         <translation>Confirm Folder Sync Connection Removal</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1528" />
+        <location filename="../src/gui/accountsettings.cpp" line="1532" />
         <source>Connected to %1 (%2).</source>
         <translation>Connected to %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1526" />
+        <location filename="../src/gui/accountsettings.cpp" line="1530" />
         <source>Connected to %1.</source>
         <translation>Connected to %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1546" />
+        <location filename="../src/gui/accountsettings.cpp" line="1550" />
         <source>Connecting to %1 …</source>
         <translation>Connecting to %1 …</translation>
     </message>
@@ -751,7 +751,7 @@ Should the account be imported?</translation>
         <translation>End-to-end Encryption with Virtual Files</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1933" />
+        <location filename="../src/gui/accountsettings.cpp" line="1937" />
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</translation>
     </message>
@@ -796,12 +796,12 @@ Should the account be imported?</translation>
         <translation>Grant access to sync folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1757" />
+        <location filename="../src/gui/accountsettings.cpp" line="1761" />
         <source>Migrate certificate to a new one</source>
         <translation>Migrate certificate to a new one</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1566" />
+        <location filename="../src/gui/accountsettings.cpp" line="1570" />
         <source>No %1 connection configured.</source>
         <translation>No %1 connection configured.</translation>
     </message>
@@ -852,37 +852,37 @@ Should the account be imported?</translation>
         <translation>Resume sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1540" />
+        <location filename="../src/gui/accountsettings.cpp" line="1544" />
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Server %1 is currently being redirected, or your connection is behind a captive portal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1537" />
+        <location filename="../src/gui/accountsettings.cpp" line="1541" />
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Server %1 is currently in maintenance mode.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1534" />
+        <location filename="../src/gui/accountsettings.cpp" line="1538" />
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 is temporarily unavailable.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1553" />
+        <location filename="../src/gui/accountsettings.cpp" line="1557" />
         <source>Server configuration error: %1 at %2.</source>
         <translation>Server configuration error: %1 at %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2004" />
+        <location filename="../src/gui/accountsettings.cpp" line="2008" />
         <source>Set up encryption</source>
         <translation>Set up encryption</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1543" />
+        <location filename="../src/gui/accountsettings.cpp" line="1547" />
         <source>Signed out from %1.</source>
         <translation>Signed out from %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1400" />
+        <location filename="../src/gui/accountsettings.cpp" line="1404" />
         <source>Sync Running</source>
         <translation>Sync Running</translation>
     </message>
@@ -897,43 +897,43 @@ Should the account be imported?</translation>
         <translation>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1524" />
+        <location filename="../src/gui/accountsettings.cpp" line="1528" />
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>The server version %1 is unsupported! Proceed at your own risk.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1401" />
+        <location filename="../src/gui/accountsettings.cpp" line="1405" />
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1996" />
+        <location filename="../src/gui/accountsettings.cpp" line="2000" />
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>The virtual files integration does not support end-to-end encryption yet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1867" />
+        <location filename="../src/gui/accountsettings.cpp" line="1871" />
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>There are folders that have grown in size beyond %1MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1855" />
+        <location filename="../src/gui/accountsettings.cpp" line="1859" />
         <source>There are folders that were not synchronized because they are external storages:</source>
         <translation>There are folders that were not synchronised because they are external storages:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1856" />
+        <location filename="../src/gui/accountsettings.cpp" line="1860" />
         <source>There are folders that were not synchronized because they are too big or external storages:</source>
         <translation>There are folders that were not synchronised because they are too big or external storages:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1854" />
+        <location filename="../src/gui/accountsettings.cpp" line="1858" />
         <source>There are folders that were not synchronized because they are too big:</source>
         <translation>There are folders that were not synchronised because they are too big:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1995" />
-        <location filename="../src/gui/accountsettings.cpp" line="1998" />
+        <location filename="../src/gui/accountsettings.cpp" line="1999" />
+        <location filename="../src/gui/accountsettings.cpp" line="2002" />
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>This account supports end-to-end encryption, but it needs to be set up first.</translation>
     </message>
@@ -963,7 +963,7 @@ This action will abort any currently running synchronization.</translation>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1550" />
+        <location filename="../src/gui/accountsettings.cpp" line="1554" />
         <source>Unable to connect to %1.</source>
         <translation type="unfinished" />
     </message>
@@ -992,7 +992,7 @@ Would you like to do this now?</source>
 Would you like to do this now?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1561" />
+        <location filename="../src/gui/accountsettings.cpp" line="1565" />
         <source>You need to accept the terms of service at %1.</source>
         <translation>You need to accept the terms of service at %1.</translation>
     </message>
@@ -3189,202 +3189,202 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>enterprise</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="128" />
+        <location filename="../src/gui/generalsettings.ui" line="393" />
         <source>&amp;Automatically check for updates</source>
         <translation>&amp;Automatically check for updates</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="54" />
+        <location filename="../src/gui/generalsettings.ui" line="67" />
         <source>&amp;Launch on System Startup</source>
         <translation>&amp;Launch on System Startup</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="637" />
+        <location filename="../src/gui/generalsettings.ui" line="509" />
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Restart &amp;&amp; Update</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="187" />
+        <location filename="../src/gui/generalsettings.ui" line="120" />
         <source>Advanced</source>
         <translation>Advanced</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="305" />
+        <location filename="../src/gui/generalsettings.ui" line="239" />
         <source>Ask for confirmation before synchronizing external storages</source>
         <translation>Ask for confirmation before synchronising external storages</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="200" />
+        <location filename="../src/gui/generalsettings.ui" line="134" />
         <source>Ask for confirmation before synchronizing new folders larger than</source>
         <translation>Ask for confirmation before synchronizing new folders larger than</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="292" />
+        <location filename="../src/gui/generalsettings.ui" line="226" />
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>Automatically disable synchronisation of folders that overcome limit</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="138" />
-        <location filename="../src/gui/generalsettings.ui" line="655" />
+        <location filename="../src/gui/generalsettings.ui" line="403" />
+        <location filename="../src/gui/generalsettings.ui" line="527" />
         <source>Check Now</source>
         <translation>Check Now</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="402" />
+        <location filename="../src/gui/generalsettings.ui" line="336" />
         <location filename="../src/gui/generalsettings.cpp" line="805" />
         <source>Create Debug Archive</source>
         <translation>Create Debug Archive</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="443" />
+        <location filename="../src/gui/generalsettings.ui" line="612" />
         <source>Data Protection</source>
         <translation>Data Protection</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="735" />
+        <location filename="../src/gui/generalsettings.ui" line="724" />
         <source>Desktop client x.x.x</source>
         <translation>Desktop client x.x.x</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="395" />
+        <location filename="../src/gui/generalsettings.ui" line="329" />
         <source>Edit &amp;Ignored Files</source>
         <translation>Edit &amp;Ignored Files</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="75" />
+        <location filename="../src/gui/generalsettings.ui" line="88" />
         <source>For System Tray</source>
         <translation>For System Tray</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="35" />
-        <source>General Settings</source>
+        <location filename="../src/gui/generalsettings.ui" line="60" />
+        <source>General settings</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="508" />
-        <location filename="../src/gui/generalsettings.ui" line="687" />
+        <location filename="../src/gui/generalsettings.ui" line="559" />
+        <location filename="../src/gui/generalsettings.ui" line="675" />
         <source>Legal Notice</source>
         <translation>Legal Notice</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="236" />
+        <location filename="../src/gui/generalsettings.ui" line="170" />
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="742" />
+        <location filename="../src/gui/generalsettings.ui" line="731" />
         <source>More Information</source>
         <translation>More Information</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="316" />
+        <location filename="../src/gui/generalsettings.ui" line="250" />
         <source>Move removed files to trash</source>
         <translation>Move removed files to trash</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="454" />
+        <location filename="../src/gui/generalsettings.ui" line="621" />
         <source>Necessary data</source>
         <translation type="unfinished">Necessary data</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="264" />
+        <location filename="../src/gui/generalsettings.ui" line="198" />
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Notify when synchronised folders grow larger than specified limit</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="522" />
+        <location filename="../src/gui/generalsettings.ui" line="689" />
         <source>Open Source Software</source>
         <translation>Open Source Software</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="515" />
+        <location filename="../src/gui/generalsettings.ui" line="682" />
         <source>Privacy Policy</source>
         <translation>Privacy Policy</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="464" />
+        <location filename="../src/gui/generalsettings.ui" line="631" />
         <source>Required to ensure that the software can be used as expected</source>
         <translation type="unfinished">Required to ensure that the software can be used as expected</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="697" />
+        <location filename="../src/gui/generalsettings.ui" line="569" />
         <source>Restore &amp;Default</source>
         <translation>Restore &amp;Default</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="478" />
+        <location filename="../src/gui/generalsettings.ui" line="645" />
         <source>Send anonymous use</source>
         <translation type="unfinished">Send anonymous use</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="341" />
+        <location filename="../src/gui/generalsettings.ui" line="275" />
         <source>Server poll interval</source>
         <translation>Server poll interval</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="145" />
+        <location filename="../src/gui/generalsettings.ui" line="410" />
         <source>Show &amp;Quota Warning Notifications</source>
         <translation>Show &amp;Quota Warning Notifications</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="68" />
+        <location filename="../src/gui/generalsettings.ui" line="81" />
         <source>Show Call Notifications</source>
         <translation>Show Call Notifications</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="85" />
+        <location filename="../src/gui/generalsettings.ui" line="98" />
         <source>Show Chat Notifications</source>
         <translation>Show Chat Notifications</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="61" />
+        <location filename="../src/gui/generalsettings.ui" line="74" />
         <source>Show Server &amp;Notifications</source>
         <translation>Show Server &amp;Notifications</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="328" />
+        <location filename="../src/gui/generalsettings.ui" line="262" />
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>Show sync folders in &amp;Explorer&apos;s navigation pane</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="488" />
+        <location filename="../src/gui/generalsettings.ui" line="655" />
         <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
         <translation type="unfinished">This helps us to optimize the software and to better identify system crashes and unexpected errors.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="589" />
+        <location filename="../src/gui/generalsettings.ui" line="461" />
         <source>Update channel</source>
         <translation>Update channel</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="109" />
+        <location filename="../src/gui/generalsettings.ui" line="380" />
         <source>Updates</source>
         <translation>Updates</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="680" />
+        <location filename="../src/gui/generalsettings.ui" line="552" />
         <source>Usage Documentation</source>
         <translation>Usage Documentation</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="78" />
+        <location filename="../src/gui/generalsettings.ui" line="91" />
         <source>Use &amp;Monochrome Icons</source>
         <translation>Use &amp;Monochrome Icons</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="609" />
+        <location filename="../src/gui/generalsettings.ui" line="481" />
         <location filename="../src/gui/generalsettings.cpp" line="578" />
         <source>beta</source>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="361" />
+        <location filename="../src/gui/generalsettings.ui" line="295" />
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
         <translation>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="604" />
+        <location filename="../src/gui/generalsettings.ui" line="476" />
         <location filename="../src/gui/generalsettings.cpp" line="574" />
         <source>stable</source>
         <translation>stable</translation>
@@ -5260,22 +5260,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 Settings</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="368" />
+        <location filename="../src/gui/settingsdialog.cpp" line="362" />
         <source>Account</source>
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="210" />
+        <location filename="../src/gui/settingsdialog.cpp" line="205" />
         <source>General</source>
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="197" />
-        <source>New account</source>
-        <translation>New account</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="615" />
+        <location filename="../src/gui/settingsdialog.cpp" line="603" />
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
@@ -5985,12 +5980,12 @@ Server replied with error: %2</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1663" />
+        <location filename="../src/gui/accountsettings.cpp" line="1667" />
         <source>ExpandMemory-Link</source>
         <translation type="unfinished">https://wl.hidrive.com/easy/0057</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1661" />
+        <location filename="../src/gui/accountsettings.cpp" line="1665" />
         <source>ExpandMemory-Link_STRATO</source>
         <translation type="unfinished">https://static.hidrive.com/next/1046</translation>
     </message>
