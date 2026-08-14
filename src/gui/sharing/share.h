@@ -34,6 +34,7 @@ public:
     [[nodiscard]] static QPointer<Share> fromJson(const QJsonDocument &json, const AccountPtr &account);
 
     enum class ShareState {
+        Unknown,
         Draft,
         Active,
         Deleted
@@ -60,7 +61,7 @@ Q_SIGNALS:
 private:
     AccountPtr _account;
     QString _id;
-    ShareState _state = ShareState::Draft;
+    ShareState _state = ShareState::Unknown;
     QString _permissionPreset;
     QList<QPointer<Permission>> _permissions;
     QList<QPointer<Property>> _properties;

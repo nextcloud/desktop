@@ -482,7 +482,6 @@ void SharingController::startShareActivation(Share *share)
     connect(job, &SetShareStateJob::shareUpdated, this, [this, guardedShare](QPointer<Share> updatedShare) {
         if (updatedShare && updatedShare->state() == Share::ShareState::Active) {
             Q_EMIT shareActivated(updatedShare);
-            Q_EMIT sharesChanged();
             return;
         }
 
