@@ -26,22 +26,22 @@
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="272"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="211"/>
         <source>Connect without TLS</source>
-        <translation type="unfinished"/>
+        <translation>Kapcsolódás TLS nélkül</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="223"/>
         <source>Use client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Klienstanúsítvány alkalmazása</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Vissza</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="289"/>
@@ -3763,7 +3763,7 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="245"/>
         <source>Unknown account</source>
-        <translation type="unfinished"/>
+        <translation>Ismeretlen fiók</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="252"/>
@@ -4060,22 +4060,22 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Felhasználói dokumentáció</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="81"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Jogi információk</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="152"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Frissítési csatorna</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="172"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Alapértelmezés helyreállítása</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="193"/>
@@ -4085,7 +4085,7 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
     <message>
         <location filename="../src/gui/infosettings.ui" line="216"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>Új&amp;raindítás és frissítés</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="229"/>
@@ -4095,33 +4095,33 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
     <message>
         <location filename="../src/gui/infosettings.cpp" line="110"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Helyreállítás erre: &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="151"/>
         <location filename="../src/gui/infosettings.cpp" line="177"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Vállalati rendszerhez kapcsolódva. A frissítési csatorna (%1) nem változtatható meg.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="208"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>stabil</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="212"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>béta</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="216"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>napi</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="220"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>vállalati</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="255"/>
@@ -4130,7 +4130,10 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- béta: olyan új funkciókat tartalmazó verziókat tartalmaz, amelyeket még nem teszteltek alaposan.
+- napi: a csak tesztelés és fejlesztés céljából naponta létrehozott verziókat tartalmazza.
+
+A verziók visszaváltása nem lehetséges azonnal: a bétáról stabilra való váltás az új stabil verzióra való várakozást jelenti.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="260"/>
@@ -4138,12 +4141,14 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- vállalati: stabil verziókat tartalmaz az ügyfelek számára.
+
+A verziók visszaváltása nem lehetséges azonnal: a stabilról vállalatira való váltás az új vállalati verzióra való várakozást jelenti.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="267"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Módosítja a frissítési csatornát?</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="268"/>
@@ -4151,17 +4156,19 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>A csatorna határozza meg, hogy mely frissítéseket ajánl fel a telepítéshez:
+- stabil: megbízhatónak tartott, tesztelt verziókat tartalmaz
+</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="274"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Frissítési csatorna módosítása</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="275"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Mégse</translation>
     </message>
 </context>
 <context>
@@ -6573,103 +6580,108 @@ A kiszolgáló hibával válaszolt: %2</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="427"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="428"/>
         <source>Please sign in</source>
         <translation>Jelentkezzen be</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
         <source>There are no sync folders configured.</source>
         <translation>Nincsenek szinkronizálandó mappák beállítva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="408"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
         <source>Disconnected from %1</source>
         <translation>Kapcsolat bontva a %1dal</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Unsupported Server Version</source>
         <translation>Nem támogatott kiszolgálóverzió</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>A(z) %1 fiók kiszolgálója nem támogatott verziót (%2) futtat. Ennek a kliensnek a nem támogatott kiszolgálóverziókkal történő használata nem tesztelt és potenciálisan veszélyes. Folytatás kizárólag saját felelősségére.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>Terms of service</source>
         <translation>Szolgáltatási feltételek</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>%1 fiókja megköveteli, hogy elfogadja a kiszolgáló szolgáltatási feltételeit. A rendszer átirányítja Önt, hogy elismerje, hogy elolvasta és elfogadja azt: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="498"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="499"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="502"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>%1 macOS VFS: A szinkronizálás fut.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>%1 macOS VFS: A legutolsó szinkronizálás sikeres volt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="509"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>%1 macOS VFS: Probléma merült fel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="577"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="578"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Változások keresése a(z) „%1” távoli mappában</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Változások keresése a(z) „%1” helyi mappában</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="870"/>
-        <source>Internal link copied</source>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <source>Select new location …</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="871"/>
+        <source>Internal link copied</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="872"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="411"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="412"/>
         <source>Disconnected from accounts:</source>
         <translation>Kapcsolat bontva a fiókokkal:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="413"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
         <source>Account %1: %2</source>
         <translation>%1 fiók: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="431"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="432"/>
         <source>Account synchronization is disabled</source>
         <translation>Fiók szinkronizálás letiltva</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="597"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="598"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>

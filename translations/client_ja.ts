@@ -3785,12 +3785,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="269"/>
         <source>Enable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>ファイルプロバイダーを有効にしますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="274"/>
         <source>Enable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>ファイルプロバイダーを有効にする</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="275"/>
@@ -3801,22 +3801,22 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="286"/>
         <source>File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the &quot;Locations&quot; section.</source>
-        <translation type="unfinished"/>
+        <translation>すべてのアカウントでファイルプロバイダが無効になり、Finderの「場所」 セクションからファイルにアクセスできなくなります。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="288"/>
         <source>Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>まだアップロードされていないアイテムは保持され、表示されます。従来の同期フォルダは自動的に再設定されません。各アカウントの設定から、後からフォルダ同期の設定を追加することができます。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="291"/>
         <source>Disable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>ファイルプロバイダーを無効にしますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="296"/>
         <source>Disable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>ファイルプロバイダーを無効にする</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -5140,7 +5140,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
         <source>Failed to create encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>暗号化されたフォルダの作成に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
@@ -5665,7 +5665,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1348"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>ラベルを適用する</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1490"/>
@@ -6150,7 +6150,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="886"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>終了</translation>
     </message>
 </context>
 <context>
@@ -6159,7 +6159,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="462"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 デスクトップクライアントバージョン %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="646"/>
@@ -6312,7 +6312,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1691"/>
         <source>Sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>同期の競合</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1834"/>
@@ -6580,103 +6580,108 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="427"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="428"/>
         <source>Please sign in</source>
         <translation>サインインしてください</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
         <source>There are no sync folders configured.</source>
         <translation>同期するフォルダーがありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="408"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
         <source>Disconnected from %1</source>
         <translation>%1 から切断されました</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Unsupported Server Version</source>
         <translation>サポートされていないサーバーバージョン</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>アカウント %1 のサーバーは、サポートされていない古いバージョン %2 で実行しています。サポートされていないサーバーバージョンでこのクライアントを使用することはテストされておらず、潜在的な危険をはらんでいます。ご利用は自己責任でお願いいたします。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>Terms of service</source>
         <translation>サービス利用規約</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>アカウント %1 では、サーバの利用規約に同意する必要があります。%2にリダイレクトされ、利用規約を読み、同意したことを確認します。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="498"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="499"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="502"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS for %1: 同期が実行されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS for %1: 最後の同期に成功しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="509"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS for %1: 問題が発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>%1用の macOS VFS：エラーが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="577"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="578"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>リモート &quot;%1&quot; での変更を確認中 </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>ローカル &quot;%1&quot; での変更を確認中 </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="870"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Internal link copied</source>
         <translation>内部リンクをコピーしました</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="872"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>内部リンクがクリップボードにコピーされました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="411"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="412"/>
         <source>Disconnected from accounts:</source>
         <translation>アカウントから切断:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="413"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
         <source>Account %1: %2</source>
         <translation>アカウント %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="431"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="432"/>
         <source>Account synchronization is disabled</source>
         <translation>アカウントの同期は無効になっています</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="597"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="598"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -7055,22 +7060,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="19"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>検索</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="74"/>
         <source>Search is available when this account is connected</source>
-        <translation type="unfinished"/>
+        <translation>このアカウントが接続されている場合、検索機能を利用できます</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="75"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>ファイル、メッセージ、イベントを検索…</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
-        <translation type="unfinished"/>
+        <translation>検索結果一覧</translation>
     </message>
 </context>
 <context>
@@ -7326,47 +7331,47 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="594"/>
         <source>No apps available</source>
-        <translation type="unfinished"/>
+        <translation>利用可能なアプリはありません</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="634"/>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>通知</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="658"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>開く</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="671"/>
         <source>Recent activity</source>
-        <translation type="unfinished"/>
+        <translation>最近のアクティビティ</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
         <source>No recent activity</source>
-        <translation type="unfinished"/>
+        <translation>最近のアクティビティはありません</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="696"/>
         <source>More activity…</source>
-        <translation type="unfinished"/>
+        <translation>その他のアクティビティ…</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="760"/>
         <source>Resolve: %1</source>
-        <translation type="unfinished"/>
+        <translation>解決策: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
         <source>User status</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーステータス</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="800"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>検索</translation>
     </message>
 </context>
 <context>
@@ -7405,7 +7410,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="730"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="783"/>
         <source>Local folder</source>
-        <translation type="unfinished"/>
+        <translation>ローカルフォルダー</translation>
     </message>
 </context>
 <context>
@@ -7428,7 +7433,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>アプリ</translation>
     </message>
 </context>
 <context>
@@ -7492,12 +7497,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="123"/>
         <source>Could not handle link</source>
-        <translation type="unfinished"/>
+        <translation>リンクを処理できませんでした</translation>
     </message>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="191"/>
         <source>Adding another account is not allowed in this client.</source>
-        <translation type="unfinished"/>
+        <translation>このクライアントでは、別のカウントを追加することはできません。</translation>
     </message>
 </context>
 <context>
@@ -7640,7 +7645,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>オンラインステータス</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
@@ -7650,12 +7655,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <source>Away</source>
-        <translation>不在</translation>
+        <translation>離席中</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
         <source>Busy</source>
-        <translation>忙しい</translation>
+        <translation>取り込み中</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
@@ -7665,12 +7670,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
         <source>Mute all notifications</source>
-        <translation>全ての通知をミュートします</translation>
+        <translation>全ての通知をミュート</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
         <source>Invisible</source>
-        <translation>不可視</translation>
+        <translation>非表示</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
@@ -7680,33 +7685,33 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation>状態メッセージ</translation>
+        <translation>ステータスメッセージ</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
         <source>Choose emoji</source>
-        <translation type="unfinished"/>
+        <translation>絵文字を選択</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>現在の状況は?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
         <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
         <source>Clear status after</source>
-        <translation type="unfinished"/>
+        <translation>ステータスをクリアした後</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>ステータスメッセージを消去</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>ステータスメッセージを設定</translation>
     </message>
 </context>
 <context>
@@ -7715,7 +7720,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
         <source>%1, resets after %2</source>
         <extracomment>%1 is the status text and %2 is a time string.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1, %2 の後にリセット</translation>
     </message>
 </context>
 <context>
@@ -7799,7 +7804,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/WindowAccountHeader.qml" line="63"/>
         <source>Account avatar</source>
-        <translation type="unfinished"/>
+        <translation>アカウントのアバター</translation>
     </message>
 </context>
 <context>

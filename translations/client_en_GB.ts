@@ -16,17 +16,17 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="250" />
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="310" />
         <source>Dismiss</source>
         <translation>Dismiss</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="226" />
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="264" />
         <source>File actions</source>
         <translation>File actions</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="217" />
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="228" />
         <source>File details</source>
         <translation>File details</translation>
     </message>
@@ -416,7 +416,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="170" />
         <source>Folders</source>
-        <translation>Folders</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="89" />
@@ -426,7 +426,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="212" />
         <source>Refresh</source>
-        <translation>Refresh</translation>
+        <translation type="unfinished">Refresh</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="53" />
@@ -435,11 +435,74 @@
     </message>
 </context>
 <context>
+    <name>MainWindow</name>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="531" />
+        <source>Ask Assistant…</source>
+        <translation>Ask Assistant…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="465" />
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="357" />
+        <source>Issue with account %1</source>
+        <translation>Issue with account %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="359" />
+        <source>Issues with several accounts</source>
+        <translation>Issues with several accounts</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="271" />
+        <source>Main content</source>
+        <translation>Main content</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="876" />
+        <source>New activities</source>
+        <translation>New activities</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="461" />
+        <source>New conversation</source>
+        <translation>New conversation</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="559" />
+        <source>Send assistant question</source>
+        <translation>Send assistant question</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="580" />
+        <source>Start a new assistant chat</source>
+        <translation>Start a new assistant chat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="441" />
+        <source>Start new conversation?</source>
+        <translation>Start new conversation?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="486" />
+        <source>This will clear the existing conversation.</source>
+        <translation>This will clear the existing conversation.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="805" />
+        <source>Unified search results list</source>
+        <translation>Unified search results list</translation>
+    </message>
+</context>
+<context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="637" />
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished" />
     </message>
 </context>
 <context>
@@ -561,12 +624,12 @@ Should the account be imported?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="1058" />
         <location filename="../src/gui/accountsettings.cpp" line="1065" />
         <source>Bookmark Error</source>
-        <translation>Bookmark Error</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="796" />
         <source>Choose what to sync</source>
-        <translation>Choose what to sync</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="987" />
@@ -897,12 +960,12 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1270" />
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
-        <translation>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1550" />
         <source>Unable to connect to %1.</source>
-        <translation>Unable to connect to %1.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="377" />
@@ -5191,28 +5254,28 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="194" />
+        <location filename="../src/gui/settingsdialog.cpp" line="188" />
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation>%1 Settings</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="374" />
+        <location filename="../src/gui/settingsdialog.cpp" line="368" />
         <source>Account</source>
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="216" />
+        <location filename="../src/gui/settingsdialog.cpp" line="210" />
         <source>General</source>
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="203" />
+        <location filename="../src/gui/settingsdialog.cpp" line="197" />
         <source>New account</source>
         <translation>New account</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="621" />
+        <location filename="../src/gui/settingsdialog.cpp" line="615" />
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
@@ -6410,27 +6473,27 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="99" />
         <source>Host your own server</source>
-        <translation>Host your own server</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="58" />
         <source>Keep your data secure and under your control</source>
-        <translation>Keep your data secure and under your control</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20" />
         <source>Form</source>
-        <translation>Form</translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="188" />
         <source>Log in</source>
-        <translation>Log in</translation>
+        <translation type="unfinished">Log in</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="201" />
         <source>Sign up with provider</source>
-        <translation>Sign up with provider</translation>
+        <translation type="unfinished" />
     </message>
 </context>
 <context>
@@ -6438,33 +6501,33 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29" />
         <source>HTTP(S) proxy</source>
-        <translation>HTTP(S) proxy</translation>
+        <translation type="unfinished">HTTP(S) proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25" />
         <source>Hostname of proxy server</source>
-        <translation>Hostname of proxy server</translation>
+        <translation type="unfinished">Hostname of proxy server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27" />
         <source>Password for proxy server</source>
-        <translation>Password for proxy server</translation>
+        <translation type="unfinished">Password for proxy server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23" />
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation>Proxy Settings</translation>
+        <translation type="unfinished">Proxy Settings</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30" />
         <source>SOCKS5 proxy</source>
-        <translation>SOCKS5 proxy</translation>
+        <translation type="unfinished">SOCKS5 proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26" />
         <source>Username for proxy server</source>
-        <translation>Username for proxy server</translation>
+        <translation type="unfinished">Username for proxy server</translation>
     </message>
 </context>
 <context>
@@ -6472,7 +6535,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225" />
         <source>&amp;Local Folder</source>
-        <translation>&amp;Local Folder</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="674" />
@@ -6482,38 +6545,38 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="433" />
         <source>Ask before syncing folders larger than</source>
-        <translation>Ask before syncing folders larger than</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="331" />
         <source>Choose different folder</source>
-        <translation>Choose different folder</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="509" />
         <source>Choose what to sync</source>
-        <translation>Choose what to sync</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="677" />
         <source>Erase local folder and start a clean sync</source>
-        <translation>Erase local folder and start a clean sync</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="658" />
         <source>Keep local data</source>
-        <translation>Keep local data</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="268" />
         <source>Local Folder</source>
-        <translation>Local Folder</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459" />
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>MB</translation>
+        <translation type="unfinished">MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="164" />
@@ -7038,17 +7101,17 @@ Server replied with error: %2</translation>
 <context>
     <name>SesTrayHeader</name>
     <message>
-        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="51" />
+        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="54" />
         <source>Open Nextcloud in browser</source>
         <translation>Open HiDrive Next in browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="66" />
+        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="69" />
         <source>Open local or team folders</source>
         <translation type="unfinished">Open local or team folders</translation>
     </message>
     <message>
-        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="46" />
+        <location filename="../src/gui/SesComponents/SesTrayHeader.qml" line="49" />
         <source>Website</source>
         <translation>Website</translation>
     </message>
@@ -7207,22 +7270,22 @@ Server replied with error: %2</translation>
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="124" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="125" />
         <source>Open browser</source>
         <translation>Open browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="135" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="136" />
         <source>Open settings</source>
         <translation>Open settings</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="111" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="112" />
         <source>Resolve conflicts</source>
         <translation>Resolve conflicts</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="94" />
+        <location filename="../src/gui/tray/SyncStatus.qml" line="95" />
         <source>Sync now</source>
         <translation>Sync now</translation>
     </message>
@@ -7517,19 +7580,19 @@ Server replied with error: %2</translation>
         <translation>Account sync status requires attention</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="208" />
-        <location filename="../src/gui/tray/UserLine.qml" line="219" />
+        <location filename="../src/gui/tray/UserLine.qml" line="207" />
+        <location filename="../src/gui/tray/UserLine.qml" line="218" />
         <source>Log in</source>
         <translation>Log in</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="208" />
-        <location filename="../src/gui/tray/UserLine.qml" line="219" />
+        <location filename="../src/gui/tray/UserLine.qml" line="207" />
+        <location filename="../src/gui/tray/UserLine.qml" line="218" />
         <source>Log out</source>
         <translation>Log out</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="262" />
+        <location filename="../src/gui/tray/UserLine.qml" line="261" />
         <source>Remove account</source>
         <translation type="unfinished">Remove account</translation>
     </message>

@@ -6,7 +6,7 @@
 
 #include "legacyaccountselectiondialog.h"
 #include "whitelabeltheme.h"
-#include "buttonStyle.h"
+#include "buttonstyle.h"
 #include <QCheckBox>
 #include <QDialogButtonBox>
 #include <QLabel>

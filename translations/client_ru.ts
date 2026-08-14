@@ -99,12 +99,12 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="20"/>
         <source>Activities</source>
-        <translation type="unfinished"/>
+        <translation>События</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="127"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Новые события</translation>
     </message>
 </context>
 <context>
@@ -112,12 +112,12 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="25"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>Сведения о файле</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="32"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Действия с файлом</translation>
     </message>
 </context>
 <context>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenuButton.qml" line="34"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Подробные сведения о файле</translation>
     </message>
 </context>
 <context>
@@ -222,39 +222,39 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="19"/>
         <source>Nextcloud Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Помощник Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="91"/>
         <location filename="../src/gui/AssistantWindow.qml" line="95"/>
         <source>Start new conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Начать новое обсуждение?</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="104"/>
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Это действие удалит существующее обсуждение.</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="119"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="125"/>
         <location filename="../src/gui/AssistantWindow.qml" line="245"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>Новое обсуждение</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="236"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Спросить Ассистента …</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="252"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Отправить</translation>
     </message>
 </context>
 <context>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="71"/>
         <source>Search emoji</source>
-        <translation type="unfinished"/>
+        <translation>Поиск эмодзи</translation>
     </message>
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="200"/>
@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="200"/>
         <source>No emojis found</source>
-        <translation type="unfinished"/>
+        <translation>Эмодзи не найдено</translation>
     </message>
 </context>
 <context>
@@ -679,52 +679,52 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="49"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Применить метки</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
-        <translation type="unfinished"/>
+        <translation>Присвойте файлу ярлыки, чтобы управлять его конфиденциальностью, временем хранения и юридическими правилами.</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
         <source>Sensitivity labels</source>
-        <translation type="unfinished"/>
+        <translation>Метки чувствительности</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
         <source>Retention labels</source>
-        <translation type="unfinished"/>
+        <translation>Метки времени хранения</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
         <source>Legal hold labels</source>
-        <translation type="unfinished"/>
+        <translation>Метки юридических обязательств</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Сбросить</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Применить</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
         <source>Select sensitivity label</source>
-        <translation type="unfinished"/>
+        <translation>Выбрать метку чувствительности</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
         <source>Select retention label</source>
-        <translation type="unfinished"/>
+        <translation>Выбрать метку времени хранения</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
         <source>Select legal hold label</source>
-        <translation type="unfinished"/>
+        <translation>Выбрать метку юридических обязательств</translation>
     </message>
 </context>
 <context>
@@ -732,7 +732,7 @@
     <message>
         <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
         <source>Local Network access is disabled. Enable it to connect to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Доступ к локальной сети отключен. Включите его для подключения к серверу.</translation>
     </message>
 </context>
 <context>
@@ -805,7 +805,7 @@
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="792"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Помощник</translation>
     </message>
 </context>
 <context>
@@ -813,37 +813,37 @@
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="20"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="26"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>Повторить</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="34"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>Вырезать</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="40"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="46"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>Вставить</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="52"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="60"/>
         <source>Select All</source>
-        <translation type="unfinished"/>
+        <translation>Выбрать все</translation>
     </message>
 </context>
 <context>
@@ -928,12 +928,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="200"/>
         <source>File Provider is enabled, but this account still has classic sync folders. The Finder integration stays unavailable until this is resolved.</source>
-        <translation type="unfinished"/>
+        <translation>Поставщик файлов включен, но текущий аккаунт до сих пор имеет папки классической синхронизации. Интеграция с Finder будет недоступна, пока проблема не будет устранена.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="216"/>
         <source>Resolve…</source>
-        <translation type="unfinished"/>
+        <translation>Решить...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
@@ -965,13 +965,13 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="505"/>
         <source>If this account&apos;s files appear stuck, missing, or out of sync in Finder, reset its File Provider storage. Unsynced local changes are preserved.</source>
-        <translation type="unfinished"/>
+        <translation>Если файлы этой учетной записи заблокированы, отсутствуют или не синхронизированы в Finder, сбросьте настройки хранилища Поставщика файлов. Несинхронизированные локальные изменения будут сохранены.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="521"/>
         <location filename="../src/gui/accountsettings.cpp" line="2071"/>
         <source>Reset File Provider Domain</source>
-        <translation type="unfinished"/>
+        <translation>Сбросить домен Поставщика файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="558"/>
@@ -1183,7 +1183,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Не удалось настроить синхронизацию папок для &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="977"/>
@@ -1348,17 +1348,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2057"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
-        <translation type="unfinished"/>
+        <translation>Это действие сбрасывает настройки Поставщика файлов для %1 до исходного состояния. Используйте его, когда файлы этой учетной записи оказываются заблокированными, отсутствующими или не синхронизированными в Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2061"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
-        <translation type="unfinished"/>
+        <translation>Расположение на короткое время исчезнет из Finder и снова появится в нем. Все локальные изменения, которые еще не были загружены, будут сохранены и отображены в папке в Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2066"/>
         <source>Reset File Provider Domain for this account?</source>
-        <translation type="unfinished"/>
+        <translation>Сбросить домен Поставщика файлов для данного аккаунта?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1969"/>
@@ -3617,12 +3617,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>Enable &amp;File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Включить Поставщика файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="158"/>
         <source>Files appear in Finder under the &quot;Locations&quot; section and do not use local storage space; contents download automatically when you open a file. Applies to all accounts and replaces classic sync folders and their Finder integration.</source>
-        <translation type="unfinished"/>
+        <translation>Файлы отображаются в Finder в разделе &quot;Места&quot; и не занимают локальное хранилище; содержимое загружается автоматически при открытии файла. Применяется ко всем учетным записям и заменяет классические папки синхронизации и их интеграцию с Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
@@ -3764,32 +3764,32 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="245"/>
         <source>Unknown account</source>
-        <translation type="unfinished"/>
+        <translation>Неизвестный аккаунт</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="252"/>
         <source>File Provider will be enabled for all accounts. Your files will appear in Finder under the &quot;Locations&quot; section. Accounts added later will also be set up as File Providers.</source>
-        <translation type="unfinished"/>
+        <translation>Поставщик файлов будет включен для всех учетных записей. Ваши файлы появятся в Finder в разделе &quot;Места&quot;. Учетные записи, добавленные позже, также будут настроены в качестве поставщиков файлов.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="261"/>
         <source>This removes classic sync folder connections from the following accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Это приведет к удалению подключений к папкам классической синхронизации из следующих учетных записей:</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="265"/>
         <source>Synced files stay on your computer, but they will no longer be kept up to date and settings such as selective sync are discarded.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизированные файлы останутся на вашем компьютере, но они больше не будут обновляться, и такие настройки, как выборочная синхронизация, будут отменены.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="269"/>
         <source>Enable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Включить Поставщика файлов?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="274"/>
         <source>Enable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Включить Поставщика файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="275"/>
@@ -3800,22 +3800,22 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="286"/>
         <source>File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the &quot;Locations&quot; section.</source>
-        <translation type="unfinished"/>
+        <translation>Поставщик файлов будет отключен для всех учетных записей, и ваши файлы больше не будут доступны в Finder в разделе &quot;Места&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="288"/>
         <source>Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>Элементы, которые еще не были загружены, будут сохранены и показаны вам. Папки классической синхронизации не настраиваются автоматически повторно — вы можете добавить подключения для синхронизации папок позже в настройках каждой учетной записи.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="291"/>
         <source>Disable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Выключить Поставщика файлов?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="296"/>
         <source>Disable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Выключить Поставщика файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -5139,7 +5139,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
         <source>Failed to create encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось создать зашифрованную папку.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
@@ -5664,7 +5664,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1348"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Применить метки</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1490"/>
@@ -6149,7 +6149,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="886"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Выход</translation>
     </message>
 </context>
 <context>
@@ -6311,7 +6311,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1691"/>
         <source>Sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Ошибки синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1834"/>
@@ -6579,103 +6579,108 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="427"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="428"/>
         <source>Please sign in</source>
         <translation>Войдите в систему</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
         <source>There are no sync folders configured.</source>
         <translation>Синхронизация папок не настроена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="408"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
         <source>Disconnected from %1</source>
         <translation>Отключён от %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Unsupported Server Version</source>
         <translation>Версия сервера не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>На сервере учётной записи «%1» используется неподдерживаемая версия %2. Использование этого клиента совместно с неподдерживаемым сервером не тестировалось и может быть небезопасным. Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>Terms of service</source>
         <translation>Условия использования</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>Ваша учётная запись %1 требует, чтобы вы приняли условия предоставления услуг вашего сервера. Вы будете перенаправлены на страницу %2 для ознакомления и подтверждения согласия с ними.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="498"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="499"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="502"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>mac OS VFS для %1: синхронизация запущена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>mac OS VFS для %1: синхронизация прошла успешно.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="509"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS для %1: возникла проблема.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>macOS VFS для %1: произошла ошибка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="577"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="578"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Проверка изменений на сервере «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Проверка изменений в локальной папке «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="870"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Internal link copied</source>
         <translation>Внутренняя ссылка скопирована</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="872"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>Внутренняя ссылка скопирована в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="411"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="412"/>
         <source>Disconnected from accounts:</source>
         <translation>Отключён от учётных записей:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="413"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
         <source>Account %1: %2</source>
         <translation>Учётная запись %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="431"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="432"/>
         <source>Account synchronization is disabled</source>
         <translation>Синхронизация учётной записи отключена</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="597"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="598"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -7054,22 +7059,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="19"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="74"/>
         <source>Search is available when this account is connected</source>
-        <translation type="unfinished"/>
+        <translation>Поиск станет доступен после подключения данного аккаунта</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="75"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Поиск файлов, сообщений, событий …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
-        <translation type="unfinished"/>
+        <translation>Результаты поиска</translation>
     </message>
 </context>
 <context>
@@ -7256,7 +7261,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation>File Provider</translation>
+        <translation>Поставщик файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
@@ -7325,47 +7330,47 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="594"/>
         <source>No apps available</source>
-        <translation type="unfinished"/>
+        <translation>Нет доступных приложений</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="634"/>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Уведомления</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="658"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Открыть</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="671"/>
         <source>Recent activity</source>
-        <translation type="unfinished"/>
+        <translation>Недавние события</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
         <source>No recent activity</source>
-        <translation type="unfinished"/>
+        <translation>Нет недавних событий</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="696"/>
         <source>More activity…</source>
-        <translation type="unfinished"/>
+        <translation>Больше событий...</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="760"/>
         <source>Resolve: %1</source>
-        <translation type="unfinished"/>
+        <translation>Решить: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
         <source>User status</source>
-        <translation type="unfinished"/>
+        <translation>Статус пользователя</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="800"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Поиск</translation>
     </message>
 </context>
 <context>
@@ -7404,7 +7409,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="730"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="783"/>
         <source>Local folder</source>
-        <translation type="unfinished"/>
+        <translation>Локальная папка</translation>
     </message>
 </context>
 <context>
@@ -7427,7 +7432,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Приложения</translation>
     </message>
 </context>
 <context>
@@ -7639,7 +7644,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Статус подключения</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
@@ -7679,33 +7684,33 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation>Описание статуса</translation>
+        <translation>Сообщение статуса</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
         <source>Choose emoji</source>
-        <translation type="unfinished"/>
+        <translation>Выбрать эмодзи</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Опишите свой статус</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
         <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
         <source>Clear status after</source>
-        <translation type="unfinished"/>
+        <translation>Очистить статус через</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Удалить сообщение к статусу</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Установить сообщение к статусу</translation>
     </message>
 </context>
 <context>
@@ -7714,7 +7719,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
         <source>%1, resets after %2</source>
         <extracomment>%1 is the status text and %2 is a time string.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1, сбросится через %2</translation>
     </message>
 </context>
 <context>
@@ -7798,7 +7803,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/WindowAccountHeader.qml" line="63"/>
         <source>Account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Аватар аккаунта</translation>
     </message>
 </context>
 <context>
