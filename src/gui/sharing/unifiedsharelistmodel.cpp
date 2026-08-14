@@ -94,15 +94,17 @@ void UnifiedShareListModel::rebuild()
     _shareConnections.clear();
 
     _shares = _sharingController ? _sharingController->shares() : QList<Share *>{};
+    _shares.removeIf([](const Share *share) {
+        return !share || share->state() != Share::ShareState::Active;
+    });
     std::stable_sort(_shares.begin(), _shares.end(), [](const Share *left, const Share *right) {
         return isExternalShare(left) < isExternalShare(right);
     });
 
-    _shareConnections.reserve(_shares.size());
+    _shareConnections.reserve(_shares.size() * 2);
     for (const auto share : std::as_const(_shares)) {
-        if (share) {
-            _shareConnections.append(connect(share, &Share::recipientsChanged, this, &UnifiedShareListModel::rebuild));
-        }
+        _shareConnections.append(connect(share, &Share::recipientsChanged, this, &UnifiedShareListModel::rebuild));
+        _shareConnections.append(connect(share, &Share::stateChanged, this, &UnifiedShareListModel::rebuild));
     }
 
     endResetModel();

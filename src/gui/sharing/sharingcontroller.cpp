@@ -9,8 +9,8 @@
 #include <QLoggingCategory>
 #include <QNetworkReply>
 
-#include <optional>
 #include <memory>
+#include <optional>
 
 #include "addrecipientjob.h"
 #include "addsourcejob.h"
@@ -118,7 +118,23 @@ void SharingController::initialize(const QString &fileId)
     job->start();
 }
 
-void SharingController::createShare(const QString &fileId)
+void SharingController::createShareForRecipient(const QString &fileId,
+                                                const QString &recipientType,
+                                                const QString &recipientValue,
+                                                const QString &recipientInstance)
+{
+    if (recipientType.isEmpty() || recipientValue.isEmpty()) {
+        qCWarning(lcSharingController) << "attempted to create a share without a recipient";
+        return;
+    }
+
+    startShareCreation(fileId, recipientType, recipientValue, recipientInstance);
+}
+
+void SharingController::startShareCreation(const QString &fileId,
+                                           const QString &recipientType,
+                                           const QString &recipientValue,
+                                           const QString &recipientInstance)
 {
     if (!_account) {
         qCWarning(lcSharingController) << "attempted to create a new share without an account set";
@@ -139,7 +155,7 @@ void SharingController::createShare(const QString &fileId)
     setCreatingShare(true);
 
     const auto job = new CreateShareJob{_account};
-    connect(job, &CreateShareJob::shareCreated, this, [this, fileId](QPointer<Share> share) -> void {
+    connect(job, &CreateShareJob::shareCreated, this, [this, fileId, recipientType, recipientValue, recipientInstance](QPointer<Share> share) -> void {
         if (!share || share->id().isEmpty()) {
             qCWarning(lcSharingController) << "share created without a valid Share object";
             failShareCreation(tr("The server returned an invalid share."), share);
@@ -147,7 +163,7 @@ void SharingController::createShare(const QString &fileId)
         }
 
         share->setParent(this);
-        addSourceAfterCreation(share, fileId);
+        addSourceAfterCreation(share, fileId, recipientType, recipientValue, recipientInstance);
     });
     connect(job, &CreateShareJob::ocsError, this, [this](int, const QString &message) {
         failShareCreation(message.isEmpty() ? tr("Could not create the share.") : message);
@@ -187,6 +203,9 @@ void SharingController::destroyShare(Share *share)
 
         const auto share = guardedShare.data();
         _shares.removeAll(share);
+        _pendingDraftUpdates.remove(share);
+        _activationRequested.remove(share);
+        _activationBlocked.remove(share);
         setDestroyingShare(false);
         share->deleteLater();
         Q_EMIT sharesChanged();
@@ -326,11 +345,13 @@ void SharingController::setPermission(Share *share, const QString &permissionCla
     const auto guardedShare = QPointer<Share>{share};
     const auto permissionFailureReported = std::make_shared<bool>(false);
     const auto job = new SetPermissionJob{_account, *share, permissionClass, enabled};
+    trackDraftUpdate(share, job);
     connect(job, &SetPermissionJob::ocsError, this, [this, guardedShare, permissionFailureReported](int, const QString &message) {
         if (*permissionFailureReported) {
             return;
         }
         *permissionFailureReported = true;
+        markDraftUpdateFailed(guardedShare);
         Q_EMIT permissionUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the permissions.") : message);
     });
     connect(job, &SetPermissionJob::networkError, this, [this, guardedShare, permissionFailureReported](const QNetworkReply *reply) {
@@ -338,6 +359,7 @@ void SharingController::setPermission(Share *share, const QString &permissionCla
             return;
         }
         *permissionFailureReported = true;
+        markDraftUpdateFailed(guardedShare);
         Q_EMIT permissionUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the permissions."));
     });
     job->start();
@@ -363,11 +385,13 @@ void SharingController::setPermissionPreset(Share *share, const QString &permiss
     const auto guardedShare = QPointer<Share>{share};
     const auto permissionFailureReported = std::make_shared<bool>(false);
     const auto job = new SetPermissionPresetJob{_account, *share, permissionPreset};
+    trackDraftUpdate(share, job);
     connect(job, &SetPermissionPresetJob::ocsError, this, [this, guardedShare, permissionFailureReported](int, const QString &message) {
         if (*permissionFailureReported) {
             return;
         }
         *permissionFailureReported = true;
+        markDraftUpdateFailed(guardedShare);
         Q_EMIT permissionUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the permissions.") : message);
     });
     connect(job, &SetPermissionPresetJob::networkError, this, [this, guardedShare, permissionFailureReported](const QNetworkReply *reply) {
@@ -375,6 +399,7 @@ void SharingController::setPermissionPreset(Share *share, const QString &permiss
             return;
         }
         *permissionFailureReported = true;
+        markDraftUpdateFailed(guardedShare);
         Q_EMIT permissionUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the permissions."));
     });
     job->start();
@@ -400,15 +425,18 @@ void SharingController::setProperty(Share *share, const QString &propertyClass, 
     const auto guardedShare = QPointer<Share>{share};
     const auto propertyValue = value.isEmpty() ? std::nullopt : std::optional{value};
     const auto job = new SetPropertyJob{_account, *share, propertyClass, propertyValue};
+    trackDraftUpdate(share, job);
     connect(job, &SetPropertyJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
         if (updatedShare) {
             Q_EMIT propertyUpdated(updatedShare);
         }
     });
     connect(job, &SetPropertyJob::ocsError, this, [this, guardedShare](int, const QString &message) {
+        markDraftUpdateFailed(guardedShare);
         Q_EMIT propertyUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the sharing setting.") : message);
     });
     connect(job, &SetPropertyJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
+        markDraftUpdateFailed(guardedShare);
         Q_EMIT propertyUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the sharing setting."));
     });
     job->start();
@@ -431,11 +459,30 @@ void SharingController::activateShare(Share *share)
         return;
     }
 
+    if (_activationRequested.contains(share)) {
+        return;
+    }
+
+    if (_pendingDraftUpdates.value(share) > 0) {
+        _activationRequested.insert(share);
+        return;
+    }
+
+    startShareActivation(share);
+}
+
+void SharingController::startShareActivation(Share *share)
+{
+    if (!containsShare(share) || share->state() != Share::ShareState::Draft) {
+        return;
+    }
+
     const auto guardedShare = QPointer<Share>{share};
     const auto job = new SetShareStateJob{_account, *share, Share::ShareState::Active};
     connect(job, &SetShareStateJob::shareUpdated, this, [this, guardedShare](QPointer<Share> updatedShare) {
         if (updatedShare && updatedShare->state() == Share::ShareState::Active) {
             Q_EMIT shareActivated(updatedShare);
+            Q_EMIT sharesChanged();
             return;
         }
 
@@ -455,7 +502,11 @@ bool SharingController::containsShare(const Share *share) const
     return share && _shares.contains(share);
 }
 
-void SharingController::addSourceAfterCreation(QPointer<Share> share, const QString &fileId)
+void SharingController::addSourceAfterCreation(QPointer<Share> share,
+                                               const QString &fileId,
+                                               const QString &recipientType,
+                                               const QString &recipientValue,
+                                               const QString &recipientInstance)
 {
     if (!share) {
         failShareCreation(tr("The newly created share is no longer available."));
@@ -463,12 +514,18 @@ void SharingController::addSourceAfterCreation(QPointer<Share> share, const QStr
     }
 
     const auto job = new AddSourceJob{_account, *share, fileId};
-    connect(job, &AddSourceJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
+    connect(job, &AddSourceJob::shareUpdated, this, [this, recipientType, recipientValue, recipientInstance](QPointer<Share> updatedShare) {
         if (!updatedShare) {
             failShareCreation(tr("The newly created share is no longer available."));
             return;
         }
-        finishShareCreation(updatedShare);
+
+        if (recipientType.isEmpty()) {
+            finishShareCreation(updatedShare);
+            return;
+        }
+
+        addRecipientAfterCreation(updatedShare, recipientType, recipientValue, recipientInstance);
     });
     connect(job, &AddSourceJob::ocsError, this, [this, share](int, const QString &message) {
         failShareCreation(message.isEmpty() ? tr("Could not attach the item to the share.") : message, share);
@@ -479,10 +536,38 @@ void SharingController::addSourceAfterCreation(QPointer<Share> share, const QStr
     job->start();
 }
 
+void SharingController::addRecipientAfterCreation(QPointer<Share> share,
+                                                  const QString &recipientType,
+                                                  const QString &recipientValue,
+                                                  const QString &recipientInstance)
+{
+    if (!share) {
+        failShareCreation(tr("The newly created share is no longer available."));
+        return;
+    }
+
+    const auto job = new AddRecipientJob{_account, *share, recipientType, recipientValue, optionalString(recipientInstance)};
+    connect(job, &AddRecipientJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
+        if (!updatedShare) {
+            failShareCreation(tr("The newly created share is no longer available."));
+            return;
+        }
+        finishShareCreation(updatedShare);
+    });
+    connect(job, &AddRecipientJob::ocsError, this, [this, share](int, const QString &message) {
+        failShareCreation(message.isEmpty() ? tr("Could not add the recipient.") : message, share);
+    });
+    connect(job, &AddRecipientJob::networkError, this, [this, share](const QNetworkReply *reply) {
+        failShareCreation(reply ? reply->errorString() : tr("Could not add the recipient."), share);
+    });
+    job->start();
+}
+
 void SharingController::finishShareCreation(QPointer<Share> share)
 {
     _shares.append(share);
     setCreatingShare(false);
+    Q_EMIT shareCreated(share);
     Q_EMIT sharesChanged();
 }
 
@@ -504,6 +589,50 @@ void SharingController::failShareCreation(const QString &error, QPointer<Share> 
         cleanupJob->start();
     }
     delete share.data();
+}
+
+void SharingController::trackDraftUpdate(Share *share, QObject *job)
+{
+    if (!share || !job || share->state() != Share::ShareState::Draft) {
+        return;
+    }
+
+    ++_pendingDraftUpdates[share];
+    connect(job, &QObject::destroyed, this, [this, guardedShare = QPointer<Share>{share}] {
+        if (!guardedShare) {
+            return;
+        }
+
+        const auto share = guardedShare.data();
+        auto pendingUpdate = _pendingDraftUpdates.find(share);
+        if (pendingUpdate == _pendingDraftUpdates.end()) {
+            return;
+        }
+
+        --pendingUpdate.value();
+        if (pendingUpdate.value() > 0) {
+            return;
+        }
+
+        _pendingDraftUpdates.erase(pendingUpdate);
+        if (!_activationRequested.remove(share)) {
+            return;
+        }
+
+        if (_activationBlocked.remove(share)) {
+            Q_EMIT shareActivationFailed(share, tr("Could not save all changes to the share."));
+            return;
+        }
+
+        startShareActivation(share);
+    });
+}
+
+void SharingController::markDraftUpdateFailed(Share *share)
+{
+    if (share && _activationRequested.contains(share)) {
+        _activationBlocked.insert(share);
+    }
 }
 
 void SharingController::setCreatingShare(bool creatingShare)

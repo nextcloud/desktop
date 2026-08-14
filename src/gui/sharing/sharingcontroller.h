@@ -5,9 +5,11 @@
 
 #pragma once
 
+#include <QHash>
 #include <QList>
 #include <QObject>
 #include <QPointer>
+#include <QSet>
 #include <qqmlintegration.h>
 
 #include "accountfwd.h"
@@ -39,7 +41,7 @@ public:
     /** @brief Returns all shares associated with the initialized file. */
     [[nodiscard]] const QList<Share *> &shares() const;
 
-    /** @brief Returns whether a share and its source are currently being created. */
+    /** @brief Returns whether a share, its source, and its initial recipient are currently being created. */
     [[nodiscard]] bool creatingShare() const;
 
     /** @brief Returns the last share creation error, or an empty string after a new attempt starts. */
@@ -59,14 +61,20 @@ public:
     Q_INVOKABLE void initialize(const QString &fileId);
 
     /**
-     * @brief Creates a draft share and attaches the specified file as its source.
+     * @brief Creates a draft share for one recipient and attaches the specified file.
      *
-     * The share is added to shares only after both requests succeed. A second
-     * call while creation is in progress is ignored.
+     * The draft is exposed only after the share, source, and recipient requests
+     * all succeed.
      *
      * @param fileId Server file ID to attach to the new share
-    */
-    Q_INVOKABLE void createShare(const QString &fileId);
+     * @param recipientType Server-defined recipient class
+     * @param recipientValue Server-defined recipient identifier
+     * @param recipientInstance Remote server identifying a federated recipient, or an empty string for a local recipient
+     */
+    Q_INVOKABLE void createShareForRecipient(const QString &fileId,
+                                             const QString &recipientType,
+                                             const QString &recipientValue,
+                                             const QString &recipientInstance = {});
 
     /** @brief Permanently removes a share managed by this controller. */
     Q_INVOKABLE void destroyShare(Share *share);
@@ -118,6 +126,9 @@ Q_SIGNALS:
     /** @brief Emitted when shareCreationError changes. */
     void shareCreationErrorChanged();
 
+    /** @brief Emitted after a draft share and its requested source and recipient have been created. */
+    void shareCreated(Share *share);
+
     /** @brief Emitted when destroyingShare changes. */
     void destroyingShareChanged();
 
@@ -164,11 +175,29 @@ private:
     QString _shareCreationError;
     bool _destroyingShare = false;
     QString _shareDestructionError;
+    QHash<Share *, int> _pendingDraftUpdates;
+    QSet<Share *> _activationRequested;
+    QSet<Share *> _activationBlocked;
 
     [[nodiscard]] bool containsShare(const Share *share) const;
-    void addSourceAfterCreation(QPointer<Share> share, const QString &fileId);
+    void startShareCreation(const QString &fileId,
+                            const QString &recipientType,
+                            const QString &recipientValue,
+                            const QString &recipientInstance);
+    void addSourceAfterCreation(QPointer<Share> share,
+                                const QString &fileId,
+                                const QString &recipientType,
+                                const QString &recipientValue,
+                                const QString &recipientInstance);
+    void addRecipientAfterCreation(QPointer<Share> share,
+                                   const QString &recipientType,
+                                   const QString &recipientValue,
+                                   const QString &recipientInstance);
     void finishShareCreation(QPointer<Share> share);
     void failShareCreation(const QString &error, QPointer<Share> share = {});
+    void trackDraftUpdate(Share *share, QObject *job);
+    void markDraftUpdateFailed(Share *share);
+    void startShareActivation(Share *share);
     void setCreatingShare(bool creatingShare);
     void setShareCreationError(const QString &error);
     void setDestroyingShare(bool destroyingShare);

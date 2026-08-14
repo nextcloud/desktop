@@ -92,6 +92,7 @@ void RecipientSearchModel::setAccount(AccountPtr account)
 
     beginResetModel();
     _searchTimer.stop();
+    setFetchOngoing(false);
     _account = account;
     _searchResults = {};
     Q_EMIT accountChanged();
@@ -119,6 +120,7 @@ void RecipientSearchModel::setQuery(const QString &query)
 
     if (_query.isEmpty()) {
         _searchTimer.stop();
+        setFetchOngoing(false);
         beginResetModel();
         _searchResults = {};
         endResetModel();
@@ -140,6 +142,7 @@ void RecipientSearchModel::setShareId(const QString &shareId)
     }
 
     _shareId = shareId;
+    setFetchOngoing(false);
     beginResetModel();
     _searchResults = {};
     endResetModel();
@@ -149,11 +152,17 @@ void RecipientSearchModel::setShareId(const QString &shareId)
     }
 }
 
+bool RecipientSearchModel::fetchOngoing() const
+{
+    return _fetchOngoing;
+}
+
 void RecipientSearchModel::search()
 {
     const auto query = _query;
     const auto account = _account;
     const auto shareId = _shareId;
+    setFetchOngoing(true);
     const auto job = new SearchRecipientsJob{account,
                                              query,
                                              0,
@@ -168,6 +177,27 @@ void RecipientSearchModel::search()
         beginResetModel();
         _searchResults = recipients;
         endResetModel();
+        setFetchOngoing(false);
+    });
+    connect(job, &SearchRecipientsJob::ocsError, this, [this, account, query, shareId] {
+        if (_account == account && _query == query && _shareId == shareId) {
+            setFetchOngoing(false);
+        }
+    });
+    connect(job, &SearchRecipientsJob::networkError, this, [this, account, query, shareId] {
+        if (_account == account && _query == query && _shareId == shareId) {
+            setFetchOngoing(false);
+        }
     });
     job->start();
+}
+
+void RecipientSearchModel::setFetchOngoing(bool fetchOngoing)
+{
+    if (_fetchOngoing == fetchOngoing) {
+        return;
+    }
+
+    _fetchOngoing = fetchOngoing;
+    Q_EMIT fetchOngoingChanged();
 }
