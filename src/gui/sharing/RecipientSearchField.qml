@@ -99,8 +99,7 @@ WizardTextField {
 
         visible: !root.recipientModel.fetchOngoing
     }
-    /*
-    NCBusyIndicator {
+    Image {
         id: busyIndicator
 
         anchors {
@@ -110,11 +109,21 @@ WizardTextField {
         }
 
         width: height
-        color: palette.placeholderText
+        source: "image://svgimage-custom-color/change.svg/" + palette.placeholderText
+        sourceSize: Qt.size(parent.height * root.iconsScaleFactor, parent.height * root.iconsScaleFactor)
+        fillMode: Image.PreserveAspectFit
         visible: root.recipientModel.fetchOngoing
-        running: visible
+
+        RotationAnimator {
+            target: busyIndicator
+            running: busyIndicator.visible
+            from: 0
+            to: 360
+            loops: Animation.Infinite
+            duration: Style.shortAnimationDuration * 15
+        }
     }
- */
+
     Image {
         id: clearTextButton
 
