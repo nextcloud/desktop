@@ -864,14 +864,15 @@ void Systray::createFileDetailsDialog(const QString &localPath, const QString &f
         return;
     }
 
+    const auto relativePath = localPath.mid(folder->cleanPath().length() + 1);
     auto resolvedFileId = fileId;
     if (resolvedFileId.isEmpty()) {
-        const auto relativePath = localPath.mid(folder->cleanPath().length() + 1);
         auto fileRecord = SyncJournalFileRecord{};
         if (folder->journalDb()->getFileRecord(relativePath, &fileRecord)) {
-            resolvedFileId = QString::fromUtf8(fileRecord._fileId);
+            resolvedFileId = QString::fromUtf8(fileRecord.numericFileId());
         }
     }
+    const auto remotePath = QDir(folder->remotePath()).filePath(relativePath);
 
     if (folder->accountState()->account()->capabilities().unifiedSharingAvailable()) {
         // we have a server with the new unified sharing system, let's show the new fancy one
@@ -881,6 +882,7 @@ void Systray::createFileDetailsDialog(const QString &localPath, const QString &f
             {"account", QVariant::fromValue(folder->accountState()->account())},
             {"localPath", localPath},
             {"fileId", resolvedFileId},
+            {"remotePath", remotePath},
         };
 
         QQmlComponent fileDetailsDialog(trayEngine(), "com.nextcloud.desktopclient.sharing"_L1, "ShareDialog"_L1);
