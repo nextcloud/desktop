@@ -19,6 +19,7 @@ namespace
 {
 constexpr auto internalSection = "internal"_L1;
 constexpr auto externalSection = "external"_L1;
+constexpr auto pendingSection = "pending"_L1;
 }
 
 UnifiedShareListModel::UnifiedShareListModel(QObject *parent)
@@ -70,7 +71,7 @@ QVariant UnifiedShareListModel::data(const QModelIndex &index, int role) const
     case ShareRole:
         return QVariant::fromValue(share);
     case SectionRole:
-        return isExternalShare(share) ? externalSection : internalSection;
+        return sectionForShare(share);
     default:
         return {};
     }
@@ -95,10 +96,10 @@ void UnifiedShareListModel::rebuild()
 
     _shares = _sharingController ? _sharingController->shares() : QList<Share *>{};
     _shares.removeIf([](const Share *share) {
-        return !share || share->state() != Share::ShareState::Active;
+        return !share || share->state() == Share::ShareState::Deleted || share->state() == Share::ShareState::Unknown;
     });
     std::stable_sort(_shares.begin(), _shares.end(), [](const Share *left, const Share *right) {
-        return isExternalShare(left) < isExternalShare(right);
+        return sectionOrder(left) < sectionOrder(right);
     });
 
     _shareConnections.reserve(_shares.size() * 2);
@@ -108,6 +109,27 @@ void UnifiedShareListModel::rebuild()
     }
 
     endResetModel();
+}
+
+QString UnifiedShareListModel::sectionForShare(const Share *share)
+{
+    if (share && share->state() == Share::ShareState::Draft) {
+        return pendingSection;
+    }
+
+    return isExternalShare(share) ? externalSection : internalSection;
+}
+
+int UnifiedShareListModel::sectionOrder(const Share *share)
+{
+    const auto section = sectionForShare(share);
+    if (section == internalSection) {
+        return 0;
+    }
+    if (section == externalSection) {
+        return 1;
+    }
+    return 2;
 }
 
 bool UnifiedShareListModel::isExternalShare(const Share *share)

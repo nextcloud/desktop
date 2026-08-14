@@ -263,7 +263,12 @@ WizardStyledWindow {
                         width: shareListView.width
                         topPadding: Style.standardSpacing
                         bottomPadding: Style.extraSmallSpacing
-                        text: section === "external" ? qsTr("External shares") : qsTr("Internal shares")
+                        text: {
+                            if (section === "pending") {
+                                return qsTr("Pending shares")
+                            }
+                            return section === "external" ? qsTr("External shares") : qsTr("Internal shares")
+                        }
                         font.weight: Font.DemiBold
                     }
 

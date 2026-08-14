@@ -97,9 +97,11 @@ void Share::setId(const QString &id)
 
 void Share::setState(const QString &state)
 {
-    ShareState newState = ShareState::Draft;
+    auto newState = ShareState::Unknown;
 
-    if (state == "active"_L1) {
+    if (state == "draft"_L1) {
+        newState = ShareState::Draft;
+    } else if (state == "active"_L1) {
         newState = ShareState::Active;
     } else if (state == "deleted"_L1) {
         newState = ShareState::Deleted;
