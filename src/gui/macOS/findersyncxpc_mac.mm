@@ -4,6 +4,7 @@
  */
 
 #include "findersyncxpc.h"
+#include "version.h"
 
 #import <Foundation/Foundation.h>
 #import "../../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncProtocol.h"
@@ -332,11 +333,7 @@ void FinderSyncXPC::publishEndpointToBroker()
     // and we would go on talking to last version's broker indefinitely.
     [broker brokerVersionWithReply:^(NSString *version) {
         const auto brokerVersion = QString::fromNSString(version);
-        // Deliberately the literal key rather than kCFBundleVersionKey: that constant would add
-        // a CoreFoundation data symbol to this translation unit for no benefit, and the other
-        // Info.plist reads here use literals too.
-        const auto ourVersion = QString::fromNSString(
-            [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
+        const auto ourVersion = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION));
 
         if (brokerVersion == ourVersion) {
             qCDebug(lcFinderSyncXPC) << "Broker version matches ours:" << brokerVersion;
