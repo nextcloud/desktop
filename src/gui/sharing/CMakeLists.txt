@@ -3,6 +3,8 @@
 
 add_library(nextcloudGuiSharing STATIC)
 
+set_source_files_properties(RecipientIcon.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+
 target_sources(nextcloudGuiSharing
   PRIVATE
     abstractsharemodel.h
