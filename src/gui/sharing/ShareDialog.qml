@@ -26,9 +26,10 @@ WizardStyledWindow {
     property string fileId: ""
     property Share selectedShare: null
     property Share sharePendingDeletion: null
-    property bool selectShareAfterCreation: false
     property bool activatingShare: false
     property string shareActivationError: ""
+
+    signal clearNewShareRecipientSearch
 
     property FileDetails fileDetails: FileDetails {
         localPath: dialog.localPath
@@ -95,24 +96,18 @@ WizardStyledWindow {
         target: sharingController
 
         function onSharesChanged() {
-            if (dialog.selectShareAfterCreation) {
-                const shares = dialog.currentShares()
-                dialog.selectedShare = shares.length > 0 ? shares[shares.length - 1] : null
-                dialog.selectShareAfterCreation = false
-            } else {
-                dialog.reconcileSelectedShare()
-            }
+            dialog.reconcileSelectedShare()
         }
 
-        function onShareCreationErrorChanged() {
-            if (sharingController.shareCreationError.length > 0) {
-                dialog.selectShareAfterCreation = false
-            }
+        function onShareCreated(share) {
+            dialog.clearNewShareRecipientSearch()
+            dialog.selectedShare = share
         }
 
         function onShareActivated(share) {
             if (share === dialog.selectedShare) {
                 dialog.activatingShare = false
+                dialog.selectedShare = null
             }
         }
 
@@ -175,22 +170,19 @@ WizardStyledWindow {
             Layout.fillWidth: true
             Layout.preferredHeight: Style.normalBorderWidth
             color: Style.sharingDialogSeparatorColor
-        }
+        }   
 
-        RowLayout {
+        EnforcedPlainTextLabel {
             Layout.fillWidth: true
             Layout.leftMargin: Style.sharingDialogWindowMargin
             Layout.rightMargin: Style.sharingDialogWindowMargin
             Layout.topMargin: Style.standardSpacing
             Layout.preferredHeight: Style.sharingDialogPaneHeaderHeight
 
-            EnforcedPlainTextLabel {
-                Layout.fillWidth: true
-
-                text: dialog.selectedShare ? dialog.shareTitle(dialog.selectedShare) : qsTr("Sharing")
-                font.pointSize: Style.subheaderFontPtSize
-                font.weight: Font.DemiBold
-            }
+            text: dialog.shareTitle(dialog.selectedShare)
+            font.pointSize: Style.subheaderFontPtSize
+            font.weight: Font.DemiBold
+            visible: dialog.selectedShare
         }
 
         StackLayout {
@@ -214,17 +206,32 @@ WizardStyledWindow {
                         width: shareListView.width
                         spacing: Style.standardSpacing
 
-                        WizardButton {
-                            Layout.alignment: Qt.AlignLeft
-                            text: sharingController.creatingShare ? qsTr("Creating share…") : qsTr("Create new share")
-                            enabled: !sharingController.creatingShare && dialog.fileId.length > 0
-                            iconSource: "image://svgimage-custom-color/add.svg/" + palette.buttonText
-                            iconBeforeText: true
+                        RecipientSearchField {
+                            id: newShareRecipientSearch
 
-                            onClicked: {
-                                dialog.selectShareAfterCreation = true
-                                sharingController.createShare(dialog.fileId)
+                            Layout.fillWidth: true
+                            enabled: !sharingController.creatingShare && dialog.fileId.length > 0
+                            account: dialog.account
+                            shareId: ""
+
+                            onRecipientSelected: (recipientType, recipientValue, recipientInstance) => {
+                                sharingController.createShareForRecipient(dialog.fileId, recipientType, recipientValue, recipientInstance)
                             }
+
+                            Connections {
+                                target: dialog
+
+                                function onClearNewShareRecipientSearch() {
+                                    newShareRecipientSearch.clear()
+                                }
+                            }
+                        }
+
+                        EnforcedPlainTextLabel {
+                            Layout.fillWidth: true
+                            text: qsTr("Creating share…")
+                            color: Style.wizardSecondaryText
+                            visible: sharingController.creatingShare
                         }
 
                         ErrorBox {
@@ -331,6 +338,14 @@ WizardStyledWindow {
                         visible: text.length > 0
                     }
 
+                    ErrorBox {
+                        Layout.fillWidth: true
+                        Layout.leftMargin: shareDetailsFrame.windowMargin
+                        Layout.rightMargin: shareDetailsFrame.windowMargin
+                        text: sharingController.shareDestructionError
+                        visible: text.length > 0
+                    }
+
                     EnforcedPlainTextLabel {
                         Layout.fillWidth: true
                         Layout.leftMargin: shareDetailsFrame.windowMargin
@@ -346,6 +361,7 @@ WizardStyledWindow {
                     WizardButton {
                         text: qsTr("Delete share")
                         enabled: !sharingController.destroyingShare
+                        visible: dialog.selectedShare && dialog.selectedShare.state === Share.Active
                         iconSource: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
                         iconBeforeText: true
                         onClicked: {
@@ -358,16 +374,27 @@ WizardStyledWindow {
                     },
                     WizardButton {
                         text: qsTr("Close")
+                        visible: dialog.selectedShare && dialog.selectedShare.state === Share.Active
                         onClicked: dialog.selectedShare = null
                     },
                     WizardButton {
+                        text: sharingController.destroyingShare ? qsTr("Cancelling…") : qsTr("Cancel")
+                        enabled: !sharingController.destroyingShare && !dialog.activatingShare
+                        visible: dialog.selectedShare && dialog.selectedShare.state === Share.Draft
+
+                        onClicked: sharingController.destroyShare(dialog.selectedShare)
+                    },
+                    WizardButton {
                         primary: true
-                        text: dialog.activatingShare ? qsTr("Sending…") : qsTr("Send share")
-                        enabled: !dialog.activatingShare
+                        text: dialog.activatingShare ? qsTr("Saving…") : qsTr("Save")
+                        enabled: !dialog.activatingShare && !sharingController.destroyingShare && dialog.selectedShare && dialog.selectedShare.recipients.length > 0
                         visible: dialog.selectedShare && dialog.selectedShare.state === Share.Draft
 
                         onClicked: {
                             dialog.shareActivationError = ""
+                            if (shareDetailsLoader.item) {
+                                shareDetailsLoader.item.commitPendingChanges()
+                            }
                             dialog.activatingShare = true
                             sharingController.activateShare(dialog.selectedShare)
                         }
