@@ -20,6 +20,22 @@ WizardStyledWindow {
     id: dialog
     visible: true
 
+    component DetachedVerticalScrollBar: ScrollBar {
+        required property var flickable
+
+        orientation: Qt.Vertical
+        policy: ScrollBar.AsNeeded
+        size: flickable.visibleArea.heightRatio
+        position: flickable.visibleArea.yPosition
+        active: flickable.movingVertically || hovered || pressed
+
+        onPositionChanged: {
+            if (pressed) {
+                flickable.contentY = flickable.originY + position * flickable.contentHeight
+            }
+        }
+    }
+
     required property var account
     property string localPath: ""
     property string shortLocalPath: dialog.localPath.split("/").reverse()[0]
@@ -235,22 +251,31 @@ WizardStyledWindow {
             visible: dialog.selectedShare
         }
 
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: Style.normalBorderWidth
+            color: Style.sharingDialogSeparatorColor
+            visible: dialog.selectedShare
+        }
+
         StackLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
             currentIndex: dialog.selectedShare ? 1 : 0
 
             Item {
-                ListView {
-                    id: shareListView
+                id: shareListPane
 
+                ColumnLayout {
                     anchors.fill: parent
-                    clip: true
-                    spacing: Style.extraSmallSpacing
-                    model: shareListModel
+                    spacing: 0
 
-                    header: ColumnLayout {
-                        width: shareListView.width
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Layout.leftMargin: Style.sharingDialogWindowMargin
+                        Layout.rightMargin: Style.sharingDialogWindowMargin
+                        Layout.topMargin: Style.standardSpacing
+                        Layout.bottomMargin: Style.standardSpacing
                         spacing: Style.standardSpacing
 
                         RecipientSearchField {
@@ -276,8 +301,6 @@ WizardStyledWindow {
 
                         EnforcedPlainTextLabel {
                             Layout.fillWidth: true
-                            Layout.leftMargin: Style.sharingDialogWindowMargin
-                            Layout.rightMargin: Style.sharingDialogWindowMargin
                             text: qsTr("Creating share…")
                             color: Style.wizardSecondaryText
                             visible: sharingController.creatingShare
@@ -285,137 +308,139 @@ WizardStyledWindow {
 
                         ErrorBox {
                             Layout.fillWidth: true
-                            Layout.leftMargin: Style.sharingDialogWindowMargin
-                            Layout.rightMargin: Style.sharingDialogWindowMargin
                             text: sharingController.shareCreationError
                             visible: text.length > 0
                         }
 
                         ErrorBox {
                             Layout.fillWidth: true
-                            Layout.leftMargin: Style.sharingDialogWindowMargin
-                            Layout.rightMargin: Style.sharingDialogWindowMargin
                             text: sharingController.shareDestructionError
                             visible: text.length > 0
                         }
 
                         ErrorBox {
                             Layout.fillWidth: true
-                            Layout.leftMargin: Style.sharingDialogWindowMargin
-                            Layout.rightMargin: Style.sharingDialogWindowMargin
                             text: sharingController.internalLinkError
                             visible: text.length > 0
                         }
 
                         ErrorBox {
                             Layout.fillWidth: true
-                            Layout.leftMargin: Style.sharingDialogWindowMargin
-                            Layout.rightMargin: Style.sharingDialogWindowMargin
                             text: dialog.shareActivationError
                             visible: !dialog.selectedShare && text.length > 0
                         }
                     }
 
-                    delegate: Loader {
-                        id: rowLoader
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
 
-                        required property int itemType
-                        required property string section
-                        required property Share share
-                        required property string recipientNames
-                        required property bool publicLink
-                        required property string publicLinkUrl
+                        ListView {
+                            id: shareListView
 
-                        width: ListView.view.width
-                        height: item ? item.implicitHeight : 0
-                        sourceComponent: {
-                            if (itemType === UnifiedShareListModel.SectionHeader) {
-                                return sectionHeaderComponent
-                            }
-                            if (itemType === UnifiedShareListModel.InternalLink) {
-                                return internalLinkComponent
-                            }
-                            if (itemType === UnifiedShareListModel.CreatePublicLink) {
-                                return createPublicLinkComponent
-                            }
-                            return shareComponent
-                        }
+                            anchors.fill: parent
+                            anchors.leftMargin: Style.sharingDialogWindowMargin
+                            anchors.rightMargin: Style.sharingDialogWindowMargin
+                            clip: true
+                            spacing: Style.extraSmallSpacing
+                            model: shareListModel
 
-                        Component {
-                            id: sectionHeaderComponent
+                            delegate: Loader {
+                                id: rowLoader
 
-                            ShareSectionHeader {
-                                x: Style.sharingDialogWindowMargin
-                                width: rowLoader.width - Style.sharingDialogWindowMargin * 2
-                                title: dialog.sectionTitle(rowLoader.section)
-                                description: dialog.sectionDescription(rowLoader.section)
-                            }
-                        }
+                                required property int itemType
+                                required property string section
+                                required property Share share
+                                required property string recipientNames
+                                required property bool publicLink
+                                required property string publicLinkUrl
 
-                        Component {
-                            id: internalLinkComponent
+                                width: ListView.view.width
+                                height: item ? item.implicitHeight : 0
+                                sourceComponent: {
+                                    if (itemType === UnifiedShareListModel.SectionHeader) {
+                                        return sectionHeaderComponent
+                                    }
+                                    if (itemType === UnifiedShareListModel.InternalLink) {
+                                        return internalLinkComponent
+                                    }
+                                    if (itemType === UnifiedShareListModel.CreatePublicLink) {
+                                        return createPublicLinkComponent
+                                    }
+                                    return shareComponent
+                                }
 
-                            ShareActionRow {
-                                x: Style.sharingDialogWindowMargin
-                                width: rowLoader.width - Style.sharingDialogWindowMargin * 2
-                                title: qsTr("Internal link")
-                                subtitle: qsTr("For people who already have access")
-                                actionIcon: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
-                                actionName: qsTr("Copy internal link")
-                                actionEnabled: !sharingController.resolvingInternalLink && dialog.remotePath.length > 0
+                                Component {
+                                    id: sectionHeaderComponent
 
-                                onActionRequested: sharingController.requestInternalLink(dialog.remotePath, dialog.fileId)
-                            }
-                        }
+                                    ShareSectionHeader {
+                                        title: dialog.sectionTitle(rowLoader.section)
+                                        description: dialog.sectionDescription(rowLoader.section)
+                                    }
+                                }
 
-                        Component {
-                            id: createPublicLinkComponent
+                                Component {
+                                    id: internalLinkComponent
 
-                            ShareActionRow {
-                                x: Style.sharingDialogWindowMargin
-                                width: rowLoader.width - Style.sharingDialogWindowMargin * 2
-                                title: qsTr("Create public link")
-                                subtitle: ""
-                                actionIcon: "image://svgimage-custom-color/add.svg/" + palette.buttonText
-                                actionName: qsTr("Create public link")
-                                actionEnabled: !sharingController.creatingShare && dialog.fileId.length > 0
+                                    ShareActionRow {
+                                        title: qsTr("Internal link")
+                                        subtitle: qsTr("For people who already have access")
+                                        actionIcon: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
+                                        actionName: qsTr("Copy internal link")
+                                        actionEnabled: !sharingController.resolvingInternalLink && dialog.remotePath.length > 0
 
-                                onActionRequested: {
-                                    dialog.shareActivationError = ""
-                                    sharingController.createPublicLink(dialog.fileId)
+                                        onActionRequested: sharingController.requestInternalLink(dialog.remotePath, dialog.fileId)
+                                    }
+                                }
+
+                                Component {
+                                    id: createPublicLinkComponent
+
+                                    ShareActionRow {
+                                        title: qsTr("Create public link")
+                                        subtitle: ""
+                                        actionIcon: "image://svgimage-custom-color/add.svg/" + palette.buttonText
+                                        actionName: qsTr("Create public link")
+                                        actionEnabled: !sharingController.creatingShare && dialog.fileId.length > 0
+
+                                        onActionRequested: {
+                                            dialog.shareActivationError = ""
+                                            sharingController.createPublicLink(dialog.fileId)
+                                        }
+                                    }
+                                }
+
+                                Component {
+                                    id: shareComponent
+
+                                    ShareRow {
+                                        share: rowLoader.share
+                                        recipientNames: rowLoader.recipientNames
+                                        publicLink: rowLoader.publicLink
+                                        publicLinkUrl: rowLoader.publicLinkUrl
+
+                                        onCopyRequested: dialog.copyToClipboard(publicLinkUrl)
+                                        onConfigureRequested: dialog.selectedShare = share
+                                    }
                                 }
                             }
                         }
 
-                        Component {
-                            id: shareComponent
-
-                            ShareRow {
-                                x: Style.sharingDialogWindowMargin
-                                width: rowLoader.width - Style.sharingDialogWindowMargin * 2
-                                share: rowLoader.share
-                                recipientNames: rowLoader.recipientNames
-                                publicLink: rowLoader.publicLink
-                                publicLinkUrl: rowLoader.publicLinkUrl
-
-                                onCopyRequested: dialog.copyToClipboard(publicLinkUrl)
-                                onConfigureRequested: dialog.selectedShare = share
-                            }
+                        DetachedVerticalScrollBar {
+                            anchors.top: parent.top
+                            anchors.right: parent.right
+                            anchors.bottom: parent.bottom
+                            flickable: shareListView
                         }
-                    }
-
-                    ScrollBar.vertical: ScrollBar {
-                        parent: shareListView
-                        anchors.top: shareListView.top
-                        anchors.right: shareListView.right
-                        anchors.bottom: shareListView.bottom
-                        policy: ScrollBar.AsNeeded
                     }
                 }
             }
 
             WizardDialogFrame {
                 id: shareDetailsFrame
+
+                footerSeparatorVisible: dialog.selectedShare !== null
+                footerTopPadding: Style.standardSpacing
 
                 ColumnLayout {
                     anchors.fill: parent
@@ -453,13 +478,7 @@ WizardStyledWindow {
                             policy: ScrollBar.AlwaysOff
                         }
 
-                        ScrollBar.vertical: ScrollBar {
-                            parent: shareDetailsScrollView
-                            anchors.top: shareDetailsScrollView.top
-                            anchors.right: shareDetailsScrollView.right
-                            anchors.bottom: shareDetailsScrollView.bottom
-                            policy: ScrollBar.AsNeeded
-                        }
+                        ScrollBar.vertical.policy: ScrollBar.AlwaysOff
                     }
 
                     ErrorBox {
@@ -487,6 +506,13 @@ WizardStyledWindow {
                         wrapMode: Text.Wrap
                         visible: dialog.selectedShare && dialog.selectedShare.state === Share.Active
                     }
+                }
+
+                DetachedVerticalScrollBar {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    flickable: shareDetailsScrollView.contentItem
                 }
 
                 footer: [
