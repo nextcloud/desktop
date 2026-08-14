@@ -82,6 +82,7 @@ Account::Account(QObject *parent)
     , _capabilities(QVariantMap())
     , _serverColor(Theme::defaultColor())
     , _e2e{}
+    , _uuid{QUuid::createUuid()}
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
     qRegisterMetaType<Account *>("Account*");
@@ -1582,6 +1583,11 @@ void Account::setDownloadLimit(const unsigned int limit)
 bool Account::serverHasIntegration() const
 {
     return _serverHasIntegration;
+}
+
+QUuid Account::uuid() const
+{
+    return _uuid;
 }
 
 void Account::updateServerHasIntegration()

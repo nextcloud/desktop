@@ -309,6 +309,11 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     return false;
 }
 
+HydrationJob *VfsCfApi::hydrateFile(const QByteArray &fileId, const QString &targetPath)
+{
+    return nullptr;
+}
+
 bool VfsCfApi::setPinState(const QString &folderPath, PinState state)
 {
     qCDebug(lcCfApi) << "setPinState" << folderPath << state;
@@ -655,6 +660,11 @@ VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinState
             }
         };
     }
+}
+
+Result<void, QString> CfApiVfsPluginFactory::prepare([[maybe_unused]] const QString &path, [[maybe_unused]] const QUuid &accountUuid) const
+{
+    return {};
 }
 
 } // namespace OCC

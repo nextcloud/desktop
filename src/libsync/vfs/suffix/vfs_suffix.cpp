@@ -188,4 +188,9 @@ Vfs::AvailabilityResult VfsSuffix::availability(const QString &folderPath, const
     return availabilityInDb(folderPath);
 }
 
+Result<void, QString> SuffixVfsPluginFactory::prepare([[maybe_unused]] const QString &path, [[maybe_unused]] const QUuid &accountUuid) const
+{
+    return {};
+}
+
 } // namespace OCC
