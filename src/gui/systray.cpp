@@ -900,6 +900,10 @@ void Systray::createFileDetailsDialog(const QString &localPath, const QString &f
 
         _fileDetailDialogs.append(dialog);
 
+#if defined(Q_OS_MACOS)
+        configureMacOSExpandedQuickWindow(dialog);
+#endif
+
         dialog->show();
         dialog->raise();
         dialog->requestActivate();
