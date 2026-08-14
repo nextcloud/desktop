@@ -37,6 +37,8 @@ QString Vfs::modeToString(Mode mode)
         return QStringLiteral("wincfapi");
     case XAttr:
         return QStringLiteral("xattr");
+    case OpenVFS:
+        return QStringLiteral("openvfs");
     }
     return QStringLiteral("off");
 }
@@ -248,6 +250,10 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
 
     auto factory = qobject_cast<PluginFactory *>(plugin);
     if (!factory) {
+        qCCritical(lcPlugin) << "Plugin" << loader.fileName() << "does not implement PluginFactory";
+        return nullptr;
+    }
+    if (!factory->checkAvailability()) {
         qCCritical(lcPlugin) << "Plugin" << loader.fileName() << "does not implement PluginFactory";
         return nullptr;
     }
