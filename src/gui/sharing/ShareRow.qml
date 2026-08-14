@@ -16,6 +16,9 @@ WizardItemDelegate {
 
     required property Share share
     required property string recipientNames
+    required property bool publicLink
+    required property string publicLinkUrl
+    signal copyRequested
     signal configureRequested
 
     readonly property bool pending: share.state === Share.Draft
@@ -38,20 +41,48 @@ WizardItemDelegate {
 
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
-                text: root.recipientNames || (root.pending ? qsTr("Unfinished share") : qsTr("Share"))
+                text: root.publicLink ? qsTr("Share link") : root.recipientNames || (root.pending ? qsTr("Unfinished share") : qsTr("Share"))
                 color: Style.wizardPrimaryText
                 elide: Text.ElideRight
             }
 
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
-                text: root.pending
-                    ? qsTr("Not active — select to finish")
-                    : qsTr("%n recipient(s)", "", root.share.recipients.length)
+                text: {
+                    if (root.pending) {
+                        return qsTr("Not active — select to finish")
+                    }
+                    if (root.publicLink) {
+                        if (root.share.permissionPreset.endsWith("\\ViewSharePermissionPreset")) {
+                            return qsTr("View only")
+                        }
+                        if (root.share.permissionPreset.endsWith("\\EditSharePermissionPreset")) {
+                            return qsTr("Can edit")
+                        }
+                        return ""
+                    }
+                    return qsTr("%n recipient(s)", "", root.share.recipients.length)
+                }
                 color: Style.wizardSecondaryText
                 elide: Text.ElideRight
                 visible: text.length > 0
             }
+        }
+
+        WizardButton {
+            Layout.preferredWidth: implicitHeight
+            leftPadding: 0
+            rightPadding: 0
+            text: ""
+            iconSource: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
+            visible: root.publicLink && root.publicLinkUrl.length > 0
+            enabled: visible
+
+            Accessible.name: qsTr("Copy public link")
+            ToolTip.visible: hovered
+            ToolTip.text: Accessible.name
+
+            onClicked: root.copyRequested()
         }
 
         WizardButton {
