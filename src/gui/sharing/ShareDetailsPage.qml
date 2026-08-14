@@ -22,6 +22,9 @@ ColumnLayout {
     property string recipientOperationError: ""
     property string permissionUpdateError: ""
     property string propertyUpdateError: ""
+    readonly property bool shareIsActive: share.state === Share.Active
+
+    signal commitRequested
 
     spacing: Style.standardSpacing
 
@@ -30,6 +33,10 @@ ColumnLayout {
         clipboardHelper.selectAll()
         clipboardHelper.copy()
         clipboardHelper.clear()
+    }
+
+    function commitPendingChanges(): void {
+        commitRequested()
     }
 
     TextEdit {
@@ -43,6 +50,7 @@ ColumnLayout {
 
         account: root.sharingController.account
         shareId: root.share.id
+        visible: root.shareIsActive
 
         onRecipientSelected: (recipientType, recipientValue, recipientInstance) => {
             root.recipientOperationError = ""
@@ -123,7 +131,7 @@ ColumnLayout {
                     rightPadding: 0
                     text: ""
                     iconSource: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
-                    visible: recipientDelegate.model.secretUrl !== ""
+                    visible: root.shareIsActive && recipientDelegate.model.secretUrl !== ""
                     enabled: visible
 
                     Accessible.name: qsTr("Copy recipient link")
@@ -139,7 +147,7 @@ ColumnLayout {
                     rightPadding: 0
                     text: ""
                     iconSource: "image://svgimage-custom-color/change.svg/" + palette.buttonText
-                    visible: recipientDelegate.model.secretUpdatable
+                    visible: root.shareIsActive && recipientDelegate.model.secretUpdatable
                     enabled: visible
 
                     Accessible.name: recipientDelegate.model.secretUrl !== "" ? qsTr("Regenerate recipient link") : qsTr("Generate recipient link")
@@ -158,6 +166,7 @@ ColumnLayout {
                     rightPadding: 0
                     text: ""
                     iconSource: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
+                    visible: root.shareIsActive
 
                     Accessible.name: qsTr("Remove recipient")
                     ToolTip.visible: hovered
@@ -266,12 +275,21 @@ ColumnLayout {
         }
 
         delegate: FieldDelegate {
+            id: propertyDelegate
+
             width: propertyList.width
             height: item ? item.implicitHeight : 0
 
             onValueEdited: (propertyClass, value) => {
                 root.propertyUpdateError = ""
                 root.sharingController.setProperty(root.share, propertyClass, value)
+            }
+
+            Connections {
+                target: root
+                function onCommitRequested() {
+                    propertyDelegate.commit()
+                }
             }
         }
     }
@@ -299,12 +317,21 @@ ColumnLayout {
         }
 
         delegate: FieldDelegate {
+            id: advancedPropertyDelegate
+
             width: advancedPropertyList.width
             height: item ? item.implicitHeight : 0
 
             onValueEdited: (propertyClass, value) => {
                 root.propertyUpdateError = ""
                 root.sharingController.setProperty(root.share, propertyClass, value)
+            }
+
+            Connections {
+                target: root
+                function onCommitRequested() {
+                    advancedPropertyDelegate.commit()
+                }
             }
         }
     }

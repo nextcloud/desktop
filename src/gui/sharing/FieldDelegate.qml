@@ -31,6 +31,12 @@ Loader {
         valueEdited(model.property, value)
     }
 
+    function commit(): void {
+        if (item && item.commit) {
+            item.commit()
+        }
+    }
+
     sourceComponent: switch (model.type) {
     case PropertyModel.Boolean:
         return booleanComponent
@@ -63,6 +69,14 @@ Loader {
         id: dateComponent
 
         ColumnLayout {
+            id: dateColumn
+
+            function commit(): void {
+                if (dateField.valid) {
+                    instantiator.submit(dateField.text)
+                }
+            }
+
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
@@ -79,9 +93,7 @@ Loader {
                 property bool valid: (!instantiator.model.required || text.length > 0) && (!text || !isNaN(Date.parse(text))) && withinMinimum && withinMaximum
 
                 onEditingFinished: {
-                    if (valid) {
-                        instantiator.submit(text)
-                    }
+                    dateColumn.commit()
                 }
             }
             EnforcedPlainTextLabel {
@@ -123,19 +135,27 @@ Loader {
         id: passwordComponent
 
         ColumnLayout {
+            id: passwordColumn
+
+            function commit(): void {
+                if (!instantiator.model.required || passwordField.text.length > 0) {
+                    instantiator.submit(passwordField.text)
+                }
+            }
+
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
             WizardTextField {
+                id: passwordField
+
                 Layout.fillWidth: true
                 text: instantiator.model.value ?? ""
                 placeholderText: instantiator.model.placeholder
                 echoMode: TextInput.Password
 
                 onEditingFinished: {
-                    if (!instantiator.model.required || text.length > 0) {
-                        instantiator.submit(text)
-                    }
+                    passwordColumn.commit()
                 }
             }
         }
@@ -145,6 +165,14 @@ Loader {
         id: stringComponent
 
         ColumnLayout {
+            id: stringColumn
+
+            function commit(): void {
+                if (stringField.valid) {
+                    instantiator.submit(stringField.text)
+                }
+            }
+
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
@@ -159,9 +187,7 @@ Loader {
                 property bool valid: (!instantiator.model.required || text.length > 0) && (!instantiator.model.minimum || text.length >= instantiator.model.minimum)
 
                 onEditingFinished: {
-                    if (valid) {
-                        instantiator.submit(text)
-                    }
+                    stringColumn.commit()
                 }
             }
             EnforcedPlainTextLabel {

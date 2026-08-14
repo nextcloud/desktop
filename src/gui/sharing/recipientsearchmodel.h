@@ -24,6 +24,7 @@ class RecipientSearchModel : public QAbstractListModel
     Q_PROPERTY(AccountPtr account READ account WRITE setAccount NOTIFY accountChanged)
     Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY queryChanged)
     Q_PROPERTY(QString shareId READ shareId WRITE setShareId NOTIFY shareIdChanged)
+    Q_PROPERTY(bool fetchOngoing READ fetchOngoing NOTIFY fetchOngoingChanged)
 
 public:
     enum Roles {
@@ -51,10 +52,14 @@ public:
     [[nodiscard]] QString shareId() const;
     void setShareId(const QString &shareId);
 
+    /** @brief Returns whether the current query is waiting for server results. */
+    [[nodiscard]] bool fetchOngoing() const;
+
 Q_SIGNALS:
     void accountChanged();
     void queryChanged();
     void shareIdChanged();
+    void fetchOngoingChanged();
 
 private:
     AccountPtr _account = nullptr;
@@ -62,8 +67,10 @@ private:
     QString _query;
     QString _shareId;
     QTimer _searchTimer;
+    bool _fetchOngoing = false;
 
     void search();
+    void setFetchOngoing(bool fetchOngoing);
 };
 
 }
