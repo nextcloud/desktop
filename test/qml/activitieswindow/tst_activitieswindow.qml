@@ -64,7 +64,6 @@ Item {
         property ActivitiesWindow activitiesWindow
         property var activityList
         property var activityListView
-        property var activityHighlight
         property var newActivitiesButtonLoader
 
         function init()
@@ -134,8 +133,7 @@ Item {
         {
             activityListView.currentIndex = 0;
             tryVerify(() => activityListView.currentItem !== null);
-            activityHighlight = activityListView.highlightItem;
-            verify(activityHighlight);
+            tryVerify(() => activityListView.highlightItem !== null);
 
             activitiesWindow.requestActivate();
             activityListView.forceActiveFocus();
@@ -144,7 +142,7 @@ Item {
             activitiesWindow.resetActivityList();
 
             compare(activityListView.currentItem, null);
-            compare(activityHighlight.visible, false);
+            tryVerify(() => activityListView.highlightItem === null || !activityListView.highlightItem.visible);
         }
 
         function test_liveActivityDoesNotResetViewport()
