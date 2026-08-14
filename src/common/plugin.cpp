@@ -12,6 +12,11 @@ namespace OCC {
 
 PluginFactory::~PluginFactory() = default;
 
+bool PluginFactory::checkAvailability() const
+{
+    return true;
+}
+
 QString pluginFileName(const QString &type, const QString &name)
 {
     return QStringLiteral("%1sync_%2_%3")

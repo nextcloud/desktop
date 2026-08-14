@@ -875,4 +875,40 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName, const QSt
     return true;
 }
 
+time_t FileSystem::fileTimeToTime_t(std::filesystem::file_time_type fileTime)
+{
+#ifdef HAS_CLOCK_CAST
+    return std::chrono::system_clock::to_time_t(std::chrono::clock_cast<std::chrono::system_clock>(fileTime));
+#else
+    const auto systemTime = std::chrono::time_point_cast<std::chrono::system_clock::duration>(std::chrono::file_clock::to_sys(fileTime));
+    return std::chrono::system_clock::to_time_t(systemTime);
+#endif
+}
+
+std::filesystem::file_time_type FileSystem::time_tToFileTime(time_t fileTime)
+{
+#ifdef HAS_CLOCK_CAST
+    return std::chrono::clock_cast<std::chrono::file_clock>(std::chrono::system_clock::from_time_t(fileTime));
+#else
+    return std::chrono::file_clock::from_sys(std::chrono::system_clock::from_time_t(fileTime));
+#endif
+}
+
+bool FileSystem::setModTime(const std::filesystem::path &filename, time_t modTime)
+{
+#ifdef Q_OS_WINDOWS
+    // the access denied ACEs also prevents us from changing the modtime -> make it writable if needed
+    FilePermissionsRestore restore(filename, FileSystem::FolderPermissions::ReadWrite);
+#endif
+
+    std::error_code rc;
+    std::filesystem::last_write_time(filename, time_tToFileTime(modTime), rc);
+    if (rc) {
+        qCWarning(lcFileSystem) << u"Error setting mtime for" << filename << u"failed: rc" << rc.value() << u", error message:" << rc.message();
+        Q_ASSERT(!rc);
+        return false;
+    }
+    return true;
+}
+
 } // namespace OCC
