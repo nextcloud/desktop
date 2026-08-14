@@ -1195,6 +1195,25 @@ bool Systray::anySyncFolders() const
     return _anySyncFolders;
 }
 
+Systray::SyncControlState Systray::syncControlState() const
+{
+    const auto folders = FolderMan::instance()->map();
+    if (folders.isEmpty()) {
+        return SyncControlState::Unavailable;
+    }
+
+    const auto anyPaused = std::any_of(std::cbegin(folders), std::cend(folders), [](const Folder *folder) {
+        return folder->syncPaused();
+    });
+    const auto anyRunning = std::any_of(std::cbegin(folders), std::cend(folders), [](const Folder *folder) {
+        return !folder->syncPaused();
+    });
+    if (anyPaused && anyRunning) {
+        return SyncControlState::PauseAndResume;
+    }
+    return anyPaused ? SyncControlState::Resume : SyncControlState::Pause;
+}
+
 /********************************************************************************************/
 /* Helper functions for cross-platform tray icon position and taskbar orientation detection */
 /********************************************************************************************/

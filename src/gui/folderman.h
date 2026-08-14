@@ -29,6 +29,7 @@ class TestSyncConflictsModel;
 class TestRemoteWipe;
 class FolderManTestHelper;
 class TestFileActionsModel;
+class TestBrowserReAuthController;
 
 namespace OCC {
 
@@ -411,6 +412,15 @@ private:
     static std::unique_ptr<FolderMan> _instance;
 
     friend class ::TestFolderMan;
+    friend class ::TestSyncConflictsModel;
+    friend class ::TestCfApiShellExtensionsIPC;
+    friend class ::ShareTestHelper;
+    friend class ::EndToEndTestHelper;
+    friend class ::TestFolderStatusModel;
+    friend class ::TestRemoteWipe;
+    friend class ::FolderManTestHelper;
+    friend class ::TestFileActionsModel;
+    friend class ::TestBrowserReAuthController;
 };
 
 } // namespace OCC

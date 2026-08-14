@@ -5,4 +5,5 @@
 # no GUI, so it runs in PR CI — unlike the signed-bundle checks, which need a signing identity
 # and a login session and therefore belong to the release pipeline.
 nextcloud_add_test(FinderSyncBrokerIdentity)
+nextcloud_add_test(SystraySyncControlMacOS)
 nextcloud_add_test(MacSandboxUtility)
