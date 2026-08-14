@@ -5,6 +5,9 @@
 
 #include "tray/svgimageprovider.h"
 
+#include "logger.h"
+
+#include <QStandardPaths>
 #include <QQmlEngine>
 #include <QResource>
 #include <QtQuickTest>
@@ -22,6 +25,14 @@ public:
     }
 
 public slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     /** @brief Adds the production SVG image provider to the test engine. */
     void qmlEngineAvailable(QQmlEngine *engine)
     {
