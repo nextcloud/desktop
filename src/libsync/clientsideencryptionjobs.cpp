@@ -369,7 +369,9 @@ bool LockEncryptFolderApiJob::finished()
     const auto obj = json.object().toVariantMap();
     const auto token = obj["ocs"].toMap()["data"].toMap()["e2e-token"].toByteArray();
 
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
     qCDebug(lcCseJob()) << "lock folder finished with code" << retCode << " for:" << path() << " for fileId: " << _fileId << " token:" << token;
+#endif
 
     if (!_account->e2e()->getPublicKey().isNull()) {
         const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), token);
