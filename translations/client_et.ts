@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Veebibrauseri avamine ei õnnestu. Palun kopeeri see link oma eelistatud brauserisse.</translation>
     </message>
 </context>
 <context>
@@ -923,7 +923,7 @@ Kas peaksin selle kasutajakonto importima?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Märkimata kaustad &lt;b&gt;eemaldatakse&lt;/b&gt; kohalikust failisüsteemist ning neid ei sünkroniseerita enam sellesse arvutisse</translation>
+        <translation>Märkimata kaustad &lt;b&gt;eemaldatakse&lt;/b&gt; kohalikust failisüsteemist ning neid ei sünkroonita enam sellesse arvutisse</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="394"/>
@@ -3278,7 +3278,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="244"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation>Leidub lahendamata failikonflikte. Lisateave saamiseks klõpsi.</translation>
+        <translation>Leidub lahendamata failikonflikte. Lisateabe saamiseks klõpsi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
@@ -3409,7 +3409,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="232"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation>Sisesta uue kausta nimi, mis on loomisel „%1“ alla:</translation>
+        <translation>Sisesta uue kausta nimi, mis on loomisel „%1“ kausta alla:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="261"/>
@@ -3434,7 +3434,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="372"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Vali see sünkroniseerimine tervele kontole</translation>
+        <translation>Vali see sünkroonimine tervele kontole</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
@@ -5158,7 +5158,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="462"/>
         <source>Local file changed during sync.</source>
-        <translation>Kohalik fail muutus sünkroniseeringu käigus.</translation>
+        <translation>Kohalik fail muutus sünkroonimise käigus.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="472"/>
@@ -6056,7 +6056,7 @@ Veateade serveri päringuvastuses: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="618"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="879"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="908"/>
         <source>Settings</source>
         <translation>Seadistused</translation>
     </message>
@@ -6072,16 +6072,18 @@ Veateade serveri päringuvastuses: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="626"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="882"/>
         <source>Pause sync for all</source>
         <translation>Peata sünkroonimine kõigi jaoks</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="632"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="882"/>
         <source>Resume sync for all</source>
         <translation>Jätka sünkroonimist kõigi jaoks</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="886"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="915"/>
         <source>Quit</source>
         <translation>Välju</translation>
     </message>
@@ -7801,7 +7803,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
         <source>Moved to %1</source>
-        <translation>Tõstetud %1</translation>
+        <translation>Tõstetud asukohta „%1“</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
@@ -8060,7 +8062,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>SSL kliendisertifikaadiga autentimine</translation>
+        <translation>Autentimine SSL kliendisertifikaadiga</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -8412,7 +8414,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="679"/>
         <source>Successfully connected to %1!</source>
-        <translation>Edukalt ühendatud %1!</translation>
+        <translation>Kenasti ühendatud %1 serveriga!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="686"/>
