@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Unable to open the Browser, please copy the link to your Browser.</translation>
     </message>
 </context>
 <context>
@@ -6058,7 +6058,7 @@ Server replied with error: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="618"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="879"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="908"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
@@ -6074,16 +6074,18 @@ Server replied with error: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="626"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="882"/>
         <source>Pause sync for all</source>
         <translation>Pause sync for all</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="632"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="882"/>
         <source>Resume sync for all</source>
         <translation>Resume sync for all</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="886"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="915"/>
         <source>Quit</source>
         <translation>Quit</translation>
     </message>
@@ -6588,7 +6590,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="833"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Select new location …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="921"/>
