@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Ní féidir an Brabhsálaí a oscailt, cóipeáil an nasc chuig do Bhrabhsálaí le do thoil.</translation>
     </message>
 </context>
 <context>
@@ -6589,7 +6589,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="833"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh nua …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="921"/>
