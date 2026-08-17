@@ -26,7 +26,7 @@ public:
     [[nodiscard]] bool isVfsEnabled() const;
 
 public slots:
-    void setupAccountFromCommandLine();
+    [[nodiscard]] bool setupAccountFromCommandLine();
 
 private:
     explicit AccountSetupCommandLineManager(QObject *parent = nullptr);
