@@ -19,6 +19,7 @@ class QToolBar;
 class QStackedWidget;
 class QStandardItemModel;
 class QResizeEvent;
+class QImage;
 
 namespace OCC {
 
@@ -71,9 +72,11 @@ private:
     void customizeStyle();
     void requestStyleUpdate();
     void updateAccountAvatar(const Account *account);
+    QImage addAvatarContrastBorder(const QImage &circularAvatar) const;
 
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
+    QIcon createContrastAwareAvatarIcon(const QString &iconPath) const;
 
     QActionGroup *_actionGroup;
     // Maps the actions from the action group to the corresponding widgets

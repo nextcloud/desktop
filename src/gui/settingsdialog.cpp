@@ -11,6 +11,7 @@
 #include "configfile.h"
 #include "folderman.h"
 #include "generalsettings.h"
+#include "iconutils.h"
 #include "networksettings.h"
 #include "owncloudgui.h"
 #include "progressdispatcher.h"
@@ -360,7 +361,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
     const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
-    const auto accountAction = createColorAwareAction(WLTheme.avatarIcon("qtwidget"), actionText);
+    const auto avatarIconPath = WLTheme.avatarIcon("qtwidget");
+    const auto accountAction = createActionWithIcon(createContrastAwareAvatarIcon(avatarIconPath), actionText, avatarIconPath);
     updateAccountAvatar(s->account().data());
 
     if (!brandingSingleAccount) {
@@ -421,8 +423,41 @@ void SettingsDialog::updateAccountAvatar(const Account *account)
 
     const QImage pix = account->avatar();
     if (!pix.isNull()) {
-        action->setIcon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(pix)));
+        const auto circularAvatar = AvatarJob::makeCircularAvatar(pix);
+
+        // Normal state gets the contrast border; while selected, palette(highlight) already sets
+        // the button apart from its neighbors, so show the plain avatar there instead.
+        QIcon icon(QPixmap::fromImage(addAvatarContrastBorder(circularAvatar)));
+        icon.addPixmap(QPixmap::fromImage(circularAvatar), QIcon::Normal, QIcon::On);
+        action->setIcon(icon);
     }
+}
+
+QImage SettingsDialog::addAvatarContrastBorder(const QImage &circularAvatar) const
+{
+    // The avatar the server returns (real photo or a generated initials placeholder) can be any
+    // color, so wrap it in a ring using the palette's text color to guarantee contrast against the
+    // toolbar background, the same way the fallback glyph icon is backed by a disc in
+    // createContrastAwareAvatarIcon.
+    if (circularAvatar.isNull()) {
+        return circularAvatar;
+    }
+
+    constexpr int borderWidth = 3;
+    const auto outerDim = circularAvatar.width() + borderWidth * 2;
+
+    QImage bordered(outerDim, outerDim, QImage::Format_ARGB32);
+    bordered.fill(Qt::transparent);
+
+    QPainter painter(&bordered);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(palette().color(QPalette::WindowText));
+    painter.drawEllipse(bordered.rect());
+    painter.drawImage(borderWidth, borderWidth, circularAvatar);
+    painter.end();
+
+    return bordered;
 }
 
 void SettingsDialog::slotAccountDisplayNameChanged()
@@ -497,8 +532,10 @@ void SettingsDialog::customizeStyle()
     _toolBar->setStyleSheet(
         QString(TOOLBAR_CSS).arg(white, borderColor, hoverColor, highlightTextColor, toolbarActionBorderRadius, pressedColor, selectedColor, toolButtonFont));
 
+    const auto accountActions = _actionForAccount.values();
     for (const auto a : _actionGroup->actions()) {
-        QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), this->palette());
+        const auto iconPath = a->property("iconPath").toString();
+        const QIcon icon = accountActions.contains(a) ? createContrastAwareAvatarIcon(iconPath) : Theme::createColorAwareIcon(iconPath, this->palette());
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
         if (btn) {
@@ -544,12 +581,19 @@ void SettingsDialog::customizeStyle()
                        " }"));
 
     const auto &allActions = _actionGroup->actions();
+    const auto accountActions = _actionForAccount.values();
     for (const auto a : allActions) {
-        QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
+        const auto iconPath = a->property("iconPath").toString();
+        const QIcon icon = accountActions.contains(a) ? createContrastAwareAvatarIcon(iconPath) : Theme::createColorAwareIcon(iconPath, palette());
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
         if (btn)
             btn->setIcon(icon);
+    }
+
+    // Re-apply account avatars, since the loop above just reset them to the generic icon
+    for (auto it = _actionForAccount.constBegin(); it != _actionForAccount.constEnd(); ++it) {
+        updateAccountAvatar(it.key());
     }
 }
 #endif
@@ -599,6 +643,39 @@ QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const Q
     // all buttons must have the same size in order to keep a good layout
     QIcon coloredIcon = Theme::createColorAwareIcon(iconPath, palette());
     return createActionWithIcon(coloredIcon, text, iconPath);
+}
+
+QIcon SettingsDialog::createContrastAwareAvatarIcon(const QString &iconPath) const
+{
+    // Backs the fallback avatar glyph with a disc in the palette's text color so it stays legible
+    // against both the normal toolbar background and the :checked palette(highlight) background,
+    // instead of relying on the fixed brand color contrasting with whatever is behind it.
+    // The glyph itself is recolored to the palette's window color, since the brand navy would
+    // otherwise disappear against the now text-colored disc.
+    const auto diameter = _toolBar->iconSize().height() > 0 ? _toolBar->iconSize().height() : 32;
+    QImage composed(diameter, diameter, QImage::Format_ARGB32);
+    composed.fill(Qt::transparent);
+
+    QPainter painter(&composed);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(palette().color(QPalette::WindowText));
+    painter.drawEllipse(composed.rect());
+
+    const auto glyphDiameter = qRound(diameter * 0.55);
+    const auto glyphImage = Ui::IconUtils::drawSvgWithCustomFillColor(iconPath, palette().color(QPalette::Window), nullptr, QSize(glyphDiameter, glyphDiameter));
+    const auto glyphOrigin = (diameter - glyphDiameter) / 2;
+    painter.drawImage(glyphOrigin, glyphOrigin, glyphImage);
+    painter.end();
+
+    QIcon icon(QPixmap::fromImage(composed));
+
+    // While the button is selected, palette(highlight) already sets it apart from its neighbors,
+    // so the extra contrast disc is unnecessary there - fall back to the plain brand-colored glyph.
+    const auto plainGlyph = Theme::createColorAwareIcon(iconPath, palette(), QSize(diameter, diameter)).pixmap(diameter, diameter);
+    icon.addPixmap(plainGlyph, QIcon::Normal, QIcon::On);
+
+    return icon;
 }
 
 void SettingsDialog::setupUi()
