@@ -12,4 +12,5 @@ enum SchemaVersion: UInt64 {
     case addedCanonicalPathKeysToRealmItemMetadata = 203
     case addedNormalizedFileNameIndexToRealmItemMetadata = 204
     case addedExcludedFromSyncItems = 205
+    case addedPendingChunkUploadCleanup = 206
 }

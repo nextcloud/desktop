@@ -568,6 +568,21 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var rootTrashItem: MockRemoteItem?
     public var currentChunks: [String: [RemoteFileChunk]] = [:]
     public var completedChunkTransferSize: [String: Int64] = [:]
+
+    /// Limits completion callbacks to simulate an interrupted chunk upload.
+    public var chunkUploadCompletedChunkCount: Int?
+
+    /// Overrides the directory where chunked uploads create their local chunk files.
+    public var chunkUploadDirectory: URL?
+
+    /// Maps chunk upload identifiers to the directories used for their local chunk files.
+    public var chunkUploadDirectories: [String: URL] = [:]
+
+    /// When `false`, chunked uploads return no directory so cleanup uses `removeLocalChunks`.
+    public var returnsChunkUploadDirectory = true
+
+    /// When set, local chunk removal fails with this error.
+    public var removeLocalChunksError: (any Error)?
     public var pagination: Bool
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
@@ -875,20 +890,24 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     ) async -> (
         account: String,
         file: NKFile?,
+        chunksDirectory: URL?,
         nkError: NKError
     ) {
         guard let remoteUrl = URL(string: remotePath) else {
             print("Invalid remote path!")
-            return ("", nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
 
-        // Create temp directory for file and create chunks within it
+        // Create the local chunk directory used by the production adapter and populate it below.
         let fm = FileManager.default
-        let tempDirectoryUrl = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let tempDirectoryUrl = chunkUploadDirectory ?? fm.temporaryDirectory
+            .appendingPathComponent(remoteChunkStoreFolderName, isDirectory: true)
+        chunkUploadDirectories[remoteChunkStoreFolderName] = tempDirectoryUrl
         try! fm.createDirectory(atPath: tempDirectoryUrl.path, withIntermediateDirectories: true)
 
         // Access local file and gather metadata
-        let fileSize = try! fm.attributesOfItem(atPath: localPath)[.size] as! Int
+        let localFileData = try! Data(contentsOf: URL(fileURLWithPath: localPath))
+        let fileSize = localFileData.count
 
         var remainingFileSize = fileSize
         let numChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
@@ -905,6 +924,18 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         let preexistingChunks = currentChunks[remoteChunkStoreFolderName] ?? []
         let totalChunks = preexistingChunks + newChunks
         currentChunks[remoteChunkStoreFolderName] = totalChunks
+
+        for chunk in newChunks {
+            guard let chunkNumber = Int(chunk.fileName), chunkNumber > 0 else { continue }
+
+            let startIndex = (chunkNumber - 1) * chunkSize
+            let endIndex = min(startIndex + Int(chunk.size), localFileData.count)
+            guard startIndex < endIndex else { continue }
+
+            let chunkData = localFileData.subdata(in: startIndex ..< endIndex)
+            try! chunkData.write(to: tempDirectoryUrl.appendingPathComponent(chunk.fileName))
+        }
+
         chunkUploadStartHandler(newChunks)
 
         let (_, ocId, etag, date, size, _, remoteError) = await upload(
@@ -918,7 +949,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             taskHandler: taskHandler,
             progressHandler: progressHandler
         )
-        newChunks.forEach { chunkUploadCompleteHandler($0) }
+        let completedChunks = chunkUploadCompletedChunkCount.map {
+            newChunks.prefix($0)
+        } ?? newChunks[...]
+        completedChunks.forEach { chunkUploadCompleteHandler($0) }
         print(remainingChunks)
         completedChunkTransferSize[remoteChunkStoreFolderName] =
             remainingChunks.reduce(0) { $0 + $1.size }
@@ -937,7 +971,31 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         file.creationDate = creationDate ?? Date()
         file.date = date as? Date ?? Date()
 
-        return (account.ncKitAccount, file, remoteError)
+        return (
+            account.ncKitAccount,
+            file,
+            returnsChunkUploadDirectory ? tempDirectoryUrl : nil,
+            remoteError
+        )
+    }
+
+    public func removeLocalChunks(remoteChunkStoreFolderName: String) throws {
+        if let removeLocalChunksError {
+            throw removeLocalChunksError
+        }
+
+        let chunksDirectory = chunkUploadDirectories.removeValue(
+            forKey: remoteChunkStoreFolderName
+        ) ?? FileManager.default.temporaryDirectory.appendingPathComponent(
+            remoteChunkStoreFolderName,
+            isDirectory: true
+        )
+
+        do {
+            try FileManager.default.removeItem(at: chunksDirectory)
+        } catch CocoaError.fileNoSuchFile {
+            // Nothing remains to clean up.
+        }
     }
 
     public func move(

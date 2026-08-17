@@ -784,7 +784,20 @@ import OSLog
 
         await MainActor.run {
             ncAccount = account
-            dbManager = FilesDatabaseManager(account: account, fileProviderDomainIdentifier: domain.identifier, log: log)
+            let databaseManager = FilesDatabaseManager(
+                account: account,
+                fileProviderDomainIdentifier: domain.identifier,
+                log: log
+            )
+            // TODO: Initial file creation does not persist item metadata until the upload succeeds.
+            // If the extension restarts while that upload is still in progress, startup cleanup
+            // cannot distinguish its chunks from an abandoned upload and may remove them.
+            cleanupAbandonedChunkUploads(
+                usingRemoteInterface: ncKit,
+                dbManager: databaseManager,
+                logger: logger
+            )
+            dbManager = databaseManager
 
             ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!)
             completionHandler?(nil)

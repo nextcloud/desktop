@@ -1424,6 +1424,126 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(modifiedItem.documentSize?.intValue, newContents.count)
 
         XCTAssertEqual(remoteItem.data, newContents)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.chunkUploadId)
+    }
+
+    func testSuccessfulChunkedModifyPreservesChunkUploadIdentifierWhenCleanupFails() async throws {
+        let chunkSize = 2
+        let newContents = Data(repeating: 1, count: chunkSize * 3)
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("failed-cleanup-chunked-modify-\(UUID().uuidString)")
+        try newContents.write(to: newContentsUrl)
+        defer { try? FileManager.default.removeItem(at: newContentsUrl) }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.returnsChunkUploadDirectory = false
+        remoteInterface.removeLocalChunksError = CocoaError(.fileWriteNoPermission)
+
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("failed-cleanup-chunks-\(UUID().uuidString)", isDirectory: true)
+        remoteInterface.chunkUploadDirectory = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
+        targetItemMetadata.date = modificationDate
+        targetItemMetadata.size = Int64(newContents.count)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            forcedChunkSize: chunkSize,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(error)
+        XCTAssertNotNil(modifiedItem)
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.chunkUploadId,
+            chunkUploadIdentifier(
+                forItemWithIdentifier: itemMetadata.ocId,
+                fileSize: Int64(newContents.count),
+                modificationDate: modificationDate
+            )
+        )
+    }
+
+    func testFailedChunkedModifyPreservesChunkUploadIdentifier() async throws {
+        let chunkSize = 2
+        let newContents = Data(repeating: 1, count: chunkSize * 3)
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("failed-chunked-modify-\(UUID().uuidString)")
+        try newContents.write(to: newContentsUrl)
+        defer { try? FileManager.default.removeItem(at: newContentsUrl) }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 500, fallbackDescription: "Upload failed")
+        remoteInterface.chunkUploadCompletedChunkCount = 1
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("failed-modify-chunks-\(UUID().uuidString)", isDirectory: true)
+        remoteInterface.chunkUploadDirectory = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let uploadIdentifier = chunkUploadIdentifier(
+            forItemWithIdentifier: itemMetadata.ocId,
+            fileSize: Int64(newContents.count),
+            modificationDate: modificationDate
+        )
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
+        targetItemMetadata.date = modificationDate
+        targetItemMetadata.size = Int64(newContents.count)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            forcedChunkSize: chunkSize,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertNotNil(error)
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        XCTAssertEqual(storedMetadata.status, Status.uploadError.rawValue)
+        XCTAssertEqual(storedMetadata.chunkUploadId, uploadIdentifier)
     }
 
     func testModifyFileContentsChunkedResumed() async throws {
