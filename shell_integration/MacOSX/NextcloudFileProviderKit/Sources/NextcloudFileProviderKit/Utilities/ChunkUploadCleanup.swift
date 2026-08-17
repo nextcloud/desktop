@@ -42,9 +42,9 @@ func discardChunkUploads(
             uploadIdentifiers.insert(uploadIdentifier)
         }
 
-        let legacyPrefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
+        let itemPrefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
         let chunkIdentifiers = db.objects(RemoteFileChunk.self)
-            .where { $0.remoteChunkStoreFolderName.starts(with: legacyPrefix) }
+            .where { $0.remoteChunkStoreFolderName.starts(with: itemPrefix) }
             .map(\.remoteChunkStoreFolderName)
         uploadIdentifiers.formUnion(chunkIdentifiers)
     }

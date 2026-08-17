@@ -190,6 +190,43 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
         assertChunkCount(for: seeded.uploadIdentifier, equals: 1)
     }
 
+    func testDiscardChunkUploadsDoesNotMatchSimilarItemIdentifiers() throws {
+        for (itemIdentifier, similarItemIdentifier) in [("a", "a_b"), ("a/b", "ab")] {
+            let itemUploadIdentifier = chunkUploadIdentifier(
+                forItemWithIdentifier: itemIdentifier,
+                fileSize: 1,
+                modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+            )
+            let similarItemUploadIdentifier = chunkUploadIdentifier(
+                forItemWithIdentifier: similarItemIdentifier,
+                fileSize: 1,
+                modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+            )
+            let itemUpload = try seedChunkUpload(
+                uploadIdentifier: itemUploadIdentifier,
+                itemIdentifier: itemIdentifier,
+                metadataStatus: .normal
+            )
+            let similarItemUpload = try seedChunkUpload(
+                uploadIdentifier: similarItemUploadIdentifier,
+                itemIdentifier: similarItemIdentifier,
+                metadataStatus: .normal
+            )
+
+            discardChunkUploads(
+                forItemIdentifiers: [itemIdentifier],
+                usingRemoteInterface: remoteInterface,
+                dbManager: dbManager,
+                logger: makeLogger()
+            )
+
+            XCTAssertFalse(FileManager.default.fileExists(atPath: itemUpload.directory.path))
+            XCTAssertTrue(FileManager.default.fileExists(atPath: similarItemUpload.directory.path))
+            assertChunkCount(for: itemUploadIdentifier, equals: 0)
+            assertChunkCount(for: similarItemUploadIdentifier, equals: 1)
+        }
+    }
+
     private func seedChunkUpload(
         uploadIdentifier requestedUploadIdentifier: String? = nil,
         itemIdentifier: String,
