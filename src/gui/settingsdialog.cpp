@@ -401,13 +401,11 @@ void SettingsDialog::accountAdded(AccountState *s)
 
 void SettingsDialog::slotAccountAvatarChanged()
 {
-#ifndef IONOS_BUILD
     auto *account = dynamic_cast<Account *>(sender());
     if (!account) {
         return;
     }
     updateAccountAvatar(account);
-#endif
 }
 
 void SettingsDialog::updateAccountAvatar(const Account *account)
@@ -506,6 +504,11 @@ void SettingsDialog::customizeStyle()
         if (btn) {
             btn->setIcon(icon);
         }
+    }
+
+    // Re-apply account avatars via the shared helper, since the loop above just reset them to the generic icon
+    for (auto it = _actionForAccount.constBegin(); it != _actionForAccount.constEnd(); ++it) {
+        updateAccountAvatar(it.key());
     }
 }
 #else

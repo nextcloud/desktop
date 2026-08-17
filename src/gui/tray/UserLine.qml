@@ -57,7 +57,9 @@ AbstractButton {
             id: accountAvatar
             verticalAlignment: Qt.AlignCenter
             cache: false
-            source: Style.sesAvatar
+            source: avatar !== "" ? avatar : Style.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
+            Layout.preferredHeight: Style.accountAvatarSize
+            Layout.preferredWidth: Style.accountAvatarSize
         }
 
         ColumnLayout {
