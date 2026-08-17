@@ -244,6 +244,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connectionSettingsLayout->setSpacing(0);
     connectionSettingsLayout->addWidget(networkSettings, 1);
     connectionSettingsPanelContents->setLayout(connectionSettingsLayout);
+    _ui->connectionSettingsPanel->setVisible(false);
 
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
