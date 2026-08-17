@@ -578,6 +578,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Maps chunk upload identifiers to the directories used for their local chunk files.
     public var chunkUploadDirectories: [String: URL] = [:]
 
+    /// When `false`, chunked uploads return no directory so cleanup uses `removeLocalChunks`.
+    public var returnsChunkUploadDirectory = true
+
     /// When set, local chunk removal fails with this error.
     public var removeLocalChunksError: (any Error)?
     public var pagination: Bool
@@ -968,7 +971,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         file.creationDate = creationDate ?? Date()
         file.date = date as? Date ?? Date()
 
-        return (account.ncKitAccount, file, tempDirectoryUrl, remoteError)
+        return (
+            account.ncKitAccount,
+            file,
+            returnsChunkUploadDirectory ? tempDirectoryUrl : nil,
+            remoteError
+        )
     }
 
     public func removeLocalChunks(remoteChunkStoreFolderName: String) throws {
