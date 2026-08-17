@@ -10,9 +10,12 @@ import RealmSwift
 let defaultFileChunkSize = 104_857_600 // 100 MiB
 
 /// The per-item prefix shared by every chunked-upload identifier for a given item, so stale chunk
-/// bookkeeping from earlier versions of the same item can be swept.
+/// bookkeeping from earlier versions of the same item can be swept without matching another item.
 func chunkUploadIdentifierPrefix(forItemWithIdentifier itemIdentifier: String) -> String {
-    itemIdentifier.replacingOccurrences(of: "/", with: "") + "_"
+    let encodedIdentifier = Data(itemIdentifier.utf8)
+        .map { String(format: "%02x", $0) }
+        .joined()
+    return encodedIdentifier + "_"
 }
 
 /// Derives a stable, *content-scoped* identifier for a chunked upload's server folder and its local
@@ -21,7 +24,9 @@ func chunkUploadIdentifierPrefix(forItemWithIdentifier itemIdentifier: String) -
 /// The identity is `(item, size, modificationDate)`: the same content re-uploads under the same id,
 /// so an interrupted transfer resumes and reuses the chunks already stored on the server. Any content
 /// change yields a different id, so chunks from a previous version are never spliced into a different
-/// one (see F3). The value is prefixed with the item id so stale sets can be swept by prefix.
+/// one (see F3). The value is prefixed with an unambiguous encoding of the item id so stale sets
+/// can be swept by prefix without collisions between identifiers such as `a` and `a_b`, or `a/b`
+/// and `ab`.
 ///
 /// When no modification date is available the content can't be bound to an id, so a per-attempt unique
 /// id is used: this forgoes resume for that upload but never risks a bad splice. In the File Provider

@@ -650,8 +650,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     func testCreateFileChunkedResumed() async throws {
         let chunkSize = 2
-        let expectedChunkUploadIdBase = UUID().uuidString // Check that illegal characters are stripped.
-        let illegalChunkUploadId = expectedChunkUploadIdBase + "/" // Check that illegal characters are stripped.
+        let expectedChunkUploadIdBase = UUID().uuidString
+        let illegalChunkUploadId = expectedChunkUploadIdBase + "/" // Check that path separators are encoded safely.
 
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
         let tempData = Data(repeating: 1, count: chunkSize * 3)
@@ -667,7 +667,11 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             fileSize: Int64(tempData.count),
             modificationDate: modificationDate
         )
-        XCTAssertTrue(chunkUploadId.hasPrefix(expectedChunkUploadIdBase + "_"))
+        XCTAssertTrue(
+            chunkUploadId.hasPrefix(
+                chunkUploadIdentifierPrefix(forItemWithIdentifier: illegalChunkUploadId)
+            )
+        )
         XCTAssertFalse(chunkUploadId.contains("/"))
 
         let previousUploadedChunkNum = 1
