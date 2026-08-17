@@ -69,6 +69,12 @@ func removeLocalChunkUpload(
     dbManager: FilesDatabaseManager,
     logger: FileProviderLogger
 ) {
+    recordPendingChunkUploadCleanup(
+        uploadIdentifier: uploadIdentifier,
+        dbManager: dbManager,
+        logger: logger
+    )
+
     do {
         if let chunksDirectory {
             do {
@@ -107,9 +113,11 @@ func cleanupAbandonedChunkUploads(
     let metadataUploadIdentifiers = metadata
         .where { $0.chunkUploadId != nil }
         .compactMap(\.chunkUploadId)
-    let knownIdentifiers = Set(chunkIdentifiers).union(
-        metadataUploadIdentifiers
-    )
+    let pendingCleanupIdentifiers = db.objects(RealmPendingChunkUploadCleanup.self)
+        .map(\.uploadIdentifier)
+    let knownIdentifiers = Set(chunkIdentifiers)
+        .union(metadataUploadIdentifiers)
+        .union(pendingCleanupIdentifiers)
     let resumableIdentifiers = Set(
         metadata
             .where {
@@ -167,13 +175,38 @@ private func removeChunkUploadBookkeeping(
             .where { $0.remoteChunkStoreFolderName == uploadIdentifier }
         let owners = db.objects(RealmItemMetadata.self)
             .where { $0.chunkUploadId == uploadIdentifier }
+        let pendingCleanup = db.objects(RealmPendingChunkUploadCleanup.self)
+            .where { $0.uploadIdentifier == uploadIdentifier }
         try db.write {
             db.delete(chunks)
+            db.delete(pendingCleanup)
             owners.forEach { $0.chunkUploadId = nil }
         }
     } catch {
         logger.error(
             "Could not clear chunk upload bookkeeping.",
+            [.error: error, .name: uploadIdentifier]
+        )
+    }
+}
+
+private func recordPendingChunkUploadCleanup(
+    uploadIdentifier: String,
+    dbManager: FilesDatabaseManager,
+    logger: FileProviderLogger
+) {
+    let db = dbManager.ncDatabase()
+
+    do {
+        try db.write {
+            db.add(
+                RealmPendingChunkUploadCleanup(uploadIdentifier: uploadIdentifier),
+                update: .modified
+            )
+        }
+    } catch {
+        logger.error(
+            "Could not record pending chunk upload cleanup.",
             [.error: error, .name: uploadIdentifier]
         )
     }

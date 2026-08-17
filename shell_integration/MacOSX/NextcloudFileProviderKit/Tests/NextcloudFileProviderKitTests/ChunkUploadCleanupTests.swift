@@ -190,6 +190,48 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
         assertChunkCount(for: seeded.uploadIdentifier, equals: 1)
     }
 
+    func testCompletedUploadCleanupIsRetriedFromDurableRecord() throws {
+        let uploadIdentifier = "completed-upload-with-failed-cleanup"
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("pending-cleanup-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        temporaryChunkDirectories.append(directory)
+        try Data([1]).write(to: directory.appendingPathComponent("1"))
+        remoteInterface.chunkUploadDirectories[uploadIdentifier] = directory
+        remoteInterface.removeLocalChunksError = CocoaError(.fileWriteNoPermission)
+
+        removeLocalChunkUpload(
+            uploadIdentifier: uploadIdentifier,
+            chunksDirectory: nil,
+            usingRemoteInterface: remoteInterface,
+            dbManager: dbManager,
+            logger: makeLogger()
+        )
+
+        XCTAssertTrue(FileManager.default.fileExists(atPath: directory.path))
+        XCTAssertEqual(
+            dbManager.ncDatabase().objects(RealmPendingChunkUploadCleanup.self)
+                .where { $0.uploadIdentifier == uploadIdentifier }
+                .count,
+            1
+        )
+
+        remoteInterface.removeLocalChunksError = nil
+        cleanupAbandonedChunkUploads(
+            usingRemoteInterface: remoteInterface,
+            dbManager: dbManager,
+            logger: makeLogger()
+        )
+
+        XCTAssertFalse(FileManager.default.fileExists(atPath: directory.path))
+        XCTAssertEqual(
+            dbManager.ncDatabase().objects(RealmPendingChunkUploadCleanup.self)
+                .where { $0.uploadIdentifier == uploadIdentifier }
+                .count,
+            0
+        )
+    }
+
     func testDiscardChunkUploadsDoesNotMatchSimilarItemIdentifiers() throws {
         for (itemIdentifier, similarItemIdentifier) in [("a", "a_b"), ("a/b", "ab")] {
             let itemUploadIdentifier = chunkUploadIdentifier(

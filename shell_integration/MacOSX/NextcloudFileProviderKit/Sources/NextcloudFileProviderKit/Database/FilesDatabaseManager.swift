@@ -31,7 +31,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedExcludedFromSyncItems
+    private static let schemaVersion = SchemaVersion.addedPendingChunkUploadCleanup
     let logger: FileProviderLogger
     let account: Account
 
@@ -100,7 +100,12 @@ public final class FilesDatabaseManager: Sendable {
                     }
                 }
             },
-            objectTypes: [RealmItemMetadata.self, RealmExcludedFromSyncItem.self, RemoteFileChunk.self]
+            objectTypes: [
+                RealmItemMetadata.self,
+                RealmExcludedFromSyncItem.self,
+                RemoteFileChunk.self,
+                RealmPendingChunkUploadCleanup.self
+            ]
         )
 
         Realm.Configuration.defaultConfiguration = configuration
