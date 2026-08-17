@@ -17,8 +17,9 @@ Hält `.claude/context/gui/` (siehe dessen [CLAUDE.md](../../context/gui/CLAUDE.
    - Dokumentierter Unterordner, der nicht mehr existiert? → Nutzer fragen, ob die verwaiste Doku-Datei gelöscht werden soll (nicht automatisch löschen).
 
 3. **Änderungs-Check pro Bereich** (git-basiert, kein Neuscan):
-   - Pro Unterordner: `git log --oneline --since=<Stand-Datum> -- src/gui/<ordner>`
-   - Für den flachen Wurzelbereich (COMPONENTS.md): `git log --oneline --since=<Stand-Datum> -- src/gui/*.cpp src/gui/*.h src/gui/*.ui src/gui/*.qml src/gui/*.mm` (Shell-Glob, matcht nur Dateien direkt in `src/gui/`, nicht in Unterordnern — im Bash-Tool ausführen, nicht PowerShell, damit die Glob-Expansion greift).
+   - Pro Unterordner: `git log --oneline --since="<Stand-Datum> 00:00:00" -- src/gui/<ordner>`
+   - Für den flachen Wurzelbereich (COMPONENTS.md): `git log --oneline --since="<Stand-Datum> 00:00:00" -- src/gui/*.cpp src/gui/*.h src/gui/*.ui src/gui/*.qml src/gui/*.mm` (Shell-Glob, matcht nur Dateien direkt in `src/gui/`, nicht in Unterordnern — im Bash-Tool ausführen, nicht PowerShell, damit die Glob-Expansion greift).
+   - **Wichtig:** immer `" 00:00:00"` an das Stand-Datum anhängen. `--since=<Datum>` ohne Uhrzeit interpretiert Git als "dieses Datum, aktuelle Uhrzeit" — an genau dem Tag, an dem der Refresh läuft (Stand-Datum = heute), filtert das sonst stillschweigend alle bereits heute gemachten Commits heraus und täuscht "keine Änderungen" vor.
    - Keine Treffer → Bereich überspringen, nichts anfassen.
 
 4. **Bei Treffern: Umfang der Änderung einschätzen, dann passend reagieren**:
