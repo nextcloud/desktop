@@ -24,12 +24,12 @@ public extension Item {
             return NSFileProviderError(.directoryNotEmpty)
         }
 
-        let chunkUploadOwnerIdentifiers = chunkUploadItemIdentifiers()
+        let chunkUploadOwnerIdentifiersToDiscard = chunkUploadItemIdentifiersToDiscard()
         var deletionCompleted = false
         defer {
             if deletionCompleted {
                 discardChunkUploads(
-                    forItemIdentifiers: chunkUploadOwnerIdentifiers,
+                    forItemIdentifiers: chunkUploadOwnerIdentifiersToDiscard,
                     usingRemoteInterface: remoteInterface,
                     dbManager: dbManager,
                     logger: logger
@@ -147,7 +147,7 @@ public extension Item {
         return handleMetadataTrashModification()
     }
 
-    private func chunkUploadItemIdentifiers() -> [String] {
+    private func chunkUploadItemIdentifiersToDiscard() -> [String] {
         guard metadata.directory else {
             return [metadata.ocId]
         }
@@ -158,6 +158,9 @@ public extension Item {
             .where {
                 $0.directory == false &&
                     $0.account == itemAccount &&
+                    // Keep chunks for in-progress or failed uploads that recursive metadata deletion
+                    // deliberately preserves.
+                    $0.status < Status.inUpload.rawValue &&
                     RealmItemMetadata.hasServerUrl(
                         $0,
                         equalTo: directoryRemotePath,

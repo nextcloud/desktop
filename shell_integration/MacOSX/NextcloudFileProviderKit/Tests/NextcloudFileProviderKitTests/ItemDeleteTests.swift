@@ -332,6 +332,94 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    func testDeleteFolderPreservesPendingDescendantChunkUpload() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteFolder = MockRemoteItem(
+            identifier: "folder-with-pending-upload",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let itemIdentifier = "pending-descendant"
+        let remoteItem = MockRemoteItem(
+            identifier: itemIdentifier,
+            name: "pending.txt",
+            remotePath: Self.account.davFilesUrl + "/folder/pending.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.status = Status.uploading.rawValue
+        Self.dbManager.addItemMetadata(folderMetadata)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: remoteItem.identifier,
+            fileSize: 8,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+        )
+        setChunkUploadIdentifier(
+            uploadIdentifier: chunkUploadId,
+            itemIdentifier: remoteItem.identifier,
+            dbManager: Self.dbManager,
+            logger: FileProviderLogger(category: "ItemDeleteTests", log: FileProviderLogMock())
+        )
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.status, Status.uploading.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.chunkUploadId, chunkUploadId)
+
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("preserved-descendant-chunks-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: chunksDirectory, withIntermediateDirectories: true)
+        try Data([1]).write(to: chunksDirectory.appendingPathComponent("2"))
+        remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let db = Self.dbManager.ncDatabase()
+        try db.write {
+            db.add(RemoteFileChunk(
+                fileName: "2",
+                size: 3,
+                remoteChunkStoreFolderName: chunkUploadId
+            ))
+        }
+
+        let folder = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await folder.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.status, Status.uploading.rawValue)
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: itemIdentifier)?.chunkUploadId,
+            chunkUploadId
+        )
+        XCTAssertEqual(
+            db.objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+                .count,
+            1
+        )
+    }
+
     func testDeleteWithTrashing() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemIdentifier = "file"
