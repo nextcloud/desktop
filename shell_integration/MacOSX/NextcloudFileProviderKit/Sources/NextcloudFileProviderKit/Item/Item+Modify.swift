@@ -329,7 +329,7 @@ public extension Item {
         newMetadata.sessionTaskIdentifier = 0
         newMetadata.downloaded = true
         newMetadata.uploaded = true
-        newMetadata.chunkUploadId = nil
+        newMetadata.chunkUploadId = metadata.chunkUploadId
 
         dbManager.addItemMetadata(newMetadata)
 
