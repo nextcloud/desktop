@@ -11,6 +11,7 @@ import QtQuick.Controls
 import com.nextcloud.desktopclient
 import com.nextcloud.desktopclient as NC
 import Style
+import "qrc:/qml/src/gui/tray"
 import "qrc:/qml/src/gui/wizard/qml"
 
 // Based on the old `ShareeSearchField` component from filedetails.
