@@ -139,6 +139,8 @@ Button {
 
         AccountMenuItem{
             id: syncPauseButton
+            enabled: Systray.anySyncFolders
+            visible: Systray.anySyncFolders
             onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
             icon.source: Systray.syncIsPaused ? Style.sesAccountResume : Style.sesAccountPause
         }
