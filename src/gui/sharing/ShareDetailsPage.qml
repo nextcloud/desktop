@@ -12,6 +12,7 @@ import QtQuick.Controls
 import com.nextcloud.desktopclient
 import Style
 import "qrc:/qml/src/gui"
+import "qrc:/qml/src/gui/tray"
 import "qrc:/qml/src/gui/wizard/qml"
 
 ColumnLayout {
