@@ -5,6 +5,7 @@
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
+import RealmSwift
 
 public extension Item {
     /// > Note: The trashing parameter does not affect whether the server will trash this or not.
@@ -21,6 +22,19 @@ public extension Item {
 
         guard trashing || isEmptyDirOrIsFile || options.contains(.recursive) else {
             return NSFileProviderError(.directoryNotEmpty)
+        }
+
+        let chunkUploadOwnerIdentifiersToDiscard = chunkUploadItemIdentifiersToDiscard()
+        var deletionCompleted = false
+        defer {
+            if deletionCompleted {
+                discardChunkUploads(
+                    forItemIdentifiers: chunkUploadOwnerIdentifiersToDiscard,
+                    usingRemoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    logger: logger
+                )
+            }
         }
 
         let ocId = itemIdentifier.rawValue
@@ -41,11 +55,13 @@ public extension Item {
                 return NSFileProviderError(.cannotSynchronize)
             }
 
+            deletionCompleted = true
             return nil
         }
 
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
             logger.info("File is in the ignore list. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: filename])
+            deletionCompleted = true
             dbManager.deleteItemMetadata(ocId: ocId)
             return nil
         }
@@ -78,6 +94,7 @@ public extension Item {
                         "Trashbin item no longer present in a fresh trash listing; treating permanent delete as already complete.",
                         [.item: ocId, .name: filename]
                     )
+                    deletionCompleted = true
                     handleMetadataDeletion()
                     return nil
                 case .unresolved:
@@ -111,6 +128,7 @@ public extension Item {
                     "Trashbin item returned 404 on permanent delete; it is already gone, treating as complete.",
                     [.item: ocId, .url: serverFileNameUrl]
                 )
+                deletionCompleted = true
                 handleMetadataDeletion()
                 return nil
             }
@@ -119,6 +137,7 @@ public extension Item {
         }
 
         logger.info("Successfully deleted item.", [.item: ocId, .url: serverFileNameUrl])
+        deletionCompleted = true
 
         guard trashing else {
             handleMetadataDeletion()
@@ -126,6 +145,29 @@ public extension Item {
         }
 
         return handleMetadataTrashModification()
+    }
+
+    private func chunkUploadItemIdentifiersToDiscard() -> [String] {
+        guard metadata.directory else {
+            return [metadata.ocId]
+        }
+
+        let directoryRemotePath = metadata.remotePath()
+        let itemAccount = metadata.account
+        return dbManager.itemMetadatas
+            .where {
+                $0.directory == false &&
+                    $0.account == itemAccount &&
+                    // Keep chunks for in-progress or failed uploads that recursive metadata deletion
+                    // deliberately preserves.
+                    $0.status < Status.inUpload.rawValue &&
+                    RealmItemMetadata.hasServerUrl(
+                        $0,
+                        equalTo: directoryRemotePath,
+                        includingDescendants: true
+                    )
+            }
+            .map(\.ocId)
     }
 
     @discardableResult

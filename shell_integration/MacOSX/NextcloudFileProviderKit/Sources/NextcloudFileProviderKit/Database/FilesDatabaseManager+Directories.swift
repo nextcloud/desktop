@@ -198,6 +198,8 @@ public extension FilesDatabaseManager {
         // orphan after upload. Follow-up: defer parent deletion or re-parent after upload.
         for result in results {
             if result.status >= Status.inUpload.rawValue {
+                // Preserve the child metadata and its resumable chunks. Item deletion applies
+                // the same status boundary when deciding which descendant chunks to clean up.
                 logger.info("Skipping deletion of child with pending upload.", [.item: result.ocId])
                 continue
             }

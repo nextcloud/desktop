@@ -124,11 +124,11 @@ extension NextcloudKit: RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in },
         progressHandler: @escaping (Progress) -> Void = { _ in },
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
-    ) async -> (account: String, file: NKFile?, nkError: NKError) {
+    ) async -> (account: String, file: NKFile?, chunksDirectory: URL?, nkError: NKError) {
         let logger = FileProviderLogger(category: "NextcloudKit+RemoteInterface", log: log)
 
         guard let remotePathComponents = chunkedUploadRemotePathComponents(from: remotePath) else {
-            return ("", nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
         let localUrl = URL(fileURLWithPath: localPath)
 
@@ -143,7 +143,7 @@ extension NextcloudKit: RemoteInterface {
                 Could not create temporary directory for chunked files: \(error)
                 """
             )
-            return ("", nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
 
         var directory = localUrl.deletingLastPathComponent().path
@@ -202,11 +202,22 @@ extension NextcloudKit: RemoteInterface {
                 }
             )
 
-            return (account, file, .success)
+            return (account, file, chunksOutputDirectoryUrl, .success)
         } catch let nkError as NKError {
-            return (account.ncKitAccount, nil, nkError)
+            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, nkError)
         } catch {
-            return (account.ncKitAccount, nil, NKError.urlError)
+            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, NKError.urlError)
+        }
+    }
+
+    public func removeLocalChunks(remoteChunkStoreFolderName: String) throws {
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent(remoteChunkStoreFolderName, isDirectory: true)
+
+        do {
+            try FileManager.default.removeItem(at: chunksDirectory)
+        } catch CocoaError.fileNoSuchFile {
+            // Nothing remains to clean up.
         }
     }
 
