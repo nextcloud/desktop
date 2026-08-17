@@ -12,7 +12,7 @@ Implements the local IPC server that talks to the OS shell-integration extension
 
 ## How it fits together
 
-`SocketApi` is the single long-lived server object (created by `owncloudgui`), and each shell-extension process connects as a client and speaks the line-based `command_*` protocol; `FolderMan`/`Folder`/journal DB provide the data `SocketApi` needs to answer status queries and build context menus, while `SyncFileItem`/`SyncJournalFileRecord`/`ShareManager`/`EncryptFolderJob`/`ConflictDialog` are invoked to actually perform requested actions.
+`SocketApi` is the single long-lived server object (created and owned by `FolderMan`, see `folderman.cpp::_socketApi.reset(new SocketApi)`), and each shell-extension process connects as a client and speaks the line-based `command_*` protocol; `FolderMan`/`Folder`/journal DB provide the data `SocketApi` needs to answer status queries and build context menus, while `SyncFileItem`/`SyncJournalFileRecord`/`ShareManager`/`EncryptFolderJob`/`ConflictDialog` are invoked to actually perform requested actions.
 
 ## Fork-specific notes
 

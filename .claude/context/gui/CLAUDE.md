@@ -32,7 +32,7 @@ Wiederkehrende Marker, an denen sich fork-eigener Code von generischem Nextcloud
 - Namenspräfix **"ses"** (BRICKMAKERS-Ticketpräfix, z. B. `sesStyle`, `SesComponents`, `sesFileIconProvider`) — praktisch immer fork-eigen.
 - Compile-Guards **`IONOS_BUILD`, `IONOS_WL_BUILD`, `STRATO_WL_BUILD`** — schalten Code zwischen IONOS- und Strato/HiDrive-Next-Branding um; `StratoTheme` ist der `#else`-Default-Zweig.
 - QML-Modul-Import **`com.strato.hidrivenext.desktopclient`** statt eines generischen `com.nextcloud.desktopclient` — praktisch jede `.qml`-Datei im Fork nutzt das.
-- Klassen **`WLTheme`/`BaseTheme`/`IonosTheme`/`StratoTheme`** als zentrale Theming-Schicht über dem generischen `Theme`.
+- Klassen **`BaseTheme`/`IonosTheme`/`StratoTheme`** als zentrale Theming-Schicht über dem generischen `Theme`; **`WLTheme`** ist keine eigene Klasse, sondern die global genutzte `static`-Singleton-Instanz davon (je nach Build-Guard `IONOS_WL_BUILD` vom Typ `IonosTheme` oder `StratoTheme`, siehe `whitelabeltheme.h`).
 - Referenzen auf **"hidrivenext"** in Log-Kategorien/Dateinamen (z. B. `hidrivenext.log`) als Branding-Leck in sonst generischem Code.
 
 ## Bekannter Merge-Hotspot

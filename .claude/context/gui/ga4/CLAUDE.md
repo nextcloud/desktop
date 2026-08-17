@@ -1,6 +1,6 @@
 # src/gui/ga4
 
-Google Analytics 4 (Measurement Protocol) telemetry integration for the fork, used to send anonymous usage/click events from the desktop client. Files carry "Nextcloud Desktop - IONOS HiDrive Next" headers and explicit "Modifications" notes, meaning this is an adapted version of an (upstream/older ownCloud-style) GA integration, reworked to target the newer GA4 `/g/collect` endpoint instead of the old Universal Analytics Measurement Protocol.
+Google Analytics 4 (Measurement Protocol) telemetry integration for the fork, used to send anonymous usage/click events from the desktop client. Files carry "This file is part of Nextcloud Destop - Ionos HiDrive Next" headers (sic, typo in the original) and explicit "Modifications" notes, meaning this is an adapted version of an (upstream/older ownCloud-style) GA integration, reworked to target the newer GA4 `/g/collect` endpoint instead of the old Universal Analytics Measurement Protocol.
 
 ## Key classes/components
 
@@ -10,10 +10,10 @@ Google Analytics 4 (Measurement Protocol) telemetry integration for the fork, us
 
 ## How it fits together
 
-GUI code (settings dialogs, `application.cpp`) talks only to `DataCollectionWrapper`, which forwards typed tracking calls to the `GAnalytics` singleton, which hands them to its `GAnalyticsWorker` for queuing/batching/HTTP delivery to `google-analytics.com`. `setSendData(bool)` toggles the whole pipeline via the user's telemetry opt-in setting.
+GUI code (settings dialogs, `application.cpp`) talks only to `DataCollectionWrapper`, which forwards typed tracking calls to the `GAnalytics` singleton, which hands them to its `GAnalyticsWorker` for queuing/batching/HTTP delivery to `www.google-analytics.com`. `setSendData(bool)` toggles the whole pipeline via the user's telemetry opt-in setting.
 
 ## Fork-specific notes
 
-- The whole folder is a fork addition on top of Nextcloud (no such telemetry exists upstream); explicit code comments mark it as ported/modified for GA4 (`// Changed the usage of Measurement Protocol to the GA4 API`), and measurement IDs / `TODO SES-169` comments confirm it's BRICKMAKERS/IONOS-owned code.
+- The whole folder is a fork addition on top of Nextcloud (no such telemetry exists upstream); explicit code comments mark it as ported/modified for GA4 (a `Modifications:` block comment listing `* - Changed the usage of Measurement Protocol to the GA4 API`), and measurement IDs / `TODO SES-169` comments confirm it's BRICKMAKERS/IONOS-owned code.
 
 *Quelle: src/gui/ga4 — Stand 2026-08-17, automatisch erstellt, bitte gegenlesen.*

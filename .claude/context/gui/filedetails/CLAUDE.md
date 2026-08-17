@@ -11,7 +11,7 @@ the tray context menu or Explorer/Finder overlay context menu for a selected syn
   local path to its `Folder`/`SyncJournalFileRecord`, exposes name/size/last-changed/icon,
   file-lock status (polls every 6s while locked), and the file's `FileTagModel`
   (from `gui/filetagmodel.h`). Also exposes `sharingAvailable` (server capability check).
-- **`ShareModel`** (`sharemodel.h/cpp`, large ~1600 lines) – the core sharing model:
+- **`ShareModel`** (`sharemodel.h/cpp`, large — 1502 lines in the .cpp, ~1770 combined) – the core sharing model:
   `QAbstractListModel` wrapping `ShareManager` to list/create/delete/modify shares
   (link, user/group, team, room, remote), handles password/expiry/note/permission toggles,
   placeholder rows for "create link share" / secure-file-drop, and "shared with me" info.

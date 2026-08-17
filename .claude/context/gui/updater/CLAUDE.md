@@ -18,7 +18,7 @@ This folder implements the client's self-update mechanism: periodic checks again
 
 ## Fork-specific notes
 
-- The update server URL is brand-specific and set at CMake configure time — see `IONOS.cmake` (`APPLICATION_UPDATE_URL = https://customerupdates.nextcloud.com/client/`) vs. `NEXTCLOUD.cmake` (`https://updates.nextcloud.org/client/`), compiled into `config.h` as `APPLICATION_UPDATE_URL` and read in `Updater::updateUrl()`.
+- The update server URL is brand-specific and set at CMake configure time — see `IONOS.cmake` (`APPLICATION_UPDATE_URL = https://customerupdates.nextcloud.com/client/`, set identically for both "strato" and "ionos" `WHITELABEL_NAME`, and only inside the `LOCALBUILD` branch — production builds presumably get this from an external CMake cache variable) vs. `NEXTCLOUD.cmake` (`https://updates.nextcloud.org/client/`, set unconditionally), compiled into `config.h` as `APPLICATION_UPDATE_URL` and read in `Updater::updateUrl()`.
 - The updater C++ logic itself (`OCUpdater`, `NSISUpdater`, `PassiveUpdateNotifier`, `SparkleUpdater`, `UpdateInfo`) is largely unmodified upstream Nextcloud/ownCloud code; only user-facing strings reference `Theme::instance()->appNameGUI()` for branding.
 
 *Quelle: src/gui/updater — Stand 2026-08-17, automatisch erstellt, bitte gegenlesen.*

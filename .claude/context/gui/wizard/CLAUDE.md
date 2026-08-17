@@ -52,13 +52,18 @@ account. Pages are plain `QWizardPage` subclasses registered by page ID (see
 
 `OwncloudWizard` registers all pages against `WizardCommon::Pages` IDs and lets each page's
 `nextId()` decide the actual route. Typical flow: `Page_Welcome` → `Page_ServerSetup` (URL entry,
-runs `DetermineAuthTypeJob`) → depending on the detected auth type: `Page_HttpCreds` (Basic),
-`Page_Flow2AuthCreds` (OAuth2/LoginFlowV2), or `Page_WebView` (browser-based, non-Flow2 builds).
-From any credentials page, `AbstractCredentialsWizardPage::nextId()` (or the Flow2-specific
-override) sends the user to `Page_TermsOfService` if the server requires ToS acceptance, else —
-in IONOS builds — to `Page_DataProtection` (with an optional detour to
-`Page_DataProtectionSettings`), else straight to `Page_AdvancedSetup`, which is the terminal page
-that creates local/remote folders and finishes the wizard (`basicSetupFinished`).
+emits the `determineAuthType` signal, handled outside this folder in
+`owncloudsetupwizard.cpp::slotDetermineAuthType` which runs the actual `DetermineAuthTypeJob`) →
+depending on the detected auth type: `Page_HttpCreds` (Basic), `Page_Flow2AuthCreds`
+(OAuth2/LoginFlowV2), or `Page_WebView` (browser-based, non-Flow2 builds). From a credentials
+page, `AbstractCredentialsWizardPage::nextId()` (used by `Page_HttpCreds`) sends the user to
+`Page_TermsOfService` if the server requires ToS acceptance, else to `Page_AdvancedSetup` — or,
+if `useVirtualFileSyncByDefault()`, straight to the wizard end (`-1`), skipping Advanced Setup
+entirely. The `Page_DataProtection` detour (with an optional further detour to
+`Page_DataProtectionSettings`) exists only in the **Flow2-specific override**
+(`Flow2AuthCredsPage::nextId()`, `#ifdef IONOS_BUILD`) — Basic-auth users never see it.
+`Page_AdvancedSetup` is the terminal page that creates local/remote folders and finishes the
+wizard (`basicSetupFinished`).
 
 ## Fork-specific vs upstream
 - `dataprotectionpage.*`, `dataprotectionsettingspage.*`, and IONOS/STRATO logos
