@@ -790,9 +790,8 @@ import OSLog
                 log: log
             )
             // TODO: Initial file creation does not persist item metadata until the upload succeeds.
-            // Running cleanup during setup therefore removes its remaining chunks after an extension
-            // restart, before File Provider can resume the create. Persist pending-create metadata,
-            // or otherwise distinguish pending local creations from abandoned uploads, first.
+            // If the extension restarts while that upload is still in progress, startup cleanup
+            // cannot distinguish its chunks from an abandoned upload and may remove them.
             cleanupAbandonedChunkUploads(
                 usingRemoteInterface: ncKit,
                 dbManager: databaseManager,
