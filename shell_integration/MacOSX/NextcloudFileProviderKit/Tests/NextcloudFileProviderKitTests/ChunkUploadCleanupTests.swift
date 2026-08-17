@@ -124,6 +124,27 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
         assertUploadRemoved(seeded)
     }
 
+    func testStartupCleanupShouldPreserveInProgressInitialCreateWithoutMetadata() throws {
+        let seeded = try seedChunkUpload(
+            itemIdentifier: "in-progress-initial-create",
+            metadataStatus: nil
+        )
+        XCTAssertNil(dbManager.itemMetadata(ocId: seeded.itemIdentifier))
+
+        // TODO: This expected failure tracks the startup-cleanup TODO in
+        // FileProviderExtension.swift: initial creates need durable state so their chunks can be
+        // distinguished from abandoned uploads after an extension restart.
+        XCTExpectFailure("Initial creates need durable metadata before startup cleanup can preserve them.") {
+            cleanupAbandonedChunkUploads(
+                usingRemoteInterface: remoteInterface,
+                dbManager: dbManager,
+                logger: makeLogger()
+            )
+
+            XCTAssertTrue(FileManager.default.fileExists(atPath: seeded.directory.path))
+        }
+    }
+
     func testStartupCleanupUsesMetadataIdentifierWhenNoChunkRowsRemain() throws {
         let seeded = try seedChunkUpload(
             itemIdentifier: "completed-chunks-item",
