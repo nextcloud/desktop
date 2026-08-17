@@ -580,120 +580,120 @@ Should the account be imported?</translation>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1521" />
+        <location filename="../src/gui/accountsettings.cpp" line="1525" />
         <source>%1 as %2</source>
         <translation>%1 as %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1494" />
+        <location filename="../src/gui/accountsettings.cpp" line="1495" />
         <source>%1 in use</source>
         <translation>%1 in use</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1487" />
+        <location filename="../src/gui/accountsettings.cpp" line="1488" />
         <source>%1 of %2 in use</source>
         <translation>%1 of %2 in use</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="840" />
+        <location filename="../src/gui/accountsettings.cpp" line="841" />
         <source>(experimental)</source>
         <translation>(experimental)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="930" />
+        <location filename="../src/gui/accountsettings.cpp" line="931" />
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="988" />
+        <location filename="../src/gui/accountsettings.cpp" line="989" />
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044" />
+        <location filename="../src/gui/accountsettings.cpp" line="1045" />
         <source>Access Error</source>
         <translation>Access Error</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="670" />
-        <location filename="../src/gui/accountsettings.cpp" line="817" />
+        <location filename="../src/gui/accountsettings.cpp" line="671" />
+        <location filename="../src/gui/accountsettings.cpp" line="818" />
         <source>Availability</source>
         <translation>Availability</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1058" />
-        <location filename="../src/gui/accountsettings.cpp" line="1065" />
+        <location filename="../src/gui/accountsettings.cpp" line="1059" />
+        <location filename="../src/gui/accountsettings.cpp" line="1066" />
         <source>Bookmark Error</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="796" />
+        <location filename="../src/gui/accountsettings.cpp" line="797" />
         <source>Choose what to sync</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="987" />
+        <location filename="../src/gui/accountsettings.cpp" line="988" />
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Confirm Folder Sync Connection Removal</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1532" />
+        <location filename="../src/gui/accountsettings.cpp" line="1536" />
         <source>Connected to %1 (%2).</source>
         <translation>Connected to %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1530" />
+        <location filename="../src/gui/accountsettings.cpp" line="1534" />
         <source>Connected to %1.</source>
         <translation>Connected to %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1550" />
+        <location filename="../src/gui/accountsettings.cpp" line="1554" />
         <source>Connecting to %1 …</source>
         <translation>Connecting to %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044" />
+        <location filename="../src/gui/accountsettings.cpp" line="1045" />
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>Could not acquire access to the selected folder. Please try again.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1058" />
+        <location filename="../src/gui/accountsettings.cpp" line="1059" />
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Could not create a security bookmark for the folder. Please try again.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="488" />
+        <location filename="../src/gui/accountsettings.cpp" line="489" />
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>Could not encrypt folder because the folder does not exist anymore</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1065" />
+        <location filename="../src/gui/accountsettings.cpp" line="1066" />
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Could not resolve the security bookmark. Please try again.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="664" />
-        <location filename="../src/gui/accountsettings.cpp" line="791" />
+        <location filename="../src/gui/accountsettings.cpp" line="665" />
+        <location filename="../src/gui/accountsettings.cpp" line="792" />
         <source>Create new folder</source>
         <translation>Create new folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1179" />
+        <location filename="../src/gui/accountsettings.cpp" line="1180" />
         <source>Disable support</source>
         <translation>Disable support</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="830" />
+        <location filename="../src/gui/accountsettings.cpp" line="831" />
         <source>Disable virtual file support …</source>
         <translation>Disable virtual file support …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1165" />
+        <location filename="../src/gui/accountsettings.cpp" line="1166" />
         <source>Disable virtual file support?</source>
         <translation>Disable virtual file support?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="338" />
+        <location filename="../src/gui/accountsettings.cpp" line="339" />
         <source>Display mnemonic</source>
         <translation>Display mnemonic</translation>
     </message>
@@ -704,23 +704,23 @@ Should the account be imported?</translation>
         <translation>Do not encrypt folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1296" />
+        <location filename="../src/gui/accountsettings.cpp" line="1297" />
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>Do you want to forget the end-to-end encryption settings for %1 on this device?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="661" />
-        <location filename="../src/gui/accountsettings.cpp" line="788" />
+        <location filename="../src/gui/accountsettings.cpp" line="662" />
+        <location filename="../src/gui/accountsettings.cpp" line="789" />
         <source>Edit Ignored Files</source>
         <translation>Edit Ignored Files</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="840" />
+        <location filename="../src/gui/accountsettings.cpp" line="841" />
         <source>Enable virtual file support %1 …</source>
         <translation>Enable virtual file support %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="651" />
+        <location filename="../src/gui/accountsettings.cpp" line="652" />
         <source>Encrypt</source>
         <translation>Encrypt</translation>
     </message>
@@ -731,12 +731,12 @@ Should the account be imported?</translation>
         <translation>Encrypt folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="488" />
+        <location filename="../src/gui/accountsettings.cpp" line="489" />
         <source>Encryption failed</source>
         <translation>Encryption failed</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="344" />
+        <location filename="../src/gui/accountsettings.cpp" line="345" />
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
         <translation>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</translation>
     </message>
@@ -751,194 +751,194 @@ Should the account be imported?</translation>
         <translation>End-to-end Encryption with Virtual Files</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1937" />
+        <location filename="../src/gui/accountsettings.cpp" line="1941" />
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="298" />
+        <location filename="../src/gui/accountsettings.cpp" line="299" />
         <source>End-to-end encryption has not been initialized on this account.</source>
         <translation>End-to-end encryption has not been initialized on this account.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1268" />
+        <location filename="../src/gui/accountsettings.cpp" line="1269" />
         <source>End-to-end encryption mnemonic</source>
         <translation>End-to-end encryption mnemonic</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="929" />
+        <location filename="../src/gui/accountsettings.cpp" line="930" />
         <source>Folder creation failed</source>
         <translation>Folder creation failed</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802" />
+        <location filename="../src/gui/accountsettings.cpp" line="803" />
         <source>Force sync now</source>
         <translation>Force sync now</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="328" />
+        <location filename="../src/gui/accountsettings.cpp" line="329" />
         <source>Forget encryption setup</source>
         <translation>Forget encryption setup</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1295" />
+        <location filename="../src/gui/accountsettings.cpp" line="1296" />
         <source>Forget the end-to-end encryption on this device</source>
         <translation>Forget the end-to-end encryption on this device</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1298" />
+        <location filename="../src/gui/accountsettings.cpp" line="1299" />
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1035" />
+        <location filename="../src/gui/accountsettings.cpp" line="1036" />
         <source>Grant access to sync folder</source>
         <translation>Grant access to sync folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1761" />
+        <location filename="../src/gui/accountsettings.cpp" line="1765" />
         <source>Migrate certificate to a new one</source>
         <translation>Migrate certificate to a new one</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1570" />
+        <location filename="../src/gui/accountsettings.cpp" line="1574" />
         <source>No %1 connection configured.</source>
         <translation>No %1 connection configured.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="306" />
+        <location filename="../src/gui/accountsettings.cpp" line="307" />
         <source>No account configured.</source>
         <translation>No account configured.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="632" />
-        <location filename="../src/gui/accountsettings.cpp" line="785" />
+        <location filename="../src/gui/accountsettings.cpp" line="633" />
+        <location filename="../src/gui/accountsettings.cpp" line="786" />
         <source>Open folder</source>
         <translation>Open folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810" />
+        <location filename="../src/gui/accountsettings.cpp" line="811" />
         <source>Pause sync</source>
         <translation>Pause sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051" />
+        <location filename="../src/gui/accountsettings.cpp" line="1052" />
         <source>Please select the original sync folder: %1</source>
         <translation>Please select the original sync folder: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="423" />
+        <location filename="../src/gui/accountsettings.cpp" line="424" />
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Please wait for the folder to sync before trying to encrypt it.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1000" />
+        <location filename="../src/gui/accountsettings.cpp" line="1001" />
         <source>Remove Folder Sync Connection</source>
         <translation>Remove Folder Sync Connection</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="813" />
+        <location filename="../src/gui/accountsettings.cpp" line="814" />
         <source>Remove folder sync connection</source>
         <translation>Remove folder sync connection</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="804" />
+        <location filename="../src/gui/accountsettings.cpp" line="805" />
         <source>Restart sync</source>
         <translation>Restart sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810" />
+        <location filename="../src/gui/accountsettings.cpp" line="811" />
         <source>Resume sync</source>
         <translation>Resume sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1544" />
+        <location filename="../src/gui/accountsettings.cpp" line="1548" />
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Server %1 is currently being redirected, or your connection is behind a captive portal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1541" />
+        <location filename="../src/gui/accountsettings.cpp" line="1545" />
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Server %1 is currently in maintenance mode.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1538" />
+        <location filename="../src/gui/accountsettings.cpp" line="1542" />
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 is temporarily unavailable.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1557" />
+        <location filename="../src/gui/accountsettings.cpp" line="1561" />
         <source>Server configuration error: %1 at %2.</source>
         <translation>Server configuration error: %1 at %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2008" />
+        <location filename="../src/gui/accountsettings.cpp" line="2012" />
         <source>Set up encryption</source>
         <translation>Set up encryption</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1547" />
+        <location filename="../src/gui/accountsettings.cpp" line="1551" />
         <source>Signed out from %1.</source>
         <translation>Signed out from %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1404" />
+        <location filename="../src/gui/accountsettings.cpp" line="1405" />
         <source>Sync Running</source>
         <translation>Sync Running</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="425" />
+        <location filename="../src/gui/accountsettings.cpp" line="426" />
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="427" />
+        <location filename="../src/gui/accountsettings.cpp" line="428" />
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1528" />
+        <location filename="../src/gui/accountsettings.cpp" line="1532" />
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>The server version %1 is unsupported! Proceed at your own risk.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1405" />
+        <location filename="../src/gui/accountsettings.cpp" line="1406" />
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2000" />
+        <location filename="../src/gui/accountsettings.cpp" line="2004" />
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>The virtual files integration does not support end-to-end encryption yet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1871" />
+        <location filename="../src/gui/accountsettings.cpp" line="1875" />
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>There are folders that have grown in size beyond %1MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1859" />
+        <location filename="../src/gui/accountsettings.cpp" line="1863" />
         <source>There are folders that were not synchronized because they are external storages:</source>
         <translation>There are folders that were not synchronised because they are external storages:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1860" />
+        <location filename="../src/gui/accountsettings.cpp" line="1864" />
         <source>There are folders that were not synchronized because they are too big or external storages:</source>
         <translation>There are folders that were not synchronised because they are too big or external storages:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1858" />
+        <location filename="../src/gui/accountsettings.cpp" line="1862" />
         <source>There are folders that were not synchronized because they are too big:</source>
         <translation>There are folders that were not synchronised because they are too big:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1999" />
-        <location filename="../src/gui/accountsettings.cpp" line="2002" />
+        <location filename="../src/gui/accountsettings.cpp" line="2003" />
+        <location filename="../src/gui/accountsettings.cpp" line="2006" />
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>This account supports end-to-end encryption, but it needs to be set up first.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1166" />
+        <location filename="../src/gui/accountsettings.cpp" line="1167" />
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -958,41 +958,41 @@ This action will abort any currently running synchronization.</translation>
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1270" />
+        <location filename="../src/gui/accountsettings.cpp" line="1271" />
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1554" />
+        <location filename="../src/gui/accountsettings.cpp" line="1558" />
         <source>Unable to connect to %1.</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="377" />
+        <location filename="../src/gui/accountsettings.cpp" line="378" />
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051" />
+        <location filename="../src/gui/accountsettings.cpp" line="1052" />
         <source>Wrong Folder</source>
         <translation>Wrong Folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="464" />
+        <location filename="../src/gui/accountsettings.cpp" line="465" />
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="439" />
+        <location filename="../src/gui/accountsettings.cpp" line="440" />
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
         <translation>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1565" />
+        <location filename="../src/gui/accountsettings.cpp" line="1569" />
         <source>You need to accept the terms of service at %1.</source>
         <translation>You need to accept the terms of service at %1.</translation>
     </message>
@@ -1013,8 +1013,8 @@ Would you like to do this now?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="311" />
-        <location filename="../src/gui/accountsettings.cpp" line="1002" />
-        <location filename="../src/gui/accountsettings.cpp" line="1182" />
+        <location filename="../src/gui/accountsettings.cpp" line="1003" />
+        <location filename="../src/gui/accountsettings.cpp" line="1183" />
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -2894,12 +2894,12 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="914" />
+        <location filename="../src/gui/folderwizard.cpp" line="899" />
         <source>Add Folder Sync Connection</source>
         <translation>Add Folder Sync Connection</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="917" />
+        <location filename="../src/gui/folderwizard.cpp" line="902" />
         <source>Add Sync Connection</source>
         <translation>Add Sync Connection</translation>
     </message>
@@ -2907,37 +2907,37 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="200" />
+        <location filename="../src/gui/folderwizard.cpp" line="185" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Add Folder Sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="227" />
+        <location filename="../src/gui/folderwizard.cpp" line="212" />
         <source>Choose</source>
         <translation>Choose</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="86" />
+        <location filename="../src/gui/folderwizard.cpp" line="71" />
         <source>Click to select a local folder to sync.</source>
         <translation>Click to select a local folder to sync.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="90" />
+        <location filename="../src/gui/folderwizard.cpp" line="75" />
         <source>Enter the path to the local folder.</source>
         <translation>Enter the path to the local folder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="213" />
+        <location filename="../src/gui/folderwizard.cpp" line="198" />
         <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
         <translation type="unfinished">Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="156" />
+        <location filename="../src/gui/folderwizard.cpp" line="141" />
         <source>Select the source folder</source>
         <translation>Select the source folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="207" />
+        <location filename="../src/gui/folderwizard.cpp" line="192" />
         <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished">Step 1 of 3: Select local folder</translation>
     </message>
@@ -2945,78 +2945,78 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="672" />
+        <location filename="../src/gui/folderwizard.cpp" line="657" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Add Folder Sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="355" />
+        <location filename="../src/gui/folderwizard.cpp" line="340" />
         <source>Authentication failed accessing %1</source>
         <translation>Authentication failed accessing %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="688" />
+        <location filename="../src/gui/folderwizard.cpp" line="673" />
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
         <translation type="unfinished">Both folders are permanently linked and the respective contents are automatically synchronized and updated.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="454" />
+        <location filename="../src/gui/folderwizard.cpp" line="439" />
         <source>Choose this to sync the entire account</source>
         <translation>Choose this to sync the entire account</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="285" />
+        <location filename="../src/gui/folderwizard.cpp" line="270" />
         <source>Create Remote Folder</source>
         <translation>Create Remote Folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="711" />
+        <location filename="../src/gui/folderwizard.cpp" line="696" />
         <source>Create folder</source>
         <translation type="unfinished">Create folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="286" />
+        <location filename="../src/gui/folderwizard.cpp" line="271" />
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Enter the name of the new folder to be created below &quot;%1&quot;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="357" />
+        <location filename="../src/gui/folderwizard.cpp" line="342" />
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Failed to create the folder on %1. Please check manually.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="374" />
+        <location filename="../src/gui/folderwizard.cpp" line="359" />
         <source>Failed to list a folder. Error: %1</source>
         <translation>Failed to list a folder. Error: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="345" />
+        <location filename="../src/gui/folderwizard.cpp" line="330" />
         <source>Folder was successfully created on %1.</source>
         <translation>Folder was successfully created on %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="589" />
-        <location filename="../src/gui/folderwizard.cpp" line="599" />
+        <location filename="../src/gui/folderwizard.cpp" line="574" />
+        <location filename="../src/gui/folderwizard.cpp" line="584" />
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Please choose a different location. %1 is already being synced to %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="685" />
+        <location filename="../src/gui/folderwizard.cpp" line="670" />
         <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
         <translation type="unfinished">Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="709" />
+        <location filename="../src/gui/folderwizard.cpp" line="694" />
         <source>Refresh</source>
         <translation type="unfinished">Refresh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="679" />
+        <location filename="../src/gui/folderwizard.cpp" line="664" />
         <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished">Step 2 of 3: Directory in your %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="594" />
+        <location filename="../src/gui/folderwizard.cpp" line="579" />
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>You are already syncing the subfolder %1 at %2.</translation>
     </message>
@@ -3024,36 +3024,36 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="732" />
-        <location filename="../src/gui/folderwizard.cpp" line="788" />
-        <location filename="../src/gui/folderwizard.cpp" line="836" />
+        <location filename="../src/gui/folderwizard.cpp" line="717" />
+        <location filename="../src/gui/folderwizard.cpp" line="773" />
+        <location filename="../src/gui/folderwizard.cpp" line="821" />
         <source>(experimental)</source>
         <translation>(experimental)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="759" />
+        <location filename="../src/gui/folderwizard.cpp" line="744" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Add Folder Sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="766" />
+        <location filename="../src/gui/folderwizard.cpp" line="751" />
         <source>Step 3 of 3: Selektive Synchronisation</source>
         <translation type="unfinished">Step 3 of 3: Selective Synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="731" />
-        <location filename="../src/gui/folderwizard.cpp" line="787" />
-        <location filename="../src/gui/folderwizard.cpp" line="835" />
+        <location filename="../src/gui/folderwizard.cpp" line="716" />
+        <location filename="../src/gui/folderwizard.cpp" line="772" />
+        <location filename="../src/gui/folderwizard.cpp" line="820" />
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Use virtual files instead of downloading content immediately %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="857" />
+        <location filename="../src/gui/folderwizard.cpp" line="842" />
         <source>Virtual files are not supported at the selected location</source>
         <translation>Virtual files are not supported at the selected location</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="831" />
+        <location filename="../src/gui/folderwizard.cpp" line="816" />
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</translation>
     </message>
@@ -5270,7 +5270,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="603" />
+        <location filename="../src/gui/settingsdialog.cpp" line="606" />
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
@@ -5980,12 +5980,12 @@ Server replied with error: %2</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1667" />
+        <location filename="../src/gui/accountsettings.cpp" line="1671" />
         <source>ExpandMemory-Link</source>
         <translation type="unfinished">https://wl.hidrive.com/easy/0057</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1665" />
+        <location filename="../src/gui/accountsettings.cpp" line="1669" />
         <source>ExpandMemory-Link_STRATO</source>
         <translation type="unfinished">https://static.hidrive.com/next/1046</translation>
     </message>
@@ -7410,7 +7410,7 @@ Server replied with error: %2</translation>
 <context>
     <name>TrayWindowAccountMenu</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="283" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="287" />
         <source>Account switcher and settings menu</source>
         <translation type="unfinished">Account switcher and settings menu</translation>
     </message>
@@ -7425,22 +7425,22 @@ Server replied with error: %2</translation>
         <translation type="unfinished">Current account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="176" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="180" />
         <source>Current account avatar</source>
         <translation type="unfinished">Current account avatar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="225" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="229" />
         <source>Current account status is do not disturb</source>
         <translation type="unfinished">Current account status is do not disturb</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="225" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="229" />
         <source>Current account status is online</source>
         <translation type="unfinished">Current account status is online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="155" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="157" />
         <source>Exit</source>
         <translation type="unfinished">Exit</translation>
     </message>
@@ -7455,7 +7455,7 @@ Server replied with error: %2</translation>
         <translation>Resume sync for all</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="148" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="150" />
         <source>Settings</source>
         <translation type="unfinished">Settings</translation>
     </message>
@@ -7476,34 +7476,6 @@ Server replied with error: %2</translation>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="68" />
         <source>Open local or team folders</source>
         <translation>Open local or team folders</translation>
-    </message>
-</context>
-<context>
-    <name>TrayWindowHeaderBar</name>
-    <message>
-        <location filename="../src/gui/tray/TrayWindowHeaderBar.qml" line="108" />
-        <source>More apps</source>
-        <translation type="unfinished">More apps</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayWindowHeaderBar.qml" line="162" />
-        <source>Open %1 in browser</source>
-        <translation type="unfinished">Open %1 in browser</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayWindowHeaderBar.qml" line="45" />
-        <source>Open Nextcloud in browser</source>
-        <translation type="unfinished">Open HiDrive Next in browser</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayWindowHeaderBar.qml" line="65" />
-        <source>Open local or team folders</source>
-        <translation type="unfinished">Open local or team folders</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayWindowHeaderBar.qml" line="42" />
-        <source>Website</source>
-        <translation type="unfinished">Website</translation>
     </message>
 </context>
 <context>
@@ -7565,29 +7537,29 @@ Server replied with error: %2</translation>
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="163" />
+        <location filename="../src/gui/tray/UserLine.qml" line="165" />
         <source>Account actions</source>
         <translation>Account actions</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="145" />
+        <location filename="../src/gui/tray/UserLine.qml" line="147" />
         <source>Account sync status requires attention</source>
         <translation>Account sync status requires attention</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="207" />
-        <location filename="../src/gui/tray/UserLine.qml" line="218" />
+        <location filename="../src/gui/tray/UserLine.qml" line="209" />
+        <location filename="../src/gui/tray/UserLine.qml" line="220" />
         <source>Log in</source>
         <translation>Log in</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="207" />
-        <location filename="../src/gui/tray/UserLine.qml" line="218" />
+        <location filename="../src/gui/tray/UserLine.qml" line="209" />
+        <location filename="../src/gui/tray/UserLine.qml" line="220" />
         <source>Log out</source>
         <translation>Log out</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="261" />
+        <location filename="../src/gui/tray/UserLine.qml" line="263" />
         <source>Remove account</source>
         <translation type="unfinished">Remove account</translation>
     </message>
