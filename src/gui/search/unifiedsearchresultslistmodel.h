@@ -36,8 +36,8 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
     Q_OBJECT
 
     QML_ELEMENT
-    QML_UNCREATABLE("created by Systray")
 
+    Q_PROPERTY(int accountId READ accountId WRITE setAccountId NOTIFY accountIdChanged)
     Q_PROPERTY(bool isSearchInProgress READ isSearchInProgress NOTIFY isSearchInProgressChanged)
     Q_PROPERTY(QString currentFetchMoreInProgressProviderId READ currentFetchMoreInProgressProviderId NOTIFY currentFetchMoreInProgressProviderIdChanged)
     Q_PROPERTY(QString errorString READ errorString NOTIFY errorStringChanged)
@@ -131,6 +131,7 @@ public:
         LoadingRole,
     };
 
+    Q_INVOKABLE explicit UnifiedSearchResultsListModel(QObject *parent = nullptr);
     explicit UnifiedSearchResultsListModel(AccountState *accountState,
                                             int debounceInterval = 300,
                                             int revealInterval = 1000,
@@ -141,6 +142,7 @@ public:
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
+    [[nodiscard]] int accountId() const;
     [[nodiscard]] bool isSearchInProgress() const;
     [[nodiscard]] QString currentFetchMoreInProgressProviderId() const;
     [[nodiscard]] QString searchTerm() const;
@@ -191,6 +193,7 @@ public Q_SLOTS:
     void activateSelected() const;
 
 Q_SIGNALS:
+    void accountIdChanged();
     void currentFetchMoreInProgressProviderIdChanged();
     void isSearchInProgressChanged();
     void errorStringChanged();
@@ -216,6 +219,7 @@ private:
         Loaded,
         Failed,
     };
+    void setAccountState(AccountState *accountState);
 
     struct UnifiedSearchProvider
     {
@@ -321,5 +325,6 @@ private:
     QTimer _debounceTimer;
     QTimer _revealTimer;
     AccountState *_accountState = nullptr;
+    int _accountId = -1;
 };
 }
