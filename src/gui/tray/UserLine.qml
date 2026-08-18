@@ -59,8 +59,8 @@ AbstractButton {
             verticalAlignment: Qt.AlignCenter
             cache: false
             source: avatar !== "" ? avatar : Style.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
-            Layout.preferredHeight: Style.accountAvatarSize
-            Layout.preferredWidth: Style.accountAvatarSize
+            Layout.preferredHeight: Math.min(Style.accountAvatarSize, userLine.availableHeight)
+            Layout.preferredWidth: Math.min(Style.accountAvatarSize, userLine.availableHeight)
         }
 
         ColumnLayout {
@@ -180,10 +180,9 @@ AbstractButton {
                 contentItem: ColumnLayout {
                     spacing: 0
 
-                    Button {
+                    MenuItem {
                         id: logInOutButton
                         Layout.fillWidth: true
-                        flat: true
 
                         property bool isHovered: logInOutButton.hovered || logInOutButton.visualFocus
                         property bool isActive: logInOutButton.pressed
@@ -225,10 +224,9 @@ AbstractButton {
                         }
                     }
 
-                    Button {
+                    MenuItem {
                         id: removeAccountButton
                         Layout.fillWidth: true
-                        flat: true
 
                         property bool isHovered: removeAccountButton.hovered || removeAccountButton.visualFocus
                         property bool isActive: removeAccountButton.pressed
