@@ -1465,17 +1465,17 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountSetupFromCommandLineJob</name>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="149"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>مۇلازىمېتىرغا دەلىللەنگەن تەلەپ «%1» گە يۆتكەلدى. URL ناچار ، مۇلازىمېتىر خاتا تەڭشەلدى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="169"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>مۇلازىمېتىر تەرىپىدىن چەكلەنگەن. مۇۋاپىق زىيارەت قىلىش ھوقۇقىڭىزنى جەزملەشتۈرۈش ئۈچۈن ، &lt;a href = &quot;%1&quot;&gt; بۇ يەرنى چېكىپ &lt;/a&gt; توركۆرگۈڭىز بىلەن مۇلازىمەتنى زىيارەت قىلىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="167"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="177"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>دەلىللەنگەن WebDAV تەلىپىگە ئىناۋەتسىز جاۋاب كەلدى</translation>
     </message>
@@ -1483,57 +1483,57 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="152"/>
+        <location filename="../src/gui/accountstate.cpp" line="156"/>
         <source>Signed out</source>
         <translation>تىزىملاتتى</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="154"/>
+        <location filename="../src/gui/accountstate.cpp" line="158"/>
         <source>Disconnected</source>
         <translation>ئۈزۈلۈپ قالدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="156"/>
+        <location filename="../src/gui/accountstate.cpp" line="160"/>
         <source>Connected</source>
         <translation>ئۇلاندى</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="158"/>
+        <location filename="../src/gui/accountstate.cpp" line="162"/>
         <source>Service unavailable</source>
         <translation>مۇلازىمەتنى ئىشلەتكىلى بولمايدۇ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="160"/>
+        <location filename="../src/gui/accountstate.cpp" line="164"/>
         <source>Maintenance mode</source>
         <translation>ئاسراش ھالىتى</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="162"/>
+        <location filename="../src/gui/accountstate.cpp" line="166"/>
         <source>Redirect detected</source>
         <translation>قايتا نىشانلاندى</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="164"/>
+        <location filename="../src/gui/accountstate.cpp" line="168"/>
         <source>Network error</source>
         <translation>تور خاتالىقى</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="166"/>
+        <location filename="../src/gui/accountstate.cpp" line="170"/>
         <source>Configuration error</source>
         <translation>سەپلەش خاتالىقى</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="168"/>
+        <location filename="../src/gui/accountstate.cpp" line="172"/>
         <source>Asking Credentials</source>
         <translation>كىنىشكا سوراش</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="170"/>
+        <location filename="../src/gui/accountstate.cpp" line="174"/>
         <source>Need the user to accept the terms of service</source>
         <translation>ئىشلەتكۈچىنىڭ مۇلازىمەت شەرتلىرىنى قوبۇل قىلىشى كېرەك</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="172"/>
+        <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Unknown account state</source>
         <translation>نامەلۇم ھېسابات ھالىتى</translation>
     </message>
@@ -1885,34 +1885,34 @@ This action will abort any currently running synchronization.</source>
         <translation>داۋاملاشتۇر</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="703"/>
+        <location filename="../src/gui/application.cpp" line="705"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation> %1 ھېسابات</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="704"/>
+        <location filename="../src/gui/application.cpp" line="706"/>
         <source>1 account</source>
         <translation>1 ھېسابات</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="706"/>
+        <location filename="../src/gui/application.cpp" line="708"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation> %1 ھۆججەت قىسقۇچ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="707"/>
+        <location filename="../src/gui/application.cpp" line="709"/>
         <source>1 folder</source>
         <translation>1 ھۆججەت قىسقۇچ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="709"/>
+        <location filename="../src/gui/application.cpp" line="711"/>
         <source>Legacy import</source>
         <translation>مىراس ئىمپورت</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="710"/>
+        <location filename="../src/gui/application.cpp" line="712"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1920,12 +1920,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="830"/>
+        <location filename="../src/gui/application.cpp" line="834"/>
         <source>Error accessing the configuration file</source>
         <translation>سەپلىمە ھۆججىتىگە كىرىشتە خاتالىق</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="831"/>
+        <location filename="../src/gui/application.cpp" line="835"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation> %1 دىكى سەپلىمە ھۆججىتىنى زىيارەت قىلغاندا خاتالىق كۆرۈلدى. ھۆججەتنى سىستېما ھېساباتىڭىز ئارقىلىق زىيارەت قىلىشقا كاپالەتلىك قىلىڭ.</translation>
     </message>
@@ -3013,12 +3013,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="500"/>
+        <location filename="../src/gui/folderman.cpp" line="512"/>
         <source>Could not reset folder state</source>
         <translation>ھۆججەت قىسقۇچ ھالىتىنى ئەسلىگە كەلتۈرەلمىدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="501"/>
+        <location filename="../src/gui/folderman.cpp" line="513"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>كونا ماس قەدەملىك ژۇرنال «%1» تېپىلدى ، ئەمما ئۆچۈرگىلى بولمىدى. ھازىر ھېچقانداق قوللىنىشچان پروگراممىنىڭ ئىشلىتىلمەيدىغانلىقىنى جەزملەشتۈرۈڭ.</translation>
     </message>
@@ -3033,116 +3033,116 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation> (زاپاسلاش%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1874"/>
+        <location filename="../src/gui/folderman.cpp" line="1886"/>
         <source>Undefined state.</source>
         <translation>ئېنىقلانمىغان دۆلەت.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1877"/>
+        <location filename="../src/gui/folderman.cpp" line="1889"/>
         <source>Waiting to start syncing.</source>
         <translation>ماسقەدەملەشنى باشلايدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1880"/>
+        <location filename="../src/gui/folderman.cpp" line="1892"/>
         <source>Preparing for sync.</source>
         <translation>ماسقەدەملەشكە تەييارلىق قىلماقتا.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1890"/>
+        <location filename="../src/gui/folderman.cpp" line="1902"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation> %2 نىڭ %1 ماسقەدەملىنىشى (بىر نەچچە سېكۇنت قالدى)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1893"/>
+        <location filename="../src/gui/folderman.cpp" line="1905"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation> %2 نىڭ %1 نى ماسقەدەملەش ( %3 قالدى)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1896"/>
+        <location filename="../src/gui/folderman.cpp" line="1908"/>
         <source>Syncing %1 of %2</source>
         <translation> %2 نىڭ %1 نى ماسقەدەملەش</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1902"/>
+        <location filename="../src/gui/folderman.cpp" line="1914"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>ماس قەدەم %1 (بىر نەچچە سېكۇنت قالدى)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1904"/>
+        <location filename="../src/gui/folderman.cpp" line="1916"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>ماس قەدەم %1 ( %2 سول)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1919"/>
         <source>Syncing %1</source>
         <translation>ماس قەدەم%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1912"/>
+        <location filename="../src/gui/folderman.cpp" line="1924"/>
         <source>Sync is running.</source>
         <translation>ماسقەدەملەش ئىجرا بولۇۋاتىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1917"/>
+        <location filename="../src/gui/folderman.cpp" line="1929"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>ماس قەدەمدە ھەل قىلىنمىغان توقۇنۇشلار بىلەن تاماملاندى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1919"/>
+        <location filename="../src/gui/folderman.cpp" line="1931"/>
         <source>Last sync was successful.</source>
         <translation>ئاخىرقى ماسقەدەملەش مۇۋەپپەقىيەتلىك بولدى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1925"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>Setup error.</source>
         <translation>تەڭشەش خاتالىقى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1928"/>
+        <location filename="../src/gui/folderman.cpp" line="1940"/>
         <source>Sync request was cancelled.</source>
         <translation>ماس قەدەملىك تەلەپ ئەمەلدىن قالدۇرۇلدى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1945"/>
+        <location filename="../src/gui/folderman.cpp" line="1957"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>باشقا ئورۇن تاللاڭ. تاللانغان قىسقۇچ ئىناۋەتسىز.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1953"/>
-        <location filename="../src/gui/folderman.cpp" line="2032"/>
+        <location filename="../src/gui/folderman.cpp" line="1965"/>
+        <location filename="../src/gui/folderman.cpp" line="2044"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>باشقا ئورۇن تاللاڭ. %1 ئاللىقاچان سىنخرونلاشتۇرۇش قىسقۇچى سۈپىتىدە ئىشلىتىلىۋاتىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1962"/>
+        <location filename="../src/gui/folderman.cpp" line="1974"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>باشقا ئورۇن تاللاڭ. %1 يولى مەۋجۇت ئەمەس.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1966"/>
+        <location filename="../src/gui/folderman.cpp" line="1978"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>باشقا ئورۇن تاللاڭ. %1 يولى قىسقۇچ ئەمەس.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1974"/>
-        <location filename="../src/gui/folderman.cpp" line="1979"/>
+        <location filename="../src/gui/folderman.cpp" line="1986"/>
+        <location filename="../src/gui/folderman.cpp" line="1991"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>باشقا ئورۇن تاللاڭ. %1 غا يېزىشقا يېتەرلىك ھوقۇقىڭىز يوق.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2039"/>
+        <location filename="../src/gui/folderman.cpp" line="2051"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>باشقا ئورۇن تاللاڭ. %1 ئاللىقاچان سىنخرونلاشتۇرۇش قىسقۇچى سۈپىتىدە ئىشلىتىلگەن قىسقۇچتا بار.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2054"/>
+        <location filename="../src/gui/folderman.cpp" line="2066"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>باشقا ئورۇن تاللاڭ. %1 ئاللىقاچان %2 ئۈچۈن سىنخرونلاشتۇرۇش قىسقۇچى سۈپىتىدە ئىشلىتىلىۋاتىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2212"/>
+        <location filename="../src/gui/folderman.cpp" line="2224"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3153,17 +3153,17 @@ For advanced users: this issue might be related to multiple sync database files 
 ئىلغار ئىشلەتكۈچىلەر ئۈچۈن: بۇ مەسىلە بىر قىسقۇچتا تېپىلغان كۆپ ماسلاشتۇرۇش سانلىق مەلۇمات ئامبىرى ھۆججەتلىرى بىلەن مۇناسىۋەتلىك بولۇشى مۇمكىن. %1 نىڭ كونا ۋە ئىشلىتىلمىگەن .sync_*.db ھۆججەتلىرىنى تەكشۈرۈپ، ئۇلارنى ئۆچۈرۈڭ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1931"/>
+        <location filename="../src/gui/folderman.cpp" line="1943"/>
         <source>Sync is paused.</source>
         <translation>ماسقەدەملەش توختىتىلدى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="413"/>
+        <location filename="../src/gui/folderman.cpp" line="425"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1937"/>
+        <location filename="../src/gui/folderman.cpp" line="1949"/>
         <source>%1 (Sync is paused)</source>
         <translation> %1 (ماسقەدەملەش توختىتىلدى)</translation>
     </message>
@@ -3851,22 +3851,22 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="906"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="904"/>
         <source>Password for share required</source>
         <translation>ئورتاقلىشىش ئۈچۈن پارول لازىم</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="907"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="905"/>
         <source>Please enter a password for your link share:</source>
         <translation>ئۇلىنىش ھەمبەھىرلىنىشىڭىز ئۈچۈن پارول كىرگۈزۈڭ:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="933"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="931"/>
         <source>Sharing error</source>
         <translation>ئورتاقلىشىش خاتالىقى</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="934"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="932"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5471,48 +5471,48 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="874"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="872"/>
         <source>Context menu share</source>
         <translation>مەزمۇن تىزىملىكى ئورتاقلىشىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1160"/>
         <source>I shared something with you</source>
         <translation>مەن سىز بىلەن بىر نەرسە ئورتاقلاشتىم</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1175"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1213"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1173"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
         <source>Share options</source>
         <translation>ئورتاقلىشىش تاللانمىلىرى</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1180"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1178"/>
         <source>Send private link by email …</source>
         <translation>ئېلېكترونلۇق خەت ئارقىلىق شەخسىي ئۇلىنىش ئەۋەتىڭ…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1179"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1177"/>
         <source>Copy private link to clipboard</source>
         <translation>شەخسىي ئۇلىنىشنى چاپلاش تاختىسىغا كۆچۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="595"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="593"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>«%1» دىكى ھۆججەت قىسقۇچنى مەخپىيلەشتۈرۈش مەغلۇب بولدى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="596"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="594"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation> %1 ھېساباتىدا ئاخىرىغىچە مەخپىيلەشتۈرۈش سەپلەنمىگەن. ھۆججەت قىسقۇچنى مەخپىيلەشتۈرۈش ئۈچۈن بۇنى ھېسابات تەڭشىكىڭىزگە تەڭشەڭ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="615"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="613"/>
         <source>Failed to encrypt folder</source>
         <translation>ھۆججەت قىسقۇچنى مەخپىيلەشتۈرۈش مەغلۇب بولدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="614"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5521,12 +5521,12 @@ Server replied with error: %2</source>
 مۇلازىمېتىر خاتالىق بىلەن جاۋاب بەردى:%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="623"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="621"/>
         <source>Folder encrypted successfully</source>
         <translation>ھۆججەت قىسقۇچ مۇۋەپپەقىيەتلىك شىفىرلاندى</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="624"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="622"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>تۆۋەندىكى ھۆججەت قىسقۇچ مۇۋەپپەقىيەتلىك شىفىرلاندى: &quot;%1&quot;</translation>
     </message>
@@ -5536,101 +5536,101 @@ Server replied with error: %2</source>
         <translation>يېڭى ئورۇننى تاللاڭ…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1176"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1239"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1174"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1237"/>
         <source>File actions</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1177"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1420"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1175"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1418"/>
         <source>Activity</source>
         <translation>پائالىيەت</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1205"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
         <source>Leave this share</source>
         <translation>بۇ ئۈلۈشنى قالدۇرۇڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>Resharing this file is not allowed</source>
         <translation>بۇ ھۆججەتنى قايتا ئىشلىتىشكە بولمايدۇ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>Resharing this folder is not allowed</source>
         <translation>بۇ ھۆججەت قىسقۇچنى قايتا ئىشلىتىشكە بولمايدۇ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1272"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1270"/>
         <source>Encrypt</source>
         <translation>شىفىرلاش</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
         <source>Lock file</source>
         <translation>ھۆججەتنى قۇلۇپلاش</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1286"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1284"/>
         <source>Unlock file</source>
         <translation>ھۆججەتنى ئېچىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1302"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1300"/>
         <source>Locked by %1</source>
         <translation> %1 تەرىپىدىن قۇلۇپلانغان</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1306"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1304"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>%1 مىنۇتتا مۇددىتى توشىدۇ</numerusform><numerusform>%1 مىنۇتتا مۇددىتى توشىدۇ</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1315"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1313"/>
         <source>Apply labels</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1457"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1455"/>
         <source>Resolve conflict …</source>
         <translation>زىددىيەتنى ھەل قىلىش…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1461"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1459"/>
         <source>Move and rename …</source>
         <translation>يۆتكەش ۋە ئۆزگەرتىش…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1464"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1462"/>
         <source>Move, rename and upload …</source>
         <translation>يۆتكەش ، ئىسىم ئۆزگەرتىش ۋە يوللاش…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1466"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1464"/>
         <source>Delete local changes</source>
         <translation>يەرلىك ئۆزگەرتىشلەرنى ئۆچۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1472"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1470"/>
         <source>Move and upload …</source>
         <translation>يۆتكەش ۋە يوللاش…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1473"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1471"/>
         <source>Delete</source>
         <translation>ئۆچۈر</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1217"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1215"/>
         <source>Copy internal link</source>
         <translation>ئىچكى ئۇلىنىشنى كۆچۈرۈڭ</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1424"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1426"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1428"/>
         <source>Open in browser</source>
         <translation>توركۆرگۈدە ئېچىڭ</translation>
     </message>

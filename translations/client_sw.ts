@@ -1466,17 +1466,17 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
 <context>
     <name>OCC::AccountSetupFromCommandLineJob</name>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="149"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Ombi lililothibitishwa kwa seva lilielekezwa upya hadi &quot;%1&quot;. URL ni mbaya, seva haijasanidiwa vibaya.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="169"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Ufikiaji umekatazwa na seva. Ili kuthibitisha kuwa una ufikiaji ufaao, &lt;a href=&quot;%1&quot;&gt;bofya hapa&lt;/a&gt; ili kufikia huduma ukitumia kivinjari chako.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="167"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="177"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Kulikuwa na jibu batili kwa ombi la WebDAV lililothibitishwa</translation>
     </message>
@@ -1484,57 +1484,57 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="152"/>
+        <location filename="../src/gui/accountstate.cpp" line="156"/>
         <source>Signed out</source>
         <translation>Umeondoka</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="154"/>
+        <location filename="../src/gui/accountstate.cpp" line="158"/>
         <source>Disconnected</source>
         <translation>Imetenganishwa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="156"/>
+        <location filename="../src/gui/accountstate.cpp" line="160"/>
         <source>Connected</source>
         <translation>Imeunganishwa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="158"/>
+        <location filename="../src/gui/accountstate.cpp" line="162"/>
         <source>Service unavailable</source>
         <translation>Huduma haipatikani</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="160"/>
+        <location filename="../src/gui/accountstate.cpp" line="164"/>
         <source>Maintenance mode</source>
         <translation>Hali ya matengenezo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="162"/>
+        <location filename="../src/gui/accountstate.cpp" line="166"/>
         <source>Redirect detected</source>
         <translation>Uelekezaji upya umegunduliwa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="164"/>
+        <location filename="../src/gui/accountstate.cpp" line="168"/>
         <source>Network error</source>
         <translation>Hitilafu ya mtandao</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="166"/>
+        <location filename="../src/gui/accountstate.cpp" line="170"/>
         <source>Configuration error</source>
         <translation>Hitilafu ya usanidi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="168"/>
+        <location filename="../src/gui/accountstate.cpp" line="172"/>
         <source>Asking Credentials</source>
         <translation>Inauliza Sifa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="170"/>
+        <location filename="../src/gui/accountstate.cpp" line="174"/>
         <source>Need the user to accept the terms of service</source>
         <translation>Haja ya mtumiaji kukubali sheria na masharti</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="172"/>
+        <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Unknown account state</source>
         <translation>Hali ya akaunti isiyojulikana</translation>
     </message>
@@ -1886,34 +1886,34 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
         <translation>Endelea</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="703"/>
+        <location filename="../src/gui/application.cpp" line="705"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 akaunti</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="704"/>
+        <location filename="../src/gui/application.cpp" line="706"/>
         <source>1 account</source>
         <translation>1 akaunti</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="706"/>
+        <location filename="../src/gui/application.cpp" line="708"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 folda</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="707"/>
+        <location filename="../src/gui/application.cpp" line="709"/>
         <source>1 folder</source>
         <translation>1 folda </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="709"/>
+        <location filename="../src/gui/application.cpp" line="711"/>
         <source>Legacy import</source>
         <translation>Uagizaji wa urithi</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="710"/>
+        <location filename="../src/gui/application.cpp" line="712"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1921,12 +1921,12 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="830"/>
+        <location filename="../src/gui/application.cpp" line="834"/>
         <source>Error accessing the configuration file</source>
         <translation>Hitilafu katika kufikia faili ya usanidi</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="831"/>
+        <location filename="../src/gui/application.cpp" line="835"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Kulikuwa na hitilafu wakati wa kufikia faili ya usanidi katika %1. Tafadhali hakikisha kuwa faili inaweza kufikiwa na akaunti yako ya mfumo.</translation>
     </message>
@@ -3014,12 +3014,12 @@ Vinginevyo, unaweza kurejesha faili zote zilizofutwa kwa kuzipakua kutoka kwa se
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="500"/>
+        <location filename="../src/gui/folderman.cpp" line="512"/>
         <source>Could not reset folder state</source>
         <translation>Haikuweza kuweka upya hali ya folda</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="501"/>
+        <location filename="../src/gui/folderman.cpp" line="513"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Jarida la zamani la ulandanishi &quot;%1&quot; lilipatikana, lakini halikuweza kuondolewa. Tafadhali hakikisha kuwa hakuna programu inayoitumia kwa sasa.</translation>
     </message>
@@ -3034,116 +3034,116 @@ Vinginevyo, unaweza kurejesha faili zote zilizofutwa kwa kuzipakua kutoka kwa se
         <translation> (chelezo %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1874"/>
+        <location filename="../src/gui/folderman.cpp" line="1886"/>
         <source>Undefined state.</source>
         <translation>Hali isiyobainishwa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1877"/>
+        <location filename="../src/gui/folderman.cpp" line="1889"/>
         <source>Waiting to start syncing.</source>
         <translation>Inasubiri kuanza kusawazisha.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1880"/>
+        <location filename="../src/gui/folderman.cpp" line="1892"/>
         <source>Preparing for sync.</source>
         <translation>Inajiandaa kwa usawazishaji.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1890"/>
+        <location filename="../src/gui/folderman.cpp" line="1902"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Inasawazisha %1 kati ya %2 (Zimesalia sekunde chache)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1893"/>
+        <location filename="../src/gui/folderman.cpp" line="1905"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Inasawazisha %1 kati ya %2 (imesalia %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1896"/>
+        <location filename="../src/gui/folderman.cpp" line="1908"/>
         <source>Syncing %1 of %2</source>
         <translation>Inasawazisha %1 kati ya %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1902"/>
+        <location filename="../src/gui/folderman.cpp" line="1914"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Inasawazisha %1 (Zimesalia sekunde chache)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1904"/>
+        <location filename="../src/gui/folderman.cpp" line="1916"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Inasawazisha %1 (imesalia %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1919"/>
         <source>Syncing %1</source>
         <translation>Inasawazisha %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1912"/>
+        <location filename="../src/gui/folderman.cpp" line="1924"/>
         <source>Sync is running.</source>
         <translation>Usawazishaji unaendelea.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1917"/>
+        <location filename="../src/gui/folderman.cpp" line="1929"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Usawazishaji umekamilika na mizozo ambayo haijatatuliwa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1919"/>
+        <location filename="../src/gui/folderman.cpp" line="1931"/>
         <source>Last sync was successful.</source>
         <translation>Usawazishaji wa mwisho ulifanikiwa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1925"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>Setup error.</source>
         <translation>Hitilafu ya kusanidi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1928"/>
+        <location filename="../src/gui/folderman.cpp" line="1940"/>
         <source>Sync request was cancelled.</source>
         <translation>Ombi la kusawazisha lilighairiwa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1945"/>
+        <location filename="../src/gui/folderman.cpp" line="1957"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Tafadhali chagua eneo tofauti. Folda iliyochaguliwa si sahihi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1953"/>
-        <location filename="../src/gui/folderman.cpp" line="2032"/>
+        <location filename="../src/gui/folderman.cpp" line="1965"/>
+        <location filename="../src/gui/folderman.cpp" line="2044"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Tafadhali chagua eneo tofauti. %1 tayari inatumika kama folda ya kusawazisha.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1962"/>
+        <location filename="../src/gui/folderman.cpp" line="1974"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Tafadhali chagua eneo tofauti. Njia %1 haipo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1966"/>
+        <location filename="../src/gui/folderman.cpp" line="1978"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Tafadhali chagua eneo tofauti. Njia %1 si folda.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1974"/>
-        <location filename="../src/gui/folderman.cpp" line="1979"/>
+        <location filename="../src/gui/folderman.cpp" line="1986"/>
+        <location filename="../src/gui/folderman.cpp" line="1991"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Tafadhali chagua eneo tofauti. Huna ruhusa za kutosha kuandika kwa %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2039"/>
+        <location filename="../src/gui/folderman.cpp" line="2051"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Tafadhali chagua eneo tofauti. %1 tayari iko kwenye folda inayotumika kama folda ya kusawazisha.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2054"/>
+        <location filename="../src/gui/folderman.cpp" line="2066"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Tafadhali chagua eneo tofauti. %1 tayari inatumika kama folda ya kusawazisha ya %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2212"/>
+        <location filename="../src/gui/folderman.cpp" line="2224"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3154,17 +3154,17 @@ Ili kutatua suala hili: tafadhali ondoa %1 kutoka kwa mojawapo ya akaunti na uun
 Kwa watumiaji wa hali ya juu: suala hili linaweza kuhusishwa na faili nyingi za hifadhidata zinazopatikana katika folda moja. Tafadhali angalia %1 kwa faili za .sync_*.db zilizopitwa na wakati na ambazo hazijatumika na uziondoe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1931"/>
+        <location filename="../src/gui/folderman.cpp" line="1943"/>
         <source>Sync is paused.</source>
         <translation>Usawazishaji umesitishwa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="413"/>
+        <location filename="../src/gui/folderman.cpp" line="425"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1937"/>
+        <location filename="../src/gui/folderman.cpp" line="1949"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Usawazishaji umesitishwa.)</translation>
     </message>
@@ -3852,22 +3852,22 @@ Matoleo ya kushusha hadhi hayawezekani mara moja: kubadilisha kutoka imara hadi 
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="906"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="904"/>
         <source>Password for share required</source>
         <translation>Nenosiri la kushiriki linahitajika</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="907"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="905"/>
         <source>Please enter a password for your link share:</source>
         <translation>Tafadhali weka nenosiri kwa kiungo chako kushiriki:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="933"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="931"/>
         <source>Sharing error</source>
         <translation>Hitilafu ya kushiriki</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="934"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="932"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5472,48 +5472,48 @@ Kumbuka kuwa kutumia chaguo zozote za mstari wa amri ya kukata miti kutabatilish
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="874"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="872"/>
         <source>Context menu share</source>
         <translation>Kushiriki menyu ya muktadha</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1160"/>
         <source>I shared something with you</source>
         <translation>Nilishiriki kitu na wewe</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1175"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1213"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1173"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
         <source>Share options</source>
         <translation>Shiriki chaguzi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1180"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1178"/>
         <source>Send private link by email …</source>
         <translation>Tuma kiungo cha faragha kwa barua pepe...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1179"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1177"/>
         <source>Copy private link to clipboard</source>
         <translation>Nakili kiungo cha faragha kwenye ubao wa kunakili</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="595"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="593"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Imeshindwa kusimba folda kwa njia fiche kwa &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="596"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="594"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>Akaunti %1 haina usimbaji fiche wa mwisho hadi mwisho uliosanidiwa. Tafadhali sanidi hii katika mipangilio ya akaunti yako ili kuwezesha usimbaji fiche wa folda.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="615"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="613"/>
         <source>Failed to encrypt folder</source>
         <translation>Imeshindwa kusimba folda</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="614"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5522,12 +5522,12 @@ Server replied with error: %2</source>
 Seva ilijibu kwa hitilafu: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="623"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="621"/>
         <source>Folder encrypted successfully</source>
         <translation>Folda imesimbwa kwa njia fiche</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="624"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="622"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>Folda ifuatayo imesimbwa kwa njia fiche kwa mafanikio: &quot;%1&quot;</translation>
     </message>
@@ -5537,101 +5537,101 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation>Chagua eneo jipya...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1176"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1239"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1174"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1237"/>
         <source>File actions</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1177"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1420"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1175"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1418"/>
         <source>Activity</source>
         <translation>Shughuli</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1205"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
         <source>Leave this share</source>
         <translation>Acha shiriki hii</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>Resharing this file is not allowed</source>
         <translation>Kushiriki upya faili hii hairuhusiwi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Kushiriki upya folda hii hairuhusiwi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1272"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1270"/>
         <source>Encrypt</source>
         <translation>Simba kwa njia fiche</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
         <source>Lock file</source>
         <translation>Funga faili</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1286"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1284"/>
         <source>Unlock file</source>
         <translation>Fungua faili</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1302"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1300"/>
         <source>Locked by %1</source>
         <translation>Imefungwa na %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1306"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1304"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Expires in %1 minute</numerusform><numerusform>Inaisha ndani ya dakika %1</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1315"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1313"/>
         <source>Apply labels</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1457"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1455"/>
         <source>Resolve conflict …</source>
         <translation>Tatua mzozo...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1461"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1459"/>
         <source>Move and rename …</source>
         <translation>Sogeza na ubadilishe jina...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1464"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1462"/>
         <source>Move, rename and upload …</source>
         <translation>Sogeza, badilisha jina na upakie...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1466"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1464"/>
         <source>Delete local changes</source>
         <translation>Futa mabadiliko ya ndani</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1472"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1470"/>
         <source>Move and upload …</source>
         <translation>Sogeza na upakie...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1473"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1471"/>
         <source>Delete</source>
         <translation>Futa</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1217"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1215"/>
         <source>Copy internal link</source>
         <translation>Nakili kiungo cha ndani</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1424"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1426"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1428"/>
         <source>Open in browser</source>
         <translation>Fungua katika kivinjari</translation>
     </message>

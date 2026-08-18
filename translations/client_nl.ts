@@ -1463,17 +1463,17 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
 <context>
     <name>OCC::AccountSetupFromCommandLineJob</name>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="149"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>De geverifieerde aanvraag voor de server werd omgeleid naar &quot;%1&quot;. De URL is onjuist, de server is verkeerd geconfigureerd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="169"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Toegang door server verboden. Om te verifiëren dat je toegang mag hebben, &lt;a href=&quot;%1&quot;&gt;klik hier&lt;/a&gt; om met je browser toegang tot de service te krijgen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="167"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="177"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Er is een ongeldig antwoord ontvangen op een geverifieerde WebDAV aanvraag</translation>
     </message>
@@ -1481,57 +1481,57 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="152"/>
+        <location filename="../src/gui/accountstate.cpp" line="156"/>
         <source>Signed out</source>
         <translation>Afgemeld</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="154"/>
+        <location filename="../src/gui/accountstate.cpp" line="158"/>
         <source>Disconnected</source>
         <translation>Niet verbonden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="156"/>
+        <location filename="../src/gui/accountstate.cpp" line="160"/>
         <source>Connected</source>
         <translation>Verbonden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="158"/>
+        <location filename="../src/gui/accountstate.cpp" line="162"/>
         <source>Service unavailable</source>
         <translation>Dienst niet beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="160"/>
+        <location filename="../src/gui/accountstate.cpp" line="164"/>
         <source>Maintenance mode</source>
         <translation>Onderhoudsmodus</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="162"/>
+        <location filename="../src/gui/accountstate.cpp" line="166"/>
         <source>Redirect detected</source>
         <translation>Redirect waargenomen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="164"/>
+        <location filename="../src/gui/accountstate.cpp" line="168"/>
         <source>Network error</source>
         <translation>Netwerkfout</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="166"/>
+        <location filename="../src/gui/accountstate.cpp" line="170"/>
         <source>Configuration error</source>
         <translation>Configuratiefout</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="168"/>
+        <location filename="../src/gui/accountstate.cpp" line="172"/>
         <source>Asking Credentials</source>
         <translation>Vragen naar inloggegevens</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="170"/>
+        <location filename="../src/gui/accountstate.cpp" line="174"/>
         <source>Need the user to accept the terms of service</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="172"/>
+        <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Unknown account state</source>
         <translation>Onbekende account-status</translation>
     </message>
@@ -1883,34 +1883,34 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
         <translation>Doorgaan</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="703"/>
+        <location filename="../src/gui/application.cpp" line="705"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 accounts</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="704"/>
+        <location filename="../src/gui/application.cpp" line="706"/>
         <source>1 account</source>
         <translation>1 account</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="706"/>
+        <location filename="../src/gui/application.cpp" line="708"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mappen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="707"/>
+        <location filename="../src/gui/application.cpp" line="709"/>
         <source>1 folder</source>
         <translation>1 map</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="709"/>
+        <location filename="../src/gui/application.cpp" line="711"/>
         <source>Legacy import</source>
         <translation>Legacy import</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="710"/>
+        <location filename="../src/gui/application.cpp" line="712"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1918,12 +1918,12 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="830"/>
+        <location filename="../src/gui/application.cpp" line="834"/>
         <source>Error accessing the configuration file</source>
         <translation>Fout bij benaderen configuratiebestand</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="831"/>
+        <location filename="../src/gui/application.cpp" line="835"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Fout bij het benaderen van het configuratiebestand op %1. Zorg ervoor dat het bestand door je systeemaccount kan worden benaderd.</translation>
     </message>
@@ -3007,12 +3007,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="500"/>
+        <location filename="../src/gui/folderman.cpp" line="512"/>
         <source>Could not reset folder state</source>
         <translation>Kan de beginstaat van de map niet terugzetten</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="501"/>
+        <location filename="../src/gui/folderman.cpp" line="513"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Een oud synchronisatieverslag  &quot;%1&quot; is gevonden maar kan niet worden verwijderd. Zorg ervoor dat geen applicatie dit bestand gebruikt.</translation>
     </message>
@@ -3027,116 +3027,116 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>(backup %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1874"/>
+        <location filename="../src/gui/folderman.cpp" line="1886"/>
         <source>Undefined state.</source>
         <translation>Ongedefinieerde status.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1877"/>
+        <location filename="../src/gui/folderman.cpp" line="1889"/>
         <source>Waiting to start syncing.</source>
         <translation>In afwachting van synchronisatie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1880"/>
+        <location filename="../src/gui/folderman.cpp" line="1892"/>
         <source>Preparing for sync.</source>
         <translation>Synchronisatie wordt voorbereid</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1890"/>
+        <location filename="../src/gui/folderman.cpp" line="1902"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1893"/>
+        <location filename="../src/gui/folderman.cpp" line="1905"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1896"/>
+        <location filename="../src/gui/folderman.cpp" line="1908"/>
         <source>Syncing %1 of %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1902"/>
+        <location filename="../src/gui/folderman.cpp" line="1914"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1904"/>
+        <location filename="../src/gui/folderman.cpp" line="1916"/>
         <source>Syncing %1 (%2 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1919"/>
         <source>Syncing %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1912"/>
+        <location filename="../src/gui/folderman.cpp" line="1924"/>
         <source>Sync is running.</source>
         <translation>Bezig met synchroniseren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1917"/>
+        <location filename="../src/gui/folderman.cpp" line="1929"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Synchronisatie beëindigd met niet opgeloste conflicten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1919"/>
+        <location filename="../src/gui/folderman.cpp" line="1931"/>
         <source>Last sync was successful.</source>
         <translation>Laatste synchronisatie was geslaagd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1925"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>Setup error.</source>
         <translation>Installatiefout.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1928"/>
+        <location filename="../src/gui/folderman.cpp" line="1940"/>
         <source>Sync request was cancelled.</source>
         <translation>Synchronisatieaanvraag werd geannuleerd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1945"/>
+        <location filename="../src/gui/folderman.cpp" line="1957"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1953"/>
-        <location filename="../src/gui/folderman.cpp" line="2032"/>
+        <location filename="../src/gui/folderman.cpp" line="1965"/>
+        <location filename="../src/gui/folderman.cpp" line="2044"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1962"/>
+        <location filename="../src/gui/folderman.cpp" line="1974"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1966"/>
+        <location filename="../src/gui/folderman.cpp" line="1978"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1974"/>
-        <location filename="../src/gui/folderman.cpp" line="1979"/>
+        <location filename="../src/gui/folderman.cpp" line="1986"/>
+        <location filename="../src/gui/folderman.cpp" line="1991"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2039"/>
+        <location filename="../src/gui/folderman.cpp" line="2051"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2054"/>
+        <location filename="../src/gui/folderman.cpp" line="2066"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2212"/>
+        <location filename="../src/gui/folderman.cpp" line="2224"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3144,17 +3144,17 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1931"/>
+        <location filename="../src/gui/folderman.cpp" line="1943"/>
         <source>Sync is paused.</source>
         <translation>Synchronisatie gepauzeerd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="413"/>
+        <location filename="../src/gui/folderman.cpp" line="425"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1937"/>
+        <location filename="../src/gui/folderman.cpp" line="1949"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronisatie onderbroken)</translation>
     </message>
@@ -3836,22 +3836,22 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="906"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="904"/>
         <source>Password for share required</source>
         <translation>Wachtwoord voor deellink vereist</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="907"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="905"/>
         <source>Please enter a password for your link share:</source>
         <translation>Voer het wachtwoord in voor je deellink:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="933"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="931"/>
         <source>Sharing error</source>
         <translation>Fout bij delen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="934"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="932"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5456,48 +5456,48 @@ Merk op dat het gebruik van logging-opdrachtregel opties deze instelling zal ove
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="874"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="872"/>
         <source>Context menu share</source>
         <translation>Contextmenu delen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1160"/>
         <source>I shared something with you</source>
         <translation>Ik deelde iets met u</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1175"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1213"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1173"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
         <source>Share options</source>
         <translation>Deelopties</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1180"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1178"/>
         <source>Send private link by email …</source>
         <translation>Verstuur privélink per e-mail ---</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1179"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1177"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopieer privé-link  naar klembord</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="595"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="593"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Kon een map niet versleutelen in %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="596"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="594"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>Het account %1 heeft geen begin-tot-eind versleuteling ingesteld. Ga naar je accountinstellingen om mapversleuteling in te stellen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="615"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="613"/>
         <source>Failed to encrypt folder</source>
         <translation>Kon de map niet versleutelen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="614"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5506,12 +5506,12 @@ Server replied with error: %2</source>
 Server antwoordde met fout: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="623"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="621"/>
         <source>Folder encrypted successfully</source>
         <translation>Map succesvol versleuteld</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="624"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="622"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>De volgende map was succesvol versleuteld: &quot;%1&quot;</translation>
     </message>
@@ -5521,101 +5521,101 @@ Server antwoordde met fout: %2</translation>
         <translation>Selecteer nieuwe locatie ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1176"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1239"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1174"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1237"/>
         <source>File actions</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1177"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1420"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1175"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1418"/>
         <source>Activity</source>
         <translation>Activiteit</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1205"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
         <source>Leave this share</source>
         <translation>Verlaat deze gedeelde locatie</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>Resharing this file is not allowed</source>
         <translation>Opnieuw delen van dit bestand is niet toegestaan</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Opnieuw delen van deze map is niet toegestaan</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1272"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1270"/>
         <source>Encrypt</source>
         <translation>Versleutel</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
         <source>Lock file</source>
         <translation>Vergrendel bestand</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1286"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1284"/>
         <source>Unlock file</source>
         <translation>Ontgrendel bestand</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1302"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1300"/>
         <source>Locked by %1</source>
         <translation>Vergrendeld door %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1306"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1304"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1315"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1313"/>
         <source>Apply labels</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1457"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1455"/>
         <source>Resolve conflict …</source>
         <translation>Oplossen conflict ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1461"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1459"/>
         <source>Move and rename …</source>
         <translation>Verplaatsen en hernoemen ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1464"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1462"/>
         <source>Move, rename and upload …</source>
         <translation>Verplaatsen, hernoemen en uploaden ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1466"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1464"/>
         <source>Delete local changes</source>
         <translation>Verwijder lokale aanpassingen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1472"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1470"/>
         <source>Move and upload …</source>
         <translation>Verplaatsen en uploaden ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1473"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1471"/>
         <source>Delete</source>
         <translation>Verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1217"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1215"/>
         <source>Copy internal link</source>
         <translation>Kopieer interne link</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1424"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1426"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1428"/>
         <source>Open in browser</source>
         <translation>Openen in browser</translation>
     </message>
