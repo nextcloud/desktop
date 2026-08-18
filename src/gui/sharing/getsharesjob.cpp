@@ -45,7 +45,7 @@ GetSharesJob::GetSharesJob(AccountPtr account,
     : UnifiedSharingRequest{account,
                             "/ocs/v2.php/apps/sharing/api/v1/shares"_L1,
                             "GET"_ba,
-                            {.parameters = getSharesParameters(sourceTypeClass, sourceTypeValue, lastShareId, limit)}}
+                            {.parameters = getSharesParameters(sourceTypeClass, sourceTypeValue, lastShareId, limit), .passStatusCodes = {}, .body = {}}}
 {
     connect(this, &OcsJob::jobFinished, this, [this, account = std::move(account)](const QJsonDocument &json, int) {
         auto shares = QList<QPointer<Share>>{};

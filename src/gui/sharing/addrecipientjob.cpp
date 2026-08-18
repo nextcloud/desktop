@@ -35,7 +35,7 @@ AddRecipientJob::AddRecipientJob(AccountPtr account,
                      share,
                      "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient"_L1.arg(share.id()),
                      "POST"_ba,
-                     {.body = addRecipientBody(recipientTypeClass, recipientValue, instance)}}
+                     {.parameters = {}, .passStatusCodes = {}, .body = addRecipientBody(recipientTypeClass, recipientValue, instance)}}
 {
 }
 

@@ -47,7 +47,7 @@ SearchRecipientsJob::SearchRecipientsJob(AccountPtr account,
     : UnifiedSharingRequest{std::move(account),
                             "/ocs/v2.php/apps/sharing/api/v1/recipients"_L1,
                             "GET"_ba,
-                            {.parameters = searchRecipientsParameters(query, offset, limit, recipientTypeClasses, shareId)}}
+                            {.parameters = searchRecipientsParameters(query, offset, limit, recipientTypeClasses, shareId), .passStatusCodes = {}, .body = {}}}
 {
     setTimeout(requestTimeoutMsec);
     connect(this, &OcsJob::jobFinished, this, [this](const QJsonDocument &json, int) {
