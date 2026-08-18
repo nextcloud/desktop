@@ -484,19 +484,6 @@
                                                 </widget>
                                             </item>
                                             <item>
-                                                <widget class="QLabel" name="updateStateLabel_old">
-                                                    <property name="text">
-                                                        <string />
-                                                    </property>
-                                                    <property name="wordWrap">
-                                                        <bool>true</bool>
-                                                    </property>
-                                                    <property name="openExternalLinks">
-                                                        <bool>true</bool>
-                                                    </property>
-                                                </widget>
-                                            </item>
-                                            <item>
                                                 <widget class="QPushButton" name="restartButton">
                                                     <property name="sizePolicy">
                                                         <sizepolicy hsizetype="Maximum"
