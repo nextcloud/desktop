@@ -14,7 +14,7 @@ DestroyShareJob::DestroyShareJob(AccountPtr account, const QString &shareId)
     : UnifiedSharingRequest{std::move(account),
                             "/ocs/v2.php/apps/sharing/api/v1/share/%1"_L1.arg(shareId),
                             "DELETE"_ba,
-                            {.passStatusCodes = QList<int>{204}}}
+                            {.parameters = {}, .passStatusCodes = QList<int>{204}, .body = {}}}
 {
 }
 

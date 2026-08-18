@@ -33,7 +33,7 @@ SetShareStateJob::SetShareStateJob(AccountPtr account, Share &share, Share::Shar
                      share,
                      "/ocs/v2.php/apps/sharing/api/v1/share/%1/state"_L1.arg(share.id()),
                      "PUT"_ba,
-                     {.body = QJsonObject{{"state"_L1, stateName(state)}}}}
+                     {.parameters = {}, .passStatusCodes = {}, .body = QJsonObject{{"state"_L1, stateName(state)}}}}
 {
 }
 
