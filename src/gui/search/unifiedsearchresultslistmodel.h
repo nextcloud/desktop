@@ -26,8 +26,8 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
     Q_OBJECT
 
     QML_ELEMENT
-    QML_UNCREATABLE("created by Systray")
 
+    Q_PROPERTY(int accountId READ accountId WRITE setAccountId NOTIFY accountIdChanged)
     Q_PROPERTY(bool isSearchInProgress READ isSearchInProgress NOTIFY isSearchInProgressChanged)
     Q_PROPERTY(QString currentFetchMoreInProgressProviderId READ currentFetchMoreInProgressProviderId NOTIFY
             currentFetchMoreInProgressProviderIdChanged)
@@ -79,11 +79,13 @@ public:
         TypeAsStringRole,
     };
 
+    Q_INVOKABLE explicit UnifiedSearchResultsListModel(QObject *parent = nullptr);
     explicit UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent = nullptr);
 
     [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
+    [[nodiscard]] int accountId() const;
     [[nodiscard]] bool isSearchInProgress() const;
 
     [[nodiscard]] QString currentFetchMoreInProgressProviderId() const;
@@ -123,6 +125,7 @@ private:
     void clearCurrentFetchMoreInProgressProviderId();
 
 signals:
+    void accountIdChanged();
     void currentFetchMoreInProgressProviderIdChanged();
     void isSearchInProgressChanged();
     void errorStringChanged();
@@ -132,6 +135,7 @@ signals:
     void searchStateChanged();
 
 public slots:
+    void setAccountId(int id);
     void setSearchTerm(const QString &term);
 
 private slots:
@@ -141,6 +145,7 @@ private slots:
 
 private:
     static QUrl openableResourceUrl(const QUrl &resourceUrl, const QUrl &accountUrl);
+    void setAccountState(AccountState *accountState);
 
     QMap<QString, UnifiedSearchProvider> _providers;
     QVector<UnifiedSearchResult> _results;
@@ -156,5 +161,6 @@ private:
     QTimer _unifiedSearchTextEditingFinishedTimer;
 
     AccountState *_accountState = nullptr;
+    int _accountId = -1;
 };
 }

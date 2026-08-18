@@ -34,14 +34,7 @@ if(NOT BUILD_LIBRARIES_ONLY)
   ecm_mark_nongui_executable(nextcloudcmd)
   set_target_properties(nextcloudcmd PROPERTIES RUNTIME_OUTPUT_NAME "${APPLICATION_EXECUTABLE}cmd")
 
-  target_link_libraries(nextcloudcmd
-    cmdCore
-    nextcloudCore
-    nextcloudGuiSearch
-    nextcloudGuiSearchplugin
-    nextcloudGuiSharing
-    nextcloudGuiSharingplugin
-  )
+  target_link_libraries(nextcloudcmd cmdCore nextcloudCore)
 
   if(BUILD_OWNCLOUD_OSX_BUNDLE)
     set_target_properties(nextcloudcmd PROPERTIES
