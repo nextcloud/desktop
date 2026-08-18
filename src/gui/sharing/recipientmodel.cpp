@@ -7,7 +7,7 @@
 
 #include <QPointer>
 
-#include "share.h"
+#include "unifiedshare.h"
 #include "recipient.h"
 #include "recipienticonutils.h"
 

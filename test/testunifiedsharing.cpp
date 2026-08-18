@@ -23,7 +23,7 @@
 #include "gui/sharing/setpropertyjob.h"
 #include "gui/sharing/setrecipientsecretjob.h"
 #include "gui/sharing/setsharestatejob.h"
-#include "gui/sharing/share.h"
+#include "gui/sharing/unifiedshare.h"
 #include "gui/sharing/sharingconstants.h"
 #include "gui/sharing/sharingcontroller.h"
 #include "gui/sharing/unifiedsharelistmodel.h"
