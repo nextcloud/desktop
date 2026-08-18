@@ -171,11 +171,6 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
         }
     }
 
-    if (OCC::FileSystem::isFileLocked(path, OCC::FileSystem::LockMode::SharedRead)) {
-        qCWarning(lcCsyncExclude) << path << "is locked" << "exluding it from sync";
-        return CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED;
-    }
-
     if (csync_is_windows_reserved_word(bname)) {
         return CSYNC_FILE_SILENTLY_EXCLUDED;
     }
