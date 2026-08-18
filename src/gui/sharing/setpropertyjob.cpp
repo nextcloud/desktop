@@ -22,7 +22,7 @@ SetPropertyJob::SetPropertyJob(AccountPtr account,
                      share,
                      "/ocs/v2.php/apps/sharing/api/v1/share/%1/property"_L1.arg(share.id()),
                      "PUT"_ba,
-                     {.body = QJsonObject{{"class"_L1, propertyClass}, {"value"_L1, value ? QJsonValue{*value} : QJsonValue{QJsonValue::Null}}}}}
+                     {.parameters = {}, .passStatusCodes = {}, .body = QJsonObject{{"class"_L1, propertyClass}, {"value"_L1, value ? QJsonValue{*value} : QJsonValue{QJsonValue::Null}}}}}
 {
 }
 

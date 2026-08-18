@@ -412,7 +412,7 @@ private slots:
                       {},
                       {{"class"_L1, "recipient-class"_L1}, {"value"_L1, "alice"_L1}});
         verifyRequest(new GetShareJob{account, "share-1"_L1}, "POST", "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
-        verifyRequest(new UnifiedSharingRequest{account, "/ocs/v2.php/apps/sharing/api/v1/share/share-1"_L1, "POST"_ba, {.body = QJsonObject{}}},
+        verifyRequest(new UnifiedSharingRequest{account, "/ocs/v2.php/apps/sharing/api/v1/share/share-1"_L1, "POST"_ba, {.parameters = {}, .passStatusCodes = {}, .body = QJsonObject{}}},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
         QCOMPARE(requestContentType, "application/json");

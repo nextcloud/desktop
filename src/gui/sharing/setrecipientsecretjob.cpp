@@ -41,7 +41,7 @@ SetRecipientSecretJob::SetRecipientSecretJob(AccountPtr account,
                      share,
                      "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient/secret"_L1.arg(share.id()),
                      "PUT"_ba,
-                     {.body = setRecipientSecretBody(recipientTypeClass, recipientValue, secret, instance)}}
+                     {.parameters = {}, .passStatusCodes = {}, .body = setRecipientSecretBody(recipientTypeClass, recipientValue, secret, instance)}}
 {
 }
 

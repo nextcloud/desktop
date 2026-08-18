@@ -35,7 +35,7 @@ RemoveRecipientJob::RemoveRecipientJob(AccountPtr account,
                      share,
                      "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient"_L1.arg(share.id()),
                      "DELETE"_ba,
-                     {.parameters = removeRecipientParameters(recipientTypeClass, recipientValue, instance)}}
+                     {.parameters = removeRecipientParameters(recipientTypeClass, recipientValue, instance), .passStatusCodes = {}, .body = {}}}
 {
 }
 
