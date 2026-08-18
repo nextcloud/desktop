@@ -5,7 +5,7 @@
 
 #include "propertymodel.h"
 
-#include "share.h"
+#include "unifiedshare.h"
 #include "property.h"
 
 #include <algorithm>

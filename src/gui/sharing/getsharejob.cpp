@@ -5,7 +5,7 @@
 
 #include "getsharejob.h"
 
-#include "share.h"
+#include "unifiedshare.h"
 
 using namespace Qt::StringLiterals;
 

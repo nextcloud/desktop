@@ -5,7 +5,7 @@
 
 #include "getsharesjob.h"
 
-#include "share.h"
+#include "unifiedshare.h"
 
 #include <QJsonArray>
 #include <QJsonDocument>

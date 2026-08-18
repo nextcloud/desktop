@@ -26,7 +26,7 @@
 #include "setpropertyjob.h"
 #include "setrecipientsecretjob.h"
 #include "setsharestatejob.h"
-#include "share.h"
+#include "unifiedshare.h"
 #include "sharingconstants.h"
 
 Q_LOGGING_CATEGORY(lcSharingController, "nextcloud.gui.sharing.sharingcontroller", QtInfoMsg)

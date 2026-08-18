@@ -5,7 +5,7 @@
 
 #include "permissionmodel.h"
 
-#include "share.h"
+#include "unifiedshare.h"
 #include "permission.h"
 
 using namespace Qt::StringLiterals;
