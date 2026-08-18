@@ -5,7 +5,7 @@
 
 #include "setpropertyjob.h"
 
-#include "share.h"
+#include "unifiedshare.h"
 
 #include <QJsonValue>
 

@@ -60,8 +60,8 @@ target_sources(nextcloudGuiSharing
     recipientmodel.cpp
     recipientsearchmodel.h
     recipientsearchmodel.cpp
-    share.h
-    share.cpp
+    unifiedshare.h
+    unifiedshare.cpp
     sharingcontroller.h
     sharingcontroller.cpp
     unifiedsharelistmodel.h
