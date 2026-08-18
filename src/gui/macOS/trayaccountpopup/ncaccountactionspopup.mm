@@ -207,7 +207,8 @@ static NSView *compactAccountActionsSeparator()
     }
     auto screen = self.screen;
     if (!screen) {
-        screen = NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+        NSScreen *const mainScreen = NSScreen.mainScreen;
+        screen = mainScreen ? mainScreen : NSScreen.screens.firstObject;
     }
     if (screen) {
         frame.origin = clampedPopupOrigin(frame.origin, frame.size, screen.visibleFrame);

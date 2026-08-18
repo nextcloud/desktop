@@ -20,7 +20,8 @@ using namespace OCC::Mac::TrayPopupViewUtils;
 static NSScreen *nsScreenForQtScreen(QScreen *qtScreen)
 {
     if (!qtScreen) {
-        return NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+        NSScreen *const mainScreen = NSScreen.mainScreen;
+        return mainScreen ? mainScreen : NSScreen.screens.firstObject;
     }
 
     const auto qtScreenName = qtScreen->name().toNSString();
@@ -36,7 +37,8 @@ static NSScreen *nsScreenForQtScreen(QScreen *qtScreen)
         return [NSScreen.screens objectAtIndex:screenIndex];
     }
 
-    return NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+    NSScreen *const mainScreen = NSScreen.mainScreen;
+    return mainScreen ? mainScreen : NSScreen.screens.firstObject;
 }
 
 namespace OCC {
