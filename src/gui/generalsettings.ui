@@ -118,6 +118,56 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="fileProviderGroupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QVBoxLayout" name="fileProviderSettingsLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="fileProviderRow">
+        <item>
+         <widget class="QLabel" name="fileProviderLabel">
+          <property name="text">
+           <string>Enable &amp;File Provider</string>
+          </property>
+          <property name="buddy">
+           <cstring>fileProviderCheckBox</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="fileProviderSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="OCC::SettingsSwitch" name="fileProviderCheckBox"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="fileProviderDescriptionRow">
+        <item>
+         <widget class="QLabel" name="fileProviderDescriptionLabel">
+          <property name="text">
+           <string>Files appear in Finder under the "Locations" section and do not use local storage space; contents download automatically when you open a file. Applies to all accounts and replaces classic sync folders and their Finder integration.</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="notificationsGroupBox">
      <property name="title">
       <string/>
@@ -283,6 +333,7 @@
  <tabstops>
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>monoIconsCheckBox</tabstop>
+  <tabstop>fileProviderCheckBox</tabstop>
   <tabstop>serverNotificationsCheckBox</tabstop>
   <tabstop>chatNotificationsCheckBox</tabstop>
   <tabstop>callNotificationsCheckBox</tabstop>

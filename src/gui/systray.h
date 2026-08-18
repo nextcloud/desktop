@@ -50,7 +50,7 @@ void sendOsXTalkNotification(const QString &title, const QString &message, const
 #endif
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
-void showMacOSTrayPopup(const QRect &iconRect);
+bool showMacOSTrayPopup(const QRect &iconRect);
 void hideMacOSTrayPopup();
 void showMacOSQMLWindow();
 #endif
@@ -83,6 +83,15 @@ public:
     enum class WindowPosition { Default, Center };
     Q_ENUM(WindowPosition);
 
+    /** @brief Actions offered by the global tray synchronization control. */
+    enum class SyncControlState {
+        Unavailable, //!< No classic synchronization folders are configured.
+        Pause, //!< All classic synchronization folders are running.
+        Resume, //!< All classic synchronization folders are paused.
+        PauseAndResume, //!< Some classic synchronization folders are paused and others are running.
+    };
+    Q_ENUM(SyncControlState);
+
     enum class FileDetailsPage { Activity, Sharing };
     Q_ENUM(FileDetailsPage);
 
@@ -91,6 +100,8 @@ public:
 
     [[nodiscard]] bool syncIsPaused() const;
     [[nodiscard]] bool anySyncFolders() const;
+    /** @brief Returns the actions that the global tray synchronization control should offer. */
+    [[nodiscard]] SyncControlState syncControlState() const;
     [[nodiscard]] bool isOpen() const;
     [[nodiscard]] bool isActivitySurfaceVisible() const;
     void setTrayContextMenuVisible(const bool visible);

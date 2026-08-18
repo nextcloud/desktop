@@ -9,10 +9,13 @@
  */
 
 #include <QtTest>
+#include <QDir>
 #include "syncenginetestutils.h"
 #include "lockwatcher.h"
 #include <syncengine.h>
 #include <localdiscoverytracker.h>
+#include "discoveryphase.h"
+#include <QThreadPool>
 
 using namespace OCC;
 
@@ -28,6 +31,23 @@ HANDLE makeHandle(const QString &file, int shareMode)
         shareMode,
         nullptr, OPEN_EXISTING,
         FILE_ATTRIBUTE_NORMAL,
+        nullptr);
+    if (handle == INVALID_HANDLE_VALUE) {
+        qWarning() << GetLastError();
+    }
+    return handle;
+}
+
+// Same as makeHandle(), but FILE_FLAG_BACKUP_SEMANTICS is required to open a directory.
+HANDLE makeDirectoryHandle(const QString &directory, int shareMode)
+{
+    const auto fName = FileSystem::longWinPath(directory);
+    auto handle = CreateFileW(
+        reinterpret_cast<const wchar_t *>(fName.utf16()),
+        GENERIC_READ,
+        shareMode,
+        nullptr, OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
         nullptr);
     if (handle == INVALID_HANDLE_VALUE) {
         qWarning() << GetLastError();
@@ -111,7 +131,152 @@ private slots:
         QVERIFY(tmp.remove());
     }
 
+    // Functional check for local directory discovery #10535: DiscoverySingleLocalDirectoryJob
+    // must return every regular file and subdirectory with its name and flags intact.
+    void testLocalDirectoryDiscoveryReturnsAllEntries()
+    {
+        QTemporaryDir tmp;
+        QVERIFY(tmp.isValid());
+        QStringList expectedFiles;
+        for (int i = 0; i < 50; ++i) {
+            // Varied lengths and non ascii, matching the discovery concat path.
+            const QString name = QStringLiteral("entry_%1_ααβγ_%2.txt").arg(i).arg(QString(i % 20, QChar('x')));
+            QFile file(tmp.filePath(name));
+            QVERIFY(file.open(QIODevice::WriteOnly));
+            file.write("data");
+            expectedFiles.append(name);
+        }
+        QVERIFY(QDir(tmp.path()).mkdir(QStringLiteral("subdir")));
+
+        const auto job = new DiscoverySingleLocalDirectoryJob({}, tmp.path(), nullptr, false);
+        QSignalSpy finishedSpy(job, &DiscoverySingleLocalDirectoryJob::finished);
+        QThreadPool::globalInstance()->start(job);
+        QTRY_COMPARE_WITH_TIMEOUT(finishedSpy.count(), 1, 5000);
+
+        const auto results = finishedSpy.takeFirst().at(0).value<QVector<OCC::LocalInfo>>();
+        QCOMPARE(results.size(), expectedFiles.size() + 1);
+
+        QStringList seenFiles;
+        for (const auto &info : results) {
+            QVERIFY(!info.name.isEmpty());
+            if (info.isDirectory) {
+                QCOMPARE(info.name, QStringLiteral("subdir"));
+                continue;
+            }
+            QVERIFY(!info.isLocked);
+            seenFiles.append(info.name);
+        }
+        seenFiles.sort();
+        expectedFiles.sort();
+        QCOMPARE(seenFiles, expectedFiles);
+    }
+
 #ifdef Q_OS_WIN
+    void testLockDetectionUsesRealFileSystemCheck()
+    {
+        // Regression guard for #10464: exercise the real FileSystem::isFileLocked path
+        QTemporaryDir tmp;
+        QVERIFY(tmp.isValid());
+        for (const auto &name : { QStringLiteral("locked.bin"), QStringLiteral("test.txt") }) {
+            QFile tmpFile(tmp.filePath(name));
+            QVERIFY(tmpFile.open(QIODevice::WriteOnly));
+            tmpFile.write("x");
+        }
+        QVERIFY(QDir(tmp.path()).mkdir(QStringLiteral("subdir")));
+
+        auto handle = makeHandle(tmp.filePath(QStringLiteral("locked.bin")), 0);
+        QVERIFY(handle != INVALID_HANDLE_VALUE);
+
+        const auto job = new DiscoverySingleLocalDirectoryJob({}, tmp.path(), nullptr, false);
+        QSignalSpy finishedSpy(job, &DiscoverySingleLocalDirectoryJob::finished);
+        QThreadPool::globalInstance()->start(job);
+        QTRY_COMPARE_WITH_TIMEOUT(finishedSpy.count(), 1, 5000);
+
+        CloseHandle(handle);
+
+        const auto results = finishedSpy.takeFirst().at(0).value<QVector<OCC::LocalInfo>>();
+        QCOMPARE(results.size(), 3);
+        for (const auto &info : results) {
+            if (info.name == QStringLiteral("locked.bin")) {
+                QVERIFY(info.isLocked);
+                continue;
+            }
+
+            QVERIFY(!info.isLocked);
+            if (info.name == QStringLiteral("subdir")) {
+                QVERIFY(info.isDirectory);
+            }
+        }
+    }
+
+    void testDirectoryLockChecks()
+    {
+        QTemporaryDir tmp;
+        QVERIFY(tmp.isValid());
+
+        const auto subDirectory = tmp.path() + QStringLiteral("/aDirectory");
+        QVERIFY(QDir().mkpath(subDirectory));
+
+        const auto fileInDirectory = subDirectory + QStringLiteral("/aFile.txt");
+        {
+            QFile file(fileInDirectory);
+            QVERIFY(file.open(QFile::WriteOnly));
+            QVERIFY(file.write("Nextcloud"));
+        }
+
+        const auto fileHandle = makeHandle(fileInDirectory, 0);
+        QVERIFY(fileHandle != INVALID_HANDLE_VALUE);
+
+        // Logger only forwards fatal messages, so QTest::failOnWarning() would not see
+        // these. Count by category, which survives rewording of the message.
+        static int warningCount = 0;
+        static QStringList warningMessages;
+        warningCount = 0;
+        warningMessages.clear();
+        const auto previousHandler = qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &context, const QString &message) {
+            if (type == QtWarningMsg && context.category && qstrcmp(context.category, "nextcloud.sync.filesystem") == 0) {
+                ++warningCount;
+                warningMessages.append(message);
+            }
+        });
+
+        // Every mode has to stay silent, but only SharedRead is asserted on: Exclusive
+        // requests deny-sharing, so any unrelated handle an indexer or virus scanner
+        // holds would rightfully make it report the directory as locked.
+        QVarLengthArray<bool, 2> sharedReadResults;
+        for (const auto mode : {FileSystem::LockMode::Shared, FileSystem::LockMode::SharedRead, FileSystem::LockMode::Exclusive}) {
+            const auto subDirectoryLocked = FileSystem::isFileLocked(subDirectory, mode);
+            const auto rootDirectoryLocked = FileSystem::isFileLocked(tmp.path(), mode);
+            if (mode == FileSystem::LockMode::SharedRead) {
+                sharedReadResults.append(subDirectoryLocked);
+                sharedReadResults.append(rootDirectoryLocked);
+            }
+        }
+
+        // Skipping the lock on directories must not hide a locked file inside one.
+        const auto lockedFileDetected = FileSystem::isFileLocked(fileInDirectory, FileSystem::LockMode::SharedRead);
+
+        // A directory held with deny-sharing is still locked; CreateFileW reports that.
+        const auto directoryHandle = makeDirectoryHandle(subDirectory, 0);
+        const auto sharedDirectoryDetected = directoryHandle != INVALID_HANDLE_VALUE
+            && FileSystem::isFileLocked(subDirectory, FileSystem::LockMode::SharedRead);
+
+        qInstallMessageHandler(previousHandler);
+        if (directoryHandle != INVALID_HANDLE_VALUE) {
+            CloseHandle(directoryHandle);
+        }
+        CloseHandle(fileHandle);
+
+        // The failing LockFile() call used to log one warning per directory per run.
+        QVERIFY2(warningCount == 12, qPrintable(warningMessages.join(QStringLiteral(" || "))));
+        for (const auto isLocked : sharedReadResults) {
+            QVERIFY(!isLocked);
+        }
+        QVERIFY(lockedFileDetected);
+        QVERIFY(sharedDirectoryDetected);
+        QVERIFY(!FileSystem::isFileLocked(fileInDirectory, FileSystem::LockMode::SharedRead));
+    }
+
     void testLockedFilePropagation()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };

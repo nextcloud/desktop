@@ -252,6 +252,14 @@ extension Item {
             return nil
         }
 
+        // (Newer versions of) AutoCAD creates .dwl and .dwl2 as a pair. Only unlock when both are gone.
+        if isAutoCADLockFileName(metadata.fileName),
+           autoCADSiblingLockFileExists(lockFilename: metadata.fileName, parentServerUrl: metadata.serverUrl, dbManager: dbManager)
+        {
+            logger.info("AutoCAD sibling lock file still present; keeping document locked.", [.name: originalFileName])
+            return nil
+        }
+
         let originalFileServerFileNameUrl = metadata.serverUrl + "/" + originalFileName
 
         do {

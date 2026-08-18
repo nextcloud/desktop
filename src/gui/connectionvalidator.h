@@ -15,6 +15,8 @@
 #include "accountfwd.h"
 #include "clientsideencryption.h"
 
+#include <functional>
+
 namespace OCC {
 
 /**
@@ -157,6 +159,10 @@ protected slots:
     void termsOfServiceCheckDone();
 
 private:
+    using LocalNetworkPermissionCheck = std::function<void(const QUrl &, QObject *, std::function<void(bool)>)>;
+
+    friend class ConnectionValidatorTestAccess;
+
 #ifndef TOKEN_AUTH_ONLY
     void reportConnected();
 #endif
@@ -177,6 +183,7 @@ private:
     AccountStatePtr _accountState;
     AccountPtr _account;
     TermsOfServiceChecker _termsOfServiceChecker;
+    LocalNetworkPermissionCheck _localNetworkPermissionCheck;
     bool _isCheckingServerAndAuth = false;
 };
 }

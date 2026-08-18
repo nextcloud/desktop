@@ -242,11 +242,11 @@ ExcludedFiles::ExcludedFiles(const QString &localPath)
 
 ExcludedFiles::~ExcludedFiles() = default;
 
-void ExcludedFiles::addExcludeFilePath(const QString &path)
+void ExcludedFiles::addExcludeFilePath(const QString &path, ExcludeFileAnchor anchor)
 {
     const QFileInfo excludeFileInfo(path);
     const auto fileName = excludeFileInfo.fileName();
-    const auto basePath = fileName.compare(QStringLiteral("sync-exclude.lst"), Qt::CaseInsensitive) == 0
+    const auto basePath = anchor == ExcludeFileAnchor::SyncRoot || fileName.compare(QStringLiteral("sync-exclude.lst"), Qt::CaseInsensitive) == 0
                                                                     ? _localPath
                                                                     : leftIncludeLast(path, QLatin1Char('/'));
     auto &excludeFilesLocalPath = _excludeFiles[basePath];

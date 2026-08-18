@@ -29,6 +29,7 @@ class TestSyncConflictsModel;
 class TestRemoteWipe;
 class FolderManTestHelper;
 class TestFileActionsModel;
+class TestBrowserReAuthController;
 
 namespace OCC {
 
@@ -80,7 +81,9 @@ public:
     };
 
     ~FolderMan() override;
-    static FolderMan *instance() { return _instance; }
+
+    static FolderMan *instance();
+    static void resetInstance();
 
     int setupFolders();
     int setupFoldersMigration();
@@ -287,6 +290,8 @@ public slots:
 
     void removeE2eFiles(const OCC::AccountPtr &account) const;
 
+    void slotServerVersionChanged(const OCC::AccountPtr &account);
+
 private slots:
     void slotFolderSyncPaused(OCC::Folder *, bool paused);
     void slotFolderCanSyncChanged();
@@ -307,8 +312,6 @@ private slots:
     // Wraps the Folder::syncStateChange() signal into the
     // FolderMan::folderSyncStateChange(Folder*) signal.
     void slotForwardFolderSyncStateChange();
-
-    void slotServerVersionChanged(const OCC::AccountPtr &account);
 
     /**
      * A file whose locks were being monitored has become unlocked.
@@ -357,6 +360,11 @@ private:
     void runEtagJobsIfPossible(const QList<Folder *> &folderMap);
     void runEtagJobIfPossible(Folder *folder);
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    /** @brief Returns whether the account state permits File Provider ETag polling. */
+    [[nodiscard]] static bool canPollFileProviderEtag(const AccountState &accountState);
+#endif
+
     bool pushNotificationsFilesReady(const OCC::AccountPtr &account);
 
     [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
@@ -399,9 +407,10 @@ private:
 
     bool _appRestartRequired = false;
 
-    static FolderMan *_instance;
     explicit FolderMan(QObject *parent = nullptr);
-    friend class OCC::Application;
+
+    static std::unique_ptr<FolderMan> _instance;
+
     friend class ::TestFolderMan;
     friend class ::TestSyncConflictsModel;
     friend class ::TestCfApiShellExtensionsIPC;
@@ -411,6 +420,7 @@ private:
     friend class ::TestRemoteWipe;
     friend class ::FolderManTestHelper;
     friend class ::TestFileActionsModel;
+    friend class ::TestBrowserReAuthController;
 };
 
 } // namespace OCC

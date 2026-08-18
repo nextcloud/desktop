@@ -216,8 +216,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         let ghost = RealmItemMetadata()
         ghost.ocId = "staleGhost"
         ghost.account = Self.account.ncKitAccount
-        ghost.serverUrl = storedLive.serverUrl
-        ghost.fileName = storedLive.fileName
+        ghost.updateLocation(serverUrl: storedLive.serverUrl, fileName: storedLive.fileName)
         ghost.uploaded = true
         ghost.syncTime = oldSyncTime
         try realm.write { realm.add(ghost) }
@@ -448,6 +447,66 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(
             reportedIds(observer).contains(file.identifier),
             "A content change should surface; if it does not, the report depends entirely on a correct server ETag."
+        )
+    }
+
+    /// Headline regression for this fix (nextcloud/desktop#10442): a single unreadable folder must
+    /// NOT abort the whole working-set remote-change scan. Two visited folders each hold a changed
+    /// downloaded file; the FIRST-scanned folder's PROPFIND is forced to fail with a non-404 server
+    /// error (standing in for a large container timing out — the position the account root occupies in
+    /// production, since the scan queue is sorted parent-first). The change in the OTHER folder must
+    /// still be discovered and reported. Before the fix `scanMaterialisedItemsForRemoteChanges` `break`ed
+    /// on the first failure and silently dropped every later folder's changes (the "files uploaded on
+    /// the web never appear" bug). The incomplete scan must also NOT advance the working-set sync point,
+    /// so the next signal re-derives and can pick up the folder it could not read this pass.
+    func testWorkingSetScanContinuesPastAFailedFolderRead() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        // "a" sorts before "zzzzzzzzzz" by remote-path length, so the failing folder is scanned first.
+        let failingFolder = makeFolder(name: "a", parent: rootItem, etag: "a-v1")
+        let healthyFolder = makeFolder(name: "zzzzzzzzzz", parent: rootItem, etag: "z-v1")
+        let fileInFailing = makeFile(name: "itemA", parent: failingFolder, etag: "itemA-v1")
+        let fileInHealthy = makeFile(name: "itemZ", parent: healthyFolder, etag: "itemZ-v1")
+
+        seed(failingFolder, visitedDirectory: true)
+        seed(healthyFolder, visitedDirectory: true)
+        seed(fileInFailing, downloaded: true)
+        seed(fileInHealthy, downloaded: true)
+
+        // Both downloaded files changed on the server.
+        fileInFailing.versionIdentifier = "itemA-v2"; fileInFailing.modificationDate = Date()
+        fileInHealthy.versionIdentifier = "itemZ-v2"; fileInHealthy.modificationDate = Date()
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        // Force the first-scanned folder's depth-1 read to fail with a non-404 error (not a deletion).
+        remoteInterface.enumerateErrorBySuffix = [
+            "/a": NKError(statusCode: 500, fallbackDescription: "Internal Server Error")
+        ]
+
+        let inputAnchor = Enumerator.syncAnchor(at: anchorDate)
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges(from: inputAnchor)
+
+        // The scan skips the failing folder and finishes normally (no error surfaced to the framework)…
+        XCTAssertNil(observer.error)
+        // …and the change in the folder scanned AFTER the failing one still surfaces — the core regression.
+        XCTAssertTrue(
+            reportedIds(observer).contains(fileInHealthy.identifier),
+            "A read failure on one folder must not prevent a later folder's change from being reported."
+        )
+        // The incomplete scan must keep the incoming sync anchor rather than advancing to a fresh "now",
+        // so the framework does not treat the domain as fully synced past the folder it could not read.
+        let finalAnchor = try XCTUnwrap(observer.finishes.last?.anchor)
+        XCTAssertEqual(
+            finalAnchor.rawValue, inputAnchor.rawValue,
+            "An incomplete working-set scan must not advance the working-set sync anchor."
         )
     }
 

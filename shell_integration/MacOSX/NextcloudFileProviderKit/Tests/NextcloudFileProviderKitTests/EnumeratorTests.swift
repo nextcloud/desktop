@@ -417,7 +417,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 2. Act
         let firstPageFiles = [parentNKFile] + childrenNKFiles
         let (firstPageResult, firstPageError) = Enumerator.handlePagedReadResults(
-            files: firstPageFiles, pageIndex: 0, dbManager: dbManager
+            files: firstPageFiles, pageIndex: 0, dbManager: dbManager, log: FileProviderLogMock()
         )
 
         // 3. Assert
@@ -441,7 +441,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // --- Scenario B: Follow-up Page (pageIndex > 0) ---
         // 4. Act
         let (followUpPageResult, followUpPageError) = Enumerator.handlePagedReadResults(
-            files: followUpChildrenNKFiles, pageIndex: 1, dbManager: dbManager
+            files: followUpChildrenNKFiles, pageIndex: 1, dbManager: dbManager, log: FileProviderLogMock()
         )
 
         // 5. Assert
@@ -462,7 +462,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         rootNKFile.path = Self.account.davFilesUrl
 
         let (rootResult, rootError) = Enumerator.handlePagedReadResults(
-            files: [rootNKFile], pageIndex: 0, dbManager: dbManager
+            files: [rootNKFile], pageIndex: 0, dbManager: dbManager, log: FileProviderLogMock()
         )
 
         // 7. Assert
@@ -520,7 +520,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         }
 
         let (returnedMetadatas, error) = Enumerator.handlePagedReadResults(
-            files: [parentNKFile] + childrenNKFiles, pageIndex: 0, dbManager: dbManager
+            files: [parentNKFile] + childrenNKFiles, pageIndex: 0, dbManager: dbManager, log: FileProviderLogMock()
         )
         XCTAssertNil(error)
 
@@ -570,7 +570,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         }
 
         let (returnedMetadatas, error) = Enumerator.handlePagedReadResults(
-            files: followUpChildrenNKFiles, pageIndex: 1, dbManager: dbManager
+            files: followUpChildrenNKFiles, pageIndex: 1, dbManager: dbManager, log: FileProviderLogMock()
         )
         XCTAssertNil(error)
 
@@ -602,7 +602,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let parentNKFile = remoteFolder.toNKFile()
         let (_, error) = Enumerator.handlePagedReadResults(
-            files: [parentNKFile], pageIndex: 0, dbManager: dbManager
+            files: [parentNKFile], pageIndex: 0, dbManager: dbManager, log: FileProviderLogMock()
         )
         XCTAssertNil(error)
 

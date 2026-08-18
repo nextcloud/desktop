@@ -54,8 +54,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolderMan, "nextcloud.gui.folder.manager", QtInfoMsg)
 
-FolderMan *FolderMan::_instance = nullptr;
-
 FolderMan::FolderMan(QObject *parent)
     : QObject(parent)
     , _lockWatcher(new LockWatcher)
@@ -63,10 +61,9 @@ FolderMan::FolderMan(QObject *parent)
     , _navigationPaneHelper(this)
 #endif
 {
-    ASSERT(!_instance);
-    _instance = this;
-
     _socketApi.reset(new SocketApi);
+    // folder watcher
+    connect(this, &FolderMan::folderSyncStateChange, _socketApi.data(), &SocketApi::slotUpdateFolderView);
 
     ConfigFile cfg;
     std::chrono::milliseconds polltime = cfg.remotePollInterval();
@@ -100,7 +97,22 @@ FolderMan::FolderMan(QObject *parent)
 FolderMan::~FolderMan()
 {
     qDeleteAll(_folderMap);
-    _instance = nullptr;
+}
+
+std::unique_ptr<FolderMan> FolderMan::_instance = {};
+
+FolderMan *FolderMan::instance()
+{
+    if (!_instance) {
+        _instance.reset(new FolderMan{});
+    }
+
+    return _instance.get();
+}
+
+void FolderMan::resetInstance()
+{
+    _instance.reset();
 }
 
 const OCC::Folder::Map &FolderMan::map() const
@@ -1109,6 +1121,13 @@ bool FolderMan::isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) co
     return result;
 }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+bool FolderMan::canPollFileProviderEtag(const AccountState &accountState)
+{
+    return accountState.isConnected();
+}
+#endif
+
 void FolderMan::slotEtagPollTimerTimeout()
 {
     qCInfo(lcFolderMan) << "Etag poll timer timeout";
@@ -1138,6 +1157,11 @@ void FolderMan::slotEtagPollTimerTimeout()
 
     for (const auto &accountState : accounts) {
         const auto account = accountState->account();
+
+        if (!canPollFileProviderEtag(*accountState)) {
+            qCDebug(lcFolderMan) << "Account" << account->displayName() << "is not connected, skipping File Provider ETag check.";
+            continue;
+        }
 
         // Skip accounts that don't have a File Provider domain
         if (!Mac::FileProvider::instance()->domainManager()->domainForAccount(account.data())) {
@@ -1387,6 +1411,15 @@ void FolderMan::slotFolderSyncFinished(const SyncResult &)
 
 Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition &folderDefinition)
 {
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Classic sync folders and the File Provider integration are mutually exclusive:
+    // the FinderSync extension cannot run while the File Provider extension is active.
+    if (ConfigFile().macFileProviderModeEnabled()) {
+        qCWarning(lcFolderMan) << "Refusing to add classic sync folder: File Provider mode is enabled.";
+        return nullptr;
+    }
+#endif
+
     // Choose a db filename
     auto definition = folderDefinition;
     definition.journalPath = definition.defaultJournalPath(accountState->account());

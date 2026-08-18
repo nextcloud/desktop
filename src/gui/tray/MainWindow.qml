@@ -7,11 +7,13 @@ import QtQml
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
+import "../activity/qml"
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 import Qt.labs.platform as NativeDialogs
 
 import "../"
+import "../common/"
 import "../filedetails/"
 
 // Custom qml modules are in /theme (and included by resources.qrc)
@@ -463,7 +465,7 @@ ApplicationWindow {
             anchors.bottomMargin: Style.trayHorizontalMargin
             spacing: Style.extraSmallSpacing
 
-            TextField {
+            NCContextMenuTextField {
                 id: assistantQuestionInput
                 Layout.fillWidth: true
                 Layout.minimumWidth: 0
@@ -727,7 +729,7 @@ ApplicationWindow {
             anchors.bottom: trayWindowMainItem.bottom
 
             activeFocusOnTab: true
-            currentUser: UserModel.currentUser
+            accentColor: UserModel.currentUser.accentColor
             model: activityModel
             onOpenFile: Qt.openUrlExternally(filePath);
             onActivityItemClicked: {

@@ -18,6 +18,7 @@
 #include "userinfo.h"
 #include "networkjobs.h"
 #include "clientproxy.h"
+#include "localnetworkpermission.h"
 #include <creds/abstractcredentials.h>
 #include "systray.h"
 
@@ -35,6 +36,7 @@ ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QSt
     , _accountState(accountState)
     , _account(accountState->account())
     , _termsOfServiceChecker(_account)
+    , _localNetworkPermissionCheck(LocalNetworkPermission::checkDeniedForConnection)
 {
     connect(&_termsOfServiceChecker, &TermsOfServiceChecker::done,
             this, &ConnectionValidator::termsOfServiceCheckDone);
@@ -160,24 +162,29 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
         return;
     }
 
+    QString error;
     if (!_account->credentials()->stillValid(reply)) {
         // Note: Why would this happen on a status.php request?
-        _errors.append(tr("Authentication error: Either username or password are wrong."));
+        error = tr("Authentication error: Either username or password are wrong.");
     } else {
         //_errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
-        _errors.append(job->errorString());
+        error = job->errorString();
     }
-    reportResult(StatusNotFound);
+
+    _localNetworkPermissionCheck(_account->url(), this, [this, error](const bool denied) {
+        _errors.append(denied ? LocalNetworkPermission::deniedError() : error);
+        reportResult(StatusNotFound);
+    });
 }
 
 void ConnectionValidator::slotJobTimeout(const QUrl &url)
 {
-    Q_UNUSED(url);
     //_errors.append(tr("Unable to connect to %1").arg(url.toString()));
-    _errors.append(tr("Timeout"));
-    reportResult(Timeout);
+    _localNetworkPermissionCheck(url, this, [this](const bool denied) {
+        _errors.append(denied ? LocalNetworkPermission::deniedError() : tr("Timeout"));
+        reportResult(Timeout);
+    });
 }
-
 
 void ConnectionValidator::checkAuthentication()
 {

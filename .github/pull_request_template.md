@@ -22,6 +22,7 @@ https://en.wikipedia.org/wiki/Developer_Certificate_of_Origin
   - [How to rebase your commits](https://docs.github.com/en/get-started/using-git/about-git-rebase)
   - [How to squash commits with rebase](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History#_squashing)
 - [ ] Uploaded screenshots from before and after for UI changes.
+- [ ] Test(s) added to branch, with before/after results included in PR description, for performance improvements where applicable.
 - [ ] [Documentation](https://github.com/nextcloud/documentation/) has been updated or is not required.
 - [ ] [Backports requested](https://github.com/nextcloud/backportbot/#usage) where applicable (critical bugfixes).
 - [ ] [Labels added](https://github.com/nextcloud/server/labels) where applicable (bug/enhancement).

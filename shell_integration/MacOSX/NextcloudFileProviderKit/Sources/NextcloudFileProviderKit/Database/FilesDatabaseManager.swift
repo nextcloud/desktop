@@ -31,7 +31,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata
+    private static let schemaVersion = SchemaVersion.addedPendingChunkUploadCleanup
     let logger: FileProviderLogger
     let account: Account
 
@@ -88,8 +88,24 @@ public final class FilesDatabaseManager: Sendable {
                     }
                 }
 
+                if oldSchemaVersion < SchemaVersion.addedCanonicalPathKeysToRealmItemMetadata.rawValue {
+                    migration.enumerateObjects(ofType: RealmItemMetadata.className()) { _, newObject in
+                        guard let newObject,
+                              let serverUrl = newObject["serverUrl"] as? String,
+                              let fileName = newObject["fileName"] as? String
+                        else { return }
+
+                        newObject["normalizedServerUrl"] = serverUrl.precomposedStringWithCanonicalMapping
+                        newObject["normalizedFileName"] = fileName.precomposedStringWithCanonicalMapping
+                    }
+                }
             },
-            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
+            objectTypes: [
+                RealmItemMetadata.self,
+                RealmExcludedFromSyncItem.self,
+                RemoteFileChunk.self,
+                RealmPendingChunkUploadCleanup.self
+            ]
         )
 
         Realm.Configuration.defaultConfiguration = configuration
@@ -181,8 +197,12 @@ public final class FilesDatabaseManager: Sendable {
         let parentPath = "/\(parentPathComponents.joined(separator: "/"))"
         let rawParentURL = baseURL.absoluteString + parentPath
 
-        if let metadata = itemMetadatas.where({
-            $0.account == account && $0.serverUrl == rawParentURL && $0.fileName == fileName
+        if let metadata = itemMetadatas.where({ item in
+            RealmItemMetadata.hasLocation(
+                item,
+                serverUrl: rawParentURL,
+                fileName: fileName
+            )
         }).first {
             return SendableItemMetadata(value: metadata)
         }
@@ -213,9 +233,9 @@ public final class FilesDatabaseManager: Sendable {
         account: String, underServerUrl serverUrl: String
     ) -> [SendableItemMetadata] {
         itemMetadatas
-            .where {
-                $0.account == account &&
-                    ($0.serverUrl == serverUrl || $0.serverUrl.starts(with: serverUrl + "/"))
+            .where { item in
+                item.account == account &&
+                    RealmItemMetadata.hasServerUrl(item, equalTo: serverUrl, includingDescendants: true)
             }
             .toUnmanagedResults()
     }
@@ -254,14 +274,18 @@ public final class FilesDatabaseManager: Sendable {
         existingMetadatas: Results<RealmItemMetadata>,
         updatedMetadatas: [SendableItemMetadata]
     ) -> [RealmItemMetadata] {
+        // O(1) membership test instead of a per-existing linear scan of `updatedMetadatas`. The previous
+        // `updatedMetadatas.contains(where:)` made this loop O(existing × updated) — with the linear scan
+        // in `processItemMetadatasToUpdate` it was the dominant cost of a large non-paginated depth-1
+        // write (measured ≈19 min, never completing, for a 6982-item flat folder; no index can fix an
+        // in-memory scan). `existingMetadata` is already the managed row from the caller's `database`
+        // handle and is value-copied before the write, so it is used directly — this also removes the
+        // per-item `itemMetadatas` (`ncDatabase()`) re-open the old `.where{}.first` fetch incurred.
+        let updatedOcIds = Set(updatedMetadatas.map(\.ocId))
         var deletedMetadatas: [RealmItemMetadata] = []
 
-        for existingMetadata in existingMetadatas {
-            guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
-                  let metadataToDelete = itemMetadatas.where({ $0.ocId == existingMetadata.ocId }).first
-            else { continue }
-
-            deletedMetadatas.append(metadataToDelete)
+        for existingMetadata in existingMetadatas where !updatedOcIds.contains(existingMetadata.ocId) {
+            deletedMetadatas.append(existingMetadata)
 
             logger.debug("Deleting item metadata during update.", [.item: existingMetadata.ocId])
         }
@@ -274,12 +298,24 @@ public final class FilesDatabaseManager: Sendable {
         var returningUpdatedMetadatas: [SendableItemMetadata] = []
         var directoriesNeedingRename: [SendableItemMetadata] = []
 
+        // O(1) ocId lookup instead of `existingMetadatas.first(where:)` — the old per-item linear scan of
+        // a Realm `Results` was O(updated × existing), the other half of the measured O(N²) large-folder
+        // write. Keyed once up front (first occurrence wins, matching `.first(where:)`).
+        var existingByOcId: [String: RealmItemMetadata] = [:]
+        existingByOcId.reserveCapacity(existingMetadatas.count)
+        for existingMetadata in existingMetadatas where existingByOcId[existingMetadata.ocId] == nil {
+            existingByOcId[existingMetadata.ocId] = existingMetadata
+        }
+
+        // `inheritedKeepDownloaded` depends on the item only through (account, parent serverUrl); every
+        // child of a folder shares one serverUrl, so cache per serverUrl to collapse N parent lookups
+        // (each a DB query) to one per distinct parent.
+        var inheritedKeepDownloadedByServerUrl: [String: Bool] = [:]
+
         for var updatedMetadata in updatedMetadatas {
-            if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
+            if let existingMetadata = existingByOcId[updatedMetadata.ocId] {
                 if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
-                    let pathChanged =
-                        updatedMetadata.serverUrl != existingMetadata.serverUrl ||
-                        updatedMetadata.fileName != existingMetadata.fileName
+                    let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
                         directoriesNeedingRename.append(updatedMetadata)
@@ -312,7 +348,13 @@ public final class FilesDatabaseManager: Sendable {
 
             } else { // This is a new metadata
                 // Inherit the parent's "Always keep downloaded" flag so a file surfacing here via remote enumeration acquires the same pin as its already-pinned siblings (#10054).
-                updatedMetadata.keepDownloaded = inheritedKeepDownloaded(for: updatedMetadata)
+                if let cached = inheritedKeepDownloadedByServerUrl[updatedMetadata.serverUrl] {
+                    updatedMetadata.keepDownloaded = cached
+                } else {
+                    let inherited = inheritedKeepDownloaded(for: updatedMetadata)
+                    inheritedKeepDownloadedByServerUrl[updatedMetadata.serverUrl] = inherited
+                    updatedMetadata.keepDownloaded = inherited
+                }
 
                 returningNewMetadatas.append(updatedMetadata)
 
@@ -345,12 +387,12 @@ public final class FilesDatabaseManager: Sendable {
             }
             let existingMetadatas = database
                 .objects(RealmItemMetadata.self)
-                .where {
+                .where { item in
                     // Don't worry — root will be updated at the end of this method if is the target
-                    $0.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue &&
-                        $0.account == account &&
-                        $0.serverUrl == cleanServerUrl &&
-                        $0.uploaded
+                    item.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue &&
+                        RealmItemMetadata.hasServerUrl(item, equalTo: cleanServerUrl, includingDescendants: false) &&
+                        item.account == account &&
+                        item.uploaded
                 }
 
             var updatedChildMetadatas = updatedMetadatas
@@ -463,9 +505,6 @@ public final class FilesDatabaseManager: Sendable {
                     result.downloaded = false
                 } else if result.isUpload {
                     result.uploaded = false
-                    result.chunkUploadId = UUID().uuidString
-                } else if status == .normal, metadata.isUpload {
-                    result.chunkUploadId = nil
                 }
 
                 logger.debug("Updated status for item metadata.", [
@@ -499,6 +538,62 @@ public final class FilesDatabaseManager: Sendable {
             }
         } catch {
             logger.error("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl, .error: error])
+        }
+    }
+
+    /**
+     * @brief Records that the provider returned `.excludedFromSync` for an item.
+     *
+     * The marker is stored separately from item metadata so remote enumeration and
+     * materialization updates cannot overwrite it before the system calls `deleteItem`.
+     *
+     * @param ocId The file provider item identifier to mark.
+     * @return `true` when the marker was stored successfully.
+     */
+    @discardableResult
+    func markItemAsExcludedFromSync(ocId: String) -> Bool {
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                database.add(RealmExcludedFromSyncItem(ocId: ocId), update: .all)
+            }
+            return true
+        } catch {
+            logger.error("Could not mark item as excluded from sync.", [.item: ocId, .error: error])
+            return false
+        }
+    }
+
+    /**
+     * @brief Returns whether an item is awaiting the deletion callback caused by `.excludedFromSync`.
+     * @param ocId The file provider item identifier to look up.
+     */
+    func isItemExcludedFromSync(ocId: String) -> Bool {
+        ncDatabase().object(ofType: RealmExcludedFromSyncItem.self, forPrimaryKey: ocId) != nil
+    }
+
+    /**
+     * @brief Removes the durable exclusion marker after local metadata deletion succeeds.
+     * @param ocId The file provider item identifier whose marker should be removed.
+     * @return `true` when the marker was removed successfully or was already absent.
+     */
+    @discardableResult
+    func removeExcludedFromSyncMarker(ocId: String) -> Bool {
+        let database = ncDatabase()
+
+        guard let marker = database.object(ofType: RealmExcludedFromSyncItem.self, forPrimaryKey: ocId) else {
+            return true
+        }
+
+        do {
+            try database.write {
+                database.delete(marker)
+            }
+            return true
+        } catch {
+            logger.error("Could not remove excluded-from-sync marker.", [.item: ocId, .error: error])
+            return false
         }
     }
 
@@ -557,12 +652,14 @@ public final class FilesDatabaseManager: Sendable {
             // state and choosing one would risk merging from the row about to
             // be evicted. Eviction in `addItemMetadata` will then prune the
             // prior row in the same write that persists the fresh one.
-            let logicalCandidates = metadatas.where {
-                $0.account == metadata.account
-                    && $0.serverUrl == metadata.serverUrl
-                    && $0.fileName == metadata.fileName
-                    && !$0.deleted
-                    && !$0.isLockFileOfLocalOrigin
+            let logicalCandidates = metadatas.where { item in
+                RealmItemMetadata.hasLocation(
+                    item,
+                    serverUrl: metadata.serverUrl,
+                    fileName: metadata.fileName
+                )
+                    && !item.deleted
+                    && !item.isLockFileOfLocalOrigin
             }
 
             if logicalCandidates.count == 1, let existing = logicalCandidates.first {
@@ -647,9 +744,8 @@ public final class FilesDatabaseManager: Sendable {
                 let oldFileName = itemMetadata.fileName
                 let oldServerUrl = itemMetadata.serverUrl
 
-                itemMetadata.fileName = newFileName
+                itemMetadata.updateLocation(serverUrl: newServerUrl, fileName: newFileName)
                 itemMetadata.fileNameView = newFileName
-                itemMetadata.serverUrl = newServerUrl
                 itemMetadata.lockToken = nil
 
                 database.add(itemMetadata, update: .all)
@@ -767,8 +863,9 @@ public final class FilesDatabaseManager: Sendable {
             }
             .forEach { serverUrl in
                 itemMetadatas
-                    .where {
-                        $0.serverUrl == serverUrl && $0.syncTime > date
+                    .where { item in
+                        RealmItemMetadata.hasServerUrl(item, equalTo: serverUrl, includingDescendants: false) &&
+                            item.syncTime > date
                     }
                     .forEach { child in
                         let sendableMetadata = SendableItemMetadata(value: child)
@@ -801,8 +898,9 @@ public final class FilesDatabaseManager: Sendable {
                 $0.remotePath()
             }
             .forEach { serverUrl in
-                itemMetadatas.where {
-                    $0.serverUrl.starts(with: serverUrl) && $0.syncTime > date
+                itemMetadatas.where { item in
+                    RealmItemMetadata.hasServerUrl(item, equalTo: serverUrl, includingDescendants: true) &&
+                        item.syncTime > date
                 }.forEach { child in
                     guard child.isLockFileOfLocalOrigin == false else {
                         logger.info("Excluding item from deletion because it is a lock file from local origin.", [.item: child.ocId, .name: child.fileName])

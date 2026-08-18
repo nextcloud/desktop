@@ -6,6 +6,7 @@
 
 #include "accountmanager.h"
 #include "accountstate.h"
+#include "activity/syncstatussummary.h"
 #include "systray.h"
 #include "theme.h"
 #include "config.h"
@@ -45,6 +46,8 @@
 #define NOTIFICATIONS_PATH "/org/freedesktop/Notifications"
 #define NOTIFICATIONS_IFACE "org.freedesktop.Notifications"
 #endif
+
+using namespace Qt::StringLiterals;
 
 namespace OCC {
 
@@ -209,9 +212,10 @@ void Systray::showTrayPopup(WindowPosition position)
     }
 
 #ifdef Q_OS_MACOS
-    showMacOSTrayPopup(geometry());
-    setIsOpen(true);
-    UserModel::instance()->fetchCurrentActivityModel();
+    if (showMacOSTrayPopup(geometry())) {
+        setIsOpen(true);
+        UserModel::instance()->fetchCurrentActivityModel();
+    }
 #else
     if (showQtTrayPopup(this, geometry(), position)) {
         setIsOpen(true);
@@ -252,6 +256,12 @@ void Systray::showActivitiesWindow(int userIndex)
         return;
     }
 
+    const auto accountState = user->accountState();
+    if (!accountState) {
+        qCWarning(lcSystray) << "Could not open activities window without an account state";
+        return;
+    }
+
     hideWindow();
 
     if (!_trayEngine) {
@@ -262,26 +272,39 @@ void Systray::showActivitiesWindow(int userIndex)
     const auto windowKey = user->account()->id();
 
     if (const auto existingWindow = _activitiesWindows.value(windowKey)) {
+        const auto syncStatusModel = qvariant_cast<SyncStatusSummary *>(existingWindow->property("syncStatusModel"));
+        if (syncStatusModel) {
+            syncStatusModel->loadForAccount(accountState);
+        }
         positionWindowAtScreenCenter(existingWindow.data());
         existingWindow->show();
         existingWindow->raise();
         existingWindow->requestActivate();
-        userModel->fetchActivityModel(targetUserId);
+        user->refreshActivities();
         return;
     }
 
-    const QVariantMap initialProperties{
-        {"userIndex", targetUserId},
-        {"currentUser", QVariant::fromValue(user)},
-        {"activityModel", QVariant::fromValue(user->getActivityModel())},
-    };
-    QQmlComponent activitiesWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/ActivitiesWindow.qml"));
+    QQmlComponent activitiesWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/activity/qml/ActivitiesWindow.qml"));
 
     if (activitiesWindowComponent.isError()) {
         qCWarning(lcSystray) << activitiesWindowComponent.errorString();
         qCWarning(lcSystray) << activitiesWindowComponent.errors();
         return;
     }
+
+    auto *const syncStatusModel = new SyncStatusSummary(this);
+    syncStatusModel->loadForAccount(accountState);
+    const QVariantMap initialProperties{
+        {"account", QVariantMap{
+                        {"avatar", user->avatarUrl()},
+                        {"name", user->name()},
+                        {"server", user->server()},
+                        {"accentColor", user->accentColor()},
+                    }},
+        {"activityUser", QVariant::fromValue(user)},
+        {"activityModel", QVariant::fromValue(user->getActivityModel())},
+        {"syncStatusModel", QVariant::fromValue(syncStatusModel)},
+    };
 
     const auto createdObject = activitiesWindowComponent.createWithInitialProperties(initialProperties);
     const auto window = qobject_cast<QQuickWindow *>(createdObject);
@@ -290,6 +313,7 @@ void Systray::showActivitiesWindow(int userIndex)
         if (createdObject) {
             createdObject->deleteLater();
         }
+        syncStatusModel->deleteLater();
         return;
     }
 
@@ -308,12 +332,13 @@ void Systray::showActivitiesWindow(int userIndex)
     connect(window, &QObject::destroyed, this, [this, windowKey] {
         _activitiesWindows.remove(windowKey);
     });
+    connect(window, &QObject::destroyed, syncStatusModel, &QObject::deleteLater);
 
     positionWindowAtScreenCenter(window);
     window->show();
     window->raise();
     window->requestActivate();
-    userModel->fetchActivityModel(targetUserId);
+    user->refreshActivities();
 }
 
 void Systray::showAssistantWindow(int userIndex)
@@ -428,7 +453,7 @@ void Systray::showSearchWindow(int userIndex)
         return;
     }
 
-    QQmlComponent searchWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/search/qml/SearchWindow.qml"));
+    QQmlComponent searchWindowComponent(trayEngine(), "com.nextcloud.desktopclient.search"_L1, "SearchWindow"_L1);
 
     if (searchWindowComponent.isError()) {
         qCWarning(lcSystray) << searchWindowComponent.errorString();
@@ -1168,6 +1193,25 @@ void Systray::setSyncIsPaused(const bool syncIsPaused)
 bool Systray::anySyncFolders() const
 {
     return _anySyncFolders;
+}
+
+Systray::SyncControlState Systray::syncControlState() const
+{
+    const auto folders = FolderMan::instance()->map();
+    if (folders.isEmpty()) {
+        return SyncControlState::Unavailable;
+    }
+
+    const auto anyPaused = std::any_of(std::cbegin(folders), std::cend(folders), [](const Folder *folder) {
+        return folder->syncPaused();
+    });
+    const auto anyRunning = std::any_of(std::cbegin(folders), std::cend(folders), [](const Folder *folder) {
+        return !folder->syncPaused();
+    });
+    if (anyPaused && anyRunning) {
+        return SyncControlState::PauseAndResume;
+    }
+    return anyPaused ? SyncControlState::Resume : SyncControlState::Pause;
 }
 
 /********************************************************************************************/

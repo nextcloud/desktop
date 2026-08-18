@@ -6,7 +6,7 @@ import NextcloudKit
 
 extension Enumerator {
     static func handlePagedReadResults(
-        files: [NKFile], pageIndex: Int, dbManager: FilesDatabaseManager
+        files: [NKFile], pageIndex: Int, dbManager: FilesDatabaseManager, log: any FileProviderLogging
     ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
         // First PROPFIND contains the target item, but we do not want to report this in the
         // retrieved metadatas (the enumeration observers don't expect you to enumerate the
@@ -40,9 +40,43 @@ extension Enumerator {
         // `keepDownloaded == false` for items that are pinned in the
         // database, leaving the OS view (`isKeepDownloaded`, `contentPolicy`)
         // out of sync with the local truth.
-        let metadatas = files[startIndex...].map { file -> SendableItemMetadata in
-            dbManager.addItemMetadataPreservingLocalState(file.toItemMetadata())
+        //
+        // Conversion and persistence are timed separately (convAccum / dbAccum) so the JSONL PERF
+        // line splits CPU spent building metadata from CPU spent in Realm. Today each item opens its
+        // own write transaction inside `addItemMetadataPreservingLocalState`; `db_items_per_s` is the
+        // throughput number to watch, and the enclosing `ConvertAndPersistPage` signpost bounds the
+        // whole page for Instruments. (Phase 2 batches these into one transaction per page.)
+        let signposter = EnumerationSignposter.signposter
+        let convAndPersistState = signposter.beginInterval(
+            "ConvertAndPersistPage",
+            id: signposter.makeSignpostID(),
+            "pageIndex=\(pageIndex) files=\(files.count)"
+        )
+
+        let clock = ContinuousClock()
+        var convAccum: Duration = .zero
+        var dbAccum: Duration = .zero
+        var metadatas: [SendableItemMetadata] = []
+        metadatas.reserveCapacity(max(0, files.count - startIndex))
+
+        for file in files[startIndex...] {
+            let convStart = clock.now
+            let itemMetadata = file.toItemMetadata()
+            convAccum += clock.now - convStart
+
+            let dbStart = clock.now
+            metadatas.append(dbManager.addItemMetadataPreservingLocalState(itemMetadata))
+            dbAccum += clock.now - dbStart
         }
+
+        signposter.endInterval("ConvertAndPersistPage", convAndPersistState, "items=\(metadatas.count)")
+
+        let itemCount = metadatas.count
+        let dbSeconds = dbAccum.fpSeconds
+        let dbRate = dbSeconds > 0 ? Double(itemCount) / dbSeconds : 0
+        FileProviderLogger(category: "Enumerator", log: log).performance(
+            "PERF ConvertAndPersistPage pageIndex=\(pageIndex) items=\(itemCount) conv_s=\(convAccum.fpSeconds) db_s=\(dbSeconds) db_items_per_s=\(dbRate)"
+        )
 
         return (metadatas, nil)
     }
@@ -68,11 +102,23 @@ extension Enumerator {
 
         if let pageIndex {
             let (metadatas, error) =
-                handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager)
+                handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager, log: log)
             return (metadatas, nil, error)
         }
 
-        guard var (directory, _, files) = await files.toSendableDirectoryMetadata(account: account, directoryToRead: serverUrl) else {
+        // Non-paginated path (older servers / change enumeration): conversion is parallelized and the
+        // persist is a single batched transaction. Signpost each so its cost is comparable, in a trace,
+        // against the paginated path's per-item behavior.
+        let signposter = EnumerationSignposter.signposter
+        let convDirState = signposter.beginInterval(
+            "ConvertDirectoryMetadata",
+            id: signposter.makeSignpostID(),
+            "serverUrl=\(serverUrl, privacy: .public) files=\(files.count)"
+        )
+        let convertedDirectory = await files.toSendableDirectoryMetadata(account: account, directoryToRead: serverUrl)
+        signposter.endInterval("ConvertDirectoryMetadata", convDirState)
+
+        guard var (directory, _, files) = convertedDirectory else {
             logger.error("Failed to convert array of NKFile to directory and files metadata objects!")
             return (nil, nil, .invalidData)
         }
@@ -92,11 +138,30 @@ extension Enumerator {
 
         files.insert(directory, at: 0)
 
+        let batchClock = ContinuousClock()
+        let batchStart = batchClock.now
+        let batchWriteState = signposter.beginInterval(
+            "Depth1BatchWrite",
+            id: signposter.makeSignpostID(),
+            "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
+        )
         let changes = dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: serverUrl,
             updatedMetadatas: files,
             keepExistingDownloadState: true
+        )
+        signposter.endInterval("Depth1BatchWrite", batchWriteState)
+
+        // The non-paginated depth-1 write (change / working-set full-folder re-read) is the measured
+        // enumeration bottleneck: its per-item logical-dedup scans are O(N²) over a flat folder. Log its
+        // wall-clock + items/sec so the effect of the normalizedFileName index is visible in the JSONL
+        // (the `Depth1BatchWrite` signpost shows the same in Instruments).
+        let batchElapsed = batchClock.now - batchStart
+        let batchRate = batchElapsed.fpSeconds > 0 ? Double(files.count) / batchElapsed.fpSeconds : 0
+        logger.performance(
+            "PERF Depth1BatchWrite items=\(files.count) write_s=\(batchElapsed.fpSeconds) items_per_s=\(batchRate)",
+            [.url: serverUrl]
         )
 
         return (files, changes, nil)
@@ -140,6 +205,21 @@ extension Enumerator {
             .init()
         }
 
+        // Signpost + wall-clock the network read in isolation so a trace (or the JSONL PERF line) can
+        // attribute enumeration latency to the paginated PROPFIND (server-bound) versus the local
+        // conversion + Realm persistence (CPU-bound). begin/end stay in this one function scope so the
+        // non-Sendable interval state never crosses the `await`'s potential thread hop.
+        let pageIndexForLog = pageSettings?.index ?? 0
+        let signposter = EnumerationSignposter.signposter
+        let propfindSignpostID = signposter.makeSignpostID()
+        let propfindState = signposter.beginInterval(
+            "PROPFIND",
+            id: propfindSignpostID,
+            "serverUrl=\(serverUrl, privacy: .public) index=\(pageIndexForLog) depth=\(depth.rawValue, privacy: .public)"
+        )
+        let networkClock = ContinuousClock()
+        let networkStart = networkClock.now
+
         let (_, files, data, error) = await remoteInterface.enumerate(
             remotePath: serverUrl,
             depth: depth,
@@ -157,6 +237,13 @@ extension Enumerator {
                     )
                 }
             }
+        )
+
+        let networkElapsed = networkClock.now - networkStart
+        signposter.endInterval("PROPFIND", propfindState, "files=\(files.count)")
+        logger.performance(
+            "PERF PROPFIND index=\(pageIndexForLog) net_s=\(networkElapsed.fpSeconds) files=\(files.count) depth=\(depth.rawValue)",
+            [.url: serverUrl]
         )
 
         guard error == .success else {
@@ -259,7 +346,7 @@ extension Enumerator {
             )
         } else if let pageIndex = pageSettings?.index {
             let (metadatas, error) = handlePagedReadResults(
-                files: files, pageIndex: pageIndex, dbManager: dbManager
+                files: files, pageIndex: pageIndex, dbManager: dbManager, log: log
             )
             return RemoteReadResult(metadatas: metadatas, nextPage: nextPage, error: error)
         } else {

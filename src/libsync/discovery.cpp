@@ -353,7 +353,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         }
     }
 
-    if (excluded == CSYNC_NOT_EXCLUDED && OCC::FileSystem::isFileLocked(_discoveryData->_localDir + path, OCC::FileSystem::LockMode::SharedRead) &&
+    // Lock state was accessed off the GUI thread during discovery, so this read cannot block
+    if (excluded == CSYNC_NOT_EXCLUDED && entries.localEntry.isLocked &&
         (!entries.dbEntry.isValid() || !entries.serverEntry.isValid() || entries.serverEntry.etag == entries.dbEntry._etag)) {
         qCInfo(lcDisco) << _discoveryData->_localDir + path << "is locked" << "exluding it from sync";
         excluded = CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED;
@@ -944,6 +945,19 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         return;
     }
 
+    if (serverEntry.isValid() && _isInsideEncryptedTree && !item->isDirectory() && !item->isEncrypted()) {
+        qCWarning(lcDisco()) << "remote file inside an encrypted folder" << item->_file
+                             << "serverEntry.isValid()" << (serverEntry.isValid() ? "true" : "false")
+                             << "_isInsideEncryptedTree" << (_isInsideEncryptedTree ? "true" : "false")
+                             << "item->isDirectory()" << (item->isDirectory() ? "true" : "false")
+                             << "item->isEncrypted()" << (item->isEncrypted() ? "true" : "false");
+
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
+        emit _discoveryData->itemDiscovered(item);
+
+        return;
+    }
+
     if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
         emit _discoveryData->itemDiscovered(item);
@@ -1165,6 +1179,16 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
         || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+
+    if (serverModified && _isInsideEncryptedTree && !item->isDirectory() && !item->isEncrypted()) {
+        qCWarning(lcDisco()) << "remote file inside an encrypted folder" << item->_file
+                              << "serverModified" << (serverModified ? "true" : "false")
+                              << "_isInsideEncryptedTree" << (_isInsideEncryptedTree ? "true" : "false")
+                              << "item->isDirectory()" << (item->isDirectory() ? "true" : "false")
+                              << "item->isEncrypted()" << (item->isEncrypted() ? "true" : "false");
+
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
+    }
 
     const auto isTypeChange = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
 
@@ -1573,6 +1597,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return true;
     };
     const auto isMove = moveCheck();
+    const auto isStaleVirtualDirectory = localEntry.type == ItemTypeVirtualDirectory && noServerEntry;
     const auto isE2eeMove = isMove && (base.isE2eEncrypted() || isInsideEncryptedTree());
     const auto isCfApiVfsMode = _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi;
     const bool isOnlineOnlyItem = isCfApiVfsMode && (localEntry.isDirectory || _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local));
@@ -1605,7 +1630,17 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
             Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
         }
-        postProcessLocalNew();
+        if (isStaleVirtualDirectory && !isMove) {
+            // A virtual directory without a database record is a stale placeholder.
+            // A newly created local directory is not a virtual directory, so it can
+            // still follow the normal local-new path below.
+            qCWarning(lcDisco) << "Wiping virtual directory without db entry for" << path._local;
+            item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+            item->_direction = SyncFileItem::Down;
+            item->_type = ItemTypeVirtualDirectory;
+        } else {
+            postProcessLocalNew();
+        }
         finalize();
         return;
     }

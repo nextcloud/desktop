@@ -64,6 +64,7 @@ struct LocalInfo
     bool isSymLink = false;
     bool isMetadataMissing = false;
     bool isPermissionsInvalid = false;
+    bool isLocked = false;
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
 };
 
@@ -72,7 +73,7 @@ struct LocalInfo
  *
  * @ingroup libsync
  */
-class DiscoverySingleLocalDirectoryJob : public QObject, public QRunnable
+class OWNCLOUDSYNC_EXPORT DiscoverySingleLocalDirectoryJob : public QObject, public QRunnable
 {
     Q_OBJECT
 public:

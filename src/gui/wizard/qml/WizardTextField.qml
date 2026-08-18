@@ -4,10 +4,11 @@
  */
 
 import QtQuick
-import QtQuick.Controls.Basic as BasicControls
+import QtQuick.Controls
 import Style
+import "../../common"
 
-BasicControls.TextField {
+NCContextMenuTextField {
     id: root
 
     implicitHeight: Style.standardPrimaryButtonHeight

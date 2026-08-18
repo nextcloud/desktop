@@ -146,8 +146,22 @@ static os_log_t getFinderSyncLogger(void) {
     os_log_debug(_log, "Building menu for menu kind: %lu", (unsigned long)whichMenu);
 
     if(![self.xpcManager isConnected]) {
+        // Returning nil shows no Nextcloud entry at all, which the user cannot tell apart from
+        // "the extension isn't installed" — that ambiguity is a large part of why 34.0.0's dead
+        // channel went unreported for so long. A single disabled item costs nothing and turns an
+        // invisible failure into something screenshot-able.
         os_log_error(_log, "Not connected, cannot build menu.");
-        return nil;
+
+        NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"]
+            ?: [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"] ?: @"Nextcloud";
+        NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
+        NSMenuItem *item = [menu addItemWithTitle:[NSString stringWithFormat:@"%@ — not connected", appName]
+                                          action:nil
+                                   keyEquivalent:@""];
+        item.enabled = NO;
+        item.image = [[NSBundle mainBundle] imageForResource:@"app.icns"];
+
+        return menu;
     }
 
 	FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
@@ -186,7 +200,18 @@ static os_log_t getFinderSyncLogger(void) {
     // is delivered by another thread
     [self waitForMenuToArrive];
 
-	id contextMenuTitle = [_strings objectForKey:@"CONTEXT_MENU_TITLE"];
+	// Snapshot under the lock. The wait can also end on its deadline, and after a timeout the
+	// delivery queue is still free to keep appending — iterating the live array while it mutates
+	// would throw.
+	NSArray *menuItems = nil;
+	[self->_menuIsComplete lock];
+	menuItems = [_menuItems copy];
+	[self->_menuIsComplete unlock];
+
+	id contextMenuTitle = nil;
+	@synchronized(_strings) {
+		contextMenuTitle = [_strings objectForKey:@"CONTEXT_MENU_TITLE"];
+	}
 
 	if (contextMenuTitle && !onlyRootsSelected) {
 		os_log_debug(_log, "Creating context menu with title: %{public}@", contextMenuTitle);
@@ -196,14 +221,14 @@ static os_log_t getFinderSyncLogger(void) {
 		subMenuItem.submenu = subMenu;
 		subMenuItem.image = [[NSBundle mainBundle] imageForResource:@"app.icns"];
 
-		// There is an annoying bug in macOS (at least 10.13.3), it does not use/copy over the representedObject of a menu item
-		// So we have to use tag instead.
 		int idx = 0;
-
-		for (NSArray* item in _menuItems) {
+		for (NSArray* item in menuItems) {
 			NSMenuItem *actionItem = [subMenu addItemWithTitle:[item valueForKey:@"text"]
 														action:@selector(subMenuActionClicked:)
 												 keyEquivalent:@""];
+
+			// Finder copies the menu into its own process to display it but identifier does not survive it
+			// Use tag to pass the command: an index into _menuItems that subMenuActionClicked: resolves locally
 			[actionItem setTag:idx];
 			[actionItem setTarget:self];
 			NSString *flags = [item valueForKey:@"flags"]; // e.g. "d"
@@ -225,9 +250,20 @@ static os_log_t getFinderSyncLogger(void) {
 }
 
 - (void)subMenuActionClicked:(id)sender {
-	long idx = [(NSMenuItem*)sender tag];
-	os_log_debug(_log, "Menu item clicked at index: %ld", idx);
-	NSString *command = [[_menuItems objectAtIndex:idx] valueForKey:@"command"];
+	const NSInteger tag = [(NSMenuItem *)sender tag];
+	NSString *command = nil;
+	[self->_menuIsComplete lock];
+	if (tag >= 0 && tag < (NSInteger)_menuItems.count) {
+		command = _menuItems[tag][@"command"];
+		os_log_debug(_log, "command for menu: %{public}@", command);
+	}
+	[self->_menuIsComplete unlock];
+
+	if (command.length == 0) {
+		os_log_error(_log, "Menu item clicked with no command attached; ignoring");
+		return;
+	}
+
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
 	os_log_debug(_log, "Executing command: %{public}@", command);
 	[self.xpcManager askOnSocket:paths query:command];
@@ -276,24 +312,43 @@ static os_log_t getFinderSyncLogger(void) {
 - (void)setString:(NSString*)key value:(NSString*)value
 {
 	os_log_debug(_log, "Setting string: %{public}@ = %{public}@", key, value);
-	[_strings setObject:value forKey:key];
+	// Written from the XPC delivery queue but read from Finder's menu thread in
+	// -menuForMenuKind:. NSMutableDictionary is not thread-safe, and a -setObject:forKey: that
+	// rehashes while -objectForKey: is walking a bucket can crash the extension outright.
+	@synchronized(_strings) {
+		[_strings setObject:value forKey:key];
+	}
 }
 
 - (void)resetMenuItems
 {
 	os_log_debug(_log, "Resetting menu items");
+	// _menuItems is published to Finder's menu thread, which reads it after -menuHasCompleted
+	// under _menuIsComplete. Mutating it under the same lock is what makes that handoff safe;
+	// see the ordering note in -menuHasCompleted.
+	[self->_menuIsComplete lock];
 	_menuItems = [[NSMutableArray alloc] init];
+	[self->_menuIsComplete unlock];
 	os_log_debug(_log, "Menu items reset completed");
 }
 
 - (void)addMenuItem:(NSDictionary *)item {
     os_log_debug(_log, "Adding menu item with title: %{public}@", [item valueForKey:@"text"] ?: @"(no title)");
+	[self->_menuIsComplete lock];
 	[_menuItems addObject:item];
-	os_log_debug(_log, "Menu item added, total items: %lu", (unsigned long)_menuItems.count);
+	const unsigned long count = (unsigned long)_menuItems.count;
+	[self->_menuIsComplete unlock];
+	os_log_debug(_log, "Menu item added, total items: %lu", count);
 }
 
 - (void)menuHasCompleted
 {
+    // Ordering matters here and is the reason -resetMenuItems and -addMenuItem: take the same
+    // lock. All three arrive from the XPC manager's serial queue in protocol order, so taking
+    // _menuIsComplete means the waiter cannot observe _menuReady before every item that
+    // preceded this signal is in _menuItems. Delivering the reset/add pair on one queue and the
+    // signal on another — as the socket implementation used to — left them unordered, and the
+    // waiter could wake to the *previous* request's items.
     os_log_debug(_log, "Menu completion signal received");
     [self->_menuIsComplete lock];
     self->_menuReady = YES;
@@ -305,7 +360,9 @@ static os_log_t getFinderSyncLogger(void) {
 - (void)connectionDidDie
 {
 	os_log_error(_log, "Connection to sync client died");
-	[_strings removeAllObjects];
+	@synchronized(_strings) {
+		[_strings removeAllObjects];
+	}
 	[_registeredDirectories removeAllObjects];
 	// For some reason the FIFinderSync cache doesn't seem to be cleared for the root item when
 	// we reset the directoryURLs (seen on macOS 10.12 at least).

@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "notificationhandler.h"
+#include "activity/notificationhandler.h"
+#include "trayaccountmenupolicy.h"
 #include "usermodel.h"
 #include "common/filesystembase.h"
 
@@ -21,8 +22,7 @@
 #include "syncresult.h"
 #include "syncfileitem.h"
 #include "systray.h"
-#include "tray/activitylistmodel.h"
-#include "tray/talkreply.h"
+#include "activity/activitylistmodel.h"
 #include "userstatusconnector.h"
 #include "common/utility.h"
 #include "ocsassistantconnector.h"
@@ -567,8 +567,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_activityModel, &ActivityListModel::notificationPreviewDataChanged, this, &User::trayNotificationsChanged);
     connect(_activityModel, &ActivityListModel::activityListChanged, this, &User::refreshAccountAlert);
 
-    connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
-
     connect(_account->account().data(), &Account::userCertificateNeedsMigrationChanged, this, [this] () {
         auto certificateNeedMigration = Activity{};
         certificateNeedMigration._type = Activity::OpenSettingsNotificationType;
@@ -947,7 +945,7 @@ void User::slotFileProviderInsufficientQuotaForItem(const QString &domainIdentif
     // user-visible refusal can produce many `reportInsufficientQuotaForItem` calls. Dedupe
     // per (domain, relativePath) so the activity list shows one row per affected file rather
     // than one per retry. See https://github.com/nextcloud/desktop/issues/9598.
-    const auto dedupKey = domainIdentifier + QLatin1Char('|') + relativePath;
+    const QString dedupKey = domainIdentifier + QLatin1Char('|') + relativePath;
     if (_reportedQuotaItems.contains(dedupKey)) {
         qCDebug(lcActivity) << "Suppressing duplicate quota-item entry for" << relativePath << "in domain" << domainIdentifier;
         return;
@@ -1045,7 +1043,7 @@ void User::slotFileProviderRetryUploads(const QString &domainIdentifier)
     // Re-arm dedupe so the next quota event for this domain produces a fresh summary entry
     // and fresh per-item entries (one per affected file, not one per retry).
     _reportedQuotaSummaryDomains.remove(domainIdentifier);
-    const auto domainPrefix = domainIdentifier + QLatin1Char('|');
+    const QString domainPrefix = domainIdentifier + QLatin1Char('|');
     QMutableSetIterator<QString> it(_reportedQuotaItems);
     while (it.hasNext()) {
         if (it.next().startsWith(domainPrefix)) {
@@ -1666,6 +1664,11 @@ ActivityListModel *User::getActivityModel()
     return _activityModel;
 }
 
+void User::refreshActivities()
+{
+    slotRefresh();
+}
+
 QVariantList User::recentActivities() const
 {
     return _activityModel->recentActivityPreviewData();
@@ -1803,8 +1806,21 @@ void User::openFolderLocallyOrInBrowser(const QString &fullRemotePath)
 
 void User::login() const
 {
-    _account->account()->resetRejectedCertificates();
-    _account->signIn();
+    switch (TrayAccountMenuPolicy::reconnectMode(
+        _account->isConnected(),
+        _account->isSignedOut(),
+        !isPublicShareLink())) {
+    case TrayAccountMenuPolicy::ReconnectMode::None:
+        return;
+    case TrayAccountMenuPolicy::ReconnectMode::SignIn:
+        _account->account()->resetRejectedCertificates();
+        _account->signIn();
+        break;
+    case TrayAccountMenuPolicy::ReconnectMode::RetryConnection:
+        _account->account()->resetRejectedCertificates();
+        _account->freshConnectionAttempt();
+        break;
+    }
 }
 
 void User::logout() const
@@ -2015,15 +2031,6 @@ void User::removeAccount() const
 {
     AccountManager::instance()->deleteAccount(_account.data());
     AccountManager::instance()->save();
-}
-
-void User::slotSendReplyMessage(const int activityIndex, const QString &token, const QString &message, const QString &replyTo)
-{
-    QPointer<TalkReply> talkReply = new TalkReply(_account.data(), this);
-    talkReply->sendReplyMessage(token, message, replyTo);
-    connect(talkReply, &TalkReply::replyMessageSent, this, [&, activityIndex](const QString &message) {
-        _activityModel->setReplyMessageSent(activityIndex, message);
-    });
 }
 
 void User::submitAssistantQuestion(const QString &question)
@@ -2957,15 +2964,6 @@ void UserModel::fetchCurrentActivityModel()
         return;
 
     _users[currentUserId()]->slotRefresh();
-}
-
-void UserModel::fetchActivityModel(const int id)
-{
-    if (id < 0 || id >= _users.size()) {
-        return;
-    }
-
-    _users[id]->slotRefresh();
 }
 
 void UserModel::fetchActivityPreview(const int id)

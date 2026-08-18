@@ -330,66 +330,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteItem.data, originalRemoteData)
     }
 
-    /// Upload integrity guard (F1): when the server reports it stored a different number of bytes
-    /// than the local file contains, the modify must NOT record the item as a clean upload. It
-    /// returns a *transient* error (so the File Provider system automatically retries the modify)
-    /// and leaves the row un-uploaded, instead of committing a truncated/torn file.
-    func testModifyFileFailsOnUploadSizeMismatch() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-
-        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
-        itemMetadata.uploaded = true
-        itemMetadata.downloaded = true
-        Self.dbManager.addItemMetadata(itemMetadata)
-
-        let newContents = "Hello, New World!".data(using: .utf8)!
-        let newContentsUrl = FileManager.default.temporaryDirectory
-            .appendingPathComponent("integrity-mismatch-modify")
-        try newContents.write(to: newContentsUrl)
-
-        // Simulate the server storing fewer bytes than we sent (a torn transfer).
-        remoteInterface.uploadResponseSizeOverride = Int64(newContents.count - 1)
-
-        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
-        targetItemMetadata.size = Int64(newContents.count)
-
-        let item = Item(
-            metadata: itemMetadata,
-            parentItemIdentifier: .rootContainer,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager
-        )
-        let targetItem = Item(
-            metadata: targetItemMetadata,
-            parentItemIdentifier: .rootContainer,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager
-        )
-
-        let (modifiedItem, error) = await item.modify(
-            itemTarget: targetItem,
-            changedFields: [.contents],
-            contents: newContentsUrl,
-            dbManager: Self.dbManager
-        )
-
-        XCTAssertNil(modifiedItem)
-
-        // The error must be *transient* (NSCocoaErrorDomain, outside the resolvable
-        // NSFileProviderError set) so the system automatically retries the modify rather than
-        // backing off until the provider signals resolution.
-        let nsError = try XCTUnwrap(error as NSError?)
-        XCTAssertEqual(nsError.domain, NSCocoaErrorDomain)
-        XCTAssertEqual(nsError.code, NSFileWriteUnknownError)
-
-        // The item must not be recorded as a clean upload; it stays pending for the retry.
-        let dbItem = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
-        XCTAssertFalse(dbItem.uploaded)
-        XCTAssertNotEqual(dbItem.status, Status.normal.rawValue)
-    }
-
     /// When the server returns 404 during an upload (the parent folder was renamed
     /// on another client while the file was open), the extension must:
     ///   - clear the stale lock token so the next attempt goes without an If: header
@@ -481,9 +421,182 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
 
         XCTAssertNil(modifiedItem)
-        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        // On macOS < 26 the heuristic sends `If-Match` on every content upload
+        // (the item has a base etag), so a 412 is now read as a version conflict and
+        // returns a transient NSCocoaError. On macOS 26+ no `.failOnConflict` was
+        // requested, so no `If-Match` is sent and 412 keeps its stale-lock meaning.
+        if #available(macOS 26.0, *) {
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        } else {
+            let nsError = error as NSError?
+            XCTAssertEqual(nsError?.domain, NSCocoaErrorDomain)
+            XCTAssertEqual(nsError?.code, NSFileWriteUnknownError)
+        }
         let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
         XCTAssertNil(updatedMetadata?.lockToken, "Stale lock token must be cleared on 412.")
+    }
+
+    /// With conflict detection active, the content upload must carry an
+    /// `If-Match` precondition set to the (quoted) base etag so the server can
+    /// reject a write that would clobber a newer version. On macOS 26+ this is
+    /// requested by the system via `.failOnConflict`; on older systems the
+    /// heuristic sends it unconditionally.
+    func testModifyPassesIfMatchWhenConflictDetectionActive() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-ifmatch-sent")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let options: NSFileProviderModifyItemOptions = if #available(macOS 26.0, *) {
+            .failOnConflict
+        } else {
+            []
+        }
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            options: options,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(error)
+        XCTAssertNotNil(modifiedItem)
+        XCTAssertEqual(
+            remoteInterface.lastUploadIfMatchHeader, "\"0\"",
+            "Content upload must carry If-Match set to the quoted base etag."
+        )
+    }
+
+    /// macOS 26+: a 412 from the server while `If-Match` was sent means the
+    /// server copy changed under us. With `.failOnConflict` the extension must
+    /// return `.localVersionConflictingWithServer` so the system creates a conflict
+    /// copy — and must not commit the rejected upload.
+    func testModifyNativeConflictReturnsLocalVersionConflict() async throws {
+        guard #available(macOS 26.0, *) else {
+            throw XCTSkip("Native fail-on-conflict requires macOS 26+")
+        }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.lockToken = "opaquelocktoken:token"
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-native-conflict")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            options: .failOnConflict,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .localVersionConflictingWithServer)
+        XCTAssertEqual(remoteInterface.lastUploadIfMatchHeader, "\"0\"")
+
+        let updated = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNil(updated?.lockToken, "Lock token must be cleared on conflict.")
+        XCTAssertNotEqual(
+            updated?.status, Status.normal.rawValue,
+            "A rejected upload must not be committed as a normal, synced item."
+        )
+    }
+
+    /// macOS < 26: no conflict-copy contract exists, so a detected conflict
+    /// (412 while `If-Match` was sent) must fail transiently — an NSCocoaError
+    /// outside the resolvable NSFileProviderError set — so the system re-drives the
+    /// edit after re-enumeration instead of silently overwriting the server copy.
+    func testModifyHeuristicConflictReturnsTransientError() async throws {
+        guard #unavailable(macOS 26.0) else {
+            throw XCTSkip("Below-26 heuristic path; macOS 26+ uses the native mechanism.")
+        }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.lockToken = "opaquelocktoken:token"
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-heuristic-conflict")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        let nsError = error as NSError?
+        XCTAssertEqual(nsError?.domain, NSCocoaErrorDomain)
+        XCTAssertEqual(nsError?.code, NSFileWriteUnknownError)
+        XCTAssertEqual(remoteInterface.lastUploadIfMatchHeader, "\"0\"")
+
+        let updated = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNil(updated?.lockToken, "Lock token must be cleared on conflict.")
     }
 
     func testModifyWith423ClearsLockToken() async throws {
@@ -611,28 +724,28 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         // We do not yet support modification of folder contents
     }
 
-    /// Verify that a modify operation on a bundle is refused at the file provider boundary
-    /// with `.excludedFromSync` and that the (mock) server is left untouched. Replaces the
-    /// previous `testModifyBundleContents` test, which validated the now-removed recursive-
-    /// mirror code path. See https://github.com/nextcloud/desktop/issues/9827.
-    func testModifyBundleIsExcluded() async {
+    /// Verify the framework callback sequence caused by excluding a remotely synced bundle.
+    func testModifyRemoteBundleExclusionDoesNotDeleteRemoteBundle() async throws {
         let db = Self.dbManager.ncDatabase()
         debugPrint(db)
 
         let bundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
-
-        // Pre-seed: the bundle exists locally + in the DB but never reached the server. This
-        // mirrors what would happen after the create-time exclusion path ran on a fresh drag.
-        var bundleMetadata = SendableItemMetadata(
-            ocId: "test-bundle-id", fileName: bundleFilename, account: Self.account
+        let remoteBundle = MockRemoteItem(
+            identifier: "test-bundle-id",
+            name: bundleFilename,
+            remotePath: Self.account.davFilesUrl + "/" + bundleFilename,
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
         )
-        bundleMetadata.directory = true
-        bundleMetadata.serverUrl = Self.account.davFilesUrl
-        bundleMetadata.classFile = NKTypeClassFile.directory.rawValue
+        remoteBundle.parent = rootItem
+        rootItem.children.append(remoteBundle)
+
+        var bundleMetadata = remoteBundle.toItemMetadata(account: Self.account)
         bundleMetadata.contentType = UTType.bundle.identifier
-        bundleMetadata.uploaded = false
-        bundleMetadata.downloaded = true
         Self.dbManager.addItemMetadata(bundleMetadata)
 
         let bundleItem = Item(
@@ -652,8 +765,31 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNotNil(modifiedItem)
         XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
-        // Mock server stays untouched.
-        XCTAssertNil(rootItem.children.first { $0.name == bundleFilename })
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
+
+        // Returning `.excludedFromSync` makes macOS fetch the package, then call deleteItem.
+        // Replacing the metadata here models writes made while that fetch/materialization runs.
+        var materializedMetadata = remoteBundle.toItemMetadata(account: Self.account)
+        materializedMetadata.contentType = UTType.bundle.identifier
+        materializedMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(materializedMetadata)
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
+
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: bundleMetadata.ocId))
+        let storedBundle = Item(
+            metadata: storedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let deleteError = await storedBundle.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(deleteError)
+        XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteBundle.identifier })
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: bundleMetadata.ocId)?.deleted, true)
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
     }
 
     func testMoveFileToTrash() async throws {
@@ -1288,17 +1424,155 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(modifiedItem.documentSize?.intValue, newContents.count)
 
         XCTAssertEqual(remoteItem.data, newContents)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.chunkUploadId)
+    }
+
+    func testSuccessfulChunkedModifyPreservesChunkUploadIdentifierWhenCleanupFails() async throws {
+        let chunkSize = 2
+        let newContents = Data(repeating: 1, count: chunkSize * 3)
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("failed-cleanup-chunked-modify-\(UUID().uuidString)")
+        try newContents.write(to: newContentsUrl)
+        defer { try? FileManager.default.removeItem(at: newContentsUrl) }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.returnsChunkUploadDirectory = false
+        remoteInterface.removeLocalChunksError = CocoaError(.fileWriteNoPermission)
+
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("failed-cleanup-chunks-\(UUID().uuidString)", isDirectory: true)
+        remoteInterface.chunkUploadDirectory = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
+        targetItemMetadata.date = modificationDate
+        targetItemMetadata.size = Int64(newContents.count)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            forcedChunkSize: chunkSize,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(error)
+        XCTAssertNotNil(modifiedItem)
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.chunkUploadId,
+            chunkUploadIdentifier(
+                forItemWithIdentifier: itemMetadata.ocId,
+                fileSize: Int64(newContents.count),
+                modificationDate: modificationDate
+            )
+        )
+    }
+
+    func testFailedChunkedModifyPreservesChunkUploadIdentifier() async throws {
+        let chunkSize = 2
+        let newContents = Data(repeating: 1, count: chunkSize * 3)
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("failed-chunked-modify-\(UUID().uuidString)")
+        try newContents.write(to: newContentsUrl)
+        defer { try? FileManager.default.removeItem(at: newContentsUrl) }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 500, fallbackDescription: "Upload failed")
+        remoteInterface.chunkUploadCompletedChunkCount = 1
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("failed-modify-chunks-\(UUID().uuidString)", isDirectory: true)
+        remoteInterface.chunkUploadDirectory = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let uploadIdentifier = chunkUploadIdentifier(
+            forItemWithIdentifier: itemMetadata.ocId,
+            fileSize: Int64(newContents.count),
+            modificationDate: modificationDate
+        )
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
+        targetItemMetadata.date = modificationDate
+        targetItemMetadata.size = Int64(newContents.count)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            forcedChunkSize: chunkSize,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertNotNil(error)
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        XCTAssertEqual(storedMetadata.status, Status.uploadError.rawValue)
+        XCTAssertEqual(storedMetadata.chunkUploadId, uploadIdentifier)
     }
 
     func testModifyFileContentsChunkedResumed() async throws {
         let chunkSize = 2
-        let chunkUploadId = UUID().uuidString
+        let newContents = Data(repeating: 1, count: chunkSize * 3)
+        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
+        try newContents.write(to: newContentsUrl)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        // The chunk id is derived from (item, size, modificationDate); seed the prior interrupted
+        // attempt under exactly that derived id so the resume path recognises identical content.
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: itemMetadata.ocId,
+            fileSize: Int64(newContents.count),
+            modificationDate: modificationDate
+        )
+
         let previousUploadedChunkNum = 1
         let preexistingChunk = RemoteFileChunk(
             fileName: String(previousUploadedChunkNum),
             size: Int64(chunkSize),
             remoteChunkStoreFolderName: chunkUploadId
         )
+        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
 
         let db = Self.dbManager.ncDatabase()
         try db.write {
@@ -1316,19 +1590,8 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             ])
         }
 
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
-
-        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
-        itemMetadata.chunkUploadId = chunkUploadId
-        Self.dbManager.addItemMetadata(itemMetadata)
-
-        let newContents = Data(repeating: 1, count: chunkSize * 3)
-        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
-        try newContents.write(to: newContentsUrl)
-
         var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
-        targetItemMetadata.date = .init()
+        targetItemMetadata.date = modificationDate
         targetItemMetadata.size = Int64(newContents.count)
 
         let item = Item(
@@ -1366,9 +1629,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             remoteInterface.completedChunkTransferSize[chunkUploadId],
             Int64(newContents.count) - preexistingChunk.size
         )
-
-        let dbItem = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
-        XCTAssertNil(dbItem.chunkUploadId)
     }
 
     func testModifyDoesNotPropagateIgnoredFile() async {

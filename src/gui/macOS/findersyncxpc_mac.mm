@@ -4,20 +4,35 @@
  */
 
 #include "findersyncxpc.h"
+#include "version.h"
 
 #import <Foundation/Foundation.h>
-#import <Security/Security.h>
 #import "../../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncProtocol.h"
 #import "../../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncAppProtocol.h"
+#import "../../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncBrokerProtocol.h"
 
 #include <QLoggingCategory>
 #include <QMetaObject>
+#include <QPointer>
+#include <QTimer>
 
+#include "findersyncbrokeridentity.h"
+#include "findersyncbrokerregistrar.h"
 #include "findersyncservice.h"
 
 namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFinderSyncXPC, "nextcloud.gui.macos.findersync.xpc", QtInfoMsg)
+
+namespace {
+    //! How long to wait for evidence that a publish arrived before treating silence as failure.
+    //! Covers a launchd cold start of the login item plus the broker's own 5 s self-check, so a
+    //! slow first launch does not spend the recovery budget.
+    constexpr int kBrokerPublishWatchdogMs = 15000;
+
+    //! Pacing between publish attempts once a failure has been reported explicitly.
+    constexpr int kBrokerPublishRetryMs = 2000;
+}
 
 } // namespace OCC::Mac
 
@@ -41,54 +56,17 @@ Q_LOGGING_CATEGORY(lcFinderSyncXPC, "nextcloud.gui.macos.findersync.xpc", QtInfo
         return NO;
     }
 
-    // Validate that the connecting client is our FinderSync extension by checking
-    // that it shares the same team identifier as the main app bundle.
-    // This prevents unauthorized processes from connecting to this XPC service.
-    NSString *expectedTeamId = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"TeamIdentifierPrefix"];
-    if (!expectedTeamId) {
-        // Fall back to extracting team ID from code signing info
-        SecCodeRef code = NULL;
-        OSStatus status = SecCodeCopySelf(kSecCSDefaultFlags, &code);
-        if (status == errSecSuccess && code) {
-            CFDictionaryRef info = NULL;
-            status = SecCodeCopySigningInformation(code, kSecCSSigningInformation, &info);
-            if (status == errSecSuccess && info) {
-                // Retain + autorelease before releasing the dictionary that owns this string.
-                // Without the explicit retain, CFRelease(info) below would drop the dictionary's
-                // retain count to zero, deallocating it (and all its values) while
-                // expectedTeamId still holds a pointer into it — a classic MRC dangling pointer.
-                expectedTeamId = [[((__bridge NSDictionary *)info)[@"teamid"] retain] autorelease];
-                CFRelease(info);
-            }
-            CFRelease(code);
-        }
-    }
-
-    if (!expectedTeamId || expectedTeamId.length == 0) {
-        qCWarning(OCC::Mac::lcFinderSyncXPC) << "Cannot determine team ID for XPC validation, rejecting connection for safety";
-        return NO;
-    }
-
-    pid_t pid = newConnection.processIdentifier;
-    SecCodeRef clientCode = NULL;
-    NSDictionary *attrs = @{(__bridge NSString *)kSecGuestAttributePid: @(pid)};
-    OSStatus status = SecCodeCopyGuestWithAttributes(NULL, (__bridge CFDictionaryRef)attrs, kSecCSDefaultFlags, &clientCode);
-    if (status == errSecSuccess && clientCode) {
-        CFDictionaryRef clientInfo = NULL;
-        status = SecCodeCopySigningInformation(clientCode, kSecCSSigningInformation, &clientInfo);
-        if (status == errSecSuccess && clientInfo) {
-            NSString *clientTeamId = ((__bridge NSDictionary *)clientInfo)[@"teamid"];
-            if (![expectedTeamId isEqualToString:clientTeamId]) {
-                qCWarning(OCC::Mac::lcFinderSyncXPC) << "Rejecting XPC connection from untrusted client, team:"
-                                                      << QString::fromNSString(clientTeamId ? clientTeamId : @"(none)");
-                CFRelease(clientInfo);
-                CFRelease(clientCode);
-                return NO;
-            }
-            CFRelease(clientInfo);
-        }
-        CFRelease(clientCode);
-    }
+    // Peer authentication is not done here. The requirement is installed once on the listener
+    // with -setConnectionCodeSigningRequirement:, so XPC rejects connections that fail it
+    // before this delegate is ever called.
+    //
+    // This replaced a hand-rolled check that read the peer's team identifier via
+    // kSecGuestAttributePid. That was wrong twice over: it resolved the peer by process
+    // identifier, which is recycled — a peer could exit between the lookup and the check and
+    // be replaced at the same PID by a different, legitimately signed binary — and its
+    // expected-team lookup read a TeamIdentifierPrefix key that the CMake-generated
+    // Info.plist does not contain, so every locally built client fell into the
+    // "cannot determine team ID, rejecting for safety" branch and refused all connections.
 
     // Configure the connection
     newConnection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(FinderSyncAppProtocol)];
@@ -177,6 +155,10 @@ FinderSyncXPC::~FinderSyncXPC()
         _connectionToId.clear();
     }
 
+    // Drop the broker link first: its handler blocks capture `this`, so they must not be able
+    // to fire once the rest of this object is gone.
+    releaseBrokerConnection();
+
     // Clean up listener
     if (_listener) {
         NSXPCListener *listener = (__bridge NSXPCListener *)_listener;
@@ -193,24 +175,15 @@ FinderSyncXPC::~FinderSyncXPC()
     }
 }
 
-void FinderSyncXPC::startListener(Mac::FinderSyncService *service)
+bool FinderSyncXPC::startListener(Mac::FinderSyncService *service)
 {
     qCInfo(lcFinderSyncXPC) << "Starting FinderSync XPC listener";
 
-    // Create a listener with a Mach service name
-    // The service name should match what the extension tries to connect to
-    NSString *serviceName = [[NSBundle mainBundle] bundleIdentifier];
-    serviceName = [serviceName stringByAppendingString:@".FinderSyncService"];
-
-    qCInfo(lcFinderSyncXPC) << "Creating XPC listener with service name:"
-                            << QString::fromNSString(serviceName);
-
-    NSXPCListener *listener = [[NSXPCListener alloc] initWithMachServiceName:serviceName];
-
-    if (!listener) {
-        qCWarning(lcFinderSyncXPC) << "Failed to create XPC listener for FinderSync";
-        return;
-    }
+    // Anonymous, not named. A plain app is not a launchd job and may not advertise a Mach
+    // service name; the FinderSyncBroker login item does that for us and hands this endpoint
+    // to the extension. An anonymous listener needs no entitlement and cannot fail to
+    // activate, because there is no bootstrap name to register.
+    NSXPCListener *listener = [[NSXPCListener anonymousListener] retain];
 
     FinderSyncXPCListenerDelegate *delegate = [[FinderSyncXPCListenerDelegate alloc] init];
     delegate.finderSyncXPC = this;
@@ -218,10 +191,15 @@ void FinderSyncXPC::startListener(Mac::FinderSyncService *service)
     delegate.connectionCounter = 0;
 
     listener.delegate = delegate;
+
+    // Blanket peer authentication, installed before -resume so XPC rejects anything that fails
+    // it without our delegate seeing it.
+    [listener setConnectionCodeSigningRequirement:Mac::FinderSyncBrokerIdentity::peerRequirement().toNSString()];
+
     [listener resume];
 
     // Store listener with retained reference (works with and without ARC).
-    // CFBridgingRetain adds +1, so release the original alloc/init +1 to avoid a leak.
+    // CFBridgingRetain adds +1, so release the original +1 to avoid a leak.
     _listener = (void *)CFBridgingRetain(listener);
     [listener release];
 
@@ -230,7 +208,352 @@ void FinderSyncXPC::startListener(Mac::FinderSyncService *service)
     _listenerDelegate = (void *)CFBridgingRetain(delegate);
     [delegate release];
 
-    qCInfo(lcFinderSyncXPC) << "FinderSync XPC listener started successfully";
+    qCInfo(lcFinderSyncXPC) << "Anonymous FinderSync listener created; publishing endpoint to broker"
+                            << Mac::FinderSyncBrokerIdentity::brokerServiceName();
+
+    publishEndpointToBroker();
+
+    return true;
+}
+
+void FinderSyncXPC::releaseBrokerConnection()
+{
+    if (!_brokerConnection) {
+        return;
+    }
+
+    NSXPCConnection *connection = (__bridge NSXPCConnection *)_brokerConnection;
+    connection.interruptionHandler = nil;
+    connection.invalidationHandler = nil;
+    [connection invalidate];
+    [connection release];
+    _brokerConnection = nullptr;
+}
+
+void FinderSyncXPC::publishEndpointToBroker()
+{
+    if (!_listener) {
+        qCWarning(lcFinderSyncXPC) << "No listener to publish; not contacting the broker";
+        return;
+    }
+
+    releaseBrokerConnection();
+
+    const QString serviceName = Mac::FinderSyncBrokerIdentity::brokerServiceName();
+    NSXPCConnection *connection =
+        [[NSXPCConnection alloc] initWithMachServiceName:serviceName.toNSString() options:0];
+    connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(FinderSyncBrokerProtocol)];
+
+    // Authenticate the broker before handing it an endpoint that grants full access to the
+    // FinderSync protocol. macOS 13+ API, evaluated by the system against the message's audit
+    // token — do not reimplement this from a PID, which is racy.
+    [connection setCodeSigningRequirement:Mac::FinderSyncBrokerIdentity::peerRequirement().toNSString()];
+
+    // Captured by value into the blocks below instead of a raw `this`. The interruption and
+    // invalidation handlers are cleared by releaseBrokerConnection(), but the proxy error handler
+    // further down cannot be, and a block already in flight can outlive this object — dereferencing
+    // `this` to reach QMetaObject::invokeMethod would then be undefined before any event is even
+    // posted. QPointer is copyable, so an Objective-C++ block captures it correctly.
+    //
+    // The attempt number scopes each callback to the connection that installed it, so a late
+    // failure from a superseded attempt cannot disturb the ladder for its replacement.
+    QPointer<FinderSyncXPC> self(this);
+    const auto attempt = ++_brokerAttempt;
+
+    connection.interruptionHandler = ^{
+        // The broker died. It is a launchd job and will be relaunched on the next lookup, but
+        // it comes back with no stored endpoint, so we must publish again.
+        if (!self) {
+            return;
+        }
+        QMetaObject::invokeMethod(self, [self, attempt] {
+            if (self) {
+                self->handlePublishFailure(attempt, QStringLiteral("broker connection interrupted"));
+            }
+        }, Qt::QueuedConnection);
+    };
+
+    connection.invalidationHandler = ^{
+        // A Mach name that is absent from the bootstrap namespace produces *invalidation*, not
+        // interruption — so this, not the handler above, is the path taken when the login item is
+        // not registered. It used to only flip the flag, which is why the client made exactly one
+        // publish attempt per run while the extension retried every 8 s forever.
+        if (!self) {
+            return;
+        }
+        QMetaObject::invokeMethod(self, [self, attempt] {
+            if (self) {
+                self->handlePublishFailure(attempt, QStringLiteral("broker connection invalidated"));
+            }
+        }, Qt::QueuedConnection);
+    };
+
+    [connection resume];
+    _brokerConnection = (void *)connection;
+
+    NSXPCListener *listener = (__bridge NSXPCListener *)_listener;
+
+    id<FinderSyncBrokerProtocol> broker = [connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+        // The overwhelmingly common cause is that the login item is not registered yet, or the
+        // user switched it off in System Settings. Both leave FinderSync completely inert, so
+        // this is an error, not a debug note.
+        const auto description = QString::fromNSString(error.localizedDescription);
+        if (!self) {
+            return;
+        }
+        QMetaObject::invokeMethod(self, [self, attempt, description] {
+            if (self) {
+                self->handlePublishFailure(attempt, description);
+            }
+        }, Qt::QueuedConnection);
+    }];
+
+    [broker publishAppEndpoint:listener.endpoint reply:^(uint64_t generation) {
+        qCInfo(lcFinderSyncXPC) << "Broker accepted our endpoint, generation" << generation;
+        if (!self) {
+            return;
+        }
+        QMetaObject::invokeMethod(self, [self, attempt] {
+            // Scoped to the attempt: a success reply that arrives after a newer publish attempt
+            // has already started must not mark that newer attempt as done.
+            if (self && attempt == self->_brokerAttempt) {
+                self->setEndpointPublished(true);
+            }
+        }, Qt::QueuedConnection);
+    }];
+
+    // Nothing above proves the publish arrived. If the name resolves but the broker is wedged, or
+    // its listener never activated, no reply and no handler ever comes — so arm the ladder to find
+    // out. Generous, because a cold launchd start plus the broker's own 5 s self-check is legitimate
+    // startup latency, not a fault.
+    scheduleNextPublishAttempt(kBrokerPublishWatchdogMs);
+
+    // Replacing the app bundle does not restart an already-running broker: its Service
+    // Management registration survives the upgrade, so launchd keeps the previous binary alive
+    // and we would go on talking to last version's broker indefinitely.
+    [broker brokerVersionWithReply:^(NSString *version) {
+        const auto brokerVersion = QString::fromNSString(version);
+        const auto ourVersion = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION));
+
+        if (brokerVersion == ourVersion) {
+            qCDebug(lcFinderSyncXPC) << "Broker version matches ours:" << brokerVersion;
+            return;
+        }
+
+        qCInfo(lcFinderSyncXPC) << "Broker is running version" << brokerVersion << "but we are"
+                                << ourVersion << "- restarting it";
+
+        if (!self) {
+            return;
+        }
+        QMetaObject::invokeMethod(self, [self, brokerVersion] {
+            if (self) {
+                self->requestBrokerRestart(BrokerRestartReason::VersionMismatch, brokerVersion);
+            }
+        }, Qt::QueuedConnection);
+    }];
+}
+
+bool FinderSyncXPC::isEndpointPublished() const
+{
+    QMutexLocker locker(&_proxiesMutex);
+    return _endpointPublished;
+}
+
+void FinderSyncXPC::setEndpointPublished(bool published)
+{
+    if (published) {
+        // Deliberately before the unchanged-value early return below. A republish that merely
+        // re-confirms an already-published endpoint must still stop the timer, otherwise it fires
+        // later and starts climbing the ladder against a perfectly healthy channel.
+        if (_publishTimer) {
+            _publishTimer->stop();
+        }
+        resetSelfHeal();
+    }
+
+    {
+        QMutexLocker locker(&_proxiesMutex);
+        if (_endpointPublished == published) {
+            return;
+        }
+        _endpointPublished = published;
+    }
+
+    emit brokerReachableChanged(published);
+}
+
+void FinderSyncXPC::resetSelfHeal()
+{
+    // Only ever called once an endpoint has actually been published. A healthy period earns a
+    // fresh budget, so a user who enables the login item in System Settings recovers without
+    // restarting the app — while a channel that never works cannot reach any stage twice.
+    _selfHealStage = SelfHealStage::Republish;
+    _republishAttemptsLeft = 2;
+    _brokerRestartSpent = false;
+}
+
+void FinderSyncXPC::scheduleNextPublishAttempt(int delayMs)
+{
+    if (isEndpointPublished()) {
+        return;
+    }
+
+    if (!_publishTimer) {
+        _publishTimer = new QTimer(this);
+        _publishTimer->setSingleShot(true);
+        connect(_publishTimer, &QTimer::timeout, this, &FinderSyncXPC::advanceSelfHeal);
+    }
+
+    _publishTimer->start(delayMs);
+}
+
+void FinderSyncXPC::handlePublishFailure(quint64 attempt, const QString &reason)
+{
+    if (attempt != _brokerAttempt) {
+        qCDebug(lcFinderSyncXPC) << "Ignoring failure from superseded publish attempt:" << reason;
+        return;
+    }
+
+    if (isEndpointPublished()) {
+        // A stale handler from a superseded connection. Ignore it rather than tearing down a
+        // channel that is currently working.
+        qCDebug(lcFinderSyncXPC) << "Ignoring stale broker failure while published:" << reason;
+        return;
+    }
+
+    setEndpointPublished(false);
+
+    qCWarning(lcFinderSyncXPC) << "Could not publish our endpoint to the FinderSync broker:" << reason;
+
+    // Pace the retry rather than reacting immediately: republishing straight from the invalidation
+    // handler of a name that does not exist would spin as fast as XPC can fail.
+    scheduleNextPublishAttempt(kBrokerPublishRetryMs);
+}
+
+void FinderSyncXPC::advanceSelfHeal()
+{
+    if (isEndpointPublished()) {
+        return;
+    }
+
+    switch (_selfHealStage) {
+    case SelfHealStage::Republish:
+        if (_republishAttemptsLeft > 0) {
+            --_republishAttemptsLeft;
+            qCInfo(lcFinderSyncXPC) << "Retrying the endpoint publish;" << _republishAttemptsLeft
+                                    << "attempt(s) left before touching the login item";
+            publishEndpointToBroker();
+            return;
+        }
+        _selfHealStage = SelfHealStage::Register;
+        [[fallthrough]];
+
+    case SelfHealStage::Register: {
+        const auto status = FinderSyncBrokerRegistrar::status();
+        qCInfo(lcFinderSyncXPC) << "Endpoint publish keeps failing; login item is"
+                                << FinderSyncBrokerRegistrar::describe(status);
+
+        if (status == FinderSyncBrokerRegistrar::Status::RequiresApproval) {
+            // The user's decision. Retrying earns kSMErrorLaunchDeniedByUser, and re-registering
+            // could erase their explicit "off", so stop here.
+            qCCritical(lcFinderSyncXPC)
+                << "FinderSync integration is switched off in System Settings; badges and the "
+                   "context menu will not work until it is enabled there";
+            _selfHealStage = SelfHealStage::GaveUp;
+            return;
+        }
+
+        if (status != FinderSyncBrokerRegistrar::Status::Enabled) {
+            const auto result = FinderSyncBrokerRegistrar::ensureRegistered();
+            _selfHealStage = SelfHealStage::Reregister;
+
+            if (result == FinderSyncBrokerRegistrar::Status::Enabled) {
+                publishEndpointToBroker();
+                return;
+            }
+
+            if (result == FinderSyncBrokerRegistrar::Status::NotFound) {
+                // Packaging fault, not a transient one: the bundle is missing or its identifier
+                // does not match its wrapper filename. Restarting it cannot help.
+                qCCritical(lcFinderSyncXPC)
+                    << "The FinderSync login item cannot be resolved, so it will never register; "
+                       "this is a packaging fault, not something the app can recover from";
+                _selfHealStage = SelfHealStage::GaveUp;
+                return;
+            }
+        }
+
+        // Registered and enabled, yet not serving. Restarting it is the remaining remedy.
+        _selfHealStage = SelfHealStage::Reregister;
+        [[fallthrough]];
+    }
+
+    case SelfHealStage::Reregister:
+        _selfHealStage = SelfHealStage::GaveUp;
+        requestBrokerRestart(BrokerRestartReason::Unreachable);
+        return;
+
+    case SelfHealStage::GaveUp:
+        // Reported once already. Only setEndpointPublished(true) revives the ladder.
+        return;
+    }
+}
+
+void FinderSyncXPC::requestBrokerRestart(BrokerRestartReason reason, const QString &brokerVersion)
+{
+    if (_brokerRestartInFlight) {
+        // Registering before a previous unregistration has completed fails with
+        // SMAppServiceErrorDomain code 1. Drop rather than queue: whatever the second caller
+        // wanted, the restart already in flight will produce it.
+        qCDebug(lcFinderSyncXPC) << "Broker restart already in flight; ignoring duplicate request";
+        return;
+    }
+
+    if (reason == BrokerRestartReason::VersionMismatch && _restartedForBrokerVersion == brokerVersion) {
+        // Without this the version check loops: restart, republish, ask the version again, still
+        // mismatched, restart… each iteration mutating login item state.
+        qCWarning(lcFinderSyncXPC) << "Already restarted the broker for version" << brokerVersion
+                                   << "and it came back the same; leaving it alone";
+        return;
+    }
+
+    if (_brokerRestartSpent) {
+        // One restart per healthy period, shared by both reasons: if a restart just happened and
+        // did not help, doing it again will not either.
+        qCWarning(lcFinderSyncXPC) << "Broker restart budget already spent this session; not "
+                                      "restarting the login item again";
+        return;
+    }
+
+    // Recorded only now that a restart is actually going ahead. Recording it before the budget
+    // check would permanently blacklist a version we never actually attempted.
+    if (reason == BrokerRestartReason::VersionMismatch) {
+        _restartedForBrokerVersion = brokerVersion;
+    }
+
+    _brokerRestartSpent = true;
+    _brokerRestartInFlight = true;
+
+    QPointer<FinderSyncXPC> self(this);
+
+    FinderSyncBrokerRegistrar::reregisterAsync([self](FinderSyncBrokerRegistrar::Status status) {
+        if (!self) {
+            return;
+        }
+
+        self->_brokerRestartInFlight = false;
+
+        if (status != FinderSyncBrokerRegistrar::Status::Enabled) {
+            qCWarning(lcFinderSyncXPC) << "Broker login item is" << FinderSyncBrokerRegistrar::describe(status)
+                                       << "after restarting; not publishing again";
+            return;
+        }
+
+        // The replacement process starts with no stored endpoint.
+        self->setEndpointPublished(false);
+        self->publishEndpointToBroker();
+    });
 }
 
 bool FinderSyncXPC::hasActiveConnections() const

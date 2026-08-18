@@ -148,7 +148,7 @@ public:
 
 public slots:
     [[nodiscard]] bool addEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
-    void removeEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
+    [[nodiscard]] bool removeEncryptedFile(const QString &originalFilename);
     void removeAllEncryptedFiles();
 
 private:

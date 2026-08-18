@@ -64,8 +64,11 @@ public protocol RemoteInterface: Sendable {
     ) async -> (
         account: String,
         file: NKFile?,
+        chunksDirectory: URL?,
         nkError: NKError
     )
+
+    func removeLocalChunks(remoteChunkStoreFolderName: String) throws
 
     func move(
         remotePathSource: String,

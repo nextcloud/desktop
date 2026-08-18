@@ -7,6 +7,7 @@ import NextcloudFileProviderKitMocks
 import NextcloudKit
 import RealmSwift
 import TestInterface
+import UniformTypeIdentifiers
 import XCTest
 
 final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
@@ -63,7 +64,195 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.deleted, true)
     }
 
-    func testDeleteFolderAndContents() async {
+    func testDeleteFileDiscardsIncompleteChunkUpload() async throws {
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account,
+            rootItem: rootItem,
+            rootTrashItem: rootTrashItem
+        )
+        let itemIdentifier = "file-with-incomplete-upload"
+        let remoteItem = MockRemoteItem(
+            identifier: itemIdentifier,
+            name: "file.txt",
+            remotePath: Self.account.davFilesUrl + "/file.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteItem.parent = rootItem
+        rootItem.children = [remoteItem]
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: itemIdentifier,
+            fileSize: 8,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+        )
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("deleted-item-chunks-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: chunksDirectory, withIntermediateDirectories: true)
+        try Data([1]).write(to: chunksDirectory.appendingPathComponent("2"))
+        remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let db = Self.dbManager.ncDatabase()
+        try db.write {
+            db.add(RemoteFileChunk(
+                fileName: "2",
+                size: 3,
+                remoteChunkStoreFolderName: chunkUploadId
+            ))
+        }
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertEqual(
+            db.objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+                .count,
+            0
+        )
+    }
+
+    func testDeleteUnexcludedBundlePropagatesToServer() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteBundle = MockRemoteItem(
+            identifier: "bundle-id",
+            name: "ExplicitlyDeleted.key",
+            remotePath: Self.account.davFilesUrl + "/ExplicitlyDeleted.key",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteBundle.parent = rootItem
+        rootItem.children = [remoteBundle]
+
+        var metadata = remoteBundle.toItemMetadata(account: Self.account)
+        metadata.contentType = UTType.bundle.identifier
+        Self.dbManager.addItemMetadata(metadata)
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertTrue(rootItem.children.isEmpty)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId)?.deleted, true)
+    }
+
+    func testDeleteExcludedBundleDoesNotPropagateToServer() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteBundle = MockRemoteItem(
+            identifier: "excluded-bundle-id",
+            name: "Excluded.key",
+            remotePath: Self.account.davFilesUrl + "/Excluded.key",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteBundle.parent = rootItem
+        rootItem.children = [remoteBundle]
+
+        var metadata = remoteBundle.toItemMetadata(account: Self.account)
+        metadata.contentType = UTType.bundle.identifier
+        Self.dbManager.addItemMetadata(metadata)
+        XCTAssertTrue(Self.dbManager.markItemAsExcludedFromSync(ocId: metadata.ocId))
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteBundle.identifier })
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId)?.deleted, true)
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: metadata.ocId))
+    }
+
+    func testFailedDeleteKeepsIncompleteChunkUpload() async throws {
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account,
+            rootItem: rootItem,
+            rootTrashItem: rootTrashItem
+        )
+        let itemIdentifier = "file-with-failed-delete"
+        let itemMetadata = SendableItemMetadata(
+            ocId: itemIdentifier,
+            fileName: "missing.txt",
+            account: Self.account
+        )
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: itemIdentifier,
+            fileSize: 8,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+        )
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("failed-delete-chunks-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: chunksDirectory, withIntermediateDirectories: true)
+        try Data([1]).write(to: chunksDirectory.appendingPathComponent("2"))
+        remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let db = Self.dbManager.ncDatabase()
+        try db.write {
+            db.add(RemoteFileChunk(
+                fileName: "2",
+                size: 3,
+                remoteChunkStoreFolderName: chunkUploadId
+            ))
+        }
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNotNil(error)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertEqual(
+            db.objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+                .count,
+            1
+        )
+    }
+
+    func testDeleteFolderAndContents() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteFolder = MockRemoteItem(
             identifier: "folder",
@@ -99,6 +288,27 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
 
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: remoteItem.identifier,
+            fileSize: 8,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+        )
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("deleted-descendant-chunks-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: chunksDirectory, withIntermediateDirectories: true)
+        try Data([1]).write(to: chunksDirectory.appendingPathComponent("2"))
+        remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let db = Self.dbManager.ncDatabase()
+        try db.write {
+            db.add(RemoteFileChunk(
+                fileName: "2",
+                size: 3,
+                remoteChunkStoreFolderName: chunkUploadId
+            ))
+        }
+
         let folder = Item(
             metadata: folderMetadata,
             parentItemIdentifier: .rootContainer,
@@ -113,6 +323,101 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertEqual(
+            db.objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+                .count,
+            0
+        )
+    }
+
+    func testDeleteFolderPreservesPendingDescendantChunkUpload() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteFolder = MockRemoteItem(
+            identifier: "folder-with-pending-upload",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let itemIdentifier = "pending-descendant"
+        let remoteItem = MockRemoteItem(
+            identifier: itemIdentifier,
+            name: "pending.txt",
+            remotePath: Self.account.davFilesUrl + "/folder/pending.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.status = Status.uploading.rawValue
+        Self.dbManager.addItemMetadata(folderMetadata)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: remoteItem.identifier,
+            fileSize: 8,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+        )
+        setChunkUploadIdentifier(
+            uploadIdentifier: chunkUploadId,
+            itemIdentifier: remoteItem.identifier,
+            dbManager: Self.dbManager,
+            logger: FileProviderLogger(category: "ItemDeleteTests", log: FileProviderLogMock())
+        )
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.status, Status.uploading.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.chunkUploadId, chunkUploadId)
+
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("preserved-descendant-chunks-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: chunksDirectory, withIntermediateDirectories: true)
+        try Data([1]).write(to: chunksDirectory.appendingPathComponent("2"))
+        remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let db = Self.dbManager.ncDatabase()
+        try db.write {
+            db.add(RemoteFileChunk(
+                fileName: "2",
+                size: 3,
+                remoteChunkStoreFolderName: chunkUploadId
+            ))
+        }
+
+        let folder = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await folder.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.status, Status.uploading.rawValue)
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: itemIdentifier)?.chunkUploadId,
+            chunkUploadId
+        )
+        XCTAssertEqual(
+            db.objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+                .count,
+            1
+        )
     }
 
     func testDeleteWithTrashing() async throws {
@@ -409,6 +714,99 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(error)
         XCTAssertFalse(
             targetRemote.locked, "Expected the document to be unlocked after lock file deletion"
+        )
+    }
+
+    func testDeleteAutoCADLockFileWithSiblingKeepsDocumentLocked() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let folderRemote = MockRemoteItem(
+            identifier: "folder-id",
+            versionIdentifier: "1",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        let targetFileName = "Drawing.dwg"
+        let targetRemote = MockRemoteItem(
+            identifier: "folder/\(targetFileName)",
+            versionIdentifier: "1",
+            name: targetFileName,
+            remotePath: folderRemote.remotePath + "/" + targetFileName,
+            data: Data("test data".utf8),
+            locked: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        folderRemote.children = [targetRemote]
+        folderRemote.parent = rootItem
+        rootItem.children = [folderRemote]
+
+        var folderMetadata = SendableItemMetadata(
+            ocId: folderRemote.identifier, fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        var targetMetadata = SendableItemMetadata(
+            ocId: targetRemote.identifier, fileName: targetFileName, account: Self.account
+        )
+        targetMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(targetMetadata)
+
+        // Insert both .dwl and .dwl2 lock file metadata into the DB.
+        var dwlMetadata = SendableItemMetadata(
+            ocId: "dwl-id", fileName: "Drawing.dwl", account: Self.account
+        )
+        dwlMetadata.serverUrl += "/folder"
+        dwlMetadata.isLockFileOfLocalOrigin = true
+        Self.dbManager.addItemMetadata(dwlMetadata)
+
+        var dwl2Metadata = SendableItemMetadata(
+            ocId: "dwl2-id", fileName: "Drawing.dwl2", account: Self.account
+        )
+        dwl2Metadata.serverUrl += "/folder"
+        dwl2Metadata.isLockFileOfLocalOrigin = true
+        Self.dbManager.addItemMetadata(dwl2Metadata)
+
+        // Delete .dwl2 while .dwl still exists — document must stay locked.
+        let dwl2Item = Item(
+            metadata: dwl2Metadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await dwl2Item.delete(dbManager: Self.dbManager)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: dwl2Metadata.ocId)?.deleted, true)
+        XCTAssertNil(error)
+        XCTAssertTrue(
+            targetRemote.locked, "Expected the document to stay locked while .dwl sibling exists"
+        )
+
+        // Now delete .dwl — with both gone, the document must unlock.
+        let dwlItem = Item(
+            metadata: dwlMetadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error2 = await dwlItem.delete(dbManager: Self.dbManager)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: dwlMetadata.ocId)?.deleted, true)
+        XCTAssertNil(error2)
+        XCTAssertFalse(
+            targetRemote.locked, "Expected the document to be unlocked after both lock files are deleted"
         )
     }
 

@@ -17,9 +17,8 @@ public extension FilesDatabaseManager {
     func childItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
         return itemMetadatas
-            .where {
-                $0.serverUrl == directoryServerUrl ||
-                    $0.serverUrl.starts(with: directoryServerUrl + "/")
+            .where { item in
+                RealmItemMetadata.hasServerUrl(item, equalTo: directoryServerUrl, includingDescendants: true)
             }
             .toUnmanagedResults()
     }
@@ -33,16 +32,17 @@ public extension FilesDatabaseManager {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
 
         return itemMetadatas
-            .where { $0.serverUrl == directoryServerUrl }
+            .where { item in
+                RealmItemMetadata.hasServerUrl(item, equalTo: directoryServerUrl, includingDescendants: false)
+            }
             .toUnmanagedResults()
     }
 
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
         return itemMetadatas
-            .where {
-                $0.serverUrl == directoryServerUrl ||
-                    $0.serverUrl.starts(with: directoryServerUrl + "/")
+            .where { item in
+                RealmItemMetadata.hasServerUrl(item, equalTo: directoryServerUrl, includingDescendants: true)
             }
             .count
     }
@@ -76,8 +76,7 @@ public extension FilesDatabaseManager {
                     $0.downloaded == true &&
                     $0.deleted == false &&
                     $0.keepDownloaded == false &&
-                    ($0.serverUrl == directoryServerUrl ||
-                        $0.serverUrl.starts(with: directoryServerUrl + "/"))
+                    RealmItemMetadata.hasServerUrl($0, equalTo: directoryServerUrl, includingDescendants: true)
             }
             .first != nil
     }
@@ -100,8 +99,7 @@ public extension FilesDatabaseManager {
                     $0.downloaded == true &&
                     $0.deleted == false &&
                     $0.keepDownloaded == false &&
-                    ($0.serverUrl == directoryServerUrl ||
-                        $0.serverUrl.starts(with: directoryServerUrl + "/"))
+                    RealmItemMetadata.hasServerUrl($0, equalTo: directoryServerUrl, includingDescendants: true)
             }
             .map { NSFileProviderItemIdentifier($0.ocId) }
     }
@@ -191,15 +189,17 @@ public extension FilesDatabaseManager {
 
         var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
 
-        let results = itemMetadatas.where {
-            $0.account == directoryAccount &&
-                ($0.serverUrl == directoryUrlPath || $0.serverUrl.starts(with: directoryUrlPath + "/"))
+        let results = itemMetadatas.where { item in
+            item.account == directoryAccount &&
+                RealmItemMetadata.hasServerUrl(item, equalTo: directoryUrlPath, includingDescendants: true)
         }
 
         // TODO: Parent is deleted even when a child upload is pending. The child will
         // orphan after upload. Follow-up: defer parent deletion or re-parent after upload.
         for result in results {
             if result.status >= Status.inUpload.rawValue {
+                // Preserve the child metadata and its resumable chunks. Item deletion applies
+                // the same status boundary when deciding which descendant chunks to clean up.
                 logger.info("Skipping deletion of child with pending upload.", [.item: result.ocId])
                 continue
             }
@@ -236,9 +236,9 @@ public extension FilesDatabaseManager {
         let oldItemFilename = directoryMetadata.fileName
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + oldItemFilename
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
-        let childItemResults = itemMetadatas.where {
-            $0.account == directoryMetadata.account &&
-                ($0.serverUrl == oldDirectoryServerUrl || $0.serverUrl.starts(with: oldDirectoryServerUrl + "/"))
+        let childItemResults = itemMetadatas.where { item in
+            item.account == directoryMetadata.account &&
+                RealmItemMetadata.hasServerUrl(item, equalTo: oldDirectoryServerUrl, includingDescendants: true)
         }
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
@@ -252,7 +252,7 @@ public extension FilesDatabaseManager {
                     let movedServerUrl = oldServerUrl.replacingOccurrences(
                         of: oldDirectoryServerUrl, with: newDirectoryServerUrl
                     )
-                    childItem.serverUrl = movedServerUrl
+                    childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
                     childItem.lockToken = nil
                     database.add(childItem, update: .all)
                     logger.debug(
@@ -269,9 +269,9 @@ public extension FilesDatabaseManager {
         }
 
         return itemMetadatas
-            .where {
-                $0.account == directoryMetadata.account &&
-                    ($0.serverUrl == newDirectoryServerUrl || $0.serverUrl.starts(with: newDirectoryServerUrl + "/"))
+            .where { item in
+                item.account == directoryMetadata.account &&
+                    RealmItemMetadata.hasServerUrl(item, equalTo: newDirectoryServerUrl, includingDescendants: true)
             }
             .toUnmanagedResults()
     }

@@ -42,7 +42,7 @@ class TestFolderMan: public QObject
 {
     Q_OBJECT
 
-    std::unique_ptr<FolderMan> _fm;
+    QPointer<FolderMan> _fm;
 
 signals:
     void incomingShareDeleted();
@@ -58,8 +58,8 @@ private slots:
 
     void testDeleteEncryptedFiles()
     {
-        _fm.reset({});
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         QCOMPARE(fakeFolder.currentLocalState().children.count(), 4);
@@ -163,8 +163,8 @@ private slots:
 
     void testLeaveShare()
     {
-        _fm.reset({});
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
         QTemporaryDir dir;
         ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
@@ -266,8 +266,8 @@ private slots:
 
     void testCheckPathValidityForNewFolder()
     {
-        _fm.reset({});
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
 #ifdef Q_OS_WIN
         Utility::NtfsPermissionLookupRAII ntfs_perm;
@@ -403,8 +403,8 @@ private slots:
 
     void testFindGoodPathForNewSyncFolder()
     {
-        _fm.reset({});
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
         // SETUP
 
@@ -459,8 +459,8 @@ private slots:
 
     void testProcessingFileIdsPushNotification()
     {
-        _fm.reset({});
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
         QTemporaryDir tempDir;
         ConfigFile::setConfDir(tempDir.path()); // we don't want to pollute the user's config file
@@ -558,8 +558,8 @@ private slots:
 
     void testUnloadAndDeleteAllFolders()
     {
-        _fm.reset({});
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
         QTemporaryDir dir;
         ConfigFile::setConfDir(dir.path());
@@ -588,6 +588,79 @@ private slots:
 
         QCOMPARE(FolderMan::instance()->map().count(), 0);
     }
+
+    void testMacFileProviderModeEnabledConfig()
+    {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+        QVERIFY(dir.isValid());
+
+        ConfigFile cfg;
+        QVERIFY(!cfg.macFileProviderModeEnabledIsSet());
+        QVERIFY(!cfg.macFileProviderModeEnabled());
+
+        cfg.setMacFileProviderModeEnabled(true);
+        QVERIFY(cfg.macFileProviderModeEnabledIsSet());
+        QVERIFY(cfg.macFileProviderModeEnabled());
+
+        cfg.setMacFileProviderModeEnabled(false);
+        QVERIFY(cfg.macFileProviderModeEnabledIsSet());
+        QVERIFY(!cfg.macFileProviderModeEnabled());
+    }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void testFileProviderEtagPollingRequiresConnectedAccount()
+    {
+        const auto accountState = std::make_unique<FakeAccountState>(Account::create());
+        QVERIFY(FolderMan::canPollFileProviderEtag(*accountState));
+
+        const auto disconnectedStates = {
+            AccountState::SignedOut,
+            AccountState::Disconnected,
+            AccountState::ServiceUnavailable,
+            AccountState::RedirectDetected,
+            AccountState::MaintenanceMode,
+            AccountState::NetworkError,
+            AccountState::ConfigurationError,
+            AccountState::AskingCredentials,
+            AccountState::NeedToSignTermsOfService,
+        };
+
+        for (const auto state : disconnectedStates) {
+            accountState->setStateForTesting(state);
+            QVERIFY2(!FolderMan::canPollFileProviderEtag(*accountState),
+                qPrintable(AccountState::stateString(state)));
+        }
+    }
+
+    void testAddFolderRefusedWhenFileProviderModeEnabled()
+    {
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
+
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+        QVERIFY(dir.isValid());
+        QVERIFY(QDir(dir.path()).mkpath(QStringLiteral("folder1")));
+
+        auto account = Account::create();
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        account->setUrl(QUrl(QStringLiteral("http://example.de")));
+        auto accountState = new FakeAccountState(account);
+
+        // Classic sync folders and File Provider mode are mutually exclusive.
+        ConfigFile().setMacFileProviderModeEnabled(true);
+        QVERIFY(!FolderMan::instance()->addFolder(accountState, folderDefinition(dir.path() + QStringLiteral("/folder1"))));
+        QCOMPARE(FolderMan::instance()->map().count(), 0);
+
+        ConfigFile().setMacFileProviderModeEnabled(false);
+        QVERIFY(FolderMan::instance()->addFolder(accountState, folderDefinition(dir.path() + QStringLiteral("/folder1"))));
+        QCOMPARE(FolderMan::instance()->map().count(), 1);
+
+        FolderMan::instance()->unloadAndDeleteAllFolders();
+        QCOMPARE(FolderMan::instance()->map().count(), 0);
+    }
+#endif
 };
 
 QTEST_GUILESS_MAIN(TestFolderMan)
