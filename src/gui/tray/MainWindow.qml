@@ -371,8 +371,7 @@ ApplicationWindow {
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
-            height: 0
-            visible: false //SES-4 removed
+            visible: !trayWindowMainItem.showAssistantPanel
 
             property bool activateSearchFocus: activeFocus
 
