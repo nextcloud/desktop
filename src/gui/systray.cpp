@@ -15,7 +15,6 @@
 #include "config.h"
 #include "configfile.h"
 #include "guiutility.h"
-#include "search/unifiedsearchresultslistmodel.h"
 #include "theme.h"
 #include "tray/svgimageprovider.h"
 #include "tray/trayimageprovider.h"
@@ -462,14 +461,13 @@ void Systray::showSearchWindow(int userIndex)
         return;
     }
 
-    auto *const searchModel = new UnifiedSearchResultsListModel(accountState.data(), accountState.data());
     const QVariantMap initialProperties{
         {"account", QVariantMap{
                         {"avatar", user->avatarUrl()},
                         {"name", user->name()},
                         {"server", user->server()},
                     }},
-        {"searchModel", QVariant::fromValue(searchModel)},
+        {"accountId", targetUserId},
     };
     const auto createdObject = searchWindowComponent.createWithInitialProperties(initialProperties);
     const auto window = qobject_cast<QQuickWindow *>(createdObject);
@@ -478,7 +476,6 @@ void Systray::showSearchWindow(int userIndex)
         if (createdObject) {
             createdObject->deleteLater();
         }
-        searchModel->deleteLater();
         return;
     }
 
@@ -497,13 +494,8 @@ void Systray::showSearchWindow(int userIndex)
     connect(window, &QObject::destroyed, this, [this, windowKey] {
         _searchWindows.remove(windowKey);
     });
-    connect(window, &QObject::destroyed, searchModel, &QObject::deleteLater);
-    const auto searchModelGuard = QPointer<UnifiedSearchResultsListModel>(searchModel);
-    connect(window, &QWindow::visibleChanged, window, [window, searchModelGuard](const bool visible) {
+    connect(window, &QWindow::visibleChanged, window, [window](const bool visible) {
         if (!visible) {
-            if (searchModelGuard) {
-                searchModelGuard->deleteLater();
-            }
             window->deleteLater();
         }
     });

@@ -10,6 +10,7 @@
 #include "guiutility.h"
 #include "folderman.h"
 #include "networkjobs.h"
+#include "tray/usermodel.h"
 
 #include <algorithm>
 
@@ -185,9 +186,8 @@ constexpr int minimumEntresNumberToShowLoadMore = 5;
 namespace OCC {
 Q_LOGGING_CATEGORY(lcUnifiedSearch, "nextcloud.gui.unifiedsearch", QtInfoMsg)
 
-UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent)
+UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(QObject *parent)
     : QAbstractListModel(parent)
-    , _accountState(accountState)
 {
     connect(this, &UnifiedSearchResultsListModel::isSearchInProgressChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
     connect(this, &UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderIdChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
@@ -199,8 +199,51 @@ UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accou
     connect(this, &QAbstractListModel::modelReset, this, &UnifiedSearchResultsListModel::searchStateChanged);
 
     connect(this, &UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderIdChanged, this, &UnifiedSearchResultsListModel::canEditSearchChanged);
+}
+
+UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent)
+    : UnifiedSearchResultsListModel(parent)
+{
+    setAccountState(accountState);
+}
+
+int UnifiedSearchResultsListModel::accountId() const
+{
+    return _accountId;
+}
+
+void UnifiedSearchResultsListModel::setAccountId(const int id)
+{
+    if (_accountId == id) {
+        return;
+    }
+
+    _accountId = id;
+    emit accountIdChanged();
+
+    const auto userModel = UserModel::instance();
+    const auto user = userModel ? userModel->user(id) : nullptr;
+    setAccountState(user ? user->accountState().data() : nullptr);
+    emit canEditSearchChanged();
+}
+
+void UnifiedSearchResultsListModel::setAccountState(AccountState *const accountState)
+{
+    if (_accountState == accountState) {
+        return;
+    }
+
+    if (_accountState) {
+        disconnect(_accountState, nullptr, this, nullptr);
+    }
+
+    _accountState = accountState;
     if (_accountState) {
         connect(_accountState, &AccountState::isConnectedChanged, this, &UnifiedSearchResultsListModel::canEditSearchChanged);
+        connect(_accountState, &QObject::destroyed, this, [this] {
+            _accountState = nullptr;
+            emit canEditSearchChanged();
+        });
     }
 }
 

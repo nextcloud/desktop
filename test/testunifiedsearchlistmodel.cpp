@@ -737,6 +737,35 @@ private Q_SLOTS:
         model->setSearchTerm(QStringLiteral(""));
     }
 
+    void testDefaultConstructedModelHasNoAccount()
+    {
+        QScopedPointer<OCC::UnifiedSearchResultsListModel> defaultModel(new OCC::UnifiedSearchResultsListModel());
+        QCOMPARE(defaultModel->accountId(), -1);
+        QVERIFY(!defaultModel->isAccountConnected());
+        QVERIFY(!defaultModel->canEditSearch());
+        QCOMPARE(defaultModel->searchState(), OCC::UnifiedSearchResultsListModel::SearchState::Placeholder);
+    }
+
+    void testSetAccountIdForUnknownUser()
+    {
+        QScopedPointer<OCC::UnifiedSearchResultsListModel> defaultModel(new OCC::UnifiedSearchResultsListModel());
+        QSignalSpy accountIdChanged(defaultModel.data(), &OCC::UnifiedSearchResultsListModel::accountIdChanged);
+
+        defaultModel->setAccountId(123456);
+        QCOMPARE(accountIdChanged.count(), 1);
+        QCOMPARE(defaultModel->accountId(), 123456);
+        QVERIFY(!defaultModel->isAccountConnected());
+        QVERIFY(!defaultModel->canEditSearch());
+
+        // setting the same id again does not emit the signal
+        defaultModel->setAccountId(123456);
+        QCOMPARE(accountIdChanged.count(), 1);
+
+        defaultModel->setAccountId(-1);
+        QCOMPARE(accountIdChanged.count(), 2);
+        QCOMPARE(defaultModel->accountId(), -1);
+    }
+
     void cleanupTestCase()
     {
         FakeSearchResultsStorage::destroy();

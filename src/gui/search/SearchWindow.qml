@@ -15,7 +15,10 @@ WizardStyledWindow {
     id: root
 
     property var account: null
-    property var searchModel: null
+    property int accountId: -1
+    property UnifiedSearchResultsListModel searchModel: UnifiedSearchResultsListModel {
+        accountId: root.accountId
+    }
     readonly property string headline: qsTr("Search")
     readonly property int searchState: searchModel
         ? searchModel.searchState
