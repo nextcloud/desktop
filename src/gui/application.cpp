@@ -393,6 +393,9 @@ Application::Application(int &argc, char **argv)
 
     _theme->setSystrayUseMonoIcons(ConfigFile().monoIcons());
     connect(this, &Application::systemPaletteChanged, _theme, &Theme::systemPaletteHasChanged);
+    // Establish the correct (light/dark) WindowText immediately, rather than waiting for
+    // the first actual system palette change event.
+    _theme->systemPaletteHasChanged();
 
 #if defined(Q_OS_WIN)
     _shellExtensionsServer.reset(new ShellExtensionsServer);
