@@ -137,6 +137,8 @@ public:
     /** [checked, size in MB] **/
     [[nodiscard]] QPair<bool, qint64> newBigFolderSizeLimit() const;
     void setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes);
+    /** @brief Whether new classic sync folders start with no remote folders selected. */
+    [[nodiscard]] bool wizardSelectiveSyncDefaultNothing() const;
     [[nodiscard]] bool notifyExistingFoldersOverLimit() const;
     void setNotifyExistingFoldersOverLimit(const bool notify);
     [[nodiscard]] bool stopSyncingExistingFoldersOverLimit() const;
@@ -308,6 +310,7 @@ public:
     static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
     static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
     static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
+    static constexpr char wizardSelectiveSyncDefaultNothingC[] = "wizardSelectiveSyncDefaultNothing";
     static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
     static constexpr char stopSyncingExistingFoldersOverLimitC[] = "stopSyncingExistingFoldersOverLimit";
     static constexpr char moveToTrashC[] = "moveToTrash";

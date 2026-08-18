@@ -5,11 +5,14 @@
 
 #include <QTest>
 
+#include "configfile.h"
 #include "theme.h"
 #include "themeutils.h"
 #include "iconutils.h"
 #include "logger.h"
 
+#include <QScopeGuard>
+#include <QSettings>
 #include <QStandardPaths>
 
 class TestTheme : public QObject
@@ -107,6 +110,37 @@ private slots:
         paintDevice.setHidpi(false);
 
         QCOMPARE(OCC::Theme::isHidpi(&paintDevice), false);
+    }
+
+    void testWizardSelectiveSyncDefaultNothing_readsConfiguration()
+    {
+        auto config = OCC::ConfigFile();
+        auto settings = QSettings(config.configFile(), QSettings::IniFormat);
+        const auto key = QString::fromLatin1(OCC::ConfigFile::wizardSelectiveSyncDefaultNothingC);
+        const auto hadOriginalValue = settings.contains(key);
+        const auto originalValue = settings.value(key);
+        const auto restoreConfiguration = qScopeGuard([&settings, &key, hadOriginalValue, originalValue] {
+            if (hadOriginalValue) {
+                settings.setValue(key, originalValue);
+            } else {
+                settings.remove(key);
+            }
+            settings.sync();
+        });
+
+        settings.remove(key);
+        settings.sync();
+        QCOMPARE(config.wizardSelectiveSyncDefaultNothing(), false);
+
+        settings.setValue(key, true);
+        settings.sync();
+        QCOMPARE(config.wizardSelectiveSyncDefaultNothing(), true);
+        QCOMPARE(OCC::Theme::instance()->wizardSelectiveSyncDefaultNothing(), true);
+
+        settings.setValue(key, false);
+        settings.sync();
+        QCOMPARE(config.wizardSelectiveSyncDefaultNothing(), false);
+        QCOMPARE(OCC::Theme::instance()->wizardSelectiveSyncDefaultNothing(), false);
     }
 };
 
