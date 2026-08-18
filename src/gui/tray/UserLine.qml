@@ -30,6 +30,7 @@ AbstractButton {
 
     signal showUserStatusSelector(int id)
     signal showUserStatusMessageSelector(int id)
+    signal requestCloseAccountMenu()
 
     property color parentBackgroundColor: userLine.palette.base
 
@@ -88,11 +89,7 @@ AbstractButton {
                 elide: Text.ElideRight
                 font.pixelSize: Style.subLinePixelSize
 
-                color: !userLine.parent.enabled
-                    ? userLine.parent.palette.mid
-                    : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
-                        ? userLine.parent.palette.highlightedText
-                        : userLine.parent.palette.text)
+                color: userLine.statusItemColor
             }
 
             RowLayout {
@@ -163,75 +160,63 @@ AbstractButton {
 
             Accessible.role: Accessible.ButtonMenu
             Accessible.name: qsTr("Account actions")
-            Accessible.onPressAction: userMoreButtonMouseArea.clicked()
+            Accessible.onPressAction: userMoreButton.clicked()
 
-            onClicked: userMoreButtonMenu.visible ? userMoreButtonMenu.close() : userMoreButtonMenu.popup()
+            onClicked: userMoreButtonMenu.visible ? userMoreButtonMenu.close() : userMoreButtonMenu.open()
 
-            Menu {
+            Popup {
                 id: userMoreButtonMenu
                 width: Style.sesAccountMenuWidth
                 height: Math.min(implicitHeight, maxMenuHeight)
-                closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                bottomInset: 0
-                topInset: 0
-                rightInset: 0
-                leftInset: 0
-                rightPadding: 0
-                leftPadding: 0
-                topPadding: 0
-                bottomPadding: 0
+                padding: 0
+                closePolicy: Popup.CloseOnPressOutsideParent | Popup.CloseOnEscape
 
                 background: Rectangle {
                     radius: Style.sesCornerRadius
+                    color: Style.sesBackgroundColor
                     border.color: Style.sesBorderColor
                 }
 
-                MenuItem {
-                    id: logInOutButton
+                contentItem: ColumnLayout {
+                    spacing: 0
 
-                    property bool isHovered: logInOutButton.hovered || logInOutButton.visualFocus
-                    property bool isActive: logInOutButton.pressed
+                    Button {
+                        id: logInOutButton
+                        Layout.fillWidth: true
+                        flat: true
 
-                    palette.text: Style.sesTrayFontColor
+                        property bool isHovered: logInOutButton.hovered || logInOutButton.visualFocus
+                        property bool isActive: logInOutButton.pressed
 
-                    Component.onCompleted: {
-                        if (contentItem && contentItem.hasOwnProperty("color")) {
-                            contentItem.color = logInOutButton.palette.text
+                        enabled: model.canLogout
+                        palette.text: Style.sesTrayFontColor
+
+                        Component.onCompleted: {
+                            if (contentItem && contentItem.hasOwnProperty("color")) {
+                                contentItem.color = logInOutButton.palette.text
+                            }
                         }
-                    }
-                    icon.source: Style.sesLogout
-                    icon.color: Style.sesIconDarkColor
-                    leftPadding: Style.sesMediumMargin
-                    topPadding: Style.sesAccountMenuItemPadding
-                    bottomPadding: Style.sesAccountMenuItemPadding
-                    spacing: Style.sesSmallMargin
-                    text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
-                    font: userLine.font
-                    palette.windowText: Style.ncTextColor
-                    hoverEnabled: true
+                        icon.source: Style.sesLogout
+                        icon.color: Style.sesIconDarkColor
+                        leftPadding: Style.sesMediumMargin
+                        topPadding: Style.sesAccountMenuItemPadding
+                        bottomPadding: Style.sesAccountMenuItemPadding
+                        spacing: Style.sesSmallMargin
+                        text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
+                        font: userLine.font
+                        palette.windowText: Style.ncTextColor
+                        hoverEnabled: true
 
-                    onClicked: {
-                        model.isConnected ? UserModel.logout(index) : UserModel.login(index)
-                        accountMenu.close()
-                    }
-                    // TODO SES-459 Check Merge "setStatus" && "onPressed"
-                    Accessible.role: Accessible.Button
-                    Accessible.name: model.isConnected ? qsTr("Log out") : qsTr("Log in")
-
-                    onPressed: {
-                        if (model.isConnected) {
-                            UserModel.logout(index)
-                        } else {
-                            UserModel.login(index)
+                        onClicked: {
+                            model.isConnected ? UserModel.logout(index) : UserModel.login(index)
+                            userMoreButtonMenu.close()
+                            userLine.requestCloseAccountMenu()
                         }
-                        accountMenu.close()
-                    }
 
-                    background: Item {
-                        height: parent.height
-                        width: parent.menu.width
-                        Rectangle {
+                        Accessible.role: Accessible.Button
+                        Accessible.name: model.isConnected ? qsTr("Log out") : qsTr("Log in")
+
+                        background: Rectangle {
                             radius: 0
                             anchors.fill: parent
                             anchors.margins: 1
@@ -239,52 +224,51 @@ AbstractButton {
                                    logInOutButton.isHovered ? Style.sesAccountMenuHover : "transparent"
                         }
                     }
-               }
 
-                MenuItem {
-                    id: removeAccountButton
+                    Button {
+                        id: removeAccountButton
+                        Layout.fillWidth: true
+                        flat: true
 
-                    property bool isHovered: removeAccountButton.hovered || removeAccountButton.visualFocus
-                    property bool isActive: removeAccountButton.pressed
+                        property bool isHovered: removeAccountButton.hovered || removeAccountButton.visualFocus
+                        property bool isActive: removeAccountButton.pressed
 
-                    palette.text: Style.sesTrayFontColor
+                        palette.text: Style.sesTrayFontColor
 
-                    Component.onCompleted: {
-                        if (contentItem && contentItem.hasOwnProperty("color")) {
-                            contentItem.color = removeAccountButton.palette.text
+                        Component.onCompleted: {
+                            if (contentItem && contentItem.hasOwnProperty("color")) {
+                                contentItem.color = removeAccountButton.palette.text
+                            }
                         }
-                    }
-                    icon.source: Style.sesDelete
-                    icon.color: Style.sesIconDarkColor
-                    leftPadding: Style.sesMediumMargin
-                    topPadding: Style.sesAccountMenuItemPadding
-                    bottomPadding: Style.sesAccountMenuItemPadding
-                    spacing: Style.sesSmallMargin
-                    text: qsTr("Remove account")
-                    font: userLine.font
-                    palette.windowText: Style.ncTextColor
-                    hoverEnabled: true
-                    onClicked: {
-                        UserModel.removeAccount(index)
-                        accountMenu.close()
-                    }
+                        icon.source: Style.sesDelete
+                        icon.color: Style.sesIconDarkColor
+                        leftPadding: Style.sesMediumMargin
+                        topPadding: Style.sesAccountMenuItemPadding
+                        bottomPadding: Style.sesAccountMenuItemPadding
+                        spacing: Style.sesSmallMargin
+                        text: qsTr("Remove account")
+                        font: userLine.font
+                        palette.windowText: Style.ncTextColor
+                        hoverEnabled: true
+                        onClicked: {
+                            UserModel.removeAccount(index)
+                            userMoreButtonMenu.close()
+                            userLine.requestCloseAccountMenu()
+                        }
 
-                    background: Item {
-                        height: parent.height
-                        width: parent.menu.width
-                        Rectangle {
+                        background: Rectangle {
                             radius: 0
                             anchors.fill: parent
                             anchors.margins: 1
                             color: removeAccountButton.isActive ? Style.sesButtonPressed :
                                    removeAccountButton.isHovered ? Style.sesAccountMenuHover : "transparent"
                         }
-                    }
 
-                    Accessible.role: Accessible.MenuItem
-                    Accessible.name: text
-                    Accessible.onPressAction: removeAccountButton.clicked()
-               }
+                        Accessible.role: Accessible.MenuItem
+                        Accessible.name: text
+                        Accessible.onPressAction: removeAccountButton.clicked()
+                    }
+                }
             }
         }
     }

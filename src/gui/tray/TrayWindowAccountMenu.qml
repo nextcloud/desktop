@@ -109,6 +109,7 @@ Button {
                     userStatusDrawer.openUserStatusDrawer(model.index);
                     accountMenu.close();
                 }
+                onRequestCloseAccountMenu: accountMenu.close()
                 onClicked: UserModel.currentUserId = model.index;
             }
             onObjectAdded: (index, object) => accountMenu.insertItem(index, object)
