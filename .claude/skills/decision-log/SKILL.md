@@ -1,22 +1,34 @@
 ---
 name: decision-log
-description: Hält nennenswerte Implementierungs-Entscheidungen und bewusst verworfene Alternativen in DECISIONS.md fest, inkl. Begründung — nicht nur stable-Vergleiche (dafür siehe stable-merge-check), sondern jede Design-/Architektur-/UI-Entscheidung, bei der mehrere echte Optionen abgewogen wurden. Proaktiv nutzen: wenn eine Alternative nach Diskussion oder Test verworfen wird ("nicht zufriedenstellend", "das passt nicht", "lass uns bei X bleiben"), einen Eintrag vorschlagen bzw. anlegen, ohne dass explizit danach gefragt werden muss. Auch manuell auslösbar. Trigger — "halte das im Entscheidungs-Log fest", "log diese Entscheidung", "warum haben wir uns für X entschieden", "haben wir das schon mal probiert", nach einem verworfenen Lösungsansatz, vor einem Commit der eine von mehreren erwogenen Lösungen umsetzt.
+description: Hält Entscheidungen zum Ausblenden/Entfernen ganzer Komponenten sowie bewusste Abweichungen von stable-x.y in DECISIONS.md fest, inkl. Begründung — bewusst eng gefasst, siehe stable-merge-check für die Detail-Merge-Risiko-Analyse. Kein allgemeines Änderungsprotokoll: Bugfixes, Kompilierbarkeits-Fixes und reine Vereinheitlichungs-/Aufräum-Refactorings gehören NICHT hinein. Proaktiv nutzen: wenn eine Komponente bewusst ausgeblendet statt entfernt wird (oder umgekehrt), oder eine Struktur bewusst nah an/abweichend von stable-x.y gehalten wird, einen Eintrag vorschlagen bzw. anlegen, ohne dass explizit danach gefragt werden muss. Auch manuell auslösbar. Trigger — "halte das im Entscheidungs-Log fest", "log diese Entscheidung", "warum haben wir X ausgeblendet/entfernt", "warum weichen wir hier von stable ab".
 ---
 
 # Decision Log
 
-Bei Implementierungsarbeit fallen laufend Entscheidungen zwischen mehreren echten Alternativen — manche werden getestet und wieder verworfen (z. B. "Option 2 sieht doch nicht gut aus, zurück zu Option 1"). Ohne Protokoll geht die Begründung verloren, und ein späteres Gespräch (auch mit anderem Kontext-Fenster oder anderer Person) probiert die bereits verworfene Idee erneut aus, ohne zu wissen, dass sie schon geprüft und aus einem konkreten Grund abgelehnt wurde.
+Ziel ist **nicht** ein allgemeines Änderungsprotokoll, sondern gezielt zwei Dinge nachvollziehbar zu machen:
+
+1. Warum eine ganze Komponente/ein ganzes Feature **ausgeblendet statt entfernt** wurde (oder umgekehrt entfernt statt nur ausgeblendet) — und was das für Nähe/Abstand zu stable-x.y bedeutet.
+2. Warum eine Struktur bewusst **nah an stable-x.y gehalten** oder bewusst **davon abgewichen** wurde — relevant für spätere Merge-Konflikte oder Diagnose "was hat der Merge kaputt gemacht".
+
+Ohne Protokoll geht diese Begründung verloren, und ein späteres Gespräch riskiert, eine bereits geprüfte Abweichung erneut aufzurollen oder eine bewusst ausgeblendete Komponente versehentlich zu entfernen (oder umgekehrt).
 
 Dieser Skill pflegt dafür ein einziges, chronologisches Protokoll in [DECISIONS.md](DECISIONS.md).
 
 ## Wann ein Eintrag sinnvoll ist
 
-- Es gab **mindestens zwei echte Alternativen**, und eine wurde bewusst gewählt oder verworfen.
-- Eine bereits umgesetzte/getestete Lösung wird **verworfen** ("nicht zufriedenstellend", "das brauchen wir nicht", "das passt nicht") — der Grund ist der wertvollste Teil des Eintrags.
-- Eine Abweichung von stable-x.y wird bewusst in Kauf genommen (Überschneidung mit [stable-merge-check](../stable-merge-check/SKILL.md) — dort ggf. kurz verweisen statt inhaltlich zu duplizieren).
-- Eine überraschende Erkenntnis während der Bewertung fällt an (z. B. "Funktion X ignoriert Parameter Y komplett"), die spätere Arbeit beeinflusst.
+- Eine **ganze Komponente/ein ganzes Feature** wird ausgeblendet statt entfernt (Code bleibt bestehen, nur `setVisible(false)`/Guard) — oder umgekehrt tatsächlich entfernt/gelöscht.
+- Eine Struktur wird bewusst **nah an stable-x.y gehalten oder bewusst davon abgewichen**, mit Auswirkung auf künftige Merge-Konflikte (Überschneidung mit [stable-merge-check](../stable-merge-check/SKILL.md) — dort ggf. kurz verweisen statt inhaltlich zu duplizieren).
+- Toter Code/eine Komponente wird bewusst **erhalten**, weil stable-x.y sie noch führt (Merge-Kompatibilität), obwohl sie im Fork ungenutzt wirkt.
 
-**Nicht** eintragen: triviale Ein-Weg-Fixes, mechanische Refactorings, reine Tippfehler-Korrekturen, Entscheidungen ohne echte Alternative.
+**Nicht** eintragen (auch wenn eine Alternative erwogen wurde):
+- Bugfixes jeder Art, auch wenn dabei eine Alternative verworfen wurde.
+- Anpassungen, die nur die Kompilierbarkeit/den Build wiederherstellen (Includes, Case-Sensitivity, fehlende Pakete, Toolchain-Probleme).
+- Rein mechanische Aufräumarbeiten (verwaiste Einzeldeklarationen, tote Funktionen ohne Komponentencharakter) — auch wenn "entfernt statt reaktiviert" wie eine Entscheidung aussieht, zählt das hier nicht, solange kein ganzes Feature/keine ganze Komponente betroffen ist.
+- Reine Vereinheitlichungs-/Konsistenz-Refactorings ohne Bezug zu stable-x.y-Abweichung.
+- Dev-Tooling/Build-Umgebung (Linux-Setup, CraftRoot, IDE-Konfiguration) — nichts davon betrifft Produktcode oder stable-Nähe.
+- Triviale Ein-Weg-Fixes, reine Tippfehler-Korrekturen, Entscheidungen ohne echte Alternative.
+
+**Faustregel bei Unsicherheit:** Würde ein späterer stable-x.y-Merge oder eine "warum ist Komponente X weg/da" Frage von diesem Eintrag profitieren? Wenn nein, gehört es nicht ins Log.
 
 ## Knapp halten (Token-Budget)
 
@@ -29,7 +41,7 @@ Diese Datei wird potenziell bei jedem neuen Eintrag gelesen — sie soll nicht z
 
 ## Ablauf
 
-1. **Proaktiv erkennen**: Wenn im Gespräch eine Alternative verworfen wird oder eine von mehreren Optionen bestätigt wird, kurz anbieten oder direkt einen Eintrag ergänzen ("Ich halte das im Entscheidungs-Log fest.") — nicht erst warten, bis explizit danach gefragt wird.
+1. **Proaktiv erkennen**: Wenn im Gespräch eine Komponente ausgeblendet statt entfernt wird (oder umgekehrt), oder eine Struktur bewusst nah an/abweichend von stable-x.y gehalten wird, kurz anbieten oder direkt einen Eintrag ergänzen ("Ich halte das im Entscheidungs-Log fest.") — nicht erst warten, bis explizit danach gefragt wird. Bei allem anderen (Bugfixes, Build-Fixes, Aufräumarbeiten) nicht proaktiv anbieten, siehe "Wann ein Eintrag sinnvoll ist" oben.
 2. **Vor einem neuen Eintrag gezielt prüfen, ob es schon einen zum selben Thema gibt** — nicht die komplette Datei lesen, sondern per Grep nach dem Thema/Dateinamen/Funktionsnamen suchen (z. B. `Grep "avatar" DECISIONS.md`). Nur bei echtem Treffer den betroffenen Abschnitt gezielt lesen. Das hält den Kontextverbrauch auch bei einer langen Datei klein.
 3. **Neuen Abschnitt anhängen** (chronologisch, ans Ende) im Format:
 
