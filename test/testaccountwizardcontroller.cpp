@@ -9,6 +9,7 @@
 #include "configfile.h"
 #include "folder.h"
 #include "gui/localnetworkpermission.h"
+#include "gui/selectivesyncdialog.h"
 #include "gui/wizard/accountwizardcontroller.h"
 #include "managedsettingstestutils.h"
 #include "syncenginetestutils.h"
@@ -20,6 +21,7 @@
 
 #include <QDesktopServices>
 #include <QDialog>
+#include <QNetworkReply>
 #include <QScopeGuard>
 #include <QSignalSpy>
 #include <QStandardPaths>
@@ -45,6 +47,22 @@ public:
     {
         controller._account = Account::create();
         controller._account->setUrl(url);
+    }
+
+    static void setAccount(AccountWizardController &controller, const AccountPtr &account)
+    {
+        controller._account = account;
+        controller._remoteFolder.clear();
+    }
+
+    static SelectiveSyncDialog *selectiveSyncDialog(const AccountWizardController &controller)
+    {
+        return controller._selectiveSyncDialog;
+    }
+
+    static QStringList selectiveSyncBlacklist(const AccountWizardController &controller)
+    {
+        return controller._selectiveSyncBlacklist;
     }
 
     static void setSyncMode(AccountWizardController &controller, AccountWizardController::SyncMode mode)
@@ -298,6 +316,98 @@ private Q_SLOTS:
         QVERIFY(controller.syncMode() != AccountWizardController::VirtualFiles);
         QVERIFY(controller.needsSyncOptions());
         QVERIFY(controller.localSyncFolderRequired());
+    }
+
+    void defaultSelectiveSyncSelection_data()
+    {
+        QTest::addColumn<bool>("defaultNothing");
+        QTest::addColumn<bool>("acceptSelection");
+        QTest::addColumn<bool>("selectEverything");
+        QTest::addColumn<bool>("listingFails");
+
+        QTest::newRow("cancel-default-nothing") << true << false << false << false;
+        QTest::newRow("accept-default-nothing") << true << true << false << false;
+        QTest::newRow("select-everything") << true << true << true << false;
+        QTest::newRow("default-everything") << false << true << false << false;
+        QTest::newRow("cancel-after-listing-error") << true << false << false << true;
+    }
+
+    void defaultSelectiveSyncSelection()
+    {
+        QFETCH(bool, defaultNothing);
+        QFETCH(bool, acceptSelection);
+        QFETCH(bool, selectEverything);
+        QFETCH(bool, listingFails);
+        const auto restoreTheme = restoreOverrideState();
+        ConfigFile::setDeviceSourcesFactory([defaultNothing] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(
+                std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                            EnforcementState::Enforced,
+                                            200,
+                                            QVariantMap{{u"wizardSelectiveSyncDefaultNothing"_s, defaultNothing}, {u"virtualFilesMode"_s, u"off"_s}}));
+            return sources;
+        });
+        auto fakeFolder = FakeFolder{FileInfo::A12_B12_C12_S12(), {}, {}, false};
+        if (listingFails) {
+            fakeFolder.serverErrorPaths().append({}, 503);
+        }
+        auto listingFailed = false;
+        AccountWizardController controller;
+        connect(fakeFolder.networkAccessManager(), &QNetworkAccessManager::finished, &controller, [&listingFailed](QNetworkReply *reply) {
+            listingFailed = reply->error() != QNetworkReply::NoError;
+        });
+        AccountWizardControllerTestAccess::setAccount(controller, fakeFolder.account());
+        AccountWizardControllerTestAccess::setLocalSyncFolderPicker(controller, [](const QString &, const QString &, const auto &completion) {
+            completion({}, {});
+        });
+        const auto closeDialog = qScopeGuard([&controller] {
+            delete AccountWizardControllerTestAccess::selectiveSyncDialog(controller);
+        });
+        controller.setSyncMode(AccountWizardController::SyncEverything);
+        AccountWizardControllerTestAccess::chooseSyncModeAfterCapabilities(controller);
+        if (!defaultNothing) {
+            QCOMPARE(controller.syncMode(), AccountWizardController::SyncEverything);
+            QVERIFY(!AccountWizardControllerTestAccess::selectiveSyncDialog(controller));
+            controller.openSelectiveSync();
+        }
+        QTRY_VERIFY(AccountWizardControllerTestAccess::selectiveSyncDialog(controller));
+        auto dialog = AccountWizardControllerTestAccess::selectiveSyncDialog(controller);
+        QCOMPARE(controller.syncMode(), AccountWizardController::SelectiveSync);
+        QVERIFY(AccountWizardControllerTestAccess::selectiveSyncBlacklist(controller).isEmpty());
+
+        const auto excludedFolders = QStringList{u"A/"_s, u"B/"_s, u"C/"_s, u"S/"_s};
+        if (listingFails) {
+            QTRY_VERIFY(listingFailed);
+        } else {
+            const auto tree = dialog->findChild<QTreeWidget *>();
+            QVERIFY(tree);
+            QTRY_COMPARE(tree->topLevelItemCount(), 1);
+            QTRY_COMPARE(tree->topLevelItem(0)->childCount(), 4);
+            QCOMPARE(dialog->createBlackList(), defaultNothing ? excludedFolders : QStringList{});
+            if (selectEverything) {
+                tree->topLevelItem(0)->setCheckState(0, Qt::Checked);
+            }
+        }
+        if (acceptSelection) {
+            dialog->accept();
+        } else {
+            dialog->reject();
+        }
+        const auto keepsExclusions = defaultNothing && acceptSelection && !selectEverything;
+        const auto expectedBlacklist = keepsExclusions ? excludedFolders : QStringList{};
+        QCOMPARE(controller.syncMode(), keepsExclusions ? AccountWizardController::SelectiveSync : AccountWizardController::SyncEverything);
+        QCOMPARE(AccountWizardControllerTestAccess::selectiveSyncBlacklist(controller), expectedBlacklist);
+        QTRY_VERIFY(!AccountWizardControllerTestAccess::selectiveSyncDialog(controller));
+
+        controller.openSelectiveSync();
+        dialog = AccountWizardControllerTestAccess::selectiveSyncDialog(controller);
+        QVERIFY(dialog);
+        QCOMPARE(dialog->oldBlackList(), expectedBlacklist);
+        dialog->reject();
+        QCOMPARE(AccountWizardControllerTestAccess::selectiveSyncBlacklist(controller), expectedBlacklist);
+        controller.setSyncMode(AccountWizardController::SyncEverything);
+        QVERIFY(AccountWizardControllerTestAccess::selectiveSyncBlacklist(controller).isEmpty());
     }
 
     void normalizesCommonServerUrlSuffixes()

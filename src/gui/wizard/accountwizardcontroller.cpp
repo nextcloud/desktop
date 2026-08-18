@@ -1231,8 +1231,9 @@ void AccountWizardController::chooseSyncModeAfterCapabilities()
 
         setCurrentStep(SyncOptionsStep);
         if (Theme::instance()->wizardSelectiveSyncDefaultNothing() && canUseClassicSync()) {
-            _selectiveSyncBlacklist = QStringList(QStringLiteral("/"));
-            QTimer::singleShot(0, this, &AccountWizardController::openSelectiveSync);
+            QTimer::singleShot(0, this, [this] {
+                openSelectiveSyncWithBlacklist({u"/"_s});
+            });
         }
     } else {
         finish();
@@ -1769,6 +1770,10 @@ void AccountWizardController::setSyncMode(int syncMode)
     const auto oldLocalSyncFolderRequired = localSyncFolderRequired();
     const auto oldCanFinish = canFinish();
     _syncMode = newSyncMode;
+    if (_syncMode != SelectiveSync) {
+        _selectiveSyncBlacklist.clear();
+        _selectiveSyncSize = -1;
+    }
     Q_EMIT syncModeChanged();
 
     if (oldLocalSyncFolderRequired != localSyncFolderRequired()) {
@@ -1846,6 +1851,11 @@ void AccountWizardController::openLocalSyncFolderDialog(bool initialSelection)
 
 void AccountWizardController::openSelectiveSync()
 {
+    openSelectiveSyncWithBlacklist(_selectiveSyncBlacklist);
+}
+
+void AccountWizardController::openSelectiveSyncWithBlacklist(const QStringList &initialBlacklist)
+{
     if (!_account || !canUseClassicSync()) {
         return;
     }
@@ -1855,11 +1865,7 @@ void AccountWizardController::openSelectiveSync()
     const auto previousSelectiveSyncSize = _selectiveSyncSize;
     setSyncMode(SelectiveSync);
     if (!_selectiveSyncDialog) {
-        _selectiveSyncDialog = new SelectiveSyncDialog(_account,
-            _remoteFolder,
-            _selectiveSyncBlacklist,
-            nullptr,
-            Qt::Dialog | Qt::FramelessWindowHint);
+        _selectiveSyncDialog = new SelectiveSyncDialog(_account, _remoteFolder, initialBlacklist, nullptr, Qt::Dialog | Qt::FramelessWindowHint);
         _selectiveSyncDialog->setAttribute(Qt::WA_DeleteOnClose);
         _selectiveSyncDialog->setWindowModality(Qt::ApplicationModal);
         connect(_selectiveSyncDialog, &SelectiveSyncDialog::finished, this, [this, previousSyncMode, previousBlacklist, previousSelectiveSyncSize] {

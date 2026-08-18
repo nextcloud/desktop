@@ -290,6 +290,7 @@ private:
     void testOwnCloudConnect();
     void completeAuthentication();
     void chooseSyncModeAfterCapabilities();
+    void openSelectiveSyncWithBlacklist(const QStringList &initialBlacklist);
     void fetchUserAvatar();
     void fetchRootFolderSize();
     AccountState *applyAccountChanges();

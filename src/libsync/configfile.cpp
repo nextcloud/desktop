@@ -1194,6 +1194,11 @@ void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes)
     setConfig(QLatin1String(useNewBigFolderSizeLimitC), isChecked);
 }
 
+bool ConfigFile::wizardSelectiveSyncDefaultNothing() const
+{
+    return getConfig<bool>(QLatin1String(wizardSelectiveSyncDefaultNothingC));
+}
+
 bool ConfigFile::confirmExternalStorage() const
 {
     return getConfig<bool>(QLatin1String(confirmExternalStorageC));
