@@ -185,6 +185,14 @@ ColumnLayout {
                         userStatusSelectorModel.setClearAt(currentValue)
                     }
                 }
+
+                indicator: Image {
+                    x: clearComboBox.width - width - clearComboBox.rightPadding
+                    y: clearComboBox.topPadding + (clearComboBox.availableHeight - height) / 2
+                    source: "image://svgimage-custom-color/caret-down.svg/" + Style.sesTrayFontColor
+                    sourceSize.width: 14
+                    sourceSize.height: 14
+                }
             }
         }
     }

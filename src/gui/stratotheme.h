@@ -19,11 +19,11 @@ public:
     }
 
     QString trayFontColor() const override {
-        return "#2F2F70";
+        return themedColor("#2F2F70", "#C9CBEF");
     }
 
     QString trayBorderColor() const override {
-        return "#8493B3";
+        return themedColor("#8493B3", "#454C5E");
     }
 
     QString trayInputFieldBorderColor() const override {
@@ -31,7 +31,7 @@ public:
     }
 
     QString trayBackgroundColor() const override {
-        return "#F7F7F9";
+        return themedColor("#F7F7F9", "#1F2024");
     }
 
     QString settingsLinkColor() const override {
@@ -87,11 +87,11 @@ public:
     }
 
     QString pillButtonPrimaryColor() const override {
-        return "#272CB2";
+        return themedColor("#272CB2", "#5B60D6");
     }
 
     QString pillButtonSecondaryColor() const override {
-        return "#E4E4ED";
+        return themedColor("#E4E4ED", "#2E2F3D");
     }
 
     QString pillButtonBorderColor() const override {
@@ -103,7 +103,7 @@ public:
     }
 
     QString buttonIconColor() const override {
-        return "#2f2f70";
+        return themedColor("#2f2f70", "#C9CBEF");
     }
 
     QString buttonIconHoverColor() const override {
@@ -111,19 +111,19 @@ public:
     }
 
     QString buttonHoveredColor() const override {
-        return "#eeeff9";
+        return themedColor("#eeeff9", "#2A2B3D");
     }
 
     QString buttonPressedColor() const override {
-        return "#D6D6E4";
+        return themedColor("#D6D6E4", "#3A3B52");
     }
 
     QString toolButtonHoveredColor() const override {
-        return "#EDEEF3";
+        return themedColor("#EDEEF3", "#282A36");
     }
 
     QString toolButtonPressedColor() const override {
-        return "#D6D6E4";
+        return themedColor("#D6D6E4", "#3A3B52");
     }
 
     QString menuTextColor() const override {
@@ -139,7 +139,7 @@ public:
     }
 
     QString iconDarkColor() const override {
-        return "#2F2F70";
+        return themedColor("#2F2F70", "#C9CBEF");
     }
 
     QString menuPressedItemColor() const override {
@@ -155,11 +155,11 @@ public:
     }
 
     QString trayErrorBorderColor() const override {
-        return "#FF004C";
+        return themedColor("#FF004C", "#FF6688");
     }
 
     QString trayErrorTextColor() const override {
-        return "#CC0052";
+        return themedColor("#CC0052", "#FF8FB3");
     }
 
     QString sesHeaderLogoIcon() const override {

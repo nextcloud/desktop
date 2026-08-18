@@ -19,7 +19,7 @@ QtObject {
     readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
     readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2.35) : Qt.darker(backgroundColor, 1.25)
     readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
-    readonly property color backgroundColor: "#FFFFFF"
+    readonly property color backgroundColor: Theme.darkMode ? "#1E2126" : "#FFFFFF"
     readonly property color buttonBackgroundColor: Theme.systemPalette.button
     readonly property color positiveColor: Qt.rgba(0.38, 0.74, 0.38, 1)
     readonly property color accentColor: UserModel.currentUser ? UserModel.currentUser.accentColor : ncBlue
@@ -257,21 +257,21 @@ QtObject {
 
     readonly property color sesBackgroundColor: WLTheme.trayBackgroundColor
     readonly property color sesBorderColor: WLTheme.trayBorderColor
-    readonly property color sesWhite: "#FFFFFF"
+    readonly property color sesWhite: Theme.darkMode ? sesBackgroundColor : "#FFFFFF"
     readonly property color sesGray: "#465A75"
     readonly property color sesTrayInputField: WLTheme.trayInputFieldBorderColor
-    readonly property color sesHover: "#F2F5F8"
+    readonly property color sesHover: Theme.darkMode ? "#2D3138" : "#F2F5F8"
     readonly property color sesActionHover: WLTheme.buttonHoveredColor
     readonly property color sesActionPressed: WLTheme.buttonPressedColor
-    readonly property color sesSelectedColor: "#F4F7FA"
+    readonly property color sesSelectedColor: Theme.darkMode ? "#333844" : "#F4F7FA"
     readonly property color sesButtonPressed: WLTheme.toolButtonPressedColor
     readonly property color sesAccountMenuHover: WLTheme.toolButtonHoveredColor
     readonly property color sesDarkGreen: "#096B35"
     readonly property color sesTrayFontColor: WLTheme.trayFontColor
     readonly property color sesErrorBoxBorder: WLTheme.trayErrorBorderColor
     readonly property color sesErrorBoxText: WLTheme.trayErrorTextColor
-    readonly property color sesMenuBorder: "#2E4360"
-    readonly property color sesSearchFieldContent: "#97A3B4"
+    readonly property color sesMenuBorder: Theme.darkMode ? "#5B7699" : "#2E4360"
+    readonly property color sesSearchFieldContent: Theme.darkMode ? "#B7C1CE" : "#97A3B4"
 
     property int sesAccountMenuHeight: variableSize(40)
     property int sesHeaderLogoHeigth: variableSize(40)

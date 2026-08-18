@@ -236,7 +236,7 @@ RowLayout {
 
                             Component.onCompleted: {
                                 if (contentItem && contentItem.hasOwnProperty("color")) {
-                                    contentItem.color = fileDetailsMenuItem.palette.text
+                                    contentItem.color = Qt.binding(function() { return fileDetailsMenuItem.palette.text })
                                 }
                             }
 
@@ -272,7 +272,7 @@ RowLayout {
 
                             Component.onCompleted: {
                                 if (contentItem && contentItem.hasOwnProperty("color")) {
-                                    contentItem.color = fileActionsMenuItem.palette.text
+                                    contentItem.color = Qt.binding(function() { return fileActionsMenuItem.palette.text })
                                 }
                             }
 
