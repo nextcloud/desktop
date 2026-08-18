@@ -694,11 +694,11 @@ set_target_properties(nextcloud PROPERTIES
 )
 
 target_link_libraries(nextcloud PRIVATE
+    nextcloudCore
     nextcloudGuiSearch
     nextcloudGuiSearchplugin
     nextcloudGuiSharing
     nextcloudGuiSharingplugin
-    nextcloudCore
 )
 
 if(TARGET PkgConfig::CLOUDPROVIDERS)
