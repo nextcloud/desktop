@@ -697,11 +697,11 @@ set_target_properties(nextcloud PROPERTIES
 )
 
 target_link_libraries(nextcloud PRIVATE
+    nextcloudCore
     nextcloudGuiSearch
     nextcloudGuiSearchplugin
     nextcloudGuiSharing
     nextcloudGuiSharingplugin
-    nextcloudCore
 )
 target_compile_definitions(nextcloud PRIVATE QT_NO_KEYWORDS)
 
