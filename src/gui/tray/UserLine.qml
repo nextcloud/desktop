@@ -122,10 +122,6 @@ AbstractButton {
             }
         }
 
-        Item { // Spacer
-            Layout.fillWidth: true
-        }
-
         Item {
             id: syncStatusColumn
             Layout.preferredWidth: Style.headerButtonIconSize
