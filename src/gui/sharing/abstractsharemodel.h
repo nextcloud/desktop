@@ -7,7 +7,7 @@
 
 #include <QAbstractListModel>
 
-#include "share.h"
+#include "unifiedshare.h"
 
 namespace OCC::Gui::Sharing {
 

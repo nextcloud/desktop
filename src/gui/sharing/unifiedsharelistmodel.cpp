@@ -6,7 +6,7 @@
 #include "unifiedsharelistmodel.h"
 
 #include "recipient.h"
-#include "share.h"
+#include "unifiedshare.h"
 #include "sharingconstants.h"
 #include "sharingcontroller.h"
 

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "share.h"
+#include "unifiedshare.h"
 #include "updatesharejob.h"
 
 namespace OCC::Gui::Sharing

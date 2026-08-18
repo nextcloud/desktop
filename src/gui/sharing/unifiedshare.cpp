@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "share.h"
+#include "unifiedshare.h"
 
 #include "sharingconstants.h"
 
