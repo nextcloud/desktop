@@ -39,7 +39,7 @@ GetShareJob::GetShareJob(AccountPtr account,
     : UnifiedSharingRequest{account,
                             "/ocs/v2.php/apps/sharing/api/v1/share/%1"_L1.arg(shareId),
                             "POST"_ba,
-                            {.body = getShareBody(secret, arguments)}}
+                            {.parameters = {}, .passStatusCodes = {}, .body = getShareBody(secret, arguments)}}
 {
     connect(this, &OcsJob::jobFinished, this, [this, account = std::move(account)](const QJsonDocument &json, int) {
         Q_EMIT shareFetched(Share::fromJson(json, account));
