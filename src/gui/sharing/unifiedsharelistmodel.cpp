@@ -137,7 +137,7 @@ void UnifiedShareListModel::rebuild()
 
     auto shares = _sharingController->shares();
     shares.removeIf([](const Share *share) {
-        return !share || share->state() == Share::ShareState::Deleted || share->state() == Share::ShareState::Unknown;
+        return !share || share->state() == Share::State::Deleted || share->state() == Share::State::Unknown;
     });
 
     _shareConnections.reserve(shares.size() * 2);
@@ -174,7 +174,7 @@ void UnifiedShareListModel::rebuild()
     appendShares(additionalSection);
 
     if (std::ranges::any_of(shares, [](const Share *share) {
-            return share && share->state() == Share::ShareState::Draft;
+            return share && share->state() == Share::State::Draft;
         })) {
         appendHeader(pendingSection);
         appendShares(pendingSection);
@@ -185,7 +185,7 @@ void UnifiedShareListModel::rebuild()
 
 QString UnifiedShareListModel::sectionForShare(const Share *share)
 {
-    if (share && share->state() == Share::ShareState::Draft) {
+    if (share && share->state() == Share::State::Draft) {
         return pendingSection;
     }
 
