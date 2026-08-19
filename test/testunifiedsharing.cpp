@@ -36,6 +36,8 @@
 #include <QUrlQuery>
 
 #include <algorithm>
+#include <memory>
+#include <vector>
 
 using namespace OCC;
 using namespace OCC::Gui::Sharing;
@@ -49,7 +51,7 @@ private slots:
     void recipientsPreserveServerIdentityAndCapabilities()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        const auto share = Share::fromJson(QJsonDocument{QJsonObject{
+        auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
                                                {"ocs"_L1,
                                                 QJsonObject{
                                                     {"data"_L1,
@@ -84,7 +86,7 @@ private slots:
                                                      }},
                                                 }},
                                            }},
-                                           fakeFolder.account());
+                                           fakeFolder.account()));
 
         QCOMPARE(share->recipients().size(), 2);
         const auto recipient = share->recipients().constFirst();
@@ -102,7 +104,7 @@ private slots:
         QCOMPARE(recipient->initiatorDisplayName(), "Bob"_L1);
 
         RecipientModel model;
-        model.setShare(share);
+        model.setShare(share.get());
         QCOMPARE(model.rowCount(), 2);
         const auto index = model.index(0);
         QCOMPARE(model.data(index, RecipientModel::InstanceRole).toString(), "cloud.example.com"_L1);
@@ -116,13 +118,12 @@ private slots:
         QVERIFY(missingSecretUrl.isValid());
         QCOMPARE(missingSecretUrl.toString(), QString{});
 
-        delete share;
     }
 
     void sharePropertiesPreserveServerMetadataAndUseTypedFields()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        const auto share = Share::fromJson(QJsonDocument::fromJson(R"json({
+        auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {
                     "data": {
                         "id": "share-1",
@@ -180,10 +181,10 @@ private slots:
                     }
                 }
             })json"),
-                                           fakeFolder.account());
+                                           fakeFolder.account()));
 
         PropertyModel model;
-        model.setShare(share);
+        model.setShare(share.get());
 
         QCOMPARE(model.rowCount(), 4);
         QVERIFY(!model.data({}, PropertyModel::LabelRole).isValid());
@@ -208,20 +209,19 @@ private slots:
         QCOMPARE(model.data(enumIndex, PropertyModel::AdvancedRole).toBool(), true);
         QCOMPARE(model.data(enumIndex, PropertyModel::ValidValuesRole).toStringList(), QStringList({"private"_L1, "public"_L1}));
 
-        delete share;
     }
 
     void permissionModelIsReadOnlyAndTracksOnlyItsCurrentShare()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        const auto shareWithOnePermission = Share::fromJson(QJsonDocument::fromJson(R"json({
+        auto shareWithOnePermission = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {"data": {
                     "id": "share-1",
                     "permissions": [{"class": "view", "display_name": "View files", "enabled": true}]
                 }}
             })json"),
-                                                            fakeFolder.account());
-        const auto shareWithTwoPermissions = Share::fromJson(QJsonDocument::fromJson(R"json({
+                                                            fakeFolder.account()));
+        auto shareWithTwoPermissions = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {"data": {
                     "id": "share-2",
                     "permissions": [
@@ -230,10 +230,10 @@ private slots:
                     ]
                 }}
             })json"),
-                                                             fakeFolder.account());
+                                                             fakeFolder.account()));
 
         PermissionModel model;
-        model.setShare(shareWithOnePermission);
+        model.setShare(shareWithOnePermission.get());
         QCOMPARE(model.rowCount(), 1);
         const auto index = model.index(0);
         QCOMPARE(model.data(index, PermissionModel::LabelRole).toString(), "View files"_L1);
@@ -241,15 +241,13 @@ private slots:
         QVERIFY(!model.data(QModelIndex{}, PermissionModel::LabelRole).isValid());
         QCOMPARE(model.rowCount(model.index(0, 0)), 0);
 
-        model.setShare(shareWithTwoPermissions);
+        model.setShare(shareWithTwoPermissions.get());
         QCOMPARE(model.rowCount(), 2);
         shareWithOnePermission->updateFromJson(QJsonDocument::fromJson(R"json({
             "ocs": {"data": {"permissions": []}}
         })json"));
         QCOMPARE(model.rowCount(), 2);
 
-        delete shareWithOnePermission;
-        delete shareWithTwoPermissions;
     }
 
     void requestsAreConfiguredBeforeTheyStart()
@@ -322,7 +320,7 @@ private slots:
         });
 
         const auto account = fakeFolder.account();
-        const auto share = Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1"}}})json"), fakeFolder.account());
+        auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1"}}})json"), fakeFolder.account()));
 
         const auto verifyRequest = [&](UnifiedSharingRequest *job,
                                        const QByteArray &expectedVerb,
@@ -420,7 +418,6 @@ private slots:
         verifyRequest(new GetSharesJob{account}, "GET", "/ocs/v2.php/apps/sharing/api/v1/shares", {{"limit"_L1, "100"_L1}});
 
         QCOMPARE(requestCount, 19);
-        delete share;
     }
 
     void requestStartsOnlyOnce()
@@ -457,7 +454,7 @@ private slots:
     void partialShareUpdatesPreserveOmittedFields()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        const auto share = Share::fromJson(QJsonDocument::fromJson(R"json({
+        auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {
                     "data": {
                         "id": "share-1",
@@ -482,7 +479,7 @@ private slots:
                     }
                 }
             })json"),
-                                           fakeFolder.account());
+                                           fakeFolder.account()));
 
         share->updateFromJson(QJsonDocument::fromJson(R"json({
             "ocs": {
@@ -518,14 +515,11 @@ private slots:
         QCOMPARE(share->permissions().size(), 1);
         QCOMPARE(share->recipients().size(), 1);
 
-        delete share;
-
-        const auto unknownShare = Share::fromJson(QJsonDocument::fromJson(R"json({
+        auto unknownShare = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({
             "ocs": {"data": {"id": "unknown-share", "state": "paused"}}
         })json"),
-                                                  fakeFolder.account());
+                                                  fakeFolder.account()));
         QCOMPARE(unknownShare->state(), Share::ShareState::Unknown);
-        delete unknownShare;
     }
 
     void sharingControllerLoadsAllSharesWithoutCreatingOne()
@@ -1817,10 +1811,10 @@ private slots:
 
         const auto account = fakeFolder.account();
 
-        QPointer<Share> createdShare;
+        auto createdShare = std::unique_ptr<Share>{};
         const auto createJob = new CreateShareJob{account};
         connect(createJob, &CreateShareJob::shareCreated, this, [&](QPointer<Share> share) {
-            createdShare = share;
+            createdShare.reset(share.data());
         });
         createJob->start();
         QTRY_VERIFY(createdShare);
@@ -1829,7 +1823,7 @@ private slots:
         auto updateReceived = false;
         const auto updateJob = new SetPermissionJob{account, *createdShare, "permission-class"_L1, true};
         connect(updateJob, &UpdateShareJob::shareUpdated, this, [&](QPointer<Share> share) {
-            updateReceived = share == createdShare;
+            updateReceived = share == createdShare.get();
         });
         updateJob->start();
         QTRY_VERIFY(updateReceived);
@@ -1853,22 +1847,25 @@ private slots:
         secretJob->start();
         QTRY_COMPARE(generatedSecret, "generated-secret"_L1);
 
-        QPointer<Share> fetchedShare;
+        auto fetchedShare = std::unique_ptr<Share>{};
         const auto getShareJob = new GetShareJob{account, "share-1"_L1};
         connect(getShareJob, &GetShareJob::shareFetched, this, [&](QPointer<Share> share) {
-            fetchedShare = share;
+            fetchedShare.reset(share.data());
         });
         getShareJob->start();
         QTRY_VERIFY(fetchedShare);
         QCOMPARE(fetchedShare->id(), "share-1"_L1);
 
-        auto fetchedShares = QList<QPointer<Share>>{};
+        auto fetchedShares = std::vector<std::unique_ptr<Share>>{};
         const auto getSharesJob = new GetSharesJob{account};
         connect(getSharesJob, &GetSharesJob::sharesFetched, this, [&](const QList<QPointer<Share>> &shares) {
-            fetchedShares = shares;
+            fetchedShares.clear();
+            for (const auto &share : shares) {
+                fetchedShares.emplace_back(share.data());
+            }
         });
         getSharesJob->start();
-        QTRY_COMPARE(fetchedShares.size(), 2);
+        QTRY_VERIFY(fetchedShares.size() == 2);
         QCOMPARE(fetchedShares.at(0)->id(), "share-1"_L1);
         QCOMPARE(fetchedShares.at(1)->id(), "share-2"_L1);
 
@@ -1880,9 +1877,6 @@ private slots:
         destroyJob->start();
         QTRY_VERIFY(destroyed);
 
-        delete createdShare;
-        delete fetchedShare;
-        qDeleteAll(fetchedShares);
     }
 
     void ocsErrorsAreSeparateFromSuccessfulResults()
@@ -1946,7 +1940,7 @@ private slots:
         });
 
         const auto account = fakeFolder.account();
-        const auto share = Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1","state":"draft"}}})json"), account);
+        auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1","state":"draft"}}})json"), account));
         const auto jobs = QList<UpdateShareJob *>{
             new AddSourceJob{account, *share, "42"_L1},
             new RemoveSourceJob{account, *share, "42"_L1},
@@ -1977,7 +1971,6 @@ private slots:
             QCOMPARE(share->state(), Share::ShareState::Draft);
         }
 
-        delete share;
     }
 
     void networkErrorsAreSeparateFromSuccessfulResults()
