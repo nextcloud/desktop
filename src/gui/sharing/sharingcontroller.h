@@ -10,7 +10,7 @@
 #include <QObject>
 #include <QPointer>
 #include <QSet>
-#include <qqmlintegration.h>
+#include <QtQmlIntegration>
 
 #include "accountfwd.h"
 

@@ -9,7 +9,7 @@
 #include <QTimer>
 
 #include <QJsonArray>
-#include <qqmlintegration.h>
+#include <QtQmlIntegration>
 
 #include "accountfwd.h"
 

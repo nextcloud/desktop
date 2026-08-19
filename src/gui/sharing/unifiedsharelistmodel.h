@@ -9,7 +9,7 @@
 #include <QMetaObject>
 #include <QPointer>
 
-#include <qqmlintegration.h>
+#include <QtQmlIntegration>
 
 namespace OCC::Gui::Sharing
 {

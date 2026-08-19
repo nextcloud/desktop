@@ -15,14 +15,14 @@
 #include <QtCore>
 #include <QTimer>
 #include <QUrlQuery>
-#include <qqmlintegration.h>
+#include <QtQmlIntegration>
 
 #include <limits>
 
-#include "accountstate.h"
 #include "unifiedsearchresult.h"
 
 namespace OCC {
+class AccountState;
 
 /**
  * @brief Account-scoped presentation model for Nextcloud Unified Search.
