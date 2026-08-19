@@ -106,11 +106,7 @@ QString RecipientSearchModel::query() const
 
 void RecipientSearchModel::setQuery(const QString &query)
 {
-    if (!_account) {
-        return;
-    }
-
-    if (_query == query) {
+    if (!_account || _query == query) {
         return;
     }
 
