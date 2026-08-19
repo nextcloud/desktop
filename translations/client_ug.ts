@@ -2865,68 +2865,68 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>ماسقەدەملەش پائالىيىتى</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1185"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Could not read system exclude file</source>
         <translation>ھۆججەتنى چىقىرىۋېتىش سىستېمىسىنى ئوقۇيالمىدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1470"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation> %1 MB دىن چوڭ بولغان يېڭى ھۆججەت قىسقۇچ قوشۇلدى:%2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1478"/>
+        <location filename="../src/gui/folder.cpp" line="1473"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>سىرتقى ساقلاش بوشلۇقىدىن ھۆججەت قىسقۇچ قوشۇلدى.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1479"/>
+        <location filename="../src/gui/folder.cpp" line="1474"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>چۈشۈرمەكچى بولسىڭىز تەڭشەكلەرگە كىرىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1536"/>
+        <location filename="../src/gui/folder.cpp" line="1531"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>قىسقۇچ بەلگىلەنگەن ھۆججەت قىسقۇچنىڭ چوڭلۇقى%1MB دىن ئېشىپ كەتتى:%2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1547"/>
+        <location filename="../src/gui/folder.cpp" line="1542"/>
         <source>Keep syncing</source>
         <translation>ماسقەدەملەشنى داۋاملاشتۇرۇڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1550"/>
         <source>Stop syncing</source>
         <translation>ماسقەدەملەشنى توختىتىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1561"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation> %1 ھۆججەت قىسقۇچ%2MB لىق ھۆججەت قىسقۇچنىڭ چوڭلۇقىدىن ئېشىپ كەتتى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1567"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>بۇ ھۆججەت قىسقۇچنى ماسقەدەملەشنى توختاتامسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation> %1 ھۆججەت قىسقۇچى قۇرۇلدى ، ئەمما ماس قەدەمدە چىقىرىۋېتىلدى. ئۇنىڭ ئىچىدىكى سانلىق مەلۇماتلار ماس قەدەمدە بولمايدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1640"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation> %1 ھۆججىتى قۇرۇلدى ، ئەمما ماس قەدەمدە چىقىرىۋېتىلدى. ئۇ ماس قەدەمدە بولمايدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1656"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2939,12 +2939,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1694"/>
+        <location filename="../src/gui/folder.cpp" line="1689"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>مەۋھۇم ھۆججەت چۈشۈرۈش «%1» ، ھالەت «%2» ۋە خاتالىق ئۇچۇرى «%3» بىلەن مەغلۇپ بولدى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1788"/>
+        <location filename="../src/gui/folder.cpp" line="1783"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2953,7 +2953,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 ئۇنىڭدىن باشقا ، &apos;%1&apos; ھۆججەت قىسقۇچىدىن مۇلازىمېتىرغا يوللاش ئارقىلىق ئۆچۈرۈلگەن ھۆججەتلەرنىڭ ھەممىسىنى ئەسلىگە كەلتۈرەلەيسىز.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1789"/>
+        <location filename="../src/gui/folder.cpp" line="1784"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2962,22 +2962,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 ئۇنىڭدىن باشقا ، ئۆچۈرۈلگەن ھۆججەتلەرنىڭ ھەممىسىنى مۇلازىمېتىردىن چۈشۈرۈپ ئەسلىگە كەلتۈرەلەيسىز.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1790"/>
+        <location filename="../src/gui/folder.cpp" line="1785"/>
         <source>Remove all files?</source>
         <translation>بارلىق ھۆججەتلەرنى ئۆچۈرەمسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1794"/>
+        <location filename="../src/gui/folder.cpp" line="1789"/>
         <source>Proceed with Deletion</source>
         <translation>ئۆچۈرۈش بىلەن داۋاملاشتۇرۇڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files to Server</source>
         <translation>ھۆججەتلەرنى مۇلازىمېتىرغا ئەسلىگە كەلتۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files from Server</source>
         <translation>مۇلازىمېتىردىن ھۆججەتلەرنى ئەسلىگە كەلتۈرۈڭ</translation>
     </message>
