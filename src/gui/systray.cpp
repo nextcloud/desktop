@@ -88,6 +88,8 @@ Systray::Systray()
         this, &Systray::setupContextMenu);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Systray::setupContextMenu);
+    connect(Theme::instance(), &Theme::darkModeChanged,
+        this, &Systray::setupContextMenu);
     setupContextMenu();
 #endif
 
@@ -210,11 +212,37 @@ void Systray::setupContextMenu()
         resumeAction->setEnabled(anyPaused);
     });
 
-    _contextMenu->setStyleSheet(WLTheme.fontConfigurationCss(
-        WLTheme.settingsFont(),
-        WLTheme.settingsTextSize(),
-        WLTheme.settingsTextWeight(),
-        WLTheme.menuTextColor()));
+    _contextMenu->setStyleSheet(QStringLiteral(
+        "QMenu {"
+        "background-color: %1;"
+        "border: 1px solid %2;"
+        "padding: 6px;"
+        "font-family: %3;"
+        "font-size: %4;"
+        "font-weight: %5;"
+        "}"
+        "QMenu::item {"
+        "background-color: transparent;"
+        "padding: 8px 16px;"
+        "color: %6;"
+        "}"
+        "QMenu::item:selected {"
+        "background-color: %7;"
+        "color: %6;"
+        "}"
+        "QMenu::item:pressed {"
+        "background-color: %8;"
+        "color: %9;"
+        "}")
+        .arg(WLTheme.trayBackgroundColor(),
+             WLTheme.menuBorderColor(),
+             WLTheme.settingsFont(),
+             WLTheme.settingsTextSize(),
+             WLTheme.settingsTextWeight(),
+             WLTheme.menuTextColor(),
+             WLTheme.menuSelectedItemColor(),
+             WLTheme.menuPressedItemColor(),
+             WLTheme.menuPressedTextColor()));
 }
 
 void Systray::destroyDialog(QQuickWindow *dialog) const

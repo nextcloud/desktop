@@ -127,11 +127,11 @@ public:
     }
 
     QString menuTextColor() const override {
-        return "#29294d";
+        return themedColor("#29294d", "#C9CBEF");
     }
 
     QString menuSelectedItemColor() const override {
-        return "#D6D6E4";
+        return themedColor("#D6D6E4", "#282A36");
     }
 
     QString menuPressedTextColor() const override {
@@ -143,7 +143,7 @@ public:
     }
 
     QString menuPressedItemColor() const override {
-        return "#5A6782";
+        return themedColor("#5A6782", "#3A3B52");
     }
 
     QString errorColor() const override {
