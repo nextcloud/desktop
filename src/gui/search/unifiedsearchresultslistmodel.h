@@ -10,7 +10,7 @@
 #include <limits>
 
 #include <QtCore>
-#include <qqmlintegration.h>
+#include <QtQmlIntegration>
 
 namespace OCC {
 class AccountState;
