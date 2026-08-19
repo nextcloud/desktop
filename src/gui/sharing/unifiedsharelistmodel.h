@@ -78,14 +78,15 @@ private:
         QPointer<Share> share;
     };
 
-    QPointer<SharingController> _sharingController;
-    QList<Item> _items;
-    QList<QMetaObject::Connection> _shareConnections;
-
-    void rebuild();
     [[nodiscard]] static QString sectionForShare(const Share *share);
     [[nodiscard]] static bool isInternalShare(const Share *share);
     [[nodiscard]] static bool isExternalShare(const Share *share);
+
+    void rebuild();
+
+    QPointer<SharingController> _sharingController;
+    QList<Item> _items;
+    QList<QMetaObject::Connection> _shareConnections;
 };
 
 }
