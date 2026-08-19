@@ -186,6 +186,7 @@ private slots:
         model.setShare(share);
 
         QCOMPARE(model.rowCount(), 4);
+        QVERIFY(!model.data({}, PropertyModel::LabelRole).isValid());
         const auto stringIndex = model.index(3);
         QCOMPARE(model.data(stringIndex, PropertyModel::TypeRole).toInt(), static_cast<int>(PropertyModel::String));
         QCOMPARE(model.data(stringIndex, PropertyModel::RequiredRole).toBool(), true);
