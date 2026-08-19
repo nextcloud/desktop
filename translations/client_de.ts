@@ -5,7 +5,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="49" />
         <source>In %1</source>
-        <translation>In %1</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="31" />
@@ -383,7 +383,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="37" />
         <source>Add Folder Sync</source>
-        <translation type="unfinished">Ordner Sync hinzufügen</translation>
+        <translation>Ordner Sync hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="88" />
@@ -464,12 +464,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="876" />
         <source>New activities</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Neue Aktivitäten</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="461" />
         <source>New conversation</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Neue Unterhaltung</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="559" />
@@ -484,12 +484,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="441" />
         <source>Start new conversation?</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Neue Unterhaltung beginnen?</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="486" />
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Dadurch wird die bestehende Unterhaltung geleert.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="805" />
@@ -580,120 +580,120 @@ Soll das Konto importiert werden?</translation>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1517" />
+        <location filename="../src/gui/accountsettings.cpp" line="1518" />
         <source>%1 as %2</source>
         <translation>%1 als %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1490" />
+        <location filename="../src/gui/accountsettings.cpp" line="1491" />
         <source>%1 in use</source>
         <translation>%1 belegt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1483" />
+        <location filename="../src/gui/accountsettings.cpp" line="1484" />
         <source>%1 of %2 in use</source>
         <translation>%1 von %2 belegt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="840" />
+        <location filename="../src/gui/accountsettings.cpp" line="841" />
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="930" />
+        <location filename="../src/gui/accountsettings.cpp" line="931" />
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Konnte lokalen Ordner &lt;i&gt;%1&lt;/i&gt; nicht anle‏gen.‎&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="988" />
+        <location filename="../src/gui/accountsettings.cpp" line="989" />
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Möchten Sie den Ordner &lt;i&gt;%1&lt;/i&gt; nicht mehr synchronisieren?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Anmerkung:&lt;/b&gt; Dies wird &lt;b&gt;keine&lt;/b&gt; Dateien löschen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044" />
+        <location filename="../src/gui/accountsettings.cpp" line="1045" />
         <source>Access Error</source>
         <translation>Zugriffsfehler</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="670" />
-        <location filename="../src/gui/accountsettings.cpp" line="817" />
+        <location filename="../src/gui/accountsettings.cpp" line="671" />
+        <location filename="../src/gui/accountsettings.cpp" line="818" />
         <source>Availability</source>
         <translation>Verfügbarkeit</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1058" />
-        <location filename="../src/gui/accountsettings.cpp" line="1065" />
+        <location filename="../src/gui/accountsettings.cpp" line="1059" />
+        <location filename="../src/gui/accountsettings.cpp" line="1066" />
         <source>Bookmark Error</source>
         <translation>Lesezeichenfehler</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="796" />
+        <location filename="../src/gui/accountsettings.cpp" line="797" />
         <source>Choose what to sync</source>
         <translation>Zu synchronisierende Elemente auswählen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="987" />
+        <location filename="../src/gui/accountsettings.cpp" line="988" />
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Bestätigen Sie die Löschung der Ordner-Synchronisierung</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1528" />
+        <location filename="../src/gui/accountsettings.cpp" line="1529" />
         <source>Connected to %1 (%2).</source>
         <translation>Verbunden mit %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1526" />
+        <location filename="../src/gui/accountsettings.cpp" line="1527" />
         <source>Connected to %1.</source>
         <translation>Verbunden mit %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1546" />
+        <location filename="../src/gui/accountsettings.cpp" line="1547" />
         <source>Connecting to %1 …</source>
         <translation>Verbinde zu %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044" />
+        <location filename="../src/gui/accountsettings.cpp" line="1045" />
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>Der Zugriff auf den ausgewählten Ordner konnte nicht hergestellt werden. Bitte nochmals versuchen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1058" />
+        <location filename="../src/gui/accountsettings.cpp" line="1059" />
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Es konnte kein Sicherheits-Lesezeichen für den Ordner erstellt werden. Bitte erneut versuchen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="488" />
+        <location filename="../src/gui/accountsettings.cpp" line="489" />
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>Der Ordner konnte nicht verschlüsselt werden, da er nicht mehr existiert</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1065" />
+        <location filename="../src/gui/accountsettings.cpp" line="1066" />
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Das Sicherheits-Lesezeichen konnte nicht aufgelöst werden. Bitte erneut versuchen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="664" />
-        <location filename="../src/gui/accountsettings.cpp" line="791" />
+        <location filename="../src/gui/accountsettings.cpp" line="665" />
+        <location filename="../src/gui/accountsettings.cpp" line="792" />
         <source>Create new folder</source>
         <translation>Neuen Ordner erstellen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1179" />
+        <location filename="../src/gui/accountsettings.cpp" line="1180" />
         <source>Disable support</source>
         <translation>Unterstützung deaktivieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="830" />
+        <location filename="../src/gui/accountsettings.cpp" line="831" />
         <source>Disable virtual file support …</source>
         <translation>Unterstützung für virtuelle Dateien deaktivieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1165" />
+        <location filename="../src/gui/accountsettings.cpp" line="1166" />
         <source>Disable virtual file support?</source>
         <translation>Unterstützung für virtuelle Dateien deaktivieren?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="338" />
+        <location filename="../src/gui/accountsettings.cpp" line="339" />
         <source>Display mnemonic</source>
         <translation>Gedächtnisstütze anzeigen</translation>
     </message>
@@ -704,23 +704,23 @@ Soll das Konto importiert werden?</translation>
         <translation>Ordner nicht verschlüsseln</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1296" />
+        <location filename="../src/gui/accountsettings.cpp" line="1297" />
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>Soll die Ende-zu-Ende-Verschlüsselungseinstellungen für %1 auf diesem Gerät vergessen werden?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="661" />
-        <location filename="../src/gui/accountsettings.cpp" line="788" />
+        <location filename="../src/gui/accountsettings.cpp" line="662" />
+        <location filename="../src/gui/accountsettings.cpp" line="789" />
         <source>Edit Ignored Files</source>
         <translation>Ignorierte Dateien bearbeiten</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="840" />
+        <location filename="../src/gui/accountsettings.cpp" line="841" />
         <source>Enable virtual file support %1 …</source>
         <translation>Unterstützung für virtuelle Dateien aktivieren %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="651" />
+        <location filename="../src/gui/accountsettings.cpp" line="652" />
         <source>Encrypt</source>
         <translation>Verschlüsseln</translation>
     </message>
@@ -731,12 +731,12 @@ Soll das Konto importiert werden?</translation>
         <translation>Ordner verschlüsseln</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="488" />
+        <location filename="../src/gui/accountsettings.cpp" line="489" />
         <source>Encryption failed</source>
         <translation>Verschlüsselung fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="344" />
+        <location filename="../src/gui/accountsettings.cpp" line="345" />
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
         <translation>Die Verschlüsselung ist eingerichtet. Nicht vergessen, einen Ordner zu &lt;b&gt;verschlüsseln&lt;/b&gt;, um alle neu hinzugefügten Dateien Ende-zu-Ende zu verschlüsseln.</translation>
     </message>
@@ -751,194 +751,194 @@ Soll das Konto importiert werden?</translation>
         <translation>Ende-zu-Ende-Verschlüsselung mit virtuellen Dateien</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1933" />
+        <location filename="../src/gui/accountsettings.cpp" line="1934" />
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>Die Ende-zu-Ende-Verschlüsselung wurde für dieses Konto mit einem anderen Gerät initialisiert. &lt;br&gt;Geben Sie den eindeutigen Mnemonic ein, um die verschlüsselten Ordner auch auf diesem Gerät zu synchronisieren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="298" />
+        <location filename="../src/gui/accountsettings.cpp" line="299" />
         <source>End-to-end encryption has not been initialized on this account.</source>
         <translation>Für dieses Konto wurde keine Ende-zu-Ende-Verschlüsselung initialisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1268" />
+        <location filename="../src/gui/accountsettings.cpp" line="1269" />
         <source>End-to-end encryption mnemonic</source>
         <translation>Gedächtnisstütze für die Ende-zu-Ende-Verschlüsselung</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="929" />
+        <location filename="../src/gui/accountsettings.cpp" line="930" />
         <source>Folder creation failed</source>
         <translation>Anlegen des Ordners fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802" />
+        <location filename="../src/gui/accountsettings.cpp" line="803" />
         <source>Force sync now</source>
         <translation>Synchronisierung jetzt erzwingen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="328" />
+        <location filename="../src/gui/accountsettings.cpp" line="329" />
         <source>Forget encryption setup</source>
         <translation>Verschlüsselungseinrichtung vergessen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1295" />
+        <location filename="../src/gui/accountsettings.cpp" line="1296" />
         <source>Forget the end-to-end encryption on this device</source>
         <translation>Die Ende-zu-Ende-Verschlüsselung auf diesem Gerät vergessen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1298" />
+        <location filename="../src/gui/accountsettings.cpp" line="1299" />
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>Wenn die Ende-zu-Ende-Verschlüsselung vergessen wird, werden die vertraulichen Daten und alle verschlüsselten Dateien von diesem Gerät entfernt. Die verschlüsselten Dateien verbleiben jedoch auf dem Server und allen Ihren anderen Geräten, sofern eingerichtet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1035" />
+        <location filename="../src/gui/accountsettings.cpp" line="1036" />
         <source>Grant access to sync folder</source>
         <translation>Zugriff auf Synchronisierungsordner gewähren</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1757" />
+        <location filename="../src/gui/accountsettings.cpp" line="1758" />
         <source>Migrate certificate to a new one</source>
         <translation>Zertifikat auf ein neues migrieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1566" />
+        <location filename="../src/gui/accountsettings.cpp" line="1567" />
         <source>No %1 connection configured.</source>
         <translation>Keine %1-Verbindung konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="306" />
+        <location filename="../src/gui/accountsettings.cpp" line="307" />
         <source>No account configured.</source>
         <translation>Kein Konto konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="632" />
-        <location filename="../src/gui/accountsettings.cpp" line="785" />
+        <location filename="../src/gui/accountsettings.cpp" line="633" />
+        <location filename="../src/gui/accountsettings.cpp" line="786" />
         <source>Open folder</source>
         <translation>Ordner öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810" />
+        <location filename="../src/gui/accountsettings.cpp" line="811" />
         <source>Pause sync</source>
         <translation>Synchronisierung pausieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051" />
+        <location filename="../src/gui/accountsettings.cpp" line="1052" />
         <source>Please select the original sync folder: %1</source>
         <translation>Bitte den ursprünglichen Synchronisierungsordner auswählen: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="423" />
+        <location filename="../src/gui/accountsettings.cpp" line="424" />
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Bitte warten Sie, bis der Ordner synchronisiert ist, bevor Sie versuchen, ihn zu verschlüsseln.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1000" />
+        <location filename="../src/gui/accountsettings.cpp" line="1001" />
         <source>Remove Folder Sync Connection</source>
         <translation>Ordner-Synchronisierung entfernen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="813" />
+        <location filename="../src/gui/accountsettings.cpp" line="814" />
         <source>Remove folder sync connection</source>
         <translation>Ordner-Synchronisierung entfernen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="804" />
+        <location filename="../src/gui/accountsettings.cpp" line="805" />
         <source>Restart sync</source>
         <translation>Synchronisierung neustarten</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810" />
+        <location filename="../src/gui/accountsettings.cpp" line="811" />
         <source>Resume sync</source>
         <translation>Synchronisierung fortsetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1540" />
+        <location filename="../src/gui/accountsettings.cpp" line="1541" />
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Server %1 wird derzeit umgeleitet oder Ihre Verbindung befindet sich hinter einem Captive-Portal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1537" />
+        <location filename="../src/gui/accountsettings.cpp" line="1538" />
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Server %1 befindet sich im Wartungsmodus.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1534" />
+        <location filename="../src/gui/accountsettings.cpp" line="1535" />
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 ist derzeit nicht verfügbar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1553" />
+        <location filename="../src/gui/accountsettings.cpp" line="1554" />
         <source>Server configuration error: %1 at %2.</source>
         <translation>Konfigurationsfehler des Servers: %1 auf %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2004" />
+        <location filename="../src/gui/accountsettings.cpp" line="2005" />
         <source>Set up encryption</source>
         <translation>Verschlüsselung einrichten</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1543" />
+        <location filename="../src/gui/accountsettings.cpp" line="1544" />
         <source>Signed out from %1.</source>
         <translation>Abgemeldet von %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1400" />
+        <location filename="../src/gui/accountsettings.cpp" line="1401" />
         <source>Sync Running</source>
         <translation>Synchronisierung läuft</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="425" />
+        <location filename="../src/gui/accountsettings.cpp" line="426" />
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Der Ordner weist ein geringfügiges Synchronisierungsproblem auf. Die Verschlüsselung dieses Ordners ist möglich, sobald er synchronisiert wurde</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="427" />
+        <location filename="../src/gui/accountsettings.cpp" line="428" />
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Der Ordner weist einen Synchronisierungsfehler auf. Die Verschlüsselung dieses Ordners ist möglich, sobald er synchronisiert wurde</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1524" />
+        <location filename="../src/gui/accountsettings.cpp" line="1525" />
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Die Serverversion %1 wird nicht unterstützt! Fortfahren auf eigenes Risiko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1401" />
+        <location filename="../src/gui/accountsettings.cpp" line="1402" />
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1996" />
+        <location filename="../src/gui/accountsettings.cpp" line="1997" />
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>Die Integration für virtuelle Dateien unterstützt keine Ende-zu-Ende-Verschlüsselung.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1867" />
+        <location filename="../src/gui/accountsettings.cpp" line="1868" />
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Es gibt Ordner, deren Größe über %1 MB hinaus gewachsen ist: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1855" />
+        <location filename="../src/gui/accountsettings.cpp" line="1856" />
         <source>There are folders that were not synchronized because they are external storages:</source>
         <translation>Es gibt Ordner, die nicht synchronisiert werden konnten, da sie externe Speicher sind:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1856" />
+        <location filename="../src/gui/accountsettings.cpp" line="1857" />
         <source>There are folders that were not synchronized because they are too big or external storages:</source>
         <translation>Es gibt Ordner, die nicht synchronisiert werden konnten, da sie zu groß oder externe Speicher sind:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1854" />
+        <location filename="../src/gui/accountsettings.cpp" line="1855" />
         <source>There are folders that were not synchronized because they are too big:</source>
         <translation>Einige Ordner konnten nicht synchronisiert werden, da sie zu groß sind:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1995" />
-        <location filename="../src/gui/accountsettings.cpp" line="1998" />
+        <location filename="../src/gui/accountsettings.cpp" line="1996" />
+        <location filename="../src/gui/accountsettings.cpp" line="1999" />
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Dieses Konto unterstützt die Ende-zu-Ende-Verschlüsselung, diese muss aber zuerst eingerichtet werden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1166" />
+        <location filename="../src/gui/accountsettings.cpp" line="1167" />
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -958,41 +958,41 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
 &lt;b&gt;Dies kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie fortfahren möchten?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1270" />
+        <location filename="../src/gui/accountsettings.cpp" line="1271" />
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>Um Ihre kryptografische Identität zu schützen, verschlüsseln wir sie mit einer Gedächtnisstütze aus zwölf Wörtern aus dem Wörterbuch. Bitte notieren Sie sich diese und bewahren Sie sie sicher auf. Sie benötigen sie, um die Synchronisierung verschlüsselter Ordner auf Ihren anderen Geräten einzurichten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1550" />
+        <location filename="../src/gui/accountsettings.cpp" line="1551" />
         <source>Unable to connect to %1.</source>
         <translation>Verbindung zu %1 kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="377" />
+        <location filename="../src/gui/accountsettings.cpp" line="378" />
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051" />
+        <location filename="../src/gui/accountsettings.cpp" line="1052" />
         <source>Wrong Folder</source>
         <translation>Falscher Ordner</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="464" />
+        <location filename="../src/gui/accountsettings.cpp" line="465" />
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Sie können einen Ordner nicht mit Inhalten verschlüsseln, bitte Dateien entfernen.
 Warten Sie auf die neue Synchronisierung und verschlüsseln Sie sie dann.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="439" />
+        <location filename="../src/gui/accountsettings.cpp" line="440" />
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
         <translation>Dieser Ordner kann nicht verschlüsselt werden, da die Ende-zu-Ende-Verschlüsselung auf diesem Gerät noch nicht eingerichtet ist.
 Möchten Sie dies jetzt tun?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1561" />
+        <location filename="../src/gui/accountsettings.cpp" line="1562" />
         <source>You need to accept the terms of service at %1.</source>
         <translation>Die Nutzungsbedingungen unter %1 müssen bestätigt werden.</translation>
     </message>
@@ -1013,8 +1013,8 @@ Möchten Sie dies jetzt tun?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="311" />
-        <location filename="../src/gui/accountsettings.cpp" line="1002" />
-        <location filename="../src/gui/accountsettings.cpp" line="1182" />
+        <location filename="../src/gui/accountsettings.cpp" line="1003" />
+        <location filename="../src/gui/accountsettings.cpp" line="1183" />
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -2421,17 +2421,17 @@ Dies bedeutet, dass der Synchronisierungs-Client lokale Änderungen möglicherwe
     <message>
         <location filename="../src/gui/folder.cpp" line="241" />
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation>Bitte wählen Sie einen anderen Speicherort. %1 ist kein lesbarer Ordner.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="239" />
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation>Bitte wählen Sie einen anderen Speicherort. %1 ist kein gültiger Ordner.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="237" />
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation>Bitte wählen Sie einen anderen Speicherort. Der Ordner %1 ist nicht vorhanden.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1474" />
@@ -2894,12 +2894,12 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="914" />
+        <location filename="../src/gui/folderwizard.cpp" line="899" />
         <source>Add Folder Sync Connection</source>
         <translation>Ordner-Synchronisierung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="917" />
+        <location filename="../src/gui/folderwizard.cpp" line="902" />
         <source>Add Sync Connection</source>
         <translation>Synchronisierung hinzufügen</translation>
     </message>
@@ -2907,37 +2907,37 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="200" />
+        <location filename="../src/gui/folderwizard.cpp" line="185" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Ordner Sync hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="227" />
+        <location filename="../src/gui/folderwizard.cpp" line="212" />
         <source>Choose</source>
         <translation>Wählen Sie</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="86" />
+        <location filename="../src/gui/folderwizard.cpp" line="71" />
         <source>Click to select a local folder to sync.</source>
         <translation>Hier klicken, um einen lokalen Ordner zum Synchronisieren auszuwählen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="90" />
+        <location filename="../src/gui/folderwizard.cpp" line="75" />
         <source>Enter the path to the local folder.</source>
         <translation>Pfad zum lokalen Ordner eingeben</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="213" />
+        <location filename="../src/gui/folderwizard.cpp" line="198" />
         <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
         <translation type="unfinished">Wählen Sie einen Ordner auf Ihrer Festplatte, der dauerhaft mit Ihrem %1 verbunden sein soll. Alle Dateien und Unterordner werden automatisch hochgeladen und synchronisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="156" />
+        <location filename="../src/gui/folderwizard.cpp" line="141" />
         <source>Select the source folder</source>
         <translation>Quellordner auswählen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="207" />
+        <location filename="../src/gui/folderwizard.cpp" line="192" />
         <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished">Schritt 1 von 3: Lokalen Ordner auswählen</translation>
     </message>
@@ -2945,78 +2945,78 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="672" />
+        <location filename="../src/gui/folderwizard.cpp" line="657" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Ordner Sync hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="355" />
+        <location filename="../src/gui/folderwizard.cpp" line="340" />
         <source>Authentication failed accessing %1</source>
         <translation>Beim Zugriff auf %1 ist die Authentifizierung fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="688" />
+        <location filename="../src/gui/folderwizard.cpp" line="673" />
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
         <translation type="unfinished">Beide Ordner sind dauerhaft miteinander verknüpft und die jeweiligen Inhalte werden automatisch synchronisiert und aktualisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="454" />
+        <location filename="../src/gui/folderwizard.cpp" line="439" />
         <source>Choose this to sync the entire account</source>
         <translation>Wählen Sie dies, um das gesamte Konto zu synchronisieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="285" />
+        <location filename="../src/gui/folderwizard.cpp" line="270" />
         <source>Create Remote Folder</source>
         <translation>Entfernten Ordner erstellen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="711" />
+        <location filename="../src/gui/folderwizard.cpp" line="696" />
         <source>Create folder</source>
         <translation type="unfinished">Ordner erstellen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="286" />
+        <location filename="../src/gui/folderwizard.cpp" line="271" />
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Geben Sie den Namen des neuen, unter &quot;%1&quot; zu erstellenden Ordners ein:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="357" />
+        <location filename="../src/gui/folderwizard.cpp" line="342" />
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Der Ordner konnte nicht auf %1 erstellt werden. Bitte prüfen Sie dies manuell.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="374" />
+        <location filename="../src/gui/folderwizard.cpp" line="359" />
         <source>Failed to list a folder. Error: %1</source>
         <translation>Ordner konnte nicht gelistet werden. Fehler: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="345" />
+        <location filename="../src/gui/folderwizard.cpp" line="330" />
         <source>Folder was successfully created on %1.</source>
         <translation>Ordner auf %1 erstellt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="589" />
-        <location filename="../src/gui/folderwizard.cpp" line="599" />
+        <location filename="../src/gui/folderwizard.cpp" line="574" />
+        <location filename="../src/gui/folderwizard.cpp" line="584" />
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Bitte wählen Sie einen anderen Speicherort. %1 wird bereits mit %2 synchronisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="685" />
+        <location filename="../src/gui/folderwizard.cpp" line="670" />
         <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
         <translation type="unfinished">Bitte wählen oder erstellen Sie nun einen Zielordner in Ihrem %1, in den der Inhalt hochgeladen und synchronisiert werden soll.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="709" />
+        <location filename="../src/gui/folderwizard.cpp" line="694" />
         <source>Refresh</source>
         <translation type="unfinished">Aktualisieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="679" />
+        <location filename="../src/gui/folderwizard.cpp" line="664" />
         <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished">Schritt 2 von 3: Verzeichnis in Ihrem %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="594" />
+        <location filename="../src/gui/folderwizard.cpp" line="579" />
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>Sie synchronisieren bereits den Unterordner %1 bei %2.</translation>
     </message>
@@ -3024,36 +3024,36 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="732" />
-        <location filename="../src/gui/folderwizard.cpp" line="788" />
-        <location filename="../src/gui/folderwizard.cpp" line="836" />
+        <location filename="../src/gui/folderwizard.cpp" line="717" />
+        <location filename="../src/gui/folderwizard.cpp" line="773" />
+        <location filename="../src/gui/folderwizard.cpp" line="821" />
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="759" />
+        <location filename="../src/gui/folderwizard.cpp" line="744" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Ordner Sync hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="766" />
+        <location filename="../src/gui/folderwizard.cpp" line="751" />
         <source>Step 3 of 3: Selektive Synchronisation</source>
         <translation type="unfinished">Schritt 3 von 3: Selektive Synchronisierung</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="731" />
-        <location filename="../src/gui/folderwizard.cpp" line="787" />
-        <location filename="../src/gui/folderwizard.cpp" line="835" />
+        <location filename="../src/gui/folderwizard.cpp" line="716" />
+        <location filename="../src/gui/folderwizard.cpp" line="772" />
+        <location filename="../src/gui/folderwizard.cpp" line="820" />
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Virtuelle Dateien verwenden, anstatt den Inhalt sofort herunterzuladen %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="857" />
+        <location filename="../src/gui/folderwizard.cpp" line="842" />
         <source>Virtual files are not supported at the selected location</source>
         <translation>Virtuelle Dateien werden an dem ausgewählten Speicherort nicht unterstützt</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="831" />
+        <location filename="../src/gui/folderwizard.cpp" line="816" />
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Virtuelle Dateien werden für die Wurzel von Windows-Partitionen als lokaler Ordner nicht unterstützt. Bitte wählen Sie einen gültigen Unterordner unter dem Laufwerksbuchstaben.</translation>
     </message>
@@ -4258,27 +4258,27 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="729" />
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Dateianbieter-basiertes Konto %1 erstellt!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="771" />
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokaler Sync-Ordner %1 erstellt!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="290" />
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font color=&quot;green&quot;&gt;Erfolgreich mit  %1 verbunden: %2 Version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="654" />
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Die Erstellung des entfernten Ordners ist fehlgeschlagen, vermutlich sind die angegebenen Zugangsdaten falsch.&lt;/font&gt;&lt;br/&gt;Bitte gehen Sie zurück und überprüfen Sie Ihre Zugangsdaten.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="674" />
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Eine Synchronisierungsverbindung für Ordner %1 zum entfernten Ordner %2 wurde eingerichtet.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="471" />
@@ -4288,73 +4288,73 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="700" />
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Der Ordner kann nicht entfernt und gesichert werden, da der Ordner oder einer seiner Dateien in einem anderen Programm geöffnet ist. Bitte schließen Sie den Ordner oder die Datei und versuchen Sie es erneut oder beenden Sie die Installation.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="686" />
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Die Verbindung zu %1 konnte nicht hergestellt werden. Bitte prüfen Sie die Einstellungen erneut.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="545" />
         <source>Could not create local folder %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Der lokale Ordner %1 konnte nicht erstellt werden</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="537" />
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Lokaler Ordner %1 für die Synchronisierung wird erstellt …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="611" />
         <source>Error: %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Fehler: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="322" />
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Die Verbindung zu %1 auf %2 konnte nicht hergestellt werden: &lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="699" />
         <source>Folder rename failed</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ordner umbenennen fehlgeschlagen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="320" />
         <source>Invalid URL</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ungültige URL</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="534" />
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Lokaler Sync-Ordner %1 existiert bereits, aktiviere Synchronistation.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="605" />
         <source>No remote folder specified!</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Kein entfernter Ordner angegeben!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541" />
         <source>OK</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="629" />
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Entfernter Ordner %1 erstellt.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="659" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="660" />
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Entfernter Ordner %1 konnte mit folgendem Fehler nicht erstellt werden: &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="679" />
         <source>Successfully connected to %1!</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Erfolgreich mit %1 verbunden!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="457" />
@@ -4365,17 +4365,17 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="646" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="648" />
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Das Erstellen des Ordners erzeugte den HTTP-Fehler-Code %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="644" />
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Der Ordner %1 ist auf dem Server bereits vorhanden. Verbinde zur Synchronisierung.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="650" />
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Die Erstellung des entfernten Ordners ist fehlgeschlagen, weil die angegebenen Zugangsdaten falsch sind. &lt;br/&gt;Bitte gehen Sie zurück und überprüfen Sie die Zugangsdaten.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="480" />
@@ -4385,23 +4385,23 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="340" />
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Zeitüberschreitung beim Verbindungsversuch mit %1 unter %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="367" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="390" />
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Verbindungsversuch mit %1 unter %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="624" />
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Erstelle Ordner auf Nextcloud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543" />
         <source>failed.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">fehlgeschlagen.</translation>
     </message>
 </context>
 <context>
@@ -4409,7 +4409,7 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108" />
         <source>Add %1 account</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">%1 Konto hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="117" />
@@ -4425,34 +4425,34 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="532" />
         <source>Enable experimental feature?</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Experimentelle Funktion aktivieren?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="547" />
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Experimentellen Platzhaltermodus aktivieren</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="116" />
         <source>Next</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished" />
+        <translation type="unfinished">Weiter</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="114" />
         <source>Proxy Settings</source>
         <comment>Proxy Settings button text in new account wizard</comment>
-        <translation type="unfinished" />
+        <translation type="unfinished">Proxyeinstellungen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="112" />
         <source>Skip folders configuration</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ordner-Konfiguration überspringen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="548" />
         <source>Stay safe</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Bleiben Sie sicher</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="533" />
@@ -4463,7 +4463,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Wenn der Modus &quot;Virtuelle Dateien&quot; aktiviert ist, werden zunächst keine Dateien heruntergeladen. Stattdessen wird für jede Datei, die auf dem Server existiert, eine winzige &quot;%1&quot;-Datei erstellt. Der Inhalt kann heruntergeladen werden, indem diese Dateien ausgeführt werden oder indem deren Kontextmenü verwendet wird.
+
+Der Modus &quot;Virtuelle Dateien&quot; schließt sich mit der ausgewählten Synchronisierung gegenseitig aus. Derzeit nicht ausgewählte Ordner werden in reine Online-Ordner umgewandelt und Ihre Einstellungen für die selektive Synchronisierung werden zurückgesetzt.
+
+Wenn Sie in diesen Modus wechseln, wird eine aktuell laufende Synchronisierung abgebrochen.
+
+Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu verwenden, melden Sie bitte alle auftretenden Probleme.</translation>
     </message>
 </context>
 <context>
@@ -4665,37 +4671,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="470" />
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished">Grund: Der Dateiname hat einen unzulässigen Basisnamen (Beginn des Dateinamens).</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450" />
         <source>Stat failed.</source>
-        <translation type="unfinished">Stat fehlgeschlagen.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="382" />
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished">Symbolische Verknüpfungen werden bei der Synchronisierung nicht unterstützt.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="461" />
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished">Der Dateiname kann auf Ihrem Dateisystem nicht entschlüsselt werden.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="464" />
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished">Der Dateiname steht auf dem Server auf einer schwarzen Liste.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1250" />
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished">Hochladen von %1 übersteigt %2 des in dem Ordner %3 verfügbaren Speicherplatzes.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247" />
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished">Hochladen von %1 übersteigt %2 des in den persönlichen Dateien verfügbaren Speicherplatzes.</translation>
+        <translation type="unfinished" />
     </message>
 </context>
 <context>
@@ -5912,12 +5918,12 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="195" />
         <source>Exit %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">%1 beenden</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="194" />
         <source>Help</source>
-        <translation>Hilfe</translation>
+        <translation type="unfinished">Hilfe</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="188" />
@@ -5934,7 +5940,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="201" />
         <source>Pause sync for all</source>
-        <translation>Synchronisierung für alle pausieren</translation>
+        <translation type="unfinished">Synchronisierung für alle pausieren</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="192" />
@@ -5978,18 +5984,18 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125" />
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished" />
+        <translation>Es wird auf die Bestätigung der Nutzungsbedingungen gewartet</translation>
     </message>
 </context>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1663" />
+        <location filename="../src/gui/accountsettings.cpp" line="1664" />
         <source>ExpandMemory-Link</source>
         <translation type="unfinished">https://wl.hidrive.com/easy/0097</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1661" />
+        <location filename="../src/gui/accountsettings.cpp" line="1662" />
         <source>ExpandMemory-Link_STRATO</source>
         <translation type="unfinished">https://static.hidrive.com/next/1041</translation>
     </message>
@@ -6472,27 +6478,27 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="99" />
         <source>Host your own server</source>
-        <translation type="unfinished" />
+        <translation>Eigenen Server betreiben</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="58" />
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished" />
+        <translation>Halten Sie Ihre Daten sicher und unter Ihrer Kontrolle</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20" />
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="188" />
         <source>Log in</source>
-        <translation type="unfinished">Anmelden</translation>
+        <translation>Anmelden</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="201" />
         <source>Sign up with provider</source>
-        <translation type="unfinished" />
+        <translation>Mit Provider anmelden</translation>
     </message>
 </context>
 <context>
@@ -6500,33 +6506,33 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29" />
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished">HTTP(S)-Proxy</translation>
+        <translation>HTTP(S)-Proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25" />
         <source>Hostname of proxy server</source>
-        <translation type="unfinished">Hostname des Proxy-Servers</translation>
+        <translation>Hostname des Proxyservers</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27" />
         <source>Password for proxy server</source>
-        <translation type="unfinished">Passwort für den Proxy-Server</translation>
+        <translation>Passwort für den Proxyserver</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23" />
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation type="unfinished" />
+        <translation>Proxyeinstellungen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30" />
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished">SOCKS5-Proxy</translation>
+        <translation>SOCKS5-Proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26" />
         <source>Username for proxy server</source>
-        <translation type="unfinished">Benutzername für den Proxy-Server</translation>
+        <translation>Benutzername für den Proxyserver</translation>
     </message>
 </context>
 <context>
@@ -6534,7 +6540,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225" />
         <source>&amp;Local Folder</source>
-        <translation type="unfinished" />
+        <translation>&amp;Lokaler Ordner</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="674" />
@@ -6544,38 +6550,38 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="433" />
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished" />
+        <translation>Fragen, bevor Ordner synchronisiert werden. Grenze:</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="331" />
         <source>Choose different folder</source>
-        <translation type="unfinished" />
+        <translation>Anderen Ordner wählen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="509" />
         <source>Choose what to sync</source>
-        <translation type="unfinished">Zu synchronisierende Elemente auswählen</translation>
+        <translation>Zu synchronisierende Elemente auswählen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="677" />
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished" />
+        <translation>Lokalen Ordner löschen und eine saubere Synchronisierung starten</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="658" />
         <source>Keep local data</source>
-        <translation type="unfinished" />
+        <translation>Lokale Daten behalten</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="268" />
         <source>Local Folder</source>
-        <translation type="unfinished" />
+        <translation>Lokaler Ordner</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459" />
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished">MB</translation>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="164" />
@@ -7826,7 +7832,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="298" />
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation>Die heruntergeladene Datei stimmt nicht mit der Prüfsumme überein, sie wird fortgesetzt. &quot;%1&quot; != &quot;%2&quot;</translation>
+        <translation type="unfinished">Die heruntergeladene Datei stimmt nicht mit der Prüfsumme überein, sie wird fortgesetzt. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 </TS>

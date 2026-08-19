@@ -5,7 +5,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="49" />
         <source>In %1</source>
-        <translation>Om %1</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="31" />
@@ -383,7 +383,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="37" />
         <source>Add Folder Sync</source>
-        <translation type="unfinished">Lägg till mappsynkronisering</translation>
+        <translation>Lägg till mappsynkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="88" />
@@ -464,12 +464,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="876" />
         <source>New activities</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Nya aktiviteter</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="461" />
         <source>New conversation</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ny konversation</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="559" />
@@ -484,12 +484,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="441" />
         <source>Start new conversation?</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Starta ny konversation?</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="486" />
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Detta kommer att rensa den befintliga konversationen.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="805" />
@@ -580,120 +580,120 @@ Ska kontot importeras?</translation>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1517" />
+        <location filename="../src/gui/accountsettings.cpp" line="1518" />
         <source>%1 as %2</source>
         <translation>%1 som %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1490" />
+        <location filename="../src/gui/accountsettings.cpp" line="1491" />
         <source>%1 in use</source>
         <translation>%1 används</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1483" />
+        <location filename="../src/gui/accountsettings.cpp" line="1484" />
         <source>%1 of %2 in use</source>
         <translation>%1 av %2 används</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="840" />
+        <location filename="../src/gui/accountsettings.cpp" line="841" />
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="930" />
+        <location filename="../src/gui/accountsettings.cpp" line="931" />
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kunde inte skapa lokal mapp &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="988" />
+        <location filename="../src/gui/accountsettings.cpp" line="989" />
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen avbryta synkronisering av mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Observera:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; att radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044" />
+        <location filename="../src/gui/accountsettings.cpp" line="1045" />
         <source>Access Error</source>
         <translation>Åtkomstfel</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="670" />
-        <location filename="../src/gui/accountsettings.cpp" line="817" />
+        <location filename="../src/gui/accountsettings.cpp" line="671" />
+        <location filename="../src/gui/accountsettings.cpp" line="818" />
         <source>Availability</source>
         <translation>Tillgänglighet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1058" />
-        <location filename="../src/gui/accountsettings.cpp" line="1065" />
+        <location filename="../src/gui/accountsettings.cpp" line="1059" />
+        <location filename="../src/gui/accountsettings.cpp" line="1066" />
         <source>Bookmark Error</source>
         <translation>Bokmärkesfel</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="796" />
+        <location filename="../src/gui/accountsettings.cpp" line="797" />
         <source>Choose what to sync</source>
         <translation>Välj vad som ska synkroniseras</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="987" />
+        <location filename="../src/gui/accountsettings.cpp" line="988" />
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Bekräfta borttagning av synkroniseringskoppling för mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1528" />
+        <location filename="../src/gui/accountsettings.cpp" line="1529" />
         <source>Connected to %1 (%2).</source>
         <translation>Ansluten till %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1526" />
+        <location filename="../src/gui/accountsettings.cpp" line="1527" />
         <source>Connected to %1.</source>
         <translation>Ansluten till %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1546" />
+        <location filename="../src/gui/accountsettings.cpp" line="1547" />
         <source>Connecting to %1 …</source>
         <translation>Ansluter till %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044" />
+        <location filename="../src/gui/accountsettings.cpp" line="1045" />
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>Det gick inte att få åtkomst till den valda mappen. Vänligen försök igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1058" />
+        <location filename="../src/gui/accountsettings.cpp" line="1059" />
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Det gick inte att skapa ett säkerhetsbokmärke för mappen. Vänligen försök igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="488" />
+        <location filename="../src/gui/accountsettings.cpp" line="489" />
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>Kunde inte kryptera mappen eftersom den inte längre finns</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1065" />
+        <location filename="../src/gui/accountsettings.cpp" line="1066" />
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Det gick inte att hantera säkerhetsbokmärket. Vänligen försök igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="664" />
-        <location filename="../src/gui/accountsettings.cpp" line="791" />
+        <location filename="../src/gui/accountsettings.cpp" line="665" />
+        <location filename="../src/gui/accountsettings.cpp" line="792" />
         <source>Create new folder</source>
         <translation>Skapa ny mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1179" />
+        <location filename="../src/gui/accountsettings.cpp" line="1180" />
         <source>Disable support</source>
         <translation>Inaktivera stöd</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="830" />
+        <location filename="../src/gui/accountsettings.cpp" line="831" />
         <source>Disable virtual file support …</source>
         <translation>Inaktivera stöd för virtuella filer ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1165" />
+        <location filename="../src/gui/accountsettings.cpp" line="1166" />
         <source>Disable virtual file support?</source>
         <translation>Inaktivera stöd för virtuella filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="338" />
+        <location filename="../src/gui/accountsettings.cpp" line="339" />
         <source>Display mnemonic</source>
         <translation>Visa krypteringsord</translation>
     </message>
@@ -704,23 +704,23 @@ Ska kontot importeras?</translation>
         <translation>Kryptera inte mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1296" />
+        <location filename="../src/gui/accountsettings.cpp" line="1297" />
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>Vill du glömma inställningarna till ände-till-ände-kryptering för %1 på den här enheten?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="661" />
-        <location filename="../src/gui/accountsettings.cpp" line="788" />
+        <location filename="../src/gui/accountsettings.cpp" line="662" />
+        <location filename="../src/gui/accountsettings.cpp" line="789" />
         <source>Edit Ignored Files</source>
         <translation>Redigera ignorerade filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="840" />
+        <location filename="../src/gui/accountsettings.cpp" line="841" />
         <source>Enable virtual file support %1 …</source>
         <translation>Aktivera stöd för virtuella filer %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="651" />
+        <location filename="../src/gui/accountsettings.cpp" line="652" />
         <source>Encrypt</source>
         <translation>Kryptera</translation>
     </message>
@@ -731,12 +731,12 @@ Ska kontot importeras?</translation>
         <translation>Kryptera mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="488" />
+        <location filename="../src/gui/accountsettings.cpp" line="489" />
         <source>Encryption failed</source>
         <translation>Kryptering misslyckades</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="344" />
+        <location filename="../src/gui/accountsettings.cpp" line="345" />
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
         <translation>Kryptering är konfigurerad. Kom ihåg att &lt;b&gt;Kryptera&lt;/b&gt; en mapp för att ände-till-ände-kryptera alla nya filer som läggs till i den.</translation>
     </message>
@@ -751,194 +751,194 @@ Ska kontot importeras?</translation>
         <translation>ände-till-ände-kryptering med virtuella filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1933" />
+        <location filename="../src/gui/accountsettings.cpp" line="1934" />
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>Ände-till-ände-kryptering har initierats på det här kontot med en annan enhet.&lt;br&gt;Ange den unika minnesfrasen för att synkronisera de krypterade mapparna även på den här enheten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="298" />
+        <location filename="../src/gui/accountsettings.cpp" line="299" />
         <source>End-to-end encryption has not been initialized on this account.</source>
         <translation>Ände-till-ände-kryptering har inte aktiverats på detta konto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1268" />
+        <location filename="../src/gui/accountsettings.cpp" line="1269" />
         <source>End-to-end encryption mnemonic</source>
         <translation>Krypteringsord för ände-till-ände-kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="929" />
+        <location filename="../src/gui/accountsettings.cpp" line="930" />
         <source>Folder creation failed</source>
         <translation>Kunde inte skapa mappen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802" />
+        <location filename="../src/gui/accountsettings.cpp" line="803" />
         <source>Force sync now</source>
         <translation>Tvinga synkronisering nu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="328" />
+        <location filename="../src/gui/accountsettings.cpp" line="329" />
         <source>Forget encryption setup</source>
         <translation>Glöm krypteringsinställning</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1295" />
+        <location filename="../src/gui/accountsettings.cpp" line="1296" />
         <source>Forget the end-to-end encryption on this device</source>
         <translation>Glöm ände-till-ände-krypteringen på den här enheten</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1298" />
+        <location filename="../src/gui/accountsettings.cpp" line="1299" />
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>Att glömma ände-till-ände-kryptering kommer att ta bort känslig data och alla krypterade filer från den här enheten.&lt;br&gt;Filerna kommer dock att finnas kvar på servern och på alla dina andra enheter, om de är konfigurerade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1035" />
+        <location filename="../src/gui/accountsettings.cpp" line="1036" />
         <source>Grant access to sync folder</source>
         <translation>Bevilja åtkomst till synkroniseringsmappen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1757" />
+        <location filename="../src/gui/accountsettings.cpp" line="1758" />
         <source>Migrate certificate to a new one</source>
         <translation>Migrera certifikat till ett nytt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1566" />
+        <location filename="../src/gui/accountsettings.cpp" line="1567" />
         <source>No %1 connection configured.</source>
         <translation>Ingen %1 anslutning konfigurerad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="306" />
+        <location filename="../src/gui/accountsettings.cpp" line="307" />
         <source>No account configured.</source>
         <translation>Inget konto konfigurerat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="632" />
-        <location filename="../src/gui/accountsettings.cpp" line="785" />
+        <location filename="../src/gui/accountsettings.cpp" line="633" />
+        <location filename="../src/gui/accountsettings.cpp" line="786" />
         <source>Open folder</source>
         <translation>Öppna mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810" />
+        <location filename="../src/gui/accountsettings.cpp" line="811" />
         <source>Pause sync</source>
         <translation>Pausa synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051" />
+        <location filename="../src/gui/accountsettings.cpp" line="1052" />
         <source>Please select the original sync folder: %1</source>
         <translation>Välj den ursprungliga synkroniseringsmappen: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="423" />
+        <location filename="../src/gui/accountsettings.cpp" line="424" />
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Vänta tills mappen är synkroniserad innan du försöker kryptera den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1000" />
+        <location filename="../src/gui/accountsettings.cpp" line="1001" />
         <source>Remove Folder Sync Connection</source>
         <translation>Ta bort synkroniseringskoppling för mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="813" />
+        <location filename="../src/gui/accountsettings.cpp" line="814" />
         <source>Remove folder sync connection</source>
         <translation>Ta bort synkroniseringskoppling för mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="804" />
+        <location filename="../src/gui/accountsettings.cpp" line="805" />
         <source>Restart sync</source>
         <translation>Starta om synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810" />
+        <location filename="../src/gui/accountsettings.cpp" line="811" />
         <source>Resume sync</source>
         <translation>Återuppta synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1540" />
+        <location filename="../src/gui/accountsettings.cpp" line="1541" />
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Server %1 omdirigeras för närvarande, eller så ligger din anslutning bakom en inloggningsportal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1537" />
+        <location filename="../src/gui/accountsettings.cpp" line="1538" />
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Servern %1 är för närvarande i underhållsläge.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1534" />
+        <location filename="../src/gui/accountsettings.cpp" line="1535" />
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Servern %1 är för tillfället inte tillgänglig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1553" />
+        <location filename="../src/gui/accountsettings.cpp" line="1554" />
         <source>Server configuration error: %1 at %2.</source>
         <translation>Felaktig serverkonfiguration: %1 vid %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2004" />
+        <location filename="../src/gui/accountsettings.cpp" line="2005" />
         <source>Set up encryption</source>
         <translation>Aktivera kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1543" />
+        <location filename="../src/gui/accountsettings.cpp" line="1544" />
         <source>Signed out from %1.</source>
         <translation>Utloggad från %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1400" />
+        <location filename="../src/gui/accountsettings.cpp" line="1401" />
         <source>Sync Running</source>
         <translation>Synkronisering pågår</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="425" />
+        <location filename="../src/gui/accountsettings.cpp" line="426" />
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Mappen har ett mindre synkroniseringsproblem. Kryptering av denna mapp kommer att vara möjlig när den väl har synkroniserats</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="427" />
+        <location filename="../src/gui/accountsettings.cpp" line="428" />
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Mappen har ett synkroniseringsfel. Kryptering av denna mapp kommer att vara möjlig när den väl har synkroniserats</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1524" />
+        <location filename="../src/gui/accountsettings.cpp" line="1525" />
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Serverversion %1 stöds inte! Fortsätt på egen risk.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1401" />
+        <location filename="../src/gui/accountsettings.cpp" line="1402" />
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1996" />
+        <location filename="../src/gui/accountsettings.cpp" line="1997" />
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>Integrationen av virtuella filer stöder ännu inte ände-till-ände-kryptering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1867" />
+        <location filename="../src/gui/accountsettings.cpp" line="1868" />
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Det finns mappar som har vuxit i storlek större än %1MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1855" />
+        <location filename="../src/gui/accountsettings.cpp" line="1856" />
         <source>There are folders that were not synchronized because they are external storages:</source>
         <translation>Det finns mappar som inte synkroniserades eftersom de är externa lagringsutrymmen:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1856" />
+        <location filename="../src/gui/accountsettings.cpp" line="1857" />
         <source>There are folders that were not synchronized because they are too big or external storages:</source>
         <translation>Det finns mappar som inte synkroniserades eftersom de är för stora eller externa lagringsutrymmen:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1854" />
+        <location filename="../src/gui/accountsettings.cpp" line="1855" />
         <source>There are folders that were not synchronized because they are too big:</source>
         <translation>Det finns mappar som inte synkroniserades eftersom de är för stora:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1995" />
-        <location filename="../src/gui/accountsettings.cpp" line="1998" />
+        <location filename="../src/gui/accountsettings.cpp" line="1996" />
+        <location filename="../src/gui/accountsettings.cpp" line="1999" />
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Det här kontot stöder ände-till-ände-kryptering, men det måste konfigureras först.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1166" />
+        <location filename="../src/gui/accountsettings.cpp" line="1167" />
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -958,41 +958,41 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 &lt;b&gt;Denna process går inte att ångra. Är du säker på att du vill fortsätta?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1270" />
+        <location filename="../src/gui/accountsettings.cpp" line="1271" />
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>För att skydda din kryptografiska identitet krypterar vi den med en minnesfras bestående av 12 ord från en ordlista. Skriv ner den och förvara den säkert. Du kommer att behöva den för att konfigurera synkronisering av krypterade mappar på dina andra enheter.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1550" />
+        <location filename="../src/gui/accountsettings.cpp" line="1551" />
         <source>Unable to connect to %1.</source>
         <translation>Kan inte ansluta till %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="377" />
+        <location filename="../src/gui/accountsettings.cpp" line="378" />
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051" />
+        <location filename="../src/gui/accountsettings.cpp" line="1052" />
         <source>Wrong Folder</source>
         <translation>Fel mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="464" />
+        <location filename="../src/gui/accountsettings.cpp" line="465" />
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Du kan inte kryptera en mapp med innehåll, ta bort filerna.
 Vänta på en ny synk och kryptera den sedan.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="439" />
+        <location filename="../src/gui/accountsettings.cpp" line="440" />
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
         <translation>Du kan inte ände-till-ände-kryptera den här mappen eftersom end-to-end-kryptering ännu inte är konfigurerad på den här enheten.
 Vill du konfigurera den nu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1561" />
+        <location filename="../src/gui/accountsettings.cpp" line="1562" />
         <source>You need to accept the terms of service at %1.</source>
         <translation>Du måste acceptera användarvillkoren på %1.</translation>
     </message>
@@ -1013,8 +1013,8 @@ Vill du konfigurera den nu?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="311" />
-        <location filename="../src/gui/accountsettings.cpp" line="1002" />
-        <location filename="../src/gui/accountsettings.cpp" line="1182" />
+        <location filename="../src/gui/accountsettings.cpp" line="1003" />
+        <location filename="../src/gui/accountsettings.cpp" line="1183" />
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -2421,17 +2421,17 @@ Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar ome
     <message>
         <location filename="../src/gui/folder.cpp" line="241" />
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation>Välj en annan plats. %1 är inte en läsbar mapp.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="239" />
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation>Välj en annan plats. %1 är inte en giltig mapp.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="237" />
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation>Välj en annan plats. Mappen %1 finns inte.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1474" />
@@ -2894,12 +2894,12 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="914" />
+        <location filename="../src/gui/folderwizard.cpp" line="899" />
         <source>Add Folder Sync Connection</source>
         <translation>Lägg till synkroniseringskoppling för map</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="917" />
+        <location filename="../src/gui/folderwizard.cpp" line="902" />
         <source>Add Sync Connection</source>
         <translation>Lägg till synkroniseringskoppling.</translation>
     </message>
@@ -2907,37 +2907,37 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="200" />
+        <location filename="../src/gui/folderwizard.cpp" line="185" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Lägg till mappsynkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="227" />
+        <location filename="../src/gui/folderwizard.cpp" line="212" />
         <source>Choose</source>
         <translation>Välj</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="86" />
+        <location filename="../src/gui/folderwizard.cpp" line="71" />
         <source>Click to select a local folder to sync.</source>
         <translation>Klicka för att välja en lokal mapp att synkronisera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="90" />
+        <location filename="../src/gui/folderwizard.cpp" line="75" />
         <source>Enter the path to the local folder.</source>
         <translation>Ange sökvägen till den lokala mappen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="213" />
+        <location filename="../src/gui/folderwizard.cpp" line="198" />
         <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
         <translation type="unfinished">Välj en mapp på din hårddisk som ska vara permanent ansluten till din %1. Alla filer och undermappar laddas upp och synkroniseras automatiskt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="156" />
+        <location filename="../src/gui/folderwizard.cpp" line="141" />
         <source>Select the source folder</source>
         <translation>Välj källmapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="207" />
+        <location filename="../src/gui/folderwizard.cpp" line="192" />
         <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished">Steg 1 av 3: Välj lokal mapp</translation>
     </message>
@@ -2945,78 +2945,78 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="672" />
+        <location filename="../src/gui/folderwizard.cpp" line="657" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Lägg till mappsynkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="355" />
+        <location filename="../src/gui/folderwizard.cpp" line="340" />
         <source>Authentication failed accessing %1</source>
         <translation>Autentisering misslyckades att komma åt %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="688" />
+        <location filename="../src/gui/folderwizard.cpp" line="673" />
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
         <translation type="unfinished">De båda mapparna är permanent länkade och respektive innehåll synkroniseras och uppdateras automatiskt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="454" />
+        <location filename="../src/gui/folderwizard.cpp" line="439" />
         <source>Choose this to sync the entire account</source>
         <translation>Välj detta för att synkronisera hela kontot</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="285" />
+        <location filename="../src/gui/folderwizard.cpp" line="270" />
         <source>Create Remote Folder</source>
         <translation>Skapa fjärrmapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="711" />
+        <location filename="../src/gui/folderwizard.cpp" line="696" />
         <source>Create folder</source>
         <translation type="unfinished">Skapa mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="286" />
+        <location filename="../src/gui/folderwizard.cpp" line="271" />
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Ange namnet på den nya mappen som ska skapas under &quot;%1&quot;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="357" />
+        <location filename="../src/gui/folderwizard.cpp" line="342" />
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Det gick inte att skapa mappen på %1. Kontrollera manuellt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="374" />
+        <location filename="../src/gui/folderwizard.cpp" line="359" />
         <source>Failed to list a folder. Error: %1</source>
         <translation>Kunde inte lista en mapp. Felkod: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="345" />
+        <location filename="../src/gui/folderwizard.cpp" line="330" />
         <source>Folder was successfully created on %1.</source>
         <translation>Mappen skapades på %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="589" />
-        <location filename="../src/gui/folderwizard.cpp" line="599" />
+        <location filename="../src/gui/folderwizard.cpp" line="574" />
+        <location filename="../src/gui/folderwizard.cpp" line="584" />
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Välj en annan plats. %1 synkroniseras redan till %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="685" />
+        <location filename="../src/gui/folderwizard.cpp" line="670" />
         <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
         <translation type="unfinished">Välj eller skapa nu en målmapp i din %1 där innehållet ska laddas upp och synkroniseras.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="709" />
+        <location filename="../src/gui/folderwizard.cpp" line="694" />
         <source>Refresh</source>
         <translation type="unfinished">Uppdatera</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="679" />
+        <location filename="../src/gui/folderwizard.cpp" line="664" />
         <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished">Steg 2 av 3: Katalog i din %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="594" />
+        <location filename="../src/gui/folderwizard.cpp" line="579" />
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>Du synkroniserar redan undermappen %1 på %2.</translation>
     </message>
@@ -3024,36 +3024,36 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="732" />
-        <location filename="../src/gui/folderwizard.cpp" line="788" />
-        <location filename="../src/gui/folderwizard.cpp" line="836" />
+        <location filename="../src/gui/folderwizard.cpp" line="717" />
+        <location filename="../src/gui/folderwizard.cpp" line="773" />
+        <location filename="../src/gui/folderwizard.cpp" line="821" />
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="759" />
+        <location filename="../src/gui/folderwizard.cpp" line="744" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Lägg till mappsynkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="766" />
+        <location filename="../src/gui/folderwizard.cpp" line="751" />
         <source>Step 3 of 3: Selektive Synchronisation</source>
         <translation type="unfinished">Steg 3 av 3: Selektiv synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="731" />
-        <location filename="../src/gui/folderwizard.cpp" line="787" />
-        <location filename="../src/gui/folderwizard.cpp" line="835" />
+        <location filename="../src/gui/folderwizard.cpp" line="716" />
+        <location filename="../src/gui/folderwizard.cpp" line="772" />
+        <location filename="../src/gui/folderwizard.cpp" line="820" />
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Använd virtuella filer istället för att ladda ner innehåll direkt %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="857" />
+        <location filename="../src/gui/folderwizard.cpp" line="842" />
         <source>Virtual files are not supported at the selected location</source>
         <translation>Virtuella filer stöds inte på den valda platsen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="831" />
+        <location filename="../src/gui/folderwizard.cpp" line="816" />
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Windows stödjer inte virtuella filer direkt i rotkataloger. Välj en underkatalog.</translation>
     </message>
@@ -4259,27 +4259,27 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="729" />
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Filleverantörsbaserat konto %1 har skapats!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="771" />
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokal synkroniseringsmapp %1 skapad!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="290" />
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font color=&quot;green&quot;&gt;Lyckades ansluta till %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="654" />
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Misslyckades skapa fjärrmappen, troligen p.g.a felaktiga inloggningsuppgifter.&lt;/font&gt;&lt;br/&gt;Kontrollera dina inloggningsuppgifter.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="674" />
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">En synkroniseringskoppling från %1 till extern mapp %2 har skapats.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="471" />
@@ -4289,73 +4289,73 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="700" />
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Kan inte ta bort och göra en säkerhetskopia av mappen på grund av att mappen eller en fil i den används av ett annat program. Stäng mappen eller filen och försök igen eller avbryt installationen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="686" />
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Anslutningen till %1 kunde inte etableras. Vänligen kontrollera och försök igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="545" />
         <source>Could not create local folder %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Kunde inte skapa lokal mapp %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="537" />
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Skapar lokal synkroniseringsmapp %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="611" />
         <source>Error: %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Fel: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="322" />
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Misslyckades att ansluta till %1 vid %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="699" />
         <source>Folder rename failed</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Omdöpning av mapp misslyckades</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="320" />
         <source>Invalid URL</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ogiltig webbadress</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="534" />
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Den lokala synkroniseringsmappen % 1 finns redan, aktiverar den för synkronisering.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="605" />
         <source>No remote folder specified!</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ingen fjärrmapp specificerad! </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541" />
         <source>OK</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="629" />
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Fjärrmapp %1 har skapats.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="659" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="660" />
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Misslyckades skapa fjärrmapp %1 med fel &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="679" />
         <source>Successfully connected to %1!</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ansluten till %1!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="457" />
@@ -4366,17 +4366,17 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="646" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="648" />
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Skapande av mapp resulterade i HTTP felkod %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="644" />
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Fjärrmappen %1 finns redan. Ansluter den för synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="650" />
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Det gick inte att skapa mappen efter som du inte har tillräckliga rättigheter!&lt;br/&gt;Vänligen återvänd och kontrollera dina rättigheter.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="480" />
@@ -4386,23 +4386,23 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="340" />
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Försök att ansluta till %1 på %2 tog för lång tid.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="367" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="390" />
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Försöker ansluta till %1 på %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="624" />
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">skapar mapp på Nextcloud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543" />
         <source>failed.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">misslyckades.</translation>
     </message>
 </context>
 <context>
@@ -4410,7 +4410,7 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108" />
         <source>Add %1 account</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Lägg till %1 konto</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="117" />
@@ -4426,18 +4426,18 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="532" />
         <source>Enable experimental feature?</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Aktivera experimentell funktion?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="547" />
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Aktivera experimentellt platshållarläge</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="116" />
         <source>Next</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished" />
+        <translation type="unfinished">Nästa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="114" />
@@ -4448,12 +4448,12 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="112" />
         <source>Skip folders configuration</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Hoppa över konfiguration av mappar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="548" />
         <source>Stay safe</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Var försiktig</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="533" />
@@ -4464,7 +4464,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">När läget &quot;virtuella filer&quot; är aktiverat kommer inga filer att laddas ner initialt. Istället kommer en liten &quot;%1&quot;-fil att skapas för varje fil som finns på servern. Innehållet kan laddas ner genom att köra dessa filer eller genom att använda klientens snabbmeny.
+
+Läget för virtuella filer är ömsesidigt uteslutande med selektiv synkronisering. Befintliga omarkerade mappar kommer att översättas till mappar som endast är online och dina selektiva synkroniseringsinställningar återställs.
+
+Om du byter till det här läget avbryts all pågående synkronisering.
+
+Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda det, rapportera eventuella problem som dyker upp.</translation>
     </message>
 </context>
 <context>
@@ -4666,37 +4672,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="470" />
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"> Orsak: filnamnet har ett förbjudet basnamn (filnamnsstart).</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450" />
         <source>Stat failed.</source>
-        <translation type="unfinished">Status misslyckades.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="382" />
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished">Symboliska länkar kan ej synkroniseras.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="461" />
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished">Filnamnet kan inte avkodas på ditt filsystem.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="464" />
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished">Filnamnet är svartlistat på servern.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1250" />
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished">Uppladdningen av %1 överskrider %2 av återstående utrymme i mappen %3.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247" />
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished">Uppladdningen av %1 överskrider %2 av återstående utrymme i personliga filer.</translation>
+        <translation type="unfinished" />
     </message>
 </context>
 <context>
@@ -5913,12 +5919,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="195" />
         <source>Exit %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Avsluta %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="194" />
         <source>Help</source>
-        <translation>Hjälp</translation>
+        <translation type="unfinished">Hjälp</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="188" />
@@ -5935,7 +5941,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="201" />
         <source>Pause sync for all</source>
-        <translation>Pausa synkronisering för alla</translation>
+        <translation type="unfinished">Pausa synkronisering för alla</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="192" />
@@ -5946,7 +5952,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="207" />
         <source>Resume sync for all</source>
-        <translation type="unfinished">Återuppta synkronisering för alla</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="193" />
@@ -5979,18 +5985,18 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125" />
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished" />
+        <translation>Väntar på att användarvillkoren ska accepteras</translation>
     </message>
 </context>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1663" />
+        <location filename="../src/gui/accountsettings.cpp" line="1664" />
         <source>ExpandMemory-Link</source>
         <translation type="unfinished">https://static.hidrive.com/next/1045</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1661" />
+        <location filename="../src/gui/accountsettings.cpp" line="1662" />
         <source>ExpandMemory-Link_STRATO</source>
         <translation type="unfinished">https://static.hidrive.com/next/1044</translation>
     </message>
@@ -6473,27 +6479,27 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="99" />
         <source>Host your own server</source>
-        <translation type="unfinished" />
+        <translation>Använd egen server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="58" />
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished" />
+        <translation>Håll din data säker och under din kontroll</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20" />
         <source>Form</source>
-        <translation type="unfinished">Formulär</translation>
+        <translation>Formulär</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="188" />
         <source>Log in</source>
-        <translation type="unfinished">Logga in</translation>
+        <translation>Logga in</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="201" />
         <source>Sign up with provider</source>
-        <translation type="unfinished" />
+        <translation>Registrera hos en leverantör</translation>
     </message>
 </context>
 <context>
@@ -6501,33 +6507,33 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29" />
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished">HTTP(S) proxy</translation>
+        <translation>HTTP(S) proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25" />
         <source>Hostname of proxy server</source>
-        <translation type="unfinished">Värdnamn för proxyserver</translation>
+        <translation>Värdnamn för proxyserver</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27" />
         <source>Password for proxy server</source>
-        <translation type="unfinished">Lösenord för proxyanvändare</translation>
+        <translation>Lösenord för proxyserver</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23" />
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation type="unfinished">Proxyinställningar</translation>
+        <translation>Proxyinställningar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30" />
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished">SOCKS5 proxy</translation>
+        <translation>SOCKS5 proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26" />
         <source>Username for proxy server</source>
-        <translation type="unfinished">Användarnamn för proxyserver</translation>
+        <translation>Användarnamn för proxyserver</translation>
     </message>
 </context>
 <context>
@@ -6535,7 +6541,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225" />
         <source>&amp;Local Folder</source>
-        <translation type="unfinished" />
+        <translation>&amp;Lokal mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="674" />
@@ -6545,38 +6551,38 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="433" />
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished" />
+        <translation>Fråga innan synkronisering av mappar större än</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="331" />
         <source>Choose different folder</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Välj annan mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="509" />
         <source>Choose what to sync</source>
-        <translation type="unfinished">Välj vad som ska synkroniseras</translation>
+        <translation>Välj vad som ska synkroniseras</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="677" />
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished" />
+        <translation>Radera lokal mapp och starta en fräsch synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="658" />
         <source>Keep local data</source>
-        <translation type="unfinished" />
+        <translation>Behåll lokal data</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="268" />
         <source>Local Folder</source>
-        <translation type="unfinished" />
+        <translation>Lokal mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459" />
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished">MB</translation>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="164" />
@@ -7827,7 +7833,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="298" />
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation>Den nedladdade filen matchar inte kontrollsumman, den kommer att återupptas. &quot;%1&quot; != &quot;%2&quot;</translation>
+        <translation type="unfinished">Den nedladdade filen matchar inte kontrollsumman, den kommer att återupptas. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 </TS>
