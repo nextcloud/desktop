@@ -79,3 +79,15 @@ Chronologisches Protokoll: Komponenten-Ausblenden/-Entfernen-Entscheidungen und 
 **Offener Punkt:** `Theme::createColorAwareIcon` ignoriert `palette` fork-weit komplett (nicht nur fürs Avatar-Icon) — relevant, falls an anderer Stelle ebenfalls über mangelnden Icon-Kontrast diskutiert wird.
 
 **Status:** aktiv
+
+## 2026-08-18 — Chevron im Account-Umschalter: generisches Icon statt Marken-SVG (SES-578)
+
+*Rekonstruiert am 2026-08-19 nach versehentlichem Datenverlust (Branch-Wechsel hat den ursprünglichen, noch nicht committeten Eintrag überschrieben) — aus dem Kontext-Fragment dieses Gesprächs und der Commit-Message von `9647f1174` zusammengesetzt, nicht das Original-Wording.*
+
+**Kontext:** Im Zuge der Dark-Mode-Unterstützung für den Tray fiel auf, dass der Chevron-Pfeil im Account-Umschalter (`TrayWindowAccountMenu.qml`) im Dark Mode nicht die Farbe wechselt. Ursache: `source: Style.sesChevron` lädt die markenspezifische Asset-Datei `ses-chevron.svg` (`WLTheme.chevronIcon()`) direkt — deren Farbe ist fest ins SVG kodiert. Der `image://svgimage-custom-color/`-Provider, der Icons dynamisch nach `Style.sesTrayFontColor` einfärbt, kann nur Dateien im generischen `:/client/theme/`-Verzeichnis finden, keine markenspezifischen `ses/`-Assets.
+
+**Entscheidung:** Auf generisches `caret-down.svg` über den `svgimage-custom-color`-Provider umgestellt, getönt mit `Style.sesTrayFontColor` — gleiches Muster wie `TrayFoldersMenuButton.qml`/`CurrentAccountHeaderButton.qml`. Commit `9647f1174`.
+
+**Offener Punkt:** Icon-Form weicht leicht vom bisherigen Marken-Chevron ab — ggf. später durch einen passenden Marken-Asset von Design ersetzen.
+
+**Status:** aktiv
