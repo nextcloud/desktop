@@ -62,15 +62,15 @@ Q_SIGNALS:
     void fetchOngoingChanged();
 
 private:
+    void search();
+    void setFetchOngoing(bool fetchOngoing);
+
     AccountPtr _account = nullptr;
     QJsonArray _searchResults;
     QString _query;
     QString _shareId;
     QTimer _searchTimer;
     bool _fetchOngoing = false;
-
-    void search();
-    void setFetchOngoing(bool fetchOngoing);
 };
 
 }
