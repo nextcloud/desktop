@@ -16,7 +16,7 @@ using namespace OCC;
 using namespace OCC::Gui::Sharing;
 
 RecipientModel::RecipientModel(QObject *parent)
-    : AbstractShareModel{parent}
+    : ShareDetailsListModel{parent}
 {}
 
 int RecipientModel::rowCount(const QModelIndex &parent) const
@@ -82,7 +82,7 @@ QHash<int, QByteArray> RecipientModel::roleNames() const
 
 void RecipientModel::setShare(Share *share)
 {
-    AbstractShareModel::setShare(share);
+    ShareDetailsListModel::setShare(share);
     if (!_share) {
         return;
     }

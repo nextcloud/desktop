@@ -7,8 +7,8 @@ set_source_files_properties(RecipientIcon.qml PROPERTIES QT_QML_SINGLETON_TYPE T
 
 target_sources(nextcloudGuiSharing
   PRIVATE
-    abstractsharemodel.h
-    abstractsharemodel.cpp
+    sharedetailslistmodel.h
+    sharedetailslistmodel.cpp
     sharingconstants.h
     unifiedsharingrequest.h
     unifiedsharingrequest.cpp

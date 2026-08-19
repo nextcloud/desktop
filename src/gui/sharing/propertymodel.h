@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "abstractsharemodel.h"
+#include "sharedetailslistmodel.h"
 #include "property.h"
 
 #include <QPointer>
@@ -18,7 +18,7 @@ namespace OCC::Gui::Sharing {
  *
  * Properties are ordered from highest to lowest server-provided priority.
  */
-class PropertyModel : public AbstractShareModel
+class PropertyModel : public ShareDetailsListModel
 {
     Q_OBJECT
     QML_ELEMENT
