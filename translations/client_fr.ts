@@ -5,7 +5,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="49" />
         <source>In %1</source>
-        <translation>Dans %1</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="31" />
@@ -383,7 +383,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="37" />
         <source>Add Folder Sync</source>
-        <translation type="unfinished">Ajouter une synchronisation de dossiers</translation>
+        <translation>Ajouter une synchronisation de dossiers</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="88" />
@@ -464,12 +464,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="876" />
         <source>New activities</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Nouvelles activités</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="461" />
         <source>New conversation</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Nouvelle conversation</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="559" />
@@ -484,12 +484,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="441" />
         <source>Start new conversation?</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Commencer une nouvelle conversation ?</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="486" />
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Cela effacera la conversation en cours.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="805" />
@@ -2344,7 +2344,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
         <location filename="../src/gui/folder.cpp" line="526" />
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation>%1 a été renommé en %2.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="519" />
@@ -2418,17 +2418,17 @@ Cela signifie que le client de bureau ne va pas téléverser immédiatement les 
     <message>
         <location filename="../src/gui/folder.cpp" line="241" />
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation>Veuillez choisir un emplacement différent. %1 n&apos;est pas un dossier lisible.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="239" />
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation>Veuillez choisir un emplacement différent. %1 n&apos;est pas un dossier valide.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="237" />
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation>Veuillez choisir un emplacement différent. Le dossier %1 n&apos;existe pas.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1474" />
@@ -3196,7 +3196,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <translation>&amp;Lancer au démarrage du système</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="509" />
+        <location filename="../src/gui/generalsettings.ui" line="496" />
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>Redémarrer et Mettre à jour</translation>
     </message>
@@ -3222,7 +3222,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="403" />
-        <location filename="../src/gui/generalsettings.ui" line="527" />
+        <location filename="../src/gui/generalsettings.ui" line="514" />
         <source>Check Now</source>
         <translation>Vérifier maintenant</translation>
     </message>
@@ -3233,12 +3233,12 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <translation>Créer une archive de débogage</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="612" />
+        <location filename="../src/gui/generalsettings.ui" line="599" />
         <source>Data Protection</source>
         <translation>Protection des données</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="724" />
+        <location filename="../src/gui/generalsettings.ui" line="711" />
         <source>Desktop client x.x.x</source>
         <translation>Client de bureau x.x.x</translation>
     </message>
@@ -3258,8 +3258,8 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="559" />
-        <location filename="../src/gui/generalsettings.ui" line="675" />
+        <location filename="../src/gui/generalsettings.ui" line="546" />
+        <location filename="../src/gui/generalsettings.ui" line="662" />
         <source>Legal Notice</source>
         <translation>Mentions légales</translation>
     </message>
@@ -3270,7 +3270,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <translation>Mo</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="731" />
+        <location filename="../src/gui/generalsettings.ui" line="718" />
         <source>More Information</source>
         <translation>Plus d’informations</translation>
     </message>
@@ -3280,7 +3280,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <translation>Déplacer les fichiers supprimés vers la corbeille</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="621" />
+        <location filename="../src/gui/generalsettings.ui" line="608" />
         <source>Necessary data</source>
         <translation type="unfinished">Données indispensables</translation>
     </message>
@@ -3290,27 +3290,27 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <translation>Notifier lorsque les dossiers synchronisés dépassent la limite spécifiée</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="689" />
+        <location filename="../src/gui/generalsettings.ui" line="676" />
         <source>Open Source Software</source>
         <translation>Logiciel libre</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="682" />
+        <location filename="../src/gui/generalsettings.ui" line="669" />
         <source>Privacy Policy</source>
         <translation>Politique de confidentialité</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="631" />
+        <location filename="../src/gui/generalsettings.ui" line="618" />
         <source>Required to ensure that the software can be used as expected</source>
         <translation type="unfinished">Nécessaire pour s&apos;assurer que le logiciel peut être utilisé comme prévu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="569" />
+        <location filename="../src/gui/generalsettings.ui" line="556" />
         <source>Restore &amp;Default</source>
         <translation>Restaurer les valeurs par défaut</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="645" />
+        <location filename="../src/gui/generalsettings.ui" line="632" />
         <source>Send anonymous use</source>
         <translation type="unfinished">Envoyer utilisation anonyme</translation>
     </message>
@@ -3345,7 +3345,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <translation>Afficher les dossiers synchronisés dans le panneau de navigation de l&apos;&amp;Explorateur de fichiers</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="655" />
+        <location filename="../src/gui/generalsettings.ui" line="642" />
         <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
         <translation type="unfinished">Cela nous aide à optimiser le logiciel et à mieux identifier les pannes de système et les erreurs inattendues.</translation>
     </message>
@@ -3360,7 +3360,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <translation>Mises à jour</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="552" />
+        <location filename="../src/gui/generalsettings.ui" line="539" />
         <source>Usage Documentation</source>
         <translation>Documentation d&apos;utilisation</translation>
     </message>
@@ -4669,37 +4669,37 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="470" />
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Motif : le nom de fichier a un nom de base interdit (début du nom de fichier).</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450" />
         <source>Stat failed.</source>
-        <translation>Stat échoué.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="382" />
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>Les liens symboliques ne sont pas pris en charge par la synchronisation.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="461" />
         <source>The filename cannot be encoded on your file system.</source>
-        <translation>Le nom de fichier ne peut pas être encodé sur votre système de fichiers.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="464" />
         <source>The filename is blacklisted on the server.</source>
-        <translation>Le nom du fichier est sur la liste noire du serveur.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1250" />
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation>Le téléversement de %1 dépasse les %2 d&apos;espace restant du dossier %3.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247" />
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation>Le téléversement de %1 dépasse les %2 d&apos;espace restant de l&apos;espace personnel.</translation>
+        <translation type="unfinished" />
     </message>
 </context>
 <context>
@@ -5257,23 +5257,23 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="188" />
+        <location filename="../src/gui/settingsdialog.cpp" line="189" />
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation>Paramètres %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="362" />
+        <location filename="../src/gui/settingsdialog.cpp" line="363" />
         <source>Account</source>
         <translation>Compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="205" />
+        <location filename="../src/gui/settingsdialog.cpp" line="206" />
         <source>General</source>
         <translation>Général</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="606" />
+        <location filename="../src/gui/settingsdialog.cpp" line="683" />
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
@@ -5911,12 +5911,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="195" />
         <source>Exit %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Quitter %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="194" />
         <source>Help</source>
-        <translation>Aide</translation>
+        <translation type="unfinished">Aide</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="188" />
@@ -5933,7 +5933,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="201" />
         <source>Pause sync for all</source>
-        <translation>Suspendre toutes les synchros</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="192" />
@@ -5944,7 +5944,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="207" />
         <source>Resume sync for all</source>
-        <translation type="unfinished">Reprendre la synchronisation pour tout</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="193" />
@@ -5977,7 +5977,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125" />
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished" />
+        <translation>En attente de l&apos;acceptation des conditions</translation>
     </message>
 </context>
 <context>
@@ -6471,27 +6471,27 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="99" />
         <source>Host your own server</source>
-        <translation type="unfinished" />
+        <translation>Hébergez votre propre serveur</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="58" />
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished" />
+        <translation>Gardez vos données en sécurité et sous votre contrôle</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20" />
         <source>Form</source>
-        <translation type="unfinished">Formulaire</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="188" />
         <source>Log in</source>
-        <translation type="unfinished">Se connecter</translation>
+        <translation>Se connecter</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="201" />
         <source>Sign up with provider</source>
-        <translation type="unfinished" />
+        <translation>S&apos;inscrire auprès d&apos;un fournisseur</translation>
     </message>
 </context>
 <context>
@@ -6499,33 +6499,33 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29" />
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished">Proxy HTTP(S)</translation>
+        <translation>Proxy HTTP(S)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25" />
         <source>Hostname of proxy server</source>
-        <translation type="unfinished">Nom d&apos;hôte du serveur proxy</translation>
+        <translation>Nom d&apos;hôte du serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27" />
         <source>Password for proxy server</source>
-        <translation type="unfinished">Mot de passe pour le serveur proxy</translation>
+        <translation>Mot de passe du serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23" />
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation type="unfinished">Paramètres de serveur proxy</translation>
+        <translation>Paramètres de serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30" />
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished">Proxy SOCKS5</translation>
+        <translation>Proxy SOCKS5</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26" />
         <source>Username for proxy server</source>
-        <translation type="unfinished">Nom d’utilisateur pour le serveur proxy</translation>
+        <translation>Nom d’utilisateur du serveur proxy</translation>
     </message>
 </context>
 <context>
@@ -6533,7 +6533,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225" />
         <source>&amp;Local Folder</source>
-        <translation type="unfinished" />
+        <translation>&amp;Dossier local</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="674" />
@@ -6543,38 +6543,38 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="433" />
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished" />
+        <translation>Demander confirmation avant de synchroniser les dossiers de taille supérieure à </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="331" />
         <source>Choose different folder</source>
-        <translation type="unfinished" />
+        <translation>Choisir un autre dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="509" />
         <source>Choose what to sync</source>
-        <translation type="unfinished">Sélectionner le contenu à synchroniser</translation>
+        <translation>Sélectionner le contenu à synchroniser</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="677" />
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished" />
+        <translation>Effacer le dossier local et démarrer une synchronisation complète</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="658" />
         <source>Keep local data</source>
-        <translation type="unfinished" />
+        <translation>Conserver les données locales</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="268" />
         <source>Local Folder</source>
-        <translation type="unfinished" />
+        <translation>Dossier local</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459" />
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished">Mo</translation>
+        <translation>Mo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="164" />
@@ -7797,7 +7797,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="298" />
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation>Le fichier téléchargé ne correspond pas à la somme de contrôle, il sera repris. &quot;%1&quot; != &quot;%2&quot;</translation>
+        <translation type="unfinished">Le fichier téléchargé ne correspond pas à la somme de contrôle, il sera repris. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 </TS>

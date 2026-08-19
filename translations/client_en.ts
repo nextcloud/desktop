@@ -3173,7 +3173,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="509" />
+        <location filename="../src/gui/generalsettings.ui" line="496" />
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation type="unfinished" />
     </message>
@@ -3199,7 +3199,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="403" />
-        <location filename="../src/gui/generalsettings.ui" line="527" />
+        <location filename="../src/gui/generalsettings.ui" line="514" />
         <source>Check Now</source>
         <translation type="unfinished" />
     </message>
@@ -3210,12 +3210,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="612" />
+        <location filename="../src/gui/generalsettings.ui" line="599" />
         <source>Data Protection</source>
         <translation>Data Protection</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="724" />
+        <location filename="../src/gui/generalsettings.ui" line="711" />
         <source>Desktop client x.x.x</source>
         <translation type="unfinished" />
     </message>
@@ -3235,8 +3235,8 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="559" />
-        <location filename="../src/gui/generalsettings.ui" line="675" />
+        <location filename="../src/gui/generalsettings.ui" line="546" />
+        <location filename="../src/gui/generalsettings.ui" line="662" />
         <source>Legal Notice</source>
         <translation type="unfinished" />
     </message>
@@ -3247,7 +3247,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="731" />
+        <location filename="../src/gui/generalsettings.ui" line="718" />
         <source>More Information</source>
         <translation>More Information</translation>
     </message>
@@ -3257,7 +3257,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="621" />
+        <location filename="../src/gui/generalsettings.ui" line="608" />
         <source>Necessary data</source>
         <translation type="unfinished">Necessary data</translation>
     </message>
@@ -3267,27 +3267,27 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="689" />
+        <location filename="../src/gui/generalsettings.ui" line="676" />
         <source>Open Source Software</source>
         <translation>Open Source Software</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="682" />
+        <location filename="../src/gui/generalsettings.ui" line="669" />
         <source>Privacy Policy</source>
         <translation>Privacy Policy</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="631" />
+        <location filename="../src/gui/generalsettings.ui" line="618" />
         <source>Required to ensure that the software can be used as expected</source>
         <translation type="unfinished">Required to ensure that the software can be used as expected</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="569" />
+        <location filename="../src/gui/generalsettings.ui" line="556" />
         <source>Restore &amp;Default</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="645" />
+        <location filename="../src/gui/generalsettings.ui" line="632" />
         <source>Send anonymous use</source>
         <translation type="unfinished">Send anonymous use</translation>
     </message>
@@ -3322,7 +3322,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Show sync folders in &amp;Explorer&apos;s navigation pane</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="655" />
+        <location filename="../src/gui/generalsettings.ui" line="642" />
         <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
         <translation type="unfinished">This helps us to optimize the software and to better identify system crashes and unexpected errors.</translation>
     </message>
@@ -3337,7 +3337,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Updates</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="552" />
+        <location filename="../src/gui/generalsettings.ui" line="539" />
         <source>Usage Documentation</source>
         <translation type="unfinished" />
     </message>
@@ -5223,23 +5223,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="188" />
+        <location filename="../src/gui/settingsdialog.cpp" line="189" />
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="362" />
+        <location filename="../src/gui/settingsdialog.cpp" line="363" />
         <source>Account</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="205" />
+        <location filename="../src/gui/settingsdialog.cpp" line="206" />
         <source>General</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="606" />
+        <location filename="../src/gui/settingsdialog.cpp" line="683" />
         <source>Settings</source>
         <translation type="unfinished">Settings</translation>
     </message>

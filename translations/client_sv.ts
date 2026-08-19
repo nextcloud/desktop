@@ -5,7 +5,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="49" />
         <source>In %1</source>
-        <translation>Om %1</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="31" />
@@ -383,7 +383,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="37" />
         <source>Add Folder Sync</source>
-        <translation type="unfinished">Lägg till mappsynkronisering</translation>
+        <translation>Lägg till mappsynkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="88" />
@@ -464,12 +464,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="876" />
         <source>New activities</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Nya aktiviteter</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="461" />
         <source>New conversation</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ny konversation</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="559" />
@@ -484,12 +484,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="441" />
         <source>Start new conversation?</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Starta ny konversation?</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="486" />
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Detta kommer att rensa den befintliga konversationen.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="805" />
@@ -2421,17 +2421,17 @@ Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar ome
     <message>
         <location filename="../src/gui/folder.cpp" line="241" />
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation>Välj en annan plats. %1 är inte en läsbar mapp.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="239" />
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation>Välj en annan plats. %1 är inte en giltig mapp.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="237" />
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation>Välj en annan plats. Mappen %1 finns inte.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1474" />
@@ -3199,7 +3199,7 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>&amp;Starta vid uppstart</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="509" />
+        <location filename="../src/gui/generalsettings.ui" line="496" />
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Starta om &amp;&amp; Uppdatera</translation>
     </message>
@@ -3225,7 +3225,7 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="403" />
-        <location filename="../src/gui/generalsettings.ui" line="527" />
+        <location filename="../src/gui/generalsettings.ui" line="514" />
         <source>Check Now</source>
         <translation>Kolla nu</translation>
     </message>
@@ -3236,12 +3236,12 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>Skapa felsökningsarkiv</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="612" />
+        <location filename="../src/gui/generalsettings.ui" line="599" />
         <source>Data Protection</source>
         <translation>Dataskydd</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="724" />
+        <location filename="../src/gui/generalsettings.ui" line="711" />
         <source>Desktop client x.x.x</source>
         <translation>Skrivbordsklient x.x.x</translation>
     </message>
@@ -3261,8 +3261,8 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="559" />
-        <location filename="../src/gui/generalsettings.ui" line="675" />
+        <location filename="../src/gui/generalsettings.ui" line="546" />
+        <location filename="../src/gui/generalsettings.ui" line="662" />
         <source>Legal Notice</source>
         <translation>Rättsligt meddelande</translation>
     </message>
@@ -3273,7 +3273,7 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="731" />
+        <location filename="../src/gui/generalsettings.ui" line="718" />
         <source>More Information</source>
         <translation>Mer information</translation>
     </message>
@@ -3283,7 +3283,7 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>Flytta borttagna filer till papperskorgen</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="621" />
+        <location filename="../src/gui/generalsettings.ui" line="608" />
         <source>Necessary data</source>
         <translation type="unfinished">Nödvändiga uppgifter</translation>
     </message>
@@ -3293,27 +3293,27 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>Meddela när synkroniserade mappar växer sig större än den angivna gränsen</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="689" />
+        <location filename="../src/gui/generalsettings.ui" line="676" />
         <source>Open Source Software</source>
         <translation>Programvara med öppen källkod</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="682" />
+        <location filename="../src/gui/generalsettings.ui" line="669" />
         <source>Privacy Policy</source>
         <translation>Integritetspolicy</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="631" />
+        <location filename="../src/gui/generalsettings.ui" line="618" />
         <source>Required to ensure that the software can be used as expected</source>
         <translation type="unfinished">Krävs för att säkerställa att programvaran kan användas som förväntat</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="569" />
+        <location filename="../src/gui/generalsettings.ui" line="556" />
         <source>Restore &amp;Default</source>
         <translation>Återställ &amp;Standard</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="645" />
+        <location filename="../src/gui/generalsettings.ui" line="632" />
         <source>Send anonymous use</source>
         <translation type="unfinished">Skicka anonym användning</translation>
     </message>
@@ -3348,7 +3348,7 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>Visa synkroniseringsmappar i &amp;Explorers navigeringsfönster</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="655" />
+        <location filename="../src/gui/generalsettings.ui" line="642" />
         <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
         <translation type="unfinished">Detta hjälper oss att optimera programvaran och att bättre identifiera systemkrascher och oväntade fel.</translation>
     </message>
@@ -3363,7 +3363,7 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation>Uppdateringar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="552" />
+        <location filename="../src/gui/generalsettings.ui" line="539" />
         <source>Usage Documentation</source>
         <translation>Användardokumentation</translation>
     </message>
@@ -4259,27 +4259,27 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="729" />
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Filleverantörsbaserat konto %1 har skapats!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="771" />
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokal synkroniseringsmapp %1 skapad!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="290" />
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font color=&quot;green&quot;&gt;Lyckades ansluta till %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="654" />
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Misslyckades skapa fjärrmappen, troligen p.g.a felaktiga inloggningsuppgifter.&lt;/font&gt;&lt;br/&gt;Kontrollera dina inloggningsuppgifter.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="674" />
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">En synkroniseringskoppling från %1 till extern mapp %2 har skapats.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="471" />
@@ -4289,73 +4289,73 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="700" />
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Kan inte ta bort och göra en säkerhetskopia av mappen på grund av att mappen eller en fil i den används av ett annat program. Stäng mappen eller filen och försök igen eller avbryt installationen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="686" />
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Anslutningen till %1 kunde inte etableras. Vänligen kontrollera och försök igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="545" />
         <source>Could not create local folder %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Kunde inte skapa lokal mapp %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="537" />
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Skapar lokal synkroniseringsmapp %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="611" />
         <source>Error: %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Fel: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="322" />
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Misslyckades att ansluta till %1 vid %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="699" />
         <source>Folder rename failed</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Omdöpning av mapp misslyckades</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="320" />
         <source>Invalid URL</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ogiltig webbadress</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="534" />
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Den lokala synkroniseringsmappen % 1 finns redan, aktiverar den för synkronisering.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="605" />
         <source>No remote folder specified!</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ingen fjärrmapp specificerad! </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541" />
         <source>OK</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="629" />
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Fjärrmapp %1 har skapats.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="659" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="660" />
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Misslyckades skapa fjärrmapp %1 med fel &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="679" />
         <source>Successfully connected to %1!</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Ansluten till %1!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="457" />
@@ -4366,17 +4366,17 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="646" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="648" />
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Skapande av mapp resulterade i HTTP felkod %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="644" />
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Fjärrmappen %1 finns redan. Ansluter den för synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="650" />
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Det gick inte att skapa mappen efter som du inte har tillräckliga rättigheter!&lt;br/&gt;Vänligen återvänd och kontrollera dina rättigheter.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="480" />
@@ -4386,23 +4386,23 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="340" />
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Försök att ansluta till %1 på %2 tog för lång tid.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="367" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="390" />
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Försöker ansluta till %1 på %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="624" />
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">skapar mapp på Nextcloud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543" />
         <source>failed.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">misslyckades.</translation>
     </message>
 </context>
 <context>
@@ -4410,7 +4410,7 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108" />
         <source>Add %1 account</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Lägg till %1 konto</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="117" />
@@ -4426,18 +4426,18 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="532" />
         <source>Enable experimental feature?</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Aktivera experimentell funktion?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="547" />
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Aktivera experimentellt platshållarläge</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="116" />
         <source>Next</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished" />
+        <translation type="unfinished">Nästa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="114" />
@@ -4448,12 +4448,12 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="112" />
         <source>Skip folders configuration</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Hoppa över konfiguration av mappar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="548" />
         <source>Stay safe</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Var försiktig</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="533" />
@@ -4464,7 +4464,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">När läget &quot;virtuella filer&quot; är aktiverat kommer inga filer att laddas ner initialt. Istället kommer en liten &quot;%1&quot;-fil att skapas för varje fil som finns på servern. Innehållet kan laddas ner genom att köra dessa filer eller genom att använda klientens snabbmeny.
+
+Läget för virtuella filer är ömsesidigt uteslutande med selektiv synkronisering. Befintliga omarkerade mappar kommer att översättas till mappar som endast är online och dina selektiva synkroniseringsinställningar återställs.
+
+Om du byter till det här läget avbryts all pågående synkronisering.
+
+Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda det, rapportera eventuella problem som dyker upp.</translation>
     </message>
 </context>
 <context>
@@ -4666,37 +4672,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="470" />
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"> Orsak: filnamnet har ett förbjudet basnamn (filnamnsstart).</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450" />
         <source>Stat failed.</source>
-        <translation type="unfinished">Status misslyckades.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="382" />
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished">Symboliska länkar kan ej synkroniseras.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="461" />
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished">Filnamnet kan inte avkodas på ditt filsystem.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="464" />
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished">Filnamnet är svartlistat på servern.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1250" />
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished">Uppladdningen av %1 överskrider %2 av återstående utrymme i mappen %3.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247" />
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished">Uppladdningen av %1 överskrider %2 av återstående utrymme i personliga filer.</translation>
+        <translation type="unfinished" />
     </message>
 </context>
 <context>
@@ -5254,23 +5260,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="188" />
+        <location filename="../src/gui/settingsdialog.cpp" line="189" />
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation>%1 inställningar</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="362" />
+        <location filename="../src/gui/settingsdialog.cpp" line="363" />
         <source>Account</source>
         <translation>Konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="205" />
+        <location filename="../src/gui/settingsdialog.cpp" line="206" />
         <source>General</source>
         <translation>Allmänt</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="606" />
+        <location filename="../src/gui/settingsdialog.cpp" line="683" />
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
@@ -5908,12 +5914,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="195" />
         <source>Exit %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Avsluta %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="194" />
         <source>Help</source>
-        <translation>Hjälp</translation>
+        <translation type="unfinished">Hjälp</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="188" />
@@ -5930,7 +5936,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="201" />
         <source>Pause sync for all</source>
-        <translation>Pausa synkronisering för alla</translation>
+        <translation type="unfinished">Pausa synkronisering för alla</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="192" />
@@ -5941,7 +5947,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="207" />
         <source>Resume sync for all</source>
-        <translation type="unfinished">Återuppta synkronisering för alla</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="193" />
@@ -5974,7 +5980,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125" />
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished" />
+        <translation>Väntar på att användarvillkoren ska accepteras</translation>
     </message>
 </context>
 <context>
@@ -6468,27 +6474,27 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="99" />
         <source>Host your own server</source>
-        <translation type="unfinished" />
+        <translation>Använd egen server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="58" />
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished" />
+        <translation>Håll din data säker och under din kontroll</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20" />
         <source>Form</source>
-        <translation type="unfinished">Formulär</translation>
+        <translation>Formulär</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="188" />
         <source>Log in</source>
-        <translation type="unfinished">Logga in</translation>
+        <translation>Logga in</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="201" />
         <source>Sign up with provider</source>
-        <translation type="unfinished" />
+        <translation>Registrera hos en leverantör</translation>
     </message>
 </context>
 <context>
@@ -6496,33 +6502,33 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29" />
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished">HTTP(S) proxy</translation>
+        <translation>HTTP(S) proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25" />
         <source>Hostname of proxy server</source>
-        <translation type="unfinished">Värdnamn för proxyserver</translation>
+        <translation>Värdnamn för proxyserver</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27" />
         <source>Password for proxy server</source>
-        <translation type="unfinished">Lösenord för proxyanvändare</translation>
+        <translation>Lösenord för proxyserver</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23" />
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation type="unfinished">Proxyinställningar</translation>
+        <translation>Proxyinställningar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30" />
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished">SOCKS5 proxy</translation>
+        <translation>SOCKS5 proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26" />
         <source>Username for proxy server</source>
-        <translation type="unfinished">Användarnamn för proxyserver</translation>
+        <translation>Användarnamn för proxyserver</translation>
     </message>
 </context>
 <context>
@@ -6530,7 +6536,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225" />
         <source>&amp;Local Folder</source>
-        <translation type="unfinished" />
+        <translation>&amp;Lokal mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="674" />
@@ -6540,38 +6546,38 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="433" />
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished" />
+        <translation>Fråga innan synkronisering av mappar större än</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="331" />
         <source>Choose different folder</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Välj annan mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="509" />
         <source>Choose what to sync</source>
-        <translation type="unfinished">Välj vad som ska synkroniseras</translation>
+        <translation>Välj vad som ska synkroniseras</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="677" />
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished" />
+        <translation>Radera lokal mapp och starta en fräsch synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="658" />
         <source>Keep local data</source>
-        <translation type="unfinished" />
+        <translation>Behåll lokal data</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="268" />
         <source>Local Folder</source>
-        <translation type="unfinished" />
+        <translation>Lokal mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459" />
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished">MB</translation>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="164" />
@@ -7794,7 +7800,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="298" />
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation>Den nedladdade filen matchar inte kontrollsumman, den kommer att återupptas. &quot;%1&quot; != &quot;%2&quot;</translation>
+        <translation type="unfinished">Den nedladdade filen matchar inte kontrollsumman, den kommer att återupptas. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 </TS>
