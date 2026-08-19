@@ -7,7 +7,7 @@
 
 #include <QObject>
 
-#include <qqmlintegration.h>
+#include <QtQmlIntegration>
 
 #include "permission.h"
 #include "property.h"

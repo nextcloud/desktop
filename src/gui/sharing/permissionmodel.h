@@ -7,7 +7,7 @@
 
 #include "sharedetailslistmodel.h"
 
-#include <qqmlintegration.h>
+#include <QtQmlIntegration>
 
 namespace OCC::Gui::Sharing {
 

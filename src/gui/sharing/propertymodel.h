@@ -9,7 +9,7 @@
 #include "property.h"
 
 #include <QPointer>
-#include <qqmlintegration.h>
+#include <QtQmlIntegration>
 
 namespace OCC::Gui::Sharing {
 
