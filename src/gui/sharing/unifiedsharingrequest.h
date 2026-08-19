@@ -20,16 +20,6 @@ namespace OCC::Gui::Sharing
 {
 
 /**
- * @brief Optional parts of a Unified Sharing request.
- */
-struct UnifiedSharingRequestOptions
-{
-    QList<QPair<QString, QString>> parameters; //!< Query or form parameters to send
-    std::optional<QList<int>> passStatusCodes; //!< Accepted status codes, or no value to keep the OCS defaults
-    std::optional<QJsonObject> body; //!< JSON body to send, or no value to send no JSON body
-};
-
-/**
  * @brief Configures and starts one request to the Unified Sharing API.
  */
 class UnifiedSharingRequest : public OcsJob
@@ -37,10 +27,20 @@ class UnifiedSharingRequest : public OcsJob
     Q_OBJECT
 
 public:
+    /**
+    * @brief Optional parts of a Unified Sharing request.
+    */
+    struct Options
+    {
+        QList<QPair<QString, QString>> parameters; //!< Query or form parameters to send
+        std::optional<QList<int>> passStatusCodes; //!< Accepted status codes, or no value to keep the OCS defaults
+        std::optional<QJsonObject> body; //!< JSON body to send, or no value to send no JSON body
+    };
+
     explicit UnifiedSharingRequest(AccountPtr account,
                                    const QString &path,
                                    const QByteArray &verb,
-                                   const UnifiedSharingRequestOptions &options = {});
+                                   const Options &options = {});
 
     void start() override;
 
