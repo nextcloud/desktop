@@ -5,7 +5,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="49" />
         <source>In %1</source>
-        <translation>In %1</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="31" />
@@ -383,7 +383,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="37" />
         <source>Add Folder Sync</source>
-        <translation type="unfinished">Add Folder Sync</translation>
+        <translation>Add Folder Sync</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="88" />
@@ -629,7 +629,7 @@ Should the account be imported?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="797" />
         <source>Choose what to sync</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Choose what to sync</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="988" />
@@ -2421,17 +2421,17 @@ This means that the synchronization client might not upload local changes immedi
     <message>
         <location filename="../src/gui/folder.cpp" line="241" />
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation>Please choose a different location. %1 isn&apos;t a readable folder.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="239" />
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation>Please choose a different location. %1 isn&apos;t a valid folder.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="237" />
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation>Please choose a different location. The folder %1 doesn&apos;t exist.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1474" />
@@ -3199,7 +3199,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>&amp;Launch on System Startup</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="509" />
+        <location filename="../src/gui/generalsettings.ui" line="496" />
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Restart &amp;&amp; Update</translation>
     </message>
@@ -3225,7 +3225,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="403" />
-        <location filename="../src/gui/generalsettings.ui" line="527" />
+        <location filename="../src/gui/generalsettings.ui" line="514" />
         <source>Check Now</source>
         <translation>Check Now</translation>
     </message>
@@ -3236,12 +3236,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Create Debug Archive</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="612" />
+        <location filename="../src/gui/generalsettings.ui" line="599" />
         <source>Data Protection</source>
         <translation>Data Protection</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="724" />
+        <location filename="../src/gui/generalsettings.ui" line="711" />
         <source>Desktop client x.x.x</source>
         <translation>Desktop client x.x.x</translation>
     </message>
@@ -3261,8 +3261,8 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="559" />
-        <location filename="../src/gui/generalsettings.ui" line="675" />
+        <location filename="../src/gui/generalsettings.ui" line="546" />
+        <location filename="../src/gui/generalsettings.ui" line="662" />
         <source>Legal Notice</source>
         <translation>Legal Notice</translation>
     </message>
@@ -3273,7 +3273,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="731" />
+        <location filename="../src/gui/generalsettings.ui" line="718" />
         <source>More Information</source>
         <translation>More Information</translation>
     </message>
@@ -3283,7 +3283,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Move removed files to trash</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="621" />
+        <location filename="../src/gui/generalsettings.ui" line="608" />
         <source>Necessary data</source>
         <translation type="unfinished">Necessary data</translation>
     </message>
@@ -3293,27 +3293,27 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Notify when synchronised folders grow larger than specified limit</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="689" />
+        <location filename="../src/gui/generalsettings.ui" line="676" />
         <source>Open Source Software</source>
         <translation>Open Source Software</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="682" />
+        <location filename="../src/gui/generalsettings.ui" line="669" />
         <source>Privacy Policy</source>
         <translation>Privacy Policy</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="631" />
+        <location filename="../src/gui/generalsettings.ui" line="618" />
         <source>Required to ensure that the software can be used as expected</source>
         <translation type="unfinished">Required to ensure that the software can be used as expected</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="569" />
+        <location filename="../src/gui/generalsettings.ui" line="556" />
         <source>Restore &amp;Default</source>
         <translation>Restore &amp;Default</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="645" />
+        <location filename="../src/gui/generalsettings.ui" line="632" />
         <source>Send anonymous use</source>
         <translation type="unfinished">Send anonymous use</translation>
     </message>
@@ -3348,7 +3348,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Show sync folders in &amp;Explorer&apos;s navigation pane</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="655" />
+        <location filename="../src/gui/generalsettings.ui" line="642" />
         <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
         <translation type="unfinished">This helps us to optimize the software and to better identify system crashes and unexpected errors.</translation>
     </message>
@@ -3363,7 +3363,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Updates</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="552" />
+        <location filename="../src/gui/generalsettings.ui" line="539" />
         <source>Usage Documentation</source>
         <translation>Usage Documentation</translation>
     </message>
@@ -4259,27 +4259,27 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="729" />
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="771" />
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font colour=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="290" />
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;font colour=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="654" />
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">&lt;p&gt;&lt;font colour=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="674" />
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">A sync connection from %1 to remote directory %2 was set up.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="471" />
@@ -4289,73 +4289,73 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="700" />
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="686" />
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Connection to %1 could not be established. Please check again.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="545" />
         <source>Could not create local folder %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Could not create local folder %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="537" />
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Creating local sync folder %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="611" />
         <source>Error: %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Error: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="322" />
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Failed to connect to %1 at %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="699" />
         <source>Folder rename failed</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Folder rename failed</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="320" />
         <source>Invalid URL</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Invalid URL</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="534" />
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="605" />
         <source>No remote folder specified!</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">No remote folder specified!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541" />
         <source>OK</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="629" />
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Remote folder %1 created successfully.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="659" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="660" />
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="679" />
         <source>Successfully connected to %1!</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Successfully connected to %1!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="457" />
@@ -4366,17 +4366,17 @@ Note that using any logging command line options will override this setting.</tr
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="646" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="648" />
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">The folder creation resulted in HTTP error code %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="644" />
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">The remote folder %1 already exists. Connecting it for syncing.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="650" />
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="480" />
@@ -4386,23 +4386,23 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="340" />
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Timeout while trying to connect to %1 at %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="367" />
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="390" />
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Trying to connect to %1 at %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="624" />
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">creating folder on Nextcloud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543" />
         <source>failed.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">failed.</translation>
     </message>
 </context>
 <context>
@@ -4410,7 +4410,7 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108" />
         <source>Add %1 account</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Add %1 account</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="117" />
@@ -4426,18 +4426,18 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="532" />
         <source>Enable experimental feature?</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Enable experimental feature?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="547" />
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Enable experimental placeholder mode</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="116" />
         <source>Next</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished" />
+        <translation type="unfinished">Next</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="114" />
@@ -4448,12 +4448,12 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="112" />
         <source>Skip folders configuration</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Skip folders configuration</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="548" />
         <source>Stay safe</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Stay safe</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="533" />
@@ -4464,7 +4464,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
+
+The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
+
+Switching to this mode will abort any currently running synchronization.
+
+This is a new, experimental mode. If you decide to use it, please report any issues that come up.</translation>
     </message>
 </context>
 <context>
@@ -4666,37 +4672,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="470" />
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished">Reason: the filename has a forbidden base name (filename start).</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450" />
         <source>Stat failed.</source>
-        <translation type="unfinished">Stat failed.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="382" />
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished">Symbolic links are not supported in syncing.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="461" />
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished">The filename cannot be encoded on your file system.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="464" />
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished">The filename is blacklisted on the server.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1250" />
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished">Upload of %1 exceeds %2 of space left in folder %3.</translation>
+        <translation type="unfinished" />
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247" />
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished">Upload of %1 exceeds %2 of space left in personal files.</translation>
+        <translation type="unfinished" />
     </message>
 </context>
 <context>
@@ -5254,23 +5260,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="188" />
+        <location filename="../src/gui/settingsdialog.cpp" line="189" />
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation>%1 Settings</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="362" />
+        <location filename="../src/gui/settingsdialog.cpp" line="363" />
         <source>Account</source>
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="205" />
+        <location filename="../src/gui/settingsdialog.cpp" line="206" />
         <source>General</source>
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="606" />
+        <location filename="../src/gui/settingsdialog.cpp" line="683" />
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
@@ -5908,12 +5914,12 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="195" />
         <source>Exit %1</source>
-        <translation type="unfinished" />
+        <translation type="unfinished">Exit %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="194" />
         <source>Help</source>
-        <translation>Help</translation>
+        <translation type="unfinished">Help</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="188" />
@@ -5930,7 +5936,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="201" />
         <source>Pause sync for all</source>
-        <translation>Pause sync for all</translation>
+        <translation type="unfinished">Pause sync for all</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="192" />
@@ -5974,7 +5980,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125" />
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished" />
+        <translation>Waiting for terms to be accepted</translation>
     </message>
 </context>
 <context>
@@ -6468,27 +6474,27 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="99" />
         <source>Host your own server</source>
-        <translation type="unfinished" />
+        <translation>Host your own server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="58" />
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished" />
+        <translation>Keep your data secure and under your control</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20" />
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="188" />
         <source>Log in</source>
-        <translation type="unfinished">Log in</translation>
+        <translation>Log in</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="201" />
         <source>Sign up with provider</source>
-        <translation type="unfinished" />
+        <translation>Sign up with provider</translation>
     </message>
 </context>
 <context>
@@ -6496,33 +6502,33 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29" />
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished">HTTP(S) proxy</translation>
+        <translation>HTTP(S) proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25" />
         <source>Hostname of proxy server</source>
-        <translation type="unfinished">Hostname of proxy server</translation>
+        <translation>Hostname of proxy server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27" />
         <source>Password for proxy server</source>
-        <translation type="unfinished">Password for proxy server</translation>
+        <translation>Password for proxy server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23" />
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation type="unfinished">Proxy Settings</translation>
+        <translation>Proxy Settings</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30" />
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished">SOCKS5 proxy</translation>
+        <translation>SOCKS5 proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26" />
         <source>Username for proxy server</source>
-        <translation type="unfinished">Username for proxy server</translation>
+        <translation>Username for proxy server</translation>
     </message>
 </context>
 <context>
@@ -6530,7 +6536,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225" />
         <source>&amp;Local Folder</source>
-        <translation type="unfinished" />
+        <translation>&amp;Local Folder</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="674" />
@@ -6540,38 +6546,38 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="433" />
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished" />
+        <translation>Ask before syncing folders larger than</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="331" />
         <source>Choose different folder</source>
-        <translation type="unfinished" />
+        <translation>Choose different folder</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="509" />
         <source>Choose what to sync</source>
-        <translation type="unfinished" />
+        <translation>Choose what to sync</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="677" />
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished" />
+        <translation>Erase local folder and start a clean sync</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="658" />
         <source>Keep local data</source>
-        <translation type="unfinished" />
+        <translation>Keep local data</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="268" />
         <source>Local Folder</source>
-        <translation type="unfinished" />
+        <translation>Local Folder</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459" />
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished">MB</translation>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="164" />
@@ -7794,7 +7800,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="298" />
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</translation>
+        <translation type="unfinished">The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 </TS>
