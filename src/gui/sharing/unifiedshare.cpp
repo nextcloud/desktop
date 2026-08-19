@@ -6,17 +6,17 @@
 
 #include "unifiedshare.h"
 
-#include "sharingconstants.h"
-
-#include <algorithm>
-
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QPointer>
 #include <QLoggingCategory>
 
+#include <algorithm>
+
 #include "property.h"
+#include "sharingconstants.h"
+
 
 Q_LOGGING_CATEGORY(lcSharingShare, "nextcloud.gui.sharing.share", QtInfoMsg)
 
