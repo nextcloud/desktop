@@ -69,4 +69,5 @@ Wenn `DECISIONS.md` über ca. 25 Einträge oder 300 Zeilen wächst: die älteste
 
 - Für stable-x.y-Vergleichs-/Merge-Risiko-Entscheidungen im Detail: [stable-merge-check](../stable-merge-check/SKILL.md).
 - Für Protokoll zu Fork-Ersatzkomponenten vs. Upstream-Original: [shadow-component-watch](../shadow-component-watch/CHANGELOG.md).
+- Für gebündelten Kontextabruf zu einer einzelnen Komponente (inkl. Auszug aus diesem Log): [component-context](../component-context/SKILL.md) — liest hier nur, schreibt nichts.
 - Dieser Skill dupliziert deren Inhalte nicht, sondern verlinkt bei Bedarf darauf.
