@@ -199,6 +199,7 @@ RowLayout {
                         contentItem: Text {
                             text: qsTr("Open file details")
                             color: Style.sesTrayFontColor
+                            font.family: Style.sesOpenSansRegular
                         }
                     }
 

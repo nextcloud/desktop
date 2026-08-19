@@ -4,6 +4,7 @@
 #include <QFont>
 #include <QString>
 #include "theme.h"
+#include "common/utility.h"
 
 namespace OCC {
 
@@ -243,12 +244,11 @@ public:
 
     //Font Configuration
     virtual QString settingsFont() const {
-        return "Segoe UI";
+        return Utility::isWindows() ? QStringLiteral("Segoe UI") : QStringLiteral("Open Sans");
     }
 
     virtual QString contextMenuFont() const {
-        //TODO
-        return ":/client/fonts/OpenSans-Regular.ttf";
+        return settingsFont();
     }
 
     virtual QString settingsSmallTextSize() const {

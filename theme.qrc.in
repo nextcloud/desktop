@@ -295,6 +295,11 @@
 		<file>theme/file-open.svg</file>
 		<file>theme/backup.svg</file>
 		<file>theme/convert_to_text.svg</file>
+
+		<!-- bundled fonts (used as fallback where the platform default font, e.g. Segoe UI, is unavailable) -->
+		<!-- fonts/OpenSans-Regular.ttf and fonts/OpenSans-SemiBold.ttf are already registered under
+		     this same /client prefix by ionos-theme.qrc.in - do not duplicate them here. -->
+		<file>fonts/OpenSans-Bold.ttf</file>
     </qresource>
 </RCC>
 

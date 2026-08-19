@@ -283,7 +283,7 @@ QtObject {
     property int sesAccountMenuItemPadding: 12
     property int sesMediumMargin: 16
 
-    readonly property string sesOpenSansRegular: "qrc:///client/fonts/OpenSans-Regular.ttf"
+    readonly property string sesOpenSansRegular: "Open Sans"
     property int sesFontPointSize: 9
     property int sesFontPixelSizeTitle: 20
     property int sesFontPixelSize: 16
