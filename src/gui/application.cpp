@@ -42,6 +42,7 @@
 #if defined(Q_OS_WIN)
 #include "shellextensionsserver.h"
 #include <windows.h>
+#include <dwmapi.h>
 #elif defined(Q_OS_MACOS)
 #include "macOS/fileprovider.h"
 #endif
@@ -121,6 +122,28 @@ QString applicationTrPath()
     }
 #endif
 }
+
+#if defined(Q_OS_WIN)
+// Native window chrome (title bar, borders) is drawn by DWM, outside Qt's own
+// palette/stylesheet system - Qt does not switch it automatically. Windows 11's
+// own dark title bar only follows an app's declared preference per-HWND.
+void applyImmersiveDarkMode(QWidget *widget, bool dark)
+{
+    if (!widget || !widget->isWindow()) {
+        return;
+    }
+    const auto hwnd = reinterpret_cast<HWND>(widget->winId());
+    if (!hwnd) {
+        return;
+    }
+    const BOOL enabled = dark ? TRUE : FALSE;
+    // 20 = DWMWA_USE_IMMERSIVE_DARK_MODE on Windows 10 20H1+ and Windows 11; older
+    // insider builds (10 build 18985-18999) used 19 instead - try both.
+    if (DwmSetWindowAttribute(hwnd, 20, &enabled, sizeof(enabled)) != S_OK) {
+        DwmSetWindowAttribute(hwnd, 19, &enabled, sizeof(enabled));
+    }
+}
+#endif
 }
 
 // ----------------------------------------------------------------------------------
@@ -398,6 +421,16 @@ Application::Application(int &argc, char **argv)
     _theme->systemPaletteHasChanged();
 
 #if defined(Q_OS_WIN)
+    // Give every top-level window its dark/light title bar as soon as it becomes visible,
+    // and re-apply to all of them if the theme changes while windows are already open.
+    installEventFilter(this);
+    connect(_theme, &Theme::darkModeChanged, this, [this] {
+        const auto dark = _theme->darkMode();
+        for (auto *widget : QApplication::topLevelWidgets()) {
+            applyImmersiveDarkMode(widget, dark);
+        }
+    });
+
     _shellExtensionsServer.reset(new ShellExtensionsServer);
 #endif
 
@@ -1236,6 +1269,21 @@ bool Application::event(QEvent *event)
         emit systemPaletteChanged();
     }
     return QGuiApplication::event(event);
+}
+
+bool Application::eventFilter(QObject *watched, QEvent *event)
+{
+#if defined(Q_OS_WIN)
+    if (event->type() == QEvent::Show) {
+        if (auto *widget = qobject_cast<QWidget *>(watched)) {
+            applyImmersiveDarkMode(widget, _theme->darkMode());
+        }
+    }
+#else
+    Q_UNUSED(watched)
+    Q_UNUSED(event)
+#endif
+    return false;
 }
 
 } // namespace OCC
