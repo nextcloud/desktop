@@ -65,14 +65,6 @@ Q_SIGNALS:
     void recipientsChanged();
 
 private:
-    AccountPtr _account;
-    QString _id;
-    ShareState _state = ShareState::Unknown;
-    QString _permissionPreset;
-    QList<QPointer<Permission>> _permissions;
-    QList<QPointer<Property>> _properties;
-    QList<QPointer<Recipient>> _recipients;
-
     explicit Share(const AccountPtr &account);
 
     void setId(const QString &id);
@@ -81,6 +73,14 @@ private:
     void setPermissions(const QJsonArray &permissions);
     void setProperties(const QJsonArray &properties);
     void setRecipients(const QJsonArray &recipients);
+
+    AccountPtr _account;
+    QString _id;
+    ShareState _state = ShareState::Unknown;
+    QString _permissionPreset;
+    QList<QPointer<Permission>> _permissions;
+    QList<QPointer<Property>> _properties;
+    QList<QPointer<Recipient>> _recipients;
 };
 
 }
