@@ -444,15 +444,15 @@ public:
     }
 
     virtual QString menuBorderColor() const {
-        return "#2E4360";
+        return themedColor("#2E4360", "#5B7699");
     }
 
     virtual QString menuTextColor() const {
-        return "#001B41";
+        return themedColor("#001B41", "#D6E4F5");
     }
 
     virtual QString menuPressedTextColor() const {
-        return "#001B41";
+        return themedColor("#001B41", "#D6E4F5");
     }
 
     virtual QString iconDarkColor() const {
@@ -460,11 +460,11 @@ public:
     }
 
     virtual QString menuSelectedItemColor() const {
-        return "#F4F7FA";
+        return themedColor("#F4F7FA", "#333844");
     }
 
     virtual QString menuPressedItemColor() const {
-        return "#F4F7FA";
+        return themedColor("#F4F7FA", "#333844");
     }
 
     virtual QString menuBorderRadius() const {
