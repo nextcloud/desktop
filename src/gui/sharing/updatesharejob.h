@@ -29,7 +29,7 @@ protected:
                             Share &share,
                             const QString &path,
                             const QByteArray &verb,
-                            const UnifiedSharingRequestOptions &options = {});
+                            const UnifiedSharingRequest::Options &options = {});
 
 Q_SIGNALS:
     /** @brief Emitted after a successful response, or with null if the Share was deleted while the request was running. */
