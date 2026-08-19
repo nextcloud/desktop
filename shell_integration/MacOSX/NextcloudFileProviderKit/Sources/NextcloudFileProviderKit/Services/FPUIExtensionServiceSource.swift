@@ -3,6 +3,7 @@
 
 import FileProvider
 import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 
@@ -107,13 +108,13 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
             return false
         }
 
-        let (_, _, responseData, error) = await fpExtension.ncKit.fetchCapabilities(account: account)
+        let (_, capabilities, _, error) = await fpExtension.ncKit.fetchCapabilities(account: account)
         guard error == .success else {
             logger.error("Could not determine whether unified sharing is supported.", [.item: identifier, .error: error])
             return false
         }
 
-        guard UnifiedSharingCapability.isAvailable(in: responseData) else {
+        guard capabilities?.sharing != nil  else {
             logger.info("Unified sharing is not supported; using the legacy sharing interface.", [.item: identifier])
             return false
         }
