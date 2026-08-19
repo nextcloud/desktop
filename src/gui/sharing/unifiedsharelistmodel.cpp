@@ -5,13 +5,13 @@
 
 #include "unifiedsharelistmodel.h"
 
+#include <algorithm>
+#include <utility>
+
 #include "recipient.h"
 #include "unifiedshare.h"
 #include "sharingconstants.h"
 #include "sharingcontroller.h"
-
-#include <algorithm>
-#include <utility>
 
 using namespace Qt::StringLiterals;
 using namespace OCC::Gui::Sharing;
