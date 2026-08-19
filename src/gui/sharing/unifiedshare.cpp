@@ -64,7 +64,7 @@ QString Share::id() const
     return _id;
 }
 
-Share::ShareState Share::state() const
+Share::State Share::state() const
 {
     return _state;
 }
@@ -116,14 +116,14 @@ void Share::setId(const QString &id)
 
 void Share::setState(const QString &state)
 {
-    auto newState = ShareState::Unknown;
+    auto newState = State::Unknown;
 
     if (state == "draft"_L1) {
-        newState = ShareState::Draft;
+        newState = State::Draft;
     } else if (state == "active"_L1) {
-        newState = ShareState::Active;
+        newState = State::Active;
     } else if (state == "deleted"_L1) {
-        newState = ShareState::Deleted;
+        newState = State::Deleted;
     }
 
     if (_state == newState) {

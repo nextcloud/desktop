@@ -24,7 +24,7 @@ class Share : public QObject
     QML_UNCREATABLE("created via SharingController")
 
     Q_PROPERTY(QString id READ id NOTIFY idChanged)
-    Q_PROPERTY(Share::ShareState state READ state NOTIFY stateChanged)
+    Q_PROPERTY(Share::State state READ state NOTIFY stateChanged)
     Q_PROPERTY(QString permissionPreset READ permissionPreset NOTIFY permissionPresetChanged)
     Q_PROPERTY(QList<QPointer<Permission>> permissions READ permissions NOTIFY permissionsChanged)
     Q_PROPERTY(QList<QPointer<Property>> properties READ properties NOTIFY propertiesChanged)
@@ -35,18 +35,18 @@ class Share : public QObject
 public:
     [[nodiscard]] static QPointer<Share> fromJson(const QJsonDocument &json, const AccountPtr &account);
 
-    enum class ShareState {
+    enum class State {
         Unknown,
         Draft,
         Active,
         Deleted
     };
-    Q_ENUM(ShareState)
+    Q_ENUM(State)
 
     void updateFromJson(const QJsonDocument &json);
 
     [[nodiscard]] QString id() const;
-    [[nodiscard]] ShareState state() const;
+    [[nodiscard]] State state() const;
     [[nodiscard]] QString permissionPreset() const;
     [[nodiscard]] const QList<QPointer<Permission>> &permissions() const;
     [[nodiscard]] const QList<QPointer<Property>> &properties() const;
@@ -76,7 +76,7 @@ private:
 
     AccountPtr _account;
     QString _id;
-    ShareState _state = ShareState::Unknown;
+    State _state = State::Unknown;
     QString _permissionPreset;
     QList<QPointer<Permission>> _permissions;
     QList<QPointer<Property>> _properties;
