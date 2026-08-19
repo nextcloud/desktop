@@ -351,7 +351,7 @@ private slots:
                        {"id"_L1, "share-1"_L1}});
         verifyRequest(new GenerateSecretJob{account}, "GET", "/ocs/v2.php/apps/sharing/api/v1/secret");
         verifyRequest(new CreateShareJob{account}, "POST", "/ocs/v2.php/apps/sharing/api/v1/share");
-        verifyRequest(new SetShareStateJob{account, *share, Share::ShareState::Active},
+        verifyRequest(new SetShareStateJob{account, *share, Share::State::Active},
                       "PUT",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/state",
                       {},
@@ -495,7 +495,7 @@ private slots:
         })json"));
 
         QCOMPARE(share->id(), "share-1"_L1);
-        QCOMPARE(share->state(), Share::ShareState::Active);
+        QCOMPARE(share->state(), Share::State::Active);
         QCOMPARE(share->permissionPreset(), "view-preset"_L1);
         QCOMPARE(share->permissions().size(), 1);
         QCOMPARE(share->properties().size(), 1);
@@ -519,7 +519,7 @@ private slots:
             "ocs": {"data": {"id": "unknown-share", "state": "paused"}}
         })json"),
                                                   fakeFolder.account()));
-        QCOMPARE(unknownShare->state(), Share::ShareState::Unknown);
+        QCOMPARE(unknownShare->state(), Share::State::Unknown);
     }
 
     void sharingControllerLoadsAllSharesWithoutCreatingOne()
@@ -919,7 +919,7 @@ private slots:
         QTRY_COMPARE(shareActivatedSpy.size(), 1);
         QCOMPARE(controller.shares().size(), 1);
         const auto share = controller.shares().constFirst();
-        QCOMPARE(share->state(), Share::ShareState::Active);
+        QCOMPARE(share->state(), Share::State::Active);
         QVERIFY(share->isPublicLink());
         QCOMPARE(share->publicLinkUrl(), publicUrl);
 
@@ -1491,7 +1491,7 @@ private slots:
         controller.initialize("42"_L1);
         QTRY_COMPARE(controller.shares().size(), 1);
         const auto share = controller.shares().constFirst();
-        QCOMPARE(share->state(), Share::ShareState::Draft);
+        QCOMPARE(share->state(), Share::State::Draft);
 
         QSignalSpy activatedSpy{&controller, &SharingController::shareActivated};
         QSignalSpy activationFailedSpy{&controller, &SharingController::shareActivationFailed};
@@ -1499,7 +1499,7 @@ private slots:
 
         QTRY_COMPARE(activatedSpy.size(), 1);
         QVERIFY(activationFailedSpy.isEmpty());
-        QCOMPARE(share->state(), Share::ShareState::Active);
+        QCOMPARE(share->state(), Share::State::Active);
         QCOMPARE(stateRequestVerb, "PUT");
         QCOMPARE(stateRequestBody, (QJsonObject{{"state"_L1, "active"_L1}}));
 
@@ -1589,11 +1589,11 @@ private slots:
 
         QTest::qWait(20);
         QCOMPARE(stateRequests, 0);
-        QCOMPARE(share->state(), Share::ShareState::Draft);
+        QCOMPARE(share->state(), Share::State::Draft);
 
         QTRY_COMPARE(activatedSpy.size(), 1);
         QCOMPARE(stateRequests, 1);
-        QCOMPARE(share->state(), Share::ShareState::Active);
+        QCOMPARE(share->state(), Share::State::Active);
         QCOMPARE(share->properties().constFirst()->value().toString(), "Saved before activation"_L1);
     }
 
@@ -1645,7 +1645,7 @@ private slots:
         QTRY_COMPARE(propertyFailedSpy.size(), 1);
         QTRY_COMPARE(activationFailedSpy.size(), 1);
         QCOMPARE(stateRequests, 0);
-        QCOMPARE(share->state(), Share::ShareState::Draft);
+        QCOMPARE(share->state(), Share::State::Draft);
     }
 
     void sharingControllerReportsShareActivationFailure()
@@ -1680,7 +1680,7 @@ private slots:
 
         QTRY_COMPARE(activationFailedSpy.size(), 1);
         QVERIFY(activatedSpy.isEmpty());
-        QCOMPARE(share->state(), Share::ShareState::Draft);
+        QCOMPARE(share->state(), Share::State::Draft);
         QCOMPARE(activationFailedSpy.constFirst().at(0).value<Share *>(), share);
         QCOMPARE(activationFailedSpy.constFirst().at(1).toString(), "Share rejected"_L1);
     }
@@ -1827,7 +1827,7 @@ private slots:
         });
         updateJob->start();
         QTRY_VERIFY(updateReceived);
-        QCOMPARE(createdShare->state(), Share::ShareState::Active);
+        QCOMPARE(createdShare->state(), Share::State::Active);
 
         auto recipients = QJsonArray{};
         const auto searchJob = new SearchRecipientsJob{account, "ali"_L1, 0, 10};
@@ -1950,7 +1950,7 @@ private slots:
             new SetPropertyJob{account, *share, "property-class"_L1, "value"_L1},
             new SetPermissionJob{account, *share, "permission-class"_L1, true},
             new SetPermissionPresetJob{account, *share, "preset-class"_L1},
-            new SetShareStateJob{account, *share, Share::ShareState::Active},
+            new SetShareStateJob{account, *share, Share::State::Active},
         };
 
         for (const auto job : jobs) {
@@ -1968,7 +1968,7 @@ private slots:
             QTRY_VERIFY(ocsError);
             QVERIFY(!shareUpdated);
             QCOMPARE(share->id(), "share-1"_L1);
-            QCOMPARE(share->state(), Share::ShareState::Draft);
+            QCOMPARE(share->state(), Share::State::Draft);
         }
 
     }

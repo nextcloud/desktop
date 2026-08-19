@@ -525,7 +525,7 @@ void SharingController::activateShare(Share *share)
         return;
     }
 
-    if (share->state() != Share::ShareState::Draft) {
+    if (share->state() != Share::State::Draft) {
         qCDebug(lcSharingController) << "ignoring attempt to activate a share that is not a draft";
         return;
     }
@@ -544,14 +544,14 @@ void SharingController::activateShare(Share *share)
 
 void SharingController::startShareActivation(Share *share)
 {
-    if (!containsShare(share) || share->state() != Share::ShareState::Draft) {
+    if (!containsShare(share) || share->state() != Share::State::Draft) {
         return;
     }
 
     const auto guardedShare = QPointer<Share>{share};
-    const auto job = new SetShareStateJob{_account, *share, Share::ShareState::Active};
+    const auto job = new SetShareStateJob{_account, *share, Share::State::Active};
     connect(job, &SetShareStateJob::shareUpdated, this, [this, guardedShare](QPointer<Share> updatedShare) {
-        if (updatedShare && updatedShare->state() == Share::ShareState::Active) {
+        if (updatedShare && updatedShare->state() == Share::State::Active) {
             Q_EMIT shareActivated(updatedShare);
             return;
         }
@@ -668,7 +668,7 @@ void SharingController::failShareCreation(const QString &error, QPointer<Share> 
 
 void SharingController::trackDraftUpdate(Share *share, QObject *job)
 {
-    if (!share || !job || share->state() != Share::ShareState::Draft) {
+    if (!share || !job || share->state() != Share::State::Draft) {
         return;
     }
 

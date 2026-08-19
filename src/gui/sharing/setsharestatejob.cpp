@@ -12,23 +12,23 @@ namespace OCC::Gui::Sharing
 
 namespace
 {
-QString stateName(Share::ShareState state)
+QString stateName(Share::State state)
 {
     switch (state) {
-    case Share::ShareState::Active:
+    case Share::State::Active:
         return "active"_L1;
-    case Share::ShareState::Deleted:
+    case Share::State::Deleted:
         return "deleted"_L1;
-    case Share::ShareState::Draft:
+    case Share::State::Draft:
         return "draft"_L1;
-    case Share::ShareState::Unknown:
+    case Share::State::Unknown:
         break;
     }
     Q_UNREACHABLE_RETURN({});
 }
 }
 
-SetShareStateJob::SetShareStateJob(AccountPtr account, Share &share, Share::ShareState state)
+SetShareStateJob::SetShareStateJob(AccountPtr account, Share &share, Share::State state)
     : UpdateShareJob{std::move(account),
                      share,
                      "/ocs/v2.php/apps/sharing/api/v1/share/%1/state"_L1.arg(share.id()),
