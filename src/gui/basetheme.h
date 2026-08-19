@@ -319,19 +319,19 @@ public:
     }
 
     virtual QString folderWizardSubtitleColor() const {
-        return "#104996";
+        return themedColor("#104996", "#5FA8E0");
     }
 
     virtual QString folderWizardPathColor() const {
-        return "#97A3B4";
+        return themedColor("#97A3B4", "#A8B4C6");
     }
 
     virtual QString loginWizardFontGrey() const {
-        return "#616161";
+        return themedColor("#616161", "#D6D6D6");
     }
 
     virtual QString loginWizardFontLightGrey() const {
-        return "#BDBDBD";
+        return themedColor("#BDBDBD", "#8A8A8A");
     }
 
     virtual QString trayFontColor() const {
@@ -356,19 +356,19 @@ public:
 
     //Colors
     virtual QString settingsLinkColor() const {
-        return "#02306A";
+        return themedColor("#02306A", "#5FA8E0");
     }
 
     virtual QString quotaProgressColor() const {
-        return "#308cc6";
+        return themedColor("#308cc6", "#5FA8E0");
     }
 
     virtual QString syncProgressColor() const {
-        return "#359ada";
+        return themedColor("#359ada", "#4FB6F0");
     }
 
     virtual QString buttonPrimaryColor() const {
-        return "#0F6CBD";
+        return themedColor("#0F6CBD", "#3D6BB0");
     }
 
     virtual QString buttonSecondaryColor() const {
@@ -382,35 +382,35 @@ public:
     }
 
     virtual QString buttonDisabledColor() const {
-        return "#F0F0F0";
+        return themedColor("#F0F0F0", "#33363C");
     }
 
     virtual QString buttonPrimaryHoverColor() const {
-        return "#115EA3";
+        return themedColor("#115EA3", "#4B7CC4");
     }
 
     virtual QString buttonSecondaryHoverColor() const {
-        return "#F5F5F5";
+        return themedColor("#F5F5F5", "#343841");
     }
 
     virtual QString buttonPrimaryPressedColor() const {
-        return "#0C3B5E";
+        return themedColor("#0C3B5E", "#2A4D82");
     }
 
     virtual QString buttonSecondaryPressedColor() const {
-        return "#E0E0E0";
+        return themedColor("#E0E0E0", "#3D424D");
     }
 
     virtual QString buttonPrimaryFocusedBorderColor() const {
-        return "#000000";
+        return themedColor("#000000", "#FFFFFF");
     }
 
     virtual QString buttonSecondaryFocusedBorderColor() const {
-        return "#000000";
+        return themedColor("#000000", "#FFFFFF");
     }
 
     virtual QString buttonDisabledFontColor() const {
-        return "#BDBDBD";
+        return themedColor("#BDBDBD", "#5A5D63");
     }
 
     virtual QString pillButtonPrimaryColor() const {
@@ -478,7 +478,7 @@ public:
     }
 
     virtual QString buttonIconHoverColor() const {
-        return "#FFFFFF";
+        return themedColor("#FFFFFF", "#0B2A63");
     }
 
     virtual QString buttonPressedColor() const {
@@ -498,7 +498,7 @@ public:
     }
 
     virtual QString errorBorderColor() const {
-        return "#EEACB2";
+        return themedColor("#EEACB2", "#B25C63");
     }
 
     virtual QString trayErrorBorderColor() const {
@@ -510,19 +510,19 @@ public:
     }
 
     virtual QString warningBorderColor() const {
-        return "#F4BFAB";
+        return themedColor("#F4BFAB", "#C98F5E");
     }
 
     virtual QString successBorderColor() const {
-        return "#9FD89F";
+        return themedColor("#9FD89F", "#5FA86A");
     }
 
     virtual QString infoBorderColor() const {
-        return "#11C7E6";
+        return themedColor("#11C7E6", "#4DD9F0");
     }
 
     virtual QString treeViewHoverColor() const {
-        return "#e5f3ff";
+        return themedColor("#e5f3ff", "#242A33");
     }
 
 signals:
