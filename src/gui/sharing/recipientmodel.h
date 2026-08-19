@@ -5,13 +5,13 @@
 
 #pragma once
 
-#include "abstractsharemodel.h"
+#include "sharedetailslistmodel.h"
 
 #include <qqmlintegration.h>
 
 namespace OCC::Gui::Sharing {
 
-class RecipientModel : public AbstractShareModel
+class RecipientModel : public ShareDetailsListModel
 {
     Q_OBJECT
     QML_ELEMENT
