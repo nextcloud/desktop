@@ -14,7 +14,7 @@ UpdateShareJob::UpdateShareJob(AccountPtr account,
                                Share &share,
                                const QString &path,
                                const QByteArray &verb,
-                               const UnifiedSharingRequestOptions &options)
+                               const UnifiedSharingRequest::Options &options)
     : UnifiedSharingRequest{std::move(account), path, verb, options}
 {
     connect(this, &OcsJob::jobFinished, this, [this, share = QPointer<Share>{&share}](const QJsonDocument &json, int) {

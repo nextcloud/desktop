@@ -15,7 +15,7 @@ using namespace OCC::Gui::Sharing;
 UnifiedSharingRequest::UnifiedSharingRequest(AccountPtr account,
                                              const QString &path,
                                              const QByteArray &verb,
-                                             const UnifiedSharingRequestOptions &options)
+                                             const Options &options)
     : OcsJob{account}
 {
     setPath(path);
