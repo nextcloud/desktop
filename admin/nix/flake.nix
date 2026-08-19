@@ -25,7 +25,7 @@
           inherit system;
         };
 
-        inherit (pkgs.lib.lists) optional optionals;
+        inherit (pkgs.lib.lists) optionals;
         inherit (pkgs.lib.strings) optionalString;
 
         buildMacOSSymlinks = pkgs.runCommand "nextcloud-build-symlinks" { } ''
@@ -37,51 +37,54 @@
           with pkgs;
           [
             cmake
-            extra-cmake-modules
-            pkg-config
             inkscape
-            qt5.wrapQtAppsHook
+            pkg-config
+
+            qt6Packages.wrapQtAppsHook
+
+            kdePackages.extra-cmake-modules
           ]
-          ++ optionals stdenv.isDarwin [
+          ++ optionals stdenv.hostPlatform.isDarwin [
             buildMacOSSymlinks
           ];
 
         buildInputs =
           with pkgs;
           [
-            sqlite
+            kdsingleapplication
+            libp11
+            libsysprof-capture
             openssl
-            pcre
+            pcre2
+            sqlite
 
-            qt5.qtbase
-            qt5.qtquickcontrols2
-            qt5.qtsvg
-            qt5.qtgraphicaleffects
-            qt5.qtdeclarative
-            qt5.qttools
-            qt5.qtwebsockets
+            qt6Packages.qt5compat
+            qt6Packages.qtbase
+            qt6Packages.qtdeclarative
+            qt6Packages.qtkeychain
+            qt6Packages.qtsvg
+            qt6Packages.qttools
+            qt6Packages.qtwayland
+            qt6Packages.qtwebsockets
 
-            libsForQt5.karchive
-            libsForQt5.qtkeychain
+            kdePackages.karchive
           ]
-          ++ optionals stdenv.isLinux [
+          ++ optionals stdenv.hostPlatform.isLinux [
             inotify-tools
             libcloudproviders
             libsecret
 
-            libsForQt5.breeze-icons
-            libsForQt5.qqc2-desktop-style
-            libsForQt5.kio
+            kdePackages.breeze-icons
+            kdePackages.kio
+            kdePackages.qqc2-desktop-style
           ]
-          ++ optionals stdenv.isDarwin [
-            libsForQt5.qt5.qtmacextras
-
+          ++ optionals stdenv.hostPlatform.isDarwin [
             darwin.apple_sdk.frameworks.UserNotifications
           ];
 
         packages.default =
           with pkgs;
-          stdenv.mkDerivation rec {
+          stdenv.mkDerivation {
             inherit nativeBuildInputs buildInputs;
             pname = "nextcloud-client";
             version = "dev";
@@ -92,41 +95,39 @@
             separateDebugInfo = false;
             enableParallelBuilding = true;
 
-            preConfigure =
-              optionals stdenv.isLinux [
-                ''
-                  substituteInPlace shell_integration/libcloudproviders/CMakeLists.txt \
-                    --replace "PKGCONFIG_GETVAR(dbus-1 session_bus_services_dir _install_dir)" "set(_install_dir "\$\{CMAKE_INSTALL_DATADIR\}/dbus-1/service")"
-                ''
-              ]
-              ++ optionals stdenv.isDarwin [
-                ''
-                  substituteInPlace shell_integration/MacOSX/CMakeLists.txt \
-                    --replace "-target FinderSyncExt -configuration Release" "-scheme FinderSyncExt -configuration Release -derivedDataPath $ENV{NIX_BUILD_TOP}/derivedData"
-                ''
-              ];
+            cmakeFlags = [
+              "-DBUILD_UPDATER=off"
+              "-DMIRALL_VERSION_SUFFIX=" # remove git suffix from version
+            ]
+            ++ optionals stdenv.hostPlatform.isLinux [
+              "-DCMAKE_INSTALL_LIBDIR=lib" # expected to be prefix-relative by build code setting RPATH
+              "-DNO_SHIBBOLETH=1" # allows to compile without qtwebkit
+            ]
+            ++ optionals stdenv.hostPlatform.isDarwin [
+              "-DQT_ENABLE_VERBOSE_DEPLOYMENT=TRUE"
+              "-DBUILD_OWNCLOUD_OSX_BUNDLE=OFF"
+            ];
+            postPatch = ''
+              substituteInPlace src/common/utility_unix.cpp \
+                --replace-fail \
+                  'QLatin1String("Exec=\"") << executablePath << "\" --background\n"' \
+                  'QLatin1String("Exec=\"") << "nextcloud --background\n"'
+            ''
+            + optionalString stdenv.hostPlatform.isLinux ''
+              substituteInPlace CMakeLists.txt \
+                --replace-fail '"''${SYSTEMD_USER_UNIT_DIR}"' "\"$out/lib/systemd/user\""
 
-            cmakeFlags =
-              optionals stdenv.isLinux [
-                "-DCMAKE_INSTALL_LIBDIR=lib" # expected to be prefix-relative by build code setting RPATH
-                "-DNO_SHIBBOLETH=1" # allows to compile without qtwebkit
-              ]
-              ++ optionals stdenv.isDarwin [
-                "-DQT_ENABLE_VERBOSE_DEPLOYMENT=TRUE"
-                "-DBUILD_OWNCLOUD_OSX_BUNDLE=OFF"
-              ];
-            postPatch = optionalString stdenv.isLinux ''
               for file in src/libsync/vfs/*/CMakeLists.txt; do
                 substituteInPlace $file \
-                  --replace "PLUGINDIR" "KDE_INSTALL_PLUGINDIR"
+                  --replace-fail "PLUGINDIR" "KDE_INSTALL_PLUGINDIR"
               done
             '';
-            postFixup = optionalString stdenv.isLinux ''
-              wrapProgram "$out/bin/nextcloud" \
-                --set LD_LIBRARY_PATH ${lib.makeLibraryPath [ libsecret ]} \
-                --set PATH ${lib.makeBinPath [ xdg-utils ]} \
-                --set QML_DISABLE_DISK_CACHE "1"
-            '';
+            qtWrapperArgs = [
+              "--prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libsecret ]}"
+              # make xdg-open overridable at runtime
+              "--suffix PATH : ${lib.makeBinPath [ xdg-utils ]}"
+              "--set QML_DISABLE_DISK_CACHE 1"
+            ];
           };
 
         apps.default = mkApp {
@@ -142,7 +143,7 @@
           nativeBuildInputs =
             with pkgs;
             nativeBuildInputs
-            ++ optionals (stdenv.isLinux) [
+            ++ optionals (stdenv.hostPlatform.isLinux) [
               gdb
               qtcreator
             ];
