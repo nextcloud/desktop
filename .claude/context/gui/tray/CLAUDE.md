@@ -8,7 +8,7 @@ This folder implements the Nextcloud Desktop **system tray popup**: the tray ico
 - **`ActivityListModel`** (+ `SortedActivityListModel` proxy) — feed of notifications/sync results/errors/activities per account; backs `ActivityList.qml`/`ActivityItem*.qml`. Data rows are `Activity`/`ActivityLink`/`PreviewData` (activitydata.h).
 - **`ServerNotificationHandler`** (notificationhandler.cpp) — fetches server notifications via OCS API and feeds them into `User`/`ActivityListModel`.
 - **`SyncStatusSummary`** — aggregates folder sync progress/state across the current account; drives `SyncStatus.qml`.
-- **`UnifiedSearchResultsListModel`** + `UnifiedSearchResult` — server-wide search results; backs `UnifiedSearchInputContainer.qml`/`UnifiedSearchResult*.qml` (currently hidden, `visible: false //SES-4 removed`).
+- **`UnifiedSearchResultsListModel`** + `UnifiedSearchResult` — server-wide search results; backs `UnifiedSearchInputContainer.qml`/`UnifiedSearchResult*.qml` (re-enabled and restyled for the whitelabel design as of SES-579, after being hidden since SES-589).
 - **`TalkReply`** — sends Talk chat replies from notification/activity items; used with `TalkReplyTextField.qml`.
 - **`ImageProvider`/`AsyncImageResponse`, `TrayImageProvider`, `SvgImageProvider`** — async QML image providers for avatars, server icons, and recolored SVGs.
 
@@ -20,7 +20,7 @@ This folder implements the Nextcloud Desktop **system tray popup**: the tray ico
 - **`ActivityList.qml`** / **`ActivityItem.qml`** / **`ActivityItemContent.qml`** / **`ActivityItemActions.qml`** / **`ActivityItemContextMenu.qml`** — the notification/activity feed list and its per-row rendering, action buttons, and context menu.
 - **`SyncStatus.qml`** (wraps `NC.SyncStatusSummary`) + **`NCBusyIndicator.qml`** / **`NCProgressBar.qml`** — sync spinner/progress shown in the header area.
 - **`TrayFoldersMenuButton.qml`** + **`TrayFolderListItem.qml`** + **`AutoSizingMenu.qml`** — "open local/group folder" button and its folder-picker popup menu.
-- **`UnifiedSearchInputContainer.qml`** + **`UnifiedSearchResult*.qml`** (`Item`, `ListItem`, `SectionItem`, `Skeleton*`, `NothingFound`, `FetchMoreTrigger`, `PlaceholderView`) — unified search box and results list; disabled via `visible: false // SES-4 removed` in `SyncStatus.qml`/`MainWindow.qml` (not inside `UnifiedSearchInputContainer.qml` itself).
+- **`UnifiedSearchInputContainer.qml`** + **`UnifiedSearchResult*.qml`** (`Item`, `ListItem`, `SectionItem`, `Skeleton*`, `NothingFound`, `FetchMoreTrigger`, `PlaceholderView`) — unified search box and results list; active in `MainWindow.qml` (SES-579 restyled the field/hover state to match the fork's design — background/border/text colors like `ShareeSearchField`, `Style.sesHover` instead of `palette.highlight`).
 - **`CallNotificationDialog.qml`** — incoming Talk call popup; **`EncryptionTokenDiscoveryDialog.qml`** / **`EditFileLocallyLoadingDialog.qml`** — misc modal dialogs launched from activities.
 - Small shared building blocks: `HeaderButton.qml`, `IconButton.qml`, `PrimaryPillButton.qml`/`SecondaryPillButton.qml`, `EnforcedPlainTextLabel.qml`, `ListItemLineAndSubline.qml`, `NCIconWithBackgroundImage.qml`.
 - **Legacy/unused (superseded by the fork's `SesTrayHeader`)**: `TrayWindowHeader.qml` (upstream header variant) and `CurrentAccountHeaderButton.qml` (upstream account button, only referenced by `TrayWindowHeader.qml`) are still present but not instantiated from `MainWindow.qml`'s actual render tree — kept from upstream merges, replaced functionally by `TrayWindowAccountMenu.qml`/`UserLine.qml`. (Note: `TrayWindowHeaderBar.qml` does not exist in this fork.)
@@ -32,10 +32,11 @@ This folder implements the Nextcloud Desktop **system tray popup**: the tray ico
 - All `.qml` files import the fork's `com.strato.hidrivenext.desktopclient` QML module (HiDrive Next/Strato branding) rather than a generic Nextcloud one, and use `Style.ses*` properties for fork theming (colors, fonts, icon sizes) defined in `theme/Style/Style.qml`.
 - `SesTrayHeader.qml` (in `../SesComponents/`) is a fork-only replacement for upstream's `TrayWindowHeader.qml`; `TrayWindowAccountMenu.qml`/`UserLine.qml` are fork-only replacements for upstream's `CurrentAccountHeaderButton.qml`, tied to tickets like `SES-459`/`SES-511`/`SES-589`.
 - `AsyncImageResponse` (asyncimageresponse.h/.cpp) pulls in `SesFileIconProvider` (`sesFileIconProvider.h`) for fork-specific file-type icon rendering.
-- Several upstream features are explicitly disabled in this fork via `visible: false // SES-4 removed` in `SyncStatus.qml`/`MainWindow.qml` (Unified Search input, Talk/apps header buttons), while the underlying C++ models (`UnifiedSearchResultsListModel`, etc.) remain in the codebase unused by the active UI.
+- Some upstream features are explicitly disabled in this fork via `visible: false // SES-4 removed` (e.g. the "Sync now" button in `SyncStatus.qml`). Unified Search was previously in this category (hidden since SES-589) but was re-enabled and restyled for the whitelabel design in SES-579 — its C++ backing models (`UnifiedSearchResultsListModel`, etc.) are active again, not unused.
+- `BaseTheme`'s colors are now dark-mode-reactive (`themeColorsChanged` signal, `themedColor(light, dark)` helper, see `../CLAUDE.md`/`COMPONENTS.md` root docs); the tray (`SES-578`) was the reference implementation other dialogs' dark-mode support was modeled on.
 - Generic/unmodified upstream Nextcloud logic: `ActivityListModel`/`activitydata`, `ServerNotificationHandler`, `SyncStatusSummary`, `UserModel`/`User` core account logic, `TalkReply`, and the various list-model/image-provider plumbing.
 
 ## Merge-Risiko-Hinweis
 Dieser Ordner enthält mehrere der historisch häufigsten Merge-Konflikt-Stellen des Forks (`MainWindow.qml`, `TrayWindowAccountMenu.qml`, `UserLine.qml`) — bei Änderungen hier den [stable-merge-check-Skill](../../../skills/stable-merge-check/SKILL.md) nutzen.
 
-*Quelle: src/gui/tray — Stand 2026-08-17, automatisch erstellt, bitte gegenlesen.*
+*Quelle: src/gui/tray — Stand 2026-08-19, automatisch erstellt, bitte gegenlesen.*

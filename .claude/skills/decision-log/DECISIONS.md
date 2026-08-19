@@ -80,6 +80,14 @@ Chronologisches Protokoll: Komponenten-Ausblenden/-Entfernen-Entscheidungen und 
 
 **Status:** aktiv
 
+## 2026-08-18 — Unified Search im Tray wieder aktiviert (SES-579)
+
+**Kontext:** Die Unified-Search-Leiste (`UnifiedSearchInputContainer.qml`) im Tray war seit `SES-589` per `visible: false` ausgeblendet (Commit `f545c860a`, "removed searchbar") — laut Commit-Message zurückgestellt, weil sie damals kein direktes `develop_stable-4.0`-Element war.
+
+**Entscheidung:** Sichtbarkeit wiederhergestellt und ins Whitelabel-Design integriert: Such-/Ergebnis-Hover-Styling an fork-eigene Farben/Komponenten angeglichen (Hintergrund/Rand/Text wie `ShareeSearchField`, `Style.sesHover` statt `palette.highlight`, einheitliche Eingabefeldhöhe). Commit `26fe47ea7`. Die zugehörigen C++-Modelle (`UnifiedSearchResultsListModel` etc.) waren die ganze Zeit unverändert im Baum vorhanden und sind jetzt wieder aktiv genutzt statt totem Code.
+
+**Status:** aktiv
+
 ## 2026-08-18 — Chevron im Account-Umschalter: generisches Icon statt Marken-SVG (SES-578)
 
 *Rekonstruiert am 2026-08-19 nach versehentlichem Datenverlust (Branch-Wechsel hat den ursprünglichen, noch nicht committeten Eintrag überschrieben) — aus dem Kontext-Fragment dieses Gesprächs und der Commit-Message von `9647f1174` zusammengesetzt, nicht das Original-Wording.*
