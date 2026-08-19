@@ -61,12 +61,13 @@ public:
     /** @brief Returns the last internal-link resolution error. */
     [[nodiscard]] QString internalLinkError() const;
 
+public Q_SLOTS:
     /**
      * @brief Loads all shares associated with a file without creating a share.
      *
      * @param fileId Server file ID used to filter the shares request
     */
-    Q_INVOKABLE void initialize(const QString &fileId);
+    void initialize(const QString &fileId);
 
     /**
      * @brief Creates a draft share for one recipient and attaches the specified file.
@@ -79,13 +80,13 @@ public:
      * @param recipientValue Server-defined recipient identifier
      * @param recipientInstance Remote server identifying a federated recipient, or an empty string for a local recipient
      */
-    Q_INVOKABLE void createShareForRecipient(const QString &fileId,
-                                             const QString &recipientType,
-                                             const QString &recipientValue,
-                                             const QString &recipientInstance = {});
+    void createShareForRecipient(const QString &fileId,
+                                 const QString &recipientType,
+                                 const QString &recipientValue,
+                                 const QString &recipientInstance = {});
 
     /** @brief Creates and activates a public-link share for the specified file. */
-    Q_INVOKABLE void createPublicLink(const QString &fileId);
+    void createPublicLink(const QString &fileId);
 
     /**
      * @brief Resolves the server-provided internal link for the specified file.
@@ -93,47 +94,47 @@ public:
      * @param remotePath Path of the file relative to the account's WebDAV root
      * @param numericFileId Numeric file ID used if the server does not expose a private-link property
      */
-    Q_INVOKABLE void requestInternalLink(const QString &remotePath, const QString &numericFileId);
+    void requestInternalLink(const QString &remotePath, const QString &numericFileId);
 
     /** @brief Permanently removes a share managed by this controller. */
-    Q_INVOKABLE void destroyShare(Share *share);
+    void destroyShare(Share *share);
 
     /**
      * @brief Adds a recipient to a share.
      *
      * @param recipientInstance Remote server identifying a federated recipient, or an empty string for a local recipient
      */
-    Q_INVOKABLE void addRecipient(Share *share,
-                                  const QString &recipientType,
-                                  const QString &recipientValue,
-                                  const QString &recipientInstance = {});
+    void addRecipient(Share *share,
+                      const QString &recipientType,
+                      const QString &recipientValue,
+                      const QString &recipientInstance = {});
 
     /**
      * @brief Removes a recipient from a share.
      *
      * @param recipientInstance Remote server identifying a federated recipient, or an empty string for a local recipient
      */
-    Q_INVOKABLE void removeRecipient(Share *share,
-                                     const QString &recipientType,
-                                     const QString &recipientValue,
-                                     const QString &recipientInstance = {});
+    void removeRecipient(Share *share,
+                         const QString &recipientType,
+                         const QString &recipientValue,
+                         const QString &recipientInstance = {});
 
     /**
      * @brief Generates and assigns a new secret to a recipient.
      *
      * @param recipientInstance Remote server identifying a federated recipient, or an empty string for a local recipient
      */
-    Q_INVOKABLE void updateRecipientSecret(Share *share,
-                                           const QString &recipientType,
-                                           const QString &recipientValue,
-                                           const QString &recipientInstance = {});
+    void updateRecipientSecret(Share *share,
+                               const QString &recipientType,
+                               const QString &recipientValue,
+                               const QString &recipientInstance = {});
 
-    Q_INVOKABLE void setPermission(Share *share, const QString &permissionClass, bool enabled);
-    Q_INVOKABLE void setPermissionPreset(Share *share, const QString &permissionPreset);
-    Q_INVOKABLE void setProperty(Share *share, const QString &propertyClass, const QString &value);
+    void setPermission(Share *share, const QString &permissionClass, bool enabled);
+    void setPermissionPreset(Share *share, const QString &permissionPreset);
+    void setProperty(Share *share, const QString &propertyClass, const QString &value);
 
     /** @brief Activates a draft share, making it available to its recipients. */
-    Q_INVOKABLE void activateShare(Share *share);
+    void activateShare(Share *share);
 
 Q_SIGNALS:
     void accountChanged();
@@ -197,18 +198,6 @@ Q_SIGNALS:
     void shareActivationFailed(Share *share, const QString &error);
 
 private:
-    AccountPtr _account;
-    QList<Share *> _shares;
-    bool _creatingShare = false;
-    QString _shareCreationError;
-    bool _destroyingShare = false;
-    QString _shareDestructionError;
-    bool _resolvingInternalLink = false;
-    QString _internalLinkError;
-    QHash<Share *, int> _pendingDraftUpdates;
-    QSet<Share *> _activationRequested;
-    QSet<Share *> _activationBlocked;
-
     [[nodiscard]] bool containsShare(const Share *share) const;
     [[nodiscard]] bool beginShareCreation(const QString &fileId);
     void startShareCreation(const QString &fileId,
@@ -239,6 +228,18 @@ private:
     void setResolvingInternalLink(bool resolvingInternalLink);
     void setInternalLinkError(const QString &error);
     void replaceShares(const QList<Share *> &shares);
+
+    AccountPtr _account;
+    QList<Share *> _shares;
+    bool _creatingShare = false;
+    QString _shareCreationError;
+    bool _destroyingShare = false;
+    QString _shareDestructionError;
+    bool _resolvingInternalLink = false;
+    QString _internalLinkError;
+    QHash<Share *, int> _pendingDraftUpdates;
+    QSet<Share *> _activationRequested;
+    QSet<Share *> _activationBlocked;
 };
 
 }
