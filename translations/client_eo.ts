@@ -2854,67 +2854,67 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Sinkronigaj aktivaĵoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1185"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Could not read system exclude file</source>
         <translation>Ne eblis legi la sisteman dosieron pri esceptoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1470"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Nova dosierujo pli granda ol %1 MB estis aldonita: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1478"/>
+        <location filename="../src/gui/folder.cpp" line="1473"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Dosierujo el ekstera konservejo estis aldonita.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1479"/>
+        <location filename="../src/gui/folder.cpp" line="1474"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Bv. iri al la agordoj por elekti, ĉu vi volas elŝuti ĝin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1536"/>
+        <location filename="../src/gui/folder.cpp" line="1531"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1547"/>
+        <location filename="../src/gui/folder.cpp" line="1542"/>
         <source>Keep syncing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1550"/>
         <source>Stop syncing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1561"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1567"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>La dosierujo %1 estis kreita sed estis eksigita el sinkronigo antaŭe. Datumoj ene de ĝi ne estos sinkronigitaj.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1640"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>La dosiero %1 estis kreita sed estis eksigita el sinkronigo antaŭe. Ĝi ne estos sinkronigita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1656"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2927,41 +2927,41 @@ Tio signifas, ke la sinkroniga kliento eble ne alŝutas tuj lokajn ŝanĝojn kaj
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1694"/>
+        <location filename="../src/gui/folder.cpp" line="1689"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1788"/>
+        <location filename="../src/gui/folder.cpp" line="1783"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1789"/>
+        <location filename="../src/gui/folder.cpp" line="1784"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1790"/>
+        <location filename="../src/gui/folder.cpp" line="1785"/>
         <source>Remove all files?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1794"/>
+        <location filename="../src/gui/folder.cpp" line="1789"/>
         <source>Proceed with Deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files to Server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files from Server</source>
         <translation type="unfinished"/>
     </message>

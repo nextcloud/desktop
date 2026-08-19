@@ -2867,68 +2867,68 @@ Tai gali būti susiję su jūsų „OpenSSL“ bibliotekomis.</translation>
         <translation>Sinchronizavimo veikla</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1185"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Could not read system exclude file</source>
         <translation>Nepavyko perskaityti sistemos išimčių failo</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1470"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Buvo pridėtas naujas, didesnis nei  %1 MB, aplankas: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1478"/>
+        <location filename="../src/gui/folder.cpp" line="1473"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Buvo pridėtas aplankas iš išorinės saugyklos.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1479"/>
+        <location filename="../src/gui/folder.cpp" line="1474"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Jei norite atsisiųsti, eikite į nustatymus ir pasirinkite.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1536"/>
+        <location filename="../src/gui/folder.cpp" line="1531"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Aplankas viršijo nustatytą aplanko dydžio ribą – %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1547"/>
+        <location filename="../src/gui/folder.cpp" line="1542"/>
         <source>Keep syncing</source>
         <translation>Sinchronizuoti toliau</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1550"/>
         <source>Stop syncing</source>
         <translation>Sustabdyti sinchronizavimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1561"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>%1 aplankas viršijo nustatytą aplanko dydžio ribą – %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1567"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Ar norite sustabdyti šio aplanko sinchronizavimą?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Aplankas %1 buvo sukurtas, tačiau anksčiau išskirtas iš sinchronizavimo. Aplanke esantys duomenys nebus sinchronizuoti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1640"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Failas %1 buvo sukurtas, tačiau anksčiau išskirtas iš sinchronizavimo. Failas nebus sinchronizuotas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1656"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2941,12 +2941,12 @@ Tai reiškia, kad sinchronizacijos klientas gali iš karto neįkelti lokalių pa
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1694"/>
+        <location filename="../src/gui/folder.cpp" line="1689"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Virtualaus failo atsisiuntimas nepavyko. Kodas „%1“, būsena „%2“ ir klaidos pranešimas „%3“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1788"/>
+        <location filename="../src/gui/folder.cpp" line="1783"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2955,7 +2955,7 @@ Patvirtinkite, jei norite tęsti šiuos trynimus.
 Arba galite atkurti visus ištrintus failus įkeldami juos iš aplanko „%1“ į serverį.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1789"/>
+        <location filename="../src/gui/folder.cpp" line="1784"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2964,22 +2964,22 @@ Patvirtinkite, ar norite tęsti šiuos trynimus.
 Arba galite atkurti visus ištrintus failus atsisiųsdami juos iš serverio.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1790"/>
+        <location filename="../src/gui/folder.cpp" line="1785"/>
         <source>Remove all files?</source>
         <translation>Pašalinti visus failus?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1794"/>
+        <location filename="../src/gui/folder.cpp" line="1789"/>
         <source>Proceed with Deletion</source>
         <translation>Tęsti ištrynimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files to Server</source>
         <translation>Atkurti failus į serverį</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files from Server</source>
         <translation>Atkurti failus iš serverio</translation>
     </message>

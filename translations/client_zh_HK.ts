@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>無法開啟瀏覽器，請將連結複製到瀏覽器。</translation>
     </message>
 </context>
 <context>
@@ -2870,67 +2870,67 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>同步活動</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1185"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Could not read system exclude file</source>
         <translation>無法讀取系統的排除檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1470"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>一個大於%1MB的資料夾已被新增至：%2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1478"/>
+        <location filename="../src/gui/folder.cpp" line="1473"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>一個來自外部空間的資料夾已被新增</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1479"/>
+        <location filename="../src/gui/folder.cpp" line="1474"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>若要下載此項目，請前往設定選擇它</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1536"/>
+        <location filename="../src/gui/folder.cpp" line="1531"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>資料夾已超出設置的資料夾大小限制 %1MB：%2。
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1547"/>
+        <location filename="../src/gui/folder.cpp" line="1542"/>
         <source>Keep syncing</source>
         <translation>保持同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1550"/>
         <source>Stop syncing</source>
         <translation>停止同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1561"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>資料夾已超出設置的資料夾大小限制 %2MB。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1567"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>您想停止同步此資料夾嗎？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>已創建%1資料夾，但該資料夾已從要同步的檔案中剔除，因此不會被同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1640"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>已新增%1檔案，但該檔案已從要同步的檔案中剔除，因此不會被同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1656"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2943,12 +2943,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1694"/>
+        <location filename="../src/gui/folder.cpp" line="1689"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>虛擬檔案下載失敗，代碼為“%1”，狀態為“%2”，錯誤訊息為“%3”</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1788"/>
+        <location filename="../src/gui/folder.cpp" line="1783"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2957,7 +2957,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 或者，您也可以從「%1」資料夾上傳至伺服器來還原所有已刪除的檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1789"/>
+        <location filename="../src/gui/folder.cpp" line="1784"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2966,22 +2966,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 或者，您也可以從伺服器下載這些檔案來還原所有已刪除的檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1790"/>
+        <location filename="../src/gui/folder.cpp" line="1785"/>
         <source>Remove all files?</source>
         <translation>移除所有檔案？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1794"/>
+        <location filename="../src/gui/folder.cpp" line="1789"/>
         <source>Proceed with Deletion</source>
         <translation>繼續刪除</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files to Server</source>
         <translation>將檔案還原到伺服器</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files from Server</source>
         <translation>從伺服器還原檔案</translation>
     </message>
@@ -6592,7 +6592,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="833"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>選擇新位置 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="921"/>

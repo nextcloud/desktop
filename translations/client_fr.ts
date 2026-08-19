@@ -2864,19 +2864,19 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
         <translation>Activité de synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1185"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Could not read system exclude file</source>
         <translation>Impossible de lire le fichier d&apos;exclusion du système</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1470"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Un nouveau dossier de taille supérieure à %1 Mo a été ajouté : %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1478"/>
+        <location filename="../src/gui/folder.cpp" line="1473"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Un nouveau dossier localisé sur un stockage externe a été ajouté.
@@ -2884,49 +2884,49 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1479"/>
+        <location filename="../src/gui/folder.cpp" line="1474"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Merci d&apos;aller dans les Paramètres pour indiquer si vous souhaitez le télécharger.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1536"/>
+        <location filename="../src/gui/folder.cpp" line="1531"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Un dossier a dépassé la taille limite fixée de %1 Mo : %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1547"/>
+        <location filename="../src/gui/folder.cpp" line="1542"/>
         <source>Keep syncing</source>
         <translation>Continuer la synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1550"/>
         <source>Stop syncing</source>
         <translation>Arrêter la synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1561"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Le dossier %1 a dépassé la taille limite fixée de %2 Mo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1567"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Voulez vous arrêter la synchronisation de ce dossier ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Le dossier %1 a été créé mais il était exclu de la synchronisation auparavant. Les données qu&apos;il contient ne seront pas synchronisées.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1640"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Le fichier %1 a été créé mais il était exclu de la synchronisation auparavant. Il ne sera pas synchronisé.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1656"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2939,12 +2939,12 @@ Cela signifie que le client de bureau ne va pas téléverser immédiatement les 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1694"/>
+        <location filename="../src/gui/folder.cpp" line="1689"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Le téléchargement du fichier virtuel a échoué avec le code &quot;%1&quot;, statut &quot;%2&quot; et le message d&apos;erreur &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1788"/>
+        <location filename="../src/gui/folder.cpp" line="1783"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2953,7 +2953,7 @@ Veuillez confirmer si vous souhaitez procéder à ces suppressions.
 Vous pouvez également restaurer tous les fichiers supprimés en les téléversant depuis le dossier &apos;%1&apos; vers le serveur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1789"/>
+        <location filename="../src/gui/folder.cpp" line="1784"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2962,22 +2962,22 @@ Veuillez confirmer si vous souhaitez procéder à ces suppressions.
 Vous pouvez également restaurer tous les fichiers supprimés en les téléchargeant depuis le serveur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1790"/>
+        <location filename="../src/gui/folder.cpp" line="1785"/>
         <source>Remove all files?</source>
         <translation>Supprimer tous les fichiers ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1794"/>
+        <location filename="../src/gui/folder.cpp" line="1789"/>
         <source>Proceed with Deletion</source>
         <translation>Procéder à la suppression</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files to Server</source>
         <translation>Restaurer les fichiers sur le serveur</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files from Server</source>
         <translation>Restaurer des fichiers à partir du serveur</translation>
     </message>
