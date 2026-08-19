@@ -337,6 +337,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 #endif
 
     connectToTracking();
+    connect(Theme::instance(), &Theme::darkModeChanged, this, &GeneralSettings::slotStyleChanged);
     customizeStyle();
 }
 
@@ -859,11 +860,13 @@ void GeneralSettings::customizeStyle()
     }();
     _ui->infoAndUpdatesLabel->setText(aboutText);
 
-    this->setAutoFillBackground(true);
-    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
-
-    this->setStyleSheet(QStringLiteral("QGroupBox { border: none; font-size: %2; font-weight: %3; color: %4; }")
-                            .arg(WLTheme.settingsTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()));
+    // Background is expressed via the style sheet (not QPalette): once a widget has any
+    // style sheet applied, Qt's QStyleSheetStyle snapshots its "un-styled" palette on first
+    // polish and restores that frozen snapshot on every later style-sheet change, silently
+    // discarding a separately-called setPalette() on every re-run of customizeStyle().
+    this->setStyleSheet(QStringLiteral("OCC--GeneralSettings { background-color: %1; } "
+                                        "QGroupBox { border: none; font-size: %2; font-weight: %3; color: %4; }")
+                            .arg(WLTheme.dialogBackgroundColor(), WLTheme.settingsTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()));
 
     this->setStyleSheet(this->styleSheet()
                         + QStringLiteral("QCheckBox { font-size: %1; font-weight: %2; margin-left: %3 px; color: %4; }")
