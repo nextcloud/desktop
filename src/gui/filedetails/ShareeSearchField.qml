@@ -90,6 +90,7 @@ TextField {
 
     background: Rectangle {
         radius: 5
+        color: Style.sesBackgroundColor
         border.color: Style.sesMenuBorder
         border.width: 1
 
