@@ -29,7 +29,7 @@ int PropertyModel::rowCount(const QModelIndex &parent) const
 
 QVariant PropertyModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || index.row() >= _properties.size()) {
+    if (!checkIndex(index, CheckIndexOption::IndexIsValid | CheckIndexOption::ParentIsInvalid)) {
         return {};
     }
 
