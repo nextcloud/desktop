@@ -2867,68 +2867,68 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Δραστηριότητα Συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1185"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Could not read system exclude file</source>
         <translation>Αδυναμία ανάγνωσης αρχείου αποκλεισμού συστήματος</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1470"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Προστέθηκε ένας νέος φάκελος μεγαλύτερος από %1 MB: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1478"/>
+        <location filename="../src/gui/folder.cpp" line="1473"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Προστέθηκε ένας φάκελος από εξωτερικό αποθηκευτικό χώρο.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1479"/>
+        <location filename="../src/gui/folder.cpp" line="1474"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Μεταβείτε στις ρυθμίσεις για να το επιλέξετε εάν επιθυμείτε να το κατεβάσετε.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1536"/>
+        <location filename="../src/gui/folder.cpp" line="1531"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Ένας φάκελος έχει ξεπεράσει το όριο μεγέθους φακέλου των %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1547"/>
+        <location filename="../src/gui/folder.cpp" line="1542"/>
         <source>Keep syncing</source>
         <translation>Συνέχιση συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1550"/>
         <source>Stop syncing</source>
         <translation>Διακοπή συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1561"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Ο φάκελος %1 έχει ξεπεράσει το όριο μεγέθους φακέλου των %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1567"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Θα θέλατε να σταματήσετε τον συγχρονισμό αυτού του φακέλου;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Ο φάκελος %1 που δημιουργήθηκε έχει εξαιρεθεί απο τον συγχρονισμό. Τα δεδομένα του δεν θα συγχρονιστούν.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1640"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Το αρχείο %1 που δημιουργήθηκε έχει εξαιρεθεί απο τον συγχρονισμό. Δεν θα συγχρονιστή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1656"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2939,12 +2939,12 @@ This means that the synchronization client might not upload local changes immedi
 Αυτό σημαίνει ότι η εφαρμογή δεν θα ανεβάσει τις τοπικές αλλαγές άμεσα, θα ελέγξει μόνο τις τοπικές αλλαγές και θα τις ανεβάσει περιοδικά (κάθε δύο ώρες από προεπιλογή).</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1694"/>
+        <location filename="../src/gui/folder.cpp" line="1689"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Η λήψη εικονικού αρχείου απέτυχε με κωδικό &quot;%1&quot;, κατάσταση &quot;%2&quot; και μήνυμα σφάλματος &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1788"/>
+        <location filename="../src/gui/folder.cpp" line="1783"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2953,7 +2953,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 Εναλλακτικά, μπορείτε να επαναφέρετε όλα τα διαγραμμένα αρχεία μεταφορτώνοντας από τον φάκελο &apos;%1&apos; στον διακομιστή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1789"/>
+        <location filename="../src/gui/folder.cpp" line="1784"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2962,22 +2962,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 Εναλλακτικά, μπορείτε να επαναφέρετε όλα τα διαγραμμένα αρχεία κατεβάζοντάς τα από τον διακομιστή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1790"/>
+        <location filename="../src/gui/folder.cpp" line="1785"/>
         <source>Remove all files?</source>
         <translation>Αφαίρεση όλων των αρχείων;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1794"/>
+        <location filename="../src/gui/folder.cpp" line="1789"/>
         <source>Proceed with Deletion</source>
         <translation>Προχωρήστε με Διαγραφή</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files to Server</source>
         <translation>Επαναφορά Αρχείων στον Διακομιστή</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files from Server</source>
         <translation>Επαναφορά Αρχείων από τον Διακομιστή</translation>
     </message>
