@@ -3,6 +3,14 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include <QSignalSpy>
+#include <QTest>
+#include <QUrlQuery>
+
+#include <algorithm>
+#include <memory>
+#include <vector>
+
 #include "gui/sharing/addrecipientjob.h"
 #include "gui/sharing/addsourcejob.h"
 #include "gui/sharing/createsharejob.h"
@@ -30,14 +38,6 @@
 #include "gui/sharing/unifiedsharingrequest.h"
 #include "gui/sharing/updatesharejob.h"
 #include "syncenginetestutils.h"
-
-#include <QSignalSpy>
-#include <QTest>
-#include <QUrlQuery>
-
-#include <algorithm>
-#include <memory>
-#include <vector>
 
 using namespace OCC;
 using namespace OCC::Gui::Sharing;
