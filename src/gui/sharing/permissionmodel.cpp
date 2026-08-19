@@ -13,7 +13,7 @@ using namespace OCC;
 using namespace OCC::Gui::Sharing;
 
 PermissionModel::PermissionModel(QObject *parent)
-    : AbstractShareModel{parent}
+    : ShareDetailsListModel{parent}
 {}
 
 int PermissionModel::rowCount(const QModelIndex &parent) const
@@ -65,7 +65,7 @@ void PermissionModel::setShare(Share *share)
     }
 
     QObject::disconnect(_permissionsChangedConnection);
-    AbstractShareModel::setShare(share);
+    ShareDetailsListModel::setShare(share);
     if (!_share) {
         return;
     }

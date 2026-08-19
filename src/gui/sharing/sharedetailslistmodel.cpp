@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "abstractsharemodel.h"
+#include "sharedetailslistmodel.h"
 
 #include "unifiedshare.h"
 
@@ -11,16 +11,16 @@ using namespace Qt::StringLiterals;
 using namespace OCC;
 using namespace OCC::Gui::Sharing;
 
-AbstractShareModel::AbstractShareModel(QObject *parent)
+ShareDetailsListModel::ShareDetailsListModel(QObject *parent)
     : QAbstractListModel{parent}
 {}
 
-Share *AbstractShareModel::share() const
+Share *ShareDetailsListModel::share() const
 {
     return _share;
 }
 
-void AbstractShareModel::setShare(Share *share)
+void ShareDetailsListModel::setShare(Share *share)
 {
     if (_share == share) {
         return;
