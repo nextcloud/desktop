@@ -15,6 +15,8 @@
 #include "networkjobs.h"
 
 #include <QAuthenticator>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QPointer>
@@ -170,12 +172,75 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
 
     qCInfo(lcWebFlowCredentials()) << "Obtained a new password";
 
+    // The account identity is the persistent, unique dav_user. The webflow_user
+    // (login name) returned by the browser flow may legitimately differ from it
+    // and may change between logins, so remember the current values and only
+    // commit the new credentials once we confirmed they still map to the same
+    // dav_user. Reading the "davUser" property gives the raw stored dav_user
+    // rather than the credentials-user fallback of Account::davUser().
+    const auto previousUser = _user;
+    const auto previousDavUser = _account->property("davUser").toString();
+
+    // Tentatively apply the new credentials so the identity check below can
+    // authenticate with them; they are only persisted once verified.
     _user = user;
     _password = pass;
     _ready = true;
     _credentialsValid = true;
-    persist();
-    emit asked();
+
+    verifyReAuthenticatedUser(previousDavUser, previousUser);
+}
+
+void WebFlowCredentials::verifyReAuthenticatedUser(const QString &previousDavUser, const QString &previousUser)
+{
+    auto *const job = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v1.php/cloud/user"), this);
+    connect(job, &JsonApiJob::jsonReceived, this, [this, previousDavUser, previousUser](const QJsonDocument &json, int statusCode) {
+        if (statusCode != 100) {
+            qCWarning(lcWebFlowCredentials) << "Could not fetch user id to verify re-authentication, status code:" << statusCode;
+        }
+
+        const auto objData = json.object().value(QLatin1String("ocs")).toObject().value(QLatin1String("data")).toObject();
+        const auto newDavUser = objData.value(QLatin1String("id")).toString();
+
+        if (newDavUser.isEmpty()) {
+            // We could not determine the identity: keep the freshly provided
+            // credentials rather than locking the user out, but leave dav_user
+            // untouched.
+            qCWarning(lcWebFlowCredentials) << "Server did not return a user id, keeping provided credentials without verification";
+            persist();
+            emit asked();
+            return;
+        }
+
+        if (previousDavUser.isEmpty()) {
+            // No dav_user was stored yet: adopt the fetched id as the persistent
+            // identity and keep the new webflow_user.
+            qCInfo(lcWebFlowCredentials) << "Establishing dav_user" << newDavUser << "for account" << _account->url();
+            _account->setDavUser(newDavUser);
+            persist();
+            emit asked();
+            return;
+        }
+
+        if (QString::compare(previousDavUser, newDavUser, Qt::CaseInsensitive) != 0) {
+            // dav_user must stay constant: the user authenticated as a different
+            // account. Reject the new credentials and ask again.
+            qCWarning(lcWebFlowCredentials) << "Authenticated with the wrong user! Expected dav_user" << previousDavUser << "but got" << newDavUser;
+            _user = previousUser;
+            _password.clear();
+            _ready = false;
+            _credentialsValid = false;
+            askFromUser();
+            return;
+        }
+
+        // Same account: dav_user is unchanged. The webflow_user (login name) may
+        // have changed and is written back to the configuration by persist().
+        qCInfo(lcWebFlowCredentials) << "Re-authenticated same dav_user" << newDavUser << "- updating stored login name if it changed";
+        persist();
+        emit asked();
+    });
+    job->start();
 }
 
 void WebFlowCredentials::slotAskFromUserCancelled() {

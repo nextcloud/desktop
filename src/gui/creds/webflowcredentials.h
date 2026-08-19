@@ -89,6 +89,21 @@ private:
     void readSingleClientCaCertPEM();
     void writeSingleClientCaCertPEM();
 
+    /** Confirms that freshly provided browser credentials still belong to the
+     * account's persistent dav_user before they are persisted.
+     *
+     * The dav_user is the unique, persistent account id and must stay constant.
+     * The webflow_user (login name) may legitimately differ from it and change
+     * between logins, so it is updated in the configuration while dav_user is
+     * kept. Fetches ocs/.../cloud/user with the new credentials and, on success,
+     * either persists them (same or first-seen dav_user) or rejects and re-asks
+     * (different dav_user).
+     *
+     * @param previousDavUser the account's stored dav_user, empty if never set.
+     * @param previousUser the webflow_user in use before this re-authentication.
+     */
+    void verifyReAuthenticatedUser(const QString &previousDavUser, const QString &previousUser);
+
     /*
      * Since we're limited by Windows limits, we just create our own
      * limit to avoid evil things happening by endless recursion
