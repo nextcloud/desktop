@@ -73,6 +73,7 @@ ecm_add_qml_module(nextcloudGuiSharing
   GENERATE_PLUGIN_SOURCE
   QML_FILES
     FieldDelegate.qml
+    DeleteShareConfirmation.qml
     RecipientIcon.qml
     RecipientSearchField.qml
     ShareActionRow.qml
