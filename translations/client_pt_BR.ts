@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Não foi possível abrir o navegador. Copie o link para o seu navegador.</translation>
+        <translation>Não foi possível abrir o navegador. Por favor, copie o link para o seu navegador.</translation>
     </message>
 </context>
 <context>
@@ -2692,37 +2692,37 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="116"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation><numerusform>há %1 segundo</numerusform><numerusform>há %1 segundos</numerusform><numerusform>há %1 segundos</numerusform></translation>
+        <translation><numerusform>%1 segundo atrás</numerusform><numerusform>%1 de segundos atrás</numerusform><numerusform>%1 segundos atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="119"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation><numerusform>há %1 minuto</numerusform><numerusform>há %1 minutos</numerusform><numerusform>há %1 minutos</numerusform></translation>
+        <translation><numerusform>%1 minuto atrás</numerusform><numerusform>%1 de minutos atrás</numerusform><numerusform>%1 minutos atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="122"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation><numerusform>há %1 hora</numerusform><numerusform>há %1 horas</numerusform><numerusform>há %1 horas</numerusform></translation>
+        <translation><numerusform>%1 hora atrás</numerusform><numerusform>%1 de horas atrás</numerusform><numerusform>%1 horas atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="125"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation><numerusform>há %1 dia</numerusform><numerusform>há %1 dias</numerusform><numerusform>há %1 dias</numerusform></translation>
+        <translation><numerusform>%1 dia atrás</numerusform><numerusform>%1 de dias atrás</numerusform><numerusform>%1 dias atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation><numerusform>há %1 mês</numerusform><numerusform>há %1 de meses</numerusform><numerusform>há %1 meses</numerusform></translation>
+        <translation><numerusform>%1 mês atrás</numerusform><numerusform>%1 de meses atrás</numerusform><numerusform>%1 meses atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation><numerusform>há %1 ano</numerusform><numerusform>há %1 de anos</numerusform><numerusform>há %1 anos</numerusform></translation>
+        <translation><numerusform>%1 ano atrás</numerusform><numerusform>%1 de anos atrás</numerusform><numerusform>%1 anos atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
