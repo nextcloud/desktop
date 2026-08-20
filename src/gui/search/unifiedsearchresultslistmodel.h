@@ -131,7 +131,7 @@ public:
         LoadingRole,
     };
 
-    Q_INVOKABLE explicit UnifiedSearchResultsListModel(QObject *parent = nullptr);
+    explicit UnifiedSearchResultsListModel(QObject *parent = nullptr);
     explicit UnifiedSearchResultsListModel(AccountState *accountState,
                                             int debounceInterval = 300,
                                             int revealInterval = 1000,
