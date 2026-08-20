@@ -60,6 +60,7 @@ Beim UI-Theming (Ausblenden von Komponenten, Änderungen in Subdialogen) mit vie
 - **gui-context-refresh**: pflegt die Strukturdoku unter `.claude/context/gui/`. Dieser Skill liest nur daraus und aktualisiert sie nicht.
 - **stable-merge-check**: für Merge-Risiko-Analyse im Detail und Post-Merge-Diagnose. Bei Bedarf verlinken statt inhaltlich duplizieren.
 - **shadow-component-watch**: für laufende Überwachung von Fork-Ersatzkomponenten gegen Upstream. Dieser Skill prüft nur kurz, ob die Komponente dort registriert ist.
+- **color-scheme-map**: für die Farb-Property-Landkarte (welches Theme-Property, Light-/Dark-Wert, Bruch oder nicht) einer Komponente — dieser Skill liest davon nichts mit, bei Bedarf explizit verweisen.
 
 ## Nicht in diesem Skill enthalten
 

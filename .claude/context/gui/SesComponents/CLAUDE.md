@@ -17,4 +17,4 @@ The two QML components are drop-in replacements/extensions for tray and sharing 
 - Entire folder is fork-only (BRICKMAKERS/IONOS-HiDrive Next fork), no upstream Nextcloud equivalent directory exists.
 - `SesTrayHeader.qml` specifically substitutes for/duplicates parts of what would otherwise be inline header markup in upstream `tray/MainWindow.qml`.
 
-*Quelle: src/gui/SesComponents — Stand 2026-08-17, automatisch erstellt, bitte gegenlesen.*
+*Quelle: src/gui/SesComponents — Stand 2026-08-20, automatisch erstellt, bitte gegenlesen.*
