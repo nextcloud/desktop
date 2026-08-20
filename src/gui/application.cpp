@@ -35,6 +35,7 @@
 #include "sesstyle.h"
 #include "version.h"
 
+#include <QOperatingSystemVersion>
 #include <QStyleFactory>
 
 #include "config.h"
@@ -441,7 +442,18 @@ Application::Application(int &argc, char **argv)
 #endif
 
 #ifdef IONOS_BUILD
-    setStyle(new sesStyle(QStyleFactory::create("WindowsVista")));
+#if defined(Q_OS_WIN)
+    // Match stable's OS-version-based widget style choice (see main.cpp) so native
+    // primitives (e.g. QTreeView branch indicators) stay palette/dark-mode aware
+    // instead of falling back to the legacy UxTheme-based "WindowsVista" style.
+    const auto baseStyleName = QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows11
+        ? QStringLiteral("windows11")
+        : QStringLiteral("Fusion");
+    setStyle(new sesStyle(QStyleFactory::create(baseStyleName)));
+#else
+    // QProxyStyle falls back to the platform's current style when given nullptr.
+    setStyle(new sesStyle(nullptr));
+#endif
 #endif
 
     // create accounts and folders from a legacy desktop client or from the current config file
