@@ -1910,6 +1910,12 @@ void AccountSettings::slotStyleChanged()
 
 void AccountSettings::customizeStyle()
 {
+    // Unlike GeneralSettings, this page never painted its own background, so it stayed
+    // stuck on the ambient (unreliable on Windows 11 dark mode, see below) palette instead
+    // of the already-themed dialogBackgroundColor().
+    setAutoFillBackground(true);
+    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
+
     auto msg = _ui->connectLabel->text();
     Theme::replaceLinkColorStringBackgroundAware(msg);
     _ui->connectLabel->setText(msg);
