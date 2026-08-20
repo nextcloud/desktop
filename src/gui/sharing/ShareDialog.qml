@@ -217,121 +217,25 @@ WizardStyledWindow {
                 onClearActivationError: dialog.shareActivationError = ""
             }
 
-            WizardDialogFrame {
+            ShareDetailsFrame {
                 id: shareDetailsFrame
 
-                footerSeparatorVisible: dialog.selectedShare !== null
-                footerTopPadding: Style.standardSpacing
+                sharingController: sharingController
+                share: dialog.selectedShare
+                activatingShare: dialog.activatingShare
+                activationError: dialog.shareActivationError
 
-                ColumnLayout {
-                    anchors.fill: parent
-                    spacing: Style.wizardSectionSpacing
-
-                    ScrollView {
-                        id: shareDetailsScrollView
-
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        contentWidth: availableWidth
-                        clip: true
-
-                        ColumnLayout {
-                            width: shareDetailsScrollView.availableWidth
-
-                            Loader {
-                                id: shareDetailsLoader
-
-                                Layout.fillWidth: true
-                                Layout.leftMargin: shareDetailsFrame.windowMargin
-                                Layout.rightMargin: shareDetailsFrame.windowMargin
-                                Layout.preferredHeight: active && item ? item.implicitHeight : 0
-                                active: dialog.selectedShare !== null
-                                visible: active
-
-                                sourceComponent: ShareDetailsPage {
-                                    sharingController: sharingController
-                                    share: dialog.selectedShare
-                                }
-                            }
-                        }
-
-                        ScrollBar.horizontal: ScrollBar {
-                            policy: ScrollBar.AlwaysOff
-                        }
-
-                        ScrollBar.vertical.policy: ScrollBar.AsNeeded
-                    }
-
-                    ErrorBox {
-                        Layout.fillWidth: true
-                        Layout.leftMargin: shareDetailsFrame.windowMargin
-                        Layout.rightMargin: shareDetailsFrame.windowMargin
-                        text: dialog.shareActivationError
-                        visible: text.length > 0
-                    }
-
-                    ErrorBox {
-                        Layout.fillWidth: true
-                        Layout.leftMargin: shareDetailsFrame.windowMargin
-                        Layout.rightMargin: shareDetailsFrame.windowMargin
-                        text: sharingController.shareDestructionError
-                        visible: text.length > 0
-                    }
-
-                    EnforcedPlainTextLabel {
-                        Layout.fillWidth: true
-                        Layout.leftMargin: shareDetailsFrame.windowMargin
-                        Layout.rightMargin: shareDetailsFrame.windowMargin
-                        text: qsTr("Changes to this share are applied immediately.")
-                        color: Style.wizardSecondaryText
-                        wrapMode: Text.Wrap
-                        visible: dialog.selectedShare && dialog.selectedShare.state === Share.Active
-                    }
+                onDeleteRequested: share => {
+                    dialog.sharePendingDeletion = share
+                    deleteShareConfirmation.open()
                 }
-
-                footer: [
-                    WizardButton {
-                        text: qsTr("Delete share")
-                        enabled: !sharingController.destroyingShare
-                        visible: dialog.selectedShare && dialog.selectedShare.state === Share.Active
-                        iconSource: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
-                        iconBeforeText: true
-                        onClicked: {
-                            dialog.sharePendingDeletion = dialog.selectedShare
-                            deleteShareConfirmation.open()
-                        }
-                    },
-                    Item {
-                        Layout.fillWidth: true
-                    },
-                    WizardButton {
-                        text: qsTr("Close")
-                        visible: dialog.selectedShare && dialog.selectedShare.state === Share.Active
-                        onClicked: dialog.selectedShare = null
-                    },
-                    WizardButton {
-                        text: sharingController.destroyingShare ? qsTr("Cancelling…") : qsTr("Cancel")
-                        enabled: !sharingController.destroyingShare && !dialog.activatingShare
-                        visible: dialog.selectedShare && dialog.selectedShare.state === Share.Draft
-
-                        onClicked: sharingController.destroyShare(dialog.selectedShare)
-                    },
-                    WizardButton {
-                        primary: true
-                        text: dialog.activatingShare ? qsTr("Saving…") : qsTr("Save")
-                        enabled: !dialog.activatingShare && !sharingController.destroyingShare && dialog.selectedShare && dialog.selectedShare.recipients.length > 0
-                        visible: dialog.selectedShare && dialog.selectedShare.state === Share.Draft
-
-                        onClicked: {
-                            dialog.shareActivationError = ""
-                            if (shareDetailsLoader.item) {
-                                shareDetailsLoader.item.commitPendingChanges()
-                            }
-                            dialog.activatingShare = true
-                            sharingController.activateShare(dialog.selectedShare)
-                        }
-                    }
-                ]
+                onCloseRequested: dialog.selectedShare = null
+                onCancelRequested: sharingController.destroyShare(dialog.selectedShare)
+                onSaveRequested: {
+                    dialog.shareActivationError = ""
+                    dialog.activatingShare = true
+                    sharingController.activateShare(dialog.selectedShare)
+                }
             }
         }
     }
