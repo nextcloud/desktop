@@ -104,7 +104,9 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     "    background-color: "
     + WLTheme.dialogBackgroundColor() +
     ";" // Set the background color
-    "    border: 1px solid #e6e6e6;"   // Optional: add a border
+    // Matches the tray's own hairline separators (e.g. MainWindow.qml), which use the
+    // Qt palette's "dark" role directly instead of a WLTheme getter - already theme-aware.
+    "    border: 1px solid palette(dark);"
     "    padding-left: 4px;"
     +    QString(WLTheme.fontConfigurationCss(
             WLTheme.settingsFont(),
@@ -554,13 +556,16 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
 
     QPushButton *button = nullptr;
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
+    // This button has no explicit "buttonStyle" property, so it renders via the app-wide
+    // SecondaryButtonStyle (buttonSecondaryColor()/buttonSecondaryBorderColor()), which is
+    // now dark-mode-aware (see basetheme.h/stratotheme.h). Match its text to that background.
     button->setStyleSheet(
         button->styleSheet() + QStringLiteral("QPushButton { %1; } ").arg(
             WLTheme.fontConfigurationCss(
                 WLTheme.settingsFont(),
                 WLTheme.settingsTextSize(),
                 WLTheme.settingsTextWeight(),
-                WLTheme.black()
+                WLTheme.titleColor()
             )
         )
     );

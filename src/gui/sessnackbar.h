@@ -50,7 +50,7 @@ namespace OCC {
         QLabel m_captionLabel;
         QLabel m_iconLabel;
 
-        void updateStyleSheet(QColor frameBorderColor, QColor frameBackgroundColor, QColor frameColor, QColor labelColor);
+        void updateStyleSheet(QColor frameBorderColor);
         void setMessage(QString messageText);
 
         void errorStyle();

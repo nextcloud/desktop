@@ -1330,6 +1330,9 @@ void AccountSettings::migrateCertificateForAccount(const AccountPtr &account)
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
 {
 #ifndef IONOS_BUILD
+    // SES-578: white-on-red is a fixed, self-contained contrast pair - deliberately not themed,
+    // matching the tray's own alert colors (e.g. Style.errorBoxBackgroundColor / infoBoxBackgroundColor
+    // in Style.qml), which stay constant across light/dark rather than getting a dark variant.
     const auto errStyle = QLatin1String(
         "color:#ffffff; background-color:#bb4d4d;padding:5px;"
         "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
@@ -1352,6 +1355,9 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
     _ui->accountStatus->setVisible(false);
 #else
 
+    // SES-578: white-on-red is a fixed, self-contained contrast pair - deliberately not themed,
+    // matching the tray's own alert colors (e.g. Style.errorBoxBackgroundColor / infoBoxBackgroundColor
+    // in Style.qml), which stay constant across light/dark rather than getting a dark variant.
     const auto errStyle = QLatin1String(
         "color:#ffffff; background-color:#bb4d4d;padding:5px;"
         "border-width: 1px; border-style: solid; border-color: #aaaaaa;"

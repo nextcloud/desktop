@@ -299,7 +299,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     auto textBoxTop = qMax(localPathRect.bottom(), remotePathRect.bottom()) +  margin;
 
     // paint an error overlay if there is an error string or conflict string
-    auto drawTextBox = [&](const QStringList &texts, QColor color, QColor borderColor) {
+    auto drawTextBox = [&](const QStringList &texts, QColor borderColor) {
         auto rect = localPathRect;
         rect.setLeft(iconRect.left());
         rect.setTop(textBoxTop);
@@ -323,11 +323,17 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // save previous state to not mess up colours with the background (fixes issue: https://github.com/nextcloud/desktop/issues/1237)
         painter->save();
-        painter->setBrush(color);
+        // warning/error/infoColor() are opaque near-white pastels with no dark variant. Instead of
+        // inventing new dark pastels, tint the (already theme-aware) row background with the border
+        // hue at low alpha - the same translucent-overlay technique the tray uses for its alert/error
+        // boxes (ErrorBox.qml, MainWindow.qml's trayWindowSyncWarning) so it adapts automatically.
+        auto fillColor = borderColor;
+        fillColor.setAlphaF(0.2f);
+        painter->setBrush(fillColor);
         painter->setPen(borderColor);
         painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, rect),
             4, 4);
-        painter->setPen(Qt::black);
+        painter->setPen(palette.color(colourGroup, QPalette::Text));
         painter->setFont(errorFont);
         QRect textRect(rect.left() + margin,
             rect.top() + margin,
@@ -348,10 +354,10 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     };
 
     if (!conflictTexts.isEmpty()) {
-        drawTextBox(conflictTexts, QColor(WLTheme.warningColor()), QColor(WLTheme.warningBorderColor()));
+        drawTextBox(conflictTexts, QColor(WLTheme.warningBorderColor()));
     }
     if (!errorTexts.isEmpty()) {
-        drawTextBox(errorTexts, QColor(WLTheme.errorColor()), QColor(WLTheme.errorBorderColor()));
+        drawTextBox(errorTexts, QColor(WLTheme.errorBorderColor()));
     }
 
     // Paint "Grant access" button when sandbox re-approval is needed
@@ -377,7 +383,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
 
     if (!infoTexts.isEmpty()) {
-        drawTextBox(infoTexts, QColor(WLTheme.infoColor()), QColor(WLTheme.infoBorderColor()));
+        drawTextBox(infoTexts, QColor(WLTheme.infoBorderColor()));
     }
 
     // Sync File Progress Bar: Show it if syncFile is not empty.

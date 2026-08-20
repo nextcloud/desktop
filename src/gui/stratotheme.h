@@ -62,12 +62,14 @@ public:
         return "#CDD5E3";
     }
 
-    QString buttonSecondaryColor() const override { 
-        return "#F7F7F9";
+    QString buttonSecondaryColor() const override {
+        // Dark value matches pillButtonSecondaryColor() below (SecondaryPillButton.qml).
+        return themedColor("#F7F7F9", "#2E2F3D");
     }
 
-    QString buttonSecondaryBorderColor() const override { 
-        return "#CDD5E3";
+    QString buttonSecondaryBorderColor() const override {
+        // Dark value matches pillButtonBorderColor() below, which stays white in both modes.
+        return themedColor("#CDD5E3", "#FFFFFF");
     }
 
     QString buttonSecondaryHoverColor() const override {
@@ -144,10 +146,6 @@ public:
 
     QString menuPressedItemColor() const override {
         return themedColor("#5A6782", "#3A3B52");
-    }
-
-    QString errorColor() const override {
-        return "#FFE0ED";
     }
 
     QString errorBorderColor() const override {

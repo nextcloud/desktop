@@ -372,11 +372,13 @@ public:
     }
 
     virtual QString buttonSecondaryColor() const {
-        return "#FFFFFF";
+        // Dark value matches the tray's pillButtonSecondaryColor() (SecondaryPillButton.qml).
+        return themedColor("#FFFFFF", "#2A2E35");
     }
 
     virtual QString buttonSecondaryBorderColor() const {
-        return "#D1D1D1";
+        // Dark value matches the tray's pillButtonBorderColor() (SecondaryPillButton.qml).
+        return themedColor("#D1D1D1", "#3D6BB0");
     }
 
     virtual QString buttonDisabledColor() const {
@@ -495,10 +497,6 @@ public:
         return themedColor("#95CAEB", "#2C4A63");
     }
 
-    virtual QString errorColor() const {
-        return "#FDF3F4";
-    }
-
     virtual QString errorBorderColor() const {
         return "#EEACB2";
     }
@@ -515,24 +513,12 @@ public:
         return "#F4BFAB";
     }
 
-    virtual QString warningColor() const {
-        return "#FDF6F3";
-    }
-
     virtual QString successBorderColor() const {
         return "#9FD89F";
     }
 
-    virtual QString successColor() const {
-        return "#F1FAF1";
-    }
-
     virtual QString infoBorderColor() const {
         return "#11C7E6";
-    }
-
-    virtual QString infoColor() const {
-        return "#E6F9FC";
     }
 
     virtual QString treeViewHoverColor() const {
