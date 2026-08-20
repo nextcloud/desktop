@@ -20,22 +20,6 @@ WizardStyledWindow {
     id: dialog
     visible: true
 
-    component DetachedVerticalScrollBar: ScrollBar {
-        required property var flickable
-
-        orientation: Qt.Vertical
-        policy: ScrollBar.AsNeeded
-        size: flickable.visibleArea.heightRatio
-        position: flickable.visibleArea.yPosition
-        active: flickable.movingVertically || hovered || pressed
-
-        onPositionChanged: {
-            if (pressed) {
-                flickable.contentY = flickable.originY + position * flickable.contentHeight
-            }
-        }
-    }
-
     required property var account
     property string localPath: ""
     property string shortLocalPath: dialog.localPath.split("/").reverse()[0]
@@ -344,6 +328,7 @@ WizardStyledWindow {
                             clip: true
                             spacing: Style.extraSmallSpacing
                             model: shareListModel
+                            ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
                             delegate: Loader {
                                 id: rowLoader
@@ -425,13 +410,6 @@ WizardStyledWindow {
                                 }
                             }
                         }
-
-                        DetachedVerticalScrollBar {
-                            anchors.top: parent.top
-                            anchors.right: parent.right
-                            anchors.bottom: parent.bottom
-                            flickable: shareListView
-                        }
                     }
                 }
             }
@@ -478,7 +456,7 @@ WizardStyledWindow {
                             policy: ScrollBar.AlwaysOff
                         }
 
-                        ScrollBar.vertical.policy: ScrollBar.AlwaysOff
+                        ScrollBar.vertical.policy: ScrollBar.AsNeeded
                     }
 
                     ErrorBox {
@@ -506,13 +484,6 @@ WizardStyledWindow {
                         wrapMode: Text.Wrap
                         visible: dialog.selectedShare && dialog.selectedShare.state === Share.Active
                     }
-                }
-
-                DetachedVerticalScrollBar {
-                    anchors.top: parent.top
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    flickable: shareDetailsScrollView.contentItem
                 }
 
                 footer: [
