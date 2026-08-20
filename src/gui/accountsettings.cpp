@@ -1916,6 +1916,18 @@ void AccountSettings::customizeStyle()
     setAutoFillBackground(true);
     setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
 
+    // Card-style panels sitting on top of the page background, matching stable-33.0's
+    // grouped-panel layout (accountStatusPanel/fileProviderPanel/syncFoldersPanel/
+    // connectionSettingsPanel), which this fork's IONOS_BUILD styling never applied.
+    // QFrame doesn't paint a stylesheet background on its own - needs WA_StyledBackground.
+    _ui->accountStatusPanel->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->fileProviderPanel->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->syncFoldersPanel->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->connectionSettingsPanel->setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(QStringLiteral("#accountStatusPanel, #fileProviderPanel, #syncFoldersPanel, #connectionSettingsPanel "
+                                  "{ background-color: %1; border-radius: 10px; }")
+                      .arg(WLTheme.panelBackgroundColor()));
+
     auto msg = _ui->connectLabel->text();
     Theme::replaceLinkColorString(msg, QColor(WLTheme.settingsLinkColor()));
     _ui->connectLabel->setText(msg);
