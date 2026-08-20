@@ -30,8 +30,6 @@ WizardStyledWindow {
     property bool activatingShare: false
     property string shareActivationError: ""
 
-    signal clearNewShareRecipientSearch
-
     property FileDetails fileDetails: FileDetails {
         localPath: dialog.localPath
     }
@@ -72,32 +70,6 @@ WizardStyledWindow {
         return names.length > 0 ? qsTr("Share with %1").arg(names.join(", ")) : qsTr("New share")
     }
 
-    function sectionTitle(section: string): string {
-        if (section === "internal") {
-            return qsTr("Internal shares")
-        }
-        if (section === "external") {
-            return qsTr("External shares")
-        }
-        if (section === "additional") {
-            return qsTr("Additional shares")
-        }
-        return qsTr("Pending shares")
-    }
-
-    function sectionDescription(section: string): string {
-        if (section === "internal") {
-            return qsTr("Share files within your organisation. Recipients who can already view the file can also use this link for easy access.")
-        }
-        if (section === "external") {
-            return qsTr("Share files with others outside your organisation via public links and email addresses. You can also share to Nextcloud accounts on other instances using their federated cloud ID.")
-        }
-        if (section === "additional") {
-            return qsTr("Shares from apps or other sources which are not included in internal or external shares.")
-        }
-        return ""
-    }
-
     function copyToClipboard(value: string): void {
         clipboardHelper.text = value
         clipboardHelper.selectAll()
@@ -112,11 +84,6 @@ WizardStyledWindow {
 
     SharingController {
         id: sharingController
-    }
-
-    UnifiedShareListModel {
-        id: shareListModel
-        sharingController: sharingController
     }
 
     TextEdit {
@@ -141,13 +108,6 @@ WizardStyledWindow {
             dialog.reconcileSelectedShare()
         }
 
-        function onShareCreated(share) {
-            dialog.clearNewShareRecipientSearch()
-            if (!share.publicLink) {
-                dialog.selectedShare = share
-            }
-        }
-
         function onShareActivated(share) {
             if (share === dialog.selectedShare) {
                 dialog.activatingShare = false
@@ -162,10 +122,6 @@ WizardStyledWindow {
             } else if (share && share.publicLink) {
                 dialog.shareActivationError = error
             }
-        }
-
-        function onInternalLinkResolved(url) {
-            dialog.copyToClipboard(url)
         }
     }
 
@@ -247,171 +203,18 @@ WizardStyledWindow {
             Layout.fillHeight: true
             currentIndex: dialog.selectedShare ? 1 : 0
 
-            Item {
-                id: shareListPane
+            ShareListPage {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                account: dialog.account
+                sharingController: sharingController
+                fileId: dialog.fileId
+                remotePath: dialog.remotePath
+                activationError: dialog.shareActivationError
 
-                ColumnLayout {
-                    anchors.fill: parent
-                    spacing: 0
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        Layout.leftMargin: Style.sharingDialogWindowMargin
-                        Layout.rightMargin: Style.sharingDialogWindowMargin
-                        Layout.topMargin: Style.standardSpacing
-                        Layout.bottomMargin: Style.standardSpacing
-                        spacing: Style.standardSpacing
-
-                        RecipientSearchField {
-                            id: newShareRecipientSearch
-
-                            Layout.fillWidth: true
-                            enabled: !sharingController.creatingShare && dialog.fileId.length > 0
-                            account: dialog.account
-                            shareId: ""
-
-                            onRecipientSelected: (recipientType, recipientValue, recipientInstance) => {
-                                sharingController.createShareForRecipient(dialog.fileId, recipientType, recipientValue, recipientInstance)
-                            }
-
-                            Connections {
-                                target: dialog
-
-                                function onClearNewShareRecipientSearch() {
-                                    newShareRecipientSearch.clear()
-                                }
-                            }
-                        }
-
-                        EnforcedPlainTextLabel {
-                            Layout.fillWidth: true
-                            text: qsTr("Creating share…")
-                            color: Style.wizardSecondaryText
-                            visible: sharingController.creatingShare
-                        }
-
-                        ErrorBox {
-                            Layout.fillWidth: true
-                            text: sharingController.shareCreationError
-                            visible: text.length > 0
-                        }
-
-                        ErrorBox {
-                            Layout.fillWidth: true
-                            text: sharingController.shareDestructionError
-                            visible: text.length > 0
-                        }
-
-                        ErrorBox {
-                            Layout.fillWidth: true
-                            text: sharingController.internalLinkError
-                            visible: text.length > 0
-                        }
-
-                        ErrorBox {
-                            Layout.fillWidth: true
-                            text: dialog.shareActivationError
-                            visible: !dialog.selectedShare && text.length > 0
-                        }
-                    }
-
-                    Item {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-
-                        ListView {
-                            id: shareListView
-
-                            anchors.fill: parent
-                            anchors.leftMargin: Style.sharingDialogWindowMargin
-                            anchors.rightMargin: Style.sharingDialogWindowMargin
-                            clip: true
-                            spacing: Style.extraSmallSpacing
-                            model: shareListModel
-                            ScrollBar.vertical.policy: ScrollBar.AsNeeded
-
-                            delegate: Loader {
-                                id: rowLoader
-
-                                required property int itemType
-                                required property string section
-                                required property Share share
-                                required property string recipientNames
-                                required property bool publicLink
-                                required property string publicLinkUrl
-
-                                width: ListView.view.width
-                                height: item ? item.implicitHeight : 0
-                                sourceComponent: {
-                                    if (itemType === UnifiedShareListModel.SectionHeader) {
-                                        return sectionHeaderComponent
-                                    }
-                                    if (itemType === UnifiedShareListModel.InternalLink) {
-                                        return internalLinkComponent
-                                    }
-                                    if (itemType === UnifiedShareListModel.CreatePublicLink) {
-                                        return createPublicLinkComponent
-                                    }
-                                    return shareComponent
-                                }
-
-                                Component {
-                                    id: sectionHeaderComponent
-
-                                    ShareSectionHeader {
-                                        title: dialog.sectionTitle(rowLoader.section)
-                                        description: dialog.sectionDescription(rowLoader.section)
-                                    }
-                                }
-
-                                Component {
-                                    id: internalLinkComponent
-
-                                    ShareActionRow {
-                                        title: qsTr("Internal link")
-                                        subtitle: qsTr("For people who already have access")
-                                        actionIcon: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
-                                        actionName: qsTr("Copy internal link")
-                                        actionEnabled: !sharingController.resolvingInternalLink && dialog.remotePath.length > 0
-
-                                        onActionRequested: sharingController.requestInternalLink(dialog.remotePath, dialog.fileId)
-                                    }
-                                }
-
-                                Component {
-                                    id: createPublicLinkComponent
-
-                                    ShareActionRow {
-                                        title: qsTr("Create public link")
-                                        subtitle: ""
-                                        actionIcon: "image://svgimage-custom-color/add.svg/" + palette.buttonText
-                                        actionName: qsTr("Create public link")
-                                        actionEnabled: !sharingController.creatingShare && dialog.fileId.length > 0
-
-                                        onActionRequested: {
-                                            dialog.shareActivationError = ""
-                                            sharingController.createPublicLink(dialog.fileId)
-                                        }
-                                    }
-                                }
-
-                                Component {
-                                    id: shareComponent
-
-                                    ShareRow {
-                                        share: rowLoader.share
-                                        recipientNames: rowLoader.recipientNames
-                                        publicLink: rowLoader.publicLink
-                                        publicLinkUrl: rowLoader.publicLinkUrl
-
-                                        onCopyRequested: dialog.copyToClipboard(publicLinkUrl)
-                                        onConfigureRequested: dialog.selectedShare = share
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                onShareSelected: share => dialog.selectedShare = share
+                onCopyRequested: value => dialog.copyToClipboard(value)
+                onClearActivationError: dialog.shareActivationError = ""
             }
 
             WizardDialogFrame {
