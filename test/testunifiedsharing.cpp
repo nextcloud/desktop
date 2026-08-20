@@ -105,6 +105,7 @@ private slots:
 
         RecipientModel model;
         model.setShare(share.get());
+        QAbstractItemModelTester modelTester(&model);
         QCOMPARE(model.rowCount(), 2);
         const auto index = model.index(0);
         QCOMPARE(model.data(index, RecipientModel::InstanceRole).toString(), "cloud.example.com"_L1);
@@ -185,6 +186,7 @@ private slots:
 
         PropertyModel model;
         model.setShare(share.get());
+        QAbstractItemModelTester modelTester(&model);
 
         QCOMPARE(model.rowCount(), 4);
         QVERIFY(!model.data({}, PropertyModel::LabelRole).isValid());
@@ -234,6 +236,7 @@ private slots:
 
         PermissionModel model;
         model.setShare(shareWithOnePermission.get());
+        QAbstractItemModelTester modelTester(&model);
         QCOMPARE(model.rowCount(), 1);
         const auto index = model.index(0);
         QCOMPARE(model.data(index, PermissionModel::LabelRole).toString(), "View files"_L1);
@@ -661,6 +664,7 @@ private slots:
         QSignalSpy modelResetSpy{&model, &QAbstractItemModel::modelReset};
 
         controller.initialize("42"_L1);
+        QAbstractItemModelTester modelTester(&model);
 
         QTRY_COMPARE(model.rowCount(), 11);
         QCOMPARE(model.data(model.index(0), UnifiedShareListModel::ItemTypeRole).value<UnifiedShareListModel::ItemType>(),
@@ -952,6 +956,7 @@ private slots:
 
         UnifiedShareListModel model;
         model.setSharingController(&controller);
+        QAbstractItemModelTester modelTester(&model);
         QCOMPARE(model.rowCount(), 5);
         QCOMPARE(model.data(model.index(3), UnifiedShareListModel::PublicLinkRole).toBool(), true);
         QCOMPARE(model.data(model.index(3), UnifiedShareListModel::PublicLinkUrlRole).toString(), publicUrl);
@@ -2065,6 +2070,7 @@ private slots:
 
         RecipientSearchModel model;
         model.setAccount(fakeFolder.account());
+        QAbstractItemModelTester modelTester(&model);
         QVERIFY(!model.fetchOngoing());
         model.setQuery("o"_L1);
         model.setQuery("ol"_L1);
