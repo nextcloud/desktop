@@ -904,7 +904,11 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     button(QWizard::NextButton)->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
 
     adjustWizardSize();
-    setWizardStyle(QWizard::ClassicStyle);
+    // ClassicStyle/AeroStyle render their chrome (banner/background) natively on Windows and
+    // ignore our QPalette overrides in customizeStyle() below - QTBUG-123853. Upstream fixed this
+    // by switching to ModernStyle (8b1e3fcd9); the SES-457 whitelabel squash-commit accidentally
+    // reverted it back to ClassicStyle while restyling the wizard, reintroducing the regression.
+    setWizardStyle(QWizard::ModernStyle);
     customizeStyle();
 
     // Close the wizard if initial folder selection is canceled
