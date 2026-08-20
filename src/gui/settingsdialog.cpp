@@ -92,20 +92,24 @@ public:
     }
 };
 
-#ifdef IONOS
+#ifdef IONOS_BUILD
 constexpr auto TOOLBAR_CSS = QLatin1String(
-    "QToolBar { background: %1; border: none; border-bottom: 1px solid %2; } "
+    // No border-bottom here: the toolbar's height tracks its content (see setSizePolicy()
+    // in setupUi()), so a bottom border would sit right under the last account button,
+    // reading as a spurious extra separator. The one intentional divider (below "General")
+    // is the explicit addSeparator(), styled via QToolBar::separator below.
+    "QToolBar { background: %1; border: none; } "
     "QToolBar QToolButton { background: %1; border: none; margin: 2px 0px 7px 12px; padding: 10px 4px 4px 4px; border-radius: %5; %8; } "
     "QToolBar QToolButton:checked { background: %7; color: %4; }"
     "QToolBar QToolButton:hover { background: %3; }"
     "QToolBar QToolButton:pressed { background: %6; color: %4; }"
-    "QToolBar::separator { height: 100%; width: 1px; background: %2; margin-left: 12px; } " // Style for the separator
+    "QToolBar::separator { width: 100%; height: 1px; background: %2; margin-left: 12px; } " // Style for the separator
     "QToolBarExtension#qt_toolbar_ext_button {margin: 0 0 7px 0; padding: 0;}" // Style overflow button
     "QMenu { background: %1; color: %4; }" // Style overflow menu
     "QMenu::item::checked { background: %7; color: %4; }"
     "QMenu::item::selected { background: %3; color: %4; }"
     "QMenu::item::pressed { background: %6; color: %4; }"
-    "QToolTip { color: %4; background-color: %1; border: 1px solid %2; }")
+    "QToolTip { color: %4; background-color: %1; border: 1px solid %2; }");
 #else
 constexpr auto TOOLBAR_CSS = QLatin1String(
     "QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
@@ -514,15 +518,16 @@ void SettingsDialog::customizeStyle()
     if (_updatingStyle) {
         return;
     }
-    QVariantMap palette = Theme::instance()->systemPalette();
+    const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
 
-    QString white(palette["window"].value<QColor>().name());
+    QString white(WLTheme.dialogBackgroundColor());
     QString hoverColor(WLTheme.toolButtonHoveredColor());
     QString pressedColor(WLTheme.toolButtonPressedColor());
     QString selectedColor(WLTheme.menuSelectedItemColor());
 
-    QString borderColor(palette["shadow"].value<QColor>().name());
-    QString highlightTextColor(palette["highlightedText"].value<QColor>().name());
+    // Matches the light value previously hardcoded in the now-removed IONOSPalette (#D1D1D1).
+    QString borderColor(WLTheme.buttonSecondaryBorderColor());
+    QString highlightTextColor(WLTheme.titleColor());
 
     QString toolbarActionBorderRadius(WLTheme.toolbarActionBorderRadius());
     QString toolbarSideMargin(WLTheme.toolbarSideMargin());
@@ -531,6 +536,14 @@ void SettingsDialog::customizeStyle()
 
     _toolBar->setStyleSheet(
         QString(TOOLBAR_CSS).arg(white, borderColor, hoverColor, highlightTextColor, toolbarActionBorderRadius, pressedColor, selectedColor, toolButtonFont));
+
+    // The toolbar itself only covers its buttons' rect, not the stretch area below them
+    // (see navigationLayout->addStretch() in setupUi()) nor the dialog's own background -
+    // style those explicitly here (rebuilt on every call, e.g. dark mode toggling) rather
+    // than relying on ownCloudGui's one-shot, non-reactive setStyleSheet() after construction.
+    setStyleSheet(QStringLiteral("#Settings { background: %1; } "
+                                  "#settings_navigation, #settings_navigation_scroll { background: %1; border: none; }")
+                      .arg(white));
 
     const auto accountActions = _actionForAccount.values();
     for (const auto a : _actionGroup->actions()) {
