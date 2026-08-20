@@ -19,7 +19,7 @@ ColumnLayout {
     id: root
 
     required property var account
-    required property SharingController sharingController
+    property SharingController sharingController: null
     required property string fileId
     required property string remotePath
     property string activationError: ""
@@ -61,6 +61,7 @@ ColumnLayout {
 
     Connections {
         target: root.sharingController
+        ignoreUnknownSignals: true
 
         function onShareCreated(share) {
             newShareRecipientSearch.clear()
@@ -86,7 +87,7 @@ ColumnLayout {
             id: newShareRecipientSearch
 
             Layout.fillWidth: true
-            enabled: !root.sharingController.creatingShare && root.fileId.length > 0
+            enabled: root.sharingController && !root.sharingController.creatingShare && root.fileId.length > 0
             account: root.account
             shareId: ""
 
@@ -99,24 +100,24 @@ ColumnLayout {
             Layout.fillWidth: true
             text: qsTr("Creating share…")
             color: Style.wizardSecondaryText
-            visible: root.sharingController.creatingShare
+            visible: root.sharingController && root.sharingController.creatingShare
         }
 
         ErrorBox {
             Layout.fillWidth: true
-            text: root.sharingController.shareCreationError
+            text: root.sharingController ? root.sharingController.shareCreationError : ""
             visible: text.length > 0
         }
 
         ErrorBox {
             Layout.fillWidth: true
-            text: root.sharingController.shareDestructionError
+            text: root.sharingController ? root.sharingController.shareDestructionError : ""
             visible: text.length > 0
         }
 
         ErrorBox {
             Layout.fillWidth: true
-            text: root.sharingController.internalLinkError
+            text: root.sharingController ? root.sharingController.internalLinkError : ""
             visible: text.length > 0
         }
 
@@ -140,7 +141,9 @@ ColumnLayout {
             clip: true
             spacing: Style.extraSmallSpacing
             model: shareListModel
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+            ScrollBar.vertical: ScrollBar {
+                policy: ScrollBar.AsNeeded
+            }
 
             delegate: Loader {
                 id: rowLoader
@@ -184,7 +187,7 @@ ColumnLayout {
                         subtitle: qsTr("For people who already have access")
                         actionIcon: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
                         actionName: qsTr("Copy internal link")
-                        actionEnabled: !root.sharingController.resolvingInternalLink && root.remotePath.length > 0
+                        actionEnabled: root.sharingController && !root.sharingController.resolvingInternalLink && root.remotePath.length > 0
 
                         onActionRequested: root.sharingController.requestInternalLink(root.remotePath, root.fileId)
                     }
@@ -198,7 +201,7 @@ ColumnLayout {
                         subtitle: ""
                         actionIcon: "image://svgimage-custom-color/add.svg/" + palette.buttonText
                         actionName: qsTr("Create public link")
-                        actionEnabled: !root.sharingController.creatingShare && root.fileId.length > 0
+                        actionEnabled: root.sharingController && !root.sharingController.creatingShare && root.fileId.length > 0
 
                         onActionRequested: {
                             root.clearActivationError()

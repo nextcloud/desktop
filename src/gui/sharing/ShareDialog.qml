@@ -29,6 +29,7 @@ WizardStyledWindow {
     property Share sharePendingDeletion: null
     property bool activatingShare: false
     property string shareActivationError: ""
+    property alias controller: controllerObject
 
     property FileDetails fileDetails: FileDetails {
         localPath: dialog.localPath
@@ -41,7 +42,7 @@ WizardStyledWindow {
     minimumHeight: Style.compactDialogHeight
 
     function currentShares() {
-        return controller ? Array.from(controller.shares || []) : []
+        return controllerObject ? Array.from(controllerObject.shares || []) : []
     }
 
     function reconcileSelectedShare() {
@@ -83,7 +84,8 @@ WizardStyledWindow {
     }
 
     SharingController {
-        id: controller
+        id: controllerObject
+        objectName: "sharingController"
     }
 
     TextEdit {
@@ -97,12 +99,12 @@ WizardStyledWindow {
     }
 
     Component.onCompleted: {
-        controller.account = dialog.account
-        controller.initialize(dialog.fileId)
+        controllerObject.account = dialog.account
+        controllerObject.initialize(dialog.fileId)
     }
 
     Connections {
-        target: controller
+        target: controllerObject
 
         function onSharesChanged() {
             dialog.reconcileSelectedShare()
@@ -204,10 +206,11 @@ WizardStyledWindow {
             currentIndex: dialog.selectedShare ? 1 : 0
 
             ShareListPage {
+                objectName: "shareListPage"
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 account: dialog.account
-                sharingController: controller
+                sharingController: controllerObject
                 fileId: dialog.fileId
                 remotePath: dialog.remotePath
                 activationError: dialog.shareActivationError
@@ -219,8 +222,9 @@ WizardStyledWindow {
 
             ShareDetailsFrame {
                 id: shareDetailsFrame
+                objectName: "shareDetailsFrame"
 
-                sharingController: controller
+                sharingController: controllerObject
                 share: dialog.selectedShare
                 activatingShare: dialog.activatingShare
                 activationError: dialog.shareActivationError
@@ -230,11 +234,11 @@ WizardStyledWindow {
                     deleteShareConfirmation.open()
                 }
                 onCloseRequested: dialog.selectedShare = null
-                onCancelRequested: sharingController.destroyShare(dialog.selectedShare)
+                onCancelRequested: controllerObject.destroyShare(dialog.selectedShare)
                 onSaveRequested: {
                     dialog.shareActivationError = ""
                     dialog.activatingShare = true
-                    controller.activateShare(dialog.selectedShare)
+                    controllerObject.activateShare(dialog.selectedShare)
                 }
             }
         }
@@ -249,7 +253,7 @@ WizardStyledWindow {
                 if (dialog.selectedShare === dialog.sharePendingDeletion) {
                     dialog.selectedShare = null
                 }
-                controller.destroyShare(dialog.sharePendingDeletion)
+                controllerObject.destroyShare(dialog.sharePendingDeletion)
             }
             dialog.sharePendingDeletion = null
         }

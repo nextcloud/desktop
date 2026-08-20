@@ -16,12 +16,12 @@ import "qrc:/qml/src/gui/wizard/qml"
 ColumnLayout {
     id: root
 
-    required property SharingController sharingController
-    required property Share share
+    property SharingController sharingController: null
+    property Share share: null
     property string recipientOperationError: ""
     property string permissionUpdateError: ""
     property string propertyUpdateError: ""
-    readonly property bool shareIsActive: share.state === Share.Active
+    readonly property bool shareIsActive: !!share && share.state === Share.Active
 
     signal commitRequested
 
@@ -47,8 +47,8 @@ ColumnLayout {
         id: recipientSearch
         Layout.fillWidth: true
 
-        account: root.sharingController.account
-        shareId: root.share.id
+        account: root.sharingController ? root.sharingController.account : null
+        shareId: root.share ? root.share.id : ""
         visible: root.shareIsActive
 
         onRecipientSelected: (recipientType, recipientValue, recipientInstance) => {
@@ -186,7 +186,7 @@ ColumnLayout {
 
         readonly property var presetValues: ["OC\\Core\\Sharing\\Permission\\ViewSharePermissionPreset", "OC\\Core\\Sharing\\Permission\\EditSharePermissionPreset", ""]
         readonly property int selectedPresetIndex: {
-            const preset = root.share.permissionPreset
+            const preset = root.share && root.share.permissionPreset ? root.share.permissionPreset : ""
             if (preset.endsWith("\\ViewSharePermissionPreset")) {
                 return 0
             }
@@ -344,6 +344,7 @@ ColumnLayout {
 
     Connections {
         target: root.sharingController
+        ignoreUnknownSignals: true
 
         function onRecipientAdded(share) {
             if (share === root.share) {
