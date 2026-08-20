@@ -143,6 +143,9 @@ extension Item {
                         targetMetadata.lockOwnerType = lock.ownerType.rawValue
                         targetMetadata.lockTime = lock.time
                         targetMetadata.lockTimeOut = lock.timeOut
+                        if let etag = lock.etag {
+                            targetMetadata.etag = etag
+                        }
                         targetMetadata.lockToken = lock.token
                     }
                 } else {

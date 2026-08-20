@@ -165,10 +165,11 @@ public extension Item {
             shouldSendIfMatch = true
         }
 
-        // We can only guard the write if we know the version to match against. When we
-        // do, a subsequent 412 is a real content conflict (below); when we don't, the
-        // upload stays unconditional and 412 keeps its previous stale-lock meaning.
-        let sentIfMatch = shouldSendIfMatch && baseEtag != nil
+        // A lock token is already an exclusive write precondition. Its acquisition also changes
+        // the server etag, while File Provider's base version intentionally remains the version the
+        // document was opened from. Do not combine that pre-lock etag with the current lock token.
+        // Without a lock token, keep using the etag as the optimistic-concurrency guard.
+        let sentIfMatch = shouldSendIfMatch && baseEtag != nil && metadata.lockToken == nil
         if sentIfMatch, let baseEtag {
             // Our stored etag is normalized (unquoted); Sabre/DAV compares If-Match
             // against the quoted resource ETag, so re-add the quotes.

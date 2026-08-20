@@ -792,6 +792,16 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.lockUnlockResult = NKLock(
+            owner: Self.account.id,
+            ownerEditor: "",
+            ownerType: .token,
+            ownerDisplayName: Self.account.username,
+            time: nil,
+            timeOut: nil,
+            token: "files_lock/test-token",
+            etag: "etag-after-lock"
+        )
 
         // Setup remote folder and file
         let folderRemote = MockRemoteItem(
@@ -868,6 +878,10 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(error)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
         XCTAssertTrue(targetRemote.locked)
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: targetRemote.identifier)?.etag,
+            "etag-after-lock"
+        )
     }
 
     func testCreateLockFileUnactionableWithoutCapabilities() async throws {
