@@ -130,8 +130,7 @@ namespace OCC {
         // the (already theme-aware) border color at low alpha instead of an opaque fill, and take the
         // text from the widget's own palette instead of a hardcoded black - mirrors the translucent-
         // overlay technique the tray uses for its alert boxes (ErrorBox.qml, trayWindowSyncWarning).
-        auto frameBackgroundColor = frameBorderColor;
-        frameBackgroundColor.setAlphaF(0.2f);
+        auto frameBackgroundColor = BaseTheme::tintedFillFromBorder(frameBorderColor);
         const auto textColor = palette().color(QPalette::WindowText);
 
         QString style = QString::fromLatin1("QFrame {border: 1px solid %1; border-radius: 4px;"

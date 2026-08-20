@@ -20,7 +20,7 @@ QtObject {
     readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2.35) : Qt.darker(backgroundColor, 1.25)
     readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
     readonly property color backgroundColor: Theme.darkMode ? "#1E2126" : "#FFFFFF"
-    readonly property color buttonBackgroundColor: Theme.systemPalette.button
+    readonly property color buttonBackgroundColor: WLTheme.pillButtonSecondaryColor
     readonly property color positiveColor: Qt.rgba(0.38, 0.74, 0.38, 1)
     readonly property color accentColor: UserModel.currentUser ? UserModel.currentUser.accentColor : ncBlue
 
@@ -224,6 +224,12 @@ QtObject {
     // some platforms (e.g. Windows 11) have a transparency set on palette colours, this function removes that
     function colorWithoutTransparency(color) {
         return Qt.rgba(color.r, color.g, color.b, 1)
+    }
+
+    // tints an already theme-aware border color into a translucent fill, instead of
+    // inventing a separate opaque pastel per dark/light variant
+    function tintedFill(color, alpha) {
+        return Qt.rgba(color.r, color.g, color.b, alpha)
     }
 
     // SES

@@ -99,3 +99,13 @@ Chronologisches Protokoll: Komponenten-Ausblenden/-Entfernen-Entscheidungen und 
 **Offener Punkt:** Icon-Form weicht leicht vom bisherigen Marken-Chevron ab — ggf. später durch einen passenden Marken-Asset von Design ersetzen.
 
 **Status:** aktiv
+
+## 2026-08-20 — isWindows11OrGreater() bleibt lokal in theme.cpp, verifiziert gegen stable-33.0 (SES-578)
+
+**Kontext:** Erwogen, den Windows-11-Versionscheck aus `theme.cpp` in einen wiederverwendbaren `Utility::isWindows11OrGreater()`-Helper zu extrahieren, in der Annahme, das sei näher an stable-33.0. Direkter Abgleich gegen den lokalen `stable-33.0`-Branch zeigt aber: dort ist `isWindows11OrGreater()` selbst eine lokale Funktion in `theme.cpp` (Zeile 62), kein `Utility::`-Helper.
+
+**Entscheidung:** Als lokale Funktion in `theme.cpp` belassen, exakt wie in stable-33.0 — keine Code-Änderung nötig, nur verifiziert.
+
+**Verworfene Alternative:** Extraktion nach `Utility::isWindows11OrGreater()` — hätte die Struktur von stable-33.0 weg bewegt statt angenähert.
+
+**Status:** aktiv

@@ -1,6 +1,7 @@
 #ifndef _BASETHEME_H
 #define _BASETHEME_H
 
+#include <QColor>
 #include <QFont>
 #include <QString>
 #include "theme.h"
@@ -533,6 +534,15 @@ protected:
     // Needs a proper visual QA/design pass before being considered final.
     static QString themedColor(const QString &light, const QString &dark) {
         return Theme::instance()->darkMode() ? dark : light;
+    }
+
+public:
+    // Tints an already theme-aware border color into a translucent fill, instead of
+    // inventing a separate opaque pastel per dark/light variant.
+    static QColor tintedFillFromBorder(const QColor &border, float alpha = 0.2f) {
+        auto fill = border;
+        fill.setAlphaF(alpha);
+        return fill;
     }
 
     private:

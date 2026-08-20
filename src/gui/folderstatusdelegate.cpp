@@ -327,9 +327,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         // inventing new dark pastels, tint the (already theme-aware) row background with the border
         // hue at low alpha - the same translucent-overlay technique the tray uses for its alert/error
         // boxes (ErrorBox.qml, MainWindow.qml's trayWindowSyncWarning) so it adapts automatically.
-        auto fillColor = borderColor;
-        fillColor.setAlphaF(0.2f);
-        painter->setBrush(fillColor);
+        painter->setBrush(BaseTheme::tintedFillFromBorder(borderColor));
         painter->setPen(borderColor);
         painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, rect),
             4, 4);
