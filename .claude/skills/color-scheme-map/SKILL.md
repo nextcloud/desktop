@@ -46,6 +46,7 @@ Beim Dark-Mode-Umbau (SES-578 u. ä.) taucht dieselbe Frage ständig neu auf: we
 - **gui-context-refresh**: Zweck/Struktur/Zusammenspiel einer Komponente — dieser Skill befasst sich ausschließlich mit ihren Farb-Properties, nicht mit ihrer sonstigen Doku.
 - **stable-merge-check**: ob eine Farb-/Style-Änderung strukturell von `stable-x.y` abweicht — dieser Skill bewertet nur, ob eine Farbe dark-mode-tauglich ist, nicht das Merge-Risiko.
 - **component-context**: bündelt vorhandenen Kontext vor einer Änderung, liest aber nur — dieser Skill ist die einzige Quelle, die die Farb-Landkarte selbst schreibt/pflegt.
+- **merge-drift-map**: gleiches Muster (inkrementelle, dauerhafte Landkarte), aber für Abweichung von `stable-x.y` statt Farb-Properties — unabhängige Dimension, kein Zusammenhang zwischen den beiden Karten.
 
 ## Nicht in diesem Skill enthalten
 
