@@ -207,9 +207,9 @@ void IgnoreListTableWidget::customizeIgnoreListDialogStyle(){
 
     ui->tableWidget->setStyleSheet(
         QStringLiteral("QTableWidget { background-color: %1; color: %2; } ").arg(
-            WLTheme.white(), 
-            WLTheme.black()
-        ) + 
+            WLTheme.dialogBackgroundColor(),
+            WLTheme.titleColor()
+        ) +
         WLTheme.fontConfigurationCss(
             WLTheme.settingsFont(),
             WLTheme.settingsTextSize(),
@@ -229,8 +229,8 @@ void IgnoreListTableWidget::customizeIgnoreListDialogStyle(){
 
     ui->tableWidget->horizontalHeader()->setStyleSheet(
             QStringLiteral("QHeaderView::section { background-color: %1; color: %2; border-bottom: none; %3; }").arg(
-            WLTheme.white(), 
-            WLTheme.black(),
+            WLTheme.dialogBackgroundColor(),
+            WLTheme.titleColor(),
             WLTheme.fontConfigurationCss(
                 WLTheme.settingsFont(),
                 WLTheme.settingsTextSize(),

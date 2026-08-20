@@ -348,7 +348,7 @@ void InvalidFilenameDialog::customizeStyle()
                 WLTheme.settingsTextWeight(),
                 WLTheme.buttonRadius(),
                 WLTheme.menuBorderColor(),
-                WLTheme.white()
+                WLTheme.dialogBackgroundColor()
             )
     );
 

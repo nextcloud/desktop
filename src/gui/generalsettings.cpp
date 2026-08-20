@@ -863,22 +863,22 @@ void GeneralSettings::customizeStyle()
     setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
 
     this->setStyleSheet(QStringLiteral("QGroupBox { border: none; font-size: %2; font-weight: %3; color: %4; }")
-                            .arg(WLTheme.settingsTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.black()));
+                            .arg(WLTheme.settingsTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()));
 
     this->setStyleSheet(this->styleSheet()
                         + QStringLiteral("QCheckBox { font-size: %1; font-weight: %2; margin-left: %3 px; color: %4; }")
-                              .arg(WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.smallMargin(), WLTheme.black()));
+                              .arg(WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.smallMargin(), WLTheme.titleColor()));
 
     this->setStyleSheet(this->styleSheet()
                         + QStringLiteral("QLabel { font-size: %1; font-weight: %2; color: %3; }")
-                              .arg(WLTheme.settingsTextSize(), WLTheme.settingsTitleWeight500(), WLTheme.black()));
+                              .arg(WLTheme.settingsTextSize(), WLTheme.settingsTitleWeight500(), WLTheme.titleColor()));
 
     this->setStyleSheet(this->styleSheet()
                         + QStringLiteral("QFrame { font-size: %1; font-weight: %2; color: %3; }")
-                              .arg(WLTheme.settingsTextSize(), WLTheme.settingsTitleWeight600(), WLTheme.black()));
+                              .arg(WLTheme.settingsTextSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()));
 
     const auto titleStyle = QStringLiteral("QLabel { font-size: %1; font-weight: %2; color: %3; }")
-                                 .arg(WLTheme.settingsTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.black());
+                                 .arg(WLTheme.settingsTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor());
     _ui->generalGroupBoxTitle->setStyleSheet(titleStyle);
     _ui->advancedGroupBoxTitle->setStyleSheet(titleStyle);
     _ui->updateGroupBoxTitle->setStyleSheet(titleStyle);
@@ -892,13 +892,13 @@ void GeneralSettings::customizeStyle()
                                                        .arg(WLTheme.settingsTextSize(), WLTheme.settingsTitleWeight600(), WLTheme.folderWizardSubtitleColor()));
 
     _ui->necessaryDataLabel->setStyleSheet(QStringLiteral("QLabel { font-size: %1; font-weight: %2; color: %3; margin-left: %4; }")
-                                               .arg(WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.black(), "24"));
+                                               .arg(WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor(), "24"));
 
     _ui->updateStateLabel->setStyleSheet(QStringLiteral("QLabel { font-size: %1; font-weight: %2; color: %3; margin-left: %4; }")
-                                             .arg(WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.black(), "24"));
+                                             .arg(WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor(), "24"));
 
     _ui->anonymousDataLabel->setStyleSheet(QStringLiteral("QLabel { font-size: %1; font-weight: %2; color: %3;  margin-left: %4; margin-bottom: %5; }")
-                                               .arg(WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.black(), "24", "16"
+                                               .arg(WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor(), "24", "16"
 
                                                     ));
 

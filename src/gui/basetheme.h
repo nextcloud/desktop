@@ -9,7 +9,7 @@ namespace OCC {
 
 class BaseTheme : public QObject{
     Q_OBJECT
-    Q_PROPERTY(QString dialogBackgroundColor READ dialogBackgroundColor CONSTANT)
+    Q_PROPERTY(QString dialogBackgroundColor READ dialogBackgroundColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayFontColor READ trayFontColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayBorderColor READ trayBorderColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayInputFieldBorderColor READ trayInputFieldBorderColor CONSTANT)
@@ -315,7 +315,7 @@ public:
     }
 
     virtual QString titleColor() const {
-        return "#000000";
+        return themedColor("#000000", "#D6E4F5");
     }
 
     virtual QString folderWizardSubtitleColor() const {
@@ -436,7 +436,7 @@ public:
     }
 
     virtual QString dialogBackgroundColor() const {
-        return "#FAFAFA";
+        return themedColor("#FAFAFA", "#1E2126");
     }
 
     virtual QString trayBackgroundColor() const {

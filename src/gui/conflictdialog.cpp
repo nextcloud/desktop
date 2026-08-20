@@ -183,8 +183,8 @@ void ConflictDialog::customizeStyle()
 {
     this->setStyleSheet(
         QStringLiteral("QDialog {background-color: %1; color: %2;} QLabel{ %3;}").arg(
-            WLTheme.dialogBackgroundColor(), 
-            WLTheme.black(),
+            WLTheme.dialogBackgroundColor(),
+            WLTheme.titleColor(),
             WLTheme.fontConfigurationCss(
                 WLTheme.settingsFont(),
                 WLTheme.settingsTextSize(),
@@ -199,11 +199,11 @@ void ConflictDialog::customizeStyle()
         _ui->buttonBox->setLayoutDirection(Qt::LeftToRight);
 
         _ui->localVersionRadio->setStyleSheet(
-            QStringLiteral("QCheckBox {color: %1;}").arg(WLTheme.black())
+            QStringLiteral("QCheckBox {color: %1;}").arg(WLTheme.titleColor())
         );
 
         _ui->remoteVersionRadio->setStyleSheet(
-            QStringLiteral("QCheckBox {color: %1;}").arg(WLTheme.black())
+            QStringLiteral("QCheckBox {color: %1;}").arg(WLTheme.titleColor())
         );
     #endif
 }

@@ -93,7 +93,7 @@ namespace OCC{
                     WLTheme.settingsFont(),
                     WLTheme.settingsTextSize(),
                     WLTheme.settingsTextWeight(),
-                    WLTheme.black()
+                    WLTheme.titleColor()
                 ),
                 "24"
             )
@@ -105,9 +105,9 @@ namespace OCC{
                     WLTheme.settingsFont(),
                     WLTheme.settingsTextSize(),
                     WLTheme.settingsTextWeight(),
-                    WLTheme.black()
+                    WLTheme.titleColor()
                 ),
-                "16", 
+                "16",
                 WLTheme.smallMargin()
             )
         );
@@ -118,9 +118,9 @@ namespace OCC{
                     WLTheme.settingsFont(),
                     WLTheme.settingsTextSize(),
                     WLTheme.settingsTextWeight(),
-                    WLTheme.black()
+                    WLTheme.titleColor()
                 ),
-                "16", 
+                "16",
                 "48"
             )
         );

@@ -101,9 +101,11 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
 #ifdef Q_OS_MAC
     _folderTree->header()->setStyleSheet(
     "QHeaderView::section {"
-    "    background-color: white;" // Set the background color
+    "    background-color: "
+    + WLTheme.dialogBackgroundColor() +
+    ";" // Set the background color
     "    border: 1px solid #e6e6e6;"   // Optional: add a border
-    "    padding-left: 4px;" 
+    "    padding-left: 4px;"
     +    QString(WLTheme.fontConfigurationCss(
             WLTheme.settingsFont(),
             WLTheme.settingsTextSize(),
@@ -130,7 +132,7 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     ));
 
 #ifdef Q_OS_MAC
-    _folderTree->setPalette(QPalette(WLTheme.white()));
+    _folderTree->setPalette(QPalette(WLTheme.dialogBackgroundColor()));
 #endif
 
     ConfigFile::setupDefaultExcludeFilePaths(_excludedFiles);

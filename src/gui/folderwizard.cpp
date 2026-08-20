@@ -207,7 +207,7 @@ void FolderWizardLocalPath::changeStyle()
                                                .arg(WLTheme.settingsTextWeight())
                                                .arg(WLTheme.buttonRadius())
                                                .arg(WLTheme.menuBorderColor())
-                                               .arg(WLTheme.white()));
+                                               .arg(WLTheme.dialogBackgroundColor()));
 
     _ui.localFolderChooseBtn->setProperty("text", tr("Choose"));
 
@@ -247,7 +247,7 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     _ui.folderTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 
 #ifdef Q_OS_MAC
-    _ui.folderTreeWidget->setPalette(QPalette(WLTheme.white()));
+    _ui.folderTreeWidget->setPalette(QPalette(WLTheme.dialogBackgroundColor()));
 #endif
 
     // Make sure that there will be a scrollbar when the contents is too wide
@@ -292,7 +292,7 @@ void FolderWizardRemotePath::slotAddRemoteFolder()
                  WLTheme.settingsTextWeight(),
                  WLTheme.buttonRadius(),
                  WLTheme.menuBorderColor(),
-                 WLTheme.white()));
+                 WLTheme.dialogBackgroundColor()));
 
     dlg->findChild<QLabel *>()->setStyleSheet(
         WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor()));
@@ -687,9 +687,10 @@ void FolderWizardRemotePath::changeStyle()
     _ui.folderTreeWidget->setStyleSheet(
         QStringLiteral(" %1; background: %2; ")
             .arg(WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor()),
-                 WLTheme.white()));
+                 WLTheme.dialogBackgroundColor()));
 
-    _ui.folderTreeWidget->setStyleSheet(_ui.folderTreeWidget->styleSheet() + QStringLiteral("QTreeWidget { background: %1; }").arg(WLTheme.white()));
+    _ui.folderTreeWidget->setStyleSheet(_ui.folderTreeWidget->styleSheet()
+        + QStringLiteral("QTreeWidget { background: %1; }").arg(WLTheme.dialogBackgroundColor()));
 
     _ui.refreshButton->setProperty("text", tr("Refresh"));
 
@@ -737,7 +738,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     _selectiveSync->setStyleSheet(
         QStringLiteral(" %1; background: %2; ")
             .arg(WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor()),
-                 WLTheme.white()));
+                 WLTheme.dialogBackgroundColor()));
 
     _uiSelectiveSync.title->setStyleSheet(
         WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsBigTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()));

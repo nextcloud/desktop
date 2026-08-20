@@ -602,7 +602,7 @@ void AccountSettings::openIgnoredFilesDialog(const QString &absFolderPath)
     });
     connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::close);
 
-    dialog->setPalette(QPalette(QPalette::Window, WLTheme.white()));
+    dialog->setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
     dialog->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     dialog->open();
@@ -733,7 +733,7 @@ void AccountSettings::styleCustomContextMenu(QMenu *menu) const
                                        "color: %4; "
                                        "border-radius: 8px; "
                                        "}")
-                            .arg(WLTheme.white(),
+                            .arg(WLTheme.trayBackgroundColor(),
                                  WLTheme.menuBorderColor(),
                                  WLTheme.menuTextColor(),
                                  WLTheme.menuPressedTextColor(),
@@ -1175,7 +1175,7 @@ void AccountSettings::slotDisableVfsCurrentFolder()
     msgBox->setStyleSheet(
         QStringLiteral("QMessageBox QLabel { %1 background-color: %2; }")
             .arg(WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor()),
-                 WLTheme.white()));
+                 WLTheme.dialogBackgroundColor()));
 
     const auto acceptButton = msgBox->addButton(tr("Disable support"), QMessageBox::AcceptRole);
     acceptButton->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
@@ -1914,11 +1914,11 @@ void AccountSettings::customizeStyle()
 
     _ui->_folderList->setStyleSheet(
         QStringLiteral("background: %1; %2;")
-            .arg(WLTheme.white(),
+            .arg(WLTheme.dialogBackgroundColor(),
                  WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor())));
 
 #if defined(Q_OS_MAC)
-    _ui->selectiveSyncLabel->setStyleSheet(QString("color: %1;").arg(WLTheme.black()));
+    _ui->selectiveSyncLabel->setStyleSheet(QString("color: %1;").arg(WLTheme.titleColor()));
     _ui->horizontalLayout->setSpacing(16);
 #endif
 }

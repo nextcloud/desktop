@@ -71,9 +71,9 @@ void LegacyAccountSelectionDialog::customizeStyle()
                     WLTheme.settingsTextWeight(),
                     WLTheme.titleColor()
                 ),
-                WLTheme.black()
+                WLTheme.titleColor()
             )
-    ); 
+    );
 }
 
 } // namespace OCC
