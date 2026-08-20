@@ -253,9 +253,18 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     setWindowFlag(Qt::Window, true);
     cfg.restoreGeometry(this);
+
+    // Base the minimum height on the tallest page (not just GeneralSettings), otherwise
+    // shrinking the window to its minimum can make a taller page (e.g. AccountSettings)
+    // grow a scrollbar instead of just being fully visible.
+    int tallestPageHeight = generalSettings->sizeHint().height();
+    for (int i = 0; i < _stack->count(); ++i) {
+        tallestPageHeight = qMax(tallestPageHeight, _stack->widget(i)->sizeHint().height());
+    }
+
     resize(width() > WLTheme.minimalSettingsDialogWidth() + 50 ? width() : WLTheme.minimalSettingsDialogWidth() + 50,
-           (height() > generalSettings->sizeHint().height() + 100 ? height() : generalSettings->sizeHint().height()) + 100);
-    setMinimumSize(WLTheme.minimalSettingsDialogWidth() + 50, generalSettings->sizeHint().height() + 100);
+           (height() > tallestPageHeight + 100 ? height() : tallestPageHeight) + 100);
+    setMinimumSize(WLTheme.minimalSettingsDialogWidth() + 50, tallestPageHeight + 100);
 }
 
 SettingsDialog::~SettingsDialog()
