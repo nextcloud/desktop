@@ -79,7 +79,7 @@ public:
         TypeAsStringRole,
     };
 
-    Q_INVOKABLE explicit UnifiedSearchResultsListModel(QObject *parent = nullptr);
+    explicit UnifiedSearchResultsListModel(QObject *parent = nullptr);
     explicit UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent = nullptr);
 
     [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
