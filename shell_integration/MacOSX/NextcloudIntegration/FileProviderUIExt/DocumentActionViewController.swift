@@ -97,10 +97,20 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
     // MARK: - Sharing
 
     private func prepareSharingAction(itemIdentifiers: [NSFileProviderItemIdentifier]) {
-        guard itemIdentifiers.count == 1,
-              let itemIdentifier = itemIdentifiers.first,
-              let manager = NSFileProviderManager(for: domain)
-        else {
+        guard itemIdentifiers.count == 1, let itemIdentifier = itemIdentifiers.first else {
+            logger.error(
+                "Sharing action requires exactly one selected item.",
+                [.item: itemIdentifiers.map { $0.rawValue }.joined(separator: ", ")]
+            )
+            extensionContext.completeRequest()
+            return
+        }
+
+        guard let manager = NSFileProviderManager(for: domain) else {
+            logger.error(
+                "Could not get the file provider domain manager; falling back to legacy sharing.",
+                [.domain: domain.identifier.rawValue]
+            )
             prepareLegacySharingAction(itemIdentifiers: itemIdentifiers)
             return
         }
