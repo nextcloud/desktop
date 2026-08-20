@@ -421,17 +421,10 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
 
         XCTAssertNil(modifiedItem)
-        // On macOS < 26 the heuristic sends `If-Match` on every content upload
-        // (the item has a base etag), so a 412 is now read as a version conflict and
-        // returns a transient NSCocoaError. On macOS 26+ no `.failOnConflict` was
-        // requested, so no `If-Match` is sent and 412 keeps its stale-lock meaning.
-        if #available(macOS 26.0, *) {
-            XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
-        } else {
-            let nsError = error as NSError?
-            XCTAssertEqual(nsError?.domain, NSCocoaErrorDomain)
-            XCTAssertEqual(nsError?.code, NSFileWriteUnknownError)
-        }
+        // The lock token is the upload precondition, so the pre-lock base etag is not
+        // also sent as If-Match. A 412 therefore keeps its stale-lock meaning.
+        XCTAssertNil(remoteInterface.lastUploadIfMatchHeader)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
         let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
         XCTAssertNil(updatedMetadata?.lockToken, "Stale lock token must be cleared on 412.")
     }
@@ -488,6 +481,64 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    /// The server changes the etag while acquiring an exclusive token lock, but
+    /// File Provider correctly supplies the version from which the document was
+    /// opened. The token must be the only write precondition for that owner upload;
+    /// combining it with the pre-lock etag would reject the first save.
+    func testModifyWithLockTokenDoesNotPassPreLockIfMatch() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.etag = "etag-after-lock"
+        itemMetadata.lockToken = "files_lock/test-token"
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-locked-with-pre-lock-version")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let baseVersion = NSFileProviderItemVersion(
+            contentVersion: Data("etag-before-lock".utf8),
+            metadataVersion: Data("etag-before-lock".utf8)
+        )
+        let options: NSFileProviderModifyItemOptions = if #available(macOS 26.0, *) {
+            .failOnConflict
+        } else {
+            []
+        }
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            baseVersion: baseVersion,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            options: options,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(error)
+        XCTAssertNotNil(modifiedItem)
+        XCTAssertNil(remoteInterface.lastUploadIfMatchHeader)
+        XCTAssertEqual(
+            remoteInterface.lastUploadIfHeader,
+            "<\(remoteItem.remotePath)> (<opaquelocktoken:files_lock/test-token>)"
+        )
+    }
+
     /// macOS 26+: a 412 from the server while `If-Match` was sent means the
     /// server copy changed under us. With `.failOnConflict` the extension must
     /// return `.localVersionConflictingWithServer` so the system creates a conflict
@@ -501,7 +552,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         remoteInterface.uploadError = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
 
         var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
-        itemMetadata.lockToken = "opaquelocktoken:token"
         itemMetadata.uploaded = true
         itemMetadata.downloaded = true
         Self.dbManager.addItemMetadata(itemMetadata)
@@ -538,7 +588,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteInterface.lastUploadIfMatchHeader, "\"0\"")
 
         let updated = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
-        XCTAssertNil(updated?.lockToken, "Lock token must be cleared on conflict.")
         XCTAssertNotEqual(
             updated?.status, Status.normal.rawValue,
             "A rejected upload must not be committed as a normal, synced item."
@@ -558,7 +607,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         remoteInterface.uploadError = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
 
         var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
-        itemMetadata.lockToken = "opaquelocktoken:token"
         itemMetadata.uploaded = true
         itemMetadata.downloaded = true
         Self.dbManager.addItemMetadata(itemMetadata)
@@ -594,9 +642,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(nsError?.domain, NSCocoaErrorDomain)
         XCTAssertEqual(nsError?.code, NSFileWriteUnknownError)
         XCTAssertEqual(remoteInterface.lastUploadIfMatchHeader, "\"0\"")
-
-        let updated = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
-        XCTAssertNil(updated?.lockToken, "Lock token must be cleared on conflict.")
     }
 
     func testModifyWith423ClearsLockToken() async throws {

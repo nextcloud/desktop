@@ -611,6 +611,13 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// which etag. Captured before any injected `uploadError` short-circuit.
     public var lastUploadIfMatchHeader: String?
 
+    /// Records the WebDAV `If` header the most recent upload call carried (nil if none).
+    public var lastUploadIfHeader: String?
+
+    /// When set, locking a mock item changes its version identifier to this value.
+    /// This simulates the server-side etag propagation performed when a lock is acquired.
+    public var lockVersionIdentifier: String?
+
     /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
@@ -794,6 +801,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         remoteError: NKError
     ) {
         lastUploadIfMatchHeader = options.customHeader?["If-Match"]
+        lastUploadIfHeader = options.customHeader?["If"]
 
         if let uploadError {
             return (account.ncKitAccount, nil, nil, nil, 0, nil, uploadError)
@@ -1300,6 +1308,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         }
 
         item.locked = shouldLock
+        if shouldLock, let lockVersionIdentifier {
+            item.versionIdentifier = lockVersionIdentifier
+        }
 
         return nil
     }

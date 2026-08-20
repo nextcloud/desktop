@@ -792,6 +792,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.lockVersionIdentifier = "etag-after-lock"
 
         // Setup remote folder and file
         let folderRemote = MockRemoteItem(
@@ -822,6 +823,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
         folderRemote.children = [targetRemote]
         folderRemote.parent = rootItem
+        targetRemote.parent = folderRemote
         rootItem.children = [folderRemote]
 
         // Insert folder and target file into DB
@@ -829,12 +831,14 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             ocId: folderRemote.identifier, fileName: "folder", account: Self.account
         )
         folderMetadata.directory = true
+        folderMetadata.etag = folderRemote.versionIdentifier
         Self.dbManager.addItemMetadata(folderMetadata)
 
         var targetMetadata = SendableItemMetadata(
             ocId: targetRemote.identifier, fileName: targetFileName, account: Self.account
         )
         targetMetadata.serverUrl += "/folder"
+        targetMetadata.etag = targetRemote.versionIdentifier
         Self.dbManager.addItemMetadata(targetMetadata)
 
         // Construct the lock file metadata
@@ -868,6 +872,25 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(error)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
         XCTAssertTrue(targetRemote.locked)
+        XCTAssertEqual(remoteInterface.readOperationCount, 1)
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: targetRemote.identifier)?.etag,
+            "etag-after-lock",
+            "The lock-generated etag must be consumed before the create request completes."
+        )
+
+        let laterRead = await Enumerator.readServerUrl(
+            folderRemote.remotePath,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
+        )
+        XCTAssertFalse(
+            laterRead.changes?.createdAndUpdated.contains(where: { $0.ocId == targetRemote.identifier }) ?? true,
+            "A later enumeration must not report the owner's lock etag as a content update."
+        )
     }
 
     func testCreateLockFileUnactionableWithoutCapabilities() async throws {

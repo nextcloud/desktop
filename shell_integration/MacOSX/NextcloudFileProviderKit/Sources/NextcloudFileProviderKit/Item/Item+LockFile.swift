@@ -133,8 +133,15 @@ extension Item {
 
             if let lock {
                 logger.info("Locked file and received lock, will update target item.", [.name: targetFileName, .lock: lock])
+            } else {
+                logger.info("Locked file but did not receive lock information.", [.name: targetFileName])
+            }
 
-                if let targetMetadata = dbManager.itemMetadatas.where({ $0.fileName.equals(targetFileName) }).where({ $0.serverUrl.equals(parentItemRemotePath) }).first {
+            var targetItemIdentifier: NSFileProviderItemIdentifier?
+            if let targetMetadata = dbManager.itemMetadatas.where({ $0.fileName.equals(targetFileName) }).where({ $0.serverUrl.equals(parentItemRemotePath) }).first {
+                targetItemIdentifier = NSFileProviderItemIdentifier(targetMetadata.ocId)
+
+                if let lock {
                     try dbManager.ncDatabase().write {
                         targetMetadata.lock = true
                         targetMetadata.lockOwner = lock.owner
@@ -145,11 +152,29 @@ extension Item {
                         targetMetadata.lockTimeOut = lock.timeOut
                         targetMetadata.lockToken = lock.token
                     }
-                } else {
-                    logger.error("Failed to find target item for acquired lock.", [.lock: lock])
                 }
             } else {
-                logger.info("Locked file but did not receive lock information.", [.name: targetFileName])
+                logger.error("Failed to find target item after acquiring lock.", [.name: targetFileName])
+            }
+
+            // Acquiring the server lock changes the target's etag even though its content did not
+            // change. Consume that metadata update inside this request so File Provider never sees
+            // the owner client's lock etag as a separate content version to replace locally.
+            if let targetItemIdentifier {
+                let readResult = await Enumerator.readServerUrl(
+                    targetFileRemotePath,
+                    account: account,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    domain: domain,
+                    enumeratedItemIdentifier: targetItemIdentifier,
+                    depth: .target,
+                    log: log
+                )
+
+                if let readError = readResult.error, readError != .success {
+                    logger.error("Failed to refresh target item after acquiring lock.", [.item: targetItemIdentifier, .error: readError])
+                }
             }
         } catch {
             logger.error("Failed to lock file \"\(targetFileName)\" which has lock file \"\(itemTemplate.filename)\".", [.error: error])
