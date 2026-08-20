@@ -16,13 +16,13 @@ WizardStyledWindow {
 
     required property QtObject controller
     property bool controllerFinished: false
-    readonly property int compactHeight: Style.accountWizardCompactHeight
+    readonly property int compactHeight: Style.compactDialogHeight
     readonly property int syncOptionsHeight: Style.accountWizardSyncOptionsHeight
 
     minimizable: true
-    width: Style.accountWizardWindowWidth
+    width: Style.dialogWidth
     height: compactHeight
-    minimumWidth: Style.accountWizardWindowWidth
+    minimumWidth: Style.dialogWidth
     minimumHeight: compactHeight
     title: ""
     function defaultHeightForCurrentStep() {

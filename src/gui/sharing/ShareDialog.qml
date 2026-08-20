@@ -39,8 +39,8 @@ WizardStyledWindow {
     title: qsTr("Share \"%1\"").arg(dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File"))
     width: Style.sharingDialogWidth
     height: Style.sharingDialogHeight
-    minimumWidth: Style.sharingDialogMinimumWidth
-    minimumHeight: Style.sharingDialogMinimumHeight
+    minimumWidth: Style.dialogWidth
+    minimumHeight: Style.compactDialogHeight
 
     function currentShares() {
         return sharingController ? Array.from(sharingController.shares || []) : []
@@ -219,7 +219,7 @@ WizardStyledWindow {
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: Style.normalBorderWidth
-            color: Style.sharingDialogSeparatorColor
+            color: Style.wizardRowBorder
         }
 
         EnforcedPlainTextLabel {
@@ -238,7 +238,7 @@ WizardStyledWindow {
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: Style.normalBorderWidth
-            color: Style.sharingDialogSeparatorColor
+            color: Style.wizardRowBorder
             visible: dialog.selectedShare
         }
 
