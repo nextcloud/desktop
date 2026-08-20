@@ -336,45 +336,20 @@ WizardStyledWindow {
         }
     }
 
-    Dialog {
+    DeleteShareConfirmation {
         id: deleteShareConfirmation
 
         anchors.centerIn: parent
-        modal: true
-        title: qsTr("Delete share?")
-
-        EnforcedPlainTextLabel {
-            width: parent.width
-            text: qsTr("This removes the share and its access for all recipients.")
-            wrapMode: Text.Wrap
-        }
-
-        footer: DialogButtonBox {
-            WizardButton {
-                primary: true
-                text: qsTr("Delete")
-                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-                onClicked: deleteShareConfirmation.accept()
-            }
-
-            WizardButton {
-                text: qsTr("Cancel")
-                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-                onClicked: deleteShareConfirmation.reject()
-            }
-        }
-
-        onAccepted: {
+        onDeleteRequested: {
             if (dialog.sharePendingDeletion) {
                 if (dialog.selectedShare === dialog.sharePendingDeletion) {
                     dialog.selectedShare = null
                 }
                 sharingController.destroyShare(dialog.sharePendingDeletion)
-                dialog.sharePendingDeletion = null
             }
-            close()
+            dialog.sharePendingDeletion = null
         }
 
-        onRejected: dialog.sharePendingDeletion = null
+        onCancelled: dialog.sharePendingDeletion = null
     }
 }
