@@ -224,9 +224,9 @@ public:
         return OCC::WLTheme.buttonDisabledFontColor();
     }
 
-    QString buttonFontColor() const override 
+    QString buttonFontColor() const override
     {
-        return OCC::WLTheme.black();
+        return OCC::WLTheme.titleColor();
     }
 
     // Icon (Three Dots)
@@ -258,67 +258,68 @@ public:
     }
 
     // Default
-    QString buttonDefaultColor() const override 
+    QString buttonDefaultColor() const override
     {
-        return OCC::WLTheme.white();
+        // Blends into the row background this button is painted on (folderstatusdelegate.cpp).
+        return OCC::WLTheme.dialogBackgroundColor();
     }
 
-    QString buttonDefaultBorderColor() const override 
+    QString buttonDefaultBorderColor() const override
     {
-        return OCC::WLTheme.white();
+        return OCC::WLTheme.dialogBackgroundColor();
     }
 
     // Hover
-    QString buttonHoverColor() const override 
+    QString buttonHoverColor() const override
     {
         return OCC::WLTheme.buttonHoveredColor();
     }
 
-    QString buttonHoverBorderColor() const override 
+    QString buttonHoverBorderColor() const override
     {
         return OCC::WLTheme.buttonHoveredColor();
     }
 
     // Pressed
-    QString buttonPressedColor() const override 
+    QString buttonPressedColor() const override
     {
         return OCC::WLTheme.buttonPressedColor();
     }
 
-    QString buttonPressedBorderColor() const override 
+    QString buttonPressedBorderColor() const override
     {
         return OCC::WLTheme.buttonPressedColor();
     }
 
     // Disabled
-    QString buttonDisabledColor() const override 
+    QString buttonDisabledColor() const override
     {
         return OCC::WLTheme.buttonDisabledColor();
     }
 
-    QString buttonDisabledBorderColor() const override 
+    QString buttonDisabledBorderColor() const override
     {
         return OCC::WLTheme.buttonDisabledColor();
     }
 
-    // Focused 
-    QString buttonFocusedColor() const override 
+    // Focused
+    QString buttonFocusedColor() const override
     {
         return OCC::WLTheme.white();
     }
 
-    QString buttonFocusedBorderColor() const override 
-    { 
+    QString buttonFocusedBorderColor() const override
+    {
         return OCC::WLTheme.black();
     }
 
     // Font
-    QString buttonDisabledFontColor() const override 
+    QString buttonDisabledFontColor() const override
     {
         return OCC::WLTheme.buttonDisabledFontColor();
     }
 
-    QString buttonFontColor() const override 
+    QString buttonFontColor() const override
     {
         return OCC::WLTheme.black();
     }
