@@ -11,16 +11,15 @@ namespace OCC::Gui::Sharing
 {
 
 /**
- * @brief Removes a local filesystem node from an existing share.
+ * @brief Removes the item identified by @p fileId from an existing share.
  *
- * This stops the node identified by fileId from being content of the share. It
- * does not delete the node or the share itself. The returned representation is
- * applied to the supplied Share object.
+ * This removes the item's association with the share; it does not delete the
+ * item or the share itself.
  */
 class RemoveSourceJob : public UpdateShareJob
 {
 public:
-    /** @brief Creates a request to remove the node identified by fileId. */
+    /** @brief Creates a request to remove the item identified by @p fileId from the share. */
     explicit RemoveSourceJob(AccountPtr account, Share &share, const QString &fileId);
 };
 
