@@ -20,9 +20,6 @@ macro(nextcloud_build_test test_class)
       Qt::Test
       Qt::Quick
       Qt::Core5Compat
-
-      nextcloudGuiSearch
-      nextcloudGuiSearchplugin
     )
 
     target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE QT_NO_KEYWORDS)
@@ -63,9 +60,6 @@ macro(nextcloud_add_test test_class)
       Qt::Test
       Qt::Quick
       Qt::Core5Compat
-
-      nextcloudGuiSearch
-      nextcloudGuiSearchplugin
     )
 
     target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE QT_NO_KEYWORDS)
@@ -120,9 +114,6 @@ macro(nextcloud_add_benchmark test_class)
       Qt::Xml
       Qt::Network
       Qt::Core5Compat
-
-      nextcloudGuiSearch
-      nextcloudGuiSearchplugin
     )
 
     target_compile_definitions(${OWNCLOUD_TEST_CLASS}Bench PRIVATE QT_NO_KEYWORDS)
