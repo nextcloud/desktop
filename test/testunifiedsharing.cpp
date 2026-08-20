@@ -522,6 +522,33 @@ private slots:
         QCOMPARE(unknownShare->state(), Share::State::Unknown);
     }
 
+    void permissionPresetLabelsHideServerClassNames()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+
+        const auto shareForPreset = [&](const QString &preset) {
+            auto data = QJsonObject{};
+            data.insert("permission_preset"_L1, preset);
+            auto ocs = QJsonObject{};
+            ocs.insert("data"_L1, data);
+            auto root = QJsonObject{};
+            root.insert("ocs"_L1, ocs);
+            return std::unique_ptr<Share>(Share::fromJson(QJsonDocument{root}, fakeFolder.account()));
+        };
+
+        const auto viewShare = shareForPreset("OC\\Core\\Sharing\\Permission\\ViewSharePermissionPreset"_L1);
+        QCOMPARE(viewShare->permissionPresetLabel(), "View only"_L1);
+
+        const auto editShare = shareForPreset("OC\\Core\\Sharing\\Permission\\EditSharePermissionPreset"_L1);
+        QCOMPARE(editShare->permissionPresetLabel(), "Can edit"_L1);
+
+        const auto customShare = shareForPreset("custom-preset"_L1);
+        QVERIFY(customShare->permissionPresetLabel().isEmpty());
+
+        const auto unknownShare = shareForPreset({});
+        QVERIFY(unknownShare->permissionPresetLabel().isEmpty());
+    }
+
     void sharingControllerLoadsAllSharesWithoutCreatingOne()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};

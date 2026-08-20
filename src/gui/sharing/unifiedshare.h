@@ -26,6 +26,7 @@ class Share : public QObject
     Q_PROPERTY(QString id READ id NOTIFY idChanged)
     Q_PROPERTY(Share::State state READ state NOTIFY stateChanged)
     Q_PROPERTY(QString permissionPreset READ permissionPreset NOTIFY permissionPresetChanged)
+    Q_PROPERTY(QString permissionPresetLabel READ permissionPresetLabel NOTIFY permissionPresetChanged)
     Q_PROPERTY(QList<QPointer<Permission>> permissions READ permissions NOTIFY permissionsChanged)
     Q_PROPERTY(QList<QPointer<Property>> properties READ properties NOTIFY propertiesChanged)
     Q_PROPERTY(QList<QPointer<Recipient>> recipients READ recipients NOTIFY recipientsChanged)
@@ -48,6 +49,8 @@ public:
     [[nodiscard]] QString id() const;
     [[nodiscard]] State state() const;
     [[nodiscard]] QString permissionPreset() const;
+    /** @brief Returns the localized label for the known permission preset, or an empty string for custom or unknown presets. */
+    [[nodiscard]] QString permissionPresetLabel() const;
     [[nodiscard]] const QList<QPointer<Permission>> &permissions() const;
     [[nodiscard]] const QList<QPointer<Property>> &properties() const;
     [[nodiscard]] const QList<QPointer<Recipient>> &recipients() const;

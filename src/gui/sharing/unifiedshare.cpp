@@ -74,6 +74,17 @@ QString Share::permissionPreset() const
     return _permissionPreset;
 }
 
+QString Share::permissionPresetLabel() const
+{
+    if (_permissionPreset.endsWith("\\ViewSharePermissionPreset"_L1)) {
+        return tr("View only");
+    }
+    if (_permissionPreset.endsWith("\\EditSharePermissionPreset"_L1)) {
+        return tr("Can edit");
+    }
+    return {};
+}
+
 const QList<QPointer<Permission>> &Share::permissions() const
 {
     return _permissions;
