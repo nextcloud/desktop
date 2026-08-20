@@ -437,12 +437,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="531" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="530" />
         <source>Ask Assistant…</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="465" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="464" />
         <source>Cancel</source>
         <translation type="unfinished">Avbryt</translation>
     </message>
@@ -462,37 +462,37 @@
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="876" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="875" />
         <source>New activities</source>
         <translation type="unfinished">Nya aktiviteter</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="461" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="460" />
         <source>New conversation</source>
         <translation type="unfinished">Ny konversation</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="559" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="558" />
         <source>Send assistant question</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="580" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="579" />
         <source>Start a new assistant chat</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="441" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="440" />
         <source>Start new conversation?</source>
         <translation type="unfinished">Starta ny konversation?</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="486" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="485" />
         <source>This will clear the existing conversation.</source>
         <translation type="unfinished">Detta kommer att rensa den befintliga konversationen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="805" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="804" />
         <source>Unified search results list</source>
         <translation type="unfinished" />
     </message>
@@ -580,17 +580,17 @@ Ska kontot importeras?</translation>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1525" />
+        <location filename="../src/gui/accountsettings.cpp" line="1531" />
         <source>%1 as %2</source>
         <translation>%1 som %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1495" />
+        <location filename="../src/gui/accountsettings.cpp" line="1501" />
         <source>%1 in use</source>
         <translation>%1 används</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1488" />
+        <location filename="../src/gui/accountsettings.cpp" line="1494" />
         <source>%1 of %2 in use</source>
         <translation>%1 av %2 används</translation>
     </message>
@@ -637,17 +637,17 @@ Ska kontot importeras?</translation>
         <translation>Bekräfta borttagning av synkroniseringskoppling för mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1536" />
+        <location filename="../src/gui/accountsettings.cpp" line="1542" />
         <source>Connected to %1 (%2).</source>
         <translation>Ansluten till %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1534" />
+        <location filename="../src/gui/accountsettings.cpp" line="1540" />
         <source>Connected to %1.</source>
         <translation>Ansluten till %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1554" />
+        <location filename="../src/gui/accountsettings.cpp" line="1560" />
         <source>Connecting to %1 …</source>
         <translation>Ansluter till %1 …</translation>
     </message>
@@ -751,7 +751,7 @@ Ska kontot importeras?</translation>
         <translation>ände-till-ände-kryptering med virtuella filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1941" />
+        <location filename="../src/gui/accountsettings.cpp" line="1947" />
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>Ände-till-ände-kryptering har initierats på det här kontot med en annan enhet.&lt;br&gt;Ange den unika minnesfrasen för att synkronisera de krypterade mapparna även på den här enheten.</translation>
     </message>
@@ -796,12 +796,12 @@ Ska kontot importeras?</translation>
         <translation>Bevilja åtkomst till synkroniseringsmappen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1765" />
+        <location filename="../src/gui/accountsettings.cpp" line="1771" />
         <source>Migrate certificate to a new one</source>
         <translation>Migrera certifikat till ett nytt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1574" />
+        <location filename="../src/gui/accountsettings.cpp" line="1580" />
         <source>No %1 connection configured.</source>
         <translation>Ingen %1 anslutning konfigurerad.</translation>
     </message>
@@ -852,37 +852,37 @@ Ska kontot importeras?</translation>
         <translation>Återuppta synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1548" />
+        <location filename="../src/gui/accountsettings.cpp" line="1554" />
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Server %1 omdirigeras för närvarande, eller så ligger din anslutning bakom en inloggningsportal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1545" />
+        <location filename="../src/gui/accountsettings.cpp" line="1551" />
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Servern %1 är för närvarande i underhållsläge.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1542" />
+        <location filename="../src/gui/accountsettings.cpp" line="1548" />
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Servern %1 är för tillfället inte tillgänglig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1561" />
+        <location filename="../src/gui/accountsettings.cpp" line="1567" />
         <source>Server configuration error: %1 at %2.</source>
         <translation>Felaktig serverkonfiguration: %1 vid %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2012" />
+        <location filename="../src/gui/accountsettings.cpp" line="2018" />
         <source>Set up encryption</source>
         <translation>Aktivera kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1551" />
+        <location filename="../src/gui/accountsettings.cpp" line="1557" />
         <source>Signed out from %1.</source>
         <translation>Utloggad från %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1405" />
+        <location filename="../src/gui/accountsettings.cpp" line="1411" />
         <source>Sync Running</source>
         <translation>Synkronisering pågår</translation>
     </message>
@@ -897,43 +897,43 @@ Ska kontot importeras?</translation>
         <translation>Mappen har ett synkroniseringsfel. Kryptering av denna mapp kommer att vara möjlig när den väl har synkroniserats</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1532" />
+        <location filename="../src/gui/accountsettings.cpp" line="1538" />
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Serverversion %1 stöds inte! Fortsätt på egen risk.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1406" />
+        <location filename="../src/gui/accountsettings.cpp" line="1412" />
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2004" />
+        <location filename="../src/gui/accountsettings.cpp" line="2010" />
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>Integrationen av virtuella filer stöder ännu inte ände-till-ände-kryptering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1875" />
+        <location filename="../src/gui/accountsettings.cpp" line="1881" />
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Det finns mappar som har vuxit i storlek större än %1MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1863" />
+        <location filename="../src/gui/accountsettings.cpp" line="1869" />
         <source>There are folders that were not synchronized because they are external storages:</source>
         <translation>Det finns mappar som inte synkroniserades eftersom de är externa lagringsutrymmen:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1864" />
+        <location filename="../src/gui/accountsettings.cpp" line="1870" />
         <source>There are folders that were not synchronized because they are too big or external storages:</source>
         <translation>Det finns mappar som inte synkroniserades eftersom de är för stora eller externa lagringsutrymmen:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1862" />
+        <location filename="../src/gui/accountsettings.cpp" line="1868" />
         <source>There are folders that were not synchronized because they are too big:</source>
         <translation>Det finns mappar som inte synkroniserades eftersom de är för stora:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2003" />
-        <location filename="../src/gui/accountsettings.cpp" line="2006" />
+        <location filename="../src/gui/accountsettings.cpp" line="2009" />
+        <location filename="../src/gui/accountsettings.cpp" line="2012" />
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Det här kontot stöder ände-till-ände-kryptering, men det måste konfigureras först.</translation>
     </message>
@@ -963,7 +963,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <translation>För att skydda din kryptografiska identitet krypterar vi den med en minnesfras bestående av 12 ord från en ordlista. Skriv ner den och förvara den säkert. Du kommer att behöva den för att konfigurera synkronisering av krypterade mappar på dina andra enheter.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1558" />
+        <location filename="../src/gui/accountsettings.cpp" line="1564" />
         <source>Unable to connect to %1.</source>
         <translation>Kan inte ansluta till %1.</translation>
     </message>
@@ -992,7 +992,7 @@ Would you like to do this now?</source>
 Vill du konfigurera den nu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1569" />
+        <location filename="../src/gui/accountsettings.cpp" line="1575" />
         <source>You need to accept the terms of service at %1.</source>
         <translation>Du måste acceptera användarvillkoren på %1.</translation>
     </message>
@@ -1199,39 +1199,39 @@ Vill du konfigurera den nu?</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="580" />
+        <location filename="../src/gui/application.cpp" line="616" />
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 konton</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="582" />
+        <location filename="../src/gui/application.cpp" line="618" />
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mappar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="580" />
+        <location filename="../src/gui/application.cpp" line="616" />
         <source>1 account</source>
         <translation>1 konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="582" />
+        <location filename="../src/gui/application.cpp" line="618" />
         <source>1 folder</source>
         <translation>1 mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="194" />
+        <location filename="../src/gui/application.cpp" line="217" />
         <source>Continue</source>
         <translation>Fortsätt</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="662" />
+        <location filename="../src/gui/application.cpp" line="698" />
         <source>Error accessing the configuration file</source>
         <translation>Kunde inte komma åt konfigurationsfilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="586" />
+        <location filename="../src/gui/application.cpp" line="622" />
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1239,43 +1239,43 @@ Vill du konfigurera den nu?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="585" />
+        <location filename="../src/gui/application.cpp" line="621" />
         <source>Legacy import</source>
         <translation>Import från äldre version</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="193" />
+        <location filename="../src/gui/application.cpp" line="216" />
         <source>Quit</source>
         <translation>Avsluta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184" />
+        <location filename="../src/gui/application.cpp" line="207" />
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Vissa inställningar har konfigurerats i %1 versioner av den här klienten och använder funktioner som inte är tillgängliga i den här versionen.&lt;br&gt;&lt;br&gt;Att fortsätta kommer att betyda &lt;b&gt;%2 dessa inställningar&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Den aktuella konfigurationsfilen har redan säkerhetskopierats till &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="663" />
+        <location filename="../src/gui/application.cpp" line="699" />
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Ett fel uppstod vid läsning av konfigurationsfilen vid %1. Kontrollera att filen kan nås av ditt datorkonto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="191" />
+        <location filename="../src/gui/application.cpp" line="214" />
         <source>deleting</source>
         <translation>radera</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="191" />
+        <location filename="../src/gui/application.cpp" line="214" />
         <source>ignoring</source>
         <translation>ignorera</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190" />
+        <location filename="../src/gui/application.cpp" line="213" />
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>nyare</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190" />
+        <location filename="../src/gui/application.cpp" line="213" />
         <source>older</source>
         <comment>older software version</comment>
         <translation>äldre</translation>
@@ -2693,14 +2693,14 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <translation type="unfinished">Lägg till mappsynkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="397" />
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="403" />
         <source>File</source>
         <translation>Fil</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="113" />
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="362" />
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="559" />
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="368" />
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="565" />
         <source>Grant access</source>
         <translation>Ge åtkomst</translation>
     </message>
@@ -2894,12 +2894,12 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="899" />
+        <location filename="../src/gui/folderwizard.cpp" line="900" />
         <source>Add Folder Sync Connection</source>
         <translation>Lägg till synkroniseringskoppling för map</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="902" />
+        <location filename="../src/gui/folderwizard.cpp" line="903" />
         <source>Add Sync Connection</source>
         <translation>Lägg till synkroniseringskoppling.</translation>
     </message>
@@ -2970,7 +2970,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <translation>Skapa fjärrmapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="696" />
+        <location filename="../src/gui/folderwizard.cpp" line="697" />
         <source>Create folder</source>
         <translation type="unfinished">Skapa mapp</translation>
     </message>
@@ -3006,7 +3006,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <translation type="unfinished">Välj eller skapa nu en målmapp i din %1 där innehållet ska laddas upp och synkroniseras.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="694" />
+        <location filename="../src/gui/folderwizard.cpp" line="695" />
         <source>Refresh</source>
         <translation type="unfinished">Uppdatera</translation>
     </message>
@@ -3024,36 +3024,36 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="717" />
-        <location filename="../src/gui/folderwizard.cpp" line="773" />
-        <location filename="../src/gui/folderwizard.cpp" line="821" />
+        <location filename="../src/gui/folderwizard.cpp" line="718" />
+        <location filename="../src/gui/folderwizard.cpp" line="774" />
+        <location filename="../src/gui/folderwizard.cpp" line="822" />
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="744" />
+        <location filename="../src/gui/folderwizard.cpp" line="745" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Lägg till mappsynkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="751" />
+        <location filename="../src/gui/folderwizard.cpp" line="752" />
         <source>Step 3 of 3: Selektive Synchronisation</source>
         <translation type="unfinished">Steg 3 av 3: Selektiv synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="716" />
-        <location filename="../src/gui/folderwizard.cpp" line="772" />
-        <location filename="../src/gui/folderwizard.cpp" line="820" />
+        <location filename="../src/gui/folderwizard.cpp" line="717" />
+        <location filename="../src/gui/folderwizard.cpp" line="773" />
+        <location filename="../src/gui/folderwizard.cpp" line="821" />
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Använd virtuella filer istället för att ladda ner innehåll direkt %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="842" />
+        <location filename="../src/gui/folderwizard.cpp" line="843" />
         <source>Virtual files are not supported at the selected location</source>
         <translation>Virtuella filer stöds inte på den valda platsen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="816" />
+        <location filename="../src/gui/folderwizard.cpp" line="817" />
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Windows stödjer inte virtuella filer direkt i rotkataloger. Välj en underkatalog.</translation>
     </message>
@@ -5187,7 +5187,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="543" />
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="547" />
         <source>Choose What to Sync</source>
         <translation>Välj vad som ska synkroniseras</translation>
     </message>
@@ -5195,7 +5195,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::SelectiveSyncWidget</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="349" />
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="353" />
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>Ett fel uppstod när listan för submappar lästes in.</translation>
     </message>
@@ -5215,8 +5215,8 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Namn</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="270" />
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="347" />
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="274" />
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="351" />
         <source>No subfolders currently on the server.</source>
         <translation>Inga undermappar på servern för närvarande.</translation>
     </message>
@@ -5902,7 +5902,7 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="186" />
+        <location filename="../src/gui/systray.cpp" line="188" />
         <source>Add account</source>
         <translation>Lägg till konto</translation>
     </message>
@@ -5912,45 +5912,45 @@ Servern svarade med fel: %2</translation>
         <translation>Ladda ner</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="195" />
+        <location filename="../src/gui/systray.cpp" line="197" />
         <source>Exit %1</source>
         <translation type="unfinished">Avsluta %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="194" />
+        <location filename="../src/gui/systray.cpp" line="196" />
         <source>Help</source>
         <translation type="unfinished">Hjälp</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="188" />
+        <location filename="../src/gui/systray.cpp" line="190" />
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>Öppna %1 Desktop</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="191" />
-        <location filename="../src/gui/systray.cpp" line="201" />
+        <location filename="../src/gui/systray.cpp" line="193" />
+        <location filename="../src/gui/systray.cpp" line="203" />
         <source>Pause sync</source>
         <translation>Pausa synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="201" />
+        <location filename="../src/gui/systray.cpp" line="203" />
         <source>Pause sync for all</source>
         <translation type="unfinished">Pausa synkronisering för alla</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="192" />
-        <location filename="../src/gui/systray.cpp" line="207" />
+        <location filename="../src/gui/systray.cpp" line="194" />
+        <location filename="../src/gui/systray.cpp" line="209" />
         <source>Resume sync</source>
         <translation>Återuppta synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="207" />
+        <location filename="../src/gui/systray.cpp" line="209" />
         <source>Resume sync for all</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="193" />
+        <location filename="../src/gui/systray.cpp" line="195" />
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
@@ -5986,22 +5986,22 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1671" />
+        <location filename="../src/gui/accountsettings.cpp" line="1677" />
         <source>ExpandMemory-Link</source>
         <translation type="unfinished">https://static.hidrive.com/next/1045</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1669" />
+        <location filename="../src/gui/accountsettings.cpp" line="1675" />
         <source>ExpandMemory-Link_STRATO</source>
         <translation type="unfinished">https://static.hidrive.com/next/1044</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="336" />
+        <location filename="../src/gui/application.cpp" line="359" />
         <source>Login_URL</source>
         <translation>https://storage.ionos.com</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="334" />
+        <location filename="../src/gui/application.cpp" line="357" />
         <source>Login_URL_STRATO</source>
         <translation>https://storage.ionos.com</translation>
     </message>
@@ -7416,12 +7416,12 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>TrayWindowAccountMenu</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="287" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="288" />
         <source>Account switcher and settings menu</source>
         <translation type="unfinished">Kontobytare och inställningsmeny</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="128" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="129" />
         <source>Add account</source>
         <translation>Lägg till konto</translation>
     </message>
@@ -7431,22 +7431,22 @@ Servern svarade med fel: %2</translation>
         <translation type="unfinished">Nuvarande konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="180" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="181" />
         <source>Current account avatar</source>
         <translation type="unfinished">Avatar för aktuellt konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="229" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="230" />
         <source>Current account status is do not disturb</source>
         <translation type="unfinished">Aktuell kontostatus är stör ej</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="229" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="230" />
         <source>Current account status is online</source>
         <translation type="unfinished">Aktuell kontostatus är online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="157" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="158" />
         <source>Exit</source>
         <translation type="unfinished">Avsluta</translation>
     </message>
@@ -7461,7 +7461,7 @@ Servern svarade med fel: %2</translation>
         <translation>Synkronisering av CV för alla</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="150" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="151" />
         <source>Settings</source>
         <translation type="unfinished">Inställningar</translation>
     </message>
@@ -7487,7 +7487,7 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="34" />
+        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="35" />
         <source>Search files, messages, events …</source>
         <translation>Sök efter filer, meddelanden, händelser...</translation>
     </message>
@@ -7543,34 +7543,34 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="165" />
+        <location filename="../src/gui/tray/UserLine.qml" line="158" />
         <source>Account actions</source>
         <translation>Kontoåtgärder</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="147" />
+        <location filename="../src/gui/tray/UserLine.qml" line="140" />
         <source>Account sync status requires attention</source>
         <translation>Kontots synkroniseringsstatus kräver uppmärksamhet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="209" />
-        <location filename="../src/gui/tray/UserLine.qml" line="220" />
+        <location filename="../src/gui/tray/UserLine.qml" line="200" />
+        <location filename="../src/gui/tray/UserLine.qml" line="212" />
         <source>Log in</source>
         <translation>Logga in</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="209" />
-        <location filename="../src/gui/tray/UserLine.qml" line="220" />
+        <location filename="../src/gui/tray/UserLine.qml" line="200" />
+        <location filename="../src/gui/tray/UserLine.qml" line="212" />
         <source>Log out</source>
         <translation>Logga ut</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="263" />
+        <location filename="../src/gui/tray/UserLine.qml" line="243" />
         <source>Remove account</source>
         <translation type="unfinished">Ta bort konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="37" />
+        <location filename="../src/gui/tray/UserLine.qml" line="38" />
         <source>Switch to account</source>
         <translation>Växla till konto</translation>
     </message>
@@ -7578,17 +7578,17 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>UserStatusMessageView</name>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="221" />
+        <location filename="../src/gui/UserStatusMessageView.qml" line="229" />
         <source>Apply</source>
         <translation>Verkställ</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="205" />
+        <location filename="../src/gui/UserStatusMessageView.qml" line="213" />
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="212" />
+        <location filename="../src/gui/UserStatusMessageView.qml" line="220" />
         <source>Clear</source>
         <translation>Rensa</translation>
     </message>
