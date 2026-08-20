@@ -18,7 +18,7 @@ import "qrc:/qml/src/gui/wizard/qml"
 WizardDialogFrame {
     id: root
 
-    required property SharingController sharingController
+    property SharingController sharingController: null
     property Share share: null
     property bool activatingShare: false
     property string activationError: ""
@@ -28,7 +28,7 @@ WizardDialogFrame {
     signal deleteRequested(Share share)
     signal saveRequested
 
-    footerSeparatorVisible: root.share !== null
+    footerSeparatorVisible: !!root.share
     footerTopPadding: Style.standardSpacing
 
     ColumnLayout {
@@ -40,11 +40,11 @@ WizardDialogFrame {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
-            contentWidth: availableWidth
+            contentWidth: width
             clip: true
 
             ColumnLayout {
-                width: shareDetailsScrollView.availableWidth
+                width: shareDetailsScrollView.width
 
                 Loader {
                     id: shareDetailsLoader
@@ -53,7 +53,7 @@ WizardDialogFrame {
                     Layout.leftMargin: root.windowMargin
                     Layout.rightMargin: root.windowMargin
                     Layout.preferredHeight: active && item ? item.implicitHeight : 0
-                    active: root.share !== null
+                    active: !!root.share
                     visible: active
 
                     sourceComponent: ShareDetailsPage {
@@ -67,7 +67,9 @@ WizardDialogFrame {
                 policy: ScrollBar.AlwaysOff
             }
 
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+            ScrollBar.vertical: ScrollBar {
+                policy: ScrollBar.AsNeeded
+            }
         }
 
         ErrorBox {
@@ -82,7 +84,7 @@ WizardDialogFrame {
             Layout.fillWidth: true
             Layout.leftMargin: root.windowMargin
             Layout.rightMargin: root.windowMargin
-            text: root.sharingController.shareDestructionError
+            text: root.sharingController ? root.sharingController.shareDestructionError : ""
             visible: text.length > 0
         }
 
@@ -100,7 +102,7 @@ WizardDialogFrame {
     footer: [
         WizardButton {
             text: qsTr("Delete share")
-            enabled: !root.sharingController.destroyingShare
+            enabled: !!root.sharingController && !root.sharingController.destroyingShare
             visible: root.share && root.share.state === Share.Active
             iconSource: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
             iconBeforeText: true
@@ -115,15 +117,15 @@ WizardDialogFrame {
             onClicked: root.closeRequested()
         },
         WizardButton {
-            text: root.sharingController.destroyingShare ? qsTr("Cancelling…") : qsTr("Cancel")
-            enabled: !root.sharingController.destroyingShare && !root.activatingShare
+            text: root.sharingController && root.sharingController.destroyingShare ? qsTr("Cancelling…") : qsTr("Cancel")
+            enabled: !!root.sharingController && !root.sharingController.destroyingShare && !root.activatingShare
             visible: root.share && root.share.state === Share.Draft
             onClicked: root.cancelRequested()
         },
         WizardButton {
             primary: true
             text: root.activatingShare ? qsTr("Saving…") : qsTr("Save")
-            enabled: !root.activatingShare && !root.sharingController.destroyingShare && root.share && root.share.recipients.length > 0
+            enabled: !root.activatingShare && !!root.sharingController && !root.sharingController.destroyingShare && !!root.share && !!root.share.recipients && root.share.recipients.length > 0
             visible: root.share && root.share.state === Share.Draft
 
             onClicked: {

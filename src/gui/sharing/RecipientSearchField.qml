@@ -25,10 +25,18 @@ WizardTextField {
     required property var account
     required property string shareId
     property RecipientSearchModel recipientModel: RecipientSearchModel {
-        account: root.account
         query: root.text
         shareId: root.shareId
     }
+
+    function syncRecipientModelAccount() {
+        if (root.recipientModel && root.account !== undefined && root.account !== null) {
+            root.recipientModel.account = root.account
+        }
+    }
+
+    onAccountChanged: syncRecipientModelAccount()
+    Component.onCompleted: syncRecipientModelAccount()
 
     readonly property int horizontalPaddingOffset: Style.trayHorizontalMargin
     readonly property double iconsScaleFactor: 0.6
