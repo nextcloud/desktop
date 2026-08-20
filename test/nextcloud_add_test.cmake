@@ -20,9 +20,6 @@ macro(nextcloud_build_test test_class)
       Qt::Test
       Qt::Quick
       Qt::Core5Compat
-
-      nextcloudGuiSearch
-      nextcloudGuiSearchplugin
     )
 
     if (WIN32)
@@ -61,9 +58,6 @@ macro(nextcloud_add_test test_class)
       Qt::Test
       Qt::Quick
       Qt::Core5Compat
-
-      nextcloudGuiSearch
-      nextcloudGuiSearchplugin
     )
 
     if (WIN32)
@@ -116,9 +110,6 @@ macro(nextcloud_add_benchmark test_class)
       Qt::Xml
       Qt::Network
       Qt::Core5Compat
-
-      nextcloudGuiSearch
-      nextcloudGuiSearchplugin
     )
 
     IF(BUILD_UPDATER)
