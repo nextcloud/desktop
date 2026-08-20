@@ -179,6 +179,12 @@ void FolderWizardLocalPath::changeEvent(QEvent *e)
 
 void FolderWizardLocalPath::changeStyle()
 {
+    // QWizard::ModernStyle paints this page's own background natively on Windows and ignores
+    // the wizard-level QPalette set in FolderWizard::customizeStyle() - same class of issue as
+    // QTBUG-123853, but for the page body rather than the banner. Paint it explicitly instead.
+    setAutoFillBackground(true);
+    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
+
     _ui.title->setStyleSheet(
         WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsBigTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()));
 
@@ -651,6 +657,11 @@ void FolderWizardRemotePath::changeEvent(QEvent *e)
 
 void FolderWizardRemotePath::changeStyle()
 {
+    // See FolderWizardLocalPath::changeStyle() - ModernStyle paints the page body natively
+    // and ignores the wizard-level palette, so it needs to be set explicitly here too.
+    setAutoFillBackground(true);
+    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
+
     _ui.title->setStyleSheet(
         WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsBigTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()));
 
@@ -705,6 +716,11 @@ void FolderWizardRemotePath::changeStyle()
 
 FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
 {
+    // See FolderWizardLocalPath::changeStyle() - ModernStyle paints the page body natively
+    // and ignores the wizard-level palette, so it needs to be set explicitly here too.
+    setAutoFillBackground(true);
+    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
+
     _uiSelectiveSync.setupUi(this);
     auto *layout = _uiSelectiveSync.verticalLayout;
     _selectiveSync = new SelectiveSyncWidget(account, this);

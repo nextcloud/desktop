@@ -118,12 +118,13 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     );
 #else
     _folderTree->header()->setStyleSheet(
-        WLTheme.fontConfigurationCss(
-            WLTheme.settingsFont(),
-            WLTheme.settingsTextSize(),
-            WLTheme.settingsTextWeight(),
-            WLTheme.titleColor()
-    ));
+        QStringLiteral("QHeaderView::section { background-color: %1; %2 }")
+            .arg(WLTheme.dialogBackgroundColor(),
+                 WLTheme.fontConfigurationCss(
+                     WLTheme.settingsFont(),
+                     WLTheme.settingsTextSize(),
+                     WLTheme.settingsTextWeight(),
+                     WLTheme.titleColor())));
 #endif
 
     _folderTree->setStyleSheet(WLTheme.fontConfigurationCss(
