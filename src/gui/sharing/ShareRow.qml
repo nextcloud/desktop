@@ -54,13 +54,7 @@ WizardItemDelegate {
                         return qsTr("Not active — select to finish")
                     }
                     if (root.publicLink) {
-                        if (root.share.permissionPreset.endsWith("\\ViewSharePermissionPreset")) {
-                            return qsTr("View only")
-                        }
-                        if (root.share.permissionPreset.endsWith("\\EditSharePermissionPreset")) {
-                            return qsTr("Can edit")
-                        }
-                        return ""
+                        return root.share.permissionPresetLabel
                     }
                     return qsTr("%n recipient(s)", "", root.share.recipients.length)
                 }
