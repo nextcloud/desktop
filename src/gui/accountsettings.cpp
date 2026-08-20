@@ -1339,10 +1339,10 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
         "border-radius:5px;");
     if (errors.isEmpty()) {
         auto msg = message;
-        Theme::replaceLinkColorStringBackgroundAware(msg);
+        Theme::replaceLinkColorString(msg, QColor(WLTheme.settingsLinkColor()));
         _ui->connectLabel->setText(msg);
         _ui->connectLabel->setToolTip({});
-        _ui->connectLabel->setStyleSheet({});
+        _ui->connectLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
     } else {
         errors.prepend(message);
         auto userFriendlyMsg = errors.join(QLatin1String("<br>"));
@@ -1364,10 +1364,10 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
         "border-radius:5px;");
     if (errors.isEmpty()) {
         auto msg = message;
-        Theme::replaceLinkColorStringBackgroundAware(msg);
+        Theme::replaceLinkColorString(msg, QColor(WLTheme.settingsLinkColor()));
         _ui->connectLabel->setText(msg);
         _ui->connectLabel->setToolTip({});
-        _ui->connectLabel->setStyleSheet({});
+        _ui->connectLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
     } else {
         errors.prepend(message);
         auto userFriendlyMsg = errors.join(QLatin1String("<br>"));
@@ -1917,8 +1917,15 @@ void AccountSettings::customizeStyle()
     setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
 
     auto msg = _ui->connectLabel->text();
-    Theme::replaceLinkColorStringBackgroundAware(msg);
+    Theme::replaceLinkColorString(msg, QColor(WLTheme.settingsLinkColor()));
     _ui->connectLabel->setText(msg);
+    // Skip if an error is currently shown (fixed white-on-red errStyle from showConnectionLabel(),
+    // deliberately not theme-dependent) - don't clobber it with the normal-state text color.
+    if (!_ui->connectLabel->styleSheet().contains(QLatin1String("background-color"))) {
+        _ui->connectLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
+    }
+
+    _ui->syncFoldersPanelTitle->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
 
     const auto color = palette().highlight().color();
     const auto toolTipStyle =
