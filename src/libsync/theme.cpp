@@ -453,9 +453,17 @@ Theme::Theme()
     IONOSPalette.setColor(QPalette::HighlightedText, QColor(0, 0, 0));
     IONOSPalette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(0, 0, 0));
 
-    auto systemPalette = QGuiApplication::palette();
-    systemPalette.setColor(QPalette::WindowText, QColor("#001B40"));
-    QGuiApplication::setPalette(systemPalette);
+    // WLTheme (whitelabeltheme.h) is a namespace-scope static, constructed for every
+    // translation unit that includes it - this constructor is guaranteed to run during
+    // static initialization, before main()/QGuiApplication exist. darkMode() dereferences
+    // qGuiApp, so it would crash here unguarded; qGuiApp is null at this point.
+    if (qGuiApp) {
+        auto systemPalette = QGuiApplication::palette();
+        if (!darkMode()) {
+            systemPalette.setColor(QPalette::WindowText, QColor("#001B40"));
+            QGuiApplication::setPalette(systemPalette);
+        }
+    }
 
     connectToPaletteSignal();
 
@@ -1172,13 +1180,17 @@ void Theme::systemPaletteHasChanged()
 {
     qCInfo(lcTheme()) << "system palette changed";
 
-    // TODO: first-pass, not yet design-reviewed. See BaseTheme::themedColor() for the
-    // equivalent tray-color fix and its rationale.
-    auto systemPalette = QGuiApplication::palette();
+    // Only touch the app palette when we actually need to override something (the light-mode
+    // WindowText contrast fix below). Unlike stable, we used to call setPalette() unconditionally
+    // here, including when darkMode() is true on Windows 11 - that explicit call appears to freeze
+    // Qt's own native Windows 11 dark-palette tracking for roles we never touch ourselves (e.g.
+    // AlternateBase/Light), leaving them stuck light. Stable never calls setPalette() at all in the
+    // Windows-11-dark case, relying entirely on Qt's native resolution - mirror that here too.
     if (!darkMode()) {
+        auto systemPalette = QGuiApplication::palette();
         systemPalette.setColor(QPalette::WindowText, QColor("#001B40"));
+        QGuiApplication::setPalette(systemPalette);
     }
-    QGuiApplication::setPalette(systemPalette);
 
 #ifdef Q_OS_WIN
     if (darkMode() && !isWindows11OrGreater()) {
