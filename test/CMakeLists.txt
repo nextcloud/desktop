@@ -135,6 +135,7 @@ add_test(NAME AssistantQmlTest
 )
 set_tests_properties(AssistantQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(UnifiedSearchPeopleModel)
+target_link_libraries(UnifiedSearchListmodelTest PRIVATE nextcloudGuiSearch)
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(SortedActivityListModel)
 nextcloud_add_test(ActivityData)
