@@ -15,10 +15,10 @@ WizardStyledWindow {
     required property QtObject controller
 
     minimizable: true
-    width: Style.accountWizardWindowWidth
-    height: Style.accountWizardCompactHeight
-    minimumWidth: Style.accountWizardWindowWidth
-    minimumHeight: Style.accountWizardCompactHeight
+    width: Style.dialogWidth
+    height: Style.compactDialogHeight
+    minimumWidth: Style.dialogWidth
+    minimumHeight: Style.compactDialogHeight
     title: ""
 
     onClosing: function(close) {
