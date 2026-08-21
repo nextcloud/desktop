@@ -200,7 +200,7 @@ void Systray::showWindow(WindowPosition position)
     showActivitiesWindow();
 }
 
-void Systray::showTrayPopup(WindowPosition position)
+void Systray::showTrayPopup([[maybe_unused]] WindowPosition position)
 {
     if (isOpen()) {
         return;

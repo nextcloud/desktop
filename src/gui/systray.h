@@ -161,7 +161,7 @@ public slots:
     void destroyDialog(QQuickWindow *window) const;
 
     void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
-    void showTrayPopup(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
+    void showTrayPopup([[maybe_unused]] OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
     void showQMLWindow();
     void showActivitiesWindow(int userIndex = -1);
