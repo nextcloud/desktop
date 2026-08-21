@@ -106,6 +106,24 @@ private slots:
                 {QStringLiteral("data"), QJsonObject{
                     {QStringLiteral("id"), QStringLiteral("share-1")},
                     {QStringLiteral("state"), QStringLiteral("active")},
+                    {QStringLiteral("properties"), QJsonArray{
+                        QJsonObject{
+                            {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Property\\NoteProperty")},
+                            {QStringLiteral("display_name"), QStringLiteral("Note to recipients")},
+                            {QStringLiteral("type"), QStringLiteral("string")},
+                            {QStringLiteral("advanced"), false},
+                            {QStringLiteral("required"), false},
+                            {QStringLiteral("value"), QStringLiteral("Original note")},
+                        },
+                        QJsonObject{
+                            {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Property\\ExpirationProperty")},
+                            {QStringLiteral("display_name"), QStringLiteral("Expiration date")},
+                            {QStringLiteral("type"), QStringLiteral("date")},
+                            {QStringLiteral("advanced"), true},
+                            {QStringLiteral("required"), false},
+                            {QStringLiteral("value"), QString()},
+                        },
+                    }},
                     {QStringLiteral("recipients"), QJsonArray{QJsonObject{
                         {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
                         {QStringLiteral("display_name"), QStringLiteral("admin")},
@@ -133,6 +151,32 @@ private slots:
         const auto backButton = dialogObject->findChild<QObject *>(QStringLiteral("backToShareListButton"));
         QVERIFY(backButton);
         QVERIFY(backButton->property("visible").toBool());
+
+        const auto gearButton = dialogObject->findChild<QObject *>(QStringLiteral("advancedSettingsButton"));
+        QVERIFY(gearButton);
+        QVERIFY(gearButton->property("visible").toBool());
+        QCOMPARE(dialogObject->property("advancedSettingsVisible").toBool(), false);
+
+        QVERIFY(dialogObject->setProperty("advancedSettingsVisible", true));
+        QCoreApplication::processEvents();
+        const auto advancedPage = dialogObject->findChild<QObject *>(QStringLiteral("shareAdvancedSettingsPage"));
+        QVERIFY(advancedPage);
+        const auto shareDetailsLoader = dialogObject->findChild<QObject *>(QStringLiteral("shareDetailsLoader"));
+        QVERIFY(shareDetailsLoader);
+        QCOMPARE(shareDetailsLoader->property("item").value<QObject *>()->objectName(), QStringLiteral("shareAdvancedSettingsPage"));
+        const auto advancedPropertyModel = advancedPage->findChild<QAbstractItemModel *>(QStringLiteral("advancedPropertyModel"));
+        QVERIFY(advancedPropertyModel);
+        QCOMPARE(advancedPropertyModel->rowCount(), 1);
+        const auto basicPage = dialogObject->findChild<QObject *>(QStringLiteral("shareDetailsPage"));
+        QVERIFY(basicPage);
+        QVERIFY(!basicPage->property("visible").toBool());
+        QCOMPARE(dialogObject->findChild<QObject *>(QStringLiteral("shareDialogTitle"))->property("text").toString(), QStringLiteral("Sharing settings"));
+        QCOMPARE(dialogObject->findChild<QObject *>(QStringLiteral("shareDialogSubtitle"))->property("text").toString(), QStringLiteral("File"));
+
+        QVERIFY(dialogObject->setProperty("advancedSettingsVisible", false));
+        QCoreApplication::processEvents();
+        QVERIFY(dialogObject->findChild<QObject *>(QStringLiteral("shareDetailsPage")));
+        QCOMPARE(shareDetailsLoader->property("item").value<QObject *>()->objectName(), QStringLiteral("shareDetailsPage"));
 
         QVERIFY(dialogObject->setProperty("hasSelectedShare", false));
         QCOMPARE(shareStackLayout->property("currentIndex").toInt(), 0);

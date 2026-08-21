@@ -27,6 +27,7 @@ WizardStyledWindow {
     property string remotePath: ""
     property Share selectedShare
     property bool hasSelectedShare: false
+    property bool advancedSettingsVisible: false
     property var sharePendingDeletion: null
     property bool activatingShare: false
     property string shareActivationError: ""
@@ -72,6 +73,21 @@ WizardStyledWindow {
         return names.length > 0 ? qsTr("Share with %1").arg(names.join(", ")) : qsTr("New share")
     }
 
+    function fileMetadataText(): string {
+        const details = []
+        if (dialog.fileDetails.sizeString) {
+            details.push(dialog.fileDetails.sizeString)
+        }
+        if (dialog.fileDetails.lastChangedString) {
+            details.push(dialog.fileDetails.lastChangedString)
+        }
+        const owner = dialog.account ? (dialog.account.davDisplayName || dialog.account.davUser) : ""
+        if (owner) {
+            details.push(owner)
+        }
+        return details.join(" · ")
+    }
+
     function copyToClipboard(value: string): void {
         clipboardHelper.text = value
         clipboardHelper.selectAll()
@@ -82,6 +98,13 @@ WizardStyledWindow {
     onSelectedShareChanged: {
         dialog.activatingShare = false
         dialog.shareActivationError = ""
+        dialog.advancedSettingsVisible = false
+    }
+
+    onHasSelectedShareChanged: {
+        if (!dialog.hasSelectedShare) {
+            dialog.advancedSettingsVisible = false
+        }
     }
 
     SharingController {
@@ -148,10 +171,16 @@ WizardStyledWindow {
                 visible: dialog.hasSelectedShare
                 text: ""
                 iconSource: "image://svgimage-custom-color/back.svg/" + palette.buttonText
-                Accessible.name: qsTr("Back to shares")
+                Accessible.name: dialog.advancedSettingsVisible ? qsTr("Back to share details") : qsTr("Back to shares")
                 ToolTip.visible: hovered
                 ToolTip.text: Accessible.name
-                onClicked: dialog.hasSelectedShare = false
+                onClicked: {
+                    if (dialog.advancedSettingsVisible) {
+                        dialog.advancedSettingsVisible = false
+                    } else {
+                        dialog.hasSelectedShare = false
+                    }
+                }
             }
 
             ColumnLayout {
@@ -160,7 +189,10 @@ WizardStyledWindow {
                 EnforcedPlainTextLabel {
                     Layout.fillWidth: true
 
-                    text: dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File")
+                    objectName: "shareDialogTitle"
+                    text: dialog.advancedSettingsVisible
+                        ? qsTr("Sharing settings")
+                        : (dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File"))
                     elide: Text.ElideRight
                     font.pointSize: Style.titleFontPtSize
                     font.weight: Font.DemiBold
@@ -170,25 +202,29 @@ WizardStyledWindow {
                 EnforcedPlainTextLabel {
                     Layout.fillWidth: true
 
-                    text: {
-                        const details = []
-                        if (dialog.fileDetails.sizeString) {
-                            details.push(dialog.fileDetails.sizeString)
-                        }
-                        if (dialog.fileDetails.lastChangedString) {
-                            details.push(dialog.fileDetails.lastChangedString)
-                        }
-                        const owner = dialog.account ? (dialog.account.davDisplayName || dialog.account.davUser) : ""
-                        if (owner) {
-                            details.push(owner)
-                        }
-                        return details.join(" · ")
-                    }
+                    objectName: "shareDialogSubtitle"
+                    text: dialog.advancedSettingsVisible
+                        ? (dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File"))
+                        : dialog.fileMetadataText()
                     color: Style.wizardSecondaryText
                     elide: Text.ElideRight
                     font.pointSize: Style.defaultFontPtSize
                     visible: text.length > 0
                 }
+            }
+
+            WizardButton {
+                objectName: "advancedSettingsButton"
+                Layout.preferredWidth: visible ? implicitHeight : 0
+                Layout.preferredHeight: implicitHeight
+                visible: dialog.hasSelectedShare
+                    && !dialog.advancedSettingsVisible
+                text: ""
+                iconSource: "image://svgimage-custom-color/settings.svg/" + palette.buttonText
+                Accessible.name: qsTr("Advanced sharing settings")
+                ToolTip.visible: hovered
+                ToolTip.text: Accessible.name
+                onClicked: dialog.advancedSettingsVisible = true
             }
         }
 
@@ -229,6 +265,7 @@ WizardStyledWindow {
                 account: dialog.account
                 sharingController: controllerObject
                 share: dialog.selectedShare
+                advancedSettingsVisible: dialog.advancedSettingsVisible
                 activatingShare: dialog.activatingShare
                 activationError: dialog.shareActivationError
 
