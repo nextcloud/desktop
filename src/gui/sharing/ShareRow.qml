@@ -15,14 +15,14 @@ import "qrc:/qml/src/gui/wizard/qml"
 WizardItemDelegate {
     id: root
 
-    required property Share share
-    required property string recipientNames
-    required property bool publicLink
-    required property string publicLinkUrl
+    property var share: null
+    property string recipientNames: ""
+    property bool publicLink: false
+    property string publicLinkUrl: ""
     signal copyRequested
     signal configureRequested
 
-    readonly property bool pending: share.state === Share.Draft
+    readonly property bool pending: !!root.share && root.share.state === Share.Draft
 
     implicitHeight: contentItem.implicitHeight + topPadding + bottomPadding
     contentItem: RowLayout {
@@ -53,10 +53,10 @@ WizardItemDelegate {
                     if (root.pending) {
                         return qsTr("Not active — select to finish")
                     }
-                    if (root.publicLink) {
-                        return root.share.permissionPresetLabel
+                    if (root.publicLink && root.share) {
+                        return root.share.permissionPresetLabel || ""
                     }
-                    return qsTr("%n recipient(s)", "", root.share.recipients.length)
+                    return root.share && root.share.recipients ? qsTr("%n recipient(s)", "", root.share.recipients.length) : ""
                 }
                 color: Style.wizardSecondaryText
                 elide: Text.ElideRight

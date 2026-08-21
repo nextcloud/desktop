@@ -30,6 +30,7 @@ ColumnLayout {
 
     UnifiedShareListModel {
         id: shareListModel
+        objectName: "shareListModel"
         sharingController: root.sharingController
     }
 
