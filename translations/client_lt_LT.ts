@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyksta atidaryti naršyklės, nukopijuokite nuorodą į naršyklę.</translation>
     </message>
 </context>
 <context>
