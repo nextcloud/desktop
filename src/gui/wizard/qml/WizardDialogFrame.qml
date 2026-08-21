@@ -14,6 +14,7 @@ Pane {
 
     default property alias contents: body.data
     property alias footer: footerLayout.data
+    property bool footerVisible: true
     property bool footerSeparatorVisible: false
     property int footerTopPadding: 0
     readonly property int windowMargin: Style.wizardWindowMargin
@@ -37,7 +38,10 @@ Pane {
 
         Item {
             Layout.fillWidth: true
-            Layout.preferredHeight: root.footerButtonHeight + root.windowMargin + root.footerTopPadding + (root.footerSeparatorVisible ? Style.normalBorderWidth : 0)
+            Layout.preferredHeight: root.footerVisible
+                ? root.footerButtonHeight + root.windowMargin + root.footerTopPadding + (root.footerSeparatorVisible ? Style.normalBorderWidth : 0)
+                : 0
+            visible: root.footerVisible
 
             Rectangle {
                 anchors.top: parent.top
