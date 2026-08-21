@@ -133,7 +133,7 @@ WizardStyledWindow {
         anchors.topMargin: Style.standardSpacing
         spacing: 0
 
-        ColumnLayout {
+        RowLayout {
             Layout.leftMargin: Style.sharingDialogWindowMargin
             Layout.rightMargin: Style.sharingDialogWindowMargin
             Layout.bottomMargin: Style.standardSpacing
@@ -141,58 +141,11 @@ WizardStyledWindow {
 
             Layout.fillWidth: true
 
-            EnforcedPlainTextLabel {
-                Layout.fillWidth: true
-
-                text: dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File")
-                elide: Text.ElideRight
-                font.pointSize: Style.titleFontPtSize
-                font.weight: Font.DemiBold
-                color: palette.text
-            }
-
-            EnforcedPlainTextLabel {
-                Layout.fillWidth: true
-
-                text: {
-                    const details = []
-                    if (dialog.fileDetails.sizeString) {
-                        details.push(dialog.fileDetails.sizeString)
-                    }
-                    if (dialog.fileDetails.lastChangedString) {
-                        details.push(dialog.fileDetails.lastChangedString)
-                    }
-                    const owner = dialog.account ? (dialog.account.davDisplayName || dialog.account.davUser) : ""
-                    if (owner) {
-                        details.push(owner)
-                    }
-                    return details.join(" · ")
-                }
-                color: Style.wizardSecondaryText
-                elide: Text.ElideRight
-                font.pointSize: Style.defaultFontPtSize
-                visible: text.length > 0
-            }
-        }
-
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: Style.normalBorderWidth
-            color: Style.wizardRowBorder
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.leftMargin: Style.sharingDialogWindowMargin
-            Layout.rightMargin: Style.sharingDialogWindowMargin
-            Layout.topMargin: Style.standardSpacing
-            Layout.preferredHeight: Style.sharingDialogPaneHeaderHeight
-
-            visible: dialog.hasSelectedShare
-
             WizardButton {
                 objectName: "backToShareListButton"
-                Layout.preferredWidth: implicitHeight
+                Layout.preferredWidth: visible ? implicitHeight : 0
+                Layout.preferredHeight: implicitHeight
+                visible: dialog.hasSelectedShare
                 text: ""
                 iconSource: "image://svgimage-custom-color/back.svg/" + palette.buttonText
                 Accessible.name: qsTr("Back to shares")
@@ -201,11 +154,41 @@ WizardStyledWindow {
                 onClicked: dialog.hasSelectedShare = false
             }
 
-            EnforcedPlainTextLabel {
+            ColumnLayout {
                 Layout.fillWidth: true
-                text: dialog.shareTitle(dialog.selectedShare)
-                font.pointSize: Style.subheaderFontPtSize
-                font.weight: Font.DemiBold
+
+                EnforcedPlainTextLabel {
+                    Layout.fillWidth: true
+
+                    text: dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File")
+                    elide: Text.ElideRight
+                    font.pointSize: Style.titleFontPtSize
+                    font.weight: Font.DemiBold
+                    color: palette.text
+                }
+
+                EnforcedPlainTextLabel {
+                    Layout.fillWidth: true
+
+                    text: {
+                        const details = []
+                        if (dialog.fileDetails.sizeString) {
+                            details.push(dialog.fileDetails.sizeString)
+                        }
+                        if (dialog.fileDetails.lastChangedString) {
+                            details.push(dialog.fileDetails.lastChangedString)
+                        }
+                        const owner = dialog.account ? (dialog.account.davDisplayName || dialog.account.davUser) : ""
+                        if (owner) {
+                            details.push(owner)
+                        }
+                        return details.join(" · ")
+                    }
+                    color: Style.wizardSecondaryText
+                    elide: Text.ElideRight
+                    font.pointSize: Style.defaultFontPtSize
+                    visible: text.length > 0
+                }
             }
         }
 
@@ -213,7 +196,6 @@ WizardStyledWindow {
             Layout.fillWidth: true
             Layout.preferredHeight: Style.normalBorderWidth
             color: Style.wizardRowBorder
-            visible: dialog.hasSelectedShare
         }
 
         StackLayout {

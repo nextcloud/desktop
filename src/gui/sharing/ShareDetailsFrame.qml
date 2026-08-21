@@ -29,7 +29,8 @@ WizardDialogFrame {
     signal deleteRequested(Share share)
     signal saveRequested
 
-    footerSeparatorVisible: !!root.share
+    footerVisible: !!root.share && root.share.state === Share.Draft
+    footerSeparatorVisible: root.footerVisible
     footerTopPadding: Style.standardSpacing
 
     ColumnLayout {
@@ -38,14 +39,10 @@ WizardDialogFrame {
 
         ScrollView {
             id: shareDetailsScrollView
+            objectName: "shareDetailsScrollView"
 
             Layout.fillWidth: true
             Layout.fillHeight: true
-            contentWidth: availableWidth
-            leftPadding: 0
-            topPadding: 0
-            bottomPadding: 0
-            rightPadding: ScrollBar.vertical.width
             clip: true
 
             ColumnLayout {
@@ -70,15 +67,9 @@ WizardDialogFrame {
                 }
             }
 
-            ScrollBar.horizontal: ScrollBar {
-                policy: ScrollBar.AlwaysOff
-            }
-
-            ScrollBar.vertical: ScrollBar {
-                policy: ScrollBar.AsNeeded
-                width: Math.max(implicitWidth, Style.minimumScrollBarWidth)
-                minimumSize: Style.minimumScrollBarThumbSize
-            }
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+            ScrollBar.vertical.objectName: "shareDetailsScrollBar"
         }
 
         ErrorBox {
