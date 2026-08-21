@@ -1,0 +1,198 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+#include <QLoggingCategory>
+
+#include "migration.h"
+#include "theme.h"
+#include "configfile.h"
+#include "version.h"
+#include "common/utility.h"
+
+#include <QSettings>
+#include <QDir>
+#include <QStandardPaths>
+
+namespace {
+    constexpr auto legacyCfgFileNameC = "owncloud.cfg";
+    constexpr auto legacyRelativeConfigLocationC = "/ownCloud/owncloud.cfg";
+    constexpr auto unbrandedRelativeConfigLocationC = "/Nextcloud/nextcloud.cfg";
+    constexpr auto unbrandedCfgFileNameC = "nextcloud.cfg";
+}
+
+namespace OCC {
+
+Q_LOGGING_CATEGORY(lcMigration, "nextcloud.settings.migration", QtInfoMsg)
+
+Migration::Phase Migration::_phase = Phase::NotStarted;
+Migration::BrandingType Migration::_brandingType = BrandingType::UnbrandedToUnbranded;
+Migration::UpgradeType Migration::_upgradeType = UpgradeType::NoChange;
+QString Migration::_discoveredLegacyConfigPath = {};
+
+QVersionNumber Migration::currentVersion()
+{
+    return QVersionNumber::fromString(MIRALL_VERSION_STRING);
+}
+
+QVersionNumber Migration::configVersion()
+{
+    return QVersionNumber::fromString(ConfigFile().clientVersionString());
+}
+
+void Migration::setPhase(const Phase phase)
+{
+    if (phase > _phase) {
+        _phase = phase;
+    }
+}
+
+Migration::Phase Migration::phase()
+{
+    return _phase;
+}
+
+void Migration::setBrandingType(const BrandingType type)
+{
+    _brandingType = type;
+}
+
+Migration::BrandingType Migration::brandingType()
+{
+    return _brandingType;
+}
+
+Migration::UpgradeType Migration::upgradeType()
+{
+    return _upgradeType;
+}
+
+void Migration::setUpgradeType(const UpgradeType type)
+{
+    _upgradeType = type;
+}
+
+bool Migration::isUpgrade()
+{
+    return currentVersion() > configVersion();
+}
+
+bool Migration::isDowngrade()
+{
+    return configVersion() > currentVersion();
+}
+
+bool Migration::versionChanged()
+{
+    return isUpgrade() || isDowngrade();
+}
+
+bool Migration::shouldTryUnbrandedToBrandedMigration()
+{
+    return phase() == Migration::Phase::SetupFolders
+        && Theme::instance()->appName() != ConfigFile::unbrandedAppName
+        && !_discoveredLegacyConfigPath.isEmpty();
+}
+
+bool Migration::isUnbrandedToBrandedMigration()
+{
+    return isInProgress() && !_discoveredLegacyConfigPath.isEmpty() && Theme::instance()->appName() != ConfigFile::unbrandedAppName;
+}
+
+bool Migration::shouldTryToMigrate()
+{
+    // Migrate when the config was written by a different client version than
+    // the one running now, and that difference is an actual up or downgrade.
+    return configVersion() != currentVersion() && (isUpgrade() || isDowngrade());
+}
+
+bool Migration::isInProgress()
+{
+    const auto currentPhase = phase();
+    return currentPhase != Phase::NotStarted
+        && currentPhase != Phase::Done;
+}
+
+void Migration::resetForTesting()
+{
+    _phase = Phase::NotStarted;
+    _brandingType = BrandingType::UnbrandedToUnbranded;
+    _upgradeType = UpgradeType::NoChange;
+    _discoveredLegacyConfigPath = {};
+}
+
+Migration::LegacyData Migration::legacyData()
+{
+    qCInfo(lcMigration) << "Migrate: restoreFromLegacySettings, checking settings group" << Theme::instance()->appName();
+
+    // try to open the correctly themed settings
+    auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
+    LegacyData legacyData;
+
+    // if the settings file could not be opened, the childKeys list is empty
+    // then try to load settings from a very old place
+    if (settings->childKeys().isEmpty()) {
+        // Legacy settings used QDesktopServices to get the location for the config folder in 2.4 and before
+        const auto legacy2_4CfgSettingsLocation = QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/data"));
+        const auto legacy2_4CfgFileParentFolder = legacy2_4CfgSettingsLocation.left(legacy2_4CfgSettingsLocation.lastIndexOf('/'));
+
+        // 2.5+ (rest of 2.x series)
+        const auto legacy2_5CfgSettingsLocation =
+            QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
+        const auto legacy2_5CfgFileParentFolder = legacy2_5CfgSettingsLocation.left(legacy2_5CfgSettingsLocation.lastIndexOf('/'));
+
+        // Now try the locations we use today
+        const auto fullLegacyCfgFile = QDir::fromNativeSeparators(settings->fileName());
+        const auto legacyCfgFileParentFolder = fullLegacyCfgFile.left(fullLegacyCfgFile.lastIndexOf('/'));
+        const auto legacyCfgFileGrandParentFolder = legacyCfgFileParentFolder.left(legacyCfgFileParentFolder.lastIndexOf('/'));
+
+        const auto legacyCfgFileNamePath = QString(QStringLiteral("/") + legacyCfgFileNameC);
+        const auto legacyCfgFileRelativePath = QString(legacyRelativeConfigLocationC);
+
+        auto legacyLocations = QVector<QString>{legacy2_4CfgFileParentFolder + legacyCfgFileRelativePath,
+                                                legacy2_5CfgFileParentFolder + legacyCfgFileRelativePath,
+                                                legacyCfgFileParentFolder + legacyCfgFileNamePath,
+                                                legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
+
+        if (Theme::instance()->isBranded()) {
+            const auto unbrandedCfgFileNamePath = QString(QStringLiteral("/") + unbrandedCfgFileNameC);
+            const auto unbrandedCfgFileRelativePath = QString(unbrandedRelativeConfigLocationC);
+            legacyLocations.append({legacyCfgFileParentFolder + unbrandedCfgFileNamePath, legacyCfgFileGrandParentFolder + unbrandedCfgFileRelativePath});
+        }
+
+        for (const auto &configFileString : std::as_const(legacyLocations)) {
+            auto oCSettings = std::make_unique<QSettings>(configFileString, QSettings::IniFormat);
+            if (oCSettings->status() != QSettings::Status::NoError) {
+                qCInfo(lcMigration) << "Error reading legacy configuration file" << configFileString << oCSettings->status();
+                continue;
+            }
+
+            if (const QFileInfo configFileInfo(configFileString); configFileInfo.exists() && configFileInfo.isReadable()) {
+                qCInfo(lcMigration) << "Discovered legacy config at" << configFileInfo.canonicalPath();
+                legacyData = std::move(oCSettings);
+                break;
+            } else {
+                qCInfo(lcMigration) << "Migrate: could not read old config " << configFileString;
+            }
+        }
+    }
+
+    return legacyData;
+}
+
+QString Migration::discoveredLegacyConfigPath()
+{
+    return _discoveredLegacyConfigPath;
+}
+
+void Migration::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath)
+{
+    if (_discoveredLegacyConfigPath == discoveredLegacyConfigPath) {
+        return;
+    }
+
+    _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
+}
+
+}
