@@ -394,3 +394,5 @@ bool EncryptedFolderMetadataHandler::isFolderLocked() const
 }
 
 }
+
+#include "moc_encryptedfoldermetadatahandler.cpp"

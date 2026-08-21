@@ -1835,3 +1835,5 @@ void PropagateVfsUpdateMetadataJob::start()
 }
 
 }
+
+#include "moc_owncloudpropagator.cpp"

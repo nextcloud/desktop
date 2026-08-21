@@ -148,3 +148,5 @@ void EncryptFolderJob::slotUploadMetadataFinished(int statusCode, const QString 
 }
 
 }
+
+#include "moc_encryptfolderjob.cpp"

@@ -112,3 +112,5 @@ std::chrono::milliseconds PutMultiFileJob::msSinceStart() const
 }
 
 }
+
+#include "moc_putmultifilejob.cpp"

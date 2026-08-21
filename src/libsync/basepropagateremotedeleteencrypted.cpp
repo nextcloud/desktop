@@ -197,3 +197,5 @@ const QByteArray BasePropagateRemoteDeleteEncrypted::folderToken() const
 }
 
 } // namespace OCC
+
+#include "moc_basepropagateremotedeleteencrypted.cpp"

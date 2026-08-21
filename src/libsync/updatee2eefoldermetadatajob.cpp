@@ -167,3 +167,5 @@ void UpdateE2eeFolderMetadataJob::unlockFolder(const EncryptedFolderMetadataHand
 }
 
 }
+
+#include "moc_updatee2eefoldermetadatajob.cpp"
