@@ -5,6 +5,7 @@
 
 #include "gui/accountmanager.h"
 #include "gui/filedetails/filedetails.h"
+#include "gui/sharing/propertymodel.h"
 #include "gui/sharing/sharingcontroller.h"
 #include "gui/systray.h"
 #include "gui/tray/usermodel.h"
@@ -76,6 +77,74 @@ private slots:
         QCOMPARE(shareDetailsFrame->property("sharingController").value<QObject *>(), controller);
 
         dialog->close();
+    }
+
+    void createsOptionalPropertyFieldWithDisabledToggle()
+    {
+        QQmlComponent component(
+            Systray::instance()->trayEngine(),
+            QStringLiteral("com.nextcloud.desktopclient.sharing"),
+            QStringLiteral("FieldDelegate"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        const QVariantMap model{
+            {QStringLiteral("type"), PropertyModel::String},
+            {QStringLiteral("label"), QStringLiteral("Expiration date")},
+            {QStringLiteral("property"), QStringLiteral("expiration")},
+            {QStringLiteral("advanced"), true},
+            {QStringLiteral("required"), false},
+            {QStringLiteral("value"), QString()},
+        };
+        const auto fieldObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("model"), model},
+            {QStringLiteral("width"), 400},
+        }));
+        QVERIFY2(fieldObject, qPrintable(component.errorString()));
+
+        const auto fieldItem = fieldObject->property("item").value<QObject *>();
+        QVERIFY(fieldItem);
+        const auto toggle = fieldItem->findChild<QObject *>(QStringLiteral("optionalFieldSwitch"));
+        QVERIFY(toggle);
+        QVERIFY(toggle->property("visible").toBool());
+        QVERIFY(!toggle->property("checked").toBool());
+
+        const auto fieldControl = fieldItem->findChild<QObject *>(QStringLiteral("optionalFieldControl"));
+        QVERIFY(fieldControl);
+        QVERIFY(!fieldControl->property("enabled").toBool());
+    }
+
+    void createsOptionalPropertyFieldWithEnabledToggle()
+    {
+        QQmlComponent component(
+            Systray::instance()->trayEngine(),
+            QStringLiteral("com.nextcloud.desktopclient.sharing"),
+            QStringLiteral("FieldDelegate"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        const QVariantMap model{
+            {QStringLiteral("type"), PropertyModel::String},
+            {QStringLiteral("label"), QStringLiteral("Expiration date")},
+            {QStringLiteral("property"), QStringLiteral("expiration")},
+            {QStringLiteral("advanced"), true},
+            {QStringLiteral("required"), false},
+            {QStringLiteral("value"), QStringLiteral("2026-08-21")},
+        };
+        const auto fieldObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("model"), model},
+            {QStringLiteral("width"), 400},
+        }));
+        QVERIFY2(fieldObject, qPrintable(component.errorString()));
+
+        const auto fieldItem = fieldObject->property("item").value<QObject *>();
+        QVERIFY(fieldItem);
+        const auto toggle = fieldItem->findChild<QObject *>(QStringLiteral("optionalFieldSwitch"));
+        QVERIFY(toggle);
+        QVERIFY(toggle->property("visible").toBool());
+        QVERIFY(toggle->property("checked").toBool());
+
+        const auto fieldControl = fieldItem->findChild<QObject *>(QStringLiteral("optionalFieldControl"));
+        QVERIFY(fieldControl);
+        QVERIFY(fieldControl->property("enabled").toBool());
     }
 };
 
