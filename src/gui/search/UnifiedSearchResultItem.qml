@@ -10,10 +10,11 @@ import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 
 import Style
-import "qrc:/qml/src/gui/tray"
 
 RowLayout {
     id: unifiedSearchResultItemDetails
+
+    objectName: "searchResultContent"
 
     property string title: ""
     property string subline: ""
@@ -22,6 +23,7 @@ RowLayout {
 
     property bool iconsIsThumbnail: false
     property bool isRounded: false
+    property bool accessibilityEnabled: true
 
     property int iconWidth: iconsIsThumbnail && icons !== "" ? Style.unifiedSearchResultIconWidth : Style.unifiedSearchResultSmallIconWidth
     property int titleFontSize: Style.unifiedSearchResultTitleFontSize
@@ -32,8 +34,9 @@ RowLayout {
 
 
     Accessible.role: Accessible.ListItem
-    Accessible.name: resultTitle
-    Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
+    Accessible.name: title
+    Accessible.description: subline
+    Accessible.ignored: !accessibilityEnabled
 
     spacing: Style.trayHorizontalMargin
 
@@ -86,16 +89,35 @@ RowLayout {
         }
     }
 
-    ListItemLineAndSubline {
+    ColumnLayout {
         id: unifiedSearchResultTextContainer
 
-        spacing: Style.standardSpacing
+        objectName: "searchResultTextContainer"
+        spacing: Style.unifiedSearchResultTextSpacing
 
         Layout.fillWidth: true
         Layout.rightMargin: Style.trayHorizontalMargin
 
-        lineText: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
-        sublineText: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")
+        Label {
+            objectName: "searchResultTitle"
+            Layout.fillWidth: true
+            text: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
+            textFormat: Text.PlainText
+            color: unifiedSearchResultItemDetails.titleColor
+            elide: Text.ElideRight
+            font.pixelSize: unifiedSearchResultItemDetails.titleFontSize
+        }
+
+        Label {
+            objectName: "searchResultSubline"
+            Layout.fillWidth: true
+            text: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")
+            textFormat: Text.PlainText
+            color: unifiedSearchResultItemDetails.sublineColor
+            visible: text.length > 0
+            elide: Text.ElideRight
+            font.pixelSize: unifiedSearchResultItemDetails.sublineFontSize
+        }
     }
 
 }

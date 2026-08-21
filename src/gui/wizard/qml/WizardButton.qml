@@ -4,8 +4,9 @@
  */
 
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Controls.Basic as BasicControls
+import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 import Style
 
 BasicControls.Button {
@@ -14,7 +15,11 @@ BasicControls.Button {
     property bool primary: false
     property string iconSource: ""
     property bool iconBeforeText: false
+    property bool tintIcon: false
+    property color iconTintColor: Style.wizardPrimaryText
+    property real cornerRadius: Style.mediumRoundedButtonRadius
     property string textSuffix: ""
+    property string trailingIconSource: ""
     readonly property color primaryColor: Style.wizardPrimaryButtonBackground
     readonly property color primaryPressedColor: Style.wizardPrimaryButtonPressed
     readonly property color secondaryColor: Style.wizardSecondaryButtonBackground
@@ -31,52 +36,78 @@ BasicControls.Button {
     Accessible.role: Accessible.Button
     Accessible.name: textSuffix === "" ? text : text + " " + textSuffix
 
-    contentItem: Item {
-        implicitWidth: contentRow.implicitWidth
-        implicitHeight: contentRow.implicitHeight
+    contentItem: RowLayout {
+        spacing: 6
 
-        Row {
-            id: contentRow
-
-            anchors.centerIn: parent
-            spacing: 6
+        Item {
+            visible: root.iconSource !== "" && root.iconBeforeText
+            Layout.preferredWidth: visible ? Style.smallIconSize : 0
+            Layout.preferredHeight: Style.smallIconSize
 
             Image {
-                visible: root.iconSource !== "" && root.iconBeforeText
-                source: root.iconSource
+                id: leadingIconImage
+
+                anchors.fill: parent
+                visible: !root.tintIcon
+                source: root.iconSource !== "" && root.iconBeforeText ? root.iconSource : ""
                 sourceSize.width: Style.smallIconSize
                 sourceSize.height: Style.smallIconSize
-                width: visible ? Style.smallIconSize : 0
-                height: Style.smallIconSize
-                anchors.verticalCenter: parent.verticalCenter
                 fillMode: Image.PreserveAspectFit
+                Accessible.ignored: true
             }
 
-            Text {
-                text: root.textSuffix === "" ? root.text : root.text + " " + root.textSuffix
-                font: root.font
-                color: root.enabled
-                    ? (root.primary ? Style.wizardSelectedText : root.palette.buttonText)
-                    : Style.wizardDisabledText
-                anchors.verticalCenter: parent.verticalCenter
-                elide: Text.ElideRight
+            ColorOverlay {
+                objectName: "wizardButtonLeadingIconTint"
+                anchors.fill: leadingIconImage
+                visible: root.tintIcon
+                source: leadingIconImage
+                color: root.iconTintColor
+                cached: true
+                Accessible.ignored: true
             }
+        }
 
-            Image {
-                visible: root.iconSource !== "" && !root.iconBeforeText
-                source: root.iconSource
-                sourceSize.width: Style.smallIconSize
-                sourceSize.height: Style.smallIconSize
-                width: visible ? Style.smallIconSize : 0
-                height: Style.smallIconSize
-                anchors.verticalCenter: parent.verticalCenter
-                fillMode: Image.PreserveAspectFit
-            }
+        Text {
+            objectName: "wizardButtonText"
+            Layout.fillWidth: true
+            text: root.textSuffix === "" ? root.text : root.text + " " + root.textSuffix
+            font: root.font
+            color: root.enabled
+                ? (root.primary ? Style.wizardSelectedText : root.palette.buttonText)
+                : Style.wizardDisabledText
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
+        }
+
+        Image {
+            visible: root.iconSource !== "" && !root.iconBeforeText
+            source: root.iconSource !== "" && !root.iconBeforeText ? root.iconSource : ""
+            sourceSize.width: Style.smallIconSize
+            sourceSize.height: Style.smallIconSize
+            Layout.preferredWidth: visible ? Style.smallIconSize : 0
+            Layout.preferredHeight: Style.smallIconSize
+            fillMode: Image.PreserveAspectFit
+            Accessible.ignored: true
+        }
+
+        Image {
+            id: trailingIcon
+
+            objectName: "wizardButtonTrailingIcon"
+            visible: root.trailingIconSource !== ""
+            source: root.trailingIconSource
+            sourceSize.width: Style.smallIconSize
+            sourceSize.height: Style.smallIconSize
+            Layout.preferredWidth: visible ? Style.smallIconSize : 0
+            Layout.preferredHeight: Style.smallIconSize
+            fillMode: Image.PreserveAspectFit
+            Accessible.ignored: true
         }
     }
 
     background: Rectangle {
-        radius: Style.mediumRoundedButtonRadius
+        radius: root.cornerRadius
         border.width: root.primary ? 0 : 1
         border.color: root.enabled ? root.secondaryBorderColor : root.disabledBorderColor
         color: {
@@ -84,15 +115,20 @@ BasicControls.Button {
                 return root.disabledColor
             }
             if (root.primary) {
-                return root.down ? root.primaryPressedColor : root.primaryColor
+                return root.down || hoverArea.containsMouse
+                    ? root.primaryPressedColor
+                    : root.primaryColor
             }
-            return root.down
+            return root.down || hoverArea.containsMouse
                 ? root.secondaryPressedColor
                 : root.secondaryColor
         }
     }
 
     MouseArea {
+        id: hoverArea
+
+        objectName: "wizardButtonHoverArea"
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
         enabled: root.enabled

@@ -9,6 +9,8 @@ target_sources(nextcloudGuiSearch
     unifiedsearchresult.cpp
     unifiedsearchresultslistmodel.h
     unifiedsearchresultslistmodel.cpp
+    unifiedsearchpeoplemodel.h
+    unifiedsearchpeoplemodel.cpp
 )
 
 ecm_add_qml_module(nextcloudGuiSearch
@@ -17,6 +19,7 @@ ecm_add_qml_module(nextcloudGuiSearch
   QML_FILES
     SearchWindow.qml
     UnifiedSearchInputContainer.qml
+    UnifiedSearchResultDelegate.qml
     UnifiedSearchResultFetchMoreTrigger.qml
     UnifiedSearchResultItem.qml
     UnifiedSearchResultItemSkeleton.qml
