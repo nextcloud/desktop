@@ -144,6 +144,25 @@ void applyImmersiveDarkMode(QWidget *widget, bool dark)
         DwmSetWindowAttribute(hwnd, 19, &enabled, sizeof(enabled));
     }
 }
+
+// Qt's "windows11" style (used on Windows 11 for palette/dark-mode-aware native
+// primitives, see baseStyleName below) requests rounded window corners from DWM
+// on its own as part of matching the native Fluent look. Override that back to
+// square corners here if that's not wanted.
+void applyWindowCornerPreference(QWidget *widget)
+{
+    if (!widget || !widget->isWindow()) {
+        return;
+    }
+    const auto hwnd = reinterpret_cast<HWND>(widget->winId());
+    if (!hwnd) {
+        return;
+    }
+    // 33 = DWMWA_WINDOW_CORNER_PREFERENCE, 1 = DWMWCP_DONOTROUND (Windows 11 only;
+    // no-op and harmless on Windows 10).
+    const DWORD doNotRound = 1;
+    DwmSetWindowAttribute(hwnd, 33, &doNotRound, sizeof(doNotRound));
+}
 #endif
 }
 
@@ -1289,6 +1308,7 @@ bool Application::eventFilter(QObject *watched, QEvent *event)
     if (event->type() == QEvent::Show) {
         if (auto *widget = qobject_cast<QWidget *>(watched)) {
             applyImmersiveDarkMode(widget, _theme->darkMode());
+            applyWindowCornerPreference(widget);
         }
     }
 #else
