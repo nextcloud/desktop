@@ -31,7 +31,7 @@
 				<key>Label</key>
 				<dict>
 					<key>NSStringFormat</key>
-					<string>Always keep downloaded</string>
+					<string>Always Keep Downloaded</string>
 				</dict>
 			</dict>
 		</array>
@@ -43,7 +43,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.KeepDownloadedAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Always keep downloaded</string>
+				<string>Always Keep Downloaded</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>

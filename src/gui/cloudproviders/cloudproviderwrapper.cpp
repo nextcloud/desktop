@@ -240,7 +240,7 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
     g_clear_object (&section);
 
     section = g_menu_new();
-    item = addMenuItem(tr("Open in browser"), "cloudprovider.openwebsite");
+    item = addMenuItem(tr("Open in Browser"), "cloudprovider.openwebsite");
     g_menu_append_item(section, item);
     g_clear_object (&item);
     g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
