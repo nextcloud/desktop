@@ -865,10 +865,17 @@ void Systray::createFileDetailsDialog(const QString &localPath, const QString &f
         }
     }
     const auto remotePath = QDir(folder->remotePath()).filePath(relativePath);
+    qCDebug(lcSystray).nospace() << "Resolved file details file ID for " << localPath << ": " << resolvedFileId;
 
-    if (folder->accountState()->account()->capabilities().unifiedSharingAvailable()) {
+    const auto unifiedSharingAvailable = folder->accountState()->account()->capabilities().unifiedSharingAvailable();
+    if (unifiedSharingAvailable && !resolvedFileId.isEmpty()) {
         createUnifiedSharingDialog(folder->accountState()->account(), localPath, resolvedFileId, remotePath);
         return;
+    }
+
+    if (unifiedSharingAvailable) {
+        qCWarning(lcSystray) << "Cannot open unified sharing for" << localPath
+                             << "because no server file ID was available; falling back to the existing file details view";
     }
 
     const QVariantMap initialProperties{

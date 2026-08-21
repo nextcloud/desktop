@@ -19,6 +19,7 @@ WizardDialogFrame {
     id: root
 
     property SharingController sharingController: null
+    property var account: null
     property Share share: null
     property bool activatingShare: false
     property string activationError: ""
@@ -40,11 +41,15 @@ WizardDialogFrame {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
-            contentWidth: width
+            contentWidth: availableWidth
+            leftPadding: 0
+            topPadding: 0
+            bottomPadding: 0
+            rightPadding: ScrollBar.vertical.width
             clip: true
 
             ColumnLayout {
-                width: shareDetailsScrollView.width
+                width: shareDetailsScrollView.availableWidth
 
                 Loader {
                     id: shareDetailsLoader
@@ -57,6 +62,8 @@ WizardDialogFrame {
                     visible: active
 
                     sourceComponent: ShareDetailsPage {
+                        objectName: "shareDetailsPage"
+                        account: root.account
                         sharingController: root.sharingController
                         share: root.share
                     }
@@ -69,6 +76,8 @@ WizardDialogFrame {
 
             ScrollBar.vertical: ScrollBar {
                 policy: ScrollBar.AsNeeded
+                width: Math.max(implicitWidth, Style.minimumScrollBarWidth)
+                minimumSize: Style.minimumScrollBarThumbSize
             }
         }
 
@@ -95,15 +104,16 @@ WizardDialogFrame {
             text: qsTr("Changes to this share are applied immediately.")
             color: Style.wizardSecondaryText
             wrapMode: Text.Wrap
-            visible: root.share && root.share.state === Share.Active
+            visible: !!root.share && root.share.state === Share.Active
         }
     }
 
     footer: [
         WizardButton {
+            objectName: "deleteShareButton"
             text: qsTr("Delete share")
             enabled: !!root.sharingController && !root.sharingController.destroyingShare
-            visible: root.share && root.share.state === Share.Active
+            visible: !!root.share && root.share.state === Share.Active
             iconSource: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
             iconBeforeText: true
             onClicked: root.deleteRequested(root.share)
@@ -112,21 +122,24 @@ WizardDialogFrame {
             Layout.fillWidth: true
         },
         WizardButton {
+            objectName: "closeShareButton"
             text: qsTr("Close")
-            visible: root.share && root.share.state === Share.Active
+            visible: !!root.share && root.share.state === Share.Active
             onClicked: root.closeRequested()
         },
         WizardButton {
+            objectName: "cancelShareButton"
             text: root.sharingController && root.sharingController.destroyingShare ? qsTr("Cancelling…") : qsTr("Cancel")
             enabled: !!root.sharingController && !root.sharingController.destroyingShare && !root.activatingShare
-            visible: root.share && root.share.state === Share.Draft
+            visible: !!root.share && root.share.state === Share.Draft
             onClicked: root.cancelRequested()
         },
         WizardButton {
+            objectName: "saveShareButton"
             primary: true
             text: root.activatingShare ? qsTr("Saving…") : qsTr("Save")
             enabled: !root.activatingShare && !!root.sharingController && !root.sharingController.destroyingShare && !!root.share && !!root.share.recipients && root.share.recipients.length > 0
-            visible: root.share && root.share.state === Share.Draft
+            visible: !!root.share && root.share.state === Share.Draft
 
             onClicked: {
                 root.commitPendingChanges()

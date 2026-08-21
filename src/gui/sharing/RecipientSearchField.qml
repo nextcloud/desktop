@@ -22,8 +22,8 @@ WizardTextField {
 
     signal recipientSelected(string recipientType, string recipientValue, string recipientInstance)
 
-    required property var account
-    required property string shareId
+    property var account: null
+    property string shareId: ""
     property RecipientSearchModel recipientModel: RecipientSearchModel {
         query: root.text
         shareId: root.shareId

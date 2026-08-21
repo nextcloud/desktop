@@ -25,8 +25,9 @@ WizardStyledWindow {
     property string shortLocalPath: dialog.localPath.split("/").reverse()[0]
     property string fileId: ""
     property string remotePath: ""
-    property Share selectedShare: null
-    property Share sharePendingDeletion: null
+    property Share selectedShare
+    property bool hasSelectedShare: false
+    property var sharePendingDeletion: null
     property bool activatingShare: false
     property string shareActivationError: ""
     property alias controller: controllerObject
@@ -47,11 +48,11 @@ WizardStyledWindow {
 
     function reconcileSelectedShare() {
         const shares = dialog.currentShares()
-        if (dialog.selectedShare && shares.indexOf(dialog.selectedShare) !== -1) {
+        if (dialog.hasSelectedShare && dialog.selectedShare && shares.indexOf(dialog.selectedShare) !== -1) {
             return
         }
 
-        dialog.selectedShare = null
+        dialog.hasSelectedShare = false
     }
 
     function shareTitle(share): string {
@@ -113,7 +114,7 @@ WizardStyledWindow {
         function onShareActivated(share) {
             if (share === dialog.selectedShare) {
                 dialog.activatingShare = false
-                dialog.selectedShare = null
+                dialog.hasSelectedShare = false
             }
         }
 
@@ -180,30 +181,46 @@ WizardStyledWindow {
             color: Style.wizardRowBorder
         }
 
-        EnforcedPlainTextLabel {
+        RowLayout {
             Layout.fillWidth: true
             Layout.leftMargin: Style.sharingDialogWindowMargin
             Layout.rightMargin: Style.sharingDialogWindowMargin
             Layout.topMargin: Style.standardSpacing
             Layout.preferredHeight: Style.sharingDialogPaneHeaderHeight
 
-            text: dialog.shareTitle(dialog.selectedShare)
-            font.pointSize: Style.subheaderFontPtSize
-            font.weight: Font.DemiBold
-            visible: dialog.selectedShare
+            visible: dialog.hasSelectedShare
+
+            WizardButton {
+                objectName: "backToShareListButton"
+                Layout.preferredWidth: implicitHeight
+                text: ""
+                iconSource: "image://svgimage-custom-color/back.svg/" + palette.buttonText
+                Accessible.name: qsTr("Back to shares")
+                ToolTip.visible: hovered
+                ToolTip.text: Accessible.name
+                onClicked: dialog.hasSelectedShare = false
+            }
+
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+                text: dialog.shareTitle(dialog.selectedShare)
+                font.pointSize: Style.subheaderFontPtSize
+                font.weight: Font.DemiBold
+            }
         }
 
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: Style.normalBorderWidth
             color: Style.wizardRowBorder
-            visible: dialog.selectedShare
+            visible: dialog.hasSelectedShare
         }
 
         StackLayout {
+            objectName: "shareStackLayout"
             Layout.fillWidth: true
             Layout.fillHeight: true
-            currentIndex: dialog.selectedShare ? 1 : 0
+            currentIndex: dialog.hasSelectedShare ? 1 : 0
 
             ShareListPage {
                 objectName: "shareListPage"
@@ -215,7 +232,10 @@ WizardStyledWindow {
                 remotePath: dialog.remotePath
                 activationError: dialog.shareActivationError
 
-                onShareSelected: share => dialog.selectedShare = share
+                onShareSelected: share => {
+                    dialog.selectedShare = share
+                    dialog.hasSelectedShare = true
+                }
                 onCopyRequested: value => dialog.copyToClipboard(value)
                 onClearActivationError: dialog.shareActivationError = ""
             }
@@ -224,6 +244,7 @@ WizardStyledWindow {
                 id: shareDetailsFrame
                 objectName: "shareDetailsFrame"
 
+                account: dialog.account
                 sharingController: controllerObject
                 share: dialog.selectedShare
                 activatingShare: dialog.activatingShare
@@ -233,7 +254,7 @@ WizardStyledWindow {
                     dialog.sharePendingDeletion = share
                     deleteShareConfirmation.open()
                 }
-                onCloseRequested: dialog.selectedShare = null
+                onCloseRequested: dialog.hasSelectedShare = false
                 onCancelRequested: controllerObject.destroyShare(dialog.selectedShare)
                 onSaveRequested: {
                     dialog.shareActivationError = ""
@@ -251,7 +272,7 @@ WizardStyledWindow {
         onDeleteRequested: {
             if (dialog.sharePendingDeletion) {
                 if (dialog.selectedShare === dialog.sharePendingDeletion) {
-                    dialog.selectedShare = null
+                    dialog.hasSelectedShare = false
                 }
                 controllerObject.destroyShare(dialog.sharePendingDeletion)
             }
