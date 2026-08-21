@@ -86,6 +86,233 @@ Mehrere `color: "white"`-Treffer sind reine `OpacityMask`-Maskenformen (`visible
 2. `ui.lineEdit` im E2E-Mnemonic-Dialog (accountsettings.cpp:1280) ist fest hellgrau/schwarz, unabhängig vom OS-Theme — fällt in einem sonst abgedunkelten Dialog optisch heraus.
 3. `selectiveSyncNotification` (accountsettings.ui:352) hat fest `color: red` ohne jede Theme-Anbindung — funktional meist noch lesbar (Rot auf Hell/Dunkel), aber nicht über `themedColor()` geführt wie der Rest der Seite.
 
+## Dialog-Familie: caseclashfilenamedialog / conflictdialog / foldercreationdialog / invalidfilenamedialog / legacyaccountselectiondialog
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+Alle fünf Dialoge teilen dasselbe Whitelabel-Muster (Commit `45446a124` "roll out dialogBackgroundColor()/titleColor() dark-mode reuse across dialogs", Basis `bb543a166`): `#include "buttonstyle.h"`/`"whitelabeltheme.h"`, `buttonStyle`-Property auf den Buttons, eine `customizeStyle()`-Methode, die per `setStyleSheet()`/`setPalette()` dieselben vier Getter kombiniert. **Alle fünf rufen `customizeStyle()` nur einmal im Konstruktor auf, keiner hängt es an `changeEvent()`/`paletteChanged`** — ein Theme-Wechsel bei bereits offenem Dialog würde ihn nicht neu einfärben (übergreifende Beobachtung, kein Einzel-Bruch).
+
+| Property | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|
+| `WLTheme.dialogBackgroundColor()` | `#F7F7F9` | `#1F2024` | `StratoTheme::dialogBackgroundColor()`, stratotheme.h:17-18 | ✅ theme-aware |
+| `WLTheme.titleColor()` | `#000000` | `#D6E4F5` | `themedColor()` basetheme.h:319-320 (keine Strato-Override) | ✅ theme-aware |
+| `WLTheme.folderWizardPathColor()` | `#97A3B4` | `#A8B4C6` | `themedColor()` basetheme.h:327-328 (keine Strato-Override) | ✅ theme-aware |
+| `WLTheme.menuBorderColor()` | `#2E4360` | `#5B7699` | `themedColor()` basetheme.h:457-458 (keine Strato-Override) | ✅ theme-aware |
+
+Fundstellen: `caseclashfilenamedialog.cpp:296,297,302,311,316,317` · `conflictdialog.cpp:186,187,192` (+ zwei `Q_OS_MAC`-only QCheckBox-Styles `titleColor()` bei 202/206) · `foldercreationdialog.cpp:106,118,123,124` (`dialogBackgroundColor()` hier direkt per `setPalette(QPalette(QPalette::Window, …))`) · `invalidfilenamedialog.cpp:331,336,345,350,351` · `legacyaccountselectiondialog.cpp:25,67,72,74`.
+
+**Brüche:** keine — alle Treffer ✅ theme-aware.
+
+**Hinweis (kein Farb-, sondern Merge-Risiko-Fund):** `foldercreationdialog.cpp` hat neben dem Styling auch echte Logik verändert (`accept()`-Guard `QDir(fullPath).exists()` entfernt, `ui->labelErrorMessage`→`ui->errorSnackbar` umbenannt) — siehe [[project_ionos-build-dead-branch-pattern]]-artige Kategorie "unauffällige Nebenänderung im selben Commit", separat in DRIFT_MAP.md als **hoch** eingestuft. Lohnt eine eigene Prüfung, ob der entfernte Guard beabsichtigt war.
+
+## GeneralSettings (`src/gui/generalsettings.cpp`)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `WLTheme.dialogBackgroundColor()` | generalsettings.cpp:869 | `#F7F7F9` | `#1F2024` | `StratoTheme::dialogBackgroundColor()`, stratotheme.h:18 | ✅ theme-aware |
+| `WLTheme.panelBackgroundColor()` | generalsettings.cpp:873 | `#FAFAFA` | `#050505` | `themedColor()` basetheme.h:450 (keine Strato-Override) | ✅ theme-aware — bewusst neu (Commit `b9e530504`) für Card-Panel-Optik analog stable-33.0 |
+| `WLTheme.titleColor()` | generalsettings.cpp:872,877,881,885,888,902,905,908 | `#000000` | `#D6E4F5` | `themedColor()` basetheme.h:320 | ✅ theme-aware |
+| `WLTheme.folderWizardSubtitleColor()` | generalsettings.cpp:896,899 | `#104996` | `#5FA8E0` | `themedColor()` basetheme.h:324 | ✅ theme-aware |
+
+**Brüche:** keine.
+
+## IgnoreListTableWidget (`src/gui/ignorelisttablewidget.cpp`)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `WLTheme.dialogBackgroundColor()` | ignorelisttablewidget.cpp:210,232,267,296 | `#F7F7F9` | `#1F2024` | stratotheme.h:18 | ✅ theme-aware |
+| `WLTheme.titleColor()` | ignorelisttablewidget.cpp:211,217,226,233,238,265,278 | `#000000` | `#D6E4F5` | basetheme.h:320 | ✅ theme-aware |
+| `WLTheme.folderWizardPathColor()` | ignorelisttablewidget.cpp:287 | `#97A3B4` | `#A8B4C6` | basetheme.h:328 | ✅ theme-aware |
+| `WLTheme.menuBorderColor()` | ignorelisttablewidget.cpp:292 | `#2E4360` | `#5B7699` | basetheme.h:458 | ✅ theme-aware |
+
+Kommentar bei Zeile 296 begründet bewusst, dass das Eingabefeld sich nur über den Rahmen absetzt statt über eine eigene Füllfarbe.
+
+**Brüche:** keine.
+
+## Systray-Kontextmenü (`src/gui/systray.cpp`)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `WLTheme.trayBackgroundColor()` | systray.cpp:237 | `#F7F7F9` | `#1F2024` | stratotheme.h:34 | ✅ theme-aware |
+| `WLTheme.menuBorderColor()` | systray.cpp:238 | `#2E4360` | `#5B7699` | basetheme.h:458 | ✅ theme-aware |
+| `WLTheme.menuTextColor()` | systray.cpp:242 | `#29294d` | `#C9CBEF` | stratotheme.h:133 | ✅ theme-aware |
+| `WLTheme.menuSelectedItemColor()` | systray.cpp:243 | `#D6D6E4` | `#282A36` | stratotheme.h:137 | ✅ theme-aware |
+| `WLTheme.menuPressedItemColor()` | systray.cpp:244 | `#5A6782` | `#3A3B52` | stratotheme.h:149 | ✅ theme-aware |
+| `WLTheme.menuPressedTextColor()` | systray.cpp:245 | `#FFFFFF` | `#FFFFFF` (identisch) | `StratoTheme::menuPressedTextColor()`, stratotheme.h:141 — fixer Rückgabewert, kein `themedColor()` | ⚠️ Bruch: Getter selbst hat keinen Dark-Wert |
+
+**Brüche:** `menuPressedTextColor()` (stratotheme.h:141) — derselbe bereits unter AccountSettings dokumentierte Bruch, hier im Tray-Kontextmenü bestätigt (zweite Verwendungsstelle desselben Getters).
+
+## ButtonStyle (`src/gui/buttonstyle.h`, fork-eigen)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+Reine Weiterleitung an `WLTheme`-Getter (`PrimaryButtonStyle`/`SecondaryButtonStyle`/`MoreOptionsButtonStyle`), keine eigenen Hex-Werte.
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `buttonPrimaryColor()` | 75,80,119 | `#272CB2` | `#5B60D6` | stratotheme.h:50 | ✅ theme-aware |
+| `buttonPrimaryHoverColor()` | 86,91 | `#2944CC` | `#2944CC` (identisch) | `StratoTheme`-Override stratotheme.h:55, eigener TODO-Kommentar "no established Strato dark counterpart" | ⚠️ Bruch: Getter selbst hat keinen Dark-Wert (offen bekannt) |
+| `buttonPrimaryPressedColor()` | 97,102 | `#272CB2` | `#5B60D6` | stratotheme.h:59 | ✅ theme-aware |
+| `buttonDisabledColor()` | 108,113,202,207,297,302 | `#EDEEF3` | `#282A36` | stratotheme.h:89 | ✅ theme-aware |
+| `buttonPrimaryFocusedBorderColor()` | 124 | `#CDD5E3` | `#FFFFFF` | stratotheme.h:63 | ✅ theme-aware |
+| `buttonDisabledFontColor()` | 130,224,319 | `#BDBDBD` | `#5A5D63` | basetheme.h:415 | ✅ theme-aware |
+| `white()` | 135,141,146,213,235,240,308 | `#FFFFFF` | identisch | basetheme.h:435, fixer Wert | ⚠️ Bruch: Getter selbst hat keinen Dark-Wert |
+| `buttonSecondaryColor()` | 169 | `#F7F7F9` | `#2E2F3D` | stratotheme.h:68 | ✅ theme-aware |
+| `buttonSecondaryBorderColor()` | 174,185,196 | `#CDD5E3` | `#FFFFFF` | stratotheme.h:73 | ✅ theme-aware |
+| `buttonSecondaryHoverColor()` | 180 | `#EDEEF3` | `#282A36` | stratotheme.h:77 | ✅ theme-aware |
+| `buttonSecondaryPressedColor()` | 191 | `#D6D6E4` | `#3A3B52` | stratotheme.h:81 | ✅ theme-aware |
+| `buttonSecondaryFocusedBorderColor()` | 218 | `#8493B3` | `#454C5E` | stratotheme.h:85 | ✅ theme-aware |
+| `titleColor()` | 229 | `#000000` | `#D6E4F5` | basetheme.h:320 | ✅ theme-aware |
+| `dialogBackgroundColor()` | 264,269 | `#F7F7F9` | `#1F2024` | stratotheme.h:18 | ✅ theme-aware |
+| `buttonHoveredColor()` | 275,280 | `#eeeff9` | `#2A2B3D` | stratotheme.h:117 | ✅ theme-aware |
+| `buttonPressedColor()` | 286,291 | `#D6D6E4` | `#3A3B52` | stratotheme.h:121 | ✅ theme-aware |
+| `black()` | 313,324 | `#000000` | identisch | basetheme.h:439, fixer Wert | ⚠️ Bruch: Getter selbst hat keinen Dark-Wert — **Zeile 324 (`MoreOptionsButtonStyle::buttonFontColor()`) sitzt auf `dialogBackgroundColor()` dunkel `#1F2024`, also potenziell fast-schwarzer Text auf fast-schwarzem Grund** |
+| `buttonIconColor()` | 330 | `#2f2f70` | `#C9CBEF` | stratotheme.h:109 | ✅ theme-aware |
+| `buttonIconHoverColor()` | 335 | `#2f2f70` | `#C9CBEF` | stratotheme.h:113 | ✅ theme-aware |
+
+**Brüche:**
+1. `buttonPrimaryHoverColor()` (stratotheme.h:55) — kein Dark-Wert, laut eigenem TODO noch offen (Design-Input fehlt).
+2. `white()`/`black()` (basetheme.h:435/439) — fixe Werte, betreffen v. a. `MoreOptionsButtonStyle::buttonFontColor()` (Zeile 324): **schwarzer Text auf `dialogBackgroundColor()` im Dark Mode (`#1F2024`) — praktisch vermutlich unlesbar, konkretester Kontrast-Fund dieser Analyse-Runde.**
+
+## SettingsDialog (`src/gui/settingsdialog.cpp`)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `WLTheme.dialogBackgroundColor()` | 532,546-547,553-555 (nur `IONOS_BUILD`) | `#F7F7F9` | `#1F2024` | stratotheme.h:17-18 | ✅ theme-aware |
+| `WLTheme.toolButtonHoveredColor()` | 533 | `#EDEEF3` | `#282A36` | stratotheme.h:124-125 | ✅ theme-aware |
+| `WLTheme.toolButtonPressedColor()` | 534 | `#D6D6E4` | `#3A3B52` | stratotheme.h:128-129 | ✅ theme-aware |
+| `WLTheme.menuSelectedItemColor()` | 535 | `#D6D6E4` | `#282A36` | stratotheme.h:136-137 | ✅ theme-aware |
+| `WLTheme.buttonSecondaryBorderColor()` | 538 | `#CDD5E3` | `#FFFFFF` | stratotheme.h:71-73 | ✅ theme-aware |
+| `WLTheme.titleColor()` (als `highlightTextColor`) | 539 | `#000000` | `#D6E4F5` | basetheme.h:319-320 | ✅ theme-aware |
+| `WLTheme.menuTextColor()` | 544 | `#29294d` | `#C9CBEF` | stratotheme.h:132-133 | ✅ theme-aware |
+| `palette(highlight)`/`palette(highlighted-text)` (`TOOLBAR_CSS`, `IONOS_BUILD`) | 118 | OS-Theme | OS-Theme | ambient | ℹ️ ambient — verifiziert reaktiv über `changeEvent()`→`customizeStyle()` (306-312) |
+| `palette(window)`/`palette(alternate-base/light)` (`BACKGROUND_PALETTE`, Nicht-`IONOS_BUILD`-Zweig) | 583-596 | OS-Theme | OS-Theme | ambient | ℹ️ ambient — verifiziert reaktiv |
+| `palette().color(QPalette::WindowText/Window)` (Avatar-Ring/Glyph) | 468,684,688 | OS-Theme | OS-Theme | ambient, mit Begründungskommentar | ℹ️ ambient — verifiziert reaktiv |
+| `Theme::createColorAwareIcon(iconPath, palette())` | 560,609,666,697 | OS-Theme | OS-Theme | ambient | ℹ️ ambient — verifiziert reaktiv |
+
+**Brüche:** keine.
+
+## FolderStatusDelegate (`src/gui/folderstatusdelegate.cpp`)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `option.palette` (Zeilentext) | 285,287,334 | OS-Theme | OS-Theme | Qt liefert `option.palette` pro Paint-Aufruf neu | ℹ️ ambient (zwangsläufig aktuell) |
+| `WLTheme.warningBorderColor()` | 355 | `#F4BFAB` | `#C98F5E` | basetheme.h:521-522 | ✅ theme-aware |
+| `WLTheme.errorBorderColor()` | 358 | `#FF004C` | `#FF6688` | stratotheme.h:152-153 | ✅ theme-aware |
+| `WLTheme.infoBorderColor()` | 384 | `#11C7E6` | `#4DD9F0` | basetheme.h:529-530 | ✅ theme-aware |
+| `WLTheme.dialogBackgroundColor()` (Fortschrittsleisten-Base) | 425 | `#F7F7F9` | `#1F2024` | stratotheme.h:17-18 | ✅ theme-aware |
+| `WLTheme.syncProgressColor()` (Fortschrittsleisten-Highlight) | 426 | `#009850` | identisch | `StratoTheme::syncProgressColor()`, stratotheme.h:45-47 — fixer Rückgabewert, überschreibt `basetheme.h:368-369` (`themedColor("#359ada","#4FB6F0")`) | ⚠️ Bruch: Getter selbst hat keinen Dark-Wert |
+| `BaseTheme::tintedFillFromBorder(borderColor)` (Fehler/Warn/Info-Box-Füllung) | 330 | abgeleitet | abgeleitet | Formel auf o.g. Border-Farben, Kommentar 326-329 begründet bewusste Ableitung statt fixer Pastelltöne | ✅ theme-aware |
+
+**Brüche:** `StratoTheme::syncProgressColor()` (stratotheme.h:45-47) fest `#009850` — betrifft die Sync-Fortschrittsleiste; Grün bleibt im Dark Mode vermutlich noch kontrastreich genug, aber nicht bewusst dokumentiert.
+
+## FolderWizard (`src/gui/folderwizard.cpp`)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `WLTheme.dialogBackgroundColor()` | 186,216,256,290,301,722,757,967 | `#F7F7F9` | `#1F2024` | stratotheme.h:17-18 | ✅ theme-aware |
+| `WLTheme.titleColor()` | 189,201,289,304,677,686,756,760 | `#000000` | `#D6E4F5` | basetheme.h:319-320 | ✅ theme-aware |
+| `WLTheme.folderWizardSubtitleColor()` | 193-196,673,763-766 | `#104996` | `#5FA8E0` | basetheme.h:323-324 | ✅ theme-aware |
+| `WLTheme.folderWizardPathColor()` | 210,295 | `#97A3B4` | `#A8B4C6` | basetheme.h:327-328 | ✅ theme-aware |
+| `WLTheme.menuBorderColor()` | 215,300 | `#2E4360` | `#5B7699` | basetheme.h:457-458 | ✅ theme-aware |
+| `WLTheme.white()` (Button-Text, nur `Q_OS_MAC`) | 223,310 | `#FFFFFF` | identisch | basetheme.h:434-436, fixer Wert | ⚠️ Bruch: Getter selbst hat keinen Dark-Wert |
+
+**Brüche:** `white()` (basetheme.h:434-436) — nur macOS-Zweig, vermutlich unkritisch (analog zum bekannten `menuPressedTextColor()`-Muster), aber nicht als bewusste Dark-Mode-Ausnahme kommentiert.
+
+## OwncloudGui (`src/gui/owncloudgui.cpp`)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+**Keine Farbtreffer.** Alle `WLTheme.*`-Aufrufe (`syncOfflineIcon`, `syncSyncingIcon`, `syncPausedIcon`, `syncSuccessIcon`, `syncWarningIcon`) liefern Icon-Dateipfade, keine Farbwerte.
+
+## SelectiveSyncDialog (`src/gui/selectivesyncdialog.cpp`)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `WLTheme.dialogBackgroundColor()` | 81,105,122,138,582,598 | `#F7F7F9` | `#1F2024` | stratotheme.h:17-18 | ✅ theme-aware |
+| `WLTheme.titleColor()` | 80,115,127,134,569 | `#000000` | `#D6E4F5` | basetheme.h:319-320 | ✅ theme-aware |
+| `WLTheme.white()` (OK-Button-Text) | 591 | `#FFFFFF` | identisch | basetheme.h:434-436, fixer Wert | ⚠️ Bruch: Getter selbst hat keinen Dark-Wert |
+| `palette(dark)` (Header-Trennlinie, nur `Q_OS_MAC`) | 109 | OS-Theme | OS-Theme | ambient, Kommentar 107-108 bewusst analog zum Tray | ℹ️ ambient (bewusst) |
+
+**Brüche:** `white()` (basetheme.h:434-436), gleiches Muster wie `folderwizard.cpp`.
+
+**Hinweis:** `customizeStyle()` wird nur im Konstruktor aufgerufen (Zeile 576), nicht an `changeEvent()` gehängt — anders als `settingsdialog.cpp`. Farbwerte selbst sind theme-aware definiert, werden aber bei einem Theme-Wechsel während der Dialog offen ist ggf. nicht neu angewendet.
+
+## Wizard: DataProtection-Seiten (`src/gui/wizard/dataprotectionpage.cpp`, `dataprotectionsettingspage.cpp`, fork-eigen)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `WLTheme.titleColor()` | dataprotectionpage.cpp:83 · dataprotectionsettingspage.cpp:96,108,121 | `#000000` | `#D6E4F5` | basetheme.h:319-320 | ✅ theme-aware |
+| `WLTheme.folderWizardSubtitleColor()` | dataprotectionsettingspage.cpp:76,86 | `#104996` | `#5FA8E0` | basetheme.h:323-324 | ✅ theme-aware |
+
+**Brüche:** keine.
+
+## SesErrorBox.qml / ShareeSearchField.qml (FileDetailsPage-Umfeld)
+
+*Zuletzt geprüfter Commit: `8534f6865` (2026-08-20) — heute im selben Lauf per SES-578 gefixt (Commits `cd9d7535e`, `8534f6865`)*
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `Style.tintedFill(Style.sesErrorBoxBorder, 0.2)` (Hintergrund) | SesErrorBox.qml:34 | `#FF004C`@20% | `#FF6688`@20% | `Style.tintedFill()` Style.qml:231, neuer gemeinsamer Helfer `BaseTheme::tintedFillFromBorder` | ✅ theme-aware |
+| `Style.sesErrorBoxBorder` | SesErrorBox.qml:35 | `#FF004C` | `#FF6688` | `WLTheme.trayErrorBorderColor()`, stratotheme.h:156-157 | ✅ theme-aware |
+| `Style.sesErrorBoxText` | SesErrorBox.qml:63 | `#CC0052` | `#FF8FB3` | `WLTheme.trayErrorTextColor()`, stratotheme.h:160-161 | ✅ theme-aware |
+| `Style.sesSearchFieldContent` (Placeholder/Icon-Tint) | ShareeSearchField.qml:34,116 | `#97A3B4` | `#B7C1CE` | inline `Theme.darkMode`-Ternary, Style.qml:280 | ✅ theme-aware |
+| `Style.sesTrayFontColor` (Text/Cursor) | ShareeSearchField.qml:43,44 | `#2F2F70` | `#C9CBEF` | stratotheme.h:21-22 | ✅ theme-aware |
+| `Style.sesBackgroundColor` (Field-/Popup-Background) | ShareeSearchField.qml:93,173 | `#F7F7F9` | `#1F2024` | stratotheme.h:33-34 | ✅ theme-aware |
+| `Style.sesMenuBorder` (Field-/Popup-Border) | ShareeSearchField.qml:94,174 | `#2E4360` | `#5B7699` | inline Ternary, Style.qml:279 | ✅ theme-aware |
+| `Style.sesHover` (Vorschlagsliste-Highlight) | ShareeSearchField.qml:197 | `#F2F5F8` | `#2D3138` | inline Ternary, Style.qml:269 | ✅ theme-aware |
+| `palette.placeholderText` (Busy-Indicator/Clear-Icon-Tint) | ShareeSearchField.qml:132,154 | — | — | ambient, kein eigener Wert | ℹ️ ambient, unverifiziert — weder `FileDetailsPage.qml` noch `ShareDetailsPage.qml` rebinden `placeholderText` |
+
+**Brüche:** keine (beide Dateien wurden in dieser Session bereits korrigiert). Einzige offene Frage: `palette.placeholderText` ist ambient/unverifiziert, praktisch niedrige Priorität.
+
+## UserStatusMessageView.qml
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+| Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
+|---|---|---|---|---|---|
+| `Style.ncBlue` (Feldrahmen bei `showBorder`) | 65 | `#0082c9` | identisch | `Theme::wizardHeaderBackgroundColor()`, theme.cpp:784, `Q_PROPERTY CONSTANT` | ⚠️ Bruch: Getter selbst hat keinen Dark-Wert |
+| `palette.dark` (Feldrahmen-Fallback, Emoji-Dialog-Border) | 65,96 | — | — | ambient | ℹ️ ambient, unverifiziert — `MainWindow.qml` rebindet nur `base`/`windowText`, `dark` bleibt System-Palette |
+| `palette.button` (Feld-Hintergrund) | 69 | — | — | ambient | ℹ️ ambient, unverifiziert |
+| `palette.base` (Emoji-Dialog-Hintergrund) | 94 | — | — | ambient | ℹ️ ambient, verifiziert — `MainWindow.qml:40` setzt `palette.base` an der Wurzel |
+| `Style.sesTrayFontColor` (ComboBox-Indicator-Icon-Tint, neu) | 192 | `#2F2F70` | `#C9CBEF` | stratotheme.h:21-22 | ✅ theme-aware |
+
+**Brüche:** `Style.ncBlue`/`Theme::wizardHeaderBackgroundColor()` (theme.cpp:784) — derselbe bereits im Tray-Abschnitt dokumentierte Bruch, hier als zweite Verwendungsstelle bestätigt.
+
+## Application (`src/gui/application.cpp`/`.h`)
+
+*Zuletzt geprüfter Commit: `9d3af4e33` (2026-08-20)*
+
+**Keine Farbtreffer.** Die Datei behandelt Style-Auswahl (`sesStyle`-Base-Style, s. Fix von heute) und natives Dark-Titlebar-Chrome (`applyImmersiveDarkMode()`, DWM-Attribut, kein Farbwert) — beides betrifft Dark-Mode-*Verhalten*, aber keine `WLTheme`/Hex-Farbwerte im Sinne dieser Karte.
+
+## SesSnackBar-Header (`src/gui/sessnackbar.h`)
+
+*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+
+**Keine Farbtreffer in der Header-Datei** — nur Deklarationen (`updateStyleSheet(QColor)`, `errorStyle()`/`warningStyle()`/`successStyle()`). Die tatsächlichen Farbwerte stehen in `src/gui/sessnackbar.cpp` (fork-only) — dort bislang noch nicht geprüft, offen für eine künftige Erfassung bei Bedarf.
+
+## Ergänzung Tray-QML (AccountMenuItem, ActivityItemContent, TrayWindowAccountMenu, UnifiedSearchInputContainer, UserLine)
+
+*Sanity-Check-Commit: `2f77361ec` (2026-08-20)*
+
+Sanity-Check gegen die bestehende Tray-Sektion (s.o.) durchgeführt — keine neuen Farbmuster gefunden, die nicht bereits über die dort erfassten `Style.*`-Properties abgedeckt sind. `UnifiedSearchInputContainer.qml` hat neu `palette.placeholderText` durch `Style.sesSearchFieldContent`/`Style.sesTrayFontColor` ersetzt (jetzt ✅ theme-aware statt ambient). Keine neuen Brüche.
+
 ## Format je Komponente
 
 ```markdown
