@@ -7,6 +7,7 @@
 #ifndef MIRALL_FOLDERWATCHER_LINUX_H
 #define MIRALL_FOLDERWATCHER_LINUX_H
 
+#include <QByteArray>
 #include <QObject>
 #include <QString>
 #include <QSocketNotifier>
@@ -33,7 +34,7 @@ public:
 
     [[nodiscard]] int testWatchCount() const { return _pathToWatch.size(); }
 
-    /// On linux the watcher is ready when the ctor finished.
+    // On Linux the watcher is ready when the constructor has finished.
     bool _ready = true;
 
 protected slots:
@@ -58,8 +59,10 @@ private:
     QHash<int, QString> _watchToPath;
     QMap<QString, int> _pathToWatch;
     QScopedPointer<QSocketNotifier> _socket;
+    QByteArray _inotifyBuffer;
     int _fd = 0;
 };
-}
+
+} // namespace OCC
 
 #endif

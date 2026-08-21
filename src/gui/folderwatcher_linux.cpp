@@ -6,6 +6,7 @@
 
 #include "config.h"
 
+#include <limits.h>
 #include <sys/inotify.h>
 
 #include "folder.h"
@@ -14,15 +15,39 @@
 #include <cerrno>
 #include <QStringList>
 #include <QObject>
-#include <QVarLengthArray>
 
 namespace OCC {
+
+namespace {
+
+// The inotify ABI guarantees that this is sufficient for one event,
+// including a maximum-length filename, its terminating NUL, and record
+// padding.
+constexpr size_t kWorstCaseInotifyEventSize = sizeof(struct inotify_event) + NAME_MAX + 1;
+
+// The inotify ABI guarantees that this is sufficient for one event,
+// including a maximum-length filename, its terminating NUL, and record
+// padding.
+constexpr size_t kInotifyRecordsPerRead = 64;
+
+constexpr size_t kInotifyReadBufferSize = kInotifyRecordsPerRead * kWorstCaseInotifyEventSize;
+
+static_assert(kInotifyRecordsPerRead >= 1);
+static_assert(kInotifyReadBufferSize >= kWorstCaseInotifyEventSize);
+
+} // namespace
 
 FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path)
     : QObject()
     , _parent(p)
     , _folder(path)
 {
+    // The buffer is allocated once per watcher and reused for every read.
+    _inotifyBuffer.resize(static_cast<qsizetype>(kInotifyReadBufferSize));
+
+    // Keep this descriptor blocking for now. The notification handler performs
+    // one read per activation and therefore does not attempt to read until
+    // EAGAIN.
     _fd = inotify_init();
     if (_fd != -1) {
         _socket.reset(new QSocketNotifier(_fd, QSocketNotifier::Read));
@@ -46,15 +71,19 @@ bool FolderWatcherPrivate::findFoldersBelow(const QDir &dir, QStringList &fullLi
     } else {
         QStringList nameFilter;
         nameFilter << QLatin1String("*");
-        QDir::Filters filter = QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden;
+        
+        const QDir::Filters filter = QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden;
         const QStringList paths = dir.entryList(nameFilter, filter);
 
         QStringList::const_iterator constIterator;
         for (constIterator = paths.constBegin(); constIterator != paths.constEnd();
              ++constIterator) {
             const QString fullPath(dir.path() + QLatin1String("/") + (*constIterator));
+
             fullList.append(fullPath);
-            ok = findFoldersBelow(QDir(fullPath), fullList);
+
+            // Preserve failures from earlier recursive calls.
+            ok = findFoldersBelow(QDir(fullPath), fullList) && ok;
         }
     }
 
@@ -119,105 +148,181 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
     }
 }
 
+// Reads and processes pending inotify events for this watcher, updating
+// watches recursively for created/removed subfolders as needed.
 void FolderWatcherPrivate::slotReceivedNotification(int fd)
 {
-    int len = 0;
-    struct inotify_event *event = nullptr;
-    size_t i = 0;
-    int error = 0;
-    QVarLengthArray<char, 2048> buffer(2048);
+    ssize_t len;
 
-    len = read(fd, buffer.data(), buffer.size());
-    error = errno;
-    /**
-      * From inotify documentation:
-      *
-      * The behavior when the buffer given to read(2) is too
-      * small to return information about the next event
-      * depends on the kernel version: in kernels  before 2.6.21,
-      * read(2) returns 0; since kernel 2.6.21, read(2) fails with
-      * the error EINVAL.
-      */
-    while (len < 0 && error == EINVAL) {
-        // double the buffer size
-        buffer.resize(buffer.size() * 2);
+    for (;;) {
+        len = read(fd, _inotifyBuffer.data(), static_cast<size_t>(_inotifyBuffer.size()));
+        if (len >= 0) {
+            // Process the events returned by this read below.
+            break;
+        }
 
-        /* and try again ... */
-        len = read(fd, buffer.data(), buffer.size());
-        error = errno;
+        if (errno == EINTR) {
+            // Interrupted by a signal; just retry.
+            continue;
+        }
+
+        if (errno == EAGAIN || errno == EWOULDBLOCK) {
+            // No data available right now (if fd becomes non-blocking).
+            return;
+        }
+
+        if (errno == EINVAL) {
+            // The buffer is sized for at least one maximum-sized event.
+            // Keep this as a diagnostic if the ABI or sizing changes.
+            qCWarning(lcFolderWatcher)
+                << "Inotify read buffer is too small for an event";
+
+            // We cannot rely on the notification stream after an unexpected
+            // sizing failure, so request a full local discovery and do not
+            // process later records from this read.
+            emit _parent->lostChanges();
+            return;
+        } else {
+            qCWarning(lcFolderWatcher)
+                << "Failed to read inotify events:" << strerror(errno);
+        }
+
+        return;
+    }
+
+    if (len == 0) {
+        qCWarning(lcFolderWatcher)
+            << "Inotify read returned zero bytes";
+        return;
     }
 
     // iterate events in buffer
-    unsigned int ulen = len;
-    for (i = 0; i + sizeof(inotify_event) <= ulen; i += sizeof(inotify_event) + (event ? event->len : 0)) {
-        // cast an inotify_event
-        event = (struct inotify_event *)&buffer[i];
-        if (!event) {
-            qCDebug(lcFolderWatcher) << "NULL event";
-            continue;
+    bool needsRescan = false;
+    size_t offset = 0;
+
+    while (offset < static_cast<size_t>(len)) {
+        const size_t remaining = static_cast<size_t>(len) - offset;
+
+        if (remaining < sizeof(struct inotify_event)) {
+            // Inotify should return complete records. Treat unexpected
+            // truncation as loss of reliable incremental state.
+            qCWarning(lcFolderWatcher)
+                << "Incomplete inotify event header";
+            needsRescan = true;
+            break;
         }
 
-        if (event->mask & IN_Q_OVERFLOW) {
+        const char *eventData = _inotifyBuffer.constData() + offset;
+
+        // Copy the fixed-size header into an aligned local object rather
+        // than dereferencing a potentially unaligned buffer pointer.
+        struct inotify_event eventHeader;
+        std::memcpy(&eventHeader, eventData, sizeof(eventHeader));
+
+        if (eventHeader.len > remaining - sizeof(struct inotify_event)) {
+            // Defensive check against a truncated or malformed record.
+            qCWarning(lcFolderWatcher)
+                << "Incomplete inotify event";
+            needsRescan = true;
+            break;
+        }
+
+        const size_t eventSize = sizeof(struct inotify_event) + eventHeader.len;
+
+        offset += eventSize;
+
+        if (eventHeader.mask & IN_Q_OVERFLOW) {
             qCWarning(lcFolderWatcher)
                 << "The inotify event queue overflowed; triggering a full local discovery";
-            emit _parent->lostChanges();
-            continue;
+            needsRescan = true;
+            // Incremental processing is no longer reliable after queue
+            // overflow, so do not process later records from this read.
+            break;
         }
 
-        // Fire event for the path that was changed.
-        if (event->len == 0 || event->wd <= -1)
+        // Events without a name are handled only through their mask.
+        if (eventHeader.len == 0 || eventHeader.wd <= -1)
             continue;
-        QByteArray fileName(event->name);
-        // Filter out journal changes - redundant with filtering in
-        // FolderWatcher::pathIsIgnored.
+        
+        const char *nameData = eventData + sizeof(struct inotify_event);
+
+        // eventHeader.len includes padding, so bound the search to the
+        // current record and do not assume a valid NUL terminator blindly.
+        const size_t nameLength = ::strnlen(nameData, eventHeader.len);
+
+        if (nameLength == eventHeader.len) {
+            qCWarning(lcFolderWatcher)
+                << "Inotify event name is not NUL-terminated";
+            needsRescan = true;
+            break;
+        }
+
+        const QByteArray fileName(nameData, static_cast<qsizetype>(nameLength));
+
+        // Filter out journal changes. This is redundant with filtering in
+        // FolderWatcher::pathIsIgnored(), but avoids unnecessary processing.
         if (fileName.startsWith("._sync_")
             || fileName.startsWith(".csync_journal.db")
             || fileName.startsWith(".sync_")) {
             continue;
         }
-        const auto watchPathIt = _watchToPath.constFind(event->wd);
+
+        const auto watchPathIt = _watchToPath.constFind(eventHeader.wd);
         if (watchPathIt == _watchToPath.cend()) {
-            qCDebug(lcFolderWatcher) << "Ignoring event for unknown watch descriptor" << event->wd << fileName;
+            qCDebug(lcFolderWatcher)
+                << "Ignoring event for unknown watch descriptor"
+                << eventHeader.wd << fileName;
             continue;
         }
 
         const QString p = *watchPathIt + '/' + fileName;
+
         _parent->changeDetected(p);
 
-        if ((event->mask & (IN_MOVED_TO | IN_CREATE))
+        if ((eventHeader.mask & (IN_MOVED_TO | IN_CREATE))
             && QFileInfo(p).isDir()
             && !_parent->pathIsIgnored(p)) {
             slotAddFolderRecursive(p);
         }
-        if (event->mask & (IN_MOVED_FROM | IN_DELETE)) {
+
+        if (eventHeader.mask & (IN_MOVED_FROM | IN_DELETE)) {
             removeFoldersBelow(p);
         }
+    }
+    
+    if (needsRescan) {
+        emit _parent->lostChanges();
     }
 }
 
 void FolderWatcherPrivate::removeFoldersBelow(const QString &path)
 {
     auto it = _pathToWatch.find(path);
+
     if (it == _pathToWatch.end())
         return;
 
-    QString pathSlash = path + '/';
+    const QString pathSlash = path + '/';
 
-    // Remove the entry and all subentries
+    // Remove the entry and all subentries.
     while (it != _pathToWatch.end()) {
-        auto itPath = it.key();
+        const auto itPath = it.key();
+
         if (!itPath.startsWith(path))
             break;
+
         if (itPath != path && !itPath.startsWith(pathSlash)) {
             // order is 'foo', 'foo bar', 'foo/bar'
             ++it;
             continue;
         }
 
-        auto wid = it.value();
+        const auto wid = it.value();
+
         inotify_rm_watch(_fd, wid);
         _watchToPath.remove(wid);
         it = _pathToWatch.erase(it);
+
         qCDebug(lcFolderWatcher) << "Removed watch for" << itPath;
     }
 }
