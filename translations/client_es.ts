@@ -500,7 +500,7 @@
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="637" />
+        <location filename="../src/libsync/theme.cpp" line="624" />
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished" />
     </message>
@@ -751,7 +751,7 @@ Should the account be imported?</source>
         <translation>Cifrado de extremo a extremo con Archivos Virtuales</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1947" />
+        <location filename="../src/gui/accountsettings.cpp" line="1972" />
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>El cifrado de extremo a extremo ha sido inicializado en esta cuenta con otro dispositivo. &lt;br&gt; Ingrese el mnemonico para que las carpetas cifradas se sincronicen en este dispositivo también.</translation>
     </message>
@@ -872,7 +872,7 @@ Should the account be imported?</source>
         <translation>Error de configuración del servidor: %1 en %2,</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2018" />
+        <location filename="../src/gui/accountsettings.cpp" line="2043" />
         <source>Set up encryption</source>
         <translation>Configurar cifrado</translation>
     </message>
@@ -907,7 +907,7 @@ Should the account be imported?</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2010" />
+        <location filename="../src/gui/accountsettings.cpp" line="2035" />
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>La integración de archivos virtuales aún no admite el cifrado de extremo a extremo.</translation>
     </message>
@@ -932,8 +932,8 @@ Should the account be imported?</source>
         <translation>Hay carpetas que no se han sincronizado porque son demasiado grandes:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2009" />
-        <location filename="../src/gui/accountsettings.cpp" line="2012" />
+        <location filename="../src/gui/accountsettings.cpp" line="2034" />
+        <location filename="../src/gui/accountsettings.cpp" line="2037" />
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Esta cuenta soporta cifrado de extremo a extremo, pero debe ser configurado primero.</translation>
     </message>
@@ -1199,39 +1199,39 @@ Would you like to do this now?</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="616" />
+        <location filename="../src/gui/application.cpp" line="628" />
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 cuentas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="618" />
+        <location filename="../src/gui/application.cpp" line="630" />
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 carpetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="616" />
+        <location filename="../src/gui/application.cpp" line="628" />
         <source>1 account</source>
         <translation>1 cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="618" />
+        <location filename="../src/gui/application.cpp" line="630" />
         <source>1 folder</source>
         <translation>1 carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="217" />
+        <location filename="../src/gui/application.cpp" line="218" />
         <source>Continue</source>
         <translation>Continuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="698" />
+        <location filename="../src/gui/application.cpp" line="710" />
         <source>Error accessing the configuration file</source>
         <translation>Error al acceder al archivo de configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="622" />
+        <location filename="../src/gui/application.cpp" line="634" />
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1239,43 +1239,43 @@ Would you like to do this now?</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="621" />
+        <location filename="../src/gui/application.cpp" line="633" />
         <source>Legacy import</source>
         <translation>Importación heredada</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="216" />
+        <location filename="../src/gui/application.cpp" line="217" />
         <source>Quit</source>
         <translation>Salir</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="207" />
+        <location filename="../src/gui/application.cpp" line="208" />
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Algunos ajustes fueron configurados en %1 versiones de este cliente y utilizan características que no están disponibles en esta versión.&lt;br&gt;&lt;br&gt;Continuar implica &lt;b&gt;%2 estos ajustes&lt;/b&gt;.&lt;br&gt;&lt;br&gt;El archivo de configuración actual ya se respaldó en &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="699" />
+        <location filename="../src/gui/application.cpp" line="711" />
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Se ha producido un error al acceder al archivo de configuración en %1. Por favor, asegúrese de que su cuenta del sistema puede acceder al archivo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="214" />
+        <location filename="../src/gui/application.cpp" line="215" />
         <source>deleting</source>
         <translation>eliminando</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="214" />
+        <location filename="../src/gui/application.cpp" line="215" />
         <source>ignoring</source>
         <translation>ignorando</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="213" />
+        <location filename="../src/gui/application.cpp" line="214" />
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>recientes</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="213" />
+        <location filename="../src/gui/application.cpp" line="214" />
         <source>older</source>
         <comment>older software version</comment>
         <translation>antiguos</translation>
@@ -2694,14 +2694,14 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
         <translation type="unfinished">Añadir sincronización de carpetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="403" />
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="401" />
         <source>File</source>
         <translation>Archivo</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="113" />
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="368" />
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="565" />
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="366" />
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="563" />
         <source>Grant access</source>
         <translation>Permitir acceso</translation>
     </message>
@@ -2895,12 +2895,12 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="900" />
+        <location filename="../src/gui/folderwizard.cpp" line="914" />
         <source>Add Folder Sync Connection</source>
         <translation>Añadir conexión para el directorio de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="903" />
+        <location filename="../src/gui/folderwizard.cpp" line="917" />
         <source>Add Sync Connection</source>
         <translation>Añadir conexión de sincronización</translation>
     </message>
@@ -2908,12 +2908,12 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="185" />
+        <location filename="../src/gui/folderwizard.cpp" line="189" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Añadir sincronización de carpetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="212" />
+        <location filename="../src/gui/folderwizard.cpp" line="216" />
         <source>Choose</source>
         <translation>Seleccione</translation>
     </message>
@@ -2928,17 +2928,17 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
         <translation>Introduzca la ubicación de la carpeta local.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="198" />
+        <location filename="../src/gui/folderwizard.cpp" line="202" />
         <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
         <translation type="unfinished">Selecciona una carpeta de tu disco duro que deba estar permanentemente conectada a tu %1. Todos los archivos y subcarpetas se cargan y sincronizan automáticamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="141" />
+        <location filename="../src/gui/folderwizard.cpp" line="139" />
         <source>Select the source folder</source>
         <translation>Seleccione la carpeta de origen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="192" />
+        <location filename="../src/gui/folderwizard.cpp" line="196" />
         <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished">Paso 1 de 3: Seleccionar carpeta local</translation>
     </message>
@@ -2946,78 +2946,78 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="657" />
+        <location filename="../src/gui/folderwizard.cpp" line="666" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Añadir sincronización de carpetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="340" />
+        <location filename="../src/gui/folderwizard.cpp" line="344" />
         <source>Authentication failed accessing %1</source>
         <translation>Fallo de autenticación al acceder a %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="673" />
+        <location filename="../src/gui/folderwizard.cpp" line="682" />
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
         <translation type="unfinished">Ambas carpetas están permanentemente vinculadas y sus respectivos contenidos se sincronizan y actualizan automáticamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="439" />
+        <location filename="../src/gui/folderwizard.cpp" line="443" />
         <source>Choose this to sync the entire account</source>
         <translation>Elija esto para sincronizar la cuenta entera</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="270" />
+        <location filename="../src/gui/folderwizard.cpp" line="274" />
         <source>Create Remote Folder</source>
         <translation>Crear carpeta remota</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="697" />
+        <location filename="../src/gui/folderwizard.cpp" line="706" />
         <source>Create folder</source>
         <translation type="unfinished">Crear carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="271" />
+        <location filename="../src/gui/folderwizard.cpp" line="275" />
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Introduce el nombre de la nueva carpeta que se creará debajo de &quot;%1&quot;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="342" />
+        <location filename="../src/gui/folderwizard.cpp" line="346" />
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Fallo al crear la carpeta %1. Por favor, revíselo manualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="359" />
+        <location filename="../src/gui/folderwizard.cpp" line="363" />
         <source>Failed to list a folder. Error: %1</source>
         <translation>Fallo al listar una carpeta. Error: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="330" />
+        <location filename="../src/gui/folderwizard.cpp" line="334" />
         <source>Folder was successfully created on %1.</source>
         <translation>La carpeta ha sido creada con éxito en %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="574" />
-        <location filename="../src/gui/folderwizard.cpp" line="584" />
+        <location filename="../src/gui/folderwizard.cpp" line="578" />
+        <location filename="../src/gui/folderwizard.cpp" line="588" />
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Por favor, escoja una ubicación diferente. %1 ya se está sincronizando para %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="670" />
+        <location filename="../src/gui/folderwizard.cpp" line="679" />
         <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
         <translation type="unfinished">Por favor, ahora seleccione o cree una carpeta de destino en su %1 donde el contenido debe ser cargado y sincronizado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="695" />
+        <location filename="../src/gui/folderwizard.cpp" line="704" />
         <source>Refresh</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="664" />
+        <location filename="../src/gui/folderwizard.cpp" line="673" />
         <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished">Paso 2 de 3: Directorio en su %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="579" />
+        <location filename="../src/gui/folderwizard.cpp" line="583" />
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>Ya está sincronizando la subcarpeta %1 en %2</translation>
     </message>
@@ -3025,36 +3025,36 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="718" />
-        <location filename="../src/gui/folderwizard.cpp" line="774" />
-        <location filename="../src/gui/folderwizard.cpp" line="822" />
+        <location filename="../src/gui/folderwizard.cpp" line="732" />
+        <location filename="../src/gui/folderwizard.cpp" line="788" />
+        <location filename="../src/gui/folderwizard.cpp" line="836" />
         <source>(experimental)</source>
         <translation>(experimental)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="745" />
+        <location filename="../src/gui/folderwizard.cpp" line="759" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Añadir sincronización de carpetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="752" />
+        <location filename="../src/gui/folderwizard.cpp" line="766" />
         <source>Step 3 of 3: Selektive Synchronisation</source>
         <translation type="unfinished">Paso 3 de 3: Sincronización selectiva</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="717" />
-        <location filename="../src/gui/folderwizard.cpp" line="773" />
-        <location filename="../src/gui/folderwizard.cpp" line="821" />
+        <location filename="../src/gui/folderwizard.cpp" line="731" />
+        <location filename="../src/gui/folderwizard.cpp" line="787" />
+        <location filename="../src/gui/folderwizard.cpp" line="835" />
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Usa archivos virtuales en vez de descargar el contenido inmediatamente %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="843" />
+        <location filename="../src/gui/folderwizard.cpp" line="857" />
         <source>Virtual files are not supported at the selected location</source>
         <translation>Los archivos virtuales no están soportados en la ubicación seleccionada</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="817" />
+        <location filename="../src/gui/folderwizard.cpp" line="831" />
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Los archivos virtuales no son compatibles con la carpeta raíz de la partición de Windows como carpeta local. Por favor, elija una subcarpeta válida bajo la letra de la unidad.</translation>
     </message>
@@ -3062,7 +3062,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="625" />
+        <location filename="../src/gui/generalsettings.cpp" line="626" />
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -3074,7 +3074,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Cambiar a una versión anterior no es inmediatamente posible: cambiar de beta a estable significa esperar a la siguiente version estable.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="631" />
+        <location filename="../src/gui/generalsettings.cpp" line="632" />
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -3084,53 +3084,53 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Cambiar a una versión anterior no es inmediatamente posible: cambiar de estable a empresarial significa esperar a la nueva versión empresarial.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="645" />
+        <location filename="../src/gui/generalsettings.cpp" line="646" />
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="644" />
+        <location filename="../src/gui/generalsettings.cpp" line="645" />
         <source>Change update channel</source>
         <translation>Cambiar canal de actualización</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="637" />
+        <location filename="../src/gui/generalsettings.cpp" line="638" />
         <source>Changing update channel?</source>
         <translation>¿Cambiar canal de actualización?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="518" />
-        <location filename="../src/gui/generalsettings.cpp" line="544" />
+        <location filename="../src/gui/generalsettings.cpp" line="519" />
+        <location filename="../src/gui/generalsettings.cpp" line="545" />
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
         <translation>Conectado a un sistema empresarial. El canal de actualización (%1) no se puede cambiar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="822" />
+        <location filename="../src/gui/generalsettings.cpp" line="823" />
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation>No se pudo acceder a la ubicación seleccionada. Inténtalo de nuevo o elige una ubicación diferente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="829" />
+        <location filename="../src/gui/generalsettings.cpp" line="830" />
         <source>Debug Archive Created</source>
         <translation>Archivo de depuración creado</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="821" />
+        <location filename="../src/gui/generalsettings.cpp" line="822" />
         <source>Failed to Access File</source>
         <translation>El acceso al archivo ha fallado</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="744" />
+        <location filename="../src/gui/generalsettings.cpp" line="745" />
         <source>Login Item Requires Approval</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="830" />
+        <location filename="../src/gui/generalsettings.cpp" line="831" />
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="485" />
+        <location filename="../src/gui/generalsettings.cpp" line="486" />
         <source>Restore to &amp;%1</source>
         <translation>Restaurar a &amp;%1</translation>
     </message>
@@ -3155,7 +3155,7 @@ Cambiar a una versión anterior no es inmediatamente posible: cambiar de estable
         <translation>Mostrar notificación cuando el uso de la cuota supere el 80%</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="638" />
+        <location filename="../src/gui/generalsettings.cpp" line="639" />
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -3165,7 +3165,7 @@ Cambiar a una versión anterior no es inmediatamente posible: cambiar de estable
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="745" />
+        <location filename="../src/gui/generalsettings.cpp" line="746" />
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
         <translation>El elemento de inicio de sesión se ha registrado, pero necesita tu aprobación para activarse. Abre Configuración del sistema → General → Elementos de inicio de sesión y activa %1 allí.</translation>
     </message>
@@ -3175,17 +3175,17 @@ Cambiar a una versión anterior no es inmediatamente posible: cambiar de estable
         <translation>No puedes desactivar el inicio automático porque el inicio automático de todo el sistema está activado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="807" />
+        <location filename="../src/gui/generalsettings.cpp" line="808" />
         <source>Zip Archives</source>
         <translation>Archivos Zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="582" />
+        <location filename="../src/gui/generalsettings.cpp" line="583" />
         <source>daily</source>
         <translation>diariamente</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="586" />
+        <location filename="../src/gui/generalsettings.cpp" line="587" />
         <source>enterprise</source>
         <translation>empresarial</translation>
     </message>
@@ -3232,7 +3232,7 @@ Cambiar a una versión anterior no es inmediatamente posible: cambiar de estable
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="336" />
-        <location filename="../src/gui/generalsettings.cpp" line="805" />
+        <location filename="../src/gui/generalsettings.cpp" line="806" />
         <source>Create Debug Archive</source>
         <translation>Crear archivo de depuración</translation>
     </message>
@@ -3375,7 +3375,7 @@ Cambiar a una versión anterior no es inmediatamente posible: cambiar de estable
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="481" />
-        <location filename="../src/gui/generalsettings.cpp" line="578" />
+        <location filename="../src/gui/generalsettings.cpp" line="579" />
         <source>beta</source>
         <translation>beta</translation>
     </message>
@@ -3386,7 +3386,7 @@ Cambiar a una versión anterior no es inmediatamente posible: cambiar de estable
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="476" />
-        <location filename="../src/gui/generalsettings.cpp" line="574" />
+        <location filename="../src/gui/generalsettings.cpp" line="575" />
         <source>stable</source>
         <translation>estable</translation>
     </message>
@@ -5188,7 +5188,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="547" />
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="548" />
         <source>Choose What to Sync</source>
         <translation>Escoja qué sincronizar</translation>
     </message>
@@ -5196,7 +5196,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
 <context>
     <name>OCC::SelectiveSyncWidget</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="353" />
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="354" />
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>Se ha producido un error al cargar la lista de carpetas.</translation>
     </message>
@@ -5216,8 +5216,8 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Nombre</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="274" />
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="351" />
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="275" />
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="352" />
         <source>No subfolders currently on the server.</source>
         <translation>No hay subcarpetas actualmente en el servidor.</translation>
     </message>
@@ -5261,23 +5261,23 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="189" />
+        <location filename="../src/gui/settingsdialog.cpp" line="193" />
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation>Configuración de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="363" />
+        <location filename="../src/gui/settingsdialog.cpp" line="376" />
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="206" />
+        <location filename="../src/gui/settingsdialog.cpp" line="210" />
         <source>General</source>
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="683" />
+        <location filename="../src/gui/settingsdialog.cpp" line="705" />
         <source>Settings</source>
         <translation>Ajustes</translation>
     </message>
@@ -5997,80 +5997,80 @@ El servidor respondió con el error: %2</translation>
         <translation type="unfinished">https://static.hidrive.com/next/1043</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="359" />
+        <location filename="../src/gui/application.cpp" line="360" />
         <source>Login_URL</source>
         <translation>https://storage.ionos.es</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="357" />
+        <location filename="../src/gui/application.cpp" line="358" />
         <source>Login_URL_STRATO</source>
         <translation>https://storage.ionos.es</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="399" />
+        <location filename="../src/gui/generalsettings.cpp" line="400" />
         <source>LegalNotice-Link</source>
         <translation>https://wl.hidrive.com/easy/0014</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="397" />
+        <location filename="../src/gui/generalsettings.cpp" line="398" />
         <source>LegalNotice-Link_STRATO</source>
         <translation>https://static.hidrive.com/next/1023</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="390" />
+        <location filename="../src/gui/generalsettings.cpp" line="391" />
         <source>MoreInformation-Link</source>
         <translation>https://wl.hidrive.com/easy/0017</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="388" />
+        <location filename="../src/gui/generalsettings.cpp" line="389" />
         <source>MoreInformation-Link_STRATO</source>
         <translation>https://static.hidrive.com/next/1013</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="408" />
+        <location filename="../src/gui/generalsettings.cpp" line="409" />
         <source>OpenSource-Link</source>
         <translation>https://wl.hidrive.com/easy/0016</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="406" />
+        <location filename="../src/gui/generalsettings.cpp" line="407" />
         <source>OpenSource-Link_STRATO</source>
         <translation> https://static.hidrive.com/next/1031</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="417" />
+        <location filename="../src/gui/generalsettings.cpp" line="418" />
         <source>Privacy-Link</source>
         <translation>https://wl.hidrive.com/easy/0015</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="415" />
+        <location filename="../src/gui/generalsettings.cpp" line="416" />
         <source>Privacy-Link_STRATO</source>
         <translation>https://static.hidrive.com/next/1003</translation>
     </message>
 <message>
-        <location filename="../src/libsync/theme.cpp" line="472" />
+        <location filename="../src/libsync/theme.cpp" line="459" />
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
         <translation>%1 Versión del Cliente de Escritorio %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="655" />
+        <location filename="../src/libsync/theme.cpp" line="642" />
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Usando el plugin de archivos virtuales: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="674" />
+        <location filename="../src/libsync/theme.cpp" line="661" />
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Esta versión ha sido suministrada por %1.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="502" />
+        <location filename="../src/libsync/theme.cpp" line="489" />
         <location filename="../src/gui/generalsettings.cpp" line="284" />
         <location filename="../src/gui/owncloudgui.cpp" line="761" />
         <source>Help-Link</source>
         <translation>https://wl.hidrive.com/easy/0118</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="500" />
+        <location filename="../src/libsync/theme.cpp" line="487" />
         <location filename="../src/gui/generalsettings.cpp" line="282" />
         <location filename="../src/gui/owncloudgui.cpp" line="759" />
         <source>Help-Link_STRATO</source>
@@ -7095,7 +7095,7 @@ El servidor respondió con el error: %2</translation>
 <context>
     <name>SesErrorBox</name>
     <message>
-        <location filename="../src/gui/SesComponents/SesErrorBox.qml" line="58" />
+        <location filename="../src/gui/SesComponents/SesErrorBox.qml" line="62" />
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
