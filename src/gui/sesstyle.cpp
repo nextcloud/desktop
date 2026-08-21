@@ -27,6 +27,8 @@
 #include <QPushButton>
 #include <QStyleOptionButton>
 #include <QPainter>
+#include <QPainterPath>
+#include <QPen>
 #include <QStyleOption>
 
 sesStyle::sesStyle(QStyle* baseStyle)
@@ -41,6 +43,11 @@ void sesStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption *option, QP
     switch (pe) {
     case PE_FrameFocusRect:
         // nothing, we don't want focus rects
+        break;
+
+    case PE_IndicatorCheckBox:
+    case PE_IndicatorItemViewItemCheck:
+        drawCheckboxIndicator(pe, option, painter, widget);
         break;
 
 #ifdef Q_OS_MAC
@@ -81,6 +88,39 @@ void sesStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption *option, QP
         super::drawPrimitive(pe, option, painter, widget);
         break;
     }
+}
+
+void sesStyle::drawCheckboxIndicator(PrimitiveElement pe, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+{
+    // QWindows11Style's native checkmark has too weak a contrast against the checked box.
+    // Keep its box/border/hover/disabled painting untouched, just draw a bolder mark on top.
+    super::drawPrimitive(pe, option, painter, widget);
+
+    if (!(option->state & (State_On | State_NoChange))) {
+        return;
+    }
+
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
+    const auto group = (option->state & State_Enabled) ? QPalette::Normal : QPalette::Disabled;
+    const auto color = option->palette.color(group, QPalette::HighlightedText);
+    const auto &rect = option->rect;
+    const auto penWidth = qMax(2, rect.height() / 7);
+    painter->setPen(QPen(color, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+
+    if (option->state & State_NoChange) {
+        painter->drawLine(QPointF(rect.left() + rect.width() * 0.25, rect.center().y()),
+                           QPointF(rect.right() - rect.width() * 0.25, rect.center().y()));
+    } else {
+        QPainterPath path;
+        path.moveTo(rect.left() + rect.width() * 0.22, rect.center().y());
+        path.lineTo(rect.left() + rect.width() * 0.42, rect.bottom() - rect.height() * 0.22);
+        path.lineTo(rect.right() - rect.width() * 0.20, rect.top() + rect.height() * 0.25);
+        painter->drawPath(path);
+    }
+
+    painter->restore();
 }
 
 int sesStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
