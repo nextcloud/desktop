@@ -2,6 +2,8 @@
 
 Wird vom [color-scheme-map](SKILL.md)-Skill Komponente für Komponente befüllt — kein Vollscan, sondern nur die Komponenten, die tatsächlich geprüft wurden.
 
+**Hinweis (2026-08-21):** `StratoTheme::dialogBackgroundColor()` (stratotheme.h:17-19) war zwischenzeitlich im Light Mode auf `#FAFAFA` geändert, ist jetzt aber bewusst wieder auf `#F7F7F9` zurückgestellt — damit teilen sich Settings-Seiten und Tray-`MainWindow` (`WLTheme.trayBackgroundColor()`, stratotheme.h:33-34, ebenfalls `#F7F7F9`/`#1F2024`) exakt denselben Hintergrund in beiden Modi. Alle Abschnitte dieser Karte, die `dialogBackgroundColor()` referenzieren, sind mit diesem Wert wieder konsistent.
+
 ## Tray (`src/gui/tray/*.qml` + `src/gui/SesComponents/SesTrayHeader.qml`)
 
 *Zuletzt geprüfter Commit: `9647f1174` (2026-08-18)*
@@ -63,12 +65,12 @@ Mehrere `color: "white"`-Treffer sind reine `OpacityMask`-Maskenformen (`visible
 
 ## AccountSettings (`src/gui/accountsettings.cpp/.h/.ui`)
 
-*Zuletzt geprüfter Commit: `d47ac72f5` (2026-08-20)*
+*Zuletzt geprüfter Commit: working tree auf `0b9c2b950` (2026-08-21, noch uncommitted)*
 
 | Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
 |---|---|---|---|---|---|
-| `WLTheme.dialogBackgroundColor()` | accountsettings.cpp:605, 998, 1178, 1917, 1934, 1936 | `#F7F7F9` | `#1F2024` | `StratoTheme::dialogBackgroundColor()`, stratotheme.h:17 (überschreibt `themedColor("#FAFAFA","#1E2126")` in basetheme.h:441) | ✅ theme-aware |
-| `WLTheme.titleColor()` | accountsettings.cpp:997, 1177, 1431, 1925, 1928, 1937, 1940 | `#000000` | `#D6E4F5` | `themedColor()` in basetheme.h:318 (keine Strato-Override) | ✅ theme-aware |
+| `WLTheme.dialogBackgroundColor()` | accountsettings.cpp:605, 998, 1178, 1917, 1932, 1936 | `#F7F7F9` (identisch mit Tray `trayBackgroundColor()`, siehe Hinweis oben) | `#1F2024` | `StratoTheme::dialogBackgroundColor()`, stratotheme.h:17-19 (überschreibt `themedColor("#FFFFFF","#1E2126")` in basetheme.h:441) | ✅ theme-aware |
+| `WLTheme.titleColor()` | accountsettings.cpp:997, 1177, 1431, 1925, 1928 | `#000000` | `#D6E4F5` | `themedColor()` in basetheme.h:318 (keine Strato-Override) | ✅ theme-aware |
 | `WLTheme.settingsLinkColor()` | accountsettings.cpp:1342, 1367, 1920 | `#272CB2` | `#5B60D6` | `StratoTheme::settingsLinkColor()`, stratotheme.h:37 | ✅ theme-aware |
 | `WLTheme.trayBackgroundColor()` | accountsettings.cpp:736 | `#F7F7F9` | `#1F2024` | `StratoTheme::trayBackgroundColor()`, stratotheme.h:33 | ✅ theme-aware |
 | `WLTheme.menuBorderColor()` | accountsettings.cpp:737 | `#2E4360` | `#5B7699` | `themedColor()` in basetheme.h:449 (keine Strato-Override) | ✅ theme-aware |
@@ -85,6 +87,8 @@ Mehrere `color: "white"`-Treffer sind reine `OpacityMask`-Maskenformen (`visible
 1. `StratoTheme::menuPressedTextColor()` (stratotheme.h:140) gibt fest `"#FFFFFF"` zurück statt `themedColor(light, dark)` — im Kontextmenü (accountsettings.cpp:739) betrifft das den Text von `QMenu::item:pressed`. Da der zugehörige Hintergrund (`menuPressedItemColor()`) im Light-Mode `#5A6782` ist, bleibt es noch lesbar, ist aber nicht bewusst getestet/geplant — eher eine übersehene Vereinfachung.
 2. `ui.lineEdit` im E2E-Mnemonic-Dialog (accountsettings.cpp:1280) ist fest hellgrau/schwarz, unabhängig vom OS-Theme — fällt in einem sonst abgedunkelten Dialog optisch heraus.
 3. `selectiveSyncNotification` (accountsettings.ui:352) hat fest `color: red` ohne jede Theme-Anbindung — funktional meist noch lesbar (Rot auf Hell/Dunkel), aber nicht über `themedColor()` geführt wie der Rest der Seite.
+
+**Hinweis (2026-08-21):** `WLTheme.panelBackgroundColor()` für die Card-Panels `accountStatusPanel`/`fileProviderPanel`/`syncFoldersPanel`/`connectionSettingsPanel` (aus Commit `b9e530504`) wurde wieder entfernt — Referenzscreenshot des Nutzers (stable-33.0-Optik) zeigt einen durchgängig einheitlichen Settings-Hintergrund ohne abgesetzte Panels. Getter + Q_PROPERTY komplett aus `basetheme.h` entfernt (ungenutzt). Der Dateibaum (`_folderList`) in dieser Komponente ist von dieser Betrachtung bewusst ausgenommen — wird separat behandelt. Durch das Entfernen von zwei Blöcken in `basetheme.h` (Q_PROPERTY-Zeile + Kommentar/Methode) können sich Zeilenangaben zu `basetheme.h` in anderen, noch nicht seit diesem Commit neu geprüften Abschnitten dieser Karte um 1-7 Zeilen verschoben haben — bei Bedarf beim nächsten Check der jeweiligen Komponente korrigieren.
 
 ## Dialog-Familie: caseclashfilenamedialog / conflictdialog / foldercreationdialog / invalidfilenamedialog / legacyaccountselectiondialog
 
@@ -107,16 +111,15 @@ Fundstellen: `caseclashfilenamedialog.cpp:296,297,302,311,316,317` · `conflictd
 
 ## GeneralSettings (`src/gui/generalsettings.cpp`)
 
-*Zuletzt geprüfter Commit: `2f77361ec` (2026-08-20)*
+*Zuletzt geprüfter Commit: working tree auf `0b9c2b950` (2026-08-21, noch uncommitted)*
 
 | Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
 |---|---|---|---|---|---|
-| `WLTheme.dialogBackgroundColor()` | generalsettings.cpp:869 | `#F7F7F9` | `#1F2024` | `StratoTheme::dialogBackgroundColor()`, stratotheme.h:18 | ✅ theme-aware |
-| `WLTheme.panelBackgroundColor()` | generalsettings.cpp:873 | `#FAFAFA` | `#050505` | `themedColor()` basetheme.h:450 (keine Strato-Override) | ✅ theme-aware — bewusst neu (Commit `b9e530504`) für Card-Panel-Optik analog stable-33.0 |
-| `WLTheme.titleColor()` | generalsettings.cpp:872,877,881,885,888,902,905,908 | `#000000` | `#D6E4F5` | `themedColor()` basetheme.h:320 | ✅ theme-aware |
-| `WLTheme.folderWizardSubtitleColor()` | generalsettings.cpp:896,899 | `#104996` | `#5FA8E0` | `themedColor()` basetheme.h:324 | ✅ theme-aware |
+| `WLTheme.dialogBackgroundColor()` | generalsettings.cpp:869 | `#F7F7F9` (identisch mit Tray `trayBackgroundColor()`, siehe Hinweis oben) | `#1F2024` | `StratoTheme::dialogBackgroundColor()`, stratotheme.h:17-19 | ✅ theme-aware |
+| `WLTheme.titleColor()` | generalsettings.cpp:872,876,880,884,887,901,904,907 | `#000000` | `#D6E4F5` | `themedColor()` basetheme.h:320 | ✅ theme-aware |
+| `WLTheme.folderWizardSubtitleColor()` | generalsettings.cpp:895,898 | `#104996` | `#5FA8E0` | `themedColor()` basetheme.h:324 | ✅ theme-aware |
 
-**Brüche:** keine.
+**Brüche:** keine. (Hinweis: `WLTheme.panelBackgroundColor()` für QGroupBox-Card-Panels wurde am 2026-08-20 in Commit `b9e530504` eingeführt und am 2026-08-21 wieder entfernt — Referenzscreenshot des Nutzers zeigt für die Settings-Seite einen durchgängig einheitlichen Hintergrund ohne abgesetzte Panels, analog zur stable-33.0-Optik. Getter + Q_PROPERTY komplett aus `basetheme.h` entfernt, da sonst ungenutzt.)
 
 ## IgnoreListTableWidget (`src/gui/ignorelisttablewidget.cpp`)
 
@@ -186,7 +189,8 @@ Reine Weiterleitung an `WLTheme`-Getter (`PrimaryButtonStyle`/`SecondaryButtonSt
 
 | Property | Fundstelle | Light-Wert | Dark-Wert | Quelle | Status |
 |---|---|---|---|---|---|
-| `WLTheme.dialogBackgroundColor()` | 532,546-547,553-555 (nur `IONOS_BUILD`) | `#F7F7F9` | `#1F2024` | stratotheme.h:17-18 | ✅ theme-aware |
+| `WLTheme.dialogBackgroundColor()` | 532,546-547,553-555,558-561 (nur `IONOS_BUILD`) | `#F7F7F9` (identisch mit Tray `trayBackgroundColor()`, siehe Hinweis oben) | `#1F2024` | stratotheme.h:17-19 | ✅ theme-aware |
+| `WLTheme.menuBorderColor()` (rechter Rahmen `#settings_navigation_scroll`, neu am 2026-08-21) | 559-561 | `#2E4360` (identisch mit Tray `Style.sesMenuBorder`) | `#5B7699` | basetheme.h:457-458 (keine Strato-Override) | ✅ theme-aware |
 | `WLTheme.toolButtonHoveredColor()` | 533 | `#EDEEF3` | `#282A36` | stratotheme.h:124-125 | ✅ theme-aware |
 | `WLTheme.toolButtonPressedColor()` | 534 | `#D6D6E4` | `#3A3B52` | stratotheme.h:128-129 | ✅ theme-aware |
 | `WLTheme.menuSelectedItemColor()` | 535 | `#D6D6E4` | `#282A36` | stratotheme.h:136-137 | ✅ theme-aware |

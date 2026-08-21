@@ -11,7 +11,6 @@ namespace OCC {
 class BaseTheme : public QObject{
     Q_OBJECT
     Q_PROPERTY(QString dialogBackgroundColor READ dialogBackgroundColor NOTIFY themeColorsChanged)
-    Q_PROPERTY(QString panelBackgroundColor READ panelBackgroundColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayFontColor READ trayFontColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayBorderColor READ trayBorderColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayInputFieldBorderColor READ trayInputFieldBorderColor CONSTANT)
@@ -441,13 +440,6 @@ public:
 
     virtual QString dialogBackgroundColor() const {
         return themedColor("#FFFFFF", "#1E2126");
-    }
-
-    // A card/panel surface sitting on top of dialogBackgroundColor() - slightly darker than
-    // the page in both modes, mirroring stable-33.0's grouped-panel layout (generalGroupBox/
-    // accountStatusPanel/etc.), which this fork's IONOS_BUILD styling never applied.
-    virtual QString panelBackgroundColor() const {
-        return themedColor("#FAFAFA", "#050505");
     }
 
     virtual QString trayBackgroundColor() const {

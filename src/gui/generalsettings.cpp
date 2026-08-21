@@ -865,12 +865,11 @@ void GeneralSettings::customizeStyle()
     // polish and restores that frozen snapshot on every later style-sheet change, silently
     // discarding a separately-called setPalette() on every re-run of customizeStyle().
     this->setStyleSheet(QStringLiteral("OCC--GeneralSettings { background-color: %1; } "
-                                        "QGroupBox { border: none; border-radius: 10px; background-color: %5; font-size: %2; font-weight: %3; color: %4; }")
+                                        "QGroupBox { border: none; font-size: %2; font-weight: %3; color: %4; }")
                             .arg(WLTheme.dialogBackgroundColor(),
                                  WLTheme.settingsTitleSize(),
                                  WLTheme.settingsTitleWeight600(),
-                                 WLTheme.titleColor(),
-                                 WLTheme.panelBackgroundColor()));
+                                 WLTheme.titleColor()));
 
     this->setStyleSheet(this->styleSheet()
                         + QStringLiteral("QCheckBox { font-size: %1; font-weight: %2; margin-left: %3 px; color: %4; }")

@@ -109,3 +109,13 @@ Chronologisches Protokoll: Komponenten-Ausblenden/-Entfernen-Entscheidungen und 
 **Verworfene Alternative:** Extraktion nach `Utility::isWindows11OrGreater()` — hätte die Struktur von stable-33.0 weg bewegt statt angenähert.
 
 **Status:** aktiv
+
+## 2026-08-21 — Card-Panel-Hintergründe in GeneralSettings/AccountSettings wieder entfernt (SES-578)
+
+**Kontext:** Commit `b9e530504` hatte per neuem `panelBackgroundColor()`-Getter abgesetzte Karten-Hintergründe für die QGroupBox/QFrame-Panels eingeführt, mit der Begründung, das entspreche stable-33.0s gruppierter Panel-Optik. Ein vom Nutzer bereitgestellter Vergleichsscreenshot (Referenz-Build 4.0.11) zeigte für die Settings-Seite jedoch einen durchgängig einheitlichen Hintergrund ohne abgesetzte Karten.
+
+**Entscheidung:** `panelBackgroundColor()` (Getter + `Q_PROPERTY`) sowie beide Verwendungsstellen (`generalsettings.cpp`, `accountsettings.cpp`) vollständig entfernt. Seitenhintergrund läuft jetzt einheitlich über `dialogBackgroundColor()`, zusätzlich im Light Mode auf denselben Wert wie Tray `trayBackgroundColor()` (`#F7F7F9`) vereinheitlicht — Settings und Tray-`MainWindow` teilen sich damit exakt dasselbe Hintergrund-Farbschema in beiden Modi.
+
+**Verworfene Alternative:** Nur Kontrastrichtung/-stärke des Panel-Getters reparieren (Light heller, Dark massiv dunkler als die Seite — inkonsistent zwischen den Modi) statt die Panels komplett zu entfernen. Verworfen, da der Referenzscreenshot gar keine abgesetzten Panels zeigt; die stable-33.0-Analogie aus `b9e530504` traf also nicht zu.
+
+**Status:** aktiv

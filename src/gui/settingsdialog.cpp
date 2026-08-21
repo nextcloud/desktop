@@ -556,8 +556,9 @@ void SettingsDialog::customizeStyle()
     // style those explicitly here (rebuilt on every call, e.g. dark mode toggling) rather
     // than relying on ownCloudGui's one-shot, non-reactive setStyleSheet() after construction.
     setStyleSheet(QStringLiteral("#Settings { background: %1; } "
-                                  "#settings_navigation, #settings_navigation_scroll { background: %1; border: none; }")
-                      .arg(white));
+                                  "#settings_navigation { background: %1; border: none; } "
+                                  "#settings_navigation_scroll { background: %1; border: none; border-right: 1px solid %2; }")
+                      .arg(white, WLTheme.menuBorderColor()));
 
     const auto accountActions = _actionForAccount.values();
     for (const auto a : _actionGroup->actions()) {
