@@ -18,6 +18,7 @@
 #include <QJsonObject>
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
+#include <QQuickItem>
 #include <QQuickWindow>
 #include <QStandardPaths>
 #include <QTest>
@@ -118,6 +119,17 @@ private slots:
         QVERIFY(dialogObject->setProperty("selectedShare", QVariant::fromValue(share.get())));
         QVERIFY(dialogObject->setProperty("hasSelectedShare", true));
         QCOMPARE(shareStackLayout->property("currentIndex").toInt(), 1);
+        QCoreApplication::processEvents();
+        const auto scrollView = dialogObject->findChild<QQuickItem *>(QStringLiteral("shareDetailsScrollView"));
+        const auto scrollBar = dialogObject->findChild<QQuickItem *>(QStringLiteral("shareDetailsScrollBar"));
+        QVERIFY(scrollView);
+        QVERIFY(scrollBar);
+        QVERIFY(scrollView->width() > 0);
+        QVERIFY(scrollView->height() > 0);
+        QVERIFY(scrollBar->width() > 0);
+        QVERIFY(scrollBar->height() >= scrollView->height() - 1);
+        QVERIFY(scrollBar->x() > 0);
+        QVERIFY(scrollBar->x() + scrollBar->width() <= scrollView->width() + 1);
         const auto backButton = dialogObject->findChild<QObject *>(QStringLiteral("backToShareListButton"));
         QVERIFY(backButton);
         QVERIFY(backButton->property("visible").toBool());
@@ -181,10 +193,17 @@ private slots:
 
         const auto deleteButton = frameObject->findChild<QObject *>(QStringLiteral("deleteShareButton"));
         const auto closeButton = frameObject->findChild<QObject *>(QStringLiteral("closeShareButton"));
+        const auto cancelButton = frameObject->findChild<QObject *>(QStringLiteral("cancelShareButton"));
+        const auto saveButton = frameObject->findChild<QObject *>(QStringLiteral("saveShareButton"));
         QVERIFY(deleteButton);
         QVERIFY(closeButton);
-        QVERIFY(deleteButton->property("visible").toBool());
-        QVERIFY(closeButton->property("visible").toBool());
+        QVERIFY(cancelButton);
+        QVERIFY(saveButton);
+        QVERIFY(!frameObject->property("footerVisible").toBool());
+        QVERIFY(!deleteButton->property("visible").toBool());
+        QVERIFY(!closeButton->property("visible").toBool());
+        QVERIFY(!cancelButton->property("visible").toBool());
+        QVERIFY(!saveButton->property("visible").toBool());
 
         // Recipient editing is available while a draft is being composed as
         // well as after activation; activation must not remove the search or
@@ -199,6 +218,53 @@ private slots:
         QCoreApplication::processEvents();
         QVERIFY(!detailsPage->property("shareIsActive").toBool());
         QVERIFY(recipientSearch->property("visible").toBool());
+        QVERIFY(frameObject->property("footerVisible").toBool());
+        QVERIFY(cancelButton->property("visible").toBool());
+        QVERIFY(saveButton->property("visible").toBool());
+    }
+
+    void hidesFooterForActivePublicLinkDetails()
+    {
+        const auto account = AccountManager::createAccount();
+        account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
+
+        const auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
+            {QStringLiteral("ocs"), QJsonObject{
+                {QStringLiteral("data"), QJsonObject{
+                    {QStringLiteral("id"), QStringLiteral("public-share-1")},
+                    {QStringLiteral("state"), QStringLiteral("active")},
+                    {QStringLiteral("recipients"), QJsonArray{QJsonObject{
+                        {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\TokenShareRecipientType")},
+                        {QStringLiteral("display_name"), QStringLiteral("Share link")},
+                        {QStringLiteral("value"), QStringLiteral("token")},
+                        {QStringLiteral("secret"), QJsonObject{{QStringLiteral("url"), QStringLiteral("https://cloud.example/s/token")}}},
+                    }}},
+                }},
+            }},
+        }}, account));
+        QVERIFY(share);
+        QVERIFY(share->isPublicLink());
+
+        QQmlComponent component(
+            Systray::instance()->trayEngine(),
+            QStringLiteral("com.nextcloud.desktopclient.sharing"),
+            QStringLiteral("ShareDetailsFrame"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        const auto frameObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("account"), QVariant::fromValue(account)},
+            {QStringLiteral("share"), QVariant::fromValue(share.get())},
+            {QStringLiteral("width"), 800},
+            {QStringLiteral("height"), 600},
+        }));
+        QVERIFY2(frameObject, qPrintable(component.errorString()));
+        QVERIFY(!frameObject->property("footerVisible").toBool());
+        const auto deleteButton = frameObject->findChild<QObject *>(QStringLiteral("deleteShareButton"));
+        const auto closeButton = frameObject->findChild<QObject *>(QStringLiteral("closeShareButton"));
+        QVERIFY(deleteButton);
+        QVERIFY(closeButton);
+        QVERIFY(!deleteButton->property("visible").toBool());
+        QVERIFY(!closeButton->property("visible").toBool());
     }
 
     void createsOptionalPropertyFieldWithDisabledToggle()
