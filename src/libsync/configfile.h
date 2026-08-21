@@ -23,6 +23,7 @@ class ExcludedFiles;
 namespace OCC {
 
 class AbstractCredentials;
+class Migration;
 
 /**
  * @brief The ConfigFile class
@@ -251,10 +252,6 @@ public:
     /// Add the system and user exclude file path to the ExcludedFiles instance.
     static void setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles);
 
-    /// Set during first time migration of legacy accounts in AccountManager
-    [[nodiscard]] static QString discoveredLegacyConfigPath();
-    static void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
-
     /// File Provider Domain UUID to Account ID mapping
 
     /**
@@ -266,6 +263,9 @@ public:
     [[nodiscard]] bool fileProviderDomainsAppSandboxMigrationCompleted() const;
     void setFileProviderDomainsAppSandboxMigrationCompleted(bool completed);
 
+    [[nodiscard]] QStringList backupConfigFiles();
+    void applyMigrationDefaults();
+
     /// App-level macOS File Provider mode: when enabled, every account gets a file
     /// provider domain and classic sync folders are unavailable (the File Provider
     /// extension and the FinderSync extension cannot run at the same time).
@@ -273,24 +273,6 @@ public:
     [[nodiscard]] bool macFileProviderModeEnabledIsSet() const;
     void setMacFileProviderModeEnabled(bool enabled);
 
-    /// Helper function for migration/upgrade proccess
-    enum MigrationPhase {
-        NotStarted,
-        SetupConfigFile,
-        SetupUsers,
-        SetupFolders,
-        Done
-    };
-    [[nodiscard]] bool isUpgrade() const;
-    [[nodiscard]] bool isDowngrade() const;
-    [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
-    [[nodiscard]] bool isUnbrandedToBrandedMigrationInProgress() const;
-    [[nodiscard]] bool shouldTryToMigrate() const;
-    /// Does the current app has a different version of the config version
-    [[nodiscard]] bool hasVersionChanged() const;
-    [[nodiscard]] bool isMigrationInProgress() const;
-    [[nodiscard]] MigrationPhase migrationPhase() const;
-    void setMigrationPhase(const MigrationPhase phase);
     static constexpr char unbrandedAppName[] = "Nextcloud";
     static constexpr char legacyAppName[] = "Owncloud";
 
@@ -335,8 +317,6 @@ private:
     using SharedCreds = QSharedPointer<AbstractCredentials>;
 
     static QString _confDir;
-    static QString _discoveredLegacyConfigPath;
-    static MigrationPhase _migrationPhase;
 };
 }
 #endif // CONFIGFILE_H

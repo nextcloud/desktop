@@ -21,6 +21,7 @@
 #include <pushnotifications.h>
 #include <syncengine.h>
 #include "updatee2eefolderusersmetadatajob.h"
+#include "settings/migration.h"
 
 #ifdef Q_OS_MACOS
 #include <CoreServices/CoreServices.h>
@@ -439,7 +440,7 @@ int FolderMan::setupFoldersMigration()
     auto configPath = _folderConfigPath;
 
 #if !DISABLE_ACCOUNT_MIGRATION
-    if (const auto legacyConfigPath = ConfigFile::discoveredLegacyConfigPath();!legacyConfigPath.isEmpty()) {
+    if (const auto legacyConfigPath = Migration::discoveredLegacyConfigPath(); !legacyConfigPath.isEmpty()) {
         configPath =  legacyConfigPath;
         qCInfo(lcFolderMan) << "Starting folder migration from legacy path:" << legacyConfigPath;
     }
