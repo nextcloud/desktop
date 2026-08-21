@@ -300,6 +300,8 @@ enum Signer: Signing {
         if code > 0 {
             throw MacCrafterError.signing("Signing verification failed because the codesign command terminated with code \(code)")
         }
+
+        try CodeSignatureVerifier.verify(at: location)
     }
 
     // MARK: - Public
