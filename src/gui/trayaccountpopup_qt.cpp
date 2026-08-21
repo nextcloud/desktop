@@ -807,9 +807,6 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
         QCoreApplication::translate("TrayWindowHeader", "Apps"));
     setFixedMenuWidth(appsMenu);
     appsMenu->menuAction()->setEnabled(populateAppsMenu(appsMenu, userId));
-    QObject::connect(appsMenu, &QMenu::aboutToShow, appsMenu, [appsMenu, userId] {
-        appsMenu->menuAction()->setEnabled(populateAppsMenu(appsMenu, userId));
-    });
 
     menu->addSeparator();
 
@@ -842,9 +839,13 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
 
             const auto accountMenu = addSubMenu(menu, accountIcon, accountText);
             setFixedMenuWidth(accountMenu);
+#ifdef Q_OS_LINUX
+            populateAccountMenu(accountMenu, userId);
+#else
             QObject::connect(accountMenu, &QMenu::aboutToShow, accountMenu, [accountMenu, userId] {
                 populateAccountMenu(accountMenu, userId);
             });
+#endif
             QObject::connect(userModel,
                 &QAbstractItemModel::dataChanged,
                 accountMenu,
