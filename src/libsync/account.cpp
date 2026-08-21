@@ -59,7 +59,6 @@ namespace {
 constexpr int pushNotificationsReconnectInterval = 1000 * 60 * 2;
 constexpr int usernamePrefillServerVersionMinSupportedMajor = 24;
 constexpr int checksumRecalculateRequestServerVersionMinSupportedMajor = 24;
-constexpr auto isSkipE2eeMetadataChecksumValidationAllowedInClientVersion = MIRALL_VERSION_MAJOR == 3 && MIRALL_VERSION_MINOR == 8;
 
 bool isPushNotificationsWebSocketUrlAllowed(const QUrl &accountUrl, const QUrl &webSocketUrl)
 {
@@ -801,7 +800,7 @@ QString Account::serverVersion() const
 
 bool Account::shouldSkipE2eeMetadataChecksumValidation() const
 {
-    return isSkipE2eeMetadataChecksumValidationAllowedInClientVersion && _skipE2eeMetadataChecksumValidation;
+    return _skipE2eeMetadataChecksumValidation;
 }
 
 void Account::resetShouldSkipE2eeMetadataChecksumValidation()
