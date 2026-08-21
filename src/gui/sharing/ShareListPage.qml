@@ -26,6 +26,7 @@ ColumnLayout {
 
     signal shareSelected(Share share)
     signal copyRequested(string value)
+    signal deleteRequested(Share share)
     signal clearActivationError
 
     UnifiedShareListModel {
@@ -222,6 +223,7 @@ ColumnLayout {
 
                         onCopyRequested: root.copyRequested(publicLinkUrl)
                         onConfigureRequested: root.shareSelected(share)
+                        onDeleteRequested: root.deleteRequested(share)
                     }
                 }
             }
