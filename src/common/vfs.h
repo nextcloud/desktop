@@ -6,9 +6,11 @@
 #pragma once
 
 #include "ocsynclib.h"
+
 #include "result.h"
 #include "syncfilestatus.h"
 #include "pinstate.h"
+#include "path.h"
 
 #include "common/remoteinfo.h"
 
@@ -82,11 +84,14 @@ struct OCSYNC_EXPORT VfsSetupParams
     /// Strings potentially passed on to the platform
     QString providerName;
     QString providerVersion;
+    QString socketPath;
 
     /** when registering with the system we might use
      *  a different presentaton to identify the accounts
      */
     bool multipleAccountsRegistered = false;
+
+    const FileSystem::Path &root() const;
 };
 
 /** Interface describing how to deal with virtual/placeholder files.
@@ -116,6 +121,7 @@ public:
         WithSuffix,
         WindowsCfApi,
         XAttr,
+        OpenVFS,
     };
     Q_ENUM(Mode)
     enum class ConvertToPlaceholderResult {
@@ -302,6 +308,12 @@ signals:
     void doneHydrating();
     // Emitted when hydration fails
     void failureHydrating(int errorCode, int statusCode, const QString &errorString, const QString &fileName);
+
+    /// we encountered an error
+    void error(const QString &error);
+
+    /// start complete
+    void started();
 
 protected:
     /** Setup the plugin for the folder.

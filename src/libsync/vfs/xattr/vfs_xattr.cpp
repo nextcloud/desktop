@@ -206,4 +206,9 @@ void VfsXAttr::fileStatusChanged(const QString &, SyncFileStatus)
 {
 }
 
+Result<void, QString> XattrVfsPluginFactory::prepare([[maybe_unused]] const QString &path, [[maybe_unused]] const QUuid &accountUuid) const
+{
+    return {};
+}
+
 } // namespace OCC
