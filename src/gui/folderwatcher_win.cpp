@@ -72,6 +72,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             const DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
+                emit lostChanges();
                 emit changed(_path);
                 *increaseBufferSize = true;
             } else {
