@@ -25,6 +25,13 @@ Loader {
         return model.required ? qsTr("%1 (required)").arg(model.label) : model.label
     }
 
+    readonly property bool optionalField: !!model.advanced && !model.required
+
+    function valueIsSet(): bool {
+        const value = model.value
+        return value !== null && value !== undefined && String(value).length > 0
+    }
+
     function submit(value: string): void {
         if (model.value === value) {
             return
@@ -81,20 +88,39 @@ Loader {
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
-            WizardTextField {
-                id: dateField
+            RowLayout {
+                property bool fieldEnabled: !instantiator.optionalField || instantiator.valueIsSet()
 
-                Layout.fillWidth: true
-                text: instantiator.model.value ?? ""
-                placeholderText: instantiator.model.placeholder || qsTr("ISO 8601 date")
-                inputMethodHints: Qt.ImhDate
+                WizardTextField {
+                    id: dateField
 
-                property bool withinMinimum: !instantiator.model.minimum || !text || Date.parse(text) > Date.parse(instantiator.model.minimum)
-                property bool withinMaximum: !instantiator.model.maximum || !text || Date.parse(text) < Date.parse(instantiator.model.maximum)
-                property bool valid: (!instantiator.model.required || text.length > 0) && (!text || !isNaN(Date.parse(text))) && withinMinimum && withinMaximum
+                    Layout.fillWidth: true
+                    enabled: parent.fieldEnabled
+                    text: instantiator.model.value ?? ""
+                    placeholderText: instantiator.model.placeholder || qsTr("ISO 8601 date")
+                    inputMethodHints: Qt.ImhDate
 
-                onEditingFinished: {
-                    dateColumn.commit()
+                    property bool withinMinimum: !instantiator.model.minimum || !text || Date.parse(text) > Date.parse(instantiator.model.minimum)
+                    property bool withinMaximum: !instantiator.model.maximum || !text || Date.parse(text) < Date.parse(instantiator.model.maximum)
+                    property bool valid: (!instantiator.model.required || text.length > 0) && (!text || !isNaN(Date.parse(text))) && withinMinimum && withinMaximum
+
+                    onEditingFinished: {
+                        dateColumn.commit()
+                    }
+                }
+
+                Switch {
+                    objectName: "optionalFieldSwitch"
+                    visible: instantiator.optionalField
+                    checked: parent.fieldEnabled
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                    onToggled: {
+                        parent.fieldEnabled = checked
+                        if (!checked) {
+                            instantiator.submit("")
+                        }
+                    }
                 }
             }
             EnforcedPlainTextLabel {
@@ -114,19 +140,38 @@ Loader {
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
-            WizardComboBox {
-                id: enumSelector
+            RowLayout {
+                property bool fieldEnabled: !instantiator.optionalField || instantiator.valueIsSet()
 
-                Layout.fillWidth: true
-                model: instantiator.model.validValues.map(value => ({
-                            "name": value,
-                            "isSelected": value === instantiator.model.value
-                        }))
-                textRole: "name"
-                currentIndex: instantiator.model.validValues.indexOf(instantiator.model.value)
+                WizardComboBox {
+                    id: enumSelector
 
-                onActivated: index => {
-                    instantiator.submit(instantiator.model.validValues[index])
+                    Layout.fillWidth: true
+                    enabled: parent.fieldEnabled
+                    model: instantiator.model.validValues.map(value => ({
+                                "name": value,
+                                "isSelected": value === instantiator.model.value
+                            }))
+                    textRole: "name"
+                    currentIndex: instantiator.model.validValues.indexOf(instantiator.model.value)
+
+                    onActivated: index => {
+                        instantiator.submit(instantiator.model.validValues[index])
+                    }
+                }
+
+                Switch {
+                    objectName: "optionalFieldSwitch"
+                    visible: instantiator.optionalField
+                    checked: parent.fieldEnabled
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                    onToggled: {
+                        parent.fieldEnabled = checked
+                        if (!checked) {
+                            instantiator.submit("")
+                        }
+                    }
                 }
             }
         }
@@ -147,16 +192,35 @@ Loader {
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
-            WizardTextField {
-                id: passwordField
+            RowLayout {
+                property bool fieldEnabled: !instantiator.optionalField || instantiator.valueIsSet()
 
-                Layout.fillWidth: true
-                text: instantiator.model.value ?? ""
-                placeholderText: instantiator.model.placeholder
-                echoMode: TextInput.Password
+                WizardTextField {
+                    id: passwordField
 
-                onEditingFinished: {
-                    passwordColumn.commit()
+                    Layout.fillWidth: true
+                    enabled: parent.fieldEnabled
+                    text: instantiator.model.value ?? ""
+                    placeholderText: instantiator.model.placeholder
+                    echoMode: TextInput.Password
+
+                    onEditingFinished: {
+                        passwordColumn.commit()
+                    }
+                }
+
+                Switch {
+                    objectName: "optionalFieldSwitch"
+                    visible: instantiator.optionalField
+                    checked: parent.fieldEnabled
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                    onToggled: {
+                        parent.fieldEnabled = checked
+                        if (!checked) {
+                            instantiator.submit("")
+                        }
+                    }
                 }
             }
         }
@@ -177,18 +241,38 @@ Loader {
             EnforcedPlainTextLabel {
                 text: instantiator.labelText()
             }
-            WizardTextField {
-                id: stringField
+            RowLayout {
+                property bool fieldEnabled: !instantiator.optionalField || instantiator.valueIsSet()
 
-                Layout.fillWidth: true
-                text: instantiator.model.value ?? ""
-                placeholderText: instantiator.model.placeholder
-                maximumLength: instantiator.model.maximum ?? 32767
+                WizardTextField {
+                    id: stringField
 
-                property bool valid: (!instantiator.model.required || text.length > 0) && (!instantiator.model.minimum || text.length >= instantiator.model.minimum)
+                    objectName: "optionalFieldControl"
+                    Layout.fillWidth: true
+                    enabled: parent.fieldEnabled
+                    text: instantiator.model.value ?? ""
+                    placeholderText: instantiator.model.placeholder
+                    maximumLength: instantiator.model.maximum ?? 32767
 
-                onEditingFinished: {
-                    stringColumn.commit()
+                    property bool valid: (!instantiator.model.required || text.length > 0) && (!instantiator.model.minimum || text.length >= instantiator.model.minimum)
+
+                    onEditingFinished: {
+                        stringColumn.commit()
+                    }
+                }
+
+                Switch {
+                    objectName: "optionalFieldSwitch"
+                    visible: instantiator.optionalField
+                    checked: parent.fieldEnabled
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                    onToggled: {
+                        parent.fieldEnabled = checked
+                        if (!checked) {
+                            instantiator.submit("")
+                        }
+                    }
                 }
             }
             EnforcedPlainTextLabel {
