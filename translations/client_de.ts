@@ -437,12 +437,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="531" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="530" />
         <source>Ask Assistant…</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="465" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="464" />
         <source>Cancel</source>
         <translation type="unfinished">Abbrechen</translation>
     </message>
@@ -462,37 +462,37 @@
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="876" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="875" />
         <source>New activities</source>
         <translation type="unfinished">Neue Aktivitäten</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="461" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="460" />
         <source>New conversation</source>
         <translation type="unfinished">Neue Unterhaltung</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="559" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="558" />
         <source>Send assistant question</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="580" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="579" />
         <source>Start a new assistant chat</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="441" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="440" />
         <source>Start new conversation?</source>
         <translation type="unfinished">Neue Unterhaltung beginnen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="486" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="485" />
         <source>This will clear the existing conversation.</source>
         <translation type="unfinished">Dadurch wird die bestehende Unterhaltung geleert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="805" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="804" />
         <source>Unified search results list</source>
         <translation type="unfinished" />
     </message>
@@ -2894,12 +2894,12 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="899" />
+        <location filename="../src/gui/folderwizard.cpp" line="897" />
         <source>Add Folder Sync Connection</source>
         <translation>Ordner-Synchronisierung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="902" />
+        <location filename="../src/gui/folderwizard.cpp" line="900" />
         <source>Add Sync Connection</source>
         <translation>Synchronisierung hinzufügen</translation>
     </message>
@@ -2907,12 +2907,12 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="185" />
+        <location filename="../src/gui/folderwizard.cpp" line="183" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Ordner Sync hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="212" />
+        <location filename="../src/gui/folderwizard.cpp" line="210" />
         <source>Choose</source>
         <translation>Wählen Sie</translation>
     </message>
@@ -2927,17 +2927,17 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
         <translation>Pfad zum lokalen Ordner eingeben</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="198" />
+        <location filename="../src/gui/folderwizard.cpp" line="196" />
         <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
         <translation type="unfinished">Wählen Sie einen Ordner auf Ihrer Festplatte, der dauerhaft mit Ihrem %1 verbunden sein soll. Alle Dateien und Unterordner werden automatisch hochgeladen und synchronisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="141" />
+        <location filename="../src/gui/folderwizard.cpp" line="139" />
         <source>Select the source folder</source>
         <translation>Quellordner auswählen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="192" />
+        <location filename="../src/gui/folderwizard.cpp" line="190" />
         <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished">Schritt 1 von 3: Lokalen Ordner auswählen</translation>
     </message>
@@ -2945,78 +2945,78 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="657" />
+        <location filename="../src/gui/folderwizard.cpp" line="655" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Ordner Sync hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="340" />
+        <location filename="../src/gui/folderwizard.cpp" line="338" />
         <source>Authentication failed accessing %1</source>
         <translation>Beim Zugriff auf %1 ist die Authentifizierung fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="673" />
+        <location filename="../src/gui/folderwizard.cpp" line="671" />
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
         <translation type="unfinished">Beide Ordner sind dauerhaft miteinander verknüpft und die jeweiligen Inhalte werden automatisch synchronisiert und aktualisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="439" />
+        <location filename="../src/gui/folderwizard.cpp" line="437" />
         <source>Choose this to sync the entire account</source>
         <translation>Wählen Sie dies, um das gesamte Konto zu synchronisieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="270" />
+        <location filename="../src/gui/folderwizard.cpp" line="268" />
         <source>Create Remote Folder</source>
         <translation>Entfernten Ordner erstellen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="696" />
+        <location filename="../src/gui/folderwizard.cpp" line="694" />
         <source>Create folder</source>
         <translation type="unfinished">Ordner erstellen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="271" />
+        <location filename="../src/gui/folderwizard.cpp" line="269" />
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Geben Sie den Namen des neuen, unter &quot;%1&quot; zu erstellenden Ordners ein:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="342" />
+        <location filename="../src/gui/folderwizard.cpp" line="340" />
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Der Ordner konnte nicht auf %1 erstellt werden. Bitte prüfen Sie dies manuell.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="359" />
+        <location filename="../src/gui/folderwizard.cpp" line="357" />
         <source>Failed to list a folder. Error: %1</source>
         <translation>Ordner konnte nicht gelistet werden. Fehler: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="330" />
+        <location filename="../src/gui/folderwizard.cpp" line="328" />
         <source>Folder was successfully created on %1.</source>
         <translation>Ordner auf %1 erstellt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="574" />
-        <location filename="../src/gui/folderwizard.cpp" line="584" />
+        <location filename="../src/gui/folderwizard.cpp" line="572" />
+        <location filename="../src/gui/folderwizard.cpp" line="582" />
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Bitte wählen Sie einen anderen Speicherort. %1 wird bereits mit %2 synchronisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="670" />
+        <location filename="../src/gui/folderwizard.cpp" line="668" />
         <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
         <translation type="unfinished">Bitte wählen oder erstellen Sie nun einen Zielordner in Ihrem %1, in den der Inhalt hochgeladen und synchronisiert werden soll.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="694" />
+        <location filename="../src/gui/folderwizard.cpp" line="692" />
         <source>Refresh</source>
         <translation type="unfinished">Aktualisieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="664" />
+        <location filename="../src/gui/folderwizard.cpp" line="662" />
         <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished">Schritt 2 von 3: Verzeichnis in Ihrem %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="579" />
+        <location filename="../src/gui/folderwizard.cpp" line="577" />
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>Sie synchronisieren bereits den Unterordner %1 bei %2.</translation>
     </message>
@@ -3024,36 +3024,36 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="717" />
-        <location filename="../src/gui/folderwizard.cpp" line="773" />
-        <location filename="../src/gui/folderwizard.cpp" line="821" />
+        <location filename="../src/gui/folderwizard.cpp" line="715" />
+        <location filename="../src/gui/folderwizard.cpp" line="771" />
+        <location filename="../src/gui/folderwizard.cpp" line="819" />
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="744" />
+        <location filename="../src/gui/folderwizard.cpp" line="742" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Ordner Sync hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="751" />
+        <location filename="../src/gui/folderwizard.cpp" line="749" />
         <source>Step 3 of 3: Selektive Synchronisation</source>
         <translation type="unfinished">Schritt 3 von 3: Selektive Synchronisierung</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="716" />
-        <location filename="../src/gui/folderwizard.cpp" line="772" />
-        <location filename="../src/gui/folderwizard.cpp" line="820" />
+        <location filename="../src/gui/folderwizard.cpp" line="714" />
+        <location filename="../src/gui/folderwizard.cpp" line="770" />
+        <location filename="../src/gui/folderwizard.cpp" line="818" />
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Virtuelle Dateien verwenden, anstatt den Inhalt sofort herunterzuladen %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="842" />
+        <location filename="../src/gui/folderwizard.cpp" line="840" />
         <source>Virtual files are not supported at the selected location</source>
         <translation>Virtuelle Dateien werden an dem ausgewählten Speicherort nicht unterstützt</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="816" />
+        <location filename="../src/gui/folderwizard.cpp" line="814" />
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Virtuelle Dateien werden für die Wurzel von Windows-Partitionen als lokaler Ordner nicht unterstützt. Bitte wählen Sie einen gültigen Unterordner unter dem Laufwerksbuchstaben.</translation>
     </message>
@@ -7415,12 +7415,12 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>TrayWindowAccountMenu</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="287" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="288" />
         <source>Account switcher and settings menu</source>
         <translation type="unfinished">Konto-Umschalter und Einstellungsmenü</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="128" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="129" />
         <source>Add account</source>
         <translation type="unfinished">Konto hinzufügen</translation>
     </message>
@@ -7430,22 +7430,22 @@ Server antwortete mit Fehler: %2</translation>
         <translation type="unfinished">Aktuelles Konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="180" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="181" />
         <source>Current account avatar</source>
         <translation type="unfinished">Avatar des aktuellen Kontos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="229" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="230" />
         <source>Current account status is do not disturb</source>
         <translation type="unfinished">Aktueller Kontostatus ist &quot;Nicht stören&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="229" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="230" />
         <source>Current account status is online</source>
         <translation type="unfinished">Aktueller Kontostatus ist &quot;Online&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="157" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="158" />
         <source>Exit</source>
         <translation type="unfinished">Beenden</translation>
     </message>
@@ -7460,7 +7460,7 @@ Server antwortete mit Fehler: %2</translation>
         <translation>Synchronisierung für alle fortsetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="150" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="151" />
         <source>Settings</source>
         <translation type="unfinished">Einstellungen</translation>
     </message>
@@ -7486,7 +7486,7 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="34" />
+        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="35" />
         <source>Search files, messages, events …</source>
         <translation>Suche Dateien, Nachrichten und Termine …</translation>
     </message>
@@ -7542,34 +7542,34 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="165" />
+        <location filename="../src/gui/tray/UserLine.qml" line="158" />
         <source>Account actions</source>
         <translation>Konto-Aktionen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="147" />
+        <location filename="../src/gui/tray/UserLine.qml" line="140" />
         <source>Account sync status requires attention</source>
         <translation>Der Kontosynchronisierungsstatus erfordert Aufmerksamkeit</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="209" />
-        <location filename="../src/gui/tray/UserLine.qml" line="220" />
+        <location filename="../src/gui/tray/UserLine.qml" line="200" />
+        <location filename="../src/gui/tray/UserLine.qml" line="212" />
         <source>Log in</source>
         <translation>Anmelden</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="209" />
-        <location filename="../src/gui/tray/UserLine.qml" line="220" />
+        <location filename="../src/gui/tray/UserLine.qml" line="200" />
+        <location filename="../src/gui/tray/UserLine.qml" line="212" />
         <source>Log out</source>
         <translation>Abmelden</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="263" />
+        <location filename="../src/gui/tray/UserLine.qml" line="243" />
         <source>Remove account</source>
         <translation type="unfinished">Konto entfernen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="37" />
+        <location filename="../src/gui/tray/UserLine.qml" line="38" />
         <source>Switch to account</source>
         <translation>Zu Konto wechseln</translation>
     </message>

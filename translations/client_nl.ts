@@ -437,12 +437,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="531" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="530" />
         <source>Ask Assistant…</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="465" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="464" />
         <source>Cancel</source>
         <translation type="unfinished">Annuleren</translation>
     </message>
@@ -462,37 +462,37 @@
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="876" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="875" />
         <source>New activities</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="461" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="460" />
         <source>New conversation</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="559" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="558" />
         <source>Send assistant question</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="580" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="579" />
         <source>Start a new assistant chat</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="441" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="440" />
         <source>Start new conversation?</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="486" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="485" />
         <source>This will clear the existing conversation.</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="805" />
+        <location filename="../src/gui/tray/MainWindow.qml" line="804" />
         <source>Unified search results list</source>
         <translation type="unfinished" />
     </message>
@@ -2889,12 +2889,12 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="899" />
+        <location filename="../src/gui/folderwizard.cpp" line="897" />
         <source>Add Folder Sync Connection</source>
         <translation>Toevoegen mapsynchronisatie verbinding</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="902" />
+        <location filename="../src/gui/folderwizard.cpp" line="900" />
         <source>Add Sync Connection</source>
         <translation>Toevoegen Sync verbinding</translation>
     </message>
@@ -2902,12 +2902,12 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="185" />
+        <location filename="../src/gui/folderwizard.cpp" line="183" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Mapsynchronisatie toevoegen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="212" />
+        <location filename="../src/gui/folderwizard.cpp" line="210" />
         <source>Choose</source>
         <translation>Kies</translation>
     </message>
@@ -2922,17 +2922,17 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Geef het pad op naar de lokale map.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="198" />
+        <location filename="../src/gui/folderwizard.cpp" line="196" />
         <source>Select a folder on your hard drive that should be permanetly connected to your %1. All files and subfolders are automatically uploaded and synchronized</source>
         <translation type="unfinished">Selecteer een map op je harde schijf die permanent verbonden moet zijn met je %1. Alle bestanden en submappen worden automatisch geüpload en gesynchroniseerd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="141" />
+        <location filename="../src/gui/folderwizard.cpp" line="139" />
         <source>Select the source folder</source>
         <translation>Selecteer de bronmap</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="192" />
+        <location filename="../src/gui/folderwizard.cpp" line="190" />
         <source>Step 1 of 3: Select local folder</source>
         <translation type="unfinished">Stap 1 van 3: Selecteer lokale map</translation>
     </message>
@@ -2940,78 +2940,78 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="657" />
+        <location filename="../src/gui/folderwizard.cpp" line="655" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Mapsynchronisatie toevoegen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="340" />
+        <location filename="../src/gui/folderwizard.cpp" line="338" />
         <source>Authentication failed accessing %1</source>
         <translation>Authenticatie mislukt bij benaderen %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="673" />
+        <location filename="../src/gui/folderwizard.cpp" line="671" />
         <source>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</source>
         <translation type="unfinished">Beide mappen zijn permanent gekoppeld en de respectieve inhoud wordt automatisch gesynchroniseerd en bijgewerkt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="439" />
+        <location filename="../src/gui/folderwizard.cpp" line="437" />
         <source>Choose this to sync the entire account</source>
         <translation>Kies dit om je volledige account te synchroniseren</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="270" />
+        <location filename="../src/gui/folderwizard.cpp" line="268" />
         <source>Create Remote Folder</source>
         <translation>Externe map aanmaken</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="696" />
+        <location filename="../src/gui/folderwizard.cpp" line="694" />
         <source>Create folder</source>
         <translation type="unfinished">Maak map</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="271" />
+        <location filename="../src/gui/folderwizard.cpp" line="269" />
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Voer de naam van de hieronder te maken nieuwe map in &quot;%1&quot;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="342" />
+        <location filename="../src/gui/folderwizard.cpp" line="340" />
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Aanmaken van de map op %1 mislukt. Controleer handmatig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="359" />
+        <location filename="../src/gui/folderwizard.cpp" line="357" />
         <source>Failed to list a folder. Error: %1</source>
         <translation>Tonen mappenlijst mislukt. Fout: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="330" />
+        <location filename="../src/gui/folderwizard.cpp" line="328" />
         <source>Folder was successfully created on %1.</source>
         <translation>Map is succesvol aangemaakt op %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="574" />
-        <location filename="../src/gui/folderwizard.cpp" line="584" />
+        <location filename="../src/gui/folderwizard.cpp" line="572" />
+        <location filename="../src/gui/folderwizard.cpp" line="582" />
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="670" />
+        <location filename="../src/gui/folderwizard.cpp" line="668" />
         <source>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</source>
         <translation type="unfinished">Selecteer of maak nu een doelmap in uw %1 waar de inhoud moet worden geüpload en gesynchroniseerd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="694" />
+        <location filename="../src/gui/folderwizard.cpp" line="692" />
         <source>Refresh</source>
         <translation type="unfinished">Vernieuwen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="664" />
+        <location filename="../src/gui/folderwizard.cpp" line="662" />
         <source>Step 2 of 3: Directory in your %1</source>
         <translation type="unfinished">Stap 2 van 3: Directory in uw %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="579" />
+        <location filename="../src/gui/folderwizard.cpp" line="577" />
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation type="unfinished" />
     </message>
@@ -3019,36 +3019,36 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="717" />
-        <location filename="../src/gui/folderwizard.cpp" line="773" />
-        <location filename="../src/gui/folderwizard.cpp" line="821" />
+        <location filename="../src/gui/folderwizard.cpp" line="715" />
+        <location filename="../src/gui/folderwizard.cpp" line="771" />
+        <location filename="../src/gui/folderwizard.cpp" line="819" />
         <source>(experimental)</source>
         <translation>(experimenteel)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="744" />
+        <location filename="../src/gui/folderwizard.cpp" line="742" />
         <source>Add Folder Sync</source>
         <translation type="unfinished">Mapsynchronisatie toevoegen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="751" />
+        <location filename="../src/gui/folderwizard.cpp" line="749" />
         <source>Step 3 of 3: Selektive Synchronisation</source>
         <translation type="unfinished">Stap 3 van 3: Selektieve synchronisatie</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="716" />
-        <location filename="../src/gui/folderwizard.cpp" line="772" />
-        <location filename="../src/gui/folderwizard.cpp" line="820" />
+        <location filename="../src/gui/folderwizard.cpp" line="714" />
+        <location filename="../src/gui/folderwizard.cpp" line="770" />
+        <location filename="../src/gui/folderwizard.cpp" line="818" />
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Gebruik virtuele bestanden in plaats van direct downloaden content%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="842" />
+        <location filename="../src/gui/folderwizard.cpp" line="840" />
         <source>Virtual files are not supported at the selected location</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="816" />
+        <location filename="../src/gui/folderwizard.cpp" line="814" />
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Virtuele bestanden worden niet ondersteund voor Windows-partitie-hoofdmappen als lokale map. Kies een geldige submap onder de stationsletter.</translation>
     </message>
@@ -7404,12 +7404,12 @@ Server antwoordde met fout: %2</translation>
 <context>
     <name>TrayWindowAccountMenu</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="287" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="288" />
         <source>Account switcher and settings menu</source>
         <translation type="unfinished">Wisselen van gebruiker en instellingsmenu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="128" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="129" />
         <source>Add account</source>
         <translation type="unfinished" />
     </message>
@@ -7419,22 +7419,22 @@ Server antwoordde met fout: %2</translation>
         <translation type="unfinished">Huidige gebruiker</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="180" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="181" />
         <source>Current account avatar</source>
         <translation type="unfinished">Huidige gebruiker avatar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="229" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="230" />
         <source>Current account status is do not disturb</source>
         <translation type="unfinished">Huidige gebruikersstatus is Niet Storen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="229" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="230" />
         <source>Current account status is online</source>
         <translation type="unfinished">Huidige gebruikersstatus is Online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="157" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="158" />
         <source>Exit</source>
         <translation type="unfinished">Verlaat</translation>
     </message>
@@ -7449,7 +7449,7 @@ Server antwoordde met fout: %2</translation>
         <translation>Synchronisatie hervatten voor alles</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="150" />
+        <location filename="../src/gui/tray/TrayWindowAccountMenu.qml" line="151" />
         <source>Settings</source>
         <translation type="unfinished">Instellingen</translation>
     </message>
@@ -7475,7 +7475,7 @@ Server antwoordde met fout: %2</translation>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="34" />
+        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="35" />
         <source>Search files, messages, events …</source>
         <translation>Zoek in bestanden, berichten, afspraak ...</translation>
     </message>
@@ -7531,34 +7531,34 @@ Server antwoordde met fout: %2</translation>
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="165" />
+        <location filename="../src/gui/tray/UserLine.qml" line="158" />
         <source>Account actions</source>
         <translation>Accountacties</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="147" />
+        <location filename="../src/gui/tray/UserLine.qml" line="140" />
         <source>Account sync status requires attention</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="209" />
-        <location filename="../src/gui/tray/UserLine.qml" line="220" />
+        <location filename="../src/gui/tray/UserLine.qml" line="200" />
+        <location filename="../src/gui/tray/UserLine.qml" line="212" />
         <source>Log in</source>
         <translation>Meld u aan</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="209" />
-        <location filename="../src/gui/tray/UserLine.qml" line="220" />
+        <location filename="../src/gui/tray/UserLine.qml" line="200" />
+        <location filename="../src/gui/tray/UserLine.qml" line="212" />
         <source>Log out</source>
         <translation>Afmelden</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="263" />
+        <location filename="../src/gui/tray/UserLine.qml" line="243" />
         <source>Remove account</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="37" />
+        <location filename="../src/gui/tray/UserLine.qml" line="38" />
         <source>Switch to account</source>
         <translation>Omschakelen naar account</translation>
     </message>

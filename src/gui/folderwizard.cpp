@@ -130,13 +130,11 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
     const bool isInitialSelection = _initialFolderSelection;
     QString sf;
 
-#ifdef Q_OS_MACOS
-    // On macOS with app sandbox, QStandardPaths returns the sandbox container directory,
-    // not the actual user home directory. Use NSHomeDirectory() to get the real path.
-    sf = Utility::getRealHomeDirectory();
-#else
-    sf = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-#endif
+    #ifdef Q_OS_MACOS
+        sf = Utility::getRealHomeDirectory();
+    #else
+        sf = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    #endif
 
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select the source folder"), sf, QFileDialog::ShowDirsOnly);
     if (!dir.isEmpty()) {
