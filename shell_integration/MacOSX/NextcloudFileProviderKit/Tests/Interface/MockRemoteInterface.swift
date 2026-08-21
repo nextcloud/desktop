@@ -614,8 +614,14 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Records the WebDAV `If` header the most recent upload call carried (nil if none).
     public var lastUploadIfHeader: String?
 
+<<<<<<< HEAD
     /// Lock information returned by lock and unlock requests.
     public var lockUnlockResult: NKLock?
+=======
+    /// When set, locking a mock item changes its version identifier to this value.
+    /// This simulates the server-side etag propagation performed when a lock is acquired.
+    public var lockVersionIdentifier: String?
+>>>>>>> aca77d0f9ce6bacf7e41175f87a8105cc06cc0e4
 
     /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
@@ -1307,6 +1313,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         }
 
         item.locked = shouldLock
+        if shouldLock, let lockVersionIdentifier {
+            item.versionIdentifier = lockVersionIdentifier
+        }
 
         return lockUnlockResult
     }

@@ -128,6 +128,7 @@ public extension Item {
         }
 
         var headers = [String: String]()
+        let hasLockToken = metadata.lockToken != nil
 
         if let token = metadata.lockToken {
             headers["If"] = "<\(remotePath)> (<opaquelocktoken:\(token)>)"
@@ -169,7 +170,11 @@ public extension Item {
         // the server etag, while File Provider's base version intentionally remains the version the
         // document was opened from. Do not combine that pre-lock etag with the current lock token.
         // Without a lock token, keep using the etag as the optimistic-concurrency guard.
+<<<<<<< HEAD
         let sentIfMatch = shouldSendIfMatch && baseEtag != nil && metadata.lockToken == nil
+=======
+        let sentIfMatch = shouldSendIfMatch && baseEtag != nil && !hasLockToken
+>>>>>>> aca77d0f9ce6bacf7e41175f87a8105cc06cc0e4
         if sentIfMatch, let baseEtag {
             // Our stored etag is normalized (unquoted); Sabre/DAV compares If-Match
             // against the quoted resource ETag, so re-add the quotes.
