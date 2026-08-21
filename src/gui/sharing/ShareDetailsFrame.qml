@@ -21,6 +21,7 @@ WizardDialogFrame {
     property SharingController sharingController: null
     property var account: null
     property Share share: null
+    property bool advancedSettingsVisible: false
     property bool activatingShare: false
     property string activationError: ""
 
@@ -50,6 +51,7 @@ WizardDialogFrame {
 
                 Loader {
                     id: shareDetailsLoader
+                    objectName: "shareDetailsLoader"
 
                     Layout.fillWidth: true
                     Layout.leftMargin: root.windowMargin
@@ -58,11 +60,28 @@ WizardDialogFrame {
                     active: !!root.share
                     visible: active
 
-                    sourceComponent: ShareDetailsPage {
-                        objectName: "shareDetailsPage"
-                        account: root.account
-                        sharingController: root.sharingController
-                        share: root.share
+                    sourceComponent: root.advancedSettingsVisible ? advancedSettingsPageComponent : shareDetailsPageComponent
+
+                    Component {
+                        id: shareDetailsPageComponent
+
+                        ShareDetailsPage {
+                            objectName: "shareDetailsPage"
+                            account: root.account
+                            sharingController: root.sharingController
+                            share: root.share
+                        }
+                    }
+
+                    Component {
+                        id: advancedSettingsPageComponent
+
+                        ShareAdvancedSettingsPage {
+                            objectName: "shareAdvancedSettingsPage"
+                            account: root.account
+                            sharingController: root.sharingController
+                            share: root.share
+                        }
                     }
                 }
             }
