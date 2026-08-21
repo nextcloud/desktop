@@ -18,7 +18,7 @@ Kombiniert: niedrig+niedrig = unauffällig, hoch+niedrig = viele harmlose Konfli
 
 ## Datei
 
-- [DRIFT_MAP.md](DRIFT_MAP.md) — Legende (die Erläuterung oben) einmal am Anfang, danach pro Komponente eine Tabelle: Datei | Auf stable? | Diff-Anteil | Qualitative Einstufung | Bewusst/Drift | Bemerkung, plus "zuletzt geprüfter Commit" (eigener und stable-Seite).
+- [DRIFT_MAP.md](DRIFT_MAP.md) — Legende (die Erläuterung oben) einmal am Anfang, danach **eine einzige, flache Tabelle** über alle bisher geprüften Dateien: Datei | Auf stable? | Diff-Anteil | Qualitative Einstufung | Bewusst/Drift | zuletzt geprüfter Commit (eigener und stable-Seite) | Bemerkung. **Kein Verlaufs-/Rundenprotokoll**: eine erneute Prüfung überschreibt die bestehende Zeile der Datei, statt einen neuen datierten Abschnitt ("Runde 2", "Erstbefüllung" o. ä.) anzuhängen. Die Karte zeigt nur den Ist-Zustand — Historie über verschiedene Repo-Stände pflegt der Nutzer bewusst an anderer Stelle selbst.
 
 ## Referenz-Branch
 
@@ -41,7 +41,7 @@ Wie [stable-merge-check](../stable-merge-check/SKILL.md): Branch aus dessen `ref
 
 5. **Qualitative Einstufung ermitteln:** Workflow A aus [stable-merge-check](../stable-merge-check/SKILL.md) anwenden (nicht hier duplizieren) — `git diff origin/<branch> -- <datei>` lesen, niedrig/mittel/hoch einordnen, bewusst vs. Drift vermerken. Bei Unsicherheit oder wenn nur ein Teil der Datei bisher inhaltlich geprüft wurde, ehrlich **"nicht vollständig geprüft"** statt eine Einstufung zu raten.
 
-6. **`DRIFT_MAP.md` schreiben/ergänzen:** Zeile/Abschnitt für die Datei/Komponente anlegen, beide "zuletzt geprüft"-Commits (eigener HEAD, stable-Seite) setzen.
+6. **`DRIFT_MAP.md` schreiben/aktualisieren:** neue Zeile in der einen Tabelle anlegen, oder bei einer erneuten Prüfung die bestehende Zeile der Datei überschreiben (nicht duplizieren) — beide "zuletzt geprüft"-Commits (eigener HEAD, stable-Seite) auf den aktuellen Stand setzen.
 
 7. **Auffällige Kombinationen hervorheben.** Am Ende dem Nutzer explizit die hoch+hoch-Fälle nennen (besondere Vorsicht) sowie neue niedrig+hoch-Fälle (selten, aber gefährlich) — das sind die eigentlich interessanten Ergebnisse, nicht die Tabelle an sich.
 
@@ -57,3 +57,4 @@ Wie [stable-merge-check](../stable-merge-check/SKILL.md): Branch aus dessen `ref
 - Kein Vollscan aller Dateien in einem Lauf.
 - Kein automatisches Fixen gefundener Risiken.
 - Kein periodischer/automatischer Trigger.
+- Keine Verlaufs-/Rundenhistorie in `DRIFT_MAP.md` (kein "Runde 1/2/3", keine datierten Abschnitte) — nur der Ist-Zustand pro Datei. Historie über verschiedene Repo-Stände pflegt der Nutzer bewusst an anderer Stelle selbst.
