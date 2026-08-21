@@ -7,7 +7,6 @@
 #include "socketapi.h"
 #include "socketapi_p.h"
 
-#include "conflictdialog.h"
 #include "conflictsolver.h"
 
 #include "config.h"
@@ -51,7 +50,6 @@
 #include <QStringBuilder>
 #include <QMessageBox>
 #include <QInputDialog>
-#include <QFileDialog>
 
 
 #include <QAction>
@@ -68,10 +66,6 @@
 #ifdef Q_OS_MACOS
 #include <CoreFoundation/CoreFoundation.h>
 #include "common/utility_mac_sandbox.h"
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "macOS/findersyncxpc.h"
-#include "application.h"
-#endif
 #endif
 
 #ifdef HAVE_KGUIADDONS
@@ -317,10 +311,8 @@ SocketApi::SocketApi(QObject *parent)
 
     connect(&_localServer, &QLocalServer::newConnection, this, &SocketApi::slotNewConnection);
 #endif
-
-    // folder watcher
-    connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &SocketApi::slotUpdateFolderView);
 }
+
 
 SocketApi::~SocketApi()
 {
@@ -458,11 +450,30 @@ void SocketApi::slotRegisterPath(const QString &alias)
 
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
-        const QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+        const QString path = removeTrailingSlash(f->path());
+        const QString message = buildRegisterPathMessage(path);
         for (const auto &listener : std::as_const(_listeners)) {
             qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener->socket;
             listener->sendMessage(message);
         }
+
+#if defined(Q_OS_MACOS)
+        // _listeners is always empty on macOS, so the loop above reaches nobody. This is the only
+        // path that registers a folder which has *become* syncable rather than one that already
+        // was: FolderMan::slotFolderCanSyncChanged() calls us when the account finishes connecting.
+        //
+        // Missing this bridge is why Finder integration was invisible after every login. The
+        // extension connects long before the account is connected, so the bootstrap registration
+        // on connect finds canSync() false for every folder and registers nothing; the account
+        // then connects, this slot fires, and the message went nowhere. Restarting Finder appeared
+        // to fix it only because a fresh extension re-triggers the bootstrap, by which time the
+        // account is connected.
+        if (auto app = qobject_cast<Application *>(qApp)) {
+            if (auto finderSyncXPC = app->finderSyncXPC()) {
+                finderSyncXPC->registerPath(path);
+            }
+        }
+#endif
     }
 
     _registeredAliases.insert(alias);
@@ -476,9 +487,19 @@ void SocketApi::slotUnregisterPath(const QString &alias)
 
     auto folder = FolderMan::instance()->folder(alias);
     if (folder) {
-        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"),
-                                      removeTrailingSlash(folder->path()),
-                                      QString()));
+        const QString path = removeTrailingSlash(folder->path());
+        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), path, QString()));
+
+#if defined(Q_OS_MACOS)
+        // Same reason as slotRegisterPath: broadcastMessage only reaches _listeners, which is
+        // empty on macOS. Without this a folder that stops being syncable — paused, or the account
+        // disconnecting — keeps its badges and context menu in Finder.
+        if (auto app = qobject_cast<Application *>(qApp)) {
+            if (auto finderSyncXPC = app->finderSyncXPC()) {
+                finderSyncXPC->unregisterPath(path);
+            }
+        }
+#endif
     }
 
     _registeredAliases.remove(alias);
@@ -486,9 +507,16 @@ void SocketApi::slotUnregisterPath(const QString &alias)
 
 void SocketApi::slotUpdateFolderView(Folder *f)
 {
+    // Deliberately not gated on _listeners being non-empty. On macOS that container is always
+    // empty — the shell extension talks over XPC, not the local socket — so bailing out here
+    // silently dropped the sync folder's own root badge and the post-sync view refresh, which
+    // both happen below via broadcastStatusPushMessage/broadcastMessage. Those two now bridge
+    // to XPC themselves, so reaching them is what matters.
+#if !defined(Q_OS_MACOS)
     if (_listeners.isEmpty()) {
         return;
     }
+#endif
 
     if (f) {
         // do only send UPDATE_VIEW for a couple of status
@@ -502,6 +530,17 @@ void SocketApi::slotUpdateFolderView(Folder *f)
             broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
 
             broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), rootPath));
+
+#if defined(Q_OS_MACOS)
+            // broadcastMessage only reaches _listeners, which is always empty on macOS. Tell the
+            // FinderSync extension over its own channel instead, or Finder keeps showing the
+            // pre-sync state until something else happens to invalidate it.
+            if (auto app = qobject_cast<Application *>(qApp)) {
+                if (auto finderSyncXPC = app->finderSyncXPC()) {
+                    finderSyncXPC->updateViewAtPath(rootPath);
+                }
+            }
+#endif
         } else {
             qCDebug(lcSocketApi) << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
         }
@@ -774,6 +813,28 @@ void SocketApi::command_FILE_ACTIONS(const QString &localFile, SocketListener *l
     processFileActionsRequest(localFile);
 }
 
+void SocketApi::command_FILES_GOVERNANCE_LABELS(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener);
+
+    auto fileData = FileData::get(localFile);
+    if (!fileData.folder) {
+        qCWarning(lcSocketApi) << "Unknown path" << localFile;
+        return;
+    }
+
+    if (!fileData.folder->accountState()->account()->capabilities().governanceAvailable()) {
+        qCWarning(lcSocketApi) << "capability to use governance labels is missing";
+        return;
+    }
+
+    auto record = fileData.journalRecord();
+    if (!record.isValid())
+        return;
+
+    emit governanceLabelsCommandReceived(fileData.folder->accountState()->account(), fileData.localPath, QString::fromLatin1(record._fileId));
+}
+
 // don't pull the share manager into socketapi unittests
 #ifndef OWNCLOUD_TEST
 
@@ -808,7 +869,7 @@ public:
 private slots:
     void sharesFetched(const QList<OCC::SharePtr> &shares)
     {
-        auto shareName = SocketApi::tr("Context menu share");
+        auto shareLabel = SocketApi::tr("Context menu share");
 
         // If there already is a context menu share, reuse it
         for (const auto &share : shares) {
@@ -816,7 +877,7 @@ private slots:
             if (!linkShare)
                 continue;
 
-            if (linkShare->getName() == shareName) {
+            if (linkShare->getLabel() == shareLabel) {
                 qCDebug(lcPublicLink) << "Found existing share, reusing";
                 return success(linkShare->getLink().toString());
             }
@@ -825,9 +886,9 @@ private slots:
         // otherwise create a new one
         qCDebug(lcPublicLink) << "Creating new share";
         if (_isSecureFileDropOnlyFolder) {
-            _shareManager.createSecureFileDropShare(_localFile, shareName, QString());
+            _shareManager.createSecureFileDropShare(_localFile, shareLabel, QString());
         } else {
-            _shareManager.createLinkShare(_localFile, shareName, QString());
+            _shareManager.createLinkShare(_localFile, shareLabel, QString());
         }
     }
 
@@ -1007,15 +1068,7 @@ void SocketApi::command_RESOLVE_CONFLICT(const QString &localFile, SocketListene
 
     const auto baseName = QFileInfo(basePath).fileName();
 
-#ifndef OWNCLOUD_TEST
-    ConflictDialog dialog;
-    dialog.setBaseFilename(baseName);
-    dialog.setLocalVersionFilename(conflictedPath);
-    dialog.setRemoteVersionFilename(basePath);
-    if (dialog.exec() == ConflictDialog::Accepted) {
-        fileData.folder->scheduleThisFolderSoon();
-    }
-#endif
+    emit resolveConflictCommandReceived(conflictedPath, basePath, baseName, fileData.folder->alias());
 }
 
 void SocketApi::command_DELETE_ITEM(const QString &localFile, SocketListener *)
@@ -1056,30 +1109,7 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     // Add back the folder path
     defaultDirAndName = QDir(fileData.folder->path()).filePath(defaultDirAndName);
 
-    // Use getSaveFileUrl for sandbox compatibility
-    const auto targetUrl = QFileDialog::getSaveFileUrl(
-        nullptr,
-        tr("Select new location …"),
-        QUrl::fromLocalFile(defaultDirAndName),
-        QString(), nullptr, QFileDialog::HideNameFilterDetails);
-    if (targetUrl.isEmpty())
-        return;
-
-#ifdef Q_OS_MACOS
-    // On macOS with app sandbox, we need to explicitly access the security-scoped resource
-    auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(targetUrl);
-    
-    if (!scopedAccess->isValid()) {
-        qCWarning(lcSocketApi) << "Could not access security-scoped resource for conflict resolution:" << targetUrl;
-        return;
-    }
-#endif
-
-    const auto target = targetUrl.toLocalFile();
-
-    ConflictSolver solver;
-    solver.setLocalVersionFilename(localFile);
-    solver.setRemoteVersionFilename(target);
+    emit moveItemCommandReceived(localFile, defaultDirAndName);
 }
 
 void SocketApi::command_LOCK_FILE(const QString &localFile, SocketListener *listener)
@@ -1275,6 +1305,15 @@ void SocketApi::sendLockFileInfoMenuEntries(const QFileInfo &fileInfo,
     }
 }
 
+void SocketApi::sendFilesGovernanceLabelsMenuOptions(const QFileInfo &fileInfo,
+                                                     const FileData &fileData,
+                                                     SocketListener *listener)
+{
+    if (fileData.folder->accountState()->account()->capabilities().governanceAvailable() && !FileSystem::isDir(fileInfo.absoluteFilePath())) {
+        listener->sendMessage(QLatin1String("MENU_ITEM:FILES_GOVERNANCE_LABELS::") + tr("Apply labels"));
+    }
+}
+
 SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
 {
     FileData data;
@@ -1393,6 +1432,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         const auto rootE2eeFolderFlag = isE2eEncryptedRootFolder ? SharingContextItemRootEncryptedFolderFlag::RootEncryptedFolder : SharingContextItemRootEncryptedFolderFlag::NonRootEncryptedFolder;
         sendSharingContextMenuOptions(fileData, listener, itemEncryptionFlag, rootE2eeFolderFlag);
         sendFileActionsContextMenuOptions(fileData, listener);
+        sendFilesGovernanceLabelsMenuOptions(fileInfo, fileData, listener);
 
         // Conflict files get conflict resolution actions
         bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);

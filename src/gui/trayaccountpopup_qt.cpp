@@ -10,6 +10,7 @@
 #include "iconjob.h"
 #include "theme.h"
 #include "tray/trayaccountappsmodel.h"
+#include "tray/trayaccountmenupolicy.h"
 #include "tray/trayimageutils.h"
 #include "tray/usermodel.h"
 
@@ -509,6 +510,15 @@ void openLocalFolderForUser(const int userId)
 #endif
 }
 
+void reconnectUser(const int userId)
+{
+    closeTrayPopup();
+
+    if (const auto userModel = UserModel::instance()) {
+        userModel->login(userId);
+    }
+}
+
 void openUserStatusForUser(const int userId)
 {
     closeTrayPopup();
@@ -519,6 +529,12 @@ void openAssistantForUser(const int userId)
 {
     closeTrayPopup();
     Systray::instance()->showAssistantWindow(userId);
+}
+
+void openSearchForUser(const int userId)
+{
+    closeTrayPopup();
+    Systray::instance()->showSearchWindow(userId);
 }
 
 void openSettingsAfterTrayPopupCloses()
@@ -627,15 +643,17 @@ void addNotifications(QMenu *menu, const int userId, const QVariantList &notific
         const auto activityIndex = notificationData.value(QStringLiteral("activityIndex")).toInt();
         const auto actions = notificationData.value(QStringLiteral("actions")).toList();
         const auto dateTime = notificationData.value(QStringLiteral("dateTime")).toString();
+        const auto subtitle = notificationData.value(QStringLiteral("subtitle")).toString();
+        const auto displayTitle = subtitle.isEmpty() ? title : QStringLiteral("%1: %2").arg(title, subtitle);
         if (actions.isEmpty()) {
-            const auto action = addTimedMenuAction(menu, activityIcon(notificationData), title, dateTime);
+            const auto action = addTimedMenuAction(menu, activityIcon(notificationData), displayTitle, dateTime);
             QObject::connect(action, &QAction::triggered, action, [userId, opensSettings] {
                 openNotification(userId, opensSettings);
             });
             continue;
         }
 
-        const auto notificationMenu = addTimedSubMenu(menu, activityIcon(notificationData), title, dateTime);
+        const auto notificationMenu = addTimedSubMenu(menu, activityIcon(notificationData), displayTitle, dateTime);
         setFixedMenuWidth(notificationMenu);
         const auto openAction = addMenuAction(notificationMenu, QIcon{}, QCoreApplication::translate("TrayAccountPopup", "Open"));
         QObject::connect(openAction, &QAction::triggered, openAction, [userId, opensSettings] {
@@ -691,16 +709,49 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
         return;
     }
 
-    if (fetchActivityPreview) {
+    const auto userModelIndex = userModel->index(userId);
+    const auto policy = TrayAccountMenuPolicy{
+        userModel->data(userModelIndex, UserModel::IsConnectedRole).toBool(),
+        userModel->data(userModelIndex, UserModel::CanLogoutRole).toBool(),
+    };
+    if (fetchActivityPreview && policy.fetchActivityPreview()) {
         userModel->fetchActivityPreview(userId);
     }
 
-    const auto userModelIndex = userModel->index(userId);
     const auto menuIconPalette = nativeMenuIconPalette(menu);
     const auto menuIconSize = nativeMenuIconSize(menu);
-    const auto serverHasUserStatus = userModel->data(userModelIndex, UserModel::ServerHasUserStatusRole).toBool();
-    const auto onlineStatusEnabled = userModel->data(userModelIndex, UserModel::IsConnectedRole).toBool() && serverHasUserStatus;
 
+    if (!policy.showConnectedSections()) {
+        for (const auto entry : policy.disconnectedEntries()) {
+            switch (entry) {
+            case TrayAccountMenuPolicy::Entry::LocalFolder: {
+                const auto openFolderAction = addMenuAction(menu,
+                    templateBlackThemeIcon(QStringLiteral("folder.svg"), menuIconSize, menuIconPalette),
+                    QCoreApplication::translate("TrayFoldersMenuButton", "Local folder"));
+                QObject::connect(openFolderAction, &QAction::triggered, openFolderAction, [userId] {
+                    openLocalFolderForUser(userId);
+                });
+                break;
+            }
+            case TrayAccountMenuPolicy::Entry::Separator:
+                menu->addSeparator();
+                break;
+            case TrayAccountMenuPolicy::Entry::Reconnect: {
+                const auto reconnectAction = addMenuAction(menu,
+                    QIcon{},
+                    QCoreApplication::translate("OCC::AccountSettings", "Log in"));
+                QObject::connect(reconnectAction, &QAction::triggered, reconnectAction, [userId] {
+                    reconnectUser(userId);
+                });
+                break;
+            }
+            }
+        }
+        return;
+    }
+
+    const auto serverHasUserStatus = userModel->data(userModelIndex, UserModel::ServerHasUserStatusRole).toBool();
+    const auto onlineStatusEnabled = policy.showConnectedSections() && serverHasUserStatus;
     const auto accountAlert = userModel->data(userModelIndex, UserModel::AccountAlertRole).toMap();
     const auto accountAlertTitle = accountAlert.value(QStringLiteral("title")).toString();
     if (!accountAlertTitle.isEmpty()) {
@@ -738,11 +789,18 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
     if (assistantEnabled) {
         const auto assistantAction = addMenuAction(menu,
             templateBlackThemeIcon(QStringLiteral("nc-assistant-app.svg"), menuIconSize, menuIconPalette),
-            QCoreApplication::translate("MainWindow", "Open Assistant"));
+            QCoreApplication::translate("MainWindow", "Assistant"));
         QObject::connect(assistantAction, &QAction::triggered, assistantAction, [userId] {
             openAssistantForUser(userId);
         });
     }
+
+    const auto searchAction = addMenuAction(menu,
+        templateBlackThemeIcon(QStringLiteral("search.svg"), menuIconSize, menuIconPalette),
+        QCoreApplication::translate("TrayAccountPopup", "Search"));
+    QObject::connect(searchAction, &QAction::triggered, searchAction, [userId] {
+        openSearchForUser(userId);
+    });
 
     const auto appsMenu = addSubMenu(menu,
         templateBlackThemeIcon(QStringLiteral("more-apps.svg"), menuIconSize, menuIconPalette),
@@ -796,7 +854,8 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
                     }
                     if (!roles.isEmpty()
                         && !roles.contains(UserModel::RecentActivitiesRole)
-                        && !roles.contains(UserModel::TrayNotificationsRole)) {
+                        && !roles.contains(UserModel::TrayNotificationsRole)
+                        && !roles.contains(UserModel::IsConnectedRole)) {
                         return;
                     }
                     populateAccountMenu(accountMenu, userId, false);
@@ -813,6 +872,35 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
             closeTrayPopup();
             Q_EMIT Systray::instance()->openAccountWizard();
         });
+    }
+
+    const auto syncControlState = systray->syncControlState();
+    const auto addSyncControlAction = [menu, systray, &menuIconPalette, &menuIconSize](const bool pausesSync) {
+        const auto syncControlIconUrl = pausesSync ? Theme::instance()->pause() : Theme::instance()->sync();
+        const auto syncControlAction = addMenuAction(menu,
+            templateIconFromIcon(iconFromUrl(syncControlIconUrl), menuIconSize, menuIconPalette),
+            pausesSync ? Systray::tr("Pause sync for all") : Systray::tr("Resume sync for all"));
+        syncControlAction->setObjectName(pausesSync
+                ? QStringLiteral("trayPauseSyncAction")
+                : QStringLiteral("trayResumeSyncAction"));
+        QObject::connect(syncControlAction, &QAction::triggered, syncControlAction, [systray, pausesSync] {
+            closeTrayPopup();
+            systray->setSyncIsPaused(pausesSync);
+        });
+    };
+    switch (syncControlState) {
+    case Systray::SyncControlState::Pause:
+        addSyncControlAction(true);
+        break;
+    case Systray::SyncControlState::Resume:
+        addSyncControlAction(false);
+        break;
+    case Systray::SyncControlState::PauseAndResume:
+        addSyncControlAction(true);
+        addSyncControlAction(false);
+        break;
+    case Systray::SyncControlState::Unavailable:
+        break;
     }
 
     const auto settingsAction = addMenuAction(menu,

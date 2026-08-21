@@ -7,7 +7,9 @@
 #include <cstdlib>
 #include <iostream>
 #include <qcoreapplication.h>
+#include <QDir>
 #include <QStringList>
+#include <QTimer>
 #include <QUrl>
 #include <QFile>
 #include <QFileInfo>
@@ -17,15 +19,23 @@
 #include <qdebug.h>
 
 #include "account.h"
+#include "accountmanager.h"
+#include "accountsetupcommandlinemanager.h"
+#include "folderman.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #ifdef TOKEN_AUTH_ONLY
 # include "creds/tokencredentials.h"
 #else
 # include "creds/httpcredentials.h"
 #endif
+#include "creds/webflowcredentials.h"
+#include "networkjobs.h"
 #include "simplesslerrorhandler.h"
 #include "syncengine.h"
+#include "common/filesystembase.h"
 #include "common/syncjournaldb.h"
+#include "common/utility.h"
+#include "common/vfs.h"
 #include "config.h"
 #include "csync_exclude.h"
 
@@ -46,7 +56,7 @@
 #endif
 
 using namespace OCC;
-
+using namespace Qt::StringLiterals;
 
 static void nullMessageHandler(QtMsgType, const QMessageLogContext &, const QString &)
 {
@@ -56,7 +66,7 @@ struct CmdOptions
 {
     QString source_dir;
     QString target_url;
-    QString remotePath = QStringLiteral("/");
+    QString remotePath = u"/"_s;
     QString config_directory;
     QString user;
     QString password;
@@ -67,6 +77,7 @@ struct CmdOptions
     bool interactive = false;
     bool ignoreHiddenFiles = false;
     QString exclude;
+    QString excludeAnchored;
     QString unsyncedfolders;
     int restartTimes = 0;
     int downlimit = 0;
@@ -161,6 +172,7 @@ void help()
     std::cout << binaryName << " - command line " APPLICATION_NAME " client tool" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "Usage: " << binaryName << " [OPTION] <source_dir> <server_url>" << std::endl;
+    std::cout << "       " << binaryName << " --userid <user> --serverurl <url> [--apppassword <pass>] [OPTION]" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "A proxy can either be set manually using --httpproxy." << std::endl;
     std::cout << "Otherwise, the setting from a configured sync client will be used." << std::endl;
@@ -171,6 +183,10 @@ void help()
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
     std::cout << "  --exclude [file]       Exclude list file" << std::endl;
+    std::cout << "  --exclude-anchored [file]  Exclude list file, always anchored at the" << std::endl;
+    std::cout << "                         sync root regardless of the file's own name" << std::endl;
+    std::cout << "                         (use this if --exclude patterns aren't matching," << std::endl;
+    std::cout << "                         see nextcloud/desktop#2916, #7682)" << std::endl;
     std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced remote folders (selective sync)" << std::endl;
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
@@ -183,8 +199,16 @@ void help()
     std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "  --logdebug             More verbose logging" << std::endl;
     std::cout << "  --path                 Path to a folder on a remote server" << std::endl;
+    std::cout << "  --confdir [dir]        Use the given configuration directory" << std::endl;
     std::cout << "" << std::endl;
-    exit(0);
+    std::cout << "Account provisioning options (non-interactive setup):" << std::endl;
+    std::cout << "  --userid [user]        The user ID to configure" << std::endl;
+    std::cout << "  --apppassword [pass]   The app password for authentication (optional)" << std::endl;
+    std::cout << "  --serverurl [url]      The base URL of the Nextcloud server" << std::endl;
+    std::cout << "  --localdirpath [path]  Local folder path for sync (optional)" << std::endl;
+    std::cout << "  --remotedirpath [path] Remote folder path to sync, default /" << std::endl;
+    std::cout << "  --isvfsenabled [0|1]   Enable virtual files (1) or disable (0)" << std::endl;
+    std::cout << "" << std::endl;
 }
 
 void showVersion()
@@ -193,83 +217,116 @@ void showVersion()
     exit(0);
 }
 
-void parseOptions(const QStringList &app_args, CmdOptions *options)
+enum class CommandMode {
+    HelpMode,
+    SyncingMode,
+    ProvisioningMode,
+    UnknownMode,
+};
+
+CommandMode parseOptions(const QStringList &app_args, CmdOptions *options)
 {
-    QStringList args(app_args);
+    auto result = CommandMode::UnknownMode;
 
-    int argCount = args.count();
+    auto args(app_args);
 
-    if (argCount < 3) {
-        if (argCount >= 2) {
-            const QString option = args.at(1);
-            if (option == "-v" || option == "--version") {
-                showVersion();
+    const auto argCount = args.count();
+
+    // Detect provisioning mode: --userid flag present means no positional args required
+    const auto provisionMode = args.contains(QStringLiteral("--userid"));
+    if (provisionMode) {
+        result = CommandMode::ProvisioningMode;
+    }
+
+    if (!provisionMode) {
+        if (argCount < 3) {
+            if (argCount >= 2) {
+                const QString option = args.at(1);
+                if (option == "-v" || option == "--version") {
+                    showVersion();
+                }
             }
+            help();
+            result = CommandMode::HelpMode;
+            return result;
         }
-        help();
+
+        options->target_url = args.takeLast();
+
+        options->source_dir = args.takeLast();
+        if (!options->source_dir.endsWith('/')) {
+            options->source_dir.append('/');
+        }
+        auto sourceDirFileInfo = QFileInfo{options->source_dir};
+        if (!sourceDirFileInfo.exists()) {
+            std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
+            exit(1);
+        }
+        options->source_dir = sourceDirFileInfo.absoluteFilePath();
     }
 
-    options->target_url = args.takeLast();
-
-    options->source_dir = args.takeLast();
-    if (!options->source_dir.endsWith('/')) {
-        options->source_dir.append('/');
-    }
-    QFileInfo fi(options->source_dir);
-    if (!fi.exists()) {
-        std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
-        exit(1);
-    }
-    options->source_dir = fi.absoluteFilePath();
-
-    QStringListIterator it(args);
+    auto it = QStringListIterator{args};
     // skip file name;
     if (it.hasNext())
         it.next();
 
     while (it.hasNext()) {
-        const QString option = it.next();
+        const auto option = it.next();
 
-        if (option == "--httpproxy" && !it.peekNext().startsWith("-")) {
+        if (option == u"--httpproxy"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->proxy = it.next();
-        } else if (option == "-s" || option == "--silent") {
+        } else if (option == u"-s"_s || option == u"--silent"_s) {
             options->silent = true;
-        } else if (option == "--trust") {
+        } else if (option == u"--trust"_s) {
             options->trustSSL = true;
-        } else if (option == "-n") {
+        } else if (option == u"-n"_s) {
             options->useNetrc = true;
-        } else if (option == "-h") {
+        } else if (option == u"-h"_s) {
             options->ignoreHiddenFiles = false;
-        } else if (option == "--non-interactive") {
+        } else if (option == u"--non-interactive"_s) {
             options->interactive = false;
-        } else if ((option == "-u" || option == "--user") && !it.peekNext().startsWith("-")) {
+        } else if ((option == u"-u"_s || option == u"--user"_s) && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->user = it.next();
-        } else if ((option == "-p" || option == "--password") && !it.peekNext().startsWith("-")) {
+        } else if ((option == u"-p"_s || option == u"--password"_s) && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->password = it.next();
-        } else if (option == "--exclude" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--exclude"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->exclude = it.next();
-        } else if (option == "--unsyncedfolders" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--exclude-anchored"_s && !it.peekNext().startsWith(u"-"_s)) {
+            options->excludeAnchored = it.next();
+        } else if (option == u"--unsyncedfolders"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->unsyncedfolders = it.next();
-        } else if (option == "--max-sync-retries" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--max-sync-retries"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->restartTimes = it.next().toInt();
-        } else if (option == "--uplimit" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--uplimit"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->uplimit = it.next().toInt() * 1000;
-        } else if (option == "--downlimit" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--downlimit"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->downlimit = it.next().toInt() * 1000;
-        } else if (option == "--logdebug") {
+        } else if (option == u"--logdebug"_s) {
             Logger::instance()->setLogFile("-");
             Logger::instance()->setLogDebug(true);
-        } else if (option == "--path" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--path"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->remotePath = it.next();
-        }
-        else {
-            help();
+        } else if (option == u"--confdir"_s && it.hasNext() && !it.peekNext().startsWith(u"--"_s)) {
+            options->config_directory = it.next();
+        } else {
+            QString errorMessage;
+            if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
+                help();
+                result = CommandMode::HelpMode;
+                return result;
+            }
         }
     }
 
-    if (options->target_url.isEmpty() || options->source_dir.isEmpty()) {
+    if (!provisionMode && (options->target_url.isEmpty() || options->source_dir.isEmpty())) {
+        result = CommandMode::HelpMode;
         help();
+        return result;
+    } else if (!provisionMode) {
+        result = CommandMode::SyncingMode;
     }
+
+    return result;
 }
 
 /* If the selective sync list is different from before, we need to disable the read from db
@@ -292,6 +349,56 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
     }
 }
 
+[[nodiscard]] bool setupAccountsOnly()
+{
+    auto result = false;
+
+    ConfigFile cfg;
+    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
+    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
+    if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
+        accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+        qWarning() << "restoring existing user accounts failed";
+        return result;
+    }
+
+    result = true;
+    return result;
+}
+
+[[nodiscard]] bool setupAccountsAndFolders()
+{
+    auto result = false;
+
+    auto folderManager = FolderMan::instance();
+    ConfigFile configFile;
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
+    if (!setupAccountsOnly()) {
+        return result;
+    }
+
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupFolders);
+    const auto foldersListSize = folderManager->setupFolders();
+    folderManager->setSyncEnabled(true);
+
+    const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts) {
+        QStringList list;
+        for (const auto &account : accounts) {
+            list << account->account()->prettyName().prepend("- ");
+        }
+        return list.join("\n");
+    };
+
+    const auto accounts = AccountManager::instance()->accounts();
+    const auto accountsListSize = accounts.size();
+
+    qWarning() << foldersListSize << "folder(s) migrated";
+    qWarning() << accountsListSize << "account(s) migrated:" << prettyNamesList(accounts);
+
+    result = true;
+    return result;
+}
+
 int main(int argc, char **argv)
 {
 #ifdef Q_OS_WIN
@@ -301,7 +408,7 @@ int main(int argc, char **argv)
 
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory
-    QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
+    QString opensslConf = QCoreApplication::applicationDirPath() + u"/openssl.cnf"_s;
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 #endif
 
@@ -315,12 +422,43 @@ int main(int argc, char **argv)
     options.uplimit = 0;
     options.downlimit = 0;
 
-    parseOptions(app.arguments(), &options);
+    const auto commandMode = parseOptions(app.arguments(), &options);
+
+    if (commandMode == CommandMode::HelpMode) {
+        return 0;
+    }
 
     if (options.silent) {
         qInstallMessageHandler(nullMessageHandler);
     } else {
         qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
+    }
+
+    if (!options.config_directory.isEmpty()) {
+        if (!ConfigFile::setConfDir(options.config_directory)) {
+            std::cerr << "Invalid confdir '" << qPrintable(options.config_directory) << "', disabling." << std::endl;
+        }
+    }
+
+    if (commandMode == CommandMode::ProvisioningMode) {
+        if (!setupAccountsAndFolders()) {
+            qWarning() << "Restoring existing accounts failed. Skip creation of a new account. See prior messages for a detailed error.";
+            return -1;
+        }
+
+        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+            if (AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine()) {
+                return 0;
+            } else {
+                qWarning() << "Creation of the account failed. See prior messages for a detailed error.";
+                return -1;
+            }
+        } else {
+            AccountSetupCommandLineManager::destroy();
+            qWarning() << "Missing mandatory command line options for provisioning mode";
+            help();
+            return -1;
+        }
     }
 
     AccountPtr account = Account::create();
@@ -542,11 +680,11 @@ restart_sync:
 
     // Exclude lists
 
-    bool hasUserExcludeFile = !options.exclude.isEmpty();
+    bool hasUserExcludeFile = !options.exclude.isEmpty() || !options.excludeAnchored.isEmpty();
     QString systemExcludeFile = ConfigFile::excludeFileFromSystem();
 
-    // Always try to load the user-provided exclude list if one is specified
-    if (hasUserExcludeFile) {
+    // Always try to load the user-provided exclude list(s) if specified
+    if (!options.exclude.isEmpty()) {
         if (!QFile::exists(options.exclude)) {
             // A user-supplied --exclude path that can't be found is a
             // configuration error, not something to silently ignore:
@@ -556,7 +694,21 @@ restart_sync:
             qFatal("Exclude list file supplied via --exclude does not exist: %s", qUtf8Printable(options.exclude));
             return EXIT_FAILURE;
         }
+        // Keeps addExcludeFilePath()'s historic filename-based anchoring
+        // heuristic for --exclude, so existing setups that rely on it
+        // (however unintentionally) don't change behavior. Use
+        // --exclude-anchored instead if patterns aren't matching because
+        // the file isn't literally named "sync-exclude.lst".
         engine.excludedFiles().addExcludeFilePath(options.exclude);
+    }
+    if (!options.excludeAnchored.isEmpty()) {
+        if (!QFile::exists(options.excludeAnchored)) {
+            qFatal("Exclude list file supplied via --exclude-anchored does not exist: %s", qUtf8Printable(options.excludeAnchored));
+            return EXIT_FAILURE;
+        }
+        // Always anchor patterns at the sync root regardless of the file's
+        // own name, see ExcludedFiles::addExcludeFilePath().
+        engine.excludedFiles().addExcludeFilePath(options.excludeAnchored, ExcludedFiles::ExcludeFileAnchor::SyncRoot);
     }
     // Load the system list if available, or if there's no user-provided list
     if (!hasUserExcludeFile || QFile::exists(systemExcludeFile)) {
@@ -564,7 +716,7 @@ restart_sync:
     }
 
     if (!engine.excludedFiles().reloadExcludeFiles()) {
-        qFatal("Cannot load system exclude list or list supplied via --exclude");
+        qFatal("Cannot load system exclude list or list supplied via --exclude/--exclude-anchored");
         return EXIT_FAILURE;
     }
 

@@ -171,11 +171,6 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
         }
     }
 
-    if (OCC::FileSystem::isFileLocked(path, OCC::FileSystem::LockMode::SharedRead)) {
-        qCWarning(lcCsyncExclude) << path << "is locked" << "exluding it from sync";
-        return CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED;
-    }
-
     if (csync_is_windows_reserved_word(bname)) {
         return CSYNC_FILE_SILENTLY_EXCLUDED;
     }
@@ -242,11 +237,11 @@ ExcludedFiles::ExcludedFiles(const QString &localPath)
 
 ExcludedFiles::~ExcludedFiles() = default;
 
-void ExcludedFiles::addExcludeFilePath(const QString &path)
+void ExcludedFiles::addExcludeFilePath(const QString &path, ExcludeFileAnchor anchor)
 {
     const QFileInfo excludeFileInfo(path);
     const auto fileName = excludeFileInfo.fileName();
-    const auto basePath = fileName.compare(QStringLiteral("sync-exclude.lst"), Qt::CaseInsensitive) == 0
+    const auto basePath = anchor == ExcludeFileAnchor::SyncRoot || fileName.compare(QStringLiteral("sync-exclude.lst"), Qt::CaseInsensitive) == 0
                                                                     ? _localPath
                                                                     : leftIncludeLast(path, QLatin1Char('/'));
     auto &excludeFilesLocalPath = _excludeFiles[basePath];
@@ -302,12 +297,23 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
     QStringList patterns;
     while (!file.atEnd()) {
         QByteArray line = file.readLine().trimmed();
-        if (line.startsWith("#!version")) {
-            if (!versionDirectiveKeepNextLine(line))
-                file.readLine();
+        if (file.error()) {
+            // e.g. "Access to the cloud file is denied." when the exclude list is dehydrated on a VFS-enabled sync folder
+            qCWarning(lcCsyncExclude).nospace() << "failed to load exclude patterns from file, assume empty ignore list"
+                << " fileName=" << file.fileName()
+                << " error=" << file.error()
+                << " errorString=" << file.errorString();
+            break;
         }
-        if (line.isEmpty() || line.startsWith('#'))
+
+        if (line.startsWith("#!version")) {
+            if (!versionDirectiveKeepNextLine(line)) {
+                file.readLine();
+            }
+        }
+        if (line.isEmpty() || line.startsWith('#')) {
             continue;
+        }
         const auto patternStr = QString::fromUtf8(line);
         if (QStringView{patternStr}.trimmed() == QLatin1StringView("*")) {
             continue;

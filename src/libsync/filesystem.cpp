@@ -16,9 +16,14 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QCoreApplication>
+#include <QRegularExpression>
 
 #include <array>
+#include <map>
+#include <optional>
+#include <ranges>
 #include <string_view>
+#include <vector>
 
 #ifdef Q_OS_WIN
 #include <securitybaseapi.h>
@@ -30,6 +35,156 @@ namespace
 {
 constexpr std::array<const char *, 2> lockFilePatterns = {{".~lock.", "~$"}};
 constexpr std::array<std::string_view, 8> officeFileExtensions = {"doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "odp"};
+
+// AutoCAD creates .dwl (plain text) and .dwl2 (XML) lock files when a .dwg drawing
+// is opened. Both share the document's base name — only the extension differs — so
+// the guarded document is resolved by replacing the lock extension with .dwg.
+// Both lock files are deleted when the drawing is closed.
+constexpr std::array<const char *, 2> autoCADLockFileExtensions = {"dwl", "dwl2"};
+constexpr std::string_view autoCADDocumentExtension = "dwg";
+
+// Returns true if the path's suffix is an AutoCAD lock file extension (.dwl/.dwl2).
+bool isAutoCADLockFileExtension(const QString &path)
+{
+    const auto suffix = QFileInfo{path}.suffix().toLower().toStdString();
+    return std::ranges::any_of(autoCADLockFileExtensions, [&suffix](const auto ext) { return ext == suffix; });
+}
+
+// Resolve the document guarded by an AutoCAD lock file. The lock file shares the
+// document's base name, so the document path is derived by replacing the extension
+// with .dwg. Returns std::nullopt if the lock file is not an AutoCAD lock file
+// or the guarded document does not exist.
+std::optional<QString> autoCADLockFileTargetFilePath(const QString &lockFilePath)
+{
+    const QFileInfo lockFileInfo{lockFilePath};
+    const auto baseName = lockFileInfo.completeBaseName();
+    if (baseName.isEmpty()) {
+        return std::nullopt;
+    }
+    const auto dir = lockFileInfo.dir();
+    const auto candidatePath = dir.absoluteFilePath(baseName + QLatin1Char('.') + QString::fromStdString(std::string(autoCADDocumentExtension)));
+    return QFileInfo::exists(candidatePath) ? std::make_optional(candidatePath) : std::nullopt;
+}
+
+// Returns true if a sibling AutoCAD lock file for the same base name still exists
+// on disk. AutoCAD creates .dwl and .dwl2 as a pair; the document must only be
+// unlocked when both are gone.
+bool autoCADSiblingLockFileExists(const QString &lockFilePath)
+{
+    const QFileInfo lockFileInfo{lockFilePath};
+    const auto baseName = lockFileInfo.completeBaseName();
+    if (baseName.isEmpty()) {
+        return false;
+    }
+    const auto deletedExt = lockFileInfo.suffix().toLower().toStdString();
+    const auto dir = lockFileInfo.dir();
+    return std::ranges::any_of(autoCADLockFileExtensions, [&](const auto ext) {
+        return ext != deletedExt && QFileInfo::exists(dir.absoluteFilePath(baseName + QLatin1Char('.') + QString::fromStdString(ext)));
+    });
+}
+
+// Unlike Office (`~$…`) and LibreOffice (`.~lock.…#`) lock files, Adobe lock file
+// names do not encode the guarded document's own extension, only its base name.
+// The guarded document has to be located among the lock file's siblings.
+// - `idlk`: InDesign documents (`indd`) and InCopy stories (`icml`).
+// - `prlock`: Premiere Pro projects (`prproj`).
+static const std::map<std::string_view, std::vector<std::string_view>> adobeLockFileDocumentExtensions = {
+    {"idlk", {"indd", "icml"}},
+    {"prlock", {"prproj"}},
+};
+
+bool isAdobeLockFileExtension(const QString &path)
+{
+    const auto suffix = QFileInfo{path}.suffix().toLower().toStdString();
+    return adobeLockFileDocumentExtensions.contains(suffix);
+}
+
+// Returns the candidate document extensions guarded by the given Adobe lock file
+// extension (lowercased, without the dot), in lookup order. Returns std::nullopt
+// if the extension is not a recognised Adobe lock file extension.
+std::optional<QList<QString>> adobeDocumentExtensionsFor(const QString &lockExtension)
+{
+    const auto lockExt = lockExtension.toStdString();
+    const auto it = adobeLockFileDocumentExtensions.find(lockExt);
+    if (it == adobeLockFileDocumentExtensions.cend()) {
+        return std::nullopt;
+    }
+    QList<QString> result;
+    result.reserve(static_cast<int>(it->second.size()));
+    for (const auto &documentExtension : it->second) {
+        result.append(QString::fromStdString(std::string(documentExtension)));
+    }
+    return result;
+}
+
+// Parses the document base name embedded in an Adobe lock file name.
+//   - InDesign / InCopy (.idlk): `Test` is extracted from `~Test~0kjyv(.idlk`.
+//   - Premiere Pro (.prlock): `Test` is extracted from `Test.prlock`.
+// Adobe lock file names drop the guarded document's own extension, so only the
+// base name can be recovered here. Returns std::nullopt if \a lockExtension is
+// not a recognised Adobe lock file extension, or if \a lockFileName does not
+// match the naming pattern expected for it.
+std::optional<QString> adobeLockFileDocumentBaseName(const QString &lockFileName, const QString &lockExtension)
+{
+    static const QRegularExpression idlkPattern(QStringLiteral(R"(^~(?<base>.+)~[^~]*\(\.idlk$)"),
+                                                QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression prlockPattern(QStringLiteral(R"(^(?<base>.+)\.prlock$)"),
+                                                 QRegularExpression::CaseInsensitiveOption);
+
+    const auto pattern = lockExtension == QLatin1String("idlk")    ? &idlkPattern
+        : lockExtension == QLatin1String("prlock") ? &prlockPattern
+                                                   : nullptr;
+    if (!pattern) {
+        return std::nullopt;
+    }
+
+    const auto match = pattern->match(lockFileName);
+    if (!match.hasMatch()) {
+        return std::nullopt;
+    }
+    return match.captured(QStringLiteral("base"));
+}
+
+// Resolve the document guarded by an Adobe lock file by matching a sibling file
+// in the same directory by base name and expected document extension. Returns
+// the guarded document's absolute file path, or an empty string if no matching
+// document is found.
+std::optional<QString> adobeLockFileTargetFilePath(const QString &lockFilePath)
+{
+    const QFileInfo lockFileInfo{lockFilePath};
+    const auto lockExtension = QFileInfo{lockFileInfo.fileName()}.suffix().toLower();
+    const auto documentExtensions = adobeDocumentExtensionsFor(lockExtension);
+    if (!documentExtensions || documentExtensions->isEmpty()) {
+        return std::nullopt;
+    }
+
+    const auto baseName = adobeLockFileDocumentBaseName(lockFileInfo.fileName(), lockExtension);
+    if (!baseName || baseName->isEmpty()) {
+        return std::nullopt;
+    }
+
+    const QDir dir = lockFileInfo.dir();
+    for (const auto &documentExtension : *documentExtensions) {
+        const auto candidatePath = dir.absoluteFilePath(*baseName + QLatin1Char('.') + documentExtension);
+        if (QFileInfo::exists(candidatePath)) {
+            return candidatePath;
+        }
+    }
+    return std::nullopt;
+}
+
+// Affinity by Canva creates `~lock~` suffix lock files (e.g., Screenshot.af~lock~)
+// when a document is opened. The guarded document name is recovered by stripping
+// the trailing `~lock~` suffix.
+constexpr std::string_view affinityLockFileSuffix = "~lock~";
+
+constexpr std::array<std::string_view, 4> affinityDocumentExtensions = {"afphoto", "afdesign", "afpub", "af"};
+
+bool isAffinityLockFile(const QString &path)
+{
+    return path.endsWith(QStringLiteral("~lock~"));
+}
+
 // iterates through the dirPath to find the matching fileName
 QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName)
 {
@@ -63,19 +218,37 @@ QString FileSystem::filePathLockFilePatternMatch(const QString &path)
     if (pathSplit.isEmpty()) {
         return {};
     }
-    QString lockFilePatternFound;
+
+    // Office / LibreOffice lock files are identified by a filename prefix.
     for (const auto &lockFilePattern : lockFilePatterns) {
         if (pathSplit.last().startsWith(lockFilePattern)) {
-            lockFilePatternFound = lockFilePattern;
-            break;
+            qCDebug(OCC::lcFileSystem) << "Found a lock file with prefix:" << lockFilePattern << "in path:" << path;
+            return lockFilePattern;
         }
     }
 
-    if (!lockFilePatternFound.isEmpty()) {
-        qCDebug(OCC::lcFileSystem) << "Found a lock file with prefix:" << lockFilePatternFound << "in path:" << path;
+    // Affinity lock files are identified by the `~lock~` suffix.
+    if (isAffinityLockFile(pathSplit.last())) {
+        qCDebug(OCC::lcFileSystem) << "Found an Affinity lock file with suffix ~lock~ in path:" << path;
+        return QString::fromStdString(std::string(affinityLockFileSuffix));
     }
 
-    return lockFilePatternFound;
+    // AutoCAD lock files (.dwl / .dwl2) are identified by extension, not prefix.
+    if (isAutoCADLockFileExtension(pathSplit.last())) {
+        const auto suffix = QFileInfo{pathSplit.last()}.suffix().toLower();
+        qCDebug(OCC::lcFileSystem) << "Found an AutoCAD lock file with extension:" << suffix << "in path:" << path;
+        return QStringLiteral(".") + suffix;
+    }
+
+    // Adobe lock files (.idlk / .prlock) are identified by extension, not prefix.
+    const auto suffix = QFileInfo{pathSplit.last()}.suffix().toLower().toStdString();
+    if (adobeLockFileDocumentExtensions.contains(suffix)) {
+        const QString pattern = QStringLiteral(".") + QString::fromStdString(suffix);
+        qCDebug(OCC::lcFileSystem) << "Found an Adobe lock file with extension:" << pattern << "in path:" << path;
+        return pattern;
+    }
+
+    return {};
 }
 
 bool FileSystem::isMatchingOfficeFileExtension(const QString &path)
@@ -85,9 +258,76 @@ bool FileSystem::isMatchingOfficeFileExtension(const QString &path)
     return std::find(std::cbegin(officeFileExtensions), std::cend(officeFileExtensions), extension) != std::cend(officeFileExtensions);
 }
 
+bool FileSystem::isMatchingAutoCADDocumentExtension(const QString &path)
+{
+    return QFileInfo{path}.suffix().toLower().toStdString() == autoCADDocumentExtension;
+}
+
+bool FileSystem::isMatchingAdobeDocumentExtension(const QString &path)
+{
+    const auto pathSplit = path.split(QLatin1Char('.'));
+    const auto extension = pathSplit.size() > 1 ? pathSplit.last().toLower().toStdString() : std::string{};
+    return std::ranges::any_of(adobeLockFileDocumentExtensions, [&extension](const auto &entry) {
+        return std::ranges::any_of(entry.second, [&extension](const auto &documentExtension) { return documentExtension == extension; });
+    });
+}
+
+bool FileSystem::isMatchingAffinityDocumentExtension(const QString &path)
+{
+    const auto extension = QFileInfo{path}.suffix().toLower().toStdString();
+    return std::ranges::any_of(affinityDocumentExtensions, [&extension](const auto &ext) { return ext == extension; });
+}
+
 FileSystem::FileLockingInfo FileSystem::lockFileTargetFilePath(const QString &lockFilePath, const QString &lockFileNamePattern)
 {
     FileLockingInfo result;
+
+    // Affinity lock files use a `~lock~` suffix (e.g., Screenshot.afphoto~lock~).
+    // Strip the suffix to recover the guarded document path.
+    if (isAffinityLockFile(lockFilePath)) {
+        const QFileInfo lockFileInfo{lockFilePath};
+        auto documentName = lockFileInfo.fileName();
+        documentName.chop(affinityLockFileSuffix.length());
+        if (!documentName.isEmpty()) {
+            result.path = lockFileInfo.dir().absoluteFilePath(documentName);
+            if (QFile::exists(result.path)) {
+                result.type = lockFileInfo.exists() ? FileLockingInfo::Type::Locked : FileLockingInfo::Type::Unlocked;
+            } else {
+                result.path.clear();
+            }
+        }
+        return result;
+    }
+
+    // AutoCAD lock files (.dwl / .dwl2) share the document's base name, so the
+    // guarded document is resolved by replacing the extension with .dwg.
+    // AutoCAD creates .dwl and .dwl2 as a pair — only report Unlocked when both
+    // are gone; if a sibling lock file still exists, leave the type as Unset so
+    // the watcher does not prematurely unlock the document.
+    if (isAutoCADLockFileExtension(lockFilePath)) {
+        const auto targetPath = autoCADLockFileTargetFilePath(lockFilePath);
+        if (targetPath) {
+            result.path = *targetPath;
+            if (QFile::exists(lockFilePath)) {
+                result.type = FileLockingInfo::Type::Locked;
+            } else if (!autoCADSiblingLockFileExists(lockFilePath)) {
+                result.type = FileLockingInfo::Type::Unlocked;
+            }
+        }
+        return result;
+    }
+
+    // Adobe lock files (.idlk / .prlock) are resolved by sibling lookup — the lock
+    // file name carries only the document base name, not its extension.
+    if (isAdobeLockFileExtension(lockFilePath)) {
+        const auto adobeResolvedPath = adobeLockFileTargetFilePath(lockFilePath);
+        if (adobeResolvedPath) {
+            result.path = *adobeResolvedPath;
+            if (!result.path.isEmpty())
+                result.type = QFile::exists(lockFilePath) ? FileLockingInfo::Type::Locked : FileLockingInfo::Type::Unlocked;
+        }
+        return result;
+    }
 
     if (lockFileNamePattern.isEmpty()) {
         return result;

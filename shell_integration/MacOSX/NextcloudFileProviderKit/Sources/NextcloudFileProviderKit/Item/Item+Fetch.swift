@@ -22,6 +22,7 @@ public extension Item {
         // 3. Detect child directories
         // 4. Repeat 1 -> 3 for each child directory
         var remoteDirectoryPaths = [directoryRemotePath]
+        var downloadedFileOcIds: [String] = []
         while !remoteDirectoryPaths.isEmpty {
             let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
             let readResult = await Enumerator.readServerUrl(
@@ -100,11 +101,25 @@ public extension Item {
                 metadata.sessionError = ""
                 dbManager.addItemMetadata(metadata)
 
+                if !metadata.directory {
+                    downloadedFileOcIds.append(metadata.ocId)
+                }
+
                 progress.completedUnitCount += 1
             }
         }
 
         progress.completedUnitCount += 1 // Finish off
+
+        // Downloading a folder materializes its descendant files without going
+        // through the single-file `fetchContents` refresh below, and the
+        // materialized-set observer sees no DB discrepancy (the rows are already
+        // downloaded==true). Nudge the descendants' ancestor containers directly so
+        // "Remove downloaded items" appears on the folder, its subfolders, and up
+        // to the root (#10085).
+        if let domain, let manager = NSFileProviderManager(for: domain), !downloadedFileOcIds.isEmpty {
+            refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: Set(downloadedFileOcIds), manager: manager, dbManager: dbManager, logger: logger)
+        }
     }
 
     func fetchContents(
@@ -221,6 +236,15 @@ public extension Item {
         updatedMetadata.sessionError = ""
 
         dbManager.addItemMetadata(updatedMetadata)
+
+        // A newly downloaded file changes the "Remove download" visibility of every
+        // ancestor folder and the root. This must happen here, not via the
+        // materialized-set observer: `downloaded` is already persisted above,
+        // before the system re-enumerates its materialized set, so the observer's
+        // reconciliation would see no change (#10085).
+        if !isDirectory, let domain, let manager = NSFileProviderManager(for: domain) {
+            refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: [ocId], manager: manager, dbManager: dbManager, logger: logger)
+        }
 
         guard let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
             fromMetadata: metadata,

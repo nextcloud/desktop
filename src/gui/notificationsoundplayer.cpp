@@ -55,10 +55,10 @@ QString extractQrcToCache(const QString &qrcResourcePath)
     fingerprint += QByteArray::number(bytes.size());
     const auto hash = QCryptographicHash::hash(fingerprint, QCryptographicHash::Sha1).toHex();
 
-    const auto cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QStringLiteral("/sounds");
+    const QString cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QStringLiteral("/sounds");
     const auto suffix = QFileInfo(qrcResourcePath).suffix();
     const auto dottedSuffix = suffix.isEmpty() ? QString() : QStringLiteral(".") + suffix;
-    const auto destinationPath = cacheDir + QStringLiteral("/") + QString::fromLatin1(hash) + dottedSuffix;
+    const QString destinationPath = cacheDir + QStringLiteral("/") + QString::fromLatin1(hash) + dottedSuffix;
 
     if (QFile::exists(destinationPath)) {
         extractedPaths.insert(qrcResourcePath, destinationPath);

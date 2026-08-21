@@ -31,13 +31,46 @@ struct Codesign: AsyncParsableCommand {
         let absolutePath = appBundlePath.hasPrefix("/") ? appBundlePath : "\(FileManager.default.currentDirectoryPath)/\(appBundlePath)"
         let url = URL(fileURLWithPath: absolutePath)
 
-        let entitlements = [
+        var entitlements: [String: URL] = [
             url.lastPathComponent: URL(fileURLWithPath: appEntitlements),
             "FileProviderExt.appex": URL(fileURLWithPath: fileProviderEntitlements),
             "FileProviderUIExt.appex": URL(fileURLWithPath: fileProviderUIEntitlements),
             "FinderSyncExt.appex": URL(fileURLWithPath: finderSyncEntitlements),
         ]
 
+        // The FinderSync broker login item has a branded filename derived from its
+        // bundle identifier, so it cannot be represented by a fixed dictionary key.
+        // Discover login items from the app bundle and assign the broker entitlement
+        // manifest to their actual wrapper filenames.
+        let loginItemsLocation = url
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Library")
+            .appendingPathComponent("LoginItems")
+
+        if FileManager.default.fileExists(atPath: loginItemsLocation.path) {
+            let loginItems = try FileManager.default.contentsOfDirectory(
+                at: loginItemsLocation,
+                includingPropertiesForKeys: nil
+            ).filter {
+                $0.pathExtension == "app"
+            }
+
+            if !loginItems.isEmpty {
+                let loginItemEntitlements = URL(fileURLWithPath: finderSyncEntitlements)
+                    .deletingLastPathComponent()
+                    .appendingPathComponent("FinderSyncBroker.entitlements")
+
+                guard FileManager.default.fileExists(atPath: loginItemEntitlements.path) else {
+                    throw MacCrafterError.signing(
+                        "Login item entitlement manifest does not exist: \(loginItemEntitlements.path)"
+                    )
+                }
+
+                for loginItem in loginItems {
+                    entitlements[loginItem.lastPathComponent] = loginItemEntitlements
+                }
+            }
+        }
         try await Signer.signMainBundle(at: url, codeSignIdentity: codeSignIdentity, entitlements: entitlements)
     }
 }

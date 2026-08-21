@@ -5,12 +5,15 @@
  */
 
 #include "accountmanager.h"
+#include "accountstate.h"
+#include "activity/syncstatussummary.h"
 #include "assistant/assistantcontroller.h"
 #include "systray.h"
 #include "theme.h"
 #include "config.h"
 #include "common/utility.h"
 #include "tray/svgimageprovider.h"
+#include "search/unifiedsearchresultslistmodel.h"
 #include "tray/usermodel.h"
 #include "wheelhandler.h"
 #include "tray/trayimageprovider.h"
@@ -46,6 +49,8 @@
 #define NOTIFICATIONS_PATH "/org/freedesktop/Notifications"
 #define NOTIFICATIONS_IFACE "org.freedesktop.Notifications"
 #endif
+
+using namespace Qt::StringLiterals;
 
 namespace OCC {
 
@@ -210,9 +215,10 @@ void Systray::showTrayPopup(WindowPosition position)
     }
 
 #ifdef Q_OS_MACOS
-    showMacOSTrayPopup(geometry());
-    setIsOpen(true);
-    UserModel::instance()->fetchCurrentActivityModel();
+    if (showMacOSTrayPopup(geometry())) {
+        setIsOpen(true);
+        UserModel::instance()->fetchCurrentActivityModel();
+    }
 #else
     if (showQtTrayPopup(this, geometry(), position)) {
         setIsOpen(true);
@@ -253,6 +259,12 @@ void Systray::showActivitiesWindow(int userIndex)
         return;
     }
 
+    const auto accountState = user->accountState();
+    if (!accountState) {
+        qCWarning(lcSystray) << "Could not open activities window without an account state";
+        return;
+    }
+
     hideWindow();
 
     if (!_trayEngine) {
@@ -263,26 +275,39 @@ void Systray::showActivitiesWindow(int userIndex)
     const auto windowKey = user->account()->id();
 
     if (const auto existingWindow = _activitiesWindows.value(windowKey)) {
+        const auto syncStatusModel = qvariant_cast<SyncStatusSummary *>(existingWindow->property("syncStatusModel"));
+        if (syncStatusModel) {
+            syncStatusModel->loadForAccount(accountState);
+        }
         positionWindowAtScreenCenter(existingWindow.data());
         existingWindow->show();
         existingWindow->raise();
         existingWindow->requestActivate();
-        userModel->fetchActivityModel(targetUserId);
+        user->refreshActivities();
         return;
     }
 
-    const QVariantMap initialProperties{
-        {"userIndex", targetUserId},
-        {"currentUser", QVariant::fromValue(user)},
-        {"activityModel", QVariant::fromValue(user->getActivityModel())},
-    };
-    QQmlComponent activitiesWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/ActivitiesWindow.qml"));
+    QQmlComponent activitiesWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/activity/qml/ActivitiesWindow.qml"));
 
     if (activitiesWindowComponent.isError()) {
         qCWarning(lcSystray) << activitiesWindowComponent.errorString();
         qCWarning(lcSystray) << activitiesWindowComponent.errors();
         return;
     }
+
+    auto *const syncStatusModel = new SyncStatusSummary(this);
+    syncStatusModel->loadForAccount(accountState);
+    const QVariantMap initialProperties{
+        {"account", QVariantMap{
+                        {"avatar", user->avatarUrl()},
+                        {"name", user->name()},
+                        {"server", user->server()},
+                        {"accentColor", user->accentColor()},
+                    }},
+        {"activityUser", QVariant::fromValue(user)},
+        {"activityModel", QVariant::fromValue(user->getActivityModel())},
+        {"syncStatusModel", QVariant::fromValue(syncStatusModel)},
+    };
 
     const auto createdObject = activitiesWindowComponent.createWithInitialProperties(initialProperties);
     const auto window = qobject_cast<QQuickWindow *>(createdObject);
@@ -291,6 +316,7 @@ void Systray::showActivitiesWindow(int userIndex)
         if (createdObject) {
             createdObject->deleteLater();
         }
+        syncStatusModel->deleteLater();
         return;
     }
 
@@ -309,12 +335,13 @@ void Systray::showActivitiesWindow(int userIndex)
     connect(window, &QObject::destroyed, this, [this, windowKey] {
         _activitiesWindows.remove(windowKey);
     });
+    connect(window, &QObject::destroyed, syncStatusModel, &QObject::deleteLater);
 
     positionWindowAtScreenCenter(window);
     window->show();
     window->raise();
     window->requestActivate();
-    userModel->fetchActivityModel(targetUserId);
+    user->refreshActivities();
 }
 
 void Systray::showAssistantWindow(int userIndex)
@@ -387,6 +414,106 @@ void Systray::showAssistantWindow(int userIndex)
 
     connect(window, &QObject::destroyed, this, [this, windowKey] {
         _assistantWindows.remove(windowKey);
+    });
+
+    positionWindowAtScreenCenter(window);
+    window->show();
+    window->raise();
+    window->requestActivate();
+}
+
+void Systray::showSearchWindow(int userIndex)
+{
+    const auto userModel = UserModel::instance();
+    if (!userModel) {
+        return;
+    }
+
+    const auto targetUserId = userIndex >= 0 ? userIndex : userModel->currentUserId();
+    const auto user = userModel->user(targetUserId);
+    if (!user) {
+        qCWarning(lcSystray) << "Invalid user index for search window:" << targetUserId;
+        return;
+    }
+
+    hideWindow();
+
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open search window as no tray engine was available";
+        return;
+    }
+
+    const auto accountState = user->accountState();
+    if (!accountState) {
+        qCWarning(lcSystray) << "Could not open search window without an account state";
+        return;
+    }
+
+    const auto windowKey = user->account()->id();
+
+    if (const auto existingWindow = _searchWindows.value(windowKey)) {
+        positionWindowAtScreenCenter(existingWindow.data());
+        existingWindow->show();
+        existingWindow->raise();
+        existingWindow->requestActivate();
+        return;
+    }
+
+    QQmlComponent searchWindowComponent(trayEngine(), "com.nextcloud.desktopclient.search"_L1, "SearchWindow"_L1);
+
+    if (searchWindowComponent.isError()) {
+        qCWarning(lcSystray) << searchWindowComponent.errorString();
+        qCWarning(lcSystray) << searchWindowComponent.errors();
+        return;
+    }
+
+    auto *const searchModel = new UnifiedSearchResultsListModel(accountState.data(), accountState.data());
+    const QVariantMap initialProperties{
+        {"account", QVariantMap{
+                        {"avatar", user->avatarUrl()},
+                        {"name", user->name()},
+                        {"server", user->server()},
+                    }},
+        {"searchModel", QVariant::fromValue(searchModel)},
+    };
+    const auto createdObject = searchWindowComponent.createWithInitialProperties(initialProperties);
+    const auto window = qobject_cast<QQuickWindow *>(createdObject);
+    if (!window) {
+        qCWarning(lcSystray) << "Search window resulted in creation of object that was not a window!";
+        if (createdObject) {
+            createdObject->deleteLater();
+        }
+        searchModel->deleteLater();
+        return;
+    }
+
+    _searchWindows.insert(windowKey, window);
+    window->setIcon(Theme::instance()->applicationIcon());
+
+#ifdef Q_OS_MACOS
+    auto *fgbg = new ForegroundBackground(this);
+    window->installEventFilter(fgbg);
+#endif
+
+#if defined(Q_OS_MACOS)
+    configureMacOSExpandedQuickWindow(window);
+#endif
+
+    connect(window, &QObject::destroyed, this, [this, windowKey] {
+        _searchWindows.remove(windowKey);
+    });
+    connect(window, &QObject::destroyed, searchModel, &QObject::deleteLater);
+    const auto searchModelGuard = QPointer<UnifiedSearchResultsListModel>(searchModel);
+    connect(window, &QWindow::visibleChanged, window, [window, searchModelGuard](const bool visible) {
+        if (!visible) {
+            if (searchModelGuard) {
+                searchModelGuard->deleteLater();
+            }
+            window->deleteLater();
+        }
+    });
+    connect(accountState.data(), &QObject::destroyed, window, [window] {
+        window->close();
     });
 
     positionWindowAtScreenCenter(window);
@@ -602,6 +729,37 @@ void Systray::createResolveConflictsDialog(const OCC::ActivityList &allConflicts
     const QVariantMap initialProperties{
                                         {"allConflicts", QVariant::fromValue(allConflicts)},
     };
+
+    if(conflictsDialog->isError()) {
+        qCWarning(lcSystray) << conflictsDialog->errorString();
+        return;
+    }
+
+    // This call dialog gets deallocated on close conditions
+    // by a call from the QML side to the destroyDialog slot
+    auto dialog = std::unique_ptr<QObject>(conflictsDialog->createWithInitialProperties(initialProperties));
+    if (!dialog) {
+        return;
+    }
+    dialog->setParent(QGuiApplication::instance());
+
+    auto dialogWindow = qobject_cast<QQuickWindow*>(dialog.release());
+    if (!dialogWindow) {
+        return;
+    }
+    dialogWindow->show();
+    dialogWindow->raise();
+    dialogWindow->requestActivate();
+}
+
+void Systray::createGovernanceLabelsDialog(AccountPtr account, const QString &fileName, const QString &fileId)
+{
+    const auto conflictsDialog = std::make_unique<QQmlComponent>(trayEngine(), QStringLiteral("qrc:/qml/src/gui/GovernanceLabelsDialog.qml"));
+    const QVariantMap initialProperties{
+                                        {"fileName", QVariant::fromValue(fileName)},
+                                        {"account", QVariant::fromValue(account)},
+                                        {"fileId", QVariant::fromValue(fileId)},
+                                        };
 
     if(conflictsDialog->isError()) {
         qCWarning(lcSystray) << conflictsDialog->errorString();
@@ -1041,6 +1199,25 @@ void Systray::setSyncIsPaused(const bool syncIsPaused)
 bool Systray::anySyncFolders() const
 {
     return _anySyncFolders;
+}
+
+Systray::SyncControlState Systray::syncControlState() const
+{
+    const auto folders = FolderMan::instance()->map();
+    if (folders.isEmpty()) {
+        return SyncControlState::Unavailable;
+    }
+
+    const auto anyPaused = std::any_of(std::cbegin(folders), std::cend(folders), [](const Folder *folder) {
+        return folder->syncPaused();
+    });
+    const auto anyRunning = std::any_of(std::cbegin(folders), std::cend(folders), [](const Folder *folder) {
+        return !folder->syncPaused();
+    });
+    if (anyPaused && anyRunning) {
+        return SyncControlState::PauseAndResume;
+    }
+    return anyPaused ? SyncControlState::Resume : SyncControlState::Pause;
 }
 
 /********************************************************************************************/

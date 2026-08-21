@@ -553,7 +553,9 @@ int VfsCfApi::finalizeNewPlaceholders(const QList<PlaceholderCreateInfo> &newEnt
         folderRecord._isShared = entryInfo.parsedProperties.remotePerm.hasPermission(RemotePermissions::IsShared) || entryInfo.parsedProperties.sharedByMe;
         folderRecord._sharedByMe = entryInfo.parsedProperties.sharedByMe;
         folderRecord._lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
-        folderRecord._type = (entryInfo.parsedProperties.isDirectory ? ItemTypeVirtualDirectory : ItemTypeVirtualFile);
+        folderRecord._type =
+            (entryInfo.parsedProperties.isDirectory ? ItemTypeVirtualDirectory
+                                                    : (FileSystem::isExcludeFile(entryInfo.fullPath) ? ItemTypeVirtualFileDownload : ItemTypeVirtualFile));
         folderRecord._etag = entryInfo.parsedProperties.etag;
         folderRecord._e2eEncryptionStatus = static_cast<SyncJournalFileRecord::EncryptionStatus>(entryInfo.parsedProperties.isE2eEncrypted() ? SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0 : SyncFileItem::EncryptionStatus::NotEncrypted);
         folderRecord._lockstate._locked = (entryInfo.parsedProperties.locked == SyncFileItemEnums::LockStatus::LockedItem);

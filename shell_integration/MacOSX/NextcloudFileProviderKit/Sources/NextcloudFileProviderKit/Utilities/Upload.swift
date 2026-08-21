@@ -9,13 +9,49 @@ import RealmSwift
 
 let defaultFileChunkSize = 104_857_600 // 100 MiB
 
+/// The per-item prefix shared by every chunked-upload identifier for a given item, so stale chunk
+/// bookkeeping from earlier versions of the same item can be swept without matching another item.
+func chunkUploadIdentifierPrefix(forItemWithIdentifier itemIdentifier: String) -> String {
+    let encodedIdentifier = Data(itemIdentifier.utf8)
+        .map { String(format: "%02x", $0) }
+        .joined()
+    return encodedIdentifier + "_"
+}
+
+/// Derives a stable, *content-scoped* identifier for a chunked upload's server folder and its local
+/// `RemoteFileChunk` bookkeeping.
+///
+/// The identity is `(item, size, modificationDate)`: the same content re-uploads under the same id,
+/// so an interrupted transfer resumes and reuses the chunks already stored on the server. Any content
+/// change yields a different id, so chunks from a previous version are never spliced into a different
+/// one (see F3). The value is prefixed with an unambiguous encoding of the item id so stale sets
+/// can be swept by prefix without collisions between identifiers such as `a` and `a_b`, or `a/b`
+/// and `ab`.
+///
+/// When no modification date is available the content can't be bound to an id, so a per-attempt unique
+/// id is used: this forgoes resume for that upload but never risks a bad splice. In the File Provider
+/// model a real content change always bumps `contentModificationDate` (that is how the change was
+/// detected), so equal `(size, modificationDate)` reliably means identical content.
+func chunkUploadIdentifier(
+    forItemWithIdentifier itemIdentifier: String, fileSize: Int64, modificationDate: Date?
+) -> String {
+    let prefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
+
+    guard let modificationDate else {
+        return prefix + UUID().uuidString
+    }
+
+    let mtimeSeconds = Int64(modificationDate.timeIntervalSince1970.rounded())
+    return "\(prefix)\(fileSize)_\(mtimeSeconds)"
+}
+
 func upload(
     fileLocatedAt localFilePath: String,
     toRemotePath remotePath: String,
     usingRemoteInterface remoteInterface: RemoteInterface,
     withAccount account: Account,
     inChunksSized chunkSize: Int? = nil,
-    usingChunkUploadId chunkUploadId: String? = UUID().uuidString,
+    forItemWithIdentifier itemIdentifier: String,
     dbManager: FilesDatabaseManager,
     creationDate: Date? = nil,
     modificationDate: Date? = nil,
@@ -106,7 +142,9 @@ func upload(
         return (ocId, etag, date as? Date, size, remoteError)
     }
 
-    let chunkUploadId = chunkUploadId ?? UUID().uuidString
+    let chunkUploadId = chunkUploadIdentifier(
+        forItemWithIdentifier: itemIdentifier, fileSize: fileSize, modificationDate: modificationDate
+    )
 
     uploadLogger.info(
         """
@@ -117,13 +155,46 @@ func upload(
         """
     )
 
+    var completedChunksDirectory: URL?
+    var shouldRemoveLocalChunkUpload = false
+    defer {
+        if shouldRemoveLocalChunkUpload {
+            removeLocalChunkUpload(
+                uploadIdentifier: chunkUploadId,
+                chunksDirectory: completedChunksDirectory,
+                usingRemoteInterface: remoteInterface,
+                dbManager: dbManager,
+                logger: uploadLogger
+            )
+        }
+    }
+
+    // A prior interrupted upload of different content has a different identifier. Remove its local
+    // chunks and bookkeeping, while preserving the current identifier for a genuine resume. If local
+    // removal fails, its rows remain so a later attempt can retry the cleanup; the exact-identifier
+    // query below prevents those stale rows from being used for this upload.
+    discardChunkUploads(
+        forItemIdentifiers: [itemIdentifier],
+        excluding: chunkUploadId,
+        usingRemoteInterface: remoteInterface,
+        dbManager: dbManager,
+        logger: uploadLogger
+    )
+
+    setChunkUploadIdentifier(
+        uploadIdentifier: chunkUploadId,
+        itemIdentifier: itemIdentifier,
+        dbManager: dbManager,
+        logger: uploadLogger
+    )
+
     let remainingChunks = dbManager
         .ncDatabase()
         .objects(RemoteFileChunk.self)
         .where { $0.remoteChunkStoreFolderName == chunkUploadId }
         .toUnmanagedResults()
 
-    let (_, file, nkError) = await remoteInterface.chunkedUpload(
+    let (_, file, chunksDirectory, nkError) = await remoteInterface.chunkedUpload(
         localPath: localFilePath,
         remotePath: remotePath,
         remoteChunkStoreFolderName: chunkUploadId,
@@ -181,7 +252,18 @@ func upload(
         }
     )
 
-    uploadLogger.info("\(localFilePath) successfully uploaded in chunks")
+    completedChunksDirectory = chunksDirectory
+    let chunkUploadCompleted = nkError == .success && file != nil
+    let hasRemainingChunks = !dbManager
+        .ncDatabase()
+        .objects(RemoteFileChunk.self)
+        .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+        .isEmpty
+    shouldRemoveLocalChunkUpload = chunkUploadCompleted || !hasRemainingChunks
+
+    if nkError == .success, file != nil {
+        uploadLogger.info("File successfully uploaded in chunks.", [.url: remotePath])
+    }
 
     return (file?.ocId, file?.etag, file?.date, file?.size, nkError)
 }

@@ -77,6 +77,24 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     _activeAccountRow = nil;
 }
 
+/** @brief Adds a root action that pauses or resumes every classic synchronization folder. */
+- (void)addSyncControlRowPausing:(BOOL)pausesSync
+{
+    __unsafe_unretained NCTrayPopup *weakSelf = self;
+    const auto syncControlTitle = pausesSync
+        ? OCC::Systray::tr("Pause sync for all")
+        : OCC::Systray::tr("Resume sync for all");
+    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:syncControlTitle.toNSString()
+                                                                  width:kPopupWidth
+                                                                enabled:YES
+                                                                 action:^{
+        [weakSelf closeAllPopups];
+        OCC::Systray::instance()->setSyncIsPaused(pausesSync);
+    } hoverAction:^(NSView *) {
+        [weakSelf closeAccountActionsPopup];
+    }]);
+}
+
 - (NCAccountRow *)makeRowForIndex:(int)index
                              name:(NSString *)name
                            server:(NSString *)server
@@ -215,6 +233,23 @@ using namespace OCC::Mac::TrayPopupViewUtils;
             [weakSelf closeAccountActionsPopup];
         }]);
     }
+
+    const auto syncControlState = OCC::Systray::instance()->syncControlState();
+    switch (syncControlState) {
+    case OCC::Systray::SyncControlState::Pause:
+        [self addSyncControlRowPausing:YES];
+        break;
+    case OCC::Systray::SyncControlState::Resume:
+        [self addSyncControlRowPausing:NO];
+        break;
+    case OCC::Systray::SyncControlState::PauseAndResume:
+        [self addSyncControlRowPausing:YES];
+        [self addSyncControlRowPausing:NO];
+        break;
+    case OCC::Systray::SyncControlState::Unavailable:
+        break;
+    }
+
     addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Settings").toNSString()
                                                                  width:kPopupWidth
                                                                enabled:YES
@@ -296,11 +331,27 @@ using namespace OCC::Mac::TrayPopupViewUtils;
 #endif
 }
 
+- (void)reconnectForIndex:(int)index
+{
+    [self closeAllPopups];
+
+    if (auto userModel = OCC::UserModel::instance()) {
+        userModel->login(index);
+    }
+}
+
 - (void)openAssistantForIndex:(int)index
 {
     [_accountActionsPopup orderOut:nil];
     [self orderOut:nil];
     OCC::Systray::instance()->showAssistantWindow(index);
+}
+
+- (void)openSearchForIndex:(int)index
+{
+    [_accountActionsPopup orderOut:nil];
+    [self orderOut:nil];
+    OCC::Systray::instance()->showSearchWindow(index);
 }
 
 - (void)openOnlineStatusForIndex:(int)index

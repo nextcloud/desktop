@@ -1,0 +1,90 @@
+/*
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Style
+
+ItemDelegate {
+    id: root
+
+    property Flickable flickable
+
+    property int iconSize: Style.trayListItemIconSize
+
+    property var activityModel: null
+
+    property color accentColor: Style.accentColor
+
+    property bool isFileActivityList: false
+
+    readonly property bool isChatActivity: model.objectType === "chat" || model.objectType === "room" || model.objectType === "call"
+    readonly property bool isTalkReplyPossible: root.activityModel !== null && model.conversationToken !== ""
+    property bool isTalkReplyOptionVisible: model.messageSent !== ""
+
+    padding: Style.standardSpacing
+
+    Accessible.role: Accessible.ListItem
+    Accessible.name: (model.path !== "" && model.displayPath !== "") ? qsTr("Open %1 locally").arg(model.displayPath) : model.message
+    Accessible.onPressAction: root.clicked()
+
+    ToolTip {
+        popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
+        visible: root.hovered && !activityContent.childHovered && model.displayLocation !== ""
+        text: qsTr("In %1").arg(model.displayLocation)
+    }
+
+    // TODO: the current style does not support customization of this control
+    contentItem: ColumnLayout {
+        spacing: Style.smallSpacing
+
+        ActivityItemContent {
+            id: activityContent
+
+            adaptiveTextColor: root.activeFocus ? palette.highlightedText : palette.text
+
+            Layout.fillWidth: true
+            Layout.minimumHeight: Style.minActivityHeight
+            Layout.preferredWidth: parent.width
+
+            showDismissButton: model.isDismissable
+
+            iconSize: root.iconSize
+
+            activityData: model
+            activity: model.activity
+
+            activityModel: root.activityModel
+
+            onDismissButtonClicked: {
+                if (root.activityModel) {
+                    root.activityModel.slotTriggerDismiss(model.activityIndex)
+                }
+            }
+        }
+
+        Loader {
+            id: talkReplyTextFieldLoader
+            active: root.isChatActivity && root.isTalkReplyPossible && model.messageSent === ""
+            visible: root.isTalkReplyOptionVisible
+
+            Layout.preferredWidth: Style.talkReplyTextFieldPreferredWidth
+            Layout.preferredHeight: Style.talkReplyTextFieldPreferredHeight
+            Layout.leftMargin: Style.trayListItemIconSize + Style.trayHorizontalMargin
+
+            sourceComponent: TalkReplyTextField {
+                accentColor: root.accentColor
+                onSendReply: {
+                    if (root.activityModel) {
+                        root.activityModel.sendReplyMessage(model.activityIndex, model.conversationToken, reply, model.messageId)
+                        talkReplyTextFieldLoader.visible = false
+                    }
+                }
+            }
+        }
+    }
+}

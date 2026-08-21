@@ -29,8 +29,12 @@
 - (void)openActivitiesForIndex:(int)index;
 /** @brief Closes the popups and reveals the given account's local folder (or file provider domain) in Finder. */
 - (void)openLocalFolderForIndex:(int)index;
+/** @brief Closes the popups and starts the sign-in flow for the given account. */
+- (void)reconnectForIndex:(int)index;
 /** @brief Closes the popups and opens the Assistant window for the given account. */
 - (void)openAssistantForIndex:(int)index;
+/** @brief Closes the popups and opens the Search window for the given account. */
+- (void)openSearchForIndex:(int)index;
 /** @brief Closes the popups and opens the user-status window for the given account. */
 - (void)openOnlineStatusForIndex:(int)index;
 @end

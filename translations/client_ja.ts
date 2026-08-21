@@ -1,95 +1,103 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ja_JP">
 <context>
+    <name>AccountWizardController</name>
+    <message>
+        <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="160"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="135"/>
         <source>Secure connection failed</source>
         <translation>安全な接続に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="163"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="138"/>
         <source>Connect to %1?</source>
         <translation>%1に接続しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="173"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="148"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation>安全な接続に失敗しました。暗号化なしで再試行するか、クライアント証明書を追加して再度お試しください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="174"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="149"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation>安全な接続に失敗しました。クライアント証明書を追加して、もう一度お試しください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="195"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="266"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="268"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="170"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="248"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="20"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="205"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="180"/>
         <source>Connect without TLS</source>
         <translation>TLSを使用せずに接続する</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="217"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="192"/>
         <source>Use client certificate</source>
         <translation>クライアント証明書を使用する</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="269"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
         <source>Back</source>
         <translation>戻る</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="283"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="262"/>
         <source>Set up later</source>
         <translation>後で設定する</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="273"/>
         <source>Advanced</source>
         <translation>詳細設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="303"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="282"/>
         <source>Sign up</source>
         <translation>登録する</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="313"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="292"/>
         <source>Self-host</source>
         <translation>セルフホスティング</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
         <source>Proxy settings</source>
         <translation>プロキシ設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="357"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="27"/>
         <source>Copy link</source>
         <translation>リンクをコピー</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="390"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="37"/>
         <source>Open</source>
         <translation>開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="392"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="358"/>
         <source>Connect</source>
         <translation>接続する</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="394"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="360"/>
         <source>Done</source>
         <translation>完了</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="396"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="362"/>
         <source>Log in</source>
         <translation>ログイン</translation>
     </message>
@@ -97,25 +105,46 @@
 <context>
     <name>ActivitiesWindow</name>
     <message>
-        <location filename="../src/gui/ActivitiesWindow.qml" line="19"/>
+        <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="20"/>
         <source>Activities</source>
-        <translation type="unfinished"/>
+        <translation>アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/ActivitiesWindow.qml" line="126"/>
+        <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="127"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>新しいアクティビティ</translation>
+    </message>
+</context>
+<context>
+    <name>ActivityFileMenu</name>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="25"/>
+        <source>File details</source>
+        <translation>ファイルの詳細</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="32"/>
+        <source>File actions</source>
+        <translation>ファイルアクション</translation>
+    </message>
+</context>
+<context>
+    <name>ActivityFileMenuButton</name>
+    <message>
+        <location filename="../src/gui/activity/qml/ActivityFileMenuButton.qml" line="34"/>
+        <source>Open file details</source>
+        <translation>ファイル詳細を開く</translation>
     </message>
 </context>
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
+        <location filename="../src/gui/activity/qml/ActivityItem.qml" line="32"/>
         <source>Open %1 locally</source>
         <translation>ローカルで %1 を開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="39"/>
+        <location filename="../src/gui/activity/qml/ActivityItem.qml" line="38"/>
         <source>In %1</source>
         <translation>%1 内</translation>
     </message>
@@ -123,45 +152,41 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="185"/>
-        <source>Open file details</source>
-        <translation>ファイル詳細を開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="199"/>
-        <source>File details</source>
-        <translation>ファイルの詳細</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
-        <source>File actions</source>
-        <translation>ファイルアクション</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="231"/>
+        <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="203"/>
+        <location filename="../src/gui/activity/activitydata.cpp" line="314"/>
         <source>Dismiss</source>
         <translation>閉じる</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitydata.cpp" line="303"/>
-        <source>Confirm</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="182"/>
+        <source>Open file details</source>
+        <translation>ファイル詳細を開く</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
+        <source>File details</source>
+        <translation>ファイルの詳細</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
+        <source>File actions</source>
+        <translation>ファイルアクション</translation>
     </message>
 </context>
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="56"/>
+        <location filename="../src/gui/activity/qml/ActivityList.qml" line="57"/>
         <source>Activity list</source>
         <translation>アクティビティリスト</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="142"/>
+        <location filename="../src/gui/activity/qml/ActivityList.qml" line="143"/>
         <source>Scroll to top</source>
         <translation>一番上までスクロール</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="171"/>
+        <location filename="../src/gui/activity/qml/ActivityList.qml" line="172"/>
         <source>No activities yet</source>
         <translation>まだアクティビティはありません</translation>
     </message>
@@ -205,39 +230,39 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="19"/>
         <source>Nextcloud Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud アシスタント</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="91"/>
         <location filename="../src/gui/AssistantWindow.qml" line="95"/>
         <source>Start new conversation?</source>
-        <translation type="unfinished"/>
+        <translation>新しい会話を開始しますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="104"/>
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"/>
+        <translation>これにより既存の会話が消去されます。</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="119"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="125"/>
         <location filename="../src/gui/AssistantWindow.qml" line="245"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>新しい会話</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="236"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>アシスタントにたずねる...</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="252"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>送信</translation>
     </message>
 </context>
 <context>
@@ -276,7 +301,7 @@
 <context>
     <name>BrowserAuthPage</name>
     <message>
-        <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
+        <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="39"/>
         <source>Switch to your browser</source>
         <translation>お使いのブラウザに切り替えてください</translation>
     </message>
@@ -519,17 +544,17 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="71"/>
         <source>Search emoji</source>
-        <translation type="unfinished"/>
+        <translation>絵文字を検索</translation>
     </message>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="201"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="200"/>
         <source>No recent emojis</source>
         <translation>最近の絵文字はありません</translation>
     </message>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="201"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="200"/>
         <source>No emojis found</source>
-        <translation type="unfinished"/>
+        <translation>絵文字が見つかりません</translation>
     </message>
 </context>
 <context>
@@ -586,62 +611,16 @@
     </message>
 </context>
 <context>
-    <name>FileProviderSettings</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
-        <source>File provider settings</source>
-        <translation>ファイルプロバイダーの設定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
-        <source>Virtual files settings</source>
-        <translation>仮想ファイルの設定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
-        <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation>仮想ファイルは通常のファイルのように表示されますが、ローカルストレージの容量を使用しません。ファイルを開くと内容が自動的にダウンロードされます。仮想ファイルと従来の同期機能は同時に使用できません。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="57"/>
-        <source>File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.</source>
-        <translation>ファイルプロバイダ項目は通常のファイルのように表示されますが、ローカルのストレージ容量は使用しません。ファイルを開くと、その内容が自動的にダウンロードされます。ファイルプロバイダと従来のFinder同期機能を同時に有効にすることはできません。</translation>
-    </message>
-</context>
-<context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="295"/>
+        <location filename="../src/libsync/filesystem.cpp" line="535"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>削除中のエラー &quot;%1&quot;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="343"/>
+        <location filename="../src/libsync/filesystem.cpp" line="583"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>フォルダー %1を削除できませんでした</translation>
-    </message>
-</context>
-<context>
-    <name>Flow2AuthWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
-        <source>Browser Authentication</source>
-        <translation>ブラウザー認証</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
-        <source>Logo</source>
-        <translation>ロゴ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
-        <source>Switch to your browser to connect your account</source>
-        <translation>ブラウザーに切り替えてアカウントに接続します</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="232"/>
-        <source>An error occurred while connecting. Please try again.</source>
-        <translation>接続中にエラーが発生しました。 もう一度お試しください。</translation>
     </message>
 </context>
 <context>
@@ -681,46 +660,117 @@
     </message>
 </context>
 <context>
+    <name>GovernanceLabelsDialog</name>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="49"/>
+        <source>Apply labels</source>
+        <translation>ラベルを適用する</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
+        <translation>ファイルにラベルを割り当て、その機密性、保存期間、および法的保存ポリシーを管理します。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <source>Sensitivity labels</source>
+        <translation>機密ラベル</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <source>Retention labels</source>
+        <translation>保持ラベル</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <source>Legal hold labels</source>
+        <translation>法的保存ラベル</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <source>Reset</source>
+        <translation>リセット</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <source>Apply</source>
+        <translation>適用</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
+        <source>Select sensitivity label</source>
+        <translation>機密ラベルを選択する</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
+        <source>Select retention label</source>
+        <translation>保持ラベルを選択する</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
+        <source>Select legal hold label</source>
+        <translation>法的保存ラベルを選択する</translation>
+    </message>
+</context>
+<context>
+    <name>LocalNetworkPermission</name>
+    <message>
+        <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
+        <source>Local Network access is disabled. Enable it to connect to the server.</source>
+        <translation>ローカルネットワークへのアクセスが無効になっています。サーバーに接続するには、これを有効にしてください。</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="248"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Main content</source>
         <translation>メインコンテンツ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="327"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="324"/>
         <source>Issue with account %1</source>
         <translation>アカウント %1 の問題</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="329"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="326"/>
         <source>Issues with several accounts</source>
         <translation>複数のアカウントに関する問題</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="410"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="383"/>
         <source>Start new conversation?</source>
         <translation>新しい会話を開始しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="430"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="403"/>
         <source>New conversation</source>
         <translation>新しい会話</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="434"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="407"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="455"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="428"/>
         <source>This will clear the existing conversation.</source>
         <translation>これにより既存の会話が消去されます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="500"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="473"/>
         <source>Ask Assistant …</source>
         <translation>アシスタントにたずねる...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="501"/>
+        <source>Send assistant question</source>
+        <translation>アシスタントに質問を送信</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="777"/>
+        <source>Unified search results list</source>
+        <translation>統合検索結果</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
@@ -728,29 +778,57 @@
         <translation>アシスタントにたずねる...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="528"/>
-        <source>Send assistant question</source>
-        <translation>アシスタントに質問を送信</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="549"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="522"/>
         <source>Start a new assistant chat</source>
         <translation>新しいアシスタントチャットを開始する</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="774"/>
-        <source>Unified search results list</source>
-        <translation>統合検索結果</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="840"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="691"/>
         <source>New activities</source>
         <translation>新しいアクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="741"/>
-        <source>Open Assistant</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="792"/>
+        <source>Assistant</source>
+        <translation>アシスタント</translation>
+    </message>
+</context>
+<context>
+    <name>NCContextMenuTextField</name>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="20"/>
+        <source>Undo</source>
+        <translation>元に戻す</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="26"/>
+        <source>Redo</source>
+        <translation>やり直し</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="34"/>
+        <source>Cut</source>
+        <translation>切り取り</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="40"/>
+        <source>Copy</source>
+        <translation>コピー</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="46"/>
+        <source>Paste</source>
+        <translation>貼り付け</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="52"/>
+        <source>Delete</source>
+        <translation>削除</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/common/NCContextMenuTextField.qml" line="60"/>
+        <source>Select All</source>
+        <translation>すべてを選択</translation>
     </message>
 </context>
 <context>
@@ -774,22 +852,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="227"/>
+        <location filename="../src/libsync/account.cpp" line="238"/>
         <source>Public Share Link</source>
         <translation>公開共有リンク</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1067"/>
+        <location filename="../src/libsync/account.cpp" line="1089"/>
         <source>File %1 is already locked by %2.</source>
         <translation>ファイル %1 はすでに %2 がロックしています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1069"/>
+        <location filename="../src/libsync/account.cpp" line="1091"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>エラー %2 により、 %1 のロック処理に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1071"/>
+        <location filename="../src/libsync/account.cpp" line="1093"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>エラー %2 により、 %1 のロック解除処理に失敗しました</translation>
     </message>
@@ -828,64 +906,80 @@ Should the account be imported?</source>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="205"/>
+        <location filename="../src/gui/accountsettings.ui" line="165"/>
         <source>Classic sync</source>
         <translation>クラシック同期</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="272"/>
+        <location filename="../src/gui/accountsettings.ui" line="200"/>
+        <source>File Provider is enabled, but this account still has classic sync folders. The Finder integration stays unavailable until this is resolved.</source>
+        <translation>ファイルプロバイダは有効になっていますが、このアカウントには依然として従来の同期フォルダーが存在しています。この問題が解決されるまで、Finderとの連携機能は利用できません。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="216"/>
+        <source>Resolve…</source>
+        <translation>解決...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="286"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>チェックしていないフォルダーはローカルファイルシステムから &lt;b&gt;削除&lt;/b&gt;され､このコンピューターと同期されなくなります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="380"/>
+        <location filename="../src/gui/accountsettings.ui" line="394"/>
         <source>Synchronize all</source>
         <translation>すべてを同期</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="387"/>
+        <location filename="../src/gui/accountsettings.ui" line="401"/>
         <source>Synchronize none</source>
         <translation>同期なし</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="394"/>
+        <location filename="../src/gui/accountsettings.ui" line="408"/>
         <source>Apply manual changes</source>
         <translation>手動による変更を適用</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="429"/>
+        <location filename="../src/gui/accountsettings.ui" line="443"/>
         <location filename="../src/gui/accountsettings.cpp" line="193"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1331"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1344"/>
         <source>Connection settings</source>
         <translation>接続設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="488"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1541"/>
-        <source>Log out, log back in, or remove this account from the client.</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/accountsettings.ui" line="505"/>
+        <source>If this account&apos;s files appear stuck, missing, or out of sync in Finder, reset its File Provider storage. Unsynced local changes are preserved.</source>
+        <translation>Finder上でこのアカウントのファイルが固まっている、表示されない、または同期が取れていないように見える場合は、そのファイルプロバイダのストレージをリセットしてください。同期されていないローカルの変更内容は保持されます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="504"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
+        <location filename="../src/gui/accountsettings.ui" line="521"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2071"/>
+        <source>Reset File Provider Domain</source>
+        <translation>ファイルプロバイダのドメインをリセットする</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="558"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1554"/>
+        <source>Log out, log back in, or remove this account from the client.</source>
+        <translation>ログアウトするか、再度ログインするか、またはクライアントからこのアカウントを削除してください。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="574"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1550"/>
         <source>Log out</source>
         <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="517"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
+        <location filename="../src/gui/accountsettings.ui" line="587"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>アカウントを削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="324"/>
+        <location filename="../src/gui/accountsettings.ui" line="338"/>
         <source>Apply</source>
         <translation>適用</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.ui" line="159"/>
-        <source>File Provider</source>
-        <translation>ファイルプロバイダー</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
@@ -893,9 +987,10 @@ Should the account be imported?</source>
         <translation>仮想ファイル</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="311"/>
-        <location filename="../src/gui/accountsettings.cpp" line="972"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1157"/>
+        <location filename="../src/gui/accountsettings.ui" line="325"/>
+        <location filename="../src/gui/accountsettings.cpp" line="985"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1170"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2072"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
@@ -905,7 +1000,7 @@ Should the account be imported?</source>
         <translation> &lt;user&gt; として &lt;server&gt; に接続中</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="342"/>
+        <location filename="../src/gui/accountsettings.cpp" line="348"/>
         <source>No account configured.</source>
         <translation>アカウントが未設定です。</translation>
     </message>
@@ -944,190 +1039,196 @@ Should the account be imported?</source>
 &lt;b&gt;このプロセスは元に戻せません。続行してもよろしいですか？&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="333"/>
+        <location filename="../src/gui/accountsettings.cpp" line="339"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
         <translation>このアカウントではエンドツーエンド暗号化が初期化されていません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="360"/>
+        <location filename="../src/gui/accountsettings.cpp" line="366"/>
         <source>Forget encryption setup</source>
         <translation>暗号化の設定を解除する</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="370"/>
+        <location filename="../src/gui/accountsettings.cpp" line="376"/>
         <source>Display mnemonic</source>
         <translation>ニーモニックを表示</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="376"/>
+        <location filename="../src/gui/accountsettings.cpp" line="382"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
         <translation>暗号化が設定されています。フォルダーに追加された新しいファイルをエンドツーエンドで暗号化するには、フォルダーを&lt;b&gt;暗号化する&lt;/b&gt;ことを忘れないでください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="409"/>
+        <location filename="../src/gui/accountsettings.cpp" line="415"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="470"/>
+        <location filename="../src/gui/accountsettings.cpp" line="476"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>暗号化を試みる前に、フォルダが同期されるまでお待ちください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="472"/>
+        <location filename="../src/gui/accountsettings.cpp" line="478"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>このフォルダには軽微な同期の問題があります。同期に成功すると、このフォルダの暗号化が可能になります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="474"/>
+        <location filename="../src/gui/accountsettings.cpp" line="480"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>このフォルダには同期エラーがあります。このフォルダの暗号化は、同期が成功した後に可能になります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="485"/>
+        <location filename="../src/gui/accountsettings.cpp" line="491"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
         <translation>このデバイスではEnd-to-End 暗号化がまだ設定されていないためこのフォルダーを暗号化できません。
 今これを実行しますか?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="509"/>
+        <location filename="../src/gui/accountsettings.cpp" line="515"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>フォルダーが空でないと暗号化できません。ファイルを削除してください。
 新しい同期を待ってから、暗号化します。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="533"/>
+        <location filename="../src/gui/accountsettings.cpp" line="539"/>
         <source>Encryption failed</source>
         <translation>暗号化できませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="533"/>
+        <location filename="../src/gui/accountsettings.cpp" line="539"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>フォルダーが既に存在しないため暗号化できませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="674"/>
+        <location filename="../src/gui/accountsettings.cpp" line="680"/>
         <source>Encrypt</source>
         <translation>暗号化</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="682"/>
-        <location filename="../src/gui/accountsettings.cpp" line="752"/>
+        <location filename="../src/gui/accountsettings.cpp" line="688"/>
+        <location filename="../src/gui/accountsettings.cpp" line="758"/>
         <source>Edit Ignored Files</source>
         <translation>除外ファイルリストを編集</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="685"/>
-        <location filename="../src/gui/accountsettings.cpp" line="755"/>
+        <location filename="../src/gui/accountsettings.cpp" line="691"/>
+        <location filename="../src/gui/accountsettings.cpp" line="761"/>
         <source>Create new folder</source>
         <translation>新しいフォルダーを作成</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="691"/>
-        <location filename="../src/gui/accountsettings.cpp" line="781"/>
+        <location filename="../src/gui/accountsettings.cpp" line="697"/>
+        <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>Availability</source>
         <translation>ローカルファイルの保持</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="760"/>
+        <location filename="../src/gui/accountsettings.cpp" line="766"/>
         <source>Choose what to sync</source>
         <translation>同期フォルダーを選択</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="766"/>
+        <location filename="../src/gui/accountsettings.cpp" line="772"/>
         <source>Force sync now</source>
         <translation>今すぐ強制的に同期</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="768"/>
+        <location filename="../src/gui/accountsettings.cpp" line="774"/>
         <source>Restart sync</source>
         <translation>同期を再実行</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="777"/>
+        <location filename="../src/gui/accountsettings.cpp" line="783"/>
         <source>Remove folder sync connection</source>
         <translation>同期フォルダー接続を削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="790"/>
+        <location filename="../src/gui/accountsettings.cpp" line="796"/>
         <source>Disable virtual file support …</source>
         <translation>仮想ファイルを無効にする…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="808"/>
         <source>Enable virtual file support %1 …</source>
         <translation>仮想ファイルを有効にする %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="808"/>
         <source>(experimental)</source>
         <translation>(試験的)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="904"/>
+        <location filename="../src/gui/accountsettings.cpp" line="910"/>
+        <location filename="../src/gui/accountsettings.cpp" line="953"/>
         <source>Folder creation failed</source>
         <translation>フォルダーの作成に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="964"/>
+        <location filename="../src/gui/accountsettings.cpp" line="954"/>
+        <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; のフォルダー同期接続を追加できませんでした。&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="977"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>同期フォルダー接続の削除を確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="971"/>
+        <location filename="../src/gui/accountsettings.cpp" line="984"/>
         <source>Remove Folder Sync Connection</source>
         <translation>同期フォルダー接続を削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1006"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1019"/>
         <source>Grant access to sync folder</source>
         <translation>同期フォルダーへのアクセスを許可する</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1031"/>
         <source>Access Error</source>
         <translation>アクセスエラー</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1019"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1032"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>選択したフォルダーへのアクセスを取得できませんでした。もう一度お試しください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1040"/>
         <source>Wrong Folder</source>
         <translation>間違ったフォルダー</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Please select the original sync folder: %1</source>
         <translation>元の同期フォルダを選択してください: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1037"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1050"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1059"/>
         <source>Bookmark Error</source>
         <translation>ブックマークエラー</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1038"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>フォルダーのセキュリティブックマークを作成できませんでした。もう一度お試しください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1047"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1060"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>セキュリティブックマークを解決できませんでした。もう一度お試しください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1148"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1161"/>
         <source>Disable virtual file support?</source>
         <translation>仮想ファイルを無効にしますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1149"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1162"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1140,88 +1241,88 @@ This action will abort any currently running synchronization.</source>
 この操作を行うと、現在実行中の同期が中止されます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1156"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1169"/>
         <source>Disable support</source>
         <translation>サポートを無効化</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1243"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1256"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>エンドツーエンドの暗号化 mnemonic</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1245"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1258"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>暗号化IDを保護するために、12の辞書単語のニーモニックで暗号化します。メモして大切に保管してください。他のデバイス上の暗号化されたフォルダーの同期を設定するために必要になります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1270"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1283"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation>このデバイスのエンドツーエンド暗号化を解除する</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1271"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1284"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>このデバイスの%1のEnd-to-End 暗号化設定を解除しますか?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1272"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1285"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>エンドツーエンドの暗号化を解除するとただしこのデバイスから機密データと暗号化されたすべてのファイルが削除されます。&lt;br&gt;ただし、暗号化されたファイルは、設定されている場合、サーバーと他のすべてのデバイスに残ります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1377"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1390"/>
         <source>Sync Running</source>
         <translation>同期を実行中</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1378"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1391"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>同期作業を実行中です。&lt;br/&gt;終了しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1450"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1463"/>
         <source>%1 in use</source>
         <translation>%1 を使用中</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1490"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1503"/>
         <source>Connected to %1 (%2).</source>
         <translation>%1 (%2) に接続されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1550"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="742"/>
         <source>Log in</source>
         <translation>ログイン</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
         <source>Leave share</source>
-        <translation type="unfinished"/>
+        <translation>共有から抜ける</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1540"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1553"/>
         <source>Remove this public share connection from the client.</source>
-        <translation type="unfinished"/>
+        <translation>クライアントからこの公開共有接続を削除してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1718"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1740"/>
         <source>Migrate certificate to a new one</source>
         <translation>証明書を新しいものに移行する</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1825"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1847"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>サイズが %1 MB を超えて大きくなったフォルダがあります: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1879"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>このアカウントでは、End-to-End 暗号化が別のデバイスで初期化されています。&lt;br&gt;暗号化されたフォルダーをこのデバイスでも同期させるには、一意のニーモニックを入力します。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1940"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1942"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1974"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>このアカウントはEnd-to-End 暗号化をサポートしていますが、最初に設定する必要があります。</translation>
     </message>
@@ -1231,118 +1332,133 @@ This action will abort any currently running synchronization.</source>
         <translation>仮想ファイル統合は、現時点ではEnd-to-End 暗号化をサポートしていません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1940"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2057"/>
+        <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
+        <translation>これにより、%1 のファイルプロバイダが初期状態にリセットされます。Finder 上でこのアカウントのファイルが固まってしまった、表示されない、または同期が取れていない場合などに使用してください。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="2061"/>
+        <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
+        <translation>その場所は、Finderから一時的に消え、その後再び表示されます。まだアップロードされていないローカルでの変更は保持され、Finder内のフォルダに表示されます。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="2066"/>
+        <source>Reset File Provider Domain for this account?</source>
+        <translation>このアカウントのファイルプロバイダーのドメインをリセットしますか？</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1969"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
         <translation>File Provider拡張機能は、現時点ではエンドツーエンド暗号化に対応していません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1948"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1976"/>
         <source>Set up encryption</source>
         <translation>暗号化を設定する</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1488"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1501"/>
         <source>Connected to %1.</source>
         <translation>%1 で接続しています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1496"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1509"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>サーバー %1 は一時的に利用できません</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1499"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1512"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>サーバー %1 は現在メンテナンスモードです。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1505"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1518"/>
         <source>Signed out from %1.</source>
         <translation>%1 からサインアウトしました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1812"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1834"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>大きすぎるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1813"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1835"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>外部ストレージにあるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1814"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1836"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>大きすぎたか、外部ストレージにあるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="655"/>
-        <location filename="../src/gui/accountsettings.cpp" line="749"/>
+        <location filename="../src/gui/accountsettings.cpp" line="661"/>
+        <location filename="../src/gui/accountsettings.cpp" line="755"/>
         <source>Open folder</source>
         <translation>フォルダーを開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="774"/>
+        <location filename="../src/gui/accountsettings.cpp" line="780"/>
         <source>Resume sync</source>
         <translation>再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="774"/>
+        <location filename="../src/gui/accountsettings.cpp" line="780"/>
         <source>Pause sync</source>
         <translation>一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="905"/>
+        <location filename="../src/gui/accountsettings.cpp" line="911"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;ローカルフォルダー &lt;i&gt;%1&lt;/i&gt; を作成できません。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="965"/>
+        <location filename="../src/gui/accountsettings.cpp" line="978"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;フォルダー&lt;i&gt;%1&lt;/i&gt;の同期を本当に止めますか？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注:&lt;/b&gt; これによりファイルが一切削除されることはありません。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1443"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1456"/>
         <source>%1 of %2 in use</source>
         <translation>%2 のうち %1 を使用中</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1479"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
         <source>%1 as %2</source>
         <translation>%1 に %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1486"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1499"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>サーバーバージョン %1 はサポートされていません! 自己責任で進めてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1502"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1515"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>サーバ %1 は現在リダイレクトされているか、あなたの接続がキャプティブポータルの背後にあります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1508"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1521"/>
         <source>Connecting to %1 …</source>
         <translation>%1 に接続中…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1512"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1525"/>
         <source>Unable to connect to %1.</source>
         <translation>%1 に接続できません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1530"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>サーバー設定エラー: %2 の %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1539"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>%1の利用規約に同意する必要があります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1544"/>
         <source>No %1 connection configured.</source>
         <translation>%1 の接続は設定されていません。</translation>
     </message>
@@ -1350,17 +1466,17 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountSetupFromCommandLineJob</name>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="149"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>サーバーへの認証リクエストは &quot;%1&quot; へリダイレクトされました。URLが正しくありません。サーバーが間違って設定されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="169"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>サーバによってアクセスが拒否されています。適切なアクセス権があるか検証するには、&lt;a href=&quot;%1&quot;&gt;ここをクリック&lt;/a&gt;してブラウザでサービスにアクセスしてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="167"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="177"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>認証済みの WebDAV 要求に対する無効な応答がありました</translation>
     </message>
@@ -1368,57 +1484,57 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="152"/>
+        <location filename="../src/gui/accountstate.cpp" line="156"/>
         <source>Signed out</source>
         <translation>サインアウト</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="154"/>
+        <location filename="../src/gui/accountstate.cpp" line="158"/>
         <source>Disconnected</source>
         <translation>切断しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="156"/>
+        <location filename="../src/gui/accountstate.cpp" line="160"/>
         <source>Connected</source>
         <translation>接続しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="158"/>
+        <location filename="../src/gui/accountstate.cpp" line="162"/>
         <source>Service unavailable</source>
         <translation>サービスが利用できません</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="160"/>
+        <location filename="../src/gui/accountstate.cpp" line="164"/>
         <source>Maintenance mode</source>
         <translation>メンテナンスモード</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="162"/>
+        <location filename="../src/gui/accountstate.cpp" line="166"/>
         <source>Redirect detected</source>
         <translation>リダイレクトが検出されました</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="164"/>
+        <location filename="../src/gui/accountstate.cpp" line="168"/>
         <source>Network error</source>
         <translation>ネットワークエラー</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="166"/>
+        <location filename="../src/gui/accountstate.cpp" line="170"/>
         <source>Configuration error</source>
         <translation>設定エラー</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="168"/>
+        <location filename="../src/gui/accountstate.cpp" line="172"/>
         <source>Asking Credentials</source>
         <translation>証明書を要求</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="170"/>
+        <location filename="../src/gui/accountstate.cpp" line="174"/>
         <source>Need the user to accept the terms of service</source>
         <translation>利用規約への同意が必要</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="172"/>
+        <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Unknown account state</source>
         <translation>不明なアカウント状態</translation>
     </message>
@@ -1426,199 +1542,199 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="293"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="294"/>
         <source>Will require local storage</source>
         <translation>ローカルストレージが必要になります</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="673"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="674"/>
         <source>Proxy settings are incomplete.</source>
         <translation>プロキシ設定が不完全です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="680"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="681"/>
         <source>Server address does not seem to be valid</source>
         <translation>サーバーのアドレスが有効ではないようです</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="701"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="702"/>
         <source>Username must not be empty.</source>
         <translation>ユーザー名は空欄にしないでください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="707"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1025"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="708"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1026"/>
         <source>Checking account access</source>
         <translation>アカウントアクセスの確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="785"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="786"/>
         <source>Checking server address</source>
         <translation>サーバーアドレスの確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="850"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="851"/>
         <source>Preparing browser login</source>
         <translation>ブラウザーでのログインの準備</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="871"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="872"/>
         <source>Invalid URL</source>
         <translation>無効なURL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="873"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="874"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>%2で%1への接続に失敗しました:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="889"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="890"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>%2の%1への接続中にタイムアウトが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="976"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>ブラウザーが開けません。リンクをコピーしてブラウザーに貼り付けてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1001"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1006"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1002"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1007"/>
         <source>Waiting for authorization</source>
         <translation>承認を待機中</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1011"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1012"/>
         <source>Starting authorization</source>
         <translation>承認を開始</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1016"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1017"/>
         <source>Link copied to clipboard.</source>
         <translation>リンクをクリップボードにコピーしました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1071"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1101"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1102"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>認証済みの WebDAV 要求に対する無効な応答がありました</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1088"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1089"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>サーバーへの認証リクエストは &quot;%1&quot; へリダイレクトされました。URLが正しくありません。サーバーが間違って設定されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1096"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1097"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>サーバーによりアクセスが拒否されました。アクセス権限を確認するには、ブラウザーでこのサービスを開いてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1114"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1115"/>
         <source>Account connected.</source>
         <translation>アカウントに接続しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1189"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1190"/>
         <source>Will require %1 of storage</source>
         <translation>ストレージの%1が必要になります </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1370"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>空き容量 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1380"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1373"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>ローカルフォルダーに十分な空き容量がありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1397"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1390"/>
         <source>Please choose a local sync folder.</source>
         <translation>ローカルの同期フォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1402"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1395"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>空のローカル同期フォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1467"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1460"/>
         <source>Could not create local folder %1</source>
         <translation>ローカルフォルダー %1 を作成できませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1474"/>
         <source>Checking remote folder</source>
         <translation>リモートフォルダーの確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1527"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1520"/>
         <source>No remote folder specified!</source>
         <translation>リモートフォルダーが指定されていません！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1536"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1529"/>
         <source>Error: %1</source>
         <translation>エラー: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1541"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1534"/>
         <source>Creating remote folder</source>
         <translation>リモートフォルダーの作成</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1560"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1553"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>フォルダーの作成中にHTTPエラーコード%1が発生しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1562"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>指定された認証情報が正しくないため、リモートフォルダーの作成に失敗しました。戻って認証情報を確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1564"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1557"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>リモートフォルダー %1 の作成がエラーで失敗しました。&lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1588"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>同期フォルダーの作成中にアカウントの設定に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1615"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1608"/>
         <source>Could not create the sync folder.</source>
         <translation>同期フォルダーを作成できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1705"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1698"/>
         <source>Local Sync Folder</source>
         <translation>ローカル同期フォルダー</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1952"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1960"/>
         <source>Select a certificate</source>
         <translation>証明書を選択</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1954"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1962"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>証明書ファイル (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1962"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1982"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1970"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1990"/>
         <source>Could not access the selected certificate file.</source>
         <translation>選択した証明書ファイルにアクセスできませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1998"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2006"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>証明書を読み込めませんでした。 パスワードが間違っていますか？</translation>
     </message>
@@ -1626,17 +1742,17 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="616"/>
+        <location filename="../src/gui/activity/activitylistmodel.cpp" line="645"/>
         <source>For more activities please open the Activity app.</source>
         <translation>その他のアクティビティについては、アクティビティアプリを開いてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="636"/>
+        <location filename="../src/gui/activity/activitylistmodel.cpp" line="665"/>
         <source>Fetching activities …</source>
         <translation>アクティビティを取得中...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="744"/>
+        <location filename="../src/gui/activity/activitylistmodel.cpp" line="773"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>ネットワークエラーが発生しました：クライアントは同期を再試行します。</translation>
     </message>
@@ -1734,71 +1850,71 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="200"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>一部の設定は、このクライアントの %1 バージョンで構成されており、このバージョンでは使用できない機能を使用しています。&lt;br&gt;&lt;br&gt;続行すると、&lt;b&gt;これらの設定は %2 になります &lt;/b&gt;。&lt;br&gt;&lt;br&gt;現在の設定ファイルは既に&lt;i&gt;%3&lt;/i&gt;にバックアップされています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>新しい</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="206"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>古い</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="207"/>
         <source>ignoring</source>
         <translation>無視する</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="207"/>
         <source>deleting</source>
         <translation>削除しています</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="209"/>
         <source>Quit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="210"/>
         <source>Continue</source>
         <translation>続ける</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="621"/>
+        <location filename="../src/gui/application.cpp" line="705"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 アカウント</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="622"/>
+        <location filename="../src/gui/application.cpp" line="706"/>
         <source>1 account</source>
         <translation>1 アカウント</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="624"/>
+        <location filename="../src/gui/application.cpp" line="708"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 フォルダ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="625"/>
+        <location filename="../src/gui/application.cpp" line="709"/>
         <source>1 folder</source>
         <translation>1 フォルダ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="627"/>
+        <location filename="../src/gui/application.cpp" line="711"/>
         <source>Legacy import</source>
         <translation>レガシーインポート(過去設定の取り込み)</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="628"/>
+        <location filename="../src/gui/application.cpp" line="712"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1806,12 +1922,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="748"/>
+        <location filename="../src/gui/application.cpp" line="834"/>
         <source>Error accessing the configuration file</source>
         <translation>設定ファイルのアクセスでエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="749"/>
+        <location filename="../src/gui/application.cpp" line="835"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>%1 の設定ファイルへのアクセス中にエラーが発生しました。 システム・アカウントでファイルにアクセスできることを確認してください。</translation>
     </message>
@@ -2257,23 +2373,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="48"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>%1 アカウントが設定されていません</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="177"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="184"/>
         <source>Timeout</source>
         <translation>タイムアウト</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="165"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="168"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>認証エラー: ユーザー名またはパスワードが間違っています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="214"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation>入力された資格情報が正しくありません</translation>
     </message>
@@ -2281,12 +2397,12 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoveryPhase</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="191"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="192"/>
         <source>Error while canceling deletion of a file</source>
         <translation>ファイル削除をキャンセル中にエラーが発生</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="192"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
         <source>Error while canceling deletion of %1</source>
         <translation>%1 の削除をキャンセル中にエラーが発生</translation>
     </message>
@@ -2294,23 +2410,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="573"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="583"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>サーバーエラーが発生しました。PROPFIND応答がXML形式ではありません！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="603"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="613"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>サーバーから予期しない応答が返され、読み取ることができませんでした。サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="644"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="698"/>
         <source>Encrypted metadata setup error!</source>
         <translation>暗号化されたメタデータのセットアップエラー！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="667"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>暗号化メタデータのセットアップエラー：サーバーからの初期署名が空です。</translation>
     </message>
@@ -2318,27 +2434,27 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="354"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="355"/>
         <source>Error while opening directory %1</source>
         <translation>%1 ディレクトリを開くときにエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="356"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>クライアントがディレクトリにアクセスできません、リクエストが拒否されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="361"/>
         <source>Directory not found: %1</source>
         <translation>ディレクトリが存在しません: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="391"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="393"/>
         <source>Filename encoding is not valid</source>
         <translation>ファイル名のエンコードが正しくありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="412"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="422"/>
         <source>Error while reading directory %1</source>
         <translation>%1 ディレクトリの読み込み中にエラーが発生しました</translation>
     </message>
@@ -2501,16 +2617,16 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="57"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="64"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="70"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="173"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="182"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="215"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="176"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="185"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="218"/>
         <source>Error fetching metadata.</source>
         <translation>メタデータの取得エラー。</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="125"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="131"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="229"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="232"/>
         <source>Error locking folder.</source>
         <translation>フォルダのロックでエラーが発生しました。</translation>
     </message>
@@ -2520,12 +2636,12 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>暗号化されたフォルダ ID の取得エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="197"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="200"/>
         <source>Error parsing or decrypting metadata.</source>
         <translation>メタデータの解析または復号化中にエラーが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="340"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="343"/>
         <source>Failed to upload metadata</source>
         <translation>メタデータのアップロードに失敗しました</translation>
     </message>
@@ -2645,57 +2761,6 @@ This can be an issue with your OpenSSL libraries.</source>
     </message>
 </context>
 <context>
-    <name>OCC::Flow2AuthWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="101"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="118"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="156"/>
-        <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>ブラウザーを開くことができませんでした。リンクをブラウザーにコピーしてください。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="191"/>
-        <source>Waiting for authorization</source>
-        <translation>承認を待機中</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="196"/>
-        <source>Polling for authorization</source>
-        <translation>承認を問い合わせ中</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="201"/>
-        <source>Starting authorization</source>
-        <translation>承認を開始</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="171"/>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="205"/>
-        <source>Link copied to clipboard.</source>
-        <translation>リンクをクリップボードにコピーしました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="95"/>
-        <source>Complete your provider signup in your browser</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="96"/>
-        <source>Please complete the provider signup in your browser. After the completion, confirm to open the Nextcloud application popup in your browser.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="252"/>
-        <source>Open Browser</source>
-        <translation>ブラウザーを開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="254"/>
-        <source>Copy Link</source>
-        <translation>リンクをコピー</translation>
-    </message>
-</context>
-<context>
     <name>OCC::Folder</name>
     <message>
         <location filename="../src/gui/folder.cpp" line="505"/>
@@ -2802,68 +2867,68 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>同期アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1185"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Could not read system exclude file</source>
         <translation>システム上の除外ファイルを読み込めません</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1470"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB より大きな新しいフォルダーが追加されました: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1478"/>
+        <location filename="../src/gui/folder.cpp" line="1473"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>外部ストレージからフォルダーが追加されました。
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1479"/>
+        <location filename="../src/gui/folder.cpp" line="1474"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>このフォルダーをダウンロードするには設定画面で選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1536"/>
+        <location filename="../src/gui/folder.cpp" line="1531"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>フォルダに設定されたフォルダサイズ制限値 %1MB を超えました: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1547"/>
+        <location filename="../src/gui/folder.cpp" line="1542"/>
         <source>Keep syncing</source>
         <translation>同期を維持する</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1550"/>
         <source>Stop syncing</source>
         <translation>同期を停止する</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1561"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>フォルダ %1 が設定されたフォルダサイズの制限値 %2MB を超えました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1567"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>このフォルダの同期を停止しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>フォルダー %1 は作成されましたが、以前に同期から除外されました。 中のデータは同期されません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1640"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>ファイル %1 は作成されましたが、以前に同期から除外されました。 このファイルは同期されません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1656"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2876,12 +2941,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1694"/>
+        <location filename="../src/gui/folder.cpp" line="1689"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>仮想のファイルのダウンロードは、コード &quot;%1&quot;、ステータス &quot;%2&quot;、エラーメッセージ &quot;%3&quot; で失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1788"/>
+        <location filename="../src/gui/folder.cpp" line="1783"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2890,7 +2955,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 または、&apos;%1&apos; フォルダからサーバにアップロードすることで、削除されたファイルをすべて復元できます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1789"/>
+        <location filename="../src/gui/folder.cpp" line="1784"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2899,22 +2964,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 または、削除されたファイルをサーバーからダウンロードして復元することもできます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1790"/>
+        <location filename="../src/gui/folder.cpp" line="1785"/>
         <source>Remove all files?</source>
         <translation>全てのファイルを削除しますか?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1794"/>
+        <location filename="../src/gui/folder.cpp" line="1789"/>
         <source>Proceed with Deletion</source>
         <translation>削除を進める</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files to Server</source>
         <translation>ファイルをサーバーに復元する</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1795"/>
+        <location filename="../src/gui/folder.cpp" line="1790"/>
         <source>Restore Files from Server</source>
         <translation>サーバーからファイルを復元する</translation>
     </message>
@@ -2950,12 +3015,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="505"/>
+        <location filename="../src/gui/folderman.cpp" line="512"/>
         <source>Could not reset folder state</source>
         <translation>フォルダーの状態をリセットできませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="506"/>
+        <location filename="../src/gui/folderman.cpp" line="513"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>古い同期ジャーナル  &quot;%1&quot; が見つかりましたが、削除できませんでした。それを現在使用しているアプリケーションが存在しないか確認してください。</translation>
     </message>
@@ -2970,116 +3035,116 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>(%1をバックアップ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1858"/>
+        <location filename="../src/gui/folderman.cpp" line="1886"/>
         <source>Undefined state.</source>
         <translation>未定義の状態。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1861"/>
+        <location filename="../src/gui/folderman.cpp" line="1889"/>
         <source>Waiting to start syncing.</source>
         <translation>同期開始を待機中</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1864"/>
+        <location filename="../src/gui/folderman.cpp" line="1892"/>
         <source>Preparing for sync.</source>
         <translation>同期の準備中。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1874"/>
+        <location filename="../src/gui/folderman.cpp" line="1902"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>同期中 %2 中 %1 (あと数秒)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1877"/>
+        <location filename="../src/gui/folderman.cpp" line="1905"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>同期中 %2 中 %1 (残り %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1880"/>
+        <location filename="../src/gui/folderman.cpp" line="1908"/>
         <source>Syncing %1 of %2</source>
         <translation>%2 の %1 を同期しています</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1886"/>
+        <location filename="../src/gui/folderman.cpp" line="1914"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>同期中 %1 (あと数秒)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1888"/>
+        <location filename="../src/gui/folderman.cpp" line="1916"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>同期中 %1 (残り %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1891"/>
+        <location filename="../src/gui/folderman.cpp" line="1919"/>
         <source>Syncing %1</source>
         <translation>同期中 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1896"/>
+        <location filename="../src/gui/folderman.cpp" line="1924"/>
         <source>Sync is running.</source>
         <translation>同期を実行中です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <location filename="../src/gui/folderman.cpp" line="1929"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>未解決のコンフリクトがある状態で同期が終了しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1903"/>
+        <location filename="../src/gui/folderman.cpp" line="1931"/>
         <source>Last sync was successful.</source>
         <translation>前回の同期は成功しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1909"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>Setup error.</source>
         <translation>設定エラー</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1912"/>
+        <location filename="../src/gui/folderman.cpp" line="1940"/>
         <source>Sync request was cancelled.</source>
         <translation>同期がキャンセルされました</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1929"/>
+        <location filename="../src/gui/folderman.cpp" line="1957"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>別の場所を選択してください。選択したフォルダーが無効です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1937"/>
-        <location filename="../src/gui/folderman.cpp" line="2016"/>
+        <location filename="../src/gui/folderman.cpp" line="1965"/>
+        <location filename="../src/gui/folderman.cpp" line="2044"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>別の場所を選択してください。%1はすでに同期フォルダーとして使用されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1946"/>
+        <location filename="../src/gui/folderman.cpp" line="1974"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>別の場所を選択してください。%1というパスが存在しません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1950"/>
+        <location filename="../src/gui/folderman.cpp" line="1978"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>別の場所を選択してください。パス%1はフォルダーではありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1958"/>
-        <location filename="../src/gui/folderman.cpp" line="1963"/>
+        <location filename="../src/gui/folderman.cpp" line="1986"/>
+        <location filename="../src/gui/folderman.cpp" line="1991"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>別の場所を選択してください。%1への書き込み権限が不足しています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2023"/>
+        <location filename="../src/gui/folderman.cpp" line="2051"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>別の場所を選択してください。%1はすでに同期フォルダーとして使用されているフォルダーに含まれています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2038"/>
+        <location filename="../src/gui/folderman.cpp" line="2066"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>別の場所を選択してください。%1はすでに%2の同期フォルダーとして使用されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2196"/>
+        <location filename="../src/gui/folderman.cpp" line="2224"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3090,17 +3155,17 @@ For advanced users: this issue might be related to multiple sync database files 
 上級者向け：この問題は、1つのフォルダに複数の同期データベースファイルがあることが原因である可能性があります。%1に古くて使用されていない.sync_*.dbファイルがないか確認し、削除してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1915"/>
+        <location filename="../src/gui/folderman.cpp" line="1943"/>
         <source>Sync is paused.</source>
         <translation>同期を一時停止しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="418"/>
+        <location filename="../src/gui/folderman.cpp" line="425"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
         <translation>アプリの設定を開き、同期フォルダーへのアクセス権を許可してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1921"/>
+        <location filename="../src/gui/folderman.cpp" line="1949"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (同期を一時停止)</translation>
     </message>
@@ -3307,12 +3372,12 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="705"/>
+        <location filename="../src/gui/folderwizard.cpp" line="703"/>
         <source>Add Folder Sync Connection</source>
         <translation>同期フォルダーを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="707"/>
+        <location filename="../src/gui/folderwizard.cpp" line="705"/>
         <source>Add Sync Connection</source>
         <translation>同期接続を追加</translation>
     </message>
@@ -3330,7 +3395,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>ローカルフォルダーのパスを入力してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="155"/>
+        <location filename="../src/gui/folderwizard.cpp" line="153"/>
         <source>Select the source folder</source>
         <translation>ソースフォルダーを選択</translation>
     </message>
@@ -3338,48 +3403,48 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="233"/>
+        <location filename="../src/gui/folderwizard.cpp" line="231"/>
         <source>Create Remote Folder</source>
         <translation>リモートフォルダーを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="232"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation> &quot;%1&quot; 以下に新しいフォルダーの名前を入力:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="263"/>
+        <location filename="../src/gui/folderwizard.cpp" line="261"/>
         <source>Folder was successfully created on %1.</source>
         <translation>%1 にフォルダーが作成されました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="273"/>
+        <location filename="../src/gui/folderwizard.cpp" line="271"/>
         <source>Authentication failed accessing %1</source>
         <translation>%1 アクセス中に認証に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="275"/>
+        <location filename="../src/gui/folderwizard.cpp" line="273"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>%1 にフォルダーを作成できませんでした。手作業で確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="293"/>
+        <location filename="../src/gui/folderwizard.cpp" line="291"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>フォルダーをリストアップできません。エラー: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="374"/>
+        <location filename="../src/gui/folderwizard.cpp" line="372"/>
         <source>Choose this to sync the entire account</source>
         <translation>アカウント全体を同期する場合はこちらを選択</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="514"/>
-        <location filename="../src/gui/folderwizard.cpp" line="526"/>
+        <location filename="../src/gui/folderwizard.cpp" line="512"/>
+        <location filename="../src/gui/folderwizard.cpp" line="524"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>別の場所を選択してください。%1はすでに%2に同期されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="521"/>
+        <location filename="../src/gui/folderwizard.cpp" line="519"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>サブフォルダー %1 を %2 で既に同期中です。</translation>
     </message>
@@ -3387,24 +3452,24 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="588"/>
-        <location filename="../src/gui/folderwizard.cpp" line="625"/>
+        <location filename="../src/gui/folderwizard.cpp" line="586"/>
+        <location filename="../src/gui/folderwizard.cpp" line="623"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>すぐにファイルを同期してダウンロードする代わりに仮想ファイルを利用する %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="588"/>
-        <location filename="../src/gui/folderwizard.cpp" line="625"/>
+        <location filename="../src/gui/folderwizard.cpp" line="586"/>
+        <location filename="../src/gui/folderwizard.cpp" line="623"/>
         <source>(experimental)</source>
         <translation>(試験的)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="621"/>
+        <location filename="../src/gui/folderwizard.cpp" line="619"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>仮想ファイルは、ローカルフォルダーのWindowsルートパーティションではサポートされていません。ドライブレターの下の有効なサブフォルダを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="646"/>
+        <location filename="../src/gui/folderwizard.cpp" line="644"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation>選択した場所では仮想ファイルはサポートされていません</translation>
     </message>
@@ -3440,7 +3505,7 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="202"/>
+        <location filename="../src/gui/generalsettings.ui" line="252"/>
         <source>Show Call Notifications</source>
         <translation>トークの通知を表示</translation>
     </message>
@@ -3450,12 +3515,12 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>システムトレイ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="168"/>
+        <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Show Chat Notifications</source>
         <translation>チャットの通知を表示</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="134"/>
+        <location filename="../src/gui/generalsettings.ui" line="184"/>
         <source>Show Server &amp;Notifications</source>
         <translation>サーバー通知を表示(&amp;N)</translation>
     </message>
@@ -3483,6 +3548,16 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
         <translation>指定された容量より大きな新しいフォルダーを同期する前に確認する</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="134"/>
+        <source>Enable &amp;File Provider</source>
+        <translation>&amp;File プロバイダーを有効にする</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <source>Files appear in Finder under the &quot;Locations&quot; section and do not use local storage space; contents download automatically when you open a file. Applies to all accounts and replaces classic sync folders and their Finder integration.</source>
+        <translation>ファイルはFinderの「場所」セクションに表示され、ローカルのストレージ容量を消費しません。ファイルを開くと、その内容が自動的にダウンロードされます。この機能はすべてのアカウントに適用され、従来の同期フォルダおよびFinderとの連携機能に取って代わります。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
@@ -3582,34 +3657,100 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>デフォルトに戻す</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="236"/>
+        <location filename="../src/gui/generalsettings.ui" line="286"/>
         <source>Show &amp;Quota Warning Notifications</source>
         <translation>クォータ警告通知を表示</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="32"/>
+        <location filename="../src/gui/generalsettings.cpp" line="42"/>
         <source>Server notifications that require attention.</source>
         <translation>注意が必要なサーバー通知を表示する</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="36"/>
+        <location filename="../src/gui/generalsettings.cpp" line="46"/>
         <source>Show chat notification dialogs.</source>
         <translation>チャットの通知ダイアログを表示する</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="40"/>
+        <location filename="../src/gui/generalsettings.cpp" line="50"/>
         <source>Show call notification dialogs.</source>
         <translation>トークの通知ダイアログを表示する</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="43"/>
+        <location filename="../src/gui/generalsettings.cpp" line="53"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>クォータ使用量が80%を超えた場合に通知を表示する。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="48"/>
+        <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>システム全体の自動起動が有効になっているため、自動起動を無効にすることはできません。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="174"/>
+        <source>Login Item Requires Approval</source>
+        <translation>ログイン項目は承認が必要です</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="175"/>
+        <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
+        <translation>ログイン項目は登録済みですが、有効にするには承認が必要です。「システム設定」→「一般」→「ログイン項目」を開き、そこで%1を有効にしてください。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="245"/>
+        <source>Unknown account</source>
+        <translation>不明なアカウント</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="252"/>
+        <source>File Provider will be enabled for all accounts. Your files will appear in Finder under the &quot;Locations&quot; section. Accounts added later will also be set up as File Providers.</source>
+        <translation>すべてのアカウントでファイルプロバイダが有効になります。ファイルはFinderの「場所」セクションに表示されます。今後追加されるアカウントについても、ファイルプロバイダとして設定されます。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="261"/>
+        <source>This removes classic sync folder connections from the following accounts:</source>
+        <translation>これにより、以下のアカウントから従来の同期フォルダの接続が削除されます：</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="265"/>
+        <source>Synced files stay on your computer, but they will no longer be kept up to date and settings such as selective sync are discarded.</source>
+        <translation>同期されたファイルはコンピュータに残りますが、それらは今後最新の状態に更新されなくなり、選択的同期などの設定は破棄されます。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="269"/>
+        <source>Enable File Provider?</source>
+        <translation>ファイルプロバイダーを有効にしますか？</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="274"/>
+        <source>Enable File Provider</source>
+        <translation>ファイルプロバイダーを有効にする</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="275"/>
+        <location filename="../src/gui/generalsettings.cpp" line="297"/>
+        <source>Cancel</source>
+        <translation>キャンセル</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="286"/>
+        <source>File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the &quot;Locations&quot; section.</source>
+        <translation>すべてのアカウントでファイルプロバイダが無効になり、Finderの「場所」 セクションからファイルにアクセスできなくなります。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="288"/>
+        <source>Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account&apos;s settings.</source>
+        <translation>まだアップロードされていないアイテムは保持され、表示されます。従来の同期フォルダは自動的に再設定されません。各アカウントの設定から、後からフォルダ同期の設定を追加することができます。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="291"/>
+        <source>Disable File Provider?</source>
+        <translation>ファイルプロバイダーを無効にしますか？</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="296"/>
+        <source>Disable File Provider</source>
+        <translation>ファイルプロバイダーを無効にする</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -3685,21 +3826,6 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>更新チャネルを変更</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="575"/>
-        <source>Cancel</source>
-        <translation>キャンセル</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="134"/>
-        <source>Login Item Requires Approval</source>
-        <translation>ログイン項目は承認が必要です</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="135"/>
-        <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation>ログイン項目は登録済みですが、有効にするには承認が必要です。「システム設定」→「一般」→「ログイン項目」を開き、そこで%1を有効にしてください。</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.cpp" line="737"/>
         <source>Zip Archives</source>
         <translation>Zipアーカイブ</translation>
@@ -3728,22 +3854,22 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="843"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="904"/>
         <source>Password for share required</source>
         <translation>共有用のパスワードが必要です</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="844"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="905"/>
         <source>Please enter a password for your link share:</source>
         <translation>リンク共有のパスワードを入力してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="870"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="931"/>
         <source>Sharing error</source>
         <translation>共有エラー</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="871"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="932"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -4465,215 +4591,215 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="386"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>シンボリックリンクは同期ではサポートされていません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>File is locked by another application.</source>
         <translation>ファイルは別のアプリケーションによってロックされています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="398"/>
+        <location filename="../src/libsync/discovery.cpp" line="399"/>
         <source>File is listed on the ignore list.</source>
         <translation>ファイルは除外リストに登録されています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="402"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>ピリオドで終わるファイル名はこのファイルシステムでサポートされていません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>フォルダー名に含まれる文字 &quot;%1&quot; はこのファイルシステムでサポートされていません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>ファイル名に含まれる文字 &quot;%1&quot; はこのファイルシステムでサポートされていません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="418"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>フォルダー名は少なくとも１つ以上の無効な文字を含んでいます</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
         <source>File name contains at least one invalid character</source>
         <translation>ファイル名は少なくとも１つ以上の無効な文字を含んでいます</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="422"/>
+        <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation>フォルダー名はこのファイルシステム上で予約された名前です。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="423"/>
+        <location filename="../src/libsync/discovery.cpp" line="424"/>
         <source>File name is a reserved name on this file system.</source>
         <translation>ファイル名はこのファイルシステム上で予約された名前です。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="429"/>
+        <location filename="../src/libsync/discovery.cpp" line="430"/>
         <source>Filename contains trailing spaces.</source>
         <translation>ファイル名末尾にスペースが含まれます。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="432"/>
-        <location filename="../src/libsync/discovery.cpp" line="439"/>
-        <location filename="../src/libsync/discovery.cpp" line="446"/>
-        <location filename="../src/libsync/discovery.cpp" line="488"/>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
+        <location filename="../src/libsync/discovery.cpp" line="489"/>
         <source>Cannot be renamed or uploaded.</source>
         <translation>名前の変更やアップロードはできません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
         <source>Filename contains leading spaces.</source>
         <translation>ファイル名先頭にスペースが含まれています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>ファイル名の先頭と末尾にスペースが含まれています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>Filename is too long.</source>
         <translation>ファイル名は長すぎます。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="454"/>
+        <location filename="../src/libsync/discovery.cpp" line="455"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>隠しファイル/フォルダーのため無視されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="457"/>
+        <location filename="../src/libsync/discovery.cpp" line="458"/>
         <source>Stat failed.</source>
         <translation>情報取得エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="460"/>
+        <location filename="../src/libsync/discovery.cpp" line="461"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>コンフリクト: サーバーのバージョンがダウンロードされて、ローカルのコピーはファイル名を変更しアップロードしません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="464"/>
+        <location filename="../src/libsync/discovery.cpp" line="465"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>大文字小文字の競合： 衝突を避けるためにサーバファイルをダウンロードし、名前を変更しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="468"/>
+        <location filename="../src/libsync/discovery.cpp" line="469"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>あなたのファイルシステムでファイル名をエンコードできません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="471"/>
+        <location filename="../src/libsync/discovery.cpp" line="472"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>このファイル名はサーバーにブロックされました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="474"/>
+        <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>理由：ファイル名全体が禁止されています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="477"/>
+        <location filename="../src/libsync/discovery.cpp" line="478"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
         <translation> 理由：ファイル名に禁止されているベース名（ファイル名の先頭）があります。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="480"/>
+        <location filename="../src/libsync/discovery.cpp" line="481"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation> 理由: ファイルには禁止されている拡張子 (.%1) があります。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="483"/>
+        <location filename="../src/libsync/discovery.cpp" line="484"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
         <translation> 理由: ファイル名に禁止文字 (%1) が含まれています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="629"/>
+        <location filename="../src/libsync/discovery.cpp" line="630"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>ファイルの拡張子は仮想ファイル用に予約されています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="801"/>
+        <location filename="../src/libsync/discovery.cpp" line="802"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>サーバー上でフォルダーにアクセスできません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="802"/>
+        <location filename="../src/libsync/discovery.cpp" line="803"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>サーバー上でファイルにアクセスできません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1215"/>
+        <location filename="../src/libsync/discovery.cpp" line="1239"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>修正日時が無効なため同期できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1231"/>
+        <location filename="../src/libsync/discovery.cpp" line="1255"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>%1のアップロードが個人ファイルに残されたスペースの%2を超えています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1234"/>
+        <location filename="../src/libsync/discovery.cpp" line="1258"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>%1のアップロードがフォルダー%3の空き容量の%2を超えました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1250"/>
+        <location filename="../src/libsync/discovery.cpp" line="1274"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; で開いているので、ファイルをアップロードできませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1303"/>
+        <location filename="../src/libsync/discovery.cpp" line="1327"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>ファイルレコード %1 をデータベースから削除する際にエラーが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1590"/>
-        <location filename="../src/libsync/discovery.cpp" line="2061"/>
+        <location filename="../src/libsync/discovery.cpp" line="1615"/>
+        <location filename="../src/libsync/discovery.cpp" line="2096"/>
         <source>Moved to invalid target, restoring</source>
         <translation>無効なターゲットに移動し、復元しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1918"/>
+        <location filename="../src/libsync/discovery.cpp" line="1953"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>選択した証明書が有効でないため、暗号化されたアイテムを変更できません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1985"/>
+        <location filename="../src/libsync/discovery.cpp" line="2020"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;選択されたものを同期する&quot; のブラックリストにあるために無視されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2054"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>そのフォルダーにサブフォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2025"/>
+        <location filename="../src/libsync/discovery.cpp" line="2060"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>そのフォルダーにファイルを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2039"/>
+        <location filename="../src/libsync/discovery.cpp" line="2074"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>サーバー上で読み取り専用のため、ファイルをアップロードできません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2075"/>
+        <location filename="../src/libsync/discovery.cpp" line="2110"/>
         <source>Not allowed to remove, restoring</source>
         <translation>削除、復元は許可されていません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2246"/>
+        <location filename="../src/libsync/discovery.cpp" line="2281"/>
         <source>Error while reading the database</source>
         <translation>データベースを読み込み中にエラーが発生しました</translation>
     </message>
@@ -4946,17 +5072,22 @@ Note that using any logging command line options will override this setting.</so
         <translation>誤ったHTTPコードがサーバーから返されました。201のはずが、&quot;%1 %2&quot;が返りました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="251"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
+        <source>Failed to create encrypted folder.</source>
+        <translation>暗号化されたフォルダの作成に失敗しました。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
         <source>Failed to encrypt a folder %1</source>
         <translation>フォルダ %1 の暗号化に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="274"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="278"/>
         <source>Error writing metadata to the database: %1</source>
         <translation>メタデータのデータベースへの書き込みに失敗： %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="277"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="281"/>
         <source>The file %1 is currently in use</source>
         <translation>ファイル %1 は現在使用中です</translation>
     </message>
@@ -5026,33 +5157,33 @@ Note that using any logging command line options will override this setting.</so
         <translation>ローカルファイルが同期中に変更されました。再開されます。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="446"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="462"/>
         <source>Local file changed during sync.</source>
         <translation>ローカルのファイルが同期中に変更されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="456"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="472"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>暗号化されたフォルダーの解除に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="743"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="759"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>無効な文字を含むアイテムをアップロードできません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="831"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="847"/>
         <source>Error updating metadata: %1</source>
         <translation>メタデータの更新中にエラーが発生しました：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="834"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="850"/>
         <source>The file %1 is currently in use</source>
         <translation>ファイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="292"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="737"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="753"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>%1 をアップロードするとフォルダーのクオータを超えます</translation>
     </message>
@@ -5215,12 +5346,12 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::ServerNotificationHandler</name>
     <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="140"/>
+        <location filename="../src/gui/activity/notificationhandler.cpp" line="140"/>
         <source>Reply</source>
         <translation>返信</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="177"/>
+        <location filename="../src/gui/activity/notificationhandler.cpp" line="177"/>
         <source>Dismiss</source>
         <translation>閉じる</translation>
     </message>
@@ -5262,7 +5393,7 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::ShareManager</name>
     <message>
-        <location filename="../src/gui/sharemanager.cpp" line="714"/>
+        <location filename="../src/gui/sharemanager.cpp" line="695"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
@@ -5270,14 +5401,19 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="568"/>
         <source>%1 days</source>
         <translation>%1 日</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="570"/>
         <source>%1 day</source>
         <translation>%1 日</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
+        <source>Today</source>
+        <translation>今日</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
@@ -5285,37 +5421,32 @@ Note that using any logging command line options will override this setting.</so
         <translation>1日</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="574"/>
-        <source>Today</source>
-        <translation>今日</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="748"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="744"/>
         <source>Secure file drop link</source>
         <translation>セキュアファイルドロップリンク</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="748"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="744"/>
         <source>Share link</source>
         <translation>リンクを共有</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="756"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="752"/>
         <source>Link share</source>
         <translation>リンク共有</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="758"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="754"/>
         <source>Internal link</source>
         <translation>内部リンク</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="760"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="756"/>
         <source>Secure file drop</source>
         <translation>セキュアなファイルドロップ</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="960"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="945"/>
         <source>Could not find local folder for %1</source>
         <translation>%1 のローカルフォルダが見つかりませんでした</translation>
     </message>
@@ -5348,48 +5479,48 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="811"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="872"/>
         <source>Context menu share</source>
         <translation>コンテキストメニューの共有</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1130"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1160"/>
         <source>I shared something with you</source>
         <translation>私はあなたと何かを共有しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1143"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1181"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1173"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
         <source>Share options</source>
         <translation>共有オプション</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1148"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1178"/>
         <source>Send private link by email …</source>
         <translation>メールでプライベートリンクを送信…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1147"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1177"/>
         <source>Copy private link to clipboard</source>
         <translation>プライベートリンクをクリップボードにコピーする</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="554"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="593"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>フォルダ &quot;%1&quot; の暗号化に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="594"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>アカウント %1 は End-to-End 暗号化が設定されていません。アカウント設定でこれを設定して、フォルダの暗号化を有効にしてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="574"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="613"/>
         <source>Failed to encrypt folder</source>
         <translation>フォルダの暗号化に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="575"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="614"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5398,111 +5529,116 @@ Server replied with error: %2</source>
 サーバはエラーで返信しました: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="582"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="621"/>
         <source>Folder encrypted successfully</source>
         <translation>フォルダの暗号化に成功しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="622"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>次のフォルダの暗号化に成功しました: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1062"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1036"/>
         <source>Select new location …</source>
         <translation>新しい場所の選択...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1144"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1174"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1237"/>
         <source>File actions</source>
         <translation>ファイルアクション</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1145"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1379"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1175"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1418"/>
         <source>Activity</source>
         <translation>アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1173"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
         <source>Leave this share</source>
         <translation>この共有を外す</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1179"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>Resharing this file is not allowed</source>
         <translation>このファイルの再共有は許可されていません</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1179"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>Resharing this folder is not allowed</source>
         <translation>このフォルダーの再共有は許可されていません</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1240"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1270"/>
         <source>Encrypt</source>
         <translation>暗号化</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
         <source>Lock file</source>
         <translation>ファイルをロック</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1254"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1284"/>
         <source>Unlock file</source>
         <translation>ロックを解除</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1270"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1300"/>
         <source>Locked by %1</source>
         <translation>%1 によってロックされました</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1274"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1304"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>%1分後に期限切れ</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1415"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1313"/>
+        <source>Apply labels</source>
+        <translation>ラベルを適用する</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1455"/>
         <source>Resolve conflict …</source>
         <translation>競合を解決する…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1419"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1459"/>
         <source>Move and rename …</source>
         <translation>移動して名前を変更…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1422"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1462"/>
         <source>Move, rename and upload …</source>
         <translation>移動、名前の変更、アップロード…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1424"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1464"/>
         <source>Delete local changes</source>
         <translation>ローカルの変更を削除する</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1430"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1470"/>
         <source>Move and upload …</source>
         <translation>移動してアップロード…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1431"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1471"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1215"/>
         <source>Copy internal link</source>
         <translation>内部リンクをコピー</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1387"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1424"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1426"/>
         <source>Open in browser</source>
         <translation>ブラウザーで開く</translation>
     </message>
@@ -5794,96 +5930,96 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::SyncStatusSummary</name>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="156"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="206"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="472"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="220"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="211"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="477"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="221"/>
         <source>Offline</source>
         <translation>オフライン</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1706"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1707"/>
         <source>You need to accept the terms of service</source>
         <translation>利用規約に同意する必要があります</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1699"/>
         <source>Reauthorization required</source>
         <translation>再承認が必要</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="176"/>
         <source>Please grant access to your sync folders</source>
         <translation>同期フォルダーへのアクセス権を付与してください</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="232"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="478"/>
-        <location filename="../src/gui/tray/syncstatussummary.h" line="101"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="237"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="483"/>
+        <location filename="../src/gui/activity/syncstatussummary.h" line="105"/>
         <source>All synced!</source>
         <translation>すべて同期されました！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="241"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1717"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>いくつかのファイルが同期できませんでした！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="242"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="247"/>
         <source>See below for errors</source>
         <translation>以下のエラーを確認してください</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="249"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="254"/>
         <source>Checking folder changes</source>
         <translation>フォルダーの変更点の確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="251"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="256"/>
         <source>Syncing changes</source>
         <translation>変更の同期</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="260"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="265"/>
         <source>Sync paused</source>
         <translation>同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="267"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1719"/>
         <source>Some files could not be synced!</source>
         <translation>いくつかのファイルが同期できませんでした！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="268"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="273"/>
         <source>See below for warnings</source>
         <translation>以下の警告を確認してください</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="350"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="355"/>
         <source>Syncing</source>
         <translation>同期中</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="363"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="368"/>
         <source>%1 of %2 · %3 left</source>
         <translation>%1 / %2 · 残り %3 </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="367"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="372"/>
         <source>%1 of %2</source>
         <translation>%1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="372"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="377"/>
         <source>Syncing file %1 of %2</source>
         <translation>%2 の %1 を同期しています</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="475"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="480"/>
         <source>No synchronisation configured</source>
         <translation>同期設定なし</translation>
     </message>
@@ -5891,64 +6027,66 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="143"/>
+        <location filename="../src/gui/systray.cpp" line="148"/>
         <source>Download</source>
         <translation>ダウンロード</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="484"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="811"/>
+        <location filename="../src/gui/systray.cpp" line="611"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="870"/>
         <source>Add account</source>
         <translation>アカウントを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="486"/>
+        <location filename="../src/gui/systray.cpp" line="613"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>%1 デスクトップを開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="489"/>
-        <location filename="../src/gui/systray.cpp" line="499"/>
+        <location filename="../src/gui/systray.cpp" line="616"/>
+        <location filename="../src/gui/systray.cpp" line="626"/>
         <source>Pause sync</source>
         <translation>同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="490"/>
-        <location filename="../src/gui/systray.cpp" line="505"/>
+        <location filename="../src/gui/systray.cpp" line="617"/>
+        <location filename="../src/gui/systray.cpp" line="632"/>
         <source>Resume sync</source>
         <translation>同期を再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="491"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="820"/>
+        <location filename="../src/gui/systray.cpp" line="618"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="908"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="492"/>
+        <location filename="../src/gui/systray.cpp" line="619"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="493"/>
+        <location filename="../src/gui/systray.cpp" line="620"/>
         <source>Exit %1</source>
         <translation>%1 を終了</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="499"/>
+        <location filename="../src/gui/systray.cpp" line="626"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="882"/>
         <source>Pause sync for all</source>
         <translation>全ての同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="505"/>
+        <location filename="../src/gui/systray.cpp" line="632"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="882"/>
         <source>Resume sync for all</source>
         <translation>すべての同期を再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="827"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="915"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>終了</translation>
     </message>
 </context>
 <context>
@@ -5957,7 +6095,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="462"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 デスクトップクライアントバージョン %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="646"/>
@@ -5973,22 +6111,22 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="398"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
         <source>Failed to fetch providers.</source>
         <translation>プロバイダーの取得に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="409"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="468"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
         <translation>&apos;%1&apos;の検索プロバイダーの取得に失敗しました。 エラー: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="443"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="502"/>
         <source>Search has failed for &apos;%2&apos;.</source>
         <translation>&apos;%2&apos; を検索できませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="472"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="531"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
         <translation>&apos;%1&apos; を検索できませんでした。エラー: %2</translation>
     </message>
@@ -6050,75 +6188,75 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>エンドツーエンド証明書を新しいものに移行する必要があります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>Trigger the migration</source>
         <translation>移行のトリガー</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="676"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n 通知</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="923"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="962"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="919"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="958"/>
         <source>“%1” was not synchronized</source>
         <translation>&quot;%1&quot;は同期されていません </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="964"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="960"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>サーバーの空き容量が不足しています。ファイルには%1が必要ですが、利用可能な容量は%2しかありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="967"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="963"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>サーバーのストレージ容量が不足しています。このファイルには%1が必要です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="970"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="966"/>
         <source>Insufficient storage on the server.</source>
         <translation>サーバーのストレージ容量が不足しています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1006"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>一部のアップロードについて、サーバーの空き容量が不足しています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1022"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1388"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
         <source>Retry all uploads</source>
         <translation>すべてのアップロードを再試行</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1439"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1601"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1435"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1597"/>
         <source>Resolve conflict</source>
         <translation>競合の解決</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1591"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1587"/>
         <source>Rename file</source>
         <translation>ファイル名の変更</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1691"/>
         <source>Sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>同期の競合</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1825"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1834"/>
         <source>Public Share Link</source>
         <translation>公開共有リンク</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1946"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>%1 アシスタントを開く</translation>
@@ -6370,7 +6508,7 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="150"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="152"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation>あなたのアカウント %1 は %2 でログアウトされました。もう一度ログインしてください。</translation>
     </message>
@@ -6378,103 +6516,108 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="417"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="432"/>
         <source>Please sign in</source>
         <translation>サインインしてください</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>There are no sync folders configured.</source>
         <translation>同期するフォルダーがありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="398"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="413"/>
         <source>Disconnected from %1</source>
         <translation>%1 から切断されました</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
         <source>Unsupported Server Version</source>
         <translation>サポートされていないサーバーバージョン</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="285"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="300"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>アカウント %1 のサーバーは、サポートされていない古いバージョン %2 で実行しています。サポートされていないサーバーバージョンでこのクライアントを使用することはテストされておらず、潜在的な危険をはらんでいます。ご利用は自己責任でお願いいたします。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="297"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Terms of service</source>
         <translation>サービス利用規約</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>アカウント %1 では、サーバの利用規約に同意する必要があります。%2にリダイレクトされ、利用規約を読み、同意したことを確認します。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="488"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="492"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="507"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS for %1: 同期が実行されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="495"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="510"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS for %1: 最後の同期に成功しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="498"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="513"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS for %1: 問題が発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="501"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>%1用の macOS VFS：エラーが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="567"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="582"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>リモート &quot;%1&quot; での変更を確認中 </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="570"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="585"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>ローカル &quot;%1&quot; での変更を確認中 </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="853"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="921"/>
         <source>Internal link copied</source>
         <translation>内部リンクをコピーしました</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="854"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>内部リンクがクリップボードにコピーされました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="401"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="416"/>
         <source>Disconnected from accounts:</source>
         <translation>アカウントから切断:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="403"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Account %1: %2</source>
         <translation>アカウント %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="436"/>
         <source>Account synchronization is disabled</source>
         <translation>アカウントの同期は無効になっています</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="587"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="602"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -6639,37 +6782,37 @@ Server replied with error: %2</source>
         <translation>デバッグアーカイブを選択した場所に移動できませんでした！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="492"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="491"/>
         <source>Answer</source>
         <translation>回答</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1516"/>
         <source>You renamed %1</source>
         <translation>%1 の名前を変更しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1518"/>
         <source>You deleted %1</source>
         <translation>%1 を削除しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1524"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
         <source>You created %1</source>
         <translation>%1 を作成しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1526"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
         <source>You changed %1</source>
         <translation>%1 を変更しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1550"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1546"/>
         <source>Synced %1</source>
         <translation>%1 を同期しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="333"/>
+        <location filename="../src/libsync/filesystem.cpp" line="573"/>
         <source>Error deleting the file</source>
         <translation>ファイル削除エラー</translation>
     </message>
@@ -6849,6 +6992,29 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>SearchWindow</name>
+    <message>
+        <location filename="../src/gui/search/SearchWindow.qml" line="19"/>
+        <source>Search</source>
+        <translation>検索</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/SearchWindow.qml" line="74"/>
+        <source>Search is available when this account is connected</source>
+        <translation>このアカウントが接続されている場合、検索機能を利用できます</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/SearchWindow.qml" line="75"/>
+        <source>Search files, messages, events …</source>
+        <translation>ファイル、メッセージ、イベントを検索…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/SearchWindow.qml" line="150"/>
+        <source>Search results list</source>
+        <translation>検索結果一覧</translation>
+    </message>
+</context>
+<context>
     <name>ServerPage</name>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
@@ -7004,12 +7170,12 @@ Server replied with error: %2</source>
 <context>
     <name>ShareeSearchField</name>
     <message>
-        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="39"/>
+        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Search for users or groups…</source>
         <translation>ユーザーまたはグループを検索する ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="39"/>
+        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Sharing is not available for this folder</source>
         <translation>このフォルダでは共有は利用できません</translation>
     </message>
@@ -7063,22 +7229,22 @@ Server replied with error: %2</source>
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="101"/>
+        <location filename="../src/gui/activity/qml/SyncStatus.qml" line="103"/>
         <source>Sync now</source>
         <translation>今すぐ同期</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="124"/>
+        <location filename="../src/gui/activity/qml/SyncStatus.qml" line="126"/>
         <source>Resolve conflicts</source>
         <translation>競合の解決</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="139"/>
+        <location filename="../src/gui/activity/qml/SyncStatus.qml" line="141"/>
         <source>Open browser</source>
         <translation>ブラウザーを開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="150"/>
+        <location filename="../src/gui/activity/qml/SyncStatus.qml" line="152"/>
         <source>Open settings</source>
         <translation>設定を開く</translation>
     </message>
@@ -7086,12 +7252,12 @@ Server replied with error: %2</source>
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="23"/>
+        <location filename="../src/gui/activity/qml/TalkReplyTextField.qml" line="23"/>
         <source>Reply to …</source>
         <translation>返信...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="59"/>
+        <location filename="../src/gui/activity/qml/TalkReplyTextField.qml" line="59"/>
         <source>Send reply to chat message</source>
         <translation>チャットメッセージに返信</translation>
     </message>
@@ -7099,44 +7265,49 @@ Server replied with error: %2</source>
 <context>
     <name>TrayAccountPopup</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="578"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="594"/>
         <source>No apps available</source>
-        <translation type="unfinished"/>
+        <translation>利用可能なアプリはありません</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="618"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="634"/>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>通知</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="640"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="658"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="653"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="671"/>
         <source>Recent activity</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="660"/>
-        <source>No recent activity</source>
-        <translation type="unfinished"/>
+        <translation>最近のアクティビティ</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
+        <source>No recent activity</source>
+        <translation>最近のアクティビティはありません</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="696"/>
         <source>More activity…</source>
-        <translation type="unfinished"/>
+        <translation>その他のアクティビティ…</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="709"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="760"/>
         <source>Resolve: %1</source>
-        <translation type="unfinished"/>
+        <translation>解決策: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="716"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
         <source>User status</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーステータス</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="800"/>
+        <source>Search</source>
+        <translation>検索</translation>
     </message>
 </context>
 <context>
@@ -7172,9 +7343,10 @@ Server replied with error: %2</source>
         <translation>ユーザグループとローカルフォルダメニュー</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="732"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="730"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="783"/>
         <source>Local folder</source>
-        <translation type="unfinished"/>
+        <translation>ローカルフォルダー</translation>
     </message>
 </context>
 <context>
@@ -7195,15 +7367,15 @@ Server replied with error: %2</source>
         <translation>%1をブラウザーで開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>アプリ</translation>
     </message>
 </context>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="34"/>
+        <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="36"/>
         <source>Search files, messages, events …</source>
         <translation>ファイルやメッセージ、イベントを検索</translation>
     </message>
@@ -7211,7 +7383,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchPlaceholderView</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchPlaceholderView.qml" line="30"/>
+        <location filename="../src/gui/search/UnifiedSearchPlaceholderView.qml" line="31"/>
         <source>Start typing to search</source>
         <translation>入力して検索を開始 </translation>
     </message>
@@ -7219,7 +7391,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultFetchMoreTrigger</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="36"/>
+        <location filename="../src/gui/search/UnifiedSearchResultFetchMoreTrigger.qml" line="37"/>
         <source>Load more results</source>
         <translation>結果をさらに読み込む</translation>
     </message>
@@ -7227,7 +7399,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultItemSkeleton</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="20"/>
+        <location filename="../src/gui/search/UnifiedSearchResultItemSkeleton.qml" line="20"/>
         <source>Search result skeleton.</source>
         <translation>検索結果のスケルトン。</translation>
     </message>
@@ -7235,7 +7407,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultListItem</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="35"/>
+        <location filename="../src/gui/search/UnifiedSearchResultListItem.qml" line="35"/>
         <source>Load more results</source>
         <translation>結果をさらに読み込む</translation>
     </message>
@@ -7243,7 +7415,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultNothingFound</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="31"/>
+        <location filename="../src/gui/search/UnifiedSearchResultNothingFound.qml" line="32"/>
         <source>No results for</source>
         <translation>該当する結果はありませんでした</translation>
     </message>
@@ -7251,7 +7423,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultSectionItem</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="24"/>
+        <location filename="../src/gui/search/UnifiedSearchResultSectionItem.qml" line="25"/>
         <source>Search results section %1</source>
         <translation>セクション %1 の検索結果</translation>
     </message>
@@ -7261,12 +7433,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="123"/>
         <source>Could not handle link</source>
-        <translation type="unfinished"/>
+        <translation>リンクを処理できませんでした</translation>
     </message>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="191"/>
         <source>Adding another account is not allowed in this client.</source>
-        <translation type="unfinished"/>
+        <translation>このクライアントでは、別のカウントを追加することはできません。</translation>
     </message>
 </context>
 <context>
@@ -7320,12 +7492,12 @@ Server replied with error: %2</source>
 <context>
     <name>UserStatusMessageView</name>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="42"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="43"/>
         <source>Status message</source>
         <translation>状態メッセージ</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="119"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="120"/>
         <source>What is your status?</source>
         <translation>現在のオンラインステータスは？</translation>
     </message>
@@ -7359,26 +7531,26 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="54"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="210"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="222"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="211"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="223"/>
         <source>Online</source>
         <translation>オンライン</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="65"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="212"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
         <source>Away</source>
         <translation>不在</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="77"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="214"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
         <source>Busy</source>
         <translation>忙しい</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="88"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="216"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
         <source>Do not disturb</source>
         <translation>取り込み中</translation>
     </message>
@@ -7389,7 +7561,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="101"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="218"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
         <source>Invisible</source>
         <translation>不可視</translation>
     </message>
@@ -7409,73 +7581,73 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>オンラインステータス</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>オンライン</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>離席中</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>取り込み中</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>取り込み中</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>全ての通知をミュート</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>非表示</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>オフライン</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>ステータスメッセージ</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
         <source>Choose emoji</source>
-        <translation type="unfinished"/>
+        <translation>絵文字を選択</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>現在の状況は?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
         <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
         <source>Clear status after</source>
-        <translation type="unfinished"/>
+        <translation>ステータスをクリアした後</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>ステータスメッセージを消去</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>ステータスメッセージを設定</translation>
     </message>
 </context>
 <context>
@@ -7484,7 +7656,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
         <source>%1, resets after %2</source>
         <extracomment>%1 is the status text and %2 is a time string.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1, %2 の後にリセット</translation>
     </message>
 </context>
 <context>
@@ -7568,7 +7740,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/WindowAccountHeader.qml" line="63"/>
         <source>Account avatar</source>
-        <translation type="unfinished"/>
+        <translation>アカウントのアバター</translation>
     </message>
 </context>
 <context>
@@ -7851,6 +8023,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
 </context>
 <context>
+    <name>FileProviderSettings</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
+        <source>Virtual files settings</source>
+        <translation>仮想ファイルの設定</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
+        <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
+        <translation>仮想ファイルは通常のファイルのように表示されますが、ローカルストレージの容量を使用しません。ファイルを開くと内容が自動的にダウンロードされます。仮想ファイルと従来の同期機能は同時に使用できません。</translation>
+    </message>
+</context>
+<context>
+    <name>Flow2AuthWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
+        <source>Browser Authentication</source>
+        <translation>ブラウザー認証</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
+        <source>Logo</source>
+        <translation>ロゴ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
+        <source>Switch to your browser to connect your account</source>
+        <translation>ブラウザーに切り替えてアカウントに接続します</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
+        <source>An error occurred while connecting. Please try again.</source>
+        <translation>接続中にエラーが発生しました。 もう一度お試しください。</translation>
+    </message>
+</context>
+<context>
     <name>OCC::AddCertificateDialog</name>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
@@ -7896,6 +8104,44 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
         <translation>選択した証明書ファイルにアクセスできませんでした。</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Flow2AuthWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation>ブラウザーを開くことができませんでした。リンクをブラウザーにコピーしてください。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
+        <source>Waiting for authorization</source>
+        <translation>承認を待機中</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
+        <source>Polling for authorization</source>
+        <translation>承認を問い合わせ中</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
+        <source>Starting authorization</source>
+        <translation>承認を開始</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
+        <source>Link copied to clipboard.</source>
+        <translation>リンクをクリップボードにコピーしました。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <source>Open Browser</source>
+        <translation>ブラウザーを開く</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="217"/>
+        <source>Copy Link</source>
+        <translation>リンクをコピー</translation>
     </message>
 </context>
 <context>

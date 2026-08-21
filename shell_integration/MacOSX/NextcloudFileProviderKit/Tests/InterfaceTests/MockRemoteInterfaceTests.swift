@@ -201,17 +201,23 @@ final class MockRemoteInterfaceTests: XCTestCase {
             FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let data = Data(repeating: 1, count: 8)
         try data.write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
         debugPrint(remoteInterface)
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
         let chunkSize = 3
+        let uploadId = UUID().uuidString
+        let chunkDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent(uploadId, isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: chunkDirectory) }
+
         var uploadedChunks = [RemoteFileChunk]()
         let result = await remoteInterface.chunkedUpload(
             localPath: fileUrl.path,
             remotePath: remotePath,
-            remoteChunkStoreFolderName: UUID().uuidString,
+            remoteChunkStoreFolderName: uploadId,
             chunkSize: chunkSize,
             remainingChunks: [],
             creationDate: .init(),
@@ -227,6 +233,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(result.nkError, .success)
         XCTAssertNotNil(result.file)
         XCTAssertEqual(result.file?.size, Int64(data.count))
+        XCTAssertEqual(result.chunksDirectory, chunkDirectory)
 
         let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
         let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))
@@ -238,6 +245,14 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(
             Int(lastUploadedChunk.size), data.count - ((lastUploadedChunkNameInt - 1) * chunkSize)
         )
+
+        let storedChunkNames = try FileManager.default.contentsOfDirectory(atPath: chunkDirectory.path).sorted()
+        XCTAssertEqual(storedChunkNames, ["1", "2", "3"])
+        XCTAssertEqual(try Data(contentsOf: chunkDirectory.appendingPathComponent("1")).count, chunkSize)
+        XCTAssertEqual(
+            try Data(contentsOf: chunkDirectory.appendingPathComponent("3")).count,
+            data.count - (chunkSize * 2)
+        )
     }
 
     func testResumedChunkedUpload() async throws {
@@ -245,9 +260,14 @@ final class MockRemoteInterfaceTests: XCTestCase {
             FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let data = Data(repeating: 1, count: 8)
         try data.write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
 
         let chunkSize = 3
         let uploadUuid = UUID().uuidString
+        let chunkDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent(uploadUuid, isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: chunkDirectory) }
+
         let previousUploadedChunkNum = 1
         let previousUploadedChunk = RemoteFileChunk(
             fileName: String(previousUploadedChunkNum),
@@ -292,6 +312,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(result.nkError, .success)
         XCTAssertNotNil(result.file)
         XCTAssertEqual(result.file?.size, Int64(data.count))
+        XCTAssertEqual(result.chunksDirectory, chunkDirectory)
 
         let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
         let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))
@@ -304,6 +325,9 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(
             Int(lastUploadedChunk.size), data.count - ((lastUploadedChunkNameInt - 1) * chunkSize)
         )
+
+        let storedChunkNames = try FileManager.default.contentsOfDirectory(atPath: chunkDirectory.path).sorted()
+        XCTAssertEqual(storedChunkNames, ["2", "3"])
     }
 
     func testMove() async {
@@ -503,7 +527,12 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(targetRootFile?.ocId, expectedRoot?.identifier)
         XCTAssertEqual(targetRootFile?.fileName, NextcloudKit.shared.nkCommonInstance.rootFileName) // NextcloudKit gives the root dir this name
         XCTAssertEqual(targetRootFile?.serverUrl, "https://mock.nc.com/remote.php/dav/files/testUserId") // NextcloudKit gives the root dir this url
-        XCTAssertEqual(targetRootFile?.date, expectedRoot?.creationDate)
+        // `toNKFile()` maps the item's `modificationDate` onto `NKFile.date`, so compare against
+        // that — not `creationDate`. `MockRemoteItem.init` defaults `creationDate` and
+        // `modificationDate` to two separate `Date()` calls, which are usually (but not always)
+        // identical; comparing `date` to `creationDate` therefore passed only when the clock did
+        // not tick between those two calls, and flaked on CI when it did.
+        XCTAssertEqual(targetRootFile?.date, expectedRoot?.modificationDate)
         XCTAssertEqual(targetRootFile?.etag, expectedRoot?.versionIdentifier)
 
         let resultChildren = await remoteInterface.enumerate(

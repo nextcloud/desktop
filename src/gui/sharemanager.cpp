@@ -200,7 +200,6 @@ LinkShare::LinkShare(AccountPtr account,
     const QString &uidFileOwner,
     const QString &ownerDisplayName,
     const QString &path,
-    const QString &name,
     const QString &token,
     Permissions permissions,
     bool isPasswordSet,
@@ -210,7 +209,6 @@ LinkShare::LinkShare(AccountPtr account,
     const QString &label,
     const bool hideDownload)
     : Share(account, id, uidOwner, uidFileOwner, ownerDisplayName, path, Share::TypeLink, isPasswordSet, permissions)
-    , _name(name)
     , _token(token)
     , _note(note)
     , _expireDate(expireDate)
@@ -230,11 +228,6 @@ bool LinkShare::getShowFileListing() const
     return _permissions & SharePermissionRead;
 }
 
-QString LinkShare::getName() const
-{
-    return _name;
-}
-
 QString LinkShare::getNote() const
 {
     return _note;
@@ -248,11 +241,6 @@ QString LinkShare::getLabel() const
 bool LinkShare::getHideDownload() const
 {
     return _hideDownload;
-}
-
-void LinkShare::setName(const QString &name)
-{
-    createShareJob(&LinkShare::slotNameSet)->setName(getId(), name);
 }
 
 void LinkShare::setNote(const QString &note)
@@ -308,12 +296,6 @@ void LinkShare::slotExpireDateSet(const QJsonDocument &reply, const QVariant &va
         _expireDate = value.toDate();
     }
     emit expireDateSet();
-}
-
-void LinkShare::slotNameSet(const QJsonDocument &, const QVariant &value)
-{
-    _name = value.toString();
-    emit nameSet();
 }
 
 void LinkShare::slotLabelSet(const QJsonDocument &, const QVariant &label)
@@ -663,7 +645,6 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data) 
         data.value("uid_file_owner"_L1).toString(),
         data.value("displayname_owner"_L1).toString(),
         data.value("path"_L1).toString(),
-        data.value("name"_L1).toString(),
         data.value("token"_L1).toString(),
         (Share::Permissions)data.value("permissions"_L1).toInt(),
         data.value("share_with"_L1).isString(), // has password?

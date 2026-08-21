@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "notificationhandler.h"
+#include "activity/notificationhandler.h"
+#include "trayaccountmenupolicy.h"
 #include "usermodel.h"
 #include "common/filesystembase.h"
 
@@ -21,9 +22,7 @@
 #include "syncresult.h"
 #include "syncfileitem.h"
 #include "systray.h"
-#include "tray/activitylistmodel.h"
-#include "tray/unifiedsearchresultslistmodel.h"
-#include "tray/talkreply.h"
+#include "activity/activitylistmodel.h"
 #include "userstatusconnector.h"
 #include "common/utility.h"
 
@@ -435,7 +434,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _account(account)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data(), this))
-    , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data(), this))
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);
@@ -482,8 +480,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_activityModel, &ActivityListModel::recentActivityPreviewDataChanged, this, &User::recentActivitiesChanged);
     connect(_activityModel, &ActivityListModel::notificationPreviewDataChanged, this, &User::trayNotificationsChanged);
     connect(_activityModel, &ActivityListModel::activityListChanged, this, &User::refreshAccountAlert);
-
-    connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
 
     connect(_account->account().data(), &Account::userCertificateNeedsMigrationChanged, this, [this] () {
         auto certificateNeedMigration = Activity{};
@@ -859,7 +855,7 @@ void User::slotFileProviderInsufficientQuotaForItem(const QString &domainIdentif
     // user-visible refusal can produce many `reportInsufficientQuotaForItem` calls. Dedupe
     // per (domain, relativePath) so the activity list shows one row per affected file rather
     // than one per retry. See https://github.com/nextcloud/desktop/issues/9598.
-    const auto dedupKey = domainIdentifier + QLatin1Char('|') + relativePath;
+    const QString dedupKey = domainIdentifier + QLatin1Char('|') + relativePath;
     if (_reportedQuotaItems.contains(dedupKey)) {
         qCDebug(lcActivity) << "Suppressing duplicate quota-item entry for" << relativePath << "in domain" << domainIdentifier;
         return;
@@ -957,7 +953,7 @@ void User::slotFileProviderRetryUploads(const QString &domainIdentifier)
     // Re-arm dedupe so the next quota event for this domain produces a fresh summary entry
     // and fresh per-item entries (one per affected file, not one per retry).
     _reportedQuotaSummaryDomains.remove(domainIdentifier);
-    const auto domainPrefix = domainIdentifier + QLatin1Char('|');
+    const QString domainPrefix = domainIdentifier + QLatin1Char('|');
     QMutableSetIterator<QString> it(_reportedQuotaItems);
     while (it.hasNext()) {
         if (it.next().startsWith(domainPrefix)) {
@@ -1578,6 +1574,11 @@ ActivityListModel *User::getActivityModel()
     return _activityModel;
 }
 
+void User::refreshActivities()
+{
+    slotRefresh();
+}
+
 QVariantList User::recentActivities() const
 {
     return _activityModel->recentActivityPreviewData();
@@ -1643,11 +1644,6 @@ void User::refreshAccountAlert()
 
     _accountAlert = accountAlert;
     emit accountAlertChanged();
-}
-
-UnifiedSearchResultsListModel *User::getUnifiedSearchResultsListModel() const
-{
-    return _unifiedSearchResultsModel;
 }
 
 void User::openLocalFolder() const
@@ -1720,8 +1716,21 @@ void User::openFolderLocallyOrInBrowser(const QString &fullRemotePath)
 
 void User::login() const
 {
-    _account->account()->resetRejectedCertificates();
-    _account->signIn();
+    switch (TrayAccountMenuPolicy::reconnectMode(
+        _account->isConnected(),
+        _account->isSignedOut(),
+        !isPublicShareLink())) {
+    case TrayAccountMenuPolicy::ReconnectMode::None:
+        return;
+    case TrayAccountMenuPolicy::ReconnectMode::SignIn:
+        _account->account()->resetRejectedCertificates();
+        _account->signIn();
+        break;
+    case TrayAccountMenuPolicy::ReconnectMode::RetryConnection:
+        _account->account()->resetRejectedCertificates();
+        _account->freshConnectionAttempt();
+        break;
+    }
 }
 
 void User::logout() const
@@ -1916,6 +1925,256 @@ void User::slotSendReplyMessage(const int activityIndex, const QString &token, c
     connect(talkReply, &TalkReply::replyMessageSent, this, [&, activityIndex](const QString &message) {
         _activityModel->setReplyMessageSent(activityIndex, message);
     });
+void User::submitAssistantQuestion(const QString &question)
+{
+    const auto trimmedQuestion = question.trimmed();
+    if (trimmedQuestion.isEmpty()) {
+        return;
+    }
+
+    if (!isNcAssistantEnabled()) {
+        _assistantError = tr("Assistant is not available for this account.");
+        emit assistantErrorChanged();
+        return;
+    }
+
+    if (_assistantRequestInProgress) {
+        _assistantError = tr("Assistant is already processing a request.");
+        emit assistantErrorChanged();
+        return;
+    }
+
+    if (!_assistantConnector) {
+        _assistantConnector = new OcsAssistantConnector(_account->account(), this);
+        connect(_assistantConnector, &OcsAssistantConnector::taskTypesFetched, this, &User::slotAssistantTaskTypesFetched);
+        connect(_assistantConnector, &OcsAssistantConnector::tasksFetched, this, &User::slotAssistantTasksFetched);
+        connect(_assistantConnector, &OcsAssistantConnector::taskScheduled, this, &User::slotAssistantTaskScheduled);
+        connect(_assistantConnector, &OcsAssistantConnector::taskDeleted, this, &User::slotAssistantTaskDeleted);
+        connect(_assistantConnector, &OcsAssistantConnector::requestError, this, &User::slotAssistantRequestError);
+    }
+
+    QStringList history;
+    history.reserve(_assistantMessages.size());
+    for (const auto &message : std::as_const(_assistantMessages)) {
+        const auto entry = message.toMap();
+        const auto role = entry.value(QStringLiteral("role")).toString();
+        const auto text = entry.value(QStringLiteral("text")).toString();
+        if (text.isEmpty()) {
+            continue;
+        }
+        const auto historyRole = (role == QLatin1String("assistant")) ? QStringLiteral("assistant") : QStringLiteral("human");
+        const QJsonObject historyEntry{
+            {QStringLiteral("role"), historyRole},
+            {QStringLiteral("content"), text},
+        };
+        history.append(QString::fromUtf8(QJsonDocument(historyEntry).toJson(QJsonDocument::Compact)));
+    }
+
+    _assistantQuestion = trimmedQuestion;
+    emit assistantQuestionChanged();
+
+    _assistantError.clear();
+    emit assistantErrorChanged();
+
+    _assistantResponse = tr("Sending your request\u00A0…");
+    emit assistantResponseChanged();
+
+    _assistantMessages.append(QVariantMap{
+        {QStringLiteral("role"), QStringLiteral("user")},
+        {QStringLiteral("text"), _assistantQuestion},
+    });
+    emit assistantMessagesChanged();
+
+    _assistantRequestInProgress = true;
+    emit assistantRequestInProgressChanged();
+
+    _assistantPollAttempts = 0;
+    _assistantTaskId = -1;
+
+    if (_assistantTaskType.isEmpty()) {
+        _assistantConnector->fetchTaskTypes();
+        return;
+    }
+
+    _assistantConnector->scheduleTask(_assistantQuestion, _assistantTaskType, history);
+}
+
+void User::clearAssistantResponse()
+{
+    const auto hadAssistantData = !_assistantResponse.isEmpty()
+        || !_assistantError.isEmpty()
+        || !_assistantQuestion.isEmpty()
+        || !_assistantMessages.isEmpty();
+
+    if (_assistantPollTimer.isActive()) {
+        _assistantPollTimer.stop();
+    }
+
+    const auto taskIdToDelete = _assistantTaskId;
+    _assistantTaskId = -1;
+
+    if (_assistantRequestInProgress) {
+        _assistantRequestInProgress = false;
+        emit assistantRequestInProgressChanged();
+    }
+
+    if (!hadAssistantData) {
+        if (_assistantConnector && taskIdToDelete > 0) {
+            _assistantConnector->deleteTask(taskIdToDelete);
+        }
+        return;
+    }
+    _assistantQuestion.clear();
+    _assistantResponse.clear();
+    _assistantError.clear();
+    _assistantMessages.clear();
+    emit assistantQuestionChanged();
+    emit assistantResponseChanged();
+    emit assistantErrorChanged();
+    emit assistantMessagesChanged();
+    if (_assistantConnector && taskIdToDelete > 0) {
+        _assistantConnector->deleteTask(taskIdToDelete);
+    }
+}
+
+void User::slotAssistantPoll()
+{
+    if (!_assistantConnector || _assistantTaskType.isEmpty()) {
+        _assistantPollTimer.stop();
+        return;
+    }
+
+    if (_assistantPollAttempts >= _assistantMaxPollAttempts) {
+        _assistantPollTimer.stop();
+        _assistantRequestInProgress = false;
+        emit assistantRequestInProgressChanged();
+        if (_assistantResponse.isEmpty()) {
+            _assistantResponse = tr("No response yet. Please try again later.");
+            emit assistantResponseChanged();
+        }
+        return;
+    }
+
+    ++_assistantPollAttempts;
+    _assistantConnector->fetchTasks(_assistantTaskType);
+}
+
+void User::slotAssistantTaskTypesFetched(const QJsonDocument &json, int statusCode)
+{
+    if (statusCode < assistantSuccessMinStatusCode || statusCode >= assistantSuccessMaxStatusCode) {
+        slotAssistantRequestError(QStringLiteral("taskTypes"), statusCode);
+        return;
+    }
+
+    _assistantTaskType = assistantTaskTypeIdFromResponse(json);
+    if (_assistantTaskType.isEmpty()) {
+        _assistantError = tr("No supported assistant task types were returned.");
+        emit assistantErrorChanged();
+        _assistantRequestInProgress = false;
+        emit assistantRequestInProgressChanged();
+        return;
+    }
+
+    QStringList history;
+    history.reserve(_assistantMessages.size());
+    for (const auto &message : std::as_const(_assistantMessages)) {
+        const auto entry = message.toMap();
+        const auto role = entry.value(QStringLiteral("role")).toString();
+        const auto text = entry.value(QStringLiteral("text")).toString();
+        if (text.isEmpty()) {
+            continue;
+        }
+        const auto historyRole = (role == QLatin1String("assistant")) ? QStringLiteral("assistant") : QStringLiteral("human");
+        const QJsonObject historyEntry{
+            {QStringLiteral("role"), historyRole},
+            {QStringLiteral("content"), text},
+        };
+        history.append(QString::fromUtf8(QJsonDocument(historyEntry).toJson(QJsonDocument::Compact)));
+    }
+    _assistantConnector->scheduleTask(_assistantQuestion, _assistantTaskType, history);
+}
+
+void User::slotAssistantTasksFetched(const QJsonDocument &json, int statusCode)
+{
+    if (statusCode < assistantSuccessMinStatusCode || statusCode >= assistantSuccessMaxStatusCode) {
+        slotAssistantRequestError(QStringLiteral("tasks"), statusCode);
+        return;
+    }
+
+    const auto tasks = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("tasks"_L1).toArray();
+    auto output = QString{};
+    auto taskIdToDelete = qint64{-1};
+    for (const auto &entry : tasks) {
+        const auto taskObject = entry.toObject();
+        const auto taskId = static_cast<qint64>(taskObject.value("id"_L1).toDouble(-1));
+        if (_assistantTaskId > 0 && taskId != _assistantTaskId) {
+            continue;
+        }
+        output = assistantOutputFromTask(taskObject);
+        if (!assistantTaskStillRunning(taskObject)) {
+            taskIdToDelete = taskId;
+            break;
+        }
+    }
+
+    if (taskIdToDelete == -1) {
+        if (!_assistantPollTimer.isActive()) {
+            _assistantPollAttempts = 0;
+            _assistantPollTimer.start();
+        }
+        return;
+    }
+
+    _assistantPollTimer.stop();
+    _assistantResponse = output;
+    emit assistantResponseChanged();
+    _assistantMessages.append(QVariantMap{
+        {QStringLiteral("role"), QStringLiteral("assistant")},
+        {QStringLiteral("text"), _assistantResponse},
+    });
+    emit assistantMessagesChanged();
+    _assistantResponse.clear();
+    emit assistantResponseChanged();
+    _assistantRequestInProgress = false;
+    emit assistantRequestInProgressChanged();
+    if (taskIdToDelete > 0) {
+        _assistantConnector->deleteTask(taskIdToDelete);
+    }
+}
+
+void User::slotAssistantTaskScheduled(const QJsonDocument &json, int statusCode)
+{
+    if (statusCode < assistantSuccessMinStatusCode || statusCode >= assistantSuccessMaxStatusCode) {
+        slotAssistantRequestError(QStringLiteral("schedule"), statusCode);
+        return;
+    }
+
+    _assistantTaskId = assistantTaskIdFromSchedule(json);
+    _assistantResponse = tr("Waiting for the assistant response…");
+    emit assistantResponseChanged();
+
+    _assistantPollAttempts = 0;
+    if (!_assistantPollTimer.isActive()) {
+        _assistantPollTimer.start();
+    }
+}
+
+void User::slotAssistantTaskDeleted(int statusCode)
+{
+    if (statusCode >= assistantSuccessMinStatusCode && statusCode < assistantSuccessMaxStatusCode) {
+        return;
+    }
+    slotAssistantRequestError(QStringLiteral("deleteTask"), statusCode);
+}
+
+void User::slotAssistantRequestError(const QString &context, int statusCode)
+{
+    _assistantPollTimer.stop();
+    _assistantRequestInProgress = false;
+    emit assistantRequestInProgressChanged();
+    _assistantError = tr("Assistant request failed (%1).").arg(statusCode);
+    emit assistantErrorChanged();
+    qCWarning(lcActivity) << "Assistant request error:" << context << statusCode;
 }
 
 void User::forceSyncNow() const
@@ -2597,15 +2856,6 @@ void UserModel::fetchCurrentActivityModel()
         return;
 
     _users[currentUserId()]->slotRefresh();
-}
-
-void UserModel::fetchActivityModel(const int id)
-{
-    if (id < 0 || id >= _users.size()) {
-        return;
-    }
-
-    _users[id]->slotRefresh();
 }
 
 void UserModel::fetchActivityPreview(const int id)

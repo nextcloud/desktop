@@ -19,8 +19,8 @@
 
 #include "accountfwd.h"
 #include "accountmanager.h"
-#include "activitydata.h"
-#include "activitylistmodel.h"
+#include "activity/activitydata.h"
+#include "activity/activitylistmodel.h"
 #include "folderman.h"
 #include "userinfo.h"
 #include "userstatusconnector.h"
@@ -28,6 +28,7 @@
 #include <chrono>
 
 namespace OCC {
+class OcsAssistantConnector;
 class UnifiedSearchResultsListModel;
 
 
@@ -81,7 +82,6 @@ class User : public QObject
     Q_PROPERTY(bool syncStatusOk READ syncStatusOk NOTIFY syncStatusChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
     Q_PROPERTY(bool needsToSignTermsOfService READ needsToSignTermsOfService NOTIFY accountStateChanged)
-    Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
     Q_PROPERTY(QVariantList groupFolders READ groupFolders NOTIFY groupFoldersChanged)
     Q_PROPERTY(bool canLogout READ canLogout CONSTANT)
     Q_PROPERTY(bool isAssistantEnabled READ isNcAssistantEnabled NOTIFY assistantStateChanged)
@@ -98,7 +98,9 @@ public:
     void setCurrentUser(const bool &isCurrent);
     [[nodiscard]] Folder *getFolder() const;
     ActivityListModel *getActivityModel();
-    [[nodiscard]] UnifiedSearchResultsListModel *getUnifiedSearchResultsListModel() const;
+
+    /** @brief Requests a refresh of this user's activities. */
+    void refreshActivities();
     void openLocalFolder() const;
 #ifdef BUILD_FILE_PROVIDER_MODULE
     void openFileProviderDomain() const;
@@ -125,6 +127,7 @@ public:
     [[nodiscard]] QColor headerTextColor() const;
     [[nodiscard]] AccountAppList appList() const;
     [[nodiscard]] QImage avatar() const;
+    /** @brief Signs in a signed-out account or retries another disconnected state. */
     void login() const;
     void logout() const;
     void removeAccount() const;
@@ -157,7 +160,6 @@ signals:
     void headerTextColorChanged();
     void accentColorChanged();
     void syncStatusChanged();
-    void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void groupFoldersChanged();
     void assistantStateChanged();
 
@@ -184,7 +186,6 @@ public slots:
     void slotRefreshImmediately();
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
     void slotRebuildNavigationAppList();
-    void slotSendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void forceSyncNow() const;
     void openServer() const;
     void slotAccountCapabilitiesChangedRefreshGroupFolders();
@@ -249,7 +250,6 @@ private:
     AccountStatePtr _account;
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
-    UnifiedSearchResultsListModel *_unifiedSearchResultsModel;
     QVariantMap _accountAlert;
     
     QVariantList _trayFolderInfos;
@@ -375,7 +375,6 @@ signals:
 
 public slots:
     void fetchCurrentActivityModel();
-    Q_INVOKABLE void fetchActivityModel(int id);
     Q_INVOKABLE void fetchActivityPreview(int id);
     Q_INVOKABLE void dismissNotification(int id, int activityIndex);
     Q_INVOKABLE void triggerNotificationAction(int id, int activityIndex, int actionIndex);

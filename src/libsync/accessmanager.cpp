@@ -50,6 +50,35 @@ QByteArray AccessManager::generateRequestId()
 
 QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
+    const auto opToText = [] (QNetworkAccessManager::Operation op) -> QByteArray {
+        auto result = QByteArray{};
+        switch (op) {
+        case QNetworkAccessManager::HeadOperation:
+            result = "HEAD";
+            break;
+        case QNetworkAccessManager::GetOperation:
+            result = "GET";
+            break;
+        case QNetworkAccessManager::PutOperation:
+            result = "PUT";
+            break;
+        case QNetworkAccessManager::PostOperation:
+            result = "POST";
+            break;
+        case QNetworkAccessManager::DeleteOperation:
+            result = "DELETE";
+            break;
+        case QNetworkAccessManager::CustomOperation:
+            result = "CUSTOM";
+            break;
+        case QNetworkAccessManager::UnknownOperation:
+            result = "UNKNOWN";
+            break;
+        };
+
+        return result;
+    };
+
     QNetworkRequest newRequest(request);
 
     // Respect request specific user agent if any
@@ -69,7 +98,7 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 
     // Generate a new request id
     QByteArray requestId = generateRequestId();
-    qInfo(lcAccessManager) << op << verb << newRequest.url().toString() << "has X-Request-ID" << requestId;
+    qInfo(lcAccessManager) << opToText(op) << verb << newRequest.url().toString() << "has X-Request-ID" << requestId;
     newRequest.setRawHeader("X-Request-ID", requestId);
 
     if (newRequest.url().scheme() == "https") { // Not for "http": QTBUG-61397

@@ -53,7 +53,6 @@ set(client_UI_SRCS
     proxyauthdialog.ui
     mnemonicdialog.ui
     vfsdownloaderrordialog.ui
-    wizard/flow2authwidget.ui
 )
 
 qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
@@ -86,6 +85,7 @@ set(client_SRCS
     conflictsolver.cpp
     connectionvalidator.h
     connectionvalidator.cpp
+    localnetworkpermission.h
     editlocallyjob.h
     editlocallyjob.cpp
     editlocallymanager.h
@@ -222,30 +222,49 @@ set(client_SRCS
     filedetails/shareemodel.cpp
     filedetails/sortedsharemodel.h
     filedetails/sortedsharemodel.cpp
+    governance/governancenetworkjob.h
+    governance/governancenetworkjob.cpp
+    governance/getgovernancelabels.h
+    governance/getgovernancelabels.cpp
+    governance/getavailablegovernancelabels.h
+    governance/getavailablegovernancelabels.cpp
+    governance/applygovernancelabel.h
+    governance/applygovernancelabel.cpp
+    governance/deletegovernancelabel.h
+    governance/deletegovernancelabel.cpp
+    governance/typedgovernancenetworkjob.h
+    governance/typedgovernancenetworkjob.cpp
+    governance/ocsgovernancejob.h
+    governance/ocsgovernancejob.cpp
+    governance/typedwithlabelidgovernancenetworkjob.h
+    governance/typedwithlabelidgovernancenetworkjob.cpp
+    governance/governancelabelinfo.h
+    governance/governancelabelinfo.cpp
+    governance/governancelabelslistmodel.h
+    governance/governancelabelslistmodel.cpp
+    governance/governancetypes.h
     tray/svgimageprovider.h
     tray/svgimageprovider.cpp
-    tray/syncstatussummary.h
-    tray/syncstatussummary.cpp
-    tray/activitydata.h
-    tray/activitydata.cpp
-    tray/activitylistmodel.h
-    tray/activitylistmodel.cpp
-    tray/unifiedsearchresult.h
+    activity/syncstatussummary.h
+    activity/syncstatussummary.cpp
+    activity/activitydata.h
+    activity/activitydata.cpp
+    activity/activitylistmodel.h
+    activity/activitylistmodel.cpp
     tray/asyncimageresponse.cpp
-    tray/unifiedsearchresult.cpp
-    tray/unifiedsearchresultslistmodel.h
     tray/trayimageprovider.cpp
+    tray/trayaccountmenupolicy.h
+    tray/trayactivationpolicy.h
     tray/trayaccountappsmodel.h
     tray/trayaccountappsmodel.cpp
-    tray/unifiedsearchresultslistmodel.cpp
     tray/usermodel.h
     tray/usermodel.cpp
-    tray/notificationhandler.h
-    tray/notificationhandler.cpp
-    tray/sortedactivitylistmodel.h
-    tray/sortedactivitylistmodel.cpp
+    activity/notificationhandler.h
+    activity/notificationhandler.cpp
+    activity/sortedactivitylistmodel.h
+    activity/sortedactivitylistmodel.cpp
     creds/credentialsfactory.h
-    tray/talkreply.cpp
+    activity/talkreply.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.h
     creds/httpcredentialsgui.cpp
@@ -253,16 +272,12 @@ set(client_SRCS
     creds/flow2auth.cpp
     creds/webflowcredentials.h
     creds/webflowcredentials.cpp
-    creds/webflowcredentialsdialog.h
-    creds/webflowcredentialsdialog.cpp
     wizard/accountwizardcontroller.h
     wizard/accountwizardcontroller.cpp
-    wizard/flow2authwidget.h
-    wizard/flow2authwidget.cpp
-    wizard/providersignuppage.h
-    wizard/providersignuppage.cpp
-    wizard/linklabel.h
-    wizard/linklabel.cpp
+    wizard/browserreauthcontroller.h
+    wizard/browserreauthcontroller.cpp
+    wizard/browserreauthwindow.h
+    wizard/browserreauthwindow.cpp
     integration/fileactionsmodel.h
     integration/fileactionsmodel.cpp
     )
@@ -285,15 +300,20 @@ IF(BUILD_UPDATER)
     )
 endif()
 
+add_subdirectory(search)
+
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
     list(APPEND client_SRCS systray_mac_common.mm)
     list(APPEND client_SRCS notificationsoundplayer_mac.mm)
     list(APPEND client_SRCS
+        macOS/localnetworkpermission.mm)
+    list(APPEND client_SRCS
         # macOS tray account popup: one type per header/implementation pair.
         # Shared foundation first, then the base hover view, rows, popups and the
         # public entry point (OCC::showMacOSTrayPopup / hideMacOSTrayPopup).
         macOS/trayaccountpopup/trayaccountpopupmetrics.h
+        macOS/trayaccountpopup/trayaccountpopuppresentation.h
         macOS/trayaccountpopup/trayaccountpopupimageutils.h
         macOS/trayaccountpopup/trayaccountpopupimageutils.mm
         macOS/trayaccountpopup/trayaccountpopupviewutils.h
@@ -331,6 +351,12 @@ IF( APPLE )
     list(APPEND client_SRCS
         ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncProtocol.h
         ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncAppProtocol.h
+        ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncBrokerProtocol.h
+        ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncBrokerClientProtocol.h
+        macOS/findersyncbrokeridentity.h
+        macOS/findersyncbrokeridentity.cpp
+        macOS/findersyncbrokerregistrar.h
+        macOS/findersyncbrokerregistrar_mac.mm
         macOS/findersyncxpc.h
         macOS/findersyncxpc_mac.mm
         macOS/findersyncservice.h
@@ -386,7 +412,7 @@ IF( APPLE )
     endif()
 ENDIF()
 IF( NOT APPLE )
-    list(APPEND client_SRCS trayaccountpopup_qt.cpp)
+    list(APPEND client_SRCS trayaccountpopup_qt.cpp localnetworkpermission.cpp)
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )
@@ -407,8 +433,6 @@ IF( APPLE )
 ENDIF()
 
 set(3rdparty_SRC
-    ../3rdparty/QProgressIndicator/QProgressIndicator.h
-    ../3rdparty/QProgressIndicator/QProgressIndicator.cpp
     ../3rdparty/kmessagewidget/kmessagewidget.h
     ../3rdparty/kmessagewidget/kmessagewidget.cpp
     ../3rdparty/kirigami/wheelhandler.h
@@ -572,6 +596,9 @@ target_link_libraries(nextcloudCore
   Qt::QuickWidgets
   KF6::Archive
   KDAB::kdsingleapplication
+
+  nextcloudGuiSearch
+  nextcloudGuiSearchplugin
   )
 
 if(KF6GuiAddons_FOUND)
@@ -605,7 +632,6 @@ set_target_properties(nextcloudCore
 
 target_include_directories(nextcloudCore
   PUBLIC
-  ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
   ${CMAKE_SOURCE_DIR}/src/3rdparty/kirigami
   ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
   ${CMAKE_CURRENT_BINARY_DIR}
@@ -743,7 +769,10 @@ if (APPLE)
     else()
         target_link_libraries(nextcloudCore PUBLIC "-framework UserNotifications")
     endif()
-    target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework Foundation")
+    target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework Foundation" "-framework Network")
+    # ServiceManagement for SMAppService, used to register the FinderSync broker login item.
+    # src/csync links it too, for utility_mac.mm, but PRIVATE — so it does not propagate here.
+    target_link_libraries(nextcloudCore PRIVATE "-framework ServiceManagement")
     target_compile_definitions(nextcloudCore PRIVATE NEXTCLOUD_HAS_NATIVE_SOUND_BACKEND)
 endif()
 

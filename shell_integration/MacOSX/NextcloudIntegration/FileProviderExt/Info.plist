@@ -63,6 +63,14 @@
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvictDescendants == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.EvictDescendantsAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Remove downloaded items</string>
+			</dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayFileActions == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.FileActionsAction</string>
@@ -93,6 +101,8 @@
 		<key>NSExtensionFileProviderDocumentGroup</key>
 		<string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
 		<key>NSExtensionFileProviderSupportsEnumeration</key>
+		<true/>
+		<key>NSExtensionFileProviderSupportsFailingUploadOnConflict</key>
 		<true/>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.fileprovider-nonui</string>

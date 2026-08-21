@@ -62,19 +62,20 @@ public extension FilesDatabaseManager {
         }
 
         let incomingOcId = incoming.ocId
-        let incomingAccount = incoming.account
         let incomingServerUrl = incoming.serverUrl
         let incomingFileName = incoming.fileName
 
         let candidates = database
             .objects(RealmItemMetadata.self)
-            .where {
-                $0.account == incomingAccount
-                    && $0.serverUrl == incomingServerUrl
-                    && $0.fileName == incomingFileName
-                    && $0.ocId != incomingOcId
-                    && !$0.deleted
-                    && !$0.isLockFileOfLocalOrigin
+            .where { item in
+                RealmItemMetadata.hasLocation(
+                    item,
+                    serverUrl: incomingServerUrl,
+                    fileName: incomingFileName
+                )
+                    && item.ocId != incomingOcId
+                    && !item.deleted
+                    && !item.isLockFileOfLocalOrigin
             }
 
         var evicted: [String] = []
@@ -111,7 +112,7 @@ public extension FilesDatabaseManager {
     /// already persisted in the database.
     ///
     /// Buckets all non-deleted, non-lock-file rows (except the synthetic
-    /// root-container row) by `(account, serverUrl, fileName)`. Within each
+    /// root-container row) by `(serverUrl, fileName)`. Within each
     /// bucket containing more than one row, picks a winner among the
     /// settled (non-in-flight) rows by greatest ``ItemMetadata/syncTime``
     /// — with the lexicographically greater `ocId` breaking ties — and
@@ -137,7 +138,6 @@ public extension FilesDatabaseManager {
             }
 
         struct LogicalKey: Hashable {
-            let account: String
             let serverUrl: String
             let fileName: String
         }
@@ -145,7 +145,10 @@ public extension FilesDatabaseManager {
         var buckets: [LogicalKey: [RealmItemMetadata]] = [:]
 
         for candidate in candidates {
-            let key = LogicalKey(account: candidate.account, serverUrl: candidate.serverUrl, fileName: candidate.fileName)
+            let key = LogicalKey(
+                serverUrl: candidate.normalizedServerUrl,
+                fileName: candidate.normalizedFileName
+            )
             buckets[key, default: []].append(candidate)
         }
 

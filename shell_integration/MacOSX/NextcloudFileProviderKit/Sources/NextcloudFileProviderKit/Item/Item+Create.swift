@@ -137,15 +137,13 @@ public extension Item {
         log: any FileProviderLogging
     ) async -> (Item?, Error?) {
         let logger = FileProviderLogger(category: "Item", log: log)
-        let chunkUploadId =
-            itemTemplate.itemIdentifier.rawValue.replacingOccurrences(of: "/", with: "")
         let (ocId, etag, date, size, error) = await upload(
             fileLocatedAt: localPath,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
             inChunksSized: forcedChunkSize,
-            usingChunkUploadId: chunkUploadId,
+            forItemWithIdentifier: itemTemplate.itemIdentifier.rawValue,
             dbManager: dbManager,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
@@ -201,16 +199,6 @@ public extension Item {
             account: \(account.ncKitAccount)
             """
         )
-
-        if let expectedSize = itemTemplate.documentSize??.int64Value, size != expectedSize {
-            logger.info(
-                """
-                Created item upload reported as successful, but there are differences between
-                the received file size (\(Int(size ?? -1)))
-                and the original file size (\(itemTemplate.documentSize??.int64Value ?? 0))
-                """
-            )
-        }
 
         let contentType: String = if itemTemplate.contentType == .aliasFile {
             UTType.aliasFile.identifier

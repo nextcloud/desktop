@@ -37,7 +37,10 @@ public:
 
     void clearTextMessages();
 
-    static OCC::AccountPtr createAccount(const QString &username = "user", const QString &password = "password");
+    static OCC::AccountPtr createAccount(const QString &username = "user",
+        const QString &password = "password",
+        const QUrl &accountUrl = QUrl(QStringLiteral("http://localhost")),
+        const QUrl &webSocketUrl = QUrl(QStringLiteral("ws://localhost:12345")));
 
 signals:
     void closed();

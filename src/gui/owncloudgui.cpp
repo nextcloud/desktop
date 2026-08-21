@@ -26,6 +26,8 @@
 #include "theme.h"
 #include "wheelhandler.h"
 #include "syncconflictsmodel.h"
+#include "conflictdialog.h"
+#include "conflictsolver.h"
 #include "syncengine.h"
 #include "wizard/accountwizardcontroller.h"
 #include "filedetails/datefieldbackend.h"
@@ -33,13 +35,20 @@
 #include "filedetails/shareemodel.h"
 #include "filedetails/sharemodel.h"
 #include "filedetails/sortedsharemodel.h"
-#include "tray/sortedactivitylistmodel.h"
-#include "tray/syncstatussummary.h"
+#include "activity/sortedactivitylistmodel.h"
+#include "activity/syncstatussummary.h"
+#include "tray/trayactivationpolicy.h"
 #include "tray/trayaccountappsmodel.h"
-#include "tray/unifiedsearchresultslistmodel.h"
+#include "search/unifiedsearchresultslistmodel.h"
 #include "tray/usermodel.h"
 #include "integration/fileactionsmodel.h"
+#include "governance/applygovernancelabel.h"
+#include "governance/deletegovernancelabel.h"
+#include "governance/getavailablegovernancelabels.h"
+#include "governance/getgovernancelabels.h"
+#include "governance/governancelabelslistmodel.h"
 #include "filesystem.h"
+#include "common/utility_mac_sandbox.h"
 
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "cloudproviders/cloudprovidermanager.h"
@@ -48,6 +57,7 @@
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QDir>
+#include <QFileDialog>
 #include <QGuiApplication>
 #include <QMessageBox>
 #include <QQmlApplicationEngine>
@@ -155,6 +165,11 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
     qmlRegisterType<FileActionsModel>("com.nextcloud.desktopclient", 1, 0, "FileActionsModel");
     qmlRegisterType<AccountWizardController>("com.nextcloud.desktopclient", 1, 0, "AccountWizardController");
+    qmlRegisterType<ApplyGovernanceLabel>("com.nextcloud.desktopclient", 1, 0, "ApplyGovernanceLabel");
+    qmlRegisterType<DeleteGovernanceLabel>("com.nextcloud.desktopclient", 1, 0, "DeleteGovernanceLabel");
+    qmlRegisterType<GetAvailableGovernanceLabels>("com.nextcloud.desktopclient", 1, 0, "GetAvailableGovernanceLabels");
+    qmlRegisterType<GetGovernanceLabels>("com.nextcloud.desktopclient", 1, 0, "GetGovernanceLabels");
+    qmlRegisterType<GovernanceLabelsListModel>("com.nextcloud.desktopclient", 1, 0, "GovernanceLabelsListModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
     qmlRegisterUncreatableType<AssistantController>("com.nextcloud.desktopclient", 1, 0, "AssistantController", "Owned by the Assistant window");
@@ -169,8 +184,12 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "userStatus", "Access to Status enum");
     qmlRegisterUncreatableType<Sharee>("com.nextcloud.desktopclient", 1, 0, "sharee", "Access to Type enum");
     qmlRegisterUncreatableType<ClientSideEncryptionTokenSelector>("com.nextcloud.desktopclient", 1, 0, "ClientSideEncryptionTokenSelector", "Access to the certificate selector");
+    qmlRegisterUncreatableType<GovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "GovernanceNetworkJob", "base abstract type for governance labels");
+    qmlRegisterUncreatableType<TypedGovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "TypedGovernanceNetworkJob", "base abstract type for governance labels");
+    qmlRegisterUncreatableType<TypedWithLabelIdGovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "TypedWithLabelIdGovernanceNetworkJob", "base abstract type for governance labels");
 
     qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
+    qRegisterMetaType<SyncStatusSummary *>("SyncStatusSummary*");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
     qRegisterMetaType<UserStatus>("UserStatus");
     qRegisterMetaType<SharePtr>("SharePtr");
@@ -183,10 +202,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "TrayAccountAppsModel", TrayAccountAppsModel::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Systray", Systray::instance());
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "FileProviderSettingsController", Mac::FileProviderSettingsController::instance());
-#endif
 }
 
 void ownCloudGui::createTray()
@@ -242,7 +257,7 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
     const auto currentUser = UserModel::instance()->currentUser();
     if (reason == QSystemTrayIcon::DoubleClick && currentUser && currentUser->hasLocalFolder()) {
         currentUser->openLocalFolder();
-    } else if (reason == QSystemTrayIcon::Trigger) {
+    } else if (TrayActivationPolicy::opensPrimaryPopup(reason)) {
         if (AccountManager::instance()->accounts().isEmpty()) {
             // Without a configured account the tray icon drives the setup wizard
             // directly: open it, or bring the existing one back to front instead
@@ -786,6 +801,13 @@ void ownCloudGui::slotShowShareDialog(const QString &localPath) const
     _tray->createShareDialog(localPath);
 }
 
+void ownCloudGui::slotShowGovernanceLabelsDialog(AccountPtr account,
+                                                 const QString &localPath,
+                                                 const QString &fileId) const
+{
+    _tray->createGovernanceLabelsDialog(account, localPath, fileId);
+}
+
 void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
 {
     _tray->createFileActivityDialog(localPath);
@@ -794,6 +816,52 @@ void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
 void ownCloudGui::slotShowFileActionsDialog(const QString &localPath) const
 {
     _tray->showFileActionsDialog(localPath);
+}
+
+void ownCloudGui::slotResolveConflict(const QString &conflictedPath, const QString &basePath, const QString &baseName, const QString &folderAlias) const
+{
+    // Show with open(), never exec(): this runs inside SocketApi::slotReadSocket and a modal loop would crash on a nullptr socket.
+    auto dialog = new ConflictDialog;
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setBaseFilename(baseName);
+    dialog->setLocalVersionFilename(conflictedPath);
+    dialog->setRemoteVersionFilename(basePath);
+    connect(dialog, &ConflictDialog::accepted, dialog, [folderAlias] {
+        if (const auto folder = FolderMan::instance()->folder(folderAlias)) {
+            folder->scheduleThisFolderSoon();
+        }
+    });
+    dialog->open();
+    raiseDialog(dialog);
+}
+
+void ownCloudGui::slotMoveItem(const QString &localPath, const QString &defaultTarget) const
+{
+    // Show with open(), never exec(): this runs inside SocketApi::slotReadSocket and a modal loop would crash on a freed socket.
+    auto dialog = new QFileDialog(nullptr, tr("Select new location …"), QFileInfo(defaultTarget).absolutePath());
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setAcceptMode(QFileDialog::AcceptSave);
+    dialog->setOptions(QFileDialog::HideNameFilterDetails);
+    dialog->selectUrl(QUrl::fromLocalFile(defaultTarget));
+    connect(dialog, &QFileDialog::urlSelected, dialog, [localPath](const QUrl &targetUrl) {
+        if (targetUrl.isEmpty()) {
+            return;
+        }
+
+#ifdef Q_OS_MACOS
+        const auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(targetUrl);
+        if (!scopedAccess->isValid()) {
+            qCWarning(lcOwnCloudGui) << "Could not access resource for conflict resolution:" << targetUrl;
+            return;
+        }
+#endif
+
+        ConflictSolver solver;
+        solver.setLocalVersionFilename(localPath);
+        solver.setRemoteVersionFilename(targetUrl.toLocalFile());
+    });
+    dialog->open();
+    raiseDialog(dialog);
 }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE

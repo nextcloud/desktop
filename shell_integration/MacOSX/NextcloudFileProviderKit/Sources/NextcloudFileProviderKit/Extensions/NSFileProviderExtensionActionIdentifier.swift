@@ -30,6 +30,17 @@ extension NSFileProviderExtensionActionIdentifier {
     }
 
     ///
+    /// Custom action to evict the materialized descendants of a directory (including the root container).
+    ///
+    /// Distinct from ``evict`` only so the context menu can present a folder-appropriate label ("Remove downloaded items") while reusing the same eviction handler; the file variant keeps the "Remove download" label (#10085).
+    ///
+    /// The raw value must be maintained manually and redundantly in the custom actions of the file provider extension target declared at build time.
+    ///
+    static var evictDescendants: NSFileProviderExtensionActionIdentifier {
+        NSFileProviderExtensionActionIdentifier("\(prefix)EvictDescendantsAction")
+    }
+
+    ///
     /// Custom action to change the content policy for an item to allow automatic eviction by the system.
     ///
     /// The raw value must be maintained manually and redundantly in the custom actions of the file provider extension target declared at build time.

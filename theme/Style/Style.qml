@@ -119,7 +119,6 @@ QtObject {
     property int smallSpacing: 5
     property int extraSmallSpacing: 2
     property int extraExtraSmallSpacing: 1
-    readonly property int fileProviderSettingsPadding: 12
 
     property int iconButtonWidth: 36
     property int standardPrimaryButtonHeight: 40
@@ -144,10 +143,15 @@ QtObject {
     readonly property int wizardHeaderAccountServerFontPixelSize: subLinePixelSize
     readonly property int wizardStandaloneWindowMinimumWidth: 520
     readonly property int wizardStandaloneWindowMinimumHeight: 420
+    readonly property int accountWizardWindowWidth: 600
+    readonly property int accountWizardCompactHeight: 420
+    readonly property int accountWizardSyncOptionsHeight: 520
     readonly property int activitiesWindowWidth: 680
     readonly property int activitiesWindowHeight: 700
     readonly property int assistantWindowWidth: 640
     readonly property int assistantWindowHeight: 620
+    readonly property int searchWindowWidth: 640
+    readonly property int searchWindowHeight: 620
     readonly property int userStatusWindowWidth: 560
     readonly property int userStatusWindowHeight: 700
     readonly property int userStatusWindowMinimumHeight: 560
@@ -245,6 +249,9 @@ QtObject {
     readonly property int fontPixelSizeResolveConflictsDialog: 15
     readonly property int minimumWidthResolveConflictsDialog: 600
     readonly property int minimumHeightResolveConflictsDialog: 300
+
+    readonly property int defaultWidthGovernanceLabelsDialog: 400
+    readonly property int defaultHeightGovernanceLabelsDialog: 300
 
     readonly property double smallIconScaleFactor: 0.6
 

@@ -297,8 +297,10 @@
 		<file>theme/chevron-double-up.svg</file>
 		@CALL_NOTIFICATION_WAV_FILE_ENTRY@
   		<file>theme/info.svg</file>
+		<file>theme/file-clock-outline.svg</file>
 		<file>theme/file-open.svg</file>
 		<file>theme/backup.svg</file>
 		<file>theme/convert_to_text.svg</file>
+		<file>theme/security.svg</file>
     </qresource>
 </RCC>

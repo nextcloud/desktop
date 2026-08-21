@@ -47,6 +47,12 @@
             "value" : "Luba automaatselt vabastada andmeruumi"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آزادسازی خودکار فضا"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -179,6 +185,12 @@
             "value" : "Jäta allalaaditu alati alles"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "همیشه نگه‌داشتن فایل دانلودشده"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -230,7 +242,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Behåll alltid nedladdat"
+            "value" : "Behåll alltid hämtad"
           }
         },
         "sw" : {
@@ -311,6 +323,12 @@
             "value" : "Autentimine ei õnnestunud vigase kasutajanime või salasõna tõttu"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "احراز هویت ناموفق بود؛ اطلاعات ورود معتبر نیست."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -362,7 +380,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autentiseringen misslyckades på grund av ogiltiga inloggningsuppgifter"
+            "value" : "Autentiseringen misslyckades på grund av ogiltiga inloggningsuppgifter."
           }
         },
         "sw" : {
@@ -506,7 +524,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "کپی کردن پیوند داخلی"
+            "value" : "کپی لینک داخلی"
           }
         },
         "fi_FI" : {
@@ -573,12 +591,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "内部リンクをコピー"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copy internal link"
           }
         },
         "kab" : {
@@ -699,12 +711,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Копирај интерну везу"
-          }
-        },
-        "sr@latin" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kopiraj internu vezu"
           }
         },
         "sv" : {
@@ -866,7 +872,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "اقدامات فایل"
+            "value" : "عملیات فایل"
           }
         },
         "fi_FI" : {
@@ -939,12 +945,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "파일 동작"
-          }
-        },
-        "lo" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "File actions"
           }
         },
         "lt_LT" : {
@@ -1477,6 +1477,162 @@
         }
       }
     },
+    "Remove download" : {
+      "comment" : "Context menu item label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloads entfernen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloads entfernen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove download"
+          }
+        },
+        "en_GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove download"
+          }
+        },
+        "et_EE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eemalda allalaaditud"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer le téléchargement"
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bain an íoslódáil"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover download"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta bort hämtning"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вилучити завантажене"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除下載"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除下載"
+          }
+        }
+      }
+    },
+    "Remove downloaded items" : {
+      "comment" : "Context menu item label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heruntergeladene Elemente entfernen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heruntergeladene Elemente entfernen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove downloaded items"
+          }
+        },
+        "en_GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove downloaded items"
+          }
+        },
+        "et_EE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eemalda allalaaditud failid"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer les objets téléchargés"
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bain míreanna íoslódáilte"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover itens baixados"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta bort hämtade objekt"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вилучити завантажені об'єкти"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除已下載的項目"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除已下載的項目"
+          }
+        }
+      }
+    },
     "The account information is not available." : {
       "comment" : "Description of an error when the account information is not available.",
       "isCommentAutoGenerated" : true,
@@ -1521,6 +1677,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasutajakonto teave pole saadaval"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اطلاعات حساب کاربری در دسترس نیست."
           }
         },
         "fr" : {
@@ -1659,6 +1821,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tekkis võrguühenduse viga."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خطا در اتصال به شبکه."
           }
         },
         "fr" : {

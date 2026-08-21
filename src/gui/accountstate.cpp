@@ -122,6 +122,10 @@ void AccountState::setState(State state)
 
         if (_state == SignedOut) {
             _connectionStatus = ConnectionValidator::Undefined;
+            if (oldState != _state && oldState == Disconnected) {
+                qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString() << "login needed";
+                setState(AskingCredentials);
+            }
         } else if (oldState == SignedOut && _state == Disconnected) {
             // If we stop being voluntarily signed-out, try to connect and
             // auth right now!
@@ -465,9 +469,6 @@ void AccountState::slotHandleRemoteWipeCheck()
 
     qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString()
                            << "checking for remote wipe request";
-
-    _waitingForNewCredentials = false;
-    setState(SignedOut);
 }
 
 

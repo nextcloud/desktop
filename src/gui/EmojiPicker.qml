@@ -5,12 +5,12 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Basic as BasicControls
 import QtQuick.Layouts
 
 import Style
 import com.nextcloud.desktopclient 1.0 as NC
 import "./tray"
+import "./common"
 
 ColumnLayout {
     id: root
@@ -61,7 +61,7 @@ ColumnLayout {
         id: metrics
     }
 
-    BasicControls.TextField {
+    NCContextMenuTextField {
         id: searchField
 
         visible: root.showSearch
@@ -69,7 +69,6 @@ ColumnLayout {
         Layout.preferredHeight: visible ? 32 : 0
         Layout.margins: visible ? Style.smallSpacing : 0
         placeholderText: qsTr("Search emoji")
-        selectByMouse: true
         text: root.searchText
         topPadding: 0
         bottomPadding: 0

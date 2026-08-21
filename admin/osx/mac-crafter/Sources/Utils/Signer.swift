@@ -76,6 +76,82 @@ enum Signer: Signing {
     }
 
     ///
+    /// Find all Service Management login item bundles in the bundle at the given location.
+    ///
+    /// This assumes the internal structure of the bundle at the given location to have
+    /// `Contents/Library/LoginItems`.
+    ///
+    /// Login items have to be discovered and signed explicitly. Signing the outer app bundle
+    /// does not reach them, and the outer sign is deliberately not `--deep`, so without this
+    /// the FinderSync broker would ship unsigned — which notarization would reject and which
+    /// would in any case make the sandboxed peers refuse to talk to it.
+    ///
+    private static func findLoginItems(at url: URL) throws -> [URL] {
+        let loginItemsLocation = url
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Library")
+            .appendingPathComponent("LoginItems")
+
+        guard FileManager.default.fileExists(atPath: loginItemsLocation.path) else {
+            Log.info("No LoginItems directory found, skipping login item signing")
+            return []
+        }
+
+        Log.info("Looking for login items in \(loginItemsLocation.path)")
+        var items = try FileManager.default.contentsOfDirectory(at: loginItemsLocation, includingPropertiesForKeys: nil)
+
+        items.removeAll { item in
+            if item.pathExtension == "app" {
+                Log.info("Found login item bundle: \(item.path)")
+                return false
+            } else {
+                Log.info("Skipping item that is not a login item bundle: \(item.path)")
+                return true
+            }
+        }
+
+        return items
+    }
+
+    ///
+    /// Fail the build if a login item's `CFBundleIdentifier` does not equal its wrapper filename.
+    ///
+    /// A Service Management login item is addressed by bundle identifier, and its wrapper has to
+    /// be named after that identifier. When the two disagree, `SMAppService` cannot resolve the
+    /// item: both `-status` and `-registerAndReturnError:` fail with EINVAL, the client logs
+    /// "Unable to find service status … error: 22", no launchd job is ever created, and any
+    /// extension then loops forever against a Mach service that does not exist.
+    ///
+    /// None of that is visible at build time.
+    /// Checking the built bundle is the only place the disagreement is observable.
+    ///
+    private static func assertLoginItemIdentifierMatchesFilename(_ loginItem: URL) throws {
+        let plist = loginItem
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Info.plist")
+
+        guard let contents = NSDictionary(contentsOf: plist),
+              let identifier = contents["CFBundleIdentifier"] as? String
+        else {
+            throw MacCrafterError.signing("Could not read CFBundleIdentifier from: \(plist.path)")
+        }
+
+        let expected = loginItem.deletingPathExtension().lastPathComponent
+
+        guard identifier == expected else {
+            throw MacCrafterError.signing("""
+                Login item bundle identifier does not match its wrapper filename, so \
+                SMAppService will not be able to register it: \
+                CFBundleIdentifier is "\(identifier)" but the wrapper is "\(expected).app". \
+                Check that the login item's Info.plist uses $(PRODUCT_BUNDLE_IDENTIFIER) rather \
+                than spelling the identifier out.
+                """)
+        }
+
+        Log.info("Login item identifier matches its wrapper filename: \(identifier)")
+    }
+
+    ///
     /// Find all framework bundles in the bundle at the given location.
     ///
     /// This assumes the internal structure of the bundle at the given location to have `Contents/Frameworks`.
@@ -231,9 +307,27 @@ enum Signer: Signing {
     ///
     /// Entry point for signing a whole desktop client app bundle.
     ///
-    static func signMainBundle(at location: URL, codeSignIdentity: String, entitlements: [String: URL]) async throws {
+    static func signMainBundle(
+        at location: URL,
+        codeSignIdentity: String,
+        entitlements: [String: URL]
+    ) async throws {
+        // Signing is inside-out: nested code first, the containing bundle last. Login items come
+        // before the app for that reason, and the outer sign is deliberately not --deep.
+        let loginItems = try findLoginItems(at: location)
+
+        for loginItem in loginItems {
+            guard let loginItemEntitlements = entitlements[loginItem.lastPathComponent] else {
+                throw MacCrafterError.signing("No entitlements provided for: \(loginItem.path)")
+            }
+
+            try assertLoginItemIdentifierMatchesFilename(loginItem)
+
+            await sign(at: loginItem, with: codeSignIdentity, entitlements: loginItemEntitlements)
+        }
+
         let extensions = try findExtensions(at: location)
-        
+
         for extensionInMainBundle in extensions {
             let frameworksInsideExtension = try findFrameworks(at: extensionInMainBundle)
 

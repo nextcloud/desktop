@@ -14,6 +14,7 @@
 #include <QSslKey>
 #include <QUrl>
 
+#include <functional>
 #include <memory>
 
 #include "accountfwd.h"
@@ -256,6 +257,10 @@ private slots:
     void slotCreateRemoteFolderFinished(QNetworkReply *reply);
 
 private:
+    using LocalNetworkPermissionCheck = std::function<void(const QUrl &, QObject *, std::function<void(bool)>)>;
+
+    friend class AccountWizardControllerTestAccess;
+
     void initialiseAccount();
     void ensureAccount();
     void initialiseOverrideServerChoices();
@@ -298,9 +303,11 @@ private:
     void emitProxySettingsChangedIfNeeded(bool previousValidity, bool previousLocalhostWarning);
     void discardFlow2Auth();
     [[nodiscard]] bool checkDowngradeAdvised(QNetworkReply *reply) const;
-    [[nodiscard]] bool handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly);
+    void handleFailedServerConnection(const QUrl &url, bool retryHttpOnly);
+    void handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly);
 
     AccountPtr _account;
+    LocalNetworkPermissionCheck _localNetworkPermissionCheck;
     std::unique_ptr<Flow2Auth> _flow2Auth;
     QPointer<SelectiveSyncDialog> _selectiveSyncDialog;
     enum class ProxyAuthentication {

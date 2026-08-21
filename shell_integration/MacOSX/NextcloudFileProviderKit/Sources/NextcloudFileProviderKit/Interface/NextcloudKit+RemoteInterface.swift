@@ -7,6 +7,22 @@ import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
 
+func chunkedUploadRemotePathComponents(from remotePath: String) -> (serverUrl: String, destinationFileName: String)? {
+    guard let separatorIndex = remotePath.lastIndex(of: "/") else {
+        return nil
+    }
+
+    let destinationFileNameIndex = remotePath.index(after: separatorIndex)
+    guard destinationFileNameIndex < remotePath.endIndex else {
+        return nil
+    }
+
+    return (
+        serverUrl: String(remotePath[..<separatorIndex]),
+        destinationFileName: String(remotePath[destinationFileNameIndex...])
+    )
+}
+
 extension NextcloudKit: RemoteInterface {
     public func setDelegate(_ delegate: any NextcloudKitDelegate) {
         setup(delegate: delegate)
@@ -65,10 +81,16 @@ extension NextcloudKit: RemoteInterface {
                 let ocId = self.nkCommonInstance.findHeader("oc-fileid", allHeaderFields: allHeaderFields)
                 let etag = self.nkCommonInstance.normalizedETag(self.nkCommonInstance.findHeader("oc-etag", allHeaderFields: allHeaderFields))
                 let date = self.nkCommonInstance.findHeader("date", allHeaderFields: allHeaderFields)?.parsedDate(using: "EEE, dd MMM y HH:mm:ss zzz")
+
+                // The size the server stored equals the bytes we sent, i.e. the local file's size.
+                // Do NOT read it from the response's `Content-Length`: a successful Nextcloud/SabreDAV
+                // PUT is `201 Created` with an empty body (`Content-Length: 0`), so that header is the
+                // response body length, never the stored-file size. This mirrors the chunked path,
+                // which likewise reports the local total on success.
                 var size: Int64 = 0
 
-                if let value = allHeaderFields?["Content-Length"] as? String {
-                    size = Int64(value) ?? 0
+                if nkError == .success {
+                    size = (try? FileManager.default.attributesOfItem(atPath: localPath)[.size] as? Int64) ?? 0
                 }
 
                 continuation.resume(returning: (
@@ -102,11 +124,11 @@ extension NextcloudKit: RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in },
         progressHandler: @escaping (Progress) -> Void = { _ in },
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
-    ) async -> (account: String, file: NKFile?, nkError: NKError) {
+    ) async -> (account: String, file: NKFile?, chunksDirectory: URL?, nkError: NKError) {
         let logger = FileProviderLogger(category: "NextcloudKit+RemoteInterface", log: log)
 
-        guard let remoteUrl = URL(string: remotePath) else {
-            return ("", nil, .urlError)
+        guard let remotePathComponents = chunkedUploadRemotePathComponents(from: remotePath) else {
+            return ("", nil, nil, .urlError)
         }
         let localUrl = URL(fileURLWithPath: localPath)
 
@@ -121,7 +143,7 @@ extension NextcloudKit: RemoteInterface {
                 Could not create temporary directory for chunked files: \(error)
                 """
             )
-            return ("", nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
 
         var directory = localUrl.deletingLastPathComponent().path
@@ -130,17 +152,8 @@ extension NextcloudKit: RemoteInterface {
         }
         let fileChunksOutputDirectory = chunksOutputDirectoryUrl.path
         let fileName = localUrl.lastPathComponent
-        let destinationFileName = remoteUrl.lastPathComponent
-        guard let serverUrl = remoteUrl
-            .deletingLastPathComponent()
-            .absoluteString
-            .removingPercentEncoding
-        else {
-            logger.error(
-                "NCKit ext: Could not get server url from \(remotePath)"
-            )
-            return ("", nil, .urlError)
-        }
+        let destinationFileName = remotePathComponents.destinationFileName
+        let serverUrl = remotePathComponents.serverUrl
         let fileChunks = remainingChunks.toNcKitChunks()
 
         logger.info(
@@ -189,11 +202,22 @@ extension NextcloudKit: RemoteInterface {
                 }
             )
 
-            return (account, file, .success)
+            return (account, file, chunksOutputDirectoryUrl, .success)
         } catch let nkError as NKError {
-            return (account.ncKitAccount, nil, nkError)
+            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, nkError)
         } catch {
-            return (account.ncKitAccount, nil, NKError.urlError)
+            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, NKError.urlError)
+        }
+    }
+
+    public func removeLocalChunks(remoteChunkStoreFolderName: String) throws {
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent(remoteChunkStoreFolderName, isDirectory: true)
+
+        do {
+            try FileManager.default.removeItem(at: chunksDirectory)
+        } catch CocoaError.fileNoSuchFile {
+            // Nothing remains to clean up.
         }
     }
 

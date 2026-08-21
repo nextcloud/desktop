@@ -53,15 +53,26 @@ extension Enumerator {
                 let sortedUpdated = changes.createdAndUpdated
                     .sorted { $0.remotePath().count < $1.remotePath().count }
 
-                changeBuffer.prime(key: anchorKey, updated: sortedUpdated, deleted: changes.deleted)
+                changeBuffer.prime(
+                    key: anchorKey,
+                    updated: sortedUpdated,
+                    deleted: changes.deleted,
+                    incomplete: serverChanges.hadFailure
+                )
             }
 
             // Intermediate batches keep the original anchor so an interrupted drain resumes behind all
-            // undelivered items; the final batch advances the working-set sync point to currentAnchor.
+            // undelivered items. The final batch normally advances the working-set sync point to
+            // currentAnchor — but when the scan was incomplete (a remote read failed and was skipped) we
+            // keep the incoming anchor instead, so we do not tell the framework we are synced up to "now"
+            // past changes we could not discover this pass. The next working-set signal re-derives and
+            // picks up the previously-unreadable folders once they succeed. (isPrimedIncomplete() is read
+            // before the final takeBatch clears the buffer, so it reflects this drain sequence.)
+            let finalAnchor = changeBuffer.isPrimedIncomplete() ? anchor : currentAnchor
             drainChangeBuffer(
                 for: observer,
                 startAnchor: anchor,
-                finalAnchor: currentAnchor,
+                finalAnchor: finalAnchor,
                 suggested: observer.suggestedBatchSize
             )
         }
@@ -81,7 +92,7 @@ extension Enumerator {
     ///   were marked deleted.
     ///
     func scanMaterialisedItemsForRemoteChanges() async -> (
-        updated: [SendableItemMetadata], deleted: [SendableItemMetadata]
+        updated: [SendableItemMetadata], deleted: [SendableItemMetadata], hadFailure: Bool
     ) {
         logger.debug("Checking materialised items for changes on the server...")
 
@@ -102,6 +113,11 @@ extension Enumerator {
         var accumulatedUpdates = [SendableItemMetadata]()
         var accumulatedDeletions = [SendableItemMetadata]()
         var scannedItemIds = Set<String>()
+        // Track read failures so one unreadable folder no longer aborts the whole scan (see the
+        // read-error branch below). `hadReadFailure` is returned to the caller so it can avoid
+        // advancing the working-set sync point past changes this pass could not discover.
+        var hadReadFailure = false
+        var failedItemIds = Set<String>()
 
         // Work queue seeded with the materialised items. A changed child directory discovered while
         // scanning is appended ONLY when its subtree actually contains a materialised item, so its
@@ -142,9 +158,21 @@ extension Enumerator {
                 // Children are not marked deleted here — they may have moved with their parent.
                 logger.debug("Parent returned 404; children will be checked individually.", [.url: itemRemoteUrl])
             } else if let readError = readResult.error, readError != .success {
-                logger.error("Finished remote change enumeration of materialised items with error.", [.error: readError])
-                // Report what was discovered before the error rather than discarding it.
-                break
+                // A single unreadable folder must NOT abort discovery for the rest of the working set.
+                // The queue is sorted parent-first, so the account root and top-level folders (e.g. a
+                // very large "Talk" whose depth-1 PROPFIND times out) are scanned first; a `break` here
+                // meant one early failure silently stalled ALL remote-change propagation for every other
+                // folder — the "files uploaded on the web never appear" bug. Skip only the failing item
+                // (it is retried on the next scan) and keep scanning the remainder.
+                // See nextcloud/desktop#10442.
+                logger.error(
+                    "Read of materialised item failed during working-set scan; skipping it and continuing with the rest of the working set.",
+                    [.error: readError, .url: itemRemoteUrl]
+                )
+                hadReadFailure = true
+                failedItemIds.insert(itemToScan.ocId)
+                scannedItemIds.insert(itemToScan.ocId)
+                continue
             } else {
                 accumulatedDeletions += changes.deleted
                 accumulatedUpdates += changes.updated
@@ -180,8 +208,8 @@ extension Enumerator {
                                 let childPath = childDirectory.remotePath()
                                 let childHasMaterialisedDescendant = materialisedItems.contains {
                                     $0.ocId != childDirectory.ocId
-                                        && ($0.serverUrl == childPath
-                                            || $0.serverUrl.hasPrefix(childPath + "/"))
+                                        && ($0.hasSameRemotePath(as: childPath)
+                                            || $0.isDescendant(of: childPath))
                                 }
                                 if childHasMaterialisedDescendant,
                                    enqueuedDirectoryIds.insert(childDirectory.ocId).inserted
@@ -201,7 +229,7 @@ extension Enumerator {
 
                             let hasMaterialisedDescendants = materialisedItems.contains {
                                 $0.ocId != localItem.ocId
-                                    && $0.serverUrl.hasPrefix(localItem.remotePath() + "/")
+                                    && $0.isDescendant(of: localItem.remotePath())
                             }
 
                             if !hasMaterialisedDescendants {
@@ -247,6 +275,13 @@ extension Enumerator {
             logger.info("No remote changes found in materialised items.")
         }
 
-        return (updated: discoveredUpdates, deleted: reportedDeletions)
+        if hadReadFailure {
+            logger.error(
+                "Working-set remote-change scan was incomplete: \(failedItemIds.count) item(s) could not be read and were skipped; their changes will be retried on the next scan. Not advancing the working-set sync point past the undiscovered changes.",
+                [.account: account]
+            )
+        }
+
+        return (updated: discoveredUpdates, deleted: reportedDeletions, hadFailure: hadReadFailure)
     }
 }

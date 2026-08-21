@@ -13,6 +13,8 @@
 #include <QVersionNumber>
 #include <QDebug>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerCapabilities, "nextcloud.sync.server.capabilities", QtInfoMsg)
@@ -33,11 +35,6 @@ bool Capabilities::shareAPI() const
     }
 }
 
-bool Capabilities::shareEmailPasswordEnabled() const
-{
-    return _capabilities["files_sharing"].toMap()["sharebymail"].toMap()["password"].toMap()["enabled"].toBool();
-}
-
 bool Capabilities::shareEmailPasswordEnforced() const
 {
     return _capabilities["files_sharing"].toMap()["sharebymail"].toMap()["password"].toMap()["enforced"].toBool();
@@ -51,16 +48,6 @@ bool Capabilities::sharePublicLink() const
         // This was later added so if it is not present just assume that link sharing is enabled.
         return true;
     }
-}
-
-bool Capabilities::sharePublicLinkAllowUpload() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["upload"].toBool();
-}
-
-bool Capabilities::sharePublicLinkSupportsUploadOnly() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["supports_upload_only"].toBool();
 }
 
 bool Capabilities::sharePublicLinkAskOptionalPassword() const
@@ -101,11 +88,6 @@ bool Capabilities::shareRemoteEnforceExpireDate() const
 int Capabilities::shareRemoteExpireDateDays() const
 {
     return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_remote"].toMap()["days"].toInt();
-}
-
-bool Capabilities::sharePublicLinkMultiple() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["multiple"].toBool();
 }
 
 bool Capabilities::shareResharing() const
@@ -532,6 +514,11 @@ DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &
     }
 
     return nullptr;
+}
+
+bool Capabilities::governanceAvailable() const
+{
+    return _capabilities.contains(u"governance"_s);
 }
 
 

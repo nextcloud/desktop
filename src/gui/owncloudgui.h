@@ -97,8 +97,13 @@ public slots:
      * to the folder).
      */
     void slotShowShareDialog(const QString &localPath) const;
+    void slotShowGovernanceLabelsDialog(AccountPtr account,
+                                        const QString &localPath,
+                                        const QString &fileId) const;
     void slotShowFileActivityDialog(const QString &localPath) const;
     void slotShowFileActionsDialog(const QString &localPath) const;
+    void slotResolveConflict(const QString &conflictedPath, const QString &basePath, const QString &baseName, const QString &folderAlias) const;
+    void slotMoveItem(const QString &localPath, const QString &defaultTarget) const;
 #ifdef BUILD_FILE_PROVIDER_MODULE
     /**
      * @brief Open an item's web page in the user's browser on behalf of the macOS file provider extension.

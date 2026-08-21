@@ -14,9 +14,10 @@
 /**
  * @brief The submenu shown for a single account.
  *
- * Lists the user status, "Reveal in Finder", the Assistant and Apps shortcuts,
- * pending notifications and recent activity. Owns the apps and
- * notification-actions sub-popups.
+ * Lists only "Reveal in Finder" and, where supported, the sign-in action while
+ * disconnected. Connected accounts also show user status, Assistant, Search
+ * and Apps shortcuts, pending notifications and recent activity. Owns the apps
+ * and notification-actions sub-popups.
  */
 @interface NCAccountActionsPopup : NSPanel
 /** @brief Rebuilds the popup for the given account and refreshes its activity preview. */
@@ -28,7 +29,7 @@
  */
 - (void)populateForUserIndex:(int)userIndex owner:(NCTrayPopup *)owner refreshActivities:(BOOL)refreshActivities;
 /** @brief Whether the popup is currently visible and showing the given account. */
-- (BOOL)isShowingActivitiesForUserIndex:(int)userIndex;
+- (BOOL)isShowingUserIndex:(int)userIndex;
 /** @brief Removes the persistent highlight from the row whose submenu is currently open. */
 - (void)clearActiveSubmenuRow;
 /** @brief Hides the apps and notification-actions sub-popups and clears the active submenu row. */
