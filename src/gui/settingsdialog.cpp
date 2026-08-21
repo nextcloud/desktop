@@ -250,7 +250,12 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     customizeStyle();
 
+    // Qt::Dialog already includes the Qt::Window bit (Dialog = 0x2 | Window), so
+    // setWindowFlag(Qt::Window, true) alone is a no-op and the dialog type never
+    // changes - it keeps QDialog's default hints (title/sysmenu/close), which lack
+    // minimize/maximize. Request them explicitly instead of relying on that trick.
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    setWindowFlag(Qt::WindowMinMaxButtonsHint, true);
     setWindowFlag(Qt::Window, true);
     cfg.restoreGeometry(this);
 
