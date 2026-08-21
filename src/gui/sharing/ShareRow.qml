@@ -21,6 +21,7 @@ WizardItemDelegate {
     property string publicLinkUrl: ""
     signal copyRequested
     signal configureRequested
+    signal deleteRequested(Share share)
 
     readonly property bool pending: !!root.share && root.share.state === Share.Draft
 
@@ -91,6 +92,22 @@ WizardItemDelegate {
             ToolTip.text: Accessible.name
 
             onClicked: root.configureRequested()
+        }
+
+        WizardButton {
+            Layout.preferredWidth: implicitHeight
+            leftPadding: 0
+            rightPadding: 0
+            text: ""
+            iconSource: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
+            objectName: "deleteShareRowButton"
+            visible: !!root.share
+            enabled: visible
+            Accessible.name: qsTr("Delete share")
+            ToolTip.visible: hovered
+            ToolTip.text: Accessible.name
+
+            onClicked: root.deleteRequested(root.share)
         }
     }
 }

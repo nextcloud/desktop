@@ -267,6 +267,57 @@ private slots:
         QVERIFY(saveButton->property("visible").toBool());
     }
 
+    void createsShareRowWithDeleteAction()
+    {
+        const auto account = AccountManager::createAccount();
+        account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
+
+        const auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
+            {QStringLiteral("ocs"), QJsonObject{
+                {QStringLiteral("data"), QJsonObject{
+                    {QStringLiteral("id"), QStringLiteral("share-1")},
+                    {QStringLiteral("state"), QStringLiteral("active")},
+                    {QStringLiteral("recipients"), QJsonArray{QJsonObject{
+                        {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                        {QStringLiteral("display_name"), QStringLiteral("admin")},
+                        {QStringLiteral("value"), QStringLiteral("admin")},
+                    }}},
+                }},
+            }},
+        }}, account));
+        QVERIFY(share);
+
+        QQmlComponent component(
+            Systray::instance()->trayEngine(),
+            QStringLiteral("com.nextcloud.desktopclient.sharing"),
+            QStringLiteral("ShareRow"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        const auto rowObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("share"), QVariant::fromValue(share.get())},
+            {QStringLiteral("recipientNames"), QStringLiteral("admin")},
+            {QStringLiteral("width"), 800},
+        }));
+        QVERIFY2(rowObject, qPrintable(component.errorString()));
+
+        const auto deleteButton = rowObject->findChild<QObject *>(QStringLiteral("deleteShareRowButton"));
+        QVERIFY(deleteButton);
+        QVERIFY(deleteButton->property("visible").toBool());
+        QVERIFY(deleteButton->property("enabled").toBool());
+        QVERIFY(deleteButton->property("iconSource").toString().contains(QStringLiteral("delete.svg")));
+
+        const auto hasDeleteSignal = [rowObject = rowObject.get()] {
+            for (int methodIndex = 0; methodIndex < rowObject->metaObject()->methodCount(); ++methodIndex) {
+                const auto method = rowObject->metaObject()->method(methodIndex);
+                if (method.methodType() == QMetaMethod::Signal && method.name() == QByteArrayLiteral("deleteRequested")) {
+                    return true;
+                }
+            }
+            return false;
+        }();
+        QVERIFY(hasDeleteSignal);
+    }
+
     void hidesFooterForActivePublicLinkDetails()
     {
         const auto account = AccountManager::createAccount();

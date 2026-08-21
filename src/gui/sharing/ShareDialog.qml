@@ -255,6 +255,10 @@ WizardStyledWindow {
                     dialog.hasSelectedShare = true
                 }
                 onCopyRequested: value => dialog.copyToClipboard(value)
+                onDeleteRequested: share => {
+                    dialog.sharePendingDeletion = share
+                    deleteShareConfirmation.open()
+                }
                 onClearActivationError: dialog.shareActivationError = ""
             }
 
