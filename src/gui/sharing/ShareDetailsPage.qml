@@ -16,6 +16,7 @@ import "qrc:/qml/src/gui/wizard/qml"
 ColumnLayout {
     id: root
 
+    property var account: null
     property SharingController sharingController: null
     property Share share: null
     property string recipientOperationError: ""
@@ -45,11 +46,12 @@ ColumnLayout {
 
     RecipientSearchField {
         id: recipientSearch
+        objectName: "recipientSearch"
         Layout.fillWidth: true
 
-        account: root.sharingController ? root.sharingController.account : null
+        account: root.account
         shareId: root.share ? root.share.id : ""
-        visible: root.shareIsActive
+        visible: !!root.share && !root.share.publicLink
 
         onRecipientSelected: (recipientType, recipientValue, recipientInstance) => {
             root.recipientOperationError = ""
@@ -70,6 +72,7 @@ ColumnLayout {
         interactive: false
         spacing: Style.extraSmallSpacing
         model: RecipientModel {
+            objectName: "recipientModel"
             share: root.share
         }
 
@@ -125,6 +128,7 @@ ColumnLayout {
                 }
 
                 WizardButton {
+                    objectName: "removeRecipientButton"
                     Layout.preferredWidth: implicitHeight
                     leftPadding: 0
                     rightPadding: 0
@@ -165,7 +169,7 @@ ColumnLayout {
                     rightPadding: 0
                     text: ""
                     iconSource: "image://svgimage-custom-color/delete.svg/" + palette.buttonText
-                    visible: root.shareIsActive
+                    visible: !!root.share && !root.share.publicLink
 
                     Accessible.name: qsTr("Remove recipient")
                     ToolTip.visible: hovered
