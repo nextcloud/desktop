@@ -1927,6 +1927,8 @@ void AccountSettings::customizeStyle()
 
     _ui->syncFoldersPanelTitle->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
 
+    _ui->encryptionMessageLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
+
     const auto color = palette().highlight().color();
     const auto toolTipStyle =
         QStringLiteral("QToolTip { color: %1; background-color: %2; border: 1px solid %1; }").arg(WLTheme.titleColor(), WLTheme.dialogBackgroundColor());
