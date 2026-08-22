@@ -10,6 +10,7 @@
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "application.h"
+#include "assistant/assistantcontroller.h"
 #include "callstatechecker.h"
 #include "emojimodel.h"
 #include "notificationsoundplayer.h"
@@ -39,6 +40,7 @@
 #include "tray/trayactivationpolicy.h"
 #include "tray/trayaccountappsmodel.h"
 #include "search/unifiedsearchresultslistmodel.h"
+#include "tray/usermodel.h"
 #include "integration/fileactionsmodel.h"
 #include "governance/applygovernancelabel.h"
 #include "governance/deletegovernancelabel.h"
@@ -170,6 +172,12 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<GovernanceLabelsListModel>("com.nextcloud.desktopclient", 1, 0, "GovernanceLabelsListModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
+    qmlRegisterUncreatableType<AssistantController>("com.nextcloud.desktopclient", 1, 0, "AssistantController", "Owned by the Assistant window");
+    qmlRegisterUncreatableType<AssistantTaskTypeModel>("com.nextcloud.desktopclient", 1, 0, "AssistantTaskTypeModel", "Owned by AssistantController");
+    qmlRegisterUncreatableType<AssistantTaskModel>("com.nextcloud.desktopclient", 1, 0, "AssistantTaskModel", "Owned by AssistantController");
+    qmlRegisterUncreatableType<AssistantConversationModel>("com.nextcloud.desktopclient", 1, 0, "AssistantConversationModel", "Owned by AssistantController");
+    qmlRegisterUncreatableType<AssistantMessageModel>("com.nextcloud.desktopclient", 1, 0, "AssistantMessageModel", "Owned by AssistantController");
+    qmlRegisterUncreatableType<User>("com.nextcloud.desktopclient", 1, 0, "User", "Owned by UserModel");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
     qmlRegisterUncreatableType<TalkNotificationData>("com.nextcloud.desktopclient", 1, 0, "talkNotificationData", "TalkNotificationData");
     qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");

@@ -9,7 +9,6 @@ import QtQuick.Controls
 import QtQuick.Window
 import "../activity/qml"
 import QtQuick.Layouts
-import Qt5Compat.GraphicalEffects
 import Qt.labs.platform as NativeDialogs
 
 import "../"
@@ -233,6 +232,11 @@ ApplicationWindow {
 
         property bool showAssistantPanel: false
         property bool isAssistantActive: assistantPromptLoader.active
+        property bool isUnifiedSearchActive: unifiedSearchResultsListViewSkeletonLoader.active
+                                             || unifiedSearchResultNothingFound.visible
+                                             || unifiedSearchResultsErrorLabel.visible
+                                             || unifiedSearchResultsListView.visible
+                                             || trayWindowUnifiedSearchInputContainer.activateSearchFocus
 
         anchors.fill: parent
         anchors.margins: Style.trayWindowBorderWidth
@@ -281,7 +285,6 @@ ApplicationWindow {
             visible: UserModel.hasSyncErrors
                      && !(UserModel.syncErrorUserCount === 1
                           && UserModel.firstSyncErrorUserId === UserModel.currentUserId)
-                     && !trayWindowMainItem.isAssistantActive
             padding: 0
             background: Rectangle {
                 radius: Style.slightlyRoundedButtonRadius
@@ -335,6 +338,148 @@ ApplicationWindow {
                 }
             }
         }
+
+        UnifiedSearchInputContainer {
+            id: trayWindowUnifiedSearchInputContainer
+
+            property bool activateSearchFocus: activeFocus
+
+            anchors.top: trayWindowSyncWarning.visible
+                         ? trayWindowSyncWarning.bottom
+                         : trayWindowHeader.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            anchors.leftMargin: Style.trayHorizontalMargin
+            anchors.rightMargin: Style.trayHorizontalMargin
+
+            text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+            readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
+            isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
+            onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
+            onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
+            onActiveFocusChanged: activateSearchFocus = activeFocus && focusReason !== Qt.TabFocusReason && focusReason !== Qt.BacktabFocusReason
+            Keys.onEscapePressed: activateSearchFocus = false
+        }
+
+        Rectangle {
+            id: bottomUnifiedSearchInputSeparator
+
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.topMargin: Style.trayHorizontalMargin
+
+            height: 1
+            color: palette.dark
+            visible: trayWindowMainItem.isUnifiedSearchActive
+        }
+
+        ErrorBox {
+            id: unifiedSearchResultsErrorLabel
+            visible:  UserModel.currentUser.unifiedSearchResultsListModel.errorString && !unifiedSearchResultsListView.visible && ! UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress && ! UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
+            text:  UserModel.currentUser.unifiedSearchResultsListModel.errorString
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.margins: Style.trayHorizontalMargin
+        }
+
+        UnifiedSearchPlaceholderView {
+            id: unifiedSearchPlaceholderView
+
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
+            anchors.topMargin: Style.trayHorizontalMargin
+
+            visible: trayWindowUnifiedSearchInputContainer.activateSearchFocus && !UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+        }
+
+        UnifiedSearchResultNothingFound {
+            id: unifiedSearchResultNothingFound
+
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+
+            text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+
+            property bool isSearchRunning: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
+            property bool waitingForSearchTermEditEnd: UserModel.currentUser.unifiedSearchResultsListModel.waitingForSearchTermEditEnd
+            property bool isSearchResultsEmpty: unifiedSearchResultsListView.count === 0
+            property bool nothingFound: text && isSearchResultsEmpty && !UserModel.currentUser.unifiedSearchResultsListModel.errorString
+
+            visible: !isSearchRunning && !waitingForSearchTermEditEnd && nothingFound
+        }
+
+        Loader {
+            id: unifiedSearchResultsListViewSkeletonLoader
+
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
+            anchors.margins: controlRoot.padding
+
+            active: !unifiedSearchResultNothingFound.visible &&
+                    !unifiedSearchResultsListView.visible &&
+                    !UserModel.currentUser.unifiedSearchResultsListModel.errorString &&
+                    UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+
+            sourceComponent: UnifiedSearchResultItemSkeletonContainer {
+                anchors.fill: parent
+                spacing: unifiedSearchResultsListView.spacing
+                animationRectangleWidth: trayWindow.width
+            }
+        }
+
+        ScrollView {
+            id: controlRoot
+            contentWidth: availableWidth
+
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+            data: WheelHandler {
+                target: controlRoot.contentItem
+            }
+            visible: unifiedSearchResultsListView.count > 0
+
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
+
+            ListView {
+                id: unifiedSearchResultsListView
+                spacing: 4
+                clip: true
+
+                keyNavigationEnabled: true
+
+                reuseItems: true
+
+                Accessible.role: Accessible.List
+                Accessible.name: qsTr("Unified search results list")
+
+                model: UserModel.currentUser.unifiedSearchResultsListModel
+
+                delegate: UnifiedSearchResultListItem {
+                    width: unifiedSearchResultsListView.width
+                    isSearchInProgress:  unifiedSearchResultsListView.model.isSearchInProgress
+                    currentFetchMoreInProgressProviderId: unifiedSearchResultsListView.model.currentFetchMoreInProgressProviderId
+                    fetchMoreTriggerClicked: unifiedSearchResultsListView.model.fetchMoreTriggerClicked
+                    resultClicked: unifiedSearchResultsListView.model.resultClicked
+                    ListView.onPooled: isPooled = true
+                    ListView.onReused: isPooled = false
+                }
+
+                section.property: "providerName"
+                section.criteria: ViewSection.FullString
+                section.delegate: UnifiedSearchResultSectionItem {
+                    width: unifiedSearchResultsListView.width
 
         Dialog {
             id: assistantResetConfirmationDialogWrapper
@@ -650,9 +795,9 @@ ApplicationWindow {
             accentColor: Style.accentColor
             user: UserModel.currentUser
             activityListModel: activityModel
-            visible: !trayWindowMainItem.showAssistantPanel
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.showAssistantPanel
 
-            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : trayWindowHeader.bottom
+            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
         }
@@ -664,7 +809,7 @@ ApplicationWindow {
             anchors.bottom: syncStatus.bottom
             height: 1
             color: palette.dark
-            visible: !trayWindowMainItem.showAssistantPanel
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.showAssistantPanel
         }
 
         Loader {
@@ -722,7 +867,7 @@ ApplicationWindow {
 
         ActivityList {
             id: activityList
-            visible: !trayWindowMainItem.isAssistantActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.isAssistantActive
             anchors.top: syncStatus.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right

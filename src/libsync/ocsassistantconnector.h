@@ -12,6 +12,7 @@
 #include <QObject>
 #include <QPointer>
 #include <QString>
+#include <QStringList>
 
 namespace OCC {
 

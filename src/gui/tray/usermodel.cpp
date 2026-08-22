@@ -25,7 +25,6 @@
 #include "activity/activitylistmodel.h"
 #include "userstatusconnector.h"
 #include "common/utility.h"
-#include "ocsassistantconnector.h"
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
@@ -53,93 +52,8 @@ namespace {
 
 constexpr qint64 expiredActivitiesCheckIntervalMsecs = 1000 * 60;
 constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
-constexpr qint64 assistantPollIntervalMsecs = 2000;
-constexpr int assistantSuccessMinStatusCode = 200;
-constexpr int assistantSuccessMaxStatusCode = 300;
 constexpr auto debugCallNotificationEnvVar = "NEXTCLOUD_DEBUG_CALL_NOTIFICATION";
 constexpr auto debugCallNotificationAvatarEnvVar = "NEXTCLOUD_DEBUG_CALL_NOTIFICATION_AVATAR_URL";
-
-QString assistantTaskTypeIdFromResponse(const QJsonDocument &json)
-{
-    const auto types = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("types"_L1).toObject();
-    auto resultTypeId = QString{};
-    auto fallbackTypeId = QString{};
-    for (const auto &typeId : types.keys()) {
-        const auto typeObject = types[typeId].toObject();
-        if (typeId.isEmpty()) {
-            continue;
-        }
-        if (typeId == "core:text2text:chat"_L1) {
-            qCDebug(OCC::lcActivity) << typeObject << typeId << types[typeId].toObject();
-            resultTypeId = typeId;
-            break;
-        }
-        if (typeId == "core:text2text"_L1) {
-            qCDebug(OCC::lcActivity) << typeObject << typeId << types[typeId].toObject();
-            fallbackTypeId = typeId;
-        }
-    }
-    return resultTypeId.isEmpty() ? fallbackTypeId : resultTypeId;
-}
-
-qint64 assistantTaskIdFromSchedule(const QJsonDocument &json)
-{
-    const auto task = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("task"_L1).toObject();
-    return static_cast<qint64>(task.value("id"_L1).toDouble(-1));
-}
-
-bool assistantTaskStillRunning(const QJsonObject &task)
-{
-    auto result = true;
-
-    if (!task.contains(u"status"_s)) {
-        return result;
-    }
-    if (task.value(u"status"_s).toString() == u"STATUS_FAILED"_s || task.value(u"status"_s).toString() == u"STATUS_SUCCESSFUL"_s) {
-        result = false;
-    }
-    qCDebug(OCC::lcActivity) << task.value(u"status"_s).toString();
-
-    return result;
-}
-
-QString assistantOutputFromTask(const QJsonObject &task)
-{
-    const auto outputValue = task.value("output"_L1);
-    if (outputValue.isString()) {
-        return outputValue.toString();
-    }
-
-    if (outputValue.isObject()) {
-        const auto outputObject = outputValue.toObject();
-        const auto nestedOutput = outputObject.value("output"_L1);
-        if (nestedOutput.isString()) {
-            return nestedOutput.toString();
-        }
-        if (nestedOutput.isObject()) {
-            const auto nestedObject = nestedOutput.toObject();
-            const auto textValue = nestedObject.value("text"_L1);
-            if (textValue.isString()) {
-                return textValue.toString();
-            }
-            const auto answerValue = nestedObject.value("answer"_L1);
-            if (answerValue.isString()) {
-                return answerValue.toString();
-            }
-        }
-
-        const auto textValue = outputObject.value("text"_L1);
-        if (textValue.isString()) {
-            return textValue.toString();
-        }
-        const auto answerValue = outputObject.value("answer"_L1);
-        if (answerValue.isString()) {
-            return answerValue.toString();
-        }
-    }
-
-    return QString();
-}
 
 struct SyncStatusInfo {
     QUrl icon;
@@ -583,10 +497,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
             showDesktopNotification(certificateNeedMigration);
         }
     });
-
-    _assistantPollTimer.setInterval(assistantPollIntervalMsecs);
-    _assistantPollTimer.setSingleShot(false);
-    connect(&_assistantPollTimer, &QTimer::timeout, this, &User::slotAssistantPoll);
 
     const auto folderMan = FolderMan::instance();
     connect(folderMan, &FolderMan::folderSyncStateChange, this, [this](const Folder *folder) {
@@ -1961,31 +1871,6 @@ bool User::isNcAssistantEnabled() const
     return _account->account()->capabilities().ncAssistantEnabled();
 }
 
-QString User::assistantQuestion() const
-{
-    return _assistantQuestion;
-}
-
-QString User::assistantResponse() const
-{
-    return _assistantResponse;
-}
-
-QString User::assistantError() const
-{
-    return _assistantError;
-}
-
-QVariantList User::assistantMessages() const
-{
-    return _assistantMessages;
-}
-
-bool User::assistantRequestInProgress() const
-{
-    return _assistantRequestInProgress;
-}
-
 QColor User::headerColor() const
 {
     return _account->account()->headerColor();
@@ -2033,6 +1918,13 @@ void User::removeAccount() const
     AccountManager::instance()->save();
 }
 
+void User::slotSendReplyMessage(const int activityIndex, const QString &token, const QString &message, const QString &replyTo)
+{
+    QPointer<TalkReply> talkReply = new TalkReply(_account.data(), this);
+    talkReply->sendReplyMessage(token, message, replyTo);
+    connect(talkReply, &TalkReply::replyMessageSent, this, [&, activityIndex](const QString &message) {
+        _activityModel->setReplyMessageSent(activityIndex, message);
+    });
 void User::submitAssistantQuestion(const QString &question)
 {
     const auto trimmedQuestion = question.trimmed();
