@@ -962,7 +962,7 @@ Le compte doit-il être importé ?</translation>
         <location filename="../src/gui/accountsettings.ui" line="558"/>
         <location filename="../src/gui/accountsettings.cpp" line="1554"/>
         <source>Log out, log back in, or remove this account from the client.</source>
-        <translation>Déconnectez-vous, reconnectez-vous ou supprimez ce compte du client.</translation>
+        <translation>Déconnectez-vous, reconnectez-vous ou retirez ce compte du client.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="574"/>
