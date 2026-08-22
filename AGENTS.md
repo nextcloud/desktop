@@ -138,7 +138,7 @@ Assisted-by: ClaudeCode:claude-sonnet-4-6
 
 ### Developer Certificate of Origin (DCO)
 
-The project uses the DCO as an additional safeguard. Only the human contributor may add the `Signed-off-by` trailer - agents must not add it:
+The project uses the DCO as an additional safeguard.
 
 ```
 Signed-off-by: Random J Developer <random@developer.example.org>
