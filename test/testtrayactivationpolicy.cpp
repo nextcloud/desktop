@@ -39,6 +39,15 @@ private Q_SLOTS:
         QVERIFY(!TrayActivationPolicy::opensPrimaryPopup(QSystemTrayIcon::MiddleClick));
     }
 
+    void testOnlyMiddleClickTogglesActivitiesWindow()
+    {
+        QVERIFY(TrayActivationPolicy::togglesActivitiesWindow(QSystemTrayIcon::MiddleClick));
+        QVERIFY(!TrayActivationPolicy::togglesActivitiesWindow(QSystemTrayIcon::Trigger));
+        QVERIFY(!TrayActivationPolicy::togglesActivitiesWindow(QSystemTrayIcon::Context));
+        QVERIFY(!TrayActivationPolicy::togglesActivitiesWindow(QSystemTrayIcon::DoubleClick));
+        QVERIFY(!TrayActivationPolicy::togglesActivitiesWindow(QSystemTrayIcon::Unknown));
+    }
+
     void testPopupVisibilityIsCapturedForTheCurrentMouseDown()
     {
         auto policy = TrayActivationPolicy();

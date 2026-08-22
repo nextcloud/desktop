@@ -33,6 +33,12 @@ public:
 #endif
     }
 
+    /** @brief Whether the activation should show or hide the activities window. */
+    [[nodiscard]] static constexpr bool togglesActivitiesWindow(const QSystemTrayIcon::ActivationReason reason)
+    {
+        return reason == QSystemTrayIcon::MiddleClick;
+    }
+
     /** @brief Preserve visibility from before AppKit dispatches a mouse press. */
     void recordMouseDown(const quint64 eventNumber, const bool popupVisible)
     {
