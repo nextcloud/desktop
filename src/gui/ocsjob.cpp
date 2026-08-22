@@ -12,6 +12,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include <algorithm>
+#include <utility>
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcOcs, "nextcloud.gui.sharing.ocs", QtInfoMsg)
@@ -32,12 +35,22 @@ void OcsJob::setVerb(const QByteArray &verb)
 
 void OcsJob::addParam(const QString &name, const QString &value)
 {
-    _params.insert(name, value);
+    _params.emplaceBack(name, value);
+}
+
+void OcsJob::setJsonBody(const QJsonObject &body)
+{
+    _jsonBody = QJsonDocument{body}.toJson(QJsonDocument::Compact);
 }
 
 void OcsJob::addPassStatusCode(int code)
 {
     _passStatusCodes.append(code);
+}
+
+void OcsJob::setPassStatusCodes(const QList<int> &codes)
+{
+    _passStatusCodes = codes;
 }
 
 void OcsJob::appendPath(const QString &id)
@@ -52,19 +65,22 @@ void OcsJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
 
 QString OcsJob::getParamValue(const QString &key) const
 {
-    return _params.value(key);
+    const auto parameter = std::find_if(_params.cbegin(), _params.cend(), [&key](const auto &entry) {
+        return entry.first == key;
+    });
+    return parameter == _params.cend() ? QString{} : parameter->second;
 }
 
 static QUrlQuery percentEncodeQueryItems(
-    const QHash<QString, QString> &items)
+    const QList<QPair<QString, QString>> &items)
 {
     QUrlQuery result;
     // Note: QUrlQuery::setQueryItems() does not fully percent encode
     // the query items, see #5042
-    for (auto it = std::cbegin(items); it != std::cend(items); ++it) {
+    for (const auto &[name, value] : items) {
         result.addQueryItem(
-            QUrl::toPercentEncoding(it.key()),
-            QUrl::toPercentEncoding(it.value()));
+            QUrl::toPercentEncoding(name),
+            QUrl::toPercentEncoding(value));
     }
     return result;
 }
@@ -72,25 +88,29 @@ static QUrlQuery percentEncodeQueryItems(
 void OcsJob::start()
 {
     addRawHeader("Ocs-APIREQUEST", "true");
-    addRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
     auto *buffer = new QBuffer;
 
     QUrlQuery queryItems;
-    if (_verb == "GET") {
+    if (_verb == "GET" || _verb == "DELETE") {
         queryItems = percentEncodeQueryItems(_params);
     } else if (_verb == "POST" || _verb == "PUT") {
-        // Url encode the _postParams and put them in a buffer.
-        QByteArray postData;
-        for (auto it = std::cbegin(_params); it != std::cend(_params); ++it) {
-            if (!postData.isEmpty()) {
-                postData.append("&");
+        if (_jsonBody.has_value()) {
+            addRawHeader("Content-Type", "application/json");
+            buffer->setData(*_jsonBody);
+        } else {
+            addRawHeader("Content-Type", "application/x-www-form-urlencoded");
+            QByteArray postData;
+            for (const auto &[name, value] : std::as_const(_params)) {
+                if (!postData.isEmpty()) {
+                    postData.append("&");
+                }
+                postData.append(QUrl::toPercentEncoding(name));
+                postData.append("=");
+                postData.append(QUrl::toPercentEncoding(value));
             }
-            postData.append(QUrl::toPercentEncoding(it.key()));
-            postData.append("=");
-            postData.append(QUrl::toPercentEncoding(it.value()));
+            buffer->setData(postData);
         }
-        buffer->setData(postData);
     }
     queryItems.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path(), queryItems);
