@@ -119,6 +119,8 @@ void GETFileJob::start()
     req.setPriority(QNetworkRequest::LowPriority); // Long downloads must not block non-propagation jobs.
     req.setDecompressedSafetyCheckThreshold(_decompressionThresholdBase + CustomDecompressedSafetyCheckThreshold);
 
+    enableStallDetection();
+
     if (_directDownloadUrl.isEmpty()) {
         sendRequest("GET", makeDavUrl(path()), req);
     } else {
@@ -745,6 +747,11 @@ void PropagateDownloadFile::startDownload()
     _job->setBandwidthManager(&propagator()->_bandwidthManager);
     connect(_job.data(), &GETFileJob::finishedSignal, this, &PropagateDownloadFile::slotGetFinished);
     connect(_job.data(), &GETFileJob::downloadProgress, this, &PropagateDownloadFile::slotDownloadProgress);
+    connect(_job.data(), &AbstractNetworkJob::transferStalled, this, [this]() {
+        qCWarning(lcPropagateDownload) << "Download stalled for" << _item->_file << "- scheduling retry.";
+        _job->cancel();
+        done(SyncFileItem::SoftError, tr("Download stalled: no data was transferred. The download will be retried."), ErrorCategory::GenericError);
+    });
     propagator()->_activeJobList.append(this);
     _job->start();
 }

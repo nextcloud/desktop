@@ -110,6 +110,40 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
     connect(reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::uploadProgress, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::redirected, this, [reply, this] (const QUrl &url) { emit redirected(reply, url, 0);});
+
+    if (_stallDetectionEnabled) {
+        // Reset per-reply state so progress from a previous attempt does not
+        // carry over (e.g. after an HTTP redirect).
+        _lastTransferBytes = -1;
+        connect(reply, &QNetworkReply::uploadProgress, this, [this](qint64 bytesSent, qint64) {
+            if (bytesSent > _lastTransferBytes) {
+                _lastTransferBytes = bytesSent;
+                _stallTimer.start();
+            }
+        });
+        connect(reply, &QNetworkReply::downloadProgress, this, [this](qint64 bytesReceived, qint64) {
+            if (bytesReceived > _lastTransferBytes) {
+                _lastTransferBytes = bytesReceived;
+                _stallTimer.start();
+            }
+        });
+        _stallTimer.start();
+    }
+}
+
+void AbstractNetworkJob::enableStallDetection(int timeoutMs)
+{
+    _stallDetectionEnabled = true;
+    _stallTimer.setSingleShot(true);
+    _stallTimer.setInterval(timeoutMs);
+    connect(&_stallTimer, &QTimer::timeout, this, [this]() {
+        qCWarning(lcNetworkJob) << "Transfer stalled: no bytes transferred for"
+                                << _stallTimer.interval() / 1000 << "seconds on" << path();
+        emit transferStalled();
+        if (reply()) {
+            reply()->abort();
+        }
+    });
 }
 
 QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
@@ -175,6 +209,7 @@ QUrl AbstractNetworkJob::makeDavUrl(const QString &relativePath) const
 void AbstractNetworkJob::slotFinished()
 {
     _timer.stop();
+    _stallTimer.stop();
 
     if (_reply->error() == QNetworkReply::SslHandshakeFailedError) {
         qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
