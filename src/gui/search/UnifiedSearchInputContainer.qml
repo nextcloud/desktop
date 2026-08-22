@@ -12,7 +12,6 @@ TextField {
     id: root
 
     signal clearText()
-    signal toggleFilters()
     signal moveSelection(int direction)
     signal activateSelection()
 
@@ -21,7 +20,7 @@ TextField {
     readonly property int controlSize: Math.max(40, height - 4)
 
     leftPadding: 8 + controlSize
-    rightPadding: 8 + controlSize
+    rightPadding: root.text.length > 0 ? 8 + controlSize : 8
     verticalAlignment: Qt.AlignVCenter
     placeholderText: qsTr("Search files, messages, events …")
 
@@ -57,6 +56,7 @@ TextField {
     }
 
     BusyIndicator {
+        objectName: "searchProgressIndicator"
         anchors.left: parent.left
         anchors.leftMargin: 8
         anchors.verticalCenter: parent.verticalCenter
@@ -68,16 +68,16 @@ TextField {
     }
 
     ToolButton {
+        objectName: "clearSearchButton"
         anchors.right: parent.right
         anchors.rightMargin: 2
         anchors.verticalCenter: parent.verticalCenter
         width: root.controlSize
         height: root.controlSize
-        icon.source: root.text.length > 0 ? "image://svgimage-custom-color/clear.svg/" + root.iconColor
-                                          : "image://svgimage-custom-color/filter.svg/" + root.iconColor
-        visible: root.text.length > 0 || root.activeFocus
-        Accessible.name: root.text.length > 0 ? qsTr("Clear search") : qsTr("Show search filters")
-        Accessible.description: root.text.length > 0 ? qsTr("Keeps the active filters") : ""
-        onClicked: root.text.length > 0 ? root.clearText() : root.toggleFilters()
+        icon.source: "image://svgimage-custom-color/clear.svg/" + root.iconColor
+        visible: root.text.length > 0
+        Accessible.name: qsTr("Clear search")
+        Accessible.description: qsTr("Keeps the active filters")
+        onClicked: root.clearText()
     }
 }

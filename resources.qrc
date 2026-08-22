@@ -75,6 +75,7 @@
         <file>src/gui/wizard/qml/WizardChipButton.qml</file>
         <file>src/gui/wizard/qml/WizardComboBox.qml</file>
         <file>src/gui/wizard/qml/WizardDialogFrame.qml</file>
+        <file>src/gui/wizard/qml/WizardMenu.qml</file>
         <file>src/gui/wizard/qml/WizardMenuItem.qml</file>
         <file>src/gui/wizard/qml/WizardTextField.qml</file>
         <file>src/gui/macOS/ui/FileProviderFileDelegate.qml</file>

@@ -10,6 +10,7 @@ import QtQuick.Layouts
 import Style
 import com.nextcloud.desktopclient
 import "qrc:/qml/src/gui"
+import "qrc:/qml/src/gui/tray"
 import "qrc:/qml/src/gui/wizard/qml"
 
 WizardStyledWindow {
@@ -17,10 +18,8 @@ WizardStyledWindow {
 
     property var account: null
     property var searchModel: null
-    property bool filtersRevealed: false
     readonly property bool aggregateView: searchModel && searchModel.viewMode === UnifiedSearchResultsListModel.Aggregate
     readonly property bool filtersVisible: aggregateView && searchModel && searchModel.providersReady
-        && (filtersRevealed || searchModel.searchTerm.length > 0 || searchModel.activeFilters.length > 0)
     readonly property int searchState: searchModel ? searchModel.searchState : UnifiedSearchResultsListModel.Placeholder
 
     title: ""
@@ -102,13 +101,14 @@ WizardStyledWindow {
             readOnly: !root.searchModel || !root.searchModel.canEditSearch
             text: root.searchModel ? root.searchModel.searchTerm : ""
             isSearchInProgress: root.searchModel
-                && (root.searchModel.isSearchInProgress || root.searchModel.waitingForSearchTermEditEnd)
+                && (root.searchModel.isSearchInProgress
+                    || root.searchModel.waitingForSearchTermEditEnd
+                    || root.searchModel.isFetchMoreInProgress)
             placeholderText: root.searchModel && !root.searchModel.isAccountConnected
                 ? qsTr("Search is available when this account is connected")
                 : qsTr("Search files, messages, events …")
             onTextEdited: if (root.searchModel) root.searchModel.searchTerm = text
             onClearText: if (root.searchModel) root.searchModel.searchTerm = ""
-            onToggleFilters: root.filtersRevealed = !root.filtersRevealed
             onMoveSelection: direction => root.searchModel.moveSelection(direction)
             onActivateSelection: root.searchModel.activateSelected()
         }
@@ -140,7 +140,7 @@ WizardStyledWindow {
                     root.focusSearchInput()
                 }
             }
-            Label {
+            EnforcedPlainTextLabel {
                 objectName: "searchDetailProviderTitle"
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -157,12 +157,15 @@ WizardStyledWindow {
 
         Flow {
             id: filterFlow
+            objectName: "categoryFilterFlow"
             Layout.fillWidth: true
             Layout.preferredHeight: visible ? childrenRect.height : 0
             visible: root.filtersVisible
             spacing: Style.smallSpacing
 
             WizardButton {
+                id: typeFilterButton
+
                 objectName: "typeFilterButton"
                 width: Math.max(140, (filterFlow.width - 2 * filterFlow.spacing) / 3)
                 text: qsTr("Type")
@@ -173,10 +176,12 @@ WizardStyledWindow {
                     + (primary ? Style.wizardSelectedText : Style.wizardPrimaryText)
                 primary: root.hasActiveFilter("provider")
                 Accessible.name: qsTr("Filter by type")
-                onClicked: typeMenu.open()
-                Menu {
+                onClicked: typeMenu.toggle()
+                WizardMenu {
                     id: typeMenu
-                    width: parent.width * 1.5
+                    objectName: "typeFilterMenu"
+                    anchorItem: typeFilterButton
+                    width: anchorItem.width * 1.5
                     Repeater {
                         model: root.searchModel ? root.searchModel.providers : []
                         delegate: WizardMenuItem {
@@ -191,6 +196,8 @@ WizardStyledWindow {
                 }
             }
             WizardButton {
+                id: dateFilterButton
+
                 objectName: "dateFilterButton"
                 width: Math.max(140, (filterFlow.width - 2 * filterFlow.spacing) / 3)
                 text: qsTr("Date")
@@ -203,9 +210,11 @@ WizardStyledWindow {
                 enabled: root.searchModel && root.searchModel.dateFilterAvailable
                 Accessible.name: qsTr("Filter by date")
                 Accessible.description: enabled ? "" : qsTr("No search source supports date filtering")
-                onClicked: dateMenu.open()
-                Menu {
+                onClicked: dateMenu.toggle()
+                WizardMenu {
                     id: dateMenu
+                    objectName: "dateFilterMenu"
+                    anchorItem: dateFilterButton
                     WizardMenuItem {
                         objectName: "dateTodayMenuItem"
                         text: qsTr("Today")
@@ -245,6 +254,7 @@ WizardStyledWindow {
         }
 
         Flow {
+            objectName: "activeFilterFlow"
             Layout.fillWidth: true
             Layout.preferredHeight: visible ? implicitHeight : 0
             visible: root.filtersVisible && root.searchModel && root.searchModel.activeFilters.length > 0
@@ -400,7 +410,7 @@ WizardStyledWindow {
             objectName: "partialFailureFooter"
             Layout.fillWidth: true
             visible: root.aggregateView && root.searchModel && root.searchModel.hasPartialFailure
-            Label { Layout.fillWidth: true; text: qsTr("Some sources unavailable"); color: palette.placeholderText }
+            EnforcedPlainTextLabel { Layout.fillWidth: true; text: qsTr("Some sources unavailable"); color: palette.placeholderText }
             WizardButton { text: qsTr("Retry"); onClicked: root.searchModel.retryFailedProviders() }
         }
 
@@ -432,7 +442,7 @@ WizardStyledWindow {
                 placeholderText: qsTr("Search people")
                 onTextEdited: peopleModel.searchTerm = text
             }
-            Label { visible: peopleModel.errorString.length > 0; text: peopleModel.errorString; wrapMode: Text.Wrap }
+            EnforcedPlainTextLabel { visible: peopleModel.errorString.length > 0; text: peopleModel.errorString; wrapMode: Text.Wrap }
             WizardButton {
                 visible: peopleModel.errorString.length > 0
                 text: qsTr("Retry")
@@ -473,7 +483,7 @@ WizardStyledWindow {
                                 ? "image://tray-image-provider/" + personDelegate.avatarUrl : ""
                             Accessible.ignored: true
                         }
-                        Label { Layout.fillWidth: true; text: personDelegate.displayName; elide: Text.ElideRight }
+                        EnforcedPlainTextLabel { Layout.fillWidth: true; text: personDelegate.displayName; elide: Text.ElideRight }
                     }
                     onClicked: {
                         root.searchModel.setPersonFilter(userId, displayName, avatarUrl)
@@ -517,11 +527,11 @@ WizardStyledWindow {
         }
 
         ColumnLayout {
-            Label { text: qsTr("Start date (YYYY-MM-DD)") }
+            EnforcedPlainTextLabel { text: qsTr("Start date (YYYY-MM-DD)") }
             TextField { id: customSince; Layout.fillWidth: true; placeholderText: "YYYY-MM-DD" }
-            Label { text: qsTr("End date (YYYY-MM-DD)") }
+            EnforcedPlainTextLabel { text: qsTr("End date (YYYY-MM-DD)") }
             TextField { id: customUntil; Layout.fillWidth: true; placeholderText: "YYYY-MM-DD" }
-            Label {
+            EnforcedPlainTextLabel {
                 visible: customRangeDialog.validationError
                 text: qsTr("Enter valid dates with the start date before the end date.")
                 color: palette.accent

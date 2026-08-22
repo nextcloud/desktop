@@ -396,10 +396,11 @@ QVariantList UnifiedSearchResultsListModel::activeFilters() const
 {
     QVariantList result;
     for (const auto &providerId : _selectedProviderIds) {
-        if (!_providers.contains(providerId)) {
+        const auto providerIt = _providers.constFind(providerId);
+        if (providerIt == _providers.cend()) {
             continue;
         }
-        const auto &provider = _providers.constFind(providerId).value();
+        const auto &provider = providerIt.value();
         result.push_back(QVariantMap{{QStringLiteral("type"), QStringLiteral("provider")},
                                      {QStringLiteral("id"), providerId},
                                      {QStringLiteral("label"), provider.name},

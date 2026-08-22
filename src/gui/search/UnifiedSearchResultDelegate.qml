@@ -9,6 +9,7 @@ import QtQuick.Layouts
 
 import Style
 import com.nextcloud.desktopclient
+import "qrc:/qml/src/gui/tray"
 
 Item {
     id: root
@@ -101,7 +102,7 @@ Item {
                 radius: Style.mediumRoundedButtonRadius
             }
 
-            contentItem: Label {
+            contentItem: EnforcedPlainTextLabel {
                 text: providerHeaderButton.text
                 color: Style.wizardPrimaryText
                 font: providerHeaderButton.font
@@ -110,7 +111,7 @@ Item {
                 verticalAlignment: Text.AlignVCenter
             }
 
-            onClicked: {
+            onPressed: {
                 if (root.hasOverflow) {
                     root.searchModel.openProviderDetail(root.providerId)
                 }
@@ -121,7 +122,7 @@ Item {
     Component {
         id: partialHeader
 
-        Label {
+        EnforcedPlainTextLabel {
             objectName: "partialMatchesHeaderRow"
             width: root.width
             height: 40
@@ -154,9 +155,9 @@ Item {
             Accessible.selected: root.isSelected
 
             background: Rectangle {
-                color: resultDelegateButton.hovered
-                    ? Style.listItemHoverBackground
-                    : (root.isSelected ? Style.wizardSecondaryButtonPressed : "transparent")
+                color: root.isSelected
+                    ? Style.wizardSecondaryButtonPressed
+                    : (resultDelegateButton.hovered ? Style.listItemHoverBackground : "transparent")
                 radius: Style.mediumRoundedButtonRadius
             }
 
@@ -227,18 +228,19 @@ Item {
                     Accessible.ignored: true
                 }
 
-                Label {
+                EnforcedPlainTextLabel {
+                    objectName: "searchPagingLabel"
                     Layout.fillWidth: true
                     text: pagingDelegate.text
                     color: Style.wizardPrimaryText
-                    font.bold: true
+                    font.bold: false
                     font.pixelSize: Style.unifiedSearchResultTitleFontSize
                     elide: Text.ElideRight
                     verticalAlignment: Text.AlignVCenter
                 }
             }
 
-            onClicked: root.resultType === UnifiedSearchResultsListModel.RetryFetchMoreTrigger
+            onPressed: root.resultType === UnifiedSearchResultsListModel.RetryFetchMoreTrigger
                 ? root.searchModel.retryLoadMore(root.providerId)
                 : root.searchModel.loadMore(root.providerId)
         }

@@ -10,6 +10,7 @@ import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 
 import Style
+import "qrc:/qml/src/gui/tray"
 
 RowLayout {
     id: unifiedSearchResultItemDetails
@@ -98,7 +99,7 @@ RowLayout {
         Layout.fillWidth: true
         Layout.rightMargin: Style.trayHorizontalMargin
 
-        Label {
+        EnforcedPlainTextLabel {
             objectName: "searchResultTitle"
             Layout.fillWidth: true
             text: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
@@ -108,7 +109,7 @@ RowLayout {
             font.pixelSize: unifiedSearchResultItemDetails.titleFontSize
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             objectName: "searchResultSubline"
             Layout.fillWidth: true
             text: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")

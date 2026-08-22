@@ -110,6 +110,7 @@ private slots:
         auto account = OCC::Account::create();
         account->setCredentials(new FakeCredentials(qnam.get()));
         account->setUrl(QUrl(QStringLiteral("https://cloud.example.test/")));
+        account->setDavUser(QStringLiteral("me"));
         auto state = std::make_unique<FakeAccountState>(account);
         qnam->setOverride([&](QNetworkAccessManager::Operation operation, const QNetworkRequest &request, QIODevice *) {
             const auto query = QUrlQuery(request.url()).queryItemValue(QStringLiteral("search"));

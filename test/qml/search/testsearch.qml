@@ -169,7 +169,6 @@ Item {
     }
 
     SignalSpy { id: clearSpy; target: input; signalName: "clearText" }
-    SignalSpy { id: filterSpy; target: input; signalName: "toggleFilters" }
     SignalSpy { id: moveSpy; target: input; signalName: "moveSelection" }
     SignalSpy { id: activateSpy; target: input; signalName: "activateSelection" }
 
@@ -237,7 +236,10 @@ Item {
 
         function test_hiddenLoadingFooterDoesNotReserveSpace() {
             const model = windowSearchModel.createObject(this)
-            const searchWindow = productionSearchWindow.createObject(null, { searchModel: model })
+            const searchWindow = productionSearchWindow.createObject(null, {
+                searchModel: model,
+                visible: true
+            })
             const footer = findChild(searchWindow, "searchResultsLoadingFooter")
 
             verify(footer !== null)
@@ -245,6 +247,21 @@ Item {
             compare(footer.height, 0)
             model.isSearchInProgress = true
             tryVerify(() => footer.height > 0)
+
+            searchWindow.destroy()
+            model.destroy()
+        }
+
+        function test_fetchMoreShowsSearchProgressIndicator() {
+            const model = windowSearchModel.createObject(this)
+            const searchWindow = productionSearchWindow.createObject(null, { searchModel: model })
+            const progressIndicator = findChild(searchWindow, "searchProgressIndicator")
+
+            verify(progressIndicator !== null)
+            compare(progressIndicator.visible, false)
+            model.currentFetchMoreInProgressProviderId = "files"
+            tryCompare(progressIndicator, "visible", true)
+            compare(progressIndicator.running, true)
 
             searchWindow.destroy()
             model.destroy()
@@ -311,6 +328,65 @@ Item {
             model.destroy()
         }
 
+        function test_filterMenusUseStandardDropdownGeometry() {
+            const model = windowSearchModel.createObject(this, { dateFilterAvailable: true })
+            const searchWindow = productionSearchWindow.createObject(null, {
+                searchModel: model,
+                visible: true
+            })
+            const typeButton = findChild(searchWindow, "typeFilterButton")
+            const typeMenu = findChild(searchWindow, "typeFilterMenu")
+            const dateButton = findChild(searchWindow, "dateFilterButton")
+            const dateMenu = findChild(searchWindow, "dateFilterMenu")
+
+            verify(typeButton !== null)
+            verify(typeMenu !== null)
+            verify(dateButton !== null)
+            verify(dateMenu !== null)
+            compare(dateMenu.width, dateButton.width)
+            verify(dateMenu.width > Style.standardPrimaryButtonHeight)
+            compare(typeMenu.background.radius, Style.mediumRoundedButtonRadius)
+            compare(dateMenu.background.radius, Style.mediumRoundedButtonRadius)
+            compare(typeMenu.background.border.width, Style.normalBorderWidth)
+            compare(dateMenu.background.border.width, Style.normalBorderWidth)
+
+            mouseClick(typeButton)
+            tryCompare(typeMenu, "opened", true)
+            compare(typeMenu.y, typeButton.height + Style.smallSpacing)
+            mouseClick(typeButton)
+            tryCompare(typeMenu, "opened", false)
+            mouseClick(dateButton)
+            tryCompare(dateMenu, "opened", true)
+            compare(dateMenu.y, dateButton.height + Style.smallSpacing)
+            verify(dateMenu.height > Style.standardPrimaryButtonHeight)
+            mouseClick(dateButton)
+            tryCompare(dateMenu, "opened", false)
+
+            searchWindow.destroy()
+            model.destroy()
+        }
+
+        function test_categoryFiltersAreVisibleBeforeSearchBegins() {
+            const model = windowSearchModel.createObject(this, { searchTerm: "" })
+            const searchWindow = productionSearchWindow.createObject(null, {
+                searchModel: model,
+                visible: true
+            })
+            const filterFlow = findChild(searchWindow, "categoryFilterFlow")
+            const typeButton = findChild(searchWindow, "typeFilterButton")
+            const dateButton = findChild(searchWindow, "dateFilterButton")
+            const peopleButton = findChild(searchWindow, "peopleFilterButton")
+
+            verify(filterFlow !== null)
+            compare(filterFlow.visible, true)
+            compare(typeButton.visible, true)
+            compare(dateButton.visible, true)
+            compare(peopleButton.visible, true)
+
+            searchWindow.destroy()
+            model.destroy()
+        }
+
         function test_activeFilterUsesCompactPillButton() {
             const model = windowSearchModel.createObject(this, {
                 activeFilters: [{
@@ -324,10 +400,20 @@ Item {
                 searchModel: model,
                 visible: true
             })
-            const chip = findChild(searchWindow, "activeFilterChip")
+            const activeFilterFlow = findChild(searchWindow, "activeFilterFlow")
             const dateButton = findChild(searchWindow, "dateFilterButton")
+            function activeFilterChip() {
+                for (let index = 0; index < activeFilterFlow.children.length; ++index) {
+                    if (activeFilterFlow.children[index].objectName === "activeFilterChip") {
+                        return activeFilterFlow.children[index]
+                    }
+                }
+                return null
+            }
 
-            verify(chip !== null)
+            verify(activeFilterFlow !== null)
+            tryVerify(() => activeFilterChip() !== null)
+            const chip = activeFilterChip()
             verify(dateButton !== null)
             compare(chip.implicitHeight, Style.wizardChipButtonHeight)
             verify(chip.implicitHeight < dateButton.implicitHeight)
@@ -349,7 +435,6 @@ Item {
             input.text = ""
             input.forceActiveFocus()
             clearSpy.clear()
-            filterSpy.clear()
             moveSpy.clear()
             activateSpy.clear()
         }
@@ -380,7 +465,18 @@ Item {
             keyClick(Qt.Key_R)
             compare(input.text, "calendar")
             compare(clearSpy.count, 0)
-            compare(filterSpy.count, 0)
+        }
+
+        function test_clearActionReplacesFilterAction() {
+            const clearButton = findChild(input, "clearSearchButton")
+
+            verify(clearButton !== null)
+            compare(clearButton.visible, false)
+            keyClick(Qt.Key_C)
+            compare(clearButton.visible, true)
+            verify(clearButton.icon.source.toString().includes("clear.svg"))
+            mouseClick(clearButton)
+            compare(clearSpy.count, 1)
         }
     }
 
@@ -424,9 +520,11 @@ Item {
             const trailingIcon = findChild(wizardHoverButton, "wizardButtonTrailingIcon")
             verify(textItem !== null)
             verify(trailingIcon !== null)
-            const textRight = textItem.mapToItem(wizardHoverButton, textItem.width, 0).x
-            const iconLeft = trailingIcon.mapToItem(wizardHoverButton, 0, 0).x
-            verify(textRight < iconLeft)
+            tryVerify(() => {
+                const textRight = textItem.mapToItem(wizardHoverButton, textItem.width, 0).x
+                const iconLeft = trailingIcon.mapToItem(wizardHoverButton, 0, 0).x
+                return textRight < iconLeft
+            })
         }
     }
 
@@ -480,12 +578,17 @@ Item {
             compare(findChild(resultDelegate.loadedItem, "providerHeaderIconTint"), null)
 
             mouseMove(input, 1, 1)
-            wait(0)
-            const restingColor = resultDelegate.loadedItem.background.color.toString()
+            mouseMove(input, 2, 2)
+            tryCompare(resultDelegate.loadedItem, "hovered", false)
+            compare(resultDelegate.loadedItem.background.color.toString(), "#00000000")
+            mouseMove(resultDelegate.loadedItem, 1, 1)
             mouseMove(resultDelegate.loadedItem, 2, 2)
-            tryVerify(() => resultDelegate.loadedItem.background.color.toString() !== restingColor)
+            tryCompare(resultDelegate.loadedItem, "hovered", true)
+            compare(resultDelegate.loadedItem.background.color.toString(), Style.listItemHoverBackground.toString())
 
-            mouseClick(resultDelegate.loadedItem)
+            mousePress(resultDelegate.loadedItem)
+            compare(fakeSearchModel.openedProviderDetails, 1)
+            mouseRelease(resultDelegate.loadedItem)
             compare(fakeSearchModel.openedProviderDetails, 1)
         }
 
@@ -528,15 +631,11 @@ Item {
             compare(textContainer.spacing, Style.unifiedSearchResultTextSpacing)
 
             resultDelegate.isSelected = true
-            wait(0)
-            const selectedColor = resultDelegate.loadedItem.background.color.toString()
+            tryCompare(resultDelegate.loadedItem.background, "color", Style.wizardSecondaryButtonPressed)
             resultDelegate.isSelected = false
-            mouseMove(input, 1, 1)
-            wait(0)
             mouseMove(resultDelegate.loadedItem, 2, 2)
             tryCompare(resultDelegate.loadedItem, "hovered", true)
             compare(resultDelegate.loadedItem.background.color.toString(), Style.listItemHoverBackground.toString())
-            verify(resultDelegate.loadedItem.background.color.toString() !== selectedColor)
 
             mouseClick(resultDelegate.loadedItem)
             compare(fakeSearchModel.activatedResults, 1)
@@ -549,6 +648,9 @@ Item {
             verify(resultDelegate.loadedItem !== null)
             compare(resultDelegate.loadedItem.objectName, "searchPagingRow")
             compare(resultDelegate.loadedItem.text, qsTr("Load more results"))
+            const pagingLabel = findChild(resultDelegate.loadedItem, "searchPagingLabel")
+            verify(pagingLabel !== null)
+            compare(pagingLabel.font.bold, false)
             verify(resultDelegate.loadedItem.icon.source.toString().includes("more.svg"))
             verify(!resultDelegate.loadedItem.hasOwnProperty("primary"))
             compare(resultDelegate.loadedItem.height, 44)
@@ -560,7 +662,9 @@ Item {
             tryCompare(resultDelegate.loadedItem, "hovered", true)
             compare(resultDelegate.loadedItem.background.color.toString(), Style.listItemHoverBackground.toString())
 
-            mouseClick(resultDelegate.loadedItem)
+            mousePress(resultDelegate.loadedItem)
+            compare(fakeSearchModel.loadedPages, 1)
+            mouseRelease(resultDelegate.loadedItem)
             compare(fakeSearchModel.loadedPages, 1)
         }
 
@@ -574,7 +678,9 @@ Item {
             verify(!resultDelegate.loadedItem.hasOwnProperty("primary"))
             compare(resultDelegate.loadedItem.height, 44)
 
-            mouseClick(resultDelegate.loadedItem)
+            mousePress(resultDelegate.loadedItem)
+            compare(fakeSearchModel.retriedPages, 1)
+            mouseRelease(resultDelegate.loadedItem)
             compare(fakeSearchModel.retriedPages, 1)
         }
     }
