@@ -10,6 +10,7 @@ set(CMAKE_AUTOMOC TRUE)
 
 find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIET)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS HttpServer CONFIG QUIET)
+find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS QuickTest)
 
 add_library(testutils
   STATIC
@@ -108,6 +109,7 @@ if(NOT APPLE)
     nextcloud_add_test(SystraySyncControlQt)
 endif()
 nextcloud_add_test(UnifiedSearchListmodel)
+nextcloud_add_test(UnifiedSearchPeopleModel)
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(SortedActivityListModel)
 nextcloud_add_test(ActivityData)
@@ -115,6 +117,20 @@ add_test(NAME ActivityFileMenuQmlTest
     COMMAND Qt6::qmltestrunner
         -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/activityfilemenu/testactivityfilemenu.qml"
 )
+add_executable(SearchQmlTest qml/search/searchqmltestrunner.cpp)
+target_link_libraries(SearchQmlTest PRIVATE nextcloudCore Qt::QuickTest)
+target_compile_definitions(SearchQmlTest PRIVATE
+    SEARCH_QML_TEST_IMPORT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/qml/search/imports"
+)
+set_target_properties(SearchQmlTest PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
+    FOLDER Tests
+)
+add_test(NAME SearchQmlTest
+    COMMAND SearchQmlTest -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/search/testsearch.qml"
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+set_tests_properties(SearchQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(TalkReply)
 nextcloud_add_test(LockFile)
 nextcloud_add_test(ShareModel)

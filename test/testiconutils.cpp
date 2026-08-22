@@ -43,6 +43,13 @@ private slots:
 
         QVERIFY(!OCC::Ui::IconUtils::drawSvgWithCustomFillColor(blackSvgDirPath + QStringLiteral("/") + blackImages.at(0), QColorConstants::Svg::green).isNull());
 
+        const auto imageFromZeroWidthRequest = OCC::Ui::IconUtils::drawSvgWithCustomFillColor(
+            blackSvgDirPath + QStringLiteral("/") + blackImages.at(0),
+            QColorConstants::Svg::green,
+            nullptr,
+            QSize(0, 24));
+        QVERIFY(!imageFromZeroWidthRequest.isNull());
+
         const QString whiteSvgDirPath{QString{OCC::Theme::themePrefix} + QStringLiteral("white")};
         const QDir whiteSvgDir(whiteSvgDirPath);
         const QStringList whiteImages = whiteSvgDir.entryList(QStringList("*.svg"));

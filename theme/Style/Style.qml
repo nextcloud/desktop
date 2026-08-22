@@ -49,6 +49,7 @@ QtObject {
     readonly property color wizardErrorText: darkMode ? "#ff7b86" : "#b00020"
     readonly property color wizardAvatarPlaceholder: darkMode ? "#3b464d" : "#dfe8ee"
     readonly property color wizardSelectedText: "#ffffff"
+    readonly property color listItemHoverBackground: darkMode ? "#3a3a3a" : "#f2f2f2"
 
     // ErrorBox colors
     readonly property color errorBoxBackgroundColor: Qt.rgba(0.89, 0.18, 0.18, 1)
@@ -126,6 +127,7 @@ QtObject {
     readonly property int wizardWindowMargin: 24
     readonly property int wizardWindowTopMargin: standardSpacing
     readonly property int wizardFooterButtonHeight: iconButtonWidth
+    readonly property int wizardChipButtonHeight: variableSize(26)
     readonly property int wizardFooterSpacing: trayAccountPopupActionVerticalPadding
     readonly property int wizardSectionSpacing: trayAccountPopupRowPadding
     readonly property int wizardDialogMaximumWidth: 420
@@ -149,7 +151,7 @@ QtObject {
     readonly property int assistantWindowWidth: 640
     readonly property int assistantWindowHeight: 620
     readonly property int searchWindowWidth: 640
-    readonly property int searchWindowHeight: 620
+    readonly property int searchWindowHeight: 670
     readonly property int userStatusWindowWidth: 560
     readonly property int userStatusWindowHeight: 700
     readonly property int userStatusWindowMinimumHeight: 560
@@ -221,14 +223,16 @@ QtObject {
     property bool hoverEffectsEnabled: true
 
     // unified search constants
-    readonly property int unifiedSearchItemHeight: trayWindowHeaderHeight
+    readonly property int unifiedSearchItemHeight: Math.max(44,
+        unifiedSearchResultTitleFontSize * 2 + unifiedSearchResultTextSpacing + 8)
     readonly property int unifiedSearchResultTextLeftMargin: 18
     readonly property int unifiedSearchResultTextRightMargin: 16
     readonly property int unifiedSearchResultIconWidth: trayListItemIconSize * (1 - thumbnailImageSizeReduction)
     readonly property int unifiedSearchResultSmallIconWidth: trayListItemIconSize * (1 - thumbnailImageSizeReduction * 2)
     readonly property int unifiedSearchResultIconLeftMargin: 12
-    readonly property int unifiedSearchResultTitleFontSize: topLinePixelSize
-    readonly property int unifiedSearchResultSublineFontSize: subLinePixelSize
+    readonly property int unifiedSearchResultTitleFontSize: pixelSize + extraSmallSpacing
+    readonly property int unifiedSearchResultSublineFontSize: unifiedSearchResultTitleFontSize
+    readonly property int unifiedSearchResultTextSpacing: extraSmallSpacing
     readonly property int unifiedSearchResultSectionItemLeftPadding: 16
     readonly property int unifiedSearchResultSectionItemVerticalPadding: 8
     readonly property int unifiedSearchResultNothingFoundHorizontalMargin: 10

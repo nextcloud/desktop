@@ -79,7 +79,7 @@ ScrollView {
         highlight: Rectangle {
             id: activityHover
             anchors.fill: activityList.currentItem
-            color: palette.highlight
+            color: Style.listItemHoverBackground
             radius: Style.mediumRoundedButtonRadius
             visible: activityList.activeFocus
         }
