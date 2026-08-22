@@ -29,7 +29,7 @@ class QListWidgetItem;
 class QLabel;
 class QPushButton;
 class QIcon;
-class QFrame;
+class QGroupBox;
 
 namespace OCC {
 
@@ -168,7 +168,7 @@ private:
 
     bool _menuShown = false;
     bool _e2eEncryptionSetupDone = false;
-    QFrame *_encryptionPanel = nullptr;
+    QGroupBox *_encryptionPanel = nullptr;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
     QHash<QAction *, QPushButton *> _encryptionMessageButtons;

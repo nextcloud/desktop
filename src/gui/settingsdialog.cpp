@@ -19,6 +19,7 @@
 #include "accountmanager.h"
 
 #include <QLabel>
+#include <QGroupBox>
 #include <QStandardItemModel>
 #include <QStackedWidget>
 #include <QPushButton>
@@ -54,14 +55,6 @@
 #endif
 
 using namespace Qt::StringLiterals;
-
-#ifdef Q_OS_WIN
-    // "light" looks too bright on dark mode on Windows only
-    #define BACKGROUND_PALETTE "alternate-base"
-#else
-    // ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
-    #define BACKGROUND_PALETTE "light"
-#endif
 
 namespace {
 class CurrentPageSizeStackedWidget : public QStackedWidget
@@ -501,28 +494,13 @@ void SettingsDialog::customizeStyle()
         "#Settings { background: palette(window); border-radius: 0; }"
 
         /* Navigation */
-        "#settings_navigation_scroll { background: palette(" BACKGROUND_PALETTE "); border-radius: 12px; padding: 4px; }"
-        "#settings_navigation { background: transparent; border: none; padding: 0px; }"
+        "#settings_navigation_scroll, #settings_navigation { background: transparent; border: none; padding: 0px; }"
 
         /* Content area */
         "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
 
         /* Panels */
-        "#generalGroupBox, #fileProviderGroupBox, #notificationsGroupBox, #advancedGroupBox, #syncBehaviorGroupBox,"
-        "#advancedActionsGroupBox, #aboutAndUpdatesGroupBox, #updatesGroupBox {"
-        " background: palette(" BACKGROUND_PALETTE ");"
-        " border: none;"
-        " border-radius: 12px;"
-        " margin: 0px;"
-        " padding: 0px;"
-        " }"
-        "#accountStatusPanel, #encryptionPanel, #syncFoldersPanel, #accountActionsPanel {"
-        " background: palette(" BACKGROUND_PALETTE ");"
-        " border: none;"
-        " border-radius: 12px;"
-        " margin: 0px;"
-        " padding: 6px;"
-        " }"
+        // Leave QGroupBox panels to the platform style, matching NetworkSettings.
         "#generalGroupBox QLabel, #fileProviderGroupBox QLabel, #notificationsGroupBox QLabel, #advancedGroupBox QLabel,"
         "#syncBehaviorGroupBox QLabel, #advancedActionsGroupBox QLabel,"
         "#aboutAndUpdatesGroupBox QLabel, #updatesGroupBox QLabel {"
@@ -684,7 +662,12 @@ void SettingsDialog::setupUi()
     contentScroll->viewport()->setAutoFillBackground(false);
     contentScroll->setWidget(_stack);
 
-    mainLayout->addWidget(navigationScroll);
+    auto *navigationPanel = new QGroupBox(this);
+    navigationPanel->setObjectName("settings_navigation_panel"_L1);
+    auto *navigationPanelLayout = new QVBoxLayout(navigationPanel);
+    navigationPanelLayout->setContentsMargins(0, 0, 0, 0);
+    navigationPanelLayout->addWidget(navigationScroll);
+    mainLayout->addWidget(navigationPanel);
     mainLayout->addWidget(contentScroll);
     mainLayout->setStretch(0, 0);
     mainLayout->setStretch(1, 1);
