@@ -17,7 +17,7 @@ class JsonApiJob;
 class OcsAssistantConnector;
 
 /** @brief Sends Assistant task-processing and chat requests for one account. */
-class AssistantClient final : public QObject
+class AssistantClient : public QObject
 {
     Q_OBJECT
 
@@ -26,41 +26,47 @@ public:
     explicit AssistantClient(AccountPtr account, QObject *parent = nullptr);
 
     /** @brief Requests the available task-processing types. */
-    void fetchTaskTypes();
+    virtual void fetchTaskTypes(quint64 requestGeneration);
     /** @brief Requests tasks matching a task-processing type. */
-    void fetchTasks(const QString &taskType);
+    virtual void fetchTasks(const QString &taskType, quint64 requestGeneration);
     /** @brief Schedules a text input for a task-processing type. */
-    void scheduleTask(const QString &input, const QString &taskType);
+    virtual void scheduleTask(const QString &input, const QString &taskType, quint64 requestGeneration);
     /** @brief Deletes a task-processing task. */
-    void deleteTask(qint64 taskId);
+    virtual void deleteTask(qint64 taskId, quint64 requestGeneration);
 
     /** @brief Requests the account's Assistant chat conversations. */
-    void fetchChatConversations();
+    virtual void fetchChatConversations(quint64 requestGeneration);
     /** @brief Requests the messages of a chat conversation. */
-    void fetchChatMessages(qint64 conversationId);
+    virtual void fetchChatMessages(qint64 conversationId, quint64 requestGeneration);
     /** @brief Creates a chat conversation. */
-    void createChatConversation(const QString &title, qint64 timestamp);
+    virtual void createChatConversation(const QString &title, qint64 timestamp, quint64 requestGeneration);
     /** @brief Adds a message to a chat conversation. */
-    void createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage);
+    virtual void createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage, quint64 requestGeneration);
     /** @brief Starts response generation for a chat conversation. */
-    void generateChatSession(qint64 conversationId);
+    virtual void generateChatSession(qint64 conversationId, quint64 requestGeneration);
     /** @brief Checks a running chat response-generation task. */
-    void checkChatGeneration(qint64 taskId, qint64 sessionId);
+    virtual void checkChatGeneration(qint64 taskId, qint64 sessionId, quint64 requestGeneration);
     /** @brief Requests the current generation state of a chat conversation. */
-    void checkChatSession(qint64 sessionId);
+    virtual void checkChatSession(qint64 sessionId, quint64 requestGeneration);
+    /** @brief Cancels all active requests and suppresses their replies. */
+    virtual void cancelRequests();
 
 signals:
-    void taskTypesFetched(const QJsonDocument &json, int statusCode);
-    void tasksFetched(const QJsonDocument &json, int statusCode);
-    void taskScheduled(const QJsonDocument &json, int statusCode);
-    void taskDeleted(int statusCode);
-    void chatConversationsFetched(const QJsonDocument &json, int statusCode);
-    void chatMessagesFetched(const QJsonDocument &json, int statusCode);
-    void chatConversationCreated(const QJsonDocument &json, int statusCode);
-    void chatMessageCreated(const QJsonDocument &json, int statusCode);
-    void chatSessionGenerationStarted(const QJsonDocument &json, int statusCode);
-    void chatGenerationChecked(const QJsonDocument &json, int statusCode);
-    void chatSessionChecked(const QJsonDocument &json, int statusCode);
+    void taskTypesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void tasksFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void taskScheduled(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void taskDeleted(quint64 requestGeneration, int statusCode);
+    void chatConversationsFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void chatMessagesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void chatConversationCreated(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void chatMessageCreated(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void chatSessionGenerationStarted(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void chatGenerationChecked(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void chatSessionChecked(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+
+protected:
+    /** @brief Creates a request-free client for a test double. */
+    explicit AssistantClient(QObject *parent = nullptr);
 
 private:
     AccountPtr _account;

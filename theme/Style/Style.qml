@@ -43,8 +43,6 @@ QtObject {
     readonly property color wizardDisabledButtonBorder: darkMode ? "#39434a" : "#dde7ee"
     readonly property color wizardPrimaryButtonBackground: "#2b659a"
     readonly property color wizardPrimaryButtonPressed: "#245783"
-    readonly property color assistantSelectionGradientStart: "#40519a"
-    readonly property color assistantSelectionGradientEnd: "#a84fc4"
     readonly property color wizardWarningBorder: darkMode ? "#d99832" : "#b36b00"
     readonly property color wizardWarningText: darkMode ? "#f2b84b" : "#8a5200"
     readonly property color wizardErrorBorder: darkMode ? "#e06c75" : "#d84b4b"
@@ -148,8 +146,6 @@ QtObject {
     readonly property int accountWizardSyncOptionsHeight: 520
     readonly property int activitiesWindowWidth: 680
     readonly property int activitiesWindowHeight: 700
-    readonly property int assistantWindowWidth: 640
-    readonly property int assistantWindowHeight: 620
     readonly property int searchWindowWidth: 640
     readonly property int searchWindowHeight: 620
     readonly property int userStatusWindowWidth: 560

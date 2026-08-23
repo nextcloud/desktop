@@ -6,14 +6,15 @@
 #include "ocsassistantconnector.h"
 
 #include "account.h"
+#include "assistantapijob.h"
 #include "networkjobs.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLoggingCategory>
-#include <QNetworkReply>
-#include <QRegularExpression>
 #include <QUrlQuery>
+
+#include <utility>
 
 using namespace Qt::StringLiterals;
 
@@ -21,7 +22,7 @@ namespace OCC {
 
 namespace {
 
-Q_LOGGING_CATEGORY(lcOcsAssistantConnector, "nextcloud.sync.ocsassistantconnector", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcOcsAssistantConnector, "nextcloud.gui.assistant.connector", QtInfoMsg)
 
 const auto basePath = u"/ocs/v2.php/taskprocessing"_s;
 const auto assistantChatTaskTypeId = u"core:text2text:chat"_s;
@@ -32,74 +33,7 @@ const auto assistantSystemPrompt = QStringLiteral(
     "that the user is using. Make sure to use the same language in your response. Do not mention "
     "the language explicitly.");
 
-int statusCodeFromJson(const QString &jsonStr, int fallback)
-{
-    if (jsonStr.contains("<?xml version=\"1.0\"?>"_L1)) {
-        static const QRegularExpression xmlRegex("<statuscode>(\\d+)</statuscode>"_L1);
-        const auto match = xmlRegex.match(jsonStr);
-        if (match.hasMatch()) {
-            return match.captured(1).toInt();
-        }
-        return fallback;
-    }
-
-    static const QRegularExpression jsonRegex(R"("statuscode":(\d+))");
-    const auto match = jsonRegex.match(jsonStr);
-    if (match.hasMatch()) {
-        return match.captured(1).toInt();
-    }
-
-    return fallback;
 }
-
-}
-
-class AssistantApiJob : public SimpleApiJob
-{
-    Q_OBJECT
-public:
-    explicit AssistantApiJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr)
-        : SimpleApiJob(account, path, parent)
-    {
-    }
-
-    void setFormBody(const QUrlQuery &query)
-    {
-        const auto body = query.toString(QUrl::FullyEncoded).toUtf8();
-        setBody(body);
-        request().setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    }
-
-signals:
-    void jsonReceived(const QJsonDocument &json, int statusCode);
-
-protected:
-    bool finished() override
-    {
-        qCInfo(lcOcsAssistantConnector) << "AssistantApiJob of" << reply()->request().url()
-                                        << "FINISHED WITH STATUS" << replyStatusString();
-
-        const auto httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        if (reply()->error() != QNetworkReply::NoError) {
-            qCWarning(lcOcsAssistantConnector) << "Network error:" << path() << errorString() << httpStatusCode;
-            emit jsonReceived(QJsonDocument(), httpStatusCode);
-            return true;
-        }
-
-        const QByteArray replyData = reply()->readAll();
-        const auto jsonStr = QString::fromUtf8(replyData);
-        const auto statusCode = statusCodeFromJson(jsonStr, httpStatusCode);
-
-        QJsonParseError error{};
-        auto json = QJsonDocument::fromJson(replyData, &error);
-        if (error.error != QJsonParseError::NoError) {
-            qCWarning(lcOcsAssistantConnector) << "Invalid JSON response:" << error.errorString();
-        }
-
-        emit jsonReceived(json, statusCode);
-        return true;
-    }
-};
 
 OcsAssistantConnector::OcsAssistantConnector(AccountPtr account, QObject *parent)
     : QObject(parent)
@@ -108,7 +42,7 @@ OcsAssistantConnector::OcsAssistantConnector(AccountPtr account, QObject *parent
     Q_ASSERT(_account);
 }
 
-void OcsAssistantConnector::fetchTaskTypes()
+void OcsAssistantConnector::fetchTaskTypes(quint64 requestGeneration)
 {
     if (_taskTypesJob) {
         qCDebug(lcOcsAssistantConnector) << "Task types job already running.";
@@ -116,16 +50,16 @@ void OcsAssistantConnector::fetchTaskTypes()
     }
 
     _taskTypesJob = new JsonApiJob(_account, basePath + u"/tasktypes"_s, this);
-    connect(_taskTypesJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_taskTypesJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _taskTypesJob = nullptr;
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
-        emitIfError(QStringLiteral("taskTypes"), statusCode);
-        emit taskTypesFetched(json, statusCode);
+        logIfError(QStringLiteral("taskTypes"), statusCode);
+        emit taskTypesFetched(requestGeneration, json, statusCode);
     });
     _taskTypesJob->start();
 }
 
-void OcsAssistantConnector::fetchTasks(const QString &taskType)
+void OcsAssistantConnector::fetchTasks(const QString &taskType, quint64 requestGeneration)
 {
     if (_tasksJob) {
         qCDebug(lcOcsAssistantConnector) << "Tasks job already running.";
@@ -136,17 +70,17 @@ void OcsAssistantConnector::fetchTasks(const QString &taskType)
     QUrlQuery params;
     params.addQueryItem(QStringLiteral("taskType"), taskType);
     _tasksJob->addQueryParams(params);
-    connect(_tasksJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_tasksJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _tasksJob = nullptr;
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
-        emitIfError(QStringLiteral("tasks"), statusCode);
-        emit tasksFetched(json, statusCode);
+        logIfError(QStringLiteral("tasks"), statusCode);
+        emit tasksFetched(requestGeneration, json, statusCode);
     });
     _tasksJob->start();
 }
 
 void OcsAssistantConnector::scheduleTask(const QString &input, const QString &taskType, const QStringList &history,
-    const QString &appId, const QString &customId)
+    quint64 requestGeneration, const QString &appId, const QString &customId)
 {
     if (_scheduleJob) {
         qCDebug(lcOcsAssistantConnector) << "Schedule job already running.";
@@ -181,16 +115,16 @@ void OcsAssistantConnector::scheduleTask(const QString &input, const QString &ta
     body.addQueryItem(QStringLiteral("customId"), customId);
     _scheduleJob->setFormBody(body);
 
-    connect(_scheduleJob, &AssistantApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_scheduleJob, &AssistantApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _scheduleJob = nullptr;
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
-        emitIfError(QStringLiteral("schedule"), statusCode);
-        emit taskScheduled(json, statusCode);
+        logIfError(QStringLiteral("schedule"), statusCode);
+        emit taskScheduled(requestGeneration, json, statusCode);
     });
     _scheduleJob->start();
 }
 
-void OcsAssistantConnector::deleteTask(qint64 taskId)
+void OcsAssistantConnector::deleteTask(qint64 taskId, quint64 requestGeneration)
 {
     if (_deleteJob) {
         qCDebug(lcOcsAssistantConnector) << "Delete task job already running.";
@@ -200,23 +134,36 @@ void OcsAssistantConnector::deleteTask(qint64 taskId)
     const auto path = QString{basePath + QStringLiteral("/task/") + QString::number(taskId)};
     _deleteJob = new JsonApiJob(_account, path, this);
     _deleteJob->setVerb(SimpleApiJob::Verb::Delete);
-    connect(_deleteJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_deleteJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _deleteJob = nullptr;
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
-        emitIfError(QStringLiteral("deleteTask"), statusCode);
-        emit taskDeleted(statusCode);
+        logIfError(QStringLiteral("deleteTask"), statusCode);
+        emit taskDeleted(requestGeneration, statusCode);
     });
     _deleteJob->start();
 }
 
-void OcsAssistantConnector::emitIfError(const QString &context, int statusCode)
+void OcsAssistantConnector::cancelRequests()
+{
+    const auto cancelJob = [this](auto &job) {
+        if (!job) {
+            return;
+        }
+        job->disconnect(this);
+        job->deleteLater();
+        job = nullptr;
+    };
+    cancelJob(_taskTypesJob);
+    cancelJob(_tasksJob);
+    cancelJob(_scheduleJob);
+    cancelJob(_deleteJob);
+}
+
+void OcsAssistantConnector::logIfError(const QString &context, int statusCode)
 {
     if (statusCode != 100 && (statusCode < 200 || statusCode >= 300)) {
         qCWarning(lcOcsAssistantConnector) << "Assistant request failed:" << context << "status" << statusCode;
-        emit requestError(context, statusCode);
     }
 }
 
 } // namespace OCC
-
-#include "ocsassistantconnector.moc"

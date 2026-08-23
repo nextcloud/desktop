@@ -28,7 +28,6 @@
 #include <chrono>
 
 namespace OCC {
-class OcsAssistantConnector;
 class UnifiedSearchResultsListModel;
 
 

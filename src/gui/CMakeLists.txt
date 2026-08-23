@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: 2014 ownCloud GmbH
 # SPDX-License-Identifier: GPL-2.0-or-later
 project(gui)
+include(assistant/CMakeLists.txt)
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
 find_package(KF6Archive REQUIRED)
 find_package(KF6GuiAddons)
@@ -55,7 +56,7 @@ set(client_UI_SRCS
     vfsdownloaderrordialog.ui
 )
 
-qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
+qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc ${assistant_QRC})
 
 set(client_SRCS
     accountmanager.h
@@ -198,20 +199,7 @@ set(client_SRCS
     syncconflictsmodel.cpp
     fileactivitylistmodel.h
     fileactivitylistmodel.cpp
-    assistant/assistantclient.h
-    assistant/assistantclient.cpp
-    assistant/assistantcontroller.h
-    assistant/assistantcontroller.cpp
-    assistant/assistantconversationmodel.h
-    assistant/assistantconversationmodel.cpp
-    assistant/assistantmessagemodel.h
-    assistant/assistantmessagemodel.cpp
-    assistant/assistanttaskmodel.h
-    assistant/assistanttaskmodel.cpp
-    assistant/assistanttasktypemodel.h
-    assistant/assistanttasktypemodel.cpp
-    assistant/assistantutils.h
-    assistant/assistantutils.cpp
+    ${assistant_SRCS}
     filedetails/datefieldbackend.h
     filedetails/datefieldbackend.cpp
     filedetails/filedetails.h

@@ -7,7 +7,7 @@
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "activity/syncstatussummary.h"
-#include "assistant/assistantcontroller.h"
+#include "assistant/assistantmodule.h"
 #include "systray.h"
 #include "theme.h"
 #include "config.h"
@@ -375,33 +375,12 @@ void Systray::showAssistantWindow(int userIndex)
         return;
     }
 
-    QQmlComponent assistantWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/assistant/qml/AssistantWindow.qml"));
-
-    if (assistantWindowComponent.isError()) {
-        qCWarning(lcSystray) << assistantWindowComponent.errorString();
-        qCWarning(lcSystray) << assistantWindowComponent.errors();
-        return;
-    }
-
-    auto assistantController = std::make_unique<AssistantController>(user->accountState());
-    const QVariantMap initialProperties{
-        {"currentUser", QVariant::fromValue(user)},
-        {"assistantController", QVariant::fromValue(assistantController.get())},
-    };
-    const auto createdObject = assistantWindowComponent.createWithInitialProperties(initialProperties);
-    const auto window = qobject_cast<QQuickWindow *>(createdObject);
+    const auto window = AssistantModule::createWindow(trayEngine(), user->accountState());
     if (!window) {
-        qCWarning(lcSystray) << "Assistant window resulted in creation of object that was not a window!";
-        if (createdObject) {
-            assistantController.release()->setParent(createdObject);
-            createdObject->deleteLater();
-        }
         return;
     }
-    assistantController.release()->setParent(window);
 
     _assistantWindows.insert(windowKey, window);
-    window->setIcon(Theme::instance()->applicationIcon());
 
 #ifdef Q_OS_MACOS
     auto *fgbg = new ForegroundBackground(this);

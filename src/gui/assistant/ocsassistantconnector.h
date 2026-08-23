@@ -6,8 +6,6 @@
 #pragma once
 
 #include "accountfwd.h"
-#include "owncloudlib.h"
-
 #include <QJsonDocument>
 #include <QObject>
 #include <QPointer>
@@ -19,28 +17,29 @@ namespace OCC {
 class JsonApiJob;
 class AssistantApiJob;
 
-class OWNCLOUDSYNC_EXPORT OcsAssistantConnector : public QObject
+class OcsAssistantConnector : public QObject
 {
     Q_OBJECT
 public:
     explicit OcsAssistantConnector(AccountPtr account, QObject *parent = nullptr);
 
-    void fetchTaskTypes();
-    void fetchTasks(const QString &taskType);
+    void fetchTaskTypes(quint64 requestGeneration);
+    void fetchTasks(const QString &taskType, quint64 requestGeneration);
     void scheduleTask(const QString &input, const QString &taskType, const QStringList &history,
+        quint64 requestGeneration,
         const QString &appId = QStringLiteral("assistant"),
         const QString &customId = QString());
-    void deleteTask(qint64 taskId);
+    void deleteTask(qint64 taskId, quint64 requestGeneration);
+    void cancelRequests();
 
 signals:
-    void taskTypesFetched(const QJsonDocument &json, int statusCode);
-    void tasksFetched(const QJsonDocument &json, int statusCode);
-    void taskScheduled(const QJsonDocument &json, int statusCode);
-    void taskDeleted(int statusCode);
-    void requestError(const QString &context, int statusCode);
+    void taskTypesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void tasksFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void taskScheduled(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void taskDeleted(quint64 requestGeneration, int statusCode);
 
 private:
-    void emitIfError(const QString &context, int statusCode);
+    void logIfError(const QString &context, int statusCode);
 
     AccountPtr _account;
     QPointer<JsonApiJob> _taskTypesJob;

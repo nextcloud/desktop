@@ -16,10 +16,14 @@ import "../../wizard/qml"
 WizardStyledWindow {
     id: root
 
-    required property NC.User currentUser
+    required property string accountName
+    required property string accountServer
+    required property string accountAvatar
     required property NC.AssistantController assistantController
 
     readonly property string headline: qsTr("Nextcloud Assistant")
+    readonly property color selectionGradientStart: "#40519a"
+    readonly property color selectionGradientEnd: "#a84fc4"
     readonly property bool canUseAssistant: assistantController.assistantEnabled
         && assistantController.accountConnected
     readonly property bool canSend: canUseAssistant
@@ -27,8 +31,8 @@ WizardStyledWindow {
         && assistantQuestionInput.text.trim().length > 0
 
     title: ""
-    width: Style.assistantWindowWidth
-    height: Style.assistantWindowHeight
+    width: 640
+    height: 620
     minimumWidth: Style.wizardStandaloneWindowMinimumWidth
     minimumHeight: Style.wizardStandaloneWindowMinimumHeight
 
@@ -53,8 +57,30 @@ WizardStyledWindow {
         id: frame
 
         anchors.fill: parent
+        footer: [
+            WizardTextField {
+                id: assistantQuestionInput
+
+                placeholderText: root.assistantController.selectedTaskTypeIsChat
+                    ? qsTr("Type a message")
+                    : qsTr("Describe the task")
+                enabled: root.canUseAssistant && !root.assistantController.requestInProgress
+                Layout.fillWidth: true
+                Layout.preferredHeight: frame.footerButtonHeight
+                onAccepted: root.submitQuestion()
+            },
+
+            WizardButton {
+                primary: true
+                text: qsTr("Send")
+                enabled: root.canSend
+                onClicked: root.submitQuestion()
+            }
+        ]
 
         ColumnLayout {
+            spacing: Style.wizardSectionSpacing
+
             anchors {
                 fill: parent
                 leftMargin: frame.windowMargin
@@ -62,17 +88,24 @@ WizardStyledWindow {
                 topMargin: Style.wizardWindowTopMargin
                 bottomMargin: Style.wizardWindowMargin
             }
-            spacing: Style.wizardSectionSpacing
 
             WindowAccountHeader {
                 title: root.headline
-                user: root.currentUser
+                user: ({
+                    "name": root.accountName,
+                    "server": root.accountServer,
+                    "avatar": root.accountAvatar
+                })
                 Layout.fillWidth: true
             }
 
             ScrollView {
+                id: taskTypeSelector
+
+                // Temporarily hidden while task selection is not exposed in this iteration.
+                // Keep this selector: it will be enabled and reused in a later iteration.
                 visible: false
-                clip: true
+                clip: visible
                 Layout.fillWidth: true
                 Layout.preferredHeight: 42
 
@@ -80,7 +113,9 @@ WizardStyledWindow {
                     spacing: 8
 
                     Repeater {
-                        model: root.assistantController ? root.assistantController.taskTypes : null
+                        model: taskTypeSelector.visible
+                            ? root.assistantController.taskTypes
+                            : null
 
                         delegate: Button {
                             id: taskTypeButton
@@ -143,7 +178,7 @@ WizardStyledWindow {
                                 radius: Style.mediumRoundedButtonRadius
                                 border.width: taskTypeButton.activeFocus ? 2 : 1
                                 border.color: taskTypeButton.checked || taskTypeButton.activeFocus
-                                    ? Style.assistantSelectionGradientStart
+                                    ? root.selectionGradientStart
                                     : taskTypeButton.hovered
                                         ? Style.wizardSecondaryButtonBorder
                                         : "transparent"
@@ -154,14 +189,14 @@ WizardStyledWindow {
                                     GradientStop {
                                         position: 0
                                         color: taskTypeButton.checked
-                                            ? Style.assistantSelectionGradientStart
+                                            ? root.selectionGradientStart
                                             : taskTypeButton.idleBackgroundColor
                                     }
 
                                     GradientStop {
                                         position: 1
                                         color: taskTypeButton.checked
-                                            ? Style.assistantSelectionGradientEnd
+                                            ? root.selectionGradientEnd
                                             : taskTypeButton.idleBackgroundColor
                                     }
                                 }
@@ -183,8 +218,7 @@ WizardStyledWindow {
             }
 
             Loader {
-                active: root.assistantController !== null
-                sourceComponent: root.assistantController && root.assistantController.selectedTaskTypeIsChat
+                sourceComponent: root.assistantController.selectedTaskTypeIsChat
                     ? chatComponent
                     : taskComponent
                 Layout.fillWidth: true
@@ -192,7 +226,7 @@ WizardStyledWindow {
             }
 
             EnforcedPlainTextLabel {
-                visible: root.assistantController !== null && root.assistantController.response.length > 0
+                visible: root.assistantController.response.length > 0
                 text: visible ? root.assistantController.response : ""
                 color: Style.wizardSecondaryText
                 font.pixelSize: Style.wizardBodyFontPixelSize
@@ -202,7 +236,7 @@ WizardStyledWindow {
             }
 
             ErrorBox {
-                visible: root.assistantController !== null && root.assistantController.error.length > 0
+                visible: root.assistantController.error.length > 0
                 text: visible ? root.assistantController.error : ""
                 Layout.fillWidth: true
                 Layout.preferredHeight: visible ? implicitHeight : 0
@@ -216,27 +250,6 @@ WizardStyledWindow {
                 Layout.fillWidth: true
             }
         }
-
-        footer: [
-            WizardTextField {
-                id: assistantQuestionInput
-
-                placeholderText: root.assistantController && root.assistantController.selectedTaskTypeIsChat
-                    ? qsTr("Type a message")
-                    : qsTr("Describe the task")
-                enabled: root.canUseAssistant && !root.assistantController.requestInProgress
-                Layout.fillWidth: true
-                Layout.preferredHeight: frame.footerButtonHeight
-                onAccepted: root.submitQuestion()
-            },
-
-            WizardButton {
-                primary: true
-                text: qsTr("Send")
-                enabled: root.canSend
-                onClicked: root.submitQuestion()
-            }
-        ]
     }
 
     Component {

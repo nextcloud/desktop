@@ -11,6 +11,7 @@
 #include "assistanttaskmodel.h"
 #include "assistanttasktypemodel.h"
 
+#include <QAbstractItemModel>
 #include <QJsonDocument>
 #include <QObject>
 #include <QTimer>
@@ -23,10 +24,10 @@ class AssistantClient;
 class AssistantController final : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(AssistantTaskTypeModel *taskTypes READ taskTypes CONSTANT)
-    Q_PROPERTY(AssistantTaskModel *tasks READ tasks CONSTANT)
-    Q_PROPERTY(AssistantConversationModel *chatConversations READ chatConversations CONSTANT)
-    Q_PROPERTY(AssistantMessageModel *messages READ messages CONSTANT)
+    Q_PROPERTY(QAbstractItemModel *taskTypes READ taskTypes CONSTANT)
+    Q_PROPERTY(QAbstractItemModel *tasks READ tasks CONSTANT)
+    Q_PROPERTY(QAbstractItemModel *chatConversations READ chatConversations CONSTANT)
+    Q_PROPERTY(QAbstractItemModel *messages READ messages CONSTANT)
     Q_PROPERTY(QString question READ question NOTIFY questionChanged)
     Q_PROPERTY(QString response READ response NOTIFY responseChanged)
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
@@ -45,15 +46,17 @@ class AssistantController final : public QObject
 public:
     /** @brief Creates a controller for the given account. */
     explicit AssistantController(AccountStatePtr accountState, QObject *parent = nullptr);
+    /** @brief Creates a controller and takes ownership of an injected client. */
+    AssistantController(AccountStatePtr accountState, AssistantClient *client, QObject *parent);
 
     /** @brief Returns the available task-type model. */
-    [[nodiscard]] AssistantTaskTypeModel *taskTypes();
+    [[nodiscard]] QAbstractItemModel *taskTypes();
     /** @brief Returns the task model for the selected type. */
-    [[nodiscard]] AssistantTaskModel *tasks();
+    [[nodiscard]] QAbstractItemModel *tasks();
     /** @brief Returns the chat-conversation model. */
-    [[nodiscard]] AssistantConversationModel *chatConversations();
+    [[nodiscard]] QAbstractItemModel *chatConversations();
     /** @brief Returns the selected conversation's message model. */
-    [[nodiscard]] AssistantMessageModel *messages();
+    [[nodiscard]] QAbstractItemModel *messages();
     /** @brief Returns the most recently submitted input. */
     [[nodiscard]] QString question() const;
     /** @brief Returns transient request status text. */
@@ -118,28 +121,31 @@ signals:
 
 private slots:
     void pollTasks();
-    void slotTaskTypesFetched(const QJsonDocument &json, int statusCode);
-    void slotTasksFetched(const QJsonDocument &json, int statusCode);
-    void slotTaskScheduled(const QJsonDocument &json, int statusCode);
-    void slotTaskDeleted(int statusCode);
-    void slotChatConversationsFetched(const QJsonDocument &json, int statusCode);
-    void slotChatMessagesFetched(const QJsonDocument &json, int statusCode);
-    void slotChatConversationCreated(const QJsonDocument &json, int statusCode);
-    void slotChatMessageCreated(const QJsonDocument &json, int statusCode);
-    void slotChatSessionGenerationStarted(const QJsonDocument &json, int statusCode);
-    void slotChatGenerationChecked(const QJsonDocument &json, int statusCode);
-    void slotChatSessionChecked(const QJsonDocument &json, int statusCode);
+    void pollChatGeneration();
+    void slotTaskTypesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void slotTasksFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void slotTaskScheduled(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void slotTaskDeleted(quint64 requestGeneration, int statusCode);
+    void slotChatConversationsFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void slotChatMessagesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void slotChatConversationCreated(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void slotChatMessageCreated(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void slotChatSessionGenerationStarted(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void slotChatGenerationChecked(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void slotChatSessionChecked(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
 
 private:
-    void submitChatMessage(const QString &message);
-    void scheduleSelectedTask(const QString &input);
+    [[nodiscard]] quint64 beginRequest();
+    void refreshTasks(quint64 requestGeneration);
+    void submitChatMessage(const QString &message, quint64 requestGeneration);
+    void scheduleSelectedTask(const QString &input, quint64 requestGeneration);
     void setRequestInProgress(bool inProgress);
     void setThinking(bool thinking);
     void setShowRetryResponseGeneration(bool show);
     void updateSelectedTypeMetadata();
-    void loadChatConversations();
-    void loadChatMessages(qint64 conversationId);
-    void startChatGeneration(qint64 conversationId);
+    void loadChatConversations(quint64 requestGeneration);
+    void loadChatMessages(qint64 conversationId, quint64 requestGeneration);
+    void startChatGeneration(qint64 conversationId, quint64 requestGeneration);
     void requestFailed(const QString &context, int statusCode);
 
     AccountStatePtr _accountState;
@@ -151,8 +157,11 @@ private:
     AssistantMessageModel _messages;
     QTimer _taskPollTimer;
     QTimer _chatPollTimer;
+    quint64 _requestGeneration = 0;
     int _taskPollAttempts = 0;
     int _maxTaskPollAttempts = 60;
+    int _chatPollAttempts = 0;
+    int _maxChatPollAttempts = 30;
     qint64 _taskId = -1;
     QString _taskType;
     QString _taskTypeName;

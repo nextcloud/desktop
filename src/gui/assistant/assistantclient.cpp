@@ -17,6 +17,11 @@ using namespace Qt::StringLiterals;
 
 namespace OCC {
 
+AssistantClient::AssistantClient(QObject *parent)
+    : QObject(parent)
+{
+}
+
 AssistantClient::AssistantClient(AccountPtr account, QObject *parent)
     : QObject(parent)
     , _account(std::move(account))
@@ -28,41 +33,41 @@ AssistantClient::AssistantClient(AccountPtr account, QObject *parent)
     connect(_taskConnector, &OcsAssistantConnector::taskDeleted, this, &AssistantClient::taskDeleted);
 }
 
-void AssistantClient::fetchTaskTypes()
+void AssistantClient::fetchTaskTypes(quint64 requestGeneration)
 {
-    _taskConnector->fetchTaskTypes();
+    _taskConnector->fetchTaskTypes(requestGeneration);
 }
 
-void AssistantClient::fetchTasks(const QString &taskType)
+void AssistantClient::fetchTasks(const QString &taskType, quint64 requestGeneration)
 {
-    _taskConnector->fetchTasks(taskType);
+    _taskConnector->fetchTasks(taskType, requestGeneration);
 }
 
-void AssistantClient::scheduleTask(const QString &input, const QString &taskType)
+void AssistantClient::scheduleTask(const QString &input, const QString &taskType, quint64 requestGeneration)
 {
-    _taskConnector->scheduleTask(input, taskType, {});
+    _taskConnector->scheduleTask(input, taskType, {}, requestGeneration);
 }
 
-void AssistantClient::deleteTask(qint64 taskId)
+void AssistantClient::deleteTask(qint64 taskId, quint64 requestGeneration)
 {
-    _taskConnector->deleteTask(taskId);
+    _taskConnector->deleteTask(taskId, requestGeneration);
 }
 
-void AssistantClient::fetchChatConversations()
+void AssistantClient::fetchChatConversations(quint64 requestGeneration)
 {
     if (_chatConversationsJob) {
         return;
     }
 
     _chatConversationsJob = new JsonApiJob(_account, u"/ocs/v2.php/apps/assistant/chat/sessions"_s, this);
-    connect(_chatConversationsJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_chatConversationsJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _chatConversationsJob = nullptr;
-        emit chatConversationsFetched(json, statusCode);
+        emit chatConversationsFetched(requestGeneration, json, statusCode);
     });
     _chatConversationsJob->start();
 }
 
-void AssistantClient::fetchChatMessages(qint64 conversationId)
+void AssistantClient::fetchChatMessages(qint64 conversationId, quint64 requestGeneration)
 {
     if (_chatMessagesJob) {
         return;
@@ -72,14 +77,14 @@ void AssistantClient::fetchChatMessages(qint64 conversationId)
     auto params = QUrlQuery{};
     params.addQueryItem(QStringLiteral("sessionId"), QString::number(conversationId));
     _chatMessagesJob->addQueryParams(params);
-    connect(_chatMessagesJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_chatMessagesJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _chatMessagesJob = nullptr;
-        emit chatMessagesFetched(json, statusCode);
+        emit chatMessagesFetched(requestGeneration, json, statusCode);
     });
     _chatMessagesJob->start();
 }
 
-void AssistantClient::createChatConversation(const QString &title, qint64 timestamp)
+void AssistantClient::createChatConversation(const QString &title, qint64 timestamp, quint64 requestGeneration)
 {
     if (_createChatConversationJob) {
         return;
@@ -94,14 +99,14 @@ void AssistantClient::createChatConversation(const QString &title, qint64 timest
         body.insert(QStringLiteral("title"), title);
     }
     _createChatConversationJob->setBody(QJsonDocument(body));
-    connect(_createChatConversationJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_createChatConversationJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _createChatConversationJob = nullptr;
-        emit chatConversationCreated(json, statusCode);
+        emit chatConversationCreated(requestGeneration, json, statusCode);
     });
     _createChatConversationJob->start();
 }
 
-void AssistantClient::createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage)
+void AssistantClient::createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage, quint64 requestGeneration)
 {
     if (_createChatMessageJob) {
         return;
@@ -117,14 +122,14 @@ void AssistantClient::createChatMessage(qint64 sessionId, const QString &role, c
         {QStringLiteral("firstHumanMessage"), firstHumanMessage},
     };
     _createChatMessageJob->setBody(QJsonDocument(body));
-    connect(_createChatMessageJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_createChatMessageJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _createChatMessageJob = nullptr;
-        emit chatMessageCreated(json, statusCode);
+        emit chatMessageCreated(requestGeneration, json, statusCode);
     });
     _createChatMessageJob->start();
 }
 
-void AssistantClient::generateChatSession(qint64 conversationId)
+void AssistantClient::generateChatSession(qint64 conversationId, quint64 requestGeneration)
 {
     if (_generateChatSessionJob) {
         return;
@@ -134,14 +139,14 @@ void AssistantClient::generateChatSession(qint64 conversationId)
     auto params = QUrlQuery{};
     params.addQueryItem(QStringLiteral("sessionId"), QString::number(conversationId));
     _generateChatSessionJob->addQueryParams(params);
-    connect(_generateChatSessionJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_generateChatSessionJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _generateChatSessionJob = nullptr;
-        emit chatSessionGenerationStarted(json, statusCode);
+        emit chatSessionGenerationStarted(requestGeneration, json, statusCode);
     });
     _generateChatSessionJob->start();
 }
 
-void AssistantClient::checkChatGeneration(qint64 taskId, qint64 sessionId)
+void AssistantClient::checkChatGeneration(qint64 taskId, qint64 sessionId, quint64 requestGeneration)
 {
     if (_checkChatGenerationJob) {
         return;
@@ -152,14 +157,14 @@ void AssistantClient::checkChatGeneration(qint64 taskId, qint64 sessionId)
     params.addQueryItem(QStringLiteral("taskId"), QString::number(taskId));
     params.addQueryItem(QStringLiteral("sessionId"), QString::number(sessionId));
     _checkChatGenerationJob->addQueryParams(params);
-    connect(_checkChatGenerationJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_checkChatGenerationJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _checkChatGenerationJob = nullptr;
-        emit chatGenerationChecked(json, statusCode);
+        emit chatGenerationChecked(requestGeneration, json, statusCode);
     });
     _checkChatGenerationJob->start();
 }
 
-void AssistantClient::checkChatSession(qint64 sessionId)
+void AssistantClient::checkChatSession(qint64 sessionId, quint64 requestGeneration)
 {
     if (_checkChatSessionJob) {
         return;
@@ -169,11 +174,34 @@ void AssistantClient::checkChatSession(qint64 sessionId)
     auto params = QUrlQuery{};
     params.addQueryItem(QStringLiteral("sessionId"), QString::number(sessionId));
     _checkChatSessionJob->addQueryParams(params);
-    connect(_checkChatSessionJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+    connect(_checkChatSessionJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _checkChatSessionJob = nullptr;
-        emit chatSessionChecked(json, statusCode);
+        emit chatSessionChecked(requestGeneration, json, statusCode);
     });
     _checkChatSessionJob->start();
+}
+
+void AssistantClient::cancelRequests()
+{
+    if (_taskConnector) {
+        _taskConnector->cancelRequests();
+    }
+
+    const auto cancelJob = [this](auto &job) {
+        if (!job) {
+            return;
+        }
+        job->disconnect(this);
+        job->deleteLater();
+        job = nullptr;
+    };
+    cancelJob(_chatConversationsJob);
+    cancelJob(_chatMessagesJob);
+    cancelJob(_createChatConversationJob);
+    cancelJob(_createChatMessageJob);
+    cancelJob(_generateChatSessionJob);
+    cancelJob(_checkChatGenerationJob);
+    cancelJob(_checkChatSessionJob);
 }
 
 }

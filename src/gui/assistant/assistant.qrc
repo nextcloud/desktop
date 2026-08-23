@@ -1,0 +1,11 @@
+<!--
+  - SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
+<RCC>
+    <qresource prefix="/qml">
+        <file alias="src/gui/assistant/qml/AssistantWindow.qml">qml/AssistantWindow.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantTaskView.qml">qml/AssistantTaskView.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantChatView.qml">qml/AssistantChatView.qml</file>
+    </qresource>
+</RCC>

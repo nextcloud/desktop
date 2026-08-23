@@ -144,8 +144,6 @@ set(libsync_SRCS
     rootencryptedfolderinfo.cpp
     foldermetadata.h
     foldermetadata.cpp
-    ocsassistantconnector.h
-    ocsassistantconnector.cpp
     ocsuserstatusconnector.h
     ocsuserstatusconnector.cpp
     rootencryptedfolderinfo.cpp
