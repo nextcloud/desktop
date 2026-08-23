@@ -198,6 +198,20 @@ set(client_SRCS
     syncconflictsmodel.cpp
     fileactivitylistmodel.h
     fileactivitylistmodel.cpp
+    assistant/assistantclient.h
+    assistant/assistantclient.cpp
+    assistant/assistantcontroller.h
+    assistant/assistantcontroller.cpp
+    assistant/assistantconversationmodel.h
+    assistant/assistantconversationmodel.cpp
+    assistant/assistantmessagemodel.h
+    assistant/assistantmessagemodel.cpp
+    assistant/assistanttaskmodel.h
+    assistant/assistanttaskmodel.cpp
+    assistant/assistanttasktypemodel.h
+    assistant/assistanttasktypemodel.cpp
+    assistant/assistantutils.h
+    assistant/assistantutils.cpp
     filedetails/datefieldbackend.h
     filedetails/datefieldbackend.cpp
     filedetails/filedetails.h
