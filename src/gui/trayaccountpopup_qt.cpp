@@ -701,8 +701,10 @@ void addRecentActivities(QMenu *menu, const int userId, const QVariantList &rece
 
 void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivityPreview = true)
 {
-    setFixedMenuWidth(menu);
-    clearDynamicMenu(menu);
+    if (!fetchActivityPreview) {
+        setFixedMenuWidth(menu);
+        clearDynamicMenu(menu);
+    }
 
     const auto userModel = UserModel::instance();
     if (!userModel || userId < 0 || userId >= userModel->rowCount()) {
@@ -716,6 +718,7 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
     };
     if (fetchActivityPreview && policy.fetchActivityPreview()) {
         userModel->fetchActivityPreview(userId);
+        return;
     }
 
     const auto menuIconPalette = nativeMenuIconPalette(menu);
@@ -807,9 +810,6 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
         QCoreApplication::translate("TrayWindowHeader", "Apps"));
     setFixedMenuWidth(appsMenu);
     appsMenu->menuAction()->setEnabled(populateAppsMenu(appsMenu, userId));
-    QObject::connect(appsMenu, &QMenu::aboutToShow, appsMenu, [appsMenu, userId] {
-        appsMenu->menuAction()->setEnabled(populateAppsMenu(appsMenu, userId));
-    });
 
     menu->addSeparator();
 
@@ -842,8 +842,9 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
 
             const auto accountMenu = addSubMenu(menu, accountIcon, accountText);
             setFixedMenuWidth(accountMenu);
+            populateAccountMenu(accountMenu, userId, false);
             QObject::connect(accountMenu, &QMenu::aboutToShow, accountMenu, [accountMenu, userId] {
-                populateAccountMenu(accountMenu, userId);
+                populateAccountMenu(accountMenu, userId, true);
             });
             QObject::connect(userModel,
                 &QAbstractItemModel::dataChanged,
