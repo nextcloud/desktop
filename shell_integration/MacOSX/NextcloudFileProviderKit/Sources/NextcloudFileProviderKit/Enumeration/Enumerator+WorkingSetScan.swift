@@ -61,13 +61,8 @@ extension Enumerator {
                 )
             }
 
-            // Intermediate batches keep the original anchor so an interrupted drain resumes behind all
-            // undelivered items. The final batch normally advances the working-set sync point to
-            // currentAnchor — but when the scan was incomplete (a remote read failed and was skipped) we
-            // keep the incoming anchor instead, so we do not tell the framework we are synced up to "now"
-            // past changes we could not discover this pass. The next working-set signal re-derives and
-            // picks up the previously-unreadable folders once they succeed. (isPrimedIncomplete() is read
-            // before the final takeBatch clears the buffer, so it reflects this drain sequence.)
+            // Advance the durable sync date only after a complete scan drains. An incomplete scan keeps
+            // the incoming anchor, whose continuation component still carries the original date.
             let finalAnchor = changeBuffer.isPrimedIncomplete() ? anchor : currentAnchor
             drainChangeBuffer(
                 for: observer,

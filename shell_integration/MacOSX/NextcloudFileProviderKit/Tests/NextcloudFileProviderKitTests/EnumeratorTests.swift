@@ -2158,14 +2158,22 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let expectedOcIds = seedMaterialisedWorkingSetFiles(count: itemCount, syncTime: Date())
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        let enumerator = try Enumerator(
-            enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager,
-            log: FileProviderLogMock()
+        let log = FileProviderLogMock()
+        let changeBufferStore = ChangeDeliveryBufferStore(log: log)
+        let makeEnumerator: () throws -> NSFileProviderEnumerator = {
+            try Enumerator(
+                enumeratedItemIdentifier: .workingSet,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager,
+                changeBuffer: changeBufferStore.buffer(for: NSFileProviderItemIdentifier.workingSet.rawValue),
+                log: log
+            )
+        }
+        let observer = MockChangeObserver(
+            enumerator: try makeEnumerator(),
+            continuationEnumeratorFactory: makeEnumerator
         )
-        let observer = MockChangeObserver(enumerator: enumerator)
         observer.suggestedBatchSize = batchSize
 
         try await observer.enumerateChanges(from: anchor)
@@ -2187,16 +2195,30 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             previousTotal = total
         }
 
-        // Intermediate batches keep the original anchor; only the final batch advances the sync point.
+        // Intermediate batches advance an opaque continuation token while preserving the original sync
+        // date. File Provider discards moreComing when the returned anchor is unchanged. The final batch
+        // advances the working-set sync date.
+        let parsedInputAnchor = try XCTUnwrap(Enumerator.parseSyncAnchor(anchor))
+        var previousAnchor = anchor
         for finish in observer.finishes.dropLast() {
             XCTAssertTrue(finish.moreComing, "Non-final batches must report moreComing == true.")
-            XCTAssertEqual(finish.anchor.rawValue, anchor.rawValue, "Intermediate batches must return the original anchor.")
+            XCTAssertNotEqual(finish.anchor.rawValue, previousAnchor.rawValue)
+            XCTAssertEqual(
+                try XCTUnwrap(Enumerator.parseSyncAnchor(finish.anchor)).date,
+                parsedInputAnchor.date
+            )
+            previousAnchor = finish.anchor
         }
         let finalFinish = try XCTUnwrap(observer.finishes.last)
         XCTAssertFalse(finalFinish.moreComing, "The final batch must report moreComing == false.")
-        XCTAssertNotEqual(finalFinish.anchor.rawValue, anchor.rawValue, "The final batch must advance the working-set sync anchor.")
+        XCTAssertNotEqual(finalFinish.anchor.rawValue, previousAnchor.rawValue)
+        XCTAssertGreaterThan(
+            try XCTUnwrap(Enumerator.parseSyncAnchor(finalFinish.anchor)).date,
+            parsedInputAnchor.date
+        )
 
-        // The destructive scan ran once: one server read per materialised item, not once per batch.
+        // The observer requests each continuation from a fresh Enumerator, matching the live framework.
+        // The destructive scan still ran once: one server read per materialised item, not once per batch.
         XCTAssertLessThanOrEqual(
             remoteInterface.readOperationCount,
             itemCount + 2,

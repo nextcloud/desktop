@@ -51,16 +51,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let remoteInterface: RemoteInterface
     let serverUrl: String
 
-    /// Holds the undelivered remainder of a large change set so it can be reported one batch at a time
-    /// across the framework's `moreComing` re-invocations without re-running the destructive derivation.
-    /// See ``ChangeDeliveryBuffer`` and ``drainChangeBuffer(for:startAnchor:finalAnchor:suggested:)``.
-    ///
-    /// Load-bearing assumption: the framework continues a `moreComing` chain on the *same* enumerator
-    /// instance, re-invoking `enumerateChanges(for:from:)` with the anchor the previous batch returned
-    /// (see `NSFileProviderEnumerating.h`, `currentSyncAnchorWithCompletionHandler`). The in-memory
-    /// buffer therefore survives the chain. If the extension process is recycled mid-drain, a fresh
-    /// instance re-derives from the original anchor; see ``ChangeDeliveryBuffer`` for the bounded
-    /// created/updated loss this can cause for change sets larger than ``maxBatchSize``.
+    /// Holds the remainder of a split change set. The extension reuses it across fresh continuation
+    /// enumerators while `moreComing` is true.
     let changeBuffer: ChangeDeliveryBuffer
 
     /// Default number of items reported per page/batch when the system does not suggest one. Mirrors the
@@ -78,13 +70,35 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         identifier == .rootContainer || identifier == .trashContainer || identifier == .workingSet
     }
 
-    public init(
+    public convenience init(
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         pageSize: Int = 1000,
+        log: any FileProviderLogging
+    ) throws {
+        try self.init(
+            enumeratedItemIdentifier: enumeratedItemIdentifier,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            domain: domain,
+            pageSize: pageSize,
+            changeBuffer: ChangeDeliveryBuffer(log: log),
+            log: log
+        )
+    }
+
+    init(
+        enumeratedItemIdentifier: NSFileProviderItemIdentifier,
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        domain: NSFileProviderDomain? = nil,
+        pageSize: Int = 1000,
+        changeBuffer: ChangeDeliveryBuffer,
         log: any FileProviderLogging
     ) throws {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
@@ -94,7 +108,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         self.domain = domain
         pageItemCount = pageSize
         logger = FileProviderLogger(category: "Enumerator", log: log)
-        changeBuffer = ChangeDeliveryBuffer(log: log)
+        self.changeBuffer = changeBuffer
 
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
             logger.info("Providing enumerator for a system defined container.", [.item: enumeratedItemIdentifier])

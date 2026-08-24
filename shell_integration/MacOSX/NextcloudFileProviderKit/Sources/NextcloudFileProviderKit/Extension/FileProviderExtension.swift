@@ -21,6 +21,7 @@ import OSLog
     let keychain: Keychain
     let log: any FileProviderLogging
     let logger: FileProviderLogger
+    private let changeBufferStore: ChangeDeliveryBufferStore
 
     ///
     /// The file provider manager for the domain managed by this extension implementation.
@@ -89,6 +90,7 @@ import OSLog
         // Set up logging.
         log = FileProviderLog(fileProviderDomainIdentifier: domain.identifier)
         logger = FileProviderLogger(category: "FileProviderExtension", log: log)
+        changeBufferStore = ChangeDeliveryBufferStore(log: log)
         logger.debug("Initializing with domain identifier.", [.domain: domain.identifier.rawValue])
 
         // Set up NextcloudKit.
@@ -468,6 +470,7 @@ import OSLog
             remoteInterface: ncKit,
             dbManager: dbManager,
             domain: domain,
+            changeBuffer: changeBufferStore.buffer(for: containerItemIdentifier.rawValue),
             log: log
         )
     }

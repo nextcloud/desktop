@@ -20,16 +20,12 @@ import Foundation
 /// re-deriving on a continuation invocation would surface (almost) no created/updated items and that
 /// undelivered remainder would be silently dropped. The buffer therefore holds the full derived change
 /// set after a single derivation and hands it out one batch at a time; the derivation never runs again
-/// while the buffer stays primed for the same sync anchor.
+/// while the buffer stays primed for the incoming anchor or the latest continuation anchor it returned.
 ///
-/// Durability: the buffer is in memory. Within a normal `moreComing` chain the framework reuses the same
-/// ``Enumerator`` instance, so the remainder survives. If the extension process is recycled mid-drain (only
-/// reachable for change sets larger than ``Enumerator/maxBatchSize``), a fresh instance re-derives from the
-/// original anchor: undelivered **deletions** are recovered (their soft-deleted rows persist with a fresh
-/// `syncTime` until ``FilesDatabaseManager/removeItemMetadata(ocId:)`` runs after delivery, and the
-/// working-set re-derivation re-surfaces them via `pendingWorkingSetChanges(since:)`), but undelivered
-/// **created/updated** items can be lost — for a regular container entirely, and for the working set when
-/// the item is not materialised. This replaces a guaranteed crash with a rare, bounded partial loss.
+/// File Provider may request a continuation from a fresh ``Enumerator``. While `moreComing` is true,
+/// ``ChangeDeliveryBufferStore`` therefore keeps this in-memory buffer alive across those instances.
+/// Recycling the extension process still loses an undelivered created/updated remainder; continuation
+/// anchors retain the original date so a fresh process can re-derive from the earlier sync point.
 ///
 /// ``Enumerator`` is `Sendable` with only immutable members, so the mutable delivery state lives behind
 /// this `@unchecked Sendable`, `NSLock`-guarded box — the established concurrency idiom in this target
@@ -39,6 +35,7 @@ import Foundation
 final class ChangeDeliveryBuffer: @unchecked Sendable {
     private let lock = NSLock()
     private let logger: FileProviderLogger
+    private let onBatchTaken: ((ChangeDeliveryBuffer, Bool) -> Void)?
     private var anchorKey: String?
     private var remainingUpdated: [SendableItemMetadata] = []
     private var remainingDeleted: [SendableItemMetadata] = []
@@ -48,14 +45,19 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
     /// alongside `anchorKey`.
     private var primedIncomplete = false
 
-    init(log: any FileProviderLogging) {
+    init(
+        log: any FileProviderLogging,
+        onBatchTaken: ((ChangeDeliveryBuffer, Bool) -> Void)? = nil
+    ) {
         logger = FileProviderLogger(category: "ChangeDeliveryBuffer", log: log)
+        self.onBatchTaken = onBatchTaken
     }
 
     ///
     /// Whether a derivation has already filled the buffer for the given sync-anchor key and changes are
     /// still waiting to be delivered. A continuation invocation that sees `true` must drain rather than
-    /// re-derive.
+    /// re-derive. The key starts as the incoming anchor and advances to each intermediate continuation
+    /// anchor returned to File Provider.
     ///
     func isPrimed(forKey key: String) -> Bool {
         lock.lock()
@@ -74,7 +76,8 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
     }
 
     ///
-    /// Store the full derived change set for a drain sequence, keyed by the originating sync anchor.
+    /// Store the full derived change set for a drain sequence, initially keyed by the originating sync
+    /// anchor.
     ///
     /// `updated` must already be sorted parents-before-children (ascending remote-path length) so that
     /// draining the single combined list front-to-back never reports a child in an earlier batch than
@@ -103,14 +106,15 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
     /// Updates are drained before deletions, preserving the parent-before-child ordering of the updates.
     ///
     /// `moreComing` reflects whether anything is still buffered *after* this batch (so an exactly-full
-    /// final batch does not provoke a spurious empty follow-up). The key is cleared once both lists drain,
-    /// so a later signal starts a fresh derivation.
+    /// final batch does not provoke a spurious empty follow-up). When more changes remain, the buffer is
+    /// re-keyed to `continuationKey`, matching the progressing anchor returned to File Provider. The key
+    /// is cleared once both lists drain, so a later signal starts a fresh derivation.
     ///
     func takeBatch(
-        maxItems: Int
+        maxItems: Int,
+        continuationKey: String
     ) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata], moreComing: Bool) {
         lock.lock()
-        defer { lock.unlock() }
 
         let key = anchorKey ?? "nil"
         let budget = max(1, maxItems)
@@ -124,14 +128,22 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         remainingDeleted.removeFirst(deletedCount)
 
         let moreComing = !remainingUpdated.isEmpty || !remainingDeleted.isEmpty
-        if !moreComing {
+        if moreComing {
+            anchorKey = continuationKey
+        } else {
             anchorKey = nil
             primedIncomplete = false
         }
 
+        let remainingUpdatedCount = remainingUpdated.count
+        let remainingDeletedCount = remainingDeleted.count
+        lock.unlock()
+
         logger.debug(
-            "Drained change batch. anchor: \(key), maxItems: \(budget), tookUpdated: \(updatedCount), tookDeleted: \(deletedCount), remainingUpdated: \(remainingUpdated.count), remainingDeleted: \(remainingDeleted.count), moreComing: \(moreComing)"
+            "Drained change batch. anchor: \(key), maxItems: \(budget), tookUpdated: \(updatedCount), tookDeleted: \(deletedCount), remainingUpdated: \(remainingUpdatedCount), remainingDeleted: \(remainingDeletedCount), moreComing: \(moreComing)"
         )
+
+        onBatchTaken?(self, moreComing)
 
         return (batchUpdated, batchDeleted, moreComing)
     }

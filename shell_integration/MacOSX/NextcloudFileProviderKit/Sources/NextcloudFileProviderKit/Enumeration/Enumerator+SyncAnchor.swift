@@ -7,11 +7,8 @@ import Foundation
 ///
 /// The version-tagged sync anchor scheme.
 ///
-/// Every container the extension enumerates (working set, root, sub-directories, trash) hands the
-/// framework an anchor of the form `"<extension-version>|<ISO8601-date>"`. On the next
-/// `enumerateChanges(for:from:)` the embedded version is compared against the running extension; a
-/// mismatch is rejected with `NSFileProviderError(.syncAnchorExpired)` so the framework drops its
-/// cached `NSFileProviderItem` snapshots and re-enumerates the container. See nextcloud/desktop#10065.
+/// Anchors contain the extension version and ISO8601 date. Intermediate batch anchors add an opaque
+/// continuation component. A version mismatch expires the anchor; see nextcloud/desktop#10065.
 ///
 extension Enumerator {
     ///
@@ -28,18 +25,33 @@ extension Enumerator {
     }
 
     ///
+    /// Build a unique intermediate anchor for a split change enumeration.
+    ///
+    /// The UUID progresses each intermediate batch while the embedded sync date stays unchanged.
+    ///
+    static func continuationSyncAnchor(from anchor: NSFileProviderSyncAnchor) -> NSFileProviderSyncAnchor {
+        guard let parsed = parseSyncAnchor(anchor) else {
+            assertionFailure("Cannot build a continuation anchor from an invalid sync anchor.")
+            return anchor
+        }
+
+        let raw = "\(parsed.version)|\(ISO8601DateFormatter().string(from: parsed.date))|\(UUID().uuidString)"
+        return NSFileProviderSyncAnchor(raw.data(using: .utf8)!)
+    }
+
+    ///
     /// Parse a sync anchor produced by ``syncAnchor(at:)``.
     ///
-    /// Returns `nil` for anchors that are not in the expected `"<version>|<ISO8601-date>"` format — including anchors persisted by builds older than #10065 that carried only the ISO8601 date. The caller treats `nil` as an expired anchor.
+    /// Accepts an optional opaque continuation component; malformed and legacy unversioned anchors fail.
     ///
     static func parseSyncAnchor(_ anchor: NSFileProviderSyncAnchor) -> (version: String, date: Date)? {
         guard let raw = String(data: anchor.rawValue, encoding: .utf8) else {
             return nil
         }
 
-        let parts = raw.split(separator: "|", maxSplits: 1, omittingEmptySubsequences: false)
+        let parts = raw.split(separator: "|", omittingEmptySubsequences: false)
 
-        guard parts.count == 2 else {
+        guard parts.count == 2 || (parts.count == 3 && !parts[2].isEmpty) else {
             return nil
         }
 

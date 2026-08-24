@@ -78,11 +78,8 @@ extension Enumerator {
     ///
     /// Pop the next batch from ``changeBuffer`` and report it.
     ///
-    /// Intermediate batches (`moreComing == true`) return `startAnchor` — the anchor the enumeration was
-    /// invoked with — so that if the drain is interrupted the framework resumes *behind* every
-    /// undelivered item rather than advancing the sync point past changes still sitting in the buffer.
-    /// Only the final batch returns `finalAnchor` (the working set advances to ``currentAnchor``; a
-    /// regular container preserves its incoming anchor).
+    /// Intermediate batches return a unique continuation anchor with `startAnchor`'s date. The final
+    /// batch returns `finalAnchor`.
     ///
     func drainChangeBuffer(
         for observer: NSFileProviderChangeObserver,
@@ -90,7 +87,12 @@ extension Enumerator {
         finalAnchor: NSFileProviderSyncAnchor,
         suggested: Int?
     ) {
-        let batch = changeBuffer.takeBatch(maxItems: effectiveBatchSize(suggested: suggested))
+        let continuationAnchor = Self.continuationSyncAnchor(from: startAnchor)
+        let continuationKey = String(data: continuationAnchor.rawValue, encoding: .utf8) ?? ""
+        let batch = changeBuffer.takeBatch(
+            maxItems: effectiveBatchSize(suggested: suggested),
+            continuationKey: continuationKey
+        )
         logger.info(
             "Reporting change batch. updated: \(batch.updated.count), deleted: \(batch.deleted.count), moreComing: \(batch.moreComing)",
             [.item: enumeratedItemIdentifier]
@@ -99,7 +101,7 @@ extension Enumerator {
             observer,
             updated: batch.updated,
             deleted: batch.deleted,
-            anchor: batch.moreComing ? startAnchor : finalAnchor,
+            anchor: batch.moreComing ? continuationAnchor : finalAnchor,
             moreComing: batch.moreComing,
             account: account,
             remoteInterface: remoteInterface,

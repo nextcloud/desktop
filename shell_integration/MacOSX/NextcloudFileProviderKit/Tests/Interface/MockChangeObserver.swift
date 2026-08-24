@@ -5,6 +5,10 @@
 import Foundation
 import NextcloudFileProviderKit
 
+public enum MockChangeObserverError: Error {
+    case unchangedContinuationAnchor
+}
+
 public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
     public var changedItems: [any NSFileProviderItemProtocol] = []
     public var deletedItemIdentifiers: [NSFileProviderItemIdentifier] = []
@@ -22,9 +26,14 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
     var isComplete = false
     private var batchComplete = false
     var enumerator: NSFileProviderEnumerator
+    private let continuationEnumeratorFactory: (() throws -> NSFileProviderEnumerator)?
 
-    public init(enumerator: NSFileProviderEnumerator) {
+    public init(
+        enumerator: NSFileProviderEnumerator,
+        continuationEnumeratorFactory: (() throws -> NSFileProviderEnumerator)? = nil
+    ) {
         self.enumerator = enumerator
+        self.continuationEnumeratorFactory = continuationEnumeratorFactory
     }
 
     public func didUpdate(_ changedItems: [any NSFileProviderItemProtocol]) {
@@ -55,8 +64,14 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
         isComplete = false
         var currentAnchor = anchor
         // Drive the batches the way the framework does: re-invoke enumerateChanges from the anchor the
-        // previous batch returned until one finishes with moreComing == false.
+        // previous batch returned until one finishes with moreComing == false. File Provider discards a
+        // moreComing response whose anchor did not progress, so fail the test at that same boundary.
+        var isFirstBatch = true
         repeat {
+            if !isFirstBatch, let continuationEnumeratorFactory {
+                enumerator = try continuationEnumeratorFactory()
+            }
+            isFirstBatch = false
             batchComplete = false
             enumerator.enumerateChanges?(for: self, from: currentAnchor)
             while !batchComplete {
@@ -65,8 +80,11 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
             if let error {
                 throw error
             }
-            if let latestAnchor = finishes.last?.anchor {
-                currentAnchor = latestAnchor
+            if let latestFinish = finishes.last {
+                if latestFinish.moreComing && latestFinish.anchor.rawValue == currentAnchor.rawValue {
+                    throw MockChangeObserverError.unchangedContinuationAnchor
+                }
+                currentAnchor = latestFinish.anchor
             }
         } while !isComplete
     }

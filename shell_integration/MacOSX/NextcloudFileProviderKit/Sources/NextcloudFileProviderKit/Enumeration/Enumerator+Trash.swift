@@ -8,19 +8,18 @@ extension Enumerator {
     ///
     /// Pop the next batch of trash deletions from ``changeBuffer`` and report it.
     ///
-    /// `NKTrash` items have no ETag; the only trash change of interest is a *permanent* remote deletion,
-    /// detected as a local trash row absent from the remote listing. Those orphans are derived once (see
-    /// ``enumerateTrashChanges(for:anchor:)``) and drained here one capped batch per invocation so a large
-    /// permanent-purge cannot exceed the framework's per-batch limit. Trash preserves its incoming anchor
-    /// (like a regular container), so the same anchor is returned on every batch. Each delivered orphan is
-    /// soft-deleted (`deleteItemMetadata`) only after its batch finishes, so an interrupted drain keeps its
-    /// row — the reconciliation re-derives it (the row still carries a trash `serverUrl`) rather than
-    /// dropping it.
+    /// Drain permanently deleted trash items in capped batches. Intermediate anchors progress without
+    /// changing the sync date; each delivered row is soft-deleted after its batch.
     ///
     private func drainTrashDeletions(
         for observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor, suggested: Int?
     ) {
-        let batch = changeBuffer.takeBatch(maxItems: effectiveBatchSize(suggested: suggested))
+        let continuationAnchor = Self.continuationSyncAnchor(from: anchor)
+        let continuationKey = String(data: continuationAnchor.rawValue, encoding: .utf8) ?? ""
+        let batch = changeBuffer.takeBatch(
+            maxItems: effectiveBatchSize(suggested: suggested),
+            continuationKey: continuationKey
+        )
         let orphanedIdentifiers = batch.deleted.map { NSFileProviderItemIdentifier($0.ocId) }
 
         if orphanedIdentifiers.isEmpty == false {
@@ -34,7 +33,10 @@ extension Enumerator {
             dbManager.deleteItemMetadata(ocId: metadata.ocId)
         }
 
-        observer.finishEnumeratingChanges(upTo: anchor, moreComing: batch.moreComing)
+        observer.finishEnumeratingChanges(
+            upTo: batch.moreComing ? continuationAnchor : anchor,
+            moreComing: batch.moreComing
+        )
 
         logger.debug("Reported trash deletion batch. deleted: \(batch.deleted.count), moreComing: \(batch.moreComing)")
     }
