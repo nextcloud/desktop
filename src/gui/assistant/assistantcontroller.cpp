@@ -269,7 +269,7 @@ void AssistantController::selectChatConversation(qint64 conversationId)
 
 void AssistantController::startNewChat()
 {
-    beginRequest();
+    static_cast<void>(beginRequest());
     _selectedChatConversationId = -1;
     _selectedChatConversationTitle.clear();
     _chatConversations.select(-1);
@@ -334,7 +334,7 @@ void AssistantController::submitQuestion(const QString &question)
 
 void AssistantController::clear()
 {
-    beginRequest();
+    static_cast<void>(beginRequest());
     _taskPollTimer.stop();
     _chatPollTimer.stop();
     _taskId = -1;
@@ -392,7 +392,7 @@ void AssistantController::pollTasks()
         return;
     }
     if (_taskPollAttempts >= _maxTaskPollAttempts) {
-        beginRequest();
+        static_cast<void>(beginRequest());
         setRequestInProgress(false);
         if (_response.isEmpty()) {
             _response = tr("No response yet. Please try again later.");
@@ -412,7 +412,7 @@ void AssistantController::pollChatGeneration()
         return;
     }
     if (_chatPollAttempts >= _maxChatPollAttempts) {
-        beginRequest();
+        static_cast<void>(beginRequest());
         setRequestInProgress(false);
         setShowRetryResponseGeneration(_messages.lastMessageIsHuman());
         _error = tr("No response yet. Please try again later.");
@@ -774,7 +774,7 @@ void AssistantController::startChatGeneration(qint64 conversationId, quint64 req
 
 void AssistantController::requestFailed(const QString &context, int statusCode)
 {
-    beginRequest();
+    static_cast<void>(beginRequest());
     setRequestInProgress(false);
     _error = tr("Assistant request failed (%1).").arg(statusCode);
     emit errorChanged();
