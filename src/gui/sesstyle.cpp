@@ -27,6 +27,8 @@
 #include <QPushButton>
 #include <QStyleOptionButton>
 #include <QPainter>
+#include <QPainterPath>
+#include <QPen>
 #include <QStyleOption>
 
 sesStyle::sesStyle(QStyle* baseStyle)
@@ -41,6 +43,11 @@ void sesStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption *option, QP
     switch (pe) {
     case PE_FrameFocusRect:
         // nothing, we don't want focus rects
+        break;
+
+    case PE_IndicatorCheckBox:
+    case PE_IndicatorItemViewItemCheck:
+        drawCheckboxIndicator(pe, option, painter, widget);
         break;
 
 #ifdef Q_OS_MAC
@@ -81,6 +88,68 @@ void sesStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption *option, QP
         super::drawPrimitive(pe, option, painter, widget);
         break;
     }
+}
+
+void sesStyle::drawCheckboxIndicator(PrimitiveElement pe, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+{
+    Q_UNUSED(pe);
+    Q_UNUSED(widget);
+
+    // Own fill/checkmark colors - checked fill matches the app's actual primary-button blue
+    // (WLTheme.buttonPrimaryColor(), same getter PushButtonStyleHelper uses), so it stays
+    // consistent with buttons in both Light and Dark Mode instead of a fixed single value.
+    // The box shape approximates each OS's own corner rounding rather than one fixed radius -
+    // Qt doesn't expose the native style's actual radius to query, so this is a maintained
+    // approximation, not a literal native shape.
+#if defined(Q_OS_WIN)
+    constexpr qreal radius = 3.0; // QWindows11Style's Fluent rounding
+#elif defined(Q_OS_MACOS)
+    constexpr qreal radius = 5.0; // macOS's more rounded checkbox
+#else
+    constexpr qreal radius = 2.0; // GTK/Breeze-style checkboxes sit closer to square
+#endif
+
+    const bool checked = option->state & (State_On | State_NoChange);
+    const bool enabled = option->state & State_Enabled;
+
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    if (!enabled) {
+        painter->setOpacity(0.5);
+    }
+
+    const QRectF rect = QRectF(option->rect).adjusted(0.5, 0.5, -0.5, -0.5);
+    QPainterPath boxPath;
+    boxPath.addRoundedRect(rect, radius, radius);
+
+    if (checked) {
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(QColor(OCC::WLTheme.buttonPrimaryColor()));
+    } else {
+        const auto borderWidth = qMax(1.0, rect.height() / 10.0);
+        painter->setPen(QPen(QColor(OCC::WLTheme.buttonSecondaryBorderColor()), borderWidth));
+        painter->setBrush(QColor(OCC::WLTheme.dialogBackgroundColor()));
+    }
+    painter->drawPath(boxPath);
+
+    if (checked) {
+        const auto color = QColor(OCC::WLTheme.checkboxCheckmarkColor());
+        const auto penWidth = qMax(2, qRound(rect.height() / 7));
+        painter->setPen(QPen(color, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+
+        if (option->state & State_NoChange) {
+            painter->drawLine(QPointF(rect.left() + rect.width() * 0.25, rect.center().y()),
+                               QPointF(rect.right() - rect.width() * 0.25, rect.center().y()));
+        } else {
+            QPainterPath checkPath;
+            checkPath.moveTo(rect.left() + rect.width() * 0.22, rect.center().y());
+            checkPath.lineTo(rect.left() + rect.width() * 0.42, rect.bottom() - rect.height() * 0.22);
+            checkPath.lineTo(rect.right() - rect.width() * 0.20, rect.top() + rect.height() * 0.25);
+            painter->drawPath(checkPath);
+        }
+    }
+
+    painter->restore();
 }
 
 int sesStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const

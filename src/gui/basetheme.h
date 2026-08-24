@@ -11,6 +11,7 @@ namespace OCC {
 class BaseTheme : public QObject{
     Q_OBJECT
     Q_PROPERTY(QString dialogBackgroundColor READ dialogBackgroundColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString checkboxCheckmarkColor READ checkboxCheckmarkColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayFontColor READ trayFontColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayBorderColor READ trayBorderColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayInputFieldBorderColor READ trayInputFieldBorderColor CONSTANT)
@@ -440,6 +441,12 @@ public:
 
     virtual QString dialogBackgroundColor() const {
         return themedColor("#FFFFFF", "#1E2126");
+    }
+
+    // Deliberately inverted from the native checked-box contrast (which the checked box's
+    // accent-color fill already provides) - white checkmark in Light Mode, black in Dark Mode.
+    virtual QString checkboxCheckmarkColor() const {
+        return themedColor("#FFFFFF", "#000000");
     }
 
     virtual QString trayBackgroundColor() const {
