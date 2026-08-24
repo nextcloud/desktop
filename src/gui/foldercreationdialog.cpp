@@ -69,6 +69,11 @@ void FolderCreationDialog::accept()
 
     const auto fullPath = QString(_destination + "/" + ui->newFolderNameEdit->text());
 
+    if (QDir(fullPath).exists()) {
+        ui->errorSnackbar->setVisible(true);
+        return;
+    }
+
     if (QDir(_destination).mkdir(ui->newFolderNameEdit->text())) {
         Q_EMIT folderCreated(fullPath);
     } else {

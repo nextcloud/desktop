@@ -92,7 +92,6 @@ public:
     }
 };
 
-#ifdef IONOS_BUILD
 constexpr auto TOOLBAR_CSS = QLatin1String(
     // No border-bottom here: the toolbar's height tracks its content (see setSizePolicy()
     // in setupUi()), so a bottom border would sit right under the last account button,
@@ -110,14 +109,6 @@ constexpr auto TOOLBAR_CSS = QLatin1String(
     "QMenu::item::selected { background: %3; color: %4; }"
     "QMenu::item::pressed { background: %6; color: %4; }"
     "QToolTip { color: %4; background-color: %1; border: 1px solid %2; }");
-#else
-constexpr auto TOOLBAR_CSS = QLatin1String(
-    "QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
-    "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 8px 12px; font-size: 14px; border-radius: 8px; } "
-    "QToolBar QToolBarExtension { padding: 0; } "
-    "QToolBar QToolButton:checked { background: palette(highlight); color: palette(highlighted-text); }");
-
-#endif
 
     const float buttonSizeRatio = 1.618f; // golden ratio
 constexpr auto settingsDialogDefaultWidth = 950;
@@ -525,8 +516,6 @@ void SettingsDialog::accountRemoved(AccountState *s)
     }
 }
 
-#ifdef IONOS_BUILD
-
 void SettingsDialog::customizeStyle()
 {
     if (_updatingStyle) {
@@ -576,55 +565,6 @@ void SettingsDialog::customizeStyle()
         updateAccountAvatar(it.key());
     }
 }
-#else
-void SettingsDialog::customizeStyle()
-{
-    if (_updatingStyle) {
-        return;
-    }
-
-    const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
-    _toolBar->setStyleSheet(TOOLBAR_CSS);
-
-    setStyleSheet(
-        QStringLiteral("#Settings { background: palette(window); border-radius: 0; }"
-
-                       /* Navigation */
-                       "#settings_navigation_scroll { background: palette(" BACKGROUND_PALETTE "); border-radius: 12px; padding: 4px; }"
-                       "#settings_navigation { background: transparent; border: none; padding: 0px; }"
-
-                       /* Content area */
-                       "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
-
-                       /* Panels */
-                       "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
-                       "#accountStatusPanel, #connectionSettingsPanel, #fileProviderPanel, #syncFoldersPanel {"
-                       " background: palette(" BACKGROUND_PALETTE ");"
-                       " border-radius: 10px;"
-                       " margin: 0px;"
-                       " padding: 6px;"
-                       " }"
-                       "#generalGroupBoxTitle, #advancedGroupBoxTitle, #aboutAndUpdatesGroupBoxTitle {"
-                       " margin-bottom: 6px;"
-                       " }"));
-
-    const auto &allActions = _actionGroup->actions();
-    const auto accountActions = _actionForAccount.values();
-    for (const auto a : allActions) {
-        const auto iconPath = a->property("iconPath").toString();
-        const QIcon icon = accountActions.contains(a) ? createContrastAwareAvatarIcon(iconPath) : Theme::createColorAwareIcon(iconPath, palette());
-        a->setIcon(icon);
-        auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
-        if (btn)
-            btn->setIcon(icon);
-    }
-
-    // Re-apply account avatars, since the loop above just reset them to the generic icon
-    for (auto it = _actionForAccount.constBegin(); it != _actionForAccount.constEnd(); ++it) {
-        updateAccountAvatar(it.key());
-    }
-}
-#endif
 
 class ToolButtonAction : public QWidgetAction
 {
