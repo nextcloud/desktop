@@ -641,8 +641,9 @@ public:
 
     [[nodiscard]] bool isInBulkUploadBlackList(const QString &file) const;
 
-private Q_SLOTS:
+    void emitItemCompleted(const OCC::SyncFileItemPtr &item, OCC::ErrorCategory category);
 
+private Q_SLOTS:
     void abortTimeout()
     {
         // Abort synchronously and finish
