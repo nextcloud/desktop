@@ -4,7 +4,7 @@ Erzeugt am 2026-08-24 mit dem [component-context](../../skills/component-context
 
 **Update 2026-08-24 (nach dem Merge):** `feature/SES-578_DarkMode_Tray` wurde per `e7a6ff00a` in `develop_stable-33.0` gemerged (zusammen mit `bugs/SES-596_LINUX_Vereinheitlichung_der_Schriftart`). `HEAD` bezieht sich seither auf `develop_stable-33.0`. Die Analyse wurde wiederholt und gegen den vorherigen Stand (Basis: `feature/SES-578_DarkMode_Tray`-Tip `cba5a70e8`) abgeglichen — Ergebnis siehe **Merge-Konsistenz-Check** unten. Ursprünglich 138 Diff-Dateien → 45 Komponenten; nach dem Merge 145 Diff-Dateien → 51 Komponenten (6 neu, ausschließlich durch SES-596 bedingt, keine Verluste).
 
-**Wichtig zur Richtung:** `develop_stable-4.0` ist **nicht** ein künftiges Merge-Ziel, sondern die **Basis, von der dieser Feature-Branch abgezweigt wurde** (letzter Entwicklungsstand vor SES-578). Der Diff zeigt also **alles, was dieser Branch seit dem Abzweigen selbst verändert hat** — nützlich als Übersicht des eigenen Änderungsumfangs (z. B. für Review/PR-Beschreibung), nicht als Merge-Risiko-Einschätzung gegen ein Ziel. Reine Backend-/Model-/Platform-Dateien ohne eigene UI (`accountmanager.cpp`, `folderman.cpp`, `socketapi.cpp`, macOS-FileProvider-Backend-`.mm`, `main.cpp` etc.) wurden bewusst ausgeschlossen.
+**Wichtig zur Richtung:** `develop_stable-4.0` ist **nicht** ein künftiges Merge-Ziel, sondern die **Basis, von der dieser Feature-Branch abgezweigt wurde** (letzter Entwicklungsstand vor SES-578) — und dieser Branch **wird nicht mehr gepflegt**. Es findet also kein künftiger Merge in diese Richtung statt, auch keiner "irgendwann noch nachzuziehender". Formulierungen wie "noch nicht in `develop_stable-4.0`" sind daher irreführend und wurden unten korrigiert, wo sie das nahelegten. Der Diff zeigt ausschließlich **alles, was dieser Branch seit dem (endgültigen) Abzweigen selbst verändert hat** — nützlich als Übersicht des eigenen Änderungsumfangs (z. B. für Review/PR-Beschreibung), nicht als Merge-Risiko-Einschätzung gegen ein Ziel. Reine Backend-/Model-/Platform-Dateien ohne eigene UI (`accountmanager.cpp`, `folderman.cpp`, `socketapi.cpp`, macOS-FileProvider-Backend-`.mm`, `main.cpp` etc.) wurden bewusst ausgeschlossen.
 
 **Methodik-Hinweis:** Der Klickpfad/die Einordnung wurde, wo möglich, aus der bestehenden `.claude/context/gui/`-Doku übernommen (dort mit "laut Doku" markiert) statt für jede Komponente einzeln neu aus dem Code hergeleitet — das wäre bei dieser Menge nicht mehr leistbar gewesen. Wo keine bestehende Doku existierte, wurde gezielt nachgeschaut (vermerkt). **Dieses Dokument ist ein einmaliges Sammel-Ergebnis, keine von einem Skill gepflegte Datei** (der `component-context`-Skill selbst schreibt/pflegt bewusst kein eigenes Registry-File — siehe dessen SKILL.md) — es veraltet wie jede Momentaufnahme und wird nicht automatisch nachgezogen.
 
@@ -31,14 +31,14 @@ Um sicherzustellen, dass der Merge `feature/SES-578_DarkMode_Tray` → `develop_
 **Bisherige Entscheidungen:** 2026-08-21 Card-Panel-Hintergründe wieder entfernt (SES-578); `connectionSettingsPanel`-Sichtbarkeitsentscheidung (siehe NetworkSettings unten) wirkt hier rein.
 **Doku:** COMPONENTS.md Zeile 14 — "Fork-specific: `whitelabeltheme.h`/`WLTheme`, `#ifndef IONOS_BUILD`-Guard, `STRATO_WL_BUILD`-ExpandMemory-Link".
 **Letzte Änderungen:** `cba5a70e8`, `ffeb8e7e4`, `dd2b5fcc4`, `b9e530504` — alle SES-578 Dark-Mode-Feinschliff.
-**Diff-Grund:** SES-578-Änderungen noch nicht in `develop_stable-4.0`.
+**Diff-Grund:** SES-578-Änderungen seit dem Abzweigen von `develop_stable-4.0` (unmaintained, nichts davon fließt zurück).
 
 ### GeneralSettings (`generalsettings.cpp/.ui`)
 **Navigation:** Settings-Dialog-Toolbar → "Allgemein"-Tab
 **Bisherige Entscheidungen:** 2026-08-12 zweimal (SES-576: erst als bewusster Redesign-Stand bestätigt, dann strukturell wieder an stable-33.0 angeglichen — erster Eintrag überholt); 2026-08-21 Card-Panel-Revert (SES-578).
 **Doku:** COMPONENTS.md Zeile 71 — "prime merge-conflict hotspot", GA4-Tracking auf fast jedem Control, `IONOS_BUILD`/`STRATO_WL_BUILD`-Verzweigungen.
 **Letzte Änderungen:** `dd2b5fcc4`, `b9e530504`, `80100217e`, `45446a124`.
-**Diff-Grund:** SES-576-Strukturangleichung + SES-578-Dark-Mode — beides noch nicht in `develop_stable-4.0` gemerged.
+**Diff-Grund:** SES-576-Strukturangleichung + SES-578-Dark-Mode — beides nach dem Abzweigen von `develop_stable-4.0` entstanden, kein Rückfluss dorthin vorgesehen.
 
 ### NetworkSettings (`networksettings.cpp/.ui`)
 **Navigation:** Settings-Dialog-Toolbar → "Netzwerk"-Tab, bzw. eingebettet als `connectionSettingsPanel` in AccountSettings
