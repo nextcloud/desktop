@@ -628,7 +628,7 @@ void BulkPropagatorJob::done(SyncFileItemPtr item,
 
     handleJobDoneErrors(item, status);
 
-    Q_EMIT propagator()->itemCompleted(item, category);
+    propagator()->emitItemCompleted(item, category);
 }
 
 QMap<QByteArray, QByteArray> BulkPropagatorJob::headers(SyncFileItemPtr item) const

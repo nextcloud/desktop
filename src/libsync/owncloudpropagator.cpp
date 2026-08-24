@@ -276,12 +276,7 @@ void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString 
         break;
     }
 
-    if (_item->hasErrorStatus()) {
-        qCWarning(lcPropagator) << "Could not complete propagation of" << _item->destination() << "by" << this << "with status" << _item->_status << "and error:" << _item->_errorString;
-    } else {
-        qCInfo(lcPropagator) << "Completed propagation of" << _item->destination() << "by" << this << "with status" << _item->_status;
-    }
-    Q_EMIT propagator()->itemCompleted(_item, category);
+    propagator()->emitItemCompleted(_item, category);
     Q_EMIT finished(_item->_status);
 
     if (_item->_status == SyncFileItem::FatalError) {
@@ -926,6 +921,16 @@ void OwncloudPropagator::scheduleNextJobImpl()
             }
         }
     }
+}
+
+void OwncloudPropagator::emitItemCompleted(const SyncFileItemPtr &item, ErrorCategory category)
+{
+    if (item->hasErrorStatus()) {
+        qCWarning(lcPropagator) << "Could not complete propagation of" << item->destination() << "by" << this << "with status" << item->_status << "and error:" << item->_errorString;
+    } else {
+        qCInfo(lcPropagator) << "Completed propagation of" << item->destination() << "by" << this << "with status" << item->_status;
+    }
+    Q_EMIT itemCompleted(item, category);
 }
 
 void OwncloudPropagator::reportProgress(const SyncFileItem &item, qint64 bytes)
