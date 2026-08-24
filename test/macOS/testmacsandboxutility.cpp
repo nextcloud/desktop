@@ -12,7 +12,7 @@ class TestMacSandboxUtility : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void userHomeDirectoryIsOutsideTheAppContainer()
     {
         const auto userHomeDirectory = OCC::Utility::getRealHomeDirectory();

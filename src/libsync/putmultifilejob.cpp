@@ -97,7 +97,7 @@ bool PutMultiFileJob::finished()
         }
     }
 
-    emit finishedSignal();
+    Q_EMIT finishedSignal();
     return true;
 }
 

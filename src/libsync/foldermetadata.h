@@ -146,7 +146,7 @@ public:
 
     static MetadataVersion setupVersionFromExistingMetadata(const QByteArray &metadata);
 
-public slots:
+public Q_SLOTS:
     [[nodiscard]] bool addEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
     [[nodiscard]] bool removeEncryptedFile(const QString &originalFilename);
     void removeAllEncryptedFiles();
@@ -185,7 +185,7 @@ private:
 
     static QByteArray prepareMetadataForSignature(const QJsonDocument &fullMetadata);
 
-private slots:
+private Q_SLOTS:
     void initMetadata();
     void initEmptyMetadata();
     void initEmptyMetadataLegacy();
@@ -201,7 +201,7 @@ private slots:
 
     void emitSetupComplete();
 
-signals:
+Q_SIGNALS:
     void setupComplete();
 
 private:

@@ -53,13 +53,13 @@ public:
 
     void setFolderMap(const Folder::Map &fm) { _folderMap = fm; }
 
-signals:
+Q_SIGNALS:
     void initialFolderSelectionCanceled();
 
 protected:
     void changeEvent(QEvent *) override;
 
-protected slots:
+protected Q_SLOTS:
     void slotChooseLocalFolder();
 
 private:
@@ -89,7 +89,7 @@ public:
     void initializePage() override;
     void cleanupPage() override;
 
-protected slots:
+protected Q_SLOTS:
     void showWarn(const QString & = QString()) const;
     void slotAddRemoteFolder();
     void slotCreateRemoteFolder(const QString &);
@@ -108,7 +108,7 @@ protected slots:
 protected:
     void changeEvent(QEvent *) override;
 
-private slots:
+private Q_SLOTS:
     void changeStyle();
 
 private:
@@ -138,7 +138,7 @@ public:
     void initializePage() override;
     void cleanupPage() override;
 
-private slots:
+private Q_SLOTS:
     void virtualFilesCheckboxClicked();
 
 private:

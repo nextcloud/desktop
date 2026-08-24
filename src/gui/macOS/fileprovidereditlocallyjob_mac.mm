@@ -38,7 +38,7 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
     
     if (domain == nil) {
         qCWarning(lcFileProviderEditLocallyMacJob) << "Could not get domain for account:" << userId;
-        emit notAvailable();
+        Q_EMIT notAvailable();
         return;
     }
 
@@ -47,7 +47,7 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
     if (manager == nil) {
         qCWarning(lcFileProviderEditLocallyMacJob) << "Could not get file provider manager"
                                                       "for domain of account:" << userId;;
-        emit notAvailable();
+        Q_EMIT notAvailable();
         return;
     }
 
@@ -59,7 +59,7 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
             const auto errorMessage = QString::fromNSString(error.localizedDescription);
             qCWarning(lcFileProviderEditLocallyMacJob) << "Error getting user visible URL for item:" << errorMessage;
             dispatch_async(dispatch_get_main_queue(), ^{
-                emit notAvailable();
+                Q_EMIT notAvailable();
             });
         } else if (url != nil) {
             const auto itemLocalPath = QString::fromNSString(url.path);
@@ -71,12 +71,12 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
                     const auto urlToReveal = [NSURL fileURLWithPath:itemLocalPath.toNSString()];
                     [NSWorkspace.sharedWorkspace activateFileViewerSelectingURLs:@[urlToReveal]];
                 });
-                emit finished();
+                Q_EMIT finished();
             });
         } else {
             qCWarning(lcFileProviderEditLocallyMacJob) << "Got nil user visible URL for item" << ocId;
             dispatch_async(dispatch_get_main_queue(), ^{
-                emit notAvailable();
+                Q_EMIT notAvailable();
             });
         }
         [manager release];

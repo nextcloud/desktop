@@ -44,7 +44,7 @@ public:
 
     void setIsSharedInvalidationInterval(qint64 interval);
 
-signals:
+Q_SIGNALS:
     void directoryListingIterationFinished(const QString &folderAlias);
 
 private:
@@ -57,7 +57,7 @@ private:
     void parseCustomStateRequest(QLocalSocket *socket, const QVariantMap &message);
     void parseThumbnailRequest(QLocalSocket *socket, const QVariantMap &message);
 
-private slots:
+private Q_SLOTS:
     void slotNewConnection();
 
 private:

@@ -557,7 +557,7 @@ void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 void SocketApi::processFileActivityRequest(const QString &localFile)
 {
     const auto fileData = FileData::get(localFile);
-    emit fileActivityCommandReceived(fileData.localPath);
+    Q_EMIT fileActivityCommandReceived(fileData.localPath);
 }
 
 void SocketApi::processEncryptRequest(const QString &localFile)
@@ -672,7 +672,7 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
         const QString message = QLatin1String("SHARE:OK:") + QDir::toNativeSeparators(localFile);
         listener->sendMessage(message);
 
-        emit shareCommandReceived(fileData.localPath);
+        Q_EMIT shareCommandReceived(fileData.localPath);
     }
 }
 
@@ -685,7 +685,7 @@ void SocketApi::processLeaveShareRequest(const QString &localFile, SocketListene
 void SocketApi::processFileActionsRequest(const QString &localFile)
 {
     const auto fileData = FileData::get(localFile);
-    emit fileActionsCommandReceived(fileData.localPath);
+    Q_EMIT fileActionsCommandReceived(fileData.localPath);
 }
 
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
@@ -832,7 +832,7 @@ void SocketApi::command_FILES_GOVERNANCE_LABELS(const QString &localFile, Socket
     if (!record.isValid())
         return;
 
-    emit governanceLabelsCommandReceived(fileData.folder->accountState()->account(), fileData.localPath, QString::fromLatin1(record._fileId));
+    Q_EMIT governanceLabelsCommandReceived(fileData.folder->accountState()->account(), fileData.localPath, QString::fromLatin1(record._fileId));
 }
 
 // don't pull the share manager into socketapi unittests
@@ -866,7 +866,7 @@ public:
         _shareManager.fetchShares(_localFile);
     }
 
-private slots:
+private Q_SLOTS:
     void sharesFetched(const QList<OCC::SharePtr> &shares)
     {
         auto shareLabel = SocketApi::tr("Context menu share");
@@ -919,7 +919,7 @@ private slots:
     void linkShareRequiresPassword(const QString &message)
     {
         qCInfo(lcPublicLink) << "Could not create link share:" << message;
-        emit error(message);
+        Q_EMIT error(message);
         deleteLater();
     }
 
@@ -932,18 +932,18 @@ private slots:
             tr("Could not retrieve or create the public link share. Error:\n\n%1").arg(message),
             QMessageBox::Ok,
             QMessageBox::NoButton);
-        emit error(message);
+        Q_EMIT error(message);
         deleteLater();
     }
 
-signals:
+Q_SIGNALS:
     void done(const QString &link);
     void error(const QString &message);
 
 private:
     void success(const QString &link)
     {
-        emit done(link);
+        Q_EMIT done(link);
         deleteLater();
     }
 
@@ -1068,7 +1068,7 @@ void SocketApi::command_RESOLVE_CONFLICT(const QString &localFile, SocketListene
 
     const auto baseName = QFileInfo(basePath).fileName();
 
-    emit resolveConflictCommandReceived(conflictedPath, basePath, baseName, fileData.folder->alias());
+    Q_EMIT resolveConflictCommandReceived(conflictedPath, basePath, baseName, fileData.folder->alias());
 }
 
 void SocketApi::command_DELETE_ITEM(const QString &localFile, SocketListener *)
@@ -1109,7 +1109,7 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     // Add back the folder path
     defaultDirAndName = QDir(fileData.folder->path()).filePath(defaultDirAndName);
 
-    emit moveItemCommandReceived(localFile, defaultDirAndName);
+    Q_EMIT moveItemCommandReceived(localFile, defaultDirAndName);
 }
 
 void SocketApi::command_LOCK_FILE(const QString &localFile, SocketListener *listener)

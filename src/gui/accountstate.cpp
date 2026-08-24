@@ -138,7 +138,7 @@ void AccountState::setState(State state)
             checkConnectivity();
         }
         if (oldState == Connected || _state == Connected) {
-            emit isConnectedChanged();
+            Q_EMIT isConnectedChanged();
         }
         if (_state == Connected) {
             resetRetryCount();
@@ -146,7 +146,7 @@ void AccountState::setState(State state)
     }
 
     // might not have changed but the underlying _connectionErrors might have
-    emit stateChanged(_state);
+    Q_EMIT stateChanged(_state);
 }
 
 QString AccountState::stateString(State state)
@@ -262,7 +262,7 @@ void AccountState::setDesktopNotificationsAllowed(bool isAllowed)
     }
     
     _isDesktopNotificationsAllowed = isAllowed;
-    emit desktopNotificationsAllowedChanged();
+    Q_EMIT desktopNotificationsAllowedChanged();
 }
 
 AccountState::ConnectionStatus AccountState::lastConnectionStatus() const
@@ -395,7 +395,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
                                << _connectionStatus << "->"
                                << status;
         _connectionStatus = status;
-        emit stateChanged(_state);
+        Q_EMIT stateChanged(_state);
     }
     _connectionErrors = errors;
 
@@ -458,7 +458,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     if ((oldConnectionValidatorStatus == ConnectionValidator::NeedToSignTermsOfService && status == ConnectionValidator::Connected) ||
         (status == ConnectionValidator::NeedToSignTermsOfService && oldConnectionValidatorStatus != status)) {
 
-        emit termsOfServiceChanged(_account, status == ConnectionValidator::NeedToSignTermsOfService ? AccountState::NeedToSignTermsOfService : AccountState::Connected);
+        Q_EMIT termsOfServiceChanged(_account, status == ConnectionValidator::NeedToSignTermsOfService ? AccountState::NeedToSignTermsOfService : AccountState::Connected);
     }
 }
 
@@ -649,7 +649,7 @@ void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int sta
                 }
             }
 
-            emit hasFetchedNavigationApps();
+            Q_EMIT hasFetchedNavigationApps();
         }
     }
 }

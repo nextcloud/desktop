@@ -126,7 +126,7 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
     if(_lastInfoReceived.isNull() || _lastQuotaUsedBytes != used || _lastQuotaTotalBytes != total) {
         _lastQuotaUsedBytes = used;
         _lastQuotaTotalBytes = total;
-        emit quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);
+        Q_EMIT quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);
     }
 
     _jobRestartTimer.start(defaultIntervalT);
@@ -140,14 +140,14 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
         return;
     }
 
-    emit fetchedLastInfo(this);
+    Q_EMIT fetchedLastInfo(this);
 }
 
 void UserInfo::slotAvatarImage(const QImage &img)
 {
     _accountState->account()->setAvatar(img);
 
-    emit fetchedLastInfo(this);
+    Q_EMIT fetchedLastInfo(this);
 }
 
 } // namespace OCC

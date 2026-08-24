@@ -49,7 +49,7 @@ public:
     { return pinStateInDb(folderPath); }
     AvailabilityResult availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck) override;
 
-public slots:
+public Q_SLOTS:
     void fileStatusChanged(const QString &, OCC::SyncFileStatus) override {}
 
 protected:

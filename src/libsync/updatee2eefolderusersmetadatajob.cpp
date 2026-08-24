@@ -48,7 +48,7 @@ void UpdateE2eeFolderUsersMetadataJob::start(const bool keepLock)
     qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "[DEBUG_LEAVE_SHARE]: UpdateE2eeFolderUsersMetadataJob::start";
 
     if (!_encryptedFolderMetadataHandler) {
-        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
+        Q_EMIT finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         return;
     }
 
@@ -59,14 +59,14 @@ void UpdateE2eeFolderUsersMetadataJob::start(const bool keepLock)
     }
     _keepLock = keepLock;
     if (_operation != Operation::Add && _operation != Operation::Remove && _operation != Operation::ReEncrypt) {
-        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
+        Q_EMIT finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         return;
     }
 
     if (_operation == Operation::Add) {
         connect(this, &UpdateE2eeFolderUsersMetadataJob::certificateReady, this, &UpdateE2eeFolderUsersMetadataJob::slotStartE2eeMetadataJobs);
         if (!_folderUserCertificate.isNull()) {
-            emit certificateReady();
+            Q_EMIT certificateReady();
             return;
         }
         connect(_account->e2e(), &ClientSideEncryption::certificateFetchedFromKeychain,
@@ -80,14 +80,14 @@ void UpdateE2eeFolderUsersMetadataJob::start(const bool keepLock)
 void UpdateE2eeFolderUsersMetadataJob::slotStartE2eeMetadataJobs()
 {
     if (_operation == Operation::Add && _folderUserCertificate.isNull()) {
-        emit finished(404, tr("Could not fetch public key for user %1").arg(_folderUserDisplayName));
+        Q_EMIT finished(404, tr("Could not fetch public key for user %1").arg(_folderUserDisplayName));
         return;
     }
 
     const auto folderPathRelative = Utility::fullRemotePathToRemoteSyncRootRelative(_fullRemotePath, _syncFolderRemotePath);
     SyncJournalFileRecord rec;
     if (!_journalDb->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(folderPathRelative, _syncFolderRemotePath), &rec) || !rec.isValid()) {
-        emit finished(404, tr("Could not find root encrypted folder for folder %1").arg(_fullRemotePath));
+        Q_EMIT finished(404, tr("Could not find root encrypted folder for folder %1").arg(_fullRemotePath));
         return;
     }
 
@@ -103,12 +103,12 @@ void UpdateE2eeFolderUsersMetadataJob::slotFetchMetadataJobFinished(int statusCo
 
     if (statusCode != 200) {
         qCritical(lcUpdateE2eeFolderUsersMetadataJob) << "fetch metadata finished with error" << statusCode << message;
-        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
+        Q_EMIT finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         return;
     }
 
     if (!_encryptedFolderMetadataHandler->folderMetadata() || !_encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
-        emit finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserDisplayName).arg(_fullRemotePath));
+        Q_EMIT finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserDisplayName).arg(_fullRemotePath));
         return;
     }
     startUpdate();
@@ -118,14 +118,14 @@ void UpdateE2eeFolderUsersMetadataJob::startUpdate()
 {
     if (_operation == Operation::Invalid) {
         qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "Invalid operation";
-        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
+        Q_EMIT finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         return;
     }
 
     if (_operation == Operation::Add || _operation == Operation::Remove) {
         if (!_encryptedFolderMetadataHandler->folderMetadata()) {
             qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Metadata is null";
-            emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
+            Q_EMIT finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
             return;
         }
 
@@ -138,7 +138,7 @@ void UpdateE2eeFolderUsersMetadataJob::startUpdate()
 
         if (!result) {
             qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "Could not perform operation" << _operation << "on metadata";
-            emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
+            Q_EMIT finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
             return;
         }
 
@@ -159,7 +159,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotUpdateMetadataFinished(int code, cons
             qCDebug(lcUpdateE2eeFolderUsersMetadataJob()) << "Unlocking the folder.";
             unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
         } else {
-            emit finished(code, tr("Error updating metadata for a folder %1").arg(_fullRemotePath) + QStringLiteral(":%1").arg(message));
+            Q_EMIT finished(code, tr("Error updating metadata for a folder %1").arg(_fullRemotePath) + QStringLiteral(":%1").arg(message));
         }
         return;
     }
@@ -170,7 +170,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotUpdateMetadataFinished(int code, cons
         scheduleSubJobs();
         if (_subJobs.isEmpty()) {
             if (_keepLock) {
-                emit finished(200);
+                Q_EMIT finished(200);
             } else {
                 unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Success);
             }
@@ -178,7 +178,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotUpdateMetadataFinished(int code, cons
             _subJobs.values().last()->start();
         }
     } else {
-        emit finished(200);
+        Q_EMIT finished(200);
     }
 }
 
@@ -191,7 +191,7 @@ void UpdateE2eeFolderUsersMetadataJob::scheduleSubJobs()
             unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
         } else {
             qCWarning(lcUpdateE2eeFolderUsersMetadataJob()) << "Metadata is invalid.";
-            emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
+            Q_EMIT finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         }
         return;
     }
@@ -221,7 +221,7 @@ void UpdateE2eeFolderUsersMetadataJob::unlockFolder(const EncryptedFolderMetadat
 
 void UpdateE2eeFolderUsersMetadataJob::slotFolderUnlocked(const QByteArray &folderId, int httpStatus)
 {
-    emit folderUnlocked();
+    Q_EMIT folderUnlocked();
     if (_keepLock) {
         return;
     }
@@ -229,7 +229,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotFolderUnlocked(const QByteArray &fold
         qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "Failed to unlock a folder" << folderId << httpStatus;
     }
     const auto message = httpStatus != 200 ? tr("Failed to unlock a folder.") : QString{};
-    emit finished(httpStatus, message);
+    Q_EMIT finished(httpStatus, message);
 }
 
 void UpdateE2eeFolderUsersMetadataJob::subJobsFinished(bool success)
@@ -250,7 +250,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotSubJobFinished(int code, const QStrin
     Q_ASSERT(job);
     if (!job) {
         qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "slotSubJobFinished must be invoked by signal";
-        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath) + QStringLiteral(":%1").arg(message));
+        Q_EMIT finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath) + QStringLiteral(":%1").arg(message));
         subJobsFinished(false);
         return;
     }
@@ -292,7 +292,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotCertificateFetchedFromKeychain(const 
         return;
     }
     _folderUserCertificate = certificate;
-    emit certificateReady();
+    Q_EMIT certificateReady();
 }
 
 void UpdateE2eeFolderUsersMetadataJob::slotCertificatesFetchedFromServer(const QHash<QString, NextcloudSslCertificate> &results)
@@ -300,7 +300,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotCertificatesFetchedFromServer(const Q
     const auto certificate = results.isEmpty() ? NextcloudSslCertificate{} : results.value(_folderUserId);
     _folderUserCertificate = certificate;
     if (certificate.get().isNull()) {
-        emit certificateReady();
+        Q_EMIT certificateReady();
         return;
     }
     _account->e2e()->writeCertificate(_folderUserId, certificate);

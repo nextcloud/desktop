@@ -192,7 +192,7 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
 
             _chunkBuffer.clear();
 
-            emit finished(this);
+            Q_EMIT finished(this);
 
             if (_autoDelete) {
                 deleteLater();
@@ -220,7 +220,7 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
 
         chunk.clear();
     } else {
-        emit finished(this);
+        Q_EMIT finished(this);
 
         if (_autoDelete) {
             deleteLater();
@@ -360,7 +360,7 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
 
     readJob->deleteLater();
 
-    emit finished(this);
+    Q_EMIT finished(this);
 
     if (_autoDelete) {
         deleteLater();
@@ -472,7 +472,7 @@ void DeleteJob::slotDeleteJobDone(QKeychain::Job *incomingJob)
 
     deleteJob->deleteLater();
 
-    emit finished(this);
+    Q_EMIT finished(this);
 
     if (_autoDelete) {
         deleteLater();

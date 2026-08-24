@@ -45,12 +45,12 @@ void DummyCredentials::fetchFromKeychain(const QString &appName)
 {
     Q_UNUSED(appName)
     _wasFetched = true;
-    emit fetched();
+    Q_EMIT fetched();
 }
 
 void DummyCredentials::askFromUser()
 {
-    emit asked();
+    Q_EMIT asked();
 }
 
 void DummyCredentials::persist()

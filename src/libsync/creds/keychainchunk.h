@@ -132,10 +132,10 @@ public:
     */
     bool exec();
 
-signals:
+Q_SIGNALS:
     void finished(OCC::KeychainChunk::WriteJob *incomingJob);
 
-private slots:
+private Q_SLOTS:
     void slotWriteJobDone(QKeychain::Job *incomingJob);
 }; // class WriteJob
 
@@ -165,10 +165,10 @@ public:
     */
     bool exec();
 
-signals:
+Q_SIGNALS:
     void finished(OCC::KeychainChunk::ReadJob *incomingJob);
 
-private slots:
+private Q_SLOTS:
     void slotReadJobDone(QKeychain::Job *incomingJob);
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
@@ -203,10 +203,10 @@ public:
     */
     bool exec();
 
-signals:
+Q_SIGNALS:
     void finished(OCC::KeychainChunk::DeleteJob *incomingJob);
 
-private slots:
+private Q_SLOTS:
     void slotDeleteJobDone(QKeychain::Job *incomingJob);
 }; // class DeleteJob
 

@@ -64,7 +64,7 @@ void EmojiModel::setCategory(const QString &category)
         return;
     }
     _category = category;
-    emit modelChanged();
+    Q_EMIT modelChanged();
 }
 
 QAbstractListModel *EmojiModel::emojiCategoriesModel()
@@ -112,7 +112,7 @@ void EmojiModel::emojiUsed(const QVariant &modelData)
     historyEmojis.push_front(modelData);
     _settings.setValue("Editor/emojis", historyEmojis);
 
-    emit historyChanged();
+    Q_EMIT historyChanged();
 }
 
 const QVariantList EmojiModel::people = {

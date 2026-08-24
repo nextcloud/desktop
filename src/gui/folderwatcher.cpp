@@ -168,7 +168,7 @@ void FolderWatcher::startNotificationTestWhenReady()
 
     QTimer::singleShot(5000, this, [this]() {
         if (!_testNotificationPath.isEmpty())
-            emit becameUnreliable(tr("The watcher did not receive a test notification."));
+            Q_EMIT becameUnreliable(tr("The watcher did not receive a test notification."));
         _testNotificationPath.clear();
     });
 }
@@ -177,13 +177,13 @@ void FolderWatcher::lockChangeDebouncingTimerTimedOut()
 {
     if (!_unlockedFiles.isEmpty()) {
         const auto unlockedFilesCopy = _unlockedFiles;
-        emit filesLockReleased(unlockedFilesCopy);
+        Q_EMIT filesLockReleased(unlockedFilesCopy);
         _unlockedFiles.clear();
     }
     if (!_lockedFiles.isEmpty()) {
         const auto lockedFilesCopy = _lockedFiles;
-        emit filesLockImposed(lockedFilesCopy);
-        emit lockedFilesFound(lockedFilesCopy);
+        Q_EMIT filesLockImposed(lockedFilesCopy);
+        Q_EMIT lockedFilesFound(lockedFilesCopy);
         _lockedFiles.clear();
     }
 }
@@ -285,7 +285,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
 
     for (const auto &path : changedPaths) {
         qCInfo(lcFolderWatcher) << "change on path" << path;
-        emit pathChanged(path);
+        Q_EMIT pathChanged(path);
     }
 }
 

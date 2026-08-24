@@ -54,7 +54,7 @@ public:
      */
     void setPingInterval(int interval);
 
-signals:
+Q_SIGNALS:
     /**
      * Will be emitted after a successful connection and authentication
      */
@@ -94,7 +94,7 @@ signals:
      */
     void connectionLost();
 
-private slots:
+private Q_SLOTS:
     void onWebSocketConnected();
     void onWebSocketDisconnected();
     void onWebSocketTextMessageReceived(const QString &message);

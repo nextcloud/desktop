@@ -369,7 +369,7 @@ public:
     /// whether the current folder contains any of the passed fileIds
     [[nodiscard]] bool hasFileIds(const QList<qint64>& fileIds) const;
 
-signals:
+Q_SIGNALS:
     void syncStateChange();
     void syncStarted();
     void syncFinished(const OCC::SyncResult &result);
@@ -384,7 +384,7 @@ signals:
      */
     void watchedFileChangedExternally(const QString &path);
 
-public slots:
+public Q_SLOTS:
 
     /**
        * terminate the current sync run
@@ -460,7 +460,7 @@ public slots:
      */
     void removeLocalE2eFiles();
 
-private slots:
+private Q_SLOTS:
     void slotSyncStarted();
     void slotSyncFinished(bool);
     /*

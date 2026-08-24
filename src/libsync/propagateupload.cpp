@@ -92,7 +92,7 @@ bool PUTFileJob::finished()
                      << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
                      << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
 
-    emit finishedSignal();
+    Q_EMIT finishedSignal();
     return true;
 }
 
@@ -128,7 +128,7 @@ bool PollJob::finished()
                 _journal->setPollInfo(info);
                 _journal->commit("remove poll info");
             }
-            emit finishedSignal();
+            Q_EMIT finishedSignal();
             return true;
         }
         QTimer::singleShot(8 * 1000, this, &PollJob::start);
@@ -142,7 +142,7 @@ bool PollJob::finished()
     if (jsonParseError.error != QJsonParseError::NoError) {
         _item->_errorString = tr("Invalid JSON reply from the poll URL");
         _item->_status = SyncFileItem::NormalError;
-        emit finishedSignal();
+        Q_EMIT finishedSignal();
         return true;
     }
 
@@ -177,7 +177,7 @@ bool PollJob::finished()
     _journal->setPollInfo(info);
     _journal->commit("remove poll info");
 
-    emit finishedSignal();
+    Q_EMIT finishedSignal();
     return true;
 }
 
@@ -213,8 +213,8 @@ void PropagateUploadFileCommon::start()
             done(SyncFileItem::NormalError, renameError);
             return;
         }
-        emit propagator()->touchedFile(existingFile);
-        emit propagator()->touchedFile(targetFile);
+        Q_EMIT propagator()->touchedFile(existingFile);
+        Q_EMIT propagator()->touchedFile(targetFile);
     }
 
     const auto path = _item->_file;
@@ -288,7 +288,7 @@ void PropagateUploadFileCommon::startUploadFile() {
     if (_fileToUpload._size > quotaGuess) {
         // Necessary for blacklisting logic
         _item->_httpErrorCode = 507;
-        emit propagator()->insufficientRemoteStorage();
+        Q_EMIT propagator()->insufficientRemoteStorage();
         done(SyncFileItem::DetailError, tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size)));
         return;
     }
@@ -751,7 +751,7 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
         // Set up the error
         status = SyncFileItem::DetailError;
         errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size));
-        emit propagator()->insufficientRemoteStorage();
+        Q_EMIT propagator()->insufficientRemoteStorage();
     } else if (_item->_httpErrorCode == 400) {
         const auto exception = job->errorStringParsingBodyException(replyContent);
 
@@ -893,7 +893,7 @@ void PropagateUploadFileCommon::abortNetworkJobs(
     auto oneAbortFinished = [this, runningCount]() {
         (*runningCount)--;
         if (*runningCount == 0) {
-            emit this->abortFinished();
+            Q_EMIT this->abortFinished();
         }
     };
 
@@ -922,6 +922,6 @@ void PropagateUploadFileCommon::abortNetworkJobs(
     }
 
     if (*runningCount == 0 && abortType == AbortType::Asynchronous)
-        emit abortFinished();
+        Q_EMIT abortFinished();
 }
 }

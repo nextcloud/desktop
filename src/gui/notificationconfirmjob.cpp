@@ -55,7 +55,7 @@ bool NotificationConfirmJob::finished()
             replyCode = rexMatch.captured(1).toInt();
         }
     }
-    emit jobFinished(replyStr, replyCode);
+    Q_EMIT jobFinished(replyStr, replyCode);
 
     return true;
 }

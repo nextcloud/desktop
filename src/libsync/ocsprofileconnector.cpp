@@ -100,7 +100,7 @@ void OcsProfileConnector::fetchHovercard(const QString &userId)
     if (_account->serverVersionInt() < Account::makeServerVersion(23, 0, 0)) {
         qInfo(lcOcsProfileConnector) << "Server version" << _account->serverVersion()
                                      << "does not support profile page";
-        emit error();
+        Q_EMIT error();
         return;
     }
     const QString url = QStringLiteral("/ocs/v2.php/hovercard/v1/%1").arg(userId);
@@ -121,7 +121,7 @@ void OcsProfileConnector::onHovercardFetched(const QJsonDocument &json, int stat
     Q_ASSERT(jsonData.isArray());
     _currentHovercard = jsonToHovercard(jsonData.toArray());
     fetchIcons();
-    emit hovercardFetched();
+    Q_EMIT hovercardFetched();
 }
 
 void OcsProfileConnector::setHovercardActionIcon(const std::size_t index, const QPixmap &pixmap)
@@ -129,7 +129,7 @@ void OcsProfileConnector::setHovercardActionIcon(const std::size_t index, const 
     auto &hovercardAction = _currentHovercard._actions[index];
     QPixmapCache::insert(hovercardAction._iconUrl.toString(), pixmap);
     hovercardAction._icon = pixmap;
-    emit iconLoaded(index);
+    Q_EMIT iconLoaded(index);
 }
 
 void OcsProfileConnector::loadHovercardActionIcon(const std::size_t hovercardActionIndex, const QByteArray &iconData)

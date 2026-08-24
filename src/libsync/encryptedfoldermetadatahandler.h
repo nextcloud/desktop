@@ -74,7 +74,7 @@ private:
     void fetchFolderEncryptedId();
     bool validateBeforeLock();
 
-private slots:
+private Q_SLOTS:
     void slotFolderEncryptedIdReceived(const QStringList &list);
     void slotFolderEncryptedIdError(QNetworkReply *reply);
 
@@ -90,7 +90,7 @@ private slots:
     void slotEmitUploadSuccess();
     void slotEmitUploadError();
 
-public: signals:
+public: Q_SIGNALS:
     void fetchFinished(int code, const QString &message = {});
     void uploadFinished(int code, const QString &message = {});
     void folderUnlocked(const QByteArray &folderId, int httpStatus);

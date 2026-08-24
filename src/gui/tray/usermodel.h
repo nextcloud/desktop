@@ -157,7 +157,7 @@ public:
     Q_INVOKABLE void submitAssistantQuestion(const QString &question);
     Q_INVOKABLE void clearAssistantResponse();
 
-signals:
+Q_SIGNALS:
     void nameChanged();
     void hasLocalFolderChanged();
     void featuredAppChanged();
@@ -181,7 +181,7 @@ signals:
     void assistantMessagesChanged();
     void assistantRequestInProgressChanged();
 
-public slots:
+public Q_SLOTS:
     void slotItemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item);
     void slotProgressInfo(const QString &folder, const OCC::ProgressInfo &progress);
     void slotAddError(const QString &folderAlias, const QString &message, OCC::ErrorCategory category);
@@ -232,7 +232,7 @@ public slots:
     void slotFileProviderRetryUploads(const QString &domainIdentifier);
 #endif
 
-private slots:
+private Q_SLOTS:
     void slotPushNotificationsReady();
     void slotDisconnectPushNotifications();
     void slotReceivedPushFilesChanges(Account *account);
@@ -403,13 +403,13 @@ public:
 
     [[nodiscard]] AccountAppList appList() const;
 
-signals:
+Q_SIGNALS:
     void addAccount();
     void currentUserChanged();
     void countChanged();
     void syncErrorUsersChanged();
 
-public slots:
+public Q_SLOTS:
     void fetchCurrentActivityModel();
     Q_INVOKABLE void fetchActivityPreview(int id);
     Q_INVOKABLE void dismissNotification(int id, int activityIndex);
@@ -477,7 +477,7 @@ public:
 
     void buildAppList();
 
-public slots:
+public Q_SLOTS:
     void openAppUrl(const QUrl &url);
 
 protected:

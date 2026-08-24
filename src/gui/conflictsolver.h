@@ -37,13 +37,13 @@ public:
 
     bool exec(Solution solution);
 
-public slots:
+public Q_SLOTS:
     void setLocalVersionFilename(const QString &localVersionFilename);
     void setRemoteVersionFilename(const QString &remoteVersionFilename);
     void setIsBulkSolution(bool isBulkSolution);
     void setYesToAllRequested(bool yesToAllRequested);
 
-signals:
+Q_SIGNALS:
     void localVersionFilenameChanged();
     void remoteVersionFilenameChanged();
     void isBulkSolutionChanged();

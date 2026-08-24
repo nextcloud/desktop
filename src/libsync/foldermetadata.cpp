@@ -494,7 +494,7 @@ FolderMetadata::MetadataVersion FolderMetadata::setupVersionFromExistingMetadata
 void FolderMetadata::emitSetupComplete()
 {
     QTimer::singleShot(0, this, [this]() {
-        emit setupComplete();
+        Q_EMIT setupComplete();
     });
 }
 

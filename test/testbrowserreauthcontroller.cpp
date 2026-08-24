@@ -38,7 +38,7 @@ class BrowserOpeningHandler : public QObject
 public Q_SLOTS:
     void openUrl(const QUrl &url)
     {
-        emit urlOpened(url);
+        Q_EMIT urlOpened(url);
     }
 
 Q_SIGNALS:
@@ -137,7 +137,7 @@ class TestBrowserReAuthController : public QObject
 
     std::unique_ptr<FolderMan> _fm;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

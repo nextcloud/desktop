@@ -84,14 +84,14 @@ public:
                                               QObject *parent = nullptr);
 
     void run() override;
-signals:
+Q_SIGNALS:
     void finished(QVector<OCC::LocalInfo> result);
     void finishedFatalError(QString errorString);
     void finishedNonFatalError(QString errorString);
 
     void itemDiscovered(OCC::SyncFileItemPtr item);
     void childIgnored(bool b);
-private slots:
+private Q_SLOTS:
 private:
     QString _localPath;
     AccountPtr _account;
@@ -130,14 +130,14 @@ public:
     [[nodiscard]] SyncFileItem::EncryptionStatus requiredEncryptionStatus() const;
 
     // This is not actually a network job, it is just a job
-signals:
+Q_SIGNALS:
     void firstDirectoryPermissions(OCC::RemotePermissions);
     void etag(const QByteArray &, const QDateTime &time);
     void finished(const OCC::HttpResult<QVector<OCC::RemoteInfo>> &result);
     void setfolderQuota(const OCC::FolderQuota &folderQuota);
     void firstDirectoryFileId(qint64 fileId);
 
-private slots:
+private Q_SLOTS:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();
     void lsJobFinishedWithErrorSlot(QNetworkReply *reply);
@@ -328,7 +328,7 @@ public:
 
     QSet<QString> _topLevelE2eeFolderPaths;
 
-signals:
+Q_SIGNALS:
     void fatalError(const QString &errorString, const OCC::ErrorCategory errorCategory);
     void itemDiscovered(const OCC::SyncFileItemPtr &item);
     void finished();
@@ -349,7 +349,7 @@ signals:
 
     /** Emitted when propagation would have problems with a locked file. */
     void seenLockedFile(const QString &fileName);
-private slots:
+private Q_SLOTS:
     void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
 };
 

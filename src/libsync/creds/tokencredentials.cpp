@@ -118,7 +118,7 @@ void TokenCredentials::fetchFromKeychain()
 
 void TokenCredentials::askFromUser()
 {
-    emit asked();
+    Q_EMIT asked();
 }
 
 

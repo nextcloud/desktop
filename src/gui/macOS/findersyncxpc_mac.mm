@@ -380,7 +380,7 @@ void FinderSyncXPC::setEndpointPublished(bool published)
         _endpointPublished = published;
     }
 
-    emit brokerReachableChanged(published);
+    Q_EMIT brokerReachableChanged(published);
 }
 
 void FinderSyncXPC::resetSelfHeal()

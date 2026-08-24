@@ -216,7 +216,7 @@ void ShareTestHelper::setup()
         fileStorageId,
     };
 
-    emit setupSucceeded();
+    Q_EMIT setupSucceeded();
 }
 
 QNetworkReply *ShareTestHelper::qnamOverride(QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device)

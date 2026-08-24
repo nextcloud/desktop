@@ -93,7 +93,7 @@ class TestSyncXAttr : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void testVirtualFileLifecycle_data()
     {
         QTest::addColumn<bool>("doLocalDiscovery");
