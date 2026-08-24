@@ -129,7 +129,7 @@ TextField {
         }
 
         width: height
-        color: palette.placeholderText
+        color: root.placeholderColor
         visible: root.shareeModel.fetchOngoing
         running: visible
     }
@@ -151,7 +151,7 @@ TextField {
         mipmap: true
         fillMode: Image.PreserveAspectFit
 
-        source: "image://svgimage-custom-color/clear.svg" + "/" + palette.placeholderText
+        source: "image://svgimage-custom-color/clear.svg" + "/" + root.placeholderColor
         sourceSize: Qt.size(parent.height * root.iconsScaleFactor, parent.height * root.iconsScaleFactor)
 
         visible: root.text
