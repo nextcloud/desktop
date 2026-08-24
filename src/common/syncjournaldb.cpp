@@ -1282,7 +1282,10 @@ qint64 SyncJournalDb::keyValueStoreGetInt(const QString &key, qint64 defaultValu
     auto result = query->next();
 
     if (!result.ok || !result.hasData) {
-        qCWarning(lcDb) << "database error:" << query->error();
+        if (!result.ok) {
+            qCWarning(lcDb) << "database error:" << query->error();
+        }
+
         return defaultValue;
     }
 
