@@ -28,6 +28,23 @@ Page {
             leftPadding: parent.indicator.width + parent.spacing
             verticalAlignment: Text.AlignVCenter
         }
+        indicator: Rectangle {
+            implicitWidth: 18
+            implicitHeight: 18
+            radius: 3
+            border.width: Style.thickBorderWidth
+            border.color: Style.sesTrayInputField
+            color: Style.sesBackgroundColor
+
+            Rectangle {
+                visible: parent.parent.checked
+                anchors.centerIn: parent
+                width: 10
+                height: 10
+                radius: 2
+                color: root.accentColor
+            }
+        }
     }
 
     signal closeShareDetails
