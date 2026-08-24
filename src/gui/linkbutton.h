@@ -23,6 +23,8 @@ namespace OCC {
 
     private:
         void customizeStyle();
+
+        bool _updatingStyle = false;
     };
 }
 #endif // LINKBUTTON_H

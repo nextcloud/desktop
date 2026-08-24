@@ -4,6 +4,7 @@
 #include <QLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QScopedValueRollback>
 
 namespace OCC {
 
@@ -153,6 +154,15 @@ namespace OCC {
 
     void sesSnackBar::updateStyleSheet(QColor frameBorderColor)
     {
+        // setStyleSheet() below triggers a StyleChange/PaletteChange event, which changeEvent()
+        // turns back into an errorStyle()/warningStyle()/successStyle() call - guard against that
+        // reentrancy the same way LinkButton::customizeStyle() does, or this recurses until the
+        // process crashes.
+        if (m_updatingStyle) {
+            return;
+        }
+        const QScopedValueRollback<bool> updatingStyle(m_updatingStyle, true);
+
         // successColor()/warningColor()/errorColor() and the black() text on top of them were fixed,
         // opaque pastels with no dark variant. Same fix as FolderStatusDelegate: tint the frame with
         // the (already theme-aware) border color at low alpha instead of an opaque fill, and take the
