@@ -52,6 +52,7 @@ namespace OCC {
         QString m_caption;
         QString m_message;
         Kind m_kind = Kind::Error;
+        bool m_updatingStyle = false;
 
         QLabel m_messageLabel;
         QLabel m_captionLabel;
