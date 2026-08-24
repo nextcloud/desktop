@@ -17,7 +17,7 @@ class TestTrayActivationPolicy : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void testPrimaryClickOpensPopup()
     {
         QVERIFY(TrayActivationPolicy::opensPrimaryPopup(QSystemTrayIcon::Trigger));

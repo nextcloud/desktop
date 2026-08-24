@@ -209,7 +209,7 @@ void Folder::applySandboxBookmark(const QByteArray &bookmarkData,
     _syncResult.clearErrors();
     _syncResult.setStatus(SyncResult::NotYetStarted);
     saveToSettings();
-    emit syncStateChange();
+    Q_EMIT syncStateChange();
 }
 #endif
 
@@ -371,9 +371,9 @@ void Folder::setSyncPaused(bool paused)
     } else {
         setSyncState(SyncResult::Paused);
     }
-    emit syncPausedChanged(this, paused);
-    emit syncStateChange();
-    emit canSyncChanged();
+    Q_EMIT syncPausedChanged(this, paused);
+    Q_EMIT syncStateChange();
+    Q_EMIT canSyncChanged();
 }
 
 void Folder::setSyncState(SyncResult::Status state)
@@ -732,7 +732,7 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
     }
     warnOnNewExcludedItem(record, relativePath);
 
-    emit watchedFileChangedExternally(path.toString());
+    Q_EMIT watchedFileChangedExternally(path.toString());
 
     // Also schedule this folder for a sync, but only after some delay:
     // The sync will not upload files that were changed too recently.
@@ -1169,7 +1169,7 @@ void Folder::startSync(const QStringList &pathList)
 
     _timeSinceLastSyncStart.start();
     _syncResult.setStatus(SyncResult::SyncPrepare);
-    emit syncStateChange();
+    Q_EMIT syncStateChange();
 
     qCInfo(lcFolder) << "*** Start syncing " << remoteUrl().toString() << " -" << APPLICATION_NAME << "client version"
                      << qPrintable(Theme::instance()->version());
@@ -1223,7 +1223,7 @@ void Folder::startSync(const QStringList &pathList)
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
-    emit syncStarted();
+    Q_EMIT syncStarted();
 }
 
 void Folder::correctPlaceholderFiles()
@@ -1304,20 +1304,20 @@ void Folder::slotSyncError(const QString &message, ErrorCategory category)
 {
     if (!_silenceErrorsUntilNextSync) {
         _syncResult.appendErrorString(message);
-        emit ProgressDispatcher::instance()->syncError(alias(), message, category);
+        Q_EMIT ProgressDispatcher::instance()->syncError(alias(), message, category);
     }
 }
 
 void Folder::slotAddErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject, ErrorCategory category)
 {
-    emit ProgressDispatcher::instance()->addErrorToGui(alias(), status, errorMessage, subject, category);
+    Q_EMIT ProgressDispatcher::instance()->addErrorToGui(alias(), status, errorMessage, subject, category);
 }
 
 void Folder::slotSyncStarted()
 {
     qCInfo(lcFolder) << "#### Propagation start ####################################################";
     _syncResult.setStatus(SyncResult::SyncRunning);
-    emit syncStateChange();
+    Q_EMIT syncStateChange();
 }
 
 void Folder::slotSyncFinished(bool success)
@@ -1369,7 +1369,7 @@ void Folder::slotSyncFinished(bool success)
         }
     }
 
-    emit syncStateChange();
+    Q_EMIT syncStateChange();
 
     // The syncFinished result that is to be triggered here makes the folderman
     // clear the current running sync folder marker.
@@ -1402,7 +1402,7 @@ void Folder::slotSyncFinished(bool success)
 
 void Folder::slotEmitFinishedDelayed()
 {
-    emit syncFinished(_syncResult);
+    Q_EMIT syncFinished(_syncResult);
 
     // Immediately check the etag again if there was some sync activity.
     if ((_syncResult.status() == SyncResult::Success
@@ -1420,7 +1420,7 @@ void Folder::slotEmitFinishedDelayed()
 // and hand the result over to the progress dispatcher.
 void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 {
-    emit progressInfo(pi);
+    Q_EMIT progressInfo(pi);
     ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
 }
 
@@ -1441,7 +1441,7 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item, ErrorCategory errorC
     _syncResult.processCompletedItem(item);
 
     _fileLog->logItem(*item);
-    emit ProgressDispatcher::instance()->itemCompleted(alias(), item, errorCategory);
+    Q_EMIT ProgressDispatcher::instance()->itemCompleted(alias(), item, errorCategory);
 }
 
 void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
@@ -1465,7 +1465,7 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
         if (!undecidedList.contains(newFolder)) {
             undecidedList.append(newFolder);
             journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
-            emit newBigFolderDiscovered(newFolder);
+            Q_EMIT newBigFolderDiscovered(newFolder);
         }
         QString message = !isExternal ? (tr("A new folder larger than %1 MB has been added: %2.\n")
                                                 .arg(ConfigFile().newBigFolderSizeLimit().second)
@@ -1515,7 +1515,7 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
         if (!undecidedList.contains(trailSlashFolderPath)) {
             undecidedList.append(trailSlashFolderPath);
             journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
-            emit newBigFolderDiscovered(trailSlashFolderPath);
+            Q_EMIT newBigFolderDiscovered(trailSlashFolderPath);
         }
 
         postExistingFolderNowBigNotification(folderPath);
@@ -1671,16 +1671,16 @@ void Folder::slotHydrationStarts()
     // // Let everyone know we're syncing
     // _syncResult.reset();
     // _syncResult.setStatus(SyncResult::SyncRunning);
-    // emit syncStarted();
-    // emit syncStateChange();
+    // Q_EMIT syncStarted();
+    // Q_EMIT syncStateChange();
 }
 
 void Folder::slotHydrationDone()
 {
-    // emit signal to update ui and reschedule normal syncs if necessary
+    // Q_EMIT signal to update ui and reschedule normal syncs if necessary
     _syncResult.setStatus(SyncResult::Success);
-    emit syncFinished(_syncResult);
-    emit syncStateChange();
+    Q_EMIT syncFinished(_syncResult);
+    Q_EMIT syncStateChange();
 }
 
 void Folder::slotHydrationFailed(int errorCode, int statusCode, const QString &errorString, const QString &fileName)

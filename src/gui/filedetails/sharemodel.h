@@ -130,7 +130,7 @@ public:
 
     [[nodiscard]] Q_INVOKABLE static QString generatePassword();
 
-signals:
+Q_SIGNALS:
     void localPathChanged();
     void accountStateChanged();
     void accountConnectedChanged();
@@ -158,7 +158,7 @@ signals:
 
     void sharesChanged();
 
-public slots:
+public Q_SLOTS:
     void setAccountState(OCC::AccountState *accountState);
     void setLocalPath(const QString &localPath);
 
@@ -193,7 +193,7 @@ public slots:
     void setShareNote(const OCC::SharePtr &share, const QString &note) const;
     void setShareNoteFromQml(const QVariant &share, const QString &note) const;
 
-private slots:
+private Q_SLOTS:
     void resetData();
     void updateData();
     void initShareManager();

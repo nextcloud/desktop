@@ -57,7 +57,7 @@ AsyncImageResponse::AsyncImageResponse(const QString &id, const QSize &requested
 void AsyncImageResponse::setImageAndEmitFinished(const QImage &image)
 {
     _image = image;
-    emit finished();
+    Q_EMIT finished();
 }
 
 QQuickTextureFactory* AsyncImageResponse::textureFactory() const

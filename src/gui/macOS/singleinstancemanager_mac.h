@@ -53,7 +53,7 @@ public:
     [[nodiscard]] bool isPrimaryInstance() const;
     bool sendMessage(const QByteArray &data, int timeout = 1000);
 
-signals:
+Q_SIGNALS:
     void messageReceived(const QByteArray &message);
 
 private:

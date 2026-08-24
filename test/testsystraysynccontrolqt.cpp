@@ -34,7 +34,7 @@ class TestSystraySyncControlQt : public QObject
         return menu.findChild<QAction *>(QStringLiteral("trayResumeSyncAction"));
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         QVERIFY(_helper.initialize());

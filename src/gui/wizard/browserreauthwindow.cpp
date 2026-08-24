@@ -110,7 +110,7 @@ void BrowserReAuthWindow::show()
 {
     if (_loadFailed || !_window) {
         QMetaObject::invokeMethod(this, [this] {
-            emit cancelled();
+            Q_EMIT cancelled();
         }, Qt::QueuedConnection);
         return;
     }

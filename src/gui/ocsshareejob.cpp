@@ -36,6 +36,6 @@ void OcsShareeJob::getSharees(const QString &search,
 
 void OcsShareeJob::jobDone(const QJsonDocument &reply)
 {
-    emit shareeJobFinished(reply);
+    Q_EMIT shareeJobFinished(reply);
 }
 }

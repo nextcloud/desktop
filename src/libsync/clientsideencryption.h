@@ -295,7 +295,7 @@ public:
 
     [[nodiscard]] static bool checkEncryptionErrorForHardwareTokenResetState(const QByteArray &errorString);
 
-signals:
+Q_SIGNALS:
     void initializationFinished(bool isNewMnemonicGenerated = false);
     void sensitiveDataForgotten();
     void privateKeyDeleted();
@@ -313,7 +313,7 @@ signals:
     void canDecryptChanged();
     void userCertificateNeedsMigrationChanged();
 
-public slots:
+public Q_SLOTS:
     void initialize(QWidget *settingsDialog);
     void initializeHardwareTokenEncryption(QWidget* settingsDialog);
     void addExtraRootCertificates();
@@ -324,7 +324,7 @@ public slots:
 
     void migrateCertificate();
 
-private slots:
+private Q_SLOTS:
     void generateKeyPair();
     void encryptPrivateKey();
 

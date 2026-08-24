@@ -127,7 +127,7 @@ public:
 
     void setFilesystemPermissionsReliable(bool reliable);
 
-public slots:
+public Q_SLOTS:
     void setSingleItemDiscoveryOptions(const OCC::SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
 
     void startSync();
@@ -154,7 +154,7 @@ public slots:
     void addAcceptedInvalidFileName(const QString& filePath);
     void setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value);
 
-signals:
+Q_SIGNALS:
     // During update, before reconcile
     void rootEtag(const QByteArray &, const QDateTime &);
     void rootFileIdReceived(qint64 fileId);
@@ -197,7 +197,7 @@ signals:
 
     void lockFileDetected(const QString &lockFile);
 
-private slots:
+private Q_SLOTS:
     void slotFolderDiscovered(bool local, const QString &folder);
     void slotRootEtagReceived(const QByteArray &, const QDateTime &time);
     void slotRootFileIdReceived(qint64 fileId);

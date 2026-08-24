@@ -58,7 +58,7 @@ class TestPushNotifications : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);
@@ -254,7 +254,7 @@ private slots:
         // The websocket that is retrieved through the server is not connected to the ssl error signal.
         auto pushNotificationsWebSocketChildren = account->pushNotifications()->findChildren<QWebSocket *>();
         QVERIFY(pushNotificationsWebSocketChildren.size() == 1);
-        emit pushNotificationsWebSocketChildren[0]->sslErrors(QList<QSslError>());
+        Q_EMIT pushNotificationsWebSocketChildren[0]->sslErrors(QList<QSslError>());
 
         // Account handled connectionLost signal and the authenticationFailed Signal should be emitted
         QCOMPARE(pushNotificationsDisabledSpy.count(), 1);

@@ -110,10 +110,10 @@ public:
     /// Returns a standardised error message in case of HSTS errors
     [[nodiscard]] static std::optional<QString> hstsErrorStringFromReply(QNetworkReply *reply);
 
-public slots:
+public Q_SLOTS:
     void setTimeout(qint64 msec);
     void resetTimeout();
-signals:
+Q_SIGNALS:
     /** Emitted on network error.
      *
      * \a reply is never null
@@ -199,7 +199,7 @@ protected:
 
     QString replyStatusString();
 
-private slots:
+private Q_SLOTS:
     void slotFinished();
     void slotTimeout();
 

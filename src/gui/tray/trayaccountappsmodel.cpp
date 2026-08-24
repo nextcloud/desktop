@@ -52,7 +52,7 @@ void TrayAccountAppsModel::setUserId(const int userId)
     }
 
     if (_apps.size() != oldCount) {
-        emit countChanged();
+        Q_EMIT countChanged();
     }
 }
 

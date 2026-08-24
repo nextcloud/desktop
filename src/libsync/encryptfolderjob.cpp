@@ -92,7 +92,7 @@ void EncryptFolderJob::slotEncryptionFlagError(const QByteArray &fileId,
 {
     qDebug() << "Error on the encryption flag of" << fileId << "HTTP code:" << httpErrorCode;
     _errorString = errorMessage;
-    emit finished(Error, EncryptionStatusEnums::ItemEncryptionStatus::NotEncrypted);
+    Q_EMIT finished(Error, EncryptionStatusEnums::ItemEncryptionStatus::NotEncrypted);
 }
 
 void EncryptFolderJob::uploadMetadata()
@@ -101,7 +101,7 @@ void EncryptFolderJob::uploadMetadata()
     const auto currentPathRelative = Utility::fullRemotePathToRemoteSyncRootRelative(currentPath, _remoteSyncRootPath);
     SyncJournalFileRecord rec;
     if (!_journal->getRootE2eFolderRecord(currentPathRelative, &rec)) {
-        emit finished(Error, EncryptionStatusEnums::ItemEncryptionStatus::NotEncrypted);
+        Q_EMIT finished(Error, EncryptionStatusEnums::ItemEncryptionStatus::NotEncrypted);
         return;
     }
 
@@ -122,7 +122,7 @@ void EncryptFolderJob::uploadMetadata()
             _errorString =
                 tr("Could not generate the metadata for encryption, Unlocking the folder.\n"
                    "This can be an issue with your OpenSSL libraries.");
-            emit finished(Error, EncryptionStatusEnums::ItemEncryptionStatus::NotEncrypted);
+            Q_EMIT finished(Error, EncryptionStatusEnums::ItemEncryptionStatus::NotEncrypted);
             return;
         }
         _encryptedFolderMetadataHandler->setPrefetchedMetadataAndId(emptyMetadata, _fileId);
@@ -141,10 +141,10 @@ void EncryptFolderJob::slotUploadMetadataFinished(int statusCode, const QString 
                                             << message;
         qCDebug(lcEncryptFolderJob()) << "Unlocking the folder.";
         _errorString = message;
-        emit finished(Error, EncryptionStatusEnums::ItemEncryptionStatus::NotEncrypted);
+        Q_EMIT finished(Error, EncryptionStatusEnums::ItemEncryptionStatus::NotEncrypted);
         return;
     }
-    emit finished(Success, _encryptedFolderMetadataHandler->folderMetadata()->encryptedMetadataEncryptionStatus());
+    Q_EMIT finished(Success, _encryptedFolderMetadataHandler->folderMetadata()->encryptedMetadataEncryptionStatus());
 }
 
 }

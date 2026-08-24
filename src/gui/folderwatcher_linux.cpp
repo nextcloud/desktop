@@ -76,7 +76,7 @@ void FolderWatcherPrivate::inotifyRegisterPath(const QString &path)
         // unreliable.
         if (_parent->_isReliable && (errno == ENOMEM || errno == ENOSPC)) {
             _parent->_isReliable = false;
-            emit _parent->becameUnreliable(
+            Q_EMIT _parent->becameUnreliable(
                 tr("This problem usually happens when the inotify watches are exhausted. "
                    "Check the FAQ for details."));
         }

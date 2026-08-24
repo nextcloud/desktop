@@ -208,7 +208,7 @@ void OCC::HydrationJob::emitFinished(Status status)
     if (status == Success) {
         connect(_transferDataSocket, &QLocalSocket::disconnected, this, [=, this] {
             _transferDataSocket->close();
-            emit finished(this);
+            Q_EMIT finished(this);
         });
         _transferDataSocket->disconnectFromServer();
         return;
@@ -218,7 +218,7 @@ void OCC::HydrationJob::emitFinished(Status status)
         _transferDataSocket->close();
     }
 
-    emit finished(this);
+    Q_EMIT finished(this);
 }
 
 void OCC::HydrationJob::onCancellationServerNewConnection()

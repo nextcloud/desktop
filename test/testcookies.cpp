@@ -18,7 +18,7 @@ class TestCookies : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void testCookies()
     {
         QTemporaryDir tmp;

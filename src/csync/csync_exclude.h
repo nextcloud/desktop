@@ -138,7 +138,7 @@ public:
      */
     [[nodiscard]] QStringList activeExcludePatterns() const;
 
-public slots:
+public Q_SLOTS:
     /**
      * Reloads the exclude patterns from the registered paths.
      */

@@ -25,7 +25,7 @@ public:
 
     [[nodiscard]] bool isVfsEnabled() const;
 
-public slots:
+public Q_SLOTS:
     [[nodiscard]] bool setupAccountFromCommandLine();
 
 private:

@@ -44,7 +44,7 @@ public:
     static constexpr char proxyPassC[] = "Proxy/pass";
     static constexpr char proxyNeedsAuthC[] = "Proxy/needsAuth";
 
-public slots:
+public Q_SLOTS:
     void setupQtProxyFromConfig();
     void saveProxyConfigurationFromSettings(const QSettings &settings);
     void cleanupGlobalNetworkConfiguration();
@@ -56,7 +56,7 @@ class OWNCLOUDSYNC_EXPORT SystemProxyRunnable : public QObject, public QRunnable
 public:
     SystemProxyRunnable(const QUrl &url);
     void run() override;
-signals:
+Q_SIGNALS:
     void systemProxyLookedUp(const QNetworkProxy &url);
 
 private:

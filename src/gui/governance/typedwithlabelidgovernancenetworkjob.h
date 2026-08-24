@@ -27,7 +27,7 @@ public:
 
     void setLabelId(const QString &newLabelId);
 
-signals:
+Q_SIGNALS:
     void labelIdChanged();
 
 protected:

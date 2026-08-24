@@ -138,7 +138,7 @@ public:
         return n;
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

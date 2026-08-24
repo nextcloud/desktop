@@ -49,10 +49,10 @@ void UpdateMigratedE2eeMetadataJob::start()
             _item->_e2eEncryptionStatus = updateMedatadaAndSubfoldersJob->encryptionStatus();
             _item->_e2eEncryptionStatusRemote = updateMedatadaAndSubfoldersJob->encryptionStatus();
             propagator()->updateMetadata(*_item, Vfs::UpdateMetadataType::DatabaseMetadata);
-            emit finished(SyncFileItem::Status::Success);
+            Q_EMIT finished(SyncFileItem::Status::Success);
         } else {
             _item->_errorString = message;
-            emit finished(SyncFileItem::Status::NormalError);
+            Q_EMIT finished(SyncFileItem::Status::NormalError);
         }
     });
 }

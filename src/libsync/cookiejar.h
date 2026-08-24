@@ -34,7 +34,7 @@ public:
     bool save(const QString &fileName);
     bool restore(const QString &fileName);
 
-signals:
+Q_SIGNALS:
     void newCookiesForUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url);
 
 private:

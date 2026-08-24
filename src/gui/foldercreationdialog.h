@@ -22,10 +22,10 @@ public:
     explicit FolderCreationDialog(const QString &destination, QWidget *parent = nullptr);
     ~FolderCreationDialog() override;
 
-signals:
+Q_SIGNALS:
     void folderCreated(const QString &fullFolderPath);
 
-private slots:
+private Q_SLOTS:
     void accept() override;
 
     void slotNewFolderNameEditTextEdited();

@@ -54,7 +54,7 @@ void BrowserReAuthController::setErrorText(const QString &errorText)
     }
 
     _errorText = errorText;
-    emit errorTextChanged();
+    Q_EMIT errorTextChanged();
 }
 
 void BrowserReAuthController::setInfoText(const QString &infoText)
@@ -64,7 +64,7 @@ void BrowserReAuthController::setInfoText(const QString &infoText)
     }
 
     _infoText = infoText;
-    emit infoTextChanged();
+    Q_EMIT infoTextChanged();
 }
 
 void BrowserReAuthController::start()
@@ -116,7 +116,7 @@ void BrowserReAuthController::cancel()
     setAuthPolling(false);
     setBusy(false);
     setFinished(true);
-    emit cancelled();
+    Q_EMIT cancelled();
 }
 
 void BrowserReAuthController::slotAuthResult(Flow2Auth::Result result, const QString &errorString, const QString &user, const QString &appPassword)
@@ -141,7 +141,7 @@ void BrowserReAuthController::slotAuthResult(Flow2Auth::Result result, const QSt
         setAuthPolling(false);
         setBusy(false);
         setFinished(true);
-        emit credentialsReady(user, appPassword);
+        Q_EMIT credentialsReady(user, appPassword);
         break;
     }
 }
@@ -179,7 +179,7 @@ void BrowserReAuthController::setBusy(bool busy)
     }
 
     _busy = busy;
-    emit busyChanged();
+    Q_EMIT busyChanged();
 }
 
 void BrowserReAuthController::setAuthPolling(bool authPolling)
@@ -189,7 +189,7 @@ void BrowserReAuthController::setAuthPolling(bool authPolling)
     }
 
     _authPolling = authPolling;
-    emit authPollingChanged();
+    Q_EMIT authPollingChanged();
 }
 
 void BrowserReAuthController::setFinished(bool finished)
@@ -199,7 +199,7 @@ void BrowserReAuthController::setFinished(bool finished)
     }
 
     _finished = finished;
-    emit finishedChanged();
+    Q_EMIT finishedChanged();
 }
 
 void BrowserReAuthController::setLoginUrl(const QUrl &loginUrl)
@@ -209,7 +209,7 @@ void BrowserReAuthController::setLoginUrl(const QUrl &loginUrl)
     }
 
     _loginUrl = loginUrl;
-    emit loginUrlChanged();
+    Q_EMIT loginUrlChanged();
 }
 
 } // namespace OCC

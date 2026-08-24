@@ -132,7 +132,7 @@ void PushNotifications::onWebSocketError(QAbstractSocket::SocketError error)
 
     qCWarning(lcPushNotifications) << "Websocket error on with account" << _account->displayName() << _account->url() << error;
     closeWebSocket();
-    emit connectionLost();
+    Q_EMIT connectionLost();
 }
 
 bool PushNotifications::tryReconnectToWebSocket()
@@ -161,7 +161,7 @@ void PushNotifications::onWebSocketSslErrors(const QList<QSslError> &errors)
 {
     qCWarning(lcPushNotifications) << "Websocket ssl errors on with account" << _account->displayName() << _account->url() << errors;
     closeWebSocket();
-    emit authenticationFailed();
+    Q_EMIT authenticationFailed();
 }
 
 void PushNotifications::openWebSocket()
@@ -194,7 +194,7 @@ void PushNotifications::handleAuthenticated()
     _webSocket->sendTextMessage("listen notify_file_id");
     _isReady = true;
     startPingTimer();
-    emit ready();
+    Q_EMIT ready();
 
     // We maybe reconnected to websocket while being offline for a
     // while. To not miss any notifications that may have happened,
@@ -238,7 +238,7 @@ void PushNotifications::handleNotifyFileId(const QString &message)
     }
 
     qCDebug(lcPushNotifications) << "Emitting signal of changed file IDs.";
-    emit fileIdsChanged(_account, fileIds);
+    Q_EMIT fileIdsChanged(_account, fileIds);
 }
 
 void PushNotifications::handleInvalidCredentials()
@@ -246,7 +246,7 @@ void PushNotifications::handleInvalidCredentials()
     qCInfo(lcPushNotifications) << "Invalid credentials submitted to websocket";
     if (!tryReconnectToWebSocket()) {
         closeWebSocket();
-        emit authenticationFailed();
+        Q_EMIT authenticationFailed();
     }
 }
 
@@ -312,16 +312,16 @@ void PushNotifications::setPingInterval(int timeoutInterval)
 
 void PushNotifications::emitFilesChanged()
 {
-    emit filesChanged(_account);
+    Q_EMIT filesChanged(_account);
 }
 
 void PushNotifications::emitNotificationsChanged()
 {
-    emit notificationsChanged(_account);
+    Q_EMIT notificationsChanged(_account);
 }
 
 void PushNotifications::emitActivitiesChanged()
 {
-    emit activitiesChanged(_account);
+    Q_EMIT activitiesChanged(_account);
 }
 }

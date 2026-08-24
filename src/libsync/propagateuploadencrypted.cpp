@@ -49,7 +49,7 @@ void PropagateUploadEncrypted::start()
     if (!_propagator->_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_remoteParentAbsolutePath, _propagator->remotePath()),
                                                        &rec)
         || !rec.isValid()) {
-        emit error();
+        Q_EMIT error();
         return;
     }
     _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(_propagator->account(),
@@ -89,13 +89,13 @@ void PropagateUploadEncrypted::slotFetchMetadataJobFinished(int statusCode, cons
     qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << message;
 
     if (statusCode != 200) {
-        emit error();
+        Q_EMIT error();
         return;
     }
 
     if (!_encryptedFolderMetadataHandler->folderMetadata() || !_encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
         qCWarning(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload. Invalid metadata.";
-        emit error();
+        Q_EMIT error();
         return;
     }
 
@@ -153,7 +153,7 @@ void PropagateUploadEncrypted::slotFetchMetadataJobFinished(int statusCode, cons
 
         if (!encryptionResult) {
             qCWarning(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload.";
-            emit error();
+            Q_EMIT error();
             return;
         }
 
@@ -165,7 +165,7 @@ void PropagateUploadEncrypted::slotFetchMetadataJobFinished(int statusCode, cons
 
     if (!metadata->addEncryptedFile(encryptedFile)) {
         qCWarning(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload. Invalid metadata file name.";
-        emit error();
+        Q_EMIT error();
         return;
     }
 
@@ -180,7 +180,7 @@ void PropagateUploadEncrypted::slotUploadMetadataFinished(int statusCode, const 
     if (statusCode != 200) {
         qCWarning(lcPropagateUploadEncrypted) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error" << message;
         qCDebug(lcPropagateUploadEncrypted()) << "Unlocking the folder.";
-        emit error();
+        Q_EMIT error();
         return;
     }
 
@@ -189,7 +189,7 @@ void PropagateUploadEncrypted::slotUploadMetadataFinished(int statusCode, const 
 
     qCDebug(lcPropagateUploadEncrypted) << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
     qCDebug(lcPropagateUploadEncrypted) << "Finalizing the upload part, now the actuall uploader will take over";
-    emit finalized(Utility::trailingSlashPath(outputInfo.path()) + outputInfo.fileName(),
+    Q_EMIT finalized(Utility::trailingSlashPath(outputInfo.path()) + outputInfo.fileName(),
                    Utility::trailingSlashPath(_remoteParentPath) + outputInfo.fileName(),
                    FileSystem::getSize(_completeFileName));
 }

@@ -35,7 +35,7 @@ public:
 Q_SIGNALS:
     void setupSucceeded();
 
-public slots:
+public Q_SLOTS:
     void setup(FakeFolder &fakeFolder)
     {
         fakeFolder.setServerOverride([this] (FakeQNAM::Operation operation, const QNetworkRequest &request, [[maybe_unused]] QIODevice *device) -> QNetworkReply*
@@ -311,7 +311,7 @@ class TestGovernance : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

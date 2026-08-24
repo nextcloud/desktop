@@ -353,7 +353,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
         // Still, the password can be empty which indicates a problem and
         // the password dialog has to be opened.
         _ready = true;
-        emit fetched();
+        Q_EMIT fetched();
     } else {
         // we come here if the password is empty or any other keychain
         // error happened.
@@ -362,7 +362,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
 
         _password = QString();
         _ready = false;
-        emit fetched();
+        Q_EMIT fetched();
     }
 
     // If keychain data was read from legacy location, wipe these entries and store new ones
@@ -426,7 +426,7 @@ void HttpCredentials::persist()
         // it's just written if it gets passed into the constructor.
         _account->setCredentialSetting(QLatin1String(clientCertBundleC), _clientCertBundle);
     }
-    emit _account->wantsAccountSaved(_account->sharedFromThis());
+    Q_EMIT _account->wantsAccountSaved(_account->sharedFromThis());
 
     // write secrets to the keychain
     if (!_clientCertBundle.isEmpty()) {

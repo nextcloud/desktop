@@ -46,7 +46,7 @@ public:
 
     void accept() override;
 
-signals:
+Q_SIGNALS:
     void acceptedInvalidName(const QString &filePath);
 
 private:
@@ -72,7 +72,7 @@ private:
     void onPropfindPermissionSuccess(const QVariantMap &values);
     void onPropfindPermissionError(QNetworkReply *reply = nullptr);
     void allowRenaming();
-private slots:
+private Q_SLOTS:
     void useInvalidName();
 };
 }

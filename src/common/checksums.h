@@ -81,10 +81,10 @@ public:
      */
     static QByteArray computeNowOnFile(const QString &filePath, const QByteArray &checksumType);
 
-signals:
+Q_SIGNALS:
     void done(const QByteArray &checksumType, const QByteArray &checksum);
 
-private slots:
+private Q_SLOTS:
     void slotCalculationDone();
 
 private:
@@ -128,12 +128,12 @@ public:
     [[nodiscard]] QByteArray calculatedChecksumType() const;
     [[nodiscard]] QByteArray calculatedChecksum() const;
 
-signals:
+Q_SIGNALS:
     void validated(const QByteArray &checksumType, const QByteArray &checksum);
     void validationFailed(const QString &errMsg, const QByteArray &calculatedChecksumType,
         const QByteArray &calculatedChecksum, const OCC::ValidateChecksumHeader::FailureReason reason);
 
-private slots:
+private Q_SLOTS:
     void slotChecksumCalculated(const QByteArray &checksumType, const QByteArray &checksum);
 
 private:

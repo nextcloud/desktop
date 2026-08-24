@@ -68,7 +68,7 @@ public:
         request().setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     }
 
-signals:
+Q_SIGNALS:
     void jsonReceived(const QJsonDocument &json, int statusCode);
 
 protected:
@@ -80,7 +80,7 @@ protected:
         const auto httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (reply()->error() != QNetworkReply::NoError) {
             qCWarning(lcOcsAssistantConnector) << "Network error:" << path() << errorString() << httpStatusCode;
-            emit jsonReceived(QJsonDocument(), httpStatusCode);
+            Q_EMIT jsonReceived(QJsonDocument(), httpStatusCode);
             return true;
         }
 
@@ -94,7 +94,7 @@ protected:
             qCWarning(lcOcsAssistantConnector) << "Invalid JSON response:" << error.errorString();
         }
 
-        emit jsonReceived(json, statusCode);
+        Q_EMIT jsonReceived(json, statusCode);
         return true;
     }
 };
@@ -117,7 +117,7 @@ void OcsAssistantConnector::fetchTaskTypes()
     connect(_taskTypesJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
         emitIfError(QStringLiteral("taskTypes"), statusCode);
-        emit taskTypesFetched(json, statusCode);
+        Q_EMIT taskTypesFetched(json, statusCode);
     });
     _taskTypesJob->start();
 }
@@ -136,7 +136,7 @@ void OcsAssistantConnector::fetchTasks(const QString &taskType)
     connect(_tasksJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
         emitIfError(QStringLiteral("tasks"), statusCode);
-        emit tasksFetched(json, statusCode);
+        Q_EMIT tasksFetched(json, statusCode);
     });
     _tasksJob->start();
 }
@@ -178,7 +178,7 @@ void OcsAssistantConnector::scheduleTask(const QString &input, const QString &ta
     connect(_scheduleJob, &AssistantApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
         emitIfError(QStringLiteral("schedule"), statusCode);
-        emit taskScheduled(json, statusCode);
+        Q_EMIT taskScheduled(json, statusCode);
     });
     _scheduleJob->start();
 }
@@ -196,7 +196,7 @@ void OcsAssistantConnector::deleteTask(qint64 taskId)
     connect(_deleteJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
         emitIfError(QStringLiteral("deleteTask"), statusCode);
-        emit taskDeleted(statusCode);
+        Q_EMIT taskDeleted(statusCode);
     });
     _deleteJob->start();
 }
@@ -205,7 +205,7 @@ void OcsAssistantConnector::emitIfError(const QString &context, int statusCode)
 {
     if (statusCode < 200 || statusCode >= 300) {
         qCWarning(lcOcsAssistantConnector) << "Assistant request failed:" << context << "status" << statusCode;
-        emit requestError(context, statusCode);
+        Q_EMIT requestError(context, statusCode);
     }
 }
 

@@ -27,7 +27,7 @@ class TestLockFile : public QObject
 public:
     TestLockFile() = default;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

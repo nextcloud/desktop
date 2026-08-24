@@ -46,7 +46,7 @@ public:
 
     [[nodiscard]] bool validDate() const;
 
-public slots:
+public Q_SLOTS:
     void setDate(const QDate &date);
     void setDateMsecs(const qint64 dateMsecs);
     void setDateString(const QString &dateString);
@@ -57,7 +57,7 @@ public slots:
     void setMaximumDate(const QDate &maximumDate);
     void setMaximumDateMsecs(const qint64 maximumDateMsecs);
 
-signals:
+Q_SIGNALS:
     void dateChanged();
     void dateMsecsChanged();
     void dateStringChanged();

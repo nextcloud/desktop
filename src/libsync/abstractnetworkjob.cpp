@@ -109,7 +109,7 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
     connect(reply, &QNetworkReply::metaDataChanged, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::uploadProgress, this, &AbstractNetworkJob::networkActivity);
-    connect(reply, &QNetworkReply::redirected, this, [reply, this] (const QUrl &url) { emit redirected(reply, url, 0);});
+    connect(reply, &QNetworkReply::redirected, this, [reply, this] (const QUrl &url) { Q_EMIT redirected(reply, url, 0);});
 }
 
 QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
@@ -222,7 +222,7 @@ void AbstractNetworkJob::slotFinished()
                 qCWarning(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
             }
         }
-        emit networkError(_reply);
+        Q_EMIT networkError(_reply);
     }
 
     // get the Date timestamp from reply
@@ -257,7 +257,7 @@ void AbstractNetworkJob::slotFinished()
         } else if (verb.isEmpty()) {
             qCWarning(lcNetworkJob) << this << "cannot redirect request: could not detect original verb";
         } else {
-            emit redirected(_reply, redirectUrl, _redirectCount);
+            Q_EMIT redirected(_reply, redirectUrl, _redirectCount);
 
             // The signal emission may have changed this value
             if (_followRedirects) {

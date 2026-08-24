@@ -298,11 +298,11 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
     }
 
     _searchTerm = term;
-    emit searchTermChanged();
+    Q_EMIT searchTermChanged();
 
     if (!_errorString.isEmpty()) {
         _errorString.clear();
-        emit errorStringChanged();
+        Q_EMIT errorStringChanged();
     }
 
     disconnectAndClearSearchJobs();
@@ -315,7 +315,7 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
     if (_unifiedSearchTextEditingFinishedTimer.isActive()) {
         _unifiedSearchTextEditingFinishedTimer.stop();
         _waitingForSearchTermEditEnd = false;
-        emit waitingForSearchTermEditEndChanged();
+        Q_EMIT waitingForSearchTermEditEndChanged();
     }
 
     if (!_searchTerm.isEmpty()) {
@@ -324,7 +324,7 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
             &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
         _unifiedSearchTextEditingFinishedTimer.start();
         _waitingForSearchTermEditEnd = true;
-        emit waitingForSearchTermEditEndChanged();
+        Q_EMIT waitingForSearchTermEditEndChanged();
     }
 
     if (!_results.isEmpty()) {
@@ -421,7 +421,7 @@ void UnifiedSearchResultsListModel::fetchMoreTriggerClicked(const QString &provi
     if (!providerInfo._id.isEmpty() && providerInfo._id == providerId && providerInfo._isPaginated) {
         // Load more items
         _currentFetchMoreInProgressProviderId = providerId;
-        emit currentFetchMoreInProgressProviderIdChanged();
+        Q_EMIT currentFetchMoreInProgressProviderIdChanged();
         startSearchForProvider(providerId, providerInfo._cursor);
     }
 }
@@ -429,7 +429,7 @@ void UnifiedSearchResultsListModel::fetchMoreTriggerClicked(const QString &provi
 void UnifiedSearchResultsListModel::slotSearchTermEditingFinished()
 {
     _waitingForSearchTermEditEnd = false;
-    emit waitingForSearchTermEditEndChanged();
+    Q_EMIT waitingForSearchTermEditEndChanged();
 
     disconnect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this,
         &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
@@ -455,7 +455,7 @@ void UnifiedSearchResultsListModel::slotFetchProvidersFinished(const QJsonDocume
     if (!job) {
         qCCritical(lcUnifiedSearch) << QStringLiteral("Failed to fetch providers.").arg(_searchTerm);
         _errorString += tr("Failed to fetch providers.") + u'\n';
-        emit errorStringChanged();
+        Q_EMIT errorStringChanged();
         return;
     }
 
@@ -467,7 +467,7 @@ void UnifiedSearchResultsListModel::slotFetchProvidersFinished(const QJsonDocume
         _errorString +=
             tr("Failed to fetch search providers for '%1'. Error: %2").arg(_searchTerm).arg(job->errorString())
             + u'\n';
-        emit errorStringChanged();
+        Q_EMIT errorStringChanged();
         return;
     }
     const auto providerList =
@@ -500,7 +500,7 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
     if (!job) {
         qCCritical(lcUnifiedSearch) << QStringLiteral("Search has failed for '%2'.").arg(_searchTerm);
         _errorString += tr("Search has failed for '%2'.").arg(_searchTerm) + u'\n';
-        emit errorStringChanged();
+        Q_EMIT errorStringChanged();
         return;
     }
 
@@ -514,7 +514,7 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
         _searchJobConnections.remove(providerId);
 
         if (_searchJobConnections.isEmpty()) {
-            emit isSearchInProgressChanged();
+            Q_EMIT isSearchInProgressChanged();
         }
     }
 
@@ -529,7 +529,7 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
                                            .arg(job->errorString());
         _errorString +=
             tr("Search has failed for '%1'. Error: %2").arg(_searchTerm).arg(job->errorString()) + u'\n';
-        emit errorStringChanged();
+        Q_EMIT errorStringChanged();
         return;
     }
 
@@ -584,7 +584,7 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const QString &provid
         QObject::connect(
             job, &JsonApiJob::jsonReceived, this, &UnifiedSearchResultsListModel::slotSearchForProviderFinished));
     if (isSearchInProgress() && !wasSearchInProgress) {
-        emit isSearchInProgressChanged();
+        Q_EMIT isSearchInProgressChanged();
     }
     job->start();
 }
@@ -785,7 +785,7 @@ void UnifiedSearchResultsListModel::disconnectAndClearSearchJobs()
 
     if (!_searchJobConnections.isEmpty()) {
         _searchJobConnections.clear();
-        emit isSearchInProgressChanged();
+        Q_EMIT isSearchInProgressChanged();
     }
 }
 
@@ -793,7 +793,7 @@ void UnifiedSearchResultsListModel::clearCurrentFetchMoreInProgressProviderId()
 {
     if (!_currentFetchMoreInProgressProviderId.isEmpty()) {
         _currentFetchMoreInProgressProviderId.clear();
-        emit currentFetchMoreInProgressProviderIdChanged();
+        Q_EMIT currentFetchMoreInProgressProviderIdChanged();
     }
 }
 

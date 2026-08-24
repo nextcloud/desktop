@@ -49,11 +49,11 @@ public:
     [[nodiscard]] bool isFolderLocked() const;
     [[nodiscard]] const QByteArray folderToken() const;
 
-private slots:
+private Q_SLOTS:
     void slotFetchMetadataJobFinished(int statusCode, const QString &message);
     void slotUploadMetadataFinished(int statusCode, const QString &message);
 
-signals:
+Q_SIGNALS:
     // Emitted after the file is encrypted and everything is setup.
     void finalized(const QString& path, const QString& filename, quint64 size);
     void error();

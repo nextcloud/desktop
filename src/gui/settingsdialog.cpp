@@ -262,7 +262,7 @@ void SettingsDialog::changeEvent(QEvent *e)
         customizeStyle();
 
         // Notify the other widgets (Dark-/Light-Mode switching)
-        emit styleChanged();
+        Q_EMIT styleChanged();
 #ifdef Q_OS_MACOS
         // macOS resets title-bar styling across appearance changes; re-apply it.
         if (auto *const handle = windowHandle()) {
@@ -272,7 +272,7 @@ void SettingsDialog::changeEvent(QEvent *e)
         break;
     case QEvent::ActivationChange:
         if(isActiveWindow())
-            emit onActivate();
+            Q_EMIT onActivate();
         break;
     default:
         break;

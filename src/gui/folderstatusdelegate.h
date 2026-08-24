@@ -55,7 +55,7 @@ public:
     static QRect sandboxButtonRect(QRect errorBannerRect);
     static int rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm);
 
-public slots:
+public Q_SLOTS:
     void slotStyleChanged();
 
 private:
