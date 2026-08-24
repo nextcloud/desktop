@@ -351,6 +351,7 @@ Page {
                 wrapMode: TextEdit.Wrap
                 selectByMouse: true
                 text: root.password !== "" ? root.password : root.passwordPlaceholder
+                color: Style.sesTrayFontColor
 
                 font.family: root.font.family
                 font.pixelSize: pixelSize
