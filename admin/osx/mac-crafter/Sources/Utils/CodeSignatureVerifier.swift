@@ -7,9 +7,10 @@ import Foundation
 /// Discovers signed code components and verifies their team identifiers.
 ///
 enum CodeSignatureVerifier {
-    static func verify(at location: URL) throws {
+    static func verify(at location: URL, expectedTeamIdentifier: String? = nil) throws {
         try verify(
             at: location,
+            expectedTeamIdentifier: expectedTeamIdentifier,
             isMachO: { isMachO($0) },
             signatureDetails: { try codesignDetails(at: $0) }
         )
@@ -17,6 +18,7 @@ enum CodeSignatureVerifier {
 
     static func verify(
         at location: URL,
+        expectedTeamIdentifier: String? = nil,
         isMachO: (URL) -> Bool,
         signatureDetails: (URL) throws -> String
     ) throws {
@@ -29,6 +31,15 @@ enum CodeSignatureVerifier {
         }
 
         if let error = TeamIdentifierVerifier.validationError(for: signatures) {
+            throw MacCrafterError.signing(error)
+        }
+
+        if let expectedTeamIdentifier,
+           let error = TeamIdentifierVerifier.validationError(
+               for: signatures,
+               expectedTeamIdentifier: expectedTeamIdentifier
+           )
+        {
             throw MacCrafterError.signing(error)
         }
 

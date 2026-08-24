@@ -39,4 +39,23 @@ enum TeamIdentifierVerifier {
 
         return nil
     }
+
+    static func validationError(
+        for components: [(location: String, teamIdentifier: String?)],
+        expectedTeamIdentifier: String
+    ) -> String? {
+        guard let component = components.first else {
+            return "Signing verification failed because no signed code components were found"
+        }
+
+        guard let teamIdentifier = component.teamIdentifier else {
+            return "Signing verification failed because \(component.location) has no TeamIdentifier"
+        }
+
+        guard teamIdentifier == expectedTeamIdentifier else {
+            return "Signing verification failed because \(component.location) has TeamIdentifier \(teamIdentifier), expected \(expectedTeamIdentifier) from NEXTCLOUD.cmake"
+        }
+
+        return nil
+    }
 }
