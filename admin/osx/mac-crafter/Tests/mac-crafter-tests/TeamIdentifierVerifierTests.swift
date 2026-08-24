@@ -78,6 +78,67 @@ struct TeamIdentifierVerifierTests {
     }
 
     @Test
+    func acceptsExpectedTeamIdentifier() {
+        let components = [
+            (location: "/Nextcloud.app", teamIdentifier: Optional("C4QUVLMPQU")),
+        ]
+
+        #expect(
+            TeamIdentifierVerifier.validationError(
+                for: components,
+                expectedTeamIdentifier: "C4QUVLMPQU"
+            ) == nil
+        )
+    }
+
+    @Test
+    func rejectsUnexpectedExpectedTeamIdentifier() {
+        let components = [
+            (location: "/Nextcloud.app", teamIdentifier: Optional("NKUJUXUJ3B")),
+        ]
+
+        let error = TeamIdentifierVerifier.validationError(
+            for: components,
+            expectedTeamIdentifier: "C4QUVLMPQU"
+        )
+
+        #expect(error?.contains("expected C4QUVLMPQU from NEXTCLOUD.cmake") == true)
+    }
+
+    @Test
+    func rejectsSignatureWithTeamIdentifierDifferentFromCMakeConfiguration() throws {
+        let fixture = try makeCodeBundleFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.root) }
+
+        do {
+            try CodeSignatureVerifier.verify(
+                at: fixture.root,
+                expectedTeamIdentifier: "C4QUVLMPQU",
+                isMachO: { fixture.machOFiles.contains($0.resolvingSymlinksInPath().path) },
+                signatureDetails: { _ in "TeamIdentifier=NKUJUXUJ3B" }
+            )
+            Issue.record("Expected verification to reject the TeamIdentifier from the signature")
+        } catch let error as MacCrafterError {
+            #expect(error.description.contains("expected C4QUVLMPQU from NEXTCLOUD.cmake"))
+        }
+    }
+
+    @Test
+    func readsDevelopmentTeamFromCMakeConfiguration() throws {
+        let file = FileManager.default.temporaryDirectory
+            .appendingPathComponent("NEXTCLOUD-\(UUID().uuidString).cmake")
+        defer { try? FileManager.default.removeItem(at: file) }
+
+        try #"set( DEVELOPMENT_TEAM "C4QUVLMPQU" CACHE STRING "Apple Development Team ID" )"#.write(
+            to: file,
+            atomically: true,
+            encoding: .utf8
+        )
+
+        #expect(try CMakeConfiguration.developmentTeamIdentifier(at: file) == "C4QUVLMPQU")
+    }
+
+    @Test
     func discoversBundlesDylibsAndMachOExecutables() throws {
         let fixture = try makeCodeBundleFixture()
         defer { try? FileManager.default.removeItem(at: fixture.root) }
