@@ -7201,7 +7201,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/activity/qml/SyncStatus.qml" line="103"/>
         <source>Sync now</source>
-        <translation>Sinhronizēt tagad</translation>
+        <translation>Vienādot tagad</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/SyncStatus.qml" line="126"/>
