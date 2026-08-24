@@ -754,7 +754,6 @@ void OwncloudAdvancedSetupPage::customizeStyle()
         WLTheme.loginWizardFontGrey()
     ));
 
-    #ifdef Q_OS_MAC
     _ui.syncModeLabel->setStyleSheet(
                         WLTheme.fontConfigurationCss(
                         WLTheme.settingsFont(),
@@ -763,7 +762,6 @@ void OwncloudAdvancedSetupPage::customizeStyle()
                         WLTheme.titleColor()
                         )
                 );
-    #endif
 
 }
 

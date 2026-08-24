@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QStylePainter>
 #include <QStyleOptionButton>
+#include <QEvent>
 
 namespace OCC {
 
@@ -35,16 +36,22 @@ namespace OCC {
         void setSuccess(QString successMessage);
 
         void setWordWrap(bool on);
-    
+
     signals:
         void captionChanged(QString captionText);
         void errorChanged(QString errorText);
         void warningChanged(QString warningText);
         void successChanged(QString successText);
 
+    protected:
+        void changeEvent(QEvent* event) override;
+
     private:
+        enum class Kind { Error, Warning, Success };
+
         QString m_caption;
         QString m_message;
+        Kind m_kind = Kind::Error;
 
         QLabel m_messageLabel;
         QLabel m_captionLabel;

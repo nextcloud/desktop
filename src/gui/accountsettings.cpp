@@ -1926,8 +1926,12 @@ void AccountSettings::customizeStyle()
     }
 
     _ui->syncFoldersPanelTitle->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
+    _ui->fileProviderPanelTitle->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
+    _ui->connectionSettingsPanelTitle->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
 
     _ui->encryptionMessageLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
+
+    _ui->selectiveSyncLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
 
     const auto color = palette().highlight().color();
     const auto toolTipStyle =
@@ -1939,7 +1943,6 @@ void AccountSettings::customizeStyle()
                  WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor())));
 
 #if defined(Q_OS_MAC)
-    _ui->selectiveSyncLabel->setStyleSheet(QString("color: %1;").arg(WLTheme.titleColor()));
     _ui->horizontalLayout->setSpacing(16);
 #endif
 }

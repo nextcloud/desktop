@@ -99,8 +99,34 @@ namespace OCC {
         return m_messageLabel.wordWrap();
     }
 
+    void sesSnackBar::changeEvent(QEvent* event)
+    {
+        switch (event->type()) {
+        case QEvent::StyleChange:
+        case QEvent::PaletteChange:
+        case QEvent::ThemeChange:
+            switch (m_kind) {
+            case Kind::Error:
+                errorStyle();
+                break;
+            case Kind::Warning:
+                warningStyle();
+                break;
+            case Kind::Success:
+                successStyle();
+                break;
+            }
+            break;
+        default:
+            break;
+        }
+
+        QFrame::changeEvent(event);
+    }
+
     void sesSnackBar::successStyle()
     {
+        m_kind = Kind::Success;
         const auto logoIconFileName = Theme::hidpiFileName(":/client/theme/ses/ses-snackbar-success.svg");
         m_iconLabel.setPixmap(logoIconFileName);
 
@@ -109,6 +135,7 @@ namespace OCC {
 
     void sesSnackBar::warningStyle()
     {
+        m_kind = Kind::Warning;
         const auto logoIconFileName = Theme::hidpiFileName(":/client/theme/ses/ses-snackbar-warning.svg");
         m_iconLabel.setPixmap(logoIconFileName);
 
@@ -117,6 +144,7 @@ namespace OCC {
 
     void sesSnackBar::errorStyle()
     {
+        m_kind = Kind::Error;
         const auto logoIconFileName = Theme::hidpiFileName(":/client/theme/ses/ses-snackbar-error.svg");
         m_iconLabel.setPixmap(logoIconFileName);
 
