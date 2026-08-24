@@ -149,11 +149,18 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
 
     // iterate events in buffer
     unsigned int ulen = len;
-    for (i = 0; i + sizeof(inotify_event) < ulen; i += sizeof(inotify_event) + (event ? event->len : 0)) {
+    for (i = 0; i + sizeof(inotify_event) <= ulen; i += sizeof(inotify_event) + (event ? event->len : 0)) {
         // cast an inotify_event
         event = (struct inotify_event *)&buffer[i];
         if (!event) {
             qCDebug(lcFolderWatcher) << "NULL event";
+            continue;
+        }
+
+        if (event->mask & IN_Q_OVERFLOW) {
+            qCWarning(lcFolderWatcher)
+                << "The inotify event queue overflowed; triggering a full local discovery";
+            emit _parent->lostChanges();
             continue;
         }
 
