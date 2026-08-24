@@ -70,8 +70,12 @@ rm -rf usr/share/nemo-python/
 mkdir -p AppDir/usr/share
 mv usr/share/${EXECUTABLE_NAME} AppDir/usr/share/${EXECUTABLE_NAME}
 
-# Move sync exclude to right location
-mv /app/etc/*/sync-exclude.lst usr/bin/
+# Move sync exclude to right location. It has to end up inside AppDir
+# (not just /app), otherwise it is never packed into the AppImage and
+# ConfigFile::excludeFileFromSystem()'s AppImage fallback finds nothing
+# next to the executable at runtime.
+mkdir -p AppDir/usr/bin
+mv /app/etc/*/sync-exclude.lst AppDir/usr/bin/
 rm -rf etc
 
 # com.nextcloud.desktopclient.nextcloud.desktop
