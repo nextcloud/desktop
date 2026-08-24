@@ -15,7 +15,7 @@ public:
     QString additionalThemePrefix() const override { return QStringLiteral("strato/"); }
 
     QString dialogBackgroundColor() const override {
-        return "#F7F7F9";
+        return themedColor("#F7F7F9", "#1F2024");
     }
 
     QString trayFontColor() const override {
@@ -27,7 +27,7 @@ public:
     }
 
     QString trayInputFieldBorderColor() const override {
-        return "#8493B3";
+        return themedColor("#8493B3", "#454C5E");
     }
 
     QString trayBackgroundColor() const override {
@@ -35,55 +35,58 @@ public:
     }
 
     QString settingsLinkColor() const override {
-        return "#272CB2";
+        return themedColor("#272CB2", "#5B60D6");
     }
 
     QString quotaProgressColor() const override {
-        return "#272CB2";
+        return themedColor("#272CB2", "#5B60D6");
     }
 
     QString syncProgressColor() const override {
         return "#009850";
     }
 
-    QString buttonPrimaryColor() const override { 
-        return "#272CB2";
+    QString buttonPrimaryColor() const override {
+        return themedColor("#272CB2", "#5B60D6");
     }
 
     QString buttonPrimaryHoverColor() const override {
+        // TODO: no established Strato dark counterpart for #2944CC yet - needs design input.
         return "#2944CC";
     }
 
     QString buttonPrimaryPressedColor() const override {
-        return "#272CB2";
+        return themedColor("#272CB2", "#5B60D6");
     }
 
     QString buttonPrimaryFocusedBorderColor() const override {
-        return "#CDD5E3";
+        return themedColor("#CDD5E3", "#FFFFFF");
     }
 
-    QString buttonSecondaryColor() const override { 
-        return "#F7F7F9";
+    QString buttonSecondaryColor() const override {
+        // Dark value matches pillButtonSecondaryColor() below (SecondaryPillButton.qml).
+        return themedColor("#F7F7F9", "#2E2F3D");
     }
 
-    QString buttonSecondaryBorderColor() const override { 
-        return "#CDD5E3";
+    QString buttonSecondaryBorderColor() const override {
+        // Dark value matches pillButtonBorderColor() below, which stays white in both modes.
+        return themedColor("#CDD5E3", "#FFFFFF");
     }
 
     QString buttonSecondaryHoverColor() const override {
-        return "#EDEEF3";
+        return themedColor("#EDEEF3", "#282A36");
     }
 
     QString buttonSecondaryPressedColor() const override {
-        return "#D6D6E4";
+        return themedColor("#D6D6E4", "#3A3B52");
     }
 
     QString buttonSecondaryFocusedBorderColor() const override {
-        return "#8493B3";
+        return themedColor("#8493B3", "#454C5E");
     }
 
     QString buttonDisabledColor() const override {
-        return "#EDEEF3";
+        return themedColor("#EDEEF3", "#282A36");
     }
 
     QString pillButtonPrimaryColor() const override {
@@ -107,7 +110,7 @@ public:
     }
 
     QString buttonIconHoverColor() const override {
-        return "#2f2f70";
+        return themedColor("#2f2f70", "#C9CBEF");
     }
 
     QString buttonHoveredColor() const override {
@@ -146,12 +149,8 @@ public:
         return themedColor("#5A6782", "#3A3B52");
     }
 
-    QString errorColor() const override {
-        return "#FFE0ED";
-    }
-
     QString errorBorderColor() const override {
-        return "#FF004C";
+        return themedColor("#FF004C", "#FF6688");
     }
 
     QString trayErrorBorderColor() const override {

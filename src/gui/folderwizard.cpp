@@ -177,6 +177,12 @@ void FolderWizardLocalPath::changeEvent(QEvent *e)
 
 void FolderWizardLocalPath::changeStyle()
 {
+    // QWizard::ModernStyle paints this page's own background natively on Windows and ignores
+    // the wizard-level QPalette set in FolderWizard::customizeStyle() - same class of issue as
+    // QTBUG-123853, but for the page body rather than the banner. Paint it explicitly instead.
+    setAutoFillBackground(true);
+    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
+
     _ui.title->setStyleSheet(
         WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsBigTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()));
 
@@ -205,7 +211,7 @@ void FolderWizardLocalPath::changeStyle()
                                                .arg(WLTheme.settingsTextWeight())
                                                .arg(WLTheme.buttonRadius())
                                                .arg(WLTheme.menuBorderColor())
-                                               .arg(WLTheme.white()));
+                                               .arg(WLTheme.dialogBackgroundColor()));
 
     _ui.localFolderChooseBtn->setProperty("text", tr("Choose"));
 
@@ -245,7 +251,7 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     _ui.folderTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 
 #ifdef Q_OS_MAC
-    _ui.folderTreeWidget->setPalette(QPalette(WLTheme.white()));
+    _ui.folderTreeWidget->setPalette(QPalette(WLTheme.dialogBackgroundColor()));
 #endif
 
     // Make sure that there will be a scrollbar when the contents is too wide
@@ -290,7 +296,7 @@ void FolderWizardRemotePath::slotAddRemoteFolder()
                  WLTheme.settingsTextWeight(),
                  WLTheme.buttonRadius(),
                  WLTheme.menuBorderColor(),
-                 WLTheme.white()));
+                 WLTheme.dialogBackgroundColor()));
 
     dlg->findChild<QLabel *>()->setStyleSheet(
         WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor()));
@@ -649,6 +655,11 @@ void FolderWizardRemotePath::changeEvent(QEvent *e)
 
 void FolderWizardRemotePath::changeStyle()
 {
+    // See FolderWizardLocalPath::changeStyle() - ModernStyle paints the page body natively
+    // and ignores the wizard-level palette, so it needs to be set explicitly here too.
+    setAutoFillBackground(true);
+    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
+
     _ui.title->setStyleSheet(
         WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsBigTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()));
 
@@ -685,9 +696,10 @@ void FolderWizardRemotePath::changeStyle()
     _ui.folderTreeWidget->setStyleSheet(
         QStringLiteral(" %1; background: %2; ")
             .arg(WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor()),
-                 WLTheme.white()));
+                 WLTheme.dialogBackgroundColor()));
 
-    _ui.folderTreeWidget->setStyleSheet(_ui.folderTreeWidget->styleSheet() + QStringLiteral("QTreeWidget { background: %1; }").arg(WLTheme.white()));
+    _ui.folderTreeWidget->setStyleSheet(_ui.folderTreeWidget->styleSheet()
+        + QStringLiteral("QTreeWidget { background: %1; }").arg(WLTheme.dialogBackgroundColor()));
 
     _ui.refreshButton->setProperty("text", tr("Refresh"));
 
@@ -702,6 +714,11 @@ void FolderWizardRemotePath::changeStyle()
 
 FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
 {
+    // See FolderWizardLocalPath::changeStyle() - ModernStyle paints the page body natively
+    // and ignores the wizard-level palette, so it needs to be set explicitly here too.
+    setAutoFillBackground(true);
+    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
+
     _uiSelectiveSync.setupUi(this);
     auto *layout = _uiSelectiveSync.verticalLayout;
     _selectiveSync = new SelectiveSyncWidget(account, this);
@@ -735,7 +752,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     _selectiveSync->setStyleSheet(
         QStringLiteral(" %1; background: %2; ")
             .arg(WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor()),
-                 WLTheme.white()));
+                 WLTheme.dialogBackgroundColor()));
 
     _uiSelectiveSync.title->setStyleSheet(
         WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsBigTitleSize(), WLTheme.settingsTitleWeight600(), WLTheme.titleColor()));
@@ -901,7 +918,11 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     button(QWizard::NextButton)->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
 
     adjustWizardSize();
-    setWizardStyle(QWizard::ClassicStyle);
+    // ClassicStyle/AeroStyle render their chrome (banner/background) natively on Windows and
+    // ignore our QPalette overrides in customizeStyle() below - QTBUG-123853. Upstream fixed this
+    // by switching to ModernStyle (8b1e3fcd9); the SES-457 whitelabel squash-commit accidentally
+    // reverted it back to ClassicStyle while restyling the wizard, reintroducing the regression.
+    setWizardStyle(QWizard::ModernStyle);
     customizeStyle();
 
     // Close the wizard if initial folder selection is canceled

@@ -68,4 +68,4 @@ instance, parameterized by `accountState`/`localPath`.
   fork-specific "SES" theming layered over otherwise-generic upstream Nextcloud sharing
   logic (`ShareModel`, `ShareeModel`, `ShareManager` itself live in `src/gui` more broadly).
 
-*Quelle: src/gui/filedetails — Stand 2026-08-17, automatisch erstellt, bitte gegenlesen.*
+*Quelle: src/gui/filedetails — Stand 2026-08-20, automatisch erstellt, bitte gegenlesen.*

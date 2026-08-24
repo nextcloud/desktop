@@ -66,6 +66,7 @@ public:
     [[nodiscard]] ownCloudGui *gui() const;
 
     bool event(QEvent *event) override;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 public slots:
     // TODO: this should not be public

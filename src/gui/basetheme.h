@@ -1,6 +1,7 @@
 #ifndef _BASETHEME_H
 #define _BASETHEME_H
 
+#include <QColor>
 #include <QFont>
 #include <QString>
 #include "theme.h"
@@ -10,7 +11,8 @@ namespace OCC {
 
 class BaseTheme : public QObject{
     Q_OBJECT
-    Q_PROPERTY(QString dialogBackgroundColor READ dialogBackgroundColor CONSTANT)
+    Q_PROPERTY(QString dialogBackgroundColor READ dialogBackgroundColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString checkboxCheckmarkColor READ checkboxCheckmarkColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayFontColor READ trayFontColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayBorderColor READ trayBorderColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayInputFieldBorderColor READ trayInputFieldBorderColor CONSTANT)
@@ -315,23 +317,23 @@ public:
     }
 
     virtual QString titleColor() const {
-        return "#000000";
+        return themedColor("#000000", "#D6E4F5");
     }
 
     virtual QString folderWizardSubtitleColor() const {
-        return "#104996";
+        return themedColor("#104996", "#5FA8E0");
     }
 
     virtual QString folderWizardPathColor() const {
-        return "#97A3B4";
+        return themedColor("#97A3B4", "#A8B4C6");
     }
 
     virtual QString loginWizardFontGrey() const {
-        return "#616161";
+        return themedColor("#616161", "#D6D6D6");
     }
 
     virtual QString loginWizardFontLightGrey() const {
-        return "#BDBDBD";
+        return themedColor("#BDBDBD", "#8A8A8A");
     }
 
     virtual QString trayFontColor() const {
@@ -356,59 +358,61 @@ public:
 
     //Colors
     virtual QString settingsLinkColor() const {
-        return "#02306A";
+        return themedColor("#02306A", "#5FA8E0");
     }
 
     virtual QString quotaProgressColor() const {
-        return "#308cc6";
+        return themedColor("#308cc6", "#5FA8E0");
     }
 
     virtual QString syncProgressColor() const {
-        return "#359ada";
+        return themedColor("#359ada", "#4FB6F0");
     }
 
     virtual QString buttonPrimaryColor() const {
-        return "#0F6CBD";
+        return themedColor("#0F6CBD", "#3D6BB0");
     }
 
     virtual QString buttonSecondaryColor() const {
-        return "#FFFFFF";
+        // Dark value matches the tray's pillButtonSecondaryColor() (SecondaryPillButton.qml).
+        return themedColor("#FFFFFF", "#2A2E35");
     }
 
     virtual QString buttonSecondaryBorderColor() const {
-        return "#D1D1D1";
+        // Dark value matches the tray's pillButtonBorderColor() (SecondaryPillButton.qml).
+        return themedColor("#D1D1D1", "#3D6BB0");
     }
 
     virtual QString buttonDisabledColor() const {
-        return "#F0F0F0";
+        return themedColor("#F0F0F0", "#33363C");
     }
 
     virtual QString buttonPrimaryHoverColor() const {
-        return "#115EA3";
+        return themedColor("#115EA3", "#4B7CC4");
     }
 
     virtual QString buttonSecondaryHoverColor() const {
-        return "#F5F5F5";
+        return themedColor("#F5F5F5", "#343841");
     }
 
     virtual QString buttonPrimaryPressedColor() const {
-        return "#0C3B5E";
+        return themedColor("#0C3B5E", "#2A4D82");
     }
 
     virtual QString buttonSecondaryPressedColor() const {
-        return "#E0E0E0";
+        return themedColor("#E0E0E0", "#3D424D");
     }
 
     virtual QString buttonPrimaryFocusedBorderColor() const {
-        return "#000000";
+        return themedColor("#000000", "#FFFFFF");
     }
 
     virtual QString buttonSecondaryFocusedBorderColor() const {
-        return "#000000";
+        return themedColor("#000000", "#FFFFFF");
     }
 
     virtual QString buttonDisabledFontColor() const {
-        return "#BDBDBD";
+        return themedColor("#BDBDBD", "#5A5D63");
     }
 
     virtual QString pillButtonPrimaryColor() const {
@@ -436,7 +440,13 @@ public:
     }
 
     virtual QString dialogBackgroundColor() const {
-        return "#FAFAFA";
+        return themedColor("#FFFFFF", "#1E2126");
+    }
+
+    // Deliberately inverted from the native checked-box contrast (which the checked box's
+    // accent-color fill already provides) - white checkmark in Light Mode, black in Dark Mode.
+    virtual QString checkboxCheckmarkColor() const {
+        return themedColor("#FFFFFF", "#000000");
     }
 
     virtual QString trayBackgroundColor() const {
@@ -476,7 +486,7 @@ public:
     }
 
     virtual QString buttonIconHoverColor() const {
-        return "#FFFFFF";
+        return themedColor("#FFFFFF", "#0B2A63");
     }
 
     virtual QString buttonPressedColor() const {
@@ -495,12 +505,8 @@ public:
         return themedColor("#95CAEB", "#2C4A63");
     }
 
-    virtual QString errorColor() const {
-        return "#FDF3F4";
-    }
-
     virtual QString errorBorderColor() const {
-        return "#EEACB2";
+        return themedColor("#EEACB2", "#B25C63");
     }
 
     virtual QString trayErrorBorderColor() const {
@@ -512,31 +518,19 @@ public:
     }
 
     virtual QString warningBorderColor() const {
-        return "#F4BFAB";
-    }
-
-    virtual QString warningColor() const {
-        return "#FDF6F3";
+        return themedColor("#F4BFAB", "#C98F5E");
     }
 
     virtual QString successBorderColor() const {
-        return "#9FD89F";
-    }
-
-    virtual QString successColor() const {
-        return "#F1FAF1";
+        return themedColor("#9FD89F", "#5FA86A");
     }
 
     virtual QString infoBorderColor() const {
-        return "#11C7E6";
-    }
-
-    virtual QString infoColor() const {
-        return "#E6F9FC";
+        return themedColor("#11C7E6", "#4DD9F0");
     }
 
     virtual QString treeViewHoverColor() const {
-        return "#e5f3ff";
+        return themedColor("#e5f3ff", "#242A33");
     }
 
 signals:
@@ -547,6 +541,15 @@ protected:
     // Needs a proper visual QA/design pass before being considered final.
     static QString themedColor(const QString &light, const QString &dark) {
         return Theme::instance()->darkMode() ? dark : light;
+    }
+
+public:
+    // Tints an already theme-aware border color into a translucent fill, instead of
+    // inventing a separate opaque pastel per dark/light variant.
+    static QColor tintedFillFromBorder(const QColor &border, float alpha = 0.2f) {
+        auto fill = border;
+        fill.setAlphaF(alpha);
+        return fill;
     }
 
     private:

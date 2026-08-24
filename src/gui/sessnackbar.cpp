@@ -99,40 +99,78 @@ namespace OCC {
         return m_messageLabel.wordWrap();
     }
 
+    void sesSnackBar::changeEvent(QEvent* event)
+    {
+        switch (event->type()) {
+        case QEvent::StyleChange:
+        case QEvent::PaletteChange:
+        case QEvent::ThemeChange:
+            switch (m_kind) {
+            case Kind::Error:
+                errorStyle();
+                break;
+            case Kind::Warning:
+                warningStyle();
+                break;
+            case Kind::Success:
+                successStyle();
+                break;
+            }
+            break;
+        default:
+            break;
+        }
+
+        QFrame::changeEvent(event);
+    }
+
     void sesSnackBar::successStyle()
     {
+        m_kind = Kind::Success;
         const auto logoIconFileName = Theme::hidpiFileName(":/client/theme/ses/ses-snackbar-success.svg");
         m_iconLabel.setPixmap(logoIconFileName);
 
-        updateStyleSheet(WLTheme.successBorderColor(), WLTheme.successColor(), WLTheme.black(), WLTheme.black());
+        updateStyleSheet(WLTheme.successBorderColor());
     }
 
     void sesSnackBar::warningStyle()
     {
+        m_kind = Kind::Warning;
         const auto logoIconFileName = Theme::hidpiFileName(":/client/theme/ses/ses-snackbar-warning.svg");
         m_iconLabel.setPixmap(logoIconFileName);
 
-        updateStyleSheet(WLTheme.warningBorderColor(), WLTheme.warningColor(), WLTheme.black(), WLTheme.black());
+        updateStyleSheet(WLTheme.warningBorderColor());
     }
 
     void sesSnackBar::errorStyle()
     {
+        m_kind = Kind::Error;
         const auto logoIconFileName = Theme::hidpiFileName(":/client/theme/ses/ses-snackbar-error.svg");
         m_iconLabel.setPixmap(logoIconFileName);
 
-        updateStyleSheet(WLTheme.errorBorderColor(), WLTheme.errorColor(), WLTheme.black(), WLTheme.black());
+        updateStyleSheet(WLTheme.errorBorderColor());
     }
 
-    void sesSnackBar::updateStyleSheet(QColor frameBorderColor, QColor frameBackgroundColor, QColor frameColor, QColor labelColor) 
+    void sesSnackBar::updateStyleSheet(QColor frameBorderColor)
     {
+        // successColor()/warningColor()/errorColor() and the black() text on top of them were fixed,
+        // opaque pastels with no dark variant. Same fix as FolderStatusDelegate: tint the frame with
+        // the (already theme-aware) border color at low alpha instead of an opaque fill, and take the
+        // text from the widget's own palette instead of a hardcoded black - mirrors the translucent-
+        // overlay technique the tray uses for its alert boxes (ErrorBox.qml, trayWindowSyncWarning).
+        auto frameBackgroundColor = BaseTheme::tintedFillFromBorder(frameBorderColor);
+        const auto textColor = palette().color(QPalette::WindowText);
+
         QString style = QString::fromLatin1("QFrame {border: 1px solid %1; border-radius: 4px;"
-                                "background-color: %2; color: %3;}"
-                                "QLabel {border: 0px none; padding 0px; background-color: transparent; color: %4;}"
+                                "background-color: rgba(%2, %3, %4, %5); color: %6;}"
+                                "QLabel {border: 0px none; padding 0px; background-color: transparent; color: %6;}"
                                 "QLabel#sesSnackBarCaption {font-weight: bold;}"
-                                ).arg(frameBorderColor.name()
-                                , frameBackgroundColor.name()
-                                , frameColor.name()
-                                , labelColor.name());
+                                ).arg(frameBorderColor.name())
+                                .arg(frameBackgroundColor.red())
+                                .arg(frameBackgroundColor.green())
+                                .arg(frameBackgroundColor.blue())
+                                .arg(frameBackgroundColor.alpha())
+                                .arg(textColor.name());
 
         setStyleSheet(style);
 

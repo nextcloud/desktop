@@ -667,10 +667,10 @@ void ownCloudGui::slotShowSettings()
 #ifdef Q_OS_MACOS
         auto *fgbg = new ForegroundBackground();
         _settingsDialog->installEventFilter(fgbg);
-#else
-        _settingsDialog->setStyleSheet(QStringLiteral("QDialog {background: %1}")
-            .arg(Theme::instance()->systemPalette()["base"].value<QColor>().name()));        
 #endif
+        // Dialog background is now owned by SettingsDialog::customizeStyle() (the #Settings
+        // selector), which re-applies on dark mode changes - setting it here too would just
+        // get overwritten by the next customizeStyle() call.
 
         connect(_tray.data(), &Systray::hideSettingsDialog,
                 _settingsDialog.data(), &SettingsDialog::close);

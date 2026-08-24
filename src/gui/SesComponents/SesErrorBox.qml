@@ -28,6 +28,10 @@ Item {
 
     Rectangle {
         anchors.fill: parent
+        // Same translucent-overlay technique as ErrorBox.qml / MainWindow.qml's
+        // trayWindowSyncWarning: tint with the already dark-mode-aware border color
+        // at low alpha instead of a separate, fixed pastel fill color.
+        color: Style.tintedFill(Style.sesErrorBoxBorder, 0.2)
         border.color: Style.sesErrorBoxBorder
         border.width: Style.thickBorderWidth
         radius: Style.sesCornerRadius

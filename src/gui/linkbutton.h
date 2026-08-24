@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QWidget>
 #include <QMouseEvent>
+#include <QEvent>
 namespace OCC {
     class LinkButton : public QLabel
     {
@@ -18,6 +19,10 @@ namespace OCC {
 
     protected:
         void mousePressEvent(QMouseEvent* event);
+        void changeEvent(QEvent* event) override;
+
+    private:
+        void customizeStyle();
     };
 }
 #endif // LINKBUTTON_H

@@ -58,3 +58,7 @@ Einsatz: Nach einem Merge von `origin/<branch>` funktioniert/sieht etwas nicht m
 4. Mit der konkreten Fehlerbeschreibung des Nutzers abgleichen (Fehlermeldung, Screenshot-Beschreibung, betroffenes UI-Element) — nicht raten, sondern die exakte Stelle über `git blame` auf der aktuellen Datei lokalisieren, um zu sehen, welche Zeile von welcher Seite stammt.
 5. Den konkreten Fix vorschlagen (i. d. R. die überzählige/widersprüchliche Zeile entfernen) und kurz erklären, welches Merge-Muster dazu geführt hat, damit der Nutzer es beim nächsten Mal selbst erkennt.
 6. Nach dem Fix: kurz gegen `origin/<branch>` und den vorherigen (funktionierenden) Stand gegenchecken, dass keine weiteren Stellen betroffen sind.
+
+## Verwandte Skills
+
+- [merge-drift-map](../merge-drift-map/SKILL.md) hält das Ergebnis von Workflow A dauerhaft in einer Landkarte fest (Diff-Anteil + diese Risiko-Einstufung), statt es nur einmalig im Gespräch zu liefern.

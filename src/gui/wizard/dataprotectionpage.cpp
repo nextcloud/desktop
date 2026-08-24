@@ -80,7 +80,7 @@ namespace OCC{
                     WLTheme.settingsFont(),
                     WLTheme.settingsTextSize(),
                     WLTheme.settingsTextWeight(),
-                    WLTheme.black()
+                    WLTheme.titleColor()
                 ),
                 "32"
             )

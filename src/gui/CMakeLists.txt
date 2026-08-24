@@ -587,6 +587,11 @@ if(KF6GuiAddons_FOUND)
   add_definitions(-DHAVE_KGUIADDONS)
 endif()
 
+if(WIN32)
+  # DwmSetWindowAttribute(), used to give native window title bars a dark mode.
+  target_link_libraries(nextcloudCore PUBLIC dwmapi)
+endif()
+
 add_subdirectory(socketapi)
 
 # skip unity inclusion for files which cause problems with a CMake unity build

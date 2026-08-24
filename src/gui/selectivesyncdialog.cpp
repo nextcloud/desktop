@@ -101,9 +101,13 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
 #ifdef Q_OS_MAC
     _folderTree->header()->setStyleSheet(
     "QHeaderView::section {"
-    "    background-color: white;" // Set the background color
-    "    border: 1px solid #e6e6e6;"   // Optional: add a border
-    "    padding-left: 4px;" 
+    "    background-color: "
+    + WLTheme.dialogBackgroundColor() +
+    ";" // Set the background color
+    // Matches the tray's own hairline separators (e.g. MainWindow.qml), which use the
+    // Qt palette's "dark" role directly instead of a WLTheme getter - already theme-aware.
+    "    border: 1px solid palette(dark);"
+    "    padding-left: 4px;"
     +    QString(WLTheme.fontConfigurationCss(
             WLTheme.settingsFont(),
             WLTheme.settingsTextSize(),
@@ -114,12 +118,13 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     );
 #else
     _folderTree->header()->setStyleSheet(
-        WLTheme.fontConfigurationCss(
-            WLTheme.settingsFont(),
-            WLTheme.settingsTextSize(),
-            WLTheme.settingsTextWeight(),
-            WLTheme.titleColor()
-    ));
+        QStringLiteral("QHeaderView::section { background-color: %1; %2 }")
+            .arg(WLTheme.dialogBackgroundColor(),
+                 WLTheme.fontConfigurationCss(
+                     WLTheme.settingsFont(),
+                     WLTheme.settingsTextSize(),
+                     WLTheme.settingsTextWeight(),
+                     WLTheme.titleColor())));
 #endif
 
     _folderTree->setStyleSheet(WLTheme.fontConfigurationCss(
@@ -130,7 +135,7 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     ));
 
 #ifdef Q_OS_MAC
-    _folderTree->setPalette(QPalette(WLTheme.white()));
+    _folderTree->setPalette(QPalette(WLTheme.dialogBackgroundColor()));
 #endif
 
     ConfigFile::setupDefaultExcludeFilePaths(_excludedFiles);
@@ -552,13 +557,16 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
 
     QPushButton *button = nullptr;
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
+    // This button has no explicit "buttonStyle" property, so it renders via the app-wide
+    // SecondaryButtonStyle (buttonSecondaryColor()/buttonSecondaryBorderColor()), which is
+    // now dark-mode-aware (see basetheme.h/stratotheme.h). Match its text to that background.
     button->setStyleSheet(
         button->styleSheet() + QStringLiteral("QPushButton { %1; } ").arg(
             WLTheme.fontConfigurationCss(
                 WLTheme.settingsFont(),
                 WLTheme.settingsTextSize(),
                 WLTheme.settingsTextWeight(),
-                WLTheme.black()
+                WLTheme.titleColor()
             )
         )
     );

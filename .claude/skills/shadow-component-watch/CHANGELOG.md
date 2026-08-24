@@ -41,3 +41,15 @@ Referenz-Branch: `origin/stable-33.0` (`git fetch` durchgeführt).
   - **Verdict: bewusst nicht portiert.** Von Boris bestätigt (2026-08-17): das Produkt hat keine Collaboration-Features, User-Status ergibt daher grundsätzlich keinen Sinn — gilt für den kompletten Feature-Komplex (Indikator **und** beide Menüeinträge), auch wenn nur der Indikator einen expliziten `SES-50`-Kommentar im Code trägt. `registry.md` entsprechend zusammengefasst, damit künftige Läufe das als eine Abweichung behandeln statt es erneut als offenen Punkt zu melden.
 
 **Ergebnis:** keine offenen Punkte mehr — alles bereits portiert oder nachvollziehbar bewusst nicht portiert (Status-Feature komplett, Produktentscheidung "keine Collaboration-Features").
+
+## 2026-08-19 — Routine-Check
+
+Referenz-Branch: `origin/stable-33.0` (`git fetch` durchgeführt).
+
+**Paar: `TrayWindowHeader.qml` ↔ `SesTrayHeader.qml`**
+`git log 568cbe171..origin/stable-33.0 -- src/gui/tray/TrayWindowHeader.qml` → keine neuen Commits. **Kein Handlungsbedarf**, Stand unverändert.
+
+**Paar: `CurrentAccountHeaderButton.qml` ↔ `TrayWindowAccountMenu.qml`/`UserLine.qml`**
+`git log 60e0cb196..origin/stable-33.0 -- src/gui/tray/CurrentAccountHeaderButton.qml` → keine neuen Commits. **Kein Handlungsbedarf**, Stand unverändert.
+
+**Ergebnis:** Upstream `stable-33.0` hat seit dem letzten Lauf keine neuen Commits an beiden beobachteten Dateien — reiner Bestätigungs-Check ohne Änderungen an der Registry.

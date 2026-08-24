@@ -35,6 +35,7 @@
 #include "sesstyle.h"
 #include "version.h"
 
+#include <QOperatingSystemVersion>
 #include <QStyleFactory>
 
 #include "config.h"
@@ -42,6 +43,7 @@
 #if defined(Q_OS_WIN)
 #include "shellextensionsserver.h"
 #include <windows.h>
+#include <dwmapi.h>
 #elif defined(Q_OS_MACOS)
 #include "macOS/fileprovider.h"
 #endif
@@ -121,6 +123,47 @@ QString applicationTrPath()
     }
 #endif
 }
+
+#if defined(Q_OS_WIN)
+// Native window chrome (title bar, borders) is drawn by DWM, outside Qt's own
+// palette/stylesheet system - Qt does not switch it automatically. Windows 11's
+// own dark title bar only follows an app's declared preference per-HWND.
+void applyImmersiveDarkMode(QWidget *widget, bool dark)
+{
+    if (!widget || !widget->isWindow()) {
+        return;
+    }
+    const auto hwnd = reinterpret_cast<HWND>(widget->winId());
+    if (!hwnd) {
+        return;
+    }
+    const BOOL enabled = dark ? TRUE : FALSE;
+    // 20 = DWMWA_USE_IMMERSIVE_DARK_MODE on Windows 10 20H1+ and Windows 11; older
+    // insider builds (10 build 18985-18999) used 19 instead - try both.
+    if (DwmSetWindowAttribute(hwnd, 20, &enabled, sizeof(enabled)) != S_OK) {
+        DwmSetWindowAttribute(hwnd, 19, &enabled, sizeof(enabled));
+    }
+}
+
+// Qt's "windows11" style (used on Windows 11 for palette/dark-mode-aware native
+// primitives, see baseStyleName below) requests rounded window corners from DWM
+// on its own as part of matching the native Fluent look. Override that back to
+// square corners here if that's not wanted.
+void applyWindowCornerPreference(QWidget *widget)
+{
+    if (!widget || !widget->isWindow()) {
+        return;
+    }
+    const auto hwnd = reinterpret_cast<HWND>(widget->winId());
+    if (!hwnd) {
+        return;
+    }
+    // 33 = DWMWA_WINDOW_CORNER_PREFERENCE, 1 = DWMWCP_DONOTROUND (Windows 11 only;
+    // no-op and harmless on Windows 10).
+    const DWORD doNotRound = 1;
+    DwmSetWindowAttribute(hwnd, 33, &doNotRound, sizeof(doNotRound));
+}
+#endif
 }
 
 // ----------------------------------------------------------------------------------
@@ -398,6 +441,16 @@ Application::Application(int &argc, char **argv)
     _theme->systemPaletteHasChanged();
 
 #if defined(Q_OS_WIN)
+    // Give every top-level window its dark/light title bar as soon as it becomes visible,
+    // and re-apply to all of them if the theme changes while windows are already open.
+    installEventFilter(this);
+    connect(_theme, &Theme::darkModeChanged, this, [this] {
+        const auto dark = _theme->darkMode();
+        for (auto *widget : QApplication::topLevelWidgets()) {
+            applyImmersiveDarkMode(widget, dark);
+        }
+    });
+
     _shellExtensionsServer.reset(new ShellExtensionsServer);
 #endif
 
@@ -408,7 +461,18 @@ Application::Application(int &argc, char **argv)
 #endif
 
 #ifdef IONOS_BUILD
-    setStyle(new sesStyle(QStyleFactory::create("WindowsVista")));
+#if defined(Q_OS_WIN)
+    // Match stable's OS-version-based widget style choice (see main.cpp) so native
+    // primitives (e.g. QTreeView branch indicators) stay palette/dark-mode aware
+    // instead of falling back to the legacy UxTheme-based "WindowsVista" style.
+    const auto baseStyleName = QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows11
+        ? QStringLiteral("windows11")
+        : QStringLiteral("Fusion");
+    setStyle(new sesStyle(QStyleFactory::create(baseStyleName)));
+#else
+    // QProxyStyle falls back to the platform's current style when given nullptr.
+    setStyle(new sesStyle(nullptr));
+#endif
 #endif
 
     // create accounts and folders from a legacy desktop client or from the current config file
@@ -1236,6 +1300,22 @@ bool Application::event(QEvent *event)
         emit systemPaletteChanged();
     }
     return QGuiApplication::event(event);
+}
+
+bool Application::eventFilter(QObject *watched, QEvent *event)
+{
+#if defined(Q_OS_WIN)
+    if (event->type() == QEvent::Show) {
+        if (auto *widget = qobject_cast<QWidget *>(watched)) {
+            applyImmersiveDarkMode(widget, _theme->darkMode());
+            applyWindowCornerPreference(widget);
+        }
+    }
+#else
+    Q_UNUSED(watched)
+    Q_UNUSED(event)
+#endif
+    return false;
 }
 
 } // namespace OCC

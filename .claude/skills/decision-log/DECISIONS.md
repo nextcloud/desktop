@@ -80,6 +80,14 @@ Chronologisches Protokoll: Komponenten-Ausblenden/-Entfernen-Entscheidungen und 
 
 **Status:** aktiv
 
+## 2026-08-18 — Unified Search im Tray wieder aktiviert (SES-579)
+
+**Kontext:** Die Unified-Search-Leiste (`UnifiedSearchInputContainer.qml`) im Tray war seit `SES-589` per `visible: false` ausgeblendet (Commit `f545c860a`, "removed searchbar") — laut Commit-Message zurückgestellt, weil sie damals kein direktes `develop_stable-4.0`-Element war.
+
+**Entscheidung:** Sichtbarkeit wiederhergestellt und ins Whitelabel-Design integriert: Such-/Ergebnis-Hover-Styling an fork-eigene Farben/Komponenten angeglichen (Hintergrund/Rand/Text wie `ShareeSearchField`, `Style.sesHover` statt `palette.highlight`, einheitliche Eingabefeldhöhe). Commit `26fe47ea7`. Die zugehörigen C++-Modelle (`UnifiedSearchResultsListModel` etc.) waren die ganze Zeit unverändert im Baum vorhanden und sind jetzt wieder aktiv genutzt statt totem Code.
+
+**Status:** aktiv
+
 ## 2026-08-18 — Chevron im Account-Umschalter: generisches Icon statt Marken-SVG (SES-578)
 
 *Rekonstruiert am 2026-08-19 nach versehentlichem Datenverlust (Branch-Wechsel hat den ursprünglichen, noch nicht committeten Eintrag überschrieben) — aus dem Kontext-Fragment dieses Gesprächs und der Commit-Message von `9647f1174` zusammengesetzt, nicht das Original-Wording.*
@@ -89,5 +97,25 @@ Chronologisches Protokoll: Komponenten-Ausblenden/-Entfernen-Entscheidungen und 
 **Entscheidung:** Auf generisches `caret-down.svg` über den `svgimage-custom-color`-Provider umgestellt, getönt mit `Style.sesTrayFontColor` — gleiches Muster wie `TrayFoldersMenuButton.qml`/`CurrentAccountHeaderButton.qml`. Commit `9647f1174`.
 
 **Offener Punkt:** Icon-Form weicht leicht vom bisherigen Marken-Chevron ab — ggf. später durch einen passenden Marken-Asset von Design ersetzen.
+
+**Status:** aktiv
+
+## 2026-08-20 — isWindows11OrGreater() bleibt lokal in theme.cpp, verifiziert gegen stable-33.0 (SES-578)
+
+**Kontext:** Erwogen, den Windows-11-Versionscheck aus `theme.cpp` in einen wiederverwendbaren `Utility::isWindows11OrGreater()`-Helper zu extrahieren, in der Annahme, das sei näher an stable-33.0. Direkter Abgleich gegen den lokalen `stable-33.0`-Branch zeigt aber: dort ist `isWindows11OrGreater()` selbst eine lokale Funktion in `theme.cpp` (Zeile 62), kein `Utility::`-Helper.
+
+**Entscheidung:** Als lokale Funktion in `theme.cpp` belassen, exakt wie in stable-33.0 — keine Code-Änderung nötig, nur verifiziert.
+
+**Verworfene Alternative:** Extraktion nach `Utility::isWindows11OrGreater()` — hätte die Struktur von stable-33.0 weg bewegt statt angenähert.
+
+**Status:** aktiv
+
+## 2026-08-21 — Card-Panel-Hintergründe in GeneralSettings/AccountSettings wieder entfernt (SES-578)
+
+**Kontext:** Commit `b9e530504` hatte per neuem `panelBackgroundColor()`-Getter abgesetzte Karten-Hintergründe für die QGroupBox/QFrame-Panels eingeführt, mit der Begründung, das entspreche stable-33.0s gruppierter Panel-Optik. Ein vom Nutzer bereitgestellter Vergleichsscreenshot (Referenz-Build 4.0.11) zeigte für die Settings-Seite jedoch einen durchgängig einheitlichen Hintergrund ohne abgesetzte Karten.
+
+**Entscheidung:** `panelBackgroundColor()` (Getter + `Q_PROPERTY`) sowie beide Verwendungsstellen (`generalsettings.cpp`, `accountsettings.cpp`) vollständig entfernt. Seitenhintergrund läuft jetzt einheitlich über `dialogBackgroundColor()`, zusätzlich im Light Mode auf denselben Wert wie Tray `trayBackgroundColor()` (`#F7F7F9`) vereinheitlicht — Settings und Tray-`MainWindow` teilen sich damit exakt dasselbe Hintergrund-Farbschema in beiden Modi.
+
+**Verworfene Alternative:** Nur Kontrastrichtung/-stärke des Panel-Getters reparieren (Light heller, Dark massiv dunkler als die Seite — inkonsistent zwischen den Modi) statt die Panels komplett zu entfernen. Verworfen, da der Referenzscreenshot gar keine abgesetzten Panels zeigt; die stable-33.0-Analogie aus `b9e530504` traf also nicht zu.
 
 **Status:** aktiv

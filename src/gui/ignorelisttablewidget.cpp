@@ -207,9 +207,9 @@ void IgnoreListTableWidget::customizeIgnoreListDialogStyle(){
 
     ui->tableWidget->setStyleSheet(
         QStringLiteral("QTableWidget { background-color: %1; color: %2; } ").arg(
-            WLTheme.white(), 
-            WLTheme.black()
-        ) + 
+            WLTheme.dialogBackgroundColor(),
+            WLTheme.titleColor()
+        ) +
         WLTheme.fontConfigurationCss(
             WLTheme.settingsFont(),
             WLTheme.settingsTextSize(),
@@ -229,8 +229,8 @@ void IgnoreListTableWidget::customizeIgnoreListDialogStyle(){
 
     ui->tableWidget->horizontalHeader()->setStyleSheet(
             QStringLiteral("QHeaderView::section { background-color: %1; color: %2; border-bottom: none; %3; }").arg(
-            WLTheme.white(), 
-            WLTheme.black(),
+            WLTheme.dialogBackgroundColor(),
+            WLTheme.titleColor(),
             WLTheme.fontConfigurationCss(
                 WLTheme.settingsFont(),
                 WLTheme.settingsTextSize(),
@@ -290,7 +290,10 @@ void IgnoreListTableWidget::customizeAddIgnorePatternDialogStyle(QInputDialog &i
                  WLTheme.settingsTextWeight(),
                  WLTheme.buttonRadius(),
                  WLTheme.menuBorderColor(),
-                 WLTheme.white()
+                 // Matches the tray's own input fields (e.g. TalkReplyTextField.qml), which share
+                 // their background with the surrounding surface and rely solely on the border
+                 // (menuBorderColor() above) to read as a distinct field - not a separate fill color.
+                 WLTheme.dialogBackgroundColor()
             )
     );
 

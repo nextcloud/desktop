@@ -602,7 +602,7 @@ void AccountSettings::openIgnoredFilesDialog(const QString &absFolderPath)
     });
     connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::close);
 
-    dialog->setPalette(QPalette(QPalette::Window, WLTheme.white()));
+    dialog->setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
     dialog->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     dialog->open();
@@ -733,7 +733,7 @@ void AccountSettings::styleCustomContextMenu(QMenu *menu) const
                                        "color: %4; "
                                        "border-radius: 8px; "
                                        "}")
-                            .arg(WLTheme.white(),
+                            .arg(WLTheme.trayBackgroundColor(),
                                  WLTheme.menuBorderColor(),
                                  WLTheme.menuTextColor(),
                                  WLTheme.menuPressedTextColor(),
@@ -1175,7 +1175,7 @@ void AccountSettings::slotDisableVfsCurrentFolder()
     msgBox->setStyleSheet(
         QStringLiteral("QMessageBox QLabel { %1 background-color: %2; }")
             .arg(WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor()),
-                 WLTheme.white()));
+                 WLTheme.dialogBackgroundColor()));
 
     const auto acceptButton = msgBox->addButton(tr("Disable support"), QMessageBox::AcceptRole);
     acceptButton->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
@@ -1330,16 +1330,19 @@ void AccountSettings::migrateCertificateForAccount(const AccountPtr &account)
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
 {
 #ifndef IONOS_BUILD
+    // SES-578: white-on-red is a fixed, self-contained contrast pair - deliberately not themed,
+    // matching the tray's own alert colors (e.g. Style.errorBoxBackgroundColor / infoBoxBackgroundColor
+    // in Style.qml), which stay constant across light/dark rather than getting a dark variant.
     const auto errStyle = QLatin1String(
         "color:#ffffff; background-color:#bb4d4d;padding:5px;"
         "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
         "border-radius:5px;");
     if (errors.isEmpty()) {
         auto msg = message;
-        Theme::replaceLinkColorStringBackgroundAware(msg);
+        Theme::replaceLinkColorString(msg, QColor(WLTheme.settingsLinkColor()));
         _ui->connectLabel->setText(msg);
         _ui->connectLabel->setToolTip({});
-        _ui->connectLabel->setStyleSheet({});
+        _ui->connectLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
     } else {
         errors.prepend(message);
         auto userFriendlyMsg = errors.join(QLatin1String("<br>"));
@@ -1352,16 +1355,19 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
     _ui->accountStatus->setVisible(false);
 #else
 
+    // SES-578: white-on-red is a fixed, self-contained contrast pair - deliberately not themed,
+    // matching the tray's own alert colors (e.g. Style.errorBoxBackgroundColor / infoBoxBackgroundColor
+    // in Style.qml), which stay constant across light/dark rather than getting a dark variant.
     const auto errStyle = QLatin1String(
         "color:#ffffff; background-color:#bb4d4d;padding:5px;"
         "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
         "border-radius:5px;");
     if (errors.isEmpty()) {
         auto msg = message;
-        Theme::replaceLinkColorStringBackgroundAware(msg);
+        Theme::replaceLinkColorString(msg, QColor(WLTheme.settingsLinkColor()));
         _ui->connectLabel->setText(msg);
         _ui->connectLabel->setToolTip({});
-        _ui->connectLabel->setStyleSheet({});
+        _ui->connectLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
     } else {
         errors.prepend(message);
         auto userFriendlyMsg = errors.join(QLatin1String("<br>"));
@@ -1904,9 +1910,28 @@ void AccountSettings::slotStyleChanged()
 
 void AccountSettings::customizeStyle()
 {
+    // Unlike GeneralSettings, this page never painted its own background, so it stayed
+    // stuck on the ambient (unreliable on Windows 11 dark mode, see below) palette instead
+    // of the already-themed dialogBackgroundColor().
+    setAutoFillBackground(true);
+    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
+
     auto msg = _ui->connectLabel->text();
-    Theme::replaceLinkColorStringBackgroundAware(msg);
+    Theme::replaceLinkColorString(msg, QColor(WLTheme.settingsLinkColor()));
     _ui->connectLabel->setText(msg);
+    // Skip if an error is currently shown (fixed white-on-red errStyle from showConnectionLabel(),
+    // deliberately not theme-dependent) - don't clobber it with the normal-state text color.
+    if (!_ui->connectLabel->styleSheet().contains(QLatin1String("background-color"))) {
+        _ui->connectLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
+    }
+
+    _ui->syncFoldersPanelTitle->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
+    _ui->fileProviderPanelTitle->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
+    _ui->connectionSettingsPanelTitle->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
+
+    _ui->encryptionMessageLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
+
+    _ui->selectiveSyncLabel->setStyleSheet(QStringLiteral("color: %1;").arg(WLTheme.titleColor()));
 
     const auto color = palette().highlight().color();
     const auto toolTipStyle =
@@ -1914,11 +1939,10 @@ void AccountSettings::customizeStyle()
 
     _ui->_folderList->setStyleSheet(
         QStringLiteral("background: %1; %2;")
-            .arg(WLTheme.white(),
+            .arg(WLTheme.dialogBackgroundColor(),
                  WLTheme.fontConfigurationCss(WLTheme.settingsFont(), WLTheme.settingsTextSize(), WLTheme.settingsTextWeight(), WLTheme.titleColor())));
 
 #if defined(Q_OS_MAC)
-    _ui->selectiveSyncLabel->setStyleSheet(QString("color: %1;").arg(WLTheme.black()));
     _ui->horizontalLayout->setSpacing(16);
 #endif
 }

@@ -71,6 +71,8 @@ public:
     PushButtonStyleHelper* pushButtonStyleHelper() const;
 
 private:
+    void drawCheckboxIndicator(PrimitiveElement pe, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
+
     std::unique_ptr<class PushButtonStyleHelper> mPushButtonStyleHelper;
     std::unique_ptr<class MoreOptionsButtonStyleHelper> mMoreOptionsButtonStyleHelper;
 

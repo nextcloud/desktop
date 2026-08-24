@@ -293,8 +293,8 @@ void CaseClashFilenameDialog::customizeStyle()
 {
     this->setStyleSheet(
         QStringLiteral("QDialog {background-color: %1; color: %2;} QLabel{ %3;}").arg(
-            WLTheme.dialogBackgroundColor(), 
-            WLTheme.black(),
+            WLTheme.dialogBackgroundColor(),
+            WLTheme.titleColor(),
             WLTheme.fontConfigurationCss(
                 WLTheme.settingsFont(),
                 WLTheme.settingsTextSize(),
@@ -314,7 +314,7 @@ void CaseClashFilenameDialog::customizeStyle()
                 WLTheme.settingsTextWeight(),
                 WLTheme.buttonRadius(),
                 WLTheme.menuBorderColor(),
-                WLTheme.white()
+                WLTheme.dialogBackgroundColor()
             )
     );
 

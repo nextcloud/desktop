@@ -37,3 +37,4 @@ Hält `.claude/context/gui/` (siehe dessen [CLAUDE.md](../../context/gui/CLAUDE.
 - Kein periodischer/automatischer Trigger — der Nutzer entscheidet bewusst, wann aktualisiert wird.
 - Prüft nicht inhaltlich, ob die *Fork-spezifisch vs. Upstream*-Einordnungen noch stimmen, wenn sich am Referenz-Branch selbst etwas geändert hat (dafür ist [stable-merge-check](../stable-merge-check/SKILL.md) zuständig).
 - Liefert keinen gebündelten Kontext zu einer einzelnen Komponente (Doku + Decision-Log + Git-Historie zusammen) — dafür [component-context](../component-context/SKILL.md), der diese Doku nur liest.
+- Pflegt keine Farbschema-Landkarte (welches Theme-Property, Light-/Dark-Wert, Bruch oder nicht) — dafür [color-scheme-map](../color-scheme-map/SKILL.md).
