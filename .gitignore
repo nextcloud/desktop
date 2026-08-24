@@ -198,3 +198,7 @@ theme.qrc
 
 # Swift Package Manager Build Artifacts
 .swiftpm_codeql_detected_source_root
+
+# Nix
+result
+flake.lock
