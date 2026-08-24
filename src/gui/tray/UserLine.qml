@@ -84,6 +84,7 @@ AbstractButton {
                 id: accountServer
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+                Layout.bottomMargin: 5
                 verticalAlignment: Text.AlignTop
                 text: server
                 elide: Text.ElideRight
