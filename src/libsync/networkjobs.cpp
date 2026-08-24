@@ -1111,11 +1111,13 @@ void JsonApiJob::start()
 
 bool JsonApiJob::finished()
 {
-    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
-                         << replyStatusString();
-
     int statusCode = 0;
     int httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url()
+                         << "FINISHED WITH STATUS" << replyStatusString()
+                         << "with http status code" << httpStatusCode;
+
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -1132,7 +1134,7 @@ bool JsonApiJob::finished()
             statusCode = rexMatch.captured(1).toInt();
         }
     } else if(jsonStr.isEmpty() && httpStatusCode == notModifiedStatusCode){
-        qCWarning(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
+        qCDebug(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
         statusCode = httpStatusCode;
     } else {
         static const QRegularExpression rex(R"("statuscode":(\d+))");
