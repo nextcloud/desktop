@@ -293,13 +293,15 @@ enum Signer: Signing {
         }
     }
 
-    private static func verify(at location: URL) async throws {
+    private static func verify(at location: URL, expectedTeamIdentifier: String?) async throws {
         Log.info("Verifying: \(location.path)")
         let code = await shell("codesign --verify --deep --strict --verbose=2 \"\(location.path)\"")
 
         if code > 0 {
             throw MacCrafterError.signing("Signing verification failed because the codesign command terminated with code \(code)")
         }
+
+        try CodeSignatureVerifier.verify(at: location, expectedTeamIdentifier: expectedTeamIdentifier)
     }
 
     // MARK: - Public
@@ -310,7 +312,8 @@ enum Signer: Signing {
     static func signMainBundle(
         at location: URL,
         codeSignIdentity: String,
-        entitlements: [String: URL]
+        entitlements: [String: URL],
+        expectedTeamIdentifier: String? = nil
     ) async throws {
         // Signing is inside-out: nested code first, the containing bundle last. Login items come
         // before the app for that reason, and the outer sign is deliberately not --deep.
@@ -390,7 +393,7 @@ enum Signer: Signing {
         }
 
         await sign(at: location, with: codeSignIdentity, entitlements: mainAppEntitlements)
-        try await verify(at: location)
+        try await verify(at: location, expectedTeamIdentifier: expectedTeamIdentifier)
     }
     
     ///

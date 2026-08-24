@@ -434,7 +434,10 @@ struct Build: AsyncParsableCommand {
             try await Signer.signMainBundle(
                 at: clientAppURL,
                 codeSignIdentity: codeSignIdentity,
-                entitlements: entitlements
+                entitlements: entitlements,
+                expectedTeamIdentifier: try CMakeConfiguration.developmentTeamIdentifier(
+                    at: repoRootURL.appendingPathComponent("NEXTCLOUD.cmake")
+                )
             )
         }
         
