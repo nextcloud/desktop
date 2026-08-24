@@ -279,7 +279,9 @@ QtObject {
     readonly property color sesMenuBorder: Theme.darkMode ? "#5B7699" : "#2E4360"
     readonly property color sesSearchFieldContent: Theme.darkMode ? "#B7C1CE" : "#97A3B4"
 
-    property int sesAccountMenuHeight: variableSize(40)
+    // 40 was too tight for the two text rows in UserLine.qml (name + server) plus the
+    // extra bottomMargin reserved there - the label block overflowed the row's bottom edge.
+    property int sesAccountMenuHeight: variableSize(52)
     property int sesHeaderLogoHeigth: variableSize(40)
     property int sesHeaderLogoTopMargin: variableSize(12)
     property int sesHeaderLogoLeftMargin: variableSize(24)
