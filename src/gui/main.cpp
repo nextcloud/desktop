@@ -33,6 +33,7 @@
 #include <QQuickWindow>
 #include <QSurfaceFormat>
 #include <QOperatingSystemVersion>
+#include <QFontDatabase>
 #include "ga4/ganalytics.h"
 #include "ga4/datacollectionwrapper.h"
 
@@ -107,7 +108,6 @@ int main(int argc, char **argv)
         qmlStyle = QStringLiteral("FluentWinUI3");
         widgetsStyle = QStringLiteral("windows11");
     }
-    QApplication::setFont(WLTheme.settingsFontDefault());
 #endif
 
 #ifdef IONOS_BUILD
@@ -125,9 +125,24 @@ int main(int argc, char **argv)
     }
 #endif
 
+    // Register the bundled Open Sans weights the UI actually requests. This is needed on every
+    // platform: the QML tray/file-details UI (Style.qml's sesOpenSansRegular) always renders in
+    // Open Sans regardless of OS, and on Linux/macOS it also backs BaseTheme::settingsFont(),
+    // which falls back to Open Sans there since Segoe UI (the Windows default) doesn't exist.
+    for (const auto &fontFile : {
+             QStringLiteral(":/client/fonts/OpenSans-Regular.ttf"),
+             QStringLiteral(":/client/fonts/OpenSans-SemiBold.ttf"),
+             QStringLiteral(":/client/fonts/OpenSans-Bold.ttf"),
+         }) {
+        if (QFontDatabase::addApplicationFont(fontFile) == -1) {
+            qWarning() << "Failed to register bundled font" << fontFile;
+        }
+    }
+
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
 #endif
+    QApplication::setFont(WLTheme.settingsFontDefault());
     if (app.giveHelp()) {
         app.showHelp();
         return 0;

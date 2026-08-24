@@ -35,7 +35,7 @@ TextField {
     placeholderText: qsTr("Search files, messages, events …")
     placeholderTextColor: Style.sesSearchFieldContent
     color: Style.sesTrayFontColor
-    Component.onCompleted: contentItem.cursorColor = Style.sesTrayFontColor
+    Component.onCompleted: contentItem.cursorColor = Qt.binding(function() { return Style.sesTrayFontColor })
 
     selectByMouse: true
 

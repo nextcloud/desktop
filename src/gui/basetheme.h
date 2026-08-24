@@ -4,28 +4,29 @@
 #include <QFont>
 #include <QString>
 #include "theme.h"
+#include "common/utility.h"
 
 namespace OCC {
 
 class BaseTheme : public QObject{
     Q_OBJECT
     Q_PROPERTY(QString dialogBackgroundColor READ dialogBackgroundColor CONSTANT)
-    Q_PROPERTY(QString trayFontColor READ trayFontColor CONSTANT)
-    Q_PROPERTY(QString trayBorderColor READ trayBorderColor CONSTANT)
+    Q_PROPERTY(QString trayFontColor READ trayFontColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString trayBorderColor READ trayBorderColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString trayInputFieldBorderColor READ trayInputFieldBorderColor CONSTANT)
-    Q_PROPERTY(QString trayBackgroundColor READ trayBackgroundColor CONSTANT)
-    Q_PROPERTY(QString iconDarkColor READ iconDarkColor CONSTANT)
-    Q_PROPERTY(QString buttonIconColor READ buttonIconColor CONSTANT)
-    Q_PROPERTY(QString buttonHoveredColor READ buttonHoveredColor CONSTANT)
-    Q_PROPERTY(QString buttonPressedColor READ buttonPressedColor CONSTANT)
-    Q_PROPERTY(QString toolButtonHoveredColor READ toolButtonHoveredColor CONSTANT)
-    Q_PROPERTY(QString toolButtonPressedColor READ toolButtonPressedColor CONSTANT)
-    Q_PROPERTY(QString pillButtonPrimaryColor READ pillButtonPrimaryColor CONSTANT)
-    Q_PROPERTY(QString pillButtonSecondaryColor READ pillButtonSecondaryColor CONSTANT)
-    Q_PROPERTY(QString pillButtonBorderColor READ pillButtonBorderColor CONSTANT)
+    Q_PROPERTY(QString trayBackgroundColor READ trayBackgroundColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString iconDarkColor READ iconDarkColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString buttonIconColor READ buttonIconColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString buttonHoveredColor READ buttonHoveredColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString buttonPressedColor READ buttonPressedColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString toolButtonHoveredColor READ toolButtonHoveredColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString toolButtonPressedColor READ toolButtonPressedColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString pillButtonPrimaryColor READ pillButtonPrimaryColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString pillButtonSecondaryColor READ pillButtonSecondaryColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString pillButtonBorderColor READ pillButtonBorderColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString clipboardBackgroundColor READ clipboardBackgroundColor CONSTANT)
-    Q_PROPERTY(QString trayErrorBorderColor READ trayErrorBorderColor CONSTANT)
-    Q_PROPERTY(QString trayErrorTextColor READ trayErrorTextColor CONSTANT)
+    Q_PROPERTY(QString trayErrorBorderColor READ trayErrorBorderColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString trayErrorTextColor READ trayErrorTextColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString sesHeaderLogoIcon READ sesHeaderLogoIcon CONSTANT)
     Q_PROPERTY(QString websiteIcon READ websiteIcon CONSTANT)
     Q_PROPERTY(QString folderIcon READ folderIcon CONSTANT)
@@ -50,6 +51,10 @@ class BaseTheme : public QObject{
     Q_PROPERTY(QString activityIcon READ activityIcon CONSTANT)
 
 public:
+
+    BaseTheme() {
+        connect(Theme::instance(), &Theme::darkModeChanged, this, &BaseTheme::themeColorsChanged);
+    }
 
     virtual ~BaseTheme() = default;
 
@@ -239,12 +244,11 @@ public:
 
     //Font Configuration
     virtual QString settingsFont() const {
-        return "Segoe UI";
+        return Utility::isWindows() ? QStringLiteral("Segoe UI") : QStringLiteral("Open Sans");
     }
 
     virtual QString contextMenuFont() const {
-        //TODO
-        return ":/client/fonts/OpenSans-Regular.ttf";
+        return settingsFont();
     }
 
     virtual QString settingsSmallTextSize() const {
@@ -331,11 +335,11 @@ public:
     }
 
     virtual QString trayFontColor() const {
-        return "#001B41";
+        return themedColor("#001B41", "#D6E4F5");
     }
 
     virtual QString trayBorderColor() const {
-        return "#D7D7D7";
+        return themedColor("#D7D7D7", "#3A3D42");
     }
 
     virtual QString trayInputFieldBorderColor() const {
@@ -408,15 +412,15 @@ public:
     }
 
     virtual QString pillButtonPrimaryColor() const {
-        return "#0B2A63";
+        return themedColor("#0B2A63", "#3D6BB0");
     }
 
     virtual QString pillButtonSecondaryColor() const {
-        return "#FFFFFF";
+        return themedColor("#FFFFFF", "#2A2E35");
     }
 
     virtual QString pillButtonBorderColor() const {
-        return "#0B2A63";
+        return themedColor("#0B2A63", "#3D6BB0");
     }
 
     virtual QString clipboardBackgroundColor() const {
@@ -436,31 +440,31 @@ public:
     }
 
     virtual QString trayBackgroundColor() const {
-        return "#FFFFFF";
+        return themedColor("#FFFFFF", "#1E2126");
     }
 
     virtual QString menuBorderColor() const {
-        return "#2E4360";
+        return themedColor("#2E4360", "#5B7699");
     }
 
     virtual QString menuTextColor() const {
-        return "#001B41";
+        return themedColor("#001B41", "#D6E4F5");
     }
 
     virtual QString menuPressedTextColor() const {
-        return "#001B41";
+        return themedColor("#001B41", "#D6E4F5");
     }
 
     virtual QString iconDarkColor() const {
-        return "#001B41";
+        return themedColor("#001B41", "#D6E4F5");
     }
 
     virtual QString menuSelectedItemColor() const {
-        return "#F4F7FA";
+        return themedColor("#F4F7FA", "#333844");
     }
 
     virtual QString menuPressedItemColor() const {
-        return "#F4F7FA";
+        return themedColor("#F4F7FA", "#333844");
     }
 
     virtual QString menuBorderRadius() const {
@@ -468,7 +472,7 @@ public:
     }
 
     virtual QString buttonIconColor() const {
-        return "#1474C4";
+        return themedColor("#1474C4", "#5FA8E0");
     }
 
     virtual QString buttonIconHoverColor() const {
@@ -476,19 +480,19 @@ public:
     }
 
     virtual QString buttonPressedColor() const {
-        return "#0B2A63";
+        return themedColor("#0B2A63", "#123B85");
     }
 
     virtual QString buttonHoveredColor() const {
-        return "#1474C4";
+        return themedColor("#1474C4", "#5FA8E0");
     }
 
     virtual QString toolButtonHoveredColor() const {
-        return "#DBEDF8";
+        return themedColor("#DBEDF8", "#233240");
     }
 
     virtual QString toolButtonPressedColor() const {
-        return "#95CAEB";
+        return themedColor("#95CAEB", "#2C4A63");
     }
 
     virtual QString errorColor() const {
@@ -500,11 +504,11 @@ public:
     }
 
     virtual QString trayErrorBorderColor() const {
-        return "#F50C00";
+        return themedColor("#F50C00", "#FF6B61");
     }
 
     virtual QString trayErrorTextColor() const {
-        return "#C80A00";
+        return themedColor("#C80A00", "#FF8A80");
     }
 
     virtual QString warningBorderColor() const {
@@ -533,6 +537,16 @@ public:
 
     virtual QString treeViewHoverColor() const {
         return "#e5f3ff";
+    }
+
+signals:
+    void themeColorsChanged();
+
+protected:
+    // TODO: first-pass dark variants, derived by hand and not yet design-reviewed.
+    // Needs a proper visual QA/design pass before being considered final.
+    static QString themedColor(const QString &light, const QString &dark) {
+        return Theme::instance()->darkMode() ? dark : light;
     }
 
     private:

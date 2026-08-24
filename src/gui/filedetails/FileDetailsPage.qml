@@ -230,6 +230,7 @@ Page {
                         contentItem: Text {
                             text: tagRepeater.fileTagModel.overflowTagsString
                             color: Style.sesTrayFontColor
+                            font.family: Style.sesOpenSansRegular
                         }
                     }
                 }

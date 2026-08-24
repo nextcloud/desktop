@@ -37,7 +37,8 @@ Button{
       contentItem: Text {
         text: root.toolTipText
         color: Style.sesTrayFontColor
-      } 
+        font.family: Style.sesOpenSansRegular
+      }
   }
 
   background: Rectangle {

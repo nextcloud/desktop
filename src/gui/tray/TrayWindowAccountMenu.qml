@@ -281,7 +281,7 @@ Button {
             Layout.alignment: Qt.AlignRight
             verticalAlignment: Qt.AlignBottom
             Layout.rightMargin: Style.sesAccountButtonRightMargin
-            source: Style.sesChevron
+            source: "image://svgimage-custom-color/caret-down.svg/" + Style.sesTrayFontColor
             sourceSize.width: 14
             sourceSize.height: 14
             Accessible.role: Accessible.PopupMenu

@@ -48,6 +48,7 @@ ItemDelegate {
         contentItem: Text {
             text: qsTr("In %1").arg(model.displayLocation)
             color: Style.sesTrayFontColor
+            font.family: Style.sesOpenSansRegular
         }
     }
 

@@ -89,7 +89,7 @@ AbstractButton {
                 elide: Text.ElideRight
                 font.pixelSize: Style.subLinePixelSize
 
-                color: userLine.statusItemColor
+                color: Style.sesTrayFontColor
             }
 
             RowLayout {
@@ -188,7 +188,7 @@ AbstractButton {
 
                         Component.onCompleted: {
                             if (contentItem && contentItem.hasOwnProperty("color")) {
-                                contentItem.color = logInOutButton.palette.text
+                                contentItem.color = Qt.binding(function() { return logInOutButton.palette.text })
                             }
                         }
                         icon.source: Style.sesLogout
@@ -231,7 +231,7 @@ AbstractButton {
 
                         Component.onCompleted: {
                             if (contentItem && contentItem.hasOwnProperty("color")) {
-                                contentItem.color = removeAccountButton.palette.text
+                                contentItem.color = Qt.binding(function() { return removeAccountButton.palette.text })
                             }
                         }
                         icon.source: Style.sesDelete

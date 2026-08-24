@@ -199,6 +199,7 @@ RowLayout {
                         contentItem: Text {
                             text: qsTr("Open file details")
                             color: Style.sesTrayFontColor
+                            font.family: Style.sesOpenSansRegular
                         }
                     }
 
@@ -236,7 +237,7 @@ RowLayout {
 
                             Component.onCompleted: {
                                 if (contentItem && contentItem.hasOwnProperty("color")) {
-                                    contentItem.color = fileDetailsMenuItem.palette.text
+                                    contentItem.color = Qt.binding(function() { return fileDetailsMenuItem.palette.text })
                                 }
                             }
 
@@ -272,7 +273,7 @@ RowLayout {
 
                             Component.onCompleted: {
                                 if (contentItem && contentItem.hasOwnProperty("color")) {
-                                    contentItem.color = fileActionsMenuItem.palette.text
+                                    contentItem.color = Qt.binding(function() { return fileActionsMenuItem.palette.text })
                                 }
                             }
 

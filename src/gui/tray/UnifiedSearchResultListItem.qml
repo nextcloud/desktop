@@ -41,6 +41,7 @@ MouseArea {
         contentItem: Text {
             text: isFetchMoreTrigger ? qsTr("Load more results") : model.resultTitle + "\n\n" + model.subline
             color: Style.sesTrayFontColor
+            font.family: Style.sesOpenSansRegular
         } 
     }
 

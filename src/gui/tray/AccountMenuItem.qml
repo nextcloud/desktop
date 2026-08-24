@@ -28,7 +28,7 @@ MenuItem {
     
     Component.onCompleted: {
         if (contentItem && contentItem.hasOwnProperty("color")) {
-            contentItem.color = accountMenuItem.palette.text
+            contentItem.color = Qt.binding(function() { return accountMenuItem.palette.text })
         }
     }
 

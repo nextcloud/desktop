@@ -1171,6 +1171,15 @@ void Theme::setStartLoginFlowAutomatically(bool startLoginFlowAuto)
 void Theme::systemPaletteHasChanged()
 {
     qCInfo(lcTheme()) << "system palette changed";
+
+    // TODO: first-pass, not yet design-reviewed. See BaseTheme::themedColor() for the
+    // equivalent tray-color fix and its rationale.
+    auto systemPalette = QGuiApplication::palette();
+    if (!darkMode()) {
+        systemPalette.setColor(QPalette::WindowText, QColor("#001B40"));
+    }
+    QGuiApplication::setPalette(systemPalette);
+
 #ifdef Q_OS_WIN
     if (darkMode() && !isWindows11OrGreater()) {
         qApp->setPalette(reserveDarkPalette);

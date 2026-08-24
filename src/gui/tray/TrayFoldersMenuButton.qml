@@ -70,7 +70,8 @@ HeaderButton {
         contentItem: Text {
             text: tooltip.text
             color: Style.sesTrayFontColor
-        } 
+            font.family: Style.sesOpenSansRegular
+        }
     }
 
 
