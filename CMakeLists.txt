@@ -95,6 +95,9 @@ include(ECMMarkNonGuiExecutable)
 include(ECMSetupVersion)
 include(ECMQmlModule)
 
+include(KDEGitCommitHooks)
+kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
+
 #include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMEnableSanitizers)
 
