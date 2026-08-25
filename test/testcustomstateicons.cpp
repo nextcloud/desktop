@@ -25,6 +25,16 @@ bool isColor(const QStringView value, const Qt::GlobalColor expected)
     return color.isValid() && color == QColor(expected);
 }
 
+bool isLightPixel(const QRgb pixel)
+{
+    return qAlpha(pixel) >= 128 && qRed(pixel) >= 230 && qGreen(pixel) >= 230 && qBlue(pixel) >= 230;
+}
+
+bool isDarkPixel(const QRgb pixel)
+{
+    return qAlpha(pixel) >= 128 && qRed(pixel) <= 25 && qGreen(pixel) <= 25 && qBlue(pixel) <= 25;
+}
+
 }
 
 class TestCustomStateIcons : public QObject
@@ -146,16 +156,21 @@ private slots:
                     continue;
                 }
 
-                hasLightPixel = hasLightPixel
-                    || (qRed(pixel) >= 230 && qGreen(pixel) >= 230 && qBlue(pixel) >= 230);
-                hasDarkPixel = hasDarkPixel
-                    || (qRed(pixel) <= 25 && qGreen(pixel) <= 25 && qBlue(pixel) <= 25);
+                hasLightPixel = hasLightPixel || isLightPixel(pixel);
+                hasDarkPixel = hasDarkPixel || isDarkPixel(pixel);
             }
         }
 
         QVERIFY2(hasLightPixel, qPrintable(fileName + QStringLiteral(" must retain a light interior")));
         QVERIFY2(hasDarkPixel, qPrintable(fileName + QStringLiteral(" must retain a dark outline")));
         QVERIFY2(!hasUnexpectedColor, qPrintable(fileName + QStringLiteral(" must contain only grayscale pixels")));
+
+        if (fileName.endsWith(QStringLiteral("-1-shared.png"))) {
+            const auto headCenter = image.pixel(expectedSize * 3 / 8, expectedSize / 3);
+            const auto bodyCenter = image.pixel(expectedSize * 3 / 8, expectedSize * 7 / 10);
+            QVERIFY2(isLightPixel(headCenter), qPrintable(fileName + QStringLiteral(" must retain a filled head")));
+            QVERIFY2(isLightPixel(bodyCenter), qPrintable(fileName + QStringLiteral(" must retain a filled body")));
+        }
     }
 };
 
