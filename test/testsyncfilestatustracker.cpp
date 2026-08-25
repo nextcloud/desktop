@@ -28,8 +28,9 @@ public:
         auto locPath = _syncEngine.localPath();
         // Start from the end to get the latest status
         for (int i = size() - 1; i >= 0; --i) {
-            if (QFileInfo(at(i)[0].toString()) == file)
+            if (QFileInfo(at(i)[0].toString()) == file) {
                 return at(i)[1].value<SyncFileStatus>();
+            }
         }
         return {};
     }
@@ -40,14 +41,16 @@ public:
         // Start from the end to get the latest status
         int i = size() - 1;
         for (; i >= 0; --i) {
-            if (QFileInfo(at(i)[0].toString()) == secondFile)
+            if (QFileInfo(at(i)[0].toString()) == secondFile) {
                 break;
-            else if (QFileInfo(at(i)[0].toString()) == firstFile)
+            } else if (QFileInfo(at(i)[0].toString()) == firstFile) {
                 return false;
+            }
         }
         for (; i >= 0; --i) {
-            if (QFileInfo(at(i)[0].toString()) == firstFile)
+            if (QFileInfo(at(i)[0].toString()) == firstFile) {
                 return true;
+            }
         }
         return false;
     }
@@ -63,8 +66,9 @@ class TestSyncFileStatusTracker : public QObject
         while (it.hasNext()) {
             QString filePath = it.next().mid(root.size());
             SyncFileStatus pushedStatus = statusSpy.statusOf(filePath);
-            if (pushedStatus != SyncFileStatus())
+            if (pushedStatus != SyncFileStatus()) {
                 QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus(filePath), pushedStatus);
+            }
         }
     }
 

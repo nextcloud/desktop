@@ -172,14 +172,17 @@ int FolderMan::unloadAndDeleteAllFolders()
 
 void FolderMan::registerFolderWithSocketApi(Folder *folder)
 {
-    if (!folder)
+    if (!folder) {
         return;
-    if (!QDir(folder->path()).exists())
+    }
+    if (!QDir(folder->path()).exists()) {
         return;
+    }
 
     // register the folder with the socket API
-    if (folder->canSync())
+    if (folder->canSync()) {
         _socketApi->slotRegisterPath(folder->alias());
+    }
 }
 
 int FolderMan::setupFolders()
@@ -396,10 +399,12 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 }
 
                 // Migration: Mark folders that shall be saved in a backwards-compatible way
-                if (backwardsCompatible)
+                if (backwardsCompatible) {
                     folder->setSaveBackwardsCompatible(true);
-                if (foldersWithPlaceholders)
+                }
+                if (foldersWithPlaceholders) {
                     folder->setSaveInFoldersWithPlaceholders();
+                }
 
 #ifdef Q_OS_MACOS
                 if (!folder->needsSandboxBookmark()) {
@@ -1059,8 +1064,9 @@ void FolderMan::slotStartScheduledFolderSync()
 {
     if (isAnySyncRunning()) {
         for (auto f : std::as_const(_folderMap)) {
-            if (f->isSyncRunning())
+            if (f->isSyncRunning()) {
                 qCInfo(lcFolderMan) << "Currently folder " << f->remoteUrl().toString() << " is running, wait for finish!";
+            }
         }
         return;
     }
@@ -1341,8 +1347,9 @@ void FolderMan::slotScheduleFolderByTime()
             (f->consecutiveFailingSyncs() > 0 && f->consecutiveFailingSyncs() < 3)
             || f->syncEngine().isAnotherSyncNeeded() == DelayedFollowUp;
         auto syncAgainDelay = std::chrono::seconds(10); // 10s for the first retry-after-fail
-        if (f->consecutiveFailingSyncs() > 1)
+        if (f->consecutiveFailingSyncs() > 1) {
             syncAgainDelay = std::chrono::seconds(60); // 60s for each further attempt
+        }
         if (syncAgain && msecsSinceSync > syncAgainDelay) {
             qCInfo(lcFolderMan) << "Scheduling folder" << f->alias()
                                 << ", the last" << f->consecutiveFailingSyncs() << "syncs failed"
@@ -1360,12 +1367,14 @@ void FolderMan::slotScheduleFolderByTime()
 
 bool FolderMan::isAnySyncRunning() const
 {
-    if (_currentSyncFolder)
+    if (_currentSyncFolder) {
         return true;
+    }
 
     for (auto f : _folderMap) {
-        if (f->isSyncRunning())
+        if (f->isSyncRunning()) {
             return true;
+        }
     }
     return false;
 }
@@ -1374,8 +1383,9 @@ void FolderMan::slotFolderSyncStarted()
 {
     auto f = qobject_cast<Folder *>(sender());
     ASSERT(f);
-    if (!f)
+    if (!f) {
         return;
+    }
 
     qCInfo(lcFolderMan, ">========== Sync started for folder [%s] of account [%s] with remote [%s]",
         qPrintable(f->shortGuiLocalPath()),
@@ -1393,8 +1403,9 @@ void FolderMan::slotFolderSyncFinished(const SyncResult &)
 {
     auto f = qobject_cast<Folder *>(sender());
     ASSERT(f);
-    if (!f)
+    if (!f) {
         return;
+    }
 
     qCInfo(lcFolderMan, "<========== Sync finished for folder [%s] of account [%s] with remote [%s]",
         qPrintable(f->shortGuiLocalPath()),
@@ -1405,8 +1416,9 @@ void FolderMan::slotFolderSyncFinished(const SyncResult &)
         _lastSyncFolder = _currentSyncFolder;
         _currentSyncFolder = nullptr;
     }
-    if (!isAnySyncRunning())
+    if (!isAnySyncRunning()) {
         startScheduledSyncSoon();
+    }
 }
 
 Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition &folderDefinition)
@@ -1564,16 +1576,18 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
 
     // We'll be comparing against Folder::remotePath which always starts with /
     QString serverPath = relPath;
-    if (!serverPath.startsWith('/'))
+    if (!serverPath.startsWith('/')) {
         serverPath.prepend('/');
+    }
 
     const auto mapValues = map().values();
     for (const auto folder : mapValues) {
         if (acc && folder->accountState()->account() != acc) {
             continue;
         }
-        if (!serverPath.startsWith(folder->remotePathTrailingSlash()))
+        if (!serverPath.startsWith(folder->remotePathTrailingSlash())) {
             continue;
+        }
 
         QString path = folder->cleanPath() + '/';
         path += serverPath.mid(folder->remotePathTrailingSlash().length());

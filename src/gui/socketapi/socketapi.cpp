@@ -445,8 +445,9 @@ void SocketApi::slotReadSocket()
 void SocketApi::slotRegisterPath(const QString &alias)
 {
     // Make sure not to register twice to each connected client
-    if (_registeredAliases.contains(alias))
+    if (_registeredAliases.contains(alias)) {
         return;
+    }
 
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
@@ -781,12 +782,14 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
     }
 
     auto record = fileData.journalRecord();
-    if (!record.isValid())
+    if (!record.isValid()) {
         return;
+    }
 
     DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
-    if (!editor)
+    if (!editor) {
         return;
+    }
 
     auto *job = new JsonApiJob(fileData.folder->accountState()->account(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing/open"), this);
 
@@ -800,8 +803,9 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
         auto data = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject();
         auto url = QUrl(data.value("url"_L1).toString());
 
-        if(!url.isEmpty())
+        if (!url.isEmpty()) {
             Utility::openBrowser(url);
+        }
     });
     job->start();
 }
@@ -829,8 +833,9 @@ void SocketApi::command_FILES_GOVERNANCE_LABELS(const QString &localFile, Socket
     }
 
     auto record = fileData.journalRecord();
-    if (!record.isValid())
+    if (!record.isValid()) {
         return;
+    }
 
     Q_EMIT governanceLabelsCommandReceived(fileData.folder->accountState()->account(), fileData.localPath, QString::fromLatin1(record._fileId));
 }
@@ -874,8 +879,9 @@ private Q_SLOTS:
         // If there already is a context menu share, reuse it
         for (const auto &share : shares) {
             const auto linkShare = qSharedPointerDynamicCast<LinkShare>(share);
-            if (!linkShare)
+            if (!linkShare) {
                 continue;
+            }
 
             if (linkShare->getLabel() == shareLabel) {
                 qCDebug(lcPublicLink) << "Found existing share, reusing";
@@ -981,8 +987,9 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::f
     }
 
     auto record = fileData.journalRecord();
-    if (!record.isValid())
+    if (!record.isValid()) {
         return;
+    }
 
     fetchPrivateLinkUrl(
         fileData.folder->accountState()->account(),
@@ -1013,8 +1020,9 @@ void SocketApi::command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketLi
 
     for (const auto &file : files) {
         auto data = FileData::get(file);
-        if (!data.folder)
+        if (!data.folder) {
             continue;
+        }
 
         // Update the pin state on all items
         if (!data.folder->vfs().setPinState(data.folderRelativePath, PinState::AlwaysLocal)) {
@@ -1034,8 +1042,9 @@ void SocketApi::command_MAKE_ONLINE_ONLY(const QString &filesArg, SocketListener
 
     for (const auto &file : files) {
         auto data = FileData::get(file);
-        if (!data.folder)
+        if (!data.folder) {
             continue;
+        }
 
         // Update the pin state on all items
         if (!data.folder->vfs().setPinState(data.folderRelativePath, PinState::OnlineOnly)) {
@@ -1056,8 +1065,9 @@ void SocketApi::copyUrlToClipboard(const QString &link)
 void SocketApi::command_RESOLVE_CONFLICT(const QString &localFile, SocketListener *)
 {
     const auto fileData = FileData::get(localFile);
-    if (!fileData.folder || !Utility::isConflictFile(fileData.folderRelativePath))
+    if (!fileData.folder || !Utility::isConflictFile(fileData.folderRelativePath)) {
         return; // should not have shown menu item
+    }
 
     const auto conflictedRelativePath = fileData.folderRelativePath;
     const auto baseRelativePath = fileData.folder->journalDb()->conflictFileBaseName(fileData.folderRelativePath.toUtf8());
@@ -1088,8 +1098,9 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
 {
     const auto fileData = FileData::get(localFile);
     const auto parentDir = fileData.parentFolder();
-    if (!fileData.folder)
+    if (!fileData.folder) {
         return; // should not have shown menu item
+    }
 
     QString defaultDirAndName = fileData.folderRelativePath;
 
@@ -1196,8 +1207,9 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
 
     auto capabilities = fileData.folder->accountState()->account()->capabilities();
     auto theme = Theme::instance();
-    if (!capabilities.shareAPI() || !(theme->userGroupSharing() || (theme->linkSharing() && capabilities.sharePublicLink())))
+    if (!capabilities.shareAPI() || !(theme->userGroupSharing() || (theme->linkSharing() && capabilities.sharePublicLink()))) {
         return;
+    }
 
     if (record._isShared && !record._sharedByMe && itemEncryptionFlag == SharingContextItemEncryptedFlag::NotEncryptedItem) {
         listener->sendMessage(QLatin1String("MENU_ITEM:LEAVESHARE") + flagString + tr("Leave this share"));
@@ -1319,12 +1331,14 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
     FileData data;
 
     data.localPath = QDir::cleanPath(localFile);
-    if (data.localPath.endsWith(QLatin1Char('/')))
+    if (data.localPath.endsWith(QLatin1Char('/'))) {
         data.localPath.chop(1);
+    }
 
     data.folder = FolderMan::instance()->folderForPath(data.localPath);
-    if (!data.folder)
+    if (!data.folder) {
         return data;
+    }
 
     data.folderRelativePath = data.localPath.mid(data.folder->cleanPath().length() + 1);
     data.serverRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
@@ -1356,16 +1370,18 @@ bool SocketApi::FileData::isFolderEmpty() const
 
 SyncFileStatus SocketApi::FileData::syncFileStatus() const
 {
-    if (!folder)
+    if (!folder) {
         return SyncFileStatus::StatusNone;
+    }
     return folder->syncEngine().syncFileStatusTracker().fileStatus(folderRelativePath);
 }
 
 SyncJournalFileRecord SocketApi::FileData::journalRecord() const
 {
     SyncJournalFileRecord record;
-    if (!folder)
+    if (!folder) {
         return record;
+    }
     if (!folder->journalDb()->getFileRecord(folderRelativePath, &record)) {
         qCWarning(lcSocketApi) << "Failed to get journal record for path" << folderRelativePath;
     }
@@ -1482,24 +1498,30 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         // Determine the combined availability status of the files
         auto combined = Optional<VfsItemAvailability>();
         auto merge = [](VfsItemAvailability lhs, VfsItemAvailability rhs) {
-            if (lhs == rhs)
+            if (lhs == rhs) {
                 return lhs;
-            if (int(lhs) > int(rhs))
+            }
+            if (int(lhs) > int(rhs)) {
                 std::swap(lhs, rhs); // reduce cases ensuring lhs < rhs
-            if (lhs == VfsItemAvailability::AlwaysLocal && rhs == VfsItemAvailability::AllHydrated)
+            }
+            if (lhs == VfsItemAvailability::AlwaysLocal && rhs == VfsItemAvailability::AllHydrated) {
                 return VfsItemAvailability::AllHydrated;
-            if (lhs == VfsItemAvailability::AllDehydrated && rhs == VfsItemAvailability::OnlineOnly)
+            }
+            if (lhs == VfsItemAvailability::AllDehydrated && rhs == VfsItemAvailability::OnlineOnly) {
                 return VfsItemAvailability::AllDehydrated;
+            }
             return VfsItemAvailability::Mixed;
         };
         for (const auto &file : files) {
             auto fileData = FileData::get(file);
             auto availability = syncFolder->vfs().availability(fileData.folderRelativePath, Vfs::AvailabilityRecursivity::NotRecursiveAvailability);
             if (!availability) {
-                if (availability.error() == Vfs::AvailabilityError::DbError)
+                if (availability.error() == Vfs::AvailabilityError::DbError) {
                     availability = VfsItemAvailability::Mixed;
-                if (availability.error() == Vfs::AvailabilityError::NoSuchItem)
+                }
+                if (availability.error() == Vfs::AvailabilityError::NoSuchItem) {
                     continue;
+                }
             }
             if (!combined) {
                 combined = *availability;

@@ -63,8 +63,9 @@ bool FolderWatcherPrivate::findFoldersBelow(const QDir &dir, QStringList &fullLi
 
 void FolderWatcherPrivate::inotifyRegisterPath(const QString &path)
 {
-    if (path.isEmpty())
+    if (path.isEmpty()) {
         return;
+    }
 
     int wd = inotify_add_watch(_fd, path.toUtf8().constData(),
         IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ONLYDIR);
@@ -85,8 +86,9 @@ void FolderWatcherPrivate::inotifyRegisterPath(const QString &path)
 
 void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
 {
-    if (_pathToWatch.contains(path))
+    if (_pathToWatch.contains(path)) {
         return;
+    }
 
     int subdirs = 0;
     qCDebug(lcFolderWatcher) << "(+) Watcher:" << path;
@@ -158,8 +160,9 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         }
 
         // Fire event for the path that was changed.
-        if (event->len == 0 || event->wd <= -1)
+        if (event->len == 0 || event->wd <= -1) {
             continue;
+        }
         QByteArray fileName(event->name);
         // Filter out journal changes - redundant with filtering in
         // FolderWatcher::pathIsIgnored.
@@ -191,16 +194,18 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
 void FolderWatcherPrivate::removeFoldersBelow(const QString &path)
 {
     auto it = _pathToWatch.find(path);
-    if (it == _pathToWatch.end())
+    if (it == _pathToWatch.end()) {
         return;
+    }
 
     QString pathSlash = path + '/';
 
     // Remove the entry and all subentries
     while (it != _pathToWatch.end()) {
         auto itPath = it.key();
-        if (!itPath.startsWith(path))
+        if (!itPath.startsWith(path)) {
             break;
+        }
         if (itPath != path && !itPath.startsWith(pathSlash)) {
             // order is 'foo', 'foo bar', 'foo/bar'
             ++it;

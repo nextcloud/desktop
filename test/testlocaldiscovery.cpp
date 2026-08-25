@@ -692,8 +692,9 @@ private Q_SLOTS:
 
         int nGET = 0;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) {
-            if (op == QNetworkAccessManager::GetOperation)
+            if (op == QNetworkAccessManager::GetOperation) {
                 ++nGET;
+            }
             return nullptr;
         });
 

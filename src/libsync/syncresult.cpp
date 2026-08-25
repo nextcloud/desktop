@@ -84,8 +84,9 @@ void SyncResult::appendErrorString(const QString &err)
 
 QString SyncResult::errorString() const
 {
-    if (_errors.isEmpty())
+    if (_errors.isEmpty()) {
         return QString();
+    }
     return _errors.first();
 }
 
@@ -148,18 +149,21 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_TYPE_CHANGE:
                 _numNewItems++;
-                if (!_firstItemNew)
+                if (!_firstItemNew) {
                     _firstItemNew = item;
+                }
                 break;
             case CSYNC_INSTRUCTION_REMOVE:
                 _numRemovedItems++;
-                if (!_firstItemDeleted)
+                if (!_firstItemDeleted) {
                     _firstItemDeleted = item;
+                }
                 break;
             case CSYNC_INSTRUCTION_SYNC:
                 _numUpdatedItems++;
-                if (!_firstItemUpdated)
+                if (!_firstItemUpdated) {
                     _firstItemUpdated = item;
+                }
                 break;
             case CSYNC_INSTRUCTION_RENAME:
                 if (!_firstItemRenamed) {

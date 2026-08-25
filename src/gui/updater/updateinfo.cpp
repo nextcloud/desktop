@@ -55,8 +55,9 @@ UpdateInfo UpdateInfo::parseElement(const QDomElement &element, bool *ok)
 {
     if (element.tagName() != QLatin1String("owncloudclient")) {
         qCCritical(lcUpdater) << "Expected 'owncloudclient', got '" << element.tagName() << "'.";
-        if (ok)
+        if (ok) {
             *ok = false;
+        }
         return UpdateInfo();
     }
 
@@ -76,9 +77,9 @@ UpdateInfo UpdateInfo::parseElement(const QDomElement &element, bool *ok)
         }
     }
 
-
-    if (ok)
+    if (ok) {
         *ok = true;
+    }
     return result;
 }
 
@@ -90,8 +91,9 @@ UpdateInfo UpdateInfo::parseString(const QString &xml, bool *ok)
                                 << "\n" <<  xml.split("\n").value(result.errorLine - 1) << "\n"
                                 << QStringLiteral(" ").repeated(result.errorColumn - 1) << "^\n"
                                 << "->" << xml << "<-";
-        if (ok)
+        if (ok) {
             *ok = false;
+        }
         return UpdateInfo();
     }
 

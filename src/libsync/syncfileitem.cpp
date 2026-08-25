@@ -98,8 +98,9 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
         rec._type = ItemTypeFile;
         qCInfo(lcFileItem) << "Changing item type from ItemTypeVirtualFileDownload to normal file to avoid wrong record type in database" << rec._path;
     }
-    if (rec._type == ItemTypeVirtualFileDehydration)
+    if (rec._type == ItemTypeVirtualFileDehydration) {
         rec._type = ItemTypeVirtualFile;
+    }
 
     rec._etag = _etag;
     rec._fileId = _fileId;

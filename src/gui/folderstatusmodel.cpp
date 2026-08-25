@@ -413,10 +413,12 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
         return _folders.count() + 1; // +1 for the "add folder" button
     }
     const auto info = infoForIndex(parent);
-    if (!info)
+    if (!info) {
         return 0;
-    if (info->hasLabel())
+    }
+    if (info->hasLabel()) {
         return 1;
+    }
     return info->_subs.count();
 }
 
@@ -437,8 +439,9 @@ FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex &index
 
 FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForIndex(const QModelIndex &index) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
         return nullptr;
+    }
     if (const auto parentInfo = static_cast<SubFolderInfo *>(index.internalPointer())) {
         if (parentInfo->hasLabel()) {
             return nullptr;
@@ -498,8 +501,9 @@ QModelIndex FolderStatusModel::indexForPath(Folder *folder, const QString &path)
     }
 
     const auto parent = indexForPath(folder, path.left(slashPos));
-    if (!parent.isValid())
+    if (!parent.isValid()) {
         return parent;
+    }
 
     if (slashPos == path.size() - 1) {
         // The slash is the last part, we found our index
@@ -529,17 +533,19 @@ QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex &par
     case FetchLabel:
         return {};
     case RootFolder:
-        if (_folders.count() <= parent.row())
+        if (_folders.count() <= parent.row()) {
             return {}; // should not happen
+        }
         return createIndex(row, column, const_cast<SubFolderInfo *>(&_folders[parent.row()]));
     case SubFolder: {
         auto pinfo = static_cast<SubFolderInfo *>(parent.internalPointer());
-        if (pinfo->_subs.count() <= parent.row())
+        if (pinfo->_subs.count() <= parent.row()) {
             return {}; // should not happen
+        }
         auto &info = pinfo->_subs[parent.row()];
-        if (!info.hasLabel()
-            && info._subs.count() <= row)
+        if (!info.hasLabel() && info._subs.count() <= row) {
             return {}; // should not happen
+        }
         return createIndex(row, column, &info);
     }
     }
@@ -889,8 +895,9 @@ QStringList FolderStatusModel::createBlackList(const FolderStatusModel::SubFolde
         // We did not load from the server so we reuse the one from the old black list
         const auto path = root._path;
         for (const auto &it : oldBlackList) {
-            if (it.startsWith(path))
+            if (it.startsWith(path)) {
                 result += it;
+            }
         }
     }
     return result;

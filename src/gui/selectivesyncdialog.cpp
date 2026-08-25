@@ -196,15 +196,17 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     QUrl url = _account->davUrl();
     auto pathToRemove = Utility::trailingSlashPath(url.path());
     pathToRemove.append(_folderPath);
-    if (!_folderPath.isEmpty())
+    if (!_folderPath.isEmpty()) {
         pathToRemove.append('/');
+    }
 
     // Check for excludes.
     QMutableListIterator<QString> it(list);
     while (it.hasNext()) {
         it.next();
-        if (_excludedFiles.isExcluded(it.value(), pathToRemove, FolderMan::instance()->ignoreHiddenFiles()))
+        if (_excludedFiles.isExcluded(it.value(), pathToRemove, FolderMan::instance()->ignoreHiddenFiles())) {
             it.remove();
+        }
     }
 
     // Since / cannot be in the blacklist, expand it to the actual
@@ -255,10 +257,12 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
         }
 
         QStringList paths = path.split('/');
-        if (paths.last().isEmpty())
+        if (paths.last().isEmpty()) {
             paths.removeLast();
-        if (paths.isEmpty())
+        }
+        if (paths.isEmpty()) {
             continue;
+        }
         if (!path.endsWith('/')) {
             path.append('/');
         }
@@ -321,8 +325,9 @@ void SelectiveSyncWidget::slotGatherEncryptedPaths(const QString &path, const QM
 void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
-    if (dir.isEmpty())
+    if (dir.isEmpty()) {
         return;
+    }
     QString prefix;
     if (!_folderPath.isEmpty()) {
         prefix = _folderPath + QLatin1Char('/');
@@ -337,8 +342,9 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
 
 void SelectiveSyncWidget::slotItemChanged(QTreeWidgetItem *item, int col)
 {
-    if (col != 0 || _inserting)
+    if (col != 0 || _inserting) {
         return;
+    }
 
     if (item->checkState(0) == Qt::Checked) {
         // If we are checked, check that we may need to check the parent as well if
@@ -398,8 +404,9 @@ QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
     if (!root) {
         root = _folderTree->topLevelItem(0);
     }
-    if (!root)
+    if (!root) {
         return QStringList();
+    }
 
     switch (root->checkState(0)) {
     case Qt::Unchecked:
@@ -419,8 +426,9 @@ QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
         // We did not load from the server so we reuse the one from the old black list
         QString path = root->data(0, Qt::UserRole).toString();
         for (const auto &it : _oldBlackList) {
-            if (it.startsWith(path))
+            if (it.startsWith(path)) {
                 result += it;
+            }
         }
     }
     return result;
@@ -436,9 +444,9 @@ qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)
     if (!root) {
         root = _folderTree->topLevelItem(0);
     }
-    if (!root)
+    if (!root) {
         return -1;
-
+    }
 
     switch (root->checkState(0)) {
     case Qt::Unchecked:
@@ -453,8 +461,9 @@ qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)
     if (root->childCount()) {
         for (int i = 0; i < root->childCount(); ++i) {
             auto r = estimatedSize(root->child(i));
-            if (r < 0)
+            if (r < 0) {
                 return r;
+            }
             result += r;
         }
     } else {

@@ -27,11 +27,13 @@ template <typename Char>
 void RemotePermissions::fromArray(const Char *p)
 {
     _value = notNullMask;
-    if (!p)
+    if (!p) {
         return;
+    }
     while (*p) {
-        if (auto res = std::strchr(letters, static_cast<char>(*p)))
+        if (auto res = std::strchr(letters, static_cast<char>(*p))) {
             _value |= (1 << (res - letters));
+        }
         ++p;
     }
 }
@@ -39,12 +41,14 @@ void RemotePermissions::fromArray(const Char *p)
 QByteArray RemotePermissions::toDbValue() const
 {
     QByteArray result;
-    if (isNull())
+    if (isNull()) {
         return result;
+    }
     result.reserve(PermissionsCount);
     for (uint i = 1; i <= PermissionsCount; ++i) {
-        if (_value & (1 << i))
+        if (_value & (1 << i)) {
             result.append(letters[i]);
+        }
     }
     if (result.isEmpty()) {
         // Make sure it is not empty so we can differentiate null and empty permissions
@@ -60,8 +64,9 @@ QString RemotePermissions::toString() const
 
 RemotePermissions RemotePermissions::fromDbValue(const QByteArray &value)
 {
-    if (value.isEmpty())
+    if (value.isEmpty()) {
         return {};
+    }
     RemotePermissions perm;
     perm.fromArray(value.constData());
     return perm;
