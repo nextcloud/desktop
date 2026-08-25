@@ -30,15 +30,16 @@
 #include <winbase.h>
 #endif
 
-#include <QStack>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
 #include <QLoggingCategory>
-#include <QTimer>
 #include <QObject>
-#include <QTimerEvent>
 #include <QRegularExpression>
+#include <QStack>
+#include <QTimer>
+#include <QTimerEvent>
 #include <qmath.h>
+#include <ranges>
 
 namespace OCC {
 
@@ -655,9 +656,9 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
         // since it would be done before the actual remove (issue #1845)
         // NOTE: Currently this means that we don't update those etag at all in this sync,
         //       but it should not be a problem, they will be updated in the next sync.
-        for (int i = 0; i < directories.size(); ++i) {
-            if (directories[i].second->_item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
-                directories[i].second->_item->_instruction = CSYNC_INSTRUCTION_NONE;
+        for (auto &directorie : directories) {
+            if (directorie.second->_item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
+                directorie.second->_item->_instruction = CSYNC_INSTRUCTION_NONE;
             }
         }
     } else {
@@ -739,9 +740,9 @@ void OwncloudPropagator::processE2eeMetadataMigration(const SyncFileItemPtr &ite
         const auto rootE2eeFolderPathWithSlash = QString(rootE2eeFolderPath + "/");
 
         QPair<QString, PropagateDirectory *> foundDirectory = {QString{}, nullptr};
-        for (auto it = std::rbegin(directories); it != std::rend(directories); ++it) {
-            if (it->first == rootE2eeFolderPathWithSlash) {
-                foundDirectory = *it;
+        for (auto &directorie : std::ranges::reverse_view(directories)) {
+            if (directorie.first == rootE2eeFolderPathWithSlash) {
+                foundDirectory = directorie;
                 break;
             }
         }
