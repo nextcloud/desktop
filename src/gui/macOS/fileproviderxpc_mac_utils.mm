@@ -79,7 +79,9 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
             } else if (service.name == nil) {
                 qCWarning(lcFileProviderXPCUtils) << "Service has no name";
             } else {
+                @synchronized (fpServices) {
                 [fpServices addObject:@{service.name: service}];
+            }
             }
 
             dispatch_group_leave(group);
@@ -108,7 +110,11 @@ NSArray<NSURL *> *getDomainUrlsForManagers(NSArray<NSFileProviderManager *> *man
             }
 
             qCDebug(lcFileProviderXPCUtils) << "Got user visible url" << url;
+            if (url != nil) {
+                @synchronized (urls) {
             [urls addObject:url];
+                }
+            }
             dispatch_group_leave(group);
         }];
     }
@@ -142,7 +148,11 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
                                       << url.absoluteString
                                       << "has number of services:"
                                       << services.count;
+            if (services != nil) {
+                @synchronized (fpServices) {
             [fpServices addObject:services];
+                }
+            }
             dispatch_group_leave(group);
         }];
     }
@@ -189,7 +199,9 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
                     return;
                 }
 
+                @synchronized (connections) {
                 [connections addObject:connection];
+                }
                 dispatch_group_leave(group);
             }];
         }
