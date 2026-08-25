@@ -40,7 +40,7 @@ class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
         QString userId;
         QByteArray decryptedFiledropKey;
 
-        inline bool isValid() const
+        [[nodiscard]] inline bool isValid() const
         {
             return !userId.isEmpty() && !decryptedFiledropKey.isEmpty();
         }
@@ -52,8 +52,8 @@ class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
         QByteArray nonce;
         QByteArray authenticationTag;
         UserWithFileDropEntryAccess currentUser;
-        
-        inline bool isValid() const
+
+        [[nodiscard]] inline bool isValid() const
         {
             return !cipherText.isEmpty() && !nonce.isEmpty() && !authenticationTag.isEmpty();
         }
@@ -67,7 +67,7 @@ public:
         QByteArray authenticationTag;
         QString encryptedFilename;
         QString originalFilename;
-        bool isDirectory() const;
+        [[nodiscard]] bool isDirectory() const;
     };
 
     enum class FolderType {

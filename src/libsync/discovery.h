@@ -301,7 +301,7 @@ private:
 
     FolderQuota _folderQuota;
 
-    int64_t folderBytesAvailable(const SyncFileItemPtr &item, const FolderQuota::ServerEntry serverEntry) const;
+    [[nodiscard]] int64_t folderBytesAvailable(const SyncFileItemPtr &item, const FolderQuota::ServerEntry serverEntry) const;
 
 Q_SIGNALS:
     void finished();
