@@ -80,8 +80,9 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
 {
     PathComponents pathComponents(path);
     auto base = state.find(pathComponents.parentDirComponents());
-    if (!base)
+    if (!base) {
         return false;
+    }
     for (const auto &item : std::as_const(base->children)) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(conflicted copy")) {
             local.remove(item.path());
@@ -94,8 +95,9 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
 static void setAllPerm(FileInfo *fi, OCC::RemotePermissions perm)
 {
     fi->permissions = perm;
-    for (auto &subFi : fi->children)
+    for (auto &subFi : fi->children) {
         setAllPerm(&subFi, perm);
+    }
 }
 
 class TestSyncMove : public QObject
@@ -247,10 +249,12 @@ private Q_SLOTS:
         int nPUT = 0;
         int nDELETE = 0;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) {
-            if (op == QNetworkAccessManager::PutOperation)
+            if (op == QNetworkAccessManager::PutOperation) {
                 ++nPUT;
-            if (op == QNetworkAccessManager::DeleteOperation)
+            }
+            if (op == QNetworkAccessManager::DeleteOperation) {
                 ++nDELETE;
+            }
             return nullptr;
         });
 

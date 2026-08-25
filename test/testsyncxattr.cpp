@@ -113,8 +113,9 @@ private Q_SLOTS:
 
         auto cleanup = [&]() {
             completeSpy.clear();
-            if (!doLocalDiscovery)
+            if (!doLocalDiscovery) {
                 fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
+            }
         };
         cleanup();
 
@@ -162,8 +163,9 @@ private Q_SLOTS:
         cleanup();
 
         // If the local virtual file is removed, this will be propagated remotely
-        if (!doLocalDiscovery)
+        if (!doLocalDiscovery) {
             fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, { "A" });
+        }
         fakeFolder.localModifier().remove("A/a1");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));

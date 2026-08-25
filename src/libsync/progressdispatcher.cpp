@@ -67,10 +67,11 @@ QString Progress::asActionString(const SyncFileItem &item)
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
-        if (item._direction != SyncFileItem::Up)
+        if (item._direction != SyncFileItem::Up) {
             return QCoreApplication::translate("progress", "Downloading");
-        else
+        } else {
             return QCoreApplication::translate("progress", "Uploading");
+        }
     case CSYNC_INSTRUCTION_REMOVE:
         return QCoreApplication::translate("progress", "Deleting");
     case CSYNC_INSTRUCTION_EVAL_RENAME:
@@ -362,8 +363,9 @@ void ProgressInfo::recomputeCompletedSize()
 {
     qint64 r = _totalSizeOfCompletedJobs;
     for (const auto &i : std::as_const(_currentItems)) {
-        if (isSizeDependent(i._item))
+        if (isSizeDependent(i._item)) {
             r += i._progress._completed;
+        }
     }
     _sizeProgress.setCompleted(r);
 }

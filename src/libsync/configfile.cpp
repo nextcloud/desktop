@@ -152,8 +152,9 @@ ConfigFile::ConfigFile()
 bool ConfigFile::setConfDir(const QString &value)
 {
     QString dirPath = value;
-    if (dirPath.isEmpty())
+    if (dirPath.isEmpty()) {
         return false;
+    }
 
     QFileInfo fi(dirPath);
     if (!fi.exists()) {
@@ -296,8 +297,9 @@ void ConfigFile::restoreGeometry(QWidget *w)
 void ConfigFile::saveGeometryHeader(QHeaderView *header)
 {
 #ifndef TOKEN_AUTH_ONLY
-    if (!header)
+    if (!header) {
         return;
+    }
     ASSERT(!header->objectName().isEmpty());
 
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -312,8 +314,9 @@ void ConfigFile::saveGeometryHeader(QHeaderView *header)
 void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 {
 #ifndef TOKEN_AUTH_ONLY
-    if (!header)
+    if (!header) {
         return;
+    }
     ASSERT(!header->objectName().isNull());
 
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -908,8 +911,9 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
     }
 
     QSettings settings(configFile(), QSettings::IniFormat);
-    if (!group.isEmpty())
+    if (!group.isEmpty()) {
         settings.beginGroup(group);
+    }
 
     return settings.value(param, systemSetting);
 }

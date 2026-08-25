@@ -323,8 +323,9 @@ FileSystem::FileLockingInfo FileSystem::lockFileTargetFilePath(const QString &lo
         const auto adobeResolvedPath = adobeLockFileTargetFilePath(lockFilePath);
         if (adobeResolvedPath) {
             result.path = *adobeResolvedPath;
-            if (!result.path.isEmpty())
+            if (!result.path.isEmpty()) {
                 result.type = QFile::exists(lockFilePath) ? FileLockingInfo::Type::Locked : FileLockingInfo::Type::Unlocked;
+            }
         }
         return result;
     }
@@ -528,8 +529,9 @@ bool FileSystem::removeRecursively(const QString &path,
                 removeOk = FileSystem::remove(di.filePath(), &removeError);
             }
             if (removeOk) {
-                if (onDeleted)
+                if (onDeleted) {
                     onDeleted(di.filePath(), false);
+                }
             } else {
                 if (errors) {
                     errors->append(QCoreApplication::translate("FileSystem", "Error removing \"%1\": %2")
@@ -541,8 +543,9 @@ bool FileSystem::removeRecursively(const QString &path,
                 qCWarning(lcFileSystem) << "Error removing " << di.filePath() << ':' << removeError;
             }
         }
-        if (!removeOk)
+        if (!removeOk) {
             allRemoved = false;
+        }
     }
     if (allRemoved) {
         const auto fileInfo = QFileInfo{path};
@@ -576,8 +579,9 @@ bool FileSystem::removeRecursively(const QString &path,
         }
 
         if (allRemoved) {
-            if (onDeleted)
+            if (onDeleted) {
                 onDeleted(path, true);
+            }
         } else {
             if (errors) {
                 errors->append(QCoreApplication::translate("FileSystem", "Could not remove folder \"%1\"")

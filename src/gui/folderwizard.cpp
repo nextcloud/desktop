@@ -237,8 +237,9 @@ void FolderWizardRemotePath::slotAddRemoteFolder()
 
 void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
 {
-    if (folder.isEmpty())
+    if (folder.isEmpty()) {
         return;
+    }
 
     QTreeWidgetItem *current = _ui.folderTreeWidget->currentItem();
     QString fullPath;
@@ -305,8 +306,9 @@ static QTreeWidgetItem *findFirstChild(QTreeWidgetItem *parent, const QString &t
 
 void FolderWizardRemotePath::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
 {
-    if (pathTrail.isEmpty())
+    if (pathTrail.isEmpty()) {
         return;
+    }
 
     const QString parentPath = parent->data(0, Qt::UserRole).toString();
     const QString folderName = pathTrail.first();
@@ -386,8 +388,9 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
         }
 
         QStringList paths = path.split('/');
-        if (paths.last().isEmpty())
+        if (paths.last().isEmpty()) {
             paths.removeLast();
+        }
         recursiveInsert(root, paths, path);
     }
     root->setExpanded(true);
@@ -451,8 +454,9 @@ void FolderWizardRemotePath::slotFolderEntryEdited(const QString &text)
 void FolderWizardRemotePath::slotLsColFolderEntry()
 {
     QString path = _ui.folderEntry->text();
-    if (path.startsWith(QLatin1Char('/')))
+    if (path.startsWith(QLatin1Char('/'))) {
         path = path.mid(1);
+    }
 
     LsColJob *job = runLsColJob(path);
     // No error handling, no updating, we do this manually
@@ -603,8 +607,9 @@ void FolderWizardSelectiveSync::initializePage()
         targetPath = targetPath.mid(1);
     }
     QString alias = QFileInfo(targetPath).fileName();
-    if (alias.isEmpty())
+    if (alias.isEmpty()) {
         alias = Theme::instance()->appName();
+    }
     QStringList initialBlacklist;
     if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
         initialBlacklist = QStringList("/");
@@ -658,8 +663,9 @@ void FolderWizardSelectiveSync::cleanupPage()
 {
     QString targetPath = wizard()->property("targetPath").toString();
     QString alias = QFileInfo(targetPath).fileName();
-    if (alias.isEmpty())
+    if (alias.isEmpty()) {
         alias = Theme::instance()->appName();
+    }
     _selectiveSync->setFolderInfo(targetPath, alias);
     QWizardPage::cleanupPage();
 }
@@ -670,8 +676,9 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
     // checked it was newly activated.
     if (_virtualFilesCheckBox->isChecked()) {
         Utility::askExperimentalVirtualFilesFeature(this, [this](bool enable) {
-            if (!enable)
+            if (!enable) {
                 _virtualFilesCheckBox->setChecked(false);
+            }
         });
     }
 }

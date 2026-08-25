@@ -23,8 +23,9 @@ void addBunchOfFiles(int depth, const QString &path, FileModifier &fi) {
         fi.insert(path.isEmpty() ? name : path + "/" + name);
         numFiles++;
     }
-    if (depth >= maxDepth)
+    if (depth >= maxDepth) {
         return;
+    }
     for (int dirNum = 1; dirNum <= dirPerDir; ++dirNum) {
         QString name = QStringLiteral("dir") + QString::number(dirNum);
         QString subPath = path.isEmpty() ? name : path + "/" + name;
