@@ -634,7 +634,7 @@ public Q_SLOTS:
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
-    QIcon themeIcon(const QString &name, bool sysTray = false) const;
+    [[nodiscard]] QIcon themeIcon(const QString &name, bool sysTray = false) const;
 #endif
     /**
      * @brief Generates image path in the resources
@@ -643,7 +643,7 @@ protected:
      * @param sysTray Whether the image requested is for Systray or not
      * @return QString image path in the resources
      **/
-    QString themeImagePath(const QString &name, int size = -1, bool sysTray = false) const;
+    [[nodiscard]] QString themeImagePath(const QString &name, int size = -1, bool sysTray = false) const;
     Theme();
 
 Q_SIGNALS:
