@@ -20,6 +20,8 @@
 #include "common/utility.h"
 #include "httplogger.h"
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccessManager, "nextcloud.sync.accessmanager", QtInfoMsg)
@@ -91,6 +93,14 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 
     const auto reply = QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
     HttpLogger::logRequest(reply, op, outgoingData);
+    QObject::connect(reply, &QNetworkReply::requestSent, reply, [reply] {
+        qCInfo(lcAccessManager()) << "Request has been sent"
+                                  << reply->url().toString()
+                                  << reply->request().rawHeader("X-Request-ID"_ba)
+                                  << reply->header(QNetworkRequest::ContentTypeHeader).toString()
+                                  << reply->rawHeaderPairs()
+                                  << reply;
+    });
     return reply;
 }
 
