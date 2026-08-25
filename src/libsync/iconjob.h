@@ -28,11 +28,11 @@ class OWNCLOUDSYNC_EXPORT IconJob : public QObject
 public:
     explicit IconJob(AccountPtr account, const QUrl &url, QObject *parent = nullptr);
 
-signals:
+Q_SIGNALS:
     void jobFinished(QByteArray iconData);
     void error(QNetworkReply::NetworkError errorType);
 
-private slots:
+private Q_SLOTS:
     void finished();
 };
 }

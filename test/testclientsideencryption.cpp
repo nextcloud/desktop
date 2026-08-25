@@ -28,7 +28,7 @@ class TestClientSideEncryption : public QObject
         return data.split('|').join("fA==");
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

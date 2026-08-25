@@ -29,7 +29,7 @@ public:
      */
     void getNavigationApps();
 
-signals:
+Q_SIGNALS:
     /**
      * Result of the OCS request
      *
@@ -38,7 +38,7 @@ signals:
      */
     void appsJobFinished(const QJsonDocument &reply, int statusCode);
 
-private slots:
+private Q_SLOTS:
     void jobDone(const QJsonDocument &reply, int statusCode);
 };
 }

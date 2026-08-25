@@ -32,7 +32,7 @@ public:
     {
         q->_state = state;
         q->_statusString = statusString;
-        emit q->statusChanged();
+        Q_EMIT q->statusChanged();
     }
 
     SPUStandardUpdaterController *updaterController;

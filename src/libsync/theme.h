@@ -625,7 +625,7 @@ public:
      */
     [[nodiscard]] bool displayLegacyImportDialog() const;
 
-public slots:
+public Q_SLOTS:
     void setOverrideServerUrl(const QString &overrideServerUrl);
     void setForceOverrideServerUrl(bool forceOverride);
     void setVfsEnabled(bool enabled);
@@ -646,7 +646,7 @@ protected:
     QString themeImagePath(const QString &name, int size = -1, bool sysTray = false) const;
     Theme();
 
-signals:
+Q_SIGNALS:
     void systrayUseMonoIconsChanged(bool);
     void systemPaletteChanged(const QPalette &palette);
     void darkModeChanged();

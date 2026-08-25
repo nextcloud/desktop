@@ -29,7 +29,7 @@ public:
     {}
 
 public:
-signals:
+Q_SIGNALS:
     void resultClicked(const QUrl &url);
 };
 
@@ -291,7 +291,7 @@ public:
 
     static const int searchResultsReplyDelay = 100;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

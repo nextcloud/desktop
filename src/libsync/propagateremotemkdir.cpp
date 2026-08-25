@@ -100,7 +100,7 @@ void PropagateRemoteMkdir::abort(PropagatorJob::AbortType abortType)
         _job->reply()->abort();
 
     if (abortType == AbortType::Asynchronous) {
-        emit abortFinished();
+        Q_EMIT abortFinished();
     }
 }
 
@@ -184,8 +184,8 @@ void PropagateRemoteMkdir::slotMkdir()
             done(SyncFileItem::NormalError, renameError, ErrorCategory::GenericError);
             return;
         }
-        emit propagator()->touchedFile(existingFile);
-        emit propagator()->touchedFile(targetFile);
+        Q_EMIT propagator()->touchedFile(existingFile);
+        Q_EMIT propagator()->touchedFile(targetFile);
     }
 
     const auto path = _item->_file;

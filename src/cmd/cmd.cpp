@@ -145,7 +145,7 @@ public:
         _password = ::queryPassword(user());
         _ready = true;
         persist();
-        emit asked();
+        Q_EMIT asked();
     }
 
     void setSSLTrusted(bool isTrusted)

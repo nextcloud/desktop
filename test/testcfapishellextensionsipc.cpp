@@ -75,10 +75,10 @@ class TestCfApiShellExtensionsIPC : public QObject
 public:
     static bool replyWithNoShares;
 
-signals:
+Q_SIGNALS:
     void propfindRequested();
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);
@@ -142,7 +142,7 @@ private slots:
                 const auto customOperation = req.attribute(QNetworkRequest::CustomVerbAttribute);
 
                 if (customOperation == QStringLiteral("PROPFIND")) {
-                    emit propfindRequested();
+                    Q_EMIT propfindRequested();
                     reply = new FakePayloadReply(op, req, {}, nullptr);
                 } else if (path.endsWith(ShellExtensionsServer::getFetchThumbnailPath())) {
                     const auto urlQuery = QUrlQuery(req.url());

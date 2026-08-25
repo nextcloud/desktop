@@ -103,7 +103,7 @@ public:
     [[nodiscard]] QVariantList model() const;
     QAbstractListModel *emojiCategoriesModel();
 
-signals:
+Q_SIGNALS:
     void historyChanged();
     void modelChanged();
 

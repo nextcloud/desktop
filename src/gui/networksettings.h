@@ -31,7 +31,7 @@ public:
     ~NetworkSettings() override;
     [[nodiscard]] QSize sizeHint() const override;
 
-private slots:
+private Q_SLOTS:
     void saveProxySettings();
     void saveBWLimitSettings();
 

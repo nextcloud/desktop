@@ -859,7 +859,7 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
                 return;
             }
 #endif
-            emit showIssuesList(_accountState);
+            Q_EMIT showIssuesList(_accountState);
             return;
         }
 
@@ -945,7 +945,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
             QStringList() << QLatin1String("/"));
         folderMan->scheduleAllFolders();
-        emit folderChanged();
+        Q_EMIT folderChanged();
     } else {
         // addFolder can refuse (e.g. classic sync folders are unavailable while the
         // File Provider integration is enabled). Don't leave the user believing the
@@ -989,7 +989,7 @@ void AccountSettings::slotRemoveCurrentFolder()
                 _model->removeRow(row);
 
                 // single folder fix to show add-button and hide remove-button
-                emit folderChanged();
+                Q_EMIT folderChanged();
             }
         });
         messageBox->open();
@@ -1000,7 +1000,7 @@ void AccountSettings::slotOpenCurrentFolder()
 {
     const auto alias = selectedFolderAlias();
     if (!alias.isEmpty()) {
-        emit openFolderAlias(alias);
+        Q_EMIT openFolderAlias(alias);
     }
 }
 
@@ -1871,7 +1871,7 @@ void AccountSettings::slotStyleChanged()
     customizeStyle();
 
     // Notify the other widgets (Dark-/Light-Mode switching)
-    emit styleChanged();
+    Q_EMIT styleChanged();
 }
 
 void AccountSettings::customizeStyle()

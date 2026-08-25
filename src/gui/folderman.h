@@ -236,7 +236,7 @@ public:
 
     /** If the folder configuration is no longer supported this will return an error string */
     [[nodiscard]] Result<void, QString> unsupportedConfiguration(const QString &path) const;
-signals:
+Q_SIGNALS:
     /**
       * signal to indicate a folder has changed its sync state.
       *
@@ -259,7 +259,7 @@ signals:
      */
     void wipeDone(OCC::AccountState *account, bool success);
 
-public slots:
+public Q_SLOTS:
 
     /**
      * Schedules folders of newly connected accounts, terminates and
@@ -292,7 +292,7 @@ public slots:
 
     void slotServerVersionChanged(const OCC::AccountPtr &account);
 
-private slots:
+private Q_SLOTS:
     void slotFolderSyncPaused(OCC::Folder *, bool paused);
     void slotFolderCanSyncChanged();
     void slotFolderSyncStarted();

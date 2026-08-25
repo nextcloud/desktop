@@ -43,12 +43,12 @@ public:
 
     ~ProxyAuthHandler() override;
 
-public slots:
+public Q_SLOTS:
     /// Intended for QNetworkAccessManager::proxyAuthenticationRequired()
     void handleProxyAuthenticationRequired(const QNetworkProxy &proxy,
         QAuthenticator *authenticator);
 
-private slots:
+private Q_SLOTS:
     void slotSenderDestroyed(QObject *);
 
 private:

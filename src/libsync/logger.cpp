@@ -97,12 +97,12 @@ Logger::~Logger()
 
 void Logger::postGuiLog(const QString &title, const QString &message)
 {
-    emit guiLog(title, message);
+    Q_EMIT guiLog(title, message);
 }
 
 void Logger::postGuiMessage(const QString &title, const QString &message)
 {
-    emit guiMessage(title, message);
+    Q_EMIT guiMessage(title, message);
 }
 
 bool Logger::isLoggingToFile() const
@@ -166,7 +166,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
             s_originalMessageHandler(type, ctx, message);
         }
     }
-    emit logWindowLog(msg);
+    Q_EMIT logWindowLog(msg);
 }
 
 void Logger::closeNoLock()

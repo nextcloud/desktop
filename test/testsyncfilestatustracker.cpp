@@ -68,7 +68,7 @@ class TestSyncFileStatusTracker : public QObject
         }
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

@@ -548,13 +548,13 @@ void ActivityListModel::refreshPreviewData()
     const auto recentActivityPreviewData = buildRecentActivityPreviewData(5);
     if (_recentActivityPreviewData != recentActivityPreviewData) {
         _recentActivityPreviewData = recentActivityPreviewData;
-        emit recentActivityPreviewDataChanged();
+        Q_EMIT recentActivityPreviewDataChanged();
     }
 
     const auto notificationPreviewData = buildNotificationPreviewData();
     if (_notificationPreviewData != notificationPreviewData) {
         _notificationPreviewData = notificationPreviewData;
-        emit notificationPreviewDataChanged();
+        Q_EMIT notificationPreviewDataChanged();
     }
 }
 
@@ -688,7 +688,7 @@ void ActivityListModel::activitiesReceived(const QJsonDocument &json, int status
 
     ingestActivities(activities);
 
-    emit activityJobStatusCode(statusCode);
+    Q_EMIT activityJobStatusCode(statusCode);
 }
 
 void ActivityListModel::addEntriesToActivityList(const ActivityList &activityList)
@@ -728,7 +728,7 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
     endInsertRows();
     setHasSyncConflicts(!_conflictsList.isEmpty());
     refreshPreviewData();
-    emit activityListChanged();
+    Q_EMIT activityListChanged();
 }
 
 void ActivityListModel::accountStateHasChanged()
@@ -785,7 +785,7 @@ void ActivityListModel::addNotificationToActivityList(const Activity &activity)
         if (link._verb == QByteArrayLiteral("POST")
             || link._verb == QByteArrayLiteral("REPLY")
             || link._verb == QByteArrayLiteral("WEB")) {
-            emit interactiveActivityReceived();
+            Q_EMIT interactiveActivityReceived();
         }
     }
 }
@@ -835,7 +835,7 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
     if (activityWasRemoved) {
         setHasSyncConflicts(!_conflictsList.isEmpty());
         refreshPreviewData();
-        emit activityListChanged();
+        Q_EMIT activityListChanged();
     }
 }
 
@@ -1035,7 +1035,7 @@ void ActivityListModel::setHasSyncConflicts(bool conflictsFound)
 {
     if (_hasSyncConflicts != conflictsFound) {
         _hasSyncConflicts = conflictsFound;
-        emit hasSyncConflictsChanged();
+        Q_EMIT hasSyncConflictsChanged();
     }
 }
 
@@ -1081,13 +1081,13 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
         // Tell the system to drop the cached `.insufficientQuota` error and re-enumerate
         // (handled by `OCC::User::slotFileProviderRetryUploads`), then sweep the related
         // activity entries from the list so the user gets immediate feedback.
-        emit fileProviderRetryUploadsRequested(domainIdentifier);
+        Q_EMIT fileProviderRetryUploadsRequested(domainIdentifier);
         removeFileProviderQuotaActivitiesForDomain(domainIdentifier);
         return;
     }
 #endif
 
-    emit sendNotificationRequest(activity._accName, action._link, action._verb, activityIndex);
+    Q_EMIT sendNotificationRequest(activity._accName, action._link, action._verb, activityIndex);
 }
 
 void ActivityListModel::slotTriggerDismiss(const int activityIndex)
@@ -1100,7 +1100,7 @@ void ActivityListModel::slotTriggerDismiss(const int activityIndex)
     constexpr auto deleteVerb = "DELETE";
     const auto activity = _finalList[activityIndex];
 
-    emit sendNotificationRequest(activity._accName, Utility::concatUrlPath(accountState()->account()->url(), "ocs/v2.php/apps/notifications/api/v2/notifications/" + QString::number(activity._id)).toString(), deleteVerb, activityIndex);
+    Q_EMIT sendNotificationRequest(activity._accName, Utility::concatUrlPath(accountState()->account()->url(), "ocs/v2.php/apps/notifications/api/v2/notifications/" + QString::number(activity._id)).toString(), deleteVerb, activityIndex);
 }
 
 AccountState *ActivityListModel::accountState() const
@@ -1207,7 +1207,7 @@ void ActivityListModel::slotRemoveAccount()
     _showMoreActivitiesAvailableEntry = false;
     setHasSyncConflicts(false);
     refreshPreviewData();
-    emit activityListChanged();
+    Q_EMIT activityListChanged();
 }
 
 void ActivityListModel::setReplyMessageSent(const int activityIndex, const QString &message)
@@ -1219,7 +1219,7 @@ void ActivityListModel::setReplyMessageSent(const int activityIndex, const QStri
 
     _finalList[activityIndex]._talkNotificationData.messageSent = message;
 
-    emit dataChanged(index(activityIndex, 0), index(activityIndex, 0), {ActivityListModel::TalkNotificationMessageSentRole});
+    Q_EMIT dataChanged(index(activityIndex, 0), index(activityIndex, 0), {ActivityListModel::TalkNotificationMessageSentRole});
 }
 
 QString ActivityListModel::replyMessageSent(const Activity &activity) const

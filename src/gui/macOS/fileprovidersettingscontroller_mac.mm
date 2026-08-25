@@ -463,7 +463,7 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
             controller->setOperationInProgress(false, QString());
 
             if (enabledAccountsAction == MacImplementation::VfsAccountsAction::VfsAccountsEnabledChanged) {
-                emit controller->vfsEnabledForAccountChanged(capturedUserIdAtHost);
+                Q_EMIT controller->vfsEnabledForAccountChanged(capturedUserIdAtHost);
             }
         });
     });
@@ -515,7 +515,7 @@ void FileProviderSettingsController::resetVfsForAccount(const QString &userIdAtH
 
             if (disableAction != MacImplementation::VfsAccountsAction::VfsAccountsNoAction
                 || enableAction != MacImplementation::VfsAccountsAction::VfsAccountsNoAction) {
-                emit controller->vfsEnabledForAccountChanged(capturedUserIdAtHost);
+                Q_EMIT controller->vfsEnabledForAccountChanged(capturedUserIdAtHost);
             }
 
             if (reAddFailed) {
@@ -546,7 +546,7 @@ void FileProviderSettingsController::setFileProviderModeEnabled(const bool enabl
 
     if (enabled == fileProviderModeEnabled()) {
         // Nothing to do, but let listeners (e.g. the settings switch) re-sync.
-        emit fileProviderModeEnabledChanged(enabled);
+        Q_EMIT fileProviderModeEnabledChanged(enabled);
         return;
     }
 
@@ -559,7 +559,7 @@ void FileProviderSettingsController::setFileProviderModeEnabled(const bool enabl
     // client die mid-way, "mode enabled + classic folders still configured" is picked
     // up by performStartupReconciliation() on the next launch.
     ConfigFile().setMacFileProviderModeEnabled(enabled);
-    emit fileProviderModeEnabledChanged(enabled);
+    Q_EMIT fileProviderModeEnabledChanged(enabled);
 
     applyFileProviderModeToAllAccounts(enabled);
 }
@@ -615,7 +615,7 @@ void FileProviderSettingsController::applyFileProviderModeToAllAccounts(const bo
             controller->setOperationInProgress(false, QString());
 
             for (const auto &accountId : capturedChangedAccounts) {
-                emit controller->vfsEnabledForAccountChanged(accountId);
+                Q_EMIT controller->vfsEnabledForAccountChanged(accountId);
             }
 
             if (enabled && capturedFailedAccounts.isEmpty()) {
@@ -636,7 +636,7 @@ void FileProviderSettingsController::applyFileProviderModeToAllAccounts(const bo
                                               Theme::instance()->appNameGUI()));
             }
 
-            emit controller->fileProviderModeApplyFinished(enabled, capturedFailedAccounts);
+            Q_EMIT controller->fileProviderModeApplyFinished(enabled, capturedFailedAccounts);
         });
     });
 }
@@ -773,11 +773,11 @@ void FileProviderSettingsController::setOperationInProgress(bool inProgress, con
 {
     if (_isOperationInProgress != inProgress) {
         _isOperationInProgress = inProgress;
-        emit operationInProgressChanged();
+        Q_EMIT operationInProgressChanged();
     }
     if (_operationMessage != message) {
         _operationMessage = message;
-        emit operationMessageChanged();
+        Q_EMIT operationMessageChanged();
     }
 }
 

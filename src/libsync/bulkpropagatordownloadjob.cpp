@@ -59,7 +59,7 @@ PropagatorJob::JobParallelism BulkPropagatorDownloadJob::parallelism() const
 
 void BulkPropagatorDownloadJob::finalizeOneFile(const SyncFileItemPtr &file)
 {
-    emit propagator()->itemCompleted(file, ErrorCategory::GenericError);
+    Q_EMIT propagator()->itemCompleted(file, ErrorCategory::GenericError);
 }
 
 void BulkPropagatorDownloadJob::start()
@@ -149,7 +149,7 @@ bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
 
 void BulkPropagatorDownloadJob::done(const SyncFileItem::Status status)
 {
-    emit finished(status);
+    Q_EMIT finished(status);
 }
 
 void BulkPropagatorDownloadJob::abortWithError(SyncFileItemPtr item, SyncFileItem::Status status, const QString &error)
@@ -159,7 +159,7 @@ void BulkPropagatorDownloadJob::abortWithError(SyncFileItemPtr item, SyncFileIte
     if (item) {
         item->_errorString = error;
         item->_status = status;
-        emit propagator()->itemCompleted(item, ErrorCategory::GenericError);
+        Q_EMIT propagator()->itemCompleted(item, ErrorCategory::GenericError);
     }
     done(status);
 }

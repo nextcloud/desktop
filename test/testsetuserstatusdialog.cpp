@@ -20,26 +20,26 @@ public:
     void fetchUserStatus() override
     {
         if (_couldNotFetchUserStatus) {
-            emit error(Error::CouldNotFetchUserStatus);
+            Q_EMIT error(Error::CouldNotFetchUserStatus);
             return;
         } else if (_userStatusNotSupported) {
-            emit error(Error::UserStatusNotSupported);
+            Q_EMIT error(Error::UserStatusNotSupported);
             return;
         } else if (_emojisNotSupported) {
-            emit error(Error::EmojisNotSupported);
+            Q_EMIT error(Error::EmojisNotSupported);
             return;
         }
 
-        emit userStatusFetched(_userStatus);
+        Q_EMIT userStatusFetched(_userStatus);
     }
 
     void fetchPredefinedStatuses() override
     {
         if (_couldNotFetchPredefinedUserStatuses) {
-            emit error(Error::CouldNotFetchPredefinedUserStatuses);
+            Q_EMIT error(Error::CouldNotFetchPredefinedUserStatuses);
             return;
         }
-        emit predefinedStatusesFetched(_predefinedStatuses);
+        Q_EMIT predefinedStatusesFetched(_predefinedStatuses);
     }
 
     [[nodiscard]] bool setUserStatus(const OCC::UserStatus &userStatus) override
@@ -50,13 +50,13 @@ public:
         }
 
         if (_couldNotSetUserStatusMessage) {
-            emit error(Error::CouldNotSetUserStatus);
+            Q_EMIT error(Error::CouldNotSetUserStatus);
             return false;
         }
 
         _userStatusSetByCallerOfSetUserStatus = userStatus;
         if (!_deferUserStatusSetSignal) {
-            emit UserStatusConnector::userStatusSet();
+            Q_EMIT UserStatusConnector::userStatusSet();
         }
         return true;
     }
@@ -64,10 +64,10 @@ public:
     void clearMessage() override
     {
         if (_couldNotClearUserStatusMessage) {
-            emit error(Error::CouldNotClearMessage);
+            Q_EMIT error(Error::CouldNotClearMessage);
         } else {
             _isMessageCleared = true;
-            emit UserStatusConnector::messageCleared();
+            Q_EMIT UserStatusConnector::messageCleared();
         }
     }
 
@@ -99,12 +99,12 @@ public:
 
     void emitUserStatusSet()
     {
-        emit UserStatusConnector::userStatusSet();
+        Q_EMIT UserStatusConnector::userStatusSet();
     }
 
     void emitError(Error error)
     {
-        emit UserStatusConnector::error(error);
+        Q_EMIT UserStatusConnector::error(error);
     }
 
     void setErrorCouldNotFetchPredefinedUserStatuses(bool value)
@@ -215,7 +215,7 @@ class TestSetUserStatusDialog : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

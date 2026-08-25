@@ -20,9 +20,9 @@ public:
     explicit CloudProviderManager(QObject *parent = nullptr);
     void registerSignals();
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
     void slotFolderListChanged(const OCC::Folder::Map &folderMap);
 
 private:

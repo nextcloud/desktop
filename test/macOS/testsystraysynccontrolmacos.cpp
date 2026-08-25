@@ -21,7 +21,7 @@ class TestSystraySyncControlMacOS : public QObject
 
     SystraySyncControlTestHelper _helper;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         QVERIFY(_helper.initialize());

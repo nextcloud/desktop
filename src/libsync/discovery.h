@@ -303,14 +303,14 @@ private:
 
     int64_t folderBytesAvailable(const SyncFileItemPtr &item, const FolderQuota::ServerEntry serverEntry) const;
 
-signals:
+Q_SIGNALS:
     void finished();
     // The root etag of this directory was fetched
     void etag(const QByteArray &, const QDateTime &time);
     void updatedRootFolderQuota(const int64_t &bytesUsed, const int64_t &bytesAvailable);
     void rootFileIdReceived(qint64 fileId);
 
-private slots:
+private Q_SLOTS:
     void setFolderQuota(const OCC::FolderQuota &folderQuota);
 };
 }

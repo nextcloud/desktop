@@ -241,11 +241,11 @@ void KMessageWidgetPrivate::slotTimeLineFinished()
         content->setGeometry(0, 0, q->width(), bestContentHeight());
 
         // notify about finished animation
-        emit q->showAnimationFinished();
+        Q_EMIT q->showAnimationFinished();
     } else {
         // hide and notify about finished animation
         q->hide();
-        emit q->hideAnimationFinished();
+        Q_EMIT q->hideAnimationFinished();
     }
 }
 
@@ -404,18 +404,18 @@ void KMessageWidget::animatedShow()
     // Test before styleHint, as there might have been a style change while animation was running
     if (isHideAnimationRunning()) {
         d->timeLine->stop();
-        emit hideAnimationFinished();
+        Q_EMIT hideAnimationFinished();
     }
 
     if (!style()->styleHint(QStyle::SH_Widget_Animate, nullptr, this)
      || (parentWidget() && !parentWidget()->isVisible())) {
         show();
-        emit showAnimationFinished();
+        Q_EMIT showAnimationFinished();
         return;
     }
 
     if (isVisible() && (d->timeLine->state() == QTimeLine::NotRunning) && (height() == d->bestContentHeight()) && (d->content->pos().y() == 0)) {
-        emit showAnimationFinished();
+        Q_EMIT showAnimationFinished();
         return;
     }
 
@@ -441,19 +441,19 @@ void KMessageWidget::animatedHide()
     // And before styleHint, as there might have been a style change while animation was running
     if (isShowAnimationRunning()) {
         d->timeLine->stop();
-        emit showAnimationFinished();
+        Q_EMIT showAnimationFinished();
     }
 
     if (!style()->styleHint(QStyle::SH_Widget_Animate, nullptr, this)) {
         hide();
-        emit hideAnimationFinished();
+        Q_EMIT hideAnimationFinished();
         return;
     }
 
     if (!isVisible()) {
         // explicitly hide it, so it stays hidden in case it is only not visible due to the parents
         hide();
-        emit hideAnimationFinished();
+        Q_EMIT hideAnimationFinished();
         return;
     }
 

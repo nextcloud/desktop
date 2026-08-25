@@ -135,7 +135,7 @@ void PropagateUploadFileV1::startNextChunk()
 
     const QString fileName = _fileToUpload._path;
     if (FileSystem::isFileLocked(fileName, FileSystem::LockMode::SharedRead)) {
-        emit propagator()->seenLockedFile(fileName);
+        Q_EMIT propagator()->seenLockedFile(fileName);
 
                // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError(SyncFileItem::FileLocked, tr("File is locked preventing syncing it", "Generic warning message when a locked file cannot be synced"));

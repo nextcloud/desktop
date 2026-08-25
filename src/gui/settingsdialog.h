@@ -43,7 +43,7 @@ public:
 
     QWidget* currentPage();
 
-public slots:
+public Q_SLOTS:
     void showFirstPage();
     void showAccount(OCC::AccountState *account);
     void setInitialAccount(OCC::AccountState *account);
@@ -52,7 +52,7 @@ public slots:
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
 
-signals:
+Q_SIGNALS:
     void styleChanged();
     void onActivate();
     void currentPageChanged();
@@ -63,7 +63,7 @@ protected:
     void changeEvent(QEvent *) override;
     void showEvent(QShowEvent *event) override;
 
-private slots:
+private Q_SLOTS:
     void accountAdded(OCC::AccountState *);
     void accountRemoved(OCC::AccountState *);
 

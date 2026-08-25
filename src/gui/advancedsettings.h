@@ -26,10 +26,10 @@ public:
     ~AdvancedSettings() override;
     [[nodiscard]] QSize sizeHint() const override;
 
-public slots:
+public Q_SLOTS:
     void slotStyleChanged();
 
-private slots:
+private Q_SLOTS:
     void saveMiscSettings();
     void slotShowInExplorerNavigationPane(bool checked);
     void slotIgnoreFilesEditor();

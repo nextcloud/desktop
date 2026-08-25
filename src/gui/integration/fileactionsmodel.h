@@ -90,13 +90,13 @@ public:
     [[nodiscard]] QString parseUrl(const QString &url) const;
     [[nodiscard]] QString parseIcon(const QString &icon) const;
 
-signals:
+Q_SIGNALS:
     void accountStateChanged();
     void fileChanged();
     void responseChanged();
     void fileActionModelChanged();
 
-public slots:
+public Q_SLOTS:
     void createRequest(const int row);
     void processRequest(const QJsonDocument &json, int statusCode);
 

@@ -160,10 +160,10 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
         // If this was the initial folder selection and the user canceled,
         // emit signal to close the wizard
         if (isInitialSelection) {
-            emit initialFolderSelectionCanceled();
+            Q_EMIT initialFolderSelectionCanceled();
         }
     }
-    emit completeChanged();
+    Q_EMIT completeChanged();
 }
 
 
@@ -434,7 +434,7 @@ void FolderWizardRemotePath::slotCurrentItemChanged(QTreeWidgetItem *item)
         _ui.folderEntry->setText(dir);
     }
 
-    emit completeChanged();
+    Q_EMIT completeChanged();
 }
 
 void FolderWizardRemotePath::slotFolderEntryEdited(const QString &text)

@@ -35,13 +35,13 @@ public:
     // Public so unit tests can exercise the cache + fallback paths.
     static QString resolveToFilesystemPath(const QString &source);
 
-public slots:
+public Q_SLOTS:
     void setSource(const QString &source);
     void setLoops(int loops);
     void play();
     void stop();
 
-signals:
+Q_SIGNALS:
     void sourceChanged();
     void loopsChanged();
     void playingChanged();

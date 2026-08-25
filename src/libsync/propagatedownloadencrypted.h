@@ -25,10 +25,10 @@ public:
   bool decryptFile(QFile& tmpFile);
   [[nodiscard]] QString errorString() const;
 
-private slots:
+private Q_SLOTS:
   void slotFetchMetadataJobFinished(int statusCode, const QString &message);
 
-signals:
+Q_SIGNALS:
   void fileMetadataFound();
   void failed();
 

@@ -267,7 +267,7 @@ public:
 
     Q_INVOKABLE virtual void respond();
 
-public slots:
+public Q_SLOTS:
     void slotSetFinished();
 
 public:
@@ -466,7 +466,7 @@ public:
     using QNetworkReply::setError;
     using QNetworkReply::setAttribute;
 
-public slots:
+public Q_SLOTS:
     void slotSetFinished();
 
 public:
@@ -707,7 +707,7 @@ inline void addFiles(QStringList &dest, const FileInfo &fi)
 {
     if (fi.isDir) {
         dest += QStringLiteral("%1 - dir").arg(fi.path());
-        foreach (const FileInfo &fi, fi.children)
+        Q_FOREACH (const FileInfo &fi, fi.children)
             addFiles(dest, fi);
     } else {
         dest += QStringLiteral("%1 - %2 %3-bytes").arg(fi.path()).arg(fi.size).arg(fi.contentChar);
@@ -717,7 +717,7 @@ inline void addFiles(QStringList &dest, const FileInfo &fi)
 inline QString toStringNoElide(const FileInfo &fi)
 {
     QStringList files;
-    foreach (const FileInfo &fi, fi.children)
+    Q_FOREACH (const FileInfo &fi, fi.children)
         addFiles(files, fi);
     files.sort();
     return QStringLiteral("FileInfo with %1 files(\n\t%2\n)").arg(files.size()).arg(files.join("\n\t"));
@@ -737,7 +737,7 @@ inline void addFilesDbData(QStringList &dest, const FileInfo &fi)
             fi.isDir ? "dir" : "file",
             QString::number(fi.lastModified.toSecsSinceEpoch()),
             fi.fileId);
-        foreach (const FileInfo &fi, fi.children)
+        Q_FOREACH (const FileInfo &fi, fi.children)
             addFilesDbData(dest, fi);
     } else {
         dest += QStringLiteral("%1 - %2 %3 %4 %5").arg(
@@ -752,7 +752,7 @@ inline void addFilesDbData(QStringList &dest, const FileInfo &fi)
 inline char *printDbData(const FileInfo &fi)
 {
     QStringList files;
-    foreach (const FileInfo &fi, fi.children)
+    Q_FOREACH (const FileInfo &fi, fi.children)
         addFilesDbData(files, fi);
     return QTest::toString(QStringLiteral("FileInfo with %1 files(%2)").arg(files.size()).arg(files.join(", ")));
 }

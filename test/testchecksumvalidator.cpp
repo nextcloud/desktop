@@ -37,7 +37,7 @@ using namespace OCC::Utility;
         bool           _successDown = false;
         bool           _errorSeen = false;
 
-    public slots:
+    public Q_SLOTS:
 
     void slotUpValidated(const QByteArray& type, const QByteArray& checksum) {
          qDebug() << "Checksum: " << checksum;
@@ -76,7 +76,7 @@ using namespace OCC::Utility;
         return sumShell;
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

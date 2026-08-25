@@ -286,7 +286,7 @@ public:
      */
     [[nodiscard]] virtual AvailabilityResult availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck) = 0;
 
-public slots:
+public Q_SLOTS:
     /** Update in-sync state based on SyncFileStatusTracker signal.
      *
      * For some vfs plugins the icons aren't based on SocketAPI but rather on data shared
@@ -295,7 +295,7 @@ public slots:
      */
     virtual void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus) = 0;
 
-signals:
+Q_SIGNALS:
     /// Emitted when a user-initiated hydration starts
     void beginHydrating();
     /// Emitted when the hydration ends
@@ -361,7 +361,7 @@ public:
     Optional<PinState> pinState(const QString &) override { return PinState::AlwaysLocal; }
     AvailabilityResult availability(const QString &, const AvailabilityRecursivity) override { return VfsItemAvailability::AlwaysLocal; }
 
-public slots:
+public Q_SLOTS:
     void fileStatusChanged(const QString &, OCC::SyncFileStatus) override {}
 
 protected:

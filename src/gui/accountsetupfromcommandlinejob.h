@@ -28,10 +28,10 @@ public:
                                    QString remoteDirPath = QStringLiteral("/"),
                                    QObject *parent = nullptr);
 
-public slots:
+public Q_SLOTS:
     [[nodiscard]] bool handleAccountSetupFromCommandLine();
 
-private slots:
+private Q_SLOTS:
     void checkLastModifiedWithPropfind();
 
     void accountSetupFromCommandLinePropfindHandleSuccess();

@@ -81,7 +81,7 @@ public:
 
     [[nodiscard]] bool allConflictingSelected() const;
 
-public slots:
+public Q_SLOTS:
     void setConflictActivities(OCC::ActivityList conflicts);
 
     void selectAllExisting(bool selected);
@@ -90,7 +90,7 @@ public slots:
 
     void applySolution();
 
-signals:
+Q_SIGNALS:
     void conflictActivitiesChanged();
 
     void allExistingsSelectedChanged();

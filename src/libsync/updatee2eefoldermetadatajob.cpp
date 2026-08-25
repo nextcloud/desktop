@@ -71,7 +71,7 @@ void UpdateE2eeFolderMetadataJob::slotFetchMetadataJobFinished(int httpReturnCod
         qCWarning(lcUpdateFileDropMetadataJob()) << "Error Getting the encrypted metadata.";
         _item->_status = SyncFileItem::FatalError;
         _item->_errorString = message;
-        emit finished(SyncFileItem::FatalError);
+        Q_EMIT finished(SyncFileItem::FatalError);
         return;
     }
 
@@ -88,7 +88,7 @@ void UpdateE2eeFolderMetadataJob::slotFetchMetadataJobFinished(int httpReturnCod
         return;
     }
 
-    emit fileDropMetadataParsedAndAdjusted(folderMetadata.data());
+    Q_EMIT fileDropMetadataParsedAndAdjusted(folderMetadata.data());
     _encryptedFolderMetadataHandler->uploadMetadata();
     connect(_encryptedFolderMetadataHandler.data(), &EncryptedFolderMetadataHandler::uploadFinished,
             this, &UpdateE2eeFolderMetadataJob::slotUpdateMetadataFinished);
@@ -106,7 +106,7 @@ void UpdateE2eeFolderMetadataJob::slotUpdateMetadataFinished(int httpReturnCode,
     propagator()->_journal->schedulePathForRemoteDiscovery(_item->_file);
     propagator()->_anotherSyncNeeded = true;
     _item->_status = itemStatus;
-    emit finished(itemStatus);
+    Q_EMIT finished(itemStatus);
 }
 
 void UpdateE2eeFolderMetadataJob::unlockFolder(const EncryptedFolderMetadataHandler::UnlockFolderWithResult result)
@@ -134,7 +134,7 @@ void UpdateE2eeFolderMetadataJob::unlockFolder(const EncryptedFolderMetadataHand
                 _item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(propagator()->account()->capabilities().clientSideEncryptionVersion());
             }
         }
-        emit finished(itemStatus);
+        Q_EMIT finished(itemStatus);
         return;
     }
 
@@ -144,7 +144,7 @@ void UpdateE2eeFolderMetadataJob::unlockFolder(const EncryptedFolderMetadataHand
             qCWarning(lcUpdateFileDropMetadataJob) << "Unlock Error" << folderId << httpStatus;
             propagator()->account()->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             _item->_errorString = tr("Failed to unlock encrypted folder.");
-            emit finished(SyncFileItem::FatalError);
+            Q_EMIT finished(SyncFileItem::FatalError);
             return;
         }
 
@@ -154,14 +154,14 @@ void UpdateE2eeFolderMetadataJob::unlockFolder(const EncryptedFolderMetadataHand
             || !_encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
             qCWarning(lcUpdateFileDropMetadataJob) << "Failed to finalize item. Invalid metadata.";
             _item->_errorString = tr("Failed to finalize item.");
-            emit finished(SyncFileItem::FatalError);
+            Q_EMIT finished(SyncFileItem::FatalError);
             return;
         }
 
         _item->_e2eEncryptionStatus = _encryptedFolderMetadataHandler->folderMetadata()->encryptedMetadataEncryptionStatus();
         _item->_e2eEncryptionStatusRemote = _encryptedFolderMetadataHandler->folderMetadata()->encryptedMetadataEncryptionStatus();
 
-        emit finished(SyncFileItem::Success);
+        Q_EMIT finished(SyncFileItem::Success);
     });
     _encryptedFolderMetadataHandler->unlockFolder(result);
 }

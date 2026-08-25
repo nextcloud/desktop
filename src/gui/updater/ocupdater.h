@@ -62,11 +62,11 @@ class UpdaterScheduler : public QObject
 public:
     UpdaterScheduler(QObject *parent);
 
-signals:
+Q_SIGNALS:
     void updaterAnnouncement(const QString &title, const QString &msg, const QUrl &webUrl);
     void requestRestart();
 
-private slots:
+private Q_SLOTS:
     void slotTimerFired();
 
 private:
@@ -106,20 +106,20 @@ public:
     [[nodiscard]] int downloadState() const;
     void setDownloadState(DownloadState state);
 
-signals:
+Q_SIGNALS:
     void downloadStateChanged();
     void newUpdateAvailable(const QString &header, const QString &message, const QUrl &webUrl);
     void requestRestart();
 
-public slots:
+public Q_SLOTS:
     // FIXME Maybe this should be in the NSISUpdater which should have been called WindowsUpdater
     void slotStartInstaller();
 
-protected slots:
+protected Q_SLOTS:
     void backgroundCheckForUpdate() override;
     void slotOpenUpdateUrl();
 
-private slots:
+private Q_SLOTS:
     void slotVersionInfoArrived();
     void slotTimedOut();
 
@@ -147,7 +147,7 @@ class NSISUpdater : public OCUpdater
 public:
     explicit NSISUpdater(const QUrl &url);
     bool handleStartup() override;
-private slots:
+private Q_SLOTS:
     void slotDownloadFinished();
     void slotWriteFile();
 

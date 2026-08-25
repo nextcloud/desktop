@@ -118,21 +118,21 @@ public:
      */
     void setAssociatedComposite(PropagatorCompositeJob *job) { _associatedComposite = job; }
 
-public slots:
+public Q_SLOTS:
     /*
      * Asynchronous abort requires emit of abortFinished() signal,
      * while synchronous is expected to abort immedietaly.
     */
     virtual void abort(OCC::PropagatorJob::AbortType abortType) {
         if (abortType == AbortType::Asynchronous)
-            emit abortFinished();
+            Q_EMIT abortFinished();
     }
 
     /** Starts this job, or a new subjob
      * returns true if a job was started.
      */
     virtual bool scheduleSelfOrChild() = 0;
-signals:
+Q_SIGNALS:
     /**
      * Emitted when the job is fully finished
      */
@@ -183,7 +183,7 @@ protected:
 
     [[nodiscard]] bool hasEncryptedAncestor() const;
 
-protected slots:
+protected Q_SLOTS:
     void slotRestoreJobFinished(OCC::SyncFileItem::Status status);
 
 private:
@@ -221,7 +221,7 @@ public:
 
     SyncFileItemPtr _item;
 
-public slots:
+public Q_SLOTS:
     virtual void start() = 0;
 };
 
@@ -277,13 +277,13 @@ public:
                 j->abort(abortType);
             }
         } else if (abortType == AbortType::Asynchronous){
-            emit abortFinished();
+            Q_EMIT abortFinished();
         }
     }
 
     [[nodiscard]] qint64 committedDiskSpace() const override;
 
-private slots:
+private Q_SLOTS:
     void slotSubJobAbortFinished();
     bool possiblyRunNextJob(OCC::PropagatorJob *next)
     {
@@ -351,7 +351,7 @@ public:
         return _subJobs.committedDiskSpace();
     }
 
-private slots:
+private Q_SLOTS:
 
     void slotFirstJobFinished(OCC::SyncFileItem::Status status);
     virtual void slotSubJobsFinished(OCC::SyncFileItem::Status status);
@@ -377,10 +377,10 @@ public:
 
     [[nodiscard]] qint64 committedDiskSpace() const override;
 
-public slots:
+public Q_SLOTS:
     void appendDirDeletionJob(OCC::PropagatorJob *job);
 
-private slots:
+private Q_SLOTS:
     void slotSubJobsFinished(OCC::SyncFileItem::Status status) override;
     void slotDirDeletionJobsFinished(OCC::SyncFileItem::Status status);
 
@@ -641,7 +641,7 @@ public:
 
     [[nodiscard]] bool isInBulkUploadBlackList(const QString &file) const;
 
-private slots:
+private Q_SLOTS:
 
     void abortTimeout()
     {
@@ -654,7 +654,7 @@ private slots:
     void emitFinished(OCC::SyncFileItem::Status status)
     {
         if (!_finishedEmited) {
-            emit finished(status);
+            Q_EMIT finished(status);
         }
         _abortRequested = false;
         _finishedEmited = true;
@@ -662,7 +662,7 @@ private slots:
 
     void scheduleNextJobImpl();
 
-signals:
+Q_SIGNALS:
     void newItem(const OCC::SyncFileItemPtr &);
     void itemCompleted(const OCC::SyncFileItemPtr &item, OCC::ErrorCategory category);
     void progress(const OCC::SyncFileItem &, qint64 bytes);
@@ -743,10 +743,10 @@ public:
      * will destroy itself.
      */
     void start();
-signals:
+Q_SIGNALS:
     void finished();
     void aborted(const QString &error, const OCC::ErrorCategory errorCategory);
-private slots:
+private Q_SLOTS:
     void slotPollFinished();
 };
 }

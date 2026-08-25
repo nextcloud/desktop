@@ -385,14 +385,14 @@ void SyncStatusSummary::setSyncing(bool value)
     }
 
     _isSyncing = value;
-    emit syncingChanged();
+    Q_EMIT syncingChanged();
 }
 
 void SyncStatusSummary::setTotalFiles(const qint64 value)
 {
     if (value != _totalFiles) {
         _totalFiles = value;
-        emit totalFilesChanged();
+        Q_EMIT totalFilesChanged();
     }
 }
 
@@ -403,7 +403,7 @@ void SyncStatusSummary::setSyncProgress(double value)
     }
 
     _progress = value;
-    emit syncProgressChanged();
+    Q_EMIT syncProgressChanged();
 }
 
 void SyncStatusSummary::setSyncStatusString(const QString &value)
@@ -413,7 +413,7 @@ void SyncStatusSummary::setSyncStatusString(const QString &value)
     }
 
     _syncStatusString = value;
-    emit syncStatusStringChanged();
+    Q_EMIT syncStatusStringChanged();
 }
 
 QString SyncStatusSummary::syncStatusString() const
@@ -438,7 +438,7 @@ void SyncStatusSummary::setSyncIcon(const QUrl &value)
     }
 
     _syncIcon = value;
-    emit syncIconChanged();
+    Q_EMIT syncIconChanged();
 }
 
 void SyncStatusSummary::setSyncStatusDetailString(const QString &value)
@@ -448,7 +448,7 @@ void SyncStatusSummary::setSyncStatusDetailString(const QString &value)
     }
 
     _syncStatusDetailString = value;
-    emit syncStatusDetailStringChanged();
+    Q_EMIT syncStatusDetailStringChanged();
 }
 
 void SyncStatusSummary::connectToFoldersProgress(const Folder::Map &folderMap)
@@ -540,7 +540,7 @@ void SyncStatusSummary::setNeedsSandboxReapproval(bool value)
     }
 
     _needsSandboxReapproval = value;
-    emit needsSandboxReapprovalChanged();
+    Q_EMIT needsSandboxReapprovalChanged();
 }
 
 void SyncStatusSummary::updateNeedsSandboxReapproval()

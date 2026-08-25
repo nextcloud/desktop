@@ -287,7 +287,7 @@ void GovernanceLabelsListModel::apply()
 void GovernanceLabelsListModel::emitRefreshData()
 {
     if (!validState()) {
-        qCWarning(lcGovernanceLabelsListModel()) << "cannot emit refreshData signal from an invalid model state";
+        qCWarning(lcGovernanceLabelsListModel()) << "cannot Q_EMIT refreshData signal from an invalid model state";
         return;
     }
 
