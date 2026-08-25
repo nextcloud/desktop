@@ -44,10 +44,10 @@ class TestFolderMan: public QObject
 
     QPointer<FolderMan> _fm;
 
-signals:
+Q_SIGNALS:
     void incomingShareDeleted();
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);
@@ -233,7 +233,7 @@ private slots:
            fakeFolder.remoteModifier().remove(filePathRelative);
            reply = new FakePayloadReply(op, req, {}, nullptr);
 
-           emit incomingShareDeleted();
+           Q_EMIT incomingShareDeleted();
 
            return reply;
         });

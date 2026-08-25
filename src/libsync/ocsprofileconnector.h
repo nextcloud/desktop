@@ -40,7 +40,7 @@ public:
     void fetchHovercard(const QString &userId);
     [[nodiscard]] const Hovercard &hovercard() const;
 
-signals:
+Q_SIGNALS:
     void error();
     void hovercardFetched();
     void iconLoaded(const std::size_t hovercardActionIndex);

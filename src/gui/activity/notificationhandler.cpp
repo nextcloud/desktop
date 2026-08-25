@@ -74,14 +74,14 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     if (statusCode != successStatusCode && statusCode != notModifiedStatusCode) {
         qCWarning(lcServerNotification) << "Notifications failed with status code " << statusCode;
         deleteLater();
-        emit jobFinished();
+        Q_EMIT jobFinished();
         return;
     }
 
     if (statusCode == notModifiedStatusCode) {
         qCInfo(lcServerNotification) << "Status code " << statusCode << " Not Modified - No new notifications.";
         deleteLater();
-        emit jobFinished();
+        Q_EMIT jobFinished();
         return;
     }
 
@@ -91,7 +91,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     if (!_preFetchEtagHeader.isEmpty() || _preFetchEtagHeader == postFetchEtagHeader) {
         qCInfo(lcServerNotification) << "Notifications ETag header is the same as before, no new notifications.";
         deleteLater();
-        emit jobFinished();
+        Q_EMIT jobFinished();
         return;
     }
     _preFetchEtagHeader = postFetchEtagHeader;
@@ -194,9 +194,9 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
         list.append(activity);
     }
-    emit newNotificationList(list);
-    emit newIncomingCallsList(callList);
-    emit jobFinished();
+    Q_EMIT newNotificationList(list);
+    Q_EMIT newIncomingCallsList(callList);
+    Q_EMIT jobFinished();
 
     deleteLater();
 }

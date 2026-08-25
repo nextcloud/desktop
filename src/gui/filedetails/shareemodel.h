@@ -56,7 +56,7 @@ public:
     [[nodiscard]] LookupMode lookupMode() const;
     [[nodiscard]] QVariantList shareeBlocklist() const;
 
-signals:
+Q_SIGNALS:
     void accountStateChanged();
     void shareItemIsFolderChanged();
     void searchStringChanged();
@@ -67,7 +67,7 @@ signals:
     void shareesReady();
     void displayErrorMessage(const int code, const QString &message);
 
-public slots:
+public Q_SLOTS:
     void setAccountState(OCC::AccountState *accountState);
     void setShareItemIsFolder(const bool shareItemIsFolder);
     void setSearchString(const QString &searchString);
@@ -77,7 +77,7 @@ public slots:
 
     void fetch();
 
-private slots:
+private Q_SLOTS:
     void shareesFetched(const QJsonDocument &reply);
     void insertSearchGloballyItem(const QVector<OCC::ShareePtr> &newShareesFetched);
     void filterSharees();

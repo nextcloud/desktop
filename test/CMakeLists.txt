@@ -25,6 +25,7 @@ add_library(testutils
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt::Test Qt::Core5Compat)
 target_include_directories(testutils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_definitions(testutils PRIVATE QT_NO_KEYWORDS)
 set_target_properties(testutils PROPERTIES FOLDER Tests)
 
 nextcloud_add_test(NextcloudPropagator)

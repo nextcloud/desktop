@@ -359,13 +359,13 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         qCInfo(lcDisco) << _discoveryData->_localDir + path << "is locked" << "exluding it from sync";
         excluded = CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED;
 
-        emit _discoveryData->seenLockedFile(_discoveryData->_localDir + path);
+        Q_EMIT _discoveryData->seenLockedFile(_discoveryData->_localDir + path);
     }
 
     if (excluded == CSYNC_NOT_EXCLUDED && !entries.localEntry.isSymLink) {
         return false;
     } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
-        emit _discoveryData->silentlyExcluded(path);
+        Q_EMIT _discoveryData->silentlyExcluded(path);
         return true;
     }
 
@@ -378,7 +378,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         excluded = CSYNC_NOT_EXCLUDED;
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
         item->_direction = SyncFileItem::Down;
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
         return true;
     }
 
@@ -500,9 +500,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     _childIgnored = true;
 
     if (isBlacklisted) {
-        emit _discoveryData->silentlyExcluded(path);
+        Q_EMIT _discoveryData->silentlyExcluded(path);
     } else {
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
     }
 
     return true;
@@ -629,7 +629,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("File has extension reserved for virtual files.");
             _childIgnored = true;
-            emit _discoveryData->itemDiscovered(item);
+            Q_EMIT _discoveryData->itemDiscovered(item);
             return;
         }
     }
@@ -801,7 +801,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             _childIgnored = true;
             item->_errorString = serverEntry.isDirectory ? tr("Folder is not accessible on the server.", "server error")
                                                          : tr("File is not accessible on the server.", "server error");
-            emit _discoveryData->itemDiscovered(item);
+            Q_EMIT _discoveryData->itemDiscovered(item);
             return;
         }
     }
@@ -953,14 +953,14 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
                              << "item->isEncrypted()" << (item->isEncrypted() ? "true" : "false");
 
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
 
         return;
     }
 
     if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
 
         return;
     }
@@ -1324,7 +1324,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 << " db_etag=" << dbEntry._etag
                 << " db_inode=" << dbEntry._inode;
             if (!_discoveryData->_statedb->deleteFileRecord(path._original, true)) {
-                emit _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original), ErrorCategory::GenericError);
+                Q_EMIT _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original), ErrorCategory::GenericError);
                 qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << path._original;
             }
             return;
@@ -1871,7 +1871,7 @@ void ProcessDirectoryJob::processFileFinalize(
     if (item->isEncrypted() && !_discoveryData->_account->capabilities().clientSideEncryptionAvailable()) {
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
         item->_direction = SyncFileItem::None;
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
         return;
     }
 
@@ -1996,7 +1996,7 @@ void ProcessDirectoryJob::processFileFinalize(
             || (item->_type == ItemTypeVirtualFile && item->_instruction == CSYNC_INSTRUCTION_NEW)) {
             _discoveryData->_deletedItem[path._original] = item;
         }
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
     }
 }
 
@@ -2029,7 +2029,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);
     } else {
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
     }
 }
 
@@ -2052,13 +2052,13 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
             qCWarning(lcDisco) << "checkForPermission: Not allowed because you don't have permission to add subfolders to that folder:" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
-            emit _discoveryData->remnantReadOnlyFolderDiscovered(item);
+            Q_EMIT _discoveryData->remnantReadOnlyFolderDiscovered(item);
             return false;
         } else if (!item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddFile)) {
             qCWarning(lcDisco) << "checkForPermission: Not allowed because you don't have permission to add files in that folder:" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("Not allowed because you don't have permission to add files in that folder");
-            emit _discoveryData->remnantReadOnlyFolderDiscovered(item);
+            Q_EMIT _discoveryData->remnantReadOnlyFolderDiscovered(item);
             return false;
         }
         break;
@@ -2229,7 +2229,7 @@ void ProcessDirectoryJob::subJobFinished()
     _childModified |= job->_childModified;
 
     if (job->_dirItem)
-        emit _discoveryData->itemDiscovered(job->_dirItem);
+        Q_EMIT _discoveryData->itemDiscovered(job->_dirItem);
 
     int count = _runningJobs.removeAll(job);
     ASSERT(count == 1);
@@ -2256,7 +2256,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
                 _dirItem->_instruction = CSYNC_INSTRUCTION_NONE;
             }
         }
-        emit finished();
+        Q_EMIT finished();
     }
 
     int started = 0;
@@ -2278,7 +2278,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
 
 void ProcessDirectoryJob::dbError()
 {
-    emit _discoveryData->fatalError(tr("Error while reading the database"), ErrorCategory::GenericError);
+    Q_EMIT _discoveryData->fatalError(tr("Error while reading the database"), ErrorCategory::GenericError);
 }
 
 void ProcessDirectoryJob::addVirtualFileSuffix(QString &str) const
@@ -2375,11 +2375,11 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 // Similarly, the server might also return 404 or 50x in case of bugs. #7199 #7586
                 _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
                 _dirItem->_errorString = results.error().message;
-                emit this->finished();
+                Q_EMIT this->finished();
             } else {
                 qCWarning(lcDisco) << "Error:" << results.error().message;
                 // Fatal for the root job since it has no SyncFileItem, or for the network errors
-                emit _discoveryData->fatalError(results.error().message, ErrorCategory::NetworkError);
+                Q_EMIT _discoveryData->fatalError(results.error().message, ErrorCategory::NetworkError);
             }
         }
     });
@@ -2398,7 +2398,7 @@ void ProcessDirectoryJob::setFolderQuota(const FolderQuota &folderQuota)
     _folderQuota.bytesAvailable = folderQuota.bytesAvailable;
 
     if (_currentFolder._original.isEmpty()) {
-        emit updatedRootFolderQuota(_folderQuota.bytesUsed, _folderQuota.bytesAvailable);
+        Q_EMIT updatedRootFolderQuota(_folderQuota.bytesUsed, _folderQuota.bytesAvailable);
     }
 }
 
@@ -2422,7 +2422,7 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
         if (_serverJob)
             _serverJob->abort();
 
-        emit _discoveryData->fatalError(msg, ErrorCategory::NetworkError);
+        Q_EMIT _discoveryData->fatalError(msg, ErrorCategory::NetworkError);
     });
 
     connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedNonFatalError, this, [this](const QString &msg) {
@@ -2432,10 +2432,10 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
         if (_dirItem) {
             _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
             _dirItem->_errorString = msg;
-            emit this->finished();
+            Q_EMIT this->finished();
         } else {
             // Fatal for the root job since it has no SyncFileItem
-            emit _discoveryData->fatalError(msg, ErrorCategory::GenericError);
+            Q_EMIT _discoveryData->fatalError(msg, ErrorCategory::GenericError);
         }
     });
 
@@ -2552,7 +2552,7 @@ bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item) co
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
         item->_direction = SyncFileItem::Down;
         item->_wantsSpecificActions = SyncFileItem::SynchronizationOptions::MoveToClientTrashBin;
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
         return true;
     }
 

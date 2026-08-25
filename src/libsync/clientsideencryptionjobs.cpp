@@ -67,7 +67,7 @@ bool GetMetadataApiJob::finished()
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (retCode != 200) {
         qCWarning(lcCseJob()) << "error requesting the metadata" << path() << errorString() << retCode;
-        emit error(_fileId, retCode);
+        Q_EMIT error(_fileId, retCode);
         return true;
     }
     if (_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
@@ -76,7 +76,7 @@ bool GetMetadataApiJob::finished()
     QJsonParseError error{};
     const auto replyData = reply()->readAll();
     auto json = QJsonDocument::fromJson(replyData, &error);
-    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+    Q_EMIT jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
 }
 
@@ -130,12 +130,12 @@ bool StoreMetaDataApiJob::finished()
     const auto retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (retCode != 200) {
         qCWarning(lcCseJob()) << "error sending the metadata" << path() << errorString() << retCode;
-        emit error(_fileId, retCode);
+        Q_EMIT error(_fileId, retCode);
         return false;
     }
 
     qCDebug(lcCseJob()) << "Metadata submitted to the server successfully";
-    emit success(_fileId);
+    Q_EMIT success(_fileId);
 
     return true;
 }
@@ -195,12 +195,12 @@ bool UpdateMetadataApiJob::finished()
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (retCode != 200) {
         qCWarning(lcCseJob()) << "error updating the metadata" << path() << errorString() << retCode;
-        emit error(_fileId, retCode);
+        Q_EMIT error(_fileId, retCode);
         return false;
     }
 
     qCDebug(lcCseJob()) << "Metadata submitted to the server successfully";
-    emit success(_fileId);
+    Q_EMIT success(_fileId);
     return true;
 }
 
@@ -257,15 +257,15 @@ bool UnlockEncryptFolderApiJob::finished()
         _journalDb->deleteE2EeLockedFolder(_fileId);
     }
 
-    emit done();
+    Q_EMIT done();
 
     if (retCode != 200) {
         qCWarning(lcCseJob()) << "error unlocking file" << path() << errorString() << retCode << "Full Error Log" << reply()->readAll();
-        emit error(_fileId, retCode, errorString());
+        Q_EMIT error(_fileId, retCode, errorString());
         return true;
     }
 
-    emit success(_fileId);
+    Q_EMIT success(_fileId);
     return true;
 }
 
@@ -295,10 +295,10 @@ bool DeleteMetadataApiJob::finished()
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (retCode != 200) {
         qCWarning(lcCseJob()) << "error removing metadata for" << path() << errorString() << retCode << "Full Error Log" << reply()->readAll();
-        emit error(_fileId, retCode);
+        Q_EMIT error(_fileId, retCode);
         return true;
     }
-    emit success(_fileId);
+    Q_EMIT success(_fileId);
     return true;
 }
 
@@ -360,7 +360,7 @@ bool LockEncryptFolderApiJob::finished()
 
     if (retCode != 200) {
         qCWarning(lcCseJob()) << "lock folder finished with code" << retCode << errorString() << " for:" << path() << " for fileId: " << _fileId;
-        emit error(_fileId, retCode, errorString());
+        Q_EMIT error(_fileId, retCode, errorString());
         return true;
     }
 
@@ -383,7 +383,7 @@ bool LockEncryptFolderApiJob::finished()
     }
 
     //TODO: Parse the token and submit.
-    emit success(_fileId, token);
+    Q_EMIT success(_fileId, token);
     return true;
 }
 
@@ -415,10 +415,10 @@ bool SetEncryptionFlagApiJob::finished()
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     qCDebug(lcCseJob()) << "Encryption Flag Return" << reply()->readAll();
     if (retCode == 200) {
-        emit success(_fileId);
+        Q_EMIT success(_fileId);
     } else {
         qCWarning(lcCseJob()) << "Setting the encrypted flag failed with" << path() << errorString() << retCode;
-        emit error(_fileId, retCode, errorString());
+        Q_EMIT error(_fileId, retCode, errorString());
     }
     return true;
 }
@@ -459,7 +459,7 @@ bool StorePublicKeyApiJob::finished()
 
     QJsonParseError error{};
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
-    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+    Q_EMIT jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
 }
 
@@ -498,7 +498,7 @@ bool StorePrivateKeyApiJob::finished()
 
     QJsonParseError error{};
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
-    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+    Q_EMIT jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
 }
 
@@ -535,7 +535,7 @@ bool SignPublicKeyApiJob::finished()
 
     QJsonParseError error{};
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
-    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+    Q_EMIT jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
 }
 

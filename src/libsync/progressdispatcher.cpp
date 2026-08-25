@@ -134,7 +134,7 @@ void ProgressDispatcher::setProgressInfo(const QString &folder, const ProgressIn
     {
         return;
     }
-    emit progressInfo(folder, progress);
+    Q_EMIT progressInfo(folder, progress);
 }
 
 ProgressInfo::ProgressInfo()

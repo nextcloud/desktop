@@ -80,20 +80,20 @@ void EditLocallyVerificationJob::start()
     if (!isTokenValid(_token)) {
         qCWarning(lcEditLocallyVerificationJob) << "Edit locally request is missing a valid token, will not open file. "
                                                 << "Token received was:" << _token;
-        emit error(tr("Invalid token received."), tr("Please try again."));
+        Q_EMIT error(tr("Invalid token received."), tr("Please try again."));
         return;
     }
 
     if (!isRelPathValid(_relPath)) {
         qCWarning(lcEditLocallyVerificationJob) << "Provided relPath was:" << _relPath 
                                                 << "which is not canonical.";
-        emit error(tr("Invalid file path was provided."), tr("Please try again."));
+        Q_EMIT error(tr("Invalid file path was provided."), tr("Please try again."));
         return;
     }
 
     if (!_accountState) {
         qCWarning(lcEditLocallyVerificationJob) << "No account found to edit file " << _relPath << " locally.";
-        emit error(tr("Could not find an account for local editing."), tr("Please try again."));
+        Q_EMIT error(tr("Could not find an account for local editing."), tr("Please try again."));
         return;
     }
 
@@ -115,9 +115,9 @@ void EditLocallyVerificationJob::start()
 void EditLocallyVerificationJob::responseReceived(const int statusCode)
 {
     if (statusCode == 200) {
-        emit finished();
+        Q_EMIT finished();
     } else {
-        emit error(tr("Could not start editing locally."), 
+        Q_EMIT error(tr("Could not start editing locally."), 
                    tr("An error occurred trying to verify the request to edit locally."));
     }
 }

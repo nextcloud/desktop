@@ -31,7 +31,7 @@ public:
         const QString &customId = QString());
     void deleteTask(qint64 taskId);
 
-signals:
+Q_SIGNALS:
     void taskTypesFetched(const QJsonDocument &json, int statusCode);
     void tasksFetched(const QJsonDocument &json, int statusCode);
     void taskScheduled(const QJsonDocument &json, int statusCode);

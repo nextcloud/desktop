@@ -192,6 +192,8 @@ add_dependencies(CfApiShellExtensions CustomStateProviderImpl)
 
 target_link_libraries(CfApiShellExtensions shlwapi Gdiplus onecoreuap Nextcloud::csync Qt::Core Qt::Network)
 
+target_compile_definitions(CfApiShellExtensions PRIVATE QT_NO_KEYWORDS)
+
 target_include_directories(CfApiShellExtensions PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(CfApiShellExtensions PRIVATE ${GeneratedFilesPath})
 

@@ -1363,7 +1363,7 @@ void Application::showMainDialog()
 
 void Application::slotGuiIsShowingSettings()
 {
-    emit isShowingSettingsDialog();
+    Q_EMIT isShowingSettingsDialog();
 }
 
 void Application::openVirtualFile(const QString &filename)
@@ -1423,7 +1423,7 @@ bool Application::event(QEvent *event)
         }
     } else if (event->type() == QEvent::ApplicationPaletteChange) {
         qCInfo(lcApplication) << "application palette changed";
-        emit systemPaletteChanged();
+        Q_EMIT systemPaletteChanged();
     }
     return QGuiApplication::event(event);
 }

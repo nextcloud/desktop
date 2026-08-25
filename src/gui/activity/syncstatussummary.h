@@ -47,7 +47,7 @@ public:
      */
     void loadForAccount(const OCC::AccountStatePtr &accountState);
 
-signals:
+Q_SIGNALS:
     void syncProgressChanged();
     void syncIconChanged();
     void syncingChanged();
@@ -56,7 +56,7 @@ signals:
     void totalFilesChanged();
     void needsSandboxReapprovalChanged();
 
-public slots:
+public Q_SLOTS:
     void load();
 
 private:

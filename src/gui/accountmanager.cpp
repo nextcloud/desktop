@@ -111,7 +111,7 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
     if (skipSettingsKeys.contains(settings->group())) {
         // Should not happen: bad container keys should have been deleted
         qCWarning(lcAccountManager) << "Accounts structure is too new, ignoring";
-        emit(accountListInitialized());
+        Q_EMIT accountListInitialized();
         return AccountsRestoreSuccessWithSkipped;
     }
 
@@ -122,13 +122,13 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
             return AccountsNotFound;
         }
 
-        emit(accountListInitialized());
+        Q_EMIT accountListInitialized();
         return AccountsRestoreSuccessFromLegacyVersion;
     }
 #endif
 
     if (settings->childGroups().isEmpty()) {
-        emit(accountListInitialized());
+        Q_EMIT accountListInitialized();
         return AccountsNotFound;
     }
 
@@ -158,7 +158,7 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
         }
     }
 
-    emit(accountListInitialized());
+    Q_EMIT accountListInitialized();
 
     ConfigFile().cleanupGlobalNetworkConfiguration();
     ClientProxy().cleanupGlobalNetworkConfiguration();   
@@ -779,7 +779,7 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
     addAccountState(newAccountState);
 
     if (_accounts.size() == 1) {
-        emit(accountListInitialized());
+        Q_EMIT accountListInitialized();
     }
 
     return newAccountState;
@@ -824,8 +824,8 @@ void AccountManager::removeAccountState(OCC::AccountState *account, AccountRemov
     updateServerHasValidSubscriptionConfig();
     updateServerDesktopEnterpriseUpdateChannel();
 
-    emit accountSyncConnectionRemoved(account);
-    emit accountRemoved(account);
+    Q_EMIT accountSyncConnectionRemoved(account);
+    Q_EMIT accountRemoved(account);
 }
 
 void AccountManager::updateServerHasValidSubscriptionConfig()
@@ -909,8 +909,8 @@ void AccountManager::shutdown()
     const auto accountsCopy = _accounts;
     _accounts.clear();
     for (const auto &acc : accountsCopy) {
-        emit accountRemoved(acc.data());
-        emit removeAccountFolders(acc.data());
+        Q_EMIT accountRemoved(acc.data());
+        Q_EMIT removeAccountFolders(acc.data());
     }
 }
 
@@ -932,7 +932,7 @@ bool AccountManager::isAccountIdAvailable(const QString &id) const
 QString AccountManager::generateFreeAccountId() const
 {
     auto i = 0;
-    forever {
+    Q_FOREVER {
         const auto id = QString::number(i);
         if (isAccountIdAvailable(id)) {
             return id;
@@ -956,7 +956,7 @@ void AccountManager::addAccountState(AccountState *const accountState)
     updateServerHasValidSubscriptionConfig();
     updateServerDesktopEnterpriseUpdateChannel();
 
-    emit accountAdded(accountState);
+    Q_EMIT accountAdded(accountState);
 }
 
 bool AccountManager::forceLegacyImport() const

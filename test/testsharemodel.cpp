@@ -30,7 +30,7 @@ private:
     FakeShareDefinition _testUserShareDefinition;
     FakeShareDefinition _testRemoteShareDefinition;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

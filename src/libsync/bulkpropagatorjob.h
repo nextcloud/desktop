@@ -57,7 +57,7 @@ public:
 
     [[nodiscard]] JobParallelism parallelism() const override;
 
-private slots:
+private Q_SLOTS:
     void startUploadFile(OCC::SyncFileItemPtr item, OCC::BulkPropagatorJob::UploadFileInfo fileToUpload);
 
     // Content checksum computed, compute the transmission checksum

@@ -194,7 +194,7 @@ void ShellExtensionsServer::processCustomStateRequest(QLocalSocket *socket, cons
 
         if (!folder->journalDb()->setFileRecord(record)) {
             qCWarning(lcShellExtServer) << "Could not set file record for path: " << record._path;
-            emit directoryListingIterationFinished(folderAlias);
+            Q_EMIT directoryListingIterationFinished(folderAlias);
             return;
         }
     });
@@ -203,12 +203,12 @@ void ShellExtensionsServer::processCustomStateRequest(QLocalSocket *socket, cons
         _runningLsColJobsForPaths.removeOne(lsColJobPath);
         const auto httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         qCWarning(lcShellExtServer) << "LSCOL job error" << reply->errorString() << httpCode << reply->error();
-        emit directoryListingIterationFinished(folderAlias);
+        Q_EMIT directoryListingIterationFinished(folderAlias);
     });
 
     QObject::connect(lsColJob, &LsColJob::finishedWithoutError, this, [this, folderAlias, lsColJobPath]() {
         _runningLsColJobsForPaths.removeOne(lsColJobPath);
-        emit directoryListingIterationFinished(folderAlias);
+        Q_EMIT directoryListingIterationFinished(folderAlias);
     });
 
     _runningLsColJobsForPaths.push_back(lsColJobPath);

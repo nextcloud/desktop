@@ -161,7 +161,7 @@ void BasePropagateRemoteDeleteEncrypted::unlockFolder(const EncryptedFolderMetad
         qCWarning(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Null _encryptedFolderMetadataHandler";
     }
     if (!_encryptedFolderMetadataHandler || !_encryptedFolderMetadataHandler->isFolderLocked()) {
-        emit finished(true);
+        Q_EMIT finished(true);
         return;
     }
 
@@ -178,7 +178,7 @@ void BasePropagateRemoteDeleteEncrypted::taskFailed()
     if (_encryptedFolderMetadataHandler && _encryptedFolderMetadataHandler->isFolderLocked()) {
         unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
     } else {
-        emit finished(false);
+        Q_EMIT finished(false);
     }
 }
 

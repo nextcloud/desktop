@@ -30,13 +30,13 @@ public:
 
     [[nodiscard]] JobParallelism parallelism() const override;
 
-private slots:
+private Q_SLOTS:
     void start();
     void slotFetchMetadataJobFinished(int httpReturnCode, const QString &message);
     void slotUpdateMetadataFinished(int httpReturnCode, const QString &message);
     void unlockFolder(const OCC::EncryptedFolderMetadataHandler::UnlockFolderWithResult result);
 
-signals:
+Q_SIGNALS:
     void fileDropMetadataParsedAndAdjusted(const OCC::FolderMetadata *const metadata);
 
 private:

@@ -224,7 +224,7 @@ void OcsUserStatusConnector::fetchUserStatus()
 
     if (!_userStatusSupported) {
         qCDebug(lcOcsUserStatusConnector) << "User status not supported";
-        emit error(Error::UserStatusNotSupported);
+        Q_EMIT error(Error::UserStatusNotSupported);
         return;
     }
 
@@ -249,17 +249,17 @@ void OcsUserStatusConnector::onUserStatusFetched(const QJsonDocument &json, int 
 
     if (statusCode != 200) {
         qCInfo(lcOcsUserStatusConnector) << "Slot fetch UserStatus finished with status code" << statusCode;
-        emit error(Error::CouldNotFetchUserStatus);
+        Q_EMIT error(Error::CouldNotFetchUserStatus);
         return;
     }
 
     const auto oldOnlineState = _userStatus.state();
     _userStatus = jsonToUserStatus(json);
 
-    emit userStatusFetched(_userStatus);
+    Q_EMIT userStatusFetched(_userStatus);
 
     if (oldOnlineState != _userStatus.state()) {
-        emit serverUserStatusChanged();
+        Q_EMIT serverUserStatusChanged();
     }
 }
 
@@ -280,7 +280,7 @@ void OcsUserStatusConnector::startFetchPredefinedStatuses()
 void OcsUserStatusConnector::fetchPredefinedStatuses()
 {
     if (!_userStatusSupported) {
-        emit error(Error::UserStatusNotSupported);
+        Q_EMIT error(Error::UserStatusNotSupported);
         return;
     }
     startFetchPredefinedStatuses();
@@ -292,7 +292,7 @@ void OcsUserStatusConnector::onPredefinedStatusesFetched(const QJsonDocument &js
 
     if (statusCode != 200) {
         qCInfo(lcOcsUserStatusConnector) << "Slot predefined user statuses finished with status code" << statusCode;
-        emit error(Error::CouldNotFetchPredefinedUserStatuses);
+        Q_EMIT error(Error::CouldNotFetchPredefinedUserStatuses);
         return;
     }
     const auto jsonData = json.object().value("ocs"_L1).toObject().value("data"_L1);
@@ -301,7 +301,7 @@ void OcsUserStatusConnector::onPredefinedStatusesFetched(const QJsonDocument &js
         return;
     }
     const auto statuses = jsonToPredefinedStatuses(jsonData.toArray());
-    emit predefinedStatusesFetched(statuses);
+    Q_EMIT predefinedStatusesFetched(statuses);
 }
 
 void OcsUserStatusConnector::logResponse(const QString &message, const QJsonDocument &json, int statusCode)
@@ -356,7 +356,7 @@ void OcsUserStatusConnector::setUserStatusMessageCustom(const UserStatus &userSt
     }
 
     if (!_userStatusEmojisSupported) {
-        emit error(Error::EmojisNotSupported);
+        Q_EMIT error(Error::EmojisNotSupported);
         return;
     }
     _setMessageJob = new JsonApiJob(_account, userStatusBaseUrl + QStringLiteral("/message/custom"), this);
@@ -394,7 +394,7 @@ void OcsUserStatusConnector::setUserStatusMessage(const UserStatus &userStatus)
 bool OcsUserStatusConnector::setUserStatus(const UserStatus &userStatus)
 {
     if (!_userStatusSupported) {
-        emit error(Error::UserStatusNotSupported);
+        Q_EMIT error(Error::UserStatusNotSupported);
         return false;
     }
 
@@ -415,17 +415,17 @@ void OcsUserStatusConnector::onUserStatusOnlineStatusSet(const QJsonDocument &js
     logResponse("Online status set", json, statusCode);
 
     if (statusCode != 200) {
-        emit error(Error::CouldNotSetUserStatus);
+        Q_EMIT error(Error::CouldNotSetUserStatus);
         return;
     }
 
     const auto oldOnlineState = _userStatus.state();
     _userStatus.setState(jsonToUserStatus(json).state());
 
-    emit userStatusSet();
+    Q_EMIT userStatusSet();
 
     if (oldOnlineState != _userStatus.state()) {
-        emit serverUserStatusChanged();
+        Q_EMIT serverUserStatusChanged();
     }
 }
 
@@ -434,7 +434,7 @@ void OcsUserStatusConnector::onUserStatusMessageSet(const QJsonDocument &json, i
     logResponse("Message set", json, statusCode);
 
     if (statusCode != 200) {
-        emit error(Error::CouldNotSetUserStatus);
+        Q_EMIT error(Error::CouldNotSetUserStatus);
         return;
     }
 
@@ -443,7 +443,7 @@ void OcsUserStatusConnector::onUserStatusMessageSet(const QJsonDocument &json, i
     // message
     fetchUserStatus();
 
-    emit userStatusSet();
+    Q_EMIT userStatusSet();
 }
 
 void OcsUserStatusConnector::clearMessage()
@@ -469,7 +469,7 @@ void OcsUserStatusConnector::onMessageCleared(const QJsonDocument &json, int sta
     logResponse("Message cleared", json, statusCode);
 
     if (statusCode != 200) {
-        emit error(Error::CouldNotClearMessage);
+        Q_EMIT error(Error::CouldNotClearMessage);
         return;
     }
 
@@ -477,6 +477,6 @@ void OcsUserStatusConnector::onMessageCleared(const QJsonDocument &json, int sta
 
     _userStatus = {};
     _userStatus.setState(onlineState);
-    emit messageCleared();
+    Q_EMIT messageCleared();
 }
 }

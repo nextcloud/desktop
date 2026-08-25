@@ -34,7 +34,7 @@ public:
                          QObject *parent = nullptr);
     void start() override;
 
-signals:
+Q_SIGNALS:
     void finishedWithError(int httpErrorCode,
                            const QString &errorString,
                            const QString &lockOwnerName);

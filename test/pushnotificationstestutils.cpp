@@ -90,7 +90,7 @@ void FakeWebSocketServer::close()
 void FakeWebSocketServer::processTextMessageInternal(const QString &message)
 {
     auto client = qobject_cast<QWebSocket *>(sender());
-    emit processTextMessage(client, message);
+    Q_EMIT processTextMessage(client, message);
 }
 
 void FakeWebSocketServer::onNewConnection()

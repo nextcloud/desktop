@@ -242,11 +242,11 @@ void BulkPropagatorJob::triggerUpload()
             // If the file is currently locked, we want to retry the sync
             // when it becomes available again.
             if (FileSystem::isFileLocked(singleFile._localPath, FileSystem::LockMode::SharedRead)) {
-                emit propagator()->seenLockedFile(singleFile._localPath);
+                Q_EMIT propagator()->seenLockedFile(singleFile._localPath);
             }
 
             abortWithError(singleFile._item, SyncFileItem::NormalError, device->errorString());
-            emit finished(SyncFileItem::NormalError);
+            Q_EMIT finished(SyncFileItem::NormalError);
 
             return;
         }
@@ -290,7 +290,7 @@ void BulkPropagatorJob::checkPropagationIsDone()
     }
 
     qCInfo(lcBulkPropagatorJob) << "final status" << _finalStatus;
-    emit finished(_finalStatus);
+    Q_EMIT finished(_finalStatus);
     propagator()->scheduleNextJob();
 }
 
@@ -628,7 +628,7 @@ void BulkPropagatorJob::done(SyncFileItemPtr item,
 
     handleJobDoneErrors(item, status);
 
-    emit propagator()->itemCompleted(item, category);
+    Q_EMIT propagator()->itemCompleted(item, category);
 }
 
 QMap<QByteArray, QByteArray> BulkPropagatorJob::headers(SyncFileItemPtr item) const

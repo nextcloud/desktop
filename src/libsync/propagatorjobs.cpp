@@ -242,7 +242,7 @@ void PropagateLocalMkdir::startLocalMkdir()
         if (FileSystem::isFolderReadOnly(parentFolderPath)) {
             FileSystem::setFolderPermissions(QString::fromStdWString(parentFolderPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
             parentNeedRollbackPermissions = true;
-            emit propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
+            Q_EMIT propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
         }
     }
     catch (const std::filesystem::filesystem_error &e)
@@ -258,7 +258,7 @@ void PropagateLocalMkdir::startLocalMkdir()
         qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights";
     }
 
-    emit propagator()->touchedFile(newDirStr);
+    Q_EMIT propagator()->touchedFile(newDirStr);
     QDir localDir(propagator()->localPath());
     if (!localDir.mkpath(_item->_file)) {
         done(SyncFileItem::NormalError, tr("Could not create folder %1").arg(newDirStr), ErrorCategory::GenericError);
@@ -293,7 +293,7 @@ void PropagateLocalMkdir::startLocalMkdir()
     try {
         if (parentNeedRollbackPermissions) {
             FileSystem::setFolderPermissions(QString::fromStdWString(parentFolderPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
-            emit propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
+            Q_EMIT propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
         }
     }
     catch (const std::filesystem::filesystem_error &e)
@@ -403,7 +403,7 @@ void PropagateLocalRename::start()
             if (FileSystem::isFolderReadOnly(targetParentFolderPath)) {
                 targetParentFolderWasReadOnly = true;
                 FileSystem::setFolderPermissions(QString::fromStdWString(targetParentFolderPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
-                emit propagator()->touchedFile(QString::fromStdWString(targetParentFolderPath.wstring()));
+                Q_EMIT propagator()->touchedFile(QString::fromStdWString(targetParentFolderPath.wstring()));
             }
         }
         catch (const std::filesystem::filesystem_error &e)
@@ -428,7 +428,7 @@ void PropagateLocalRename::start()
             if (FileSystem::isFolderReadOnly(originParentFolderPath)) {
                 originParentFolderWasReadOnly = true;
                 FileSystem::setFolderPermissions(QString::fromStdWString(originParentFolderPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
-                emit propagator()->touchedFile(QString::fromStdWString(originParentFolderPath.wstring()));
+                Q_EMIT propagator()->touchedFile(QString::fromStdWString(originParentFolderPath.wstring()));
             }
         }
         catch (const std::filesystem::filesystem_error &e)
@@ -447,7 +447,7 @@ void PropagateLocalRename::start()
         const auto restoreTargetPermissions = [this] (const auto &parentFolderPath) {
             try {
                 FileSystem::setFolderPermissions(QString::fromStdWString(parentFolderPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
-                emit propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
+                Q_EMIT propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
             }
             catch (const std::filesystem::filesystem_error &e)
             {
@@ -465,8 +465,8 @@ void PropagateLocalRename::start()
 
         const auto folderPermissionsHandler = FileSystem::FilePermissionsRestore{existingFile, FileSystem::FolderPermissions::ReadWrite};
 
-        emit propagator()->touchedFile(existingFile);
-        emit propagator()->touchedFile(targetFile);
+        Q_EMIT propagator()->touchedFile(existingFile);
+        Q_EMIT propagator()->touchedFile(targetFile);
         if (QString renameError; !FileSystem::rename(existingFile, targetFile, &renameError)) {
             if (targetParentFolderWasReadOnly) {
                 restoreTargetPermissions(targetParentFolderPath);

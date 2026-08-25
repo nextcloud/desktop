@@ -62,7 +62,7 @@ public:
     // To fetch the user name as early as possible
     void setAccount(Account *account) override;
 
-private slots:
+private Q_SLOTS:
     void slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator);
     void slotFinished(QNetworkReply *reply);
 

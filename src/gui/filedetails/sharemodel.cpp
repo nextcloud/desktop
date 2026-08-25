@@ -289,7 +289,7 @@ void ShareModel::updateData()
         && (_sharedItemType != SharedItemType::SharedItemTypeEncryptedTopLevelFolder
             || fileRecord._e2eEncryptionStatus < SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV2_0);
     if (prevIsShareDisabledEncryptedFolder != _isShareDisabledEncryptedFolder) {
-        emit isShareDisabledEncryptedFolderChanged();
+        Q_EMIT isShareDisabledEncryptedFolderChanged();
     }
 
     // Will get added when shares are fetched if no link shares are fetched
@@ -367,7 +367,7 @@ void ShareModel::initShareManager()
             }
 
             qCWarning(lcShareModel) << "Error from server from ShareManager class and initShareManager" << code << message;
-            emit serverError(code, message);
+            Q_EMIT serverError(code, message);
         });
 
         _manager->fetchShares(_sharePath);
@@ -942,7 +942,7 @@ void ShareModel::slotDeleteE2EeShare(const SharePtr &share) const
 
     auto folder = FolderMan::instance()->folder(folderAlias);
     if (!folder || !folder->journalDb()) {
-        emit serverError(404, tr("Could not find local folder for %1").arg(share->path()));
+        Q_EMIT serverError(404, tr("Could not find local folder for %1").arg(share->path()));
         return;
     }
 
@@ -960,7 +960,7 @@ void ShareModel::slotDeleteE2EeShare(const SharePtr &share) const
     connect(removeE2eeShareJob, &UpdateE2eeFolderUsersMetadataJob::finished, this, [share, this](int code, const QString &message) {
         if (code != 200) {
             qCWarning(lcShareModel) << "Could not remove share from E2EE folder's metadata!";
-            emit serverError(code, message);
+            Q_EMIT serverError(code, message);
             return;
         }
         share->deleteShare();

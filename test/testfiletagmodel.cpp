@@ -38,7 +38,7 @@ private:
     QScopedPointer<FakeQNAM> _fakeQnam;
     QStringList _expectedTags;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

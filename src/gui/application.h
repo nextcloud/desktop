@@ -84,7 +84,7 @@ public:
 
     bool event(QEvent *event) override;
 
-public slots:
+public Q_SLOTS:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
     void slotCrash();
@@ -102,13 +102,13 @@ protected:
     void setupTranslations();
     void setupLogging();
 
-signals:
+Q_SIGNALS:
     void folderRemoved();
     void folderStateChanged(OCC::Folder *);
     void isShowingSettingsDialog();
     void systemPaletteChanged();
 
-protected slots:
+protected Q_SLOTS:
     void slotParseMessage(const QByteArray &msg);
     void slotActivateRequestedMessage(const QStringList &arguments, const QString &workingDirectory);
     void slotCheckConnection();

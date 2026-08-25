@@ -81,13 +81,13 @@ public:
     }
     void setLogRules(const QSet<QString> &rules);
 
-signals:
+Q_SIGNALS:
     void logWindowLog(const QString &);
 
     void guiLog(const QString &, const QString &);
     void guiMessage(const QString &, const QString &);
 
-public slots:
+public Q_SLOTS:
     void enterNextLogFile(const QString &baseFileName, OCC::Logger::LogType type);
 
 private:

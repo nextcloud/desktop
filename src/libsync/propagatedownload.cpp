@@ -335,7 +335,7 @@ void GETFileJob::slotReadyRead()
                              << replyStatusString()
                              << reply()->rawHeader("Content-Range") << reply()->rawHeader("Content-Length");
 
-            emit finishedSignal();
+            Q_EMIT finishedSignal();
         }
         _hasEmittedFinishedSignal = true;
         deleteLater();
@@ -610,7 +610,7 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
             Q_ASSERT(_item->_modtime > 0);
             qCDebug(lcPropagateDownload()) << "setModTime" << fn << _item->_modtime;
             FileSystem::setModTime(fn, _item->_modtime);
-            emit propagator()->touchedFile(fn);
+            Q_EMIT propagator()->touchedFile(fn);
         }
         _item->_modtime = FileSystem::getModTime(fn);
         Q_ASSERT(_item->_modtime > 0);
@@ -696,7 +696,7 @@ void PropagateDownloadFile::startDownload()
             // these detail errors only in the error view.
             done(SyncFileItem::DetailError,
                 tr("The download would reduce free local disk space below the limit"), ErrorCategory::GenericError);
-            emit propagator()->insufficientLocalStorage();
+            Q_EMIT propagator()->insufficientLocalStorage();
         } else if (diskSpaceResult == OwncloudPropagator::DiskSpaceCritical) {
             done(SyncFileItem::FatalError,
                 tr("Free space on disk is less than %1").arg(Utility::octetsToString(criticalFreeSpaceLimit())), ErrorCategory::GenericError);
@@ -766,7 +766,7 @@ void PropagateDownloadFile::done(const SyncFileItem::Status status, const QStrin
 {
     if (_needParentFolderRestorePermissions) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
-        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        Q_EMIT propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
     PropagateItemJob::done(status, errorString, category);
@@ -794,7 +794,7 @@ void PropagateDownloadFile::makeParentFolderModifiable(const QString &fileName)
 
     if (FileSystem::isFolderReadOnly(_parentPath)) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
-        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        Q_EMIT propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = true;
     }
 }
@@ -1263,14 +1263,14 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     QString error;
-    emit propagator()->touchedFile(filename);
+    Q_EMIT propagator()->touchedFile(filename);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), filename, &error)) {
         qCWarning(lcPropagateDownload) << QStringLiteral("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(filename);
         // If the file is locked, we want to retry this sync when it
         // becomes available again, otherwise try again directly
         if (FileSystem::isFileLocked(filename, FileSystem::LockMode::SharedRead)) {
-            emit propagator()->seenLockedFile(filename);
+            Q_EMIT propagator()->seenLockedFile(filename);
         } else {
             propagator()->_anotherSyncNeeded = true;
         }
@@ -1283,7 +1283,7 @@ void PropagateDownloadFile::downloadFinished()
 
     if (_needParentFolderRestorePermissions) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
-        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        Q_EMIT propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
 
@@ -1390,7 +1390,7 @@ void PropagateDownloadFile::abort(PropagatorJob::AbortType abortType)
         _job->reply()->abort();
 
     if (abortType == AbortType::Asynchronous) {
-        emit abortFinished();
+        Q_EMIT abortFinished();
     }
 }
 }

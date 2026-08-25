@@ -118,7 +118,7 @@ private:
 
     void clearCurrentFetchMoreInProgressProviderId();
 
-signals:
+Q_SIGNALS:
     void currentFetchMoreInProgressProviderIdChanged();
     void isSearchInProgressChanged();
     void errorStringChanged();
@@ -127,10 +127,10 @@ signals:
     void canEditSearchChanged();
     void searchStateChanged();
 
-public slots:
+public Q_SLOTS:
     void setSearchTerm(const QString &term);
 
-private slots:
+private Q_SLOTS:
     void slotSearchTermEditingFinished();
     void slotFetchProvidersFinished(const QJsonDocument &json, int statusCode);
     void slotSearchForProviderFinished(const QJsonDocument &json, int statusCode);

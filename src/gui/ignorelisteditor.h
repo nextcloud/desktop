@@ -32,7 +32,7 @@ public:
 
     bool ignoreHiddenFiles();
 
-private slots:
+private Q_SLOTS:
     void slotRestoreDefaults(QAbstractButton *button);
 
 private:

@@ -49,13 +49,13 @@ namespace OCC {
                 v
             slotReadJobDone
                 |        |
-                |        +-------> emit fetched()
+                |        +-------> Q_EMIT fetched()
                 |
                 v
             refreshAccessToken()
                 |
                 v
-            emit fetched()
+            Q_EMIT fetched()
 
    2) If the credentials is still not valid when fetched() is emitted, the ui, will call askFromUser()
       which is implemented in HttpCredentialsGui

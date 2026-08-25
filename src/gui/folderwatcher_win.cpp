@@ -72,7 +72,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             const DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
-                emit changed(_path);
+                Q_EMIT changed(_path);
                 *increaseBufferSize = true;
             } else {
                 qCWarning(lcFolderWatcher) << "ReadDirectoryChangesW error" << Utility::formatWinError(errorCode);
@@ -80,7 +80,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             break;
         }
 
-        emit ready();
+        Q_EMIT ready();
 
         HANDLE handles[] = { _resultEvent, _stopEvent };
         DWORD result = WaitForMultipleObjects(
@@ -102,8 +102,8 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             const DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
-                emit lostChanges();
-                emit changed(_path);
+                Q_EMIT lostChanges();
+                Q_EMIT changed(_path);
                 *increaseBufferSize = true;
             } else {
                 qCWarning(lcFolderWatcher) << "GetOverlappedResult error" << Utility::formatWinError(errorCode);
@@ -112,7 +112,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         }
 
         FILE_NOTIFY_INFORMATION *curEntry = pFileNotifyBuffer;
-        forever {
+        Q_FOREVER {
             const int len = curEntry->FileNameLength / sizeof(wchar_t);
             QString longfile = longPath + QString::fromWCharArray(curEntry->FileName, len);
 
@@ -139,7 +139,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 && FileSystem::isDir(longfile);
 
             if (!skip) {
-                emit changed(longfile);
+                Q_EMIT changed(longfile);
             } else {
                 qCDebug(lcFolderWatcher) << "Skipping syncing of" << longfile;
             }

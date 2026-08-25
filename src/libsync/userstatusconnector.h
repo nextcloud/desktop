@@ -122,7 +122,7 @@ public:
 
     [[nodiscard]] virtual bool supportsBusyStatus() const = 0;
 
-signals:
+Q_SIGNALS:
     void userStatusFetched(const OCC::UserStatus &userStatus);
     void predefinedStatusesFetched(const QVector<OCC::UserStatus> &statuses);
     void userStatusSet();

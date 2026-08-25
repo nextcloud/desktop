@@ -37,12 +37,12 @@ public:
     [[nodiscard]] QString statusString() const;
     [[nodiscard]] State state() const;
 
-public slots:
+public Q_SLOTS:
     void setUpdateUrl(const QUrl &url);
     void checkForUpdate() override;
     void backgroundCheckForUpdate() override;
 
-signals:
+Q_SIGNALS:
     void statusChanged();
 
 private:

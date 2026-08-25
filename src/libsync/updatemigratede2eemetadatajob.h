@@ -28,7 +28,7 @@ public:
 
     void addSubJobItem(const QString &key, const SyncFileItemPtr &syncFileItem);
 
-private slots:
+private Q_SLOTS:
     void start() override;
 
 private:

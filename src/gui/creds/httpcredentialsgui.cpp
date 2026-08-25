@@ -42,7 +42,7 @@ void HttpCredentialsGui::askFromUserAsync()
         } else {
             // Shibboleth?
             qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
-            emit asked();
+            Q_EMIT asked();
         }
     });
     job->start();
@@ -87,7 +87,7 @@ void HttpCredentialsGui::showDialog()
             _ready = true;
             persist();
         }
-        emit asked();
+        Q_EMIT asked();
     });
 }
 

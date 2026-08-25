@@ -17,7 +17,7 @@ class TestSortedShareModel : public QObject
 {
     Q_OBJECT
 
-public slots:
+public Q_SLOTS:
     void addAllTestShares()
     {
         // Let's insert them in the opposite order we want from the model
@@ -52,7 +52,7 @@ private:
 
     static constexpr auto _expectedRemoteShareCount = 12;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

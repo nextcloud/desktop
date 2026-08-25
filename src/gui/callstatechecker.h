@@ -27,19 +27,19 @@ public:
     [[nodiscard]] AccountState* accountState() const;
     [[nodiscard]] bool checking() const;
 
-signals:
+Q_SIGNALS:
     void tokenChanged();
     void accountStateChanged();
     void checkingChanged();
 
     void stopNotifying();
 
-public slots:
+public Q_SLOTS:
     void setToken(const QString &token);
     void setAccountState(OCC::AccountState *accountState);
     void setChecking(const bool checking);
 
-private slots:
+private Q_SLOTS:
     void slotStatusCheckTimerElapsed();
     void slotNotificationTimerElapsed();
     void slotCallStateReceived(const QJsonDocument &json, const int statusCode);

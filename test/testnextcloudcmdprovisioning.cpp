@@ -40,7 +40,7 @@ private:
         return proc.readAll();
     }
 
-private slots:
+private Q_SLOTS:
     // --userid without --serverurl must print a descriptive error and exit 1.
     // It must NOT print the interactive "Please enter username:" prompt.
     void testUserIdAlonePrintsServerUrlError()

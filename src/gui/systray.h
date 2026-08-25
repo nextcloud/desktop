@@ -112,7 +112,7 @@ public:
 
     [[nodiscard]] QQmlApplicationEngine* trayEngine() const;
 
-signals:
+Q_SIGNALS:
     void currentUserChanged();
     void openAccountWizard();
     void openSettings();
@@ -131,7 +131,7 @@ signals:
 
     void hideSettingsDialog();
 
-public slots:
+public Q_SLOTS:
     void openUrlInBrowser(const QUrl &url) const;
 
     void setTrayEngine(QQmlApplicationEngine *trayEngine);
@@ -185,7 +185,7 @@ public slots:
     void presentShareViewInTray(const QString &localPath);
     void presentFileActionsViewInSystray(const QString &localPath);
 
-private slots:
+private Q_SLOTS:
     void slotUpdateSyncPausedState();
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();

@@ -59,12 +59,12 @@ public:
 
     void hideAndShowTray();
 
-signals:
+Q_SIGNALS:
     void setupProxy();
     void serverError(int code, const QString &message);
     void isShowingSettingsDialog();
 
-public slots:
+public Q_SLOTS:
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowTrayUpdateMessage(const QString &title, const QString &msg, const QUrl &webUrl);
@@ -138,7 +138,7 @@ public slots:
 #endif
     void slotNewAccountWizard();
 
-private slots:
+private Q_SLOTS:
     void slotLogin();
     void slotLogout();
 
