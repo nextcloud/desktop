@@ -9,6 +9,7 @@ Checks: >
   modernize-use-nodiscard,
   modernize-use-nullptr,
   modernize-use-override,
+  modernize-loop-convert,
   cppcoreguidelines-pro-type-static-cast-downcast,
   readability-braces-around-statements
 WarningsAsErrors: ''
