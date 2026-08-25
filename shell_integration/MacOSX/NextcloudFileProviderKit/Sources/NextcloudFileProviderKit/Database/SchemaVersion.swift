@@ -13,4 +13,5 @@ enum SchemaVersion: UInt64 {
     case addedNormalizedFileNameIndexToRealmItemMetadata = 204
     case addedExcludedFromSyncItems = 205
     case addedPendingChunkUploadCleanup = 206
+    case addedChangeDeliverySessions = 207
 }
