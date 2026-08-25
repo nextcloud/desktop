@@ -37,7 +37,7 @@ class TestFileProviderXPCUtils : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void concurrentServiceLookupsCanBeCollected()
     {
         constexpr auto managerCount = 128;
