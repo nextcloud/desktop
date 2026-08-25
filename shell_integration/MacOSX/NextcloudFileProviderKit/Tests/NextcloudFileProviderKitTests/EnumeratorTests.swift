@@ -2187,11 +2187,13 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             previousTotal = total
         }
 
-        // Intermediate batches keep the original anchor; only the final batch advances the sync point.
+        // Intermediate batches use distinct continuation anchors; only the final batch advances the sync point.
+        let intermediateAnchors = observer.finishes.dropLast().map(\.anchor.rawValue)
         for finish in observer.finishes.dropLast() {
             XCTAssertTrue(finish.moreComing, "Non-final batches must report moreComing == true.")
-            XCTAssertEqual(finish.anchor.rawValue, anchor.rawValue, "Intermediate batches must return the original anchor.")
+            XCTAssertNotEqual(finish.anchor.rawValue, anchor.rawValue, "Intermediate batches must return a continuation anchor.")
         }
+        XCTAssertEqual(Set(intermediateAnchors).count, intermediateAnchors.count, "Continuation anchors must be unique.")
         let finalFinish = try XCTUnwrap(observer.finishes.last)
         XCTAssertFalse(finalFinish.moreComing, "The final batch must report moreComing == false.")
         XCTAssertNotEqual(finalFinish.anchor.rawValue, anchor.rawValue, "The final batch must advance the working-set sync anchor.")
@@ -2201,6 +2203,88 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             remoteInterface.readOperationCount,
             itemCount + 2,
             "Continuation batches must drain the buffer, not re-run the server scan."
+        )
+    }
+
+    func testWorkingSetChangesResumeAcrossNewEnumeratorInstances() async throws {
+        // fileproviderd may invalidate the enumerator after an intermediate batch. The continuation must
+        // therefore resume from durable state when the next request is handled by a new Enumerator.
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300))
+        let itemCount = 10
+        let batchSize = 3
+        let expectedOcIds = seedMaterialisedWorkingSetFiles(count: itemCount, syncTime: Date())
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let firstEnumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let firstObserver = MockChangeObserver(enumerator: firstEnumerator)
+        firstObserver.suggestedBatchSize = batchSize
+        firstEnumerator.enumerateChanges(for: firstObserver, from: anchor)
+
+        for _ in 0 ..< 5000 {
+            if !firstObserver.finishes.isEmpty || firstObserver.error != nil {
+                break
+            }
+            try await Task.sleep(nanoseconds: 1_000_000)
+        }
+
+        XCTAssertNil(firstObserver.error)
+        let firstFinish = try XCTUnwrap(firstObserver.finishes.first)
+        XCTAssertTrue(firstFinish.moreComing)
+
+        var reportedOcIds = firstObserver.changedItems.map(\.itemIdentifier.rawValue)
+        var currentAnchor = firstFinish.anchor
+        var continuationAnchors = Set<Data>([currentAnchor.rawValue])
+        var batchCount = 1
+        var moreComing = firstFinish.moreComing
+
+        while moreComing, batchCount < 10 {
+            let nextEnumerator = try Enumerator(
+                enumeratedItemIdentifier: .workingSet,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager,
+                log: FileProviderLogMock()
+            )
+            let nextObserver = MockChangeObserver(enumerator: nextEnumerator)
+            nextObserver.suggestedBatchSize = batchSize
+            nextEnumerator.enumerateChanges(for: nextObserver, from: currentAnchor)
+
+            for _ in 0 ..< 5000 {
+                if !nextObserver.finishes.isEmpty || nextObserver.error != nil {
+                    break
+                }
+                try await Task.sleep(nanoseconds: 1_000_000)
+            }
+
+            XCTAssertNil(nextObserver.error)
+            let finish = try XCTUnwrap(nextObserver.finishes.first)
+            reportedOcIds += nextObserver.changedItems.map(\.itemIdentifier.rawValue)
+            XCTAssertTrue(
+                continuationAnchors.insert(finish.anchor.rawValue).inserted,
+                "Each intermediate continuation must identify a distinct durable cursor."
+            )
+            currentAnchor = finish.anchor
+            batchCount += 1
+            moreComing = finish.moreComing
+        }
+
+        XCTAssertEqual(batchCount, 4, "Ten items with a batch size of three require four batches.")
+        XCTAssertEqual(reportedOcIds.count, itemCount)
+        XCTAssertEqual(Set(reportedOcIds), expectedOcIds)
+        XCTAssertNotEqual(currentAnchor.rawValue, anchor.rawValue)
+        XCTAssertLessThanOrEqual(
+            remoteInterface.readOperationCount,
+            itemCount + 2,
+            "New enumerator instances must drain the persisted snapshot without re-reading the server."
         )
     }
 
