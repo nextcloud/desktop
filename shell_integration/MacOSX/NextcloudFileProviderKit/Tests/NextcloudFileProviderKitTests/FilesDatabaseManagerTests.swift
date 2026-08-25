@@ -25,6 +25,50 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager, "FilesDatabaseManager should be initialized")
     }
 
+    func testCompletedChangeDeliverySessionRemovesPersistedState() {
+        let sessionId = "completed-change-delivery-\(name)"
+        let metadata = SendableItemMetadata(
+            ocId: "change-delivery-item-\(name)",
+            fileName: "item.txt",
+            account: Self.account
+        )
+
+        XCTAssertTrue(
+            Self.dbManager.createChangeDeliverySession(
+                sessionId: sessionId,
+                anchorKey: "initial-anchor-\(name)",
+                finalAnchorRawValue: Data("final-anchor".utf8),
+                updated: [metadata],
+                deleted: [],
+                incomplete: false
+            )
+        )
+
+        let database = Self.dbManager.ncDatabase()
+        XCTAssertNotNil(database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId))
+        XCTAssertEqual(
+            database.objects(RealmChangeDeliveryItem.self)
+                .where { $0.sessionId == sessionId }
+                .count,
+            1
+        )
+
+        Self.dbManager.advanceChangeDeliverySession(
+            sessionId: sessionId,
+            nextSequence: 1,
+            nextAnchorKey: nil,
+            completed: true
+        )
+
+        let cleanedDatabase = Self.dbManager.ncDatabase()
+        XCTAssertNil(cleanedDatabase.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId))
+        XCTAssertTrue(
+            cleanedDatabase.objects(RealmChangeDeliveryItem.self)
+                .where { $0.sessionId == sessionId }
+                .isEmpty
+        )
+    }
+
     func testSchema203MigrationBackfillsCanonicalPathKeys() throws {
         let databaseDirectory = makeDatabaseDirectory()
         let domainIdentifier = NSFileProviderDomainIdentifier("migration-test")

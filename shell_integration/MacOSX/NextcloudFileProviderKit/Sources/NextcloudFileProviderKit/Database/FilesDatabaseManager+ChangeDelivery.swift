@@ -112,7 +112,7 @@ extension FilesDatabaseManager {
             .map { ($0.sequence, $0.metadataData, $0.deleted) }
     }
 
-    /// Advance an active session to its next continuation anchor, or mark it complete.
+    /// Advance an active session to its next continuation anchor, or remove it after the final batch.
     func advanceChangeDeliverySession(
         sessionId: String,
         nextSequence: Int,
@@ -125,15 +125,22 @@ extension FilesDatabaseManager {
         }
 
         try? database.write {
-            session.nextSequence = nextSequence
-            session.completed = completed
-            if let nextAnchorKey {
-                session.currentAnchorKey = nextAnchorKey
-            }
+            if completed {
+                database.objects(RealmChangeDeliveryItem.self)
+                    .filter("sessionId == %@", sessionId)
+                    .forEach { database.delete($0) }
+                database.delete(session)
+            } else {
+                session.nextSequence = nextSequence
+                session.completed = false
+                if let nextAnchorKey {
+                    session.currentAnchorKey = nextAnchorKey
+                }
 
-            database.objects(RealmChangeDeliveryItem.self)
-                .filter("sessionId == %@ AND sequence < %@", sessionId, nextSequence)
-                .forEach { database.delete($0) }
+                database.objects(RealmChangeDeliveryItem.self)
+                    .filter("sessionId == %@ AND sequence < %@", sessionId, nextSequence)
+                    .forEach { database.delete($0) }
+            }
         }
     }
 
