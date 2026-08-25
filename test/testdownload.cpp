@@ -27,8 +27,9 @@ public:
 
     [[nodiscard]] qint64 bytesAvailable() const override
     {
-        if (aborted)
+        if (aborted) {
             return 0;
+        }
         return std::min(size, fakeSize) + QIODevice::bytesAvailable(); // NOLINT: This is intended to simulate the brokenness
     }
 
@@ -47,8 +48,9 @@ SyncFileItemPtr getItem(const QSignalSpy &spy, const QString &path)
 {
     for (const QList<QVariant> &args : spy) {
         auto item = args[0].value<SyncFileItemPtr>();
-        if (item->destination() == path)
+        if (item->destination() == path) {
             return item;
+        }
     }
     return {};
 }
@@ -177,8 +179,9 @@ private Q_SLOTS:
         auto transProgress = connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress,
                                      [&](const ProgressInfo &pi) {
             auto propagator = fakeFolder.syncEngine().getPropagator();
-            if (pi.status() != ProgressInfo::Propagation || propConnected || !propagator)
+            if (pi.status() != ProgressInfo::Propagation || propConnected || !propagator) {
                 return;
+            }
             propConnected = true;
             connect(propagator.data(), &OwncloudPropagator::touchedFile, [&](const QString &s) {
                 if (s.contains("conflicted copy")) {
@@ -203,8 +206,9 @@ private Q_SLOTS:
 
         QObject::disconnect(transProgress);
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) -> QNetworkReply * {
-            if (op == QNetworkAccessManager::GetOperation)
+            if (op == QNetworkAccessManager::GetOperation) {
                 QTest::qFail("There shouldn't be any download", __FILE__, __LINE__);
+            }
             return nullptr;
         });
         QVERIFY(fakeFolder.syncOnce());

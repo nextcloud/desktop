@@ -267,8 +267,9 @@ CommandMode parseOptions(const QStringList &app_args, CmdOptions *options)
 
     auto it = QStringListIterator{args};
     // skip file name;
-    if (it.hasNext())
+    if (it.hasNext()) {
         it.next();
+    }
 
     while (it.hasNext()) {
         const auto option = it.next();
@@ -547,8 +548,9 @@ int main(int argc, char **argv)
             // http: //192.168.178.23 : 8080
             //  0            1            2
             host = pList.at(1);
-            if (host.startsWith("//"))
+            if (host.startsWith("//")) {
                 host.remove(0, 2);
+            }
 
             port = pList.at(2).toInt(&ok);
 

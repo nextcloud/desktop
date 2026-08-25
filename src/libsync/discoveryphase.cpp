@@ -275,8 +275,9 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
         Q_ASSERT(_currentRootJob == sender());
         _currentRootJob = nullptr;
-        if (job->_dirItem)
+        if (job->_dirItem) {
             Q_EMIT itemDiscovered(job->_dirItem);
+        }
         job->deleteLater();
 
         // Once the main job has finished recurse here to execute the remaining
@@ -346,8 +347,9 @@ DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const Account
 // Use as QRunnable
 void DiscoverySingleLocalDirectoryJob::run() {
     QString localPath = _localPath;
-    if (localPath.endsWith('/')) // Happens if _currentFolder._local.isEmpty()
+    if (localPath.endsWith('/')) { // Happens if _currentFolder._local.isEmpty()
         localPath.chop(1);
+    }
 
     auto dh = csync_vio_local_opendir(localPath);
     if (!dh) {
@@ -373,10 +375,12 @@ void DiscoverySingleLocalDirectoryJob::run() {
     while (true) {
         errno = 0;
         auto dirent = csync_vio_local_readdir(dh, _vfs, _fileSystemReliablePermissions);
-        if (!dirent)
+        if (!dirent) {
             break;
-        if (dirent->type == ItemTypeSkip)
+        }
+        if (dirent->type == ItemTypeSkip) {
             continue;
+        }
         LocalInfo i;
         static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
         ASSERT(codec);

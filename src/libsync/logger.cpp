@@ -37,8 +37,9 @@ static bool compressLog(const QString &originalName, const QString &targetName)
 {
 #ifdef ZLIB_FOUND
     QFile original(originalName);
-    if (!original.open(QIODevice::ReadOnly))
+    if (!original.open(QIODevice::ReadOnly)) {
         return false;
+    }
     auto compressed = gzopen(targetName.toUtf8(), "wb");
     if (!compressed) {
         return false;
@@ -253,8 +254,9 @@ void Logger::setupTemporaryFolderLogDir()
 
 void Logger::disableTemporaryFolderLogDir()
 {
-    if (!_temporaryFolderLogDir)
+    if (!_temporaryFolderLogDir) {
         return;
+    }
 
     enterNextLogFile("nextcloud.log", LogType::Log);
     setLogDir(QString());
@@ -339,8 +341,9 @@ void Logger::enterNextLogFileNoLock(const QString &baseFileName, LogType type)
         // Compress the previous log file. On a restart this can be the most recent
         // log file.
         auto logToCompress = previousLog;
-        if (logToCompress.isEmpty() && files.size() > 0 && !files.last().endsWith(".gz"))
+        if (logToCompress.isEmpty() && files.size() > 0 && !files.last().endsWith(".gz")) {
             logToCompress = dir.absoluteFilePath(files.last());
+        }
         if (!logToCompress.isEmpty()) {
             QString compressedName = logToCompress + ".gz";
             if (compressLog(logToCompress, compressedName)) {

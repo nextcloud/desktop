@@ -167,8 +167,9 @@ void FolderWatcher::startNotificationTestWhenReady()
     FileSystem::setFileHidden(path, true);
 
     QTimer::singleShot(5000, this, [this]() {
-        if (!_testNotificationPath.isEmpty())
+        if (!_testNotificationPath.isEmpty()) {
             Q_EMIT becameUnreliable(tr("The watcher did not receive a test notification."));
+        }
         _testNotificationPath.clear();
     });
 }
