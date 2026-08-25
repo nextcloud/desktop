@@ -175,6 +175,8 @@ Our C++ code should can make use of C++ 20 standard features whenever possible.
 
 Do not use C++ modules. Use standard header inclusion instead.
 
+After editing or adding C++ source files under `./src`, run `clang-format -i` on the touched files before considering the task done.
+
 ## macOS Specifics
 
 The following details are important and only relevant when working on the desktop client on macOS.
