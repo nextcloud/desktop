@@ -699,6 +699,28 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(lockPredicate.evaluate(with: fileproviderItems))
     }
 
+    func testShareActionActivationRequiresSingleSelection() {
+        // Cross-check the activation rule from `FileProviderUIExt/Info.plist` so the
+        // share action is not offered when Finder passes more than one item.
+        let activationPredicate = NSPredicate(
+            format: "fileproviderItems.@count == 1 && SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayShare == true ).@count == 1"
+        )
+        let shareableItem: [String: Any] = ["userInfo": ["displayShare": true]]
+        let nonShareableItem: [String: Any] = ["userInfo": ["displayShare": false]]
+
+        XCTAssertTrue(activationPredicate.evaluate(with: ["fileproviderItems": [shareableItem]]))
+        XCTAssertFalse(
+            activationPredicate.evaluate(
+                with: ["fileproviderItems": [shareableItem, nonShareableItem]]
+            )
+        )
+        XCTAssertFalse(
+            activationPredicate.evaluate(
+                with: ["fileproviderItems": [shareableItem, shareableItem]]
+            )
+        )
+    }
+
     func testItemLockFileUntrashable() {
         let metadata = SendableItemMetadata(
             ocId: "test-id", fileName: ".~lock.test.doc#", account: Self.account

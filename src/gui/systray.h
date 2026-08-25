@@ -172,13 +172,22 @@ public slots:
     void setSyncIsPaused(const bool syncIsPaused);
     void setIsOpen(const bool isOpen);
 
-    void createShareDialog(const QString &localPath);
+    void createShareDialog(const QString &localPath, const QString &fileId = {});
     void createFileActivityDialog(const QString &localPath);
     void showFileActionsDialog(const QString &localPath);
 
     #ifdef BUILD_FILE_PROVIDER_MODULE
 
     void slotShowFileProviderFileActionsDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+
+    /**
+     * @brief Opens unified sharing for a file provider item.
+     * @param fileId The numeric server file id, equal to the WebDAV `fileid` property.
+     * @param localPath The local and absolute path of the item.
+     * @param remoteItemPath The server-side path of the item.
+     * @param fileProviderDomainIdentifier The file provider domain identifier for the account that owns the item.
+     */
+    void slotShowFileProviderUnifiedSharingDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
 
     #endif
 
@@ -200,7 +209,12 @@ private:
     Systray();
 
     void setupContextMenu();
-    void createFileDetailsDialog(const QString &localPath);
+    void createFileDetailsDialog(const QString &localPath, const QString &fileId = {});
+
+    /**
+     * @brief Creates the unified sharing QML dialog with already-resolved item and account data.
+     */
+    void createUnifiedSharingDialog(const AccountPtr &account, const QString &localPath, const QString &fileId, const QString &remotePath);
     void createFileActionsDialog(const QString &localPath);
 
     #ifdef BUILD_FILE_PROVIDER_MODULE

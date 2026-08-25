@@ -69,6 +69,15 @@ signals:
     void showFileActionsDialog(const QString &fileId, const QString &localFile, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
 
     /**
+     * @brief Emitted when a file provider extension requests the unified sharing dialog.
+     * @param fileId The numeric server file id, equal to the WebDAV `fileid` property.
+     * @param localFile The local file path to share.
+     * @param remoteItemPath The server-side path of the item.
+     * @param fileProviderDomainIdentifier The file provider domain identifier for the account that owns the item.
+     */
+    void showUnifiedSharingDialog(const QString &fileId, const QString &localFile, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+
+    /**
      * @brief Emitted when a file provider extension requests to open an item's page in the user's web browser.
      *
      * The connected slot resolves the per-item private link via `fetchPrivateLinkUrl`

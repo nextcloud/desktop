@@ -4,22 +4,22 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "systray.h"
+#include "accessmanager.h"
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "activity/syncstatussummary.h"
-#include "systray.h"
-#include "theme.h"
-#include "config.h"
+#include "callstatechecker.h"
+#include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
+#include "config.h"
+#include "configfile.h"
+#include "guiutility.h"
+#include "theme.h"
 #include "tray/svgimageprovider.h"
-#include "search/unifiedsearchresultslistmodel.h"
+#include "tray/trayimageprovider.h"
 #include "tray/usermodel.h"
 #include "wheelhandler.h"
-#include "tray/trayimageprovider.h"
-#include "configfile.h"
-#include "accessmanager.h"
-#include "callstatechecker.h"
-#include "guiutility.h"
 
 #ifdef Q_OS_MACOS
 #include "foregroundbackground_interface.h"
@@ -461,14 +461,13 @@ void Systray::showSearchWindow(int userIndex)
         return;
     }
 
-    auto *const searchModel = new UnifiedSearchResultsListModel(accountState.data(), accountState.data());
     const QVariantMap initialProperties{
         {"account", QVariantMap{
                         {"avatar", user->avatarUrl()},
                         {"name", user->name()},
                         {"server", user->server()},
                     }},
-        {"searchModel", QVariant::fromValue(searchModel)},
+        {"accountId", targetUserId},
     };
     const auto createdObject = searchWindowComponent.createWithInitialProperties(initialProperties);
     const auto window = qobject_cast<QQuickWindow *>(createdObject);
@@ -477,7 +476,6 @@ void Systray::showSearchWindow(int userIndex)
         if (createdObject) {
             createdObject->deleteLater();
         }
-        searchModel->deleteLater();
         return;
     }
 
@@ -496,13 +494,8 @@ void Systray::showSearchWindow(int userIndex)
     connect(window, &QObject::destroyed, this, [this, windowKey] {
         _searchWindows.remove(windowKey);
     });
-    connect(window, &QObject::destroyed, searchModel, &QObject::deleteLater);
-    const auto searchModelGuard = QPointer<UnifiedSearchResultsListModel>(searchModel);
-    connect(window, &QWindow::visibleChanged, window, [window, searchModelGuard](const bool visible) {
+    connect(window, &QWindow::visibleChanged, window, [window](const bool visible) {
         if (!visible) {
-            if (searchModelGuard) {
-                searchModelGuard->deleteLater();
-            }
             window->deleteLater();
         }
     });
@@ -843,14 +836,14 @@ bool Systray::raiseFileDetailDialogs(const QString &localPath)
     return !_fileDetailDialogs.empty();
 }
 
-void Systray::createFileDetailsDialog(const QString &localPath)
+void Systray::createFileDetailsDialog(const QString &localPath, const QString &fileId)
 {
     if (raiseFileDetailDialogs(localPath)) {
         qCDebug(lcSystray) << "Reopening an existing file details dialog for " << localPath;
         return;
     }
 
-    qCDebug(lcSystray) << "Opening new file details dialog for " << localPath;
+    qCDebug(lcSystray).nospace() << "Opening new file details dialog localPath=" << localPath << " fileId=" << fileId;
 
     if (!_trayEngine) {
         qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "as no tray engine was available";
@@ -860,6 +853,21 @@ void Systray::createFileDetailsDialog(const QString &localPath)
     const auto folder = FolderMan::instance()->folderForPath(localPath);
     if (!folder) {
         qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "no responsible folder found";
+        return;
+    }
+
+    const auto relativePath = localPath.mid(folder->cleanPath().length() + 1);
+    auto resolvedFileId = fileId;
+    if (resolvedFileId.isEmpty()) {
+        auto fileRecord = SyncJournalFileRecord{};
+        if (folder->journalDb()->getFileRecord(relativePath, &fileRecord)) {
+            resolvedFileId = QString::fromUtf8(fileRecord.numericFileId());
+        }
+    }
+    const auto remotePath = QDir(folder->remotePath()).filePath(relativePath);
+
+    if (folder->accountState()->account()->capabilities().unifiedSharingAvailable()) {
+        createUnifiedSharingDialog(folder->accountState()->account(), localPath, resolvedFileId, remotePath);
         return;
     }
 
@@ -890,9 +898,49 @@ void Systray::createFileDetailsDialog(const QString &localPath)
     }
 }
 
-void Systray::createShareDialog(const QString &localPath)
+void Systray::createUnifiedSharingDialog(const AccountPtr &account, const QString &localPath, const QString &fileId, const QString &remotePath)
 {
-    createFileDetailsDialog(localPath);
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open unified sharing dialog for" << localPath << "as no tray engine was available";
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"account", QVariant::fromValue(account)},
+        {"localPath", localPath},
+        {"fileId", fileId},
+        {"remotePath", remotePath},
+    };
+
+    QQmlComponent fileDetailsDialog(trayEngine(), "com.nextcloud.desktopclient.sharing"_L1, "ShareDialog"_L1);
+
+    if (fileDetailsDialog.isError()) {
+        qCWarning(lcSystray) << fileDetailsDialog.errorString();
+        return;
+    }
+
+    const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);
+    const auto dialog = qobject_cast<QQuickWindow*>(createdDialog);
+
+    if (!dialog) {
+        qCWarning(lcSystray) << "Unified sharing dialog resulted in creation of object that was not a window!";
+        return;
+    }
+
+    _fileDetailDialogs.append(dialog);
+
+#if defined(Q_OS_MACOS)
+    configureMacOSExpandedQuickWindow(dialog);
+#endif
+
+    dialog->show();
+    dialog->raise();
+    dialog->requestActivate();
+}
+
+void Systray::createShareDialog(const QString &localPath, const QString &fileId)
+{
+    createFileDetailsDialog(localPath, fileId);
     Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Sharing);
 }
 
@@ -912,6 +960,23 @@ void Systray::showFileActionsDialog(const QString &localPath)
 void Systray::slotShowFileProviderFileActionsDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
 {
     createFileProviderFileActionsDialog(fileId, localPath, remoteItemPath, fileProviderDomainIdentifier);
+}
+
+void Systray::slotShowFileProviderUnifiedSharingDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
+{
+    if (raiseFileDetailDialogs(localPath)) {
+        qCDebug(lcSystray) << "Reopening an existing unified sharing dialog for" << localPath;
+        return;
+    }
+
+    const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+    if (!accountState) {
+        qCWarning(lcSystray) << "Could not open unified sharing dialog for" << localPath
+                             << "no account found for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    createUnifiedSharingDialog(accountState->account(), localPath, fileId, remoteItemPath);
 }
 
 void Systray::createFileProviderFileActionsDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
