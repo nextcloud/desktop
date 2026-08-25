@@ -76,6 +76,8 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
                 qCWarning(lcFileProviderXPCUtils) << "Failed to resolve service for file provider domain: " << error;
             } else if (service == nil) {
                 qCWarning(lcFileProviderXPCUtils) << "Service is nil!";
+            } else if (service.name == nil) {
+                qCWarning(lcFileProviderXPCUtils) << "Service has no name";
             } else {
                 [fpServices addObject:@{service.name: service}];
             }
