@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QFile>
 #include <QImage>
+#include <QList>
 #include <QStringView>
 #include <QTest>
 #include <QXmlStreamReader>
@@ -47,8 +48,7 @@ private slots:
         QVERIFY2(file.open(QIODevice::ReadOnly), qPrintable(file.errorString()));
 
         auto xml = QXmlStreamReader(&file);
-        auto hasLightFill = false;
-        auto hasDarkStroke = false;
+        auto shapeCount = 0;
 
         while (!xml.atEnd()) {
             xml.readNext();
@@ -57,57 +57,90 @@ private slots:
                 continue;
             }
 
+            const auto elementName = xml.name();
+            const auto isShape = elementName == QStringLiteral("circle")
+                || elementName == QStringLiteral("ellipse")
+                || elementName == QStringLiteral("line")
+                || elementName == QStringLiteral("path")
+                || elementName == QStringLiteral("polygon")
+                || elementName == QStringLiteral("polyline")
+                || elementName == QStringLiteral("rect");
+
+            if (!isShape) {
+                continue;
+            }
+
+            ++shapeCount;
+            QVERIFY2(elementName == QStringLiteral("path"),
+                qPrintable(fileName + QStringLiteral(" must use one uniform path")));
+
             const auto attributes = xml.attributes();
-            hasLightFill = hasLightFill || isColor(attributes.value(QStringLiteral("fill")), Qt::white);
-            hasDarkStroke = hasDarkStroke || isColor(attributes.value(QStringLiteral("stroke")), Qt::black);
+            QVERIFY2(isColor(attributes.value(QStringLiteral("fill")), Qt::white),
+                qPrintable(fileName + QStringLiteral(" paths must use a light fill")));
+            QVERIFY2(isColor(attributes.value(QStringLiteral("stroke")), Qt::black),
+                qPrintable(fileName + QStringLiteral(" paths must use a dark outline")));
         }
 
         QVERIFY2(!xml.hasError(), qPrintable(xml.errorString()));
-        QVERIFY2(hasLightFill, qPrintable(fileName + QStringLiteral(" must retain a light fill")));
-        QVERIFY2(hasDarkStroke, qPrintable(fileName + QStringLiteral(" must retain a dark outline")));
+        QCOMPARE(shapeCount, 1);
     }
 
     void testRasterContrast_data()
     {
         QTest::addColumn<QString>("fileName");
+        QTest::addColumn<int>("expectedSize");
 
         const auto directory = QDir(customStateIconDirectory());
-        const auto lockedFiles = directory.entryList(
-            QStringList{QStringLiteral("*-0-locked.png")},
-            QDir::Files | QDir::Readable,
-            QDir::Name);
-        const auto sharedFiles = directory.entryList(
-            QStringList{QStringLiteral("*-1-shared.png")},
-            QDir::Files | QDir::Readable,
-            QDir::Name);
-        const auto pngFiles = lockedFiles + sharedFiles;
+        const auto sizes = QList<int>{24, 32, 40, 48, 64, 128, 256, 512, 1024};
+        const auto stateNames = QStringList{QStringLiteral("0-locked"), QStringLiteral("1-shared")};
+        auto expectedFiles = QStringList{};
 
-        QCOMPARE(lockedFiles.size(), sharedFiles.size());
-        QCOMPARE(pngFiles.size(), 18);
+        for (const auto &stateName : stateNames) {
+            for (const auto size : sizes) {
+                const auto fileName = QStringLiteral("%1-%2.png").arg(size).arg(stateName);
+                expectedFiles.append(fileName);
 
-        for (const auto &fileName : pngFiles) {
-            const auto rowName = fileName.toUtf8();
-            QTest::newRow(rowName.constData()) << fileName;
+                const auto rowName = fileName.toUtf8();
+                QTest::newRow(rowName.constData()) << fileName << size;
+            }
         }
+
+        expectedFiles.sort();
+        const auto pngFiles = directory.entryList(
+            QStringList{QStringLiteral("*.png")}, QDir::Files | QDir::Readable, QDir::Name);
+        QCOMPARE(pngFiles, expectedFiles);
     }
 
     void testRasterContrast()
     {
         QFETCH(QString, fileName);
+        QFETCH(int, expectedSize);
 
         auto image = QImage(QDir(customStateIconDirectory()).filePath(fileName));
         QVERIFY2(!image.isNull(), qPrintable(fileName + QStringLiteral(" must be a readable image")));
+        QCOMPARE(image.size(), QSize(expectedSize, expectedSize));
 
         image = image.convertToFormat(QImage::Format_ARGB32);
 
         auto hasLightPixel = false;
         auto hasDarkPixel = false;
+        auto hasUnexpectedColor = false;
 
-        for (auto y = 0; y < image.height() && !(hasLightPixel && hasDarkPixel); ++y) {
+        for (auto y = 0; y < image.height() && !hasUnexpectedColor; ++y) {
             const auto pixels = reinterpret_cast<const QRgb *>(image.constScanLine(y));
 
             for (auto x = 0; x < image.width(); ++x) {
                 const auto pixel = pixels[x];
+
+                if (qAlpha(pixel) == 0) {
+                    continue;
+                }
+
+                hasUnexpectedColor = qRed(pixel) != qGreen(pixel) || qGreen(pixel) != qBlue(pixel);
+
+                if (hasUnexpectedColor) {
+                    break;
+                }
 
                 if (qAlpha(pixel) < 128) {
                     continue;
@@ -117,15 +150,12 @@ private slots:
                     || (qRed(pixel) >= 230 && qGreen(pixel) >= 230 && qBlue(pixel) >= 230);
                 hasDarkPixel = hasDarkPixel
                     || (qRed(pixel) <= 25 && qGreen(pixel) <= 25 && qBlue(pixel) <= 25);
-
-                if (hasLightPixel && hasDarkPixel) {
-                    break;
-                }
             }
         }
 
         QVERIFY2(hasLightPixel, qPrintable(fileName + QStringLiteral(" must retain a light interior")));
         QVERIFY2(hasDarkPixel, qPrintable(fileName + QStringLiteral(" must retain a dark outline")));
+        QVERIFY2(!hasUnexpectedColor, qPrintable(fileName + QStringLiteral(" must contain only grayscale pixels")));
     }
 };
 
