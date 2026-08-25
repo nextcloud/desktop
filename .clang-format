@@ -37,6 +37,10 @@ BreakBeforeBraces: Linux
 
 InsertBraces: true
 
+AllowShortEnumsOnASingleLine: false
+
+EnumTrailingComma: ETC_Insert
+
 # CrlInstruction *a;
 PointerAlignment: Right
 
