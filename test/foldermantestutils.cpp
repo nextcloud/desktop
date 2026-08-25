@@ -12,7 +12,4 @@ FolderManTestHelper::FolderManTestHelper(QObject *parent)
 
 }
 
-FolderManTestHelper::~FolderManTestHelper()
-{
-
-}
+FolderManTestHelper::~FolderManTestHelper() = default;
