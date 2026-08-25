@@ -216,9 +216,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     cfg.restoreGeometry(this);
 }
 
-SettingsDialog::~SettingsDialog()
-{
-}
+SettingsDialog::~SettingsDialog() = default;
 
 QWidget* SettingsDialog::currentPage()
 {
