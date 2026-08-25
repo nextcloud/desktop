@@ -53,16 +53,18 @@ extension Enumerator {
                 let sortedUpdated = changes.createdAndUpdated
                     .sorted { $0.remotePath().count < $1.remotePath().count }
 
+                let finalAnchor = serverChanges.hadFailure ? anchor : currentAnchor
                 changeBuffer.prime(
                     key: anchorKey,
+                    finalAnchorRawValue: finalAnchor.rawValue,
                     updated: sortedUpdated,
                     deleted: changes.deleted,
                     incomplete: serverChanges.hadFailure
                 )
             }
 
-            // Intermediate batches keep the original anchor so an interrupted drain resumes behind all
-            // undelivered items. The final batch normally advances the working-set sync point to
+            // Intermediate batches use a durable continuation anchor. The final batch normally advances
+            // the working-set sync point to
             // currentAnchor — but when the scan was incomplete (a remote read failed and was skipped) we
             // keep the incoming anchor instead, so we do not tell the framework we are synced up to "now"
             // past changes we could not discover this pass. The next working-set signal re-derives and
@@ -71,7 +73,6 @@ extension Enumerator {
             let finalAnchor = changeBuffer.isPrimedIncomplete() ? anchor : currentAnchor
             drainChangeBuffer(
                 for: observer,
-                startAnchor: anchor,
                 finalAnchor: finalAnchor,
                 suggested: observer.suggestedBatchSize
             )

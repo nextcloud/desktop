@@ -31,7 +31,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedPendingChunkUploadCleanup
+    private static let schemaVersion = SchemaVersion.addedChangeDeliverySessions
     let logger: FileProviderLogger
     let account: Account
 
@@ -104,7 +104,9 @@ public final class FilesDatabaseManager: Sendable {
                 RealmItemMetadata.self,
                 RealmExcludedFromSyncItem.self,
                 RemoteFileChunk.self,
-                RealmPendingChunkUploadCleanup.self
+                RealmPendingChunkUploadCleanup.self,
+                RealmChangeDeliverySession.self,
+                RealmChangeDeliveryItem.self
             ]
         )
 
