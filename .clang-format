@@ -35,6 +35,8 @@ SortIncludes: true
 # break before braces on function, namespace and class definitions.
 BreakBeforeBraces: Linux
 
+InsertBraces: true
+
 # CrlInstruction *a;
 PointerAlignment: Right
 
