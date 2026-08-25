@@ -143,7 +143,8 @@ public:
             , bytesAvailable{bytesAvailable}
         {}
 
-        QString bytesAvailableString() const {
+        [[nodiscard]] QString bytesAvailableString() const
+        {
             if (_bytesAvailableString.isEmpty()) {
                 return QString::number(bytesAvailable);
             }
