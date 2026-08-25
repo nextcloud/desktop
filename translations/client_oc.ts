@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="138"/>
         <source>Connect to %1?</source>
-        <translation type="unfinished"/>
+        <translation>Se connectar a %1 ?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="148"/>
@@ -290,7 +290,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="50"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nom d’utilizaire</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="60"/>
@@ -3489,7 +3489,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar las notificacions del chat</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="184"/>
@@ -3621,7 +3621,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="503"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Avís legal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="513"/>
@@ -3962,7 +3962,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/infosettings.ui" line="81"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Avís legal</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="152"/>
@@ -3987,7 +3987,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/infosettings.ui" line="229"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Verificar ara</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="110"/>
@@ -4058,7 +4058,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/infosettings.cpp" line="275"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Anullar</translation>
     </message>
 </context>
 <context>
