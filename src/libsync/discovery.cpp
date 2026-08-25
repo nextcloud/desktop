@@ -523,8 +523,8 @@ bool ProcessDirectoryJob::canRemoveCaseClashConflictedCopy(const QString &path, 
     }
 
     auto numMatchingEntries = 0;
-    for (auto it = allEntries.cbegin(); it != allEntries.cend(); ++it) {
-        if (it->first.compare(originalBaseFileName, Qt::CaseInsensitive) == 0 && it->second.serverEntry.isValid()) {
+    for (const auto &allEntrie : allEntries) {
+        if (allEntrie.first.compare(originalBaseFileName, Qt::CaseInsensitive) == 0 && allEntrie.second.serverEntry.isValid()) {
             // only case-insensitive matching entries that are present on the server
             ++numMatchingEntries;
         }
