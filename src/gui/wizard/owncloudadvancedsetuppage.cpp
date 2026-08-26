@@ -238,7 +238,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 
 void OwncloudAdvancedSetupPage::SetAvatarIcon()
 {
-    const auto icon = QIcon(WLTheme.roundAvatarIcon());
+    const auto icon = Theme::createColorAwareIcon(WLTheme.roundAvatarIcon(), palette());
      _ui.lServerIcon->setPixmap(icon.pixmap(32));
 }
 
@@ -767,7 +767,7 @@ void OwncloudAdvancedSetupPage::customizeStyle()
 
 void OwncloudAdvancedSetupPage::styleLocalFolderLabel()
 {
-    const auto icon = QIcon(WLTheme.folderIcon("qtwidget"));
+    const auto icon = Theme::createColorAwareIcon(WLTheme.folderIcon("qtwidget"), palette());
      _ui.lLocal->setPixmap(icon.pixmap(32));
 }
 

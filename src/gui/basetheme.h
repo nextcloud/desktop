@@ -69,6 +69,14 @@ public:
 
     virtual QString additionalThemePrefix() const { return QStringLiteral(""); }
 
+    // Recolors a themed ses-*.svg icon at load time via Qt's svgimage-custom-color image
+    // provider (see SvgImageProvider), ignoring whatever fill color is baked into the SVG.
+    // Use this instead of a static icon getter wherever the icon is consumed by QML as an
+    // "image://" source, so it stays legible when darkMode() flips.
+    Q_INVOKABLE virtual QString coloredIcon(const QString &fileName, const QString &color) const {
+        return QStringLiteral("image://svgimage-custom-color/") + _sesFolder + additionalThemePrefix() + fileName + QStringLiteral("/") + color;
+    }
+
     virtual QString avatarIcon(QString context = "qml") const {
         return themePrefix(context) + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-settingsAvatar.svg");
     }

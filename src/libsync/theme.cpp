@@ -955,13 +955,33 @@ QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette, 
     QImage img(size, QImage::Format_ARGB32);
     img.fill(Qt::GlobalColor::transparent);
     QPainter imgPainter(&img);
+    QImage inverted(size, QImage::Format_ARGB32);
+    inverted.fill(Qt::GlobalColor::transparent);
+    QPainter invPainter(&inverted);
 
     renderer.render(&imgPainter);
+    renderer.render(&invPainter);
+
+    inverted.invertPixels(QImage::InvertRgb);
+
+    const auto defaultPixmap = Theme::isDarkColor(palette.color(QPalette::Base))
+        ? QPixmap::fromImage(inverted)
+        : QPixmap::fromImage(img);
+    const auto highlightedPixmap = Theme::isDarkColor(palette.color(QPalette::HighlightedText))
+        ? QPixmap::fromImage(img)
+        : QPixmap::fromImage(inverted);
 
     QIcon icon;
-    icon.addPixmap(QPixmap::fromImage(img));
-    icon.addPixmap(QPixmap::fromImage(img), QIcon::Normal, QIcon::On);
+    icon.addPixmap(defaultPixmap, QIcon::Normal, QIcon::Off);
+    icon.addPixmap(defaultPixmap, QIcon::Active, QIcon::Off);
+    icon.addPixmap(defaultPixmap, QIcon::Selected, QIcon::Off);
 
+    icon.addPixmap(highlightedPixmap, QIcon::Normal, QIcon::On);
+    icon.addPixmap(highlightedPixmap, QIcon::Active, QIcon::On);
+    icon.addPixmap(highlightedPixmap, QIcon::Selected, QIcon::On);
+
+    icon.addPixmap(defaultPixmap, QIcon::Disabled, QIcon::Off);
+    icon.addPixmap(highlightedPixmap, QIcon::Disabled, QIcon::On);
     return icon;
 }
 

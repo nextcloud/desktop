@@ -1,4 +1,5 @@
 #include "sesFileIconProvider.h"
+#include "theme.h"
 #include "whitelabeltheme.h"
 
 #include <QFileIconProvider>
@@ -10,7 +11,7 @@ QIcon SesFileIconProvider::icon(const QFileInfo &info) const
 
     if (info.isDir())
     {
-        return QIcon(OCC::WLTheme.folderIcon("qtwidget"));
+        return OCC::Theme::createColorAwareIcon(OCC::WLTheme.folderIcon("qtwidget"));
     }
 
     if (info.suffix().isEmpty())

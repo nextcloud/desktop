@@ -233,8 +233,11 @@ QtObject {
     }
 
     // SES
-    readonly property string sesWebsiteIcon: WLTheme.websiteIcon
-    readonly property string sesFolderIcon: WLTheme.folderIcon
+    // These three go through coloredIcon() (instead of the plain WLTheme getter) because
+    // they're rendered via a raw QML Image that ignores icon.color tinting - baking the
+    // theme-aware color into the source pixels is the only thing that reliably recolors them.
+    readonly property string sesWebsiteIcon: WLTheme.coloredIcon("ses-website.svg", WLTheme.buttonIconColor)
+    readonly property string sesFolderIcon: WLTheme.coloredIcon("ses-folderIcon.svg", WLTheme.buttonIconColor)
     readonly property string sesHeaderLogoIcon: WLTheme.sesHeaderLogoIcon
  
     readonly property string sesAvatar: WLTheme.avatarIcon
@@ -256,7 +259,7 @@ QtObject {
     readonly property string sesChevron: WLTheme.chevronIcon
     readonly property string sesMore: WLTheme.moreIcon 
     readonly property string sesMoreHover: WLTheme.moreHoverIcon
-    readonly property string sesActivity: WLTheme.activityIcon
+    readonly property string sesActivity: WLTheme.coloredIcon("ses-activity.svg", WLTheme.iconDarkColor)
 
     readonly property color sesIconDarkColor: WLTheme.iconDarkColor
     readonly property color sesIconColor: WLTheme.buttonIconColor

@@ -254,11 +254,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             } else {
                 // File sync successful
                 if (activity._fileAction == "file_created") {
-                    return WLTheme.plusIcon();
+                    return WLTheme.coloredIcon(QStringLiteral("ses-darkPlus.svg"), WLTheme.iconDarkColor());
                 } else if (activity._fileAction == "file_deleted") {
-                    return WLTheme.activityDeleteIcon();
+                    return WLTheme.coloredIcon(QStringLiteral("ses-activityDelete.svg"), WLTheme.iconDarkColor());
                 } else {
-                    return WLTheme.refreshIcon();
+                    return WLTheme.coloredIcon(QStringLiteral("ses-refresh.svg"), WLTheme.iconDarkColor());
                 }
             }
         } else {

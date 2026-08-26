@@ -28,8 +28,11 @@ namespace Ui {
             return {};
         }
 
-        const auto pixmapName = idSplit.at(0);
-        const auto pixmapColor = idSplit.size() > 1 ? QColor(idSplit.at(1)) : QColorConstants::Svg::black;
+        // idSplit is normally [fileName, color], but themed icons may live in a subfolder
+        // (e.g. "ses/ses-darkPlus.svg/D6E4F5"), so treat everything but the last segment as
+        // the (possibly nested) file name and only the last segment as the color.
+        const auto pixmapColor = idSplit.size() > 1 ? QColor(idSplit.constLast()) : QColorConstants::Svg::black;
+        const auto pixmapName = idSplit.size() > 1 ? idSplit.mid(0, idSplit.size() - 1).join(QStringLiteral("/")) : idSplit.at(0);
 
         if (pixmapName.isEmpty() || !pixmapColor.isValid()) {
             qCWarning(lcSvgImageProvider) << "Image id is incorrect!";
