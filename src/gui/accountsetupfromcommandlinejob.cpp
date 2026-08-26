@@ -8,7 +8,7 @@
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "creds/webflowcredentials.h"
-#include "filesystem.h"
+#include "common/filesystembase.h"
 #include "folder.h"
 #include "folderman.h"
 #include "networkjobs.h"
@@ -41,20 +41,25 @@ AccountSetupFromCommandLineJob::AccountSetupFromCommandLineJob(QString appPasswo
 {
 }
 
-void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
+bool AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 {
-    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host()))) {
+    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId, _serverUrl.host()))) {
         printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 already exists!").arg(QDir::toNativeSeparators(_userId)), true);
-        return;
+        return false;
     }
 
-    if (!_localDirPath.isEmpty()) {
+    if (_localDirPath.isEmpty()) {
+        printAccountSetupFromCommandLineStatusAndExit(
+            QStringLiteral("Folder creation failed. Could not create local folder because the name is empty"),
+            true);
+        return false;
+    } else {
         QDir dir(_localDirPath);
         if (dir.exists() && !dir.isEmpty()) {
             printAccountSetupFromCommandLineStatusAndExit(
                 QStringLiteral("Local folder %1 already exists and is non-empty!").arg(QDir::toNativeSeparators(_localDirPath)),
                 true);
-            return;
+            return false;
         }
 
         qCInfo(lcAccountSetupCommandLineJob) << "Creating folder" << _localDirPath;
@@ -62,7 +67,7 @@ void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
             printAccountSetupFromCommandLineStatusAndExit(
                 QStringLiteral("Folder creation failed. Could not create local folder %1").arg(QDir::toNativeSeparators(_localDirPath)),
                 true);
-            return;
+            return false;
         }
 
         FileSystem::setFolderMinimumPermissions(_localDirPath);
@@ -80,7 +85,12 @@ void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 
     Q_EMIT _account->wantsAccountSaved(_account);
 
+    if (_appPassword.isEmpty()) {
+        return true;
+    }
+
     fetchUserName();
+    return true;
 }
 
 void AccountSetupFromCommandLineJob::checkLastModifiedWithPropfind()

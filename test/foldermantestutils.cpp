@@ -7,6 +7,7 @@
 
 FolderManTestHelper::FolderManTestHelper(QObject *parent)
     : QObject{parent}
+    , fm{FolderMan::instance()}
 {
 
 }
