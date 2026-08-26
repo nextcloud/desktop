@@ -35,6 +35,12 @@ SortIncludes: true
 # break before braces on function, namespace and class definitions.
 BreakBeforeBraces: Linux
 
+InsertBraces: true
+
+AllowShortEnumsOnASingleLine: false
+
+EnumTrailingComma: ETC_Insert
+
 # CrlInstruction *a;
 PointerAlignment: Right
 
