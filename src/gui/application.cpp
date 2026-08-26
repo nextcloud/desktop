@@ -20,6 +20,7 @@
 #include "logger.h"
 #include "pushnotifications.h"
 #include "socketapi/socketapi.h"
+#include "systray.h"
 #include "theme.h"
 #include "urischemehandler.h"
 
@@ -452,6 +453,13 @@ Application::Application(int &argc, char **argv)
     // setup that follows, like folder setup
     _gui = new ownCloudGui(this);
     connect(_theme, &Theme::systrayUseMonoIconsChanged, _gui, &ownCloudGui::slotComputeOverallSyncStatus);
+
+    // Startup is done, so a newly added account may open the tray popup again.
+    // Restoring the saved accounts above emits AccountManager::accountAdded too,
+    // and on X11 the popup takes a pointer and keyboard grab that is then held
+    // across the blocking disk I/O in FolderMan::setupFolders(), leaving the
+    // whole desktop unable to accept any input for as long as that takes.
+    Systray::instance()->setStartupFinished(true);
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }

@@ -169,7 +169,17 @@ Systray::Systray()
     // is placed
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, [this]{ showTrayPopup(WindowPosition::Center); });
+        this, [this]{
+            // accountAdded is also emitted during startup, when
+            // AccountManager::restore() brings the saved accounts back. Showing the
+            // popup there takes an X11 pointer and keyboard grab while the GUI thread
+            // goes straight on into FolderMan::setupFolders() and blocks on disk,
+            // so input dies desktop-wide for as long as that takes.
+            if (!startupFinished()) {
+                return;
+            }
+            showTrayPopup(WindowPosition::Center);
+        });
 #endif
 
     if (FolderMan::instance()) {

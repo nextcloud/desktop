@@ -74,6 +74,13 @@ public:
     static Systray *instance();
     ~Systray() override = default;
 
+    /** No tray popup while the client is still starting up: showing it takes an
+     *  X11 pointer and keyboard grab, and the GUI thread blocks right afterwards
+     *  in FolderMan::setupFolders() doing synchronous disk I/O. The grab is then
+     *  held for the whole of that, freezing input for the entire desktop. */
+    void setStartupFinished(bool finished) { _startupFinished = finished; }
+    [[nodiscard]] bool startupFinished() const { return _startupFinished; }
+
     enum class TaskBarPosition { Bottom, Left, Top, Right };
     Q_ENUM(TaskBarPosition);
 
@@ -230,6 +237,7 @@ private:
     bool _isTrayContextMenuVisible = false;
     bool _syncIsPaused = true;
     bool _anySyncFolders = false;
+    bool _startupFinished = false;
 
     std::unique_ptr<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
