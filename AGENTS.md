@@ -193,7 +193,9 @@ Our C++ code should can make use of C++ 20 standard features whenever possible.
 
 Do not use C++ modules. Use standard header inclusion instead.
 
-After editing or adding C++ source files under `./src`, run `clang-format -i` on the touched files before considering the task done.
+After editing or adding any C++ source files, anywhere in the repository, run `clang-format -i` on the touched files before considering the task done.
+
+After editing or adding any C++ source files, anywhere in the repository, run `run-clang-tidy -p build -header-filter='.*' -config-file .clang-tidy -fix` from the repository root and confirm it produces no further changes. This is a mandatory step: apply any fixes the tool makes, review them, re-run the command, and repeat until it reports no changes before considering the task done. Do not skip or silently waive this step; if `run-clang-tidy` cannot be run (for example because `./build` is not configured), state that explicitly rather than proceeding as if it passed.
 
 ## macOS Specifics
 
