@@ -1322,6 +1322,7 @@ void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
 
     OCC::VfsSetupParams vfsParams;
     vfsParams.filesystemPath = localPath();
+    vfsParams.rootPath = OCC::FileSystem::Path{localPath()};
     vfsParams.remotePath = _remotePath + u"/"_s;
     vfsParams.account = _account;
     vfsParams.journal = _journalDb.get();
