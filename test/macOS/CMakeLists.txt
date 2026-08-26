@@ -7,3 +7,8 @@
 nextcloud_add_test(FinderSyncBrokerIdentity)
 nextcloud_add_test(SystraySyncControlMacOS)
 nextcloud_add_test(MacSandboxUtility)
+
+if(BUILD_FILE_PROVIDER_MODULE)
+    nextcloud_add_test(FileProviderXPCUtils)
+    set_source_files_properties(testfileproviderxpcutils.cpp PROPERTIES COMPILE_FLAGS "-x objective-c++")
+endif()
