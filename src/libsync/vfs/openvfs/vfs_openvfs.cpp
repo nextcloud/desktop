@@ -529,6 +529,40 @@ bool OpenVFS::isDehydratedPlaceholder(const QString &filePath)
     return false;
 }
 
+bool OpenVFS::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
+{
+    if (stat->type == ItemTypeDirectory) {
+        return false;
+    }
+
+    const auto parentPath = static_cast<QByteArray *>(statData);
+    Q_ASSERT(!parentPath->endsWith('/'));
+    Q_ASSERT(!stat->path.startsWith('/'));
+
+    const auto path = QByteArray(*parentPath + '/' + stat->path);
+    const auto pin = [=, this] {
+        const auto absolutePath = QString::fromUtf8(path);
+        Q_ASSERT(absolutePath.startsWith(params().filesystemPath.toUtf8()));
+        const auto folderPath = absolutePath.mid(params().filesystemPath.length());
+        return pinState(folderPath);
+    }();
+
+    if (stat->type == ItemTypeFile) {
+        const auto attribs = placeHolderAttributes(path);
+        if (attribs.state == ::OpenVFS::Constants::States::DeHydrated) {
+            stat->type = ItemTypeVirtualFile;
+            if (attribs.pinState == convertPinState(PinState::AlwaysLocal)) {
+                stat->type = ItemTypeVirtualFileDownload;
+            }
+        } else {
+            if (attribs.pinState == convertPinState(PinState::OnlineOnly)) {
+                stat->type = ItemTypeVirtualFileDehydration;
+            }
+        }
+    }
+    return false;
+}
+
 // LocalInfo OpenVFS::statTypeVirtualFile(const std::filesystem::directory_entry &path, ItemType type)
 // {
 //     if (type == ItemTypeFile) {

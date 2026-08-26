@@ -52,6 +52,10 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
         return WithSuffix;
     } else if (str == QLatin1String("wincfapi")) {
         return WindowsCfApi;
+    } else if (str == QLatin1String("xattr")) {
+        return XAttr;
+    } else if (str == QLatin1String("openvfs")) {
+        return OpenVFS;
     }
     return {};
 }
@@ -136,13 +140,20 @@ VfsOff::~VfsOff() = default;
 
 static QString modeToPluginName(Vfs::Mode mode)
 {
-    if (mode == Vfs::WithSuffix)
+    switch (mode) {
+    case Vfs::Off:
+        return {};
+    case Vfs::WithSuffix:
         return QStringLiteral("suffix");
-    if (mode == Vfs::WindowsCfApi)
+    case Vfs::WindowsCfApi:
         return QStringLiteral("cfapi");
-    if (mode == Vfs::XAttr)
+    case Vfs::XAttr:
         return QStringLiteral("xattr");
-    return QString();
+    case Vfs::OpenVFS:
+        return QStringLiteral("openvfs");
+    }
+
+    return {};
 }
 
 Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
@@ -195,6 +206,10 @@ Vfs::Mode OCC::bestAvailableVfsMode()
 {
     if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         return Vfs::WindowsCfApi;
+    }
+
+    if (isVfsPluginAvailable(Vfs::OpenVFS)) {
+        return Vfs::OpenVFS;
     }
 
     if (isVfsPluginAvailable(Vfs::WithSuffix)) {
@@ -266,4 +281,9 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
 
     qCInfo(lcPlugin) << "Created VFS instance from plugin" << pluginPath;
     return vfs;
+}
+
+const FileSystem::Path &VfsSetupParams::root() const
+{
+    return rootPath;
 }

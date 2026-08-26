@@ -348,10 +348,10 @@ public:
     };
     FolderQuota _folderQuota;
 
-    QString _localName;
-
-    QString localName() const { return _localName; }
-    void setLocalName(const QString &newName) { _localName = newName; }
+    QString localName() const
+    {
+        return _file;
+    }
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

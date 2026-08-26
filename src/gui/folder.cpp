@@ -580,6 +580,7 @@ void Folder::startVfs()
     qCDebug(lcFolder) << "Display name for VFS folder will be:" << displayName;
     VfsSetupParams vfsParams;
     vfsParams.filesystemPath = path();
+    vfsParams.rootPath = FileSystem::Path{path()};
     vfsParams.displayName = displayName;
     vfsParams.alias = alias();
     vfsParams.navigationPaneClsid = navigationPaneClsid().toString();
