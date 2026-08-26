@@ -23,6 +23,14 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     private let displayFileActions: Bool
     private let remoteSupportsTrash: Bool
 
+    private var lockStateAllowsModifications: Bool {
+        metadata.lock == false || (
+            metadata.lockOwnerType == NKLockType.token.rawValue &&
+                metadata.ownerId == metadata.lockOwner &&
+                metadata.lockToken != nil
+        )
+    }
+
     public var itemIdentifier: NSFileProviderItemIdentifier {
         NSFileProviderItemIdentifier(metadata.ocId)
     }
@@ -37,7 +45,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             capabilities.insert(.allowsReading)
         }
 
-        if metadata.lock == false || (metadata.lock == true && metadata.lockOwnerType == NKLockType.token.rawValue && metadata.ownerId == metadata.lockOwner && metadata.lockToken != nil) {
+        if lockStateAllowsModifications {
             if permissions.contains("D") { // Deletable
                 capabilities.insert(.allowsDeleting)
             }
@@ -87,13 +95,20 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         // `metadataVersion` we previously handed the framework, the framework would treat
         // its cached snapshot as still valid, and the new derivations would never reach the
         // system — leaving e.g. the `displayOpenInBrowser` / `displayCopyInternalLink`
-        // userInfo keys missing on items enumerated by older builds. `contentVersion` stays
-        // bare-etag because the file content itself didn't change across the upgrade and
-        // bumping it would force the framework to re-download every materialised file.
+        // userInfo keys missing on items enumerated by older builds. `contentVersion` normally
+        // follows the etag, but lock-only etag transitions preserve the prior value because the
+        // file bytes did not change. Existing rows without that separately stored value fall back
+        // to the etag.
         //
         // See nextcloud/desktop#10065.
         let extensionVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
         var metadataVersionString = "\(metadata.etag)|\(extensionVersion)"
+
+        // Reacquiring an existing lock can restore the local token without changing the etag.
+        // Include the resulting capability state so File Provider re-reads the item as writable.
+        if metadata.lock {
+            metadataVersionString += "|\(lockStateAllowsModifications)"
+        }
 
         // A directory's `displayEvictDescendants` ("Remove downloaded items")
         // depends on whether it holds an evictable descendant file — state that
@@ -111,7 +126,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             metadataVersionString += "|\(dbManager.hasEvictableDescendantFile(directoryMetadata: metadata))"
         }
 
-        return NSFileProviderItemVersion(contentVersion: metadata.etag.data(using: .utf8)!, metadataVersion: metadataVersionString.data(using: .utf8)!)
+        let contentVersion = metadata.fileProviderContentVersion ?? metadata.etag
+        return NSFileProviderItemVersion(contentVersion: Data(contentVersion.utf8), metadataVersion: Data(metadataVersionString.utf8))
     }
 
     public var filename: String {
@@ -218,7 +234,11 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             ]
         }
 
-        if metadata.lock, metadata.lockOwnerType != NKLockType.user.rawValue || metadata.lockOwner != account.username, metadata.lockTimeOut ?? Date() > Date() {
+        if metadata.lock,
+           !lockStateAllowsModifications,
+           metadata.lockOwnerType != NKLockType.user.rawValue || metadata.lockOwner != account.username,
+           metadata.lockTimeOut ?? Date() > Date()
+        {
             return [
                 .userReadable
             ]

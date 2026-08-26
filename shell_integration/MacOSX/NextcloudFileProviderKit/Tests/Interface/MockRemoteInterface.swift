@@ -611,6 +611,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// which etag. Captured before any injected `uploadError` short-circuit.
     public var lastUploadIfMatchHeader: String?
 
+    /// Records the WebDAV `If` header the most recent upload call carried (nil if none).
+    public var lastUploadIfHeader: String?
+
+    /// Lock information returned by lock and unlock requests.
+    public var lockUnlockResult: NKLock?
+
     /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
@@ -794,6 +800,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         remoteError: NKError
     ) {
         lastUploadIfMatchHeader = options.customHeader?["If-Match"]
+        lastUploadIfHeader = options.customHeader?["If"]
 
         if let uploadError {
             return (account.ncKitAccount, nil, nil, nil, 0, nil, uploadError)
@@ -1300,8 +1307,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         }
 
         item.locked = shouldLock
+        if shouldLock, let etag = lockUnlockResult?.etag {
+            item.versionIdentifier = etag
+        }
 
-        return nil
+        return lockUnlockResult
     }
 
     public func listingTrashAsync(

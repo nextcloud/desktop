@@ -143,7 +143,21 @@ extension Item {
                         targetMetadata.lockOwnerType = lock.ownerType.rawValue
                         targetMetadata.lockTime = lock.time
                         targetMetadata.lockTimeOut = lock.timeOut
+                        if let etag = lock.etag {
+                            // LOCK changes server metadata, not file bytes. Keep the content version
+                            // File Provider already knows while adopting the lock response's etag.
+                            if targetMetadata.fileProviderContentVersion == nil {
+                                targetMetadata.fileProviderContentVersion = targetMetadata.etag
+                            }
+                            targetMetadata.etag = etag
+                        }
                         targetMetadata.lockToken = lock.token
+                        // Ensure token-dependent capabilities are published even if the etag is unchanged.
+                        targetMetadata.syncTime = Date()
+                    }
+
+                    if let domain {
+                        FileProviderChangeNotificationInterface(domain: domain, log: log).notifyChange()
                     }
                 } else {
                     logger.error("Failed to find target item for acquired lock.", [.lock: lock])
