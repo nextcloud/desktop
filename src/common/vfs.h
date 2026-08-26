@@ -56,6 +56,7 @@ struct OCSYNC_EXPORT VfsSetupParams
      * Always ends with /.
      */
     QString filesystemPath;
+    FileSystem::Path rootPath;
 
     // Folder display name in Windows Explorer
     QString displayName;
