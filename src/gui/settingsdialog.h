@@ -77,6 +77,7 @@ private:
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
     QIcon createContrastAwareAvatarIcon(const QString &iconPath) const;
+    QIcon brandColoredIcon(const QString &iconPath) const;
 
     QActionGroup *_actionGroup;
     // Maps the actions from the action group to the corresponding widgets

@@ -273,6 +273,7 @@ QtObject {
     readonly property color sesActionHover: WLTheme.buttonHoveredColor
     readonly property color sesActionPressed: WLTheme.buttonPressedColor
     readonly property color sesSelectedColor: Theme.darkMode ? "#333844" : "#F4F7FA"
+    readonly property color sesHeaderBannerColor: WLTheme.headerBannerColor
     readonly property color sesButtonPressed: WLTheme.toolButtonPressedColor
     readonly property color sesAccountMenuHover: WLTheme.toolButtonHoveredColor
     readonly property color sesDarkGreen: "#096B35"

@@ -28,5 +28,5 @@ Rectangle {
             }
     }
 
-    color: Style.sesSelectedColor
+    color: Style.sesHeaderBannerColor
 }

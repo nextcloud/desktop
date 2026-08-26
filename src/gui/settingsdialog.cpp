@@ -552,7 +552,7 @@ void SettingsDialog::customizeStyle()
     const auto accountActions = _actionForAccount.values();
     for (const auto a : _actionGroup->actions()) {
         const auto iconPath = a->property("iconPath").toString();
-        const QIcon icon = accountActions.contains(a) ? createContrastAwareAvatarIcon(iconPath) : Theme::createColorAwareIcon(iconPath, this->palette());
+        const QIcon icon = accountActions.contains(a) ? createContrastAwareAvatarIcon(iconPath) : brandColoredIcon(iconPath);
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
         if (btn) {
@@ -609,8 +609,18 @@ QAction *SettingsDialog::createActionWithIcon(const QIcon &icon, const QString &
 QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const QString &text)
 {
     // all buttons must have the same size in order to keep a good layout
-    QIcon coloredIcon = Theme::createColorAwareIcon(iconPath, palette());
-    return createActionWithIcon(coloredIcon, text, iconPath);
+    return createActionWithIcon(brandColoredIcon(iconPath), text, iconPath);
+}
+
+QIcon SettingsDialog::brandColoredIcon(const QString &iconPath) const
+{
+    // Theme::createColorAwareIcon() just inverts the SVG's RGB values for dark mode, which
+    // turns this brand-navy glyph into a mismatched yellow/tan rather than a themed color.
+    // Explicitly filling it with the brand icon color (already light/dark-mode aware) instead
+    // keeps it on-brand in both modes.
+    const auto diameter = _toolBar->iconSize().height() > 0 ? _toolBar->iconSize().height() : 32;
+    const auto glyphImage = Ui::IconUtils::drawSvgWithCustomFillColor(iconPath, QColor(WLTheme.buttonIconColor()), nullptr, QSize(diameter, diameter));
+    return QIcon(QPixmap::fromImage(glyphImage));
 }
 
 QIcon SettingsDialog::createContrastAwareAvatarIcon(const QString &iconPath) const

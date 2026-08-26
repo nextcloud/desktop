@@ -18,6 +18,7 @@ class BaseTheme : public QObject{
     Q_PROPERTY(QString trayInputFieldBorderColor READ trayInputFieldBorderColor CONSTANT)
     Q_PROPERTY(QString trayBackgroundColor READ trayBackgroundColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString iconDarkColor READ iconDarkColor NOTIFY themeColorsChanged)
+    Q_PROPERTY(QString headerBannerColor READ headerBannerColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString buttonIconColor READ buttonIconColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString buttonHoveredColor READ buttonHoveredColor NOTIFY themeColorsChanged)
     Q_PROPERTY(QString buttonPressedColor READ buttonPressedColor NOTIFY themeColorsChanged)
@@ -478,6 +479,13 @@ public:
     }
 
     virtual QString menuSelectedItemColor() const {
+        return themedColor("#F4F7FA", "#333844");
+    }
+
+    // Background of the brand logo banner at the top of the tray dropdown (HeaderLogo.qml).
+    // Kept separate from menuSelectedItemColor so a brand can give its logo banner its own
+    // look without also affecting selected-menu-item styling elsewhere.
+    virtual QString headerBannerColor() const {
         return themedColor("#F4F7FA", "#333844");
     }
 
