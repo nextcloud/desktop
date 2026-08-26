@@ -416,6 +416,10 @@ Application::Application(int &argc, char **argv)
         qCInfo(lcApplication) << "VFS suffix plugin is available";
     }
 
+    if (isVfsPluginAvailable(Vfs::OpenVFS)) {
+        qCInfo(lcApplication) << "VFS openvfs linux plugin is available";
+    }
+
     _theme->setSystrayUseMonoIcons(ConfigFile().monoIcons());
     connect(this, &Application::systemPaletteChanged,
             _theme, &Theme::systemPaletteHasChanged);
