@@ -434,10 +434,38 @@ QString ConfigFile::excludeFileFromSystem()
     return fi.absoluteFilePath();
 }
 
+namespace {
+void removeUpdaterArtifact(const QString &path)
+{
+    if (path.isEmpty() || !QFile::exists(path)) {
+        return;
+    }
+
+    if (QFile::remove(path)) {
+        qCInfo(lcConfigFile) << "Removed leftover updater file:" << path;
+    } else {
+        qCWarning(lcConfigFile) << "Failed to remove leftover updater file:" << path;
+    }
+}
+}
+
+QString ConfigFile::msiLogFilePath() const
+{
+    return configPath() + QStringLiteral("msi.log");
+}
+
 void OCC::ConfigFile::cleanUpdaterConfiguration()
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup("Updater");
+
+    // The config is the only record of where the downloaded installer lives.
+    // Delete it before dropping the keys, or every version change orphans
+    // another installer in the config folder with nothing left to find it by.
+    // See https://github.com/nextcloud/desktop/issues/7009
+    removeUpdaterArtifact(settings.value("updateAvailable").toString());
+    removeUpdaterArtifact(msiLogFilePath());
+
     settings.remove("autoUpdateAttempted");
     settings.remove("updateTargetVersion");
     settings.remove("updateTargetVersionString");
