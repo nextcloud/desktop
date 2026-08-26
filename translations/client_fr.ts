@@ -788,7 +788,7 @@
         <translation>Nouvelles activités</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="792"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="795"/>
         <source>Assistant</source>
         <translation>Assistant</translation>
     </message>
@@ -834,17 +834,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="325"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="331"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>Le serveur a mis trop de temps à répondre. Vérifiez votre connexion et réessayez la synchronisation. Si cela ne fonctionne toujours pas, contactez l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="329"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="335"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Une erreur inattendue est survenue. Veuillez réessayer la synchronisation ou contacter l&apos;administrateur de votre serveur si le problème persiste.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="609"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="615"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
         <translation>Le serveur applique une sécurité de transport stricte et n’accepte pas les certificats non approuvés.</translation>
     </message>
@@ -1288,7 +1288,7 @@ Cette action entraînera l&apos;interruption de toute synchronisation en cours.<
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1550"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="742"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="745"/>
         <source>Log in</source>
         <translation>Se connecter</translation>
     </message>
@@ -2206,7 +2206,7 @@ Vous prenez vos propres risques.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1776"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1781"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -4559,8 +4559,8 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="967"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1044"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="972"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1049"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>Impossible de récupérer la date de modification du fichier en conflit %1</translation>
     </message>
@@ -4805,38 +4805,38 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
         <source>Could not delete file %1 from local DB</source>
         <translation>Impossible de supprimer le fichier %1 de la base de données locale</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1494"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1499"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Erreur de mise à jour des métadonnées à cause d&apos;une date de modification invalide</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1526"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1532"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1538"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1561"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1567"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1573"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1531"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1537"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1572"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Le dossier %1 ne peut pas être mis en lecture seule : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1538"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1573"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
         <source>unknown exception</source>
         <translation>Exception inconnue</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
         <source>Error updating metadata: %1</source>
         <translation>Erreur lors de la mise à jour des métadonnées : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1584"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1589"/>
         <source>File is currently in use</source>
         <translation>Le fichier est actuellement en cours d&apos;utilisation</translation>
     </message>
@@ -4926,7 +4926,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
         <translation>; Échec de la restauration : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="305"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="300"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Un fichier ou un dossier a été supprimé d&apos;un partage en lecture seule, mais la restauration a échoué : %1</translation>
     </message>
@@ -5937,13 +5937,13 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1707"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1706"/>
         <source>You need to accept the terms of service</source>
         <translation>Vous devez accepter les conditions d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1699"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
         <source>Reauthorization required</source>
         <translation>Réautorisation requise</translation>
     </message>
@@ -5961,7 +5961,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1717"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Certains fichiers n’ont pas pu être synchronisés !</translation>
     </message>
@@ -5987,7 +5987,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1719"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
         <source>Some files could not be synced!</source>
         <translation>Certains fichiers n’ont pas pu être synchronisés !</translation>
     </message>
@@ -6031,7 +6031,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="611"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="870"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="871"/>
         <source>Add account</source>
         <translation>Ajouter un compte</translation>
     </message>
@@ -6055,7 +6055,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="618"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="908"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="909"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
@@ -6071,18 +6071,18 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="626"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="882"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
         <source>Pause sync for all</source>
         <translation>Suspendre toutes les synchros</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="632"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="882"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
         <source>Resume sync for all</source>
         <translation>Relancer toutes les synchros</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="915"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="916"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
@@ -6244,28 +6244,28 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Renommer le fichier</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1691"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
         <source>Sync conflicts</source>
         <translation>Conflits de synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1834"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1833"/>
         <source>Public Share Link</source>
         <translation>Lien de partage public</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1946"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1945"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Ouvrir l’assistant %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2044"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2043"/>
         <source>Assistant is not available for this account.</source>
         <translation>L’assistant n’est pas disponible pour ce compte.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2050"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2049"/>
         <source>Assistant is already processing a request.</source>
         <translation>L’assistant traite déjà une demande.</translation>
     </message>
@@ -6275,37 +6275,37 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Envoi de votre requête…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2086"/>
         <source>Sending your request …</source>
         <translation>Envoi de votre demande…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2160"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2159"/>
         <source>No response yet. Please try again later.</source>
         <translation>Aucune réponse pour le moment. Veuillez réessayer plus tard.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2178"/>
         <source>No supported assistant task types were returned.</source>
         <translation>Aucun type de tâche d’assistant pris en charge n’a été renvoyé.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2261"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2260"/>
         <source>Waiting for the assistant response…</source>
         <translation>En attente de la réponse de l’assistant…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2283"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2282"/>
         <source>Assistant request failed (%1).</source>
         <translation>La demande à l’assistant a échoué (%1).</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2358"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2357"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Quota mis à jour ; %1 pour cent de l’espace total est utilisé.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2378"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2377"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Alerte quota - %1 pour cent ou plus de stockage utilisé</translation>
     </message>
@@ -6313,32 +6313,32 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2809"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmer le retrait du compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2811"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Êtes-vous certain de vouloir retirer la connexion au compte &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt; cette opération &lt;b&gt;ne supprimera aucun de vos fichiers&lt;/b&gt; et ne supprimera pas non plus votre compte du serveur.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2814"/>
         <source>Remove connection</source>
         <translation>Supprimer la connexion</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2816"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2901"/>
         <source>Leave share</source>
         <translation>Quitter le partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2901"/>
         <source>Remove account</source>
         <translation>Retirer le compte</translation>
     </message>
@@ -6820,132 +6820,132 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Les chemins commençant par le caractère « # » ne sont pas pris en charge dans le mode VFS.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>Nous n&apos;avons pas pu traiter votre demande. Veuillez réessayer la synchronisation ultérieurement. Si le problème persiste, contactez l&apos;administrateur de votre serveur pour obtenir de l&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>Vous devez vous connecter pour continuer. Si vous rencontrez des problèmes avec vos identifiants, veuillez contacter l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>Vous n&apos;avez pas accès à cette ressource. Si vous pensez qu&apos;il s&apos;agit d&apos;une erreur, veuillez contacter l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>Nous n&apos;avons pas trouvé ce que vous cherchiez. Il a peut-être été déplacé ou supprimé. Si vous avez besoin d&apos;aide, contactez l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation>Il semble que vous utilisiez un proxy nécessitant une authentification. Veuillez vérifier vos paramètres et vos identifiants de proxy. Si vous avez besoin d&apos;aide, contactez l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>La demande prend plus de temps que d&apos;habitude. Veuillez réessayer la synchronisation. Si cela ne fonctionne toujours pas, contactez l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>Les fichiers du serveur ont été modifiés pendant votre travail. Veuillez réessayer la synchronisation. Contactez l&apos;administrateur de votre serveur si le problème persiste.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation>Ce dossier ou fichier n&apos;est plus disponible. Si vous avez besoin d&apos;aide, veuillez contacter l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation>La demande n&apos;a pas pu être traitée car certaines conditions requises n&apos;étaient pas remplies. Veuillez réessayer la synchronisation ultérieurement. Si vous avez besoin d&apos;aide, veuillez contacter l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>Le fichier est trop volumineux pour être téléchargé. Vous devrez peut-être choisir un fichier plus petit ou contacter l&apos;administrateur de votre serveur pour obtenir de l&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation>L&apos;adresse utilisée pour effectuer la requête est trop longue pour être gérée par le serveur. Veuillez essayer de raccourcir les informations envoyées ou contacter l&apos;administrateur de votre serveur pour obtenir de l&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>Ce type de fichier n&apos;est pas pris en charge. Veuillez contacter l&apos;administrateur de votre serveur pour obtenir de l&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>Le serveur n&apos;a pas pu traiter votre demande car certaines informations étaient incorrectes ou incomplètes. Veuillez réessayer la synchronisation ultérieurement ou contacter l&apos;administrateur de votre serveur pour obtenir de l&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>La ressource à laquelle vous tentez d&apos;accéder est actuellement verrouillée et ne peut pas être modifiée. Veuillez essayer de la modifier ultérieurement ou contacter l&apos;administrateur de votre serveur pour obtenir de l&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>Cette demande n&apos;a pas pu être traitée car certaines conditions requises sont manquantes. Veuillez réessayer ultérieurement ou contacter l&apos;administrateur de votre serveur pour obtenir de l&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>Vous avez effectué trop de requêtes. Veuillez patienter et réessayer. Si ce problème persiste, votre administrateur serveur peut vous aider.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>Un problème est survenu sur le serveur. Veuillez réessayer la synchronisation ultérieurement ou contacter l&apos;administrateur de votre serveur si le problème persiste.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>Le serveur ne reconnaît pas la méthode de requête. Veuillez contacter l&apos;administrateur de votre serveur pour obtenir de l&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>Nous rencontrons des difficultés de connexion au serveur. Veuillez réessayer prochainement. Si le problème persiste, votre administrateur serveur pourra vous aider.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="556"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation>Le serveur est actuellement occupé. Veuillez réessayer dans quelques minutes ou contacter l’administrateur de votre serveur si la situation est urgente.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="559"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>La connexion au serveur prend trop de temps. Veuillez réessayer ultérieurement. Si vous avez besoin d&apos;aide, contactez l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="556"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="562"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>Le serveur ne prend pas en charge la version de la connexion utilisée. Contactez votre administrateur serveur pour obtenir de l&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="559"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="565"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>Le serveur ne dispose pas de suffisamment d&apos;espace pour traiter votre demande. Veuillez vérifier le quota de votre utilisateur en contactant l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="562"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="568"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>Votre réseau nécessite une authentification supplémentaire. Veuillez vérifier votre connexion. Contactez l&apos;administrateur de votre serveur si le problème persiste.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="565"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="571"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>Vous n&apos;êtes pas autorisé à accéder à cette ressource. Si vous pensez qu&apos;il s&apos;agit d&apos;une erreur, contactez l&apos;administrateur de votre serveur pour obtenir de l&apos;aide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="568"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="574"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Une erreur inattendue est survenue. Veuillez réessayer la synchronisation ou contacter l&apos;administrateur de votre serveur si le problème persiste.</translation>
     </message>
@@ -7293,17 +7293,17 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Plus d’activité…</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="760"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="763"/>
         <source>Resolve: %1</source>
         <translation>Résoudre : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="770"/>
         <source>User status</source>
         <translation>Statut utilisateur</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="800"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="803"/>
         <source>Search</source>
         <translation>Rechercher</translation>
     </message>
@@ -7341,8 +7341,8 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Menu de groupe d&apos;utilisateurs et dossiers locaux</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="730"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="783"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="733"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="786"/>
         <source>Local folder</source>
         <translation>Dossier local</translation>
     </message>
@@ -7365,7 +7365,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Ouvrir %1 dans le navigateur</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="810"/>
         <source>Apps</source>
         <translation>Applications</translation>
     </message>
