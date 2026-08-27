@@ -568,6 +568,8 @@ void SyncEngine::startSync()
 
     _syncItems.clear();
     _needsUpdate = false;
+    _remoteDeletionProtectionRootsAtStart.clear();
+    _remoteDeletionProtectionRun = false;
 
     if (!_journal->exists()) {
         qCInfo(lcEngine) << "New sync (no sync journal exists)";
@@ -595,6 +597,27 @@ void SyncEngine::startSync()
     // filtering via schedulePathForRemoteDiscovery(). This *is* the next sync, so
     // undo the filter to allow this sync to retrieve and store the correct etags.
     _journal->clearEtagStorageFilter();
+
+    const auto remoteDeletionProtectionRoots = _journal->pendingRemoteDeletionProtectionRoots();
+    if (!remoteDeletionProtectionRoots) {
+        Q_EMIT syncError(tr("Unable to read remote-deletion protection state."), ErrorCategory::GenericError);
+        finalize(false);
+        return;
+    }
+    for (const auto &root : *remoteDeletionProtectionRoots) {
+        _remoteDeletionProtectionRootsAtStart.append(root.first);
+    }
+    if (!_remoteDeletionProtectionRootsAtStart.isEmpty()) {
+        _remoteDeletionProtectionRun = true;
+        _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
+        _localDiscoveryPaths.clear();
+        setSingleItemDiscoveryOptions({});
+        if (!_journal->forceRemoteDiscoveryNextSyncChecked()) {
+            Q_EMIT syncError(tr("Unable to prepare remote-deletion protection."), ErrorCategory::GenericError);
+            finalize(false);
+            return;
+        }
+    }
 
     _excludedFiles->setExcludeConflictFiles(!_account->capabilities().uploadConflictFiles());
 
@@ -696,6 +719,7 @@ void SyncEngine::startSync()
         _discoveryPhase->_invalidFilenameRx = QRegularExpression(invalidFilenamePattern);
     _discoveryPhase->_serverBlacklistedFiles = _account->capabilities().blacklistedFiles();
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
+    _discoveryPhase->_remoteDeletionProtectionRoots = _remoteDeletionProtectionRootsAtStart;
 
     connect(_discoveryPhase.get(), &DiscoveryPhase::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
     connect(_discoveryPhase.get(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
@@ -925,6 +949,15 @@ void SyncEngine::slotPropagationFinished(OCC::SyncFileItem::Status status)
 
     if ((status == SyncFileItem::Success || status == SyncFileItem::BlacklistedError) && _discoveryPhase) {
         _journal->setDataFingerprint(_discoveryPhase->_dataFingerprint);
+    }
+
+    if (status == SyncFileItem::Success && _remoteDeletionProtectionRun && !_remoteDeletionProtectionRootsAtStart.isEmpty()) {
+        const auto result = _journal->disarmRemoteDeletionProtection(_remoteDeletionProtectionRootsAtStart);
+        if (!result) {
+            Q_EMIT syncError(tr("Unable to release remote-deletion protection."), ErrorCategory::GenericError);
+            finalize(false);
+            return;
+        }
     }
 
     conflictRecordMaintenance();

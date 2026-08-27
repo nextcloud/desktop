@@ -388,6 +388,8 @@ private:
 
     AnotherSyncNeeded _anotherSyncNeeded = NoFollowUpSync;
     bool _restartedSyncAfterDiscovery = false;
+    QStringList _remoteDeletionProtectionRootsAtStart;
+    bool _remoteDeletionProtectionRun = false;
 
     /** Stores the time since a job touched a file. */
     QMultiMap<QElapsedTimer, QString> _touchedFiles;
