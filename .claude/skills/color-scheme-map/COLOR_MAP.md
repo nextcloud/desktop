@@ -317,6 +317,64 @@ Reine Weiterleitung an `WLTheme`-Getter (`PrimaryButtonStyle`/`SecondaryButtonSt
 
 Sanity-Check gegen die bestehende Tray-Sektion (s.o.) durchgeführt — keine neuen Farbmuster gefunden, die nicht bereits über die dort erfassten `Style.*`-Properties abgedeckt sind. `UnifiedSearchInputContainer.qml` hat neu `palette.placeholderText` durch `Style.sesSearchFieldContent`/`Style.sesTrayFontColor` ersetzt (jetzt ✅ theme-aware statt ambient). Keine neuen Brüche.
 
+## Externe Vorgabe: IONOS-Farbschema-Abgleich (STRUXD-157 Figma-Screenshots, 2026-08-27)
+
+*Kein Code-Scan, sondern Abgleich einer externen Design-Vorgabe (6 Screenshots aus Figma, `STRUXD-157 iOS app UI/UX concept for EasyNextcloud`, kein direkter Figma-Zugriff verfügbar) gegen die zu diesem Zeitpunkt bereits in dieser Karte erfassten Getter.*
+
+**Bestätigte Vorgabe-Werte** (im Figma-Inspector als Hex sichtbar):
+- `Color/Blue Ionos/B4` = `#1474C4` — Primary-Button Default, Selection-/Checked-Akzent, Links im Dark Mode
+- `Color/Blue Ionos/B5` = `#095BB1` — Primary-Button Pressed (bewusst dunkler als Default statt heller — Muster: Pressed = dunklerer Farbwert)
+- `Color/Cool Grey Ionos/C1`/`C8` — nur als Token-Name referenziert, Hex im Screenshot nicht aufgeklappt, daher nicht verifizierbar
+
+**Abgleich:**
+
+| Komponente/Zustand | Vorgabe (Dark) | Vorher im Code (Dark) | Fundstelle | Befund |
+|---|---|---|---|---|
+| Primary-Button, Default | `#1474C4` (B4) | `#5B60D6` | `buttonPrimaryColor()`, stratotheme.h:50 | ⚠️ Bruch — Indigo/Violett statt Blau |
+| Primary-Button, Pressed | `#095BB1` (B5), dunkler als Default | `#5B60D6` — identisch zum Default | `buttonPrimaryPressedColor()`, stratotheme.h:59 | ⚠️ Bruch — kein Pressed-Kontrast im Dark Mode |
+| Primary-Button, Hover | kein eigener Vorgabewert erfasst (Screenshots zeigten nur Default/Pressed/Disabled) | `#2944CC` fix, identisch zum Light-Wert | `buttonPrimaryHoverColor()`, stratotheme.h:55, eigener TODO-Kommentar | ⚠️ bereits dokumentierter Bruch |
+| Pill-Button Primary (Tray) | `#1474C4` (B4), gleiche Familie wie Buttons | `#5B60D6` | `pillButtonPrimaryColor()`, stratotheme.h:93 | ⚠️ Bruch — teilte sich den Wert mit `buttonPrimaryColor()` |
+| Secondary-Button, Rahmen (Default) | weißer Outline-Rahmen | `#FFFFFF` | `buttonSecondaryBorderColor()`, stratotheme.h:73 | ✅ Übereinstimmung |
+| Secondary-Button, Pressed | Kontrastumkehr: Fläche weiß, Text dunkel | `#3A3B52` — bleibt dunkel | `buttonSecondaryPressedColor()`, stratotheme.h:81 | ⚠️ Bruch, **nicht angepasst** (s. u.) |
+| Selection-/Checkbox-Akzent | `#1474C4` (B4), identisch zu Primary-Button | `#0082c9` (`Style.ncBlue`), fix, kein Dark-Wert | `SesCheckBox.qml:14/34/35` → `Theme::wizardHeaderBackgroundColor()`, theme.cpp:784, `Q_PROPERTY CONSTANT` | ⚠️ Bruch — dritte, unabhängige Blaufarbe |
+| Links/Akzenttext | helles Blau | `#5FA8E0` (`folderWizardSubtitleColor`) bzw. `#5B60D6` (`settingsLinkColor`) | basetheme.h:324 bzw. stratotheme.h:38 | ❓ uneindeutig, **nicht angepasst** (s. u.) |
+| Seiten-/Panel-Hintergrund | sehr dunkles Navy (C1, Hex unbekannt) | `#1F2024` | `dialogBackgroundColor()`/`trayBackgroundColor()`, stratotheme.h:18/34 | ❓ nicht verifizierbar, **nicht angepasst** |
+
+**Vorgenommene Anpassungen:**
+1. `buttonPrimaryColor()` Dark → `#1474C4`
+2. `buttonPrimaryPressedColor()` Dark → `#095BB1`
+3. `pillButtonPrimaryColor()` Dark → `#1474C4` (in Sync mit `buttonPrimaryColor()` gehalten, analog zur bestehenden Konvention bei `buttonSecondaryColor()`/`pillButtonSecondaryColor()`, siehe Kommentar dort)
+4. `buttonPrimaryHoverColor()` Dark → `#1474C4` (identisch zum neuen Default; interim, da kein eigener Hover-Wert in der Vorgabe erfasst wurde — TODO-Kommentar entsprechend aktualisiert statt entfernt)
+5. Neue `Style.sesCheckboxAccentColor`-Property (`Theme.darkMode ? "#1474C4" : ncBlue`) — `SesCheckBox.qml` nutzt jetzt diese statt direkt `Style.ncBlue`. Light-Mode-Wert bleibt dadurch unverändert (`#0082c9`), Dark Mode bekommt erstmals einen eigenen, mit der Vorgabe konsistenten Wert.
+
+**Bewusst nicht angepasst** (fehlende oder unklare Vorgabe):
+- Secondary-Button Pressed — Kontrastumkehr (Fläche + Textfarbe wechseln gemeinsam) wäre eine Strukturänderung am Button-Rendering, kein reiner Hex-Swap; hier nicht angefasst.
+- `settingsLinkColor()`/`quotaProgressColor()` — teilen sich weiterhin die alte Indigo-Farbe (`#5B60D6`); kein bestätigter Link-Hex-Wert aus der Vorgabe, zwei Kandidaten-Getter mit unterschiedlicher Passung (s. Tabelle).
+- `dialogBackgroundColor()`/`trayBackgroundColor()` (Seiten-/Panel-Hintergrund) — Vorgabe-Hex (`Cool Grey Ionos/C1`) unbekannt.
+
+### Nachtrag (2026-08-27): MoreOptionsButtonStyle Icon-Hover-Kontrast
+
+*Vom Nutzer per Live-Screenshot gemeldet, nicht Teil der ursprünglichen STRUXD-157-Vorgabe — reiner Kontrast-Bug im Settings-Ordnerlisten-„…"-Button.*
+
+Beim Vergleich fiel auf, dass `MoreOptionsButtonStyle` (buttonstyle.h:244ff., Settings-Ordnerliste `folderstatusdelegate.cpp`) für sein Drei-Punkte-Icon als einziger der drei `ButtonStyle`-Typen den themenabhängigen `WLTheme.buttonIconColor()`/`buttonIconHoverColor()` verwendete (beide identisch `themedColor("#2f2f70","#C9CBEF")`), während `PrimaryButtonStyle`/`SecondaryButtonStyle` für **beide** Icon-Zustände fest `WLTheme.white()` nutzen (buttonstyle.h:139-147, 233-241). In der laufenden App erschienen die Punkte im Hover-Zustand (farbiger Kreis-Hintergrund) dadurch zu dunkel/schlecht lesbar.
+
+| Property | Fundstelle | Vorher | Nachher | Status |
+|---|---|---|---|---|
+| `MoreOptionsButtonStyle::buttonIconHoverColor()` | buttonstyle.h:333 | `WLTheme.buttonIconHoverColor()` (themenabhängig, dark `#C9CBEF`) | `WLTheme.white()` (fix, wie bei Primary/Secondary) | ✅ angepasst |
+| `MoreOptionsButtonStyle::buttonIconDefaultColor()` | buttonstyle.h:328 | `WLTheme.buttonIconColor()` (themenabhängig) | unverändert | ℹ️ nicht angefasst — Default-Zustand blendet laut Kommentar bewusst in den Zeilenhintergrund ein (`dialogBackgroundColor()`), dafür ist ein themenabhängiger Wert weiterhin sinnvoll |
+
+### Nachtrag (2026-08-27): Native Checkbox-Häkchenfarbe (`sesStyle::drawCheckboxIndicator`)
+
+*Ebenfalls per Live-Screenshot gemeldet (General Settings + Ordnerliste-Checkboxen). Betrifft die native QWidget-Checkbox (`sesstyle.cpp:93-153`, für alle `QCheckBox`-Widgets im Widget-Baum via `QProxyStyle`), nicht die QML-Komponente `SesCheckBox.qml`, die separat weiter oben in dieser Karte dokumentiert ist.*
+
+`checkboxCheckmarkColor()` (basetheme.h:457) war bewusst gegenläufig zum Modus definiert: Weiß in Light Mode, **Schwarz in Dark Mode** — mit der Begründung, das sei "invertiert zum nativen Kontrast". Das ignoriert aber, dass die Checkbox-Füllfarbe (`WLTheme.buttonPrimaryColor()`, sesstyle.cpp:127) in beiden Modi eine gesättigte Akzentfarbe ist (Light `#272CB2`, Dark `#1474C4`) statt der Seiten-Hintergrundfarbe — ein schwarzes Häkchen auf Blau ist in beiden Modi schlecht lesbar.
+
+| Property | Fundstelle | Vorher | Nachher | Status |
+|---|---|---|---|---|
+| `checkboxCheckmarkColor()` | basetheme.h:457-459 | Light `#FFFFFF` / Dark `#000000` | Light `#FFFFFF` / Dark `#FFFFFF` (fix) | ✅ angepasst |
+
+**Hinweis:** Dieselbe Inkonsistenz (fixe Farbe vs. „invertiert nach Modus" ohne Rücksicht auf die tatsächliche Hintergrundfarbe am Einsatzort) ist strukturell verwandt mit dem oben dokumentierten `MoreOptionsButtonStyle`-Fund — in beiden Fällen wurde die Icon-/Glyphenfarbe an den Seiten-/Dialog-Hintergrund gekoppelt gedacht, obwohl der tatsächliche unmittelbare Hintergrund am Render-Ort (Akzentfarbe bzw. Hover-Kreis) ein anderer ist.
+
 ## Format je Komponente
 
 ```markdown
