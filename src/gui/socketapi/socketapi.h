@@ -46,6 +46,8 @@ class SocketApi : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString socketPath READ socketPath NOTIFY socketPathChanged FINAL)
+
     enum SharingContextItemEncryptedFlag {
         EncryptedItem,
         NotEncryptedItem
@@ -63,6 +65,8 @@ public:
     explicit SocketApi(QObject *parent = nullptr);
     ~SocketApi() override;
 
+    [[nodiscard]] QString socketPath() const;
+
 public Q_SLOTS:
     void slotUpdateFolderView(OCC::Folder *f);
     void slotUnregisterPath(const QString &alias);
@@ -76,6 +80,8 @@ Q_SIGNALS:
     void governanceLabelsCommandReceived(OCC::AccountPtr account, const QString &filePath, const QString &fileId);
     void resolveConflictCommandReceived(const QString &conflictedPath, const QString &basePath, const QString &baseName, const QString &folderAlias);
     void moveItemCommandReceived(const QString &localPath, const QString &defaultTarget);
+
+    void socketPathChanged();
 
 private Q_SLOTS:
     void slotNewConnection();
@@ -203,6 +209,7 @@ private:
     QSet<QString> _registeredAliases;
     QMap<QIODevice *, QSharedPointer<SocketListener>> _listeners;
     QLocalServer _localServer;
+    QString m_socketPath;
 };
 }
 
