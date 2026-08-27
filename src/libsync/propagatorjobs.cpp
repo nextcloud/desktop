@@ -185,7 +185,15 @@ void PropagateLocalRemove::start()
         done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
         return;
     }
-    propagator()->_journal->commit("Local remove");
+    auto protectedRoot = _item->_originalFile;
+    while (protectedRoot.endsWith(QLatin1Char('/'))) {
+        protectedRoot.chop(1);
+    }
+    const auto disarmResult = propagator()->_journal->disarmRemoteDeletionProtection({ protectedRoot });
+    if (!disarmResult) {
+        done(SyncFileItem::NormalError, tr("Could not release remote-deletion protection for %1").arg(_item->_originalFile), ErrorCategory::GenericError);
+        return;
+    }
     done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }
 
