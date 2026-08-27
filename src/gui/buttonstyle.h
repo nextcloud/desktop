@@ -330,9 +330,12 @@ public:
         return OCC::WLTheme.buttonIconColor();
     }
 
+    // The hover backdrop (buttonHoverColor() above) is a solid highlight color in both
+    // themes, so - like PrimaryButtonStyle/SecondaryButtonStyle's icon colors above - this
+    // stays fixed white instead of the theme-aware buttonIconColor() the default state uses.
     QString buttonIconHoverColor() const
     {
-        return OCC::WLTheme.buttonIconHoverColor();
+        return OCC::WLTheme.white();
     }
 };
 }
