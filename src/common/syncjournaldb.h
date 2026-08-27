@@ -209,6 +209,7 @@ public:
      * Equivalent to calling schedulePathForRemoteDiscovery() for all files.
      */
     void forceRemoteDiscoveryNextSync();
+    [[nodiscard]] bool forceRemoteDiscoveryNextSyncChecked();
 
     /* Because sqlite transactions are really slow, we encapsulate everything in big transactions
      * Commit will actually commit the transaction and create a new one.

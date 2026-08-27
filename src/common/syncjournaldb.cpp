@@ -2544,13 +2544,30 @@ void SyncJournalDb::clearEtagStorageFilter()
 
 void SyncJournalDb::forceRemoteDiscoveryNextSync()
 {
-    QMutexLocker locker(&_mutex);
+    static_cast<void>(forceRemoteDiscoveryNextSyncChecked());
+}
 
+bool SyncJournalDb::forceRemoteDiscoveryNextSyncChecked()
+{
+    QMutexLocker locker(&_mutex);
     if (!checkConnect()) {
-        return;
+        return false;
     }
 
-    forceRemoteDiscoveryNextSyncLocked();
+    qCInfo(lcDb) << "Forcing remote re-discovery by deleting folder Etags";
+    SqlQuery query(_db);
+    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE type=2;");
+    if (!query.exec()) {
+        qCWarning(lcDb) << "Could not force remote re-discovery:" << query.error();
+        _db.close();
+        _transaction = 0;
+        return false;
+    }
+    return true;
+
+    if (!checkConnect()) {
+}
+
 }
 
 void SyncJournalDb::forceRemoteDiscoveryNextSyncLocked()
