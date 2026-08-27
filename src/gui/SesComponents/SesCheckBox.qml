@@ -11,7 +11,7 @@ import Style 1.0
 CheckBox {
     id: root
 
-    property color accentColor: Style.ncBlue
+    property color accentColor: Style.sesCheckboxAccentColor
 
     hoverEnabled: false
     palette.base: Style.sesBackgroundColor
