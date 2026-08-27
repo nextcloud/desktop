@@ -375,6 +375,51 @@ Beim Vergleich fiel auf, dass `MoreOptionsButtonStyle` (buttonstyle.h:244ff., Se
 
 **Hinweis:** Dieselbe Inkonsistenz (fixe Farbe vs. „invertiert nach Modus" ohne Rücksicht auf die tatsächliche Hintergrundfarbe am Einsatzort) ist strukturell verwandt mit dem oben dokumentierten `MoreOptionsButtonStyle`-Fund — in beiden Fällen wurde die Icon-/Glyphenfarbe an den Seiten-/Dialog-Hintergrund gekoppelt gedacht, obwohl der tatsächliche unmittelbare Hintergrund am Render-Ort (Akzentfarbe bzw. Hover-Kreis) ein anderer ist.
 
+## OwncloudAdvancedSetupPage: Wizard-Icons (Avatar/Ordner/Sync-Pfeile)
+
+*Vom Nutzer per Live-Screenshot gemeldet ("IONOS HiDrive Next Konto hinzufügen"-Dialog, Ordner-Konfigurationsseite). Zuletzt geprüfter Commit: working tree, 2026-08-27.*
+
+Alle drei Icons in dieser Zeile (Personen-Symbol, Sync-Pfeile, Ordner-Symbol) haben dieselbe fest eingebackene SVG-Füllfarbe `#2F2F70` (dunkles Indigo, `theme/ses/strato/ses-settingsAvatarRound.svg`, `ses-folderIcon.svg`, `ses-syncArrows.svg`), wurden aber unterschiedlich behandelt: Avatar und Ordner liefen über `Theme::createColorAwareIcon()` (RGB-Invertierung), die Sync-Pfeile nicht. `Theme::createColorAwareIcon()` (`src/libsync/theme.cpp:952-991`) invertiert im Dark Mode einfach die rohen RGB-Werte des SVGs — bei `#2F2F70` kommt dabei `#D0D08F` heraus, ein undesigntes blasses Khaki/Beige statt eines echten Dark-Mode-Werts (derselbe „just inverts RGB"-Mechanismus, den `settingsdialog.cpp:617` bereits für einen anderen Fall kommentiert). Die drei zusammengehörigen Icons wirkten dadurch inkonsistent (zwei khaki-farben, eines dunkel-indigo).
+
+| Property | Fundstelle | Vorher (Dark) | Nachher (Dark) | Status |
+|---|---|---|---|---|
+| Avatar-Icon (`SetAvatarIcon()`) | owncloudadvancedsetuppage.cpp:266 | `Theme::createColorAwareIcon(...)` → `#D0D08F` (Invertierungs-Artefakt) | `WLTheme.iconDarkColor()` → `#C9CBEF`, per Tinting | ✅ angepasst |
+| Ordner-Icon (`styleLocalFolderLabel()`) | owncloudadvancedsetuppage.cpp:795 | `Theme::createColorAwareIcon(...)` → `#D0D08F` | `WLTheme.iconDarkColor()` → `#C9CBEF`, per Tinting | ✅ angepasst |
+| Sync-Pfeile-Icon (`styleSyncLogo()`) | owncloudadvancedsetuppage.cpp:833 | `QIcon(WLTheme.syncArrows())`, ungefärbt → `#2F2F70` fix | `WLTheme.iconDarkColor()` → `#C9CBEF`, per Tinting | ✅ angepasst |
+
+**Fix:** Neuer lokaler Helper `tintedThemeIcon()` (owncloudadvancedsetuppage.cpp, anonymous namespace) rendert das SVG einmal und färbt es per `SourceIn`-Compositing neu ein — dasselbe Verfahren, das `MoreOptionsButtonStyleHelper::tintPixmap()` bereits nutzt. Alle drei Icons verwenden jetzt einheitlich `WLTheme.iconDarkColor()` (`themedColor("#2f2f70","#C9CBEF")`, derselbe Getter, der u. a. auch für `sesIconDarkColor` und `MoreOptionsButtonStyle::buttonIconDefaultColor()` verwendet wird) statt der RGB-Invertierungs-Artefakte.
+
+**Nachtrag (2026-08-27), restliche `createColorAwareIcon()`-Stellen geprüft:**
+
+| Fundstelle | SVG-Basisfarbe | Ergebnis der RGB-Invertierung | Entscheidung |
+|---|---|---|---|
+| `sesFileIconProvider.cpp:14` (Ordner-Icon, `SesFileIconProvider::icon()`, u. a. von `asyncimageresponse.h` im Tray genutzt) | `#2F2F70` | `#D0D08F` (dasselbe Khaki-Artefakt) | ✅ angepasst — derselbe `tintedThemeIcon()`-Helfer lokal dupliziert, jetzt `WLTheme.iconDarkColor()` |
+| `accountsettings.cpp:346,2033` (`lock.svg`/`info.svg`, Verschlüsselungs-Status-Icon) | `#000000` (kein `fill` bzw. `fill="#000000"`) | `#FFFFFF` — reine Schwarz/Weiß-Invertierung, kein Farbstich | ℹ️ nicht angefasst — kein Bug: Schwarz→Weiß ist bei reinen Schwarzweiß-Icons ein korrektes Ergebnis, entspricht der etablierten `theme/black/*.svg`↔`theme/white/*.svg`-Konvention (`iconutils.cpp`) |
+| `folderstatusdelegate.cpp:586` (`_iconMore`, Settings-Ordnerliste „…"-Button) | `#1474C4` (Basis-`ses-more.svg`, nicht Strato-Variante) | beliebige Zwischenfarbe, aber irrelevant | ℹ️ nicht angefasst — kein Bug: `MoreOptionsButtonStyleHelper::adjustIconColor()` überschreibt das Ergebnis direkt danach komplett per `SourceIn`-Tinting (`buttonIconDefaultColor()`/`buttonIconHoverColor()`); das Icon dient hier nur noch als Alpha-Maske, die Ausgangsfarbe ist sichtbar wirkungslos |
+
+**Fix `sesFileIconProvider.cpp`:** derselbe `tintedThemeIcon()`-Helfer wie in `owncloudadvancedsetuppage.cpp` wurde lokal in dieser Datei dupliziert (kein gemeinsames Utility eingeführt — bewusst analog zum bestehenden Codebase-Muster lokal wiederholter kleiner Helfer, z. B. `MoreOptionsButtonStyleHelper::tintPixmap()`), Ordner-Icon nutzt jetzt `WLTheme.iconDarkColor()` statt der RGB-Invertierung.
+
+**Nachtrag zur Größe:** Der erste Fix-Versuch hatte `QIcon(path).pixmap(size)` statt `QSvgRenderer` direkt genutzt — bei nicht-quadratischen Quell-SVGs (z. B. `ses-folderIcon.svg`, 58×52) skaliert das ein bereits gerastertes Pixmap statt sauber in die Zielgröße zu rendern, zusätzlich war die Zielgröße mit `32×32` zu niedrig gewählt (Original rendert Avatar/Ordner-Icon bewusst in `64×64` vor, dann erst `.pixmap(32)` für Schärfe). Beides korrigiert: `QSvgRenderer` direkt in ein `QImage` der Zielgröße, Zielgrößen wieder an die ursprünglichen Werte angeglichen.
+
+**Vergleich mit stable-33.0 (Nutzerfrage, 2026-08-27):** stable-33.0 löst dasselbe Problem für dieselben drei UI-Stellen anders — und zwei unterschiedliche Strategien, je nach Icon:
+1. **Ordner-Icon:** kein Runtime-Recoloring, sondern `Theme::hidpiFileName("folder.png", backgroundColor)` (`theme.cpp:382-388`) wählt zwischen zwei fertigen Dateien `theme/black/folder.png`/`theme/white/folder.png`, je nach `Theme::isDarkColor(backgroundColor)`. Echte Datei-Varianten pro Theme, kein Recoloring einer einzelnen Quelle.
+2. **Sync-Pfeile, „…"-Button, Lock/Info:** weiterhin `Theme::createColorAwareIcon()` (RGB-Invertierung), aber die Quell-SVGs sind dort bewusst neutral (`sync-arrow.svg` `#969696` Grau, `more.svg`/`lock.svg`/`info.svg` `#000000`/kein `fill`) — Invertierung von Grau/Schwarz bleibt neutral, kein Farbstich.
+3. **Avatar-Platzhalter** (`SetAvatarIcon()`) existiert in stable-33.0 gar nicht — reine Fork-Ergänzung ohne Upstream-Vorbild.
+
+Der eigentliche Auslöser des Bugs war also nicht `createColorAwareIcon()` selbst, sondern dass der Fork eigene, **markenfarbige** SVGs (`ses-folderIcon.svg` etc., `#2F2F70`) eingeführt hat, ohne den Farb-Mechanismus daran anzupassen. Der hier gewählte Fix (SourceIn-Tinting mit echter Themefarbe) ist eine pragmatische Modernisierung von Strategie 2 für eine markenfarbige statt neutrale Quelle — ohne die aufwendigere Strategie 1 (separate Datei-Sets pro Theme) nachzubauen, was für diesen Umfang unverhältnismäßig gewesen wäre.
+
+## PushButtonStyle: SecondaryButtonStyle-Fokusfarbe
+
+*Vom Nutzer per Live-Screenshot gemeldet (Wizard „Konto hinzufügen", Button „Anderen Ordner wählen" wechselt beim Anklicken/Fokussieren unerwartet auf Weiß). Zuletzt geprüfter Commit: working tree, 2026-08-27.*
+
+`SecondaryButtonStyle::buttonFocusedColor()` (`buttonstyle.h:211-214`) gab fest `WLTheme.white()` zurück, unabhängig vom Theme — sobald der Button per Klick oder Tab den Fokus bekam, sprang die Füllfarbe im Dark Mode auf hartes Weiß. Zum Vergleich: `PrimaryButtonStyle::buttonFocusedColor()` (Zeile 117-120) gibt `buttonPrimaryColor()` zurück — dieselbe Farbe wie im Default-Zustand; der Fokus-Ring kommt dort ausschließlich über die separate, bereits theme-aware `buttonFocusedBorderColor()`. Bei `SecondaryButtonStyle` war dieses Muster nicht konsequent umgesetzt (vermutlich ein Copy-Paste-Versehen).
+
+| Property | Fundstelle | Vorher | Nachher | Status |
+|---|---|---|---|---|
+| `SecondaryButtonStyle::buttonFocusedColor()` | buttonstyle.h:211-214 | `WLTheme.white()` (fix) | `WLTheme.buttonSecondaryColor()` (theme-aware, = Default-Füllfarbe) | ✅ angepasst |
+
+**Brüche:** keine mehr an dieser Stelle. `buttonFocusedBorderColor()` (Zeile 216-219, `buttonSecondaryFocusedBorderColor()`) war bereits theme-aware und blieb unverändert.
+
 ## Format je Komponente
 
 ```markdown
