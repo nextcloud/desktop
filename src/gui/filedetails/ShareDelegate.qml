@@ -150,7 +150,7 @@ GridLayout {
             Layout.preferredWidth: Style.iconButtonWidth
             Layout.preferredHeight: width
             
-            iconSource: Style.sesDarkPlus + palette.buttonText
+            iconSource: "image://svgimage-custom-color/add.svg/" + Style.sesTrayFontColor
             icon.width: Style.smallIconSize
             icon.height: Style.smallIconSize
             customHoverEnabled: false

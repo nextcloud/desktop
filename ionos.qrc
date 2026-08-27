@@ -3,6 +3,8 @@
         <file>src/gui/tray/HeaderLogo.qml</file>
         <file>src/gui/SesComponents/SesErrorBox.qml</file>
         <file>src/gui/SesComponents/SesTrayHeader.qml</file>
+        <file>src/gui/SesComponents/SesCheckBox.qml</file>
+        <file>src/gui/SesComponents/SesInputBackground.qml</file>
         <file>src/gui/tray/TrayWindowAccountMenu.qml</file>
         <file>src/gui/tray/PrimaryPillButton.qml</file>
         <file>src/gui/tray/SecondaryPillButton.qml</file>
