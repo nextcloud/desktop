@@ -241,7 +241,7 @@ Page {
                 Layout.preferredHeight: width
                 Layout.rightMargin: root.padding
 
-                iconSource: Style.sesAccountQuit
+                iconSource: "image://svgimage-custom-color/clear.svg/" + Style.sesTrayFontColor
 
                 onClicked: root.closeShareDetails()
             }
