@@ -207,14 +207,17 @@ public:
         return OCC::WLTheme.buttonDisabledColor();
     }
 
-    // Focused 
-    QString buttonFocusedColor() const override 
+    // Focused - same fill as the default state (matches PrimaryButtonStyle's pattern above,
+    // where buttonFocusedColor() also just repeats the default fill); the focus ring comes
+    // from buttonFocusedBorderColor() alone, not a fill change. This previously hardcoded
+    // white() instead, which broke in dark mode (white fill flashing in on click/focus).
+    QString buttonFocusedColor() const override
     {
-        return OCC::WLTheme.white();
+        return OCC::WLTheme.buttonSecondaryColor();
     }
 
-    QString buttonFocusedBorderColor() const override 
-    { 
+    QString buttonFocusedBorderColor() const override
+    {
         return OCC::WLTheme.buttonSecondaryFocusedBorderColor();
     }
 
