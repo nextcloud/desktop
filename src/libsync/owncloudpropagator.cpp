@@ -534,6 +534,35 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
     // process each item that is new and is a directory and make sure every parent in its tree has the instruction NEW instead of REMOVE
     adjustDeletedFoldersWithNewChildren(items);
 
+    QStringList remoteDeletionProtectionRoots;
+    for (const auto &item : std::as_const(items)) {
+        if (item->_instruction == CSYNC_INSTRUCTION_REMOVE && item->_direction == SyncFileItem::Down) {
+            auto root = item->_originalFile;
+            while (root.endsWith(QLatin1Char('/'))) {
+                root.chop(1);
+            }
+            remoteDeletionProtectionRoots.append(root);
+        }
+    }
+    remoteDeletionProtectionRoots.removeDuplicates();
+    std::sort(remoteDeletionProtectionRoots.begin(), remoteDeletionProtectionRoots.end());
+    QStringList minimalRoots;
+    for (const auto &candidate : std::as_const(remoteDeletionProtectionRoots)) {
+        if (!std::any_of(minimalRoots.cbegin(), minimalRoots.cend(), [&candidate](const auto &root) {
+                return SyncJournalDb::isPathEqualOrBelow(candidate, root);
+            })) {
+            minimalRoots.append(candidate);
+        }
+    }
+    if (!minimalRoots.isEmpty()) {
+        const auto result = _journal->armRemoteDeletionProtection(minimalRoots);
+        if (!result) {
+            qCWarning(lcPropagator) << "Could not enable remote-deletion protection before filesystem mutation:" << result.error();
+            emitFinished(SyncFileItem::NormalError);
+            return;
+        }
+    }
+
     resetDelayedUploadTasks();
     _rootJob.reset(new PropagateRootDirectory(this));
     QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;
