@@ -1510,9 +1510,7 @@ void AccountSettings::slotAccountStateChanged()
     const auto state = _accountState ? _accountState->state() : AccountState::Disconnected;
     if (state != AccountState::Disconnected) {
         _ui->sslButton->updateAccountState(_accountState);
-        _ui->sslButton->setMenu(nullptr);
-        _ui->sslButton->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-        _ui->sslButton->setFocusPolicy(Qt::NoFocus);
+        _ui->sslButton->setVisible(false);
         const auto account = _accountState->account();
         auto safeUrl = account->url();
         safeUrl.setPassword({}); // Remove the password from the URL to avoid showing it in the UI
