@@ -18,28 +18,6 @@ import "../"
 Page {
     id: root
 
-    component SesCheckBox: CheckBox {
-        hoverEnabled: false
-        palette.base: Style.sesBackgroundColor
-        contentItem: Text {
-            text: parent.text
-            color: Style.sesTrayFontColor
-            font: parent.font
-            leftPadding: parent.indicator.width + parent.spacing
-            verticalAlignment: Text.AlignVCenter
-        }
-        indicator: Rectangle {
-            x: parent.leftPadding
-            y: parent.topPadding + (parent.availableHeight - height) / 2
-            implicitWidth: 20
-            implicitHeight: 20
-            radius: 3
-            border.width: Style.thickBorderWidth
-            border.color: parent.checked ? root.accentColor : Style.sesTrayInputField
-            color: parent.checked ? root.accentColor : Style.sesBackgroundColor
-        }
-    }
-
     signal closeShareDetails
     signal deleteShare
     signal createNewLinkShare
@@ -302,6 +280,7 @@ Page {
                 id: passwordProtectEnabledMenuItem
 
                 Layout.fillWidth: true
+                accentColor: root.accentColor
 
                 spacing: scrollContentsColumn.indicatorSpacing
                 padding: scrollContentsColumn.itemPadding
@@ -379,14 +358,8 @@ Page {
                     root.waitingForPasswordChange = true;
                 }
 
-                Rectangle {
+                SesInputBackground {
                     id: passwordTextBorder
-                    anchors.fill: parent
-                    radius: Style.slightlyRoundedButtonRadius
-                    border.width: Style.thickBorderWidth
-                    border.color: Style.sesTrayInputField
-                    color: Style.sesBackgroundColor
-                    z: -1
                 }
             }
 
@@ -394,6 +367,7 @@ Page {
                 id: expireDateEnabledMenuItem
 
                 Layout.fillWidth: true
+                accentColor: root.accentColor
                 font.pixelSize: pixelSize
                 font.weight: fontWeight
 
@@ -449,21 +423,16 @@ Page {
                     root.waitingForExpireDateChange = true;
                 }
 
-                Rectangle {
+                SesInputBackground {
                     id: dateTextBorder
-                    anchors.fill: parent
-                    radius: Style.slightlyRoundedButtonRadius
-                    border.width: Style.thickBorderWidth
-                    border.color: Style.sesTrayInputField
-                    color: Style.sesBackgroundColor
-                    z: -1
                 }
             }
-            
+
             SesCheckBox {
                 id: noteEnabledMenuItem
 
                 Layout.fillWidth: true
+                accentColor: root.accentColor
 
                 spacing: scrollContentsColumn.indicatorSpacing
                 leftPadding: scrollContentsColumn.itemPadding
@@ -521,14 +490,8 @@ Page {
                         root.waitingForNoteChange = true;
                     }
 
-                    background: Rectangle {
+                    background: SesInputBackground {
                         id: noteTextBorder
-                        anchors.fill: parent
-                        radius: Style.slightlyRoundedButtonRadius
-                        border.width: Style.thickBorderWidth
-                        border.color: Style.sesTrayInputField
-                        color: Style.sesBackgroundColor
-                        z: -1
                     }
                 }
             }          
@@ -538,6 +501,7 @@ Page {
                 active: !root.isFolderItem && !root.isEncryptedItem
                 visible: active
                 sourceComponent: SesCheckBox {
+                    accentColor: root.accentColor
 
                     font.pixelSize: pixelSize
                     font.weight: fontWeight
@@ -572,6 +536,7 @@ Page {
                     SesCheckBox {
                         id: customPermissionsCheckBox
                         Layout.fillWidth: true
+                        accentColor: root.accentColor
                         enabled: !root.isSharePermissionChangeInProgress
                         checkable: false
                         checked: true
@@ -589,6 +554,7 @@ Page {
                         readonly property int permissionMode: ShareModel.ModeViewOnly
                         Layout.fillWidth: true
                         Layout.leftMargin: 30
+                        accentColor: root.accentColor
                         ButtonGroup.group: permissionModeRadioButtonsGroup
                         enabled: !root.isSharePermissionChangeInProgress
                         checked: root.currentPermissionMode === permissionMode
@@ -607,6 +573,7 @@ Page {
                         readonly property int permissionMode: ShareModel.ModeUploadAndEditing
                         Layout.fillWidth: true
                         Layout.leftMargin: 30
+                        accentColor: root.accentColor
                         ButtonGroup.group: permissionModeRadioButtonsGroup
                         enabled: !root.isSharePermissionChangeInProgress
                         checked: root.currentPermissionMode === permissionMode
@@ -625,6 +592,7 @@ Page {
                         readonly property int permissionMode: ShareModel.ModeFileDropOnly
                         Layout.fillWidth: true
                         Layout.leftMargin: 30
+                        accentColor: root.accentColor
                         ButtonGroup.group: permissionModeRadioButtonsGroup
                         enabled: !root.isSharePermissionChangeInProgress
                         checked: root.currentPermissionMode === permissionMode
@@ -645,6 +613,7 @@ Page {
                 id: allowResharingCheckBox
 
                 Layout.fillWidth: true
+                accentColor: root.accentColor
 
                 font.pixelSize: pixelSize
                 font.weight: fontWeight
@@ -678,6 +647,7 @@ Page {
 
                         anchors.left: parent.left
                         anchors.right: parent.right
+                        accentColor: root.accentColor
 
                         font.pixelSize: pixelSize
                         font.weight: fontWeight
