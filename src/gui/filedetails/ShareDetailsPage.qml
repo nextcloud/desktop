@@ -29,21 +29,14 @@ Page {
             verticalAlignment: Text.AlignVCenter
         }
         indicator: Rectangle {
-            implicitWidth: 18
-            implicitHeight: 18
+            x: parent.leftPadding
+            y: parent.topPadding + (parent.availableHeight - height) / 2
+            implicitWidth: 20
+            implicitHeight: 20
             radius: 3
             border.width: Style.thickBorderWidth
-            border.color: Style.sesTrayInputField
-            color: Style.sesBackgroundColor
-
-            Rectangle {
-                visible: parent.parent.checked
-                anchors.centerIn: parent
-                width: 10
-                height: 10
-                radius: 2
-                color: root.accentColor
-            }
+            border.color: parent.checked ? root.accentColor : Style.sesTrayInputField
+            color: parent.checked ? root.accentColor : Style.sesBackgroundColor
         }
     }
 
