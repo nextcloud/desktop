@@ -11,6 +11,9 @@
 #include <QStorageInfo>
 #include <QMessageBox>
 #include <QJsonObject>
+#include <QPainter>
+#include <QPixmap>
+#include <QSvgRenderer>
 
 #include "QProgressIndicator.h"
 
@@ -34,6 +37,38 @@
 
 namespace OCC
 {
+
+namespace {
+// Theme::createColorAwareIcon() just inverts the source SVG's raw RGB values for dark mode
+// (see its definition), which for these ses-*.svg icons - all filled with the same
+// #2F2F70 - produces an undesigned, washed-out khaki/beige instead of an actual dark-mode
+// color. Render the icon once and re-tint it with a real themed color instead, the same
+// SourceIn-compositing approach MoreOptionsButtonStyleHelper::tintPixmap() already uses.
+QIcon tintedThemeIcon(const QString &path, const QColor &color, const QSize &size)
+{
+    // Render via QSvgRenderer straight into an image of the target size - same approach
+    // Theme::createColorAwareIcon() uses - rather than QIcon(path).pixmap(size), which for
+    // these non-square source SVGs (e.g. ses-folderIcon.svg is 58x52) picks/scales an
+    // already-rasterized pixmap and comes out the wrong size.
+    QSvgRenderer renderer(path);
+    QImage img(size, QImage::Format_ARGB32);
+    img.fill(Qt::transparent);
+    QPainter svgPainter(&img);
+    renderer.render(&svgPainter);
+    svgPainter.end();
+
+    QPixmap tinted(size);
+    tinted.fill(Qt::transparent);
+    QPainter painter(&tinted);
+    painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.drawImage(0, 0, img);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(tinted.rect(), color);
+    painter.end();
+
+    return QIcon(tinted);
+}
+}
 
 OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     : QWizardPage()
@@ -238,7 +273,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 
 void OwncloudAdvancedSetupPage::SetAvatarIcon()
 {
-    const auto icon = Theme::createColorAwareIcon(WLTheme.roundAvatarIcon(), palette());
+    const auto icon = tintedThemeIcon(WLTheme.roundAvatarIcon(), QColor(WLTheme.iconDarkColor()), QSize(64, 64));
      _ui.lServerIcon->setPixmap(icon.pixmap(32));
 }
 
@@ -767,7 +802,7 @@ void OwncloudAdvancedSetupPage::customizeStyle()
 
 void OwncloudAdvancedSetupPage::styleLocalFolderLabel()
 {
-    const auto icon = Theme::createColorAwareIcon(WLTheme.folderIcon("qtwidget"), palette());
+    const auto icon = tintedThemeIcon(WLTheme.folderIcon("qtwidget"), QColor(WLTheme.iconDarkColor()), QSize(64, 64));
      _ui.lLocal->setPixmap(icon.pixmap(32));
 }
 
@@ -805,8 +840,7 @@ void OwncloudAdvancedSetupPage::updateMacOsFileProviderRelatedViews()
 
 void OwncloudAdvancedSetupPage::styleSyncLogo()
 {
-    const auto syncArrowIcon = QIcon(WLTheme.syncArrows());
-    // const auto syncArrowIcon = Theme::createColorAwareIcon(QLatin1String(":/client/theme/sync-arrow.svg"), palette());
+    const auto syncArrowIcon = tintedThemeIcon(WLTheme.syncArrows(), QColor(WLTheme.iconDarkColor()), QSize(32, 32));
     _ui.syncLogoLabel->setPixmap(syncArrowIcon.pixmap(QSize(32,32)));
     _ui.syncLogoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
 }
