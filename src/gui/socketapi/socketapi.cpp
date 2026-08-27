@@ -277,6 +277,9 @@ SocketApi::SocketApi(QObject *parent)
         qCWarning(lcSocketApi) << "An unexpected system detected, this probably won't work.";
     }
 
+    m_socketPath = socketPath;
+    Q_EMIT socketPathChanged();
+
     QLocalServer::removeServer(socketPath);
     // Create the socket path:
     if (!Utility::isMac()) {
@@ -1759,6 +1762,11 @@ void SocketApiJob::resolve(const QJsonObject &response)
 void SocketApiJob::reject(const QString &response)
 {
     _socketListener->sendMessage(QStringLiteral("REJECT|") + _jobId + QLatin1Char('|') + response);
+}
+
+QString SocketApi::socketPath() const
+{
+    return m_socketPath;
 }
 
 } // namespace OCC

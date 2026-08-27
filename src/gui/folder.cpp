@@ -589,6 +589,7 @@ void Folder::startVfs()
     vfsParams.journal = &_journal;
     vfsParams.providerName = Theme::instance()->appNameGUI();
     vfsParams.providerVersion = Theme::instance()->version();
+    vfsParams.socketPath = FolderMan::instance()->socketApi()->socketPath();
     vfsParams.multipleAccountsRegistered = AccountManager::instance()->accounts().size() > 1;
 
     connect(_vfs.data(), &Vfs::beginHydrating, this, &Folder::slotHydrationStarts);

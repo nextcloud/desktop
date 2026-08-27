@@ -25,6 +25,8 @@
 #include <io.h> // for stdout
 #endif
 
+using namespace Qt::StringLiterals;
+
 namespace {
 
 constexpr int CrashLogSize = 20;
@@ -219,7 +221,7 @@ void Logger::setLogFlush(bool flush)
 
 void Logger::setLogDebug(bool debug)
 {
-    const QSet<QString> rules = {debug ? QStringLiteral("nextcloud.*.debug=true") : QString()};
+    const QSet<QString> rules = {debug ? u"nextcloud.*.debug=true"_s : QString{}, debug ? u"sync.vfs.openvfs=true"_s : QString{}};
     if (debug) {
         addLogRule(rules);
     } else {
