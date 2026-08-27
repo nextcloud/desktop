@@ -448,6 +448,14 @@ bool SyncJournalDb::checkConnect()
         return sqlFail(QStringLiteral("Create table key_value_store"), createQuery);
     }
 
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS pending_local_removals("
+                        "path TEXT NOT NULL PRIMARY KEY,"
+                        "created_at INTEGER NOT NULL"
+                        ");");
+    if (!createQuery.exec()) {
+        return sqlFail(QStringLiteral("Create table pending_local_removals"), createQuery);
+    }
+
     createQuery.prepare("CREATE TABLE IF NOT EXISTS downloadinfo("
                         "path VARCHAR(4096),"
                         "tmpfile VARCHAR(4096),"
