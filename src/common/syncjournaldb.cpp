@@ -284,6 +284,21 @@ void SyncJournalDb::commitTransaction()
     }
 }
 
+bool SyncJournalDb::commitTransactionChecked(const QString &context)
+{
+    if (_transaction != 1) {
+        return true;
+    }
+    if (!_db.commit()) {
+        qCWarning(lcDb) << "ERROR committing" << context << "to the database:" << _db.error();
+        _db.close();
+        _transaction = 0;
+        return false;
+    }
+    _transaction = 0;
+    return true;
+}
+
 bool SyncJournalDb::sqlFail(const QString &log, const SqlQuery &query)
 {
     commitTransaction();
@@ -448,6 +463,8 @@ bool SyncJournalDb::checkConnect()
         return sqlFail(QStringLiteral("Create table key_value_store"), createQuery);
     }
 
+    // Keep the historical table name for journal compatibility. The rows protect server state
+    // from remote deletions inferred from an untrusted local absence.
     createQuery.prepare("CREATE TABLE IF NOT EXISTS pending_local_removals("
                         "path TEXT NOT NULL PRIMARY KEY,"
                         "created_at INTEGER NOT NULL"
@@ -2564,10 +2581,100 @@ bool SyncJournalDb::forceRemoteDiscoveryNextSyncChecked()
         return false;
     }
     return true;
-
-    if (!checkConnect()) {
 }
 
+bool SyncJournalDb::isPathEqualOrBelow(const QString &path, const QString &root)
+{
+    return root.isEmpty() || path == root || path.startsWith(root + QLatin1Char('/'));
+}
+
+Result<QVector<QPair<QString, qint64>>, QString> SyncJournalDb::pendingRemoteDeletionProtectionRoots()
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return QStringLiteral("Unable to open the sync journal.");
+    }
+    SqlQuery query(_db);
+    query.prepare("SELECT path, created_at FROM pending_local_removals ORDER BY path;");
+    if (!query.exec()) {
+        return query.error();
+    }
+    QVector<QPair<QString, qint64>> roots;
+    Q_FOREVER {
+        const auto next = query.next();
+        if (!next.hasData) {
+            break;
+        }
+        roots.append({ query.stringValue(0), query.int64Value(1) });
+    }
+    if (query.errorId() != SQLITE_DONE) {
+        return query.error();
+    }
+    return roots;
+}
+
+Result<bool, QString> SyncJournalDb::isPathProtectedFromRemoteDeletion(const QString &path)
+{
+    const auto roots = pendingRemoteDeletionProtectionRoots();
+    if (!roots) {
+        return roots.error();
+    }
+    for (const auto &root : *roots) {
+        if (isPathEqualOrBelow(path, root.first)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+Result<void, QString> SyncJournalDb::armRemoteDeletionProtection(const QStringList &paths)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return QStringLiteral("Unable to open the sync journal while enabling remote-deletion protection.");
+    }
+    startTransaction();
+    const auto timestamp = QDateTime::currentMSecsSinceEpoch();
+    for (const auto &path : paths) {
+        SqlQuery query(_db);
+        query.prepare("INSERT OR IGNORE INTO pending_local_removals(path, created_at) VALUES(?1, ?2);");
+        query.bindValue(1, path);
+        query.bindValue(2, timestamp);
+        if (!query.exec()) {
+            _db.close();
+            _transaction = 0;
+            return query.error();
+        }
+    }
+    if (!commitTransactionChecked(QStringLiteral("Enable remote-deletion protection"))) {
+        return QStringLiteral("Unable to durably enable remote-deletion protection.");
+    }
+    startTransaction();
+    return {};
+}
+
+Result<void, QString> SyncJournalDb::disarmRemoteDeletionProtection(const QStringList &paths)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return QStringLiteral("Unable to open the sync journal while disabling remote-deletion protection.");
+    }
+    startTransaction();
+    for (const auto &path : paths) {
+        SqlQuery query(_db);
+        query.prepare("DELETE FROM pending_local_removals WHERE path=?1;");
+        query.bindValue(1, path);
+        if (!query.exec()) {
+            _db.close();
+            _transaction = 0;
+            return query.error();
+        }
+    }
+    if (!commitTransactionChecked(QStringLiteral("Disable remote-deletion protection"))) {
+        return QStringLiteral("Unable to durably disable remote-deletion protection.");
+    }
+    startTransaction();
+    return {};
 }
 
 void SyncJournalDb::forceRemoteDiscoveryNextSyncLocked()

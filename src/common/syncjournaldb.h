@@ -211,6 +211,12 @@ public:
     void forceRemoteDiscoveryNextSync();
     [[nodiscard]] bool forceRemoteDiscoveryNextSyncChecked();
 
+    [[nodiscard]] Result<bool, QString> isPathProtectedFromRemoteDeletion(const QString &path);
+    [[nodiscard]] Result<QVector<QPair<QString, qint64>>, QString> pendingRemoteDeletionProtectionRoots();
+    [[nodiscard]] Result<void, QString> armRemoteDeletionProtection(const QStringList &paths);
+    [[nodiscard]] Result<void, QString> disarmRemoteDeletionProtection(const QStringList &paths);
+    [[nodiscard]] static bool isPathEqualOrBelow(const QString &path, const QString &root);
+
     /* Because sqlite transactions are really slow, we encapsulate everything in big transactions
      * Commit will actually commit the transaction and create a new one.
      */
@@ -414,6 +420,7 @@ private:
     void commitInternal(const QString &context, bool startTrans = true);
     void startTransaction();
     void commitTransaction();
+    [[nodiscard]] bool commitTransactionChecked(const QString &context);
     QVector<QByteArray> tableColumns(const QByteArray &table);
     bool checkConnect();
 
