@@ -2035,6 +2035,17 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
 
 bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
 {
+    if (item->_instruction == CSYNC_INSTRUCTION_REMOVE && item->_direction == SyncFileItem::Up
+        && std::any_of(_discoveryData->_remoteDeletionProtectionRoots.cbegin(), _discoveryData->_remoteDeletionProtectionRoots.cend(), [item](const auto &root) {
+               return SyncJournalDb::isPathEqualOrBelow(item->_originalFile, root);
+           })) {
+        item->_instruction = CSYNC_INSTRUCTION_NEW;
+        item->_direction = SyncFileItem::Down;
+        item->_isRestoration = true;
+        item->_errorString = tr("The server copy is protected from deletion; restoring this item from the server.");
+        return true;
+    }
+
     if (item->_direction != SyncFileItem::Up) {
         // Currently we only check server-side permissions
         return true;

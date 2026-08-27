@@ -314,6 +314,8 @@ public:
 
     QStringList _listExclusiveFiles;
 
+    QStringList _remoteDeletionProtectionRoots;
+
     QStringList _forbiddenFilenames;
     QStringList _forbiddenBasenames;
     QStringList _forbiddenExtensions;
