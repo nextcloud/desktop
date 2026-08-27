@@ -452,10 +452,11 @@ public:
         return themedColor("#FFFFFF", "#1E2126");
     }
 
-    // Deliberately inverted from the native checked-box contrast (which the checked box's
-    // accent-color fill already provides) - white checkmark in Light Mode, black in Dark Mode.
+    // Fixed white in both modes: the checked box's fill is always a saturated accent color
+    // (buttonPrimaryColor()), not the page background, so the checkmark needs to contrast
+    // against that accent color rather than flip with light/dark mode.
     virtual QString checkboxCheckmarkColor() const {
-        return themedColor("#FFFFFF", "#000000");
+        return themedColor("#FFFFFF", "#FFFFFF");
     }
 
     virtual QString trayBackgroundColor() const {
