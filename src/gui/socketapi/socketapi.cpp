@@ -248,6 +248,7 @@ SocketApi::SocketApi(QObject *parent)
 {
     qRegisterMetaType<SocketListener *>("SocketListener*");
     qRegisterMetaType<QSharedPointer<SocketApiJob>>("QSharedPointer<SocketApiJob>");
+    qRegisterMetaType<QSharedPointer<SocketApiJobV2>>("QSharedPointer<SocketApiJobV2>");
 
 #if defined(Q_OS_MACOS)
     // On macOS, shell extensions communicate via XPC (FinderSyncXPC / FinderSyncService).
@@ -391,13 +392,15 @@ void SocketApi::slotReadSocket()
         const QByteArray command = line.mid(0, argPos).toUtf8().toUpper();
         const int indexOfMethod = [&] {
             QByteArray functionWithArguments = QByteArrayLiteral("command_");
-            if (command.startsWith("ASYNC_")) {
+            if (command.startsWith(QLatin1String("ASYNC_"))) {
                 functionWithArguments += command + QByteArrayLiteral("(QSharedPointer<SocketApiJob>)");
+            } else if (command.startsWith(QLatin1String("V2/"))) {
+                functionWithArguments += QByteArrayLiteral("V2_") + command.mid(3) + QByteArrayLiteral("(QSharedPointer<SocketApiJobV2>)");
             } else {
                 functionWithArguments += command + QByteArrayLiteral("(QString,SocketListener*)");
             }
-            Q_ASSERT(staticMetaObject.normalizedSignature(functionWithArguments) == functionWithArguments);
-            const auto out = staticMetaObject.indexOfMethod(functionWithArguments);
+            Q_ASSERT(staticMetaObject.normalizedSignature(functionWithArguments.constData()) == functionWithArguments);
+            const auto out = staticMetaObject.indexOfMethod(functionWithArguments.constData());
             if (out == -1) {
                 listener->sendError(QStringLiteral("Function %1 not found").arg(QString::fromUtf8(functionWithArguments)));
             }
