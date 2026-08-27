@@ -420,6 +420,20 @@ Der eigentliche Auslöser des Bugs war also nicht `createColorAwareIcon()` selbs
 
 **Brüche:** keine mehr an dieser Stelle. `buttonFocusedBorderColor()` (Zeile 216-219, `buttonSecondaryFocusedBorderColor()`) war bereits theme-aware und blieb unverändert.
 
+**Nachtrag (2026-08-27):** Nutzer wies darauf hin, dass `autoDefault`-Buttons (`pbSelectLocalFolder.ui:333-337`) nach einem Klick den Fokus behalten (normales Qt-Verhalten) und der Fokus-Rahmen dadurch wie ein Dauerzustand ("permanently selected") statt wie eine kurze Rückmeldung wirkte. `buttonSecondaryFocusedBorderColor()` (stratotheme.h:88-90) wurde daraufhin von `themedColor("#8493B3","#454C5E")` auf `themedColor("#A9B4CB","#A2A6AF")` gedämpft — 50%-Blend Richtung des ohnehin hellen Standard-Rahmens (`buttonSecondaryBorderColor()`), damit der Fokus-Indikator dezenter, aber nicht komplett unsichtbar bleibt. **Kein bestätigter Design-Wert**, reine UX-Abwägung auf Nutzerwunsch.
+
+## WizardCommon::customizeHintLabel() — unsichtbarer Hinweistext auf Linux
+
+*Vom Nutzer auf einem Linux-System gemeldet: die Größenangabe „(29 MB)" neben „Alle Daten vom Server synchronisieren" im Wizard war im Dark Mode kaum lesbar. Zuletzt geprüfter Commit: working tree, 2026-08-27.*
+
+`WizardCommon::customizeHintLabel()` (`owncloudwizardcommon.cpp:66-73`, genutzt von `owncloudadvancedsetuppage.cpp`, `owncloudsetuppage.cpp`, `termsofservicecheckwidget.cpp` für mehrere Hinweis-Labels: `lFreeSpace`, `lSyncEverythingSizeLabel`, `lSelectiveSyncSizeLabel`, `serverAddressLabel`, `_filePathLabel`) nahm die zum Aufrufzeitpunkt **ambient** vorhandene `QPalette::Text`-Farbe des Labels und reduzierte nur deren Alpha auf 50 %. Der Aufruf erfolgt aus `setupCustomization()`, das direkt im Seiten-Konstruktor läuft — zu diesem Zeitpunkt ist die Palette des frisch erzeugten Widgets plattformabhängig ggf. noch nicht auf Dark Mode propagiert (auf Windows offenbar unauffällig, auf Linux reproduzierbar sichtbar). Eine dunkle (Light-Mode-)Textfarbe mit 50 % Alpha auf dunklem Hintergrund ist praktisch unlesbar.
+
+| Property | Fundstelle | Vorher | Nachher | Status |
+|---|---|---|---|---|
+| `WizardCommon::customizeHintLabel()` | owncloudwizardcommon.cpp:66-75 | `palette().color(QPalette::Text)` @ 50 % Alpha (ambient, Timing-abhängig) | `WLTheme.folderWizardPathColor()` (`#97A3B4`/`#A8B4C6`, bereits an anderen Wizard-Stellen für gedämpften Text verwendet) | ✅ angepasst |
+
+**Hinweis:** `WizardCommon::initErrorLabel()` (Zeile 53-64, direkt darüber) hat dasselbe Grundproblem in verschärfter Form — dort ist die Fehlerbox-Farbe (`#eed3d7`/`#f2dede`/`#b94a48`) komplett hartcodiert, kein Dark-Wert überhaupt. Nicht Teil dieser Änderung, da nicht gemeldet — als bekannter, verwandter Fund hier vermerkt.
+
 ## Format je Komponente
 
 ```markdown

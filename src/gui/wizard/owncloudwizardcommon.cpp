@@ -14,6 +14,7 @@
 
 #include "wizard/owncloudwizardcommon.h"
 #include "theme.h"
+#include "whitelabeltheme.h"
 
 namespace OCC {
 
@@ -65,10 +66,14 @@ namespace WizardCommon {
 
     void customizeHintLabel(QLabel *label)
     {
+        // Used to dim whatever QPalette::Text the label inherited by 50% alpha - but this
+        // runs from the page constructor (setupCustomization()), before the widget's
+        // palette is reliably propagated to dark mode on every platform. A stale light-mode
+        // text color dimmed to 50% renders as near-invisible dark-on-dark. Use the same
+        // theme-aware muted color other wizard pages already use for secondary/hint text
+        // instead - correct regardless of palette-propagation timing.
         auto palette = label->palette();
-        QColor textColor = palette.color(QPalette::Text);
-        textColor.setAlpha(128);
-        palette.setColor(QPalette::Text, textColor);
+        palette.setColor(QPalette::Text, QColor(WLTheme.folderWizardPathColor()));
         label->setPalette(palette);
     }
 

@@ -85,8 +85,13 @@ public:
         return themedColor("#D6D6E4", "#3A3B52");
     }
 
+    // Blended halfway toward buttonSecondaryBorderColor() (the already-bright default
+    // border) instead of the previous, more saturated blue-grey - autoDefault buttons keep
+    // focus after a click (normal Qt behavior), so a strongly-colored focus ring made them
+    // read as permanently "selected" rather than a subtle focus cue. No confirmed design
+    // token for this - a maintained approximation, not a literal spec value.
     QString buttonSecondaryFocusedBorderColor() const override {
-        return themedColor("#8493B3", "#454C5E");
+        return themedColor("#A9B4CB", "#A2A6AF");
     }
 
     QString buttonDisabledColor() const override {
