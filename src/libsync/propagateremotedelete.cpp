@@ -26,6 +26,13 @@ void PropagateRemoteDelete::start()
     if (propagator()->_abortRequested)
         return;
 
+    const auto protectedResult = propagator()->_journal->isPathProtectedFromRemoteDeletion(_item->_originalFile);
+    if (!protectedResult || *protectedResult) {
+        propagator()->_anotherSyncNeeded = true;
+        done(SyncFileItem::NormalError, tr("Remote deletion blocked because this local absence may not represent user intent."), ErrorCategory::GenericError);
+        return;
+    }
+
     if (!_item->_encryptedFileName.isEmpty() || _item->isEncrypted()) {
         if (!_item->_encryptedFileName.isEmpty()) {
             _deleteEncryptedHelper = new PropagateRemoteDeleteEncrypted(propagator(), _item, this);
