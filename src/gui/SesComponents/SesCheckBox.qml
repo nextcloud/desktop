@@ -33,5 +33,15 @@ CheckBox {
         border.width: Style.thickBorderWidth
         border.color: root.checked ? root.accentColor : Style.sesTrayInputField
         color: root.checked ? root.accentColor : Style.sesBackgroundColor
+
+        Image {
+            anchors.centerIn: parent
+            width: parent.width * 0.65
+            height: width
+            visible: root.checked
+            fillMode: Image.PreserveAspectFit
+            source: "image://svgimage-custom-color/check.svg/white"
+            sourceSize: Qt.size(width, height)
+        }
     }
 }
