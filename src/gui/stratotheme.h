@@ -47,16 +47,20 @@ public:
     }
 
     QString buttonPrimaryColor() const override {
-        return themedColor("#272CB2", "#5B60D6");
+        // Dark value is IONOS Figma token Color/Blue Ionos/B4 (STRUXD-157).
+        return themedColor("#272CB2", "#1474C4");
     }
 
     QString buttonPrimaryHoverColor() const override {
-        // TODO: no established Strato dark counterpart for #2944CC yet - needs design input.
-        return "#2944CC";
+        // TODO: no distinct dark hover value confirmed in the IONOS spec (STRUXD-157 only
+        // showed default/pressed/disabled) - using the default color as an interim value.
+        return themedColor("#2944CC", "#1474C4");
     }
 
     QString buttonPrimaryPressedColor() const override {
-        return themedColor("#272CB2", "#5B60D6");
+        // Dark value is IONOS Figma token Color/Blue Ionos/B5 (STRUXD-157) - deliberately
+        // darker than the default, not lighter.
+        return themedColor("#272CB2", "#095BB1");
     }
 
     QString buttonPrimaryFocusedBorderColor() const override {
@@ -90,7 +94,8 @@ public:
     }
 
     QString pillButtonPrimaryColor() const override {
-        return themedColor("#272CB2", "#5B60D6");
+        // Kept in sync with buttonPrimaryColor() above (IONOS Blue Ionos/B4 in dark mode).
+        return themedColor("#272CB2", "#1474C4");
     }
 
     QString pillButtonSecondaryColor() const override {
