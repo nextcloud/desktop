@@ -11,8 +11,8 @@ extension Enumerator {
     /// `NKTrash` items have no ETag; the only trash change of interest is a *permanent* remote deletion,
     /// detected as a local trash row absent from the remote listing. Those orphans are derived once (see
     /// ``enumerateTrashChanges(for:anchor:)``) and drained here one capped batch per invocation so a large
-    /// permanent-purge cannot exceed the framework's per-batch limit. Trash preserves its incoming anchor
-    /// (like a regular container), so the same anchor is returned on every batch. Each delivered orphan is
+    /// permanent-purge cannot exceed the framework's per-batch limit. Intermediate batches use a durable
+    /// continuation anchor, while the final batch preserves the incoming anchor. Each delivered orphan is
     /// soft-deleted (`deleteItemMetadata`) only after its batch finishes, so an interrupted drain keeps its
     /// row — the reconciliation re-derives it (the row still carries a trash `serverUrl`) rather than
     /// dropping it.
@@ -34,7 +34,15 @@ extension Enumerator {
             dbManager.deleteItemMetadata(ocId: metadata.ocId)
         }
 
-        observer.finishEnumeratingChanges(upTo: anchor, moreComing: batch.moreComing)
+        let reportedAnchor = if let continuationAnchorRawValue = batch.continuationAnchorRawValue {
+            NSFileProviderSyncAnchor(rawValue: continuationAnchorRawValue)
+        } else if let finalAnchorRawValue = batch.finalAnchorRawValue {
+            NSFileProviderSyncAnchor(rawValue: finalAnchorRawValue)
+        } else {
+            anchor
+        }
+
+        observer.finishEnumeratingChanges(upTo: reportedAnchor, moreComing: batch.moreComing)
 
         logger.debug("Reported trash deletion batch. deleted: \(batch.deleted.count), moreComing: \(batch.moreComing)")
     }
@@ -151,7 +159,12 @@ extension Enumerator {
                 logger.info("Permanently deleting remote trash item which could not be matched with a local one.", [.item: orphan.ocId])
             }
 
-            changeBuffer.prime(key: anchorKey, updated: [], deleted: orphans)
+            changeBuffer.prime(
+                key: anchorKey,
+                finalAnchorRawValue: anchor.rawValue,
+                updated: [],
+                deleted: orphans
+            )
             drainTrashDeletions(for: observer, anchor: anchor, suggested: observer.suggestedBatchSize)
         }
     }

@@ -597,6 +597,8 @@ if(KF6GuiAddons_FOUND)
   add_definitions(-DHAVE_KGUIADDONS)
 endif()
 
+target_compile_definitions(nextcloudCore PRIVATE -DQT_NO_KEYWORDS)
+
 if(KF6DBusAddons_FOUND)
     target_link_libraries(nextcloudCore PUBLIC KF6::DBusAddons)
 endif()
@@ -690,6 +692,7 @@ IF(BUILD_UPDATER)
     target_link_libraries(updater Nextcloud::sync ${updater_DEPS} Qt::Widgets Qt::Svg Qt::Network Qt::Xml)
     target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
     set_target_properties(updater PROPERTIES AUTOMOC ON)
+    target_compile_definitions(updater PRIVATE QT_NO_KEYWORDS)
     target_link_libraries(nextcloudCore PUBLIC updater)
 endif()
 
@@ -698,6 +701,7 @@ set_target_properties(nextcloud PROPERTIES
 )
 
 target_link_libraries(nextcloud PRIVATE nextcloudCore)
+target_compile_definitions(nextcloud PRIVATE QT_NO_KEYWORDS)
 
 if(TARGET PkgConfig::CLOUDPROVIDERS)
     message("Building with libcloudproviderssupport")

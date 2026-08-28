@@ -83,7 +83,7 @@ public:
      */
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
-public slots:
+public Q_SLOTS:
     /// Saves account data when adding user, when updating e.g. dav user, not including the credentials
     void saveAccount(const OCC::AccountPtr &newAccountData);
 
@@ -109,7 +109,7 @@ public slots:
     [[nodiscard]] AccountStatePtr accountFromFileProviderDomainIdentifier(const QString &identifier) const;
 #endif
 
-signals:
+Q_SIGNALS:
     void accountAdded(OCC::AccountState *account);
     void accountRemoved(OCC::AccountState *account);
     void accountSyncConnectionRemoved(OCC::AccountState *account);

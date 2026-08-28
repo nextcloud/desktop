@@ -63,13 +63,13 @@ public:
     explicit SocketApi(QObject *parent = nullptr);
     ~SocketApi() override;
 
-public slots:
+public Q_SLOTS:
     void slotUpdateFolderView(OCC::Folder *f);
     void slotUnregisterPath(const QString &alias);
     void slotRegisterPath(const QString &alias);
     void broadcastStatusPushMessage(const QString &systemPath, OCC::SyncFileStatus fileStatus);
 
-signals:
+Q_SIGNALS:
     void shareCommandReceived(const QString &localPath);
     void fileActivityCommandReceived(const QString &localPath);
     void fileActionsCommandReceived(const QString &localPath);
@@ -77,7 +77,7 @@ signals:
     void resolveConflictCommandReceived(const QString &conflictedPath, const QString &basePath, const QString &baseName, const QString &folderAlias);
     void moveItemCommandReceived(const QString &localPath, const QString &defaultTarget);
 
-private slots:
+private Q_SLOTS:
     void slotNewConnection();
     void onLostConnection();
     void slotSocketDestroyed(QObject *obj);

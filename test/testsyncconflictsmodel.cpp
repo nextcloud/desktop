@@ -41,7 +41,7 @@ class TestSyncConflictsModel : public QObject
 private:
     QLocale _locale;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

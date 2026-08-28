@@ -32,7 +32,7 @@ public:
     void deleteTask(qint64 taskId, quint64 requestGeneration);
     void cancelRequests();
 
-signals:
+Q_SIGNALS:
     void taskTypesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void tasksFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void taskScheduled(quint64 requestGeneration, const QJsonDocument &json, int statusCode);

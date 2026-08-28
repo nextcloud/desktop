@@ -52,7 +52,7 @@ public:
     
     void unlockFolder(const EncryptedFolderMetadataHandler::UnlockFolderWithResult result);
 
-public slots:
+public Q_SLOTS:
     void start(const bool keepLock = false);
     void setUserData(const OCC::UpdateE2eeFolderUsersMetadataJob::UserData &userData);
 
@@ -68,7 +68,7 @@ private:
     void startUpdate();
     void subJobsFinished(bool success);
 
-private slots:
+private Q_SLOTS:
     void slotStartE2eeMetadataJobs();
     void slotFetchMetadataJobFinished(int statusCode, const QString &message);
 
@@ -80,7 +80,7 @@ private slots:
     void slotCertificatesFetchedFromServer(const QHash<QString, OCC::NextcloudSslCertificate> &results);
     void slotCertificateFetchedFromKeychain(const QSslCertificate &certificate);
 
-private: signals:
+private: Q_SIGNALS:
     void certificateReady();
     void finished(int code, const QString &message = {});
     void folderUnlocked();

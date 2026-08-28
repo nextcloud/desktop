@@ -51,7 +51,7 @@ public:
      */
     void setLatestReceivedSyncStatus(const QString &userId, SyncResult::Status status);
 
-signals:
+Q_SIGNALS:
     /**
      * @brief Emitted when a file provider extension reports its sync status.
      * @param account The account for which the sync state changed.

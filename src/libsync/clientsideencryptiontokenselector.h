@@ -32,12 +32,12 @@ public:
 
     void clear();
 
-public slots:
+public Q_SLOTS:
     QFuture<void> searchForCertificates(const OCC::AccountPtr &account);
 
     void setSha256Fingerprint(const QByteArray &sha256Fingerprint);
 
-signals:
+Q_SIGNALS:
 
     void isSetupChanged();
 

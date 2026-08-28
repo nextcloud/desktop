@@ -688,7 +688,7 @@ void ownCloudGui::slotShowSettings()
 
 void ownCloudGui::slotSettingsDialogActivated()
 {
-    emit isShowingSettingsDialog();
+    Q_EMIT isShowingSettingsDialog();
 }
 
 #ifdef Q_OS_MACOS

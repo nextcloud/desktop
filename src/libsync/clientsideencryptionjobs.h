@@ -44,12 +44,12 @@ public:
      */
     void setCsr(const QByteArray& csr);
 
-public slots:
+public Q_SLOTS:
     void start() override;
 
 protected:
     bool finished() override;
-signals:
+Q_SIGNALS:
 
     /**
      * @brief jsonReceived - signal to report the json answer from ocs
@@ -87,12 +87,12 @@ public:
      */
     void setPublicKey(const QByteArray& publicKey);
 
-public slots:
+public Q_SLOTS:
     void start() override;
 
 protected:
     bool finished() override;
-signals:
+Q_SIGNALS:
 
     /**
      * @brief jsonReceived - signal to report the json answer from ocs
@@ -130,12 +130,12 @@ public:
      */
     void setPrivateKey(const QByteArray& privateKey);
 
-public slots:
+public Q_SLOTS:
     void start() override;
 
 protected:
     bool finished() override;
-signals:
+Q_SIGNALS:
 
     /**
      * @brief jsonReceived - signal to report the json answer from ocs
@@ -172,13 +172,13 @@ public:
 
     explicit SetEncryptionFlagApiJob(const AccountPtr &account, const QByteArray &fileId, FlagAction flagAction = Set, QObject *parent = nullptr);
 
-public slots:
+public Q_SLOTS:
     void start() override;
 
 protected:
     bool finished() override;
 
-signals:
+Q_SIGNALS:
     void success(const QByteArray &fileId);
     void error(const QByteArray &fileId,
                const int httpReturnCode,
@@ -202,13 +202,13 @@ public:
 
     void setCounter(const quint64 counter);
 
-public slots:
+public Q_SLOTS:
     void start() override;
 
 protected:
     bool finished() override;
 
-signals:
+Q_SIGNALS:
     void success(const QByteArray& fileId, const QByteArray& token);
     void error(const QByteArray& fileId,
                const int httpErrorCode,
@@ -236,14 +236,14 @@ public:
 
     [[nodiscard]] bool shouldRollbackMetadataChanges() const;
 
-public slots:
+public Q_SLOTS:
     void start() override;
     void setShouldRollbackMetadataChanges(bool shouldRollbackMetadataChanges);
 
 protected:
     bool finished() override;
 
-signals:
+Q_SIGNALS:
     void success(const QByteArray& fileId);
     void error(const QByteArray& fileId,
                const int httpReturnCode,
@@ -271,13 +271,13 @@ public:
         const QByteArray &signature,
         QObject *parent = nullptr);
 
-public slots:
+public Q_SLOTS:
     void start() override;
 
 protected:
     bool finished() override;
 
-signals:
+Q_SIGNALS:
     void success(const QByteArray& fileId);
     void error(const QByteArray& fileId, int httpReturnCode);
 
@@ -300,13 +300,13 @@ public:
         const QByteArray &signature,
         QObject *parent = nullptr);
 
-public slots:
+public Q_SLOTS:
     void start() override;
 
 protected:
     bool finished() override;
 
-signals:
+Q_SIGNALS:
     void success(const QByteArray& fileId);
     void error(const QByteArray& fileId, int httpReturnCode);
 
@@ -329,13 +329,13 @@ public:
 
     [[nodiscard]] const QByteArray &signature() const;
 
-public slots:
+public Q_SLOTS:
     void start() override;
 
 protected:
     bool finished() override;
 
-signals:
+Q_SIGNALS:
     void jsonReceived(const QJsonDocument &json, int statusCode);
     void error(const QByteArray& fileId, int httpReturnCode);
 
@@ -354,13 +354,13 @@ public:
         const QByteArray& token,
         QObject *parent = nullptr);
 
-public slots:
+public Q_SLOTS:
     void start() override;
 
 protected:
     bool finished() override;
 
-signals:
+Q_SIGNALS:
     void success(const QByteArray& fileId);
     void error(const QByteArray& fileId, int httpErrorCode);
 

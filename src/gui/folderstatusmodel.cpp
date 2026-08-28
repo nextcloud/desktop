@@ -93,7 +93,7 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
     }
 
     endResetModel();
-    emit dirtyChanged();
+    Q_EMIT dirtyChanged();
 
     // Automatically fetch the subfolders to prevent showing the expansion chevron if there are no subfolders
     for (auto i = 0; i < _folders.size(); ++i) {
@@ -390,8 +390,8 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
             }
         }
         _dirty = true;
-        emit dirtyChanged();
-        emit dataChanged(index, index, QVector<int>() << role);
+        Q_EMIT dirtyChanged();
+        Q_EMIT dataChanged(index, index, QVector<int>() << role);
         return true;
     }
     return QAbstractItemModel::setData(index, value, role);
@@ -829,7 +829,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     }
 
     for (const auto undecidedIndex : std::as_const(undecidedIndexes)) {
-        emit suggestExpand(index(undecidedIndex, 0, parentIdx));
+        Q_EMIT suggestExpand(index(undecidedIndex, 0, parentIdx));
     }
     /* Try to remove from the undecided lists the items that are not on the server. */
     const auto it = std::remove_if(selectiveSyncUndecidedList.begin(), selectiveSyncUndecidedList.end(),
@@ -838,7 +838,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         selectiveSyncUndecidedList.erase(it, selectiveSyncUndecidedList.end());
         parentInfo->_folder->journalDb()->setSelectiveSyncList(
             SyncJournalDb::SelectiveSyncUndecidedList, selectiveSyncUndecidedList);
-        emit dirtyChanged();
+        Q_EMIT dirtyChanged();
     }
 }
 
@@ -904,7 +904,7 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
 
     for (auto i = 0; i < _folders.count(); ++i) {
         if (_folders.at(i)._folder == folder) {
-            emit dataChanged(index(i), index(i));
+            Q_EMIT dataChanged(index(i), index(i));
         }
     }
 }
@@ -997,18 +997,18 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     if (progress.status() == ProgressInfo::Discovery) {
         if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
             subFolderProgress->_overallSyncString = tr("Checking for changes in remote \"%1\"").arg(progress._currentDiscoveredRemoteFolder);
-            emit dataChanged(index(folderIndex), index(folderIndex), roles);
+            Q_EMIT dataChanged(index(folderIndex), index(folderIndex), roles);
             return;
         } else if (!progress._currentDiscoveredLocalFolder.isEmpty()) {
             subFolderProgress->_overallSyncString = tr("Checking for changes in local \"%1\"").arg(progress._currentDiscoveredLocalFolder);
-            emit dataChanged(index(folderIndex), index(folderIndex), roles);
+            Q_EMIT dataChanged(index(folderIndex), index(folderIndex), roles);
             return;
         }
     }
 
     if (progress.status() == ProgressInfo::Reconcile) {
         subFolderProgress->_overallSyncString = tr("Syncing local and remote changes");
-        emit dataChanged(index(folderIndex), index(folderIndex), roles);
+        Q_EMIT dataChanged(index(folderIndex), index(folderIndex), roles);
         return;
     }
 
@@ -1139,7 +1139,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         overallPercent = qRound(double(completedSize + completedFile) / double(totalSize + totalFileCount) * 100.0);
     }
     subFolderProgress->_overallPercent = qBound(0, overallPercent, 100);
-    emit dataChanged(index(folderIndex), index(folderIndex), roles);
+    Q_EMIT dataChanged(index(folderIndex), index(folderIndex), roles);
 }
 
 void FolderStatusModel::e2eInitializationFinished(bool isNewMnemonicGenerated)
@@ -1303,8 +1303,8 @@ void FolderStatusModel::slotNewBigFolder()
 
     resetAndFetch(index(folderIndex));
 
-    emit suggestExpand(index(folderIndex));
-    emit dirtyChanged();
+    Q_EMIT suggestExpand(index(folderIndex));
+    Q_EMIT dirtyChanged();
 }
 
 void FolderStatusModel::slotShowFetchProgress()

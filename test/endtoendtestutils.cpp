@@ -108,7 +108,7 @@ void EndToEndTestHelper::slotConnectToNCUrl(const QString &url)
 
         _accountState = new OCC::AccountState(_account);
 
-        emit accountReady(_account);
+        Q_EMIT accountReady(_account);
     });
     fetchUserNameJob->start();
 }

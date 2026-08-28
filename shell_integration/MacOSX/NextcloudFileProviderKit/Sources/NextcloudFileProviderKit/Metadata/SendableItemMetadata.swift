@@ -10,7 +10,7 @@ import Foundation
 /// **Do not hand them across the boundaries of different concurrency domains!**
 /// Ensure that this representation is the only one passed around and always completely abstract Realm to upper layer calling code.
 ///
-public struct SendableItemMetadata: ItemMetadata, Sendable {
+public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
     public var ocId: String
     public var account: String
     public var checksums: String

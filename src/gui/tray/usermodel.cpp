@@ -1134,7 +1134,7 @@ void User::slotRefreshNotifications()
 
 void User::slotRebuildNavigationAppList()
 {
-    emit featuredAppChanged();
+    Q_EMIT featuredAppChanged();
     // Rebuild App list
     UserAppsModel::instance()->buildAppList();
 }
@@ -1265,7 +1265,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
             }
         }
 
-        emit ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
+        Q_EMIT ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
     }
 }
 
@@ -1539,7 +1539,6 @@ void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
         return;
     }
 
-    qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in " << item->_errorString;
     processCompletedSyncItem(folderInstance, item);
 }
 
@@ -1643,7 +1642,7 @@ void User::refreshAccountAlert()
     }
 
     _accountAlert = accountAlert;
-    emit accountAlertChanged();
+    Q_EMIT accountAlertChanged();
 }
 
 void User::openLocalFolder() const
@@ -1802,7 +1801,7 @@ void User::updateSyncStatus()
 
     _syncStatusIcon = info.icon;
     _syncStatusOk = info.ok;
-    emit syncStatusChanged();
+    Q_EMIT syncStatusChanged();
 }
 
 bool User::serverHasUserStatus() const
@@ -1949,7 +1948,7 @@ void User::slotAccountCapabilitiesChangedRefreshGroupFolders()
     if (!_account->account()->capabilities().groupFoldersAvailable()) {
         if (!_trayFolderInfos.isEmpty()) {
             _trayFolderInfos.clear();
-            emit groupFoldersChanged();
+            Q_EMIT groupFoldersChanged();
         }
         return;
     }
@@ -2032,7 +2031,7 @@ void User::slotGroupFoldersFetched(QNetworkReply *reply)
     const auto replyData = reply->readAll();
     if (reply->error() != QNetworkReply::NoError) {
         if (oldSize != _trayFolderInfos.size()) {
-            emit groupFoldersChanged();
+            Q_EMIT groupFoldersChanged();
         }
         qCWarning(lcActivity) << "Team folders fetch error" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << replyData;
         return;
@@ -2044,7 +2043,7 @@ void User::slotGroupFoldersFetched(QNetworkReply *reply)
     if (jsonParseError.error != QJsonParseError::NoError) {
         qCWarning(lcActivity) << "Team folders JSON parse error" << jsonParseError.error << jsonParseError.errorString();
         if (oldSize != _trayFolderInfos.size()) {
-            emit groupFoldersChanged();
+            Q_EMIT groupFoldersChanged();
         }
         return;
     }
@@ -2070,14 +2069,14 @@ void User::slotGroupFoldersFetched(QNetworkReply *reply)
     }
 
     if (oldSize != _trayFolderInfos.size()) {
-        emit groupFoldersChanged();
+        Q_EMIT groupFoldersChanged();
     } else {
         for (int i = 0; i < oldTrayFolderInfos.size(); ++i) {
             const auto oldFolderInfo = oldTrayFolderInfos.at(i).template value<TrayFolderInfo>();
             const auto newFolderInfo = _trayFolderInfos.at(i).template value<TrayFolderInfo>();
             if (oldFolderInfo._folderType != newFolderInfo._folderType || oldFolderInfo._fullPath != newFolderInfo._fullPath) {
                 break;
-                emit groupFoldersChanged();
+                Q_EMIT groupFoldersChanged();
             }
         }
     }
@@ -2263,59 +2262,59 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         User *u = new User(user, isCurrent);
 
         connect(u, &User::avatarChanged, this, [this, row] {
-           emit dataChanged(index(row, 0), index(row, 0), {UserModel::AvatarRole});
+           Q_EMIT dataChanged(index(row, 0), index(row, 0), {UserModel::AvatarRole});
         });
 
         connect(u, &User::statusChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), {UserModel::StatusRole,
+            Q_EMIT dataChanged(index(row, 0), index(row, 0), {UserModel::StatusRole,
                                                             UserModel::StatusIconRole,
                                                             UserModel::StatusEmojiRole,
                                                             UserModel::StatusMessageRole});
         });
         
         connect(u, &User::desktopNotificationsAllowedChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), { UserModel::DesktopNotificationsAllowedRole });
+            Q_EMIT dataChanged(index(row, 0), index(row, 0), { UserModel::DesktopNotificationsAllowedRole });
         });
         
         connect(u, &User::accountStateChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), { UserModel::IsConnectedRole });
+            Q_EMIT dataChanged(index(row, 0), index(row, 0), { UserModel::IsConnectedRole });
         });
         connect(u, &User::accountStateChanged, this, &UserModel::updateSyncErrorUsers);
 
         connect(u, &User::serverHasUserStatusChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), { UserModel::ServerHasUserStatusRole });
+            Q_EMIT dataChanged(index(row, 0), index(row, 0), { UserModel::ServerHasUserStatusRole });
         });
 
         connect(u, &User::syncStatusChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), { UserModel::SyncStatusIconRole,
+            Q_EMIT dataChanged(index(row, 0), index(row, 0), { UserModel::SyncStatusIconRole,
                                                             UserModel::SyncStatusOkRole });
         });
 
         connect(u, &User::recentActivitiesChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), { UserModel::RecentActivitiesRole });
+            Q_EMIT dataChanged(index(row, 0), index(row, 0), { UserModel::RecentActivitiesRole });
         });
 
         connect(u, &User::trayNotificationsChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), { UserModel::TrayNotificationsRole });
+            Q_EMIT dataChanged(index(row, 0), index(row, 0), { UserModel::TrayNotificationsRole });
         });
 
         connect(u, &User::accountAlertChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), { UserModel::AccountAlertRole });
+            Q_EMIT dataChanged(index(row, 0), index(row, 0), { UserModel::AccountAlertRole });
         });
 
         connect(u, &User::assistantStateChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), { UserModel::AssistantEnabledRole });
+            Q_EMIT dataChanged(index(row, 0), index(row, 0), { UserModel::AssistantEnabledRole });
         });
 
         _users << u;
 
         endInsertRows();
-        emit countChanged();
+        Q_EMIT countChanged();
 
         if (selectAddedUser) {
             setCurrentUserId(_users.size() - 1);
         } else {
-            emit currentUserChanged();
+            Q_EMIT currentUserChanged();
         }
 
         ConfigFile cfg;
@@ -2393,7 +2392,7 @@ void UserModel::setCurrentUserId(const int id)
     if (id < 0 || id >= _users.size()) {
         if (id < 0 && _currentUserId != id) {
             _currentUserId = id;
-            emit currentUserChanged();
+            Q_EMIT currentUserChanged();
         }
         return;
     }
@@ -2408,12 +2407,12 @@ void UserModel::setCurrentUserId(const int id)
 
     if (_currentUserId == id && isCurrentUserChanged) {
         // order has changed, index remained the same
-        emit currentUserChanged();
+        Q_EMIT currentUserChanged();
     } else if (_currentUserId != id) {
         ConfigFile cfg;
         cfg.setLastSelectedAccount(_users[id]->account()->id().toUInt());
         _currentUserId = id;
-        emit currentUserChanged();
+        Q_EMIT currentUserChanged();
     }
 }
 
@@ -2458,7 +2457,7 @@ void UserModel::removeAccount(const int id)
     beginRemoveRows(QModelIndex(), id, id);
     _users.removeAt(id);
     endRemoveRows();
-    emit countChanged();
+    Q_EMIT countChanged();
 
     if (_users.size() <= 1) {
         setCurrentUserId(_users.size() - 1);
@@ -2704,7 +2703,7 @@ void UserModel::updateSyncErrorUsers()
     }
 
     _syncErrorUserIds = newSyncErrorUserIds;
-    emit syncErrorUsersChanged();
+    Q_EMIT syncErrorUsersChanged();
 }
 /*-------------------------------------------------------------------------------------*/
 
@@ -2768,7 +2767,7 @@ public:
     void handleDone(const QImage &image)
     {
         _image = image;
-        emit finished();
+        Q_EMIT finished();
     }
 
     QQuickTextureFactory *textureFactory() const override

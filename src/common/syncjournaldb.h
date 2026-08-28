@@ -394,7 +394,7 @@ public:
      */
     int autotestFailCounter = -1;
 
-public slots:
+public Q_SLOTS:
     /// Store a new or updated record in the database
     void setCaseConflictRecord(const OCC::ConflictRecord &record);
 

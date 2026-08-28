@@ -1193,7 +1193,7 @@ bool SyncJournalDb::listAllE2eeFoldersWithEncryptionStatusLessThan(const int sta
         return false;
     }
 
-    forever {
+    Q_FOREVER {
         auto next = query->next();
         if (!next.ok) {
             qCWarning(lcDb) << "database error:" << query->error();
@@ -1282,7 +1282,10 @@ qint64 SyncJournalDb::keyValueStoreGetInt(const QString &key, qint64 defaultValu
     auto result = query->next();
 
     if (!result.ok || !result.hasData) {
-        qCWarning(lcDb) << "database error:" << query->error();
+        if (!result.ok) {
+            qCWarning(lcDb) << "database error:" << query->error();
+        }
+
         return defaultValue;
     }
 
@@ -1510,7 +1513,7 @@ bool SyncJournalDb::getFileRecordsByFileId(const QByteArray &fileId, const std::
         return false;
     }
 
-    forever {
+    Q_FOREVER {
         auto next = query->next();
         if (!next.ok) {
             qCWarning(lcDb) << "database error:" << query->error();
@@ -1545,7 +1548,7 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
             return false;
         }
 
-        forever {
+        Q_FOREVER {
             auto next = query.next();
             if (!next.ok) {
                 qCWarning(lcDb) << "database error:" << query.error();
@@ -1620,7 +1623,7 @@ bool SyncJournalDb::listFilesInPath(const QByteArray& path,
         return false;
     }
 
-    forever {
+    Q_FOREVER {
         auto next = query->next();
         if (!next.ok) {
             qCWarning(lcDb) << "database error:" << query->error();
@@ -1847,7 +1850,7 @@ Optional<SyncJournalDb::HasHydratedDehydrated> SyncJournalDb::hasHydratedOrDehyd
     }
 
     HasHydratedDehydrated result;
-    forever {
+    Q_FOREVER {
         auto next = query->next();
         if (!next.ok) {
             qCWarning(lcDb) << "database error:" << query->error();
@@ -2393,7 +2396,7 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         *ok = false;
         return result;
     }
-    forever {
+    Q_FOREVER {
         auto next = query->next();
         if (!next.ok) {
             qCWarning(lcDb) << "database error:" << query->error();
@@ -3141,7 +3144,7 @@ Optional<PinState> SyncJournalDb::PinStateInterface::effectiveForPathRecursive(c
     }
 
     // Check if they are all identical
-    forever {
+    Q_FOREVER {
         auto next = query->next();
         if (!next.ok) {
             qCWarning(lcDb) << "database error:" << query->error();
@@ -3223,7 +3226,7 @@ SyncJournalDb::PinStateInterface::rawList()
     }
 
     QVector<QPair<QByteArray, PinState>> result;
-    forever {
+    Q_FOREVER {
         auto next = query.next();
         if (!next.ok) {
             qCWarning(lcDb) << "database error:" << query.error();

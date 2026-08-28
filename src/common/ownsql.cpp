@@ -323,7 +323,7 @@ auto SqlQuery::next() -> NextResult
     const bool firstStep = !sqlite3_stmt_busy(_stmt);
 
     int n = 0;
-    forever {
+    Q_FOREVER {
         _errId = sqlite3_step(_stmt);
         if (n < SQLITE_REPEAT_COUNT && firstStep && (_errId == SQLITE_LOCKED || _errId == SQLITE_BUSY)) {
             sqlite3_reset(_stmt); // not necessary after sqlite version 3.6.23.1

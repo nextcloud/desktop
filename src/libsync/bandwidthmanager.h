@@ -32,7 +32,7 @@ public:
     bool usingAbsoluteDownloadLimit() { return _currentDownloadLimit > 0; }
 
 
-public slots:
+public Q_SLOTS:
     void registerUploadDevice(OCC::UploadDevice *);
     void unregisterUploadDevice(QObject *);
 

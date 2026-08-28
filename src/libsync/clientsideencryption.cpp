@@ -1038,7 +1038,7 @@ void ClientSideEncryption::initialize(QWidget *settingsDialog)
     qCInfo(lcCse()) << "Initializing";
     if (!_account->capabilities().clientSideEncryptionAvailable()) {
         qCInfo(lcCse()) << "No Client side encryption available on server.";
-        emit initializationFinished();
+        Q_EMIT initializationFinished();
         return;
     }
 
@@ -1058,7 +1058,7 @@ void ClientSideEncryption::initialize(QWidget *settingsDialog)
                 Q_EMIT finishedDiscoveryEncryptionUsbToken();
             });
         } else {
-            emit initializationFinished();
+            Q_EMIT initializationFinished();
         }
     } else {
         fetchCertificateFromKeyChain();
@@ -1563,10 +1563,10 @@ void ClientSideEncryption::publicKeyFetchedForUserId(QKeychain::Job *incoming)
     Q_ASSERT(readJob);
 
     if (readJob->error() != NoError || readJob->binaryData().isEmpty()) {
-        emit certificateFetchedFromKeychain(QSslCertificate{});
+        Q_EMIT certificateFetchedFromKeychain(QSslCertificate{});
         return;
     }
-    emit certificateFetchedFromKeychain(QSslCertificate(readJob->binaryData(), QSsl::Pem));
+    Q_EMIT certificateFetchedFromKeychain(QSslCertificate(readJob->binaryData(), QSsl::Pem));
 }
 
 void ClientSideEncryption::privateKeyFetched(Job *incoming)
@@ -1674,7 +1674,7 @@ void ClientSideEncryption::writeCertificate(const QString &userId, const QSslCer
     connect(job, &WritePasswordJob::finished, job, [this, certificate](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Certificate stored in keychain";
-        emit certificateWriteComplete(certificate);
+        Q_EMIT certificateWriteComplete(certificate);
     });
     job->start();
 }
@@ -1684,7 +1684,7 @@ void ClientSideEncryption::completeHardwareTokenInitialization(QWidget *settings
     if (_usbTokenInformation.isSetup()) {
         initializeHardwareTokenEncryption(settingsDialog);
     } else {
-        emit initializationFinished();
+        Q_EMIT initializationFinished();
     }
 }
 
@@ -1805,13 +1805,13 @@ void ClientSideEncryption::getUsersPublicKeyFromServer(const QStringList &userId
                     results.insert(userId, QSslCertificate(publicKeys.value(userId).toString().toLocal8Bit(), QSsl::Pem));
                 }
             }
-            emit certificatesFetchedFromServer(results);
+            Q_EMIT certificatesFetchedFromServer(results);
         } else if (retCode == 404) {
             qCInfo(lcCse()) << "No public key on the server";
-            emit certificatesFetchedFromServer({});
+            Q_EMIT certificatesFetchedFromServer({});
         } else {
             qCInfo(lcCse()) << "Error while requesting public keys for users: " << retCode;
-            emit certificatesFetchedFromServer({});
+            Q_EMIT certificatesFetchedFromServer({});
         }
     });
     QUrlQuery urlQuery;
@@ -2107,7 +2107,7 @@ void ClientSideEncryption::sendPublicKey()
         case 200:
         case 409:
             saveCertificateIdentification();
-            emit initializationFinished();
+            Q_EMIT initializationFinished();
 
             break;
         default:
@@ -2251,7 +2251,7 @@ void ClientSideEncryption::encryptPrivateKey()
             writePrivateKey();
             writeCertificate();
             writeMnemonic([this] () {
-                emit initializationFinished(true);
+                Q_EMIT initializationFinished(true);
             });
             break;
         default:
@@ -2326,7 +2326,7 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
         }
     }
 
-    emit initializationFinished();
+    Q_EMIT initializationFinished();
 }
 
 void ClientSideEncryption::getPrivateKeyFromServer()
@@ -2338,11 +2338,11 @@ void ClientSideEncryption::getPrivateKeyFromServer()
             decryptPrivateKey(key.toLocal8Bit());
         } else if (retCode == 404) {
             qCWarning(lcCse) << "No private key on the server: setup is incomplete.";
-            emit initializationFinished();
+            Q_EMIT initializationFinished();
             return;
         } else {
             qCWarning(lcCse) << "Error while requesting public key: " << retCode;
-            emit initializationFinished();
+            Q_EMIT initializationFinished();
             return;
         }
     });

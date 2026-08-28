@@ -183,8 +183,8 @@ void AccountWizardController::setServerUrl(const QString &serverUrl)
     }
 
     _serverUrl = serverUrl;
-    emit serverUrlChanged();
-    emit proxySettingsChanged();
+    Q_EMIT serverUrlChanged();
+    Q_EMIT proxySettingsChanged();
 }
 
 bool AccountWizardController::serverUrlEditable() const
@@ -224,7 +224,7 @@ void AccountWizardController::setOverrideServerIndex(int index)
 
     _overrideServerIndex = index;
     setServerUrl(_overrideServerUrls.at(index));
-    emit overrideServerSelectionChanged();
+    Q_EMIT overrideServerSelectionChanged();
 }
 
 bool AccountWizardController::setServerUrlForLoginFlow(const QUrl &serverUrl)
@@ -443,7 +443,7 @@ void AccountWizardController::setProxyMode(int proxyMode)
     }
 
     if (_proxySettings._proxyType != previousProxyType) {
-        emit proxySettingsChanged();
+        Q_EMIT proxySettingsChanged();
     }
 }
 
@@ -463,7 +463,7 @@ void AccountWizardController::setManualProxyType(int manualProxyType)
         return;
     }
     _proxySettings._proxyType = proxyType;
-    emit proxySettingsChanged();
+    Q_EMIT proxySettingsChanged();
 }
 
 QString AccountWizardController::proxyHost() const
@@ -477,7 +477,7 @@ void AccountWizardController::setProxyHost(const QString &proxyHost)
         return;
     }
     _proxySettings._host = proxyHost;
-    emit proxySettingsChanged();
+    Q_EMIT proxySettingsChanged();
 }
 
 int AccountWizardController::proxyPort() const
@@ -492,7 +492,7 @@ void AccountWizardController::setProxyPort(int proxyPort)
         return;
     }
     _proxySettings._port = static_cast<quint16>(boundedProxyPort);
-    emit proxySettingsChanged();
+    Q_EMIT proxySettingsChanged();
 }
 
 bool AccountWizardController::proxyAuthenticationRequired() const
@@ -509,7 +509,7 @@ void AccountWizardController::setProxyAuthenticationRequired(bool proxyAuthentic
         return;
     }
     _proxySettings._needsAuth = proxyAuthentication;
-    emit proxySettingsChanged();
+    Q_EMIT proxySettingsChanged();
 }
 
 QString AccountWizardController::proxyUser() const
@@ -523,7 +523,7 @@ void AccountWizardController::setProxyUser(const QString &proxyUser)
         return;
     }
     _proxySettings._user = proxyUser;
-    emit proxySettingsChanged();
+    Q_EMIT proxySettingsChanged();
 }
 
 QString AccountWizardController::proxyPassword() const
@@ -537,7 +537,7 @@ void AccountWizardController::setProxyPassword(const QString &proxyPassword)
         return;
     }
     _proxySettings._password = proxyPassword;
-    emit proxySettingsChanged();
+    Q_EMIT proxySettingsChanged();
 }
 
 bool AccountWizardController::proxySettingsValid() const
@@ -572,7 +572,7 @@ void AccountWizardController::setBasicAuthUser(const QString &user)
     }
 
     _basicAuthUser = user;
-    emit basicAuthChanged();
+    Q_EMIT basicAuthChanged();
 }
 
 QString AccountWizardController::basicAuthPassword() const
@@ -587,7 +587,7 @@ void AccountWizardController::setBasicAuthPassword(const QString &password)
     }
 
     _basicAuthPassword = password;
-    emit basicAuthChanged();
+    Q_EMIT basicAuthChanged();
 }
 
 bool AccountWizardController::basicAuthValid() const
@@ -627,7 +627,7 @@ void AccountWizardController::setClientCertificatePassword(const QString &passwo
     }
 
     _clientCertificatePassword = password;
-    emit clientCertificateChanged();
+    Q_EMIT clientCertificateChanged();
 }
 
 QString AccountWizardController::clientCertificateError() const
@@ -960,7 +960,7 @@ void AccountWizardController::openProxySettings()
         return;
     }
 
-    emit proxySettingsRequested();
+    Q_EMIT proxySettingsRequested();
 }
 
 void AccountWizardController::pollNow()
@@ -1201,7 +1201,7 @@ void AccountWizardController::fetchRootFolderSize()
 
 void AccountWizardController::cancel()
 {
-    emit finished(QDialog::Rejected);
+    Q_EMIT finished(QDialog::Rejected);
 }
 
 void AccountWizardController::goBack()
@@ -1223,7 +1223,7 @@ void AccountWizardController::finish()
     }
 
     if (!_account) {
-        emit finished(QDialog::Rejected);
+        Q_EMIT finished(QDialog::Rejected);
         return;
     }
 
@@ -1251,7 +1251,7 @@ void AccountWizardController::finish()
 void AccountWizardController::skipFolderConfiguration()
 {
     if (!_account) {
-        emit finished(QDialog::Rejected);
+        Q_EMIT finished(QDialog::Rejected);
         return;
     }
 
@@ -1259,7 +1259,7 @@ void AccountWizardController::skipFolderConfiguration()
     _account = AccountManager::createAccount();
     clearOneShotOverrides();
     setCurrentStep(CompletedStep);
-    emit finished(QDialog::Accepted);
+    Q_EMIT finished(QDialog::Accepted);
 }
 
 AccountState *AccountWizardController::applyAccountChanges()
@@ -1318,7 +1318,7 @@ void AccountWizardController::setLocalSyncFolder(const QString &localSyncFolder,
 
     _localSyncFolder = normalizedLocalSyncFolder;
     _localSyncFolderSelected = localSyncFolderSelected;
-    emit localSyncFolderChanged();
+    Q_EMIT localSyncFolderChanged();
     validateLocalSyncFolder();
 }
 
@@ -1400,18 +1400,18 @@ void AccountWizardController::validateLocalSyncFolder()
 
     if (_localSyncFolderFreeSpace != localSyncFolderFreeSpace) {
         _localSyncFolderFreeSpace = localSyncFolderFreeSpace;
-        emit localSyncFolderFreeSpaceChanged();
+        Q_EMIT localSyncFolderFreeSpaceChanged();
     }
 
     if (_localSyncFolderError != localSyncFolderError) {
         _localSyncFolderError = localSyncFolderError;
-        emit localSyncFolderErrorChanged();
+        Q_EMIT localSyncFolderErrorChanged();
     }
 
     if (_localSyncFolderValid != localSyncFolderValid) {
         _localSyncFolderValid = localSyncFolderValid;
         if (oldCanFinish != canFinish()) {
-            emit canFinishChanged();
+            Q_EMIT canFinishChanged();
         }
     }
 }
@@ -1572,7 +1572,7 @@ void AccountWizardController::completeRemoteFolderCheck()
     setBusy(false);
     clearOneShotOverrides();
     setCurrentStep(CompletedStep);
-    emit finished(QDialog::Accepted);
+    Q_EMIT finished(QDialog::Accepted);
 }
 
 bool AccountWizardController::createSyncFolder(AccountState *accountState)
@@ -1654,14 +1654,14 @@ void AccountWizardController::setSyncMode(int syncMode)
     const auto oldLocalSyncFolderRequired = localSyncFolderRequired();
     const auto oldCanFinish = canFinish();
     _syncMode = newSyncMode;
-    emit syncModeChanged();
+    Q_EMIT syncModeChanged();
 
     if (oldLocalSyncFolderRequired != localSyncFolderRequired()) {
-        emit localSyncFolderRequiredChanged();
+        Q_EMIT localSyncFolderRequiredChanged();
     }
     validateLocalSyncFolder();
     if (oldCanFinish != canFinish()) {
-        emit canFinishChanged();
+        Q_EMIT canFinishChanged();
     }
     promptForInitialLocalSyncFolderIfNeeded();
 }
@@ -1744,7 +1744,7 @@ void AccountWizardController::openSelectiveSync()
 void AccountWizardController::openAdvancedOptions()
 {
     if (hasAdvancedOptions()) {
-        emit advancedOptionsRequested();
+        Q_EMIT advancedOptionsRequested();
     }
 }
 
@@ -1754,7 +1754,7 @@ void AccountWizardController::setAskBeforeLargeFolders(bool ask)
         return;
     }
     _askBeforeLargeFolders = ask;
-    emit askBeforeLargeFoldersChanged();
+    Q_EMIT askBeforeLargeFoldersChanged();
 }
 
 void AccountWizardController::setLargeFolderThresholdMb(int thresholdMb)
@@ -1764,7 +1764,7 @@ void AccountWizardController::setLargeFolderThresholdMb(int thresholdMb)
         return;
     }
     _largeFolderThresholdMb = boundedThreshold;
-    emit largeFolderThresholdMbChanged();
+    Q_EMIT largeFolderThresholdMbChanged();
 }
 
 void AccountWizardController::setAskBeforeExternalStorage(bool ask)
@@ -1773,7 +1773,7 @@ void AccountWizardController::setAskBeforeExternalStorage(bool ask)
         return;
     }
     _askBeforeExternalStorage = ask;
-    emit askBeforeExternalStorageChanged();
+    Q_EMIT askBeforeExternalStorageChanged();
 }
 
 void AccountWizardController::setCurrentStep(Step step)
@@ -1782,7 +1782,7 @@ void AccountWizardController::setCurrentStep(Step step)
         return;
     }
     _currentStep = step;
-    emit currentStepChanged();
+    Q_EMIT currentStepChanged();
     promptForInitialLocalSyncFolderIfNeeded();
 }
 
@@ -1792,7 +1792,7 @@ void AccountWizardController::setBusy(bool busy)
         return;
     }
     _busy = busy;
-    emit busyChanged();
+    Q_EMIT busyChanged();
 }
 
 void AccountWizardController::setAuthPolling(bool authPolling)
@@ -1801,7 +1801,7 @@ void AccountWizardController::setAuthPolling(bool authPolling)
         return;
     }
     _authPolling = authPolling;
-    emit authPollingChanged();
+    Q_EMIT authPollingChanged();
 }
 
 void AccountWizardController::setErrorText(const QString &errorText)
@@ -1810,7 +1810,7 @@ void AccountWizardController::setErrorText(const QString &errorText)
         return;
     }
     _errorText = errorText;
-    emit errorTextChanged();
+    Q_EMIT errorTextChanged();
 }
 
 void AccountWizardController::setLoginUrl(const QUrl &loginUrl)
@@ -1819,7 +1819,7 @@ void AccountWizardController::setLoginUrl(const QUrl &loginUrl)
         return;
     }
     _loginUrl = loginUrl;
-    emit loginUrlChanged();
+    Q_EMIT loginUrlChanged();
 }
 
 void AccountWizardController::setAuthStatusText(const QString &authStatusText)
@@ -1828,7 +1828,7 @@ void AccountWizardController::setAuthStatusText(const QString &authStatusText)
         return;
     }
     _authStatusText = authStatusText;
-    emit authStatusTextChanged();
+    Q_EMIT authStatusTextChanged();
 }
 
 void AccountWizardController::setUserDisplayName(const QString &userDisplayName)
@@ -1837,7 +1837,7 @@ void AccountWizardController::setUserDisplayName(const QString &userDisplayName)
         return;
     }
     _userDisplayName = userDisplayName;
-    emit userDisplayNameChanged();
+    Q_EMIT userDisplayNameChanged();
 }
 
 void AccountWizardController::setServerDisplayName(const QString &serverDisplayName)
@@ -1846,7 +1846,7 @@ void AccountWizardController::setServerDisplayName(const QString &serverDisplayN
         return;
     }
     _serverDisplayName = serverDisplayName;
-    emit serverDisplayNameChanged();
+    Q_EMIT serverDisplayNameChanged();
 }
 
 void AccountWizardController::setAvatarUrl(const QString &avatarUrl)
@@ -1855,7 +1855,7 @@ void AccountWizardController::setAvatarUrl(const QString &avatarUrl)
         return;
     }
     _avatarUrl = avatarUrl;
-    emit avatarUrlChanged();
+    Q_EMIT avatarUrlChanged();
 }
 
 void AccountWizardController::setSyncEverythingDescription(const QString &syncEverythingDescription)
@@ -1864,7 +1864,7 @@ void AccountWizardController::setSyncEverythingDescription(const QString &syncEv
         return;
     }
     _syncEverythingDescription = syncEverythingDescription;
-    emit syncEverythingDescriptionChanged();
+    Q_EMIT syncEverythingDescriptionChanged();
 }
 
 void AccountWizardController::setNeedsSyncOptions(bool needsSyncOptions)
@@ -1873,7 +1873,7 @@ void AccountWizardController::setNeedsSyncOptions(bool needsSyncOptions)
         return;
     }
     _needsSyncOptions = needsSyncOptions;
-    emit needsSyncOptionsChanged();
+    Q_EMIT needsSyncOptionsChanged();
 }
 
 void AccountWizardController::setPublicShareSetup(bool publicShareSetup)
@@ -1883,7 +1883,7 @@ void AccountWizardController::setPublicShareSetup(bool publicShareSetup)
     }
 
     _publicShareSetup = publicShareSetup;
-    emit publicShareSetupChanged();
+    Q_EMIT publicShareSetupChanged();
 }
 
 void AccountWizardController::setServerUrlEditable(bool editable)
@@ -1892,7 +1892,7 @@ void AccountWizardController::setServerUrlEditable(bool editable)
         return;
     }
     _serverUrlEditable = editable;
-    emit serverUrlEditableChanged();
+    Q_EMIT serverUrlEditableChanged();
 }
 
 void AccountWizardController::discardFlow2Auth()
@@ -1928,7 +1928,7 @@ void AccountWizardController::handleSecureConnectionFailure(QNetworkReply *reply
     }
 
     _secureConnectionFailedUrl = failedUrl;
-    emit secureConnectionFailed(failedUrl.host(), retryHttpOnly);
+    Q_EMIT secureConnectionFailed(failedUrl.host(), retryHttpOnly);
 }
 
 void AccountWizardController::retrySecureConnectionWithoutTls()
@@ -1951,7 +1951,7 @@ void AccountWizardController::useClientCertificateForSecureConnection()
     }
 
     _secureConnectionFailedUrl = QUrl();
-    emit clientCertificateDialogRequested();
+    Q_EMIT clientCertificateDialogRequested();
 }
 
 void AccountWizardController::chooseClientCertificate()
@@ -1968,14 +1968,14 @@ void AccountWizardController::chooseClientCertificate()
     const auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(fileUrl);
     if (!scopedAccess->isValid()) {
         _clientCertificateError = tr("Could not access the selected certificate file.");
-        emit clientCertificateChanged();
+        Q_EMIT clientCertificateChanged();
         return;
     }
 #endif
 
     _clientCertificatePath = fileUrl.toLocalFile();
     _clientCertificateError.clear();
-    emit clientCertificateChanged();
+    Q_EMIT clientCertificateChanged();
 }
 
 bool AccountWizardController::submitClientCertificate()
@@ -1988,7 +1988,7 @@ bool AccountWizardController::submitClientCertificate()
     if (!certFile.open(QFile::ReadOnly)) {
         qCWarning(lcAccountWizardController) << "Failed to open certificate file:" << _clientCertificatePath;
         _clientCertificateError = tr("Could not access the selected certificate file.");
-        emit clientCertificateChanged();
+        Q_EMIT clientCertificateChanged();
         return false;
     }
 
@@ -2004,7 +2004,7 @@ bool AccountWizardController::submitClientCertificate()
             &_clientSslCaCertificates,
             certPassword)) {
         _clientCertificateError = tr("Could not load certificate. Maybe wrong password?");
-        emit clientCertificateChanged();
+        Q_EMIT clientCertificateChanged();
         return false;
     }
 
@@ -2021,7 +2021,7 @@ void AccountWizardController::clearClientCertificateInput()
     _clientCertificatePath.clear();
     _clientCertificatePassword.clear();
     _clientCertificateError.clear();
-    emit clientCertificateChanged();
+    Q_EMIT clientCertificateChanged();
 }
 
 bool AccountWizardController::checkDowngradeAdvised(QNetworkReply *reply) const

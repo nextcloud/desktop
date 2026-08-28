@@ -63,7 +63,7 @@ bool MoveJob::finished()
     qCInfo(lcMoveJob) << "MOVE of" << reply()->request().url() << "FINISHED WITH STATUS"
                       << replyStatusString();
 
-    emit finishedSignal();
+    Q_EMIT finishedSignal();
     return true;
 }
 
@@ -181,7 +181,7 @@ void PropagateRemoteMove::abort(PropagatorJob::AbortType abortType)
         _job->reply()->abort();
 
     if (abortType == AbortType::Asynchronous) {
-        emit abortFinished();
+        Q_EMIT abortFinished();
     }
 }
 

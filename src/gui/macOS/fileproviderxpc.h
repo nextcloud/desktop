@@ -30,7 +30,7 @@ public:
     [[nodiscard]] bool fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const;
     [[nodiscard]] bool processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const;
 
-public slots:
+public Q_SLOTS:
     void connectToFileProviderDomains();
     void authenticateFileProviderDomains();
     void authenticateFileProviderDomain(const QString &fileProviderDomainIdentifier) const;
@@ -38,7 +38,7 @@ public slots:
 
     void setIgnoreList() const;
 
-private slots:
+private Q_SLOTS:
     void slotAccountStateChanged(AccountState::State state) const;
 
 private:

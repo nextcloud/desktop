@@ -29,3 +29,5 @@ ecm_add_qml_module(nextcloudGuiSearch
 )
 
 target_link_libraries(nextcloudGuiSearch PRIVATE nextcloudCore)
+target_compile_definitions(nextcloudGuiSearch PRIVATE QT_NO_KEYWORDS)
+target_compile_definitions(nextcloudGuiSearchplugin PRIVATE QT_NO_KEYWORDS)

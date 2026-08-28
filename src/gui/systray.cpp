@@ -191,7 +191,7 @@ void Systray::create()
         }
     }
     hideWindow();
-    emit activated(QSystemTrayIcon::ActivationReason::Unknown);
+    Q_EMIT activated(QSystemTrayIcon::ActivationReason::Unknown);
     slotUpdateSyncPausedState();
     connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &Systray::slotUpdateSyncPausedState);
 }
@@ -1008,13 +1008,13 @@ void Systray::slotUpdateSyncPausedState()
         connect(folder, &Folder::syncPausedChanged, this, &Systray::slotUpdateSyncPausedState, Qt::UniqueConnection);
         if (!folder->syncPaused()) {
             _syncIsPaused = false;
-            emit syncIsPausedChanged();
+            Q_EMIT syncIsPausedChanged();
             return;
         }
     }
 
     _syncIsPaused = true;
-    emit syncIsPausedChanged();
+    Q_EMIT syncIsPausedChanged();
 }
 
 void Systray::slotUnpauseAllFolders()
@@ -1031,7 +1031,7 @@ void Systray::slotSyncFoldersChanged(const OCC::Folder::Map &folderMap)
 {
     if (const auto currentAnySyncFolders = !folderMap.isEmpty(); currentAnySyncFolders != _anySyncFolders) {
         _anySyncFolders = currentAnySyncFolders;
-        emit anySyncFoldersChanged();
+        Q_EMIT anySyncFoldersChanged();
     }
 }
 
@@ -1172,7 +1172,7 @@ void Systray::setSyncIsPaused(const bool syncIsPaused)
     } else {
         slotUnpauseAllFolders();
     }
-    emit syncIsPausedChanged();
+    Q_EMIT syncIsPausedChanged();
 }
 
 bool Systray::anySyncFolders() const

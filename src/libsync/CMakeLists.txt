@@ -247,6 +247,7 @@ target_compile_features(nextcloudsync
 )
 
 target_compile_definitions(nextcloudsync PRIVATE OPENSSL_SUPPRESS_DEPRECATED)
+target_compile_definitions(nextcloudsync PRIVATE QT_NO_KEYWORDS)
 
 if (NOT TOKEN_AUTH_ONLY)
     find_package(Qt${QT_MAJOR_VERSION} COMPONENTS REQUIRED Widgets Svg)

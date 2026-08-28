@@ -582,7 +582,7 @@ QString Theme::systrayIconFlavor(bool mono) const
 void Theme::setSystrayUseMonoIcons(bool mono)
 {
     _mono = mono;
-    emit systrayUseMonoIconsChanged(mono);
+    Q_EMIT systrayUseMonoIconsChanged(mono);
 }
 
 bool Theme::systrayUseMonoIcons() const
@@ -1138,14 +1138,14 @@ void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
     if (_overrideServerUrl != validOverrideServerUrl) {
         _overrideServerUrl = validOverrideServerUrl;
         updateMultipleOverrideServers();
-        emit overrideServerUrlChanged();
+        Q_EMIT overrideServerUrlChanged();
     }
 }
 void Theme::setForceOverrideServerUrl(bool forceOverride)
 {
     if (_forceOverrideServerUrl != forceOverride) {
         _forceOverrideServerUrl = forceOverride;
-        emit forceOverrideServerUrlChanged();
+        Q_EMIT forceOverrideServerUrlChanged();
     }
 }
 
@@ -1153,7 +1153,7 @@ void Theme::setVfsEnabled(bool enabled)
 {
     if (_isVfsEnabled != enabled) {
         _isVfsEnabled = enabled;
-        emit vfsEnabledChanged();
+        Q_EMIT vfsEnabledChanged();
     }
 }
 
@@ -1161,7 +1161,7 @@ void Theme::setStartLoginFlowAutomatically(bool startLoginFlowAuto)
 {
     if (_startLoginFlowAutomatically != startLoginFlowAuto) {
         _startLoginFlowAutomatically = startLoginFlowAuto;
-        emit startLoginFlowAutomaticallyChanged();
+        Q_EMIT startLoginFlowAutomaticallyChanged();
     }
 }
 

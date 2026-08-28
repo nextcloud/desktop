@@ -116,10 +116,10 @@ bool RequestEtagJob::finished()
                 }
             }
         }
-        emit etagRetrieved(etag, QDateTime::fromString(QString::fromUtf8(_responseTimestamp), Qt::RFC2822Date));
-        emit finishedWithResult(etag);
+        Q_EMIT etagRetrieved(etag, QDateTime::fromString(QString::fromUtf8(_responseTimestamp), Qt::RFC2822Date));
+        Q_EMIT finishedWithResult(etag);
     } else {
-        emit finishedWithResult(HttpError{ httpCode, errorString() });
+        Q_EMIT finishedWithResult(HttpError{ httpCode, errorString() });
     }
     return true;
 }
@@ -278,7 +278,7 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo
                     if (currentHref.endsWith('/')) {
                         currentHref.chop(1);
                     }
-                    emit directoryListingIterated(currentHref, currentHttp200Properties);
+                    Q_EMIT directoryListingIterated(currentHref, currentHttp200Properties);
                     currentHref.clear();
                     currentHttp200Properties.clear();
                 } else if (reader.name() == QStringLiteral("propstat")) {
@@ -303,8 +303,8 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo
         qCWarning(lcLsColJob) << "ERROR no WebDAV response?" << xml;
         return false;
     } else {
-        emit directoryListingSubfolders(folders);
-        emit finishedWithoutError();
+        Q_EMIT directoryListingSubfolders(folders);
+        Q_EMIT finishedWithoutError();
     }
     return true;
 }
@@ -559,11 +559,11 @@ bool LsColJob::finished()
         const auto expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/dav/folder"
         if (!parser.parse(reply()->readAll(), &_folderInfos, expectedPath)) {
             // XML parse error
-            emit finishedWithError(reply());
+            Q_EMIT finishedWithError(reply());
         }
     } else {
         // wrong content type, wrong HTTP code or any other network error
-        emit finishedWithError(reply());
+        Q_EMIT finishedWithError(reply());
     }
 
     this->deleteLater();
@@ -600,7 +600,7 @@ void CheckServerJob::onTimedOut()
 {
     qCWarning(lcCheckServerJob) << "TIMEOUT";
     if (reply() && reply()->isRunning()) {
-        emit timeout(reply()->url());
+        Q_EMIT timeout(reply()->url());
     } else if (!reply()) {
         qCWarning(lcCheckServerJob) << "Timeout even there was no reply?";
     }
@@ -689,7 +689,7 @@ bool CheckServerJob::finished()
     int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (body.isEmpty() || httpStatus != 200) {
         qCWarning(lcCheckServerJob) << "error: status.php replied " << httpStatus << body;
-        emit instanceNotFound(reply());
+        Q_EMIT instanceNotFound(reply());
     } else {
         QJsonParseError error{};
         auto status = QJsonDocument::fromJson(body, &error);
@@ -700,10 +700,10 @@ bool CheckServerJob::finished()
 
         qCInfo(lcCheckServerJob) << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
         if (status.object().contains("installed")) {
-            emit instanceFound(_serverUrl, status.object());
+            Q_EMIT instanceFound(_serverUrl, status.object());
         } else {
             qCWarning(lcCheckServerJob) << "No proper answer on " << reply()->url();
-            emit instanceNotFound(reply());
+            Q_EMIT instanceNotFound(reply());
         }
     }
     return true;
@@ -728,7 +728,7 @@ void CheckRedirectCostFreeUrlJob::onTimedOut()
 {
     qCDebug(lcCheckRedirectCostFreeUrlJob) << "TIMEOUT";
     if (reply() && reply()->isRunning()) {
-        emit timeout(reply()->url());
+        Q_EMIT timeout(reply()->url());
     } else if (!reply()) {
         qCDebug(lcCheckRedirectCostFreeUrlJob) << "Timeout without a reply?";
     }
@@ -742,7 +742,7 @@ bool CheckRedirectCostFreeUrlJob::finished()
         const auto redirectionTarget = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
         qCDebug(lcCheckRedirectCostFreeUrlJob) << "Redirecting cost-free URL" << reply()->url() << " to" << redirectionTarget;
     }
-    emit jobFinished(statusCode);
+    Q_EMIT jobFinished(statusCode);
     return true;
 }
 /*********************************************************************************************/
@@ -811,17 +811,17 @@ bool PropfindJob::finished()
 
         if (const auto res = domDocument.setContent(reply(), QDomDocument::ParseOption::UseNamespaceProcessing); !res) {
             qCWarning(lcPropfindJob) << "XML parser error: " << res.errorMessage << res.errorLine << res.errorColumn;
-            emit finishedWithError(reply());
+            Q_EMIT finishedWithError(reply());
 
         } else {
             const auto parsedItems = processPropfindDomDocument(domDocument);
-            emit result(parsedItems);
+            Q_EMIT result(parsedItems);
         }
 
     } else {
         qCWarning(lcPropfindJob) << "*not* successful, http result code is" << http_result_code
                                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
-        emit finishedWithError(reply());
+        Q_EMIT finishedWithError(reply());
     }
 
     return true;
@@ -989,7 +989,7 @@ bool AvatarJob::finished()
             }
         }
     }
-    emit avatarPixmap(avImage);
+    Q_EMIT avatarPixmap(avImage);
     return true;
 }
 #endif
@@ -1059,11 +1059,11 @@ bool ProppatchJob::finished()
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if (http_result_code == 207) {
-        emit success();
+        Q_EMIT success();
     } else {
         qCWarning(lcProppatchJob) << "*not* successful, http result code is" << http_result_code
                                   << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
-        emit finishedWithError();
+        Q_EMIT finishedWithError();
     }
     return true;
 }
@@ -1083,7 +1083,7 @@ void EntityExistsJob::start()
 
 bool EntityExistsJob::finished()
 {
-    emit exists(reply());
+    Q_EMIT exists(reply());
     return true;
 }
 
@@ -1111,15 +1111,17 @@ void JsonApiJob::start()
 
 bool JsonApiJob::finished()
 {
-    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
-                         << replyStatusString();
-
     int statusCode = 0;
     int httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url()
+                         << "FINISHED WITH STATUS" << replyStatusString()
+                         << "with http status code" << httpStatusCode;
+
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        emit jsonReceived(QJsonDocument(), statusCode);
+        Q_EMIT jsonReceived(QJsonDocument(), statusCode);
         return true;
     }
 
@@ -1132,7 +1134,7 @@ bool JsonApiJob::finished()
             statusCode = rexMatch.captured(1).toInt();
         }
     } else if(jsonStr.isEmpty() && httpStatusCode == notModifiedStatusCode){
-        qCWarning(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
+        qCDebug(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
         statusCode = httpStatusCode;
     } else {
         static const QRegularExpression rex(R"("statuscode":(\d+))");
@@ -1145,7 +1147,7 @@ bool JsonApiJob::finished()
 
     // save new ETag value
     if (const auto etagHeader = reply()->header(QNetworkRequest::ETagHeader); etagHeader.isValid()) {
-        emit etagResponseHeaderReceived(etagHeader.toByteArray(), statusCode);
+        Q_EMIT etagResponseHeaderReceived(etagHeader.toByteArray(), statusCode);
     }
 
     QJsonParseError error{};
@@ -1153,11 +1155,11 @@ bool JsonApiJob::finished()
     // empty or invalid response and status code is != 304 because jsonStr is expected to be empty
     if ((error.error != QJsonParseError::NoError || json.isNull()) && httpStatusCode != notModifiedStatusCode) {
         qCWarning(lcJsonApiJob) << "invalid JSON!" << jsonStr << error.errorString();
-        emit jsonReceived(json, statusCode);
+        Q_EMIT jsonReceived(json, statusCode);
         return true;
     }
 
-    emit jsonReceived(json, statusCode);
+    Q_EMIT jsonReceived(json, statusCode);
     return true;
 }
 
@@ -1242,7 +1244,7 @@ void DetermineAuthTypeJob::checkAllDone()
     }
 
     qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
-    emit authType(result);
+    Q_EMIT authType(result);
     deleteLater();
 }
 
@@ -1261,7 +1263,7 @@ QNetworkReply *SimpleNetworkJob::startRequest(const QByteArray &verb, const QUrl
 
 bool SimpleNetworkJob::finished()
 {
-    emit finishedSignal(reply());
+    Q_EMIT finishedSignal(reply());
     return true;
 }
 
@@ -1292,7 +1294,7 @@ QNetworkReply *SimpleFileJob::startRequest(
 bool SimpleFileJob::finished()
 {
     qCInfo(lcSimpleFileJob) << _verb << "for" << reply()->request().url() << "FINISHED WITH STATUS" << replyStatusString();
-    emit finishedSignal(reply());
+    Q_EMIT finishedSignal(reply());
     return true;
 }
 
@@ -1321,13 +1323,13 @@ bool DeleteApiJob::finished()
 
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << httpStatus;
-        emit result(httpStatus);
+        Q_EMIT result(httpStatus);
         return true;
     }
 
     const auto replyData = QString::fromUtf8(reply()->readAll());
     qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
-    emit result(httpStatus);
+    Q_EMIT result(httpStatus);
     return SimpleFileJob::finished();
 }
 
@@ -1431,7 +1433,7 @@ bool SimpleApiJob::finished()
 {
     const auto httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     qCWarning(lcSimpleApiJob) << "result: " << path() << errorString() << httpStatusCode;
-    emit resultReceived(httpStatusCode);
+    Q_EMIT resultReceived(httpStatusCode);
     return true;
 }
 

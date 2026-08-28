@@ -44,17 +44,17 @@ public:
     [[nodiscard]] FileTagModel *fileTagModel() const;
     [[nodiscard]] bool sharingAvailable() const;
 
-public slots:
+public Q_SLOTS:
     void setLocalPath(const QString &localPath);
 
-signals:
+Q_SIGNALS:
     void localPathChanged();
     void fileChanged();
     void lockExpireStringChanged();
     void isFolderChanged();
     void fileTagModelChanged();
 
-private slots:
+private Q_SLOTS:
     void refreshFileDetails();
     void updateLockExpireString();
     void updateFileTagModel();

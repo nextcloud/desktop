@@ -134,7 +134,7 @@ void WebFlowCredentials::fetchFromKeychain(const QString &appName) {
     fetchUser();
 
     if (ready()) {
-        emit fetched();
+        Q_EMIT fetched();
     } else {
         qCInfo(lcWebFlowCredentials()) << "Fetch from keychain!";
         fetchFromKeychainHelper();
@@ -175,7 +175,7 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
     _ready = true;
     _credentialsValid = true;
     persist();
-    emit asked();
+    Q_EMIT asked();
 }
 
 void WebFlowCredentials::slotAskFromUserCancelled() {
@@ -187,7 +187,7 @@ void WebFlowCredentials::slotAskFromUserCancelled() {
 
     qCDebug(lcWebFlowCredentials()) << "User cancelled reauth!";
 
-    emit asked();
+    Q_EMIT asked();
 }
 
 bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
@@ -321,7 +321,7 @@ void WebFlowCredentials::slotWriteJobDone(QKeychain::Job *job)
     default:
         qCWarning(lcWebFlowCredentials) << "Error while writing password" << job->errorString();
     }
-    emit credentialsPersisted();
+    Q_EMIT credentialsPersisted();
 }
 
 void WebFlowCredentials::invalidateToken() {
@@ -540,7 +540,7 @@ void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
     } else {
         _ready = false;
     }
-    emit fetched();
+    Q_EMIT fetched();
 
     // If keychain data was read from legacy location, wipe these entries and store new ones
     if (_keychainMigration && _ready) {

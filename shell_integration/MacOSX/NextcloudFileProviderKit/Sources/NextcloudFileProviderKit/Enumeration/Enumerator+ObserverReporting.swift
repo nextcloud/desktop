@@ -78,19 +78,23 @@ extension Enumerator {
     ///
     /// Pop the next batch from ``changeBuffer`` and report it.
     ///
-    /// Intermediate batches (`moreComing == true`) return `startAnchor` — the anchor the enumeration was
-    /// invoked with — so that if the drain is interrupted the framework resumes *behind* every
-    /// undelivered item rather than advancing the sync point past changes still sitting in the buffer.
-    /// Only the final batch returns `finalAnchor` (the working set advances to ``currentAnchor``; a
-    /// regular container preserves its incoming anchor).
+    /// Intermediate batches (`moreComing == true`) return a durable continuation anchor. Only the final
+    /// batch returns the buffered `finalAnchor` (the working set advances to ``currentAnchor``; a regular
+    /// container preserves its incoming anchor).
     ///
     func drainChangeBuffer(
         for observer: NSFileProviderChangeObserver,
-        startAnchor: NSFileProviderSyncAnchor,
         finalAnchor: NSFileProviderSyncAnchor,
         suggested: Int?
     ) {
         let batch = changeBuffer.takeBatch(maxItems: effectiveBatchSize(suggested: suggested))
+        let reportedAnchor = if let continuationAnchorRawValue = batch.continuationAnchorRawValue {
+            NSFileProviderSyncAnchor(rawValue: continuationAnchorRawValue)
+        } else if let finalAnchorRawValue = batch.finalAnchorRawValue {
+            NSFileProviderSyncAnchor(rawValue: finalAnchorRawValue)
+        } else {
+            finalAnchor
+        }
         logger.info(
             "Reporting change batch. updated: \(batch.updated.count), deleted: \(batch.deleted.count), moreComing: \(batch.moreComing)",
             [.item: enumeratedItemIdentifier]
@@ -99,7 +103,7 @@ extension Enumerator {
             observer,
             updated: batch.updated,
             deleted: batch.deleted,
-            anchor: batch.moreComing ? startAnchor : finalAnchor,
+            anchor: reportedAnchor,
             moreComing: batch.moreComing,
             account: account,
             remoteInterface: remoteInterface,

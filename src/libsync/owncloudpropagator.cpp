@@ -276,13 +276,8 @@ void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString 
         break;
     }
 
-    if (_item->hasErrorStatus()) {
-        qCWarning(lcPropagator) << "Could not complete propagation of" << _item->destination() << "by" << this << "with status" << _item->_status << "and error:" << _item->_errorString;
-    } else {
-        qCInfo(lcPropagator) << "Completed propagation of" << _item->destination() << "by" << this << "with status" << _item->_status;
-    }
-    emit propagator()->itemCompleted(_item, category);
-    emit finished(_item->_status);
+    propagator()->emitItemCompleted(_item, category);
+    Q_EMIT finished(_item->_status);
 
     if (_item->_status == SyncFileItem::FatalError) {
         // Abort all remaining jobs.
@@ -928,9 +923,19 @@ void OwncloudPropagator::scheduleNextJobImpl()
     }
 }
 
+void OwncloudPropagator::emitItemCompleted(const SyncFileItemPtr &item, ErrorCategory category)
+{
+    if (item->hasErrorStatus()) {
+        qCWarning(lcPropagator) << "Could not complete propagation of" << item->destination() << "by" << this << "with status" << item->_status << "and error:" << item->_errorString;
+    } else {
+        qCInfo(lcPropagator) << "Completed propagation of" << item->destination() << "by" << this << "with status" << item->_status;
+    }
+    Q_EMIT itemCompleted(item, category);
+}
+
 void OwncloudPropagator::reportProgress(const SyncFileItem &item, qint64 bytes)
 {
-    emit progress(item, bytes);
+    Q_EMIT progress(item, bytes);
 }
 
 AccountPtr OwncloudPropagator::account() const
@@ -974,8 +979,8 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
         item->_file, Utility::qDateTimeFromTime_t(conflictModTime), conflictUserName);
     QString conflictFilePath = fullLocalPath(conflictFileName);
 
-    emit touchedFile(fn);
-    emit touchedFile(conflictFilePath);
+    Q_EMIT touchedFile(fn);
+    Q_EMIT touchedFile(conflictFilePath);
 
     if (!FileSystem::rename(fn, conflictFilePath, &renameError)) {
         // If the rename fails, don't replace it.
@@ -983,7 +988,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
         // If the file is locked, we want to retry this sync when it
         // becomes available again.
         if (FileSystem::isFileLocked(fn, FileSystem::LockMode::SharedRead)) {
-            emit seenLockedFile(fn);
+            Q_EMIT seenLockedFile(fn);
         }
 
         if (error)
@@ -1018,7 +1023,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
             conflictItem->_instruction = CSYNC_INSTRUCTION_NEW;
             conflictItem->_modtime = conflictModTime;
             conflictItem->_size = item->_previousSize;
-            emit newItem(conflictItem);
+            Q_EMIT newItem(conflictItem);
             composite->appendTask(conflictItem);
         }
     }
@@ -1047,8 +1052,8 @@ OCC::Optional<QString> OwncloudPropagator::createCaseClashConflict(const SyncFil
     const auto conflictFileName = Utility::makeCaseClashConflictFileName(item->_file, Utility::qDateTimeFromTime_t(conflictModTime));
     const auto conflictFilePath = fullLocalPath(conflictFileName);
 
-    emit touchedFile(filename);
-    emit touchedFile(conflictFilePath);
+    Q_EMIT touchedFile(filename);
+    Q_EMIT touchedFile(conflictFilePath);
 
     qCInfo(lcPropagator) << "rename from" << temporaryDownloadedFile << "to" << conflictFilePath;
     if (QString renameError; !FileSystem::rename(temporaryDownloadedFile, conflictFilePath, &renameError)) {
@@ -1057,7 +1062,7 @@ OCC::Optional<QString> OwncloudPropagator::createCaseClashConflict(const SyncFil
         // If the file is locked, we want to retry this sync when it
         // becomes available again.
         if (FileSystem::isFileLocked(filename, FileSystem::LockMode::SharedRead)) {
-            emit seenLockedFile(filename);
+            Q_EMIT seenLockedFile(filename);
         }
 
         return renameError;
@@ -1233,7 +1238,7 @@ void PropagatorCompositeJob::slotSubJobAbortFinished()
 
     // Emit abort if last job has been aborted
     if (_abortsCount == 0) {
-        emit abortFinished();
+        Q_EMIT abortFinished();
     }
 }
 
@@ -1355,7 +1360,7 @@ void PropagatorCompositeJob::finalize()
     }
 
     _state = Finished;
-    emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
+    Q_EMIT finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
 }
 
 qint64 PropagatorCompositeJob::committedDiskSpace() const
@@ -1457,7 +1462,7 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
             abort(AbortType::Synchronous);
             _state = Finished;
             qCInfo(lcPropagator) << "PropagateDirectory::slotFirstJobFinished" << "emit finished" << status;
-            emit finished(status);
+            Q_EMIT finished(status);
         }
         return;
     }
@@ -1480,7 +1485,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 _item->_errorString = tr("Could not delete file %1 from local DB").arg(_item->_originalFile);
                 qCInfo(lcPropagator) << "PropagateDirectory::slotSubJobsFinished"
                                      << "emit finished" << status;
-                emit finished(status);
+                Q_EMIT finished(status);
                 return;
             }
         }
@@ -1588,7 +1593,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
     }
     _state = Finished;
     qCDebug(lcDirectory()) << "PropagateDirectory::slotSubJobsFinished" << "emit finished" << status;
-    emit finished(status);
+    Q_EMIT finished(status);
 }
 
 PropagateRootDirectory::PropagateRootDirectory(OwncloudPropagator *propagator)
@@ -1621,12 +1626,12 @@ void PropagateRootDirectory::abort(PropagatorJob::AbortType abortType)
         connect(&_subJobs, &PropagatorCompositeJob::abortFinished, this, [this, abortStatus]() {
             abortStatus->subJobsFinished = true;
             if (abortStatus->subJobsFinished && abortStatus->dirDeletionFinished)
-                emit abortFinished();
+                Q_EMIT abortFinished();
         });
         connect(&_dirDeletionJobs, &PropagatorCompositeJob::abortFinished, this, [this, abortStatus]() {
             abortStatus->dirDeletionFinished = true;
             if (abortStatus->subJobsFinished && abortStatus->dirDeletionFinished)
-                emit abortFinished();
+                Q_EMIT abortFinished();
         });
     }
     _subJobs.abort(abortType);
@@ -1686,7 +1691,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             abort(AbortType::Synchronous);
             _state = Finished;
             qCInfo(lcRootDirectory()) << "PropagateRootDirectory::slotSubJobsFinished" << "emit finished" << status;
-            emit finished(status);
+            Q_EMIT finished(status);
         }
         return;
     }
@@ -1723,7 +1728,7 @@ void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status st
     }
 
     _state = Finished;
-    emit finished(status);
+    Q_EMIT finished(status);
 }
 
 bool PropagateRootDirectory::scheduleDelayedJobs()
@@ -1743,7 +1748,7 @@ CleanupPollsJob::~CleanupPollsJob() = default;
 void CleanupPollsJob::start()
 {
     if (_pollInfos.empty()) {
-        emit finished();
+        Q_EMIT finished();
         deleteLater();
         return;
     }
@@ -1764,7 +1769,7 @@ void CleanupPollsJob::slotPollFinished()
     auto *job = qobject_cast<PollJob *>(sender());
     ASSERT(job);
     if (job->_item->_status == SyncFileItem::FatalError) {
-        emit aborted(job->_item->_errorString, ErrorCategory::GenericError);
+        Q_EMIT aborted(job->_item->_errorString, ErrorCategory::GenericError);
         deleteLater();
         return;
     } else if (job->_item->_status != SyncFileItem::Success) {
@@ -1774,7 +1779,7 @@ void CleanupPollsJob::slotPollFinished()
             qCWarning(lcCleanupPolls) << "database error";
             job->_item->_status = SyncFileItem::FatalError;
             job->_item->_errorString = tr("Error writing metadata to the database");
-            emit aborted(job->_item->_errorString, ErrorCategory::GenericError);
+            Q_EMIT aborted(job->_item->_errorString, ErrorCategory::GenericError);
             deleteLater();
             return;
         }
@@ -1827,7 +1832,7 @@ void PropagateVfsUpdateMetadataJob::start()
 {
     const auto fullFileName = propagator()->fullLocalPath(_item->_file);
     const auto result = propagator()->syncOptions()._vfs->updatePlaceholderMarkInSync(fullFileName, *_item);
-    emit propagator()->touchedFile(fullFileName);
+    Q_EMIT propagator()->touchedFile(fullFileName);
     if (!result) {
         qCWarning(lcPropagator()) << "error when updating VFS metadata" << result.error();
     }

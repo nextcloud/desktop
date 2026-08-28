@@ -25,6 +25,7 @@ add_library(testutils
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt::Test Qt::Core5Compat)
 target_include_directories(testutils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_definitions(testutils PRIVATE QT_NO_KEYWORDS)
 set_target_properties(testutils PROPERTIES FOLDER Tests)
 
 nextcloud_add_test(NextcloudPropagator)
@@ -99,6 +100,9 @@ nextcloud_add_test(Capabilities)
 nextcloud_add_test(PushNotifications)
 nextcloud_add_test(Theme)
 nextcloud_add_test(IconUtils)
+nextcloud_add_test(CustomStateIcons)
+target_compile_definitions(CustomStateIconsTest PRIVATE NEXTCLOUD_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+target_link_libraries(CustomStateIconsTest PRIVATE Qt::Gui)
 nextcloud_add_test(NotificationSoundPlayer)
 nextcloud_add_test(SetUserStatusDialog)
 nextcloud_add_test(TrayAccountMenuPolicy)

@@ -26,7 +26,7 @@ private:
         MakeKey,
     };
 
-private slots:
+private Q_SLOTS:
     void ordersPopupBeforeRequestingApplicationActivation()
     {
         auto operations = std::vector<Operation>();

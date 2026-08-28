@@ -22,7 +22,7 @@ public:
         Q_INIT_RESOURCE(theme);
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

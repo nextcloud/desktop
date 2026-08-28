@@ -788,7 +788,7 @@
         <translation>Nové aktivity</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="792"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="795"/>
         <source>Assistant</source>
         <translation type="unfinished"/>
     </message>
@@ -834,17 +834,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="325"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="331"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>Serveru trvala príliš dlho odpoveď. Skontrolujte svoje pripojenie a skúste znova synchronizovať. Ak to stále nefunguje, obráťte sa na správcu servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="329"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="335"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Došlo k neočakávanej chybe. Skúste znova synchronizovať alebo kontaktujte správcu servera, ak problém pretrváva.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="609"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="615"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
         <translation>Server vynucuje prísnu bezpečnosť prenosu a neakceptuje nedôveryhodné certifikáty.</translation>
     </message>
@@ -1292,7 +1292,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1550"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="742"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="745"/>
         <source>Log in</source>
         <translation>Prihlásiť sa</translation>
     </message>
@@ -2208,7 +2208,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1776"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1781"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
@@ -4554,8 +4554,8 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="967"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1044"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="972"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1049"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>Nie je možné získať čas poslednej zmeny pre súbor v konflikte %1</translation>
     </message>
@@ -4800,38 +4800,38 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
         <source>Could not delete file %1 from local DB</source>
         <translation>Nie je možné vymazať súbor %1 z lokálnej DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1494"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1499"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Chyba pri aktualizácii metadát z dôvodu neplatného času poslednej zmeny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1526"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1532"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1538"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1561"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1567"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1573"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1531"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1537"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1572"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Priečinok %1 nemôže byť nastavený len na čítanie: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1538"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1573"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
         <source>unknown exception</source>
         <translation>neznáma chyba</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba pri aktualizácii metadát: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1584"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1589"/>
         <source>File is currently in use</source>
         <translation>Súbor sa v súčasnosti používa</translation>
     </message>
@@ -4921,7 +4921,7 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
         <translation>; Obnovenie zlyhalo: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="305"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="300"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Súbor alebo adresár bol odobratý zo zdieľania len na čítanie, ale jeho obnovenie zlyhalo: %1</translation>
     </message>
@@ -5932,13 +5932,13 @@ Server odpovedal chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1707"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1706"/>
         <source>You need to accept the terms of service</source>
         <translation>Je potrebné akceptovať zmluvné podmienky</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1699"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
         <source>Reauthorization required</source>
         <translation>Opätovné povolenie vyžadované</translation>
     </message>
@@ -5956,7 +5956,7 @@ Server odpovedal chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1717"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Niektoré súbory nebolo možné synchronizovať!</translation>
     </message>
@@ -5982,7 +5982,7 @@ Server odpovedal chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1719"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
         <source>Some files could not be synced!</source>
         <translation>Niektoré súbory nebolo možné synchronizovať!</translation>
     </message>
@@ -6026,7 +6026,7 @@ Server odpovedal chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="611"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="870"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="871"/>
         <source>Add account</source>
         <translation>Pridať účet</translation>
     </message>
@@ -6050,7 +6050,7 @@ Server odpovedal chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="618"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="908"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="909"/>
         <source>Settings</source>
         <translation>Nastavenia</translation>
     </message>
@@ -6066,18 +6066,18 @@ Server odpovedal chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="626"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="882"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
         <source>Pause sync for all</source>
         <translation>Pozastaviť synchronizáciu pre všetky účty</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="632"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="882"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
         <source>Resume sync for all</source>
         <translation>Pokračovať v synchronizácii pre všetky účty</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="915"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="916"/>
         <source>Quit</source>
         <translation type="unfinished"/>
     </message>
@@ -6239,28 +6239,28 @@ Server odpovedal chybou: %2</translation>
         <translation>Premenovať súbor</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1691"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
         <source>Sync conflicts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1834"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1833"/>
         <source>Public Share Link</source>
         <translation>Verejný odkaz na zdieľanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1946"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1945"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Otvoriť %1 asistenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2044"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2043"/>
         <source>Assistant is not available for this account.</source>
         <translation>Asistent nie je pre tento účet dostupný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2050"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2049"/>
         <source>Assistant is already processing a request.</source>
         <translation>Asistent už spracováva požiadavku.</translation>
     </message>
@@ -6270,37 +6270,37 @@ Server odpovedal chybou: %2</translation>
         <translation>Odosielanie vašej požiadavky…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2086"/>
         <source>Sending your request …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2160"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2159"/>
         <source>No response yet. Please try again later.</source>
         <translation>Žiadna odpoveď zatiaľ. Skúste to, prosím, neskôr.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2178"/>
         <source>No supported assistant task types were returned.</source>
         <translation>Žiadne podporované typy úloh asistenta neboli vrátené.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2261"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2260"/>
         <source>Waiting for the assistant response…</source>
         <translation>Čakanie na odpoveď asistenta…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2283"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2282"/>
         <source>Assistant request failed (%1).</source>
         <translation>Požiadavka asistenta zlyhala (%1).</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2358"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2357"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kvóta bola aktualizovaná; %1 percenta z celkového priestoru je využitých.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2378"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2377"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Upozornenie na kvótu - %1 percent alebo viac úložného priestoru je využité</translation>
     </message>
@@ -6308,32 +6308,32 @@ Server odpovedal chybou: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2809"/>
         <source>Confirm Account Removal</source>
         <translation>Potvrďte ostránenie účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2811"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Naozaj chcete odstrániť pripojenie k účtu &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Týmto sa &lt;b&gt;neodstránia&lt;/b&gt; žiadne súbory.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2814"/>
         <source>Remove connection</source>
         <translation>Vymazať prepojenie</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2816"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
         <source>Cancel</source>
         <translation>Zrušiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2901"/>
         <source>Leave share</source>
         <translation>Opustiť zdieľanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2901"/>
         <source>Remove account</source>
         <translation>Odstrániť účet</translation>
     </message>
@@ -6815,132 +6815,132 @@ Server odpovedal chybou: %2</translation>
         <translation>Cesty začínajúce znakom &apos;#&apos; nie sú podporované v móde VFS.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>Vašu požiadavku sa nepodarilo spracovať. Skúste synchronizáciu znova neskôr. Ak sa to bude opakovať, kontaktujte správcu servera pre pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>Musíte sa prihlásiť, aby ste mohli pokračovať. Ak máte problémy s prihlasovacími údajmi, kontaktujte prosím správcu servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>Nemáte prístup k tomuto zdroju. Ak si myslíte, že ide o chybu, kontaktujte svojho správcu servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>Nemohli sme nájsť to, čo ste hľadali. Možno to bolo presunuté alebo vymazané. Ak potrebujete pomoc, kontaktujte správcu servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation>Zdá sa, že používate proxy, ktorá vyžaduje autentifikáciu. Skontrolujte svoje nastavenia proxy a poverenia. Ak potrebujete pomoc, kontaktujte správcu servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>Žiadosť trvá dlhšie ako zvyčajne. Skúste synchronizovať znovu. Ak to stále nefunguje, obráťte sa na správcu svojho servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>Súbory servera sa zmenili, kým ste pracovali. Skúste synchronizovať znovu. Ak problém pretrváva, kontaktujte správcu servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation>Tento priečinok alebo súbor už nie je k dispozícii. Ak potrebujete pomoc, kontaktujte prosím správcu servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation>Žiadosť sa nedala dokončiť, pretože neboli splnené niektoré požadované podmienky. Skúste synchronizáciu neskôr. Ak potrebujete pomoc, kontaktujte svojho správcu servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>Súbor je príliš veľký na nahratie. Možno budete musieť vybrať menší súbor alebo kontaktovať správcu servera pre pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation>Adresa použitá na odoslanie požiadavky je príliš dlhá na to, aby ju server zvládol. Skúste skrátiť informácie, ktoré posielate, alebo kontaktujte správcu servera pre pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>Tento typ súboru nie je podporovaný. Kontaktujte správcu servera pre pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>Server nemohol spracovať vašu požiadavku, pretože niektoré informácie boli nesprávne alebo neúplné. Skúste synchronizáciu znova neskôr alebo kontaktujte správcu servera pre pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>Zdroje, ku ktorým sa pokúšate pristúpiť, sú momentálne uzamknuté a nemôžu byť upravené. Skúste to neskôr, alebo sa obráťte na správcu servera pre pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>Táto požiadavka nemohla byť dokončená, pretože chýbajú niektoré požadované podmienky. Skúste to znova neskôr, alebo kontaktujte správcu servera pre pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>Urobili ste príliš veľa požiadaviek. Prosím, počkajte a skúste to znova. Ak to budete vidieť aj naďalej, váš správca servera vám môže pomôcť.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>Niečo sa pokazilo na serveri. Skúste synchronizáciu zopakovať neskôr, alebo kontaktujte správcu servera, ak problém pretrváva.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>Server neuznáva metódu požiadavky. Prosím, kontaktujte správcu servera pre pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>Máme problémy s pripojením k serveru. Skúste to prosím neskôr. Ak problém pretrváva, váš správca servera vám môže pomôcť.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="556"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation>Server je momentálne zaneprázdnený. Skúste sa pripojiť znova o niekoľko minút, alebo kontaktujte svojho správcu servera, ak je to naliehavé.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="559"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>Trvá príliš dlho, kým sa pripojíme k serveru. Skúste to prosím neskôr. Ak potrebujete pomoc, kontaktujte správcu servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="556"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="562"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>Server nepodporuje verziu pripojenia, ktorá sa používa. Kontaktujte svojho správcu servera pre pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="559"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="565"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>Server nemá dostatok miesta na dokončenie vašej požiadavky. Skontrolujte, koľko kvóty má váš používateľ, kontaktovaním správcu servera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="562"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="568"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>Vaša sieť vyžaduje dodatočnú autentifikáciu. Skontrolujte svoje pripojenie. Ak problém pretrváva, kontaktujte správcu servera pre pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="565"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="571"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>Nemáte povolenie na prístup k tomuto zdroju. Ak sa domnievate, že ide o chybu, kontaktujte správcu servera a požiadajte o pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="568"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="574"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Došlo k neočakávanej chybe. Skúste znova synchronizovať alebo kontaktujte správcu servera, ak problém pretrváva.</translation>
     </message>
@@ -7288,17 +7288,17 @@ Server odpovedal chybou: %2</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="760"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="763"/>
         <source>Resolve: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="770"/>
         <source>User status</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="800"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="803"/>
         <source>Search</source>
         <translation type="unfinished"/>
     </message>
@@ -7336,8 +7336,8 @@ Server odpovedal chybou: %2</translation>
         <translation>Užívateľská skupina a menu miestnych adresárov</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="730"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="783"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="733"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="786"/>
         <source>Local folder</source>
         <translation type="unfinished"/>
     </message>
@@ -7360,7 +7360,7 @@ Server odpovedal chybou: %2</translation>
         <translation>Otvoriť %1 v prehliadači</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="810"/>
         <source>Apps</source>
         <translation type="unfinished"/>
     </message>
