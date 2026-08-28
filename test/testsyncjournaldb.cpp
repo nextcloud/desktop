@@ -577,6 +577,63 @@ private Q_SLOTS:
         }
     }
 
+    void testRemoteDeletionProtection()
+    {
+        QVERIFY(_db.disarmRemoteDeletionProtection({ QStringLiteral("A"), QStringLiteral("A/B"), QStringLiteral("") }));
+        QVERIFY(_db.armRemoteDeletionProtection({ QStringLiteral("A/B"), QStringLiteral("A/BC"), QStringLiteral("") }));
+
+        const auto roots = _db.pendingRemoteDeletionProtectionRoots();
+        QVERIFY(roots);
+        QCOMPARE(roots->size(), 3);
+        QCOMPARE(roots->at(0).first, QString());
+        QCOMPARE(roots->at(1).first, QStringLiteral("A/B"));
+        QCOMPARE(roots->at(2).first, QStringLiteral("A/BC"));
+        const auto originalTimestamp = roots->at(1).second;
+
+        QVERIFY(_db.armRemoteDeletionProtection({ QStringLiteral("A/B") }));
+        const auto rearmedRoots = _db.pendingRemoteDeletionProtectionRoots();
+        QVERIFY(rearmedRoots);
+        QCOMPARE(rearmedRoots->at(1).second, originalTimestamp);
+
+        const auto protectedPath = _db.isPathProtectedFromRemoteDeletion(QStringLiteral("anything"));
+        QVERIFY(protectedPath);
+        QVERIFY(*protectedPath);
+        QVERIFY(_db.isPathEqualOrBelow(QStringLiteral("A/B"), QStringLiteral("A/B")));
+        QVERIFY(_db.isPathEqualOrBelow(QStringLiteral("A/B/file"), QStringLiteral("A/B")));
+        QVERIFY(!_db.isPathEqualOrBelow(QStringLiteral("A/BC-file"), QStringLiteral("A/B")));
+        QVERIFY(_db.isPathEqualOrBelow(QStringLiteral("A/BC"), QStringLiteral("")));
+        QVERIFY(!_db.isPathEqualOrBelow(QStringLiteral("A/B-file"), QStringLiteral("A/B")));
+
+        _db.close();
+        QVERIFY(_db.open());
+        const auto reopenedRoots = _db.pendingRemoteDeletionProtectionRoots();
+        QVERIFY(reopenedRoots);
+        QCOMPARE(reopenedRoots->size(), 3);
+
+        QVERIFY(_db.disarmRemoteDeletionProtection({ QStringLiteral("") }));
+        const auto remainingRoots = _db.pendingRemoteDeletionProtectionRoots();
+        QVERIFY(remainingRoots);
+        QCOMPARE(remainingRoots->size(), 2);
+
+        _db.autotestFailCounter = 0;
+        QVERIFY(!_db.pendingRemoteDeletionProtectionRoots());
+        _db.autotestFailCounter = -1;
+
+        _db.autotestFailCounter = 0;
+        QVERIFY(!_db.armRemoteDeletionProtection({ QStringLiteral("failed-arm") }));
+        _db.autotestFailCounter = -1;
+        QVERIFY(!_db.pendingRemoteDeletionProtectionRoots()->isEmpty());
+
+        _db.autotestFailCounter = 0;
+        QVERIFY(!_db.disarmRemoteDeletionProtection({ QStringLiteral("A/B") }));
+        _db.autotestFailCounter = -1;
+        const auto retainedRoots = _db.pendingRemoteDeletionProtectionRoots();
+        QVERIFY(retainedRoots);
+        QVERIFY(std::any_of(retainedRoots->cbegin(), retainedRoots->cend(), [](const auto &root) {
+            return root.first == QStringLiteral("A/B");
+        }));
+    }
+
 private:
     SyncJournalDb _db;
 };
