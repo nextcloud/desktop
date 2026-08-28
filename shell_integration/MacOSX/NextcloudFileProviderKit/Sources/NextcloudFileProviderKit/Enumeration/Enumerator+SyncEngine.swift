@@ -282,6 +282,9 @@ extension Enumerator {
                 let isNew = existing == nil
                 let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
                 metadata.lockToken = existing?.lockToken
+                if metadata.etag == existing?.etag {
+                    metadata.fileProviderContentVersion = existing?.fileProviderContentVersion
+                }
                 let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
                 metadata.downloaded = existing?.downloaded == true
 
