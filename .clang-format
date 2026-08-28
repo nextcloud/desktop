@@ -39,7 +39,7 @@ InsertBraces: true
 
 AllowShortEnumsOnASingleLine: false
 
-EnumTrailingComma: ETC_Insert
+EnumTrailingComma: Insert
 
 # CrlInstruction *a;
 PointerAlignment: Right

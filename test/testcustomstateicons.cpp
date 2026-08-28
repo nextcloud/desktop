@@ -41,7 +41,7 @@ class TestCustomStateIcons : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void testSvgContrast_data()
     {
         QTest::addColumn<QString>("fileName");
