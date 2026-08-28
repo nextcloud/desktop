@@ -12,6 +12,10 @@
 #include "syncenginetestutils.h"
 #include <syncengine.h>
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
+
 using namespace OCC;
 
 class TestSyncDelete : public QObject
@@ -66,6 +70,37 @@ private Q_SLOTS:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentRemoteState().find("B/b1"));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void partiallyFailedRecursiveRemovalCleansJournal()
+    {
+#ifndef Q_OS_WIN
+        QSKIP("Requires Windows file-sharing semantics");
+#else
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        const auto lockedFilePath = FileSystem::longWinPath(
+            QDir::toNativeSeparators(fakeFolder.localPath() + QStringLiteral("A/a1")));
+        const auto lockedFile = CreateFileW(reinterpret_cast<const wchar_t *>(lockedFilePath.utf16()),
+            GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+        QVERIFY(lockedFile != INVALID_HANDLE_VALUE);
+
+        const auto syncResult = fakeFolder.execUntilFinished();
+        CloseHandle(lockedFile);
+
+        QVERIFY(!syncResult);
+
+        SyncJournalFileRecord lockedRecord;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &lockedRecord));
+        QVERIFY(lockedRecord.isValid());
+
+        SyncJournalFileRecord deletedRecord;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a2"), &deletedRecord));
+        QVERIFY(!deletedRecord.isValid());
+#endif
     }
 };
 
