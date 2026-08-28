@@ -599,6 +599,14 @@ void Folder::startVfs()
     connect(&_engine->syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
             _vfs.data(), &Vfs::fileStatusChanged);
 
+    connect(_vfs.get(), &Vfs::needSync, this, [this] {
+        if (canSync()) {
+            // the vfs plugin detected that its metadata is out of sync and requests a new sync
+            // the request has a hight priority as it is probably issued after a user request
+            FolderMan::instance()->scheduleFolder(this);
+        }
+    });
+
     _vfs->start(vfsParams);
 
     // Immediately mark the sqlite temporaries as excluded. They get recreated

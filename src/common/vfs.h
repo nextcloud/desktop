@@ -326,6 +326,9 @@ Q_SIGNALS:
     /// start complete
     void started();
 
+    /// The vfs plugin detected that the meta data are out of sync and requests a sync with the server
+    void needSync();
+
 protected:
     /** Setup the plugin for the folder.
      *
