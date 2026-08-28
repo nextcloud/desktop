@@ -75,6 +75,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
 {
     QString absolute = propagator()->fullLocalPath(_item->_file + path);
     QList<QPair<QString, bool>> deleted;
+    QString conversionError;
     const auto fileInfo = QFileInfo{absolute};
     const auto parentFolderPath = fileInfo.dir().absolutePath();
     const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
@@ -83,10 +84,18 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
 
     Q_EMIT propagator()->touchedFile(absolute);
 
+    // FileSystem::removeRecursively() reports deleted items as absolute filesystem paths using
+    // the host's native separators. Convert them before storing them for journal cleanup, which
+    // uses normalized paths relative to the sync folder.
     const auto success = FileSystem::removeRecursively(absolute,
-                                                       [&deleted](const QString &path, bool isDir) {
+                                                       [&deleted, &conversionError, root = propagator()->localPath()](const QString &path, bool isDir) {
                                                            // by prepending, a folder deletion may be followed by content deletions
-                                                           deleted.prepend(qMakePair(path, isDir));
+                                                           const auto relativePath = journalRelativePath(root, path);
+                                                           if (!relativePath) {
+                                                               conversionError = QStringLiteral("Filesystem path is outside the sync root");
+                                                               return;
+                                                           }
+                                                           deleted.prepend(qMakePair(*relativePath, isDir));
                                                        },
                                                        nullptr,
                                                        nullptr,
@@ -110,17 +119,20 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
         // Do it while avoiding redundant delete calls to the journal.
         QString deletedDir;
         for (const auto &it : deleted) {
-            if (!it.first.startsWith(propagator()->localPath()))
-                continue;
             if (isPathInsideDeletedDir(it.first, deletedDir))
                 continue;
-            if (it.second) {
-                deletedDir = it.first;
-            }
-            if (!propagator()->_journal->deleteFileRecord(it.first.mid(propagator()->localPath().size()), it.second)) {
-                qCWarning(lcPropagateLocalRemove) << "Failed to delete file record from local DB" << it.first.mid(propagator()->localPath().size());
+            if (propagator()->_journal->deleteFileRecord(it.first, it.second)) {
+                if (it.second) {
+                    deletedDir = it.first;
+                }
+            } else {
+                qCWarning(lcPropagateLocalRemove) << "Failed to delete file record from local DB" << it.first;
             }
         }
+    }
+    if (!conversionError.isEmpty()) {
+        qCWarning(lcPropagateLocalRemove) << "Failed to convert a deleted filesystem path to a journal path:" << conversionError;
+        return false;
     }
     return success;
 }
