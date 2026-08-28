@@ -25,6 +25,7 @@
 
 #include <filesystem>
 #include <ctime>
+#include <optional>
 
 
 namespace OCC {
@@ -32,6 +33,30 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcPropagateLocalRemove, "nextcloud.sync.propagator.localremove", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateLocalMkdir, "nextcloud.sync.propagator.localmkdir", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateLocalRename, "nextcloud.sync.propagator.localrename", QtInfoMsg)
+
+namespace {
+
+std::optional<QString> journalRelativePath(const QString &syncRoot, const QString &filesystemPath)
+{
+    const auto normalizedRoot = QDir::cleanPath(QDir::fromNativeSeparators(syncRoot));
+    const auto normalizedPath = QDir::cleanPath(QDir::fromNativeSeparators(filesystemPath));
+    if (normalizedRoot.isEmpty() || normalizedPath.isEmpty()) {
+        return std::nullopt;
+    }
+
+    auto relativePath = QDir::fromNativeSeparators(QDir{normalizedRoot}.relativeFilePath(normalizedPath));
+    relativePath = QDir::cleanPath(relativePath);
+    if (relativePath == QLatin1Char('.')) {
+        relativePath.clear();
+    }
+    if (QDir::isAbsolutePath(relativePath) || relativePath == QStringLiteral("..")
+        || relativePath.startsWith(QStringLiteral("../"))) {
+        return std::nullopt;
+    }
+    return relativePath;
+}
+
+} // namespace
 
 QByteArray localFileIdFromFullId(const QByteArray &id)
 {
