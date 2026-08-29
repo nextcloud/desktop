@@ -28,14 +28,16 @@
 #include <QCursor>
 #include <QEvent>
 #include <QGuiApplication>
+#include <QMenu>
 #include <QMouseEvent>
+#include <QNetworkDiskCache>
+#include <QProcessEnvironment>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
-#include <QVariantMap>
 #include <QScreen>
-#include <QGuiApplication>
-#include <QMenu>
+#include <QStandardPaths>
+#include <QVariantMap>
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>

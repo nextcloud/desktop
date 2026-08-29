@@ -172,11 +172,11 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<GovernanceLabelsListModel>("com.nextcloud.desktopclient", 1, 0, "GovernanceLabelsListModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
-    qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
-    qmlRegisterUncreatableType<TalkNotificationData>("com.nextcloud.desktopclient", 1, 0, "talkNotificationData", "TalkNotificationData");
+    qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "Activity", "Activity");
+    qmlRegisterUncreatableType<TalkNotificationData>("com.nextcloud.desktopclient", 1, 0, "TalkNotificationData", "TalkNotificationData");
     qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
-    qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "userStatus", "Access to Status enum");
-    qmlRegisterUncreatableType<Sharee>("com.nextcloud.desktopclient", 1, 0, "sharee", "Access to Type enum");
+    qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus", "Access to Status enum");
+    qmlRegisterUncreatableType<Sharee>("com.nextcloud.desktopclient", 1, 0, "Sharee", "Access to Type enum");
     qmlRegisterUncreatableType<ClientSideEncryptionTokenSelector>("com.nextcloud.desktopclient", 1, 0, "ClientSideEncryptionTokenSelector", "Access to the certificate selector");
     qmlRegisterUncreatableType<GovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "GovernanceNetworkJob", "base abstract type for governance labels");
     qmlRegisterUncreatableType<TypedGovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "TypedGovernanceNetworkJob", "base abstract type for governance labels");

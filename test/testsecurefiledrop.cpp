@@ -5,8 +5,12 @@
 #include "syncenginetestutils.h"
 #include "clientsideencryption.h"
 #include "foldermetadata.h"
+
 #include <array>
-#include <QtTest>
+
+#include <QJsonArray>
+#include <QStandardPaths>
+#include <QTest>
 
 namespace
 {

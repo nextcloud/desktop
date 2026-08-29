@@ -9,7 +9,7 @@
 
 #include "macOS/trayaccountpopup/trayaccountpopuppresentation.h"
 
-#include <QtTest>
+#include <QTest>
 
 #include <vector>
 

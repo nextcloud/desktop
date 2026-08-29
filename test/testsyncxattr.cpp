@@ -7,10 +7,10 @@
  * any purpose.
  */
 
-#include <QtTest>
-#include "syncenginetestutils.h"
 #include "common/vfs.h"
 #include "config.h"
+#include "syncenginetestutils.h"
+#include <QTest>
 #include <syncengine.h>
 
 #include "vfs/xattr/xattrwrapper.h"
@@ -19,21 +19,21 @@ namespace xattr {
 using namespace OCC::XAttrWrapper;
 }
 
-#define XAVERIFY_VIRTUAL(folder, path) \
-    QVERIFY(QFileInfo((folder).localPath() + (path)).exists()); \
-    QCOMPARE(QFileInfo((folder).localPath() + (path)).size(), 1); \
-    QVERIFY(xattr::hasNextcloudPlaceholderAttributes((folder).localPath() + (path))); \
-    QVERIFY(dbRecord((folder), (path)).isValid()); \
+#define XAVERIFY_VIRTUAL(folder, path)                                                                                                                         \
+    QVERIFY(QFileInfo::exists((folder).localPath() + (path)));                                                                                                 \
+    QCOMPARE(QFileInfo((folder).localPath() + (path)).size(), 1);                                                                                              \
+    QVERIFY(xattr::hasNextcloudPlaceholderAttributes((folder).localPath() + (path)));                                                                          \
+    QVERIFY(dbRecord((folder), (path)).isValid());                                                                                                             \
     QCOMPARE(dbRecord((folder), (path))._type, ItemTypeVirtualFile);
 
-#define XAVERIFY_NONVIRTUAL(folder, path) \
-    QVERIFY(QFileInfo((folder).localPath() + (path)).exists()); \
-    QVERIFY(!xattr::hasNextcloudPlaceholderAttributes((folder).localPath() + (path))); \
-    QVERIFY(dbRecord((folder), (path)).isValid()); \
+#define XAVERIFY_NONVIRTUAL(folder, path)                                                                                                                      \
+    QVERIFY(QFileInfo::exists((folder).localPath() + (path)));                                                                                                 \
+    QVERIFY(!xattr::hasNextcloudPlaceholderAttributes((folder).localPath() + (path)));                                                                         \
+    QVERIFY(dbRecord((folder), (path)).isValid());                                                                                                             \
     QCOMPARE(dbRecord((folder), (path))._type, ItemTypeFile);
 
-#define CFVERIFY_GONE(folder, path) \
-    QVERIFY(!QFileInfo((folder).localPath() + (path)).exists()); \
+#define CFVERIFY_GONE(folder, path)                                                                                                                            \
+    QVERIFY(!QFileInfo::exists((folder).localPath() + (path)));                                                                                                \
     QVERIFY(!dbRecord((folder), (path)).isValid());
 
 using namespace OCC;
@@ -188,7 +188,7 @@ private Q_SLOTS:
         // Remote rename is propagated
         fakeFolder.remoteModifier().rename("A/a1", "A/a1m");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/a1").exists());
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "A/a1"));
         XAVERIFY_VIRTUAL(fakeFolder, "A/a1m");
         QCOMPARE(dbRecord(fakeFolder, "A/a1m")._fileSize, 65);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1m").lastModified(), someDate);
@@ -204,7 +204,7 @@ private Q_SLOTS:
         // Remote remove is propagated
         fakeFolder.remoteModifier().remove("A/a1m");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/a1m").exists());
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "A/a1m"));
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1m"));
         QVERIFY(itemInstruction(completeSpy, "A/a1m", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(!dbRecord(fakeFolder, "A/a1").isValid());
@@ -229,7 +229,7 @@ private Q_SLOTS:
         XAVERIFY_VIRTUAL(fakeFolder, "A/a2");
         QCOMPARE(dbRecord(fakeFolder, "A/a2")._fileSize, 32);
         QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_UPDATE_METADATA));
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/a3").exists());
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "A/a3"));
         QVERIFY(itemInstruction(completeSpy, "A/a3", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(!dbRecord(fakeFolder, "A/a3").isValid());
         cleanup();
@@ -457,7 +457,7 @@ private Q_SLOTS:
         QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
         QVERIFY(xattr::hasNextcloudPlaceholderAttributes(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a1").exists());
+        QVERIFY(QFileInfo::exists(fakeFolder.localPath() + "A/a1"));
         QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFileDownload);
         cleanup();
 
@@ -707,8 +707,7 @@ private Q_SLOTS:
         QVERIFY(fakeFolder.syncOnce());
 
         auto isDehydrated = [&](const QString &path) {
-            return xattr::hasNextcloudPlaceholderAttributes(fakeFolder.localPath() + path)
-                && QFileInfo(fakeFolder.localPath() + path).exists();
+            return xattr::hasNextcloudPlaceholderAttributes(fakeFolder.localPath() + path) && QFileInfo::exists(fakeFolder.localPath() + path);
         };
         auto hasDehydratedDbEntries = [&](const QString &path) {
             SyncJournalFileRecord rec;
@@ -725,11 +724,11 @@ private Q_SLOTS:
         QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_SYNC));
         QCOMPARE(completeSpy.findItem("A/a2")->_type, ItemTypeVirtualFileDehydration);
 
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "B/b1").exists());
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "B/b1"));
         QVERIFY(!fakeFolder.currentRemoteState().find("B/b1"));
         QVERIFY(itemInstruction(completeSpy, "B/b1", CSYNC_INSTRUCTION_REMOVE));
 
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "B/b2").exists());
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "B/b2"));
         QVERIFY(!fakeFolder.currentRemoteState().find("B/b2"));
         QVERIFY(isDehydrated("B/b3"));
         QVERIFY(hasDehydratedDbEntries("B/b3"));
@@ -752,17 +751,17 @@ private Q_SLOTS:
         QVERIFY(isDehydrated("A/a2"));
         QVERIFY(hasDehydratedDbEntries("A/a2"));
 
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "B/b1").exists());
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "B/b2").exists());
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "B/b1"));
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "B/b2"));
         QVERIFY(isDehydrated("B/b3"));
         QVERIFY(hasDehydratedDbEntries("B/b3"));
 
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "C/c1").exists());
+        QVERIFY(QFileInfo::exists(fakeFolder.localPath() + "C/c1"));
         QVERIFY(dbRecord(fakeFolder, "C/c1").isValid());
         QVERIFY(!isDehydrated("C/c1"));
         QVERIFY(!hasDehydratedDbEntries("C/c1"));
 
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "C/c2").exists());
+        QVERIFY(QFileInfo::exists(fakeFolder.localPath() + "C/c2"));
         QVERIFY(dbRecord(fakeFolder, "C/c2").isValid());
         QVERIFY(!isDehydrated("C/c2"));
         QVERIFY(!hasDehydratedDbEntries("C/c2"));
@@ -803,7 +802,7 @@ private Q_SLOTS:
 
         CFVERIFY_GONE(fakeFolder, "f1");
         CFVERIFY_GONE(fakeFolder, "A/a1");
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a3").exists());
+        QVERIFY(QFileInfo::exists(fakeFolder.localPath() + "A/a3"));
         QVERIFY(!dbRecord(fakeFolder, "A/a3").isValid());
         CFVERIFY_GONE(fakeFolder, "A/B/b1");
 

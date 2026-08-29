@@ -11,13 +11,23 @@
 
 #include "updater/ocupdater.h"
 
+#include <QAbstractButton>
+#include <QDesktopServices>
+#include <QDir>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QMessageBox>
+#include <QNetworkReply>
 #include <QObject>
-#include <QtCore>
-#include <QtNetwork>
-#include <QtGui>
-#include <QtWidgets>
+#include <QProcess>
+#include <QPushButton>
+#include <QStyle>
+#include <QTemporaryFile>
+#include <QVBoxLayout>
 
 #include <cstdio>
+
+using namespace Qt::StringLiterals;
 
 namespace OCC {
 
@@ -223,10 +233,9 @@ void OCUpdater::slotStartInstaller()
         };
 
         const auto msiLogFile = cfg.msiLogFilePath();
-        QString command = QStringLiteral("&{msiexec /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
-             .arg(preparePathForPowershell(updateFile))
-             .arg(preparePathForPowershell(msiLogFile))
-             .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
+        const auto command = u"&{msiexec /i '%1' /L*V '%2'| Out-Null ; &'%3'}"_s.arg(preparePathForPowershell(updateFile),
+                                                                                     preparePathForPowershell(msiLogFile),
+                                                                                     preparePathForPowershell(QCoreApplication::applicationFilePath()));
 
         QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
     }

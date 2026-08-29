@@ -2329,9 +2329,9 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
 void ClientSideEncryption::getPrivateKeyFromServer()
 {
     auto job = new JsonApiJob(_account, e2eeBaseUrl(_account) + "private-key", this);
-    connect(job, &JsonApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
+    connect(job, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &doc, int retCode) {
         if (retCode == 200) {
-            QString key = doc.object()["ocs"].toObject()["data"].toObject()["private-key"].toString();
+            QString key = doc.object().value("ocs").toObject().value("data").toObject().value("private-key").toString();
             decryptPrivateKey(key.toLocal8Bit());
         } else if (retCode == 404) {
             qCWarning(lcCse) << "No private key on the server: setup is incomplete.";
@@ -2349,9 +2349,10 @@ void ClientSideEncryption::getPrivateKeyFromServer()
 void ClientSideEncryption::getPublicKeyFromServer()
 {
     auto job = new JsonApiJob(_account, e2eeBaseUrl(_account) + "public-key", this);
-    connect(job, &JsonApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
+    connect(job, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &doc, int retCode) {
         if (retCode == 200) {
-            QString publicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-keys"].toObject()[_account->davUser()].toString();
+            QString publicKey =
+                doc.object().value("ocs").toObject().value("data").toObject().value("public-keys").toObject().value(_account->davUser()).toString();
             _encryptionCertificate = CertificateInformation{useTokenBasedEncryption() ? CertificateInformation::CertificateType::HardwareCertificate : CertificateInformation::CertificateType::SoftwareNextcloudCertificate,
                                                             _encryptionCertificate.getPrivateKeyData(),
                                                             QSslCertificate{publicKey.toLocal8Bit(), QSsl::Pem}};
@@ -2375,9 +2376,9 @@ void ClientSideEncryption::getPublicKeyFromServer()
 void ClientSideEncryption::fetchAndValidatePublicKeyFromServer()
 {
     auto job = new JsonApiJob(_account, e2eeBaseUrl(_account) + "server-key", this);
-    connect(job, &JsonApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
+    connect(job, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &doc, int retCode) {
         if (retCode == 200) {
-            const auto serverPublicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-key"].toString().toLatin1();
+            const auto serverPublicKey = doc.object().value("ocs").toObject().value("data").toObject().value("public-key").toString().toLatin1();
             if (checkServerPublicKeyValidity(serverPublicKey)) {
                 if (getPrivateKey().isEmpty()) {
                     getPrivateKeyFromServer();

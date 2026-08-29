@@ -5,10 +5,11 @@
 
 #include "gui/filetagmodel.h"
 
-#include <QTest>
-#include <QSignalSpy>
-#include <QDomDocument>
 #include <QAbstractItemModelTester>
+#include <QDomDocument>
+#include <QSignalSpy>
+#include <QStandardPaths>
+#include <QTest>
 
 #include "accountmanager.h"
 #include "syncenginetestutils.h"

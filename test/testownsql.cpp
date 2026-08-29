@@ -8,7 +8,9 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
+#include <QTemporaryDir>
+#include <QTest>
 
 #include <sqlite3.h>
 

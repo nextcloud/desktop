@@ -8,9 +8,11 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
+#include <QTest>
+
+#include "syncengine.h"
 #include "syncenginetestutils.h"
-#include <syncengine.h>
 
 using namespace OCC;
 

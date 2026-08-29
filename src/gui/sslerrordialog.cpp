@@ -8,10 +8,9 @@
 #include "sslerrordialog.h"
 #include "theme.h"
 
-#include <QtGui>
-#include <QtNetwork>
-#include <QtWidgets>
-
+#include <QHstsPolicy>
+#include <QPushButton>
+#include <QTimeZone>
 
 #include "ui_sslerrordialog.h"
 

@@ -9,12 +9,11 @@
 #include "accountstate.h"
 #include "theme.h"
 
-#include <QMenu>
-#include <QUrl>
-#include <QtNetwork>
-#include <QSslConfiguration>
-#include <QWidgetAction>
 #include <QLabel>
+#include <QMenu>
+#include <QSslConfiguration>
+#include <QUrl>
+#include <QWidgetAction>
 
 namespace OCC {
 

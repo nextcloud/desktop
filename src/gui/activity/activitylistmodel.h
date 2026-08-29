@@ -7,9 +7,9 @@
 #ifndef ACTIVITYLISTMODEL_H
 #define ACTIVITYLISTMODEL_H
 
-#include <QtCore>
-
 #include "activitydata.h"
+
+#include <QAbstractListModel>
 
 class QJsonDocument;
 

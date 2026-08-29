@@ -17,6 +17,7 @@
 #include "governance/governancetypes.h"
 
 #include <QAbstractItemModelTester>
+#include <QStandardPaths>
 #include <QTest>
 
 using namespace OCC;

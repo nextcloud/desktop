@@ -7,8 +7,9 @@
  * any purpose.
  */
 
+#include <QStandardPaths>
+#include <QTest>
 #include <qglobal.h>
-#include <QtTest>
 
 #include "remotewipe.h"
 #include "accountmanager.h"

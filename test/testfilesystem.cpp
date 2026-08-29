@@ -7,9 +7,10 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
 #include <QTemporaryDir>
 #include <QTemporaryFile>
+#include <QTest>
 
 #include "common/filesystembase.h"
 #include "logger.h"
@@ -131,7 +132,7 @@ private Q_SLOTS:
 
         QString fullPath = testDir.filePath("nonexistentDirectory");
 
-        QCOMPARE(FileSystem::setFolderPermissions("nonexistentDirectory", FileSystem::FolderPermissions::ReadOnly, &permissionsDidChange), false);
+        QCOMPARE(FileSystem::setFolderPermissions(fullPath, FileSystem::FolderPermissions::ReadOnly, &permissionsDidChange), false);
         QCOMPARE(permissionsDidChange, false);
     }
 #endif

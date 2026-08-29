@@ -11,6 +11,7 @@
 #include <QAbstractItemModelTester>
 #include <QDesktopServices>
 #include <QSignalSpy>
+#include <QStandardPaths>
 #include <QTest>
 
 using namespace ActivityListModelTestUtils;

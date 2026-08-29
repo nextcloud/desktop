@@ -935,7 +935,7 @@ void ShareModel::slotDeleteE2EeShare(const SharePtr &share) const
             continue;
         }
         const auto folderPath = f->remotePath();
-        if (share->path().startsWith(folderPath) && (share->path() == folderPath || folderPath.endsWith('/') || share->path()[folderPath.size()] == '/')) {
+        if (share->path().startsWith(folderPath) && (share->path() == folderPath || folderPath.endsWith('/') || share->path().at(folderPath.size()) == '/')) {
             folderAlias = f->alias();
         }
     }

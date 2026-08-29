@@ -10,6 +10,7 @@
 #include <QAbstractItemModelTester>
 #include <QDesktopServices>
 #include <QSignalSpy>
+#include <QStandardPaths>
 #include <QTest>
 
 using namespace ActivityListModelTestUtils;
@@ -247,8 +248,6 @@ private Q_SLOTS:
         // Test all rows for things in common
         for (int i = 0; i < model->rowCount(); i++) {
             const auto index = model->index(i, 0);
-
-            auto text = index.data(OCC::ActivityListModel::ActionTextRole).toString();
 
             QVERIFY(index.data(OCC::ActivityListModel::ActionRole).canConvert<int>());
             const auto type = index.data(OCC::ActivityListModel::ActionRole).toInt();

@@ -8,15 +8,16 @@
  * any purpose.
  */
 
-#include <QtTest>
 #include "syncenginetestutils.h"
-#include <syncengine.h>
-#include <discoveryphase.h>
-#include <localdiscoverytracker.h>
 #include <QFile>
 #include <QSignalSpy>
-#include <QThreadPool>
+#include <QStandardPaths>
 #include <QTemporaryDir>
+#include <QTest>
+#include <QThreadPool>
+#include <discoveryphase.h>
+#include <localdiscoverytracker.h>
+#include <syncengine.h>
 
 using namespace OCC;
 using namespace Qt::StringLiterals;

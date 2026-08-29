@@ -8,7 +8,7 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QTest>
 
 #include "libsync/cookiejar.h"
 

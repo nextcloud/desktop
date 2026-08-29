@@ -90,7 +90,8 @@ bool Vfs::setPinStateInDb(const QString &folderPath, PinState state)
     auto path = folderPath.toUtf8();
     _setupParams.journal->internalPinStates().wipeForPathAndBelow(path);
     if (state != PinState::Inherited) {
-        _setupParams.journal->internalPinStates().setForPath(path, state);
+        auto pinState = _setupParams.journal->internalPinStates();
+        pinState.setForPath(path, state);
     }
     return true;
 }

@@ -9,7 +9,7 @@
 
 #include "tray/trayaccountmenupolicy.h"
 
-#include <QtTest>
+#include <QTest>
 
 #include <cstddef>
 

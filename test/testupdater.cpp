@@ -8,7 +8,8 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
+#include <QTest>
 
 #include "common/filesystembase.h"
 #include "updater/updater.h"

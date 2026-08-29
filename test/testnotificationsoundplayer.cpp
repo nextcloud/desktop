@@ -9,8 +9,8 @@
 #include <QSignalSpy>
 #include <QStandardPaths>
 #include <QTemporaryFile>
+#include <QTest>
 #include <QUrl>
-#include <QtTest>
 
 #include "gui/notificationsoundplayer.h"
 #include "gui/notificationsoundplayer_p.h"

@@ -10,22 +10,24 @@
 #include "configfile.h"
 #include "common/vfs.h"
 
-#include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
-#include <QtGui>
 #include <QStyle>
 #include <QApplication>
 #endif
+#include <QDir>
+#include <QFile>
 #include <QGuiApplication>
-#include <QStyleHints>
-#include <QSslSocket>
-#include <QSvgRenderer>
-#include <QPainter>
-#include <QJsonDocument>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QLoggingCategory>
+#include <QPainter>
+#include <QScreen>
+#include <QSslSocket>
+#include <QStyleHints>
+#include <QSvgRenderer>
 
 #ifdef Q_OS_WIN
+#include <QOperatingSystemVersion>
 #include <windows.h>
 #endif
 
@@ -297,7 +299,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
             return cached = QIcon::fromTheme(name);
         }
 
-        const QString svgName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2.svg").arg(flavor).arg(name);
+        const QString svgName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2.svg").arg(flavor, name);
         QSvgRenderer renderer(svgName);
         const auto createPixmapFromSvg = [&renderer] (int size) {
             QImage img(size, size, QImage::Format_ARGB32);
@@ -307,8 +309,8 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
             return QPixmap::fromImage(img);
         };
 
-        const auto loadPixmap = [flavor, name] (int size) {
-            const QString pixmapName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3.png").arg(flavor).arg(name).arg(size);
+        const auto loadPixmap = [flavor, name](int size) {
+            const QString pixmapName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3.png").arg(flavor, name, QString::number(size));
             return QPixmap(pixmapName);
         };
 
@@ -346,9 +348,8 @@ QString Theme::themeImagePath(const QString &name, int size, bool sysTray) const
     const auto useSvg = shouldPreferSvg();
 
     // branded client may have several sizes of the same icon
-    const QString filePath = (useSvg || size <= 0)
-            ? QString(Theme::themePrefix) + QString::fromLatin1("%1/%2").arg(flavor).arg(name)
-            : QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3").arg(flavor).arg(name).arg(size);
+    const QString filePath = (useSvg || size <= 0) ? QString(Theme::themePrefix) + QString::fromLatin1("%1/%2").arg(flavor, name)
+                                                   : QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3").arg(flavor, name, QString::number(size));
 
     const QString svgPath = filePath + ".svg";
     if (useSvg) {
@@ -625,14 +626,9 @@ QString Theme::gitSHA1() const
         "https://github.com/nextcloud/desktop/commit/"));
     const QString gitSha1(QLatin1String(GIT_SHA1));
     devString = QCoreApplication::translate("nextcloudTheme::aboutInfo()",
-        "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
-        " on %3, %4 using Qt %5, %6</small></p>")
-                    .arg(githubPrefix + gitSha1)
-                    .arg(gitSha1.left(6))
-                    .arg(__DATE__)
-                    .arg(__TIME__)
-                    .arg(qVersion())
-                    .arg(QSslSocket::sslLibraryVersionString());
+                                            "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
+                                            " on %3, %4 using Qt %5, %6</small></p>")
+                    .arg(githubPrefix + gitSha1, gitSha1.left(6), __DATE__, __TIME__, qVersion(), QSslSocket::sslLibraryVersionString());
 #endif
     return devString;
 }
@@ -782,12 +778,12 @@ QIcon Theme::folderOfflineIcon(bool sysTray) const
 
 QColor Theme::wizardHeaderTitleColor() const
 {
-    return {APPLICATION_WIZARD_HEADER_TITLE_COLOR};
+    return {APPLICATION_WIZARD_HEADER_TITLE_COLOR}; // clazy:exclude=qcolor-from-literal
 }
 
 QColor Theme::wizardHeaderBackgroundColor() const
 {
-    return {APPLICATION_WIZARD_HEADER_BACKGROUND_COLOR};
+    return {APPLICATION_WIZARD_HEADER_BACKGROUND_COLOR}; // clazy:exclude=qcolor-from-literal
 }
 
 QPixmap Theme::wizardApplicationLogo() const
@@ -1038,7 +1034,7 @@ bool Theme::disableVirtualFilesSyncFolder() const
 
 QColor Theme::defaultColor()
 {
-    return QColor{NEXTCLOUD_BACKGROUND_COLOR};
+    return QColor{NEXTCLOUD_BACKGROUND_COLOR}; // clazy:exclude=qcolor-from-literal
 }
 
 QColor Theme::destructiveActionTextColor() const

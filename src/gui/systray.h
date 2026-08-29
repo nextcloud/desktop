@@ -10,10 +10,11 @@
 #include "accountmanager.h"
 #include "tray/usermodel.h"
 
-#include <QSystemTrayIcon>
-#include <QQmlNetworkAccessManagerFactory>
 #include <QHash>
+#include <QQmlApplicationEngine>
+#include <QQmlNetworkAccessManagerFactory>
 #include <QStringListModel>
+#include <QSystemTrayIcon>
 
 class QScreen;
 class QMenu;
@@ -145,7 +146,7 @@ public Q_SLOTS:
     void createEditFileLocallyLoadingDialog(const QString &fileName);
     void destroyEditFileLocallyLoadingDialog();
     void createResolveConflictsDialog(const OCC::ActivityList &allConflicts);
-    void createGovernanceLabelsDialog(AccountPtr account, const QString &fileName, const QString &fileId);
+    void createGovernanceLabelsDialog(OCC::AccountPtr account, const QString &fileName, const QString &fileId);
     void createEncryptionTokenDiscoveryDialog();
     void destroyEncryptionTokenDiscoveryDialog();
 

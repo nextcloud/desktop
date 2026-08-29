@@ -39,27 +39,29 @@
 
 #include <cmath>
 
+#include <QAbstractAnimation>
+#include <QAbstractScrollArea>
+#include <QAction>
 #include <QColor>
 #include <QDesktopServices>
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDir>
-#include <QListWidgetItem>
-#include <QMessageBox>
-#include <QAction>
-#include <QAbstractScrollArea>
-#include <QSizePolicy>
-#include <QVBoxLayout>
-#include <QTreeView>
-#include <QKeySequence>
-#include <QIcon>
-#include <QVariant>
-#include <QJsonDocument>
-#include <QToolTip>
-#include <QPushButton>
-#include <QStyle>
 #include <QFileDialog>
 #include <QFrame>
+#include <QIcon>
+#include <QJsonDocument>
+#include <QKeySequence>
+#include <QListWidgetItem>
+#include <QMessageBox>
+#include <QPropertyAnimation>
+#include <QPushButton>
+#include <QSizePolicy>
+#include <QStyle>
+#include <QToolTip>
+#include <QTreeView>
+#include <QVBoxLayout>
+#include <QVariant>
 
 using namespace Qt::StringLiterals;
 
@@ -1270,7 +1272,7 @@ void AccountSettings::displayMnemonic(const QString &mnemonic)
     ui.lineEdit->selectAll();
     ui.lineEdit->setAlignment(Qt::AlignCenter);
 
-    const QFont font(QStringLiteral(""), 0);
+    const QFont font(QString{}, 0);
     QFontMetrics fm(font);
     ui.lineEdit->setFixedWidth(fm.horizontalAdvance(mnemonic));
     widget.resize(widget.sizeHint());

@@ -8,10 +8,12 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
+#include <QTest>
+
+#include "common/syncjournaldb.h"
+#include "syncengine.h"
 #include "syncenginetestutils.h"
-#include <syncengine.h>
-#include <common/syncjournaldb.h>
 
 using namespace OCC;
 

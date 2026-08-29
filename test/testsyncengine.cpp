@@ -8,7 +8,8 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
+#include <QTest>
 #include <QTextCodec>
 
 #include "syncenginetestutils.h"
@@ -20,7 +21,7 @@
 #include "syncoptions.h"
 
 #include <QFile>
-#include <QtTest>
+#include <QTest>
 
 #include <filesystem>
 
@@ -817,7 +818,7 @@ private Q_SLOTS:
         // We can't depend on currentLocalState for hidden files since
         // it should rightfully skip things like download temporaries
         auto localFileExists = [&](QString name) {
-            return QFileInfo(fakeFolder.localPath() + name).exists();
+            return QFileInfo::exists(fakeFolder.localPath() + name);
         };
 
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
@@ -943,7 +944,7 @@ private Q_SLOTS:
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").permissions(), perm);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a2").permissions(), perm);
 
-        auto conflictName = fakeFolder.syncJournal().conflictRecord(fakeFolder.syncJournal().conflictRecordPaths().first()).path;
+        auto conflictName = fakeFolder.syncJournal().conflictRecord(fakeFolder.syncJournal().conflictRecordPaths().constFirst()).path;
         QVERIFY(conflictName.contains("A/a2"));
         QCOMPARE(QFileInfo(fakeFolder.localPath() + conflictName).permissions(), perm);
     }
@@ -1307,8 +1308,6 @@ private Q_SLOTS:
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request,
                                          QIODevice *outgoingData) -> QNetworkReply * {
             Q_UNUSED(outgoingData)
-
-            auto attributeCustomVerb = request.attribute(QNetworkRequest::CustomVerbAttribute).toString();
 
             if (op == QNetworkAccessManager::CustomOperation
                 && request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("MOVE")) {
@@ -2513,7 +2512,8 @@ private Q_SLOTS:
         fakeFolder.execUntilBeforePropagation();
         QCOMPARE(itemDiscoveredSpy.size(), 1);
         {
-            const auto discoveredItem = itemDiscoveredSpy.takeFirst().takeFirst().value<OCC::SyncFileItemPtr>();
+            auto firstSignal = itemDiscoveredSpy.takeFirst();
+            const auto discoveredItem = firstSignal.takeFirst().value<OCC::SyncFileItemPtr>();
             QCOMPARE(discoveredItem->_size, 2);
         }
 
@@ -2543,7 +2543,8 @@ private Q_SLOTS:
         fakeFolder.execUntilBeforePropagation();
         QCOMPARE(itemDiscoveredSpy.size(), 1);
         {
-            const auto discoveredItem = itemDiscoveredSpy.takeFirst().takeFirst().value<OCC::SyncFileItemPtr>();
+            auto firstSignal = itemDiscoveredSpy.takeFirst();
+            const auto discoveredItem = firstSignal.takeFirst().value<OCC::SyncFileItemPtr>();
             QCOMPARE(discoveredItem->_size, 25_MiB + 2);
         }
         for (auto i = 0; i < 25; i++) {
@@ -2565,7 +2566,8 @@ private Q_SLOTS:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(itemDiscoveredSpy.size(), 1);
         {
-            const auto discoveredItem = itemDiscoveredSpy.takeFirst().takeFirst().value<OCC::SyncFileItemPtr>();
+            auto firstSignal = itemDiscoveredSpy.takeFirst();
+            const auto discoveredItem = firstSignal.takeFirst().value<OCC::SyncFileItemPtr>();
             QCOMPARE(discoveredItem->_size, 50_MiB + 2);
         }
         QVERIFY(itemDidCompleteSuccessfully(itemCompleteSpy, "changeme"));

@@ -9,23 +9,23 @@
 #include "common/filesystembase.h"
 
 #include "accountmanager.h"
-#include "owncloudgui.h"
-#include <pushnotifications.h>
-#include "userstatusselectormodel.h"
-#include "syncengine.h"
-#include "syncresult.h"
-#include "ocsjob.h"
-#include "configfile.h"
-#include "notificationconfirmjob.h"
-#include "logger.h"
-#include "guiutility.h"
-#include "syncresult.h"
-#include "syncfileitem.h"
-#include "systray.h"
 #include "activity/activitylistmodel.h"
-#include "userstatusconnector.h"
 #include "common/utility.h"
+#include "configfile.h"
+#include "guiutility.h"
+#include "logger.h"
+#include "notificationconfirmjob.h"
 #include "ocsassistantconnector.h"
+#include "ocsjob.h"
+#include "owncloudgui.h"
+#include "syncengine.h"
+#include "syncfileitem.h"
+#include "syncresult.h"
+#include "systray.h"
+#include "theme.h"
+#include "userstatusconnector.h"
+#include "userstatusselectormodel.h"
+#include <pushnotifications.h>
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
@@ -33,15 +33,14 @@
 #include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 
-#include <QtCore>
+#include <QDateTime>
 #include <QDesktopServices>
 #include <QIcon>
+#include <QJsonArray>
 #include <QMessageBox>
-#include <QSvgRenderer>
 #include <QPainter>
 #include <QPushButton>
-#include <QDateTime>
-#include <theme.h>
+#include <QSvgRenderer>
 
 using namespace Qt::StringLiterals;
 
@@ -2420,7 +2419,7 @@ void User::slotGroupFoldersFetched(QNetworkReply *reply)
     }
 
     const auto obj = json.object().toVariantMap();
-    const auto groupFolders = obj["ocs"].toMap()["data"].toMap();
+    const auto groupFolders = obj["ocs"].toMap().value("data").toMap();
 
     for (const auto &groupFolder : groupFolders) {
         const auto groupFolderInfo = groupFolder.toMap();

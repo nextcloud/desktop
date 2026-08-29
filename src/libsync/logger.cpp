@@ -25,6 +25,8 @@
 #include <io.h> // for stdout
 #endif
 
+using namespace Qt::StringLiterals;
+
 namespace {
 
 constexpr int CrashLogSize = 20;
@@ -312,9 +314,8 @@ void Logger::enterNextLogFileNoLock(const QString &baseFileName, LogType type)
             }
         }
 
-        const auto regexpText = QString{"%1\\.(\\d+).*"}.arg(QRegularExpression::escape(newLogName));
-        const auto anchoredPatternRegexpText = QRegularExpression::anchoredPattern(regexpText);
-        const QRegularExpression rx(regexpText);
+        const auto regexpText = u"%1\\.(\\d+).*"_s.arg(QRegularExpression::escape(newLogName));
+        static const QRegularExpression rx(regexpText);
         int maxNumber = -1;
         const auto collidingFileNames = dir.entryList({QStringLiteral("%1.*").arg(newLogName)}, QDir::Files, QDir::Name);
         for(const auto &fileName : collidingFileNames) {

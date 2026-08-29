@@ -36,7 +36,7 @@ public:
     [[nodiscard]] QString errorString() const;
 
 public Q_SLOTS:
-    void setAccountState(AccountState *accountState);
+    void setAccountState(OCC::AccountState *accountState);
     void setSearchTerm(const QString &searchTerm);
     void retry();
 

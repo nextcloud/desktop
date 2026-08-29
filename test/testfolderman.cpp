@@ -8,9 +8,10 @@
  * any purpose.
  */
 
-#include <qglobal.h>
+#include <QStandardPaths>
 #include <QTemporaryDir>
-#include <QtTest>
+#include <QTest>
+#include <qglobal.h>
 
 #include "QtTest/qtestcase.h"
 #include "common/utility.h"
@@ -197,7 +198,7 @@ private Q_SLOTS:
 
         FolderMan *folderman = FolderMan::instance();
         QCOMPARE(folderman, _fm.get());
-        OCC::AccountState *accountState = OCC::AccountManager::instance()->accounts().first().data();
+        OCC::AccountState *accountState = OCC::AccountManager::instance()->accounts().constFirst().data();
         const auto folder = folderman->addFolder(accountState, folderDefinition(fakeFolder.localPath()));
         QVERIFY(folder);
 

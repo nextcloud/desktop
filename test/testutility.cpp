@@ -8,8 +8,10 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QScopedValueRollback>
+#include <QStandardPaths>
 #include <QTemporaryDir>
+#include <QTest>
 
 #include "common/utility.h"
 #include "config.h"

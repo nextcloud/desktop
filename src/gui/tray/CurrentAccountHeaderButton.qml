@@ -249,8 +249,8 @@ Button {
                 id: currentAccountStatusIndicatorBackground
                 visible: UserModel.currentUser && UserModel.currentUser.isConnected
                          && UserModel.currentUser.serverHasUserStatus
-                         && UserModel.currentUser.status !== NC.userStatus.Invisible
-                         && UserModel.currentUser.status !== NC.userStatus.Offline
+                         && UserModel.currentUser.status !== NC.UserStatus.Invisible
+                         && UserModel.currentUser.status !== NC.UserStatus.Offline
                 width: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
                 color: "white"
@@ -263,8 +263,8 @@ Button {
                 id: currentAccountStatusIndicator
                 visible: UserModel.currentUser && UserModel.currentUser.isConnected
                          && UserModel.currentUser.serverHasUserStatus
-                         && UserModel.currentUser.status !== NC.userStatus.Invisible
-                         && UserModel.currentUser.status !== NC.userStatus.Offline
+                         && UserModel.currentUser.status !== NC.UserStatus.Invisible
+                         && UserModel.currentUser.status !== NC.UserStatus.Offline
                 source: UserModel.currentUser ? UserModel.currentUser.statusIcon : ""
                 cache: false
                 anchors.centerIn: currentAccountStatusIndicatorBackground

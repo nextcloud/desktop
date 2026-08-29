@@ -392,7 +392,7 @@ public Q_SLOTS:
     void slotTerminateSync();
 
     // connected to the corresponding signals in the SyncEngine
-    void slotAboutToRemoveAllFiles(OCC::SyncFileItem::Direction, std::function<void(bool)> callback);
+    void slotAboutToRemoveAllFiles(OCC::SyncFileItem::Direction, std::function<void(bool)> callback); // clazy:exclude=fully-qualified-moc-types
 
     /**
       * Starts a sync operation

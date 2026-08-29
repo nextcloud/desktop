@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include <QtTest>
-#include <QStandardPaths>
 #include <QAbstractItemModelTester>
+#include <QStandardPaths>
+#include <QTest>
 
 #include "accountstate.h"
 #include "folderman.h"

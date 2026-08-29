@@ -8,8 +8,9 @@
  * any purpose.
  */
 
-#include <QtTest>
 #include <QDebug>
+#include <QStandardPaths>
+#include <QTest>
 
 #include "accessmanager.h"
 #include "creds/webflowcredentials.h"

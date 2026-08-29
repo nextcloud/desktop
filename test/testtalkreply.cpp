@@ -11,8 +11,9 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QTest>
 #include <QSignalSpy>
+#include <QStandardPaths>
+#include <QTest>
 
 namespace {
 
@@ -55,9 +56,8 @@ private Q_SLOTS:
         fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
             Q_UNUSED(device);
             QNetworkReply *reply = nullptr;
-            
+
             const auto urlQuery = QUrlQuery(req.url());
-            const auto message = urlQuery.queryItemValue(QStringLiteral("message"));
             const auto replyTo = urlQuery.queryItemValue(QStringLiteral("replyTo"));
             const auto path = req.url().path();
 

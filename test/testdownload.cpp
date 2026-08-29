@@ -8,10 +8,12 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
+#include <QTest>
+
+#include "owncloudpropagator.h"
+#include "syncengine.h"
 #include "syncenginetestutils.h"
-#include <syncengine.h>
-#include <owncloudpropagator.h>
 
 using namespace OCC;
 

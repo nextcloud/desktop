@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-#include <QtTest>
+#include <QByteArray>
 #include <QProcess>
 #include <QString>
-#include <QByteArray>
+#include <QTest>
 
 #include "config.h"
 

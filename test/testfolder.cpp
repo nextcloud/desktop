@@ -7,8 +7,9 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
 #include <QTemporaryDir>
+#include <QTest>
 
 #include "accountstate.h"
 #include "common/vfs.h"

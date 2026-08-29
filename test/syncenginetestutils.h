@@ -22,9 +22,10 @@
 #include "testhelper.h"
 
 #include <QDir>
-#include <QNetworkReply>
 #include <QMap>
-#include <QtTest>
+#include <QNetworkReply>
+#include <QSignalSpy>
+#include <QTemporaryDir>
 
 #include <cstring>
 #include <memory>
@@ -61,7 +62,7 @@ inline QString getFilePathFromUrl(const QUrl &url)
 
 
 inline QByteArray generateEtag() {
-    return QByteArray::number(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(), 16) + QByteArray::number(OCC::Utility::rand(), 16);
+    return QByteArray::number(QDateTime::currentMSecsSinceEpoch(), 16) + QByteArray::number(OCC::Utility::rand(), 16);
 }
 // generates a value as seen in `oc:id` attributes (file ID + instance ID)
 inline QByteArray generateFileId() {
@@ -158,7 +159,7 @@ public:
         void setBytesAvailableString(const QString &bytesAvailableString) { _bytesAvailableString = bytesAvailableString; }
 
     private:
-        QString _bytesAvailableString = QStringLiteral("");
+        QString _bytesAvailableString;
     };
 
     void addChild(const FileInfo &info);

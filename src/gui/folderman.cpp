@@ -31,10 +31,10 @@
 #endif
 
 #include <QMessageBox>
-#include <QtCore>
 #include <QMutableSetIterator>
-#include <QSet>
 #include <QNetworkProxy>
+#include <QProcess>
+#include <QSet>
 
 namespace {
 constexpr auto settingsAccountsC = "Accounts";
@@ -439,7 +439,6 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
 int FolderMan::setupFoldersMigration()
 {
     ConfigFile cfg;
-    QDir storageDir(cfg.configPath());
     _folderConfigPath = cfg.configPath();
     auto configPath = _folderConfigPath;
 

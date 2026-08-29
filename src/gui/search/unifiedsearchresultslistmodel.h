@@ -15,10 +15,12 @@
 #include <QTimer>
 #include <QUrlQuery>
 
-#include <limits>
+#include <QAbstractListModel>
+#include <QTimer>
 
 #include "accountstate.h"
 #include "unifiedsearchresult.h"
+#include <limits>
 
 namespace OCC {
 
@@ -182,7 +184,7 @@ public Q_SLOTS:
     void retryLoadMore(const QString &providerId);
     void retryFailedProviders();
     void retry();
-    void moveSelection(SelectionDirection direction);
+    void moveSelection(OCC::UnifiedSearchResultsListModel::SelectionDirection direction);
     void activateSelected() const;
 
 Q_SIGNALS:

@@ -6,8 +6,6 @@
 #ifndef NOTIFICATIONHANDLER_H
 #define NOTIFICATIONHANDLER_H
 
-#include <QtCore>
-
 #include "activitydata.h"
 
 class QJsonDocument;

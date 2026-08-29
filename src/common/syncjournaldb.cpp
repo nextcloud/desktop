@@ -774,7 +774,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
     const auto addColumn = [this, &re, &columnExists] (const QString &columnName, const QString &dataType, const bool withIndex = false, const QString defaultCommand = {}) {
         if (!columnExists(columnName)) {
             SqlQuery query(_db);
-            auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2").arg(columnName).arg(dataType);
+            auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2").arg(columnName, dataType);
             if (!defaultCommand.isEmpty()) {
                 request.append(QStringLiteral(" ") + defaultCommand);
             }

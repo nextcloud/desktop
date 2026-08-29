@@ -14,11 +14,12 @@
 #include "gui/sharepermissions.h"
 #include "httplogger.h"
 
-#include <QJsonDocument>
+#include <QCryptographicHash>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
-#include <QCryptographicHash>
+#include <QXmlStreamWriter>
 
 #include <memory>
 #include <filesystem>
@@ -893,7 +894,7 @@ FakeGetWithDataReply::FakeGetWithDataReply(FileInfo &remoteRootFileInfo, const Q
 
     if (request.hasRawHeader("Range")) {
         const QString range = QString::fromUtf8(request.rawHeader("Range"));
-        const QRegularExpression bytesPattern(QStringLiteral("bytes=(?<start>\\d+)-(?<end>\\d+)"));
+        static const QRegularExpression bytesPattern(QStringLiteral("bytes=(?<start>\\d+)-(?<end>\\d+)"));
         const QRegularExpressionMatch match = bytesPattern.match(range);
         if (match.hasMatch()) {
             const int start = match.captured(QStringLiteral("start")).toInt();
@@ -1611,8 +1612,6 @@ FakeFileLockReply::FakeFileLockReply(FileInfo &remoteRootFileInfo,
         QMetaObject::invokeMethod(this, "respond404", Qt::QueuedConnection);
         return;
     }
-
-    const QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
 
     // Don't care about the request and just return a full propfind
     const QString davUri { QStringLiteral("DAV:") };

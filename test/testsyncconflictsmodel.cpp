@@ -12,10 +12,11 @@
 #include "syncenginetestutils.h"
 #include "testhelper.h"
 
-#include <QTest>
 #include <QAbstractItemModelTester>
-#include <QSignalSpy>
 #include <QLocale>
+#include <QSignalSpy>
+#include <QStandardPaths>
+#include <QTest>
 
 namespace {
 

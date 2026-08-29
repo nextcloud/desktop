@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <QtCore>
 #include <QQuickImageProvider>
+#include <QQuickImageResponse>
 
 namespace OCC {
 

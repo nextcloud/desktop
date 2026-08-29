@@ -10,7 +10,7 @@
 #include <QPoint>
 #include <QQuickItem>
 #include <QStyleHints>
-#include <QtQml>
+#include <QTimer>
 
 class QWheelEvent;
 class WheelHandler;

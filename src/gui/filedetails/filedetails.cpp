@@ -176,7 +176,6 @@ FileTagModel *FileDetails::fileTagModel() const
 
 void FileDetails::updateFileTagModel()
 {
-    const auto localPath = _fileRecord.path();
     QString serverPath = _folder->remotePathTrailingSlash() + _fileRecord.path();
  
     if (const auto vfsMode = _folder->vfs().mode(); _fileRecord.isVirtualFile() && vfsMode == Vfs::WithSuffix) {

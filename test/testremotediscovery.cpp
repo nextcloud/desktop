@@ -8,10 +8,13 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QScopedValueRollback>
+#include <QStandardPaths>
+#include <QTest>
+
+#include "localdiscoverytracker.h"
+#include "syncengine.h"
 #include "syncenginetestutils.h"
-#include <syncengine.h>
-#include <localdiscoverytracker.h>
 
 using namespace OCC;
 

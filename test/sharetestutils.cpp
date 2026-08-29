@@ -390,7 +390,6 @@ QNetworkReply *ShareTestHelper::handleShareGetOperation(const QNetworkAccessMana
     // Data: []
     const auto urlQuery = QUrlQuery(req.url());
     const auto pathParam = urlQuery.queryItemValue(QStringLiteral("path"));
-    const auto resharesParam = urlQuery.queryItemValue(QStringLiteral("reshares"));
     const auto sharedWithMeParam = urlQuery.queryItemValue(QStringLiteral("shared_with_me"));
     const auto formatParam = urlQuery.queryItemValue(QStringLiteral("format"));
 

@@ -69,7 +69,7 @@ public:
     [[nodiscard]] OCC::AccountPtr account() const { return _account; }
     [[nodiscard]] OCC::AccountStatePtr accountState() const { return _accountState; }
 
-    OCC::Folder *configureSyncFolder(const QString &targetPath = QStringLiteral(""));
+    OCC::Folder *configureSyncFolder(const QString &targetPath = {});
 
 Q_SIGNALS:
     void accountReady(const OCC::AccountPtr &account);

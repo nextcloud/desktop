@@ -35,7 +35,7 @@ private Q_SLOTS:
     void testHidpiFileName_darkBackground_returnPathToWhiteIcon()
     {
         FakePaintDevice paintDevice;
-        const QColor backgroundColor("#000000");
+        const QColor backgroundColor("#000000"); // clazy:exclude=qcolor-from-literal
         const QString iconName("icon-name");
 
         const auto iconPath = OCC::Theme::hidpiFileName(iconName + ".png", backgroundColor, &paintDevice);
@@ -46,7 +46,7 @@ private Q_SLOTS:
     void testHidpiFileName_lightBackground_returnPathToBlackIcon()
     {
         FakePaintDevice paintDevice;
-        const QColor backgroundColor("#ffffff");
+        const QColor backgroundColor("#ffffff"); // clazy:exclude=qcolor-from-literal
         const QString iconName("icon-name");
 
         const auto iconPath = OCC::Theme::hidpiFileName(iconName + ".png", backgroundColor, &paintDevice);
@@ -58,7 +58,7 @@ private Q_SLOTS:
     {
         FakePaintDevice paintDevice;
         paintDevice.setHidpi(true);
-        const QColor backgroundColor("#000000");
+        const QColor backgroundColor("#000000"); // clazy:exclude=qcolor-from-literal
         const QString iconName("wizard-files");
 
         const auto iconPath = OCC::Theme::hidpiFileName(iconName + ".png", backgroundColor, &paintDevice);

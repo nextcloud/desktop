@@ -12,7 +12,8 @@
 #include <syncengine.h>
 #include "common/ownsql.h"
 
-#include <QtTest>
+#include <QStandardPaths>
+#include <QTest>
 
 #include <filesystem>
 #include <iostream>

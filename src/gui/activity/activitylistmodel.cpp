@@ -22,10 +22,11 @@
 
 #include <QAbstractListModel>
 #include <QDesktopServices>
-#include <QWidget>
-#include <QJsonObject>
+#include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QLoggingCategory>
+#include <QWidget>
 
 #include <algorithm>
 

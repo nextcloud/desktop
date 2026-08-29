@@ -5,9 +5,9 @@
 
 #include "editlocallyjob.h"
 
-#include <QMessageBox>
 #include <QDesktopServices>
-#include <QtConcurrent>
+#include <QMessageBox>
+#include <QtConcurrentRun>
 
 #include "editlocallymanager.h"
 #include "folder.h"

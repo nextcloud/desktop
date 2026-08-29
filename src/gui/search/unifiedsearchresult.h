@@ -5,9 +5,10 @@
 
 #pragma once
 
-#include <limits>
+#include <QString>
+#include <QUrl>
 
-#include <QtCore>
+#include <limits>
 
 namespace OCC {
 

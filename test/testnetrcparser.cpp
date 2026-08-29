@@ -8,7 +8,8 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
+#include <QTest>
 
 #include "cmd/netrcparser.h"
 #include "logger.h"

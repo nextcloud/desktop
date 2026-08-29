@@ -8,10 +8,10 @@
  * any purpose.
  */
 
-#include <QtTest>
-
-#include <QUrl>
+#include <QStandardPaths>
 #include <QString>
+#include <QTest>
+#include <QUrl>
 
 #include "account.h"
 #include "logger.h"

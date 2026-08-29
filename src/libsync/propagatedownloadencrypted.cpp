@@ -26,7 +26,6 @@ PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propa
 
     const auto filenameInDb = _item->_file;
     const auto pathInDb = QString(rootPath + filenameInDb);
-    const auto parentPathInDb = pathInDb.left(pathInDb.lastIndexOf('/'));
     _parentPathInDb = pathInDb.left(pathInDb.lastIndexOf('/'));
 }
 

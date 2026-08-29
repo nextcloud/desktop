@@ -8,14 +8,16 @@
  * any purpose.
  */
 
-#include <QtTest>
 #include <QDir>
-#include "syncenginetestutils.h"
-#include "lockwatcher.h"
-#include <syncengine.h>
-#include <localdiscoverytracker.h>
-#include "discoveryphase.h"
+#include <QStandardPaths>
+#include <QTest>
 #include <QThreadPool>
+
+#include "discoveryphase.h"
+#include "localdiscoverytracker.h"
+#include "lockwatcher.h"
+#include "syncengine.h"
+#include "syncenginetestutils.h"
 
 using namespace OCC;
 

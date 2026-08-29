@@ -176,9 +176,7 @@ void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleFa
     } else {
         errorMsg = tr("There was an invalid response to an authenticated WebDAV request");
     }
-    printAccountSetupFromCommandLineStatusAndExit(
-        QStringLiteral("Account %1 setup from command line failed with error: %2.").arg(_account->displayName()).arg(errorMsg),
-        true);
+    printAccountSetupFromCommandLineStatusAndExit(u"Account %1 setup from command line failed with error: %2."_s.arg(_account->displayName(), errorMsg), true);
 }
 
 void AccountSetupFromCommandLineJob::setupLocalSyncFolder(AccountState *accountState)

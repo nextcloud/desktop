@@ -80,7 +80,6 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList &subPaths)
     QStringList newSubPaths = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
     for (auto &newSubPath : newSubPaths) {
         QString path = dir.path() + "/" + newSubPath;
-        QFileInfo fileInfo(path);
         subPaths.append(path);
         if (FileSystem::isDir(path)) {
             QDir dir(path);
@@ -296,3 +295,4 @@ void FolderWatcher::folderAccountCapabilitiesChanged()
 }
 
 } // namespace OCC
+

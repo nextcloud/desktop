@@ -7,10 +7,10 @@
  * any purpose.
  */
 
-#include <QtTest>
-
-#include <QTemporaryFile>
 #include <QRandomGenerator>
+#include <QStandardPaths>
+#include <QTemporaryFile>
+#include <QTest>
 
 #include <common/constants.h>
 

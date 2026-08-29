@@ -45,18 +45,20 @@
 #include "macOS/findersyncservice.h"
 #endif
 
+#include <QAbstractButton>
+#include <QDesktopServices>
+#include <QFileOpenEvent>
+#include <QGuiApplication>
+#include <QHttp2Configuration>
+#include <QLibraryInfo>
 #include <QLocale>
-#include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
-#include <QDesktopServices>
-#include <QGuiApplication>
-#include <QVersionNumber>
-#include <QRandomGenerator>
-#include <QHttp2Configuration>
 #include <QPushButton>
-#include <QAbstractButton>
-#include <QFileOpenEvent>
+#include <QRandomGenerator>
+#include <QStandardPaths>
+#include <QTranslator>
+#include <QVersionNumber>
 
 #include <iostream>
 

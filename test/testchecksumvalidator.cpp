@@ -8,9 +8,11 @@
  * any purpose.
  */
 
-#include <QtTest>
 #include <QDir>
+#include <QProcess>
+#include <QStandardPaths>
 #include <QString>
+#include <QTest>
 
 #include "common/checksums.h"
 #include "networkjobs.h"

@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include <QtTest>
+#include <QStandardPaths>
 #include <QTemporaryDir>
+#include <QTest>
 
 #include "account.h"
 #include "accountstate.h"

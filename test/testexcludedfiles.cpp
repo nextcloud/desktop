@@ -8,8 +8,9 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
 #include <QTemporaryDir>
+#include <QTest>
 
 #include "csync_exclude.h"
 #include "logger.h"

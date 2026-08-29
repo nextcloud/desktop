@@ -23,7 +23,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          cmake .. -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_FLAGS="-Werror -Xclang -load -Xclang ClazyPlugin.so -Xclang -add-plugin -Xclang clazy -Xclang -plugin-arg-clazy -Xclang level0,detaching-temporary"
           ninja
       - name: Run tests
         run: |

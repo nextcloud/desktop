@@ -8,7 +8,8 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
+#include <QTest>
 
 #include <sqlite3.h>
 
@@ -380,7 +381,8 @@ private Q_SLOTS:
     void testPinState()
     {
         auto make = [&](const QByteArray &path, PinState state) {
-            _db.internalPinStates().setForPath(path, state);
+            auto pinStates = _db.internalPinStates();
+            pinStates.setForPath(path, state);
             auto pinState = _db.internalPinStates().rawForPath(path);
             QVERIFY(pinState);
             QCOMPARE(*pinState, state);

@@ -264,15 +264,11 @@ private Q_SLOTS:
         const auto predefinedStatusesCount = model.predefinedStatuses().count();
         QCOMPARE(predefinedStatusesCount, fakePredefinedStatuses.size());
         for (int i = 0; i < predefinedStatusesCount; ++i) {
-            const auto predefinedStatus = model.predefinedStatuses()[i];
-            QCOMPARE(predefinedStatus.id(),
-                fakePredefinedStatuses[i].id());
-            QCOMPARE(predefinedStatus.message(),
-                fakePredefinedStatuses[i].message());
-            QCOMPARE(predefinedStatus.icon(),
-                fakePredefinedStatuses[i].icon());
-            QCOMPARE(predefinedStatus.messagePredefined(),
-                fakePredefinedStatuses[i].messagePredefined());
+            const auto predefinedStatus = model.predefinedStatuses().at(i);
+            QCOMPARE(predefinedStatus.id(), fakePredefinedStatuses.at(i).id());
+            QCOMPARE(predefinedStatus.message(), fakePredefinedStatuses.at(i).message());
+            QCOMPARE(predefinedStatus.icon(), fakePredefinedStatuses.at(i).icon());
+            QCOMPARE(predefinedStatus.messagePredefined(), fakePredefinedStatuses.at(i).messagePredefined());
         }
     }
 
@@ -455,7 +451,7 @@ private Q_SLOTS:
         auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
         fakeUserStatusJob->setFakePredefinedStatuses(createFakePredefinedStatuses(createDateTime()));
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
-        model.setPredefinedStatus(model.predefinedStatuses()[0]);
+        model.setPredefinedStatus(model.predefinedStatuses().at(0));
         QSignalSpy finishedSpy(&model, &OCC::UserStatusSelectorModel::finished);
 
         const QString userStatusMessage("Some status");
@@ -483,7 +479,7 @@ private Q_SLOTS:
         auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
         fakeUserStatusJob->setFakePredefinedStatuses(createFakePredefinedStatuses(createDateTime()));
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
-        model.setPredefinedStatus(model.predefinedStatuses()[0]);
+        model.setPredefinedStatus(model.predefinedStatuses().at(0));
         QSignalSpy finishedSpy(&model, &OCC::UserStatusSelectorModel::finished);
 
         const QString userStatusIcon("❤");
@@ -523,7 +519,7 @@ private Q_SLOTS:
             &OCC::UserStatusSelectorModel::clearAtDisplayStringChanged);
 
         const auto fakePredefinedUserStatusIndex = 0;
-        model.setPredefinedStatus(model.predefinedStatuses()[fakePredefinedUserStatusIndex]);
+        model.setPredefinedStatus(model.predefinedStatuses().at(fakePredefinedUserStatusIndex));
 
         QCOMPARE(userStatusChangedSpy.count(), 1);
         QCOMPARE(clearAtDisplayStringChangedSpy.count(), 1);
@@ -623,12 +619,12 @@ private Q_SLOTS:
         const auto clearStageTypes = model.clearStageTypes();
         QCOMPARE(clearStageTypes.count(), 6);
 
-        QCOMPARE(clearStageTypes[0].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("Don't clear"));
-        QCOMPARE(clearStageTypes[1].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("30 minutes"));
-        QCOMPARE(clearStageTypes[2].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("1 hour"));
-        QCOMPARE(clearStageTypes[3].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("4 hours"));
-        QCOMPARE(clearStageTypes[4].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("Today"));
-        QCOMPARE(clearStageTypes[5].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("This week"));
+        QCOMPARE(clearStageTypes[0].value<QVariantMap>().value(QStringLiteral("display")), QStringLiteral("Don't clear"));
+        QCOMPARE(clearStageTypes[1].value<QVariantMap>().value(QStringLiteral("display")), QStringLiteral("30 minutes"));
+        QCOMPARE(clearStageTypes[2].value<QVariantMap>().value(QStringLiteral("display")), QStringLiteral("1 hour"));
+        QCOMPARE(clearStageTypes[3].value<QVariantMap>().value(QStringLiteral("display")), QStringLiteral("4 hours"));
+        QCOMPARE(clearStageTypes[4].value<QVariantMap>().value(QStringLiteral("display")), QStringLiteral("Today"));
+        QCOMPARE(clearStageTypes[5].value<QVariantMap>().value(QStringLiteral("display")), QStringLiteral("This week"));
     }
 
     void testClearAt_clearAtTimestamp()

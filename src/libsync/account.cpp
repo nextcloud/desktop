@@ -581,7 +581,7 @@ void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 
 void Account::setUrl(const QUrl &url)
 {
-    const QRegularExpression discoverPublicLinks(R"(((https|http)://[^/]*).*/s/([^/]*)$)");
+    static const QRegularExpression discoverPublicLinks(R"(((https|http)://[^/]*).*/s/([^/]*)$)");
     const auto isPublicLink = discoverPublicLinks.match(url.toString());
     if (isPublicLink.hasMatch()) {
         _url = QUrl::fromUserInput(isPublicLink.captured(1));

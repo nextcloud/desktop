@@ -5,10 +5,11 @@
 
 #pragma once
 
-#include <QLoggingCategory>
-#include <QtCore>
-
 #include "accountstate.h"
+
+#include <QAbstractListModel>
+#include <QLoggingCategory>
+#include <QMimeType>
 
 namespace OCC {
 

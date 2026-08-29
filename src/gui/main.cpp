@@ -71,7 +71,7 @@ int main(int argc, char **argv)
     QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
 
     auto qmlStyle = QStringLiteral("Fusion");
-    auto widgetsStyle = QStringLiteral("");
+    auto widgetsStyle = QString{};
 
 #if defined Q_OS_MACOS
     qmlStyle = QStringLiteral("macOS");

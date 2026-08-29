@@ -28,7 +28,7 @@ Capabilities::Capabilities(const QVariantMap &capabilities)
 bool Capabilities::shareAPI() const
 {
     if (_capabilities["files_sharing"].toMap().contains("api_enabled")) {
-        return _capabilities["files_sharing"].toMap()["api_enabled"].toBool();
+        return _capabilities["files_sharing"].toMap().value("api_enabled").toBool();
     } else {
         // This was later added so if it is not present just assume the API is enabled.
         return true;
@@ -37,13 +37,13 @@ bool Capabilities::shareAPI() const
 
 bool Capabilities::shareEmailPasswordEnforced() const
 {
-    return _capabilities["files_sharing"].toMap()["sharebymail"].toMap()["password"].toMap()["enforced"].toBool();
+    return _capabilities["files_sharing"].toMap().value("sharebymail").toMap().value("password").toMap().value("enforced").toBool();
 }
 
 bool Capabilities::sharePublicLink() const
 {
     if (_capabilities["files_sharing"].toMap().contains("public")) {
-        return shareAPI() && _capabilities["files_sharing"].toMap()["public"].toMap()["enabled"].toBool();
+        return shareAPI() && _capabilities["files_sharing"].toMap().value("public").toMap().value("enabled").toBool();
     } else {
         // This was later added so if it is not present just assume that link sharing is enabled.
         return true;
@@ -52,53 +52,53 @@ bool Capabilities::sharePublicLink() const
 
 bool Capabilities::sharePublicLinkAskOptionalPassword() const
 {
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["askForOptionalPassword"].toBool();
+    return _capabilities["files_sharing"].toMap().value("public").toMap().value("password").toMap().value("askForOptionalPassword").toBool();
 }
 
 bool Capabilities::sharePublicLinkEnforcePassword() const
 {
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool();
+    return _capabilities["files_sharing"].toMap().value("public").toMap().value("password").toMap().value("enforced").toBool();
 }
 
 bool Capabilities::sharePublicLinkEnforceExpireDate() const
 {
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["enforced"].toBool();
+    return _capabilities["files_sharing"].toMap().value("public").toMap().value("expire_date").toMap().value("enforced").toBool();
 }
 
 int Capabilities::sharePublicLinkExpireDateDays() const
 {
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["days"].toInt();
+    return _capabilities["files_sharing"].toMap().value("public").toMap().value("expire_date").toMap().value("days").toInt();
 }
 
 bool Capabilities::shareInternalEnforceExpireDate() const
 {
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_internal"].toMap()["enforced"].toBool();
+    return _capabilities["files_sharing"].toMap().value("public").toMap().value("expire_date_internal").toMap().value("enforced").toBool();
 }
 
 int Capabilities::shareInternalExpireDateDays() const
 {
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_internal"].toMap()["days"].toInt();
+    return _capabilities["files_sharing"].toMap().value("public").toMap().value("expire_date_internal").toMap().value("days").toInt();
 }
 
 bool Capabilities::shareRemoteEnforceExpireDate() const
 {
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_remote"].toMap()["enforced"].toBool();
+    return _capabilities["files_sharing"].toMap().value("public").toMap().value("expire_date_remote").toMap().value("enforced").toBool();
 }
 
 int Capabilities::shareRemoteExpireDateDays() const
 {
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_remote"].toMap()["days"].toInt();
+    return _capabilities["files_sharing"].toMap().value("public").toMap().value("expire_date_remote").toMap().value("days").toInt();
 }
 
 bool Capabilities::shareResharing() const
 {
-    return _capabilities["files_sharing"].toMap()["resharing"].toBool();
+    return _capabilities["files_sharing"].toMap().value("resharing").toBool();
 }
 
 int Capabilities::shareDefaultPermissions() const
 {
     if(_capabilities["files_sharing"].toMap().contains("default_permissions")) {
-        return _capabilities["files_sharing"].toMap()["default_permissions"].toInt();
+        return _capabilities["files_sharing"].toMap().value("default_permissions").toInt();
     }
     
     return {};
@@ -184,7 +184,7 @@ bool Capabilities::isClientStatusReportingEnabled() const
 
 QList<QByteArray> Capabilities::supportedChecksumTypes() const
 {
-    const auto supportedTypes = _capabilities["checksums"].toMap()["supportedTypes"].toList();
+    const auto supportedTypes = _capabilities["checksums"].toMap().value("supportedTypes").toList();
     QList<QByteArray> list(supportedTypes.count());
     for (const auto &t : supportedTypes) {
         list.push_back(t.toByteArray());
@@ -221,17 +221,17 @@ bool Capabilities::chunkingNg() const
     if (chunkng == "1") {
         return true;
     }
-    return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
+    return _capabilities["dav"].toMap().value("chunking").toByteArray() >= "1.0";
 }
 
 qint64 Capabilities::maxChunkSize() const
 {
-    return _capabilities["files"].toMap()["chunked_upload"].toMap()["max_size"].toLongLong();
+    return _capabilities["files"].toMap().value("chunked_upload").toMap().value("max_size").toLongLong();
 }
 
 int Capabilities::maxConcurrentChunkUploads() const
 {
-    return _capabilities["files"].toMap()["chunked_upload"].toMap()["max_parallel_count"].toInt();
+    return _capabilities["files"].toMap().value("chunked_upload").toMap().value("max_parallel_count").toInt();
 }
 
 bool Capabilities::bulkUpload() const
@@ -243,17 +243,17 @@ bool Capabilities::bulkUpload() const
     if (bulkUploadEnv == "1") {
         return true;
     }
-    return _capabilities["dav"].toMap()["bulkupload"].toByteArray() >= "1.0";
+    return _capabilities["dav"].toMap().value("bulkupload").toByteArray() >= "1.0";
 }
 
 bool Capabilities::filesLockAvailable() const
 {
-    return _capabilities["files"].toMap()["locking"].toByteArray() >= "1.0";
+    return _capabilities["files"].toMap().value("locking").toByteArray() >= "1.0";
 }
 
 bool Capabilities::filesLockTypeAvailable() const
 {
-    return _capabilities["files"].toMap()["api-feature-lock-type"].toByteArray() >= "1.0";
+    return _capabilities["files"].toMap().value("api-feature-lock-type").toByteArray() >= "1.0";
 }
 
 bool Capabilities::userStatus() const
@@ -285,11 +285,9 @@ bool Capabilities::userStatusSupportsBusy() const
 
 bool Capabilities::ncAssistantEnabled() const
 {
-    if (_capabilities.contains("assistant")
-        && _capabilities["assistant"].toMap()["enabled"].toBool()) {
-
+    if (_capabilities.contains("assistant") && _capabilities["assistant"].toMap().value("enabled").toBool()) {
         const auto minimumVersion = QVersionNumber(1, 0, 9);
-        const auto versionString = _capabilities["assistant"].toMap()["version"].toString();
+        const auto versionString = _capabilities["assistant"].toMap().value("version").toString();
 
         if (const auto currentVersion = QVersionNumber::fromString(versionString);
             QVersionNumber::compare(currentVersion, minimumVersion) >= 0) {
@@ -331,7 +329,7 @@ PushNotificationTypes Capabilities::availablePushNotifications() const
         return PushNotificationType::None;
     }
 
-    const auto types = _capabilities["notify_push"].toMap()["type"].toStringList();
+    const auto types = _capabilities["notify_push"].toMap().value("type").toStringList();
     PushNotificationTypes pushNotificationTypes;
 
     if (types.contains("files")) {
@@ -351,23 +349,23 @@ PushNotificationTypes Capabilities::availablePushNotifications() const
 
 QUrl Capabilities::pushNotificationsWebSocketUrl() const
 {
-    const auto websocket = _capabilities["notify_push"].toMap()["endpoints"].toMap()["websocket"].toString();
+    const auto websocket = _capabilities["notify_push"].toMap().value("endpoints").toMap().value("websocket").toString();
     return QUrl(websocket);
 }
 
 bool Capabilities::chunkingParallelUploadDisabled() const
 {
-    return _capabilities["dav"].toMap()["chunkingParallelUploadDisabled"].toBool();
+    return _capabilities["dav"].toMap().value("chunkingParallelUploadDisabled").toBool();
 }
 
 bool Capabilities::privateLinkPropertyAvailable() const
 {
-    return _capabilities["files"].toMap()["privateLinks"].toBool();
+    return _capabilities["files"].toMap().value("privateLinks").toBool();
 }
 
 QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
 {
-    const auto httpErrorCodes = _capabilities["dav"].toMap()["httpErrorCodesThatResetFailingChunkedUploads"].toList();
+    const auto httpErrorCodes = _capabilities["dav"].toMap().value("httpErrorCodesThatResetFailingChunkedUploads").toList();
     QList<int> list(httpErrorCodes.count());
     for (const auto &t : httpErrorCodes) {
         list.push_back(t.toInt());
@@ -377,7 +375,7 @@ QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
 
 QString Capabilities::invalidFilenameRegex() const
 {
-    return _capabilities[QStringLiteral("dav")].toMap()[QStringLiteral("invalidFilenameRegex")].toString();
+    return _capabilities[QStringLiteral("dav")].toMap().value(QStringLiteral("invalidFilenameRegex")).toString();
 }
 
 bool Capabilities::uploadConflictFiles() const
@@ -408,27 +406,27 @@ QString Capabilities::desktopEnterpriseChannel() const
 
 QStringList Capabilities::blacklistedFiles() const
 {
-    return _capabilities["files"].toMap()["blacklisted_files"].toStringList();
+    return _capabilities["files"].toMap().value("blacklisted_files").toStringList();
 }
 
 QStringList Capabilities::forbiddenFilenames() const
 {
-    return _capabilities["files"].toMap()["forbidden_filenames"].toStringList();
+    return _capabilities["files"].toMap().value("forbidden_filenames").toStringList();
 }
 
 QStringList Capabilities::forbiddenFilenameCharacters() const
 {
-    return _capabilities["files"].toMap()["forbidden_filename_characters"].toStringList();
+    return _capabilities["files"].toMap().value("forbidden_filename_characters").toStringList();
 }
 
 QStringList Capabilities::forbiddenFilenameBasenames() const
 {
-    return _capabilities["files"].toMap()["forbidden_filename_basenames"].toStringList();
+    return _capabilities["files"].toMap().value("forbidden_filename_basenames").toStringList();
 }
 
 QStringList Capabilities::forbiddenFilenameExtensions() const
 {
-    return _capabilities["files"].toMap()["forbidden_filename_extensions"].toStringList();
+    return _capabilities["files"].toMap().value("forbidden_filename_extensions").toStringList();
 }
 
 bool Capabilities::serverHasClientIntegration() const

@@ -7,8 +7,8 @@
 
 #include <QAbstractItemModelTester>
 #include <QSignalSpy>
+#include <QStandardPaths>
 #include <QTest>
-#include <ranges>
 
 #include "sharetestutils.h"
 

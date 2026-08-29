@@ -8,9 +8,10 @@
  * any purpose.
  */
 
-#include <qglobal.h>
+#include <QStandardPaths>
 #include <QTemporaryDir>
-#include <QtTest>
+#include <QTest>
+#include <qglobal.h>
 
 #include "account.h"
 #include "accountstate.h"

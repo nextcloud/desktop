@@ -8,11 +8,13 @@
  * any purpose.
  */
 
-#include <QtTest>
-#include "syncenginetestutils.h"
+#include <QStandardPaths>
+#include <QTest>
+
 #include "common/vfs.h"
 #include "config.h"
-#include <syncengine.h>
+#include "syncengine.h"
+#include "syncenginetestutils.h"
 
 using namespace OCC;
 
@@ -1744,7 +1746,6 @@ private Q_SLOTS:
 
         auto checkStatus = [&]() -> SyncFileStatus::SyncFileStatusTag {
             auto file = QFileInfo{fakeFolder.syncEngine().localPath(), barFileAaaSubFolder};
-            auto locPath = fakeFolder.syncEngine().localPath();
             auto itemFound = false;
             // Start from the end to get the latest status
             for (int i = statusSpy.size() - 1; i >= 0 && !itemFound; --i) {
@@ -2028,7 +2029,14 @@ private Q_SLOTS:
         const auto localFileNotLocked = QFileInfo{fakeFolder.localPath() + u"A/a1" + DVSUFFIX};
         QVERIFY(localFileNotLocked.isWritable());
 
-        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch(), 1226);
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"),
+                                                    FileModifier::LockState::FileLocked,
+                                                    1,
+                                                    QStringLiteral("Nextcloud Office"),
+                                                    {},
+                                                    QStringLiteral("richdocuments"),
+                                                    QDateTime::currentSecsSinceEpoch(),
+                                                    1226);
         fakeFolder.remoteModifier().setModTimeKeepEtag(QStringLiteral("A/a1"), QDateTime::currentDateTime());
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
 

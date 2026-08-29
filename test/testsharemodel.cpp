@@ -10,6 +10,7 @@
 #include <QFileInfo>
 #include <QFlags>
 #include <QSignalSpy>
+#include <QStandardPaths>
 #include <QTest>
 #include <QTimeZone>
 #include <QUrlQuery>
@@ -844,7 +845,7 @@ private Q_SLOTS:
         const auto linkSharePtr = sharePtr.dynamicCast<LinkShare>(); // Need to connect to signal
         QSignalSpy noteSet(linkSharePtr.data(), &LinkShare::noteSet);
 
-        model.setShareNote(sharePtr, QStringLiteral(""));
+        model.setShareNote(sharePtr, QString{});
         QVERIFY(noteSet.wait(3000));
         QCOMPARE(shareIndex.data(ShareModel::NoteEnabledRole).toBool(), false);
 

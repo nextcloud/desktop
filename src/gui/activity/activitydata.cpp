@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include <QtCore>
-
 #include "activitydata.h"
 #include "folderman.h"
+
+#include <QCoreApplication>
+#include <QJsonArray>
 
 using namespace Qt::StringLiterals;
 

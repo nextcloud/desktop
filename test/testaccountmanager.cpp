@@ -7,7 +7,7 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QTest>
 
 #include <QStandardPaths>
 #include <QUrl>

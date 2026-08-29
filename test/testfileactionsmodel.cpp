@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include <QTest>
 #include <QSignalSpy>
+#include <QStandardPaths>
 #include <QTemporaryFile>
+#include <QTest>
 
 #include "../src/gui/integration/fileactionsmodel.h"
 #include "syncenginetestutils.h"

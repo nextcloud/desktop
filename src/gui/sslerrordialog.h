@@ -7,7 +7,6 @@
 #ifndef SSLERRORDIALOG_H
 #define SSLERRORDIALOG_H
 
-#include <QtCore>
 #include <QDialog>
 #include <QSslCertificate>
 #include <QList>

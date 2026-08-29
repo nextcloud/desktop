@@ -10,6 +10,8 @@
 #include "common/utility.h"
 #include "activity/activitydata.h"
 
+#include <QJsonArray>
+
 #include <optional>
 
 namespace OCC {

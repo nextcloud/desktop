@@ -17,6 +17,8 @@
 #include <QPushButton>
 #include <QUrl>
 
+using namespace Qt::StringLiterals;
+
 namespace {
 void forceHeaderFont(QWidget *widget)
 {
@@ -122,7 +124,7 @@ void ConflictDialog::updateWidgets()
 
     const auto updateGroup = [this, &mimeDb](const QString &filename, QLabel *linkLabel, const QString &linkText, QLabel *mtimeLabel, QLabel *sizeLabel, QToolButton *button) {
         const auto fileUrl = QUrl::fromLocalFile(filename).toString();
-        linkLabel->setText(QStringLiteral("<a href=\"%1\">%2</a>").arg(Utility::escape(fileUrl)).arg(linkText));
+        linkLabel->setText(u"<a href=\"%1\">%2</a>"_s.arg(Utility::escape(fileUrl), linkText));
 
         const auto info = QFileInfo(filename);
         mtimeLabel->setText(info.lastModified().toString());

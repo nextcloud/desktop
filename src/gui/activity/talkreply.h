@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <QtCore>
-#include <QPointer>
+#include <QObject>
+#include <QString>
 
 namespace OCC {
 class AccountState;

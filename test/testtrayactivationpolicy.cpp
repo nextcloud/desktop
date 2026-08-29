@@ -9,7 +9,7 @@
 
 #include "tray/trayactivationpolicy.h"
 
-#include <QtTest>
+#include <QTest>
 
 using namespace OCC;
 

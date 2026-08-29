@@ -58,7 +58,7 @@ void ClientStatusReportingNetwork::sendReportToServer()
     }
 
     const auto lastSentReportTime = _database->getLastSentReportTimestamp();
-    if (QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() - lastSentReportTime < repordSendIntervalMs) {
+    if (QDateTime::currentMSecsSinceEpoch() - lastSentReportTime < repordSendIntervalMs) {
         qCDebug(lcClientStatusReportingNetwork) << "Skipped sending client status report because interval is not met";
         return;
     }
@@ -76,7 +76,7 @@ void ClientStatusReportingNetwork::sendReportToServer()
     const auto clientStatusReportingJob = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v2.php/apps/security_guard/diagnostics"));
     clientStatusReportingJob->setBody(QJsonDocument::fromVariant(report));
     clientStatusReportingJob->setVerb(SimpleApiJob::Verb::Put);
-    connect(clientStatusReportingJob, &JsonApiJob::jsonReceived, [this](const QJsonDocument &json, int statusCode) {
+    connect(clientStatusReportingJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
         const auto isSuccess = statusCode == HttpErrorCodeNone || statusCode == HttpErrorCodeSuccess || statusCode == HttpErrorCodeSuccessCreated
             || statusCode == HttpErrorCodeSuccessNoContent;
         if (isSuccess) {
@@ -99,7 +99,7 @@ void ClientStatusReportingNetwork::reportToServerSentSuccessfully()
     if (!_database->deleteClientStatusReportingRecords()) {
         qCWarning(lcClientStatusReportingNetwork) << "Could not delete records after sending the report";
     }
-    _database->setLastSentReportTimestamp(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch());
+    _database->setLastSentReportTimestamp(QDateTime::currentMSecsSinceEpoch());
 }
 
 QVariantMap ClientStatusReportingNetwork::prepareReport() const

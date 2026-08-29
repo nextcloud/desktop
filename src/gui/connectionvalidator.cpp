@@ -268,14 +268,14 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
     _account->setCapabilities(caps.toVariantMap());
 
     // New servers also report the version in the capabilities
-    QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
+    QString serverVersion = caps["core"].toObject().value("status").toObject().value("version").toString();
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
         return;
     }
 
     // Check for the directEditing capability
-    QUrl directEditingURL = QUrl(caps["files"].toObject()["directEditing"].toObject()["url"].toString());
-    QString directEditingETag = caps["files"].toObject()["directEditing"].toObject()["etag"].toString();
+    QUrl directEditingURL = QUrl(caps["files"].toObject().value("directEditing").toObject().value("url").toString());
+    QString directEditingETag = caps["files"].toObject().value("directEditing").toObject().value("etag").toString();
     _account->fetchDirectEditors(directEditingURL, directEditingETag);
 
     checkServerTermsOfService();

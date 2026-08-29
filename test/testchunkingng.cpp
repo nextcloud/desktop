@@ -10,10 +10,12 @@
 
 #include "syncenginetestutils.h"
 
-#include <owncloudpropagator.h>
-#include <syncengine.h>
+#include "owncloudpropagator.h"
+#include "syncengine.h"
 
-#include <QtTest>
+#include <QScopedValueRollback>
+#include <QStandardPaths>
+#include <QTest>
 #include <QTextCodec>
 
 using namespace OCC;
@@ -100,7 +102,6 @@ private Q_SLOTS:
         QVERIFY(hasDestinationHeader);
 
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
-        const auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto chunkMap = fakeFolder.uploadState().children.first().children;
         const auto firstChunkName = chunkMap.first().name;
         const auto expectedChunkName = QStringLiteral("%1").arg(1, 5, 10, QChar('0'));
@@ -209,7 +210,8 @@ private Q_SLOTS:
         // Remove the second chunk, so all further chunks will be deleted and resent
         auto firstChunk = chunkMap.first();
         auto secondChunk = *(std::next(chunkMap.begin()));
-        const auto chunksList = chunkMap.keys().mid(2);
+        const auto allKeys = chunkMap.keys();
+        const auto chunksList = allKeys.mid(2);
         for (const auto& name : chunksList) {
             chunksToDelete.append(name);
         }

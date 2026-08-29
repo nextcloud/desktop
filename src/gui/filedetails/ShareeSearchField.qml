@@ -191,8 +191,8 @@ NCContextMenuTextField {
                 delegate: ShareeDelegate {
                     width: shareeListView.contentItem.width
 
-                    enabled: model.type !== NC.sharee.LookupServerSearchResults
-                    hoverEnabled: model.type !== NC.sharee.LookupServerSearchResults
+                    enabled: model.type !== NC.Sharee.LookupServerSearchResults
+                    hoverEnabled: model.type !== NC.Sharee.LookupServerSearchResults
 
                     function selectSharee() {
                         root.shareeSelected(model.sharee);
@@ -202,7 +202,7 @@ NCContextMenuTextField {
                     }
 
                     function selectItem() {
-                        if (model.type === NC.sharee.LookupServerSearch) {
+                        if (model.type === NC.Sharee.LookupServerSearch) {
                             shareeListView.currentIndex = -1
                             root.shareeModel.searchGlobally()
                         } else {

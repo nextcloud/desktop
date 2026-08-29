@@ -581,7 +581,7 @@ int main(int argc, char **argv)
     QEventLoop loop;
     auto *csjob = new CheckServerJob(account);
     csjob->setIgnoreCredentialFailure(true);
-    QObject::connect(csjob, &CheckServerJob::instanceFound, [&](const QUrl &, const QJsonObject &info) {
+    QObject::connect(csjob, &CheckServerJob::instanceFound, &loop, [&](const QUrl &, const QJsonObject &info) {
         // see ConnectionValidator::slotCapabilitiesRecieved: only set server version if not empty
         QString serverVersion = CheckServerJob::version(info);
         if (!serverVersion.isEmpty()) {
@@ -589,10 +589,10 @@ int main(int argc, char **argv)
         }
         loop.quit();
     });
-    QObject::connect(csjob, &CheckServerJob::instanceNotFound, [&]() {
+    QObject::connect(csjob, &CheckServerJob::instanceNotFound, &loop, [&]() {
         loop.quit();
     });
-    QObject::connect(csjob, &CheckServerJob::timeout, [&](const QUrl &) {
+    QObject::connect(csjob, &CheckServerJob::timeout, &loop, [&](const QUrl &) {
         loop.quit();
     });
     csjob->start();
@@ -604,12 +604,12 @@ int main(int argc, char **argv)
     }
 
     auto *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
-    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
+    QObject::connect(job, &JsonApiJob::jsonReceived, &loop, [&](const QJsonDocument &json) {
         auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
         qDebug() << "Server capabilities" << caps;
         account->setCapabilities(caps.toVariantMap());
         // see ConnectionValidator::slotCapabilitiesRecieved: only set server version if not empty
-        QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
+        QString serverVersion = caps["core"].toObject().value("status").toObject().value("version").toString();
         if (!serverVersion.isEmpty()) {
             account->setServerVersion(serverVersion);
         }
@@ -624,7 +624,7 @@ int main(int argc, char **argv)
     }
 
     job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"));
-    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
+    QObject::connect(job, &JsonApiJob::jsonReceived, &loop, [&](const QJsonDocument &json) {
         const QJsonObject data = json.object().value("ocs").toObject().value("data").toObject();
         account->setDavUser(data.value("id").toString());
         account->setDavDisplayName(data.value("display-name").toString());
@@ -648,7 +648,9 @@ restart_sync:
             qCritical() << "Could not open file containing the list of unsynced folders: " << options.unsyncedfolders;
         } else {
             // filter out empty lines and comments
-            selectiveSyncList = QString::fromUtf8(f.readAll()).split('\n').filter(QRegularExpression("\\S+")).filter(QRegularExpression("^[^#]"));
+            static const auto filterComments = QRegularExpression("^[^#]");
+            static const auto filterEmptyLines = QRegularExpression("\\S+");
+            selectiveSyncList = QString::fromUtf8(f.readAll()).split('\n').filter(filterEmptyLines).filter(filterComments);
 
             for (int i = 0; i < selectiveSyncList.count(); ++i) {
                 if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {

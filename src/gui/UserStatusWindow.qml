@@ -94,51 +94,51 @@ WizardStyledWindow {
                 UserStatusWindowStatusRow {
                     Layout.fillWidth: true
                     enabled: root.statusLoaded
-                    selected: root.statusLoaded && statusModel.onlineStatus === NC.userStatus.Online
+                    selected: root.statusLoaded && statusModel.onlineStatus === NC.UserStatus.Online
                     iconSource: statusModel.onlineIcon
                     text: qsTr("Online")
-                    onClicked: root.setOnlineStatus(NC.userStatus.Online)
+                    onClicked: root.setOnlineStatus(NC.UserStatus.Online)
                 }
 
                 UserStatusWindowStatusRow {
                     Layout.fillWidth: true
                     enabled: root.statusLoaded
-                    selected: root.statusLoaded && statusModel.onlineStatus === NC.userStatus.Away
+                    selected: root.statusLoaded && statusModel.onlineStatus === NC.UserStatus.Away
                     iconSource: statusModel.awayIcon
                     text: qsTr("Away")
-                    onClicked: root.setOnlineStatus(NC.userStatus.Away)
+                    onClicked: root.setOnlineStatus(NC.UserStatus.Away)
                 }
 
                 UserStatusWindowStatusRow {
                     Layout.fillWidth: true
                     visible: statusModel.busyStatusSupported
                     enabled: root.statusLoaded
-                    selected: root.statusLoaded && statusModel.onlineStatus === NC.userStatus.Busy
+                    selected: root.statusLoaded && statusModel.onlineStatus === NC.UserStatus.Busy
                     iconSource: statusModel.busyIcon
                     text: qsTr("Busy")
-                    onClicked: root.setOnlineStatus(NC.userStatus.Busy)
+                    onClicked: root.setOnlineStatus(NC.UserStatus.Busy)
                 }
 
                 UserStatusWindowStatusRow {
                     Layout.fillWidth: true
                     enabled: root.statusLoaded
-                    selected: root.statusLoaded && statusModel.onlineStatus === NC.userStatus.DoNotDisturb
+                    selected: root.statusLoaded && statusModel.onlineStatus === NC.UserStatus.DoNotDisturb
                     iconSource: statusModel.dndIcon
                     text: qsTr("Do not disturb")
                     secondaryText: qsTr("Mute all notifications")
-                    onClicked: root.setOnlineStatus(NC.userStatus.DoNotDisturb)
+                    onClicked: root.setOnlineStatus(NC.UserStatus.DoNotDisturb)
                 }
 
                 UserStatusWindowStatusRow {
                     Layout.fillWidth: true
                     enabled: root.statusLoaded
-                    selected: root.statusLoaded && (statusModel.onlineStatus === NC.userStatus.Invisible
-                        || statusModel.onlineStatus === NC.userStatus.Offline
+                    selected: root.statusLoaded && (statusModel.onlineStatus === NC.UserStatus.Invisible
+                        || statusModel.onlineStatus === NC.UserStatus.Offline
                     )
                     iconSource: statusModel.invisibleIcon
                     text: qsTr("Invisible")
                     secondaryText: qsTr("Appear offline")
-                    onClicked: root.setOnlineStatus(NC.userStatus.Invisible)
+                    onClicked: root.setOnlineStatus(NC.UserStatus.Invisible)
                 }
             }
 

@@ -54,7 +54,7 @@ void ClientStatusReporting::reportClientStatus(const ClientStatusReportingStatus
     ClientStatusReportingRecord record;
     record._name = _statusStrings[static_cast<int>(status)];
     record._status = static_cast<int>(status);
-    record._lastOccurence = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
+    record._lastOccurence = QDateTime::currentMSecsSinceEpoch();
     const auto result = _database->setClientStatusReportingRecord(record);
     if (!result.isValid()) {
         qCWarning(lcClientStatusReporting) << "Could not report client status:" << result.error();

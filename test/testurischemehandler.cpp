@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-#include <QtTest>
+#include <QTest>
 
 #include <QScopeGuard>
 #include <QStandardPaths>

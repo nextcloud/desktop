@@ -97,9 +97,7 @@ public Q_SLOTS:
      * to the folder).
      */
     void slotShowShareDialog(const QString &localPath) const;
-    void slotShowGovernanceLabelsDialog(AccountPtr account,
-                                        const QString &localPath,
-                                        const QString &fileId) const;
+    void slotShowGovernanceLabelsDialog(OCC::AccountPtr account, const QString &localPath, const QString &fileId) const;
     void slotShowFileActivityDialog(const QString &localPath) const;
     void slotShowFileActionsDialog(const QString &localPath) const;
     void slotResolveConflict(const QString &conflictedPath, const QString &basePath, const QString &baseName, const QString &folderAlias) const;

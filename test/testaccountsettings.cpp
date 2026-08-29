@@ -7,7 +7,8 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QStandardPaths>
+#include <QTest>
 
 #include "account.h"
 #include "testhelper.h"

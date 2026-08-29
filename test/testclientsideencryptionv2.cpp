@@ -2,10 +2,14 @@
  * SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
-#include "syncenginetestutils.h"
+
+#include <QJsonArray>
+#include <QStandardPaths>
+#include <QTest>
+
 #include "clientsideencryption.h"
 #include "foldermetadata.h"
-#include <QtTest>
+#include "syncenginetestutils.h"
 
 using namespace OCC;
 
@@ -134,8 +138,8 @@ private Q_SLOTS:
                 if (decryptedMetadataKey.isEmpty()) {
                     break;
                 }
-                
-                const auto metadataObj = metaDataDoc.object()["metadata"].toObject();
+
+                const auto metadataObj = metaDataDoc.object().value("metadata").toObject();
 
                 const auto cipherTextEncrypted = metadataObj["ciphertext"].toString().toLocal8Bit();
 
@@ -151,13 +155,13 @@ private Q_SLOTS:
                 }
 
                 const auto cipherTextDocument = QJsonDocument::fromJson(cipherTextDecrypted);
-                const auto files = cipherTextDocument.object()["files"].toObject();
+                const auto files = cipherTextDocument.object().value("files").toObject();
 
                 if (files.isEmpty()) {
                     break;
                 }
 
-                const auto parsedEncryptedFile = metadata->parseEncryptedFileFromJson(files.keys().first(), files.value(files.keys().first()));
+                const auto parsedEncryptedFile = metadata->parseEncryptedFileFromJson(files.keys().constFirst(), files.value(files.keys().constFirst()));
 
                 QCOMPARE(parsedEncryptedFile.originalFilename, fakeFileName);
 
@@ -331,11 +335,12 @@ private Q_SLOTS:
 
         QByteArray authenticationTag;
         const auto nonce = EncryptionHelper::generateRandom(16);
-        const auto encryptedCipherText = EncryptionHelper::gzipThenEncryptData(metadata->binaryMetadataKeyForEncryption(),
-                                                                               cipherTextDoc.toJson(QJsonDocument::Compact),
-                                                                               nonce,
-                                                                               authenticationTag).toBase64()
-            + QByteArrayLiteral("|") + nonce.toBase64();
+        const auto encryptedCipherText = QByteArray{EncryptionHelper::gzipThenEncryptData(metadata->binaryMetadataKeyForEncryption(),
+                                                                                          cipherTextDoc.toJson(QJsonDocument::Compact),
+                                                                                          nonce,
+                                                                                          authenticationTag)
+                                                        .toBase64()
+                                                    + QByteArrayLiteral("|") + nonce.toBase64()};
 
         auto metadataDoc = QJsonDocument::fromJson(initialEncryptedMetadata);
         auto metaObject = metadataDoc.object();
@@ -425,7 +430,7 @@ private Q_SLOTS:
                     break;
                 }
 
-                const auto metadataObj = metaDataDoc.object()["metadata"].toObject();
+                const auto metadataObj = metaDataDoc.object().value("metadata").toObject();
 
                 const auto cipherTextEncrypted = metadataObj["ciphertext"].toString().toLocal8Bit();
 
@@ -441,13 +446,13 @@ private Q_SLOTS:
                 }
 
                 const auto cipherTextDocument = QJsonDocument::fromJson(cipherTextDecrypted);
-                const auto files = cipherTextDocument.object()["files"].toObject();
+                const auto files = cipherTextDocument.object().value("files").toObject();
 
                 if (files.isEmpty()) {
                     break;
                 }
 
-                const auto parsedEncryptedFile = metadata->parseEncryptedFileFromJson(files.keys().first(), files.value(files.keys().first()));
+                const auto parsedEncryptedFile = metadata->parseEncryptedFileFromJson(files.keys().constFirst(), files.value(files.keys().constFirst()));
 
                 QCOMPARE(parsedEncryptedFile.originalFilename, fakeFileName);
 
@@ -528,7 +533,7 @@ private Q_SLOTS:
                     break;
                 }
 
-                const auto metadataObj = metaDataDocForFirstUserCrossSharing.object()["metadata"].toObject();
+                const auto metadataObj = metaDataDocForFirstUserCrossSharing.object().value("metadata").toObject();
 
                 const auto cipherTextEncrypted = metadataObj["ciphertext"].toString().toLocal8Bit();
 
@@ -544,7 +549,7 @@ private Q_SLOTS:
                 }
 
                 const auto cipherTextDocument = QJsonDocument::fromJson(cipherTextDecrypted);
-                const auto files = cipherTextDocument.object()["files"].toObject();
+                const auto files = cipherTextDocument.object().value("files").toObject();
 
                 if (files.isEmpty()) {
                     break;

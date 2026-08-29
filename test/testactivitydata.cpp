@@ -9,8 +9,11 @@
 #include "syncenginetestutils.h"
 #include "testhelper.h"
 
-#include <QTest>
 #include <QHash>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QStandardPaths>
+#include <QTest>
 
 using namespace Qt::StringLiterals;
 
@@ -244,7 +247,7 @@ private Q_SLOTS:
         QFETCH(QString, mimeTypeExpected);
         QFETCH(QString, objectTypeExpected);
         QFETCH(QString, subjectExpected);
-        QFETCH(QString, pathExpected);
+        QFETCH(QString, pathExpected); // clazy:exclude=unused-non-trivial-variable
         QFETCH(QString, fileNameExpected);
         QFETCH(QString, activityTypeExpected);
         QFETCH(int, activityIdExpected);
@@ -253,7 +256,7 @@ private Q_SLOTS:
         QFETCH(QString, linkExpected);
         QFETCH(QString, datetimeExpected);
         QFETCH(QString, iconExpected);
-        QFETCH(QString, subjectRichStringExpected);
+        QFETCH(QString, subjectRichStringExpected); // clazy:exclude=unused-non-trivial-variable
         QFETCH(QJsonArray, subjectRichDataExpected);
         QFETCH(QString, previewUrlExpected);
 

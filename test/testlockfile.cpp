@@ -12,11 +12,12 @@
 #include "syncenginetestutils.h"
 #include "localdiscoverytracker.h"
 
-#include <QTest>
-#include <QSignalSpy>
-#include <QTemporaryDir>
 #include <QFile>
 #include <QIODevice>
+#include <QSignalSpy>
+#include <QStandardPaths>
+#include <QTemporaryDir>
+#include <QTest>
 
 using namespace Qt::StringLiterals;
 
@@ -651,7 +652,14 @@ private Q_SLOTS:
         QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &fileRecordBefore));
         QVERIFY(!fileRecordBefore._lockstate._locked);
 
-        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch() - 1220, 1226);
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"),
+                                                    FileModifier::LockState::FileLocked,
+                                                    1,
+                                                    QStringLiteral("Nextcloud Office"),
+                                                    {},
+                                                    QStringLiteral("richdocuments"),
+                                                    QDateTime::currentSecsSinceEpoch() - 1220,
+                                                    1226);
 
         completeSpy.clear();
         QVERIFY(fakeFolder.syncOnce());
@@ -711,7 +719,14 @@ private Q_SLOTS:
         QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &fileRecordBefore));
         QVERIFY(!fileRecordBefore._lockstate._locked);
 
-        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch(), 1226);
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"),
+                                                    FileModifier::LockState::FileLocked,
+                                                    1,
+                                                    QStringLiteral("Nextcloud Office"),
+                                                    {},
+                                                    QStringLiteral("richdocuments"),
+                                                    QDateTime::currentSecsSinceEpoch(),
+                                                    1226);
         fakeFolder.remoteModifier().setModTimeKeepEtag(QStringLiteral("A/a1"), QDateTime::currentDateTime());
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
 
@@ -760,7 +775,14 @@ private Q_SLOTS:
         const auto localFileNotLocked = QFileInfo{fakeFolder.localPath() + u"A/a1"};
         QVERIFY(localFileNotLocked.isWritable());
 
-        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch(), 1226);
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"),
+                                                    FileModifier::LockState::FileLocked,
+                                                    1,
+                                                    QStringLiteral("Nextcloud Office"),
+                                                    {},
+                                                    QStringLiteral("richdocuments"),
+                                                    QDateTime::currentSecsSinceEpoch(),
+                                                    1226);
         fakeFolder.remoteModifier().setModTimeKeepEtag(QStringLiteral("A/a1"), QDateTime::currentDateTime());
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
 
@@ -859,11 +881,11 @@ private Q_SLOTS:
     {
         QTemporaryDir dir;
         QVERIFY(dir.isValid());
-        const auto dirPath = dir.path() + QLatin1Char('/');
+        const auto dirPath = QString{dir.path() + QLatin1Char('/')};
 
         // .dwl lock file guards the .dwg document with the same base name.
-        const auto dwgPath = dirPath + QStringLiteral("Drawing.dwg");
-        const auto dwlPath = dirPath + QStringLiteral("Drawing.dwl");
+        const auto dwgPath = QString{dirPath + QStringLiteral("Drawing.dwg")};
+        const auto dwlPath = QString{dirPath + QStringLiteral("Drawing.dwl")};
         QVERIFY(QFile{dwgPath}.open(QIODevice::WriteOnly));
         QVERIFY(QFile{dwlPath}.open(QIODevice::WriteOnly));
 
@@ -872,7 +894,7 @@ private Q_SLOTS:
         QCOMPARE(dwlResolved.type, OCC::FileSystem::FileLockingInfo::Type::Locked);
 
         // .dwl2 lock file also guards the same .dwg document.
-        const auto dwl2Path = dirPath + QStringLiteral("Drawing.dwl2");
+        const auto dwl2Path = QString{dirPath + QStringLiteral("Drawing.dwl2")};
         QVERIFY(QFile{dwl2Path}.open(QIODevice::WriteOnly));
         const auto dwl2Resolved = OCC::FileSystem::lockFileTargetFilePath(dwl2Path, QString{});
         QCOMPARE(dwl2Resolved.path, dwgPath);
@@ -904,7 +926,7 @@ private Q_SLOTS:
         QCOMPARE(nonLock.type, OCC::FileSystem::FileLockingInfo::Type::Unset);
 
         // An AutoCAD lock file with no matching .dwg sibling resolves to nothing.
-        const auto orphanDwlPath = dirPath + QStringLiteral("orphan.dwl");
+        const auto orphanDwlPath = QString{dirPath + QStringLiteral("orphan.dwl")};
         QVERIFY(QFile{orphanDwlPath}.open(QIODevice::WriteOnly));
         const auto orphan = OCC::FileSystem::lockFileTargetFilePath(orphanDwlPath, QString{});
         QVERIFY(orphan.path.isEmpty());

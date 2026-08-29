@@ -73,7 +73,7 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account,
 
     const auto filePathFileInfo = QFileInfo(_filePath);
     _relativeFilePath = filePathFileInfo.path() + QStringLiteral("/");
-    _relativeFilePath = _relativeFilePath.replace(folder->path(), QStringLiteral(""));
+    _relativeFilePath = _relativeFilePath.replace(folder->path(), QString{});
     if (!(_relativeFilePath.isEmpty() || _relativeFilePath.endsWith(QStringLiteral("/")))) {
         _relativeFilePath += QStringLiteral("/");
     }

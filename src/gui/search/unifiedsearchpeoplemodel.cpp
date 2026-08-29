@@ -196,7 +196,7 @@ void UnifiedSearchPeopleModel::startSearch()
         auto seen = QSet<QString>{};
         const auto ocs = reply.object().value(QStringLiteral("ocs")).toObject();
         const auto data = ocs.value(QStringLiteral("data")).toObject();
-        const auto appendUsers = [&people, &seen, &account](const QJsonArray &users) {
+        const auto appendUsers = [&people, &seen, account](const QJsonArray &users) { // clazy:exclude=lambda-in-connect
             for (const auto &value : users) {
                 if (people.size() >= maximumPeopleResults) {
                     break;

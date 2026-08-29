@@ -367,7 +367,7 @@ bool LockEncryptFolderApiJob::finished()
     QJsonParseError error{};
     const auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     const auto obj = json.object().toVariantMap();
-    const auto token = obj["ocs"].toMap()["data"].toMap()["e2e-token"].toByteArray();
+    const auto token = obj["ocs"].toMap().value("data").toMap().value("e2e-token").toByteArray();
 
 #if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
     qCDebug(lcCseJob()) << "lock folder finished with code" << retCode << " for:" << path() << " for fileId: " << _fileId << " token:" << token;

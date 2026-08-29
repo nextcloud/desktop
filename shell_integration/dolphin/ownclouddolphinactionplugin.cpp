@@ -55,7 +55,7 @@ public:
 
         auto menu = new QMenu(parentWidget);
         QEventLoop loop;
-        auto con = connect(helper, &OwncloudDolphinPluginHelper::commandRecieved, this, [&](const QByteArray &cmd) {
+        auto con = connect(helper, &OwncloudDolphinPluginHelper::commandRecieved, &loop, [&](const QByteArray &cmd) {
             if (cmd.startsWith("GET_MENU_ITEMS:END")) {
                 loop.quit();
             } else if (cmd.startsWith("MENU_ITEM:")) {
@@ -68,7 +68,7 @@ public:
                     action->setDisabled(true);
                 }
                 auto call = args.value(1).toLatin1();
-                connect(action, &QAction::triggered, [helper, call, files] {
+                connect(action, &QAction::triggered, &loop, [helper, call, files] {
                     helper->sendCommand(QByteArray(call + ":" + files + "\n").constData());
                 });
             }

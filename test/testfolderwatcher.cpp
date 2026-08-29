@@ -8,7 +8,9 @@
  * any purpose.
  */
 
-#include <QtTest>
+#include <QSignalSpy>
+#include <QStandardPaths>
+#include <QTest>
 
 #include "folderwatcher.h"
 #include "common/utility.h"

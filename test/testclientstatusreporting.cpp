@@ -11,6 +11,7 @@
 #include "syncenginetestutils.h"
 
 #include <QSignalSpy>
+#include <QStandardPaths>
 #include <QTest>
 
 namespace {

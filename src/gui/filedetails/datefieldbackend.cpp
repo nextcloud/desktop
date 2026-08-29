@@ -23,13 +23,13 @@ DateFieldBackend::DateFieldBackend(QObject *const parent)
     // provides a short year format that is only two years, which is an absolute
     // pain to work with -- ensure instead we have the full, unambiguous year.
     // Check for specifically two y's, no more and no fewer, within format date
-    const QRegularExpression yearRe("(?<!y)y{2}(?!y)");
+    static const QRegularExpression yearRe("(?<!y)y{2}(?!y)");
 
     // To prevent invalid parsings when the user submits a month with a leading
     // zero, also add an alternative date format that checks with a leading zero
     // This regex only matches, e.g. dd/M/yyyy which often is the default for
     // short locale date formats, which removes the leading 0
-    const QRegularExpression monthRe("(?<!M)M{1}(?!M)");
+    static const QRegularExpression monthRe("(?<!M)M{1}(?!M)");
 
     if (const auto match = yearRe.match(_dateFormat); match.hasMatch()) {
         _dateFormat.replace(match.capturedStart(), match.capturedLength(), "yyyy");

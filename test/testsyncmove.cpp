@@ -8,8 +8,10 @@
  * any purpose.
  */
 
-#include <QtTest>
 #include <QFile>
+#include <QStandardPaths>
+#include <QTest>
+
 #include "common/result.h"
 #include "syncenginetestutils.h"
 #include <syncengine.h>

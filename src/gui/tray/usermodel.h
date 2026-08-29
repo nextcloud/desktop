@@ -235,8 +235,8 @@ public Q_SLOTS:
 private Q_SLOTS:
     void slotPushNotificationsReady();
     void slotDisconnectPushNotifications();
-    void slotReceivedPushFilesChanges(Account *account);
-    void slotReceivedPushFileIdsChanges(Account *account, const QList<qint64> &fileIds);
+    void slotReceivedPushFilesChanges(OCC::Account *account);
+    void slotReceivedPushFileIdsChanges(OCC::Account *account, const QList<qint64> &fileIds);
     void slotReceivedPushNotification(OCC::Account *account);
     void slotReceivedPushActivity(OCC::Account *account);
     void slotCheckExpiredActivities();
