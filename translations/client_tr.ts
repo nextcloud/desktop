@@ -3666,12 +3666,12 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="46"/>
         <source>Show chat notification dialogs.</source>
-        <translation>Sohbet bildirimi pencerelerini görüntüler.</translation>
+        <translation>Sohbet bildirimi iletişim kutularını görüntüler.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="50"/>
         <source>Show call notification dialogs.</source>
-        <translation>Çağrı bildirimi pencerelerini görüntüler.</translation>
+        <translation>Çağrı bildirimi iletişim kutularını görüntüler.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="53"/>
