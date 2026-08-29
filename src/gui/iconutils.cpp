@@ -164,8 +164,8 @@ QImage drawSvgWithCustomFillColor(const QString &sourceSvgPath,
         return {};
     }
 
-    const auto reqSize = (requestedSize.isValid() && requestedSize.height() && requestedSize.height()) ? requestedSize : svgRenderer.defaultSize();
-    if (!reqSize.isValid() || !reqSize.height() || !reqSize.height()) {
+    const auto reqSize = (requestedSize.isValid() && requestedSize.width() && requestedSize.height()) ? requestedSize : svgRenderer.defaultSize();
+    if (!reqSize.isValid() || !reqSize.width() || !reqSize.height()) {
         return {};
     }
 

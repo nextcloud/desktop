@@ -39,6 +39,7 @@
 #include "tray/trayactivationpolicy.h"
 #include "tray/trayaccountappsmodel.h"
 #include "search/unifiedsearchresultslistmodel.h"
+#include "search/unifiedsearchpeoplemodel.h"
 #include "integration/fileactionsmodel.h"
 #include "governance/applygovernancelabel.h"
 #include "governance/deletegovernancelabel.h"
@@ -159,6 +160,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
     qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
     qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
+    qmlRegisterType<UnifiedSearchPeopleModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchPeopleModel");
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
     qmlRegisterType<FileActionsModel>("com.nextcloud.desktopclient", 1, 0, "FileActionsModel");
