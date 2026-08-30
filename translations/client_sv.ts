@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att öppna webbläsaren. Kopiera länken till webbläsaren.</translation>
     </message>
 </context>
 <context>
@@ -120,12 +120,12 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="25"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>Fildetaljer</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenu.qml" line="32"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Filåtgärder</translation>
     </message>
 </context>
 <context>
@@ -133,7 +133,7 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityFileMenuButton.qml" line="34"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Öppna fildetaljer</translation>
     </message>
 </context>
 <context>
@@ -669,32 +669,32 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
-        <translation type="unfinished"/>
+        <translation>Tilldela etiketter till filen för att hantera policyer för känslighet, bevarande och juridisk spärr.</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
         <source>Sensitivity labels</source>
-        <translation type="unfinished"/>
+        <translation>Känslighetsetiketter</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
         <source>Retention labels</source>
-        <translation type="unfinished"/>
+        <translation>Bevarandeetiketter</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
         <source>Legal hold labels</source>
-        <translation type="unfinished"/>
+        <translation>Etiketter för juridisk spärr</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Återställ</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Verkställ</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
@@ -717,7 +717,7 @@
     <message>
         <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
         <source>Local Network access is disabled. Enable it to connect to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Åtkomst till lokalt nätverk är inaktiverad. Aktivera den för att ansluta till servern.</translation>
     </message>
 </context>
 <context>
@@ -798,37 +798,37 @@
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="20"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Ångra</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="26"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>Gör om</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="34"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>Klipp ut</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="40"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="46"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>Klistra in</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="52"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="60"/>
         <source>Select All</source>
-        <translation type="unfinished"/>
+        <translation>Markera alla</translation>
     </message>
 </context>
 <context>
@@ -950,13 +950,13 @@ Ska kontot importeras?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="505"/>
         <source>If this account&apos;s files appear stuck, missing, or out of sync in Finder, reset its File Provider storage. Unsynced local changes are preserved.</source>
-        <translation type="unfinished"/>
+        <translation>Om kontots filer verkar ha fastnat, saknas eller inte är synkroniserade i Finder, återställ dess File Provider-lagring. Osynkroniserade lokala ändringar bevaras.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="521"/>
         <location filename="../src/gui/accountsettings.cpp" line="2071"/>
         <source>Reset File Provider Domain</source>
-        <translation type="unfinished"/>
+        <translation>Återställ File Provider-domänen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="558"/>
@@ -1334,17 +1334,17 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2057"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
-        <translation type="unfinished"/>
+        <translation>Detta återställer File Provider för %1 till dess ursprungliga tillstånd. Använd detta när kontots filer verkar ha fastnat, saknas eller inte är synkroniserade i Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2061"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
-        <translation type="unfinished"/>
+        <translation>Platsen försvinner en kort stund från Finder och visas sedan igen. Lokala ändringar som ännu inte har laddats upp bevaras och visas i en mapp i Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2066"/>
         <source>Reset File Provider Domain for this account?</source>
-        <translation type="unfinished"/>
+        <translation>Återställa File Provider-domänen för det här kontot?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1969"/>
@@ -6590,7 +6590,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="833"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Välj ny plats …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="921"/>
