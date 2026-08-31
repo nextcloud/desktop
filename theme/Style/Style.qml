@@ -132,6 +132,10 @@ QtObject {
     readonly property int wizardDialogSpacing: wizardSectionSpacing + extraSmallSpacing
     readonly property int wizardDialogRadius: wizardSectionSpacing
     readonly property int wizardBodyFontPixelSize: pixelSize + extraSmallSpacing
+    readonly property int wizardTextInputHorizontalPadding: trayAccountPopupRowPadding
+    readonly property int wizardTextInputVerticalPadding: trayAccountPopupActionVerticalPadding
+    readonly property int wizardTextInputRadius: mediumRoundedButtonRadius
+    readonly property int wizardTextAreaHeight: standardPrimaryButtonHeight + wizardSectionSpacing + wizardSectionSpacing
     readonly property int wizardHeaderSpacing: trayAccountPopupActionVerticalPadding
     readonly property int wizardHeaderRowSpacing: trayAccountPopupRowSpacing
     readonly property int wizardHeaderLabelSpacing: extraExtraSmallSpacing

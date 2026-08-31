@@ -26,6 +26,8 @@ Loader {
     }
 
     readonly property bool optionalField: !!model.advanced && !model.required
+    readonly property bool multilineField: typeof model.property === "string"
+        && (model.property === "note-property" || model.property.endsWith("\\NoteProperty"))
 
     function valueIsSet(): bool {
         const value = model.value
@@ -55,7 +57,7 @@ Loader {
     case PropertyModel.Password:
         return passwordComponent
     case PropertyModel.String:
-        return stringComponent
+        return multilineField ? multilineStringComponent : stringComponent
     default:
         return unknownComponent
     }
@@ -278,6 +280,64 @@ Loader {
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
                 visible: stringField.text.length > 0 && !stringField.valid
+                text: qsTr("This value is shorter than the minimum length.")
+                color: Style.wizardErrorText
+                wrapMode: Text.Wrap
+            }
+        }
+    }
+
+    Component {
+        id: multilineStringComponent
+
+        ColumnLayout {
+            id: multilineStringColumn
+
+            function commit(): void {
+                if (multilineField.valid) {
+                    instantiator.submit(multilineField.text)
+                }
+            }
+
+            EnforcedPlainTextLabel {
+                text: instantiator.labelText()
+            }
+            RowLayout {
+                property bool fieldEnabled: !instantiator.optionalField || instantiator.valueIsSet()
+
+                WizardTextArea {
+                    id: multilineField
+
+                    objectName: "multilineFieldControl"
+                    Layout.fillWidth: true
+                    enabled: parent.fieldEnabled
+                    text: instantiator.model.value ?? ""
+                    placeholderText: instantiator.model.placeholder
+
+                    property bool valid: (!instantiator.model.required || text.length > 0) && (!instantiator.model.minimum || text.length >= instantiator.model.minimum)
+
+                    onEditingFinished: {
+                        multilineStringColumn.commit()
+                    }
+                }
+
+                Switch {
+                    objectName: "optionalFieldSwitch"
+                    visible: instantiator.optionalField
+                    checked: parent.fieldEnabled
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                    onToggled: {
+                        parent.fieldEnabled = checked
+                        if (!checked) {
+                            instantiator.submit("")
+                        }
+                    }
+                }
+            }
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+                visible: multilineField.text.length > 0 && !multilineField.valid
                 text: qsTr("This value is shorter than the minimum length.")
                 color: Style.wizardErrorText
                 wrapMode: Text.Wrap
