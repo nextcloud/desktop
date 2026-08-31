@@ -538,6 +538,13 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     public func addItemMetadata(_ metadata: SendableItemMetadata) {
+        // An empty ocId would persist a row keyed by "" and later become a File Provider item with
+        // an empty identifier, crashing the framework. Refuse it at the source. See #10701.
+        guard !metadata.ocId.isEmpty else {
+            logger.error("Refusing to add item metadata with empty ocId.", [.name: metadata.fileName, .url: metadata.serverUrl])
+            return
+        }
+
         let database = ncDatabase()
 
         do {
