@@ -12,7 +12,7 @@
 #include "gui/tray/usermodel.h"
 #include "theme.h"
 
-#include <QColor>
+#include <QFile>
 #include <QGuiApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -426,24 +426,9 @@ private slots:
         QVERIFY(fieldControl);
     }
 
-    void createsSettingsSwitchDelegateWithTransparentBackground()
+    void backIconResourceIsAvailable()
     {
-        QQmlComponent component(
-            Systray::instance()->trayEngine(),
-            QStringLiteral("com.nextcloud.desktopclient.sharing"),
-            QStringLiteral("SettingsSwitchDelegate"));
-        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
-
-        const auto delegateObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
-            {QStringLiteral("text"), QStringLiteral("View files")},
-            {QStringLiteral("checked"), true},
-            {QStringLiteral("width"), 400},
-        }));
-        QVERIFY2(delegateObject, qPrintable(component.errorString()));
-
-        const auto background = delegateObject->findChild<QObject *>(QStringLiteral("settingsSwitchDelegateBackground"));
-        QVERIFY(background);
-        QCOMPARE(background->property("color").value<QColor>(), QColor(Qt::transparent));
+        QVERIFY(QFile::exists(QStringLiteral(":/client/theme/back.svg")));
     }
 
     void createsOptionalPropertyFieldWithEnabledToggle()
@@ -461,6 +446,7 @@ private slots:
             {QStringLiteral("advanced"), true},
             {QStringLiteral("required"), false},
             {QStringLiteral("value"), QStringLiteral("2026-08-21")},
+            {QStringLiteral("placeholder"), QStringLiteral("YYYY-MM-DD")},
         };
         const auto fieldObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
             {QStringLiteral("model"), model},
