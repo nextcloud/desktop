@@ -27,6 +27,7 @@ public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
     public var downloadURL: String
     public var e2eEncrypted: Bool
     public var etag: String
+    public var fileProviderContentVersion: String?
     public var favorite: Bool
     public var fileId: String
     public var fileName: String
@@ -95,6 +96,7 @@ public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
         downloadURL: String = "",
         e2eEncrypted: Bool,
         etag: String,
+        fileProviderContentVersion: String? = nil,
         favorite: Bool = false,
         fileId: String,
         fileName: String,
@@ -162,6 +164,7 @@ public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
         self.downloadURL = downloadURL
         self.e2eEncrypted = e2eEncrypted
         self.etag = etag
+        self.fileProviderContentVersion = fileProviderContentVersion
         self.favorite = favorite
         self.fileId = fileId
         self.fileName = fileName
@@ -231,6 +234,7 @@ public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
         downloadURL = value.downloadURL
         e2eEncrypted = value.e2eEncrypted
         etag = value.etag
+        fileProviderContentVersion = value.fileProviderContentVersion
         favorite = value.favorite
         fileId = value.fileId
         fileName = value.fileName

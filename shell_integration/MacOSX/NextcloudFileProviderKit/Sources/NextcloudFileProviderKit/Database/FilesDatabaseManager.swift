@@ -31,7 +31,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedChangeDeliverySessions
+    private static let schemaVersion = SchemaVersion.addedFileProviderContentVersion
     let logger: FileProviderLogger
     let account: Account
 
@@ -316,6 +316,10 @@ public final class FilesDatabaseManager: Sendable {
 
         for var updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingByOcId[updatedMetadata.ocId] {
+                if updatedMetadata.etag == existingMetadata.etag {
+                    updatedMetadata.fileProviderContentVersion = existingMetadata.fileProviderContentVersion
+                }
+
                 if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
@@ -444,6 +448,10 @@ public final class FilesDatabaseManager: Sendable {
                 }
 
                 if let existing = itemMetadata(ocId: readTargetMetadata.ocId) {
+                    if readTargetMetadata.etag == existing.etag {
+                        readTargetMetadata.fileProviderContentVersion = existing.fileProviderContentVersion
+                    }
+
                     if existing.status == Status.normal.rawValue,
                        !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
@@ -602,7 +610,7 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// Add or replace `metadata` while carrying over local-only fields the
     /// server payload cannot know about: ``keepDownloaded``, ``downloaded``,
-    /// ``visitedDirectory``, and ``lockToken``.
+    /// ``visitedDirectory``, ``lockToken``, and the content version File Provider has already seen.
     ///
     /// Mirrors the preservation set applied by
     /// ``processItemMetadatasToUpdate`` for non-paginated reads. Use this from
@@ -641,6 +649,9 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             toWrite.lockToken = existing.lockToken
+            if toWrite.etag == existing.etag {
+                toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
+            }
         } else {
             // The ocId lookup missed. Before falling back to defaults from the
             // server payload, look for a single non-deleted, non-local-lock row
@@ -673,6 +684,9 @@ public final class FilesDatabaseManager: Sendable {
                 }
 
                 toWrite.lockToken = existing.lockToken
+                if toWrite.etag == existing.etag {
+                    toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
+                }
             } else {
                 // No prior row at this ocId or logical address: this is a
                 // genuinely new item. Inherit the parent's "Always keep

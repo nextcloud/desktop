@@ -2205,6 +2205,26 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(storedRotated.downloaded)
     }
 
+    func testAddItemMetadataPreservingLocalStateKeepsContentVersionForSameEtag() {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        var original = SendableItemMetadata(ocId: "item", fileName: "locked.txt", account: account)
+        original.etag = "etag-after-lock"
+        original.fileProviderContentVersion = "etag-before-lock"
+        Self.dbManager.addItemMetadata(original)
+
+        var refreshed = SendableItemMetadata(ocId: "item", fileName: "locked.txt", account: account)
+        refreshed.etag = "etag-after-lock"
+
+        let merged = Self.dbManager.addItemMetadataPreservingLocalState(refreshed)
+
+        XCTAssertEqual(merged.fileProviderContentVersion, "etag-before-lock")
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: "item")?.fileProviderContentVersion,
+            "etag-before-lock"
+        )
+    }
+
     func testAddItemMetadataPreservingLocalStateFallbackDoesNotMergeWhenAlreadyDuplicated() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
         let fileName = "duped.txt"
