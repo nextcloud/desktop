@@ -31,13 +31,6 @@ ColumnLayout {
         commitRequested()
     }
 
-    EnforcedPlainTextLabel {
-        Layout.fillWidth: true
-        text: qsTr("Advanced settings")
-        font.weight: Font.DemiBold
-        visible: advancedPropertyList.count > 0
-    }
-
     ListView {
         id: advancedPropertyList
         objectName: "advancedPropertyList"
