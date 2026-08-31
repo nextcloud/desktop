@@ -12,6 +12,7 @@
 #include "gui/tray/usermodel.h"
 #include "theme.h"
 
+#include <QColor>
 #include <QGuiApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -87,7 +88,7 @@ private slots:
 
         const auto shareListModel = dialogObject->findChild<QAbstractItemModel *>(QStringLiteral("shareListModel"));
         QVERIFY(shareListModel);
-        QCOMPARE(shareListModel->rowCount(), 5);
+        QCOMPARE(shareListModel->rowCount(), 2);
 
         const auto shareDetailsFrame = dialogObject->findChild<QObject *>(QStringLiteral("shareDetailsFrame"));
         QVERIFY(shareDetailsFrame);
@@ -394,6 +395,26 @@ private slots:
         const auto fieldControl = fieldItem->findChild<QObject *>(QStringLiteral("optionalFieldControl"));
         QVERIFY(fieldControl);
         QVERIFY(!fieldControl->property("enabled").toBool());
+    }
+
+    void createsSettingsSwitchDelegateWithTransparentBackground()
+    {
+        QQmlComponent component(
+            Systray::instance()->trayEngine(),
+            QStringLiteral("com.nextcloud.desktopclient.sharing"),
+            QStringLiteral("SettingsSwitchDelegate"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        const auto delegateObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("text"), QStringLiteral("View files")},
+            {QStringLiteral("checked"), true},
+            {QStringLiteral("width"), 400},
+        }));
+        QVERIFY2(delegateObject, qPrintable(component.errorString()));
+
+        const auto background = delegateObject->findChild<QObject *>(QStringLiteral("settingsSwitchDelegateBackground"));
+        QVERIFY(background);
+        QCOMPARE(background->property("color").value<QColor>(), QColor(Qt::transparent));
     }
 
     void createsOptionalPropertyFieldWithEnabledToggle()
