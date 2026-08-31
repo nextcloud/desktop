@@ -147,8 +147,8 @@ QImage tintImage(const QImage &image, const QColor &color)
 
 QPalette nativeMenuIconPalette(const QMenu *menu)
 {
-    if (menu && menu->style()) {
-        return menu->style()->standardPalette();
+    if (menu) {
+        return menu->palette();
     }
     return QGuiApplication::palette();
 }

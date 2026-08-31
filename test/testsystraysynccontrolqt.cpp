@@ -9,7 +9,13 @@
 
 #include <QtTest>
 
+#include <QAction>
+#include <QColor>
+#include <QIcon>
+#include <QImage>
 #include <QMenu>
+#include <QPalette>
+#include <QSize>
 
 #include "systray.h"
 
@@ -34,6 +40,44 @@ class TestSystraySyncControlQt : public QObject
         return menu.findChild<QAction *>(QStringLiteral("trayResumeSyncAction"));
     }
 
+    static QAction *findAction(const QMenu &menu, const QString &text)
+    {
+        for (const auto action : menu.actions()) {
+            if (action->text() == text) {
+                return action;
+            }
+            if (const auto subMenu = action->menu()) {
+                if (const auto childAction = findAction(*subMenu, text)) {
+                    return childAction;
+                }
+            }
+        }
+        return nullptr;
+    }
+
+    static void verifyIconColor(const QAction *action, const QColor &expectedColor)
+    {
+        QVERIFY(action);
+        QVERIFY(!action->icon().isNull());
+
+        const auto image = action->icon().pixmap(QSize(16, 16), QIcon::Normal, QIcon::Off).toImage().convertToFormat(QImage::Format_ARGB32);
+        auto foundSolidPixel = false;
+        for (auto y = 0; y < image.height(); ++y) {
+            for (auto x = 0; x < image.width(); ++x) {
+                const auto pixelColor = image.pixelColor(x, y);
+                if (pixelColor.alpha() != 255) {
+                    continue;
+                }
+
+                foundSolidPixel = true;
+                QCOMPARE(pixelColor.red(), expectedColor.red());
+                QCOMPARE(pixelColor.green(), expectedColor.green());
+                QCOMPARE(pixelColor.blue(), expectedColor.blue());
+            }
+        }
+        QVERIFY(foundSolidPixel);
+    }
+
 private Q_SLOTS:
     void initTestCase()
     {
@@ -43,6 +87,22 @@ private Q_SLOTS:
     void cleanupTestCase()
     {
         _helper.cleanup();
+    }
+
+    void menuIconsUseTheMenuPalette()
+    {
+        const auto iconColor = QColor{QStringLiteral("#f1e2d3")};
+        auto darkPalette = QPalette{};
+        darkPalette.setColor(QPalette::Base, Qt::black);
+        darkPalette.setColor(QPalette::Window, Qt::black);
+        darkPalette.setColor(QPalette::Text, iconColor);
+
+        auto menu = QMenu{};
+        menu.setPalette(darkPalette);
+        setupQtTrayContextMenu(&menu, Systray::instance());
+
+        verifyIconColor(findAction(menu, Systray::tr("Settings")), iconColor);
+        verifyIconColor(findAction(menu, QCoreApplication::translate("TrayFoldersMenuButton", "Local folder")), iconColor);
     }
 
     void globalActionIsHiddenWithoutClassicFoldersAndTogglesAllFolders()
