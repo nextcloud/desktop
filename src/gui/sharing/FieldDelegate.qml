@@ -97,7 +97,7 @@ Loader {
                     Layout.fillWidth: true
                     enabled: parent.fieldEnabled
                     text: instantiator.model.value ?? ""
-                    placeholderText: instantiator.model.placeholder || qsTr("ISO 8601 date")
+                    placeholderText: instantiator.model.placeholder || qsTr("YYYY-MM-DD")
                     inputMethodHints: Qt.ImhDate
 
                     property bool withinMinimum: !instantiator.model.minimum || !text || Date.parse(text) > Date.parse(instantiator.model.minimum)
