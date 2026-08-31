@@ -87,15 +87,11 @@ ColumnLayout {
             contentItem: RowLayout {
                 spacing: Style.standardSpacing
 
-                Image {
+                RecipientAvatar {
                     Layout.preferredWidth: Style.activityListButtonIconSize
                     Layout.preferredHeight: Style.activityListButtonIconSize
 
                     source: RecipientIcon.source(recipientDelegate.model.iconSvgUrl, recipientDelegate.model.iconLight, recipientDelegate.model.iconDark)
-                    sourceSize.width: Style.activityListButtonIconSize
-                    sourceSize.height: Style.activityListButtonIconSize
-                    fillMode: Image.PreserveAspectFit
-                    visible: source.toString().length > 0
                 }
 
                 ColumnLayout {

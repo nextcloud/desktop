@@ -213,12 +213,10 @@ WizardTextField {
                     contentItem: RowLayout {
                         spacing: Style.standardSpacing
 
-                        Image {
+                        RecipientAvatar {
                             Layout.preferredWidth: Style.activityListButtonIconSize
                             Layout.preferredHeight: Style.activityListButtonIconSize
                             source: RecipientIcon.source(recipientDelegate.iconSvgUrl, recipientDelegate.iconLight, recipientDelegate.iconDark)
-                            sourceSize: Qt.size(Style.activityListButtonIconSize, Style.activityListButtonIconSize)
-                            fillMode: Image.PreserveAspectFit
                         }
                         EnforcedPlainTextLabel {
                             text: recipientDelegate.displayName
