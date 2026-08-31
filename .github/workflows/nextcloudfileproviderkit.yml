@@ -7,9 +7,15 @@ name: NextcloudFileProviderKit
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - "shell_integration/MacOSX/NextcloudFileProviderKit/**"
+      - ".github/workflows/nextcloudfileproviderkit.yml"
   pull_request:
     branches: [ "master" ]
     types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - "shell_integration/MacOSX/NextcloudFileProviderKit/**"
+      - ".github/workflows/nextcloudfileproviderkit.yml"
 
 jobs:
   Lint:
