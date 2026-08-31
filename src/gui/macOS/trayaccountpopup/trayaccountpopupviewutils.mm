@@ -19,6 +19,12 @@ static CGFloat clampedPopupOriginCoordinate(const CGFloat origin, const CGFloat 
     return origin < minOrigin ? minOrigin : (origin > maxOrigin ? maxOrigin : origin);
 }
 
+NSScreen *mainOrFirstScreen()
+{
+    NSScreen *const mainScreen = NSScreen.mainScreen;
+    return mainScreen ? mainScreen : NSScreen.screens.firstObject;
+}
+
 NSPoint clampedPopupOrigin(const NSPoint origin, const NSSize size, const NSRect visibleFrame)
 {
     return NSMakePoint(clampedPopupOriginCoordinate(origin.x, NSMinX(visibleFrame), NSMaxX(visibleFrame), size.width),
@@ -166,7 +172,7 @@ void positionPopupFromRow(NSPanel *popup, NSView *row)
 
     auto screen = row.window.screen;
     if (!screen) {
-        screen = NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+        screen = mainOrFirstScreen();
     }
     const auto visibleFrame = screen.visibleFrame;
     const auto rightEdge = NSMaxX(visibleFrame) - kScreenEdgePadding;
