@@ -225,26 +225,35 @@ ColumnLayout {
         }
     }
 
-    ListView {
+    SettingsPanel {
+        id: permissionListBackground
+
         Layout.fillWidth: true
-        Layout.preferredHeight: visible ? contentHeight : 0
+        Layout.preferredHeight: visible ? permissionList.contentHeight : 0
 
-        interactive: false
         visible: permissionPresetSelector.currentIndex === 2
-        model: PermissionModel {
-            share: root.share
-        }
 
-        delegate: SwitchDelegate {
-            required property var model
+        ListView {
+            id: permissionList
 
-            width: ListView.view.width
-            text: model.label
-            checked: model.enabled
+            anchors.fill: parent
+            interactive: false
+            spacing: 0
+            model: PermissionModel {
+                share: root.share
+            }
 
-            onToggled: {
-                root.permissionUpdateError = ""
-                root.sharingController.setPermission(root.share, model.className, checked)
+            delegate: SwitchDelegate {
+                required property var model
+
+                width: ListView.view.width
+                text: model.label
+                checked: model.enabled
+
+                onToggled: {
+                    root.permissionUpdateError = ""
+                    root.sharingController.setPermission(root.share, model.className, checked)
+                }
             }
         }
     }
