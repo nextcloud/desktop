@@ -54,6 +54,7 @@ WizardDialogFrame {
                     objectName: "shareDetailsLoader"
 
                     Layout.fillWidth: true
+                    Layout.topMargin: Style.standardSpacing
                     Layout.leftMargin: root.windowMargin
                     Layout.rightMargin: root.windowMargin
                     Layout.preferredHeight: active && item ? item.implicitHeight : 0
