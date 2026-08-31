@@ -6,9 +6,15 @@ name: mac-crafter CI
 on:
   push:
     branches: ["master"]
+    paths:
+      - "admin/osx/mac-crafter/**"
+      - ".github/workflows/mac-crafter-ci.yml"
   pull_request:
     branches: ["master"]
     types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - "admin/osx/mac-crafter/**"
+      - ".github/workflows/mac-crafter-ci.yml"
 
 jobs:
   tests:

@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - "translations/**"
+      - "doc/**"
+      - "**/*.md"
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
 
