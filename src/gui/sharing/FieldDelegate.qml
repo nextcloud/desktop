@@ -66,6 +66,7 @@ Loader {
         id: booleanComponent
 
         SwitchDelegate {
+            background: null
             text: instantiator.labelText()
             checked: instantiator.model.value === "true"
 
@@ -113,6 +114,7 @@ Loader {
 
                 SwitchDelegate {
                     objectName: "optionalFieldSwitch"
+                    background: null
                     visible: instantiator.optionalField
                     checked: parent.fieldEnabled
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
@@ -164,6 +166,7 @@ Loader {
 
                 SwitchDelegate {
                     objectName: "optionalFieldSwitch"
+                    background: null
                     visible: instantiator.optionalField
                     checked: parent.fieldEnabled
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
@@ -213,6 +216,7 @@ Loader {
 
                 SwitchDelegate {
                     objectName: "optionalFieldSwitch"
+                    background: null
                     visible: instantiator.optionalField
                     checked: parent.fieldEnabled
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
@@ -265,6 +269,7 @@ Loader {
 
                 SwitchDelegate {
                     objectName: "optionalFieldSwitch"
+                    background: null
                     visible: instantiator.optionalField
                     checked: parent.fieldEnabled
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
@@ -323,6 +328,7 @@ Loader {
 
                 SwitchDelegate {
                     objectName: "optionalFieldSwitch"
+                    background: null
                     visible: instantiator.optionalField
                     checked: parent.fieldEnabled
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter

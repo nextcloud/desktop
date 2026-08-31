@@ -242,6 +242,7 @@ ColumnLayout {
             delegate: SwitchDelegate {
                 required property var model
 
+                background: null
                 width: ListView.view.width
                 text: model.label
                 checked: model.enabled
