@@ -78,6 +78,7 @@
         <file>src/gui/wizard/qml/WizardMenu.qml</file>
         <file>src/gui/wizard/qml/WizardMenuItem.qml</file>
         <file>src/gui/wizard/qml/WizardTextField.qml</file>
+        <file>src/gui/wizard/qml/WizardTextArea.qml</file>
         <file>src/gui/macOS/ui/FileProviderFileDelegate.qml</file>
         <file>src/gui/integration/FileActionsWindow.qml</file>
         <file>src/gui/GovernanceLabelsDialog.qml</file>
