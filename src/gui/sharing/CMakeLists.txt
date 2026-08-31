@@ -84,7 +84,6 @@ ecm_add_qml_module(nextcloudGuiSharing
     ShareListPage.qml
     ShareRow.qml
     SettingsPanel.qml
-    SettingsSwitchDelegate.qml
     ShareDialog.qml
 )
 
