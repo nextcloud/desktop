@@ -378,6 +378,7 @@ private slots:
             {QStringLiteral("advanced"), true},
             {QStringLiteral("required"), false},
             {QStringLiteral("value"), QString()},
+            {QStringLiteral("placeholder"), QStringLiteral("YYYY-MM-DD")},
         };
         const auto fieldObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
             {QStringLiteral("model"), model},
@@ -395,6 +396,34 @@ private slots:
         const auto fieldControl = fieldItem->findChild<QObject *>(QStringLiteral("optionalFieldControl"));
         QVERIFY(fieldControl);
         QVERIFY(!fieldControl->property("enabled").toBool());
+    }
+
+    void createsMultilineNoteField()
+    {
+        QQmlComponent component(
+            Systray::instance()->trayEngine(),
+            QStringLiteral("com.nextcloud.desktopclient.sharing"),
+            QStringLiteral("FieldDelegate"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        const QVariantMap model{
+            {QStringLiteral("type"), PropertyModel::String},
+            {QStringLiteral("label"), QStringLiteral("Note to recipients")},
+            {QStringLiteral("property"), QStringLiteral("note-property")},
+            {QStringLiteral("required"), false},
+            {QStringLiteral("value"), QString()},
+            {QStringLiteral("placeholder"), QStringLiteral("Note to recipients")},
+        };
+        const auto fieldObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("model"), model},
+            {QStringLiteral("width"), 400},
+        }));
+        QVERIFY2(fieldObject, qPrintable(component.errorString()));
+
+        const auto fieldItem = fieldObject->property("item").value<QObject *>();
+        QVERIFY(fieldItem);
+        const auto fieldControl = fieldItem->findChild<QObject *>(QStringLiteral("multilineFieldControl"));
+        QVERIFY(fieldControl);
     }
 
     void createsSettingsSwitchDelegateWithTransparentBackground()
