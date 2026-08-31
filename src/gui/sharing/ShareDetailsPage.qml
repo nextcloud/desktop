@@ -239,7 +239,7 @@ ColumnLayout {
                 share: root.share
             }
 
-            delegate: SettingsSwitchDelegate {
+            delegate: SwitchDelegate {
                 required property var model
 
                 width: ListView.view.width

@@ -65,7 +65,7 @@ Loader {
     Component {
         id: booleanComponent
 
-        SettingsSwitchDelegate {
+        SwitchDelegate {
             text: instantiator.labelText()
             checked: instantiator.model.value === "true"
 
@@ -111,7 +111,7 @@ Loader {
                     }
                 }
 
-                Switch {
+                SwitchDelegate {
                     objectName: "optionalFieldSwitch"
                     visible: instantiator.optionalField
                     checked: parent.fieldEnabled
@@ -162,7 +162,7 @@ Loader {
                     }
                 }
 
-                Switch {
+                SwitchDelegate {
                     objectName: "optionalFieldSwitch"
                     visible: instantiator.optionalField
                     checked: parent.fieldEnabled
@@ -211,7 +211,7 @@ Loader {
                     }
                 }
 
-                Switch {
+                SwitchDelegate {
                     objectName: "optionalFieldSwitch"
                     visible: instantiator.optionalField
                     checked: parent.fieldEnabled
@@ -263,7 +263,7 @@ Loader {
                     }
                 }
 
-                Switch {
+                SwitchDelegate {
                     objectName: "optionalFieldSwitch"
                     visible: instantiator.optionalField
                     checked: parent.fieldEnabled
@@ -321,7 +321,7 @@ Loader {
                     }
                 }
 
-                Switch {
+                SwitchDelegate {
                     objectName: "optionalFieldSwitch"
                     visible: instantiator.optionalField
                     checked: parent.fieldEnabled
