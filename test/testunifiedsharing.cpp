@@ -601,7 +601,66 @@ private slots:
         QCOMPARE(controller.shares().at(1)->id(), "share-2"_L1);
     }
 
-    void unifiedShareListModelGroupsSharesInOneSectionedList()
+    void sharingControllerLoadsDetailsIntoSelectedShare()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto detailsRequests = 0;
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            if (request.url().path().endsWith("/share/share-1"_L1)) {
+                ++detailsRequests;
+                return new FakePayloadReply{operation,
+                                            request,
+                                            R"json({
+                "ocs": {
+                    "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                    "data": {
+                        "id": "share-1",
+                        "state": "active",
+                        "permission_preset": "",
+                        "permissions": [{"class": "view", "display_name": "View files", "enabled": true}],
+                        "properties": [{"class": "expiration", "display_name": "Expiration date", "type": "date", "advanced": true, "value": ""}]
+                    }
+                }
+            })json",
+                                            this};
+            }
+
+            return new FakePayloadReply{operation,
+                                        request,
+                                        R"json({
+                "ocs": {
+                    "meta": {"status": "ok", "statuscode": 200, "message": "OK"},
+                    "data": [{"id": "share-1", "state": "active", "recipients": [{"class": "user", "display_name": "admin", "value": "admin"}]}]
+                }
+            })json",
+                                        this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        controller.initialize("42"_L1);
+        QTRY_COMPARE(controller.shares().size(), 1);
+        const auto share = controller.shares().constFirst();
+
+        PermissionModel permissionModel;
+        permissionModel.setShare(share);
+        PropertyModel propertyModel;
+        propertyModel.setShare(share);
+        propertyModel.setAdvanced(true);
+        QCOMPARE(permissionModel.rowCount(), 0);
+        QCOMPARE(propertyModel.rowCount(), 0);
+
+        controller.fetchShareDetails(share);
+        QTRY_COMPARE(detailsRequests, 1);
+        QTRY_COMPARE(share->permissions().size(), 1);
+        QCOMPARE(share->properties().size(), 1);
+        QCOMPARE(share->properties().constFirst()->displayName(), "Expiration date"_L1);
+        QTRY_COMPARE(permissionModel.rowCount(), 1);
+        QTRY_COMPARE(propertyModel.rowCount(), 1);
+        QCOMPARE(controller.shares().constFirst(), share);
+    }
+
+    void unifiedShareListModelExposesAllSharesInOneList()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
         fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
@@ -666,30 +725,24 @@ private slots:
         controller.initialize("42"_L1);
         QAbstractItemModelTester modelTester(&model);
 
-        QTRY_COMPARE(model.rowCount(), 11);
+        QTRY_COMPARE(model.rowCount(), 7);
         QCOMPARE(model.data(model.index(0), UnifiedShareListModel::ItemTypeRole).value<UnifiedShareListModel::ItemType>(),
-                 UnifiedShareListModel::ItemType::SectionHeader);
-        QCOMPARE(model.data(model.index(0), UnifiedShareListModel::SectionRole).toString(), "internal"_L1);
-        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "internal-share"_L1);
-        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::RecipientNamesRole).toString(), "Bob"_L1);
-        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::ItemTypeRole).value<UnifiedShareListModel::ItemType>(),
                  UnifiedShareListModel::ItemType::InternalLink);
-        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::SectionRole).toString(), "external"_L1);
-        QCOMPARE(model.data(model.index(4), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "external-share"_L1);
-        QCOMPARE(model.data(model.index(4), UnifiedShareListModel::RecipientNamesRole).toString(), "alice@example.com"_L1);
-        QCOMPARE(model.data(model.index(5), UnifiedShareListModel::ItemTypeRole).value<UnifiedShareListModel::ItemType>(),
+        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::ItemTypeRole).value<UnifiedShareListModel::ItemType>(),
                  UnifiedShareListModel::ItemType::CreatePublicLink);
-        QCOMPARE(model.data(model.index(6), UnifiedShareListModel::SectionRole).toString(), "additional"_L1);
-        QCOMPARE(model.data(model.index(7), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "additional-share"_L1);
-        QCOMPARE(model.data(model.index(8), UnifiedShareListModel::SectionRole).toString(), "pending"_L1);
-        QCOMPARE(model.data(model.index(9), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "unfinished-share"_L1);
-        QCOMPARE(model.data(model.index(9), UnifiedShareListModel::RecipientNamesRole).toString(), "carol"_L1);
-        QCOMPARE(model.data(model.index(10), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "empty-draft"_L1);
-        QVERIFY(model.data(model.index(10), UnifiedShareListModel::RecipientNamesRole).toString().isEmpty());
+        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "external-share"_L1);
+        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::RecipientNamesRole).toString(), "alice@example.com"_L1);
+        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "internal-share"_L1);
+        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::RecipientNamesRole).toString(), "Bob"_L1);
+        QCOMPARE(model.data(model.index(4), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "additional-share"_L1);
+        QCOMPARE(model.data(model.index(5), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "unfinished-share"_L1);
+        QCOMPARE(model.data(model.index(5), UnifiedShareListModel::RecipientNamesRole).toString(), "carol"_L1);
+        QCOMPARE(model.data(model.index(6), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "empty-draft"_L1);
+        QVERIFY(model.data(model.index(6), UnifiedShareListModel::RecipientNamesRole).toString().isEmpty());
         QCOMPARE(model.rowCount(model.index(0)), 0);
         QVERIFY(!model.data({}, UnifiedShareListModel::ShareRole).isValid());
 
-        const auto internalShare = model.data(model.index(1), UnifiedShareListModel::ShareRole).value<Share *>();
+        const auto internalShare = model.data(model.index(3), UnifiedShareListModel::ShareRole).value<Share *>();
         internalShare->updateFromJson(QJsonDocument::fromJson(R"json({
             "ocs": {"data": {"recipients": [{
                 "class": "OC\\Core\\Sharing\\Recipient\\EmailShareRecipientType",
@@ -699,23 +752,19 @@ private slots:
         })json"));
 
         QTRY_COMPARE(modelResetSpy.size(), 2);
-        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::ItemTypeRole).value<UnifiedShareListModel::ItemType>(),
-                 UnifiedShareListModel::ItemType::InternalLink);
-        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "external-share"_L1);
-        QCOMPARE(model.data(model.index(4), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "internal-share"_L1);
+        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "external-share"_L1);
+        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "internal-share"_L1);
 
-        const auto pendingShare = model.data(model.index(9), UnifiedShareListModel::ShareRole).value<Share *>();
+        const auto pendingShare = model.data(model.index(5), UnifiedShareListModel::ShareRole).value<Share *>();
         pendingShare->updateFromJson(QJsonDocument::fromJson(R"json({
             "ocs": {"data": {"state": "active"}}
         })json"));
 
         QTRY_COMPARE(modelResetSpy.size(), 3);
-        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "unfinished-share"_L1);
-        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::ItemTypeRole).value<UnifiedShareListModel::ItemType>(),
-                 UnifiedShareListModel::ItemType::InternalLink);
-        QCOMPARE(model.data(model.index(4), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "external-share"_L1);
-        QCOMPARE(model.data(model.index(5), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "internal-share"_L1);
-        QCOMPARE(model.data(model.index(10), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "empty-draft"_L1);
+        QCOMPARE(model.data(model.index(2), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "external-share"_L1);
+        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "internal-share"_L1);
+        QCOMPARE(model.data(model.index(5), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "unfinished-share"_L1);
+        QCOMPARE(model.data(model.index(6), UnifiedShareListModel::ShareRole).value<Share *>()->id(), "empty-draft"_L1);
 
         model.setSharingController(nullptr);
         QCOMPARE(model.rowCount(), 0);
@@ -957,9 +1006,9 @@ private slots:
         UnifiedShareListModel model;
         model.setSharingController(&controller);
         QAbstractItemModelTester modelTester(&model);
-        QCOMPARE(model.rowCount(), 5);
-        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::PublicLinkRole).toBool(), true);
-        QCOMPARE(model.data(model.index(3), UnifiedShareListModel::PublicLinkUrlRole).toString(), publicUrl);
+        QCOMPARE(model.rowCount(), 2);
+        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::PublicLinkRole).toBool(), true);
+        QCOMPARE(model.data(model.index(1), UnifiedShareListModel::PublicLinkUrlRole).toString(), publicUrl);
         for (auto row = 0; row < model.rowCount(); ++row) {
             QVERIFY(model.data(model.index(row), UnifiedShareListModel::ItemTypeRole).value<UnifiedShareListModel::ItemType>()
                     != UnifiedShareListModel::ItemType::CreatePublicLink);
