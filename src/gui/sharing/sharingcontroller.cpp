@@ -18,6 +18,7 @@
 #include "createsharejob.h"
 #include "destroysharejob.h"
 #include "generatesecretjob.h"
+#include "getsharejob.h"
 #include "getsharesjob.h"
 #include "networkjobs.h"
 #include "removerecipientjob.h"
@@ -173,6 +174,28 @@ void SharingController::createPublicLink(const QString &fileId)
         failShareCreation(reply ? reply->errorString() : tr("Could not create the public link."));
     });
     generateJob->start();
+}
+
+void SharingController::fetchShareDetails(Share *share)
+{
+    if (!_account) {
+        qCWarning(lcSharingController) << "attempted to fetch share details without an account set";
+        return;
+    }
+
+    if (!containsShare(share)) {
+        qCWarning(lcSharingController) << "attempted to fetch details for a share not owned by this controller";
+        return;
+    }
+
+    const auto guardedShare = QPointer<Share>{share};
+    const auto job = new GetShareJob{_account, share->id()};
+    connect(job, &GetShareJob::shareJsonFetched, this, [guardedShare](const QJsonDocument &json) {
+        if (guardedShare) {
+            guardedShare->updateFromJson(json);
+        }
+    });
+    job->start();
 }
 
 void SharingController::requestInternalLink(const QString &remotePath, const QString &numericFileId)

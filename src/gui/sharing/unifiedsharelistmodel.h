@@ -18,7 +18,7 @@ class Share;
 class SharingController;
 
 /**
- * @brief Exposes unified sharing section headers, actions, and shares in display order.
+ * @brief Exposes unified sharing actions and shares in display order.
  */
 class UnifiedShareListModel : public QAbstractListModel
 {
@@ -30,7 +30,6 @@ class UnifiedShareListModel : public QAbstractListModel
 public:
     /** @brief Identifies the delegate needed for a list row. */
     enum class ItemType {
-        SectionHeader,
         Share,
         InternalLink,
         CreatePublicLink,
@@ -40,7 +39,6 @@ public:
     /** @brief Roles exposed to the sharing list delegates. */
     enum Role {
         ShareRole = Qt::UserRole + 1,
-        SectionRole,
         RecipientNamesRole,
         ItemTypeRole,
         PublicLinkRole,
@@ -57,7 +55,7 @@ public:
     /** @brief Sets the controller whose shares are exposed by this model. */
     void setSharingController(SharingController *sharingController);
 
-    /** @brief Returns the number of headers, actions, and shares in the root list. */
+    /** @brief Returns the number of sharing actions and shares in the root list. */
     [[nodiscard]] int rowCount(const QModelIndex &parent = {}) const override;
 
     /** @brief Returns the requested display data for a model index. */
@@ -74,13 +72,8 @@ private:
     struct Item
     {
         ItemType type;
-        QString section;
         QPointer<Share> share;
     };
-
-    [[nodiscard]] static QString sectionForShare(const Share *share);
-    [[nodiscard]] static bool isInternalShare(const Share *share);
-    [[nodiscard]] static bool isExternalShare(const Share *share);
 
     void rebuild();
 

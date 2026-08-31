@@ -88,6 +88,9 @@ public Q_SLOTS:
     /** @brief Creates and activates a public-link share for the specified file. */
     void createPublicLink(const QString &fileId);
 
+    /** @brief Loads the complete server representation for an existing share. */
+    void fetchShareDetails(Share *share);
+
     /**
      * @brief Resolves the server-provided internal link for the specified file.
      *

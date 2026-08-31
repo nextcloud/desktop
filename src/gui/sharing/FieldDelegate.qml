@@ -63,7 +63,7 @@ Loader {
     Component {
         id: booleanComponent
 
-        SwitchDelegate {
+        SettingsSwitchDelegate {
             text: instantiator.labelText()
             checked: instantiator.model.value === "true"
 

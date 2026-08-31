@@ -47,6 +47,8 @@ public:
 Q_SIGNALS:
     /** @brief Emitted with the fetched share after a successful request. */
     void shareFetched(QPointer<Share> share);
+    /** @brief Emitted with the complete share response after a successful request. */
+    void shareJsonFetched(const QJsonDocument &json);
 };
 
 }

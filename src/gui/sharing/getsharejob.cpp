@@ -7,6 +7,8 @@
 
 #include "unifiedshare.h"
 
+#include <QMetaMethod>
+
 using namespace Qt::StringLiterals;
 
 namespace OCC::Gui::Sharing
@@ -42,7 +44,10 @@ GetShareJob::GetShareJob(AccountPtr account,
                             {.parameters = {}, .passStatusCodes = {}, .body = getShareBody(secret, arguments)}}
 {
     connect(this, &OcsJob::jobFinished, this, [this, account = std::move(account)](const QJsonDocument &json, int) {
-        Q_EMIT shareFetched(Share::fromJson(json, account));
+        Q_EMIT shareJsonFetched(json);
+        if (isSignalConnected(QMetaMethod::fromSignal(&GetShareJob::shareFetched))) {
+            Q_EMIT shareFetched(Share::fromJson(json, account));
+        }
     });
 }
 
