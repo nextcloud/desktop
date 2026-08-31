@@ -22,6 +22,9 @@ void addOwnedArrangedSubview(NSStackView *stack, NSView *view);
 // The subtle row highlight colour for the current (light/dark) appearance.
 NSColor *hoverColor();
 
+// Main screen, or the first screen as fallback.
+NSScreen *mainOrFirstScreen();
+
 // Clamp a popup origin toward the screen's visible frame, inset by kScreenEdgePadding.
 // A popup larger than the visible frame can still overflow its far edge.
 NSPoint clampedPopupOrigin(const NSPoint origin, const NSSize size, const NSRect visibleFrame);
