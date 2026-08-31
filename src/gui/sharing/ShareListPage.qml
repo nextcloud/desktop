@@ -116,7 +116,7 @@ ColumnLayout {
             anchors.leftMargin: Style.sharingDialogWindowMargin
             anchors.rightMargin: Style.sharingDialogWindowMargin
             clip: true
-            spacing: Style.extraSmallSpacing
+            spacing: Style.smallSpacing
             model: shareListModel
             ScrollBar.vertical: ScrollBar {
                 policy: ScrollBar.AsNeeded
