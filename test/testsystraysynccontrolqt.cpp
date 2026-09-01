@@ -10,6 +10,7 @@
 #include <QtTest>
 
 #include <QAction>
+#include <QByteArray>
 #include <QColor>
 #include <QIcon>
 #include <QImage>
@@ -78,6 +79,29 @@ class TestSystraySyncControlQt : public QObject
         QVERIFY(foundSolidPixel);
     }
 
+    static QByteArray iconAlphaMask(const QIcon &icon)
+    {
+        const auto image = icon.pixmap(QSize(16, 16), QIcon::Normal, QIcon::Off).toImage().convertToFormat(QImage::Format_ARGB32);
+        auto alphaMask = QByteArray{};
+        alphaMask.reserve(image.width() * image.height());
+        for (auto y = 0; y < image.height(); ++y) {
+            for (auto x = 0; x < image.width(); ++x) {
+                alphaMask.append(static_cast<char>(image.pixelColor(x, y).alpha()));
+            }
+        }
+        return alphaMask;
+    }
+
+    static void verifyIconShape(const QAction *action, const QString &expectedIconPath)
+    {
+        QVERIFY(action);
+        QVERIFY(!action->icon().isNull());
+
+        const auto expectedIcon = QIcon{expectedIconPath};
+        QVERIFY(!expectedIcon.isNull());
+        QCOMPARE(iconAlphaMask(action->icon()), iconAlphaMask(expectedIcon));
+    }
+
 private Q_SLOTS:
     void initTestCase()
     {
@@ -139,6 +163,29 @@ private Q_SLOTS:
 
         QVERIFY(!_helper.firstFolder()->syncPaused());
         QVERIFY(!_helper.secondFolder()->syncPaused());
+        QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
+    }
+
+    void syncControlActionsUseMonochromeGlyphs()
+    {
+        const auto systray = Systray::instance();
+        QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
+
+        auto pauseMenu = QMenu{};
+        const auto pauseAction = pauseSyncAction(pauseMenu, systray);
+        QVERIFY(pauseAction);
+        verifyIconShape(pauseAction, QStringLiteral(":/client/theme/black/state-pause.svg"));
+        pauseAction->trigger();
+
+        QVERIFY(systray->syncControlState() == Systray::SyncControlState::Resume);
+        auto resumeMenu = QMenu{};
+        setupQtTrayContextMenu(&resumeMenu, systray);
+        QVERIFY(!resumeMenu.findChild<QAction *>(QStringLiteral("trayPauseSyncAction")));
+        const auto actualResumeAction = resumeSyncAction(resumeMenu);
+        QVERIFY(actualResumeAction);
+        verifyIconShape(actualResumeAction, QStringLiteral(":/client/theme/black/state-sync.svg"));
+        actualResumeAction->trigger();
+
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
     }
 
