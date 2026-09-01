@@ -91,4 +91,117 @@ final class MissingIdentifierCrashGuardTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(items.count, 1)
         XCTAssertEqual(items.first?.itemIdentifier.rawValue, "valid-id")
     }
+
+    // Producer: depth-1 PROPFIND ingestion writes directly to Realm, bypassing addItemMetadata. An
+    // empty-ocId row here is the most likely source of the poison. It must be dropped on write.
+    func testDepthOneIngestionDropsEmptyOcIdRows() {
+        let folderPath = Self.account.davFilesUrl + "/folder"
+
+        var target = SendableItemMetadata(ocId: "target-dir", fileName: "folder", account: Self.account)
+        target.directory = true
+        target.serverUrl = Self.account.davFilesUrl
+        var valid = SendableItemMetadata(ocId: "child-valid", fileName: "good.txt", account: Self.account)
+        valid.serverUrl = folderPath
+        var poison = SendableItemMetadata(ocId: "", fileName: "bad.txt", account: Self.account)
+        poison.serverUrl = folderPath
+
+        let changeSet = dbManager.depth1ReadUpdateItemMetadatas(
+            account: Self.account.ncKitAccount,
+            serverUrl: folderPath,
+            updatedMetadatas: [target, valid, poison],
+            keepExistingDownloadState: false
+        )
+
+        XCTAssertNil(dbManager.itemMetadata(ocId: ""))
+        XCTAssertNotNil(dbManager.itemMetadata(ocId: "child-valid"))
+        XCTAssertFalse((changeSet?.created ?? []).contains { $0.ocId.isEmpty })
+    }
+
+    // Self-heal: a database already poisoned by a previous build must shed its empty-ocId row the
+    // next time the containing folder is enumerated, not keep it forever.
+    func testDepthOneIngestionPurgesExistingEmptyOcIdRow() {
+        let folderPath = Self.account.davFilesUrl + "/folder"
+
+        var poison = SendableItemMetadata(ocId: "", fileName: "bad.txt", account: Self.account)
+        poison.serverUrl = folderPath
+        insertRaw(poison)
+        XCTAssertNotNil(dbManager.itemMetadata(ocId: ""))
+
+        var target = SendableItemMetadata(ocId: "target-dir", fileName: "folder", account: Self.account)
+        target.directory = true
+        target.serverUrl = Self.account.davFilesUrl
+
+        _ = dbManager.depth1ReadUpdateItemMetadatas(
+            account: Self.account.ncKitAccount,
+            serverUrl: folderPath,
+            updatedMetadatas: [target],
+            keepExistingDownloadState: false
+        )
+
+        XCTAssertNil(dbManager.itemMetadata(ocId: ""))
+    }
+
+    // Deletion path: an empty-ocId row that disappears remotely must not be reported to
+    // didDeleteItems as an empty identifier.
+    func testChangeBatchSkipsEmptyOcIdDeletions() throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            log: FileProviderLogMock()
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+
+        let valid = SendableItemMetadata(ocId: "del-valid", fileName: "a.txt", account: Self.account)
+        let poison = SendableItemMetadata(ocId: "", fileName: "b.txt", account: Self.account)
+
+        enumerator.completeChangesBatch(
+            observer,
+            updated: [],
+            deleted: [valid, poison],
+            anchor: Enumerator.syncAnchor(at: Date(timeIntervalSince1970: 1)),
+            moreComing: false,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
+        )
+
+        XCTAssertEqual(observer.deletedItemIdentifiers.map(\.rawValue), ["del-valid"])
+    }
+
+    // Create callback: when the server yields an item without an identifier, create must return an
+    // error rather than hand the framework an item with an empty identifier.
+    func testCreateFolderReturnsErrorWhenServerOcIdEmpty() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.createFolderIdentifierOverride = ""
+
+        var folderMeta = SendableItemMetadata(ocId: "template-id", fileName: "folder", account: Self.account)
+        folderMeta.directory = true
+        folderMeta.classFile = NKTypeClassFile.directory.rawValue
+        folderMeta.serverUrl = Self.account.davFilesUrl
+
+        let template = Item(
+            metadata: folderMeta,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
+        )
+
+        let (created, error) = await Item.create(
+            basedOn: template,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(created)
+        XCTAssertNotNil(error)
+        XCTAssertNil(dbManager.itemMetadata(ocId: ""))
+    }
 }
