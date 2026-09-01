@@ -105,6 +105,8 @@ class TestSystraySyncControlQt : public QObject
 private Q_SLOTS:
     void initTestCase()
     {
+        Q_INIT_RESOURCE(resources);
+        Q_INIT_RESOURCE(theme);
         QVERIFY(_helper.initialize());
     }
 
