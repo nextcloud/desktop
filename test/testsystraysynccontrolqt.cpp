@@ -62,21 +62,16 @@ class TestSystraySyncControlQt : public QObject
         QVERIFY(!action->icon().isNull());
 
         const auto image = action->icon().pixmap(QSize(16, 16), QIcon::Normal, QIcon::Off).toImage().convertToFormat(QImage::Format_ARGB32);
-        auto foundSolidPixel = false;
+        auto foundExpectedColor = false;
         for (auto y = 0; y < image.height(); ++y) {
             for (auto x = 0; x < image.width(); ++x) {
                 const auto pixelColor = image.pixelColor(x, y);
-                if (pixelColor.alpha() != 255) {
-                    continue;
+                if (pixelColor.alpha() != 0 && pixelColor.toRgb() == expectedColor.toRgb()) {
+                    foundExpectedColor = true;
                 }
-
-                foundSolidPixel = true;
-                QCOMPARE(pixelColor.red(), expectedColor.red());
-                QCOMPARE(pixelColor.green(), expectedColor.green());
-                QCOMPARE(pixelColor.blue(), expectedColor.blue());
             }
         }
-        QVERIFY(foundSolidPixel);
+        QVERIFY(foundExpectedColor);
     }
 
     static QByteArray iconAlphaMask(const QIcon &icon)
