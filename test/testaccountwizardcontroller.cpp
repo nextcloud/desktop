@@ -355,6 +355,17 @@ private Q_SLOTS:
         QVERIFY(controller.startLoginFlowAutomatically());
     }
 
+#ifdef Q_OS_LINUX
+    void defaultSyncModeIsNotVirtualFilesOnLinux()
+    {
+        AccountWizardController controller;
+
+        if (controller.canUseVirtualFiles()) {
+            QCOMPARE(controller.syncMode(), AccountWizardController::SyncEverything);
+        }
+    }
+#endif
+
 #ifdef BUILD_FILE_PROVIDER_MODULE
     // Keep this test last: it redirects the configuration directory.
     void followsAppLevelFileProviderMode()
