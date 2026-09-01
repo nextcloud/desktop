@@ -13,7 +13,7 @@ endif()
         configure_file(${_service_file} ${_target})
         install(FILES ${_target} DESTINATION ${_install_dir} RENAME "${LIBCLOUDPROVIDERS_DBUS_BUS_NAME}.service")
     endforeach (_i ${ARGN})
-endmacro(dbus_add_activation_service _sources)
+endmacro()
 
 macro(libcloudproviders_add_config _sources)
     set(_install_dir "${CMAKE_INSTALL_PREFIX}/share/cloud-providers")
@@ -24,7 +24,7 @@ macro(libcloudproviders_add_config _sources)
         configure_file(${_service_file} ${_target})
         install(FILES ${_target} DESTINATION ${_install_dir} RENAME "${LIBCLOUDPROVIDERS_DBUS_BUS_NAME}.ini")
     endforeach (_i ${ARGN})
-endmacro(libcloudproviders_add_config _sources)
+endmacro()
 
 
 if (Qt6_FOUND)

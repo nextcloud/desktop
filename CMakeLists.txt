@@ -302,8 +302,8 @@ add_definitions(-DNTDDI_VERSION=0x0A000004)
     # Also: Disable compiler warnings because we don't use Windows CRT safe-functions explicitly and don't intend to
     # as this is a pure cross-platform source the only alternative would be a ton of ifdefs with calls to the _s version
     add_definitions( -D_CRT_SECURE_NO_WARNINGS )
-    endif( MSVC )
-endif( WIN32 )
+    endif()
+endif()
 
 if (APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
@@ -318,8 +318,8 @@ if(BUILD_CLIENT)
     if(NOT BUILD_LIBRARIES_ONLY)
         if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
             add_subdirectory(admin)
-        endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
-    endif(NOT BUILD_LIBRARIES_ONLY)
+        endif()
+    endif()
 endif()
 
 if(BUILD_SHELL_INTEGRATION)

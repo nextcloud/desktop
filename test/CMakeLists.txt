@@ -158,7 +158,7 @@ endif()
 
 if( UNIX AND NOT APPLE )
     nextcloud_add_test(InotifyWatcher)
-endif(UNIX AND NOT APPLE)
+endif()
 
 if (WIN32)
     include_directories(
@@ -202,4 +202,4 @@ find_package(CMocka)
 if (CMOCKA_FOUND)
     include(AddCMockaTest)
     add_subdirectory(csync)
-endif (CMOCKA_FOUND)
+endif ()

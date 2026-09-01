@@ -14,8 +14,8 @@ macro (MACRO_ADD_LINK_FLAGS _target)
     set(_flags "${_flags} ${ARGN}")
   else (_flags)
     set(_flags "${ARGN}")
-  endif (_flags)
+  endif ()
 
   set_target_properties(${_target} PROPERTIES LINK_FLAGS "${_flags}")
 
-endmacro (MACRO_ADD_LINK_FLAGS)
+endmacro ()

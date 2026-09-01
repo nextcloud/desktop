@@ -27,7 +27,7 @@ include(../common/common.cmake)
 
 if (MEM_NULL_TESTS)
   add_definitions(-DCSYNC_MEM_NULL_TESTS)
-endif (MEM_NULL_TESTS)
+endif ()
 
 # Specific option for builds tied to servers that do not support renaming extensions
 set(NO_RENAME_EXTENSION 0 CACHE BOOL "Do not issue rename if the extension changes")
@@ -82,7 +82,7 @@ target_link_libraries(nextcloud_csync
 
 if(ZLIB_FOUND)
   target_link_libraries(nextcloud_csync PUBLIC ZLIB::ZLIB)
-endif(ZLIB_FOUND)
+endif()
 
 target_link_libraries(nextcloud_csync PRIVATE SQLite::SQLite3)
 
