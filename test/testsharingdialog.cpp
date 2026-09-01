@@ -426,6 +426,34 @@ private slots:
         QVERIFY(fieldControl);
     }
 
+    void preservesProvidedRecipientAvatar()
+    {
+        QQmlComponent component(
+            Systray::instance()->trayEngine(),
+            QStringLiteral("com.nextcloud.desktopclient.sharing"),
+            QStringLiteral("RecipientAvatar"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        const auto avatarObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("source"), QUrl(QStringLiteral("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><rect width='16' height='16' fill='red'/></svg>"))},
+            {QStringLiteral("width"), 32},
+            {QStringLiteral("height"), 32},
+        }));
+        QVERIFY2(avatarObject, qPrintable(component.errorString()));
+
+        const auto image = avatarObject->findChild<QObject *>(QStringLiteral("recipientAvatarImage"));
+        QVERIFY(image);
+        QTRY_COMPARE(image->property("status").toInt(), 1);
+        const auto effect = avatarObject->findChild<QObject *>(QStringLiteral("recipientAvatarEffect"));
+        QVERIFY(effect);
+        QVERIFY(effect->property("visible").toBool());
+        QVERIFY(effect->property("maskEnabled").toBool());
+        const auto mask = avatarObject->findChild<QObject *>(QStringLiteral("recipientAvatarMaskShape"));
+        QVERIFY(mask);
+        QCOMPARE(effect->property("maskSource").value<QObject *>(), mask);
+        QCOMPARE(effect->property("source").value<QObject *>(), image);
+    }
+
     void backIconResourceIsAvailable()
     {
         QVERIFY(QFile::exists(QStringLiteral(":/client/theme/back.svg")));
