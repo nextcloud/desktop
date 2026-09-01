@@ -32,7 +32,7 @@ WizardItemDelegate {
         Image {
             Layout.preferredWidth: Style.activityListButtonIconSize
             Layout.preferredHeight: Style.activityListButtonIconSize
-            source: "image://svgimage-custom-color/share.svg/" + palette.buttonText
+            source: "image://svgimage-custom-color/person_add.svg/" + palette.buttonText
             sourceSize: Qt.size(Style.activityListButtonIconSize, Style.activityListButtonIconSize)
             fillMode: Image.PreserveAspectFit
         }
