@@ -22,6 +22,7 @@ ecm_add_qml_module(nextcloudGuiSearch
     UnifiedSearchDetailHeader.qml
     UnifiedSearchFilterBar.qml
     UnifiedSearchInputContainer.qml
+    UnifiedSearchPeopleDelegate.qml
     UnifiedSearchPeoplePopup.qml
     UnifiedSearchResultDelegate.qml
     UnifiedSearchResultFetchMoreTrigger.qml

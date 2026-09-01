@@ -10,7 +10,6 @@ import QtQuick.Controls.Basic
 import QtQuick.Layouts
 
 import Style
-import "qrc:/qml/src/gui/tray"
 import "qrc:/qml/src/gui/wizard/qml"
 
 Popup {
@@ -62,54 +61,11 @@ Popup {
             clip: true
             model: root.peopleModel
 
-            delegate: ItemDelegate {
-                id: personDelegate
-
-                required property string userId
-                required property string displayName
-                required property string avatarUrl
-
+            delegate: UnifiedSearchPeopleDelegate {
                 width: ListView.view.width
-                height: Style.unifiedSearchProviderHeaderHeight
-                text: displayName
-                hoverEnabled: true
-                Accessible.description: userId
 
-                background: Rectangle {
-                    color: personDelegate.hovered || personDelegate.down
-                        ? Style.listItemHoverBackground
-                        : "transparent"
-                    radius: Style.mediumRoundedButtonRadius
-                }
-
-                HoverHandler {
-                    cursorShape: Qt.PointingHandCursor
-                }
-
-                contentItem: RowLayout {
-                    Image {
-                        Layout.preferredWidth: Style.accountAvatarSize
-                        Layout.preferredHeight: Style.accountAvatarSize
-                        sourceSize.width: Style.accountAvatarSize
-                        sourceSize.height: Style.accountAvatarSize
-                        asynchronous: true
-                        source: personDelegate.avatarUrl.length > 0
-                            ? "image://tray-image-provider/" + personDelegate.avatarUrl
-                            : ""
-                        Accessible.ignored: true
-                    }
-
-                    EnforcedPlainTextLabel {
-                        Layout.fillWidth: true
-                        text: personDelegate.displayName
-                        elide: Text.ElideRight
-                    }
-                }
-
-                onClicked: {
-                    root.searchModel.setPersonFilter(personDelegate.userId,
-                                                     personDelegate.displayName,
-                                                     personDelegate.avatarUrl)
+                onPersonChosen: (userId, displayName, avatarUrl) => {
+                    root.searchModel.setPersonFilter(userId, displayName, avatarUrl)
                     root.close()
                     root.personSelected()
                 }

@@ -12,6 +12,7 @@
 
 #include <QAbstractItemModelTester>
 #include <QDesktopServices>
+#include <QMetaMethod>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -135,7 +136,7 @@ public:
     }
 
     // initialize the JSON response containing the fake list of providers and their properties
-    void initProvidersResponse(const QString &excludedProviderId = {})
+    void initProvidersResponse(const QString &excludedProviderId = {}, const QString &providerWithoutPersonFilter = {})
     {
         QList<QVariant> providersList;
 
@@ -143,17 +144,21 @@ public:
             if (fakeProviderInitInfo._id == excludedProviderId) {
                 continue;
             }
+            auto filters = QVariantMap{
+                {QStringLiteral("term"), QVariantMap{}},
+                {QStringLiteral("since"), QVariantMap{}},
+                {QStringLiteral("until"), QVariantMap{}},
+                {QStringLiteral("person"), QVariantMap{}},
+            };
+            if (fakeProviderInitInfo._id == providerWithoutPersonFilter) {
+                filters.remove(QStringLiteral("person"));
+            }
             providersList.push_back(QVariantMap{
                 {QStringLiteral("id"), fakeProviderInitInfo._id},
                 {QStringLiteral("appId"), fakeProviderInitInfo._id},
                 {QStringLiteral("name"), fakeProviderInitInfo._name},
                 {QStringLiteral("order"), fakeProviderInitInfo._order},
-                {QStringLiteral("filters"), QVariantMap{
-                    {QStringLiteral("term"), QVariantMap{}},
-                    {QStringLiteral("since"), QVariantMap{}},
-                    {QStringLiteral("until"), QVariantMap{}},
-                    {QStringLiteral("person"), QVariantMap{}},
-                }},
+                {QStringLiteral("filters"), filters},
             });
         }
 
@@ -424,6 +429,44 @@ private Q_SLOTS:
 
         fakeDesktopServicesUrlHandler.reset(new FakeDesktopServicesUrlHandler);
     }
+
+    void testQmlVoidActionsAreSlots()
+    {
+        auto slotNames = QSet<QByteArray>{};
+        const auto &metaObject = OCC::UnifiedSearchResultsListModel::staticMetaObject;
+        for (auto methodIndex = metaObject.methodOffset(); methodIndex < metaObject.methodCount(); ++methodIndex) {
+            const auto method = metaObject.method(methodIndex);
+            if (method.methodType() == QMetaMethod::Slot) {
+                slotNames.insert(method.name());
+            }
+        }
+
+        const auto expectedSlots = QList<QByteArray>{
+            QByteArrayLiteral("setSearchTerm"),
+            QByteArrayLiteral("resultClicked"),
+            QByteArrayLiteral("fetchMoreTriggerClicked"),
+            QByteArrayLiteral("toggleProviderFilter"),
+            QByteArrayLiteral("clearTypeFilters"),
+            QByteArrayLiteral("setDatePreset"),
+            QByteArrayLiteral("clearDateFilter"),
+            QByteArrayLiteral("setPersonFilter"),
+            QByteArrayLiteral("clearPersonFilter"),
+            QByteArrayLiteral("removeFilter"),
+            QByteArrayLiteral("setExternalProvidersEnabled"),
+            QByteArrayLiteral("openProviderDetail"),
+            QByteArrayLiteral("closeProviderDetail"),
+            QByteArrayLiteral("loadMore"),
+            QByteArrayLiteral("retryLoadMore"),
+            QByteArrayLiteral("retryFailedProviders"),
+            QByteArrayLiteral("retry"),
+            QByteArrayLiteral("moveSelection"),
+            QByteArrayLiteral("activateSelected"),
+        };
+        for (const auto &slotName : expectedSlots) {
+            QVERIFY2(slotNames.contains(slotName), slotName.constData());
+        }
+    }
+
     void testSetSearchTermStartStopSearch()
     {
         // make sure the model is empty
@@ -931,6 +974,60 @@ private Q_SLOTS:
         QCOMPARE(model->searchState(), OCC::UnifiedSearchResultsListModel::SearchState::SearchError);
 
         model->setSearchTerm(QStringLiteral(""));
+    }
+
+    void testProviderDetailPreservesPartialMatchState()
+    {
+        model->setSearchTerm(QString());
+        model->closeProviderDetail();
+        model->clearTypeFilters();
+        model->clearDateFilter();
+        model->clearPersonFilter();
+
+        accountState->setStateForTesting(OCC::AccountState::Disconnected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        FakeSearchResultsStorage::instance()->initProvidersResponse({}, QStringLiteral("mail"));
+        accountState->setStateForTesting(OCC::AccountState::Connected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        QTRY_VERIFY_WITH_TIMEOUT(model->providersReady(), 1000);
+        FakeSearchResultsStorage::instance()->initProvidersResponse();
+
+        model->setPersonFilter(QStringLiteral("ada"), QStringLiteral("Ada Lovelace"));
+        model->setSearchTerm(QStringLiteral("partial detail"));
+        QTRY_VERIFY_WITH_TIMEOUT(!model->isSearchInProgress() && !model->waitingForSearchTermEditEnd(), 2000);
+
+        model->openProviderDetail(QStringLiteral("mail"));
+        QCOMPARE(model->viewMode(), OCC::UnifiedSearchResultsListModel::ViewMode::ProviderDetail);
+        auto resultCount = 0;
+        for (auto row = 0; row < model->rowCount(); ++row) {
+            const auto index = model->index(row);
+            if (model->data(index, OCC::UnifiedSearchResultsListModel::TypeRole).toInt() != OCC::UnifiedSearchResult::Type::Default) {
+                continue;
+            }
+            ++resultCount;
+            QVERIFY(model->data(index, OCC::UnifiedSearchResultsListModel::PartialMatchRole).toBool());
+        }
+        QVERIFY(resultCount > 0);
+
+        const auto rowsBeforePaging = model->rowCount();
+        model->loadMore(QStringLiteral("mail"));
+        QTRY_VERIFY_WITH_TIMEOUT(model->currentFetchMoreInProgressProviderId().isEmpty(), 1000);
+        QVERIFY(model->rowCount() > rowsBeforePaging);
+        for (auto row = 0; row < model->rowCount(); ++row) {
+            const auto index = model->index(row);
+            if (model->data(index, OCC::UnifiedSearchResultsListModel::TypeRole).toInt() == OCC::UnifiedSearchResult::Type::Default) {
+                QVERIFY(model->data(index, OCC::UnifiedSearchResultsListModel::PartialMatchRole).toBool());
+            }
+        }
+
+        model->setSearchTerm(QString());
+        model->closeProviderDetail();
+        model->clearPersonFilter();
+        accountState->setStateForTesting(OCC::AccountState::Disconnected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        accountState->setStateForTesting(OCC::AccountState::Connected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        QTRY_VERIFY_WITH_TIMEOUT(model->providersReady(), 1000);
     }
 
     void testDisconnectAndRediscoveryResetProviderState()

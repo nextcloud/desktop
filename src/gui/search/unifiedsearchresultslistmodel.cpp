@@ -321,7 +321,7 @@ QHash<int, QByteArray> UnifiedSearchResultsListModel::roleNames() const
         result[TitleRole] = "resultTitle";
         result[SublineRole] = "subline";
         result[ResourceUrlRole] = "resourceUrlRole";
-        result[TypeRole] = "type";
+        result[TypeRole] = "resultType";
         result[TypeAsStringRole] = "typeAsString";
         result[RoundedRole] = "isRounded";
         result[StableKeyRole] = "stableKey";
@@ -340,15 +340,50 @@ bool UnifiedSearchResultsListModel::isSearchInProgress() const
     return _inFlightSearchRequests > 0 || (_providersLoading && hasSearchTerm());
 }
 
-QString UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderId() const { return _currentFetchMoreInProgressProviderId; }
-QString UnifiedSearchResultsListModel::searchTerm() const { return _searchTerm; }
-QString UnifiedSearchResultsListModel::errorString() const { return _errorString; }
-bool UnifiedSearchResultsListModel::waitingForSearchTermEditEnd() const { return _waitingForSearchTermEditEnd; }
-bool UnifiedSearchResultsListModel::isFetchMoreInProgress() const { return !_currentFetchMoreInProgressProviderId.isEmpty(); }
-bool UnifiedSearchResultsListModel::hasSearchTerm() const { return !_searchTerm.trimmed().isEmpty(); }
-bool UnifiedSearchResultsListModel::hasSearchError() const { return !_errorString.isEmpty(); }
-bool UnifiedSearchResultsListModel::canEditSearch() const { return _accountState && _accountState->account() && isAccountConnected(); }
-bool UnifiedSearchResultsListModel::isAccountConnected() const { return _accountState && _accountState->isConnected(); }
+QString UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderId() const
+{
+    return _currentFetchMoreInProgressProviderId;
+}
+
+QString UnifiedSearchResultsListModel::searchTerm() const
+{
+    return _searchTerm;
+}
+
+QString UnifiedSearchResultsListModel::errorString() const
+{
+    return _errorString;
+}
+
+bool UnifiedSearchResultsListModel::waitingForSearchTermEditEnd() const
+{
+    return _waitingForSearchTermEditEnd;
+}
+
+bool UnifiedSearchResultsListModel::isFetchMoreInProgress() const
+{
+    return !_currentFetchMoreInProgressProviderId.isEmpty();
+}
+
+bool UnifiedSearchResultsListModel::hasSearchTerm() const
+{
+    return !_searchTerm.trimmed().isEmpty();
+}
+
+bool UnifiedSearchResultsListModel::hasSearchError() const
+{
+    return !_errorString.isEmpty();
+}
+
+bool UnifiedSearchResultsListModel::canEditSearch() const
+{
+    return _accountState && _accountState->account() && isAccountConnected();
+}
+
+bool UnifiedSearchResultsListModel::isAccountConnected() const
+{
+    return _accountState && _accountState->isConnected();
+}
 
 UnifiedSearchResultsListModel::SearchState UnifiedSearchResultsListModel::searchState() const
 {
@@ -415,7 +450,10 @@ QVariantList UnifiedSearchResultsListModel::activeFilters() const
     return result;
 }
 
-bool UnifiedSearchResultsListModel::providersReady() const { return _providersReady; }
+bool UnifiedSearchResultsListModel::providersReady() const
+{
+    return _providersReady;
+}
 
 bool UnifiedSearchResultsListModel::dateFilterAvailable() const
 {
@@ -436,15 +474,25 @@ bool UnifiedSearchResultsListModel::hasExternalProviders() const
     return std::any_of(_providers.cbegin(), _providers.cend(), [](const auto &provider) { return provider.isExternalProvider; });
 }
 
-bool UnifiedSearchResultsListModel::externalProvidersEnabled() const { return _externalProvidersEnabled; }
+bool UnifiedSearchResultsListModel::externalProvidersEnabled() const
+{
+    return _externalProvidersEnabled;
+}
 
 bool UnifiedSearchResultsListModel::showConnectedServicesAction() const
 {
     return _viewMode == ViewMode::Aggregate && hasSearchTerm() && hasExternalProviders() && !isSearchInProgress();
 }
 
-bool UnifiedSearchResultsListModel::hasPartialFailure() const { return _hasPartialFailure; }
-UnifiedSearchResultsListModel::ViewMode UnifiedSearchResultsListModel::viewMode() const { return _viewMode; }
+bool UnifiedSearchResultsListModel::hasPartialFailure() const
+{
+    return _hasPartialFailure;
+}
+
+UnifiedSearchResultsListModel::ViewMode UnifiedSearchResultsListModel::viewMode() const
+{
+    return _viewMode;
+}
 
 QString UnifiedSearchResultsListModel::detailProviderName() const
 {
@@ -452,9 +500,20 @@ QString UnifiedSearchResultsListModel::detailProviderName() const
     return providerIt == _providers.cend() ? QString() : providerIt->name;
 }
 
-int UnifiedSearchResultsListModel::selectedRow() const { return _selectedRow; }
-QString UnifiedSearchResultsListModel::accessibilityStatus() const { return _accessibilityStatus; }
-AccountState *UnifiedSearchResultsListModel::accountState() const { return _accountState; }
+int UnifiedSearchResultsListModel::selectedRow() const
+{
+    return _selectedRow;
+}
+
+QString UnifiedSearchResultsListModel::accessibilityStatus() const
+{
+    return _accessibilityStatus;
+}
+
+AccountState *UnifiedSearchResultsListModel::accountState() const
+{
+    return _accountState;
+}
 
 void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
 {
@@ -674,8 +733,8 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const QString &provid
     }
     auto &provider = _providers[providerId];
     const auto generation = _queryGeneration;
-    auto *const job = new JsonApiJob(_accountState->account(),
-        QStringLiteral("ocs/v2.php/search/providers/%1/search").arg(QString::fromUtf8(QUrl::toPercentEncoding(providerId))));
+    const auto job = new JsonApiJob(_accountState->account(),
+                                    QStringLiteral("ocs/v2.php/search/providers/%1/search").arg(QString::fromUtf8(QUrl::toPercentEncoding(providerId))));
     job->addQueryParams(queryForProvider(provider, pagination));
     connect(job, &JsonApiJob::jsonReceived, this,
         [this, providerId, pagination, generation, job](const QJsonDocument &json, const int statusCode) {
@@ -695,11 +754,11 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const QString &provid
 }
 
 void UnifiedSearchResultsListModel::providerSearchFinished(const QJsonDocument &json,
-                                                            int statusCode,
-                                                            const QString &providerId,
-                                                            bool pagination,
-                                                            quint64 generation,
-                                                            QObject *jobObject)
+                                                           int statusCode,
+                                                           const QString &providerId,
+                                                           bool pagination,
+                                                           quint64 generation,
+                                                           QObject *jobObject)
 {
     const auto wasInProgress = isSearchInProgress();
     untrackSearchJob(jobObject);
@@ -770,17 +829,11 @@ QVector<UnifiedSearchResult> UnifiedSearchResultsListModel::parseEntries(const Q
         if (entry.isEmpty()) {
             continue;
         }
-        UnifiedSearchResult result;
-        result._providerId = provider.id;
-        result._providerName = provider.name;
-        result._order = provider.order;
-        result._isRounded = entry.value("rounded"_L1).toBool(false);
-        result._title = entry.value("title"_L1).toString();
-        result._subline = entry.value("subline"_L1).toString();
-        result._resourceUrl = openableResourceUrl(QUrl(entry.value("resourceUrl"_L1).toString()), accountUrl);
+        const auto title = entry.value("title"_L1).toString();
+        const auto resourceUrl = openableResourceUrl(QUrl(entry.value("resourceUrl"_L1).toString()), accountUrl);
         const auto entryIcon = entry.value("icon"_L1).toString();
-        const auto darkNavigationAppIcon = navigationAppIconForResult(_accountState, provider.id, result._title, true);
-        const auto lightNavigationAppIcon = navigationAppIconForResult(_accountState, provider.id, result._title, false);
+        const auto darkNavigationAppIcon = navigationAppIconForResult(_accountState, provider.id, title, true);
+        const auto lightNavigationAppIcon = navigationAppIconForResult(_accountState, provider.id, title, false);
         const auto darkFallbackIcon = !darkNavigationAppIcon.isEmpty()
             ? darkNavigationAppIcon
             : (entryIcon.isEmpty() ? providerIcon(provider, true) : entryIcon);
@@ -789,13 +842,22 @@ QVector<UnifiedSearchResult> UnifiedSearchResultsListModel::parseEntries(const Q
             : (entryIcon.isEmpty() ? providerIcon(provider, false) : entryIcon);
         const auto darkIcons = iconsFromThumbnailAndFallbackIcon(entry.value("thumbnailUrl"_L1).toString(), darkFallbackIcon, accountUrl, true);
         const auto lightIcons = iconsFromThumbnailAndFallbackIcon(entry.value("thumbnailUrl"_L1).toString(), lightFallbackIcon, accountUrl, false);
-        result._darkIcons = darkIcons.first;
-        result._lightIcons = lightIcons.first;
-        result._darkIconsIsThumbnail = darkIcons.second;
-        result._lightIconsIsThumbnail = lightIcons.second;
-        result._providerIcon = providerIcon(provider, false);
-        result._isSelectable = true;
-        result._stableKey = stableKeyForResult(provider.id, result, entryIndex++);
+        const auto result = UnifiedSearchResult{
+            ._title = title,
+            ._subline = entry.value("subline"_L1).toString(),
+            ._providerId = provider.id,
+            ._providerName = provider.name,
+            ._providerIcon = providerIcon(provider, false),
+            ._stableKey = stableKeyForResult(provider.id, resourceUrl, entryIndex++),
+            ._isRounded = entry.value("rounded"_L1).toBool(false),
+            ._isSelectable = true,
+            ._order = provider.order,
+            ._resourceUrl = resourceUrl,
+            ._darkIcons = darkIcons.first,
+            ._lightIcons = lightIcons.first,
+            ._darkIconsIsThumbnail = darkIcons.second,
+            ._lightIconsIsThumbnail = lightIcons.second,
+        };
         parsedEntries.push_back(result);
     }
     return parsedEntries;
@@ -844,7 +906,11 @@ void UnifiedSearchResultsListModel::rebuildProjection()
     QVector<UnifiedSearchResult> projection;
     if (_viewMode == ViewMode::ProviderDetail && _providers.contains(_detailProviderId)) {
         const auto &provider = _providers[_detailProviderId];
-        projection = provider.entries;
+        projection.reserve(provider.entries.size() + 1);
+        for (auto entry : provider.entries) {
+            entry._isPartialMatch = provider.partialMatch;
+            projection.push_back(std::move(entry));
+        }
         if (provider.loadMoreFailed || provider.hasMore) {
             projection.push_back(pagingRowForProvider(provider));
         }
@@ -877,10 +943,11 @@ void UnifiedSearchResultsListModel::rebuildProjection()
                 continue;
             }
             if (!partialHeaderAdded) {
-                UnifiedSearchResult header;
-                header._type = UnifiedSearchResult::Type::PartialMatchesHeader;
-                header._title = tr("Partial matches");
-                header._stableKey = QStringLiteral("partial-matches");
+                const auto header = UnifiedSearchResult{
+                    ._title = tr("Partial matches"),
+                    ._stableKey = QStringLiteral("partial-matches"),
+                    ._type = UnifiedSearchResult::Type::PartialMatchesHeader,
+                };
                 projection.push_back(header);
                 partialHeaderAdded = true;
             }
@@ -918,15 +985,13 @@ void UnifiedSearchResultsListModel::rebuildProjection()
 
 UnifiedSearchResult UnifiedSearchResultsListModel::pagingRowForProvider(const UnifiedSearchProvider &provider) const
 {
-    UnifiedSearchResult pagingRow;
-    pagingRow._providerId = provider.id;
-    pagingRow._providerName = provider.name;
-    pagingRow._type = provider.loadMoreFailed
-        ? UnifiedSearchResult::Type::RetryFetchMoreTrigger
-        : UnifiedSearchResult::Type::FetchMoreTrigger;
-    pagingRow._isLoading = provider.paging;
-    pagingRow._stableKey = QStringLiteral("paging:%1").arg(provider.id);
-    return pagingRow;
+    return UnifiedSearchResult{
+        ._providerId = provider.id,
+        ._providerName = provider.name,
+        ._stableKey = QStringLiteral("paging:%1").arg(provider.id),
+        ._isLoading = provider.paging,
+        ._type = provider.loadMoreFailed ? UnifiedSearchResult::Type::RetryFetchMoreTrigger : UnifiedSearchResult::Type::FetchMoreTrigger,
+    };
 }
 
 bool UnifiedSearchResultsListModel::updateDetailPagingState(const UnifiedSearchProvider &provider)
@@ -975,13 +1040,17 @@ bool UnifiedSearchResultsListModel::updateDetailProjectionAfterPagination(const 
         return true;
     }
 
-    _results[pagingRowIndex] = provider.entries[previousEntryCount];
+    auto firstAppendedEntry = provider.entries[previousEntryCount];
+    firstAppendedEntry._isPartialMatch = provider.partialMatch;
+    _results[pagingRowIndex] = std::move(firstAppendedEntry);
     Q_EMIT dataChanged(index(pagingRowIndex), index(pagingRowIndex));
 
     QVector<UnifiedSearchResult> tail;
     tail.reserve(appendedCount);
     for (auto entryIndex = previousEntryCount + 1; entryIndex < provider.entries.size(); ++entryIndex) {
-        tail.push_back(provider.entries[entryIndex]);
+        auto entry = provider.entries[entryIndex];
+        entry._isPartialMatch = provider.partialMatch;
+        tail.push_back(std::move(entry));
     }
     if (provider.hasMore) {
         tail.push_back(pagingRowForProvider(provider));
@@ -1018,15 +1087,16 @@ void UnifiedSearchResultsListModel::appendProviderProjection(const UnifiedSearch
         return;
     }
 
-    UnifiedSearchResult header;
-    header._providerId = provider.id;
-    header._providerName = provider.name;
-    header._providerIcon = visibleEntries.constFirst()._providerIcon;
-    header._title = provider.name;
-    header._hasOverflow = visibleEntries.size() > aggregateResultsPerProvider || provider.hasMore;
-    header._isPartialMatch = partial;
-    header._type = UnifiedSearchResult::Type::ProviderHeader;
-    header._stableKey = QStringLiteral("header:%1:%2").arg(partial ? QStringLiteral("partial") : QStringLiteral("full"), provider.id);
+    const auto header = UnifiedSearchResult{
+        ._title = provider.name,
+        ._providerId = provider.id,
+        ._providerName = provider.name,
+        ._providerIcon = visibleEntries.constFirst()._providerIcon,
+        ._stableKey = QStringLiteral("header:%1:%2").arg(partial ? QStringLiteral("partial") : QStringLiteral("full"), provider.id),
+        ._isPartialMatch = partial,
+        ._hasOverflow = visibleEntries.size() > aggregateResultsPerProvider || provider.hasMore,
+        ._type = UnifiedSearchResult::Type::ProviderHeader,
+    };
     projection.push_back(header);
 
     const auto visibleCount = std::min(aggregateResultsPerProvider, visibleEntries.size());
@@ -1283,11 +1353,9 @@ QUrlQuery UnifiedSearchResultsListModel::queryForProvider(const UnifiedSearchPro
     return query;
 }
 
-QString UnifiedSearchResultsListModel::stableKeyForResult(const QString &providerId,
-                                                           const UnifiedSearchResult &result,
-                                                           int entryIndex)
+QString UnifiedSearchResultsListModel::stableKeyForResult(const QString &providerId, const QUrl &resourceUrl, int entryIndex)
 {
-    return QStringLiteral("result:%1:%2:%3").arg(providerId, result._resourceUrl.toString(), QString::number(entryIndex));
+    return QStringLiteral("result:%1:%2:%3").arg(providerId, resourceUrl.toString(), QString::number(entryIndex));
 }
 
 QUrl UnifiedSearchResultsListModel::openableResourceUrl(const QUrl &resourceUrl, const QUrl &accountUrl)
@@ -1314,7 +1382,10 @@ void UnifiedSearchResultsListModel::resultClicked(const QString &providerId, con
     Utility::openBrowser(resourceUrl);
 }
 
-void UnifiedSearchResultsListModel::fetchMoreTriggerClicked(const QString &providerId) { loadMore(providerId); }
+void UnifiedSearchResultsListModel::fetchMoreTriggerClicked(const QString &providerId)
+{
+    loadMore(providerId);
+}
 
 void UnifiedSearchResultsListModel::toggleProviderFilter(const QString &providerId)
 {
@@ -1483,7 +1554,10 @@ void UnifiedSearchResultsListModel::loadMore(const QString &providerId)
     startSearchForProvider(providerId, true);
 }
 
-void UnifiedSearchResultsListModel::retryLoadMore(const QString &providerId) { loadMore(providerId); }
+void UnifiedSearchResultsListModel::retryLoadMore(const QString &providerId)
+{
+    loadMore(providerId);
+}
 
 void UnifiedSearchResultsListModel::retryFailedProviders()
 {

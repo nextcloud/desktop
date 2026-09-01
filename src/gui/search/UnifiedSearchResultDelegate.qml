@@ -111,7 +111,7 @@ Item {
                 verticalAlignment: Text.AlignVCenter
             }
 
-            onPressed: {
+            onClicked: {
                 if (root.hasOverflow) {
                     root.searchModel.openProviderDetail(root.providerId)
                 }
@@ -240,7 +240,7 @@ Item {
                 }
             }
 
-            onPressed: root.resultType === UnifiedSearchResultsListModel.RetryFetchMoreTrigger
+            onClicked: root.resultType === UnifiedSearchResultsListModel.RetryFetchMoreTrigger
                 ? root.searchModel.retryLoadMore(root.providerId)
                 : root.searchModel.loadMore(root.providerId)
         }

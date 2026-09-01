@@ -70,7 +70,7 @@ Item {
                     darkImagePlaceholder: "",
                     lightImagePlaceholder: "",
                     isRounded: false,
-                    type: UnifiedSearchResultsListModel.Default,
+                    resultType: UnifiedSearchResultsListModel.Default,
                     isSelected: true,
                     isPartialMatch: false,
                     hasOverflow: false,
@@ -349,10 +349,16 @@ Item {
             const typeButton = findChild(searchWindow, "typeFilterButton")
             const dateButton = findChild(searchWindow, "dateFilterButton")
             const peopleButton = findChild(searchWindow, "peopleFilterButton")
+            const filterFlow = findChild(searchWindow, "categoryFilterFlow")
 
             verify(typeButton !== null)
             verify(dateButton !== null)
             verify(peopleButton !== null)
+            verify(filterFlow !== null)
+            compare(typeButton.width, dateButton.width)
+            compare(dateButton.width, peopleButton.width)
+            compare(typeButton.width, filterFlow.filterButtonWidth)
+            compare(filterFlow.filterButtonGapCount, filterFlow.filterButtonCount - 1)
             const todayMenuItem = findChild(searchWindow, "dateTodayMenuItem")
             verify(todayMenuItem !== null)
             compare(todayMenuItem.hoverEnabled, true)
@@ -550,9 +556,23 @@ Item {
             keyClick(Qt.Key_Down)
             keyClick(Qt.Key_End)
             keyClick(Qt.Key_Return)
-            compare(moveSpy.count, 2)
+            compare(moveSpy.count, 1)
             compare(activateSpy.count, 1)
             verify(input.activeFocus)
+        }
+
+        function test_homeAndEndEditTheQuery() {
+            input.text = "calendar"
+            input.cursorPosition = 4
+
+            keyClick(Qt.Key_Home)
+            compare(input.cursorPosition, 0)
+            compare(moveSpy.count, 0)
+
+            keyClick(Qt.Key_End, Qt.ShiftModifier)
+            compare(input.selectionStart, 0)
+            compare(input.selectionEnd, input.text.length)
+            compare(moveSpy.count, 0)
         }
 
         function test_activeFocusKeepsNeutralFrame() {
@@ -726,7 +746,7 @@ Item {
             compare(resultDelegate.loadedItem.background.color.toString(), Style.listItemHoverBackground.toString())
 
             mousePress(resultDelegate.loadedItem)
-            compare(fakeSearchModel.openedProviderDetails, 1)
+            compare(fakeSearchModel.openedProviderDetails, 0)
             mouseRelease(resultDelegate.loadedItem)
             compare(fakeSearchModel.openedProviderDetails, 1)
         }
@@ -802,7 +822,7 @@ Item {
             compare(resultDelegate.loadedItem.background.color.toString(), Style.listItemHoverBackground.toString())
 
             mousePress(resultDelegate.loadedItem)
-            compare(fakeSearchModel.loadedPages, 1)
+            compare(fakeSearchModel.loadedPages, 0)
             mouseRelease(resultDelegate.loadedItem)
             compare(fakeSearchModel.loadedPages, 1)
         }
@@ -818,7 +838,7 @@ Item {
             compare(resultDelegate.loadedItem.height, 44)
 
             mousePress(resultDelegate.loadedItem)
-            compare(fakeSearchModel.retriedPages, 1)
+            compare(fakeSearchModel.retriedPages, 0)
             mouseRelease(resultDelegate.loadedItem)
             compare(fakeSearchModel.retriedPages, 1)
         }

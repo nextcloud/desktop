@@ -41,7 +41,7 @@ private Q_SLOTS:
         auto qnam = std::unique_ptr<FakeQNAM>(new FakeQNAM({}));
         auto account = OCC::Account::create();
         account->setCredentials(new FakeCredentials(qnam.get()));
-        account->setUrl(QUrl(QStringLiteral("https://cloud.example.test/")));
+        account->setUrl(QUrl(QStringLiteral("https://cloud.example.test/nextcloud")));
         account->setDavUser(QStringLiteral("current-user"));
         auto state = std::make_unique<FakeAccountState>(account);
         auto requestCount = 0;
@@ -57,6 +57,8 @@ private Q_SLOTS:
         QTRY_COMPARE_WITH_TIMEOUT(model.rowCount(), 1, 1000);
         QCOMPARE(requestCount, 0);
         QCOMPARE(model.data(model.index(0), OCC::UnifiedSearchPeopleModel::UserIdRole).toString(), QStringLiteral("current-user"));
+        QCOMPARE(model.data(model.index(0), OCC::UnifiedSearchPeopleModel::AvatarUrlRole).toString(),
+                 QStringLiteral("https://cloud.example.test/nextcloud/index.php/avatar/current-user/64"));
         QVERIFY(model.errorString().isEmpty());
     }
 

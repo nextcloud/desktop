@@ -214,57 +214,9 @@ WizardStyledWindow {
                     Accessible.role: Accessible.List
                     Accessible.name: qsTr("Search results")
 
-                    delegate: Item {
-                        id: delegateData
-
-                        required property string providerName
-                        required property string providerId
-                        required property string providerIcon
-                        required property string resultTitle
-                        required property string subline
-                        required property url resourceUrlRole
-                        required property string darkIcons
-                        required property string lightIcons
-                        required property bool darkIconsIsThumbnail
-                        required property bool lightIconsIsThumbnail
-                        required property string darkImagePlaceholder
-                        required property string lightImagePlaceholder
-                        required property bool isRounded
-                        required property int type
-                        required property bool isSelected
-                        required property bool isPartialMatch
-                        required property bool hasOverflow
-                        required property bool isLoading
-
-                        readonly property alias loadedItem: resultDelegate.loadedItem
-
+                    delegate: UnifiedSearchResultDelegate {
                         width: resultsList.width
-                        height: resultDelegate.implicitHeight
-
-                        UnifiedSearchResultDelegate {
-                            id: resultDelegate
-
-                            anchors.fill: parent
-                            searchModel: root.searchModel
-                            providerName: delegateData.providerName
-                            providerId: delegateData.providerId
-                            providerIcon: delegateData.providerIcon
-                            resultTitle: delegateData.resultTitle
-                            subline: delegateData.subline
-                            resourceUrlRole: delegateData.resourceUrlRole
-                            darkIcons: delegateData.darkIcons
-                            lightIcons: delegateData.lightIcons
-                            darkIconsIsThumbnail: delegateData.darkIconsIsThumbnail
-                            lightIconsIsThumbnail: delegateData.lightIconsIsThumbnail
-                            darkImagePlaceholder: delegateData.darkImagePlaceholder
-                            lightImagePlaceholder: delegateData.lightImagePlaceholder
-                            isRounded: delegateData.isRounded
-                            resultType: delegateData.type
-                            isSelected: delegateData.isSelected
-                            isPartialMatch: delegateData.isPartialMatch
-                            hasOverflow: delegateData.hasOverflow
-                            isLoading: delegateData.isLoading
-                        }
+                        searchModel: root.searchModel
                     }
 
                     footer: Column {

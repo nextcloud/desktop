@@ -39,8 +39,6 @@ TextField {
         if (inputMethodComposing) return
         if (event.key === Qt.Key_Down) moveSelection(UnifiedSearchResultsListModel.Next)
         else if (event.key === Qt.Key_Up) moveSelection(UnifiedSearchResultsListModel.Previous)
-        else if (event.key === Qt.Key_Home) moveSelection(UnifiedSearchResultsListModel.First)
-        else if (event.key === Qt.Key_End) moveSelection(UnifiedSearchResultsListModel.Last)
         else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) activateSelection()
         else return
         event.accepted = true

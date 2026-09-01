@@ -17,6 +17,11 @@ Flow {
     required property var searchModel
 
     readonly property bool opened: typeMenu.opened || dateMenu.opened
+    readonly property int filterButtonCount: 3
+    readonly property int filterButtonGapCount: filterButtonCount - 1
+    readonly property real filterButtonWidth: Math.max(
+        Style.unifiedSearchFilterButtonMinimumWidth,
+        (width - filterButtonGapCount * spacing) / filterButtonCount)
 
     signal customDateRangeRequested()
     signal peopleRequested()
@@ -41,8 +46,7 @@ Flow {
         id: typeFilterButton
 
         objectName: "typeFilterButton"
-        width: Math.max(Style.unifiedSearchFilterButtonMinimumWidth,
-                        (root.width - 2 * root.spacing) / 3)
+        width: root.filterButtonWidth
         text: qsTr("Type")
         trailingIconSource: "image://svgimage-custom-color/caret-down.svg/"
             + (primary ? Style.wizardSelectedText : Style.wizardPrimaryText)
@@ -93,8 +97,7 @@ Flow {
         id: dateFilterButton
 
         objectName: "dateFilterButton"
-        width: Math.max(Style.unifiedSearchFilterButtonMinimumWidth,
-                        (root.width - 2 * root.spacing) / 3)
+        width: root.filterButtonWidth
         text: qsTr("Date")
         trailingIconSource: "image://svgimage-custom-color/caret-down.svg/"
             + (primary ? Style.wizardSelectedText : Style.wizardPrimaryText)
@@ -150,8 +153,7 @@ Flow {
         id: peopleButton
 
         objectName: "peopleFilterButton"
-        width: Math.max(Style.unifiedSearchFilterButtonMinimumWidth,
-                        (root.width - 2 * root.spacing) / 3)
+        width: root.filterButtonWidth
         text: qsTr("People")
         trailingIconSource: "image://svgimage-custom-color/caret-down.svg/"
             + (primary ? Style.wizardSelectedText : Style.wizardPrimaryText)

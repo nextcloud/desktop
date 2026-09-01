@@ -5,9 +5,6 @@
 
 #pragma once
 
-#include "accountstate.h"
-#include "unifiedsearchresult.h"
-
 #include <QAbstractListModel>
 #include <QDateTime>
 #include <QJsonArray>
@@ -19,6 +16,9 @@
 #include <QUrlQuery>
 
 #include <limits>
+
+#include "accountstate.h"
+#include "unifiedsearchresult.h"
 
 namespace OCC {
 
@@ -89,10 +89,15 @@ public:
 
     /** @brief Identifies how a result-model row is rendered in QML. */
     enum class ResultType {
+        /** @brief A regular result that opens its resource. */
         Default = static_cast<int>(UnifiedSearchResult::Type::Default),
+        /** @brief A provider heading that can open detail view. */
         ProviderHeader = static_cast<int>(UnifiedSearchResult::Type::ProviderHeader),
+        /** @brief Separates results from providers that could not apply every filter. */
         PartialMatchesHeader = static_cast<int>(UnifiedSearchResult::Type::PartialMatchesHeader),
+        /** @brief Loads the next page for a provider. */
         FetchMoreTrigger = static_cast<int>(UnifiedSearchResult::Type::FetchMoreTrigger),
+        /** @brief Retries a failed provider page request. */
         RetryFetchMoreTrigger = static_cast<int>(UnifiedSearchResult::Type::RetryFetchMoreTrigger),
     };
     Q_ENUM(ResultType)
@@ -157,25 +162,28 @@ public:
     [[nodiscard]] QString accessibilityStatus() const;
     [[nodiscard]] AccountState *accountState() const;
 
-    Q_INVOKABLE void resultClicked(const QString &providerId, const QUrl &resourceUrl) const;
-    Q_INVOKABLE void fetchMoreTriggerClicked(const QString &providerId);
-    Q_INVOKABLE void toggleProviderFilter(const QString &providerId);
-    Q_INVOKABLE void clearTypeFilters();
-    Q_INVOKABLE void setDatePreset(const QString &preset);
     Q_INVOKABLE bool setCustomDateRange(const QString &sinceDate, const QString &untilDate);
-    Q_INVOKABLE void clearDateFilter();
-    Q_INVOKABLE void setPersonFilter(const QString &userId, const QString &displayName, const QString &avatarUrl = {});
-    Q_INVOKABLE void clearPersonFilter();
-    Q_INVOKABLE void removeFilter(const QString &type, const QString &id = {});
-    Q_INVOKABLE void setExternalProvidersEnabled(bool enabled);
-    Q_INVOKABLE void openProviderDetail(const QString &providerId);
-    Q_INVOKABLE void closeProviderDetail();
-    Q_INVOKABLE void loadMore(const QString &providerId);
-    Q_INVOKABLE void retryLoadMore(const QString &providerId);
-    Q_INVOKABLE void retryFailedProviders();
-    Q_INVOKABLE void retry();
-    Q_INVOKABLE void moveSelection(SelectionDirection direction);
-    Q_INVOKABLE void activateSelected() const;
+
+public Q_SLOTS:
+    void setSearchTerm(const QString &term);
+    void resultClicked(const QString &providerId, const QUrl &resourceUrl) const;
+    void fetchMoreTriggerClicked(const QString &providerId);
+    void toggleProviderFilter(const QString &providerId);
+    void clearTypeFilters();
+    void setDatePreset(const QString &preset);
+    void clearDateFilter();
+    void setPersonFilter(const QString &userId, const QString &displayName, const QString &avatarUrl = {});
+    void clearPersonFilter();
+    void removeFilter(const QString &type, const QString &id = {});
+    void setExternalProvidersEnabled(bool enabled);
+    void openProviderDetail(const QString &providerId);
+    void closeProviderDetail();
+    void loadMore(const QString &providerId);
+    void retryLoadMore(const QString &providerId);
+    void retryFailedProviders();
+    void retry();
+    void moveSelection(SelectionDirection direction);
+    void activateSelected() const;
 
 Q_SIGNALS:
     void currentFetchMoreInProgressProviderIdChanged();
@@ -194,9 +202,6 @@ Q_SIGNALS:
     void viewModeChanged();
     void selectedRowChanged();
     void accessibilityStatusChanged();
-
-public Q_SLOTS:
-    void setSearchTerm(const QString &term);
 
 private:
     enum class ProviderStatus {
@@ -269,9 +274,7 @@ private:
     [[nodiscard]] bool providerSupportsAllContentFilters(const UnifiedSearchProvider &provider) const;
     [[nodiscard]] QString providerIcon(const UnifiedSearchProvider &provider, bool darkMode) const;
     [[nodiscard]] QUrlQuery queryForProvider(const UnifiedSearchProvider &provider, bool pagination) const;
-    [[nodiscard]] static QString stableKeyForResult(const QString &providerId,
-                                                    const UnifiedSearchResult &result,
-                                                    int entryIndex);
+    [[nodiscard]] static QString stableKeyForResult(const QString &providerId, const QUrl &resourceUrl, int entryIndex);
     [[nodiscard]] static QUrl openableResourceUrl(const QUrl &resourceUrl, const QUrl &accountUrl);
 
     QHash<QString, UnifiedSearchProvider> _providers;

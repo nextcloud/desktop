@@ -7,6 +7,7 @@
 
 #include "account.h"
 #include "accountstate.h"
+#include "common/utility.h"
 #include "networkjobs.h"
 
 #include <QJsonArray>
@@ -23,7 +24,7 @@ QString avatarUrl(const OCC::AccountPtr &account, const QString &userId)
 {
     const auto encodedUserId = QString::fromUtf8(QUrl::toPercentEncoding(userId));
     const auto avatarPath = QStringLiteral("index.php/avatar/%1/64").arg(encodedUserId);
-    return account->url().resolved(QUrl(avatarPath)).toString();
+    return OCC::Utility::concatUrlPath(account->url(), avatarPath).toString();
 }
 }
 
