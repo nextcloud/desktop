@@ -21,7 +21,9 @@ Control {
 
     signal clicked()
 
-    implicitHeight: descriptionLabel.text === "" ? 42 : 56
+    implicitHeight: descriptionLabel.text === ""
+        ? 42
+        : Math.max(56, 2 * root.padding + titleLabel.implicitHeight + descriptionLabel.implicitHeight)
     padding: 10
 
     background: Rectangle {
@@ -76,7 +78,7 @@ Control {
                 color: root.hintTextColor
                 font.pixelSize: Style.pixelSize
                 wrapMode: Text.WordWrap
-                maximumLineCount: 2
+                maximumLineCount: 4
             }
         }
     }
