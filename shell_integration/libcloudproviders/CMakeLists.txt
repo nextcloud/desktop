@@ -28,7 +28,7 @@ endmacro()
 
 
 if (Qt6_FOUND)
-    find_package(Qt6 COMPONENTS COMPONENTS DBus)
+    find_package(Qt6 COMPONENTS DBus)
 else()
     set(REQUIRED_QT_VERSION "5.15.0")
     find_package(Qt5 ${REQUIRED_QT_VERSION} COMPONENTS DBus)
