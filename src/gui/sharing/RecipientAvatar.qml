@@ -17,18 +17,21 @@ Item {
 
         anchors.fill: parent
         radius: width / 2
-        color: "black"
+        color: "white"
         visible: false
+        layer.enabled: true
     }
 
     Image {
         id: avatarImage
+        objectName: "recipientAvatarImage"
 
         anchors.fill: parent
         source: root.source
         sourceSize: Qt.size(width, height)
         fillMode: Image.PreserveAspectFit
         visible: false
+        layer.enabled: true
     }
 
     MultiEffect {
