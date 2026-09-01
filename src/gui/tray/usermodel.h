@@ -28,8 +28,6 @@
 #include <chrono>
 
 namespace OCC {
-class UnifiedSearchResultsListModel;
-
 
 class TrayFolderInfo
 {

@@ -11,7 +11,8 @@
 #include <QObject>
 #include <QPointer>
 
-namespace OCC {
+namespace OCC
+{
 
 class JsonApiJob;
 class OcsAssistantConnector;
@@ -41,7 +42,8 @@ public:
     /** @brief Creates a chat conversation. */
     virtual void createChatConversation(const QString &title, qint64 timestamp, quint64 requestGeneration);
     /** @brief Adds a message to a chat conversation. */
-    virtual void createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage, quint64 requestGeneration);
+    virtual void
+    createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage, quint64 requestGeneration);
     /** @brief Starts response generation for a chat conversation. */
     virtual void generateChatSession(qint64 conversationId, quint64 requestGeneration);
     /** @brief Checks a running chat response-generation task. */
@@ -51,7 +53,7 @@ public:
     /** @brief Cancels all active requests and suppresses their replies. */
     virtual void cancelRequests();
 
-signals:
+Q_SIGNALS:
     void taskTypesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void tasksFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void taskScheduled(quint64 requestGeneration, const QJsonDocument &json, int statusCode);

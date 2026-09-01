@@ -12,7 +12,8 @@
 #include <QString>
 #include <QStringList>
 
-namespace OCC {
+namespace OCC
+{
 
 class JsonApiJob;
 class AssistantApiJob;
@@ -25,10 +26,12 @@ public:
 
     void fetchTaskTypes(quint64 requestGeneration);
     void fetchTasks(const QString &taskType, quint64 requestGeneration);
-    void scheduleTask(const QString &input, const QString &taskType, const QStringList &history,
-        quint64 requestGeneration,
-        const QString &appId = QStringLiteral("assistant"),
-        const QString &customId = QString());
+    void scheduleTask(const QString &input,
+                      const QString &taskType,
+                      const QStringList &history,
+                      quint64 requestGeneration,
+                      const QString &appId = QStringLiteral("assistant"),
+                      const QString &customId = QString());
     void deleteTask(qint64 taskId, quint64 requestGeneration);
     void cancelRequests();
 

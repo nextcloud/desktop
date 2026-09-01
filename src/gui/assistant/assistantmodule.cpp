@@ -15,8 +15,6 @@
 #include <QQmlEngine>
 #include <QQuickWindow>
 #include <QVariantMap>
-#include <qqml.h>
-
 #include <memory>
 
 static void initializeAssistantResources()
@@ -24,11 +22,13 @@ static void initializeAssistantResources()
     Q_INIT_RESOURCE(assistant);
 }
 
-namespace OCC::AssistantModule {
+namespace OCC::Assistant
+{
 
-namespace {
+namespace
+{
 
-Q_LOGGING_CATEGORY(lcAssistantModule, "nextcloud.gui.assistant.module", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAssistantWindow, "nextcloud.gui.assistant.window", QtInfoMsg)
 
 QVariantMap accountHeaderProperties(const AccountPtr &account)
 {
@@ -57,12 +57,10 @@ QVariantMap accountHeaderProperties(const AccountPtr &account)
 
 }
 
-void registerQmlTypes()
+void initializeResources()
 {
     static const auto initialized = [] {
         initializeAssistantResources();
-        qmlRegisterUncreatableType<AssistantController>(
-            "com.nextcloud.desktopclient", 1, 0, "AssistantController", "Owned by the Assistant window");
         return true;
     }();
     Q_UNUSED(initialized)
@@ -71,15 +69,14 @@ void registerQmlTypes()
 QQuickWindow *createWindow(QQmlEngine *engine, const AccountStatePtr &accountState)
 {
     if (!engine || !accountState || !accountState->account()) {
-        qCWarning(lcAssistantModule) << "Cannot create an Assistant window without an engine and account.";
+        qCWarning(lcAssistantWindow) << "Cannot create an Assistant window without an engine and account.";
         return nullptr;
     }
 
-    registerQmlTypes();
     QQmlComponent component(engine, QStringLiteral("qrc:/qml/src/gui/assistant/qml/AssistantWindow.qml"));
     if (component.isError()) {
-        qCWarning(lcAssistantModule) << component.errorString();
-        qCWarning(lcAssistantModule) << component.errors();
+        qCWarning(lcAssistantWindow) << component.errorString();
+        qCWarning(lcAssistantWindow) << component.errors();
         return nullptr;
     }
 
@@ -95,7 +92,7 @@ QQuickWindow *createWindow(QQmlEngine *engine, const AccountStatePtr &accountSta
     const auto createdObject = component.createWithInitialProperties(initialProperties);
     const auto window = qobject_cast<QQuickWindow *>(createdObject);
     if (!window) {
-        qCWarning(lcAssistantModule) << "Assistant component did not create a window.";
+        qCWarning(lcAssistantWindow) << "Assistant component did not create a window.";
         if (createdObject) {
             controller.release()->setParent(createdObject);
             createdObject->deleteLater();

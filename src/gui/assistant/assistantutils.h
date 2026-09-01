@@ -8,7 +8,8 @@
 #include <QJsonValue>
 #include <QString>
 
-namespace OCC::AssistantUtils {
+namespace OCC::AssistantUtils
+{
 
 /** @brief Converts a JSON number or numeric string to an integer. */
 [[nodiscard]] qint64 jsonInteger(const QJsonValue &value, qint64 fallback = -1);
@@ -16,7 +17,7 @@ namespace OCC::AssistantUtils {
 [[nodiscard]] QString statusString(const QJsonValue &value);
 /** @brief Extracts text from supported nested task input or output shapes. */
 [[nodiscard]] QString textFromValue(const QJsonValue &value);
-/** @brief Formats a seconds or milliseconds Unix timestamp for display. */
+/** @brief Formats a Unix timestamp in seconds for display. */
 [[nodiscard]] QString dateText(qint64 timestamp);
 /** @brief Returns whether a task status is not terminal. */
 [[nodiscard]] bool taskStillRunning(const QJsonValue &status);

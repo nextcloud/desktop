@@ -152,6 +152,25 @@ QtObject {
     readonly property int userStatusWindowHeight: 700
     readonly property int userStatusWindowMinimumHeight: 560
 
+    // Assistant
+    readonly property int assistantWindowWidth: searchWindowWidth
+    readonly property int assistantWindowHeight: searchWindowHeight
+    readonly property color assistantSelectionGradientStart: "#40519a"
+    readonly property color assistantSelectionGradientEnd: "#a84fc4"
+    readonly property int assistantTaskTypeSelectorHeight: 42
+    readonly property int assistantConversationPickerLeftPadding: wizardSectionSpacing
+    readonly property int assistantConversationPickerRightPadding: standardPrimaryButtonHeight
+    readonly property int assistantControlFontPixelSize: pixelSize + 3
+    readonly property int assistantPopupPadding: 4
+    readonly property int assistantConversationMaximumVisibleItems: 6
+    readonly property int assistantExpandedIndicatorRotation: 180
+    readonly property real assistantDisabledOpacity: 0.45
+    readonly property real assistantMessageMaximumWidthRatio: 0.78
+    readonly property int assistantMessageMinimumWidth: 120
+    readonly property int assistantMessageTextWidthPadding: wizardWindowMargin
+    readonly property int assistantMessageHeightPadding: 26
+    readonly property int assistantEmptyStateMaximumWidth: 360
+
     property int minActivityHeight: variableSize(32)
 
     property int minimumScrollBarWidth: 12

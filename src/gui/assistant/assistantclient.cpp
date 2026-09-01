@@ -15,7 +15,8 @@
 
 using namespace Qt::StringLiterals;
 
-namespace OCC {
+namespace OCC
+{
 
 AssistantClient::AssistantClient(QObject *parent)
     : QObject(parent)
@@ -62,7 +63,7 @@ void AssistantClient::fetchChatConversations(quint64 requestGeneration)
     _chatConversationsJob = new JsonApiJob(_account, u"/ocs/v2.php/apps/assistant/chat/sessions"_s, this);
     connect(_chatConversationsJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _chatConversationsJob = nullptr;
-        emit chatConversationsFetched(requestGeneration, json, statusCode);
+        Q_EMIT chatConversationsFetched(requestGeneration, json, statusCode);
     });
     _chatConversationsJob->start();
 }
@@ -79,7 +80,7 @@ void AssistantClient::fetchChatMessages(qint64 conversationId, quint64 requestGe
     _chatMessagesJob->addQueryParams(params);
     connect(_chatMessagesJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _chatMessagesJob = nullptr;
-        emit chatMessagesFetched(requestGeneration, json, statusCode);
+        Q_EMIT chatMessagesFetched(requestGeneration, json, statusCode);
     });
     _chatMessagesJob->start();
 }
@@ -101,12 +102,17 @@ void AssistantClient::createChatConversation(const QString &title, qint64 timest
     _createChatConversationJob->setBody(QJsonDocument(body));
     connect(_createChatConversationJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _createChatConversationJob = nullptr;
-        emit chatConversationCreated(requestGeneration, json, statusCode);
+        Q_EMIT chatConversationCreated(requestGeneration, json, statusCode);
     });
     _createChatConversationJob->start();
 }
 
-void AssistantClient::createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage, quint64 requestGeneration)
+void AssistantClient::createChatMessage(qint64 sessionId,
+                                        const QString &role,
+                                        const QString &content,
+                                        qint64 timestamp,
+                                        bool firstHumanMessage,
+                                        quint64 requestGeneration)
 {
     if (_createChatMessageJob) {
         return;
@@ -124,7 +130,7 @@ void AssistantClient::createChatMessage(qint64 sessionId, const QString &role, c
     _createChatMessageJob->setBody(QJsonDocument(body));
     connect(_createChatMessageJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _createChatMessageJob = nullptr;
-        emit chatMessageCreated(requestGeneration, json, statusCode);
+        Q_EMIT chatMessageCreated(requestGeneration, json, statusCode);
     });
     _createChatMessageJob->start();
 }
@@ -141,7 +147,7 @@ void AssistantClient::generateChatSession(qint64 conversationId, quint64 request
     _generateChatSessionJob->addQueryParams(params);
     connect(_generateChatSessionJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _generateChatSessionJob = nullptr;
-        emit chatSessionGenerationStarted(requestGeneration, json, statusCode);
+        Q_EMIT chatSessionGenerationStarted(requestGeneration, json, statusCode);
     });
     _generateChatSessionJob->start();
 }
@@ -159,7 +165,7 @@ void AssistantClient::checkChatGeneration(qint64 taskId, qint64 sessionId, quint
     _checkChatGenerationJob->addQueryParams(params);
     connect(_checkChatGenerationJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _checkChatGenerationJob = nullptr;
-        emit chatGenerationChecked(requestGeneration, json, statusCode);
+        Q_EMIT chatGenerationChecked(requestGeneration, json, statusCode);
     });
     _checkChatGenerationJob->start();
 }
@@ -176,7 +182,7 @@ void AssistantClient::checkChatSession(qint64 sessionId, quint64 requestGenerati
     _checkChatSessionJob->addQueryParams(params);
     connect(_checkChatSessionJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _checkChatSessionJob = nullptr;
-        emit chatSessionChecked(requestGeneration, json, statusCode);
+        Q_EMIT chatSessionChecked(requestGeneration, json, statusCode);
     });
     _checkChatSessionJob->start();
 }

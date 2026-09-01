@@ -14,7 +14,8 @@
 
 using namespace Qt::StringLiterals;
 
-namespace OCC {
+namespace OCC
+{
 
 AssistantConversationModel::AssistantConversationModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -87,7 +88,7 @@ void AssistantConversationModel::select(qint64 conversationId)
         }
         item.selected = selected;
         const auto changedIndex = index(row, 0);
-        emit dataChanged(changedIndex, changedIndex, {SelectedRole});
+        Q_EMIT dataChanged(changedIndex, changedIndex, {SelectedRole});
     }
 }
 

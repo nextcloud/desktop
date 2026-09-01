@@ -19,13 +19,15 @@ public:
     void fetchChatConversations(quint64 requestGeneration) override;
     void fetchChatMessages(qint64 conversationId, quint64 requestGeneration) override;
     void createChatConversation(const QString &title, qint64 timestamp, quint64 requestGeneration) override;
-    void createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage, quint64 requestGeneration) override;
+    void createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage, quint64 requestGeneration)
+        override;
     void generateChatSession(qint64 conversationId, quint64 requestGeneration) override;
     void checkChatGeneration(qint64 taskId, qint64 sessionId, quint64 requestGeneration) override;
     void checkChatSession(qint64 sessionId, quint64 requestGeneration) override;
     void cancelRequests() override;
 
     void deliverChatMessages(quint64 requestGeneration, const QJsonDocument &json, int statusCode = 200);
+    void deliverChatGenerationCheck(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void deliverChatSessionCheck(quint64 requestGeneration, const QJsonDocument &json, int statusCode = 200);
 
     quint64 lastChatMessagesGeneration = 0;

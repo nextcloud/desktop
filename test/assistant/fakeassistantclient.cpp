@@ -52,7 +52,12 @@ void FakeAssistantClient::createChatConversation(const QString &title, qint64 ti
     Q_UNUSED(requestGeneration)
 }
 
-void FakeAssistantClient::createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage, quint64 requestGeneration)
+void FakeAssistantClient::createChatMessage(qint64 sessionId,
+                                            const QString &role,
+                                            const QString &content,
+                                            qint64 timestamp,
+                                            bool firstHumanMessage,
+                                            quint64 requestGeneration)
 {
     Q_UNUSED(sessionId)
     Q_UNUSED(role)
@@ -74,7 +79,7 @@ void FakeAssistantClient::checkChatGeneration(qint64 taskId, qint64 sessionId, q
     Q_UNUSED(sessionId)
     ++chatGenerationCheckCount;
     if (replyToGenerationChecksAsPending) {
-        emit chatGenerationChecked(requestGeneration, {}, 417);
+        Q_EMIT chatGenerationChecked(requestGeneration, {}, 417);
     }
 }
 
@@ -92,10 +97,15 @@ void FakeAssistantClient::cancelRequests()
 
 void FakeAssistantClient::deliverChatMessages(quint64 requestGeneration, const QJsonDocument &json, int statusCode)
 {
-    emit chatMessagesFetched(requestGeneration, json, statusCode);
+    Q_EMIT chatMessagesFetched(requestGeneration, json, statusCode);
+}
+
+void FakeAssistantClient::deliverChatGenerationCheck(quint64 requestGeneration, const QJsonDocument &json, int statusCode)
+{
+    Q_EMIT chatGenerationChecked(requestGeneration, json, statusCode);
 }
 
 void FakeAssistantClient::deliverChatSessionCheck(quint64 requestGeneration, const QJsonDocument &json, int statusCode)
 {
-    emit chatSessionChecked(requestGeneration, json, statusCode);
+    Q_EMIT chatSessionChecked(requestGeneration, json, statusCode);
 }

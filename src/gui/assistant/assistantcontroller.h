@@ -16,7 +16,8 @@
 #include <QObject>
 #include <QTimer>
 
-namespace OCC {
+namespace OCC
+{
 
 class AssistantClient;
 
@@ -45,9 +46,9 @@ class AssistantController final : public QObject
 
 public:
     /** @brief Creates a controller for the given account. */
-    explicit AssistantController(AccountStatePtr accountState, QObject *parent = nullptr);
+    explicit AssistantController(const AccountStatePtr &accountState, QObject *parent = nullptr);
     /** @brief Creates a controller and takes ownership of an injected client. */
-    AssistantController(AccountStatePtr accountState, AssistantClient *client, QObject *parent);
+    AssistantController(const AccountStatePtr &accountState, AssistantClient *client, QObject *parent);
 
     /** @brief Returns the available task-type model. */
     [[nodiscard]] QAbstractItemModel *taskTypes();
@@ -86,28 +87,29 @@ public:
     /** @brief Returns whether retrying chat response generation is available. */
     [[nodiscard]] bool showRetryResponseGeneration() const;
 
+public Q_SLOTS:
     /** @brief Loads task types and data for the selected type. */
-    Q_INVOKABLE void loadData();
+    void loadData();
     /** @brief Selects a task type and loads its data. */
-    Q_INVOKABLE void selectTaskType(const QString &taskTypeId);
+    void selectTaskType(const QString &taskTypeId);
     /** @brief Reloads tasks for the selected non-chat type. */
-    Q_INVOKABLE void refreshTasks();
+    void refreshTasks();
     /** @brief Deletes a task and reloads the task list. */
-    Q_INVOKABLE void deleteTask(qint64 taskId);
+    void deleteTask(qint64 taskId);
     /** @brief Schedules a new task using an existing task's input. */
-    Q_INVOKABLE void retryTask(qint64 taskId);
+    void retryTask(qint64 taskId);
     /** @brief Selects a chat conversation and loads its messages. */
-    Q_INVOKABLE void selectChatConversation(qint64 conversationId);
+    void selectChatConversation(qint64 conversationId);
     /** @brief Clears the selected conversation for a new chat. */
-    Q_INVOKABLE void startNewChat();
+    void startNewChat();
     /** @brief Restarts response generation for the selected conversation. */
-    Q_INVOKABLE void retryResponseGeneration();
+    void retryResponseGeneration();
     /** @brief Submits text to the selected task or chat workflow. */
-    Q_INVOKABLE void submitQuestion(const QString &question);
+    void submitQuestion(const QString &question);
     /** @brief Clears transient Assistant and conversation state. */
-    Q_INVOKABLE void clear();
+    void clear();
 
-signals:
+Q_SIGNALS:
     void questionChanged();
     void responseChanged();
     void errorChanged();
@@ -119,7 +121,7 @@ signals:
     void thinkingChanged();
     void showRetryResponseGenerationChanged();
 
-private slots:
+private Q_SLOTS:
     void pollTasks();
     void pollChatGeneration();
     void slotTaskTypesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);

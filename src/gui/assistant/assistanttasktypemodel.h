@@ -8,7 +8,8 @@
 #include <QAbstractListModel>
 #include <QJsonDocument>
 
-namespace OCC {
+namespace OCC
+{
 
 /** @brief Exposes supported Assistant task-processing types as typed QML roles. */
 class AssistantTaskTypeModel final : public QAbstractListModel

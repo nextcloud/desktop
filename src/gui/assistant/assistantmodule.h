@@ -10,10 +10,11 @@
 class QQmlEngine;
 class QQuickWindow;
 
-namespace OCC::AssistantModule {
+namespace OCC::Assistant
+{
 
-/** @brief Registers the QML types owned by the Assistant module. */
-void registerQmlTypes();
+/** @brief Makes the Assistant QML resources available to the application. */
+void initializeResources();
 
 /**
  * @brief Creates an Assistant window for an account.

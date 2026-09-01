@@ -7,7 +7,8 @@
 
 #include "networkjobs.h"
 
-namespace OCC {
+namespace OCC
+{
 
 /** @brief Sends form-encoded Assistant requests and parses their JSON response. */
 class AssistantApiJob final : public SimpleApiJob
@@ -20,7 +21,7 @@ public:
     /** @brief Sets an URL-encoded request body. */
     void setFormBody(const QUrlQuery &query);
 
-signals:
+Q_SIGNALS:
     /** @brief Reports the parsed response and its OCS or HTTP status code. */
     void jsonReceived(const QJsonDocument &json, int statusCode);
 

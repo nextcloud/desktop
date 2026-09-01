@@ -7,5 +7,12 @@
         <file alias="src/gui/assistant/qml/AssistantWindow.qml">qml/AssistantWindow.qml</file>
         <file alias="src/gui/assistant/qml/AssistantTaskView.qml">qml/AssistantTaskView.qml</file>
         <file alias="src/gui/assistant/qml/AssistantChatView.qml">qml/AssistantChatView.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantConversationDelegate.qml">qml/AssistantConversationDelegate.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantConversationPicker.qml">qml/AssistantConversationPicker.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantDeleteTaskDialog.qml">qml/AssistantDeleteTaskDialog.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantMessageDelegate.qml">qml/AssistantMessageDelegate.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantTaskDelegate.qml">qml/AssistantTaskDelegate.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantTaskList.qml">qml/AssistantTaskList.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantTaskTypeSelector.qml">qml/AssistantTaskTypeSelector.qml</file>
     </qresource>
 </RCC>

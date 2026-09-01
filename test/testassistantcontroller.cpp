@@ -6,17 +6,21 @@
 #include "account.h"
 #include "assistant/assistantcontroller.h"
 #include "assistant/assistantmodule.h"
+#include "assistant/assistantutils.h"
 #include "assistant/fakeassistantclient.h"
 #include "testhelper.h"
 
+#include <QDateTime>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QLocale>
 #include <QtTest>
 
 using namespace OCC;
 
-namespace {
+namespace
+{
 
 QJsonDocument humanMessageResponse(qint64 conversationId)
 {
@@ -31,8 +35,7 @@ QJsonDocument humanMessageResponse(qint64 conversationId)
     }};
 }
 
-struct ControllerFixture
-{
+struct ControllerFixture {
     ControllerFixture()
         : account(Account::create())
         , accountState(new FakeAccountState(account))
@@ -53,12 +56,27 @@ class TestAssistantController : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void assistantResourceIsRegistered()
     {
-        AssistantModule::registerQmlTypes();
+        Assistant::initializeResources();
 
         QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantWindow.qml")));
+        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantConversationPicker.qml")));
+        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantConversationDelegate.qml")));
+        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantMessageDelegate.qml")));
+        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantTaskList.qml")));
+        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantTaskDelegate.qml")));
+        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantDeleteTaskDialog.qml")));
+        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantTaskTypeSelector.qml")));
+    }
+
+    void dateTextDoesNotGuessTimestampUnit()
+    {
+        constexpr auto timestamp = 1000000000001LL;
+        const auto expected = QLocale::system().toString(QDateTime::fromSecsSinceEpoch(timestamp), QLocale::ShortFormat);
+
+        QCOMPARE(AssistantUtils::dateText(timestamp), expected);
     }
 
     void clearRejectsLateMessageReply()
@@ -100,8 +118,7 @@ private slots:
         fixture.controller.selectChatConversation(42);
         const auto requestGeneration = fixture.client->lastChatMessagesGeneration;
         fixture.client->deliverChatMessages(requestGeneration, humanMessageResponse(42));
-        fixture.client->deliverChatSessionCheck(requestGeneration,
-            QJsonDocument{QJsonObject{{QStringLiteral("messageTaskId"), 99}}});
+        fixture.client->deliverChatSessionCheck(requestGeneration, QJsonDocument{QJsonObject{{QStringLiteral("messageTaskId"), 99}}});
         fixture.client->replyToGenerationChecksAsPending = true;
 
         for (auto attempt = 0; attempt < 31; ++attempt) {
@@ -112,6 +129,36 @@ private slots:
         QVERIFY(!fixture.controller.requestInProgress());
         QVERIFY(!fixture.controller.thinking());
         QVERIFY(fixture.controller.showRetryResponseGeneration());
+        QVERIFY(!fixture.controller.error().isEmpty());
+    }
+
+    void pendingChatGenerationKeepsRequestActive()
+    {
+        ControllerFixture fixture;
+        fixture.controller.selectChatConversation(42);
+        const auto requestGeneration = fixture.client->lastChatMessagesGeneration;
+        fixture.client->deliverChatMessages(requestGeneration, humanMessageResponse(42));
+        fixture.client->deliverChatSessionCheck(requestGeneration, QJsonDocument{QJsonObject{{QStringLiteral("messageTaskId"), 99}}});
+
+        fixture.client->deliverChatGenerationCheck(requestGeneration, {}, 417);
+
+        QVERIFY(fixture.controller.requestInProgress());
+        QVERIFY(fixture.controller.thinking());
+        QVERIFY(fixture.controller.error().isEmpty());
+    }
+
+    void unexpectedChatGenerationStatusFailsRequest()
+    {
+        ControllerFixture fixture;
+        fixture.controller.selectChatConversation(42);
+        const auto requestGeneration = fixture.client->lastChatMessagesGeneration;
+        fixture.client->deliverChatMessages(requestGeneration, humanMessageResponse(42));
+        fixture.client->deliverChatSessionCheck(requestGeneration, QJsonDocument{QJsonObject{{QStringLiteral("messageTaskId"), 99}}});
+
+        fixture.client->deliverChatGenerationCheck(requestGeneration, {}, 418);
+
+        QVERIFY(!fixture.controller.requestInProgress());
+        QVERIFY(!fixture.controller.thinking());
         QVERIFY(!fixture.controller.error().isEmpty());
     }
 };

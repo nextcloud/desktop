@@ -6,17 +6,22 @@
 #include "assistanttasktypemodel.h"
 
 #include <QJsonObject>
+#include <QLoggingCategory>
 
 #include <algorithm>
 #include <utility>
 
 using namespace Qt::StringLiterals;
 
-namespace OCC {
+namespace OCC
+{
 
-namespace {
+namespace
+{
 
 constexpr auto chatTaskTypeId = "core:text2text:chat"_L1;
+
+Q_LOGGING_CATEGORY(lcAssistantTaskTypeModel, "nextcloud.gui.assistant.tasktypemodel", QtInfoMsg)
 
 bool isSingleTextTask(const QJsonObject &inputShape, const QJsonObject &outputShape)
 {
@@ -83,6 +88,7 @@ void AssistantTaskTypeModel::replaceFromResponse(const QJsonDocument &json)
         const auto isChat = typeId == chatTaskTypeId;
         const auto isTranslate = typeId.contains("translate"_L1, Qt::CaseInsensitive);
         if (!isChat && !isTranslate && !isSingleTextTask(inputShape, outputShape)) {
+            qCWarning(lcAssistantTaskTypeModel) << "Ignoring unsupported Assistant task type:" << typeId;
             continue;
         }
 

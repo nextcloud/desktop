@@ -13,9 +13,11 @@
 
 using namespace Qt::StringLiterals;
 
-namespace OCC {
+namespace OCC
+{
 
-namespace {
+namespace
+{
 
 Q_LOGGING_CATEGORY(lcAssistantApiJob, "nextcloud.gui.assistant.api", QtInfoMsg)
 
@@ -51,13 +53,12 @@ void AssistantApiJob::setFormBody(const QUrlQuery &query)
 
 bool AssistantApiJob::finished()
 {
-    qCInfo(lcAssistantApiJob) << "Assistant API request to" << reply()->request().url()
-                              << "finished with status" << replyStatusString();
+    qCInfo(lcAssistantApiJob) << "Assistant API request to" << reply()->request().url() << "finished with status" << replyStatusString();
 
     const auto httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcAssistantApiJob) << "Network error:" << path() << errorString() << httpStatusCode;
-        emit jsonReceived({}, httpStatusCode);
+        Q_EMIT jsonReceived({}, httpStatusCode);
         return true;
     }
 
@@ -70,7 +71,7 @@ bool AssistantApiJob::finished()
         qCWarning(lcAssistantApiJob) << "Invalid JSON response:" << error.errorString();
     }
 
-    emit jsonReceived(json, statusCode);
+    Q_EMIT jsonReceived(json, statusCode);
     return true;
 }
 

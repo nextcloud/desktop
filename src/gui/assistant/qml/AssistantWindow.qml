@@ -4,7 +4,6 @@
  */
 
 import QtQuick
-import QtQuick.Controls.Basic
 import QtQuick.Layouts
 
 import com.nextcloud.desktopclient as NC
@@ -22,8 +21,6 @@ WizardStyledWindow {
     required property NC.AssistantController assistantController
 
     readonly property string headline: qsTr("Nextcloud Assistant")
-    readonly property color selectionGradientStart: "#40519a"
-    readonly property color selectionGradientEnd: "#a84fc4"
     readonly property bool canUseAssistant: assistantController.assistantEnabled
         && assistantController.accountConnected
     readonly property bool canSend: canUseAssistant
@@ -31,8 +28,8 @@ WizardStyledWindow {
         && assistantQuestionInput.text.trim().length > 0
 
     title: ""
-    width: 640
-    height: 620
+    width: Style.assistantWindowWidth
+    height: Style.assistantWindowHeight
     minimumWidth: Style.wizardStandaloneWindowMinimumWidth
     minimumHeight: Style.wizardStandaloneWindowMinimumHeight
 
@@ -99,122 +96,11 @@ WizardStyledWindow {
                 Layout.fillWidth: true
             }
 
-            ScrollView {
-                id: taskTypeSelector
-
-                // Temporarily hidden while task selection is not exposed in this iteration.
-                // Keep this selector: it will be enabled and reused in a later iteration.
-                visible: false
-                clip: visible
+            AssistantTaskTypeSelector {
+                assistantController: root.assistantController
+                canUseAssistant: root.canUseAssistant
                 Layout.fillWidth: true
-                Layout.preferredHeight: 42
-
-                Row {
-                    spacing: 8
-
-                    Repeater {
-                        model: taskTypeSelector.visible
-                            ? root.assistantController.taskTypes
-                            : null
-
-                        delegate: Button {
-                            id: taskTypeButton
-
-                            required property string typeId
-                            required property string name
-                            required property bool isChat
-
-                            readonly property color idleBackgroundColor: {
-                                if (!enabled) {
-                                    return Style.wizardDisabledButtonBackground
-                                }
-                                if (down) {
-                                    return Style.wizardSecondaryButtonPressed
-                                }
-                                return hovered ? Style.wizardSecondaryButtonBackground : "transparent"
-                            }
-
-                            text: name
-                            checkable: true
-                            checked: root.assistantController
-                                && root.assistantController.selectedTaskTypeId === typeId
-                            enabled: root.canUseAssistant
-                                && !root.assistantController.requestInProgress
-                            implicitHeight: Style.wizardFooterButtonHeight
-                            leftPadding: 12
-                            rightPadding: 12
-                            font.pixelSize: Style.pixelSize + 2
-                            font.weight: checked ? Font.DemiBold : Font.Normal
-
-                            contentItem: Row {
-                                spacing: taskTypeButton.isChat ? 5 : 0
-
-                                Image {
-                                    visible: taskTypeButton.isChat
-                                    source: "image://svgimage-custom-color/comment.svg/"
-                                        + (taskTypeButton.checked ? Style.wizardSelectedText : taskTypeButton.palette.buttonText)
-                                    sourceSize.width: Style.smallIconSize
-                                    sourceSize.height: Style.smallIconSize
-                                    width: visible ? Style.smallIconSize : 0
-                                    height: Style.smallIconSize
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    fillMode: Image.PreserveAspectFit
-                                }
-
-                                Text {
-                                    text: taskTypeButton.text
-                                    color: taskTypeButton.checked
-                                        ? Style.wizardSelectedText
-                                        : taskTypeButton.enabled
-                                            ? taskTypeButton.palette.buttonText
-                                            : Style.wizardDisabledText
-                                    font: taskTypeButton.font
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    elide: Text.ElideRight
-                                }
-                            }
-
-                            background: Rectangle {
-                                radius: Style.mediumRoundedButtonRadius
-                                border.width: taskTypeButton.activeFocus ? 2 : 1
-                                border.color: taskTypeButton.checked || taskTypeButton.activeFocus
-                                    ? root.selectionGradientStart
-                                    : taskTypeButton.hovered
-                                        ? Style.wizardSecondaryButtonBorder
-                                        : "transparent"
-
-                                gradient: Gradient {
-                                    orientation: Gradient.Horizontal
-
-                                    GradientStop {
-                                        position: 0
-                                        color: taskTypeButton.checked
-                                            ? root.selectionGradientStart
-                                            : taskTypeButton.idleBackgroundColor
-                                    }
-
-                                    GradientStop {
-                                        position: 1
-                                        color: taskTypeButton.checked
-                                            ? root.selectionGradientEnd
-                                            : taskTypeButton.idleBackgroundColor
-                                    }
-                                }
-                            }
-
-                            Accessible.name: qsTr("Select assistant task type %1").arg(name)
-                            onClicked: root.assistantController.selectTaskType(typeId)
-
-                            MouseArea {
-                                anchors.fill: parent
-                                acceptedButtons: Qt.NoButton
-                                enabled: taskTypeButton.enabled
-                                hoverEnabled: enabled
-                                cursorShape: Qt.PointingHandCursor
-                            }
-                        }
-                    }
-                }
+                Layout.preferredHeight: Style.assistantTaskTypeSelectorHeight
             }
 
             Loader {

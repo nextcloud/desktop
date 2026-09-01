@@ -2,7 +2,6 @@
 # SPDX-FileCopyrightText: 2014 ownCloud GmbH
 # SPDX-License-Identifier: GPL-2.0-or-later
 project(gui)
-include(assistant/CMakeLists.txt)
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
 find_package(KF6Archive REQUIRED)
 find_package(KF6GuiAddons)
@@ -56,7 +55,7 @@ set(client_UI_SRCS
     vfsdownloaderrordialog.ui
 )
 
-qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc ${assistant_QRC})
+qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
 
 set(client_SRCS
     accountmanager.h
@@ -199,7 +198,6 @@ set(client_SRCS
     syncconflictsmodel.cpp
     fileactivitylistmodel.h
     fileactivitylistmodel.cpp
-    ${assistant_SRCS}
     filedetails/datefieldbackend.h
     filedetails/datefieldbackend.cpp
     filedetails/filedetails.h
@@ -289,6 +287,9 @@ IF(BUILD_UPDATER)
 endif()
 
 add_subdirectory(search)
+include(assistant/CMakeLists.txt)
+list(APPEND client_SRCS ${assistant_SRCS})
+qt_add_resources(client_UI_SRCS ${assistant_QRC})
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)

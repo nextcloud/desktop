@@ -38,8 +38,6 @@
 #include <QGuiApplication>
 #include <QMenu>
 
-#include <memory>
-
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
 #include <QDBusInterface>
@@ -375,7 +373,7 @@ void Systray::showAssistantWindow(int userIndex)
         return;
     }
 
-    const auto window = AssistantModule::createWindow(trayEngine(), user->accountState());
+    const auto window = Assistant::createWindow(trayEngine(), user->accountState());
     if (!window) {
         return;
     }

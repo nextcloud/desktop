@@ -18,20 +18,22 @@
 
 using namespace Qt::StringLiterals;
 
-namespace OCC {
+namespace OCC
+{
 
-namespace {
+namespace
+{
 
 Q_LOGGING_CATEGORY(lcOcsAssistantConnector, "nextcloud.gui.assistant.connector", QtInfoMsg)
 
-const auto basePath = u"/ocs/v2.php/taskprocessing"_s;
-const auto assistantChatTaskTypeId = u"core:text2text:chat"_s;
-const auto assistantSystemPrompt = QStringLiteral(
+constexpr auto basePath = "/ocs/v2.php/taskprocessing"_L1;
+constexpr auto assistantChatTaskTypeId = "core:text2text:chat"_L1;
+constexpr auto assistantSystemPrompt =
     "This is a conversation in a specific language between the user and you, Nextcloud Assistant. "
     "You are a kind, polite and helpful AI that helps the user to the best of its abilities. "
     "If you do not understand something, you will ask for clarification. Detect the language "
     "that the user is using. Make sure to use the same language in your response. Do not mention "
-    "the language explicitly.");
+    "the language explicitly."_L1;
 
 }
 
@@ -49,12 +51,12 @@ void OcsAssistantConnector::fetchTaskTypes(quint64 requestGeneration)
         return;
     }
 
-    _taskTypesJob = new JsonApiJob(_account, basePath + u"/tasktypes"_s, this);
+    _taskTypesJob = new JsonApiJob(_account, QString{basePath} + u"/tasktypes"_s, this);
     connect(_taskTypesJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _taskTypesJob = nullptr;
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
         logIfError(QStringLiteral("taskTypes"), statusCode);
-        emit taskTypesFetched(requestGeneration, json, statusCode);
+        Q_EMIT taskTypesFetched(requestGeneration, json, statusCode);
     });
     _taskTypesJob->start();
 }
@@ -66,7 +68,7 @@ void OcsAssistantConnector::fetchTasks(const QString &taskType, quint64 requestG
         return;
     }
 
-    _tasksJob = new JsonApiJob(_account, basePath + u"/tasks"_s, this);
+    _tasksJob = new JsonApiJob(_account, QString{basePath} + u"/tasks"_s, this);
     QUrlQuery params;
     params.addQueryItem(QStringLiteral("taskType"), taskType);
     _tasksJob->addQueryParams(params);
@@ -74,20 +76,24 @@ void OcsAssistantConnector::fetchTasks(const QString &taskType, quint64 requestG
         _tasksJob = nullptr;
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
         logIfError(QStringLiteral("tasks"), statusCode);
-        emit tasksFetched(requestGeneration, json, statusCode);
+        Q_EMIT tasksFetched(requestGeneration, json, statusCode);
     });
     _tasksJob->start();
 }
 
-void OcsAssistantConnector::scheduleTask(const QString &input, const QString &taskType, const QStringList &history,
-    quint64 requestGeneration, const QString &appId, const QString &customId)
+void OcsAssistantConnector::scheduleTask(const QString &input,
+                                         const QString &taskType,
+                                         const QStringList &history,
+                                         quint64 requestGeneration,
+                                         const QString &appId,
+                                         const QString &customId)
 {
     if (_scheduleJob) {
         qCDebug(lcOcsAssistantConnector) << "Schedule job already running.";
         return;
     }
 
-    _scheduleJob = new AssistantApiJob(_account, basePath + QStringLiteral("/schedule"), this);
+    _scheduleJob = new AssistantApiJob(_account, QString{basePath} + QStringLiteral("/schedule"), this);
     _scheduleJob->setVerb(SimpleApiJob::Verb::Post);
 
     QUrlQuery params;
@@ -97,7 +103,7 @@ void OcsAssistantConnector::scheduleTask(const QString &input, const QString &ta
     QUrlQuery body;
     body.addQueryItem(QStringLiteral("input[input]"), input);
     if (taskType == assistantChatTaskTypeId) {
-        body.addQueryItem(QStringLiteral("input[system_prompt]"), assistantSystemPrompt);
+        body.addQueryItem(QStringLiteral("input[system_prompt]"), QString{assistantSystemPrompt});
         if (history.isEmpty()) {
             const QJsonObject firstHistoryEntry = {
                 {QStringLiteral("role"), QStringLiteral("human")},
@@ -119,7 +125,7 @@ void OcsAssistantConnector::scheduleTask(const QString &input, const QString &ta
         _scheduleJob = nullptr;
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
         logIfError(QStringLiteral("schedule"), statusCode);
-        emit taskScheduled(requestGeneration, json, statusCode);
+        Q_EMIT taskScheduled(requestGeneration, json, statusCode);
     });
     _scheduleJob->start();
 }
@@ -131,14 +137,14 @@ void OcsAssistantConnector::deleteTask(qint64 taskId, quint64 requestGeneration)
         return;
     }
 
-    const auto path = QString{basePath + QStringLiteral("/task/") + QString::number(taskId)};
+    const auto path = QString{basePath}.append("/task/"_L1).append(QString::number(taskId));
     _deleteJob = new JsonApiJob(_account, path, this);
     _deleteJob->setVerb(SimpleApiJob::Verb::Delete);
     connect(_deleteJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _deleteJob = nullptr;
         qCInfo(lcOcsAssistantConnector).noquote() << statusCode << QString::fromUtf8(json.toJson(QJsonDocument::JsonFormat::Compact));
         logIfError(QStringLiteral("deleteTask"), statusCode);
-        emit taskDeleted(requestGeneration, statusCode);
+        Q_EMIT taskDeleted(requestGeneration, statusCode);
     });
     _deleteJob->start();
 }

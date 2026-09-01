@@ -11,7 +11,8 @@
 
 using namespace Qt::StringLiterals;
 
-namespace OCC::AssistantUtils {
+namespace OCC::AssistantUtils
+{
 
 qint64 jsonInteger(const QJsonValue &value, qint64 fallback)
 {
@@ -68,19 +69,14 @@ QString dateText(qint64 timestamp)
         return {};
     }
 
-    const auto dateTime = timestamp > 1000000000000LL
-        ? QDateTime::fromMSecsSinceEpoch(timestamp)
-        : QDateTime::fromSecsSinceEpoch(timestamp);
+    const auto dateTime = QDateTime::fromSecsSinceEpoch(timestamp);
     return QLocale::system().toString(dateTime, QLocale::ShortFormat);
 }
 
 bool taskStillRunning(const QJsonValue &statusValue)
 {
     const auto status = statusString(statusValue);
-    return status != "3"_L1
-        && status != "4"_L1
-        && status != "STATUS_FAILED"_L1
-        && status != "STATUS_SUCCESSFUL"_L1;
+    return status != "3"_L1 && status != "4"_L1 && status != "STATUS_FAILED"_L1 && status != "STATUS_SUCCESSFUL"_L1;
 }
 
 }

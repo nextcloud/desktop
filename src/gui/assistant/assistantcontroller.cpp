@@ -19,24 +19,39 @@
 using namespace Qt::StringLiterals;
 using namespace std::chrono_literals;
 
-namespace OCC {
+namespace OCC
+{
 
-namespace {
+namespace
+{
 
 Q_LOGGING_CATEGORY(lcAssistantController, "nextcloud.gui.assistant", QtInfoMsg)
 
 constexpr auto chatTaskTypeId = "core:text2text:chat"_L1;
 constexpr auto successMinStatusCode = 200;
 constexpr auto successMaxStatusCode = 300;
+constexpr auto chatGenerationPendingStatusCode = 417;
+
+enum class ChatReplyStatus {
+    Success,
+    Pending,
+    Failure,
+};
 
 bool statusSuccess(int statusCode)
 {
     return statusCode == 100 || (statusCode >= successMinStatusCode && statusCode < successMaxStatusCode);
 }
 
-bool chatStatusSuccess(const QJsonDocument &json, int statusCode)
+ChatReplyStatus chatReplyStatus(const QJsonDocument &json, int statusCode)
 {
-    return statusSuccess(statusCode) || (statusCode == 0 && !json.isNull());
+    if (statusCode == chatGenerationPendingStatusCode) {
+        return ChatReplyStatus::Pending;
+    }
+    if (statusSuccess(statusCode) || (statusCode == 0 && !json.isNull())) {
+        return ChatReplyStatus::Success;
+    }
+    return ChatReplyStatus::Failure;
 }
 
 qint64 taskIdFromSchedule(const QJsonDocument &json)
@@ -47,14 +62,14 @@ qint64 taskIdFromSchedule(const QJsonDocument &json)
 
 }
 
-AssistantController::AssistantController(AccountStatePtr accountState, QObject *parent)
-    : AssistantController(std::move(accountState), nullptr, parent)
+AssistantController::AssistantController(const AccountStatePtr &accountState, QObject *parent)
+    : AssistantController(accountState, nullptr, parent)
 {
 }
 
-AssistantController::AssistantController(AccountStatePtr accountState, AssistantClient *client, QObject *parent)
+AssistantController::AssistantController(const AccountStatePtr &accountState, AssistantClient *client, QObject *parent)
     : QObject(parent)
-    , _accountState(std::move(accountState))
+    , _accountState(accountState)
     , _account(_accountState ? _accountState->account() : AccountPtr{})
     , _client(client)
 {
@@ -186,12 +201,12 @@ void AssistantController::loadData()
 {
     if (!_account->capabilities().ncAssistantEnabled()) {
         _error = tr("Assistant is not available for this account.");
-        emit errorChanged();
+        Q_EMIT errorChanged();
         return;
     }
 
     _error.clear();
-    emit errorChanged();
+    Q_EMIT errorChanged();
     setRequestInProgress(true);
     _client->fetchTaskTypes(beginRequest());
 }
@@ -212,8 +227,8 @@ void AssistantController::selectTaskType(const QString &taskTypeId)
     updateSelectedTypeMetadata();
     _response.clear();
     _error.clear();
-    emit responseChanged();
-    emit errorChanged();
+    Q_EMIT responseChanged();
+    Q_EMIT errorChanged();
 
     if (selectedTaskTypeIsChat()) {
         _tasks.clear();
@@ -253,7 +268,7 @@ void AssistantController::selectChatConversation(qint64 conversationId)
     _selectedChatConversationId = conversationId;
     _chatConversations.select(conversationId);
     _selectedChatConversationTitle = _chatConversations.titleForConversation(conversationId);
-    emit selectedChatConversationChanged();
+    Q_EMIT selectedChatConversationChanged();
 
     _messages.clear();
     setShowRetryResponseGeneration(false);
@@ -282,9 +297,9 @@ void AssistantController::startNewChat()
     setRequestInProgress(false);
     setThinking(false);
     setShowRetryResponseGeneration(false);
-    emit selectedChatConversationChanged();
-    emit responseChanged();
-    emit errorChanged();
+    Q_EMIT selectedChatConversationChanged();
+    Q_EMIT responseChanged();
+    Q_EMIT errorChanged();
 }
 
 void AssistantController::retryResponseGeneration()
@@ -302,21 +317,21 @@ void AssistantController::submitQuestion(const QString &question)
     }
     if (!_account->capabilities().ncAssistantEnabled()) {
         _error = tr("Assistant is not available for this account.");
-        emit errorChanged();
+        Q_EMIT errorChanged();
         return;
     }
     if (_requestInProgress) {
         _error = tr("Assistant is already processing a request.");
-        emit errorChanged();
+        Q_EMIT errorChanged();
         return;
     }
 
     _question = trimmedQuestion;
     _error.clear();
     _response.clear();
-    emit questionChanged();
-    emit errorChanged();
-    emit responseChanged();
+    Q_EMIT questionChanged();
+    Q_EMIT errorChanged();
+    Q_EMIT responseChanged();
 
     const auto requestGeneration = beginRequest();
     if (_taskType.isEmpty()) {
@@ -352,10 +367,10 @@ void AssistantController::clear()
     setRequestInProgress(false);
     setThinking(false);
     setShowRetryResponseGeneration(false);
-    emit questionChanged();
-    emit responseChanged();
-    emit errorChanged();
-    emit selectedChatConversationChanged();
+    Q_EMIT questionChanged();
+    Q_EMIT responseChanged();
+    Q_EMIT errorChanged();
+    Q_EMIT selectedChatConversationChanged();
 }
 
 quint64 AssistantController::beginRequest()
@@ -396,7 +411,7 @@ void AssistantController::pollTasks()
         setRequestInProgress(false);
         if (_response.isEmpty()) {
             _response = tr("No response yet. Please try again later.");
-            emit responseChanged();
+            Q_EMIT responseChanged();
         }
         return;
     }
@@ -416,7 +431,7 @@ void AssistantController::pollChatGeneration()
         setRequestInProgress(false);
         setShowRetryResponseGeneration(_messages.lastMessageIsHuman());
         _error = tr("No response yet. Please try again later.");
-        emit errorChanged();
+        Q_EMIT errorChanged();
         return;
     }
 
@@ -437,7 +452,7 @@ void AssistantController::slotTaskTypesFetched(quint64 requestGeneration, const 
     _taskTypes.replaceFromResponse(json);
     if (_taskTypes.rowCount() == 0) {
         _error = tr("No supported assistant task types were returned.");
-        emit errorChanged();
+        Q_EMIT errorChanged();
         setRequestInProgress(false);
         return;
     }
@@ -494,7 +509,7 @@ void AssistantController::slotTasksFetched(quint64 requestGeneration, const QJso
 
     _taskPollTimer.stop();
     _response.clear();
-    emit responseChanged();
+    Q_EMIT responseChanged();
     setRequestInProgress(false);
 }
 
@@ -514,7 +529,7 @@ void AssistantController::slotTaskScheduled(quint64 requestGeneration, const QJs
         return;
     }
     _response = tr("Assistant task scheduled.");
-    emit responseChanged();
+    Q_EMIT responseChanged();
     _taskPollAttempts = 0;
     _client->fetchTasks(_taskType, requestGeneration);
 }
@@ -536,7 +551,7 @@ void AssistantController::slotChatConversationsFetched(quint64 requestGeneration
     if (requestGeneration != _requestGeneration) {
         return;
     }
-    if (!chatStatusSuccess(json, statusCode)) {
+    if (chatReplyStatus(json, statusCode) != ChatReplyStatus::Success) {
         requestFailed(QStringLiteral("chatConversations"), statusCode);
         return;
     }
@@ -549,7 +564,7 @@ void AssistantController::slotChatMessagesFetched(quint64 requestGeneration, con
     if (requestGeneration != _requestGeneration) {
         return;
     }
-    if (!chatStatusSuccess(json, statusCode)) {
+    if (chatReplyStatus(json, statusCode) != ChatReplyStatus::Success) {
         requestFailed(QStringLiteral("chatMessages"), statusCode);
         return;
     }
@@ -566,7 +581,7 @@ void AssistantController::slotChatConversationCreated(quint64 requestGeneration,
     if (requestGeneration != _requestGeneration) {
         return;
     }
-    if (!chatStatusSuccess(json, statusCode)) {
+    if (chatReplyStatus(json, statusCode) != ChatReplyStatus::Success) {
         requestFailed(QStringLiteral("createChatConversation"), statusCode);
         return;
     }
@@ -581,7 +596,7 @@ void AssistantController::slotChatConversationCreated(quint64 requestGeneration,
     _selectedChatConversationId = conversationId;
     _chatConversations.prepend(conversationObject, conversationId);
     _selectedChatConversationTitle = _chatConversations.titleForConversation(conversationId);
-    emit selectedChatConversationChanged();
+    Q_EMIT selectedChatConversationChanged();
 
     const auto pendingMessage = std::exchange(_pendingChatMessage, {});
     if (!pendingMessage.isEmpty()) {
@@ -596,7 +611,7 @@ void AssistantController::slotChatMessageCreated(quint64 requestGeneration, cons
     if (requestGeneration != _requestGeneration) {
         return;
     }
-    if (!chatStatusSuccess(json, statusCode)) {
+    if (chatReplyStatus(json, statusCode) != ChatReplyStatus::Success) {
         requestFailed(QStringLiteral("createChatMessage"), statusCode);
         return;
     }
@@ -609,7 +624,7 @@ void AssistantController::slotChatSessionGenerationStarted(quint64 requestGenera
     if (requestGeneration != _requestGeneration) {
         return;
     }
-    if (!chatStatusSuccess(json, statusCode)) {
+    if (chatReplyStatus(json, statusCode) != ChatReplyStatus::Success) {
         requestFailed(QStringLiteral("generateChatSession"), statusCode);
         return;
     }
@@ -632,11 +647,12 @@ void AssistantController::slotChatGenerationChecked(quint64 requestGeneration, c
     if (requestGeneration != _requestGeneration) {
         return;
     }
-    if (statusCode == 417) {
+    const auto replyStatus = chatReplyStatus(json, statusCode);
+    if (replyStatus == ChatReplyStatus::Failure) {
+        requestFailed(QStringLiteral("checkChatGeneration"), statusCode);
         return;
     }
-    if (!chatStatusSuccess(json, statusCode)) {
-        requestFailed(QStringLiteral("checkChatGeneration"), statusCode);
+    if (replyStatus == ChatReplyStatus::Pending) {
         return;
     }
 
@@ -654,7 +670,7 @@ void AssistantController::slotChatSessionChecked(quint64 requestGeneration, cons
     if (requestGeneration != _requestGeneration) {
         return;
     }
-    if (!chatStatusSuccess(json, statusCode)) {
+    if (chatReplyStatus(json, statusCode) != ChatReplyStatus::Success) {
         requestFailed(QStringLiteral("checkChatSession"), statusCode);
         return;
     }
@@ -663,11 +679,10 @@ void AssistantController::slotChatSessionChecked(quint64 requestGeneration, cons
     const auto sessionTitle = session.value("sessionTitle"_L1).toString();
     if (!sessionTitle.isEmpty() && _selectedChatConversationTitle != sessionTitle) {
         _selectedChatConversationTitle = sessionTitle;
-        emit selectedChatConversationChanged();
+        Q_EMIT selectedChatConversationChanged();
     }
 
-    _chatMessageTaskId = AssistantUtils::jsonInteger(session.value("messageTaskId"_L1),
-        AssistantUtils::jsonInteger(session.value("taskId"_L1)));
+    _chatMessageTaskId = AssistantUtils::jsonInteger(session.value("messageTaskId"_L1), AssistantUtils::jsonInteger(session.value("taskId"_L1)));
     if (_chatMessageTaskId > 0) {
         setThinking(true);
         setRequestInProgress(true);
@@ -692,11 +707,11 @@ void AssistantController::submitChatMessage(const QString &message, quint64 requ
         return;
     }
     _client->createChatMessage(_selectedChatConversationId,
-        QStringLiteral("human"),
-        message,
-        QDateTime::currentSecsSinceEpoch(),
-        _messages.rowCount() == 0,
-        requestGeneration);
+                               QStringLiteral("human"),
+                               message,
+                               QDateTime::currentSecsSinceEpoch(),
+                               _messages.rowCount() == 0,
+                               requestGeneration);
 }
 
 void AssistantController::scheduleSelectedTask(const QString &input, quint64 requestGeneration)
@@ -709,9 +724,9 @@ void AssistantController::scheduleSelectedTask(const QString &input, quint64 req
     _question = trimmedInput;
     _response = tr("Scheduling assistant task…");
     _error.clear();
-    emit questionChanged();
-    emit responseChanged();
-    emit errorChanged();
+    Q_EMIT questionChanged();
+    Q_EMIT responseChanged();
+    Q_EMIT errorChanged();
     setRequestInProgress(true);
     _client->scheduleTask(trimmedInput, _taskType, requestGeneration);
 }
@@ -722,7 +737,7 @@ void AssistantController::setRequestInProgress(bool inProgress)
         return;
     }
     _requestInProgress = inProgress;
-    emit requestInProgressChanged();
+    Q_EMIT requestInProgressChanged();
 }
 
 void AssistantController::setThinking(bool thinking)
@@ -731,7 +746,7 @@ void AssistantController::setThinking(bool thinking)
         return;
     }
     _thinking = thinking;
-    emit thinkingChanged();
+    Q_EMIT thinkingChanged();
 }
 
 void AssistantController::setShowRetryResponseGeneration(bool show)
@@ -740,14 +755,14 @@ void AssistantController::setShowRetryResponseGeneration(bool show)
         return;
     }
     _showRetryResponseGeneration = show;
-    emit showRetryResponseGenerationChanged();
+    Q_EMIT showRetryResponseGenerationChanged();
 }
 
 void AssistantController::updateSelectedTypeMetadata()
 {
     _taskTypeName = _taskTypes.nameForType(_taskType);
     _taskTypeDescription = _taskTypes.descriptionForType(_taskType);
-    emit selectedTaskTypeChanged();
+    Q_EMIT selectedTaskTypeChanged();
 }
 
 void AssistantController::loadChatConversations(quint64 requestGeneration)
@@ -765,7 +780,7 @@ void AssistantController::loadChatMessages(qint64 conversationId, quint64 reques
 void AssistantController::startChatGeneration(qint64 conversationId, quint64 requestGeneration)
 {
     _error.clear();
-    emit errorChanged();
+    Q_EMIT errorChanged();
     setRequestInProgress(true);
     setThinking(true);
     setShowRetryResponseGeneration(false);
@@ -777,7 +792,7 @@ void AssistantController::requestFailed(const QString &context, int statusCode)
     static_cast<void>(beginRequest());
     setRequestInProgress(false);
     _error = tr("Assistant request failed (%1).").arg(statusCode);
-    emit errorChanged();
+    Q_EMIT errorChanged();
     qCWarning(lcAssistantController) << "Assistant request error:" << context << statusCode;
 }
 
