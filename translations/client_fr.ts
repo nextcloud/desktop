@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="39"/>
         <source>Switch to your browser</source>
-        <translation>Basculer vers votre navigateur web</translation>
+        <translation>Bascule vers votre navigateur web</translation>
     </message>
 </context>
 <context>
@@ -974,7 +974,7 @@ Le compte doit-il être importé ?</translation>
         <location filename="../src/gui/accountsettings.ui" line="587"/>
         <location filename="../src/gui/accountsettings.cpp" line="1551"/>
         <source>Remove account</source>
-        <translation>Supprimer le compte</translation>
+        <translation>Retirer le compte</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="338"/>

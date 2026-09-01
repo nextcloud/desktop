@@ -311,12 +311,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
         <source>Talk notification caller avatar</source>
-        <translation>Opkalds-avatar til Snak meddelelse</translation>
+        <translation>Opkalds-avatar til Talk meddelelse</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
         <source>Answer Talk call notification</source>
-        <translation>Svar Snak opkaldsnotifikation</translation>
+        <translation>Svar Talk opkaldsnotifikation</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
@@ -326,7 +326,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Decline Talk call notification</source>
-        <translation>Afvis Snak opkaldsnotifikation</translation>
+        <translation>Afvis Talk opkaldsnotifikation</translation>
     </message>
 </context>
 <context>
