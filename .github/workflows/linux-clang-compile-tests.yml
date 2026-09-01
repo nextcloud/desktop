@@ -13,12 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 1
+          fetch-depth: 2
       - name: Configure and compile
         run: |
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror
+          cmake .. -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           ninja
       - name: Run tests
         run: |
@@ -26,3 +26,18 @@ jobs:
           useradd -m -s /bin/bash test
           chown -R test:test .
           su -c 'xvfb-run ctest --output-on-failure' test
+      - name: Analyze changed C++ code with clang-tidy
+        run: |
+          mkdir clang-tidy-result
+          /usr/bin/git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          # Header-only test helper: clang-tidy-diff has no target compile command for it.
+          # Its consumer test targets compile it with the required GUI include paths.
+          /usr/bin/git diff -U0 HEAD^ -- ':(exclude)test/macOS/*' ':(exclude)test/systraysynccontroltesthelper.h' ':(exclude)*macOS*' | clang-tidy-diff-21.py -checks='-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast' -p1 -path build -regex '^(?!.*/macOS/)(?!.*/MacOSX/).*\.(cpp|cc|cxx|c|h|hpp|hxx)$' -export-fixes clang-tidy-result/fixes.yml
+      - name: Publish clang-tidy review
+        uses: platisd/clang-tidy-pr-comments@28cfb84edafa771c044bde7e4a2a3fae57463818 # v1.6.1 # >1.4.3 switches to composite method w/ a forced python version and breaks things: https://github.com/actions/setup-python/issues/871
+        with:
+          python_path: "/usr/bin/python3"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          clang_tidy_fixes: clang-tidy-result/fixes.yml
+          request_changes: true
+          suggestions_per_comment: 10
