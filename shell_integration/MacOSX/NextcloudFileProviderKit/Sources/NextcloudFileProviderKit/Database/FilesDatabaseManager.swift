@@ -470,7 +470,24 @@ public final class FilesDatabaseManager: Sendable {
                 }
             }
 
+            // This path writes directly to Realm, bypassing addItemMetadata's guard. Drop any
+            // empty-ocId row here so it never becomes an item with an empty identifier. See #10701.
+            let droppedCount = metadatasToCreate.filter { $0.ocId.isEmpty }.count
+                + metadatasToUpdate.filter { $0.ocId.isEmpty }.count
+            if droppedCount > 0 {
+                logger.error("Dropping \(droppedCount) metadata row(s) with empty ocId during depth-1 ingestion.", [.url: serverUrl])
+            }
+            metadatasToCreate = metadatasToCreate.filter { !$0.ocId.isEmpty }
+            metadatasToUpdate = metadatasToUpdate.filter { !$0.ocId.isEmpty }
+
             try database.write {
+                // Self-heal a database poisoned by an earlier build: an empty-ocId row is keyed by ""
+                // and is always invalid, so remove it while we are enumerating.
+                let poisoned = database.objects(RealmItemMetadata.self).where { $0.ocId == "" }
+                if !poisoned.isEmpty {
+                    database.delete(poisoned)
+                }
+
                 // Evict any logical-address duplicates before persisting fresh
                 // payloads, so an ocId rotation (or rename whose target collides
                 // with a third row) does not leave two non-deleted siblings at
@@ -482,8 +499,9 @@ public final class FilesDatabaseManager: Sendable {
                     evictLogicalDuplicates(of: metadata, in: database)
                 }
 
-                // Do not delete the metadatas that have been deleted
-                database.add(metadatasToDelete.map { RealmItemMetadata(value: $0) }, update: .modified)
+                // Do not delete the metadatas that have been deleted. Skip empty-ocId markers so the
+                // self-heal above is not immediately undone.
+                database.add(metadatasToDelete.filter { !$0.ocId.isEmpty }.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToCreate.map { RealmItemMetadata(value: $0) }, update: .all)
             }
