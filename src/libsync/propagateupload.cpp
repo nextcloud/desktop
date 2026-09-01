@@ -925,3 +925,5 @@ void PropagateUploadFileCommon::abortNetworkJobs(
         Q_EMIT abortFinished();
 }
 }
+
+#include "moc_propagateupload.cpp"

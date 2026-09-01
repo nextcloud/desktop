@@ -555,3 +555,5 @@ bool HttpCredentials::unpackClientCertBundle()
 }
 
 } // namespace OCC
+
+#include "moc_httpcredentials.cpp"

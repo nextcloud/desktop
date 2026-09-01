@@ -58,3 +58,5 @@ void DummyCredentials::persist()
 }
 
 } // namespace OCC
+
+#include "moc_dummycredentials.cpp"

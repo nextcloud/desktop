@@ -285,3 +285,5 @@ void PropagateRemoteMkdir::success()
     done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }
 }
+
+#include "moc_propagateremotemkdir.cpp"
