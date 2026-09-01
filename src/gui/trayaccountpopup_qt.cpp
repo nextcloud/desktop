@@ -877,9 +877,9 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
 
     const auto syncControlState = systray->syncControlState();
     const auto addSyncControlAction = [menu, systray, &menuIconPalette, &menuIconSize](const bool pausesSync) {
-        const auto syncControlIconName = pausesSync ? QStringLiteral("state-pause.svg") : QStringLiteral("state-sync.svg");
+        const auto syncControlIconName = pausesSync ? QStringLiteral("pause.svg") : QStringLiteral("play.svg");
         const auto syncControlAction = addMenuAction(menu,
-                                                     templateBlackThemeIcon(syncControlIconName, menuIconSize, menuIconPalette),
+                                                     templateThemeIcon(syncControlIconName, menuIconSize, menuIconPalette),
                                                      pausesSync ? Systray::tr("Pause sync for all") : Systray::tr("Resume sync for all"));
         syncControlAction->setObjectName(pausesSync
                 ? QStringLiteral("trayPauseSyncAction")

@@ -168,7 +168,7 @@ private Q_SLOTS:
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
     }
 
-    void syncControlActionsUseMonochromeGlyphs()
+    void syncControlActionsUseActionGlyphs()
     {
         const auto systray = Systray::instance();
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
@@ -176,7 +176,7 @@ private Q_SLOTS:
         auto pauseMenu = QMenu{};
         const auto pauseAction = pauseSyncAction(pauseMenu, systray);
         QVERIFY(pauseAction);
-        verifyIconShape(pauseAction, QStringLiteral(":/client/theme/black/state-pause.svg"));
+        verifyIconShape(pauseAction, QStringLiteral(":/client/theme/pause.svg"));
         pauseAction->trigger();
 
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Resume);
@@ -185,7 +185,7 @@ private Q_SLOTS:
         QVERIFY(!resumeMenu.findChild<QAction *>(QStringLiteral("trayPauseSyncAction")));
         const auto actualResumeAction = resumeSyncAction(resumeMenu);
         QVERIFY(actualResumeAction);
-        verifyIconShape(actualResumeAction, QStringLiteral(":/client/theme/black/state-sync.svg"));
+        verifyIconShape(actualResumeAction, QStringLiteral(":/client/theme/play.svg"));
         actualResumeAction->trigger();
 
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Pause);
