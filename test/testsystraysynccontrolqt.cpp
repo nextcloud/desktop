@@ -222,6 +222,28 @@ private Q_SLOTS:
         QVERIFY(_helper.secondFolder()->syncPaused());
         QVERIFY(systray->syncControlState() == Systray::SyncControlState::Resume);
     }
+
+    void initialFolderStatesShowWaitingToStart()
+    {
+        const auto firstFolder = _helper.firstFolder();
+        const auto secondFolder = _helper.secondFolder();
+        QVERIFY(firstFolder);
+        QVERIFY(secondFolder);
+
+        firstFolder->setSyncPaused(false);
+        secondFolder->setSyncPaused(false);
+        firstFolder->setSyncState(SyncResult::Undefined);
+        secondFolder->setSyncState(SyncResult::NotYetStarted);
+
+        auto overallStatus = SyncResult::Success;
+        auto hasUnresolvedConflicts = true;
+        auto *overallProgressInfo = static_cast<ProgressInfo *>(nullptr);
+        FolderMan::trayOverallStatus({firstFolder, secondFolder}, &overallStatus, &hasUnresolvedConflicts, &overallProgressInfo);
+
+        QCOMPARE(overallStatus, SyncResult::NotYetStarted);
+        QCOMPARE(FolderMan::trayTooltipStatusString(overallStatus, hasUnresolvedConflicts, false, overallProgressInfo),
+                 QStringLiteral("Waiting to start syncing."));
+    }
 };
 
 QTEST_MAIN(TestSystraySyncControlQt)
