@@ -219,12 +219,12 @@ void UnifiedSearchResultsListModel::setAccountId(const int id)
     }
 
     _accountId = id;
-    emit accountIdChanged();
+    Q_EMIT accountIdChanged();
 
     const auto userModel = UserModel::instance();
     const auto user = userModel ? userModel->user(id) : nullptr;
     setAccountState(user ? user->accountState().data() : nullptr);
-    emit canEditSearchChanged();
+    Q_EMIT canEditSearchChanged();
 }
 
 void UnifiedSearchResultsListModel::setAccountState(AccountState *const accountState)
@@ -242,7 +242,7 @@ void UnifiedSearchResultsListModel::setAccountState(AccountState *const accountS
         connect(_accountState, &AccountState::isConnectedChanged, this, &UnifiedSearchResultsListModel::canEditSearchChanged);
         connect(_accountState, &QObject::destroyed, this, [this] {
             _accountState = nullptr;
-            emit canEditSearchChanged();
+            Q_EMIT canEditSearchChanged();
         });
     }
 }
