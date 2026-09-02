@@ -36,23 +36,23 @@ IF (NOT _macroLogFeatureAlreadyIncluded)
    SET(_file ${CMAKE_BINARY_DIR}/MissingRequirements.txt)
    IF (EXISTS ${_file})
       FILE(REMOVE ${_file})
-   ENDIF (EXISTS ${_file})
+   ENDIF ()
 
    SET(_file ${CMAKE_BINARY_DIR}/EnabledFeatures.txt)
    IF (EXISTS ${_file})
       FILE(REMOVE ${_file})
-   ENDIF (EXISTS ${_file})
+   ENDIF ()
 
    SET(_file ${CMAKE_BINARY_DIR}/DisabledFeatures.txt)
    IF (EXISTS ${_file})
       FILE(REMOVE ${_file})
-  ENDIF (EXISTS ${_file})
+  ENDIF ()
 
   SET(_macroLogFeatureAlreadyIncluded TRUE)
 
   INCLUDE(FeatureSummary)
 
-ENDIF (NOT _macroLogFeatureAlreadyIncluded)
+ENDIF ()
 
 
 MACRO(MACRO_LOG_FEATURE _var _package _description _url ) # _required _minvers _comments)
@@ -68,43 +68,43 @@ MACRO(MACRO_LOG_FEATURE _var _package _description _url ) # _required _minvers _
        SET(_LOGFILENAME ${CMAKE_BINARY_DIR}/MissingRequirements.txt)
      ELSE ("${_required}" STREQUAL "TRUE")
        SET(_LOGFILENAME ${CMAKE_BINARY_DIR}/DisabledFeatures.txt)
-     ENDIF ("${_required}" STREQUAL "TRUE")
-   ENDIF (${_var})
+     ENDIF ()
+   ENDIF ()
 
    SET(_logtext "   * ${_package}")
 
    IF (NOT ${_var})
       IF (${_minvers} MATCHES ".*")
         SET(_logtext "${_logtext} (${_minvers} or higher)")
-      ENDIF (${_minvers} MATCHES ".*")
+      ENDIF ()
       SET(_logtext "${_logtext}  <${_url}>\n     ")
    ELSE (NOT ${_var})
      SET(_logtext "${_logtext} - ")
-   ENDIF (NOT ${_var})
+   ENDIF ()
 
    SET(_logtext "${_logtext}${_description}")
 
    IF (NOT ${_var})
       IF (${_comments} MATCHES ".*")
         SET(_logtext "${_logtext}\n     ${_comments}")
-      ENDIF (${_comments} MATCHES ".*")
+      ENDIF ()
 #      SET(_logtext "${_logtext}\n") #double-space missing features?
-   ENDIF (NOT ${_var})
+   ENDIF ()
 
    FILE(APPEND "${_LOGFILENAME}" "${_logtext}\n")
 
    IF(COMMAND SET_PACKAGE_INFO)  # in FeatureSummary.cmake since CMake 2.8.3
      SET_PACKAGE_INFO("${_package}" "\"${_description}\"" "${_url}" "\"${_comments}\"")
-   ENDIF(COMMAND SET_PACKAGE_INFO)
+   ENDIF()
 
-ENDMACRO(MACRO_LOG_FEATURE)
+ENDMACRO()
 
 
 MACRO(MACRO_DISPLAY_FEATURE_LOG)
    IF(COMMAND FEATURE_SUMMARY) # in FeatureSummary.cmake since CMake 2.8.3
       FEATURE_SUMMARY(FILENAME ${CMAKE_CURRENT_BINARY_DIR}/FindPackageLog.txt
                       WHAT ALL)
-   ENDIF(COMMAND FEATURE_SUMMARY)
+   ENDIF()
 
    SET(_missingFile ${CMAKE_BINARY_DIR}/MissingRequirements.txt)
    SET(_enabledFile ${CMAKE_BINARY_DIR}/EnabledFeatures.txt)
@@ -112,7 +112,7 @@ MACRO(MACRO_DISPLAY_FEATURE_LOG)
 
    IF (EXISTS ${_missingFile} OR EXISTS ${_enabledFile} OR EXISTS ${_disabledFile})
      SET(_printSummary TRUE)
-   ENDIF (EXISTS ${_missingFile} OR EXISTS ${_enabledFile} OR EXISTS ${_disabledFile})
+   ENDIF ()
 
    IF(_printSummary)
      SET(_missingDeps 0)
@@ -120,7 +120,7 @@ MACRO(MACRO_DISPLAY_FEATURE_LOG)
        FILE(READ ${_enabledFile} _enabled)
        FILE(REMOVE ${_enabledFile})
        SET(_summary "${_summary}\n-----------------------------------------------------------------------------\n-- The following external packages were located on your system.\n-- This installation will have the extra features provided by these packages.\n-----------------------------------------------------------------------------\n${_enabled}")
-     ENDIF (EXISTS ${_enabledFile})
+     ENDIF ()
 
 
      IF (EXISTS ${_disabledFile})
@@ -128,7 +128,7 @@ MACRO(MACRO_DISPLAY_FEATURE_LOG)
        FILE(READ ${_disabledFile} _disabled)
        FILE(REMOVE ${_disabledFile})
        SET(_summary "${_summary}\n-----------------------------------------------------------------------------\n-- The following OPTIONAL packages could NOT be located on your system.\n-- Consider installing them to enable more features from this software.\n-----------------------------------------------------------------------------\n${_disabled}")
-     ENDIF (EXISTS ${_disabledFile})
+     ENDIF ()
 
 
      IF (EXISTS ${_missingFile})
@@ -137,12 +137,12 @@ MACRO(MACRO_DISPLAY_FEATURE_LOG)
        SET(_summary "${_summary}\n-----------------------------------------------------------------------------\n-- The following REQUIRED packages could NOT be located on your system.\n-- You must install these packages before continuing.\n-----------------------------------------------------------------------------\n${_requirements}")
        FILE(REMOVE ${_missingFile})
        SET(_haveMissingReq 1)
-     ENDIF (EXISTS ${_missingFile})
+     ENDIF ()
 
 
      IF (NOT ${_missingDeps})
        SET(_summary "${_summary}\n-----------------------------------------------------------------------------\n-- Congratulations! All external packages have been found.")
-     ENDIF (NOT ${_missingDeps})
+     ENDIF ()
 
 
      MESSAGE(${_summary})
@@ -151,8 +151,8 @@ MACRO(MACRO_DISPLAY_FEATURE_LOG)
 
      IF(_haveMissingReq)
        MESSAGE(FATAL_ERROR "Exiting: Missing Requirements")
-     ENDIF(_haveMissingReq)
+     ENDIF()
 
-   ENDIF(_printSummary)
+   ENDIF()
 
-ENDMACRO(MACRO_DISPLAY_FEATURE_LOG)
+ENDMACRO()
