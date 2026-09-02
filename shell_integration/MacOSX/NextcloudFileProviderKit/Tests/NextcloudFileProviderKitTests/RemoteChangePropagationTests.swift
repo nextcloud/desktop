@@ -667,4 +667,41 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
             "The trash row must survive the scan; trash reconciliation derives deletions from it."
         )
     }
+
+    ///
+    /// A directory's depth-1 read already returns its children's state, so unchanged children must
+    /// not be PROPFINDed individually.
+    ///
+    func testUnchangedChildrenAreCoveredByTheirParentsRead() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let fileA = makeFile(name: "itemA", parent: folder, etag: "itemA-v1")
+        let fileB = makeFile(name: "itemB", parent: folder, etag: "itemB-v1")
+
+        // Folder visited and both files downloaded, so all three seed the scan, with nothing
+        // changed on the server.
+        seed(folder, visitedDirectory: true)
+        seed(fileA, downloaded: true)
+        seed(fileB, downloaded: true)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+        let enumeratedPaths = recorder.paths
+
+        XCTAssertNil(observer.error)
+        XCTAssertTrue(
+            enumeratedPaths.contains { $0.hasSuffix("/folder") },
+            "The materialised folder is read at depth 1."
+        )
+        XCTAssertFalse(
+            enumeratedPaths.contains { $0.hasSuffix("/folder/itemA") || $0.hasSuffix("/folder/itemB") },
+            "Unchanged children are covered by the parent's depth-1 read and must not be read individually. Got: \(enumeratedPaths)"
+        )
+    }
 }
