@@ -127,6 +127,38 @@ public final class FilesDatabaseManager: Sendable {
         return realm
     }
 
+    ///
+    /// Serial queue owning every Realm access made from a concurrent context, serial because Realm
+    /// serializes commits internally anyway.
+    ///
+    private let databaseQueue: DispatchQueue = {
+        let queue = DispatchQueue(
+            label: "com.nextcloud.desktopclient.fileprovider.database", qos: .userInitiated
+        )
+        queue.setSpecific(key: databaseQueueKey, value: ())
+        return queue
+    }()
+
+    private static let databaseQueueKey = DispatchSpecificKey<Void>()
+
+    /// Whether the caller is running on ``databaseQueue``.
+    var isOnDatabaseQueue: Bool {
+        DispatchQueue.getSpecific(key: Self.databaseQueueKey) != nil
+    }
+
+    ///
+    /// Run `work` on the dedicated ``databaseQueue``, suspending the caller rather than blocking it,
+    /// for any database access reached from an `async` context that can run concurrently with other
+    /// database access.
+    ///
+    public func perform<T: Sendable>(
+        _ work: @escaping @Sendable (FilesDatabaseManager) -> T
+    ) async -> T {
+        await withCheckedContinuation { continuation in
+            databaseQueue.async { continuation.resume(returning: work(self)) }
+        }
+    }
+
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
         !itemMetadatas.where { $0.account == account }.isEmpty
     }
