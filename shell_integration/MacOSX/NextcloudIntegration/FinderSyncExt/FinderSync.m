@@ -38,6 +38,33 @@ static os_log_t getFinderSyncLogger(void) {
     return logger;
 }
 
+static NSString *titleCaseMenuItem(NSString *title)
+{
+    static NSDictionary<NSString *, NSString *> *titleCaseTitles;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        titleCaseTitles = @{
+            @"Leave this share": @"Leave This Share",
+            @"Share options": @"Share Options",
+            @"Copy internal link": @"Copy Internal Link",
+            @"File actions": @"File Actions",
+            @"Lock file": @"Lock File",
+            @"Unlock file": @"Unlock File",
+            @"Apply labels": @"Apply Labels",
+            @"Open in browser": @"Open in Browser",
+            @"Resolve conflict …": @"Resolve Conflict …",
+            @"Move and rename …": @"Move and Rename …",
+            @"Move, rename and upload …": @"Move, Rename and Upload …",
+            @"Delete local changes": @"Delete Local Changes",
+            @"Move and upload …": @"Move and Upload …",
+            @"Make always available locally": @"Make Always Available Locally",
+            @"Free up local space": @"Free Up Local Space",
+        };
+    });
+
+    return titleCaseTitles[title] ?: title;
+}
+
 @implementation FinderSync
 
 - (instancetype)init
@@ -223,7 +250,7 @@ static os_log_t getFinderSyncLogger(void) {
 
 		int idx = 0;
 		for (NSArray* item in menuItems) {
-			NSMenuItem *actionItem = [subMenu addItemWithTitle:[item valueForKey:@"text"]
+			NSMenuItem *actionItem = [subMenu addItemWithTitle:titleCaseMenuItem([item valueForKey:@"text"])
 														action:@selector(subMenuActionClicked:)
 												 keyEquivalent:@""];
 

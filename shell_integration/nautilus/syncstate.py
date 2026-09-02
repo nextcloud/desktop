@@ -44,6 +44,34 @@ def get_runtime_dir():
         return fallback
 
 
+def title_case_menu_item(title):
+    if not python3 and isinstance(title, str):
+        title = title.decode('utf-8')
+
+    title_case_titles = {
+        u'Leave this share': u'Leave This Share',
+        u'Share options': u'Share Options',
+        u'Copy internal link': u'Copy Internal Link',
+        u'File actions': u'File Actions',
+        u'Lock file': u'Lock File',
+        u'Unlock file': u'Unlock File',
+        u'Apply labels': u'Apply Labels',
+        u'Open in browser': u'Open in Browser',
+        u'Resolve conflict \u2026': u'Resolve Conflict \u2026',
+        u'Move and rename \u2026': u'Move and Rename \u2026',
+        u'Move, rename and upload \u2026': u'Move, Rename and Upload \u2026',
+        u'Delete local changes': u'Delete Local Changes',
+        u'Move and upload \u2026': u'Move and Upload \u2026',
+        u'Make always available locally': u'Make Always Available Locally',
+        u'Free up local space': u'Free Up Local Space',
+        u'Copy private link to clipboard': u'Copy Private Link to Clipboard',
+        u'Send private link by email \u2026': u'Send Private Link by Email \u2026',
+        u'Send private link by email...': u'Send Private Link by Email...',
+    }
+
+    return title_case_titles.get(title, title)
+
+
 class SocketConnect(GObject.GObject):
     def __init__(self):
         GObject.GObject.__init__(self)
@@ -268,7 +296,7 @@ class MenuExtension_Nextcloud(GObject.GObject, Nautilus.MenuProvider):
         item_nextcloud.set_submenu(menu)
 
         for action, enabled, label in menu_items:
-            item = Nautilus.MenuItem(name=action, label=label, sensitive=enabled)
+            item = Nautilus.MenuItem(name=action, label=title_case_menu_item(label), sensitive=enabled)
             item.connect("activate", self.context_menu_action, action, filesstring)
             menu.append_item(item)
 
@@ -315,7 +343,7 @@ class MenuExtension_Nextcloud(GObject.GObject, Nautilus.MenuProvider):
         # Add share menu option
         item = Nautilus.MenuItem(
             name='NautilusPython::ShareItem',
-            label=self.strings.get('SHARE_MENU_TITLE', 'Share...'))
+            label=title_case_menu_item(self.strings.get('SHARE_MENU_TITLE', 'Share...')))
         item.connect("activate", self.context_menu_action, 'SHARE', filename)
         menu.append_item(item)
 
@@ -323,13 +351,13 @@ class MenuExtension_Nextcloud(GObject.GObject, Nautilus.MenuProvider):
         # that don't have these actions.
         if 'COPY_PRIVATE_LINK_MENU_TITLE' in self.strings:
             item_copyprivatelink = Nautilus.MenuItem(
-                name='CopyPrivateLink', label=self.strings.get('COPY_PRIVATE_LINK_MENU_TITLE', 'Copy private link to clipboard'))
+                name='CopyPrivateLink', label=title_case_menu_item(self.strings.get('COPY_PRIVATE_LINK_MENU_TITLE', 'Copy private link to clipboard')))
             item_copyprivatelink.connect("activate", self.context_menu_action, 'COPY_PRIVATE_LINK', filename)
             menu.append_item(item_copyprivatelink)
 
         if 'EMAIL_PRIVATE_LINK_MENU_TITLE' in self.strings:
             item_emailprivatelink = Nautilus.MenuItem(
-                name='EmailPrivateLink', label=self.strings.get('EMAIL_PRIVATE_LINK_MENU_TITLE', 'Send private link by email...'))
+                name='EmailPrivateLink', label=title_case_menu_item(self.strings.get('EMAIL_PRIVATE_LINK_MENU_TITLE', 'Send private link by email...')))
             item_emailprivatelink.connect("activate", self.context_menu_action, 'EMAIL_PRIVATE_LINK', filename)
             menu.append_item(item_emailprivatelink)
 

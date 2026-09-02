@@ -14,7 +14,35 @@
 #include <QDir>
 #include <QTimer>
 #include <QEventLoop>
+#include <QHash>
 #include "ownclouddolphinpluginhelper.h"
+
+namespace {
+QString titleCaseMenuItem(const QString &title)
+{
+    static const QHash<QString, QString> titleCaseTitles = {
+        { QStringLiteral("Leave this share"), QStringLiteral("Leave This Share") },
+        { QStringLiteral("Share options"), QStringLiteral("Share Options") },
+        { QStringLiteral("Copy internal link"), QStringLiteral("Copy Internal Link") },
+        { QStringLiteral("File actions"), QStringLiteral("File Actions") },
+        { QStringLiteral("Lock file"), QStringLiteral("Lock File") },
+        { QStringLiteral("Unlock file"), QStringLiteral("Unlock File") },
+        { QStringLiteral("Apply labels"), QStringLiteral("Apply Labels") },
+        { QStringLiteral("Open in browser"), QStringLiteral("Open in Browser") },
+        { QStringLiteral("Resolve conflict …"), QStringLiteral("Resolve Conflict …") },
+        { QStringLiteral("Move and rename …"), QStringLiteral("Move and Rename …") },
+        { QStringLiteral("Move, rename and upload …"), QStringLiteral("Move, Rename and Upload …") },
+        { QStringLiteral("Delete local changes"), QStringLiteral("Delete Local Changes") },
+        { QStringLiteral("Move and upload …"), QStringLiteral("Move and Upload …") },
+        { QStringLiteral("Make always available locally"), QStringLiteral("Make Always Available Locally") },
+        { QStringLiteral("Free up local space"), QStringLiteral("Free Up Local Space") },
+        { QStringLiteral("Copy private link to clipboard"), QStringLiteral("Copy Private Link to Clipboard") },
+        { QStringLiteral("Send private link by email …"), QStringLiteral("Send Private Link by Email …") },
+    };
+
+    return titleCaseTitles.value(title, title);
+}
+}
 
 class OwncloudDolphinPluginAction : public KAbstractFileItemActionPlugin
 {
@@ -59,7 +87,7 @@ public:
                 auto args = QString::fromUtf8(cmd).split(QLatin1Char(':'));
                 if (args.size() < 4)
                     return;
-                auto action = menu->addAction(args.mid(3).join(QLatin1Char(':')));
+                auto action = menu->addAction(titleCaseMenuItem(args.mid(3).join(QLatin1Char(':'))));
                 if (args.value(2).contains(QLatin1Char('d')))
                     action->setDisabled(true);
                 auto call = args.value(1).toLatin1();
@@ -96,20 +124,20 @@ public:
         auto menu = new QMenu(parentWidget);
         menuaction->setMenu(menu);
 
-        auto shareAction = menu->addAction(helper->shareActionTitle());
+        auto shareAction = menu->addAction(titleCaseMenuItem(helper->shareActionTitle()));
         connect(shareAction, &QAction::triggered, this, [localFile, helper] {
             helper->sendCommand(QByteArray("SHARE:" + localFile.toUtf8() + "\n").constData());
         });
 
         if (!helper->copyPrivateLinkTitle().isEmpty()) {
-            auto copyPrivateLinkAction = menu->addAction(helper->copyPrivateLinkTitle());
+            auto copyPrivateLinkAction = menu->addAction(titleCaseMenuItem(helper->copyPrivateLinkTitle()));
             connect(copyPrivateLinkAction, &QAction::triggered, this, [localFile, helper] {
                 helper->sendCommand(QByteArray("COPY_PRIVATE_LINK:" + localFile.toUtf8() + "\n").constData());
             });
         }
 
         if (!helper->emailPrivateLinkTitle().isEmpty()) {
-            auto emailPrivateLinkAction = menu->addAction(helper->emailPrivateLinkTitle());
+            auto emailPrivateLinkAction = menu->addAction(titleCaseMenuItem(helper->emailPrivateLinkTitle()));
             connect(emailPrivateLinkAction, &QAction::triggered, this, [localFile, helper] {
                 helper->sendCommand(QByteArray("EMAIL_PRIVATE_LINK:" + localFile.toUtf8() + "\n").constData());
             });

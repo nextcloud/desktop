@@ -4278,7 +4278,7 @@
         }
       }
     },
-    "Free up space" : {
+    "Free Up Space" : {
       "comment" : "Context menu item label",
       "extractionState" : "manual",
       "localizations" : {
@@ -4309,13 +4309,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free up space"
+            "value" : "Free Up Space"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free up space"
+            "value" : "Free Up Space"
           }
         },
         "et_EE" : {
@@ -5324,7 +5324,7 @@
         }
       }
     },
-    "Lock file" : {
+    "Lock File" : {
       "comment" : "Context menu item label",
       "extractionState" : "manual",
       "localizations" : {
@@ -5349,13 +5349,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lock file"
+            "value" : "Lock File"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lock file"
+            "value" : "Lock File"
           }
         },
         "et_EE" : {
@@ -6922,6 +6922,145 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "分享標籤"
+          }
+        }
+      }
+    },
+    "Share Options" : {
+      "comment" : "Context menu item label",
+      "extractionState" : "manual",
+      "generatesSymbol": false,
+      "localizations" : {
+        "cs_CZ" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Předvolby pro sdílení"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabeoptionen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabeoptionen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share Options"
+          }
+        },
+        "en_GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share Options"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opciones del recurso compartido"
+          }
+        },
+        "et_EE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jagamise valikud"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "گزینه‌های اشتراک‌گذاری"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options de partage"
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Roghanna comhroinnte"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opcións da compartición"
+          }
+        },
+        "ja_JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有オプション"
+          }
+        },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tixtiṛiyin n beṭṭu"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bendrinimo parinktys"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opcje udostępniania"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opções de compartilhamento"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delningsalternativ"
+          }
+        },
+        "sw" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shiriki chaguzi"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşım seçenekleri"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulashish imkoniyatlari"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享選項"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享選項"
           }
         }
       }
@@ -8664,7 +8803,7 @@
         }
       }
     },
-    "Unlock file" : {
+    "Unlock File" : {
       "comment" : "Context menu item label",
       "extractionState" : "manual",
       "localizations" : {
@@ -8689,13 +8828,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unlock file"
+            "value" : "Unlock File"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unlock file"
+            "value" : "Unlock File"
           }
         },
         "es" : {

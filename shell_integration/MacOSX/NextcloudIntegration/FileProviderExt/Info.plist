@@ -31,7 +31,7 @@
 				<key>Label</key>
 				<dict>
 					<key>NSStringFormat</key>
-					<string>Always keep downloaded</string>
+					<string>Always Keep Downloaded</string>
 				</dict>
 			</dict>
 		</array>
@@ -43,7 +43,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.KeepDownloadedAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Always keep downloaded</string>
+				<string>Always Keep Downloaded</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -51,7 +51,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.AutoEvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Allow automatic freeing up space</string>
+				<string>Allow Automatic Freeing Up Space</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -59,7 +59,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.EvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Remove download</string>
+				<string>Remove Download</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -67,7 +67,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.EvictDescendantsAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Remove downloaded items</string>
+				<string>Remove Downloaded Items</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -75,7 +75,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.FileActionsAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>File actions</string>
+				<string>File Actions</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -83,7 +83,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.OpenInBrowserAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Open in browser</string>
+				<string>Open in Browser</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -91,7 +91,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.CopyInternalLinkAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Copy internal link</string>
+				<string>Copy Internal Link</string>
 			</dict>
 		</array>
 		<key>NSExtensionFileProviderAllowsContextualMenuDownloadEntry</key>
