@@ -72,6 +72,7 @@ Q_SIGNALS:
     void requestMnemonic();
     void removeAccountFolders(OCC::AccountState *account);
     void styleChanged();
+    void openGlobalIgnoreListEditorRequested();
 
 public Q_SLOTS:
     void slotOpenOC();
