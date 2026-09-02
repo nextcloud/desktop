@@ -101,13 +101,19 @@ extension Enumerator {
             logger.debug("Completed checking materialised items for changes on the server.")
         }
 
+        // Trashed rows are excluded. Trashing rewrites an item's `serverUrl` to the trashbin but
+        // does not set `deleted`, and a folder keeps `visitedDirectory`, so a trashed folder stayed
+        // in the materialised set and this scan PROPFINDed it through the ordinary DAV path — which
+        // 404s. That 404 is then read as "the item is gone", reporting the item deleted and hard-
+        // removing the row the trash reconciliation derives permanent deletions from. Trash has its
+        // own enumeration path (``enumerateTrashChanges(for:anchor:)``, via `listingTrashAsync`).
         // Unlike when enumerating items we can't progressively enumerate items as we need to
         // wait to see which items are truly deleted and which have just been moved elsewhere.
         // Visited folders and downloaded files. Sort in terms of their remote URLs.
         // This way we ensure we visit parent folders before their children.
         let materialisedItems = dbManager
             .materialisedItemMetadatas(account: account.ncKitAccount)
-            .filter { !$0.deleted }
+            .filter { !$0.deleted && !$0.isTrashed }
             .sorted { $0.remotePath().count < $1.remotePath().count }
 
         var accumulatedCreations = [SendableItemMetadata]()

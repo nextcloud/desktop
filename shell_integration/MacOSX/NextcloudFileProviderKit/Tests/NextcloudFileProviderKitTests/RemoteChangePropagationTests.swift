@@ -634,4 +634,55 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
             "An item created on the server inside a visited folder must be reported even when nothing in that folder is materialised."
         )
     }
+
+    ///
+    /// A trashed folder must not be scanned through the ordinary DAV path.
+    ///
+    /// Trashing rewrites `serverUrl` to the trashbin but leaves `deleted == false`, and a folder
+    /// keeps `visitedDirectory`, so the row stayed in the materialised set. The scan then PROPFINDed
+    /// `/remote.php/dav/trashbin/<user>/trash/<name>.dNNNN`, which 404s — and the scan reads a 404
+    /// as "the item is gone", reporting it deleted and hard-removing the very row the trash
+    /// reconciliation derives permanent deletions from.
+    ///
+    func testTrashedFolderIsNotScannedThroughTheRegularDavPath() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let liveFolder = makeFolder(name: "live", parent: rootItem, etag: "live-v1")
+        seed(liveFolder, visitedDirectory: true)
+
+        // A folder the user trashed: still visited, not soft-deleted, but living in the trashbin.
+        var trashed = makeFolder(name: "gone", parent: rootItem, etag: "gone-v1")
+            .toItemMetadata(account: Self.account)
+        trashed.ocId = "trashed-folder"
+        trashed.visitedDirectory = true
+        trashed.deleted = false
+        trashed.syncTime = oldSyncTime
+        trashed.serverUrl = Self.account.trashUrl
+        trashed.apply(fileName: "gone.d1788354069")
+        Self.dbManager.addItemMetadata(trashed)
+        XCTAssertTrue(trashed.isTrashed, "Precondition: the row must look trashed.")
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+        let enumeratedPaths = recorder.paths
+
+        XCTAssertNil(observer.error)
+        XCTAssertTrue(
+            enumeratedPaths.contains { $0.hasSuffix("/live") },
+            "Sanity: the live materialised folder is still scanned."
+        )
+        XCTAssertFalse(
+            enumeratedPaths.contains { $0.contains("/trashbin/") },
+            "A trashed row must never be PROPFINDed through the regular DAV path. Got: \(enumeratedPaths)"
+        )
+        XCTAssertNotNil(
+            Self.dbManager.itemMetadata(ocId: "trashed-folder"),
+            "The trash row must survive the scan; trash reconciliation derives deletions from it."
+        )
+    }
 }
