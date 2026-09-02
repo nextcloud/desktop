@@ -1145,7 +1145,9 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
         print(storedRootItem.metadata.serverUrl)
-        XCTAssertEqual(storedRootItem.childItemCount?.intValue, 4) // All items
+        // Direct children of the root only: the folder and the item just moved out of it.
+        // `itemB` stays inside the folder and the root's own row does not count itself.
+        XCTAssertEqual(storedRootItem.childItemCount?.intValue, 2)
 
         let storedFolderMaybe = await Item.storedItem(
             identifier: .init(remoteFolder.identifier),

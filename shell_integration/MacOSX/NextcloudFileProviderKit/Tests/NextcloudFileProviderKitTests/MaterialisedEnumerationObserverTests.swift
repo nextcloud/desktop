@@ -102,12 +102,15 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         let enumeratorItemsToReturn = [itemB, itemC]
 
         let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { newlyMaterialisedIds, unmaterialisedIds in
-            // Unmaterialised: itemA and dirD were materialized but not in the latest enumeration.
+            // Unmaterialised: only itemA. dirD is a directory, and a directory carries no
+            // materialized content of its own — it stays materialized through `visitedDirectory`,
+            // which this reconciliation preserves, so reporting it evicted would repeat on every
+            // pass forever.
             XCTAssertEqual(
-                unmaterialisedIds.count, 2, "itemA and dirD should be reported as unmaterialised."
+                unmaterialisedIds.count, 1, "Only itemA should be reported as unmaterialised."
             )
             XCTAssertTrue(unmaterialisedIds.contains(NSFileProviderItemIdentifier("itemA")))
-            XCTAssertTrue(unmaterialisedIds.contains(NSFileProviderItemIdentifier("dirD")))
+            XCTAssertFalse(unmaterialisedIds.contains(NSFileProviderItemIdentifier("dirD")))
 
             // Newly Materialised: itemB was NOT materialized but WAS in the latest enumeration.
             XCTAssertEqual(
