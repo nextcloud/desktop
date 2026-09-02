@@ -5920,6 +5920,14 @@ Poslužitelj je vratio pogrešku: %2</translation>
     </message>
 </context>
 <context>
+    <name>OCC::SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
+        <source>Failed to connect database.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::SyncStatusSummary</name>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
@@ -7170,14 +7178,6 @@ Poslužitelj je vratio pogrešku: %2</translation>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Sharing is not available for this folder</source>
         <translation>Dijeljenje nije dostupno za ovu mapu</translation>
-    </message>
-</context>
-<context>
-    <name>SyncJournalDb</name>
-    <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
-        <source>Failed to connect database.</source>
-        <translation>Povezivanje baze podataka nije uspjelo.</translation>
     </message>
 </context>
 <context>
@@ -8761,6 +8761,14 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
         <translation>Bez proxyja</translation>
+    </message>
+</context>
+<context>
+    <name>SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
+        <source>Failed to connect database.</source>
+        <translation>Povezivanje baze podataka nije uspjelo.</translation>
     </message>
 </context>
 <context>

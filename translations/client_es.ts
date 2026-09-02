@@ -5929,6 +5929,14 @@ El servidor respondió con el error: %2</translation>
     </message>
 </context>
 <context>
+    <name>OCC::SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
+        <source>Failed to connect database.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::SyncStatusSummary</name>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
@@ -7179,14 +7187,6 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Sharing is not available for this folder</source>
         <translation>Compartir no está disponible para esta carpeta</translation>
-    </message>
-</context>
-<context>
-    <name>SyncJournalDb</name>
-    <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
-        <source>Failed to connect database.</source>
-        <translation>Fallo en la conexión a la base de datos.</translation>
     </message>
 </context>
 <context>
@@ -8776,6 +8776,14 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
         <translation>Sin proxy</translation>
+    </message>
+</context>
+<context>
+    <name>SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
+        <source>Failed to connect database.</source>
+        <translation>Fallo en la conexión a la base de datos.</translation>
     </message>
 </context>
 <context>

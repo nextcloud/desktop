@@ -5928,6 +5928,14 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     </message>
 </context>
 <context>
+    <name>OCC::SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
+        <source>Failed to connect database.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::SyncStatusSummary</name>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
@@ -7178,14 +7186,6 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Sharing is not available for this folder</source>
         <translation>Níl roinnt ar fáil don fhillteán seo</translation>
-    </message>
-</context>
-<context>
-    <name>SyncJournalDb</name>
-    <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
-        <source>Failed to connect database.</source>
-        <translation>Theip ar an mbunachar sonraí a nascadh.</translation>
     </message>
 </context>
 <context>
@@ -8775,6 +8775,14 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
         <translation>Gan seachfhreastalaí</translation>
+    </message>
+</context>
+<context>
+    <name>SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
+        <source>Failed to connect database.</source>
+        <translation>Theip ar an mbunachar sonraí a nascadh.</translation>
     </message>
 </context>
 <context>

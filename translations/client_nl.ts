@@ -5905,6 +5905,14 @@ Server antwoordde met fout: %2</translation>
     </message>
 </context>
 <context>
+    <name>OCC::SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
+        <source>Failed to connect database.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::SyncStatusSummary</name>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
@@ -7155,14 +7163,6 @@ Server antwoordde met fout: %2</translation>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Sharing is not available for this folder</source>
         <translation>Delen is niet beschikbaar voor deze map</translation>
-    </message>
-</context>
-<context>
-    <name>SyncJournalDb</name>
-    <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
-        <source>Failed to connect database.</source>
-        <translation>Kon niet verbinden met database.</translation>
     </message>
 </context>
 <context>
@@ -8746,6 +8746,14 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
         <translation>Geen proxy</translation>
+    </message>
+</context>
+<context>
+    <name>SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
+        <source>Failed to connect database.</source>
+        <translation>Kon niet verbinden met database.</translation>
     </message>
 </context>
 <context>
