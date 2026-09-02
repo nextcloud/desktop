@@ -256,6 +256,9 @@ QtObject {
     readonly property int unifiedSearchResultSectionItemVerticalPadding: 8
     readonly property int unifiedSearchResultNothingFoundHorizontalMargin: 10
     readonly property int unifiedSearchInputContainerHeight: 40
+    readonly property int unifiedSearchInputIconSize: 24
+    readonly property int unifiedSearchInputHorizontalPadding: 8
+    readonly property int unifiedSearchInputControlInset: 4
     readonly property int unifiedSearchPlaceholderViewTitleFontPixelSize: pixelSize * 1.25
     readonly property int unifiedSearchPlaceholderViewSublineFontPixelSize: subLinePixelSize * 1.25
 

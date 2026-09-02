@@ -173,6 +173,7 @@ void UnifiedSearchPeopleModel::startSearch()
     const auto job = new JsonApiJob(account, QStringLiteral("ocs/v2.php/apps/files_sharing/api/v1/sharees"));
     auto query = QUrlQuery{};
     query.addQueryItem(QStringLiteral("search"), _searchTerm);
+    query.addQueryItem(QStringLiteral("itemType"), QStringLiteral("file"));
     query.addQueryItem(QStringLiteral("shareType"), QStringLiteral("0"));
     query.addQueryItem(QStringLiteral("lookup"), QStringLiteral("false"));
     query.addQueryItem(QStringLiteral("page"), QStringLiteral("1"));

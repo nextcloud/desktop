@@ -275,6 +275,7 @@ WizardStyledWindow {
     Loader {
         id: peoplePopupLoader
 
+        objectName: "peoplePopupLoader"
         active: false
         sourceComponent: peoplePopupComponent
         onLoaded: {

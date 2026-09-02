@@ -84,6 +84,7 @@ private Q_SLOTS:
 
         QCOMPARE(requestedUrl.path(), QStringLiteral("/ocs/v2.php/apps/files_sharing/api/v1/sharees"));
         const QUrlQuery query(requestedUrl);
+        QCOMPARE(query.queryItemValue(QStringLiteral("itemType")), QStringLiteral("file"));
         QCOMPARE(query.queryItemValue(QStringLiteral("shareType")), QStringLiteral("0"));
         QCOMPARE(query.queryItemValue(QStringLiteral("lookup")), QStringLiteral("false"));
         QCOMPARE(query.queryItemValue(QStringLiteral("page")), QStringLiteral("1"));
@@ -91,7 +92,7 @@ private Q_SLOTS:
         QCOMPARE(model.data(model.index(0), OCC::UnifiedSearchPeopleModel::UserIdRole).toString(), QStringLiteral("ada"));
         QCOMPARE(model.data(model.index(1), OCC::UnifiedSearchPeopleModel::UserIdRole).toString(), QStringLiteral("alan"));
         QCOMPARE(model.data(model.index(0), OCC::UnifiedSearchPeopleModel::AvatarUrlRole).toString(),
-            QStringLiteral("https://cloud.example.test/index.php/avatar/ada/64"));
+                 QStringLiteral("https://cloud.example.test/index.php/avatar/ada/64"));
     }
 
     void injectsMatchingSignedInUser()

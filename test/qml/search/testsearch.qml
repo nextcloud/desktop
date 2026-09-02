@@ -308,6 +308,40 @@ Item {
             model.destroy()
         }
 
+        function test_peopleQueryIsRestoredWhenPopupReopens() {
+            const model = windowSearchModel.createObject(this, {
+                peopleFilterAvailable: true
+            })
+            const searchWindow = productionSearchWindow.createObject(null, {
+                searchModel: model,
+                visible: true
+            })
+            const peopleButton = findChild(searchWindow, "peopleFilterButton")
+            const popupLoader = findChild(searchWindow, "peoplePopupLoader")
+
+            verify(peopleButton !== null)
+            verify(popupLoader !== null)
+            mouseClick(peopleButton)
+            tryCompare(popupLoader, "status", Loader.Ready)
+            let peopleSearch = findChild(popupLoader.item, "peopleSearchField")
+            verify(peopleSearch !== null)
+            peopleSearch.forceActiveFocus()
+            keyClick(Qt.Key_A)
+            compare(peopleSearch.text, "a")
+
+            popupLoader.item.close()
+            tryCompare(popupLoader, "active", false)
+            mouseClick(peopleButton)
+            tryCompare(popupLoader, "status", Loader.Ready)
+            peopleSearch = findChild(popupLoader.item, "peopleSearchField")
+            verify(peopleSearch !== null)
+            compare(peopleSearch.text, "a")
+
+            popupLoader.item.close()
+            searchWindow.destroy()
+            model.destroy()
+        }
+
         function test_detailHeaderCentersProviderAndShowsBackArrow() {
             const model = windowSearchModel.createObject(this, {
                 viewMode: UnifiedSearchResultsListModel.ProviderDetail,
@@ -577,7 +611,7 @@ Item {
 
         function test_activeFocusKeepsNeutralFrame() {
             verify(input.activeFocus)
-            compare(input.background.border.width, 1)
+            compare(input.background.border.width, Style.normalBorderWidth)
             compare(input.background.border.color, Style.wizardFieldBorder)
         }
 

@@ -481,7 +481,7 @@ bool UnifiedSearchResultsListModel::externalProvidersEnabled() const
 
 bool UnifiedSearchResultsListModel::showConnectedServicesAction() const
 {
-    return _viewMode == ViewMode::Aggregate && hasSearchTerm() && hasExternalProviders() && !isSearchInProgress();
+    return _viewMode == ViewMode::Aggregate && _selectedProviderIds.isEmpty() && hasSearchTerm() && hasExternalProviders() && !isSearchInProgress();
 }
 
 bool UnifiedSearchResultsListModel::hasPartialFailure() const
@@ -520,8 +520,10 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
     if (_searchTerm == term) {
         return;
     }
+    const auto wasInProgress = isSearchInProgress();
     _searchTerm = term;
     Q_EMIT searchTermChanged();
+    updateProgressSignals(wasInProgress);
     scheduleSearch();
 }
 

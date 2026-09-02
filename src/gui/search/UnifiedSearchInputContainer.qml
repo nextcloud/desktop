@@ -4,7 +4,7 @@
  */
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Basic
 import Style
 import com.nextcloud.desktopclient
 import "qrc:/qml/src/gui/tray"
@@ -18,20 +18,21 @@ TextField {
 
     property bool isSearchInProgress: false
     readonly property color iconColor: palette.placeholderText
-    readonly property int iconSize: 24
-    readonly property int controlSize: Math.max(40, height - 4)
+    readonly property int iconSize: Style.unifiedSearchInputIconSize
+    readonly property int controlSize: Math.max(Style.standardPrimaryButtonHeight,
+                                                height - Style.unifiedSearchInputControlInset)
 
-    leftPadding: 8 + controlSize
-    rightPadding: 8
+    leftPadding: Style.unifiedSearchInputHorizontalPadding + controlSize
+    rightPadding: Style.unifiedSearchInputHorizontalPadding
         + (root.text.length > 0 ? controlSize : 0)
-        + (root.isSearchInProgress ? 8 + iconSize : 0)
+        + (root.isSearchInProgress ? Style.unifiedSearchInputHorizontalPadding + iconSize : 0)
     verticalAlignment: Qt.AlignVCenter
     placeholderText: qsTr("Search files, messages, events …")
 
     background: Rectangle {
-        radius: 8
+        radius: Style.mediumRoundedButtonRadius
         color: Style.wizardFieldBackground
-        border.width: 1
+        border.width: Style.normalBorderWidth
         border.color: Style.wizardFieldBorder
     }
 
@@ -47,7 +48,7 @@ TextField {
     Image {
         objectName: "searchLeadingIcon"
         anchors.left: parent.left
-        anchors.leftMargin: 8
+        anchors.leftMargin: Style.unifiedSearchInputHorizontalPadding
         anchors.verticalCenter: parent.verticalCenter
         width: root.iconSize
         height: root.iconSize
@@ -60,7 +61,7 @@ TextField {
     NCBusyIndicator {
         objectName: "searchProgressIndicator"
         anchors.right: clearSearchButton.visible ? clearSearchButton.left : parent.right
-        anchors.rightMargin: clearSearchButton.visible ? 0 : 8
+        anchors.rightMargin: clearSearchButton.visible ? 0 : Style.unifiedSearchInputHorizontalPadding
         anchors.verticalCenter: parent.verticalCenter
         width: root.iconSize
         height: root.iconSize
@@ -75,7 +76,7 @@ TextField {
 
         objectName: "clearSearchButton"
         anchors.right: parent.right
-        anchors.rightMargin: 2
+        anchors.rightMargin: Style.extraSmallSpacing
         anchors.verticalCenter: parent.verticalCenter
         width: root.controlSize
         height: root.controlSize

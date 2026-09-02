@@ -11,6 +11,7 @@
 #include "testhelper.h"
 
 #include <QAbstractItemModelTester>
+#include <QCoreApplication>
 #include <QDesktopServices>
 #include <QMetaMethod>
 #include <QSignalSpy>
@@ -136,7 +137,7 @@ public:
     }
 
     // initialize the JSON response containing the fake list of providers and their properties
-    void initProvidersResponse(const QString &excludedProviderId = {}, const QString &providerWithoutPersonFilter = {})
+    void initProvidersResponse(const QString &excludedProviderId = {}, const QString &providerWithoutPersonFilter = {}, const QString &externalProviderId = {})
     {
         QList<QVariant> providersList;
 
@@ -159,6 +160,7 @@ public:
                 {QStringLiteral("name"), fakeProviderInitInfo._name},
                 {QStringLiteral("order"), fakeProviderInitInfo._order},
                 {QStringLiteral("filters"), filters},
+                {QStringLiteral("isExternalProvider"), fakeProviderInitInfo._id == externalProviderId},
             });
         }
 
@@ -496,6 +498,32 @@ private Q_SLOTS:
         QVERIFY(!model->isSearchInProgress());
     }
 
+    void testSearchTermNotifiesProgressDuringProviderDiscovery()
+    {
+        auto qnam = std::unique_ptr<FakeQNAM>(new FakeQNAM({}));
+        auto slowAccount = OCC::Account::create();
+        slowAccount->setCredentials(new FakeCredentials(qnam.get()));
+        slowAccount->setUrl(QUrl(QStringLiteral("http://example.de")));
+        auto slowAccountState = std::make_unique<FakeAccountState>(slowAccount);
+        qnam->setOverride([&](QNetworkAccessManager::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            return static_cast<QNetworkReply *>(
+                new FakePayloadReply(operation, request, FakeSearchResultsStorage::instance()->fakeProvidersResponseJson(), 1000, qnam.get()));
+        });
+
+        OCC::UnifiedSearchResultsListModel slowModel(slowAccountState.get(), 0);
+        QCoreApplication::processEvents();
+        QVERIFY(!slowModel.providersReady());
+        QSignalSpy progressChanged(&slowModel, &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
+
+        slowModel.setSearchTerm(QStringLiteral("query"));
+        QVERIFY(slowModel.isSearchInProgress());
+        QCOMPARE(progressChanged.count(), 1);
+
+        slowModel.setSearchTerm(QString());
+        QVERIFY(!slowModel.isSearchInProgress());
+        QCOMPARE(progressChanged.count(), 2);
+    }
+
     void testSetSearchTermResultsFound()
     {
         // make sure the model is empty
@@ -788,6 +816,35 @@ private Q_SLOTS:
         model->clearTypeFilters();
         model->clearDateFilter();
         model->clearPersonFilter();
+    }
+
+    void testConnectedServicesActionIsHiddenWithProviderFilter()
+    {
+        model->setSearchTerm(QString());
+        model->clearTypeFilters();
+
+        accountState->setStateForTesting(OCC::AccountState::Disconnected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        FakeSearchResultsStorage::instance()->initProvidersResponse({}, {}, QStringLiteral("mail"));
+        accountState->setStateForTesting(OCC::AccountState::Connected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        QTRY_VERIFY_WITH_TIMEOUT(model->providersReady(), 1000);
+
+        model->setSearchTerm(QStringLiteral("connected services"));
+        QTRY_VERIFY_WITH_TIMEOUT(!model->isSearchInProgress() && !model->waitingForSearchTermEditEnd(), 2000);
+        QVERIFY(model->showConnectedServicesAction());
+
+        model->toggleProviderFilter(QStringLiteral("files"));
+        QVERIFY(!model->showConnectedServicesAction());
+
+        model->setSearchTerm(QString());
+        model->clearTypeFilters();
+        accountState->setStateForTesting(OCC::AccountState::Disconnected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        FakeSearchResultsStorage::instance()->initProvidersResponse();
+        accountState->setStateForTesting(OCC::AccountState::Connected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        QTRY_VERIFY_WITH_TIMEOUT(model->providersReady(), 1000);
     }
 
     void testSearchResultlicked()

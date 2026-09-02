@@ -39,7 +39,9 @@ Popup {
         TextField {
             id: peopleSearch
 
+            objectName: "peopleSearchField"
             Layout.fillWidth: true
+            text: root.peopleModel.searchTerm
             placeholderText: qsTr("Search people")
             onTextEdited: root.peopleModel.searchTerm = text
         }
