@@ -9,13 +9,20 @@
 
 name: REUSE Compliance Check
 
-on: [pull_request]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   reuse-compliance-check:
+    if: ${{ github.event.action != 'closed' }}
     runs-on: ubuntu-latest-low
     steps:
       - name: Checkout

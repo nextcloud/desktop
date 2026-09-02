@@ -5,10 +5,15 @@ name: macOS CI
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, closed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   setup_craft:
+    if: ${{ github.event.action != 'closed' }}
     name: Set up Craft and install dependencies
     timeout-minutes: 60
     runs-on: macos-15
@@ -91,6 +96,7 @@ jobs:
 
 
   build:
+    if: ${{ github.event.action != 'closed' }}
     name: Build and test ${{ matrix.buildFileProviderModule == 'True' && 'File Provider' || 'classic' }} client
     needs: setup_craft
     strategy:
