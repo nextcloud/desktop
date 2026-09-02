@@ -693,6 +693,26 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             toWrite.lockToken = existing.lockToken
+
+            // Nothing to persist when the row already holds this remote state. Without this the
+            // paginated ingestion path rewrote every row it read — one write transaction and one
+            // `evictLogicalDuplicates` query per item — even on a listing where nothing had
+            // changed. Measured on one working-set scan: 1,998 rows rewritten to surface 7 actual
+            // changes, against 5,858 evaluations that found no difference.
+            //
+            // This is the same guard the non-paginated ingestion path already applies in
+            // ``depth1ReadUpdateItemMetadatas``, including its `status == .normal` condition, which
+            // keeps an in-transit row from being judged against a server payload that cannot yet
+            // reflect it. `visitedDirectory` is compared explicitly because it is local-only and so
+            // absent from `isInSameDatabaseStoreableRemoteState`: a caller passing
+            // `preserveVisitedDirectory: false` is recording a visit and must always be written.
+            if existing.status == Status.normal.rawValue,
+               existing.isInSameDatabaseStoreableRemoteState(toWrite),
+               existing.visitedDirectory == toWrite.visitedDirectory
+            {
+                logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
+                return toWrite
+            }
         } else {
             // The ocId lookup missed. Before falling back to defaults from the
             // server payload, look for a single non-deleted, non-local-lock row
