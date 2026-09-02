@@ -5927,6 +5927,14 @@ Veateade serveri päringuvastuses: %2</translation>
     </message>
 </context>
 <context>
+    <name>OCC::SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
+        <source>Failed to connect database.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::SyncStatusSummary</name>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
@@ -7177,14 +7185,6 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Sharing is not available for this folder</source>
         <translation>Selle kausta jagamine pole võimalik</translation>
-    </message>
-</context>
-<context>
-    <name>SyncJournalDb</name>
-    <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
-        <source>Failed to connect database.</source>
-        <translation>Ei õnnestunud luua ühendust andmebaasiga</translation>
     </message>
 </context>
 <context>
@@ -8774,6 +8774,14 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
         <translation>Proksiserver pole vajalik</translation>
+    </message>
+</context>
+<context>
+    <name>SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
+        <source>Failed to connect database.</source>
+        <translation>Ei õnnestunud luua ühendust andmebaasiga</translation>
     </message>
 </context>
 <context>
