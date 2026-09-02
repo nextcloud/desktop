@@ -590,3 +590,5 @@ bool PropagateLocalRename::deleteOldDbRecord(const QString &fileName)
     return true;
 }
 }
+
+#include "moc_propagatorjobs.cpp"
