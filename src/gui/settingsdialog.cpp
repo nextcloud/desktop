@@ -181,7 +181,10 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _firstNonAccountAction = _toolBar->addWidget(accountSpacer);
 
     addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("General"), new GeneralSettings(this));
-    addSettingsPage(QLatin1String(":/client/theme/advanced.svg"), tr("Advanced"), new AdvancedSettings(this));
+
+    _advancedSettings = new AdvancedSettings(this);
+    addSettingsPage(QLatin1String(":/client/theme/advanced.svg"), tr("Advanced"), _advancedSettings);
+
     addSettingsPage(QLatin1String(":/client/theme/info.svg"), tr("Info"), new InfoSettings(this), true);
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
@@ -326,6 +329,13 @@ void SettingsDialog::showIssuesList(AccountState *account)
     Systray::instance()->showActivitiesWindow(id);
 }
 
+void SettingsDialog::openGlobalIgnoreListEditor()
+{
+    if (_advancedSettings) {
+        _advancedSettings->slotIgnoreFilesEditor();
+    }
+}
+
 void SettingsDialog::accountAdded(AccountState *s)
 {
     auto height = _toolBar->sizeHint().height();
@@ -360,6 +370,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(accountSettings, &AccountSettings::openFolderAlias,
         _gui, &ownCloudGui::slotFolderOpenAction);
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
+    connect(accountSettings, &AccountSettings::openGlobalIgnoreListEditorRequested, this, &SettingsDialog::openGlobalIgnoreListEditor);
+
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 

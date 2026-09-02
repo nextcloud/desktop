@@ -28,11 +28,11 @@ public:
 
 public Q_SLOTS:
     void slotStyleChanged();
+    void slotIgnoreFilesEditor();
 
 private Q_SLOTS:
     void saveMiscSettings();
     void slotShowInExplorerNavigationPane(bool checked);
-    void slotIgnoreFilesEditor();
     void slotCreateDebugArchive();
     void loadMiscSettings();
     void slotRemotePollIntervalChanged(int seconds);
