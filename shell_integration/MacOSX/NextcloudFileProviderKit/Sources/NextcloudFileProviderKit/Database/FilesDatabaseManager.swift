@@ -543,6 +543,58 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    ///
+    /// Persist several metadata rows in a **single** write transaction.
+    ///
+    /// Semantically identical to calling ``addItemMetadata(_:)`` per element, but the callers
+    /// that reconcile whole sets at once — materialized-set reconciliation, delivered-deletion
+    /// cleanup — were opening one transaction per row. On a large synced set that dominated the
+    /// callback and, because some of those loops run on the main actor or on the framework's
+    /// callback thread, stalled unrelated extension work behind them.
+    ///
+    public func addItemMetadatas(_ metadatas: [SendableItemMetadata]) {
+        guard !metadatas.isEmpty else { return }
+
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                for metadata in metadatas {
+                    evictLogicalDuplicates(of: metadata, in: database)
+                    database.add(RealmItemMetadata(value: metadata), update: .all)
+                }
+            }
+
+            logger.debug("Added \(metadatas.count) item metadata records in one transaction.")
+        } catch {
+            logger.error("Failed to add \(metadatas.count) item metadata records in one transaction.", [.error: error])
+        }
+    }
+
+    ///
+    /// Hard delete several items in a **single** write transaction.
+    ///
+    /// The batched counterpart of ``removeItemMetadata(ocId:)``; see ``addItemMetadatas(_:)`` for
+    /// why the per-row transaction was a problem.
+    ///
+    public func removeItemMetadatas(ocIds: [String]) {
+        guard !ocIds.isEmpty else { return }
+
+        let database = ncDatabase()
+
+        do {
+            let results = itemMetadatas.where { $0.ocId.in(ocIds) }
+
+            try database.write {
+                database.delete(results)
+            }
+
+            logger.debug("Removed \(ocIds.count) item metadata records in one transaction.")
+        } catch {
+            logger.error("Could not remove \(ocIds.count) item metadata records in one transaction.", [.error: error])
+        }
+    }
+
     /**
      * @brief Records that the provider returned `.excludedFromSync` for an item.
      *

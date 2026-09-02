@@ -191,9 +191,11 @@ extension Enumerator {
                     // reported (didDeleteItems ran in completeChangesBatch), and doing the DB write before
                     // finishEnumeratingChanges keeps the database consistent with what the observer has
                     // been told by the time the batch is acknowledged.
-                    for metadata in deletedToRemove {
-                        dbManager.removeItemMetadata(ocId: metadata.ocId)
-                    }
+                    //
+                    // One transaction for the batch, not one per item: this block runs on the main
+                    // actor, so a per-item write transaction put the whole batch's Realm work in
+                    // front of everything else scheduled there.
+                    dbManager.removeItemMetadatas(ocIds: deletedToRemove.map(\.ocId))
 
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: moreComing)
                 }

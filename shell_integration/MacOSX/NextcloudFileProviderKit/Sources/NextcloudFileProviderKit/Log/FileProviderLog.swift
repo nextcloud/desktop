@@ -62,6 +62,18 @@ public actor FileProviderLog: FileProviderLogging {
     var handle: FileHandle?
 
     ///
+    /// Bytes written through ``handle`` since it was opened, tracked so rotation can be decided
+    /// without a file system round trip.
+    ///
+    /// ``rotateLogFileIfNeeded()`` runs before every single line and used to `stat` the log file
+    /// each time. Under load — a bulk materialisation emits tens of thousands of lines — that put
+    /// one syscall per line in front of the actor's serialized queue, which every hot path in the
+    /// extension awaits. The counter is exact because this actor is the only writer and each file
+    /// is created empty.
+    ///
+    var bytesWrittenToCurrentFile: Int64 = 0
+
+    ///
     /// Unified logger used for self-diagnostics of this actor, tagged with the category `"FileProviderLog"`.
     ///
     /// Used for messages about this actor's own concerns — log file rotation, startup and KVO transitions of the debug-logging gate, and errors that prevent writing to the JSONL file.
@@ -226,28 +238,22 @@ public actor FileProviderLog: FileProviderLogging {
             return
         }
 
-        do {
-            if let currentFile = file {
-                let fileAttributes = try fileManager.attributesOfItem(atPath: currentFile.path)
+        if let currentFile = file, bytesWrittenToCurrentFile >= maxLogFileSize {
+            // Close current handle, flushing anything still buffered in it first.
+            try? handle?.synchronize()
+            handle?.closeFile()
+            logger.debug("Closed current log file at \"\(currentFile.path, privacy: .public)\" because it exceeds the size limit.")
 
-                if let fileSize = fileAttributes[.size] as? Int64, fileSize >= maxLogFileSize {
-                    // Close current handle
-                    handle?.closeFile()
-                    logger.debug("Closed current log file at \"\(currentFile.path, privacy: .public)\" because it exceeds the size limit.")
-
-                    file = nil
-                    handle = nil
-                }
-            }
-        } catch {
-            // swiftformat:disable:next redundantSelf
-            logger.error("Failed to close open log file at \"\(self.file?.path ?? "nil")\": \(error.localizedDescription, privacy: .public)")
+            file = nil
+            handle = nil
         }
 
         guard handle == nil else {
             // Already have an active handle which was not closed previously, stick with that file.
             return
         }
+
+        bytesWrittenToCurrentFile = 0
 
         let creationDate = Date()
         let formattedDate = fileDateFormatter.string(from: creationDate)
@@ -347,9 +353,18 @@ public actor FileProviderLog: FileProviderLogging {
 
         do {
             let object = try encoder.encode(entry)
+            let newline = Data("\n".utf8)
+
+            // No `synchronize()` here. `FileHandle.write(contentsOf:)` is an unbuffered `write(2)`,
+            // so the line is in the file and readable the moment this returns; the fsync only
+            // added durability against power loss, which a diagnostic log does not need. Paying
+            // it per line serialized every caller of this actor — and every hot path in the
+            // extension logs — behind one disk flush each, so a burst of tens of thousands of
+            // lines became tens of thousands of serialized fsyncs. Rotation still flushes before
+            // closing a file.
             try handle.write(contentsOf: object)
-            try handle.write(contentsOf: "\n".data(using: .utf8)!)
-            try handle.synchronize()
+            try handle.write(contentsOf: newline)
+            bytesWrittenToCurrentFile += Int64(object.count + newline.count)
         } catch {
             logger.error("Failed to encode and write message: \(message, privacy: .public)!")
             return
