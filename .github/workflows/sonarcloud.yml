@@ -11,15 +11,15 @@ on:
       - "**/*.c"
       - "**/*.h"
   pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
 
 concurrency:
-  group: sonarcloud-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
+    if: ${{ github.event_name != 'pull_request' || (github.event.action != 'closed' && !github.event.pull_request.draft) }}
     name: SonarCloud analysis
     runs-on: [ubuntu-latest, self-hosted]
     container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-sid-6.10.2-2
