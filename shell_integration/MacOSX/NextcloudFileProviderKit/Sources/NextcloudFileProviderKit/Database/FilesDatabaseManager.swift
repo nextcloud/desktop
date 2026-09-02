@@ -258,6 +258,39 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    ///
+    /// Concurrent queue for synchronous database calls made from an `async` context, concurrent
+    /// because the pool already serialises writes and runs reads in parallel.
+    ///
+    private let blockingCallQueue: DispatchQueue = {
+        let queue = DispatchQueue(
+            label: "com.nextcloud.desktopclient.fileprovider.database", qos: .userInitiated, attributes: .concurrent
+        )
+        queue.setSpecific(key: blockingCallQueueKey, value: ())
+        return queue
+    }()
+
+    private static let blockingCallQueueKey = DispatchSpecificKey<Void>()
+
+    /// Whether the caller is running on ``blockingCallQueue``.
+    var isOnBlockingCallQueue: Bool {
+        DispatchQueue.getSpecific(key: Self.blockingCallQueueKey) != nil
+    }
+
+    ///
+    /// Run `work` on ``blockingCallQueue``, suspending the caller rather than blocking a thread of the
+    /// cooperative pool while SQLite waits for the writer or for a free reader.
+    ///
+    /// `work` calls the synchronous methods of this type, each of which enters the database on its own, so it must not run inside another database access.
+    ///
+    public func perform<T: Sendable>(
+        _ work: @escaping @Sendable (FilesDatabaseManager) -> T
+    ) async -> T {
+        await withCheckedContinuation { continuation in
+            blockingCallQueue.async { continuation.resume(returning: work(self)) }
+        }
+    }
+
     // MARK: - Lookups
 
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
