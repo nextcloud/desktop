@@ -96,6 +96,8 @@ public:
 
     const QByteArray createNewShare(const Share::ShareType shareType, const QString &shareWith, const QString &password);
     [[nodiscard]] int shareCount() const;
+    [[nodiscard]] const QList<QUrl> &sharedWithMeRequestUrls() const;
+    void resetSharedWithMeRequestUrls();
 
 signals:
     void setupSucceeded();
@@ -122,6 +124,7 @@ private:
     QByteArray _fake200JsonResponse = R"({"ocs":{"data":[],"meta":{"message":"OK","status":"ok","statuscode":200}}})";
 
     QJsonArray _sharesReplyData;
+    QList<QUrl> _sharedWithMeRequestUrls;
     QVariantMap _fakeCapabilities;
     QSet<int> _liveShareIds;
 };
