@@ -27,10 +27,11 @@
 #include "updater/ocupdater.h"
 #endif
 
+#include "common/utility.h"
+#include "common/vfs.h"
+#include "csync_exclude.h"
 #include "owncloudsetupwizard.h"
 #include "version.h"
-#include "csync_exclude.h"
-#include "common/vfs.h"
 
 #include "config.h"
 
@@ -389,7 +390,10 @@ Application::Application(int &argc, char **argv)
             shouldExit = true;
         }
 
-        if (AccountSetupCommandLineManager::instance()) {
+        // Only a command line that actually provisions an account carries a meaningful
+        // --isvfsenabled value; on a normal start this would overwrite the user's setting
+        // with the default of an unused parser.
+        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
             cfg.setVfsEnabled(AccountSetupCommandLineManager::instance()->isVfsEnabled());
         }
 
@@ -1006,7 +1010,10 @@ void Application::slotActivateRequestedMessage(const QStringList &arguments, con
 
 void Application::parseOptions(const QStringList &options)
 {
-    QStringListIterator it(options);
+    // Accept both "--option value" and "--option=value" for every option below.
+    const auto expandedOptions = Utility::expandCommandLineOptionValues(options);
+
+    QStringListIterator it(expandedOptions);
     // skip file name;
     if (it.hasNext()) {
         it.next();

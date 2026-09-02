@@ -228,7 +228,8 @@ CommandMode parseOptions(const QStringList &app_args, CmdOptions *options)
 {
     auto result = CommandMode::UnknownMode;
 
-    auto args(app_args);
+    // Accept both "--option value" and "--option=value" for every option below.
+    auto args = Utility::expandCommandLineOptionValues(app_args);
 
     const auto argCount = args.count();
 
@@ -446,19 +447,22 @@ int main(int argc, char **argv)
             return -1;
         }
 
-        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-            if (AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine()) {
-                return 0;
-            } else {
-                qWarning() << "Creation of the account failed. See prior messages for a detailed error.";
-                return -1;
-            }
-        } else {
+        if (!AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
             AccountSetupCommandLineManager::destroy();
             qWarning() << "Missing mandatory command line options for provisioning mode";
             help();
             return -1;
         }
+
+        if (!AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine()) {
+            qWarning() << "Creation of the account failed. See prior messages for a detailed error.";
+            return -1;
+        }
+
+        // Setting up the account validates the credentials against the server and stores
+        // them in the keychain, both of which are asynchronous. The setup job ends the
+        // event loop with the exit code once it has finished.
+        return app.exec();
     }
 
     AccountPtr account = Account::create();
