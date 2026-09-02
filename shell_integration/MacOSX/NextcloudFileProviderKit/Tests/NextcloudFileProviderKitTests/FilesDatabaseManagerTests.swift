@@ -2264,4 +2264,68 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let storedB = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "B"))
         XCTAssertFalse(storedB.deleted)
     }
+
+    // MARK: - Redundant-write suppression
+
+    ///
+    /// `syncTime` is the observable, carried from the incoming payload so that it advances if and
+    /// only if the row was actually written.
+    ///
+    private func seedRow(ocId: String, etag: String, syncTime: Date, visited: Bool = false) -> SendableItemMetadata {
+        var metadata = SendableItemMetadata(ocId: ocId, fileName: "doc.txt", account: Self.account)
+        metadata.etag = etag
+        metadata.syncTime = syncTime
+        metadata.visitedDirectory = visited
+        // The convenience initializer stamps `Date()`, and `date` is part of the remote-state
+        // comparison — pin it so successive rows differ only where the test intends.
+        metadata.date = Date(timeIntervalSince1970: 500_000)
+        metadata.creationDate = Date(timeIntervalSince1970: 500_000)
+        return metadata
+    }
+
+    func testUnchangedRemoteStateIsNotRewritten() {
+        let ocId = "unchanged-\(name)"
+        let firstSeen = Date(timeIntervalSince1970: 1_000_000)
+        Self.dbManager.addItemMetadata(seedRow(ocId: ocId, etag: "v1", syncTime: firstSeen))
+
+        let rescanned = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
+        let returned = Self.dbManager.addItemMetadataPreservingLocalState(rescanned)
+
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: ocId)?.syncTime, firstSeen,
+            "An unchanged row must not be rewritten."
+        )
+        XCTAssertEqual(returned.ocId, ocId, "The merged metadata must still be returned to the caller.")
+        XCTAssertEqual(returned.etag, "v1")
+    }
+
+    func testChangedRemoteStateIsStillWritten() {
+        let ocId = "changed-\(name)"
+        Self.dbManager.addItemMetadata(seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000)))
+
+        let later = Date(timeIntervalSince1970: 2_000_000)
+        Self.dbManager.addItemMetadataPreservingLocalState(seedRow(ocId: ocId, etag: "v2", syncTime: later))
+
+        let stored = Self.dbManager.itemMetadata(ocId: ocId)
+        XCTAssertEqual(stored?.etag, "v2", "A real remote change must still be persisted.")
+        XCTAssertEqual(stored?.syncTime, later)
+    }
+
+    /// `visitedDirectory` is local-only and so not part of `isInSameDatabaseStoreableRemoteState`,
+    /// so the skip must compare it explicitly or a recorded visit would be silently dropped.
+    func testRecordingADirectoryVisitIsAlwaysWritten() {
+        let ocId = "visit-\(name)"
+        var directory = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        directory.directory = true
+        Self.dbManager.addItemMetadata(directory)
+
+        var visited = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000), visited: true)
+        visited.directory = true
+        Self.dbManager.addItemMetadataPreservingLocalState(visited, preserveVisitedDirectory: false)
+
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: ocId)?.visitedDirectory, true,
+            "Recording a directory visit must be written even when the remote state is unchanged."
+        )
+    }
 }
