@@ -2,6 +2,91 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 @preconcurrency import FileProvider
+import Foundation
+
+///
+/// Batches ancestor-container refresh nudges over a short window.
+///
+/// Nudging immediately, per downloaded file, does not scale with the work that produces the
+/// nudges. Every file shares its ancestors with its siblings, so materialising a "keep downloaded"
+/// tree issued one `requestModification` per file *per level* — all landing on the same handful of
+/// containers. The root's `update-item` job was re-queued before it could finish (observed: 13
+/// times in 93 seconds under a single scheduler ID), and the sheer call rate is what macOS
+/// flagged as a notification flood.
+///
+/// Collapsing a window's worth of downloads into one deduplicated ancestor set costs a few hundred
+/// milliseconds of latency on the "Remove download" menu item and removes the amplification.
+///
+/// Guarded by an `NSLock`, following ``ChangeDeliveryBuffer``. A process serves a single file
+/// provider domain, so one shared instance covers all callers.
+///
+private final class AncestorRefreshCoalescer: @unchecked Sendable {
+    static let shared = AncestorRefreshCoalescer()
+
+    ///
+    /// How long to accumulate before nudging. Short enough to stay imperceptible in the context
+    /// menu, long enough to collapse the sibling files of a folder into one pass.
+    ///
+    private static let windowNanoseconds: UInt64 = 400_000_000
+
+    private let lock = NSLock()
+    private var pendingOcIds = Set<String>()
+    private var drainScheduled = false
+
+    ///
+    /// Take the accumulated batch and reopen the window, so downloads finishing while the batch is
+    /// being nudged start a fresh one rather than being dropped.
+    ///
+    /// Separate from the drain `Task` because `NSLock` is unavailable from an async context.
+    ///
+    private func claimBatch() -> Set<String> {
+        lock.lock()
+        defer { lock.unlock() }
+
+        let claimed = pendingOcIds
+        pendingOcIds.removeAll()
+        drainScheduled = false
+
+        return claimed
+    }
+
+    func enqueue(
+        ocIds: Set<String>,
+        manager: NSFileProviderManager,
+        dbManager: FilesDatabaseManager,
+        logger: FileProviderLogger
+    ) {
+        lock.lock()
+        pendingOcIds.formUnion(ocIds)
+
+        guard !drainScheduled else {
+            lock.unlock()
+            return
+        }
+
+        drainScheduled = true
+        lock.unlock()
+
+        Task {
+            try? await Task.sleep(nanoseconds: Self.windowNanoseconds)
+
+            let ocIds = claimBatch()
+            let ancestors = dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ocIds)
+
+            guard !ancestors.isEmpty else { return }
+
+            logger.debug("Refreshing \(ancestors.count) ancestor container(s) for \(ocIds.count) item(s) to update Remove download visibility.")
+
+            for ancestor in ancestors {
+                do {
+                    try await manager.requestModification(of: [.lastUsedDate], forItemWithIdentifier: ancestor)
+                } catch {
+                    logger.error("Could not nudge ancestor container to refresh Remove download visibility.", [.item: ancestor, .error: error.localizedDescription])
+                }
+            }
+        }
+    }
+}
 
 ///
 /// Refresh the framework's cached snapshot of every ancestor container of the
@@ -25,6 +110,11 @@
 /// - The observer covers eviction (a file going dataless) and out-of-band
 ///   materialization it discovers itself.
 ///
+/// Calls are coalesced over a short window — see ``AncestorRefreshCoalescer`` — so a bulk
+/// materialisation nudges each shared ancestor once per window rather than once per file.
+/// The ancestor walk (a synchronous Realm read) happens on the drain, so callers on
+/// latency-sensitive paths are never blocked.
+///
 func refreshRemoveDownloadVisibility(
     forAncestorsOfFileOcIds ocIds: Set<String>,
     manager: NSFileProviderManager,
@@ -33,22 +123,5 @@ func refreshRemoveDownloadVisibility(
 ) {
     guard !ocIds.isEmpty else { return }
 
-    // Everything — the ancestor walk (a synchronous Realm read) and the nudges —
-    // runs inside the Task so callers on latency-sensitive paths (the
-    // materialized-set completion handler, `fetchContents`) are never blocked.
-    Task {
-        let ancestors = dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ocIds)
-
-        guard !ancestors.isEmpty else { return }
-
-        logger.debug("Refreshing \(ancestors.count) ancestor container(s) to update Remove download visibility after materialization change.")
-
-        for ancestor in ancestors {
-            do {
-                try await manager.requestModification(of: [.lastUsedDate], forItemWithIdentifier: ancestor)
-            } catch {
-                logger.error("Could not nudge ancestor container to refresh Remove download visibility.", [.item: ancestor, .error: error.localizedDescription])
-            }
-        }
-    }
+    AncestorRefreshCoalescer.shared.enqueue(ocIds: ocIds, manager: manager, dbManager: dbManager, logger: logger)
 }
