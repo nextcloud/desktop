@@ -314,6 +314,9 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
 
 QString FileSystem::joinPath(const QString& path, const QString& file)
 {
+    Q_ASSERT(!path.isEmpty());
+    Q_ASSERT(!file.isEmpty());
+
     if (path.isEmpty()) {
         qCWarning(lcFileSystem).nospace() << "joinPath called with an empty path; returning file=" << file;
         return QDir::toNativeSeparators(file);
