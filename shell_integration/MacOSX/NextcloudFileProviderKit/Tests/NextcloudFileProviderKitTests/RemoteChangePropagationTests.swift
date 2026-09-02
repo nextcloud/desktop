@@ -537,4 +537,101 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
             "A push with no locally known ids is correctly ignored."
         )
     }
+
+    /// Headline regression for nextcloud/desktop#9688 and #10681: a folder the user creates on the Mac,
+    /// then an item created inside it on the server (web UI, public upload link, another user).
+    ///
+    /// The folder is created through the real `Item.create` path rather than `seed(...)`, because the bug
+    /// was in what creation writes to the database: it set `downloaded` but not `visitedDirectory`, and
+    /// only `visitedDirectory` puts a directory into the materialised set that
+    /// `scanMaterialisedItemsForRemoteChanges()` reads. The folder was therefore never PROPFINDed by the
+    /// working-set scan, and the parent's depth-1 read would not enqueue it either — a changed child
+    /// directory is only crawled when its subtree holds something materialised, and a brand-new remote
+    /// item is not downloaded. macOS never re-enumerates a container the extension created for it, so
+    /// nothing repaired the gap: the new item stayed invisible until the folder was forced offline
+    /// ("Keep offline"), which is exactly the workaround both issues report.
+    func testItemCreatedOnServerInLocallyCreatedFolderIsReported() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        // Create the folder the way Finder does, through the extension's create path.
+        var folderMetadata = SendableItemMetadata(
+            ocId: "folder-id", fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        folderMetadata.classFile = NKTypeClassFile.directory.rawValue
+        folderMetadata.serverUrl = Self.account.davFilesUrl
+
+        let (createdFolderMaybe, createError) = await Item.create(
+            basedOn: Item(
+                metadata: folderMetadata,
+                parentItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            ),
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(createError)
+        let createdFolder = try XCTUnwrap(createdFolderMaybe)
+
+        // The server-side creation inside that folder. Nothing in the subtree is materialised.
+        let remoteFolder = try XCTUnwrap(rootItem.children.first { $0.name == "folder" })
+        let newFile = makeFile(name: "createdOnServer.txt", parent: remoteFolder, etag: "new-v1")
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        // Assert the user-visible outcome first, so a regression fails on the symptom rather than on
+        // the flag that causes it.
+        XCTAssertNil(observer.error)
+        XCTAssertTrue(
+            reportedIds(observer).contains(newFile.identifier),
+            "An item created on the server inside a locally created folder must be reported. Reported: \(reportedIds(observer).sorted())"
+        )
+
+        // Then the mechanism: creation must record the folder as visited, or the working-set scan has
+        // no reason to read it.
+        let storedFolder = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: createdFolder.itemIdentifier.rawValue)
+        )
+        XCTAssertTrue(
+            storedFolder.visitedDirectory,
+            "A locally created folder must be recorded as visited; macOS will not enumerate it again."
+        )
+    }
+
+    /// The eviction-shaped variant of the same hole: a folder Finder has enumerated (so macOS will not
+    /// enumerate it again) whose contents are all dataless, and a NEW item appears inside it on the
+    /// server. `visitedDirectory` is deliberately kept for directories macOS reports as dataless (see
+    /// `MaterializedEnumerationObserver`), so such a folder stays in the materialised set and is read at
+    /// depth 1 — which is what must surface the new child. Guards that property against a future
+    /// narrowing of the materialised-set query or of the scan's seed set.
+    func testItemCreatedOnServerInVisitedFolderWithNoMaterialisedContentIsReported() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let existingFile = makeFile(name: "itemA", parent: folder, etag: "itemA-v1")
+
+        seed(folder, visitedDirectory: true) // enumerated once by Finder
+        seed(existingFile, downloaded: false) // evicted / never downloaded
+
+        // A new item appears on the server; the parent ETag is deliberately left alone, so discovery
+        // cannot lean on the parent looking changed.
+        let newFile = makeFile(name: "createdOnServer.txt", parent: folder, etag: "new-v1")
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        XCTAssertNil(observer.error)
+        XCTAssertTrue(
+            reportedIds(observer).contains(newFile.identifier),
+            "An item created on the server inside a visited folder must be reported even when nothing in that folder is materialised."
+        )
+    }
 }
