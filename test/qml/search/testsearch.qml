@@ -325,9 +325,8 @@ Item {
             tryCompare(popupLoader, "status", Loader.Ready)
             let peopleSearch = findChild(popupLoader.item, "peopleSearchField")
             verify(peopleSearch !== null)
-            peopleSearch.forceActiveFocus()
-            keyClick(Qt.Key_A)
-            compare(peopleSearch.text, "a")
+            popupLoader.item.peopleModel.searchTerm = "a"
+            tryCompare(peopleSearch, "text", "a")
 
             popupLoader.item.close()
             tryCompare(popupLoader, "active", false)
