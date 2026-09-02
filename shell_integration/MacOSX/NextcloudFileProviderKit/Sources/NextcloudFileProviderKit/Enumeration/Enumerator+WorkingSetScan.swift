@@ -14,6 +14,26 @@ import Foundation
 ///
 private let workingSetScanConcurrency = 6
 
+///
+/// Identifiers a streaming scan has already handed to the change buffer, so the tail append skips
+/// them. The wave callback is `@Sendable` and runs on the scan's task, hence the lock.
+///
+private final class StreamedIdentifiers: @unchecked Sendable {
+    private let lock = NSLock()
+    private var storage = Set<String>()
+
+    func formUnion(_ ocIds: some Sequence<String>) {
+        lock.lock()
+        defer { lock.unlock() }
+        storage.formUnion(ocIds)
+    }
+
+    func contains(_ ocId: String) -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return storage.contains(ocId)
+    }
+}
 
 ///
 /// Working-set change derivation. Because a change notification only ever signals `.workingSet`,
@@ -56,38 +76,73 @@ extension Enumerator {
                 let targets = RemoteChangeTargets.shared.consumeTargets()
                 let runFullScan = targets == nil || RemoteChangeTargets.shared.shouldRunFullScan()
 
-                let serverChanges = await scanMaterialisedItemsForRemoteChanges(
-                    restrictedToContainers: runFullScan ? nil : targets
-                )
-
-                if runFullScan, !serverChanges.hadFailure {
-                    RemoteChangeTargets.shared.noteFullScanCompleted()
+                // Stream the walk's discoveries rather than holding them until it ends. A full walk
+                // grows with the materialised set — 305 seconds when last measured — and a change
+                // found in its first seconds used to wait for its last: one document was seen 15
+                // seconds in and reported 4m34s later.
+                //
+                // Only scan-discovered creations and updates stream. Deletions cannot: an item
+                // absent from one directory may have moved into another the walk has not reached,
+                // which is only decidable once it has. The database-derived half is read after the
+                // scan (the scan's own writes feed it), so it joins the tail too.
+                guard let token = changeBuffer.primeStreaming(
+                    key: anchorKey, incomingAnchorRawValue: anchor.rawValue
+                ) else {
+                    logger.error("Could not open a change delivery session; skipping this derivation.")
+                    return
                 }
 
-                let pendingLocalChanges = dbManager.pendingWorkingSetChanges(since: date)
+                // Detached: awaiting the walk here would hold this call for its whole duration and
+                // streaming would buy nothing. The drain below waits only for the first wave, and
+                // the framework's continuation calls drain whatever has landed since — from this
+                // enumerator or any other, because the session and the producer's liveness are both
+                // visible to all of them.
+                Task { [changeBuffer] in
+                    let streamed = StreamedIdentifiers()
+                    let serverChanges = await scanMaterialisedItemsForRemoteChanges(
+                        restrictedToContainers: runFullScan ? nil : targets
+                    ) { discovered in
+                        streamed.formUnion(discovered.map(\.ocId))
+                        changeBuffer.append(token: token, updated: discovered, deleted: [])
+                    }
 
-                let changes = ChangeSet(
-                    mergingUpdated: [serverChanges.updated, pendingLocalChanges.updated],
-                    deleted: [serverChanges.deleted, pendingLocalChanges.deleted]
-                )
+                    if runFullScan, !serverChanges.hadFailure {
+                        RemoteChangeTargets.shared.noteFullScanCompleted()
+                    }
 
-                // Sort created+updated by remote-path length (ascending) so parent directories are
-                // reported before their children. Draining the single combined list front-to-back
-                // preserves this across batches; without it macOS may create a rename-destination folder
-                // to house a child before it processes the parent rename, briefly leaving both the old
-                // and new folder names on disk.
-                let sortedUpdated = changes.createdAndUpdated
-                    .sorted { $0.remotePath().count < $1.remotePath().count }
+                    let pendingLocalChanges = dbManager.pendingWorkingSetChanges(since: date)
 
-                let finalAnchor = serverChanges.hadFailure ? anchor : currentAnchor
-                changeBuffer.prime(
-                    key: anchorKey,
-                    finalAnchorRawValue: finalAnchor.rawValue,
-                    updated: sortedUpdated,
-                    deleted: changes.deleted,
-                    incomplete: serverChanges.hadFailure
-                )
+                    let changes = ChangeSet(
+                        mergingUpdated: [serverChanges.updated, pendingLocalChanges.updated],
+                        deleted: [serverChanges.deleted, pendingLocalChanges.deleted]
+                    )
+
+                    // Sort created+updated by remote-path length (ascending) so parent directories
+                    // are reported before their children. Draining front-to-back preserves this
+                    // across batches; without it macOS may create a rename-destination folder to
+                    // house a child before it processes the parent rename, briefly leaving both the
+                    // old and new folder names on disk. The streamed portion already satisfies the
+                    // rule by construction — waves run shallowest-depth-first — so only the tail
+                    // needs sorting.
+                    let remainingUpdated = changes.createdAndUpdated
+                        .filter { !streamed.contains($0.ocId) }
+                        .sorted { $0.remotePath().count < $1.remotePath().count }
+
+                    changeBuffer.append(token: token, updated: remainingUpdated, deleted: changes.deleted)
+
+                    let finalAnchor = serverChanges.hadFailure ? anchor : currentAnchor
+                    changeBuffer.finishStreaming(
+                        token: token,
+                        finalAnchorRawValue: finalAnchor.rawValue,
+                        incomplete: serverChanges.hadFailure
+                    )
+                }
             }
+
+            // Park until the producer has something, so a streaming session never answers with an
+            // empty batch and `moreComing: true` — which the framework answers by calling straight
+            // back. Returns at once when no producer is running.
+            await changeBuffer.awaitDeliverableItems()
 
             // Intermediate batches use a durable continuation anchor. The final batch normally advances
             // the working-set sync point to
@@ -123,8 +178,14 @@ extension Enumerator {
     ///   discovery, coverage and deletion reconciliation are unchanged; they simply operate over
     ///   what was actually read, so an item under a container this pass did not look at is never
     ///   claimed as deleted. `nil` performs the full reconciliation.
+    /// - Parameter onDiscovered: Invoked as each depth wave completes, with the creations and updates
+    ///   that wave revealed and no earlier one had. Waves run shallowest-first, so successive calls
+    ///   are already ordered parents-before-children. Deletions are deliberately absent: an item
+    ///   missing from one directory may have moved into another the walk has not reached yet, so
+    ///   they are only decidable once it is complete (see `survivingOcIds` below).
     func scanMaterialisedItemsForRemoteChanges(
-        restrictedToContainers: Set<NSFileProviderItemIdentifier>? = nil
+        restrictedToContainers: Set<NSFileProviderItemIdentifier>? = nil,
+        onDiscovered: (@Sendable ([SendableItemMetadata]) -> Void)? = nil
     ) async -> (
         updated: [SendableItemMetadata], deleted: [SendableItemMetadata], hadFailure: Bool
     ) {
@@ -158,6 +219,8 @@ extension Enumerator {
         // advancing the working-set sync point past changes this pass could not discover.
         var hadReadFailure = false
         var failedItemIds = Set<String>()
+        // What `onDiscovered` has already been handed, so each wave emits only its own delta.
+        var emittedUpdateOcIds = Set<String>()
 
         // Work queue seeded with the materialised items. A changed child directory discovered while
         // scanning is appended ONLY when its subtree actually contains a materialised item, so its
@@ -322,6 +385,18 @@ extension Enumerator {
                     }
 
                     scannedItemIds.formUnion(childrenCoveredByThisRead)
+                }
+            }
+
+            // Hand this wave over before starting the next. Emitting the delta with a persistent
+            // seen-set keeps first-occurrence ordering identical to the single dedup below.
+            if let onDiscovered {
+                let waveDiscoveries = (accumulatedCreations + accumulatedUpdates).filter {
+                    emittedUpdateOcIds.insert($0.ocId).inserted
+                }
+
+                if !waveDiscoveries.isEmpty {
+                    onDiscovered(waveDiscoveries)
                 }
             }
         }

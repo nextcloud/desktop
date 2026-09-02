@@ -56,6 +56,96 @@ extension FilesDatabaseManager {
         }
     }
 
+    ///
+    /// Append more changes to an open session, after everything already queued.
+    ///
+    /// Streaming delivery primes a session from a scan's first wave and appends the rest as they are
+    /// discovered, so a change found early is reported without waiting for the whole walk. Sequences
+    /// continue past the highest one stored — consumed items are deleted as the drain advances, so
+    /// the session's `nextSequence` is the floor to build on rather than the stored count.
+    ///
+    func appendChangeDeliveryItems(
+        sessionId: String,
+        updated: [SendableItemMetadata],
+        deleted: [SendableItemMetadata]
+    ) -> Bool {
+        let encoder = JSONEncoder()
+        let allChanges: [(metadata: SendableItemMetadata, deleted: Bool)] =
+            updated.map { (metadata: $0, deleted: false) } + deleted.map { (metadata: $0, deleted: true) }
+
+        guard !allChanges.isEmpty else { return true }
+
+        let encodedChanges: [(data: Data, deleted: Bool)] = allChanges.compactMap { change in
+            guard let metadataData = try? encoder.encode(change.metadata) else { return nil }
+            return (data: metadataData, deleted: change.deleted)
+        }
+
+        guard encodedChanges.count == allChanges.count else {
+            logger.error("Could not encode all metadata appended to a change-delivery session.")
+            return false
+        }
+
+        let database = ncDatabase()
+
+        guard let session = database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId),
+              !session.completed
+        else {
+            logger.error("Cannot append to a change-delivery session that is not open.")
+            return false
+        }
+
+        let highestStored = database
+            .objects(RealmChangeDeliveryItem.self)
+            .filter("sessionId == %@", sessionId)
+            .max(ofProperty: "sequence") as Int? ?? (session.nextSequence - 1)
+        let firstSequence = max(highestStored + 1, session.nextSequence)
+
+        do {
+            try database.write {
+                let items = encodedChanges.enumerated().map { offset, change in
+                    RealmChangeDeliveryItem(
+                        sessionId: sessionId,
+                        sequence: firstSequence + offset,
+                        metadataData: change.data,
+                        deleted: change.deleted
+                    )
+                }
+                database.add(items, update: .modified)
+            }
+            return true
+        } catch {
+            logger.error("Could not append to a change-delivery session.")
+            return false
+        }
+    }
+
+    ///
+    /// Record a streaming session's outcome once its producer has finished.
+    ///
+    /// A streaming session is primed `incomplete` because the scan's success is not yet known. A
+    /// clean finish stamps the real sync anchor and clears the flag, which is what lets the
+    /// working-set sync point advance. Left as primed, the session keeps its incoming anchor and the
+    /// next signal re-derives — the safe outcome when a scan fails or is abandoned.
+    ///
+    func finalizeChangeDeliverySession(
+        sessionId: String,
+        finalAnchorRawValue: Data,
+        incomplete: Bool
+    ) {
+        let database = ncDatabase()
+
+        guard let session = database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId),
+              !session.completed
+        else {
+            return
+        }
+
+        try? database.write {
+            session.finalAnchorRawValue = finalAnchorRawValue
+            session.incomplete = incomplete
+        }
+    }
+
     /// Return the active delivery session whose current continuation anchor matches `anchorKey`.
     func changeDeliverySession(forAnchorKey anchorKey: String) -> (
         sessionId: String,
