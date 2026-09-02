@@ -49,6 +49,14 @@ namespace OCC {
 
 // Keep behavior and menu taxonomy aligned with the macOS popup in src/gui/macOS/trayaccountpopup/.
 
+QPalette nativeMenuIconPalette(const QMenu *menu)
+{
+    if (menu) {
+        return menu->palette();
+    }
+    return QGuiApplication::palette();
+}
+
 namespace {
 
 constexpr auto fixedMenuWidth = 320;
@@ -143,14 +151,6 @@ QImage tintImage(const QImage &image, const QColor &color)
     painter.drawImage(0, 0, image.convertToFormat(QImage::Format_ARGB32_Premultiplied));
     painter.end();
     return tintedImage;
-}
-
-QPalette nativeMenuIconPalette(const QMenu *menu)
-{
-    if (menu) {
-        return menu->palette();
-    }
-    return QGuiApplication::palette();
 }
 
 QString templateIconPaletteCacheKey(const QPalette &palette)

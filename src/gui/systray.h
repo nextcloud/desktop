@@ -17,6 +17,7 @@
 
 class QScreen;
 class QMenu;
+class QPalette;
 class QQmlApplicationEngine;
 class QQuickWindow;
 class QWindow;
@@ -249,6 +250,8 @@ private:
 };
 
 #ifndef Q_OS_MACOS
+/** @brief Returns the palette used to tint native Qt tray menu icons. */
+QPalette nativeMenuIconPalette(const QMenu *menu);
 void setupQtTrayContextMenu(QMenu *menu, Systray *systray);
 bool showQtTrayPopup(Systray *systray, const QRect &iconRect, Systray::WindowPosition position);
 void hideQtTrayPopup();
