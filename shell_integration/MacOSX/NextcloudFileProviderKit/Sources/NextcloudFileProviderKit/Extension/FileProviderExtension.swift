@@ -65,6 +65,10 @@ import OSLog
     private var pendingAccount: Account?
     private var setupChain: Task<Void, Never> = Task {}
 
+    // Waiters parked in `awaitAccount(…)` until `ncAccount` is published.
+    private let accountReadyLock = NSLock()
+    private var accountReadyWaiters = [UUID: CheckedContinuation<Void, Never>]()
+
     /// Whether or not we are going to recursively scan new folders when they are discovered.
     /// Apple's recommendation is that we should always scan the file hierarchy fully.
     /// This does lead to long load times when a file provider domain is initially configured.
@@ -146,21 +150,27 @@ import OSLog
     public func item(for identifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest, completionHandler: @Sendable @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
         logger.debug("Received request for item.", [.item: identifier])
 
-        guard let ncAccount else {
-            logger.debug("Not fetching item because account not set up yet.", [.item: identifier])
-            completionHandler(nil, NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
-        guard let dbManager else {
-            logger.debug("Not fetching item because database is unavailable.", [.item: identifier])
-            completionHandler(nil, NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
         let progress = Progress(totalUnitCount: 1)
 
         Task {
+            // Same startup race as `fetchContents`, where answering `notAuthenticated` would
+            // make the framework treat the item as unreachable rather than not-ready-yet.
+            let ncAccount: Account
+
+            do {
+                ncAccount = try await awaitAccount()
+            } catch {
+                logger.error("Not fetching item because account was never set up.", [.item: identifier])
+                completionHandler(nil, NSFileProviderError(.notAuthenticated))
+                return
+            }
+
+            guard let dbManager else {
+                logger.debug("Not fetching item because database is unavailable.", [.item: identifier])
+                completionHandler(nil, NSFileProviderError(.notAuthenticated))
+                return
+            }
+
             if let item = await Item.storedItem(identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log), item.metadata.deleted == false {
                 progress.completedUnitCount = 1
                 completionHandler(item, nil)
@@ -189,22 +199,30 @@ import OSLog
             return Progress()
         }
 
-        guard let ncAccount else {
-            logger.debug("Not fetching contents for item because account not set up yet.", [.item: itemIdentifier])
-            insertErrorAction(actionId)
-            completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
-        guard let dbManager else {
-            logger.debug("Not fetching contents for item because database is unavailable.", [.item: itemIdentifier])
-            completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
-            return Progress()
-        }
-
         let progress = Progress()
 
         Task {
+            // Wait for the account rather than failing outright: the system starts this process and
+            // begins requesting content before the main app has handed the account over, and a
+            // rejected fetch is a download the framework may never ask for again.
+            let ncAccount: Account
+
+            do {
+                ncAccount = try await awaitAccount()
+            } catch {
+                logger.error("Not fetching contents for item because account was never set up.", [.item: itemIdentifier])
+                insertErrorAction(actionId)
+                completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
+                return
+            }
+
+            guard let dbManager else {
+                logger.debug("Not fetching contents for item because database is unavailable.", [.item: itemIdentifier])
+                insertErrorAction(actionId)
+                completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
+                return
+            }
+
             guard let item = await Item.storedItem(identifier: itemIdentifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log) else {
                 logger.error("Not fetching contents for item because item was not found.", [.item: itemIdentifier])
                 completionHandler(nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
@@ -800,8 +818,77 @@ import OSLog
             dbManager = databaseManager
 
             ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!)
+            signalAccountReady()
             completionHandler?(nil)
             signalEnumeratorAfterAccountSetup()
+        }
+    }
+
+    ///
+    /// The domain account, waiting up to `timeoutNanoseconds` for setup to publish it.
+    ///
+    /// - Throws: `NSFileProviderError(.notAuthenticated)` when no account arrives within
+    ///   `timeoutNanoseconds`.
+    ///
+    func awaitAccount(timeoutNanoseconds: UInt64 = 10_000_000_000) async throws -> Account {
+        if let ncAccount {
+            return ncAccount
+        }
+
+        let token = UUID()
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            accountReadyLock.lock()
+            accountReadyWaiters[token] = continuation
+            accountReadyLock.unlock()
+
+            // The account may have been published between the check above and the enqueue.
+            if ncAccount != nil {
+                resumeAccountWaiter(token)
+                return
+            }
+
+            Task { [weak self] in
+                try? await Task.sleep(nanoseconds: timeoutNanoseconds)
+                self?.resumeAccountWaiter(token)
+            }
+        }
+
+        // Read after the resume, not at the resume site: a timeout that races an account landing a
+        // moment later should still hand back the account rather than fail the request.
+        guard let account = ncAccount else {
+            throw NSFileProviderError(.notAuthenticated)
+        }
+
+        return account
+    }
+
+    ///
+    /// Resume one parked waiter, if it has not been resumed already.
+    ///
+    private func resumeAccountWaiter(_ token: UUID) {
+        accountReadyLock.lock()
+        let continuation = accountReadyWaiters.removeValue(forKey: token)
+        accountReadyLock.unlock()
+        continuation?.resume()
+    }
+
+    ///
+    /// Release everything parked in ``awaitAccount(timeoutNanoseconds:)`` once setup has published
+    /// ``ncAccount``.
+    ///
+    func signalAccountReady() {
+        accountReadyLock.lock()
+        let waiters = accountReadyWaiters
+        accountReadyWaiters.removeAll()
+        accountReadyLock.unlock()
+
+        if !waiters.isEmpty {
+            logger.debug("Account is set up; releasing \(waiters.count) waiting request(s).")
+        }
+
+        for continuation in waiters.values {
+            continuation.resume()
         }
     }
 
