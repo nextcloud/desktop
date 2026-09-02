@@ -38,11 +38,34 @@ public extension FilesDatabaseManager {
             .toUnmanagedResults()
     }
 
+    ///
+    /// The number of **direct** children of a directory, as vended by `Item.childItemCount`.
+    ///
+    /// `NSFileProviderItem.childItemCount` is defined as the number of items directly contained
+    /// in the container, and Finder displays it verbatim. This previously matched descendants
+    /// too (`includingDescendants: true`), so every folder holding subfolders reported its whole
+    /// subtree — a root with 14 direct children reported 17372 — and the framework diffed that
+    /// against its own count on every read, feeding the container `update-item` retry loop.
+    ///
+    /// Soft-deleted tombstones and rows belonging to another account are excluded: neither is a
+    /// child the user can see.
+    ///
+    /// The container's own row is excluded too. ``fullServerPathUrl(for:)`` resolves the root to
+    /// its bare `serverUrl`, and the persisted root row carries that same value as *its*
+    /// `serverUrl` (see `NKFile.toItemMetadata()`, which keeps the root's server URL rather than
+    /// its parent's), so the root would otherwise match its own children predicate and count
+    /// itself.
+    ///
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let account = directoryMetadata.account
+        let ocId = directoryMetadata.ocId
         return itemMetadatas
             .where { item in
-                RealmItemMetadata.hasServerUrl(item, equalTo: directoryServerUrl, includingDescendants: true)
+                item.account == account &&
+                    item.deleted == false &&
+                    item.ocId != ocId &&
+                    RealmItemMetadata.hasServerUrl(item, equalTo: directoryServerUrl, includingDescendants: false)
             }
             .count
     }
