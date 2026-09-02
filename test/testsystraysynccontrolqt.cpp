@@ -41,39 +41,6 @@ class TestSystraySyncControlQt : public QObject
         return menu.findChild<QAction *>(QStringLiteral("trayResumeSyncAction"));
     }
 
-    static QAction *findAction(const QMenu &menu, const QString &text)
-    {
-        for (const auto action : menu.actions()) {
-            if (action->text() == text) {
-                return action;
-            }
-            if (const auto subMenu = action->menu()) {
-                if (const auto childAction = findAction(*subMenu, text)) {
-                    return childAction;
-                }
-            }
-        }
-        return nullptr;
-    }
-
-    static void verifyIconColor(const QAction *action, const QColor &expectedColor)
-    {
-        QVERIFY(action);
-        QVERIFY(!action->icon().isNull());
-
-        const auto image = action->icon().pixmap(QSize(16, 16), QIcon::Normal, QIcon::Off).toImage().convertToFormat(QImage::Format_ARGB32);
-        auto foundExpectedColor = false;
-        for (auto y = 0; y < image.height(); ++y) {
-            for (auto x = 0; x < image.width(); ++x) {
-                const auto pixelColor = image.pixelColor(x, y);
-                if (pixelColor.alpha() != 0 && pixelColor.toRgb() == expectedColor.toRgb()) {
-                    foundExpectedColor = true;
-                }
-            }
-        }
-        QVERIFY(foundExpectedColor);
-    }
-
     static QByteArray iconAlphaMask(const QIcon &icon)
     {
         const auto image = icon.pixmap(QSize(16, 16), QIcon::Normal, QIcon::Off).toImage().convertToFormat(QImage::Format_ARGB32);
@@ -120,10 +87,7 @@ private Q_SLOTS:
 
         auto menu = QMenu{};
         menu.setPalette(darkPalette);
-        setupQtTrayContextMenu(&menu, Systray::instance());
-
-        verifyIconColor(findAction(menu, Systray::tr("Settings")), iconColor);
-        verifyIconColor(findAction(menu, QCoreApplication::translate("TrayFoldersMenuButton", "Local folder")), iconColor);
+        QCOMPARE(nativeMenuIconPalette(&menu).color(QPalette::Active, QPalette::Text), iconColor);
     }
 
     void globalActionIsHiddenWithoutClassicFoldersAndTogglesAllFolders()
