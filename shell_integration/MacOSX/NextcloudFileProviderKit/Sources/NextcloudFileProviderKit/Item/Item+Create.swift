@@ -103,6 +103,10 @@ public extension Item {
 
         directory.downloaded = true
         directory.keepDownloaded = parentKeepDownloaded
+        // A folder we just created is already fully enumerated from the framework's point of
+        // view, so set `visitedDirectory` to keep future change scans covering it
+        // (nextcloud/desktop#9688, #10681).
+        directory.visitedDirectory = true
         dbManager.addItemMetadata(directory)
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: directory.contentType)
