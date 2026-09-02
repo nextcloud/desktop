@@ -3,10 +3,15 @@
 name: QML Label component check
 on:
   pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    if: ${{ !github.event.pull_request.draft }}
+    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft }}
     name: QML Label component check
     runs-on: ubuntu-latest
     steps:

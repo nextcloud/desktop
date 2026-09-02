@@ -12,14 +12,18 @@ on:
       - ".github/workflows/nextcloudfileproviderkit.yml"
   pull_request:
     branches: [ "master" ]
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
     paths:
       - "shell_integration/MacOSX/NextcloudFileProviderKit/**"
       - ".github/workflows/nextcloudfileproviderkit.yml"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   Lint:
-    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
+    if: ${{ github.event_name != 'pull_request' || (github.event.action != 'closed' && !github.event.pull_request.draft) }}
     runs-on: macos-26
 
     defaults:
@@ -33,7 +37,7 @@ jobs:
         run: swiftformat --lint . --reporter github-actions-log
 
   Tests:
-    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
+    if: ${{ github.event_name != 'pull_request' || (github.event.action != 'closed' && !github.event.pull_request.draft) }}
     runs-on: macos-26
 
     defaults:
