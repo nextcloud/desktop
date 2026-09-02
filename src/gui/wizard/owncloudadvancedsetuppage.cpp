@@ -18,6 +18,9 @@
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "account.h"
+#ifdef Q_OS_MACOS
+#include "common/utility_mac_sandbox.h"
+#endif
 #include "theme.h"
 #include "configfile.h"
 #include "selectivesyncdialog.h"
@@ -487,7 +490,13 @@ void OwncloudAdvancedSetupPage::setRemoteFolder(const QString &remoteFolder)
 
 void OwncloudAdvancedSetupPage::slotSelectFolder()
 {
-    QString dir = QFileDialog::getExistingDirectory(nullptr, tr("Local Sync Folder"), QDir::homePath());
+    const auto homeDirectory =
+#ifdef Q_OS_MACOS
+        Utility::getRealHomeDirectory();
+#else
+        QDir::homePath();
+#endif
+    QString dir = QFileDialog::getExistingDirectory(nullptr, tr("Local Sync Folder"), homeDirectory);
     if (!dir.isEmpty()) {
         // TODO: remove when UX decision is made
         refreshVirtualFilesAvailibility(dir);
@@ -588,8 +597,13 @@ void OwncloudAdvancedSetupPage::slotQuotaRetrievedWithError(QNetworkReply *reply
 qint64 OwncloudAdvancedSetupPage::availableLocalSpace() const
 {
     QString localDir = localFolder();
-    QString path = !QDir(localDir).exists() && localDir.contains(QDir::homePath()) ?
-                QDir::homePath() : localDir;
+    const auto homeDirectory =
+#ifdef Q_OS_MACOS
+        Utility::getRealHomeDirectory();
+#else
+        QDir::homePath();
+#endif
+    QString path = !QDir(localDir).exists() && localDir.contains(homeDirectory) ? homeDirectory : localDir;
     QStorageInfo storage(QDir::toNativeSeparators(path));
 
     return storage.bytesAvailable();

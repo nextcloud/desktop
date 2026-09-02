@@ -9,6 +9,9 @@
 #include "accountmanager.h"
 #include "clientproxy.h"
 #include "common/utility.h"
+#ifdef Q_OS_MACOS
+#include "common/utility_mac_sandbox.h"
+#endif
 #include "configfile.h"
 #include "filesystem.h"
 #include "folderman.h"
@@ -118,7 +121,13 @@ void OwncloudSetupWizard::startWizard()
     // if its a relative path, prepend with users home dir, otherwise use as absolute path
 
     if (!QDir(localFolder).isAbsolute()) {
-        localFolder = QDir::homePath() + QLatin1Char('/') + localFolder;
+        const auto homeDirectory =
+#ifdef Q_OS_MACOS
+            Utility::getRealHomeDirectory();
+#else
+            QDir::homePath();
+#endif
+        localFolder = QDir(homeDirectory).filePath(localFolder);
     }
 
     _ocWizard->setProperty("localFolder", localFolder);
