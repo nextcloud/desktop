@@ -153,6 +153,32 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     ///
+    /// The containers to re-read for a set of numeric WebDAV file IDs received from notify-push.
+    ///
+    /// A push names what changed; this turns that into where to look. A changed directory is
+    /// returned as itself, a changed file as its parent — in both cases a depth-1 read of the
+    /// returned container shows the new state, including a child that was created or removed.
+    ///
+    /// Ids the database does not know are skipped rather than guessed at. That loses nothing in
+    /// practice: the server propagates a change's etag up every ancestor, so a push for a brand-new
+    /// item also carries its parent's id, and the parent is a container we already track. Unknown
+    /// ids on their own mean the change was outside the enumerated tree.
+    ///
+    public func containersForPushedFileIds(_ fileIds: Set<String>) -> Set<NSFileProviderItemIdentifier> {
+        var containers = Set<NSFileProviderItemIdentifier>()
+
+        for metadata in itemMetadatas.where({ $0.fileId.in(fileIds) && $0.deleted == false }) {
+            if metadata.directory {
+                containers.insert(NSFileProviderItemIdentifier(metadata.ocId))
+            } else if let parent = parentItemIdentifierFromMetadata(SendableItemMetadata(value: metadata)) {
+                containers.insert(parent)
+            }
+        }
+
+        return containers
+    }
+
+    ///
     /// Look up the item metadata by its account identifier and remote address.
     ///
     /// - Parameters:

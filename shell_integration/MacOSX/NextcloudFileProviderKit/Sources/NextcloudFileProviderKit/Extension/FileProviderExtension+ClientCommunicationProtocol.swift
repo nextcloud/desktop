@@ -68,13 +68,21 @@ extension FileProviderExtension: ClientCommunicationProtocol {
 
         let changedFileIds = Set(fileIds.map(\.stringValue))
 
-        guard dbManager.containsAnyItemMetadata(fileIds: changedFileIds) else {
+        // Resolve the ids to the containers worth re-reading rather than only asking whether any of
+        // them matched. Signalling the working set without them made every push a full walk of the
+        // materialised set: one measured pass spent 305 seconds to surface a file the push had
+        // named 1.5 seconds after it was created. The working-set derivation consumes these and
+        // reads just these containers; see ``RemoteChangeTargets``.
+        let containers = dbManager.containersForPushedFileIds(changedFileIds)
+
+        guard !containers.isEmpty else {
             logger.debug("Ignoring file ID changes because no locally known metadata matched.")
             completionHandler(true)
             return
         }
 
-        logger.info("Received file ID changes for locally known metadata. Signalling enumerator.")
+        RemoteChangeTargets.shared.record(containers: containers)
+        logger.info("Received file ID changes naming \(containers.count) container(s) to re-read. Signalling enumerator.")
         notifyChange()
         completionHandler(true)
     }

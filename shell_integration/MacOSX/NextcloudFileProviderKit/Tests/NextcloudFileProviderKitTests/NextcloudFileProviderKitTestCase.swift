@@ -14,6 +14,9 @@ class NextcloudFileProviderKitTestCase: XCTestCase {
         // `PendingMaterializationRegistry` is a process-wide singleton, so entries recorded by a
         // download in one test would otherwise suppress the eviction reconciliation in another.
         PendingMaterializationRegistry.shared.removeAll()
+        // Likewise process-wide: targets recorded by one test must not steer another's scan, and a
+        // stale "last full scan" timestamp would silently turn a full walk into a targeted one.
+        RemoteChangeTargets.shared.removeAll()
     }
 
     ///

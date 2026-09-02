@@ -48,7 +48,22 @@ extension Enumerator {
                 changeBuffer.reset()
                 logger.debug("Working-set change buffer not primed for anchor \(anchorKey); deriving changes.", [.account: account])
 
-                let serverChanges = await scanMaterialisedItemsForRemoteChanges()
+                // Prefer the containers a push named. Push identifies a change within a second,
+                // whereas the full walk grows with the materialised set — 305 seconds when this was
+                // measured. The full walk still runs when nothing is targeted, and is forced every
+                // `fullScanInterval` regardless, because push can drop messages across reconnects
+                // and only ever tells us what *did* change. See ``RemoteChangeTargets``.
+                let targets = RemoteChangeTargets.shared.consumeTargets()
+                let runFullScan = targets == nil || RemoteChangeTargets.shared.shouldRunFullScan()
+
+                let serverChanges = await scanMaterialisedItemsForRemoteChanges(
+                    restrictedToContainers: runFullScan ? nil : targets
+                )
+
+                if runFullScan, !serverChanges.hadFailure {
+                    RemoteChangeTargets.shared.noteFullScanCompleted()
+                }
+
                 let pendingLocalChanges = dbManager.pendingWorkingSetChanges(since: date)
 
                 let changes = ChangeSet(
@@ -103,7 +118,14 @@ extension Enumerator {
     /// - Returns: The discovered creations and updates (combined into `updated`) and the items that
     ///   were marked deleted.
     ///
-    func scanMaterialisedItemsForRemoteChanges() async -> (
+    /// - Parameter restrictedToContainers: When set, seed the walk with only these containers
+    ///   instead of the whole materialised set — the containers a `notify_push` named. Subtree
+    ///   discovery, coverage and deletion reconciliation are unchanged; they simply operate over
+    ///   what was actually read, so an item under a container this pass did not look at is never
+    ///   claimed as deleted. `nil` performs the full reconciliation.
+    func scanMaterialisedItemsForRemoteChanges(
+        restrictedToContainers: Set<NSFileProviderItemIdentifier>? = nil
+    ) async -> (
         updated: [SendableItemMetadata], deleted: [SendableItemMetadata], hadFailure: Bool
     ) {
         logger.debug("Checking materialised items for changes on the server...")
@@ -147,7 +169,14 @@ extension Enumerator {
         // activated domain triggers a full recursive PROPFIND of every changed branch down to its
         // leaves (every never-enumerated descendant looks "new"), hammering the server. Unchanged
         // subtrees are likewise never enqueued, so the "skip unchanged directories" optimisation holds.
+        // `materialisedItems` stays the full set below — it is what the descendant checks consult.
+        // Only the seed of the walk narrows.
         var scanQueue = materialisedItems
+        if let restrictedToContainers {
+            let targetOcIds = Set(restrictedToContainers.map(\.rawValue))
+            scanQueue = materialisedItems.filter { targetOcIds.contains($0.ocId) }
+            logger.info("Scanning \(scanQueue.count) push-targeted container(s) instead of \(materialisedItems.count) materialised item(s).")
+        }
         var enqueuedDirectoryIds = Set(scanQueue.filter(\.directory).map(\.ocId))
 
         /// The reads are issued concurrently, in waves grouped by remote-path depth.

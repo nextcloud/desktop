@@ -729,4 +729,129 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    // MARK: - Push-targeted scanning
+
+    /// A push names what changed; the client must turn that into where to look. A changed file
+    /// resolves to its parent container, a changed directory to itself.
+    func testPushedFileIdsResolveToContainersToReRead() {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        folder.identifier = "1000"
+        let file = makeFile(name: "itemA", parent: folder, etag: "itemA-v1")
+        file.identifier = "1001"
+        seed(folder, visitedDirectory: true)
+        seed(file, downloaded: true)
+
+        // The file resolves to its parent folder: a depth-1 read of the parent shows the file's new
+        // state, or its absence.
+        let forFile = Self.dbManager.containersForPushedFileIds(["1001"])
+        XCTAssertFalse(
+            forFile.contains(NSFileProviderItemIdentifier(file.identifier)),
+            "The file itself is not a container to read."
+        )
+        XCTAssertTrue(
+            forFile.contains(NSFileProviderItemIdentifier(folder.identifier)),
+            "A changed file must resolve to its parent container. Got: \(forFile)"
+        )
+
+        // A directory resolves to itself.
+        XCTAssertTrue(
+            Self.dbManager.containersForPushedFileIds(["1000"])
+                .contains(NSFileProviderItemIdentifier(folder.identifier))
+        )
+
+        // Ids outside the enumerated tree contribute nothing.
+        XCTAssertTrue(Self.dbManager.containersForPushedFileIds(["9001"]).isEmpty)
+    }
+
+    /// The point of the whole change: a push naming one folder must read that folder, not the entire
+    /// materialised set.
+    func testATargetedScanReadsOnlyTheTargetedContainer() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let targeted = makeFolder(name: "targeted", parent: rootItem, etag: "targeted-v1")
+        let untouched = makeFolder(name: "untouched", parent: rootItem, etag: "untouched-v1")
+        seed(targeted, visitedDirectory: true)
+        seed(untouched, visitedDirectory: true)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        _ = await enumerator.scanMaterialisedItemsForRemoteChanges(
+            restrictedToContainers: [NSFileProviderItemIdentifier(targeted.identifier)]
+        )
+
+        let paths = recorder.paths
+        XCTAssertTrue(paths.contains { $0.hasSuffix("/targeted") }, "The targeted container is read.")
+        XCTAssertFalse(
+            paths.contains { $0.hasSuffix("/untouched") },
+            "An untargeted container must not be read. Got: \(paths)"
+        )
+    }
+
+    /// Push is an accelerator, not a replacement: with nothing targeted the walk must still be full,
+    /// or anything push dropped would never reconcile.
+    func testWithNothingTargetedTheScanIsStillFull() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let a = makeFolder(name: "alpha", parent: rootItem, etag: "alpha-v1")
+        let b = makeFolder(name: "beta", parent: rootItem, etag: "beta-v1")
+        seed(a, visitedDirectory: true)
+        seed(b, visitedDirectory: true)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        _ = await enumerator.scanMaterialisedItemsForRemoteChanges(restrictedToContainers: nil)
+
+        let paths = recorder.paths
+        XCTAssertTrue(paths.contains { $0.hasSuffix("/alpha") })
+        XCTAssertTrue(paths.contains { $0.hasSuffix("/beta") }, "A full scan reads every materialised container.")
+    }
+
+    /// A steady stream of pushes must not postpone reconciliation forever.
+    func testAFullScanIsForcedOnceTheIntervalElapses() {
+        let targets = RemoteChangeTargets.shared
+
+        XCTAssertTrue(targets.shouldRunFullScan(), "Before any full scan has run, one is due.")
+
+        let completedAt = Date()
+        targets.noteFullScanCompleted(at: completedAt)
+        XCTAssertFalse(targets.shouldRunFullScan(now: completedAt.addingTimeInterval(60)))
+        XCTAssertTrue(
+            targets.shouldRunFullScan(now: completedAt.addingTimeInterval(RemoteChangeTargets.fullScanInterval + 1)),
+            "Once the interval has elapsed a full reconciliation is due again."
+        )
+    }
+
+    /// Consuming clears, so one push's containers are not re-scanned on every later derivation.
+    func testConsumingTargetsClearsThem() {
+        let targets = RemoteChangeTargets.shared
+        XCTAssertNil(targets.consumeTargets(), "Nothing recorded means no targeting information.")
+
+        targets.record(containers: [NSFileProviderItemIdentifier("a"), NSFileProviderItemIdentifier("b")])
+        XCTAssertEqual(targets.consumeTargets()?.count, 2)
+        XCTAssertNil(targets.consumeTargets(), "A second derivation must not reuse consumed targets.")
+    }
 }
