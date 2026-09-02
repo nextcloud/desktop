@@ -1555,8 +1555,10 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                     if (const auto fileName = propagator()->fullLocalPath(_item->_file); FileSystem::fileExists(fileName)) {
                         permissionsChangeHelper(fileName);
                     }
-                    if (const auto fileName = propagator()->fullLocalPath(_item->_renameTarget); !_item->_renameTarget.isEmpty() && FileSystem::fileExists(fileName)) {
-                        permissionsChangeHelper(fileName);
+                    if (!_item->_renameTarget.isEmpty()) {
+                        if (const auto fileName = propagator()->fullLocalPath(_item->_renameTarget); FileSystem::fileExists(fileName)) {
+                            permissionsChangeHelper(fileName);
+                        }
                     }
                 }
                 catch (const std::filesystem::filesystem_error &e)
