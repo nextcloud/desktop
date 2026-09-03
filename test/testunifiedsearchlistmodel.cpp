@@ -8,9 +8,12 @@
 #include "account.h"
 #include "accountstate.h"
 #include "syncenginetestutils.h"
+#include "testhelper.h"
 
 #include <QAbstractItemModelTester>
+#include <QCoreApplication>
 #include <QDesktopServices>
+#include <QMetaMethod>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -134,15 +137,30 @@ public:
     }
 
     // initialize the JSON response containing the fake list of providers and their properties
-    void initProvidersResponse()
+    void initProvidersResponse(const QString &excludedProviderId = {}, const QString &providerWithoutPersonFilter = {}, const QString &externalProviderId = {})
     {
         QList<QVariant> providersList;
 
         for (const auto &fakeProviderInitInfo : fakeProvidersInitInfo) {
+            if (fakeProviderInitInfo._id == excludedProviderId) {
+                continue;
+            }
+            auto filters = QVariantMap{
+                {QStringLiteral("term"), QVariantMap{}},
+                {QStringLiteral("since"), QVariantMap{}},
+                {QStringLiteral("until"), QVariantMap{}},
+                {QStringLiteral("person"), QVariantMap{}},
+            };
+            if (fakeProviderInitInfo._id == providerWithoutPersonFilter) {
+                filters.remove(QStringLiteral("person"));
+            }
             providersList.push_back(QVariantMap{
                 {QStringLiteral("id"), fakeProviderInitInfo._id},
+                {QStringLiteral("appId"), fakeProviderInitInfo._id},
                 {QStringLiteral("name"), fakeProviderInitInfo._name},
                 {QStringLiteral("order"), fakeProviderInitInfo._order},
+                {QStringLiteral("filters"), filters},
+                {QStringLiteral("isExternalProvider"), fakeProviderInitInfo._id == externalProviderId},
             });
         }
 
@@ -242,6 +260,65 @@ public:
                 .toJson(QJsonDocument::Compact);
         }
 
+        if (searchTerm == QStringLiteral("[app-icons]")) {
+            auto entries = QVariantList{};
+            if (providerId == QStringLiteral("settings_apps")) {
+                const auto titles = QStringList{
+                    QStringLiteral("Dashboard"),
+                    QStringLiteral("Talk"),
+                    QStringLiteral("Activity"),
+                    QStringLiteral("Unknown app"),
+                };
+                for (const auto &title : titles) {
+                    entries.push_back(QVariantMap{
+                        {QStringLiteral("thumbnailUrl"), QString()},
+                        {QStringLiteral("title"), title},
+                        {QStringLiteral("subline"), QString()},
+                        {QStringLiteral("resourceUrl"), QStringLiteral("http://example.de/index.php/apps/dashboard/")},
+                        {QStringLiteral("icon"), QStringLiteral("icon-arrow-right")},
+                        {QStringLiteral("rounded"), false},
+                    });
+                }
+            }
+            const auto dataMap = QVariantMap{
+                {QStringLiteral("name"), _searchResultsData[providerId]._name},
+                {QStringLiteral("isPaginated"), false},
+                {QStringLiteral("cursor"), QVariant()},
+                {QStringLiteral("entries"), entries},
+            };
+            const auto ocsMap = QVariantMap{{QStringLiteral("meta"), _metaSuccess}, {QStringLiteral("data"), dataMap}};
+            return QJsonDocument::fromVariant(QVariantMap{{QStringLiteral("ocs"), ocsMap}}).toJson(QJsonDocument::Compact);
+        }
+
+        if (searchTerm == QStringLiteral("[small-page]")) {
+            auto entries = resultsForProvider(providerId, 0);
+            while (entries.size() > 2) {
+                entries.removeLast();
+            }
+            const QVariantMap dataMap = {{QStringLiteral("name"), _searchResultsData[providerId]._name},
+                {QStringLiteral("isPaginated"), true}, {QStringLiteral("cursor"), cursor + entries.size()},
+                {QStringLiteral("entries"), entries}};
+            const QVariantMap ocsMap = {{QStringLiteral("meta"), _metaSuccess}, {QStringLiteral("data"), dataMap}};
+            return QJsonDocument::fromVariant(QVariantMap{{QStringLiteral("ocs"), ocsMap}})
+                .toJson(QJsonDocument::Compact);
+        }
+
+        if (searchTerm == QStringLiteral("[oversized-page]")) {
+            auto entries = QList<QVariant>();
+            const auto availableEntries = resultsForProvider(providerId, 0);
+            if (!availableEntries.isEmpty()) {
+                for (auto index = 0; index < 25; ++index) {
+                    entries.push_back(availableEntries.constFirst());
+                }
+            }
+            const QVariantMap dataMap = {{QStringLiteral("name"), _searchResultsData[providerId]._name},
+                {QStringLiteral("isPaginated"), false}, {QStringLiteral("cursor"), QVariant()},
+                {QStringLiteral("entries"), entries}};
+            const QVariantMap ocsMap = {{QStringLiteral("meta"), _metaSuccess}, {QStringLiteral("data"), dataMap}};
+            return QJsonDocument::fromVariant(QVariantMap{{QStringLiteral("ocs"), ocsMap}})
+                .toJson(QJsonDocument::Compact);
+        }
+
         const auto provider = _searchResultsData.value(providerId, Provider());
 
         const auto nextCursor = cursor + pageSize;
@@ -283,9 +360,10 @@ public:
 
     QScopedPointer<FakeQNAM> fakeQnam;
     OCC::AccountPtr account;
-    QScopedPointer<OCC::AccountState> accountState;
+    QScopedPointer<FakeAccountState> accountState;
     QScopedPointer<OCC::UnifiedSearchResultsListModel> model;
     QScopedPointer<QAbstractItemModelTester> modelTester;
+    QList<QUrl> requestedUrls;
 
     QScopedPointer<FakeDesktopServicesUrlHandler> fakeDesktopServicesUrlHandler;
 
@@ -304,10 +382,11 @@ private Q_SLOTS:
         account->setCredentials(new FakeCredentials{fakeQnam.data()});
         account->setUrl(QUrl(("http://example.de")));
 
-        accountState.reset(new OCC::AccountState(account));
+        accountState.reset(new FakeAccountState(account));
 
         fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
             Q_UNUSED(device);
+            requestedUrls.push_back(req.url());
             QNetworkReply *reply = nullptr;
 
             const auto urlQuery = QUrlQuery(req.url());
@@ -352,6 +431,44 @@ private Q_SLOTS:
 
         fakeDesktopServicesUrlHandler.reset(new FakeDesktopServicesUrlHandler);
     }
+
+    void testQmlVoidActionsAreSlots()
+    {
+        auto slotNames = QSet<QByteArray>{};
+        const auto &metaObject = OCC::UnifiedSearchResultsListModel::staticMetaObject;
+        for (auto methodIndex = metaObject.methodOffset(); methodIndex < metaObject.methodCount(); ++methodIndex) {
+            const auto method = metaObject.method(methodIndex);
+            if (method.methodType() == QMetaMethod::Slot) {
+                slotNames.insert(method.name());
+            }
+        }
+
+        const auto expectedSlots = QList<QByteArray>{
+            QByteArrayLiteral("setSearchTerm"),
+            QByteArrayLiteral("resultClicked"),
+            QByteArrayLiteral("fetchMoreTriggerClicked"),
+            QByteArrayLiteral("toggleProviderFilter"),
+            QByteArrayLiteral("clearTypeFilters"),
+            QByteArrayLiteral("setDatePreset"),
+            QByteArrayLiteral("clearDateFilter"),
+            QByteArrayLiteral("setPersonFilter"),
+            QByteArrayLiteral("clearPersonFilter"),
+            QByteArrayLiteral("removeFilter"),
+            QByteArrayLiteral("setExternalProvidersEnabled"),
+            QByteArrayLiteral("openProviderDetail"),
+            QByteArrayLiteral("closeProviderDetail"),
+            QByteArrayLiteral("loadMore"),
+            QByteArrayLiteral("retryLoadMore"),
+            QByteArrayLiteral("retryFailedProviders"),
+            QByteArrayLiteral("retry"),
+            QByteArrayLiteral("moveSelection"),
+            QByteArrayLiteral("activateSelected"),
+        };
+        for (const auto &slotName : expectedSlots) {
+            QVERIFY2(slotNames.contains(slotName), slotName.constData());
+        }
+    }
+
     void testSetSearchTermStartStopSearch()
     {
         // make sure the model is empty
@@ -370,20 +487,41 @@ private Q_SLOTS:
         QCOMPARE(model->searchTerm(), QStringLiteral("discuss"));
         QCOMPARE(searhTermChanged.count(), 1);
 
-        // #3 test that model has not started search yet
         QVERIFY(!model->isSearchInProgress());
 
-        
-        // #4 test that model has started the search after specific delay
         QSignalSpy searchInProgressChanged(model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
-        // allow search jobs to get created within the model
         QVERIFY(searchInProgressChanged.wait());
-        QCOMPARE(searchInProgressChanged.count(), 1);
         QVERIFY(model->isSearchInProgress());
 
         // #5 test that model has stopped the search after setting empty search term
         model->setSearchTerm(QStringLiteral(""));
         QVERIFY(!model->isSearchInProgress());
+    }
+
+    void testSearchTermNotifiesProgressDuringProviderDiscovery()
+    {
+        auto qnam = std::unique_ptr<FakeQNAM>(new FakeQNAM({}));
+        auto slowAccount = OCC::Account::create();
+        slowAccount->setCredentials(new FakeCredentials(qnam.get()));
+        slowAccount->setUrl(QUrl(QStringLiteral("http://example.de")));
+        auto slowAccountState = std::make_unique<FakeAccountState>(slowAccount);
+        qnam->setOverride([&](QNetworkAccessManager::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            return static_cast<QNetworkReply *>(
+                new FakePayloadReply(operation, request, FakeSearchResultsStorage::instance()->fakeProvidersResponseJson(), 1000, qnam.get()));
+        });
+
+        OCC::UnifiedSearchResultsListModel slowModel(slowAccountState.get(), 0);
+        QCoreApplication::processEvents();
+        QVERIFY(!slowModel.providersReady());
+        QSignalSpy progressChanged(&slowModel, &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
+
+        slowModel.setSearchTerm(QStringLiteral("query"));
+        QVERIFY(slowModel.isSearchInProgress());
+        QCOMPARE(progressChanged.count(), 1);
+
+        slowModel.setSearchTerm(QString());
+        QVERIFY(!slowModel.isSearchInProgress());
+        QCOMPARE(progressChanged.count(), 2);
     }
 
     void testSetSearchTermResultsFound()
@@ -395,21 +533,8 @@ private Q_SLOTS:
         // test that search term gets set, search gets started and enough results get returned
         model->setSearchTerm(model->searchTerm() + QStringLiteral("discuss"));
 
-        QSignalSpy searchInProgressChanged(
-            model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
-
-        QVERIFY(searchInProgressChanged.wait());
-
-        // make sure search has started
-        QCOMPARE(searchInProgressChanged.count(), 1);
-        QVERIFY(model->isSearchInProgress());
-
-        QVERIFY(searchInProgressChanged.wait());
-
-        // make sure search has finished
-        QVERIFY(!model->isSearchInProgress());
-
-        QVERIFY(model->rowCount() > 0);
+        QTRY_VERIFY_WITH_TIMEOUT(!model->waitingForSearchTermEditEnd()
+            && !model->isSearchInProgress() && model->rowCount() > 0, 2000);
     }
 
     void testSetSearchTermResultsNotFound()
@@ -421,21 +546,9 @@ private Q_SLOTS:
         // test that search term gets set, search gets started and enough results get returned
         model->setSearchTerm(model->searchTerm() + QStringLiteral("[empty]"));
 
-        QSignalSpy searchInProgressChanged(
-            model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
-
-        QVERIFY(searchInProgressChanged.wait());
-
-        // make sure search has started
-        QCOMPARE(searchInProgressChanged.count(), 1);
-        QVERIFY(model->isSearchInProgress());
-
-        QVERIFY(searchInProgressChanged.wait());
-
-        // make sure search has finished
-        QVERIFY(!model->isSearchInProgress());
-
-        QVERIFY(model->rowCount() == 0);
+        QTRY_VERIFY_WITH_TIMEOUT(!model->waitingForSearchTermEditEnd()
+            && !model->isSearchInProgress(), 2000);
+        QCOMPARE(model->rowCount(), 0);
     }
 
     void testFetchMoreClicked()
@@ -460,12 +573,30 @@ private Q_SLOTS:
         // make sure search has finished
         QVERIFY(!model->isSearchInProgress());
 
+        QString providerIdFetchMoreTriggered;
+        for (auto row = 0; row < model->rowCount(); ++row) {
+            if (model->data(model->index(row), OCC::UnifiedSearchResultsListModel::TypeRole)
+                    == OCC::UnifiedSearchResult::Type::ProviderHeader
+                && model->data(model->index(row), OCC::UnifiedSearchResultsListModel::HasOverflowRole).toBool()) {
+                providerIdFetchMoreTriggered = model->data(model->index(row), OCC::UnifiedSearchResultsListModel::ProviderIdRole).toString();
+                break;
+            }
+        }
+        QVERIFY(!providerIdFetchMoreTriggered.isEmpty());
+        model->openProviderDetail(providerIdFetchMoreTriggered);
+        QCOMPARE(model->viewMode(), OCC::UnifiedSearchResultsListModel::ViewMode::ProviderDetail);
         const auto numRowsInModelPrev = model->rowCount();
+        QStringList stableKeysBeforePaging;
+        for (auto row = 0; row < numRowsInModelPrev - 1; ++row) {
+            stableKeysBeforePaging.push_back(model->data(model->index(row),
+                OCC::UnifiedSearchResultsListModel::StableKeyRole).toString());
+        }
+        QSignalSpy modelReset(model.data(), &QAbstractItemModel::modelReset);
+        QSignalSpy rowsInserted(model.data(), &QAbstractItemModel::rowsInserted);
+        QSignalSpy rowsRemoved(model.data(), &QAbstractItemModel::rowsRemoved);
 
-        // test fetch more results
         QSignalSpy currentFetchMoreInProgressProviderIdChanged(
             model.data(), &OCC::UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderIdChanged);
-        QSignalSpy rowsInserted(model.data(), &OCC::UnifiedSearchResultsListModel::rowsInserted);
         for (int i = 0; i < model->rowCount(); ++i) {
             const auto type = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TypeRole);
 
@@ -479,47 +610,24 @@ private Q_SLOTS:
         }
 
         // make sure the currentFetchMoreInProgressProviderId was set back and forth and correct number fows has been inserted
-        QCOMPARE(currentFetchMoreInProgressProviderIdChanged.count(), 1);
-
-        const auto providerIdFetchMoreTriggered = model->currentFetchMoreInProgressProviderId();
-
-        QVERIFY(!providerIdFetchMoreTriggered.isEmpty());
-
-        QVERIFY(currentFetchMoreInProgressProviderIdChanged.wait());
-
-        QVERIFY(model->currentFetchMoreInProgressProviderId().isEmpty());
-
-        QCOMPARE(rowsInserted.count(), 1);
-
-        const auto arguments = rowsInserted.takeFirst();
-
-        QVERIFY(arguments.size() > 0);
-
-        const auto first = arguments.at(0).toInt();
-        const auto last = arguments.at(1).toInt();
-
-        const int numInsertedExpected = last - first;
-
-        QCOMPARE(model->rowCount() - numRowsInModelPrev, numInsertedExpected);
+        QVERIFY(currentFetchMoreInProgressProviderIdChanged.count() > 0);
+        QTRY_VERIFY_WITH_TIMEOUT(model->currentFetchMoreInProgressProviderId().isEmpty(), 1000);
+        QVERIFY(model->rowCount() > numRowsInModelPrev);
+        QCOMPARE(modelReset.count(), 0);
+        QVERIFY(rowsInserted.count() > 0);
+        QCOMPARE(rowsRemoved.count(), 0);
+        for (auto row = 0; row < stableKeysBeforePaging.size(); ++row) {
+            QCOMPARE(model->data(model->index(row), OCC::UnifiedSearchResultsListModel::StableKeyRole).toString(),
+                stableKeysBeforePaging[row]);
+        }
 
         // make sure the FetchMoreTrigger gets removed when no more results available
         if (!providerIdFetchMoreTriggered.isEmpty()) {
             currentFetchMoreInProgressProviderIdChanged.clear();
-            rowsInserted.clear();
-
-            QSignalSpy rowsRemoved(model.data(), &OCC::UnifiedSearchResultsListModel::rowsRemoved);
-
             for (int i = 0; i < 10; ++i) {
                 model->fetchMoreTriggerClicked(providerIdFetchMoreTriggered);
-
-                QVERIFY(currentFetchMoreInProgressProviderIdChanged.wait());
-
-                if (rowsRemoved.count() > 0) {
-                    break;
-                }
+                QTRY_VERIFY_WITH_TIMEOUT(model->currentFetchMoreInProgressProviderId().isEmpty(), 1000);
             }
-            
-            QCOMPARE(rowsRemoved.count(), 1);
 
             bool isFetchMoreTriggerFound = false;
 
@@ -538,6 +646,207 @@ private Q_SLOTS:
         }
     }
 
+    void testSmallPaginatedFirstPageCanOpenAndLoadMore()
+    {
+        model->setSearchTerm(QStringLiteral("[small-page]"));
+        QTRY_VERIFY_WITH_TIMEOUT(!model->waitingForSearchTermEditEnd()
+            && !model->isSearchInProgress() && model->rowCount() > 0, 2000);
+
+        auto providerId = QString();
+        for (auto row = 0; row < model->rowCount(); ++row) {
+            const auto index = model->index(row);
+            if (model->data(index, OCC::UnifiedSearchResultsListModel::TypeRole).toInt()
+                    == OCC::UnifiedSearchResult::Type::ProviderHeader
+                && model->data(index, OCC::UnifiedSearchResultsListModel::HasOverflowRole).toBool()) {
+                providerId = model->data(index, OCC::UnifiedSearchResultsListModel::ProviderIdRole).toString();
+                break;
+            }
+        }
+        QVERIFY(!providerId.isEmpty());
+
+        model->openProviderDetail(providerId);
+        QCOMPARE(model->viewMode(), OCC::UnifiedSearchResultsListModel::ViewMode::ProviderDetail);
+        const auto rowsBeforeLoading = model->rowCount();
+        QVERIFY(rowsBeforeLoading <= 3);
+        model->loadMore(providerId);
+        QTRY_VERIFY_WITH_TIMEOUT(model->currentFetchMoreInProgressProviderId().isEmpty(), 1000);
+        QVERIFY(model->rowCount() > rowsBeforeLoading);
+    }
+
+    void testNonConformingProviderPageIsCapped()
+    {
+        model->setSearchTerm(QStringLiteral("[oversized-page]"));
+        QTRY_VERIFY_WITH_TIMEOUT(!model->waitingForSearchTermEditEnd()
+            && !model->isSearchInProgress() && model->rowCount() > 0, 2000);
+
+        auto providerId = QString();
+        for (auto row = 0; row < model->rowCount(); ++row) {
+            const auto index = model->index(row);
+            if (model->data(index, OCC::UnifiedSearchResultsListModel::TypeRole).toInt()
+                == OCC::UnifiedSearchResult::Type::ProviderHeader) {
+                providerId = model->data(index, OCC::UnifiedSearchResultsListModel::ProviderIdRole).toString();
+                break;
+            }
+        }
+        QVERIFY(!providerId.isEmpty());
+        model->openProviderDetail(providerId);
+        QCOMPARE(model->viewMode(), OCC::UnifiedSearchResultsListModel::ViewMode::ProviderDetail);
+        QCOMPARE(model->rowCount(), 10);
+    }
+
+    void testAggregateProjectionAndKeyboardSelection()
+    {
+        model->setSearchTerm(QStringLiteral("projection"));
+        QTRY_VERIFY_WITH_TIMEOUT(!model->waitingForSearchTermEditEnd()
+            && !model->isSearchInProgress() && model->rowCount() > 0, 2000);
+
+        QHash<QString, int> resultsByProvider;
+        auto loadMoreFound = false;
+        for (auto row = 0; row < model->rowCount(); ++row) {
+            const auto index = model->index(row);
+            const auto type = model->data(index, OCC::UnifiedSearchResultsListModel::TypeRole).toInt();
+            if (type == OCC::UnifiedSearchResult::Type::Default) {
+                ++resultsByProvider[model->data(index, OCC::UnifiedSearchResultsListModel::ProviderIdRole).toString()];
+            } else if (type == OCC::UnifiedSearchResult::Type::FetchMoreTrigger) {
+                loadMoreFound = true;
+            }
+        }
+        for (const auto count : std::as_const(resultsByProvider)) QVERIFY(count <= 3);
+        QVERIFY(!loadMoreFound);
+        QVERIFY(model->selectedRow() >= 0);
+        const auto firstSelected = model->selectedRow();
+        model->moveSelection(OCC::UnifiedSearchResultsListModel::SelectionDirection::Next);
+        QVERIFY(model->selectedRow() >= firstSelected);
+        model->moveSelection(OCC::UnifiedSearchResultsListModel::SelectionDirection::Last);
+        const auto lastSelected = model->selectedRow();
+        model->moveSelection(OCC::UnifiedSearchResultsListModel::SelectionDirection::Next);
+        QCOMPARE(model->selectedRow(), lastSelected);
+    }
+
+    void testAppsProviderUsesNavigationAppIcons()
+    {
+        const auto navigationApps = QVariantList{
+            QVariantMap{{QStringLiteral("name"), QStringLiteral("Dashboard")},
+                        {QStringLiteral("href"), QStringLiteral("http://example.de/index.php/apps/dashboard/")},
+                        {QStringLiteral("id"), QStringLiteral("dashboard")},
+                        {QStringLiteral("icon"), QStringLiteral("http://example.de/apps/dashboard/img/app.svg")}},
+            QVariantMap{{QStringLiteral("name"), QStringLiteral("Talk")},
+                        {QStringLiteral("href"), QStringLiteral("http://example.de/call/")},
+                        {QStringLiteral("id"), QStringLiteral("spreed")},
+                        {QStringLiteral("icon"), QStringLiteral("http://example.de/apps/spreed/img/app.svg")}},
+            QVariantMap{{QStringLiteral("name"), QStringLiteral("Activity")},
+                        {QStringLiteral("href"), QStringLiteral("http://example.de/index.php/apps/activity/")},
+                        {QStringLiteral("id"), QStringLiteral("activity")},
+                        {QStringLiteral("icon"), QStringLiteral("http://example.de/apps/activity/img/app.svg")}},
+        };
+        const auto navigationResponse = QJsonDocument::fromVariant(QVariantMap{
+            {QStringLiteral("ocs"), QVariantMap{{QStringLiteral("data"), navigationApps}}},
+        });
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(),
+                                          "slotNavigationAppsFetched",
+                                          Qt::DirectConnection,
+                                          Q_ARG(QJsonDocument, navigationResponse),
+                                          Q_ARG(int, 200)));
+
+        model->setSearchTerm(QString());
+        model->closeProviderDetail();
+        model->clearTypeFilters();
+        model->clearDateFilter();
+        model->clearPersonFilter();
+        model->setSearchTerm(QStringLiteral("[app-icons]"));
+        QTRY_VERIFY_WITH_TIMEOUT(!model->waitingForSearchTermEditEnd()
+            && !model->isSearchInProgress() && model->rowCount() > 0, 2000);
+
+        model->openProviderDetail(QStringLiteral("settings_apps"));
+        QCOMPARE(model->rowCount(), 4);
+
+        const auto expectedIconUrls = QHash<QString, QString>{
+            {QStringLiteral("Dashboard"), QStringLiteral("http://example.de/apps/dashboard/img/app.svg")},
+            {QStringLiteral("Talk"), QStringLiteral("http://example.de/apps/spreed/img/app.svg")},
+            {QStringLiteral("Activity"), QStringLiteral("http://example.de/apps/activity/img/app.svg")},
+        };
+        for (auto row = 0; row < model->rowCount(); ++row) {
+            const auto index = model->index(row);
+            const auto title = model->data(index, OCC::UnifiedSearchResultsListModel::TitleRole).toString();
+            if (expectedIconUrls.contains(title)) {
+                QCOMPARE(model->data(index, OCC::UnifiedSearchResultsListModel::DarkIconsRole).toString(),
+                         expectedIconUrls.value(title) + QStringLiteral("/white"));
+                QCOMPARE(model->data(index, OCC::UnifiedSearchResultsListModel::LightIconsRole).toString(),
+                         expectedIconUrls.value(title) + QStringLiteral("/black"));
+            } else if (title == QStringLiteral("Unknown app")) {
+                QVERIFY(model->data(index, OCC::UnifiedSearchResultsListModel::DarkIconsRole)
+                            .toString()
+                            .endsWith(QStringLiteral("change.svg")));
+                QVERIFY(model->data(index, OCC::UnifiedSearchResultsListModel::LightIconsRole)
+                            .toString()
+                            .endsWith(QStringLiteral("change.svg")));
+            }
+        }
+    }
+
+    void testFiltersAndRequestParameters()
+    {
+        model->setSearchTerm(QString());
+        model->clearTypeFilters();
+        model->clearDateFilter();
+        model->clearPersonFilter();
+        requestedUrls.clear();
+
+        model->toggleProviderFilter(QStringLiteral("files"));
+        model->setDatePreset(QStringLiteral("last7days"));
+        model->setPersonFilter(QStringLiteral("ada"), QStringLiteral("Ada Lovelace"));
+        model->setSearchTerm(QStringLiteral("filtered"));
+        QTRY_VERIFY_WITH_TIMEOUT(!model->isSearchInProgress() && !model->waitingForSearchTermEditEnd(), 2000);
+
+        QList<QUrl> searchRequests;
+        for (const auto &url : std::as_const(requestedUrls)) {
+            if (url.path().endsWith(QStringLiteral("/search"))) searchRequests.push_back(url);
+        }
+        QCOMPARE(searchRequests.size(), 1);
+        QVERIFY(searchRequests.constFirst().path().contains(QStringLiteral("/files/search")));
+        const QUrlQuery query(searchRequests.constFirst());
+        QCOMPARE(query.queryItemValue(QStringLiteral("term")), QStringLiteral("filtered"));
+        QCOMPARE(query.queryItemValue(QStringLiteral("limit")), QStringLiteral("10"));
+        QCOMPARE(query.queryItemValue(QStringLiteral("person")), QStringLiteral("ada"));
+        QVERIFY(!query.queryItemValue(QStringLiteral("since")).isEmpty());
+        QVERIFY(!query.queryItemValue(QStringLiteral("until")).isEmpty());
+        QVERIFY(!query.hasQueryItem(QStringLiteral("from")));
+
+        model->setSearchTerm(QString());
+        model->clearTypeFilters();
+        model->clearDateFilter();
+        model->clearPersonFilter();
+    }
+
+    void testConnectedServicesActionIsHiddenWithProviderFilter()
+    {
+        model->setSearchTerm(QString());
+        model->clearTypeFilters();
+
+        accountState->setStateForTesting(OCC::AccountState::Disconnected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        FakeSearchResultsStorage::instance()->initProvidersResponse({}, {}, QStringLiteral("mail"));
+        accountState->setStateForTesting(OCC::AccountState::Connected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        QTRY_VERIFY_WITH_TIMEOUT(model->providersReady(), 1000);
+
+        model->setSearchTerm(QStringLiteral("connected services"));
+        QTRY_VERIFY_WITH_TIMEOUT(!model->isSearchInProgress() && !model->waitingForSearchTermEditEnd(), 2000);
+        QVERIFY(model->showConnectedServicesAction());
+
+        model->toggleProviderFilter(QStringLiteral("files"));
+        QVERIFY(!model->showConnectedServicesAction());
+
+        model->setSearchTerm(QString());
+        model->clearTypeFilters();
+        accountState->setStateForTesting(OCC::AccountState::Disconnected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        FakeSearchResultsStorage::instance()->initProvidersResponse();
+        accountState->setStateForTesting(OCC::AccountState::Connected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        QTRY_VERIFY_WITH_TIMEOUT(model->providersReady(), 1000);
+    }
+
     void testSearchResultlicked()
     {
         // make sure the model is empty
@@ -547,21 +856,8 @@ private Q_SLOTS:
         // test that search term gets set, search gets started and enough results get returned
         model->setSearchTerm(model->searchTerm() + QStringLiteral("discuss"));
 
-        QSignalSpy searchInProgressChanged(
-            model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
-
-        QVERIFY(searchInProgressChanged.wait());
-
-        // make sure search has started
-        QCOMPARE(searchInProgressChanged.count(), 1);
-        QVERIFY(model->isSearchInProgress());
-
-        QVERIFY(searchInProgressChanged.wait());
-
-        // make sure search has finished and some results has been received
-        QVERIFY(!model->isSearchInProgress());
-
-        QVERIFY(model->rowCount() != 0);
+        QTRY_VERIFY_WITH_TIMEOUT(!model->waitingForSearchTermEditEnd()
+            && !model->isSearchInProgress() && model->rowCount() > 0, 2000);
 
         QDesktopServices::setUrlHandler("http", fakeDesktopServicesUrlHandler.data(), "resultClicked");
         QDesktopServices::setUrlHandler("https", fakeDesktopServicesUrlHandler.data(), "resultClicked");
@@ -735,6 +1031,86 @@ private Q_SLOTS:
         QCOMPARE(model->searchState(), OCC::UnifiedSearchResultsListModel::SearchState::SearchError);
 
         model->setSearchTerm(QStringLiteral(""));
+    }
+
+    void testProviderDetailPreservesPartialMatchState()
+    {
+        model->setSearchTerm(QString());
+        model->closeProviderDetail();
+        model->clearTypeFilters();
+        model->clearDateFilter();
+        model->clearPersonFilter();
+
+        accountState->setStateForTesting(OCC::AccountState::Disconnected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        FakeSearchResultsStorage::instance()->initProvidersResponse({}, QStringLiteral("mail"));
+        accountState->setStateForTesting(OCC::AccountState::Connected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        QTRY_VERIFY_WITH_TIMEOUT(model->providersReady(), 1000);
+        FakeSearchResultsStorage::instance()->initProvidersResponse();
+
+        model->setPersonFilter(QStringLiteral("ada"), QStringLiteral("Ada Lovelace"));
+        model->setSearchTerm(QStringLiteral("partial detail"));
+        QTRY_VERIFY_WITH_TIMEOUT(!model->isSearchInProgress() && !model->waitingForSearchTermEditEnd(), 2000);
+
+        model->openProviderDetail(QStringLiteral("mail"));
+        QCOMPARE(model->viewMode(), OCC::UnifiedSearchResultsListModel::ViewMode::ProviderDetail);
+        auto resultCount = 0;
+        for (auto row = 0; row < model->rowCount(); ++row) {
+            const auto index = model->index(row);
+            if (model->data(index, OCC::UnifiedSearchResultsListModel::TypeRole).toInt() != OCC::UnifiedSearchResult::Type::Default) {
+                continue;
+            }
+            ++resultCount;
+            QVERIFY(model->data(index, OCC::UnifiedSearchResultsListModel::PartialMatchRole).toBool());
+        }
+        QVERIFY(resultCount > 0);
+
+        const auto rowsBeforePaging = model->rowCount();
+        model->loadMore(QStringLiteral("mail"));
+        QTRY_VERIFY_WITH_TIMEOUT(model->currentFetchMoreInProgressProviderId().isEmpty(), 1000);
+        QVERIFY(model->rowCount() > rowsBeforePaging);
+        for (auto row = 0; row < model->rowCount(); ++row) {
+            const auto index = model->index(row);
+            if (model->data(index, OCC::UnifiedSearchResultsListModel::TypeRole).toInt() == OCC::UnifiedSearchResult::Type::Default) {
+                QVERIFY(model->data(index, OCC::UnifiedSearchResultsListModel::PartialMatchRole).toBool());
+            }
+        }
+
+        model->setSearchTerm(QString());
+        model->closeProviderDetail();
+        model->clearPersonFilter();
+        accountState->setStateForTesting(OCC::AccountState::Disconnected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        accountState->setStateForTesting(OCC::AccountState::Connected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        QTRY_VERIFY_WITH_TIMEOUT(model->providersReady(), 1000);
+    }
+
+    void testDisconnectAndRediscoveryResetProviderState()
+    {
+        model->setSearchTerm(QString());
+        model->clearTypeFilters();
+        QVERIFY(model->providersReady());
+        model->toggleProviderFilter(QStringLiteral("files"));
+        QCOMPARE(model->activeFilters().size(), 1);
+        QSignalSpy providersReadyChanged(model.data(), &OCC::UnifiedSearchResultsListModel::providersReadyChanged);
+
+        accountState->setStateForTesting(OCC::AccountState::Disconnected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        QCOMPARE(model->providersReady(), false);
+        QVERIFY(providersReadyChanged.count() > 0);
+
+        FakeSearchResultsStorage::instance()->initProvidersResponse(QStringLiteral("files"));
+        accountState->setStateForTesting(OCC::AccountState::Connected);
+        QVERIFY(QMetaObject::invokeMethod(accountState.data(), "isConnectedChanged", Qt::DirectConnection));
+        QTRY_VERIFY_WITH_TIMEOUT(model->providersReady(), 1000);
+        QCOMPARE(model->activeFilters().size(), 0);
+        for (const auto &providerValue : model->providers()) {
+            QVERIFY(providerValue.toMap().value(QStringLiteral("id")).toString() != QStringLiteral("files"));
+        }
+
+        FakeSearchResultsStorage::instance()->initProvidersResponse();
     }
 
     void cleanupTestCase()

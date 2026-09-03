@@ -192,6 +192,7 @@
 		<file>theme/black/caret-down.svg</file>
 		<file>theme/black/change.svg</file>
 		<file>theme/black/clear.svg</file>
+		<file>theme/black/filter.svg</file>
 		<file>theme/black/close.svg</file>
 		<file>theme/black/comment.svg</file>
 		<file>theme/black/confirm.svg</file>
@@ -269,6 +270,8 @@
   		<file>theme/white/error.svg</file>
 	
 		<!-- generic (not themed) -->
+		<file>theme/arrow-left.svg</file>
+		<file>theme/arrow-right.svg</file>
 		<file>theme/sync-arrow.svg</file>
 		<file>theme/close.svg</file>
 		<file>theme/files.svg</file>

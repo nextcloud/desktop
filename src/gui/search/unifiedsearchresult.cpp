@@ -18,8 +18,20 @@ QString UnifiedSearchResult::typeAsString(UnifiedSearchResult::Type type)
         result = QStringLiteral("Default");
         break;
 
+    case ProviderHeader:
+        result = QStringLiteral("ProviderHeader");
+        break;
+
+    case PartialMatchesHeader:
+        result = QStringLiteral("PartialMatchesHeader");
+        break;
+
     case FetchMoreTrigger:
         result = QStringLiteral("FetchMoreTrigger");
+        break;
+
+    case RetryFetchMoreTrigger:
+        result = QStringLiteral("RetryFetchMoreTrigger");
         break;
     }
     return result;

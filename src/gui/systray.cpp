@@ -461,7 +461,8 @@ void Systray::showSearchWindow(int userIndex)
         return;
     }
 
-    auto *const searchModel = new UnifiedSearchResultsListModel(accountState.data(), accountState.data());
+    const auto searchModel = new UnifiedSearchResultsListModel(accountState.data());
+    searchModel->setParent(accountState.data());
     const QVariantMap initialProperties{
         {"account", QVariantMap{
                         {"avatar", user->avatarUrl()},
