@@ -173,7 +173,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<GovernanceLabelsListModel>("com.nextcloud.desktopclient", 1, 0, "GovernanceLabelsListModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
-    Assistant::initializeResources();
     qmlRegisterUncreatableType<AssistantController>(
         "com.nextcloud.desktopclient", 1, 0, "AssistantController", "Owned by the Assistant window");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");

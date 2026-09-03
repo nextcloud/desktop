@@ -81,35 +81,10 @@ ColumnLayout {
         }
     }
 
-    ListView {
-        id: conversationList
-
-        clip: true
-        spacing: Style.wizardSectionSpacing
-        boundsBehavior: Flickable.StopAtBounds
-        model: root.assistantController.messages
+    AssistantMessageList {
+        assistantController: root.assistantController
         Layout.fillWidth: true
         Layout.fillHeight: true
-
-        ScrollBar.vertical: ScrollBar {
-            policy: ScrollBar.AsNeeded
-        }
-
-        delegate: AssistantMessageDelegate {
-        }
-
-        onCountChanged: positionViewAtEnd()
-
-        EnforcedPlainTextLabel {
-            anchors.centerIn: parent
-            width: Math.min(parent.width, Style.assistantEmptyStateMaximumWidth)
-            visible: conversationList.count === 0 && !root.assistantController.thinking
-            text: qsTr("Start a conversation with Nextcloud Assistant.")
-            color: Style.wizardSecondaryText
-            font.pixelSize: Style.wizardBodyFontPixelSize
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
-        }
     }
 
     EnforcedPlainTextLabel {

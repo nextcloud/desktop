@@ -17,11 +17,6 @@
 #include <QVariantMap>
 #include <memory>
 
-static void initializeAssistantResources()
-{
-    Q_INIT_RESOURCE(assistant);
-}
-
 namespace OCC::Assistant
 {
 
@@ -55,15 +50,6 @@ QVariantMap accountHeaderProperties(const AccountPtr &account)
     };
 }
 
-}
-
-void initializeResources()
-{
-    static const auto initialized = [] {
-        initializeAssistantResources();
-        return true;
-    }();
-    Q_UNUSED(initialized)
 }
 
 QQuickWindow *createWindow(QQmlEngine *engine, const AccountStatePtr &accountState)

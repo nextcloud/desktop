@@ -137,7 +137,7 @@ private Q_SLOTS:
     void slotChatSessionChecked(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
 
 private:
-    [[nodiscard]] quint64 beginRequest();
+    quint64 beginRequest();
     void refreshTasks(quint64 requestGeneration);
     void submitChatMessage(const QString &message, quint64 requestGeneration);
     void scheduleSelectedTask(const QString &input, quint64 requestGeneration);

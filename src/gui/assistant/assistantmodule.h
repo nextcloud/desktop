@@ -13,9 +13,6 @@ class QQuickWindow;
 namespace OCC::Assistant
 {
 
-/** @brief Makes the Assistant QML resources available to the application. */
-void initializeResources();
-
 /**
  * @brief Creates an Assistant window for an account.
  * @param engine QML engine used to create the window.
