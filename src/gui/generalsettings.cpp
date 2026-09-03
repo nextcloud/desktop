@@ -313,12 +313,9 @@ void GeneralSettings::customizeStyle()
 {
     SettingsPanelStyle::apply(this);
 
-    // SettingsPanelStyle gives every row equal margins on all sides. For the File
-    // Provider description we only want a left indent that matches the switch label
-    // above it, and no padding on the other sides — so copy the row's left margin and
-    // zero the rest. Done after apply() so it is not overwritten.
-    const auto rowLeftMargin = _ui->fileProviderRow->contentsMargins().left();
-    _ui->fileProviderDescriptionRow->setContentsMargins(rowLeftMargin, 0, 0, 0);
+    // Keep the description close to the control row while matching the panel's outer inset.
+    const auto panelMargin = _ui->fileProviderRow->contentsMargins().left();
+    _ui->fileProviderDescriptionRow->setContentsMargins(panelMargin, 0, panelMargin, panelMargin);
 }
 
 } // namespace OCC

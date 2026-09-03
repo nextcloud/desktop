@@ -192,6 +192,7 @@ if(NOT BUILD_FILE_PROVIDER_MODULE)
 endif()
 
 nextcloud_add_test(NetworkSettings)
+nextcloud_add_test(SettingsDialog)
 nextcloud_add_test(UpdateChannel)
 nextcloud_add_test(FileActionsModel)
 nextcloud_add_test(UriSchemeHandler)
