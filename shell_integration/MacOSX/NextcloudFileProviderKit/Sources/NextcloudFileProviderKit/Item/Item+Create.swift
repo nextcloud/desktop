@@ -101,6 +101,13 @@ public extension Item {
             return (nil, NSFileProviderError(.cannotSynchronize))
         }
 
+        // The server response must carry an ocId. Returning an item with an empty identifier would
+        // crash the framework. See #10701.
+        guard !directory.ocId.isEmpty else {
+            logger.error("Refusing to return created folder with empty ocId.", [.url: remotePath])
+            return (nil, NSFileProviderError(.cannotSynchronize))
+        }
+
         directory.downloaded = true
         directory.keepDownloaded = parentKeepDownloaded
         dbManager.addItemMetadata(directory)
@@ -161,7 +168,8 @@ public extension Item {
             progressHandler: { $0.copyCurrentStateToProgress(progress) }
         )
 
-        guard error == .success, let ocId else {
+        // Reject an empty ocId too: an item with an empty identifier crashes the framework. See #10701.
+        guard error == .success, let ocId, !ocId.isEmpty else {
             logger.error(
                 """
                 Could not upload item with filename: \(itemTemplate.filename),

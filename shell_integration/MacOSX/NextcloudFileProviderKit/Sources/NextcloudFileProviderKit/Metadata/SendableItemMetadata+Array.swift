@@ -13,6 +13,13 @@ extension [SendableItemMetadata] {
         let allFilters = await Item.getContextMenuItemTypeFilters(account: account, remoteInterface: remoteInterface)
 
         return try await concurrentChunkedCompactMap { (itemMetadata: SendableItemMetadata) -> Item? in
+            // A corrupt empty-ocId row would become an item with an empty identifier and crash the
+            // framework when reported to didUpdate/didEnumerate. Skip it. See #10701.
+            guard !itemMetadata.ocId.isEmpty else {
+                logger.error("Skipping metadata with empty ocId in enumeration.", [.name: itemMetadata.fileName, .url: itemMetadata.serverUrl])
+                return nil
+            }
+
             guard !itemMetadata.e2eEncrypted else {
                 logger.info("Skipping encrypted metadata in enumeration.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 return nil
