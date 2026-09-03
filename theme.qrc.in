@@ -274,6 +274,8 @@
 		<file>theme/arrow-right.svg</file>
 		<file>theme/sync-arrow.svg</file>
 		<file>theme/close.svg</file>
+		<file>theme/pause.svg</file>
+		<file>theme/play.svg</file>
 		<file>theme/files.svg</file>
 		<file>theme/public.svg</file>
 		<file>theme/settings.svg</file>

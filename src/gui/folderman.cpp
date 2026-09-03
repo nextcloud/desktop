@@ -1832,7 +1832,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
         auto goodSeen = false;
         auto abortOrPausedSeen = false;
         auto runSeen = false;
-        auto various = false;
+        auto initialStateSeen = false;
 
         for (const auto folder : std::as_const(folders)) {
             // We've already seen an error, worst case met.
@@ -1851,7 +1851,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
                 switch (syncStatus) {
                 case SyncResult::Undefined:
                 case SyncResult::NotYetStarted:
-                    various = true;
+                    initialStateSeen = true;
                     break;
                 case SyncResult::SyncPrepare:
                 case SyncResult::SyncRunning:
@@ -1886,8 +1886,8 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
             *status = SyncResult::SyncRunning;
         } else if (goodSeen) {
             *status = SyncResult::Success;
-        } else if (various) {
-            *status = SyncResult::Undefined;
+        } else if (initialStateSeen) {
+            *status = SyncResult::NotYetStarted;
         }
     }
 }

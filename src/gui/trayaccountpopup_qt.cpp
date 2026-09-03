@@ -49,6 +49,14 @@ namespace OCC {
 
 // Keep behavior and menu taxonomy aligned with the macOS popup in src/gui/macOS/trayaccountpopup/.
 
+QPalette nativeMenuIconPalette(const QMenu *menu)
+{
+    if (menu) {
+        return menu->palette();
+    }
+    return QGuiApplication::palette();
+}
+
 namespace {
 
 constexpr auto fixedMenuWidth = 320;
@@ -143,14 +151,6 @@ QImage tintImage(const QImage &image, const QColor &color)
     painter.drawImage(0, 0, image.convertToFormat(QImage::Format_ARGB32_Premultiplied));
     painter.end();
     return tintedImage;
-}
-
-QPalette nativeMenuIconPalette(const QMenu *menu)
-{
-    if (menu && menu->style()) {
-        return menu->style()->standardPalette();
-    }
-    return QGuiApplication::palette();
 }
 
 QString templateIconPaletteCacheKey(const QPalette &palette)
@@ -877,10 +877,10 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
 
     const auto syncControlState = systray->syncControlState();
     const auto addSyncControlAction = [menu, systray, &menuIconPalette, &menuIconSize](const bool pausesSync) {
-        const auto syncControlIconUrl = pausesSync ? Theme::instance()->pause() : Theme::instance()->sync();
+        const auto syncControlIconName = pausesSync ? QStringLiteral("pause.svg") : QStringLiteral("play.svg");
         const auto syncControlAction = addMenuAction(menu,
-            templateIconFromIcon(iconFromUrl(syncControlIconUrl), menuIconSize, menuIconPalette),
-            pausesSync ? Systray::tr("Pause sync for all") : Systray::tr("Resume sync for all"));
+                                                     templateThemeIcon(syncControlIconName, menuIconSize, menuIconPalette),
+                                                     pausesSync ? Systray::tr("Pause sync for all") : Systray::tr("Resume sync for all"));
         syncControlAction->setObjectName(pausesSync
                 ? QStringLiteral("trayPauseSyncAction")
                 : QStringLiteral("trayResumeSyncAction"));
