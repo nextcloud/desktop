@@ -139,3 +139,5 @@ every row on both revisions.
   for a production server.
 - Wall-clock figures are comparable only between two runs on one machine against one fixture. The
   counts are comparable everywhere.
+- The reference image is pinned by digest so the server does not drift between runs. Only
+  Nextcloud 31 has been exercised so far.
