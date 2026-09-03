@@ -657,4 +657,9 @@ VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinState
     }
 }
 
+Result<void, QString> CfApiVfsPluginFactory::prepare([[maybe_unused]] const QString &path, [[maybe_unused]] const QUuid &accountUuid) const
+{
+    return {};
+}
+
 } // namespace OCC

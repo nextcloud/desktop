@@ -6,9 +6,11 @@
 #pragma once
 
 #include "ocsynclib.h"
+
 #include "result.h"
 #include "syncfilestatus.h"
 #include "pinstate.h"
+#include "path.h"
 
 #include "common/remoteinfo.h"
 
@@ -31,6 +33,7 @@ class SyncJournalDb;
 class VfsPrivate;
 class SyncFileItem;
 using SyncFileItemPtr = QSharedPointer<SyncFileItem>;
+class HydrationJob;
 
 enum class VirtualItemCreationStatus {
     Unknown,
@@ -54,6 +57,7 @@ struct OCSYNC_EXPORT VfsSetupParams
      * Always ends with /.
      */
     QString filesystemPath;
+    FileSystem::Path rootPath;
 
     // Folder display name in Windows Explorer
     QString displayName;
@@ -82,11 +86,14 @@ struct OCSYNC_EXPORT VfsSetupParams
     /// Strings potentially passed on to the platform
     QString providerName;
     QString providerVersion;
+    QString socketPath;
 
     /** when registering with the system we might use
      *  a different presentaton to identify the accounts
      */
     bool multipleAccountsRegistered = false;
+
+    const FileSystem::Path &root() const;
 };
 
 /** Interface describing how to deal with virtual/placeholder files.
@@ -116,6 +123,7 @@ public:
         WithSuffix,
         WindowsCfApi,
         XAttr,
+        OpenVFS,
     };
     Q_ENUM(Mode)
     enum class ConvertToPlaceholderResult {
@@ -286,6 +294,15 @@ public:
      */
     [[nodiscard]] virtual AvailabilityResult availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck) = 0;
 
+    /** Start a hydration (download of remote contents) of a file.
+     *
+     * The fileId is the SyncFileItem::id() value of the file to hydrate.
+     * The targetPath is the absolute path to the local file to hydrate.
+     *
+     * Returns a QFuture<Result> void if successful and QFuture<Result> QString if an error occurs.
+     */
+    [[nodiscard]] virtual HydrationJob *hydrateFile(const QByteArray &fileId, const QString &targetPath) = 0;
+
 public Q_SLOTS:
     /** Update in-sync state based on SyncFileStatusTracker signal.
      *
@@ -302,6 +319,15 @@ Q_SIGNALS:
     void doneHydrating();
     // Emitted when hydration fails
     void failureHydrating(int errorCode, int statusCode, const QString &errorString, const QString &fileName);
+
+    /// we encountered an error
+    void error(const QString &error);
+
+    /// start complete
+    void started();
+
+    /// The vfs plugin detected that the meta data are out of sync and requests a sync with the server
+    void needSync();
 
 protected:
     /** Setup the plugin for the folder.
@@ -360,6 +386,8 @@ public:
     bool setPinState(const QString &, PinState) override { return true; }
     Optional<PinState> pinState(const QString &) override { return PinState::AlwaysLocal; }
     AvailabilityResult availability(const QString &, const AvailabilityRecursivity) override { return VfsItemAvailability::AlwaysLocal; }
+
+    [[nodiscard]] HydrationJob *hydrateFile(const QByteArray &fileId, const QString &targetPath) override;
 
 public Q_SLOTS:
     void fileStatusChanged(const QString &, OCC::SyncFileStatus) override {}

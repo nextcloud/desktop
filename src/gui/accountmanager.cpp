@@ -36,6 +36,7 @@ constexpr auto authTypeC = "authType";
 constexpr auto userC = "user";
 constexpr auto displayNameC = "displayName";
 constexpr auto httpUserC = "http_user";
+constexpr auto accountUuidC = "account_uuid";
 constexpr auto davUserC = "dav_user";
 constexpr auto webflowUserC = "webflow_user";
 constexpr auto shibbolethUserC = "shibboleth_shib_user";
@@ -426,6 +427,7 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     } else {
         settings.setValue(QLatin1String(urlC), account->_url.toString());
     }
+    settings.setValue(QLatin1String(accountUuidC), account->_uuid);
     settings.setValue(QLatin1String(davUserC), account->_davUser);
     settings.setValue(QLatin1String(displayNameC), account->davDisplayName());
     settings.setValue(QLatin1String(serverVersionC), account->_serverVersion);
@@ -652,6 +654,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         settings.value(QLatin1String(serverDesktopEnterpriseUpdateChannelC), QVariant::fromValue(UpdateChannel::Invalid.toString())).toString());
     acc->_skipE2eeMetadataChecksumValidation = settings.value(QLatin1String(skipE2eeMetadataChecksumValidationC), {}).toBool();
     acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
+    acc->_uuid = QUuid{settings.value(QLatin1String(accountUuidC)).toString()};
 #ifdef BUILD_FILE_PROVIDER_MODULE
     acc->setFileProviderDomainIdentifier(settings.value(QLatin1String(fileProviderDomainIdentifierC)).toString());
 #endif

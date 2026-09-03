@@ -1019,7 +1019,7 @@ QPixmap Theme::createColorAwarePixmap(const QString &name)
 bool Theme::showVirtualFilesOption() const
 {
     const auto vfsMode = bestAvailableVfsMode();
-    return ConfigFile().showExperimentalOptions() || vfsMode == Vfs::WindowsCfApi;
+    return ConfigFile().showExperimentalOptions() || vfsMode == Vfs::WindowsCfApi || vfsMode == Vfs::OpenVFS;
 }
 
 bool Theme::enforceVirtualFilesSyncFolder() const

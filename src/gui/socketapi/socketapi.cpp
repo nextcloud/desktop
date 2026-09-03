@@ -35,6 +35,7 @@
 #ifndef OWNCLOUD_TEST
 #include "sharemanager.h"
 #endif
+#include "hydrationjob.h"
 
 #include <array>
 #include <QBitArray>
@@ -247,6 +248,7 @@ SocketApi::SocketApi(QObject *parent)
 {
     qRegisterMetaType<SocketListener *>("SocketListener*");
     qRegisterMetaType<QSharedPointer<SocketApiJob>>("QSharedPointer<SocketApiJob>");
+    qRegisterMetaType<QSharedPointer<SocketApiJobV2>>("QSharedPointer<SocketApiJobV2>");
 
 #if defined(Q_OS_MACOS)
     // On macOS, shell extensions communicate via XPC (FinderSyncXPC / FinderSyncService).
@@ -276,6 +278,9 @@ SocketApi::SocketApi(QObject *parent)
     } else {
         qCWarning(lcSocketApi) << "An unexpected system detected, this probably won't work.";
     }
+
+    m_socketPath = socketPath;
+    Q_EMIT socketPathChanged();
 
     QLocalServer::removeServer(socketPath);
     // Create the socket path:
@@ -387,13 +392,15 @@ void SocketApi::slotReadSocket()
         const QByteArray command = line.mid(0, argPos).toUtf8().toUpper();
         const int indexOfMethod = [&] {
             QByteArray functionWithArguments = QByteArrayLiteral("command_");
-            if (command.startsWith("ASYNC_")) {
+            if (command.startsWith(QLatin1String("ASYNC_"))) {
                 functionWithArguments += command + QByteArrayLiteral("(QSharedPointer<SocketApiJob>)");
+            } else if (command.startsWith(QLatin1String("V2/"))) {
+                functionWithArguments += QByteArrayLiteral("V2_") + command.mid(3) + QByteArrayLiteral("(QSharedPointer<SocketApiJobV2>)");
             } else {
                 functionWithArguments += command + QByteArrayLiteral("(QString,SocketListener*)");
             }
-            Q_ASSERT(staticMetaObject.normalizedSignature(functionWithArguments) == functionWithArguments);
-            const auto out = staticMetaObject.indexOfMethod(functionWithArguments);
+            Q_ASSERT(staticMetaObject.normalizedSignature(functionWithArguments.constData()) == functionWithArguments);
+            const auto out = staticMetaObject.indexOfMethod(functionWithArguments.constData());
             if (out == -1) {
                 listener->sendError(QStringLiteral("Function %1 not found").arg(QString::fromUtf8(functionWithArguments)));
             }
@@ -429,6 +436,21 @@ void SocketApi::slotReadSocket()
                 staticMetaObject.method(indexOfMethod)
                     .invoke(this, Qt::QueuedConnection, Q_ARG(QString, argument),
                             Q_ARG(SocketListener *, listener.data()));
+            }
+        } else if (command.startsWith(QLatin1String("V2/"))) {
+            QJsonParseError error;
+            const auto json = QJsonDocument::fromJson(argument.toUtf8(), &error).object();
+            if (error.error != QJsonParseError::NoError) {
+                qCWarning(lcSocketApi()) << u"Invalid json" << argument << error.errorString();
+                listener->sendError(error.errorString());
+                return;
+            }
+            auto socketApiJob = QSharedPointer<SocketApiJobV2>::create(listener, command, json);
+            if (indexOfMethod != -1) {
+                staticMetaObject.method(indexOfMethod).invoke(this, Qt::QueuedConnection, Q_ARG(QSharedPointer<SocketApiJobV2>, socketApiJob));
+            } else {
+                qCWarning(lcSocketApi) << u"The command is not supported by this version of the client:" << command << u"with argument:" << argument;
+                socketApiJob->failure(QStringLiteral("command not found"));
             }
         } else {
             if (indexOfMethod != -1) {
@@ -1126,6 +1148,36 @@ void SocketApi::command_UNLOCK_FILE(const QString &localFile, SocketListener *li
     setFileLock(localFile, SyncFileItem::LockStatus::UnlockedItem);
 }
 
+void SocketApi::command_V2_HYDRATE_FILE(const QSharedPointer<SocketApiJobV2> &job) const
+{
+    const auto &arguments = job->arguments();
+
+    const QByteArray fileId = arguments[QStringLiteral("fileId")].toString().toUtf8();
+    const QString targetPath = arguments[QStringLiteral("file")].toString();
+
+    auto fileData = FileData::get(targetPath);
+
+    if (fileData.folder) {
+        HydrationJob *hydJob = fileData.folder->vfs().hydrateFile(fileId, targetPath);
+
+        if (hydJob) {
+            connect(hydJob, &HydrationJob::finished, this, [job, hydJob] {
+                job->success({{QStringLiteral("status"), QStringLiteral("OK")}});
+                hydJob->deleteLater();
+            });
+            connect(hydJob, &HydrationJob::error, this, [job, hydJob](const QString &err) {
+                job->success({{QStringLiteral("status"), QStringLiteral("ERROR")}, {QStringLiteral("error"), err}});
+                hydJob->deleteLater();
+            });
+            hydJob->start();
+        } else {
+            qCDebug(lcSocketApi) << "Hydration job for" << fileId << "already running";
+        }
+    } else {
+        job->failure(QStringLiteral("cannot hydrate unknown file"));
+    }
+}
+
 void SocketApi::setFileLock(const QString &localFile, const SyncFileItem::LockStatus lockState) const
 {
     const auto fileData = FileData::get(localFile);
@@ -1759,6 +1811,50 @@ void SocketApiJob::resolve(const QJsonObject &response)
 void SocketApiJob::reject(const QString &response)
 {
     _socketListener->sendMessage(QStringLiteral("REJECT|") + _jobId + QLatin1Char('|') + response);
+}
+
+QString SocketApi::socketPath() const
+{
+    return m_socketPath;
+}
+
+SocketApiJobV2::SocketApiJobV2(const QSharedPointer<SocketListener> &socketListener, const QString &command, const QJsonObject &arguments)
+    : _socketListener(socketListener)
+    , _command(command)
+    , _jobId(arguments[QStringLiteral("id")].toString())
+    , _arguments(arguments[QStringLiteral("arguments")].toObject())
+{
+    Q_ASSERT(!_jobId.isEmpty());
+}
+
+void SocketApiJobV2::success(const QJsonObject &response) const
+{
+    doFinish(response);
+}
+
+void SocketApiJobV2::failure(const QString &error) const
+{
+    doFinish({{QStringLiteral("error"), error}});
+}
+
+void SocketApiJobV2::doFinish(const QJsonObject &obj) const
+{
+    QJsonObject data{{QStringLiteral("id"), _jobId}, {QStringLiteral("arguments"), obj}};
+    if (!_warning.isEmpty()) {
+        data[QStringLiteral("warning")] = _warning;
+    }
+    _socketListener->sendMessage(_command + QStringLiteral("_RESULT:") + QString::fromUtf8(QJsonDocument(data).toJson(QJsonDocument::Compact)));
+    Q_EMIT finished();
+}
+
+QString SocketApiJobV2::warning() const
+{
+    return _warning;
+}
+
+void SocketApiJobV2::setWarning(const QString &warning)
+{
+    _warning = warning;
 }
 
 } // namespace OCC

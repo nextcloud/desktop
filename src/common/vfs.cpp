@@ -37,6 +37,8 @@ QString Vfs::modeToString(Mode mode)
         return QStringLiteral("wincfapi");
     case XAttr:
         return QStringLiteral("xattr");
+    case OpenVFS:
+        return QStringLiteral("openvfs");
     }
     return QStringLiteral("off");
 }
@@ -50,6 +52,10 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
         return WithSuffix;
     } else if (str == QLatin1String("wincfapi")) {
         return WindowsCfApi;
+    } else if (str == QLatin1String("xattr")) {
+        return XAttr;
+    } else if (str == QLatin1String("openvfs")) {
+        return OpenVFS;
     }
     return {};
 }
@@ -132,15 +138,27 @@ VfsOff::VfsOff(QObject *parent)
 
 VfsOff::~VfsOff() = default;
 
+HydrationJob *VfsOff::hydrateFile([[maybe_unused]] const QByteArray &fileId, [[maybe_unused]] const QString &targetPath)
+{
+    return nullptr;
+}
+
 static QString modeToPluginName(Vfs::Mode mode)
 {
-    if (mode == Vfs::WithSuffix)
+    switch (mode) {
+    case Vfs::Off:
+        return {};
+    case Vfs::WithSuffix:
         return QStringLiteral("suffix");
-    if (mode == Vfs::WindowsCfApi)
+    case Vfs::WindowsCfApi:
         return QStringLiteral("cfapi");
-    if (mode == Vfs::XAttr)
+    case Vfs::XAttr:
         return QStringLiteral("xattr");
-    return QString();
+    case Vfs::OpenVFS:
+        return QStringLiteral("openvfs");
+    }
+
+    return {};
 }
 
 Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
@@ -193,6 +211,10 @@ Vfs::Mode OCC::bestAvailableVfsMode()
 {
     if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         return Vfs::WindowsCfApi;
+    }
+
+    if (isVfsPluginAvailable(Vfs::OpenVFS)) {
+        return Vfs::OpenVFS;
     }
 
     if (isVfsPluginAvailable(Vfs::WithSuffix)) {
@@ -251,6 +273,10 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
         qCCritical(lcPlugin) << "Plugin" << loader.fileName() << "does not implement PluginFactory";
         return nullptr;
     }
+    if (!factory->checkAvailability()) {
+        qCCritical(lcPlugin) << "Plugin" << loader.fileName() << "does not implement PluginFactory";
+        return nullptr;
+    }
 
     auto vfs = std::unique_ptr<Vfs>(qobject_cast<Vfs *>(factory->create(nullptr)));
     if (!vfs) {
@@ -260,4 +286,9 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
 
     qCInfo(lcPlugin) << "Created VFS instance from plugin" << pluginPath;
     return vfs;
+}
+
+const FileSystem::Path &VfsSetupParams::root() const
+{
+    return rootPath;
 }

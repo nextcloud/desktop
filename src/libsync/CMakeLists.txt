@@ -166,6 +166,10 @@ set(libsync_SRCS
     creds/keychainchunk.cpp
     caseclashconflictsolver.h
     caseclashconflictsolver.cpp
+    chronoelapsedtimer.h
+    chronoelapsedtimer.cpp
+    hydrationjob.h
+    hydrationjob.cpp
 )
 
 if (WIN32)
