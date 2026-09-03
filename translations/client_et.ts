@@ -5931,7 +5931,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud luua ühendust andmebaasiga</translation>
     </message>
 </context>
 <context>
