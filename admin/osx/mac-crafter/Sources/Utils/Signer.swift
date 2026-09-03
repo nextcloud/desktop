@@ -408,7 +408,7 @@ enum Signer: Signing {
 
         var commandComponents = [
             "codesign",
-            location.path,
+            "\"\(location.path)\"",
             "--timestamp",
             "--verbose=4",
             "--force",
