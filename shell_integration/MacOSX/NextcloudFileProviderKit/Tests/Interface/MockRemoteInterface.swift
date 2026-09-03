@@ -587,8 +587,76 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
 
+    /// Guards the counters below. `enumerate` now runs concurrently (the working-set scan issues
+    /// its reads in waves), so a plain `+= 1` on a shared `Int` would be a data race and would
+    /// under-count exactly in the tests that care about request volume.
+    private let counterLock = NSLock()
+
+    private var _readOperationCount = 0
+    private var _maxConcurrentEnumerations = 0
+    private var _inFlightEnumerations = 0
+
     /// Track the number of read operations performed
-    public var readOperationCount: Int = 0
+    public var readOperationCount: Int {
+        get {
+            counterLock.lock()
+            defer { counterLock.unlock() }
+            return _readOperationCount
+        }
+        set {
+            counterLock.lock()
+            defer { counterLock.unlock() }
+            _readOperationCount = newValue
+        }
+    }
+
+    ///
+    /// When set, ``enumerate(remotePath:depth:showHiddenFiles:includeHiddenFiles:requestBody:account:options:taskHandler:)``
+    /// waits this long before answering, standing in for a PROPFIND round trip.
+    ///
+    /// Reads against the mock tree are otherwise effectively instantaneous, which hides the cost the
+    /// working-set scan actually pays: network waiting. Giving each read a fixed duration makes both
+    /// the wall clock of a scan and its read concurrency measurable and comparable between revisions.
+    ///
+    public var enumerateLatency: TimeInterval?
+
+    ///
+    /// The highest number of `enumerate` calls that were in flight at the same time.
+    ///
+    /// With a sequential scan this stays at 1 no matter how many items are read; with the wave-based
+    /// concurrent scan it rises to the scan's concurrency limit. Only meaningful together with
+    /// ``enumerateLatency``, which is what makes the calls overlap in wall-clock time at all.
+    ///
+    public var maxConcurrentEnumerations: Int {
+        counterLock.lock()
+        defer { counterLock.unlock() }
+        return _maxConcurrentEnumerations
+    }
+
+    /// Reset the read counter, the concurrency high-water mark and the in-flight tally together.
+    public func resetOperationCounters() {
+        counterLock.lock()
+        defer { counterLock.unlock() }
+        _readOperationCount = 0
+        _maxConcurrentEnumerations = 0
+        _inFlightEnumerations = 0
+    }
+
+    /// Count one starting `enumerate` call and update the concurrency high-water mark.
+    private func beginEnumeration() {
+        counterLock.lock()
+        defer { counterLock.unlock() }
+        _readOperationCount += 1
+        _inFlightEnumerations += 1
+        _maxConcurrentEnumerations = max(_maxConcurrentEnumerations, _inFlightEnumerations)
+    }
+
+    /// Count one finishing `enumerate` call.
+    private func endEnumeration() {
+        counterLock.lock()
+        defer { counterLock.unlock() }
+        _inFlightEnumerations -= 1
+    }
 
     /// When non-nil, the upload mock truncates the modification date returned to
     /// the caller to this precision (in seconds) — simulating Nextcloud's
@@ -1160,8 +1228,13 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError) {
-        // Increment read operation counter
-        readOperationCount += 1
+        // Increment read operation counter and track how many reads overlap.
+        beginEnumeration()
+        defer { endEnumeration() }
+
+        if let enumerateLatency {
+            try? await Task.sleep(nanoseconds: UInt64(enumerateLatency * 1_000_000_000))
+        }
 
         var remotePath = remotePath
 
