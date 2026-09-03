@@ -11,7 +11,9 @@
 
 services:
   nextcloud:
-    image: nextcloud:31-apache
+    # Pinned by digest, not by tag: `31-apache` moves, and two runs months apart have to be
+    # the same server for their numbers to be comparable.
+    image: nextcloud:31-apache@sha256:07ec73cc816e58d6f45a162cd53ef886462c29271a23fc68d0124cec276e3767
     container_name: nfpk-bench-nextcloud
     ports:
       - "8080:80"
