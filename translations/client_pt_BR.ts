@@ -5932,7 +5932,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao conectar ao banco de dados.</translation>
     </message>
 </context>
 <context>

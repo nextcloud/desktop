@@ -5931,7 +5931,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Datenbank konnte nicht verbunden werden.</translation>
     </message>
 </context>
 <context>
