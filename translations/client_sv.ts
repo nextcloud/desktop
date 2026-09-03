@@ -5933,7 +5933,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att ansluta till databasen.</translation>
     </message>
 </context>
 <context>
