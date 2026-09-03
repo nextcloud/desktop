@@ -527,9 +527,12 @@ void EditLocallyJob::fileAlreadyLocked()
     Q_ASSERT(rec._lockstate._locked);
 
     const auto remainingTimeInMinutes = fileLockTimeRemainingMinutes(rec._lockstate._lockTime, rec._lockstate._lockTimeout);
+    const auto lockMessage = remainingTimeInMinutes < 0
+        ? tr("Lock has no expiry. You can unlock this file manually once you are finished editing.")
+        : tr("Lock will last for %1 minutes. "
+             "You can also unlock this file manually once you are finished editing.").arg(remainingTimeInMinutes);
     fileLockProcedureComplete(tr("File %1 already locked.").arg(_fileName),
-                              tr("Lock will last for %1 minutes. "
-                                 "You can also unlock this file manually once you are finished editing.").arg(remainingTimeInMinutes),
+                              lockMessage,
                               true);
 }
 
@@ -538,9 +541,12 @@ void EditLocallyJob::fileLockSuccess(const SyncFileItemPtr &item)
     qCDebug(lcEditLocallyJob()) << "File lock succeeded, showing notification" << _relPath;
 
     const auto remainingTimeInMinutes = fileLockTimeRemainingMinutes(item->_lockTime, item->_lockTimeout);
+    const auto lockMessage = remainingTimeInMinutes < 0
+        ? tr("Lock has no expiry. You can unlock this file manually once you are finished editing.")
+        : tr("Lock will last for %1 minutes. "
+             "You can also unlock this file manually once you are finished editing.").arg(remainingTimeInMinutes);
     fileLockProcedureComplete(tr("File %1 now locked.").arg(_fileName),
-                              tr("Lock will last for %1 minutes. "
-                                 "You can also unlock this file manually once you are finished editing.").arg(remainingTimeInMinutes),
+                              lockMessage,
                               true);
 }
 
@@ -564,6 +570,13 @@ void EditLocallyJob::fileLockProcedureComplete(const QString &notificationTitle,
 
 int EditLocallyJob::fileLockTimeRemainingMinutes(const qint64 lockTime, const qint64 lockTimeOut)
 {
+    // lockTimeOut <= 0 means the lock has no expiry (infinite). The server uses -1 for
+    // "never expires" and 0 is treated the same way by files_lock. Return -1 as a sentinel
+    // so callers can show a meaningful message instead of "0 minutes".
+    if (lockTimeOut <= 0) {
+        return -1;
+    }
+
     const auto lockExpirationTime = lockTime + lockTimeOut;
     const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
 
