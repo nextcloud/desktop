@@ -473,7 +473,7 @@ void ShareManager::createShare(const QString &path,
             connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
             job->createShare(path, shareType, shareWith, validPermissions, password);
         });
-    job->getSharedWithMe();
+    job->getSharedWithMe(path);
 }
 
 void ShareManager::createE2EeShareJob(const QString &fullRemotePath,
