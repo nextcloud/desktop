@@ -6,6 +6,7 @@
 
 #include "utility.h"
 #include "config.h"
+#include "xdg_portal.h"
 
 #include <QCoreApplication>
 #include <QDir>
@@ -72,6 +73,10 @@ bool Utility::hasSystemLaunchOnStartup(const QString &appName)
 
 bool Utility::hasLaunchOnStartup(const QString &appName)
 {
+    //! if we are using portals this check will not work, that's why its usage in generalsettings.cpp is currently disabled.
+    //! as far as i can tell the portal does not let us do this check. how badly do we want it? the only two times its used is
+    //! that time in generalsettings.cpp and in tests, for settings as far as i can tell that check isn't really *needed* and
+    //! we might want to adapt tests to portals anyway...
     const QString desktopFileLocation = getUserAutostartDir() + appName + QLatin1String(".desktop");
     return QFile::exists(desktopFileLocation);
 }
@@ -96,8 +101,19 @@ QString Utility::syncFolderDisplayName(const QString &folder, const QString &dis
 
 void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
+    XdgPortal portal;
+    const bool success = portal.background(enable);
+
     const auto userAutoStartPath = getUserAutostartDir();
     const QString desktopFileLocation = userAutoStartPath + appName + QLatin1String(".desktop");
+
+    if (success) { // portals worked so let's make sure there is no non-portal autostart file (not relevant for flatpaks but good for distro packages)
+        if (QFile::remove(desktopFileLocation)) {
+            qCDebug(lcUtility) << "Removed non-portal autostart file at" << desktopFileLocation;
+        }
+        return;
+    }
+
     if (enable) {
         if (!QDir().exists(userAutoStartPath) && !QDir().mkpath(userAutoStartPath)) {
             qCWarning(lcUtility) << "Could not create autostart folder" << userAutoStartPath;
@@ -108,29 +124,38 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
             qCWarning(lcUtility) << "Could not write auto start entry" << desktopFileLocation;
             return;
         }
-        // When running inside an AppImage, we need to set the path to the
-        // AppImage instead of the path to the executable
-        const QString appImagePath = qEnvironmentVariable("APPIMAGE");
-        const bool runningInsideAppImage = !appImagePath.isNull() && QFile::exists(appImagePath);
-        const QString executablePath = runningInsideAppImage ? appImagePath : QCoreApplication::applicationFilePath();
+
+        const auto executablePath = Utility::getAppExecutablePath();
 
         QTextStream ts(&iniFile);
         ts << QLatin1String("[Desktop Entry]\n")
-           << QLatin1String("Name=") << guiName << QLatin1Char('\n')
-           << QLatin1String("GenericName=") << QLatin1String("File Synchronizer\n")
-           << QLatin1String("Exec=\"") << executablePath << "\" --background\n"
-           << QLatin1String("Terminal=") << "false\n"
-           << QLatin1String("Icon=") << APPLICATION_ICON_NAME << QLatin1Char('\n')
-           << QLatin1String("Categories=") << QLatin1String("Network\n")
-           << QLatin1String("Type=") << QLatin1String("Application\n")
-           << QLatin1String("StartupNotify=") << "false\n"
-           << QLatin1String("X-GNOME-Autostart-enabled=") << "true\n"
-           << QLatin1String("X-GNOME-Autostart-Delay=10") << Qt::endl;
+        << QLatin1String("Name=") << guiName << QLatin1Char('\n')
+        << QLatin1String("GenericName=") << QLatin1String("File Synchronizer\n")
+        << QLatin1String("Exec=\"") << executablePath << "\" --background\n"
+        << QLatin1String("Terminal=") << "false\n"
+        << QLatin1String("Icon=") << APPLICATION_ICON_NAME << QLatin1Char('\n')
+        << QLatin1String("Categories=") << QLatin1String("Network\n")
+        << QLatin1String("Type=") << QLatin1String("Application\n")
+        << QLatin1String("StartupNotify=") << "false\n"
+        << QLatin1String("X-GNOME-Autostart-enabled=") << "true\n"
+        << QLatin1String("X-GNOME-Autostart-Delay=10") << Qt::endl;
     } else {
         if (!QFile::remove(desktopFileLocation)) {
             qCWarning(lcUtility) << "Could not remove autostart desktop file";
         }
     }
+}
+
+QString Utility::getAppExecutablePath()
+{
+    // When running inside an AppImage, we need to set the path to the
+    // AppImage instead of the path to the executable
+    const QString appImagePath = qEnvironmentVariable("APPIMAGE");
+    const QString flatpakId = qEnvironmentVariable("FLATPAK_ID");
+    const bool runningInsideAppImage = !appImagePath.isNull() && QFile::exists(appImagePath);
+    const bool runningInsideFlatpak = !flatpakId.isNull();
+    const QString executablePath = runningInsideAppImage ? QLatin1String("\"%1\"").arg(appImagePath) : runningInsideFlatpak ? QLatin1String("flatpak run %1").arg(flatpakId) : QLatin1String("\"%1\"").arg(QCoreApplication::applicationFilePath());
+    return executablePath;
 }
 
 bool Utility::launchOnStartupRequiresApproval()
