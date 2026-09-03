@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+# Reference server for the NextcloudFileProviderKit benchmarks, pinned to server 31 or later for
+# WebDAV pagination and kept on SQLite without Redis to limit variance.
+
+services:
+  nextcloud:
+    image: nextcloud:31-apache
+    container_name: nfpk-bench-nextcloud
+    ports:
+      - "8080:80"
+    environment:
+      SQLITE_DATABASE: nextcloud
+      NEXTCLOUD_ADMIN_USER: admin
+      NEXTCLOUD_ADMIN_PASSWORD: benchmark
+      NEXTCLOUD_TRUSTED_DOMAINS: "localhost 127.0.0.1"
+      PHP_MEMORY_LIMIT: 1G
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(file_get_contents('http://localhost/status.php') && strpos(file_get_contents('http://localhost/status.php'), '\"installed\":true') !== false ? 0 : 1);"]
+      interval: 5s
+      timeout: 10s
+      retries: 60
+      start_period: 30s
