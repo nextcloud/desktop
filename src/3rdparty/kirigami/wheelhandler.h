@@ -111,13 +111,13 @@ public:
 
     void initializeFromEvent(QWheelEvent *event);
 
-    qreal x() const;
-    qreal y() const;
-    QPointF angleDelta() const;
-    QPointF pixelDelta() const;
-    int buttons() const;
-    int modifiers() const;
-    bool inverted() const;
+    [[nodiscard]] qreal x() const;
+    [[nodiscard]] qreal y() const;
+    [[nodiscard]] QPointF angleDelta() const;
+    [[nodiscard]] QPointF pixelDelta() const;
+    [[nodiscard]] int buttons() const;
+    [[nodiscard]] int modifiers() const;
+    [[nodiscard]] bool inverted() const;
     bool isAccepted();
     void setAccepted(bool accepted);
 
@@ -268,25 +268,25 @@ public:
     explicit WheelHandler(QObject *parent = nullptr);
     ~WheelHandler() override;
 
-    QQuickItem *target() const;
+    [[nodiscard]] QQuickItem *target() const;
     void setTarget(QQuickItem *target);
 
-    qreal verticalStepSize() const;
+    [[nodiscard]] qreal verticalStepSize() const;
     void setVerticalStepSize(qreal stepSize);
     void resetVerticalStepSize();
 
-    qreal horizontalStepSize() const;
+    [[nodiscard]] qreal horizontalStepSize() const;
     void setHorizontalStepSize(qreal stepSize);
     void resetHorizontalStepSize();
 
-    Qt::KeyboardModifiers pageScrollModifiers() const;
+    [[nodiscard]] Qt::KeyboardModifiers pageScrollModifiers() const;
     void setPageScrollModifiers(Qt::KeyboardModifiers modifiers);
     void resetPageScrollModifiers();
 
-    bool filterMouseEvents() const;
+    [[nodiscard]] bool filterMouseEvents() const;
     void setFilterMouseEvents(bool enabled);
 
-    bool keyNavigationEnabled() const;
+    [[nodiscard]] bool keyNavigationEnabled() const;
     void setKeyNavigationEnabled(bool enabled);
 
     /**

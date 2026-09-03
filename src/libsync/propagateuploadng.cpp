@@ -341,8 +341,9 @@ void PropagateUploadFileNG::finishUpload()
 
 void PropagateUploadFileNG::startNextChunk()
 {
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     const auto fileSize = _fileToUpload._size;
     ENFORCE(fileSize >= _sent, "Sent data exceeds file size")

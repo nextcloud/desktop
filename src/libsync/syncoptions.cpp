@@ -42,24 +42,29 @@ void SyncOptions::setMaxChunkSize(const qint64 maxChunkSize)
 void SyncOptions::fillFromEnvironmentVariables()
 {
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
-    if (!chunkSizeEnv.isEmpty())
+    if (!chunkSizeEnv.isEmpty()) {
         _initialChunkSize = chunkSizeEnv.toUInt();
+    }
 
     QByteArray minChunkSizeEnv = qgetenv("OWNCLOUD_MIN_CHUNK_SIZE");
-    if (!minChunkSizeEnv.isEmpty())
+    if (!minChunkSizeEnv.isEmpty()) {
         _minChunkSize = minChunkSizeEnv.toUInt();
+    }
 
     QByteArray maxChunkSizeEnv = qgetenv("OWNCLOUD_MAX_CHUNK_SIZE");
-    if (!maxChunkSizeEnv.isEmpty())
+    if (!maxChunkSizeEnv.isEmpty()) {
         _maxChunkSize = maxChunkSizeEnv.toUInt();
+    }
 
     QByteArray targetChunkUploadDurationEnv = qgetenv("OWNCLOUD_TARGET_CHUNK_UPLOAD_DURATION");
-    if (!targetChunkUploadDurationEnv.isEmpty())
+    if (!targetChunkUploadDurationEnv.isEmpty()) {
         _targetChunkUploadDuration = std::chrono::milliseconds(targetChunkUploadDurationEnv.toUInt());
+    }
 
     int maxParallel = qgetenv("OWNCLOUD_MAX_PARALLEL").toInt();
-    if (maxParallel > 0)
+    if (maxParallel > 0) {
         _parallelNetworkJobs = maxParallel;
+    }
 }
 
 void SyncOptions::verifyChunkSizes()

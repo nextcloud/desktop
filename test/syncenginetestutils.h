@@ -47,12 +47,15 @@ static const QUrl sUploadUrl("owncloud://somehost/owncloud/remote.php/dav/upload
 inline QString getFilePathFromUrl(const QUrl &url)
 {
     QString path = url.path();
-    if (path.startsWith(sRootUrl2.path()))
+    if (path.startsWith(sRootUrl2.path())) {
         return path.mid(sRootUrl2.path().length());
-    if (path.startsWith(sUploadUrl.path()))
+    }
+    if (path.startsWith(sUploadUrl.path())) {
         return path.mid(sUploadUrl.path().length());
-    if (path.startsWith(sRootUrl.path()))
+    }
+    if (path.startsWith(sRootUrl.path())) {
         return path.mid(sRootUrl.path().length());
+    }
     return {};
 }
 
@@ -143,7 +146,8 @@ public:
             , bytesAvailable{bytesAvailable}
         {}
 
-        QString bytesAvailableString() const {
+        [[nodiscard]] QString bytesAvailableString() const
+        {
             if (_bytesAvailableString.isEmpty()) {
                 return QString::number(bytesAvailable);
             }
@@ -675,8 +679,9 @@ inline const FileInfo *findConflict(FileInfo &dir, const QString &filename)
 {
     QFileInfo info(filename);
     const FileInfo *parentDir = dir.find(info.path());
-    if (!parentDir)
+    if (!parentDir) {
         return nullptr;
+    }
     QString start = info.baseName() + " (conflicted copy";
     for (const auto &item : parentDir->children) {
         if (item.name.startsWith(start)) {

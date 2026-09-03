@@ -18,8 +18,9 @@ using namespace OCC;
 
 static void changeAllFileId(FileInfo &info) {
     info.fileId = generateFileId();
-    if (!info.isDir)
+    if (!info.isDir) {
         return;
+    }
     info.etag = generateEtag();
     for (auto &child : info.children) {
         changeAllFileId(child);

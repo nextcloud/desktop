@@ -107,8 +107,9 @@ QString Updater::getSystemInfo()
     process.waitForFinished();
     QByteArray output = process.readAllStandardOutput();
     qCDebug(lcUpdater) << "Sys Info size: " << output.length();
-    if (output.length() > 1024)
+    if (output.length() > 1024) {
         output.clear(); // don't send too much.
+    }
 
     return QString::fromLocal8Bit(output.toBase64());
 #else
@@ -155,8 +156,9 @@ qint64 Updater::Helper::currentVersionToInt()
 
 qint64 Updater::Helper::stringVersionToInt(const QString &version)
 {
-    if (version.isEmpty())
+    if (version.isEmpty()) {
         return 0;
+    }
     QByteArray baVersion = version.toLatin1();
     int major = 0, minor = 0, patch = 0, build = 0;
     sscanf(baVersion, "%d.%d.%d.%d", &major, &minor, &patch, &build);

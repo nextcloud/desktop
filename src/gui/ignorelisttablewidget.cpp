@@ -71,8 +71,9 @@ void IgnoreListTableWidget::slotItemSelectionChanged()
 void IgnoreListTableWidget::slotRemoveCurrentItem()
 {
     ui->tableWidget->removeRow(ui->tableWidget->currentRow());
-    if(ui->tableWidget->rowCount() == readOnlyRows)
+    if (ui->tableWidget->rowCount() == readOnlyRows) {
         ui->removeAllPushButton->setEnabled(false);
+    }
 }
 
 void IgnoreListTableWidget::slotRemoveAllItems()
@@ -134,8 +135,9 @@ void IgnoreListTableWidget::slotAddPattern()
                                                {},
                                                &okClicked);
 
-    if (!okClicked || pattern.isEmpty())
+    if (!okClicked || pattern.isEmpty()) {
         return;
+    }
 
     addPattern(pattern, false, false);
     ui->tableWidget->scrollToBottom();

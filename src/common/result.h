@@ -83,10 +83,11 @@ public:
 
     ~Result()
     {
-        if (_isError)
+        if (_isError) {
             _error.~Error();
-        else
+        } else {
             _result.~T();
+        }
     }
 
     explicit operator bool() const { return !_isError; }

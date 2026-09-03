@@ -458,10 +458,10 @@ private Q_SLOTS:
     void slotCreateE2eeShareJobFinised(int statusCode, const QString &message);
 
 private:
-    QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data) const;
-    QSharedPointer<UserGroupShare> parseUserGroupShare(const QJsonObject &data) const;
-    SharePtr parseShare(const QJsonObject &data) const;
-    const QList<OCC::SharePtr> parseShares(const QJsonDocument &reply) const;
+    [[nodiscard]] QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data) const;
+    [[nodiscard]] QSharedPointer<UserGroupShare> parseUserGroupShare(const QJsonObject &data) const;
+    [[nodiscard]] SharePtr parseShare(const QJsonObject &data) const;
+    [[nodiscard]] const QList<OCC::SharePtr> parseShares(const QJsonDocument &reply) const;
 
     AccountPtr _account;
 };

@@ -25,8 +25,9 @@ static QNetworkProxy proxyFromConfig(const ConfigFile &cfg)
 {
     QNetworkProxy proxy;
 
-    if (cfg.proxyHostName().isEmpty())
+    if (cfg.proxyHostName().isEmpty()) {
         return QNetworkProxy();
+    }
 
     proxy.setHostName(cfg.proxyHostName());
     proxy.setPort(cfg.proxyPort());

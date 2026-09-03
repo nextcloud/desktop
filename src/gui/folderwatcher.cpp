@@ -78,8 +78,8 @@ bool FolderWatcher::canSetPermissions() const
 void FolderWatcher::appendSubPaths(QDir dir, QStringList &subPaths)
 {
     QStringList newSubPaths = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
-    for (int i = 0; i < newSubPaths.size(); i++) {
-        QString path = dir.path() + "/" + newSubPaths[i];
+    for (auto &newSubPath : newSubPaths) {
+        QString path = dir.path() + "/" + newSubPath;
         QFileInfo fileInfo(path);
         subPaths.append(path);
         if (FileSystem::isDir(path)) {
@@ -167,8 +167,9 @@ void FolderWatcher::startNotificationTestWhenReady()
     FileSystem::setFileHidden(path, true);
 
     QTimer::singleShot(5000, this, [this]() {
-        if (!_testNotificationPath.isEmpty())
+        if (!_testNotificationPath.isEmpty()) {
             Q_EMIT becameUnreliable(tr("The watcher did not receive a test notification."));
+        }
         _testNotificationPath.clear();
     });
 }
