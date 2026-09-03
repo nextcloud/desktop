@@ -53,3 +53,4 @@ It is designed specifically for the implementation of this file provider extensi
 - <doc:ExcludedFromSyncDeletion>
 - <doc:ChunkedUploads>
 - <doc:UnicodePathNormalization>
+- <doc:PerformanceBenchmarks>

@@ -21,7 +21,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/nextcloud/NextcloudCapabilitiesKit.git", from: "2.5.0"),
-        .package(url: "https://github.com/nextcloud/NextcloudKit", from: "7.5.0"),
+        .package(url: "https://github.com/nextcloud/NextcloudKit", from: "7.3.3"),
         .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.55.0"),
         .package(url: "https://github.com/realm/realm-swift.git", from: "20.0.4")
     ],
@@ -67,6 +67,14 @@ let package = Package(
         .testTarget(
             name: "NextcloudFileProviderKitTests",
             dependencies: ["NextcloudFileProviderKit", "TestInterface"]
+        ),
+        .executableTarget(
+            name: "NextcloudFileProviderKitBenchmarks",
+            dependencies: [
+                "NextcloudFileProviderKit",
+                .product(name: "NextcloudKit", package: "NextcloudKit")
+            ],
+            path: "Benchmarks/Harness"
         )
     ]
 )
