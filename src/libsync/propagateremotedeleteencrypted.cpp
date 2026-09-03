@@ -74,3 +74,5 @@ void PropagateRemoteDeleteEncrypted::slotUpdateMetadataJobFinished(int statusCod
     Q_UNUSED(message);
     deleteRemoteItem(_item->_encryptedFileName);
 }
+
+#include "moc_propagateremotedeleteencrypted.cpp"

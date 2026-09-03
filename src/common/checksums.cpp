@@ -96,8 +96,9 @@ QByteArray calcSha256(const QByteArray &data)
 
 QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum)
 {
-    if (checksumType.isEmpty() || checksum.isEmpty())
+    if (checksumType.isEmpty() || checksum.isEmpty()) {
         return QByteArray();
+    }
     QByteArray header = checksumType;
     header.append(':');
     header.append(checksum);
@@ -269,8 +270,9 @@ ComputeChecksum *ValidateChecksumHeader::prepareStart(const QByteArray &checksum
 
 void ValidateChecksumHeader::start(const QString &filePath, const QByteArray &checksumHeader)
 {
-    if (auto calculator = prepareStart(checksumHeader))
+    if (auto calculator = prepareStart(checksumHeader)) {
         calculator->start(filePath);
+    }
 }
 
 QByteArray ValidateChecksumHeader::calculatedChecksumType() const
@@ -307,8 +309,9 @@ CSyncChecksumHook::CSyncChecksumHook() = default;
 QByteArray CSyncChecksumHook::hook(const QByteArray &path, const QByteArray &otherChecksumHeader, void * /*this_obj*/)
 {
     QByteArray type = parseChecksumHeaderType(QByteArray(otherChecksumHeader));
-    if (type.isEmpty())
+    if (type.isEmpty()) {
         return nullptr;
+    }
 
     qCInfo(lcChecksums) << "Computing" << type << "checksum of" << path << "in the csync hook";
     QByteArray checksum = ComputeChecksum::computeNowOnFile(QString::fromUtf8(path), type);

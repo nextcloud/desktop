@@ -103,8 +103,9 @@ bool IgnoreListEditor::ignoreHiddenFiles()
 
 void IgnoreListEditor::slotRestoreDefaults(QAbstractButton *button)
 {
-    if(ui->buttonBox->buttonRole(button) != QDialogButtonBox::ResetRole)
+    if (ui->buttonBox->buttonRole(button) != QDialogButtonBox::ResetRole) {
         return;
+    }
 
     ui->ignoreTableWidget->slotRemoveAllItems();
 

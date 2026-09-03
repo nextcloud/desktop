@@ -223,7 +223,7 @@ public:
     operator QSslCertificate() const;
 
     QSslCertificate& get();
-    const QSslCertificate &get() const;
+    [[nodiscard]] const QSslCertificate &get() const;
 
     NextcloudSslCertificate &operator=(const NextcloudSslCertificate &other);
     NextcloudSslCertificate &operator=(NextcloudSslCertificate &&other);

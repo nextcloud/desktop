@@ -215,7 +215,7 @@ IF (NOT APPLE)
         FILES ${creds_HEADERS}
 	DESTINATION ${INCLUDE_INSTALL_DIR}/nextcloudsync/creds
     )
-ENDIF(NOT APPLE)
+ENDIF()
 
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS WebSockets Xml Sql Gui Svg Widgets)
 

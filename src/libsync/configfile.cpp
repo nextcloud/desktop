@@ -152,8 +152,9 @@ ConfigFile::ConfigFile()
 bool ConfigFile::setConfDir(const QString &value)
 {
     QString dirPath = value;
-    if (dirPath.isEmpty())
+    if (dirPath.isEmpty()) {
         return false;
+    }
 
     QFileInfo fi(dirPath);
     if (!fi.exists()) {
@@ -296,8 +297,9 @@ void ConfigFile::restoreGeometry(QWidget *w)
 void ConfigFile::saveGeometryHeader(QHeaderView *header)
 {
 #ifndef TOKEN_AUTH_ONLY
-    if (!header)
+    if (!header) {
         return;
+    }
     ASSERT(!header->objectName().isEmpty());
 
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -312,8 +314,9 @@ void ConfigFile::saveGeometryHeader(QHeaderView *header)
 void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 {
 #ifndef TOKEN_AUTH_ONLY
-    if (!header)
+    if (!header) {
         return;
+    }
     ASSERT(!header->objectName().isNull());
 
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -434,10 +437,38 @@ QString ConfigFile::excludeFileFromSystem()
     return fi.absoluteFilePath();
 }
 
+namespace {
+void removeUpdaterArtifact(const QString &path)
+{
+    if (path.isEmpty() || !QFile::exists(path)) {
+        return;
+    }
+
+    if (QFile::remove(path)) {
+        qCInfo(lcConfigFile) << "Removed leftover updater file:" << path;
+    } else {
+        qCWarning(lcConfigFile) << "Failed to remove leftover updater file:" << path;
+    }
+}
+}
+
+QString ConfigFile::msiLogFilePath() const
+{
+    return configPath() + QStringLiteral("msi.log");
+}
+
 void OCC::ConfigFile::cleanUpdaterConfiguration()
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup("Updater");
+
+    // The config is the only record of where the downloaded installer lives.
+    // Delete it before dropping the keys, or every version change orphans
+    // another installer in the config folder with nothing left to find it by.
+    // See https://github.com/nextcloud/desktop/issues/7009
+    removeUpdaterArtifact(settings.value("updateAvailable").toString());
+    removeUpdaterArtifact(msiLogFilePath());
+
     settings.remove("autoUpdateAttempted");
     settings.remove("updateTargetVersion");
     settings.remove("updateTargetVersionString");
@@ -880,8 +911,9 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
     }
 
     QSettings settings(configFile(), QSettings::IniFormat);
-    if (!group.isEmpty())
+    if (!group.isEmpty()) {
         settings.beginGroup(group);
+    }
 
     return settings.value(param, systemSetting);
 }

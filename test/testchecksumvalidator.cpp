@@ -100,8 +100,9 @@ private Q_SLOTS:
         const auto sum = checksumCalculator.calculate();
 
         QByteArray sSum = shellSum("md5sum", file);
-        if (sSum.isEmpty())
+        if (sSum.isEmpty()) {
             QSKIP("Couldn't execute md5sum to calculate checksum, executable missing?", SkipSingle);
+        }
 
         QVERIFY(!sum.isEmpty());
         QCOMPARE(sSum, sum);
@@ -119,8 +120,9 @@ private Q_SLOTS:
         const auto sum = checksumCalculator.calculate();
 
         QByteArray sSum = shellSum("sha1sum", file);
-        if (sSum.isEmpty())
+        if (sSum.isEmpty()) {
             QSKIP("Couldn't execute sha1sum to calculate checksum, executable missing?", SkipSingle);
+        }
 
         QVERIFY(!sum.isEmpty());
         QCOMPARE(sSum, sum);

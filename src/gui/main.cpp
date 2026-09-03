@@ -157,8 +157,9 @@ int main(int argc, char **argv)
         QStringList args = app.arguments();
         if (args.size() > 1) {
             QString msg = args.join(QLatin1String("|"));
-            if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg))
+            if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg)) {
                 return -1;
+            }
         } else if (!app.backgroundMode() && !app.sendMessage(QLatin1String("MSG_SHOWMAINDIALOG"))) {
             return -1;
         }

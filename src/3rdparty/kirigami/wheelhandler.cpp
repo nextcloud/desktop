@@ -13,9 +13,7 @@ KirigamiWheelEvent::KirigamiWheelEvent(QObject *parent)
 {
 }
 
-KirigamiWheelEvent::~KirigamiWheelEvent()
-{
-}
+KirigamiWheelEvent::~KirigamiWheelEvent() = default;
 
 void KirigamiWheelEvent::initializeFromEvent(QWheelEvent *event)
 {

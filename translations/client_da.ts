@@ -311,12 +311,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
         <source>Talk notification caller avatar</source>
-        <translation>Opkalds-avatar til Snak meddelelse</translation>
+        <translation>Opkalds-avatar til Talk meddelelse</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
         <source>Answer Talk call notification</source>
-        <translation>Svar Snak opkaldsnotifikation</translation>
+        <translation>Svar Talk opkaldsnotifikation</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
@@ -326,7 +326,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Decline Talk call notification</source>
-        <translation>Afvis Snak opkaldsnotifikation</translation>
+        <translation>Afvis Talk opkaldsnotifikation</translation>
     </message>
 </context>
 <context>
@@ -5929,6 +5929,14 @@ Serveren svarede med fejl:% 2</translation>
     </message>
 </context>
 <context>
+    <name>OCC::SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
+        <source>Failed to connect database.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::SyncStatusSummary</name>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
@@ -7179,14 +7187,6 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Sharing is not available for this folder</source>
         <translation>Deling er ikke tilgængelig for denne mappe</translation>
-    </message>
-</context>
-<context>
-    <name>SyncJournalDb</name>
-    <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
-        <source>Failed to connect database.</source>
-        <translation>Kunne ikke forbinde database.</translation>
     </message>
 </context>
 <context>
@@ -8776,6 +8776,14 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
         <translation>Ingen proxy</translation>
+    </message>
+</context>
+<context>
+    <name>SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
+        <source>Failed to connect database.</source>
+        <translation>Kunne ikke forbinde database.</translation>
     </message>
 </context>
 <context>

@@ -41,7 +41,7 @@ if (CMOCKA_LIBRARY)
       ${CMOCKA_LIBRARIES}
       ${CMOCKA_LIBRARY}
   )
-endif (CMOCKA_LIBRARY)
+endif ()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(CMocka DEFAULT_MSG CMOCKA_LIBRARIES CMOCKA_INCLUDE_DIR)

@@ -5,9 +5,10 @@
 
 #include "gui/filedetails/sortedsharemodel.h"
 
-#include <QTest>
 #include <QAbstractItemModelTester>
 #include <QSignalSpy>
+#include <QTest>
+#include <ranges>
 
 #include "sharetestutils.h"
 
@@ -21,13 +22,13 @@ public Q_SLOTS:
     void addAllTestShares()
     {
         // Let's insert them in the opposite order we want from the model
-        for (auto it = _expectedOrder.crbegin(); it != _expectedOrder.crend(); ++it) {
-            const auto shareDef = *it;
-            if(it->shareType == Share::TypeInternalLink || it->shareType == Share::TypePlaceholderLink) {
+        for (const auto &it : std::ranges::reverse_view(_expectedOrder)) {
+            const auto shareDef = it;
+            if (it.shareType == Share::TypeInternalLink || it.shareType == Share::TypePlaceholderLink) {
                 continue; // Don't add the shares that are only internal in the client
             }
 
-            helper.appendShareReplyData(*it);
+            helper.appendShareReplyData(it);
         }
     }
 

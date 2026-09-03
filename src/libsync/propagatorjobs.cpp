@@ -85,10 +85,12 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
         // Do it while avoiding redundant delete calls to the journal.
         QString deletedDir;
         for (const auto &it : deleted) {
-            if (!it.first.startsWith(propagator()->localPath()))
+            if (!it.first.startsWith(propagator()->localPath())) {
                 continue;
-            if (isPathInsideDeletedDir(it.first, deletedDir))
+            }
+            if (isPathInsideDeletedDir(it.first, deletedDir)) {
                 continue;
+            }
             if (it.second) {
                 deletedDir = it.first;
             }
@@ -107,8 +109,9 @@ void PropagateLocalRemove::start()
 
     _moveToTrash = propagator()->syncOptions()._moveFilesToTrash || _item->_wantsSpecificActions == SyncFileItem::SynchronizationOptions::MoveToClientTrashBin;
 
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     const QString filename = propagator()->fullLocalPath(_item->_file);
     qCInfo(lcPropagateLocalRemove) << "Going to delete:" << filename;
@@ -191,8 +194,9 @@ void PropagateLocalRemove::start()
 
 void PropagateLocalMkdir::start()
 {
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     startLocalMkdir();
 }
@@ -340,8 +344,9 @@ PropagateLocalRename::PropagateLocalRename(OwncloudPropagator *propagator, const
 
 void PropagateLocalRename::start()
 {
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     auto &vfs = propagator()->syncOptions()._vfs;
     const auto previousNameInDb = propagator()->adjustRenamedPath(_item->_file);
@@ -590,3 +595,5 @@ bool PropagateLocalRename::deleteOldDbRecord(const QString &fileName)
     return true;
 }
 }
+
+#include "moc_propagatorjobs.cpp"

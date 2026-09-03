@@ -30,15 +30,16 @@
 #include <winbase.h>
 #endif
 
-#include <QStack>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
 #include <QLoggingCategory>
-#include <QTimer>
 #include <QObject>
-#include <QTimerEvent>
 #include <QRegularExpression>
+#include <QStack>
+#include <QTimer>
+#include <QTimerEvent>
 #include <qmath.h>
+#include <ranges>
 
 namespace OCC {
 
@@ -90,8 +91,9 @@ int OwncloudPropagator::maximumActiveTransferJob()
 /* The maximum number of active jobs in parallel  */
 int OwncloudPropagator::hardMaximumActiveJob()
 {
-    if (!_syncOptions._parallelNetworkJobs)
+    if (!_syncOptions._parallelNetworkJobs) {
         return 1;
+    }
     return _syncOptions._parallelNetworkJobs;
 }
 
@@ -114,8 +116,9 @@ static qint64 getMinBlacklistTime()
 static qint64 getMaxBlacklistTime()
 {
     int v = qEnvironmentVariableIntValue("OWNCLOUD_BLACKLIST_TIME_MAX");
-    if (v > 0)
+    if (v > 0) {
         return v;
+    }
     return 24 * 60 * 60; // 1 day
 }
 
@@ -341,10 +344,11 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
     bool deleteExisting = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
     switch (item->_instruction) {
     case CSYNC_INSTRUCTION_REMOVE:
-        if (item->_direction == SyncFileItem::Down)
+        if (item->_direction == SyncFileItem::Down) {
             return new PropagateLocalRemove(this, item);
-        else
+        } else {
             return new PropagateRemoteDelete(this, item);
+        }
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
     case CSYNC_INSTRUCTION_CONFLICT:
@@ -652,9 +656,9 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
         // since it would be done before the actual remove (issue #1845)
         // NOTE: Currently this means that we don't update those etag at all in this sync,
         //       but it should not be a problem, they will be updated in the next sync.
-        for (int i = 0; i < directories.size(); ++i) {
-            if (directories[i].second->_item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
-                directories[i].second->_item->_instruction = CSYNC_INSTRUCTION_NONE;
+        for (auto &directorie : directories) {
+            if (directorie.second->_item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
+                directorie.second->_item->_instruction = CSYNC_INSTRUCTION_NONE;
             }
         }
     } else {
@@ -736,9 +740,9 @@ void OwncloudPropagator::processE2eeMetadataMigration(const SyncFileItemPtr &ite
         const auto rootE2eeFolderPathWithSlash = QString(rootE2eeFolderPath + "/");
 
         QPair<QString, PropagateDirectory *> foundDirectory = {QString{}, nullptr};
-        for (auto it = std::rbegin(directories); it != std::rend(directories); ++it) {
-            if (it->first == rootE2eeFolderPathWithSlash) {
-                foundDirectory = *it;
+        for (auto &directorie : std::ranges::reverse_view(directories)) {
+            if (directorie.first == rootE2eeFolderPathWithSlash) {
+                foundDirectory = directorie;
                 break;
             }
         }
@@ -885,7 +889,9 @@ QString OwncloudPropagator::localPath() const
 
 void OwncloudPropagator::scheduleNextJob()
 {
-    if (_jobScheduled) return; // don't schedule more than 1
+    if (_jobScheduled) {
+        return; // don't schedule more than 1
+    }
     _jobScheduled = true;
     QTimer::singleShot(3, this, &OwncloudPropagator::scheduleNextJobImpl);
 }
@@ -973,8 +979,9 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
         return false;
     }
     QString conflictUserName;
-    if (account()->capabilities().uploadConflictFiles())
+    if (account()->capabilities().uploadConflictFiles()) {
         conflictUserName = account()->davDisplayName();
+    }
     QString conflictFileName = Utility::makeConflictFileName(
         item->_file, Utility::qDateTimeFromTime_t(conflictModTime), conflictUserName);
     QString conflictFilePath = fullLocalPath(conflictFileName);
@@ -991,8 +998,9 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
             Q_EMIT seenLockedFile(fn);
         }
 
-        if (error)
+        if (error) {
             *error = renameError;
+        }
         return false;
     }
     qCInfo(lcPropagator) << "Created conflict file" << fn << "->" << conflictFileName;
@@ -1555,8 +1563,10 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                     if (const auto fileName = propagator()->fullLocalPath(_item->_file); FileSystem::fileExists(fileName)) {
                         permissionsChangeHelper(fileName);
                     }
-                    if (const auto fileName = propagator()->fullLocalPath(_item->_renameTarget); !_item->_renameTarget.isEmpty() && FileSystem::fileExists(fileName)) {
-                        permissionsChangeHelper(fileName);
+                    if (!_item->_renameTarget.isEmpty()) {
+                        if (const auto fileName = propagator()->fullLocalPath(_item->_renameTarget); FileSystem::fileExists(fileName)) {
+                            permissionsChangeHelper(fileName);
+                        }
                     }
                 }
                 catch (const std::filesystem::filesystem_error &e)
@@ -1611,10 +1621,11 @@ PropagatorJob::JobParallelism PropagateRootDirectory::parallelism() const
 
 void PropagateRootDirectory::abort(PropagatorJob::AbortType abortType)
 {
-    if (_firstJob)
+    if (_firstJob) {
         // Force first job to abort synchronously
         // even if caller allows async abort (asyncAbort)
         _firstJob->abort(AbortType::Synchronous);
+    }
 
     if (abortType == AbortType::Asynchronous) {
         struct AbortsFinished {
@@ -1625,13 +1636,15 @@ void PropagateRootDirectory::abort(PropagatorJob::AbortType abortType)
 
         connect(&_subJobs, &PropagatorCompositeJob::abortFinished, this, [this, abortStatus]() {
             abortStatus->subJobsFinished = true;
-            if (abortStatus->subJobsFinished && abortStatus->dirDeletionFinished)
+            if (abortStatus->subJobsFinished && abortStatus->dirDeletionFinished) {
                 Q_EMIT abortFinished();
+            }
         });
         connect(&_dirDeletionJobs, &PropagatorCompositeJob::abortFinished, this, [this, abortStatus]() {
             abortStatus->dirDeletionFinished = true;
-            if (abortStatus->subJobsFinished && abortStatus->dirDeletionFinished)
+            if (abortStatus->subJobsFinished && abortStatus->dirDeletionFinished) {
                 Q_EMIT abortFinished();
+            }
         });
     }
     _subJobs.abort(abortType);
@@ -1840,3 +1853,5 @@ void PropagateVfsUpdateMetadataJob::start()
 }
 
 }
+
+#include "moc_owncloudpropagator.cpp"

@@ -202,12 +202,15 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
     QString org = Utility::escape(cert.subjectInfo(QSslCertificate::Organization));
     QString unit = Utility::escape(cert.subjectInfo(QSslCertificate::OrganizationalUnitName));
     QString country = Utility::escape(cert.subjectInfo(QSslCertificate::CountryName));
-    if (unit.isEmpty())
+    if (unit.isEmpty()) {
         unit = tr("&lt;not specified&gt;");
-    if (org.isEmpty())
+    }
+    if (org.isEmpty()) {
         org = tr("&lt;not specified&gt;");
-    if (country.isEmpty())
+    }
+    if (country.isEmpty()) {
         country = tr("&lt;not specified&gt;");
+    }
     li << tr("Organization: %1").arg(org);
     li << tr("Unit: %1").arg(unit);
     li << tr("Country: %1").arg(country);
@@ -245,8 +248,9 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
 
 bool SslErrorDialog::trustConnection()
 {
-    if (_allTrusted)
+    if (_allTrusted) {
         return true;
+    }
 
     bool stat = (_ui->_cbTrustConnect->checkState() == Qt::Checked);
     qCInfo(lcSslErrorDialog) << "SSL-Connection is trusted: " << stat;

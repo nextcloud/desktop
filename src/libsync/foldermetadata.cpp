@@ -1270,3 +1270,5 @@ bool FolderMetadata::verifyMetadataKey(const QByteArray &metadataKey) const
     return _keyChecksums.contains(calcSha256(metadataKeyLimitedLength)) || _keyChecksums.isEmpty();
 }
 }
+
+#include "moc_foldermetadata.cpp"

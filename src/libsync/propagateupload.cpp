@@ -507,8 +507,9 @@ UploadDevice::~UploadDevice()
 
 bool UploadDevice::open(QIODevice::OpenMode mode)
 {
-    if (mode & QIODevice::WriteOnly)
+    if (mode & QIODevice::WriteOnly) {
         return false;
+    }
 
     // Get the file size now: _file.fileName() is no longer reliable
     // on all platforms after openAndSeekFileSharedRead().
@@ -801,8 +802,9 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
         qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
     }
     headers[QByteArrayLiteral("X-OC-Mtime")] = QByteArray::number(qint64(_item->_modtime));
-    if (qEnvironmentVariableIntValue("OWNCLOUD_LAZYOPS"))
+    if (qEnvironmentVariableIntValue("OWNCLOUD_LAZYOPS")) {
         headers[QByteArrayLiteral("OC-LazyOps")] = QByteArrayLiteral("true");
+    }
 
     if (!_item->_etag.isEmpty() && _item->_etag != "empty_etag"
         && _item->_instruction != CSYNC_INSTRUCTION_NEW // On new files never send a If-Match
@@ -817,14 +819,18 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
     auto conflictRecord = propagator()->_journal->conflictRecord(_item->_file.toUtf8());
     if (conflictRecord.isValid()) {
         headers[QByteArrayLiteral("OC-Conflict")] = "1";
-        if (!conflictRecord.initialBasePath.isEmpty())
+        if (!conflictRecord.initialBasePath.isEmpty()) {
             headers[QByteArrayLiteral("OC-ConflictInitialBasePath")] = conflictRecord.initialBasePath;
-        if (!conflictRecord.baseFileId.isEmpty())
+        }
+        if (!conflictRecord.baseFileId.isEmpty()) {
             headers[QByteArrayLiteral("OC-ConflictBaseFileId")] = conflictRecord.baseFileId;
-        if (conflictRecord.baseModtime != -1)
+        }
+        if (conflictRecord.baseModtime != -1) {
             headers[QByteArrayLiteral("OC-ConflictBaseMtime")] = QByteArray::number(conflictRecord.baseModtime);
-        if (!conflictRecord.baseEtag.isEmpty())
+        }
+        if (!conflictRecord.baseEtag.isEmpty()) {
             headers[QByteArrayLiteral("OC-ConflictBaseEtag")] = conflictRecord.baseEtag;
+        }
     }
 
     if (_uploadEncryptedHelper && !_uploadEncryptedHelper->folderToken().isEmpty()) {
@@ -838,8 +844,9 @@ void PropagateUploadFileCommon::finalize()
 {
     // Update the quota, if known
     auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
-    if (quotaIt != propagator()->_folderQuota.end())
+    if (quotaIt != propagator()->_folderQuota.end()) {
         quotaIt.value() -= _fileToUpload._size;
+    }
 
     // Update the database entry
     const auto result = propagator()->updateMetadata(*_item, Vfs::DatabaseMetadata);
@@ -883,8 +890,9 @@ void PropagateUploadFileCommon::abortNetworkJobs(
     PropagatorJob::AbortType abortType,
     const std::function<bool(AbstractNetworkJob *)> &mayAbortJob)
 {
-    if (_aborting)
+    if (_aborting) {
         return;
+    }
     _aborting = true;
 
     // Count the number of jobs that need aborting, and emit the overall
@@ -900,8 +908,9 @@ void PropagateUploadFileCommon::abortNetworkJobs(
     // Abort all running jobs, except for explicitly excluded ones
     for (const auto job : std::as_const(_jobs)) {
         auto reply = job->reply();
-        if (!reply || !reply->isRunning())
+        if (!reply || !reply->isRunning()) {
             continue;
+        }
 
         (*runningCount)++;
 
@@ -910,8 +919,9 @@ void PropagateUploadFileCommon::abortNetworkJobs(
         // zero.
         // We may however finish before that if the un-abortable job completes
         // normally.
-        if (!mayAbortJob(job))
+        if (!mayAbortJob(job)) {
             continue;
+        }
 
         // Abort the job
         if (abortType == AbortType::Asynchronous) {
@@ -921,7 +931,10 @@ void PropagateUploadFileCommon::abortNetworkJobs(
         reply->abort();
     }
 
-    if (*runningCount == 0 && abortType == AbortType::Asynchronous)
+    if (*runningCount == 0 && abortType == AbortType::Asynchronous) {
         Q_EMIT abortFinished();
+    }
 }
 }
+
+#include "moc_propagateupload.cpp"

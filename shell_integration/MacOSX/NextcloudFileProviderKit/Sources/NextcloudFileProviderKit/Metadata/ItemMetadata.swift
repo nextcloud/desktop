@@ -39,6 +39,7 @@ public protocol ItemMetadata: Equatable {
     var downloadURL: String { get set }
     var e2eEncrypted: Bool { get set }
     var etag: String { get set }
+    var fileProviderContentVersion: String? { get set }
     var favorite: Bool { get set }
     var fileId: String { get set }
     var fileName: String { get set } // What the file's real file name is

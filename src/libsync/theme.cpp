@@ -835,16 +835,18 @@ QPixmap Theme::wizardHeaderLogo() const
 QPixmap Theme::wizardHeaderBanner() const
 {
     QColor c = wizardHeaderBackgroundColor();
-    if (!c.isValid())
+    if (!c.isValid()) {
         return QPixmap();
+    }
 
     QSize size(750, 78);
     if (auto screen = qApp->primaryScreen()) {
         // Adjust the the size if there is a different DPI. (Issue #6156)
         // Indeed, this size need to be big enough to for the banner height, and the wizard's width
         auto ratio = screen->logicalDotsPerInch() / 96.;
-        if (ratio > 1.)
+        if (ratio > 1.) {
             size *= ratio;
+        }
     }
     QPixmap pix(size);
     pix.fill(wizardHeaderBackgroundColor());
@@ -909,8 +911,9 @@ QString Theme::versionSwitchOutput() const
 #endif
     stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << Qt::endl;
 
-    if(!QGuiApplication::platformName().isEmpty())
+    if (!QGuiApplication::platformName().isEmpty()) {
         stream << "Using Qt platform plugin '" << QGuiApplication::platformName() << "'" << Qt::endl;
+    }
 
     stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << Qt::endl;
     stream << "Running on " << Utility::platformName() << ", " << QSysInfo::currentCpuArchitecture() << Qt::endl;

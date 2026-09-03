@@ -14,4 +14,5 @@ enum SchemaVersion: UInt64 {
     case addedExcludedFromSyncItems = 205
     case addedPendingChunkUploadCleanup = 206
     case addedChangeDeliverySessions = 207
+    case addedFileProviderContentVersion = 208
 }

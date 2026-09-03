@@ -23,8 +23,9 @@ void PropagateRemoteDelete::start()
     qCInfo(lcPropagateRemoteDelete) << "Start propagate remote delete job for" << _item->_file;
     qCInfo(lcPermanentLog) << "delete" << _item->_file << _item->_discoveryResult;
 
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     if (!_item->_encryptedFileName.isEmpty() || _item->isEncrypted()) {
         if (!_item->_encryptedFileName.isEmpty()) {
@@ -76,8 +77,9 @@ void PropagateRemoteDelete::createDeleteJob(const QString &filename)
 
 void PropagateRemoteDelete::abort(PropagatorJob::AbortType abortType)
 {
-    if (_job && _job->reply())
+    if (_job && _job->reply()) {
         _job->reply()->abort();
+    }
 
     if (abortType == AbortType::Asynchronous) {
         Q_EMIT abortFinished();
@@ -130,3 +132,5 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }
 }
+
+#include "moc_propagateremotedelete.cpp"

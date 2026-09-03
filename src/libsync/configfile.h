@@ -42,6 +42,8 @@ public:
     static QString excludeFileFromSystem(); // doesn't access config dir
 
     void cleanUpdaterConfiguration();
+    /** Path of the log msiexec writes while installing an update (Windows). */
+    [[nodiscard]] QString msiLogFilePath() const;
     void cleanupGlobalNetworkConfiguration();
 
     /**

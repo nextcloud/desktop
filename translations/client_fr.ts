@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="39"/>
         <source>Switch to your browser</source>
-        <translation>Basculer vers votre navigateur web</translation>
+        <translation>Bascule vers votre navigateur web</translation>
     </message>
 </context>
 <context>
@@ -974,7 +974,7 @@ Le compte doit-il être importé ?</translation>
         <location filename="../src/gui/accountsettings.ui" line="587"/>
         <location filename="../src/gui/accountsettings.cpp" line="1551"/>
         <source>Remove account</source>
-        <translation>Supprimer le compte</translation>
+        <translation>Retirer le compte</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="338"/>
@@ -5926,6 +5926,14 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
 </context>
 <context>
+    <name>OCC::SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
+        <source>Failed to connect database.</source>
+        <translation>Échec de la connexion à la base de données.</translation>
+    </message>
+</context>
+<context>
     <name>OCC::SyncStatusSummary</name>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
@@ -7176,14 +7184,6 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Sharing is not available for this folder</source>
         <translation>Le partage n&apos;est pas disponible pour ce dossier</translation>
-    </message>
-</context>
-<context>
-    <name>SyncJournalDb</name>
-    <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
-        <source>Failed to connect database.</source>
-        <translation>Impossible de connecter la base de données.</translation>
     </message>
 </context>
 <context>
@@ -8773,6 +8773,14 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
         <translation>Aucun serveur proxy</translation>
+    </message>
+</context>
+<context>
+    <name>SyncJournalDb</name>
+    <message>
+        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
+        <source>Failed to connect database.</source>
+        <translation>Impossible de connecter la base de données.</translation>
     </message>
 </context>
 <context>

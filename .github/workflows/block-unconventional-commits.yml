@@ -10,18 +10,18 @@ name: Block unconventional commits
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
 
 permissions:
   contents: read
 
 concurrency:
-  group: block-unconventional-commits-${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   block-unconventional-commits:
-    if: ${{ !github.event.pull_request.draft }}
+    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft }}
     name: Block unconventional commits
 
     runs-on: ubuntu-latest-low

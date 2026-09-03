@@ -3,22 +3,27 @@
 name: Linux Clang compilation and tests
 on:
   pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    if: ${{ !github.event.pull_request.draft }}
+    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft }}
     name: Linux Clang compilation and tests
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-sid-6.10.2-2
+    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-sid-6.10.2-4
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 1
+          fetch-depth: 2
       - name: Configure and compile
         run: |
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror
+          cmake .. -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           ninja
       - name: Run tests
         run: |
@@ -26,3 +31,15 @@ jobs:
           useradd -m -s /bin/bash test
           chown -R test:test .
           su -c 'xvfb-run ctest --output-on-failure' test
+      - name: Analyze C++ code with clang-tidy
+        run: |
+          mkdir clang-tidy-result
+          run-clang-tidy -p build -header-filter='.*' -config-file .clang-tidy -export-fixes clang-tidy-result/fixes.yml || true
+      - name: Publish clang-tidy review
+        uses: platisd/clang-tidy-pr-comments@28cfb84edafa771c044bde7e4a2a3fae57463818 # v1.6.1 # >1.4.3 switches to composite method w/ a forced python version and breaks things: https://github.com/actions/setup-python/issues/871
+        with:
+          python_path: "/usr/bin/python3"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          clang_tidy_fixes: clang-tidy-result/fixes.yml
+          request_changes: true
+          suggestions_per_comment: 10

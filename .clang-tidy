@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# Mirrors the checks enabled in .github/workflows/clang-tidy-review.yml
+Checks: >
+  -*,
+  modernize-use-auto,
+  modernize-use-using,
+  modernize-use-nodiscard,
+  modernize-use-nullptr,
+  modernize-use-override,
+  modernize-loop-convert,
+  modernize-use-equals-default,
+  cppcoreguidelines-pro-type-static-cast-downcast,
+  readability-braces-around-statements
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle: none

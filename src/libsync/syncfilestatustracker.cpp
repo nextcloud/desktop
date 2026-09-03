@@ -136,8 +136,9 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
         return SyncFileStatus::StatusExcluded;
     }
 
-    if (_dirtyPaths.contains(relativePath))
+    if (_dirtyPaths.contains(relativePath)) {
         return SyncFileStatus::StatusSync;
+    }
 
     // First look it up in the database to know if it's shared
     SyncJournalFileRecord rec;
@@ -190,10 +191,11 @@ void SyncFileStatusTracker::incSyncCountAndEmitStatusChanged(const QString &rela
         // SYNC while we propagate ourselves and our own children.
         ASSERT(!relativePath.endsWith('/'));
         int lastSlashIndex = relativePath.lastIndexOf('/');
-        if (lastSlashIndex != -1)
+        if (lastSlashIndex != -1) {
             incSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
-        else if (!relativePath.isEmpty())
+        } else if (!relativePath.isEmpty()) {
             incSyncCountAndEmitStatusChanged(QString(), UnknownShared);
+        }
     }
 }
 
@@ -212,10 +214,11 @@ void SyncFileStatusTracker::decSyncCountAndEmitStatusChanged(const QString &rela
         // We passed from SYNC to OK, decrement our parent.
         ASSERT(!relativePath.endsWith('/'));
         int lastSlashIndex = relativePath.lastIndexOf('/');
-        if (lastSlashIndex != -1)
+        if (lastSlashIndex != -1) {
             decSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
-        else if (!relativePath.isEmpty())
+        } else if (!relativePath.isEmpty()) {
             decSyncCountAndEmitStatusChanged(QString(), UnknownShared);
+        }
     }
 }
 
@@ -263,18 +266,21 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
     // Swap into a copy since fileStatus() reads _dirtyPaths to determine the status
     QSet<QString> oldDirtyPaths;
     std::swap(_dirtyPaths, oldDirtyPaths);
-    for (const auto &oldDirtyPath : std::as_const(oldDirtyPaths))
+    for (const auto &oldDirtyPath : std::as_const(oldDirtyPaths)) {
         Q_EMIT fileStatusChanged(getSystemDestination(oldDirtyPath), fileStatus(oldDirtyPath));
+    }
 
     // Make sure to push any status that might have been resolved indirectly since the last sync
     // (like an error file being deleted from disk)
-    for (const auto &syncProblem : _syncProblems)
+    for (const auto &syncProblem : _syncProblems) {
         oldProblems.erase(syncProblem.first);
+    }
     for (const auto &oldProblem : oldProblems) {
         const QString &path = oldProblem.first;
         SyncFileStatus::SyncFileStatusTag severity = oldProblem.second;
-        if (severity == SyncFileStatus::StatusError)
+        if (severity == SyncFileStatus::StatusError) {
             invalidateParentPaths(path);
+        }
         Q_EMIT fileStatusChanged(getSystemDestination(path), fileStatus(path));
     }
 }
@@ -336,14 +342,16 @@ SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &r
         // After a sync finished, we need to show the users issues from that last sync like the activity list does.
         // Also used for parent directories showing a warning for an error child.
         SyncFileStatus::SyncFileStatusTag problemStatus = lookupProblem(relativePath, _syncProblems);
-        if (problemStatus != SyncFileStatus::StatusNone)
+        if (problemStatus != SyncFileStatus::StatusNone) {
             status.set(problemStatus);
+        }
     }
 
     ASSERT(sharedFlag != UnknownShared,
         "The shared status needs to have been fetched from a SyncFileItem or the DB at this point.");
-    if (sharedFlag == Shared)
+    if (sharedFlag == Shared) {
         status.setShared(true);
+    }
 
     return status;
 }

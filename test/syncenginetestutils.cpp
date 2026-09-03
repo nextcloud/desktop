@@ -165,8 +165,9 @@ FileInfo FileInfo::A12_B12_C12_S12()
 FileInfo::FileInfo(const QString &name, const std::initializer_list<FileInfo> &children)
     : name { name }
 {
-    for (const auto &source : children)
+    for (const auto &source : children) {
         addChild(source);
+    }
 }
 
 void FileInfo::addChild(const FileInfo &info)
@@ -429,8 +430,9 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
                 totalSize += child.size;
             }
             xml.writeTextElement(ocUri, QStringLiteral("size"), QString::number(totalSize));
-        } else
+        } else {
             xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
+        }
 
         auto gmtDate = fileInfo.lastModified.toUTC();
         auto stringDate = QLocale::c().toString(gmtDate, QStringLiteral("ddd, dd MMM yyyy HH:mm:ss 'GMT'"));
@@ -503,8 +505,9 @@ void FakePropfindReply::respond()
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 207);
     setFinished(true);
     Q_EMIT metaDataChanged();
-    if (bytesAvailable())
+    if (bytesAvailable()) {
         Q_EMIT readyRead();
+    }
     Q_EMIT finished();
 }
 
@@ -845,8 +848,9 @@ void FakeGetReply::respond()
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileId", fileInfo->fileId);
     Q_EMIT metaDataChanged();
-    if (bytesAvailable())
+    if (bytesAvailable()) {
         Q_EMIT readyRead();
+    }
     Q_EMIT finished();
 }
 
@@ -858,8 +862,9 @@ void FakeGetReply::abort()
 
 qint64 FakeGetReply::bytesAvailable() const
 {
-    if (aborted)
+    if (aborted) {
         return 0;
+    }
     return size + QIODevice::bytesAvailable();
 }
 
@@ -912,8 +917,9 @@ void FakeGetWithDataReply::respond()
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileId", fileInfo->fileId);
     Q_EMIT metaDataChanged();
-    if (bytesAvailable())
+    if (bytesAvailable()) {
         Q_EMIT readyRead();
+    }
     Q_EMIT finished();
 }
 
@@ -925,8 +931,9 @@ void FakeGetWithDataReply::abort()
 
 qint64 FakeGetWithDataReply::bytesAvailable() const
 {
-    if (aborted)
+    if (aborted) {
         return 0;
+    }
     return payload.size() - offset + QIODevice::bytesAvailable();
 }
 
@@ -1451,8 +1458,9 @@ void FakeFolder::execUntilItemCompleted(const QString &relativePath)
         QVERIFY(spy.wait());
         for (const QList<QVariant> &args : spy) {
             auto item = args[0].value<OCC::SyncFileItemPtr>();
-            if (item->destination() == relativePath)
+            if (item->destination() == relativePath) {
                 return;
+            }
         }
     }
     QVERIFY(false);
@@ -1507,8 +1515,9 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
 
 static FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components)
 {
-    if (components.isEmpty())
+    if (components.isEmpty()) {
         return base;
+    }
     auto childName = components.pathRoot();
     auto it = base.children.find(childName);
     if (it != base.children.end()) {
@@ -1545,8 +1554,9 @@ OCC::SyncFileItemPtr ItemCompletedSpy::findItem(const QString &path) const
 {
     for (const QList<QVariant> &args : *this) {
         auto item = args[0].value<OCC::SyncFileItemPtr>();
-        if (item->destination() == path)
+        if (item->destination() == path) {
             return item;
+        }
     }
     return OCC::SyncFileItemPtr::create();
 }

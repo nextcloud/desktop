@@ -69,8 +69,9 @@ bool MoveJob::finished()
 
 void PropagateRemoteMove::start()
 {
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     QString origin = propagator()->adjustRenamedPath(_item->_file);
     qCInfo(lcPropagateRemoteMove) << origin << _item->_renameTarget;
@@ -121,10 +122,12 @@ void PropagateRemoteMove::start()
         bool destinationHadSuffix = remoteDestination.endsWith(suffix);
 
         // Remote source and destination definitely shouldn't have the suffix
-        if (sourceHadSuffix)
+        if (sourceHadSuffix) {
             remoteSource.chop(suffix.size());
-        if (destinationHadSuffix)
+        }
+        if (destinationHadSuffix) {
             remoteDestination.chop(suffix.size());
+        }
 
         QString folderTarget = _item->_renameTarget;
 
@@ -177,8 +180,9 @@ void PropagateRemoteMove::start()
 
 void PropagateRemoteMove::abort(PropagatorJob::AbortType abortType)
 {
-    if (_job && _job->reply())
+    if (_job && _job->reply()) {
         _job->reply()->abort();
+    }
 
     if (abortType == AbortType::Asynchronous) {
         Q_EMIT abortFinished();
@@ -319,8 +323,9 @@ bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QStr
     // We only care about preserving the blacklist.   The white list should anyway be empty.
     // And the undecided list will be repopulated on the next sync, if there is anything too big.
     QStringList list = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-    if (!ok)
+    if (!ok) {
         return false;
+    }
 
     bool changed = false;
     ASSERT(!from_.endsWith(QLatin1String("/")));
@@ -341,3 +346,5 @@ bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QStr
     return true;
 }
 }
+
+#include "moc_propagateremotemove.cpp"

@@ -2,7 +2,6 @@
 # SPDX-FileCopyrightText: 2011 ownCloud GmbH
 # SPDX-License-Identifier: GPL-2.0-or-later
 cmake_minimum_required(VERSION 3.16)
-cmake_policy(SET CMP0071 NEW) # Enable use of QtQuick compiler/generated code
 
 project(client)
 
@@ -11,7 +10,7 @@ if(APPLE)
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FeatureSummary)
 
@@ -56,10 +55,8 @@ if(NOT DEFINED APPLICATION_VIRTUALFILE_SUFFIX)
 endif()
 
 # need this logic to not mess with re/uninstallations via macosx.pkgproj
-if(${APPLICATION_REV_DOMAIN} STREQUAL "com.owncloud.desktopclient")
-    set(APPLICATION_REV_DOMAIN_INSTALLER "com.ownCloud.client")
-else()
-    set(APPLICATION_REV_DOMAIN_INSTALLER ${APPLICATION_REV_DOMAIN})
+if(NOT DEFINED APPLICATION_REV_DOMAIN_INSTALLER)
+    set(APPLICATION_REV_DOMAIN_INSTALLER "${APPLICATION_REV_DOMAIN}")
 endif()
 
 option( APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG "Display legacy import dialog" ON )
@@ -304,8 +301,8 @@ add_definitions(-DNTDDI_VERSION=0x0A000004)
     # Also: Disable compiler warnings because we don't use Windows CRT safe-functions explicitly and don't intend to
     # as this is a pure cross-platform source the only alternative would be a ton of ifdefs with calls to the _s version
     add_definitions( -D_CRT_SECURE_NO_WARNINGS )
-    endif( MSVC )
-endif( WIN32 )
+    endif()
+endif()
 
 if (APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
@@ -320,8 +317,8 @@ if(BUILD_CLIENT)
     if(NOT BUILD_LIBRARIES_ONLY)
         if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
             add_subdirectory(admin)
-        endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
-    endif(NOT BUILD_LIBRARIES_ONLY)
+        endif()
+    endif()
 endif()
 
 if(BUILD_SHELL_INTEGRATION)

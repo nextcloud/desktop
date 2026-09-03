@@ -391,7 +391,12 @@ QNetworkReply *ShareTestHelper::handleShareGetOperation(const QNetworkAccessMana
     const auto urlQuery = QUrlQuery(req.url());
     const auto pathParam = urlQuery.queryItemValue(QStringLiteral("path"));
     const auto resharesParam = urlQuery.queryItemValue(QStringLiteral("reshares"));
+    const auto sharedWithMeParam = urlQuery.queryItemValue(QStringLiteral("shared_with_me"));
     const auto formatParam = urlQuery.queryItemValue(QStringLiteral("format"));
+
+    if (sharedWithMeParam == QStringLiteral("true")) {
+        _sharedWithMeRequestUrls.append(req.url());
+    }
 
     if (formatParam != QStringLiteral("json") || (!pathParam.isEmpty() && !pathParam.endsWith(QString(testFileName)))) {
         reply = new FakeErrorReply(op, req, this, 400, _fake400Response);
@@ -418,6 +423,16 @@ const QByteArray ShareTestHelper::createNewShare(const Share::ShareType shareTyp
 int ShareTestHelper::shareCount() const
 {
     return _sharesReplyData.count();
+}
+
+const QList<QUrl> &ShareTestHelper::sharedWithMeRequestUrls() const
+{
+    return _sharedWithMeRequestUrls;
+}
+
+void ShareTestHelper::resetSharedWithMeRequestUrls()
+{
+    _sharedWithMeRequestUrls.clear();
 }
 
 void ShareTestHelper::appendShareReplyData(const FakeShareDefinition &definition)

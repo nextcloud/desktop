@@ -216,9 +216,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     cfg.restoreGeometry(this);
 }
 
-SettingsDialog::~SettingsDialog()
-{
-}
+SettingsDialog::~SettingsDialog() = default;
 
 QWidget* SettingsDialog::currentPage()
 {
@@ -271,8 +269,9 @@ void SettingsDialog::changeEvent(QEvent *e)
 #endif
         break;
     case QEvent::ActivationChange:
-        if(isActiveWindow())
+        if (isActiveWindow()) {
             Q_EMIT onActivate();
+        }
         break;
     default:
         break;
@@ -551,8 +550,9 @@ void SettingsDialog::customizeStyle()
         QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
-        if (btn)
+        if (btn) {
             btn->setIcon(icon);
+        }
     }
 }
 

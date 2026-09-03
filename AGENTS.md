@@ -87,6 +87,24 @@ logfile="$HOME/Desktop/nextcloud-client-$(date +%Y%m%d-%H%M%S).log"
 
 Quit all existing client instances before starting this command, and reproduce the problem in the instance launched by the command. The client is single-instance: launching another copy can forward the action to an already-running process, leaving the captured process without the relevant application log entries. Stop the capture with `Ctrl-C` after reproducing the issue and attach the resulting file. For a sharing or file-details issue, retain entries from the relevant `nextcloud.gui.*` categories and any warnings or errors around the reproduction.
 
+### Rules of thumb for feature work
+
+Use these defaults unless the existing code clearly calls for an exception:
+
+- No magic numbers. Use `Style.qml`, shared metrics or named constants for layout, timing and protocol values.
+- Break non-trivial QML delegates, dialogs, popups and reusable components into their own files. Keep a small, single-use visual fragment inline only when it has no meaningful state or behavior of its own.
+- Before writing a new job, connector, model, URL helper, mock or QML registration, use `rg`—or the next available recursive text-search tool, such as `grep`, if `rg` is not installed—to find code that already performs the same task. Reuse or extend that code when it exists. If a new implementation is necessary, state why the existing code cannot be used.
+- Follow ownership contracts exactly. Check whether a job self-deletes and who owns every object before adding cleanup, copies or wrappers.
+- Register QML types once, in the same place as neighboring types. Keep the module import, resource list, CMake entry and consuming window in agreement.
+- Treat server and platform APIs as strict contracts. Send all required fields and do not advertise a capability that the UI cannot fully submit.
+- Give every asynchronous operation a way out. Timers, jobs and busy flags must finish or reset on success, error, cancellation, timeout and destruction; retries must be bounded; stale results must not overwrite newer state.
+- When a view is reopened or a filter changes, make sure the text in the controls matches the results and warnings on screen. Do not show results for an old query under an empty search field, or hide a warning while displaying results that are only partial.
+- Start with one simple case and make it work from beginning to end: user input, processing, result, error handling and a test. Only then add the other providers, task types, filters or UI variants.
+- Tests must call the code and check its result or state. Do not stop at checking that a file exists or that an object can be constructed. QML tests must load and instantiate the application module; network tests must check the request and response; all tests must include error and boundary cases as well as the successful case.
+- Keep changes focused. Remove unrelated edits, dead code, duplicate logic and opportunistic formatting. If a feature spans several subsystems or grows to hundreds of changed lines, split it into reviewable slices or recommend a design ticket.
+- After review feedback, search the whole change for the same problem. Fixing one magic number, inline component, registration site or lifecycle mistake is not enough if the pattern remains elsewhere.
+- Before handoff, run `git diff --check`, inspect `git diff --name-only`, run the narrowest relevant test and build the consuming target. Report exactly what was run; do not call an unavailable integration check validated.
+
 ### License headers
 
 Every new file must include the correct SPDX license header. For GPL-2.0-or-later (the default for this repository):
@@ -175,7 +193,9 @@ Our C++ code should can make use of C++ 20 standard features whenever possible.
 
 Do not use C++ modules. Use standard header inclusion instead.
 
-After editing or adding C++ source files under `./src`, run `clang-format -i` on the touched files before considering the task done.
+After editing or adding any C++ source files, anywhere in the repository, run `clang-format -i` on the touched files before considering the task done.
+
+After editing or adding any C++ source files, anywhere in the repository, run `run-clang-tidy -p build -header-filter='.*' -config-file .clang-tidy -fix` from the repository root and confirm it produces no further changes. This is a mandatory step: apply any fixes the tool makes, review them, re-run the command, and repeat until it reports no changes before considering the task done. Do not skip or silently waive this step; if `run-clang-tidy` cannot be run (for example because `./build` is not configured), state that explicitly rather than proceeding as if it passed.
 
 ## macOS Specifics
 
@@ -231,6 +251,7 @@ These instructions are restricted to `./shell_integration/MacOSX/NextcloudIntegr
 
 - **Mandatory coverage for features and bugfixes.** Every feature or bugfix implemented by an AI agent must ship with corresponding automated tests in the same change. Bugfixes require a regression test for the original failure mode; features require tests for the new behavior and relevant boundary and failure cases. Tests must exercise behavior through a supported public or testable interface rather than merely increasing line coverage.
 - **Testability is part of implementation.** Before changing production code, locate the relevant test target and its existing fixtures, mocks, and helpers. Prefer designs that allow deterministic isolation and reuse existing test infrastructure; if the code is not testable, make the smallest focused production change needed to establish an appropriate test seam.
+- **Test the behavior and its contracts.** Tests must exercise the public or testable workflow, not only file existence, object construction or line coverage. For networked features, assert the important request parameters and realistic success, malformed-response and server-error paths. For asynchronous features, cover retry limits, cancellation, timeout, stale results, teardown and reopening/reset behavior. For QML features, instantiate the affected component through the same module/import path used by the application and test the relevant object state and user interaction.
 - **Validation is required.** Run the smallest existing test command that covers the changed behavior, then broaden validation when the targeted test exposes integration or build issues. A feature or bugfix is incomplete if its tests are absent, unrelated, not executed, or failing without an explicitly documented blocker.
 - When implementing new test suites, prefer Swift Testing over XCTest for implementation.
 - When implementing test cases using Swift Testing, do not prefix test method names with "test".
