@@ -711,7 +711,9 @@ private Q_SLOTS:
                 loadMoreFound = true;
             }
         }
-        for (const auto count : std::as_const(resultsByProvider)) QVERIFY(count <= 3);
+        for (const auto count : std::as_const(resultsByProvider)) {
+            QVERIFY(count <= 3);
+        }
         QVERIFY(!loadMoreFound);
         QVERIFY(model->selectedRow() >= 0);
         const auto firstSelected = model->selectedRow();
@@ -800,7 +802,9 @@ private Q_SLOTS:
 
         QList<QUrl> searchRequests;
         for (const auto &url : std::as_const(requestedUrls)) {
-            if (url.path().endsWith(QStringLiteral("/search"))) searchRequests.push_back(url);
+            if (url.path().endsWith(QStringLiteral("/search"))) {
+                searchRequests.push_back(url);
+            }
         }
         QCOMPARE(searchRequests.size(), 1);
         QVERIFY(searchRequests.constFirst().path().contains(QStringLiteral("/files/search")));

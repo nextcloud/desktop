@@ -612,13 +612,17 @@ void UnifiedSearchResultsListModel::providerDiscoveryFinished(const QJsonDocumen
             for (const auto &filter : filtersValue.toArray()) {
                 provider.filters.insert(filter.toString());
             }
-            if (provider.filters.isEmpty()) provider.filters.insert(QStringLiteral("term"));
+            if (provider.filters.isEmpty()) {
+                provider.filters.insert(QStringLiteral("term"));
+            }
         } else {
             const auto filters = filtersValue.toObject();
             for (auto it = filters.constBegin(); it != filters.constEnd(); ++it) {
                 provider.filters.insert(it.key());
             }
-            if (provider.filters.isEmpty()) provider.filters.insert(QStringLiteral("term"));
+            if (provider.filters.isEmpty()) {
+                provider.filters.insert(QStringLiteral("term"));
+            }
         }
         _providers.insert(provider.id, provider);
         if (!providersByApp.contains(provider.appId)) {
@@ -631,8 +635,8 @@ void UnifiedSearchResultsListModel::providerDiscoveryFinished(const QJsonDocumen
         const auto &right = _providers[rightId];
         return std::tie(left.order, left.discoveryIndex) < std::tie(right.order, right.discoveryIndex);
     };
-    for (auto it = providersByApp.begin(); it != providersByApp.end(); ++it) {
-        std::stable_sort(it->begin(), it->end(), providerLess);
+    for (auto &it : providersByApp) {
+        std::stable_sort(it.begin(), it.end(), providerLess);
     }
     std::stable_sort(appOrder.begin(), appOrder.end(), [&providersByApp, &providerLess](const QString &leftApp, const QString &rightApp) {
         return providerLess(providersByApp[leftApp].constFirst(), providersByApp[rightApp].constFirst());
@@ -1109,14 +1113,14 @@ void UnifiedSearchResultsListModel::appendProviderProjection(const UnifiedSearch
 
 void UnifiedSearchResultsListModel::resetProviderRuntime()
 {
-    for (auto it = _providers.begin(); it != _providers.end(); ++it) {
-        it->status = ProviderStatus::Idle;
-        it->entries.clear();
-        it->cursor = {};
-        it->hasMore = false;
-        it->loadMoreFailed = false;
-        it->paging = false;
-        it->partialMatch = false;
+    for (auto &_provider : _providers) {
+        _provider.status = ProviderStatus::Idle;
+        _provider.entries.clear();
+        _provider.cursor = {};
+        _provider.hasMore = false;
+        _provider.loadMoreFailed = false;
+        _provider.paging = false;
+        _provider.partialMatch = false;
     }
     _revealOrder.clear();
     if (_hasPartialFailure) {
