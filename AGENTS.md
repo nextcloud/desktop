@@ -121,14 +121,7 @@ Avoid creating source files that implement multiple types; instead, place each t
 
 ### Documentation comments
 
-Documentation must be trustworthy: only write a comment you can back with the implementation in front of you. **A wrong or overreaching comment is worse than none** - when a behaviour is unclear or you cannot state it with confidence, leave it undocumented. This is the same verifiability rule that governs commit messages and PR text, applied to code comments.
-
-- **Style.** Use Doxygen `/** @brief ... */` blocks for types and their members - the established convention across this codebase. Use a trailing `//!< ...` for a single instance variable or field, and plain `//` for free helper functions and file-local statics.
-- **Document the type and each declared member.** For a type, state what it is and how it behaves. For each public property, method or protocol callback, state what it does. Add `@param` entries only where the meaning is not obvious from the name - in particular, spell out what `nil`, `NO`, an empty string or `0` does, and which event triggers a callback block.
-- **Do not overreach.** Describe what the code actually does, not what it looks like it should do. Avoid absolute claims the implementation does not guarantee - for example, do not write "keeps the window on screen" for a helper that only best-effort clamps and can still overflow, or "loads a remote URL" for one that only reads local files.
-- **Overload sets.** When a type has many overloaded initializers or methods that funnel into one, fully document the designated one (with its `@param` list) and simply mark the rest as convenience overloads rather than repeating the text.
-- **Comment members selectively.** Document instance variables and file-local statics whose purpose is not obvious from their name and type; leave self-explanatory ones (a backing `_stack`, a counter) uncommented to avoid noise. In Objective-C(++), instance variables live in the `@implementation` block, so their comments belong there, not in the header.
-- **Verify before you trust it.** Re-read the implementation and confirm every comment is literally true before considering the work done.
+Documentation comments must be accurate and written for human readers. Follow [`doc/terminology.md`](doc/terminology.md) for vocabulary and [`doc/writing-style.md`](doc/writing-style.md) for comment structure, concision, language-specific conventions, and verification. A wrong or overreaching comment is worse than none. AI-generated comments must be edited to meet the same standard.
 
 ## Commit and Pull Request Guidelines
 
@@ -248,6 +241,17 @@ These instructions are restricted to `./shell_integration/MacOSX/NextcloudIntegr
 - Inclusion of `.debug`-level messages is controlled at runtime by the `debugLoggingEnabled` boolean key under the `com.nextcloud.desktopclient.FileProviderExt` domain in `UserDefaults.standard`. When unset, DEBUG builds include debug messages and release builds do not. Administrators can flip the value with `defaults write` for troubleshooting; changes propagate live via KVO. The gate applies to both Apple unified logging and the JSONL file output. See `Logging.md`.
 
 ### Tests
+
+#### QML and sharing UI workflow
+
+Changes to a QML sharing component must be validated in four stages, in this order:
+
+1. Run the narrowest automated test and verify the component's state, properties, and supported interactions. For QtQuick behavior, use QtQuick Test; use C++ tests for component construction and C++ integration seams only.
+2. Open the smallest standalone QML harness that instantiates the changed component, rather than launching the complete desktop client. Supply a deterministic mocked backend and representative data for each relevant state.
+3. Observe the harness visually, capturing a screenshot when layout or interaction is relevant. Check that every expected control, state transition, and action is present and usable with the mocked backend; a passing build or test is not visual proof.
+4. Report the observed result and any remaining discrepancy. If the harness does not match the expected UX, continue debugging and repeat the relevant stages before reporting the change as complete.
+
+When a failure is only reproducible in the full application, retain the isolated harness as far as possible and collect the desktop client's application log for the full-app reproduction. Do not claim a UI issue is fixed from static validation alone.
 
 - **Mandatory coverage for features and bugfixes.** Every feature or bugfix implemented by an AI agent must ship with corresponding automated tests in the same change. Bugfixes require a regression test for the original failure mode; features require tests for the new behavior and relevant boundary and failure cases. Tests must exercise behavior through a supported public or testable interface rather than merely increasing line coverage.
 - **Testability is part of implementation.** Before changing production code, locate the relevant test target and its existing fixtures, mocks, and helpers. Prefer designs that allow deterministic isolation and reuse existing test infrastructure; if the code is not testable, make the smallest focused production change needed to establish an appropriate test seam.
