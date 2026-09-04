@@ -115,6 +115,21 @@ endif()
 nextcloud_add_test(UnifiedSearchListmodel)
 nextcloud_add_test(AssistantController)
 target_sources(AssistantControllerTest PRIVATE assistant/fakeassistantclient.cpp)
+nextcloud_add_test(AssistantModels)
+add_executable(AssistantQmlTest
+    qml/assistant/assistantqmltestrunner.cpp
+    assistant/fakeassistantclient.cpp
+)
+target_link_libraries(AssistantQmlTest PRIVATE nextcloudCore testutils Qt::QuickTest)
+set_target_properties(AssistantQmlTest PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
+    FOLDER Tests
+)
+add_test(NAME AssistantQmlTest
+    COMMAND AssistantQmlTest -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/assistant/testassistant.qml"
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+set_tests_properties(AssistantQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(UnifiedSearchPeopleModel)
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(SortedActivityListModel)

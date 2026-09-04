@@ -10,6 +10,7 @@ import "../../tray"
 
 Item {
     id: root
+    objectName: "assistantMessageDelegate"
 
     required property string messageRole
     required property string messageText

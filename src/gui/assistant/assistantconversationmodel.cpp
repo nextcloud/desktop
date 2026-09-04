@@ -78,6 +78,16 @@ void AssistantConversationModel::prepend(const QJsonObject &conversation, qint64
     endInsertRows();
 }
 
+void AssistantConversationModel::clear()
+{
+    if (_items.isEmpty()) {
+        return;
+    }
+    beginResetModel();
+    _items.clear();
+    endResetModel();
+}
+
 void AssistantConversationModel::select(qint64 conversationId)
 {
     for (auto row = 0; row < _items.size(); ++row) {
@@ -90,6 +100,28 @@ void AssistantConversationModel::select(qint64 conversationId)
         const auto changedIndex = index(row, 0);
         Q_EMIT dataChanged(changedIndex, changedIndex, {SelectedRole});
     }
+}
+
+void AssistantConversationModel::updateTitle(qint64 conversationId, const QString &title)
+{
+    const auto it = std::find_if(_items.begin(), _items.end(), [conversationId](const Item &item) {
+        return item.conversationId == conversationId;
+    });
+    if (it == _items.end() || it->title == title) {
+        return;
+    }
+
+    it->title = title;
+    const auto row = static_cast<int>(std::distance(_items.begin(), it));
+    const auto changedIndex = index(row, 0);
+    Q_EMIT dataChanged(changedIndex, changedIndex, {TitleRole});
+}
+
+bool AssistantConversationModel::contains(qint64 conversationId) const
+{
+    return std::any_of(_items.cbegin(), _items.cend(), [conversationId](const Item &item) {
+        return item.conversationId == conversationId;
+    });
 }
 
 QString AssistantConversationModel::titleForConversation(qint64 conversationId) const

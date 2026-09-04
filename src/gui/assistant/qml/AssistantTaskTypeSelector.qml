@@ -11,6 +11,7 @@ import Style
 
 ScrollView {
     id: root
+    objectName: "assistantTaskTypeSelector"
 
     required property NC.AssistantController assistantController
     required property bool canUseAssistant

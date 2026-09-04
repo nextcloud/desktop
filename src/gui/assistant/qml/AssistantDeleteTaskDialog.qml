@@ -14,6 +14,7 @@ import "../../wizard/qml"
 
 Dialog {
     id: root
+    objectName: "assistantDeleteTaskDialog"
 
     required property NC.AssistantController assistantController
     required property Item host
@@ -67,11 +68,13 @@ Dialog {
             }
 
             WizardButton {
+                objectName: "assistantDeleteTaskCancelButton"
                 text: qsTr("Cancel")
                 onClicked: root.close()
             }
 
             WizardButton {
+                objectName: "assistantDeleteTaskConfirmButton"
                 primary: true
                 text: qsTr("Delete")
                 onClicked: {

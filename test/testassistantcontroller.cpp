@@ -8,7 +8,6 @@
 #include "assistant/fakeassistantclient.h"
 #include "testhelper.h"
 
-#include <QFile>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
@@ -54,6 +53,24 @@ QJsonDocument chatTaskTypesResponse()
     });
 }
 
+QJsonDocument conversationsResponse(std::initializer_list<QJsonObject> conversations)
+{
+    auto array = QJsonArray{};
+    for (const auto &conversation : conversations) {
+        array.append(conversation);
+    }
+    return ocsResponse(array);
+}
+
+QJsonObject conversation(qint64 id, const QString &title)
+{
+    return {
+        {QStringLiteral("id"), id},
+        {QStringLiteral("title"), title},
+        {QStringLiteral("timestamp"), 1},
+    };
+}
+
 QJsonDocument completedTaskResponse(qint64 taskId, const QString &taskType, const QString &input)
 {
     const auto task = QJsonObject{
@@ -96,21 +113,6 @@ class TestAssistantController : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-    void assistantResourceIsRegistered()
-    {
-        Q_INIT_RESOURCE(assistant);
-
-        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantWindow.qml")));
-        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantConversationPicker.qml")));
-        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantConversationDelegate.qml")));
-        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantMessageDelegate.qml")));
-        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantMessageList.qml")));
-        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantTaskList.qml")));
-        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantTaskDelegate.qml")));
-        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantDeleteTaskDialog.qml")));
-        QVERIFY(QFile::exists(QStringLiteral(":/qml/src/gui/assistant/qml/AssistantTaskTypeSelector.qml")));
-    }
-
     void loadDataLoadsChatTypeAndWrappedConversations()
     {
         ControllerFixture fixture;
@@ -150,14 +152,29 @@ private Q_SLOTS:
         fixture.client->deliverTaskTypes(fixture.client->lastTaskTypesGeneration, ocsResponse(QJsonObject{}));
 
         QCOMPARE(fixture.controller.taskTypes()->rowCount(), 0);
+        QVERIFY(fixture.controller.selectedTaskTypeId().isEmpty());
         QVERIFY(!fixture.controller.requestInProgress());
         QVERIFY(!fixture.controller.error().isEmpty());
         QCOMPARE(fixture.client->fetchChatConversationsCount, 0);
+
+        fixture.controller.submitQuestion(QStringLiteral("Question"));
+        QCOMPARE(fixture.client->fetchTaskTypesCount, 2);
+        fixture.client->deliverTaskTypes(fixture.client->lastTaskTypesGeneration, ocsResponse(QJsonObject{}));
+
+        QVERIFY(fixture.controller.selectedTaskTypeId().isEmpty());
+        QCOMPARE(fixture.client->createChatConversationCount, 0);
+        QCOMPARE(fixture.client->scheduleTaskCount, 0);
+        QVERIFY(!fixture.controller.requestInProgress());
     }
 
     void wrappedMessagesUpdateConversationState()
     {
         ControllerFixture fixture;
+
+        fixture.controller.loadData();
+        const auto loadGeneration = fixture.client->lastTaskTypesGeneration;
+        fixture.client->deliverTaskTypes(loadGeneration, chatTaskTypesResponse());
+        fixture.client->deliverChatConversations(loadGeneration, conversationsResponse({conversation(42, QStringLiteral("Original title"))}));
 
         fixture.controller.selectChatConversation(42);
         const auto requestGeneration = fixture.client->lastChatMessagesGeneration;
@@ -172,6 +189,50 @@ private Q_SLOTS:
         QCOMPARE(fixture.controller.selectedChatConversationTitle(), QStringLiteral("Renamed conversation"));
         QVERIFY(!fixture.controller.requestInProgress());
         QVERIFY(fixture.controller.showRetryResponseGeneration());
+
+        fixture.controller.startNewChat();
+        fixture.controller.selectChatConversation(42);
+        QCOMPARE(fixture.controller.selectedChatConversationTitle(), QStringLiteral("Renamed conversation"));
+    }
+
+    void reloadClearsConversationMissingFromServer()
+    {
+        ControllerFixture fixture;
+
+        fixture.controller.loadData();
+        const auto initialGeneration = fixture.client->lastTaskTypesGeneration;
+        fixture.client->deliverTaskTypes(initialGeneration, chatTaskTypesResponse());
+        fixture.client->deliverChatConversations(initialGeneration, conversationsResponse({conversation(42, QStringLiteral("Conversation"))}));
+        fixture.controller.selectChatConversation(42);
+        fixture.client->deliverChatMessages(fixture.client->lastChatMessagesGeneration, humanMessageResponse(42, true));
+        fixture.client->deliverChatSessionCheck(fixture.client->lastChatSessionCheckGeneration, ocsResponse(QJsonObject{}));
+
+        QCOMPARE(fixture.controller.messages()->rowCount(), 1);
+        QCOMPARE(fixture.controller.selectedChatConversationId(), 42);
+
+        fixture.controller.loadData();
+        const auto reloadGeneration = fixture.client->lastTaskTypesGeneration;
+        fixture.client->deliverTaskTypes(reloadGeneration, chatTaskTypesResponse());
+        fixture.client->deliverChatConversations(reloadGeneration, conversationsResponse({}));
+
+        QCOMPARE(fixture.controller.selectedChatConversationId(), -1);
+        QVERIFY(fixture.controller.selectedChatConversationTitle().isEmpty());
+        QCOMPARE(fixture.controller.messages()->rowCount(), 0);
+        QVERIFY(!fixture.controller.showRetryResponseGeneration());
+    }
+
+    void selectingConversationClearsPreviousError()
+    {
+        ControllerFixture fixture;
+
+        fixture.controller.selectChatConversation(41);
+        fixture.client->deliverChatMessages(fixture.client->lastChatMessagesGeneration, {}, 500);
+        QVERIFY(!fixture.controller.error().isEmpty());
+
+        fixture.controller.selectChatConversation(42);
+
+        QVERIFY(fixture.controller.error().isEmpty());
+        QCOMPARE(fixture.client->lastChatMessagesConversationId, 42);
     }
 
     void wrappedResponsesCompleteNewChatWorkflow()
@@ -326,6 +387,33 @@ private Q_SLOTS:
 
         QVERIFY(!fixture.controller.requestInProgress());
         QVERIFY(!fixture.controller.thinking());
+        QVERIFY(!fixture.controller.error().isEmpty());
+    }
+
+    void successfulGenerationRequiresAssistantMessage_data()
+    {
+        QTest::addColumn<QJsonDocument>("response");
+
+        QTest::newRow("empty-object") << ocsResponse(QJsonObject{});
+        QTest::newRow("human-message") << ocsResponse(message(2, 42, QStringLiteral("human"), QStringLiteral("Not an assistant response")));
+        QTest::newRow("missing-content") << ocsResponse(QJsonObject{{QStringLiteral("id"), 2}, {QStringLiteral("role"), QStringLiteral("assistant")}});
+    }
+
+    void successfulGenerationRequiresAssistantMessage()
+    {
+        QFETCH(QJsonDocument, response);
+        ControllerFixture fixture;
+        fixture.controller.selectChatConversation(42);
+        const auto requestGeneration = fixture.client->lastChatMessagesGeneration;
+        fixture.client->deliverChatMessages(requestGeneration, humanMessageResponse(42));
+        fixture.client->deliverChatSessionCheck(requestGeneration, ocsResponse(QJsonObject{{QStringLiteral("messageTaskId"), 99}}));
+
+        fixture.client->deliverChatGenerationCheck(requestGeneration, response, 200);
+
+        QCOMPARE(fixture.controller.messages()->rowCount(), 1);
+        QVERIFY(!fixture.controller.requestInProgress());
+        QVERIFY(!fixture.controller.thinking());
+        QVERIFY(fixture.controller.showRetryResponseGeneration());
         QVERIFY(!fixture.controller.error().isEmpty());
     }
 };

@@ -12,6 +12,7 @@ import "../../tray"
 
 ListView {
     id: root
+    objectName: "assistantMessageList"
 
     required property NC.AssistantController assistantController
 

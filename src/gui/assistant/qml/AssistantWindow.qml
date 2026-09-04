@@ -14,6 +14,7 @@ import "../../wizard/qml"
 
 WizardStyledWindow {
     id: root
+    objectName: "assistantWindow"
 
     required property string accountName
     required property string accountServer
@@ -25,6 +26,7 @@ WizardStyledWindow {
         && assistantController.accountConnected
     readonly property bool canSend: canUseAssistant
         && !assistantController.requestInProgress
+        && assistantController.selectedTaskTypeId.length > 0
         && assistantQuestionInput.text.trim().length > 0
 
     title: ""
@@ -57,6 +59,7 @@ WizardStyledWindow {
         footer: [
             WizardTextField {
                 id: assistantQuestionInput
+                objectName: "assistantQuestionInput"
 
                 placeholderText: root.assistantController.selectedTaskTypeIsChat
                     ? qsTr("Type a message")
@@ -68,6 +71,7 @@ WizardStyledWindow {
             },
 
             WizardButton {
+                objectName: "assistantSendButton"
                 primary: true
                 text: qsTr("Send")
                 enabled: root.canSend
@@ -97,6 +101,7 @@ WizardStyledWindow {
             }
 
             AssistantTaskTypeSelector {
+                objectName: "assistantTaskTypeSelector"
                 assistantController: root.assistantController
                 canUseAssistant: root.canUseAssistant
                 Layout.fillWidth: true
@@ -104,6 +109,7 @@ WizardStyledWindow {
             }
 
             Loader {
+                objectName: "assistantViewLoader"
                 sourceComponent: root.assistantController.selectedTaskTypeIsChat
                     ? chatComponent
                     : taskComponent

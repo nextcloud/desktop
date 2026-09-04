@@ -9,7 +9,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-namespace OCC {
+namespace OCC
+{
 
 /** @brief Exposes Assistant chat conversations as typed QML roles. */
 class AssistantConversationModel final : public QAbstractListModel
@@ -39,8 +40,14 @@ public:
     void replaceFromResponse(const QJsonDocument &json, qint64 selectedConversationId);
     /** @brief Prepends a newly created conversation. */
     void prepend(const QJsonObject &conversation, qint64 selectedConversationId);
+    /** @brief Removes all conversations. */
+    void clear();
     /** @brief Updates the selected role for all conversations. */
     void select(qint64 conversationId);
+    /** @brief Updates the title of an existing conversation. */
+    void updateTitle(qint64 conversationId, const QString &title);
+    /** @brief Returns whether the model contains a conversation. */
+    [[nodiscard]] bool contains(qint64 conversationId) const;
     /** @brief Returns a conversation title, or an empty string when absent. */
     [[nodiscard]] QString titleForConversation(qint64 conversationId) const;
 

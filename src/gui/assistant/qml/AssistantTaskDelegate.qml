@@ -13,6 +13,7 @@ import "../../wizard/qml"
 
 Rectangle {
     id: root
+    objectName: "assistantTaskDelegate"
 
     required property NC.AssistantController assistantController
     required property double taskId
@@ -54,12 +55,14 @@ Rectangle {
             }
 
             WizardButton {
+                objectName: "assistantRetryTaskButton"
                 text: qsTr("Retry")
                 enabled: !root.assistantController.requestInProgress
                 onClicked: root.assistantController.retryTask(root.taskId)
             }
 
             WizardButton {
+                objectName: "assistantDeleteTaskButton"
                 text: qsTr("Delete")
                 enabled: !root.assistantController.requestInProgress
                 onClicked: root.deleteRequested(root.taskId)

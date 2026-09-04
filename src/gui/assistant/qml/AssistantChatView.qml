@@ -14,6 +14,7 @@ import "../../wizard/qml"
 
 ColumnLayout {
     id: root
+    objectName: "assistantChatView"
 
     required property NC.AssistantController assistantController
 
@@ -26,6 +27,7 @@ ColumnLayout {
         Layout.fillWidth: true
 
         AssistantConversationPicker {
+            objectName: "assistantConversationPicker"
             assistantController: root.assistantController
             Layout.fillWidth: true
             Layout.preferredHeight: Style.standardPrimaryButtonHeight
@@ -33,6 +35,7 @@ ColumnLayout {
 
         WizardButton {
             id: newConversationButton
+            objectName: "assistantNewConversationButton"
 
             readonly property string actionName: qsTr("New conversation")
 
@@ -59,6 +62,7 @@ ColumnLayout {
 
         WizardButton {
             id: reloadConversationsButton
+            objectName: "assistantReloadConversationsButton"
 
             readonly property string actionName: qsTr("Reload conversations")
 
@@ -82,6 +86,7 @@ ColumnLayout {
     }
 
     AssistantMessageList {
+        objectName: "assistantMessageList"
         assistantController: root.assistantController
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -98,6 +103,7 @@ ColumnLayout {
     }
 
     WizardButton {
+        objectName: "assistantRetryResponseButton"
         text: qsTr("Retry response generation")
         visible: root.assistantController.showRetryResponseGeneration
         enabled: visible && !root.assistantController.requestInProgress

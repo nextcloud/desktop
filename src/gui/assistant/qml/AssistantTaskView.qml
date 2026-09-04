@@ -12,6 +12,7 @@ import "../../tray"
 
 ColumnLayout {
     id: root
+    objectName: "assistantTaskView"
 
     required property NC.AssistantController assistantController
 
@@ -28,6 +29,7 @@ ColumnLayout {
     }
 
     AssistantTaskList {
+        objectName: "assistantTaskList"
         assistantController: root.assistantController
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -39,6 +41,7 @@ ColumnLayout {
 
     AssistantDeleteTaskDialog {
         id: deleteTaskDialog
+        objectName: "assistantDeleteTaskDialog"
 
         assistantController: root.assistantController
         host: root

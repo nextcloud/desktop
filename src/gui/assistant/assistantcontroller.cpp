@@ -281,6 +281,8 @@ void AssistantController::retryTask(qint64 taskId)
 void AssistantController::selectChatConversation(qint64 conversationId)
 {
     const auto requestGeneration = beginRequest();
+    _error.clear();
+    Q_EMIT errorChanged();
     _selectedChatConversationId = conversationId;
     _chatConversations.select(conversationId);
     _selectedChatConversationTitle = _chatConversations.titleForConversation(conversationId);
@@ -467,6 +469,14 @@ void AssistantController::slotTaskTypesFetched(quint64 requestGeneration, const 
 
     _taskTypes.replaceFromResponse(json);
     if (_taskTypes.rowCount() == 0) {
+        _taskType.clear();
+        updateSelectedTypeMetadata();
+        _tasks.clear();
+        _chatConversations.clear();
+        _messages.clear();
+        _selectedChatConversationId = -1;
+        _selectedChatConversationTitle.clear();
+        Q_EMIT selectedChatConversationChanged();
         _error = tr("No supported assistant task types were returned.");
         Q_EMIT errorChanged();
         setRequestInProgress(false);
@@ -573,6 +583,13 @@ void AssistantController::slotChatConversationsFetched(quint64 requestGeneration
         return;
     }
     _chatConversations.replaceFromResponse(response, _selectedChatConversationId);
+    if (_selectedChatConversationId > 0 && !_chatConversations.contains(_selectedChatConversationId)) {
+        _selectedChatConversationId = -1;
+        _selectedChatConversationTitle.clear();
+        _messages.clear();
+        setShowRetryResponseGeneration(false);
+        Q_EMIT selectedChatConversationChanged();
+    }
     setRequestInProgress(false);
 }
 
@@ -678,9 +695,13 @@ void AssistantController::slotChatGenerationChecked(quint64 requestGeneration, c
         return;
     }
 
-    if (response.object().value("role"_L1).toString() == "assistant"_L1) {
-        _messages.append(response.object());
+    const auto message = response.object();
+    if (message.value("role"_L1).toString() != "assistant"_L1 || !message.value("content"_L1).isString()) {
+        requestFailed(QStringLiteral("checkChatGenerationResponse"), statusCode);
+        setShowRetryResponseGeneration(_messages.lastMessageIsHuman());
+        return;
     }
+    _messages.append(message);
     _chatMessageTaskId = -1;
     _chatPollTimer.stop();
     setThinking(false);
@@ -702,6 +723,7 @@ void AssistantController::slotChatSessionChecked(quint64 requestGeneration, cons
     const auto sessionTitle = session.value("sessionTitle"_L1).toString();
     if (!sessionTitle.isEmpty() && _selectedChatConversationTitle != sessionTitle) {
         _selectedChatConversationTitle = sessionTitle;
+        _chatConversations.updateTitle(_selectedChatConversationId, sessionTitle);
         Q_EMIT selectedChatConversationChanged();
     }
 

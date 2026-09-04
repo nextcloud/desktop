@@ -10,6 +10,7 @@ import Style
 
 ItemDelegate {
     id: root
+    objectName: "assistantConversationDelegate"
 
     required property int index
     required property string title

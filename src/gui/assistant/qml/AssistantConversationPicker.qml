@@ -11,6 +11,7 @@ import Style
 
 ComboBox {
     id: root
+    objectName: "assistantConversationPicker"
 
     required property NC.AssistantController assistantController
 
