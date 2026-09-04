@@ -19,7 +19,7 @@ namespace OCC
 namespace
 {
 
-constexpr auto chatTaskTypeId = "core:text2text:chat"_L1;
+constexpr auto assistantTaskTypeModelChatTaskTypeId = "core:text2text:chat"_L1;
 
 Q_LOGGING_CATEGORY(lcAssistantTaskTypeModel, "nextcloud.gui.assistant.tasktypemodel", QtInfoMsg)
 
@@ -85,7 +85,7 @@ void AssistantTaskTypeModel::replaceFromResponse(const QJsonDocument &json)
         const auto typeObject = types.value(typeId).toObject();
         const auto inputShape = typeObject.value("inputShape"_L1).toObject();
         const auto outputShape = typeObject.value("outputShape"_L1).toObject();
-        const auto isChat = typeId == chatTaskTypeId;
+        const auto isChat = typeId == assistantTaskTypeModelChatTaskTypeId;
         const auto isTranslate = typeId.contains("translate"_L1, Qt::CaseInsensitive);
         if (!isChat && !isTranslate && !isSingleTextTask(inputShape, outputShape)) {
             qCWarning(lcAssistantTaskTypeModel) << "Ignoring unsupported Assistant task type:" << typeId;

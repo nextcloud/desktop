@@ -28,7 +28,7 @@ namespace
 
 Q_LOGGING_CATEGORY(lcAssistantController, "nextcloud.gui.assistant", QtInfoMsg)
 
-constexpr auto chatTaskTypeId = "core:text2text:chat"_L1;
+constexpr auto assistantControllerChatTaskTypeId = "core:text2text:chat"_L1;
 constexpr auto successMinStatusCode = 200;
 constexpr auto successMaxStatusCode = 300;
 constexpr auto chatGenerationPendingStatusCode = 417;
@@ -98,7 +98,7 @@ AssistantController::AssistantController(const AccountStatePtr &accountState, As
         _client->setParent(this);
     }
 
-    _taskType = chatTaskTypeId;
+    _taskType = assistantControllerChatTaskTypeId;
 
     connect(_accountState.data(), &AccountState::isConnectedChanged, this, &AssistantController::accountConnectedChanged);
     connect(_account.data(), &Account::capabilitiesChanged, this, &AssistantController::assistantEnabledChanged);
@@ -190,7 +190,7 @@ QString AssistantController::selectedTaskTypeDescription() const
 
 bool AssistantController::selectedTaskTypeIsChat() const
 {
-    return _taskType == chatTaskTypeId;
+    return _taskType == assistantControllerChatTaskTypeId;
 }
 
 qint64 AssistantController::selectedChatConversationId() const
