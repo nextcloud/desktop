@@ -173,8 +173,10 @@ Item {
 
             verify(taskList !== null)
             tryCompare(taskList, "count", 1)
+            tryVerify(() => taskList.width > 0 && taskList.height > 0)
+            taskList.forceLayout()
+            tryVerify(() => taskList.itemAtIndex(0) !== null)
             const delegate = taskList.itemAtIndex(0)
-            verify(delegate !== null)
             compare(delegate.objectName, "assistantTaskDelegate")
             const retryButton = findChild(delegate, "assistantRetryTaskButton")
             verify(retryButton !== null)
@@ -188,6 +190,9 @@ Item {
             const taskList = findChild(taskView, "assistantTaskList")
 
             tryCompare(taskList, "count", 1)
+            tryVerify(() => taskList.width > 0 && taskList.height > 0)
+            taskList.forceLayout()
+            tryVerify(() => taskList.itemAtIndex(0) !== null)
             const deleteButton = findChild(taskList.itemAtIndex(0), "assistantDeleteTaskButton")
             verify(deleteButton !== null)
             mouseClick(deleteButton)
