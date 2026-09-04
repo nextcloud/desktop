@@ -474,8 +474,9 @@ void AccountState::slotHandleRemoteWipeCheck()
 
 void AccountState::handleInvalidCredentials()
 {
-    if (isSignedOut() || _waitingForNewCredentials)
+    if (isSignedOut() || _waitingForNewCredentials) {
         return;
+    }
 
     qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString()
                            << "asking user";

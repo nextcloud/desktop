@@ -66,8 +66,9 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
 
   do {
       dirent = _treaddir(handle->dh);
-      if (!dirent)
+      if (!dirent) {
           return {};
+      }
   } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
 
   file_stat = std::make_unique<csync_file_stat_t>();
@@ -99,8 +100,9 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   }
 #endif
 
-  if (file_stat->path.isNull())
+  if (file_stat->path.isNull()) {
       return file_stat;
+  }
 
   if (_csync_vio_local_stat_mb(fullPath.constData(), file_stat.get(), checkPermissionsValidity) < 0) {
       // Will get excluded by _csync_detect_update.

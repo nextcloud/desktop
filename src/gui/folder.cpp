@@ -85,8 +85,9 @@ Folder::Folder(const FolderDefinition &definition,
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
     ConfigFile::setupDefaultExcludeFilePaths(_engine->excludedFiles());
-    if (!reloadExcludes())
+    if (!reloadExcludes()) {
         qCWarning(lcFolder, "Could not read system exclude file");
+    }
 
     connect(_accountState.data(), &AccountState::termsOfServiceChanged,
             this, [this] ()
@@ -163,8 +164,9 @@ Folder::Folder(const FolderDefinition &definition,
 Folder::~Folder()
 {
     // If wipeForRemoval() was called the vfs has already shut down.
-    if (_vfs)
+    if (_vfs) {
         _vfs->stop();
+    }
 
     // Reset then engine first as it will abort and try to access members of the Folder
     _engine.reset();
@@ -311,8 +313,9 @@ QString Folder::cleanPath() const
 {
     QString cleanedPath = QDir::cleanPath(_canonicalLocalPath);
 
-    if (cleanedPath.length() == 3 && cleanedPath.endsWith(":/"))
+    if (cleanedPath.length() == 3 && cleanedPath.endsWith(":/")) {
         cleanedPath.remove(2, 1);
+    }
 
     return cleanedPath;
 }
@@ -558,8 +561,9 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
 
         if (!text.isEmpty()) {
             // Ignores the settings in case of an error or conflict
-            if(status == LogStatusError || status == LogStatusConflict)
+            if (status == LogStatusError || status == LogStatusConflict) {
                 logger->postGuiLog(tr("Sync Activity"), text);
+            }
         }
     }
 }
@@ -1597,13 +1601,15 @@ void Folder::schedulePathForLocalDiscovery(const QString &relativePath)
 
 void Folder::slotFolderConflicts(const QString &folder, const QStringList &conflictPaths)
 {
-    if (folder != _definition.alias)
+    if (folder != _definition.alias) {
         return;
+    }
     auto &r = _syncResult;
 
     // If the number of conflicts is too low, adjust it upwards
-    if (conflictPaths.size() > r.numNewConflictItems() + r.numOldConflictItems())
+    if (conflictPaths.size() > r.numNewConflictItems() + r.numOldConflictItems()) {
         r.setNumOldConflictItems(conflictPaths.size() - r.numNewConflictItems());
+    }
 }
 
 void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringView &path)
@@ -1734,10 +1740,12 @@ void Folder::setSaveBackwardsCompatible(bool save)
 
 void Folder::registerFolderWatcher()
 {
-    if (_folderWatcher)
+    if (_folderWatcher) {
         return;
-    if (!QDir(path()).exists())
+    }
+    if (!QDir(path()).exists()) {
         return;
+    }
 
     _folderWatcher.reset(new FolderWatcher(this));
     connect(_folderWatcher.data(), &FolderWatcher::pathChanged,
@@ -1904,16 +1912,18 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     }
 
     // Happens only on Windows when the explorer integration is enabled.
-    if (!folder.navigationPaneClsid.isNull())
+    if (!folder.navigationPaneClsid.isNull()) {
         settings.setValue(QLatin1String("navigationPaneClsid"), folder.navigationPaneClsid);
-    else
+    } else {
         settings.remove(QLatin1String("navigationPaneClsid"));
+    }
 
     // macOS sandbox: persist security-scoped bookmark data
-    if (!folder.securityScopedBookmarkData.isEmpty())
+    if (!folder.securityScopedBookmarkData.isEmpty()) {
         settings.setValue(QLatin1String("securityScopedBookmarkData"), folder.securityScopedBookmarkData);
-    else
+    } else {
         settings.remove(QLatin1String("securityScopedBookmarkData"));
+    }
 }
 
 bool FolderDefinition::load(QSettings &settings, const QString &alias,

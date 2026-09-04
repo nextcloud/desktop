@@ -89,10 +89,10 @@ class TestFolderWatcher : public QObject
         t.start();
         while (t.elapsed() < 5000) {
             // Check if it was already reported as changed by the watcher
-            for (int i = 0; i < _pathChangedSpy->size(); ++i) {
-                const auto &args = _pathChangedSpy->at(i);
-                if (args.first().toString() == path)
+            for (const auto &args : *_pathChangedSpy) {
+                if (args.first().toString() == path) {
                     return true;
+                }
             }
             // Wait a bit and test again (don't bother checking if we timed out or not)
             _pathChangedSpy->wait(200);

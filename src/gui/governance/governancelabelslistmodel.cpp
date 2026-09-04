@@ -254,8 +254,7 @@ void GovernanceLabelsListModel::apply()
     _applyingChanges = true;
     auto hasPendingChanges = false;
 
-    for (auto dataRow = 0; dataRow < _data.size(); ++dataRow) {
-        auto &oneLabel = _data[dataRow];
+    for (auto &oneLabel : _data) {
         if (oneLabel._currentStatus != oneLabel._serverStatus) {
             hasPendingChanges = true;
 
@@ -449,8 +448,7 @@ bool GovernanceLabelsListModel::checksForPendingChanges() const
 {
     auto hasPendingChanges = false;
 
-    for (auto dataRow = 0; dataRow < _data.size(); ++dataRow) {
-        auto &oneLabel = _data[dataRow];
+    for (const auto &oneLabel : _data) {
         if (oneLabel._currentStatus != oneLabel._serverStatus) {
             hasPendingChanges = true;
             break;

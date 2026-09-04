@@ -728,10 +728,12 @@ void ownCloudGui::slotShutdown()
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
     // those do delete on close
-    if (!_settingsDialog.isNull())
+    if (!_settingsDialog.isNull()) {
         _settingsDialog->close();
-    if (!_logBrowser.isNull())
+    }
+    if (!_logBrowser.isNull()) {
         _logBrowser->deleteLater();
+    }
 }
 
 void ownCloudGui::slotToggleLogBrowser()
