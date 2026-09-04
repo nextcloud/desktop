@@ -4339,47 +4339,47 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="429"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="409"/>
         <source>New Version Available</source>
         <translation>새 버전을 사용할 수 있음</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="435"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="415"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 클라이언트의 새 버전을 사용할 수 있습니다.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;를 다운로드 할 수 있습니다. 설치된 버전은 %3입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
         <source>Update Failed</source>
         <translation>업데이트 실패</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="482"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
         <translation>&lt;p&gt; %1 클라이언트의 새 버전을 사용할 수 있지만, 업데이트 과정에 실패했습니다.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;을(를) 다운로드 했습니다. 설치된 버전은 %3 입니다. 재시작 후 업데이트를 실행할 경우, 설치를 완료하기 위해 컴퓨터가 재시동할 것입니다.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="495"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Ask again later</source>
         <translation>다음에 다시 요청하세요.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="496"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Restart and update</source>
         <translation>재시작 및 업데이트</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="497"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
         <source>Update manually</source>
         <translation>수동으로 업데이트</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="448"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
         <source>Skip this time</source>
         <translation>이번에 건너뛰기</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="429"/>
         <source>Get update</source>
         <translation>업데이트 하기</translation>
     </message>
@@ -4478,72 +4478,72 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OCUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>Could not check for new updates.</source>
         <translation>새 업데이트를 확인할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>Checking update server …</source>
         <translation>업데이트 서버 확인 중 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="100"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="99"/>
         <source>New %1 update ready</source>
         <translation>새 %1 업데이트 준비됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="101"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="100"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
         <translation>새로운 업데이트 %1이(가) 곧 설치될 것입니다. 업데이터가 과정 중 추가 권한을 요청할 수 있습니다. 컴퓨터가 설치를 완료하기 위해 재시동할 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Downloading %1 …</source>
         <translation>%1 다운로드 중 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>%1 available. Restart application to start the update.</source>
         <translation>%1이(가) 사용 가능합니다. 업데이트를 시작하려면 응용 프로그램을 다시 시작하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
         <translation>업데이트를 다운로드할 수 없습니다. &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;을(를) 열어 수동으로 업데이트를 다운로드 하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
         <translation>업데이트를 다운로드할 수 없습니다. %1을(를) 열어 수동으로 업데이트를 다운로드 하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="161"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
         <translation>새 %1을(를) 사용할 수 있습니다. &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;을(를) 열어 업데이트를 다운로드하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="162"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
         <translation>새 %1을(를) 사용할 수 있습니다. %2을(를) 열어 업데이트를 다운로드하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="168"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>업데이트 상태를 알 수 없습니다: 새 업데이트를 확인하지 않았습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="173"/>
         <source>You are using the %1 update channel. Your installation is the latest version.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="178"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="177"/>
         <source>No updates available. Your installation is the latest version.</source>
         <translation>새 업데이트가 없습니다. 설치된 것이 마지막 버전입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="198"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="197"/>
         <source>Update Check</source>
         <translation>업데이트 확인</translation>
     </message>
@@ -4908,14 +4908,14 @@ Note that using any logging command line options will override this setting.</so
     <name>OCC::PropagateItemJob</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
-        <source>%1. Restoration failed: %2</source>
-        <comment>%1 is the generic error string, the file restoration error (%2) will be appended here</comment>
-        <translation type="unfinished"/>
+        <source>; Restoration Failed: %1</source>
+        <translation>; 복원 실패: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>; 복원 실패: %1</translation>
+        <source>%1. Restoration failed: %2</source>
+        <comment>%1 is the generic error string, the file restoration error (%2) will be appended here</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="300"/>
@@ -6107,7 +6107,112 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>OCC::UnifiedSearchPeopleModel</name>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="112"/>
+        <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="121"/>
+        <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="130"/>
+        <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="156"/>
+        <source>People search is unavailable.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="192"/>
+        <source>Could not load people. Try again.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::UnifiedSearchResultsListModel</name>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="228"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="242"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="537"/>
+        <source>Search is unavailable while this account is offline.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="533"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="580"/>
+        <source>Failed to fetch search providers.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="653"/>
+        <source>No search providers are available.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="687"/>
+        <source>Search cleared</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="727"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1230"/>
+        <source>Searching</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="949"/>
+        <source>Partial matches</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1218"/>
+        <source>Search failed for all available sources. Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1240"/>
+        <source>%1 results in %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1242"/>
+        <source>No matching results</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1244"/>
+        <source>%1 results. Some sources are unavailable.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1246"/>
+        <source>%1 results</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1420"/>
+        <source>Today</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1423"/>
+        <source>Last 7 days</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1426"/>
+        <source>Last 30 days</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
+        <source>This year</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1434"/>
+        <source>Last year</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1454"/>
+        <source>%1 – %2</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
         <source>Failed to fetch providers.</source>
@@ -7011,6 +7116,37 @@ Server replied with error: %2</source>
         <source>Search results list</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <location filename="../src/gui/search/SearchWindow.qml" line="158"/>
+        <source>Remove %1 filter</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/SearchWindow.qml" line="182"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="251"/>
+        <source>Retry</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/SearchWindow.qml" line="215"/>
+        <source>Search results</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/SearchWindow.qml" line="250"/>
+        <source>Some sources unavailable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
+        <source>Less from connected services</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
+        <source>More from connected services</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ServerPage</name>
@@ -7363,11 +7499,164 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>UnifiedSearchCustomDateRangeDialog</name>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="22"/>
+        <source>Custom date range</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="34"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="40"/>
+        <source>Apply</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="52"/>
+        <source>Start date (YYYY-MM-DD)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="59"/>
+        <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="70"/>
+        <source>YYYY-MM-DD</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="63"/>
+        <source>End date (YYYY-MM-DD)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="75"/>
+        <source>Enter valid dates with the start date before the end date.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchDetailHeader</name>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="28"/>
+        <source>Back</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
+        <source>Back to all search results</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchFilterBar</name>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="50"/>
+        <source>Type</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="57"/>
+        <source>Filter by type</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
+        <source>Date</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
+        <source>Filter by date</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>
+        <source>No search source supports date filtering</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="121"/>
+        <source>Today</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="125"/>
+        <source>Last 7 days</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="129"/>
+        <source>Last 30 days</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="133"/>
+        <source>This year</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="137"/>
+        <source>Last year</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="142"/>
+        <source>Custom range …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="146"/>
+        <source>Clear date</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="157"/>
+        <source>People</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="165"/>
+        <source>Filter by person</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="166"/>
+        <source>No search source supports people filtering</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>UnifiedSearchInputContainer</name>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="36"/>
         <source>Search files, messages, events …</source>
         <translation>파일, 메시지, 이벤트 검색…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
+        <source>Clear search</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
+        <source>Keeps the active filters</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchPeoplePopup</name>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
+        <source>Search people</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
+        <source>Retry</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -7376,6 +7665,34 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/UnifiedSearchPlaceholderView.qml" line="31"/>
         <source>Start typing to search</source>
         <translation>검색어 입력</translation>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultDelegate</name>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="83"/>
+        <source>More from %1  →</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="130"/>
+        <source>Partial matches</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="193"/>
+        <source>Loading more results …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
+        <source>Retry loading more results</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
+        <source>Load more results</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -8131,73 +8448,73 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="66"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="69"/>
         <source>Connect</source>
         <translation>연결</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="283"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="106"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
         <source>(experimental)</source>
         <translation>(실험적)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="121"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="288"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>콘텐츠를 즉시 다운로드 하는 대신 &amp;가상 파일을 사용하세요 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="280"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>가상 파일은 윈도우 파티션 루트에 로컬 폴더로 지원되지 않습니다.
 드라이브 문자가 지정된 유효한 하위 폴더를 선택하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 폴더 &quot;%2&quot;(이)가 로컬 폴더 &apos;%3&apos;(으)로 동기화되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="324"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>폴더 &apos;%1&apos; 동기화</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="326"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="329"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>경고: 로컬 폴더가 비어있지 않습니다. 해결 방법을 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="339"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="653"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="342"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="667"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 남은 공간</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="427"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="430"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="499"/>
         <source>Local Sync Folder</source>
         <translation>로컬 동기화 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="574"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="542"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="583"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="600"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="614"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>로컬 폴더에 공간이 부족합니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="651"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="665"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
         <translation type="unfinished"/>
     </message>
@@ -8280,150 +8597,150 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="290"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="299"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;%1(으)로 성공적으로 연결: %2 버전 %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="320"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
         <source>Invalid URL</source>
         <translation>잘못된 URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>%2에서 %1와 연결이 실패했습니다:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="340"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="349"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>%2에서 %1와 연결을 시도하는 중 시간이 만료되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="376"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="399"/>
         <source>Trying to connect to %1 at %2 …</source>
         <translation>%2에서 %1와 연결을 시도하는 중...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="466"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>서버에 대한 인증 된 요청이 &apos;%1&apos;로 리디렉션되었습니다. URL이 잘못되어 서버가 잘못 구성되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="471"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>서버에서 액세스가 금지되었습니다. 올바른 액세스 권한이 있는지 확인하려면 &lt;a href=&quot;%1&quot;&gt;여기&lt;/a&gt;를 클릭하여 브라우저로 서비스에 액세스하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="489"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>인증된 WebDAV 요청에 대한 응답이 잘못되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>로컬 동기화 폴더 %1이 이미 존재하며, 동기화 하도록 설정했습니다.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="537"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="546"/>
         <source>Creating local sync folder %1 …</source>
         <translation>로컬 동기화 폴더 %1 생성 중...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="550"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="552"/>
         <source>failed.</source>
         <translation>실패</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="545"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="554"/>
         <source>Could not create local folder %1</source>
         <translation>로컬 폴더 %1을 만들 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="605"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="614"/>
         <source>No remote folder specified!</source>
         <translation>원격 폴더가 지정되지 않음</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="611"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="620"/>
         <source>Error: %1</source>
         <translation>오류: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="633"/>
         <source>creating folder on Nextcloud: %1</source>
         <translation>Nextcloud에 폴더 생성 중: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="638"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>원격 폴더 %1ㅣ 성공적으로 생성되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="653"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>원격 폴더 %1이 이미 존재합니다. 동기화를 위해 연결합니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="646"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="648"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="655"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="657"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>폴더 생성으로 인해 HTTP 오류 코드 %1이 발생했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="650"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="659"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>제공된 자격 증명이 잘못되어 원격 폴더 생성에 실패했습니다.&lt;br/&gt;돌아가서 자격 증명을 확인하십시오.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="654"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="663"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;제공된 자격 증명이 잘못되어 원격 폴더 생성에 실패했을 수 있습니다.&lt;/font&gt;&lt;br/&gt;돌아가서 자격 증명을 확인하십시오.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="659"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="660"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="668"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="669"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>원격 폴더 %1 생성이 오류 &lt;tt&gt;%2&lt;/tt&gt;로 인해 실패했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="674"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="683"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>%1에서 원격 디렉토리 %2에 대한 동기화 연결이 설정되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="679"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="688"/>
         <source>Successfully connected to %1!</source>
         <translation>%1(으)로 성공적으로 연결했습니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="686"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="695"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>%1와 연결을 수립할 수 없습니다. 다시 확인해주십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="699"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="708"/>
         <source>Folder rename failed</source>
         <translation>폴더 이름을 바꿀 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="700"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="709"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>폴더 나 폴더의 파일이 다른 프로그램에서 열려있어 폴더를 제거하고 백업 할 수 없습니다. 폴더 혹은 파일을 닫고 다시 시도하거나 설정을 취소하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="729"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="738"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="771"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="780"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;로컬 동기화 폴더 %1이 성공적으로 생성되었습니다!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
