@@ -10,6 +10,7 @@
 #include <QDir>
 #include <QStringList>
 #include <QTimer>
+#include <QMap>
 #include <QUrl>
 #include <QFile>
 #include <QFileInfo>
@@ -78,6 +79,7 @@ struct CmdOptions
     bool ignoreHiddenFiles = false;
     QString exclude;
     QString excludeAnchored;
+    QString include;
     QString unsyncedfolders;
     int restartTimes = 0;
     int downlimit = 0;
@@ -172,6 +174,7 @@ void help()
     std::cout << binaryName << " - command line " APPLICATION_NAME " client tool" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "Usage: " << binaryName << " [OPTION] <source_dir> <server_url>" << std::endl;
+    std::cout << "       " << binaryName << " [OPTION] --include <include_file> <server_url>" << std::endl;
     std::cout << "       " << binaryName << " --userid <user> --serverurl <url> [--apppassword <pass>] [OPTION]" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "A proxy can either be set manually using --httpproxy." << std::endl;
@@ -187,6 +190,7 @@ void help()
     std::cout << "                         sync root regardless of the file's own name" << std::endl;
     std::cout << "                         (use this if --exclude patterns aren't matching," << std::endl;
     std::cout << "                         see nextcloud/desktop#2916, #7682)" << std::endl;
+    std::cout << "  --include [file]       Include list file. If this option is set, <source_dir> can't be set" << std::endl;
     std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced remote folders (selective sync)" << std::endl;
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
@@ -253,16 +257,20 @@ CommandMode parseOptions(const QStringList &app_args, CmdOptions *options)
 
         options->target_url = args.takeLast();
 
-        options->source_dir = args.takeLast();
-        if (!options->source_dir.endsWith('/')) {
-            options->source_dir.append('/');
+        if (!args.contains("--include")) {
+            options->source_dir = args.takeLast();
+            if (!options->source_dir.endsWith('/')) {
+                options->source_dir.append('/');
+            }
+
+            auto sourceDirFileInfo = QFileInfo{options->source_dir};
+            if (!sourceDirFileInfo.exists()) {
+                std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
+                exit(1);
+            }
+
+            options->source_dir = sourceDirFileInfo.absoluteFilePath();
         }
-        auto sourceDirFileInfo = QFileInfo{options->source_dir};
-        if (!sourceDirFileInfo.exists()) {
-            std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
-            exit(1);
-        }
-        options->source_dir = sourceDirFileInfo.absoluteFilePath();
     }
 
     auto it = QStringListIterator{args};
@@ -294,6 +302,9 @@ CommandMode parseOptions(const QStringList &app_args, CmdOptions *options)
             options->exclude = it.next();
         } else if (option == u"--exclude-anchored"_s && !it.peekNext().startsWith(u"-"_s)) {
             options->excludeAnchored = it.next();
+        } else if (option == u"--include"_s && it.hasNext() && !it.peekNext().startsWith("-")) {
+            auto includeFileInfo = QFileInfo(it.next());
+            options->include = includeFileInfo.absoluteFilePath();
         } else if (option == u"--unsyncedfolders"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->unsyncedfolders = it.next();
         } else if (option == u"--max-sync-retries"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
@@ -319,7 +330,7 @@ CommandMode parseOptions(const QStringList &app_args, CmdOptions *options)
         }
     }
 
-    if (!provisionMode && (options->target_url.isEmpty() || options->source_dir.isEmpty())) {
+    if (!provisionMode && (options->target_url.isEmpty() || (options->source_dir.isEmpty() && options->include.isEmpty()))) {
         result = CommandMode::HelpMode;
         help();
         return result;
@@ -348,6 +359,39 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 
         journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newList);
     }
+}
+
+QMap<QString, QString> parseIncludeFile(QFile *file)
+{
+    QMap<QString, QString> foldersToSync;
+    while (!file->atEnd()) {
+        auto line = file->readLine().trimmed();
+
+        if (line.isEmpty() || line.startsWith('#')) {
+            continue;
+        }
+
+        auto splitEntry = QString::fromUtf8(line).split(u' ');
+        if (splitEntry.count() != 2) {
+            std::cerr << "Entry '" << qPrintable(QString::fromUtf8(line)) << "' is not in format '<local path> <remote path>'" <<std::endl;
+            exit(1);
+        }
+
+        auto localPath = splitEntry.at(0);
+        if (localPath.endsWith('/')) {
+            localPath.append('/');
+        }
+
+        auto fi = QFileInfo(localPath);
+        if (!fi.exists()) {
+            std::cerr << "Included dir '" << qPrintable(localPath) << "' does not exist." << std::endl;
+            exit(1);
+        }
+
+        foldersToSync.insert(fi.absoluteFilePath(), splitEntry.at(1));
+    }
+
+    return foldersToSync;
 }
 
 [[nodiscard]] bool setupAccountsOnly()
@@ -529,14 +573,28 @@ int main(int argc, char **argv)
    
 
     // Find the folder and the original owncloud url
-
     hostUrl.setScheme(hostUrl.scheme().replace("owncloud", "http"));
 
     QUrl credentialFreeUrl = hostUrl;
     credentialFreeUrl.setUserName(QString());
     credentialFreeUrl.setPassword(QString());
 
-    const QString folder = options.remotePath;
+    QMap<QString, QString> foldersToSync;
+    if (!options.source_dir.isEmpty()) {
+        foldersToSync.insert(options.source_dir, options.remotePath);
+    } else {
+        auto file = QFile(options.include);
+        if (!file.exists()) {
+            std::cerr << "Include file '" << qPrintable(options.include) << "' does not exist." << std::endl;
+            exit(1);
+        }
+        if (!file.open(QIODevice::ReadOnly)) {
+            std::cerr << "Include file '" << qPrintable(file.fileName()) << "' could not be opened" << std::endl;
+            exit(1);
+        }
+
+        foldersToSync = parseIncludeFile(&file);
+    }
 
     if (!options.proxy.isNull()) {
         QString host;
@@ -658,31 +716,7 @@ restart_sync:
         }
     }
 
-    Cmd cmd;
-    QString dbPath = options.source_dir + SyncJournalDb::makeDbName(options.source_dir, credentialFreeUrl, folder, user);
-    SyncJournalDb db(dbPath);
-
-    if (!selectiveSyncList.empty()) {
-        selectiveSyncFixup(&db, selectiveSyncList);
-    }
-
-    SyncOptions syncOptions;
-    syncOptions.fillFromEnvironmentVariables();
-    syncOptions.verifyChunkSizes();
-    syncOptions.setIsCmd(true);
-    SyncEngine engine(account, options.source_dir, syncOptions, folder, &db);
-    engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
-    engine.setNetworkLimits(options.uplimit, options.downlimit);
-    QObject::connect(&engine, &SyncEngine::finished,
-        [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
-    QObject::connect(&engine, &SyncEngine::transmissionProgress, &cmd, &Cmd::transmissionProgressSlot);
-    QObject::connect(&engine, &SyncEngine::syncError,
-        [](const QString &error) { qWarning() << "Sync error:" << error; });
-
-
     // Exclude lists
-
-    bool hasUserExcludeFile = !options.exclude.isEmpty() || !options.excludeAnchored.isEmpty();
     QString systemExcludeFile = ConfigFile::excludeFileFromSystem();
 
     // Always try to load the user-provided exclude list(s) if specified
@@ -696,45 +730,86 @@ restart_sync:
             qFatal("Exclude list file supplied via --exclude does not exist: %s", qUtf8Printable(options.exclude));
             return EXIT_FAILURE;
         }
-        // Keeps addExcludeFilePath()'s historic filename-based anchoring
-        // heuristic for --exclude, so existing setups that rely on it
-        // (however unintentionally) don't change behavior. Use
-        // --exclude-anchored instead if patterns aren't matching because
-        // the file isn't literally named "sync-exclude.lst".
-        engine.excludedFiles().addExcludeFilePath(options.exclude);
     }
     if (!options.excludeAnchored.isEmpty()) {
         if (!QFile::exists(options.excludeAnchored)) {
             qFatal("Exclude list file supplied via --exclude-anchored does not exist: %s", qUtf8Printable(options.excludeAnchored));
             return EXIT_FAILURE;
         }
-        // Always anchor patterns at the sync root regardless of the file's
-        // own name, see ExcludedFiles::addExcludeFilePath().
-        engine.excludedFiles().addExcludeFilePath(options.excludeAnchored, ExcludedFiles::ExcludeFileAnchor::SyncRoot);
-    }
-    // Load the system list if available, or if there's no user-provided list
-    if (!hasUserExcludeFile || QFile::exists(systemExcludeFile)) {
-        engine.excludedFiles().addExcludeFilePath(systemExcludeFile);
     }
 
-    if (!engine.excludedFiles().reloadExcludeFiles()) {
-        qFatal("Cannot load system exclude list or list supplied via --exclude/--exclude-anchored");
-        return EXIT_FAILURE;
-    }
+    Cmd cmd;
+    int resultCode;
+    bool hasUserExcludeFile = !options.exclude.isEmpty() || !options.excludeAnchored.isEmpty();
 
+    QMapIterator<QString, QString> it(foldersToSync);
+    while (it.hasNext()) {
+        it.next();
+        QString dir = it.key();
+        QString folder = it.value();
 
-    // Have to be done async, else, an error before exec() does not terminate the event loop.
-    QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);
+        QString dbPath = dir + SyncJournalDb::makeDbName(dir, credentialFreeUrl, folder, user);
+        SyncJournalDb db(dbPath);
 
-    int resultCode = app.exec();
-
-    if (engine.isAnotherSyncNeeded() != NoFollowUpSync) {
-        if (restartCount < options.restartTimes) {
-            restartCount++;
-            qDebug() << "Restarting Sync, because another sync is needed" << restartCount;
-            goto restart_sync;
+        if (!selectiveSyncList.empty()) {
+            selectiveSyncFixup(&db, selectiveSyncList);
         }
-        qWarning() << "Another sync is needed, but not done because restart count is exceeded" << restartCount;
+
+        SyncOptions syncOptions;
+        syncOptions.fillFromEnvironmentVariables();
+        syncOptions.verifyChunkSizes();
+        syncOptions.setIsCmd(true);
+        SyncEngine engine(account, dir, syncOptions, folder, &db); //ERROR is still needed
+        engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
+        engine.setNetworkLimits(options.uplimit, options.downlimit);
+        QObject::connect(&engine, &SyncEngine::finished,
+            [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
+        QObject::connect(&engine, &SyncEngine::transmissionProgress, &cmd, &Cmd::transmissionProgressSlot);
+        QObject::connect(&engine, &SyncEngine::syncError,
+            [](const QString &error) { qWarning() << "Sync error:" << error; });
+
+        // Always try to load the user-provided exclude list(s) if specified
+        if (!options.exclude.isEmpty()) {
+            // Keeps addExcludeFilePath()'s historic filename-based anchoring
+            // heuristic for --exclude, so existing setups that rely on it
+            // (however unintentionally) don't change behavior. Use
+            // --exclude-anchored instead if patterns aren't matching because
+            // the file isn't literally named "sync-exclude.lst".
+            engine.excludedFiles().addExcludeFilePath(options.exclude);
+        }
+        if (!options.excludeAnchored.isEmpty()) {
+            // Always anchor patterns at the sync root regardless of the file's
+            // own name, see ExcludedFiles::addExcludeFilePath().
+            engine.excludedFiles().addExcludeFilePath(options.excludeAnchored, ExcludedFiles::ExcludeFileAnchor::SyncRoot);
+        }
+        
+        // Load the system list if available, or if there's no user-provided list
+        if (!hasUserExcludeFile || QFile::exists(systemExcludeFile)) {
+            engine.excludedFiles().addExcludeFilePath(systemExcludeFile);
+        }
+
+        if (!engine.excludedFiles().reloadExcludeFiles()) {
+            qFatal("Cannot load system exclude list or list supplied via --exclude/--exclude-anchored");
+            return EXIT_FAILURE;
+        }
+
+        // Have to be done async, else, an error before exec() does not terminate the event loop.
+        QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);
+
+        if (engine.isAnotherSyncNeeded() != NoFollowUpSync) {
+            if (restartCount < options.restartTimes) {
+                restartCount++;
+                qDebug() << "Restarting Sync, because another sync is needed" << restartCount;
+                goto restart_sync;
+            }
+
+            qWarning() << "Another sync is needed, but not done because restart count is exceeded" << restartCount;
+        }
+
+        resultCode = app.exec();
+        if (resultCode != 0) {
+            break;
+        }
     }
 
     return resultCode;
