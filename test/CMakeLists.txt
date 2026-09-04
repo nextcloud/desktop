@@ -119,6 +119,7 @@ nextcloud_add_test(AssistantModels)
 add_executable(AssistantQmlTest
     qml/assistant/assistantqmltestrunner.cpp
     assistant/fakeassistantclient.cpp
+    testhelper.h
 )
 target_link_libraries(AssistantQmlTest PRIVATE nextcloudCore Qt::QuickTest)
 target_include_directories(AssistantQmlTest PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
