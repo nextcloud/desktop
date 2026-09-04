@@ -31,8 +31,12 @@ public:
     ~FileProviderDomainManager() override;
 
     /**
-     * @brief Add a new file provider domain for the given account.
-     * @return The raw identifier of the added domain as a string.
+     * @brief Add a file provider domain for the given account, or return the existing one.
+     *
+     * Reuses the account's stored identifier when the domain is missing. Mints a new UUID
+     * only when the account has no identifier yet. Returns an empty string when domain
+     * listing fails, so a second Finder location is not created.
+     * @return The domain identifier, or an empty string on failure.
      */
     QString addDomainForAccount(const OCC::AccountState * const accountState);
 

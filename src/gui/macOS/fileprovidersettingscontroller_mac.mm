@@ -121,11 +121,10 @@ public:
 
         if (setEnabled) {
             // addDomainForAccount is idempotent: it returns the existing identifier when
-            // the domain is still registered with the system, re-creates it when the
-            // stored identifier is stale (the "fake" identifiers minted by
-            // migrateToAppSandbox, or a domain the user removed in System Settings), or
-            // creates a fresh one. Always going through it guarantees a real domain
-            // exists before the caller discards the classic sync folders.
+            // the domain is still registered, re-adds the same stored identifier when the
+            // domain is missing (sandbox-migration placeholders, or a domain removed in
+            // System Settings), or mints a fresh UUID only when the account has none.
+            // A failed domain listing aborts instead of minting a second identifier.
             auto const identifier = Mac::FileProvider::instance()->domainManager()->addDomainForAccount(accountState.data());
 
             if (identifier.isEmpty()) {

@@ -12,10 +12,12 @@
 #include <QLatin1StringView>
 #include <QList>
 #include <QLoggingCategory>
+#include <QSet>
 #include <QUuid>
 
 #include "config.h"
 #include "fileprovider.h"
+#include "fileproviderdomainidentifierpolicy.h"
 #include "fileproviderdomainmanager.h"
 #include "fileprovidersettingscontroller.h"
 #include "fileproviderutils.h"
@@ -101,15 +103,28 @@ public:
     }
 
     /**
+     * @brief Result of listing domains from `NSFileProviderManager`.
+     *
+     * `succeeded` is false when the system reported an error. In that case `domains` is empty
+     * and must not be treated as "there are no domains".
+     */
+    struct DomainListing
+    {
+        bool succeeded = false;
+        QList<NSFileProviderDomain *> domains;
+    };
+
+    /**
      * @brief Synchronous and logging wrapper for `[NSFileProviderManager getDomainsWithCompletionHandler:]`.
      */
-    QList<NSFileProviderDomain *> getDomains()
+    DomainListing listDomains()
     {
         qCInfo(lcMacFileProviderDomainManager) << "Getting all existing domains...";
         dispatch_group_t dispatchGroup = dispatch_group_create();
         dispatch_group_enter(dispatchGroup);
 
         __block NSArray<NSFileProviderDomain *> *returnValue = [NSArray array];
+        __block auto listingSucceeded = false;
 
         [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
             if (error) {
@@ -130,18 +145,31 @@ public:
 
             // Ensure the array (and contained domains) stay retained after the completion block returns.
             returnValue = [domains copy];
+            listingSucceeded = true;
             dispatch_group_leave(dispatchGroup);
         }];
 
         dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
 
-        QList<NSFileProviderDomain *> domainsList;
+        auto listing = DomainListing{};
+        listing.succeeded = listingSucceeded;
 
         for (NSFileProviderDomain * const domain in returnValue) {
-            domainsList.append(domain);
+            listing.domains.append(domain);
         }
 
-        return domainsList;
+        return listing;
+    }
+
+    /**
+     * @brief Identifiers of domains currently registered with the system.
+     *
+     * Empty when listing failed. Callers that need to distinguish "none" from "unknown"
+     * must use `listDomains()` instead.
+     */
+    QList<NSFileProviderDomain *> getDomains()
+    {
+        return listDomains().domains;
     }
 
     /**
@@ -392,22 +420,40 @@ public:
         // `reconcileDomainDisplayNames()`.
         const auto domainDisplayName = account->shortcutName();
 
-        if (!existingDomainId.isEmpty()) {
-            const auto domains = getDomains();
+        const auto listing = listDomains();
+        auto registeredIdentifiers = QSet<QString>{};
 
-            for (NSFileProviderDomain * const domain : domains) {
-                if (existingDomainId == QString::fromNSString(domain.identifier)) {
-                    qCDebug(lcMacFileProviderDomainManager) << "Domain already exists for account"
-                                                            << accountId
-                                                            << "with identifier"
-                                                            << existingDomainId;
-
-                    return existingDomainId;
-                }
+        if (listing.succeeded) {
+            for (NSFileProviderDomain * const domain : listing.domains) {
+                registeredIdentifiers.insert(QString::fromNSString(domain.identifier));
             }
         }
 
-        const auto domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
+        const auto decision = FileProviderDomainIdentifierPolicy::decideRegistration(existingDomainId,
+                                                                                     registeredIdentifiers,
+                                                                                     listing.succeeded);
+
+        if (decision.action == FileProviderDomainIdentifierPolicy::RegistrationAction::Abort) {
+            qCWarning(lcMacFileProviderDomainManager) << "Not adding a file provider domain for account"
+                                                      << accountId
+                                                      << "because listing existing domains failed; refusing to mint a new identifier.";
+            return {};
+        }
+
+        if (decision.action == FileProviderDomainIdentifierPolicy::RegistrationAction::Skip) {
+            qCDebug(lcMacFileProviderDomainManager) << "Domain already exists for account"
+                                                    << accountId
+                                                    << "with identifier"
+                                                    << existingDomainId;
+            return existingDomainId;
+        }
+
+        auto domainId = existingDomainId;
+
+        if (decision.action == FileProviderDomainIdentifierPolicy::RegistrationAction::AddFresh) {
+            domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
+        }
+
         NSFileProviderDomain * const domain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString() displayName:domainDisplayName.toNSString()];
         domain.supportsSyncingTrash = YES;
 
