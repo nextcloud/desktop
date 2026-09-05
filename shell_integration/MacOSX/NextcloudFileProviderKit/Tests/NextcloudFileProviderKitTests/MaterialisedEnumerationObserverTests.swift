@@ -102,12 +102,13 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         let enumeratorItemsToReturn = [itemB, itemC]
 
         let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { newlyMaterialisedIds, unmaterialisedIds in
-            // Unmaterialised: itemA and dirD were materialized but not in the latest enumeration.
+            // Unmaterialised: itemA was materialized but not in the latest enumeration. dirD is
+            // also absent from the enumeration, but keeps its visitedDirectory subscription and
+            // has no other state to clear, so it must not be reported as a state transition.
             XCTAssertEqual(
-                unmaterialisedIds.count, 2, "itemA and dirD should be reported as unmaterialised."
+                unmaterialisedIds.count, 1, "Only itemA should be reported as unmaterialised."
             )
             XCTAssertTrue(unmaterialisedIds.contains(NSFileProviderItemIdentifier("itemA")))
-            XCTAssertTrue(unmaterialisedIds.contains(NSFileProviderItemIdentifier("dirD")))
 
             // Newly Materialised: itemB was NOT materialized but WAS in the latest enumeration.
             XCTAssertEqual(
@@ -144,5 +145,123 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         enumerator.enumerateItems(for: observer, startingAt: NSFileProviderPage(Data(count: 1)))
 
         await fulfillment(of: [expect], timeout: 1)
+    }
+
+    ///
+    /// Regression test for the non-converging reconciliation loop reported in
+    /// [#10558](https://github.com/nextcloud/desktop/issues/10558).
+    ///
+    /// A directory which was browsed before keeps `visitedDirectory == true` even when the system
+    /// reports it as dataless, because that flag subscribes it to remote change scanning. That
+    /// also keeps it in the database's materialized item set, so it reappears as an eviction
+    /// candidate on every reconciliation pass. The observer therefore must only persist and
+    /// report actual state transitions — otherwise it re-marks the same directories as dataless
+    /// on every pass and reconciliation never reaches a quiescent state.
+    ///
+    func testMaterialisedObserverConvergesForDatalessVisitedDirectories() async {
+        // A directory which was browsed before but holds no materialized content any more.
+        var visitedDir = SendableItemMetadata(ocId: "visitedDir", fileName: "visitedDir", account: Self.account)
+        visitedDir.directory = true
+        visitedDir.visitedDirectory = true
+        visitedDir.downloaded = false
+
+        // A directory which was browsed before and still carries a stale downloaded flag.
+        var staleDir = SendableItemMetadata(ocId: "staleDir", fileName: "staleDir", account: Self.account)
+        staleDir.directory = true
+        staleDir.visitedDirectory = true
+        staleDir.downloaded = true
+
+        // A downloaded file about to be evicted.
+        var file = SendableItemMetadata(ocId: "file", fileName: "file.txt", account: Self.account)
+        file.downloaded = true
+
+        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+        dbManager.addItemMetadata(visitedDir)
+        dbManager.addItemMetadata(staleDir)
+        dbManager.addItemMetadata(file)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account)
+        let firstPass = XCTestExpectation(description: "First pass completion handler called")
+
+        // First pass: the system reports no materialized items at all.
+        let firstObserver = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { newlyMaterialisedIds, unmaterialisedIds in
+            XCTAssertTrue(
+                newlyMaterialisedIds.isEmpty,
+                "Nothing was enumerated, so nothing should be newly materialised."
+            )
+
+            // Only actual state transitions should be reported.
+            XCTAssertEqual(
+                unmaterialisedIds.count, 2, "The file and the stale directory should be reported as evicted."
+            )
+            XCTAssertTrue(unmaterialisedIds.contains(NSFileProviderItemIdentifier("file")))
+            XCTAssertTrue(unmaterialisedIds.contains(NSFileProviderItemIdentifier("staleDir")))
+            XCTAssertFalse(
+                unmaterialisedIds.contains(NSFileProviderItemIdentifier("visitedDir")),
+                "A visited directory in steady state must not be reported as a fresh eviction."
+            )
+
+            let persistedFile = dbManager.itemMetadata(ocId: "file")
+            XCTAssertFalse(persistedFile?.downloaded ?? true, "The file should be marked as not downloaded.")
+
+            let persistedStaleDir = dbManager.itemMetadata(ocId: "staleDir")
+            XCTAssertFalse(persistedStaleDir?.downloaded ?? true, "The stale directory should lose its downloaded flag.")
+            XCTAssertTrue(
+                persistedStaleDir?.visitedDirectory ?? false,
+                "The stale directory should keep its visitedDirectory subscription."
+            )
+
+            let persistedVisitedDir = dbManager.itemMetadata(ocId: "visitedDir")
+            XCTAssertTrue(
+                persistedVisitedDir?.visitedDirectory ?? false,
+                "The visited directory should keep its visitedDirectory subscription."
+            )
+
+            firstPass.fulfill()
+        }
+
+        let firstEnumerator = MockEnumerator(
+            account: Self.account, dbManager: dbManager, remoteInterface: remoteInterface
+        )
+        firstEnumerator.enumeratorItems = []
+        firstEnumerator.enumerateItems(for: firstObserver, startingAt: NSFileProviderPage(Data(count: 1)))
+
+        await fulfillment(of: [firstPass], timeout: 1)
+
+        // Second pass under unchanged conditions: reconciliation must have converged.
+        let secondPass = XCTestExpectation(description: "Second pass completion handler called")
+
+        let secondObserver = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { newlyMaterialisedIds, unmaterialisedIds in
+            XCTAssertTrue(
+                newlyMaterialisedIds.isEmpty,
+                "Nothing was enumerated, so nothing should be newly materialised."
+            )
+            XCTAssertTrue(
+                unmaterialisedIds.isEmpty,
+                "A repeated pass without changes must not report any evictions again."
+            )
+
+            let persistedVisitedDir = dbManager.itemMetadata(ocId: "visitedDir")
+            XCTAssertTrue(
+                persistedVisitedDir?.visitedDirectory ?? false,
+                "The visited directory should still keep its visitedDirectory subscription."
+            )
+
+            let persistedStaleDir = dbManager.itemMetadata(ocId: "staleDir")
+            XCTAssertTrue(
+                persistedStaleDir?.visitedDirectory ?? false,
+                "The stale directory should still keep its visitedDirectory subscription."
+            )
+
+            secondPass.fulfill()
+        }
+
+        let secondEnumerator = MockEnumerator(
+            account: Self.account, dbManager: dbManager, remoteInterface: remoteInterface
+        )
+        secondEnumerator.enumeratorItems = []
+        secondEnumerator.enumerateItems(for: secondObserver, startingAt: NSFileProviderPage(Data(count: 1)))
+
+        await fulfillment(of: [secondPass], timeout: 1)
     }
 }
