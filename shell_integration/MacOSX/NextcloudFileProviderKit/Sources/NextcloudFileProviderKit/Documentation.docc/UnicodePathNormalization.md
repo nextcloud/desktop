@@ -41,8 +41,23 @@ The original values must not be replaced globally. They are used for server
 requests, downloads, uploads, deletes, logging, and user-visible metadata.
 The normalized values are local identity keys only.
 
-New objects populate both forms. Realm schema migration version 203 also
-backfills the normalized properties for rows created by earlier versions.
+New objects populate both forms. Realm schema migration version 203 backfills
+the normalized properties for rows created by earlier versions, and
+`FilesDatabaseManager.repairDriftedNormalizedLocationKeys()` runs at every
+open to repair any row whose keys have drifted from its raw columns.
+
+Drift is a mismatch between a stored key and the normalization of the raw
+column it is derived from, so it cannot be expressed as a Realm query: an
+index can only be probed for a value, and the value a drifted key should hold
+is whatever `precomposedStringWithCanonicalMapping` returns for that row. The
+repair therefore walks the whole table once per open and normalizes both raw
+columns of every row. Rows are collected into an array rather than a lazy
+`Results`, which is also what makes the subsequent rewrite safe, because
+mutating the columns a live query reads would let it skip rows. Deleted rows,
+lock files of local origin, and the synthetic root container are repaired
+alongside everything else: the exclusions that `cleanupPreexistingLogicalDuplicates()`
+applies are about which rows may be soft-deleted, not about which rows have to
+be findable by location.
 
 ## Where normalization is required
 
@@ -63,8 +78,9 @@ translates them into database queries. The reusable query expressions in
 `RealmItemMetadata+Queries.swift` centralize the persisted-field predicates:
 `hasLocation` compares an account, normalized parent URL, and normalized file
 name; `hasServerUrl` compares an exact URL or a slash-delimited descendant
-path. Both helpers retain a raw-value fallback for rows whose normalized
-properties are empty during migration or recovery.
+path. Both helpers compare the normalized properties alone; the exact-match
+forms are answered from their indexes, while the descendant form stays a prefix
+disjunction that Realm cannot drive off an index.
 
 For ordinary in-memory values, `ItemMetadata.hasSameLocation(as:)` provides the
 corresponding comparison without exposing normalization details at each call

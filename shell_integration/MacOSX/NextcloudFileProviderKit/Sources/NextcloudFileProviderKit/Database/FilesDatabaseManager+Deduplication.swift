@@ -108,6 +108,37 @@ public extension FilesDatabaseManager {
     }
 
     ///
+    /// Rewrite the normalized location keys of any row whose keys have drifted from its raw
+    /// columns, at the cost of one full walk of the table per open, since a row keyed at the
+    /// wrong address is invisible to every location lookup.
+    ///
+    func repairDriftedNormalizedLocationKeys() {
+        let database = ncDatabase()
+        let drifted = database
+            .objects(RealmItemMetadata.self)
+            .filter {
+                $0.normalizedFileName != $0.fileName.precomposedStringWithCanonicalMapping
+                    || $0.normalizedServerUrl != $0.serverUrl.precomposedStringWithCanonicalMapping
+            }
+
+        guard !drifted.isEmpty else { return }
+
+        logger.error(
+            "Repairing \(drifted.count) row(s) whose normalized location keys do not match their raw columns."
+        )
+
+        do {
+            try database.write {
+                for item in drifted {
+                    item.updateLocation(serverUrl: item.serverUrl, fileName: item.fileName)
+                }
+            }
+        } catch {
+            logger.error("Failed to repair drifted normalized location keys.", [.error: error])
+        }
+    }
+
+    ///
     /// One-shot startup pass that heals pre-existing logical duplicates
     /// already persisted in the database.
     ///
