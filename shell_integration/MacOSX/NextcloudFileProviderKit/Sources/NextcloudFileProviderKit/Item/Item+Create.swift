@@ -103,6 +103,15 @@ public extension Item {
 
         directory.downloaded = true
         directory.keepDownloaded = parentKeepDownloaded
+        // A folder we just created is, from the framework's point of view, already fully enumerated:
+        // it knows the (empty) listing it created and will not ask for the contents again. So the
+        // refresh subscription a browsed folder gets must be granted here too — `visitedDirectory` is
+        // what puts a directory in the materialised set the working-set scan reads (see
+        // `FilesDatabaseManager.managedMaterialisedItemMetadatas()`); `downloaded` is ignored for
+        // directories there. Without it, a folder created locally is never PROPFINDed by the scan, so
+        // items added to it on the server (web UI, public upload link, another user) never surface —
+        // and no later `enumerateItems` exists to repair that. See nextcloud/desktop#9688, #10681.
+        directory.visitedDirectory = true
         dbManager.addItemMetadata(directory)
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: directory.contentType)
