@@ -4,6 +4,7 @@
  */
 
 import QtQuick
+import QtQuick.Controls.Basic as BasicControls
 import QtQuick.Layouts
 
 import Style
@@ -14,14 +15,22 @@ Item {
 
     property string title: ""
     property var user: null
+    // Opt-in: turns the account area into a control that opens an application menu.
+    property bool accountMenuEnabled: false
+
+    signal accountMenuRequested()
 
     readonly property string avatarSource: user && user.avatar !== ""
         ? user.avatar
         : (Style.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack")
+    readonly property int accountMenuIndicatorWidth: accountMenuEnabled
+        ? Style.smallIconSize + Style.wizardHeaderRowSpacing
+        : 0
     readonly property int maximumAccountTextWidth: Math.max(0,
                                                             Math.round(width * 0.55)
                                                             - Style.wizardHeaderAvatarSize
-                                                            - Style.wizardHeaderRowSpacing)
+                                                            - Style.wizardHeaderRowSpacing
+                                                            - accountMenuIndicatorWidth)
 
     implicitHeight: Math.max(titleLabel.implicitHeight, accountRow.implicitHeight)
 
@@ -40,9 +49,42 @@ Item {
         elide: Text.ElideRight
     }
 
+    BasicControls.Button {
+        id: accountMenuButton
+
+        objectName: "windowAccountHeaderMenuButton"
+        anchors.fill: accountRow
+        anchors.margins: -Style.extraSmallSpacing
+        z: -1
+        visible: root.accountMenuEnabled && accountRow.visible
+        enabled: visible
+        focusPolicy: Qt.StrongFocus
+
+        Accessible.role: Accessible.ButtonMenu
+        Accessible.name: qsTr("Account switcher and settings menu")
+        Accessible.onPressAction: accountMenuButton.clicked()
+
+        onClicked: root.accountMenuRequested()
+
+        background: Rectangle {
+            radius: Style.mediumRoundedButtonRadius
+            color: {
+                if (accountMenuButton.down) {
+                    return Style.wizardSecondaryButtonPressed
+                }
+                return accountMenuButton.hovered ? Style.listItemHoverBackground : "transparent"
+            }
+        }
+
+        HoverHandler {
+            cursorShape: Qt.PointingHandCursor
+        }
+    }
+
     RowLayout {
         id: accountRow
 
+        objectName: "windowAccountHeaderAccountRow"
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         width: implicitWidth
@@ -93,6 +135,20 @@ Item {
                 horizontalAlignment: Text.AlignLeft
                 elide: Text.ElideRight
             }
+        }
+
+        Image {
+            objectName: "windowAccountHeaderCaret"
+            Layout.preferredWidth: visible ? Style.smallIconSize : 0
+            Layout.preferredHeight: Style.smallIconSize
+            visible: root.accountMenuEnabled
+            source: visible
+                ? "image://svgimage-custom-color/caret-down.svg/" + Style.wizardSecondaryText
+                : ""
+            sourceSize.width: Style.smallIconSize
+            sourceSize.height: Style.smallIconSize
+            fillMode: Image.PreserveAspectFit
+            Accessible.ignored: true
         }
     }
 }

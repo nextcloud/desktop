@@ -1025,12 +1025,14 @@ void Systray::slotUpdateSyncPausedState()
         if (!folder->syncPaused()) {
             _syncIsPaused = false;
             Q_EMIT syncIsPausedChanged();
+            Q_EMIT syncControlStateChanged();
             return;
         }
     }
 
     _syncIsPaused = true;
     Q_EMIT syncIsPausedChanged();
+    Q_EMIT syncControlStateChanged();
 }
 
 void Systray::slotUnpauseAllFolders()
@@ -1048,6 +1050,7 @@ void Systray::slotSyncFoldersChanged(const OCC::Folder::Map &folderMap)
     if (const auto currentAnySyncFolders = !folderMap.isEmpty(); currentAnySyncFolders != _anySyncFolders) {
         _anySyncFolders = currentAnySyncFolders;
         Q_EMIT anySyncFoldersChanged();
+        Q_EMIT syncControlStateChanged();
     }
 }
 
@@ -1213,6 +1216,18 @@ Systray::SyncControlState Systray::syncControlState() const
         return SyncControlState::PauseAndResume;
     }
     return anyPaused ? SyncControlState::Resume : SyncControlState::Pause;
+}
+
+bool Systray::canPauseSync() const
+{
+    const auto state = syncControlState();
+    return state == SyncControlState::Pause || state == SyncControlState::PauseAndResume;
+}
+
+bool Systray::canResumeSync() const
+{
+    const auto state = syncControlState();
+    return state == SyncControlState::Resume || state == SyncControlState::PauseAndResume;
 }
 
 /********************************************************************************************/

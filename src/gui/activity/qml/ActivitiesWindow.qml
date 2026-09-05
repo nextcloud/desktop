@@ -31,7 +31,16 @@ WizardStyledWindow {
 
     Shortcut {
         sequences: [StandardKey.Cancel]
+        // Let the application menu handle the key while it is open.
+        enabled: !applicationMenu.opened
         onActivated: root.close()
+    }
+
+    ActivitiesWindowMenu {
+        id: applicationMenu
+
+        anchorItem: accountHeader
+        onCloseWindowRequested: root.close()
     }
 
     Component.onCompleted: resetActivityList()
@@ -51,9 +60,13 @@ WizardStyledWindow {
         spacing: Style.wizardSectionSpacing
 
         WindowAccountHeader {
+            id: accountHeader
+
             Layout.fillWidth: true
             title: root.headline
             user: root.account
+            accountMenuEnabled: true
+            onAccountMenuRequested: applicationMenu.toggleUnder(accountHeader)
         }
 
         Rectangle {

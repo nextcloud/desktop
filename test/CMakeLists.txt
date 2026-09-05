@@ -109,6 +109,7 @@ nextcloud_add_test(SetUserStatusDialog)
 nextcloud_add_test(TrayAccountMenuPolicy)
 nextcloud_add_test(TrayActivationPolicy)
 nextcloud_add_test(TrayAccountPopupPresentation)
+nextcloud_add_test(SystraySyncControl)
 if(NOT APPLE)
     nextcloud_add_test(SystraySyncControlQt)
 endif()
@@ -135,6 +136,20 @@ add_test(NAME SearchQmlTest
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 set_tests_properties(SearchQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+add_executable(ActivitiesMenuQmlTest qml/activitiesmenu/activitiesmenuqmltestrunner.cpp)
+target_link_libraries(ActivitiesMenuQmlTest PRIVATE nextcloudCore Qt::QuickTest)
+target_compile_definitions(ActivitiesMenuQmlTest PRIVATE
+    ACTIVITIES_MENU_QML_TEST_IMPORT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/qml/activitiesmenu/imports"
+)
+set_target_properties(ActivitiesMenuQmlTest PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
+    FOLDER Tests
+)
+add_test(NAME ActivitiesMenuQmlTest
+    COMMAND ActivitiesMenuQmlTest -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/activitiesmenu/testactivitiesmenu.qml"
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+set_tests_properties(ActivitiesMenuQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(TalkReply)
 nextcloud_add_test(LockFile)
 nextcloud_add_test(ShareModel)

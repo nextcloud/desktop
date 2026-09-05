@@ -67,6 +67,8 @@ class Systray : public QSystemTrayIcon
     Q_PROPERTY(bool useNormalWindow READ useNormalWindow CONSTANT)
     Q_PROPERTY(bool syncIsPaused READ syncIsPaused WRITE setSyncIsPaused NOTIFY syncIsPausedChanged)
     Q_PROPERTY(bool anySyncFolders READ anySyncFolders NOTIFY anySyncFoldersChanged)
+    Q_PROPERTY(bool canPauseSync READ canPauseSync NOTIFY syncControlStateChanged)
+    Q_PROPERTY(bool canResumeSync READ canResumeSync NOTIFY syncControlStateChanged)
     Q_PROPERTY(bool isOpen READ isOpen WRITE setIsOpen NOTIFY isOpenChanged)
     Q_PROPERTY(bool enableAddAccount READ enableAddAccount CONSTANT)
 
@@ -102,6 +104,10 @@ public:
     [[nodiscard]] bool anySyncFolders() const;
     /** @brief Returns the actions that the global tray synchronization control should offer. */
     [[nodiscard]] SyncControlState syncControlState() const;
+    /** @brief Returns whether the global synchronization control offers pausing all folders. */
+    [[nodiscard]] bool canPauseSync() const;
+    /** @brief Returns whether the global synchronization control offers resuming all folders. */
+    [[nodiscard]] bool canResumeSync() const;
     [[nodiscard]] bool isOpen() const;
     [[nodiscard]] bool isActivitySurfaceVisible() const;
     void setTrayContextMenuVisible(const bool visible);
@@ -127,6 +133,7 @@ Q_SIGNALS:
 
     void syncIsPausedChanged();
     void anySyncFoldersChanged();
+    void syncControlStateChanged();
     void isOpenChanged();
 
     void hideSettingsDialog();

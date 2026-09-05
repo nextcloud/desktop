@@ -152,6 +152,7 @@ QtObject {
     readonly property int accountWizardSyncOptionsHeight: 520
     readonly property int activitiesWindowWidth: 680
     readonly property int activitiesWindowHeight: 700
+    readonly property int activitiesWindowMenuWidth: 320
     readonly property int assistantWindowWidth: 640
     readonly property int assistantWindowHeight: 620
     readonly property int searchWindowWidth: 640
