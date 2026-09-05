@@ -1630,10 +1630,9 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
-        // `nil`, not 0: the database holds no children for this folder, and that is indistinguishable
-        // from nobody having read it. Reporting 0 would assert the folder is empty, which is what
-        // stopped the framework asking for its contents at all.
-        XCTAssertNil(storedFolderItem.childItemCount)
+        // 0, not nil: the enumeration above read this folder, so the empty result is knowledge.
+        let childItemCount = storedFolderItem.childItemCount as? Int
+        XCTAssertEqual(childItemCount, remoteFolder.children.count)
     }
 
     func testFolderWithFewItemsPaginatedEnumeration() async throws {
