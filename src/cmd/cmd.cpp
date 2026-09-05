@@ -23,6 +23,7 @@
 #include "accountsetupcommandlinemanager.h"
 #include "folderman.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
+#include "settings/migration.h"
 #ifdef TOKEN_AUTH_ONLY
 # include "creds/tokencredentials.h"
 #else
@@ -372,13 +373,12 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
     auto result = false;
 
     auto folderManager = FolderMan::instance();
-    ConfigFile configFile;
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
+    Migration::setPhase(Migration::Phase::SetupUsers);
     if (!setupAccountsOnly()) {
         return result;
     }
 
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupFolders);
+    Migration::setPhase(Migration::Phase::SetupFolders);
     const auto foldersListSize = folderManager->setupFolders();
     folderManager->setSyncEnabled(true);
 

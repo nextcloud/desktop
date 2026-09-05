@@ -33,6 +33,7 @@
 #include "common/vfs.h"
 
 #include "config.h"
+#include "settings/migration.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
@@ -143,21 +144,19 @@ namespace {
 bool Application::configVersionMigration()
 {
     ConfigFile configFile;
-    const auto shouldTryToMigrate = configFile.shouldTryToMigrate();
+    const auto shouldTryToMigrate = Migration::shouldTryToMigrate();
     if (!shouldTryToMigrate) {
         qCInfo(lcApplication) << "This is not an upgrade/downgrade/migration. Proceed to read current application config file.";
-        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
+        Migration::setPhase(Migration::Phase::Done);
         return false;
     }
 
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupConfigFile);
+    Migration::setPhase(Migration::Phase::SetupConfigFile);
     QStringList deleteKeys, ignoreKeys;
     AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
     FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
-    configFile.setClientPreviousVersionString(configFile.clientVersionString());
-
-    qCDebug(lcApplication) << "Migration is in progress:"  << configFile.isMigrationInProgress();
-    const auto versionChanged = configFile.hasVersionChanged();
+    qCDebug(lcApplication) << "Migration is in progress:"  << Migration::isInProgress();
+    const auto versionChanged = Migration::versionChanged();
     if (versionChanged) {
         qCInfo(lcApplication) << "Version changed. Removing updater settings from config.";
         configFile.cleanUpdaterConfiguration();
@@ -167,29 +166,8 @@ bool Application::configVersionMigration()
         return true;
     }
 
-    // 'Launch on system startup' defaults to true > 3.11.x
-    const auto theme = Theme::instance();
-    configFile.setLaunchOnSystemStartup(configFile.launchOnSystemStartup());
-    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), configFile.launchOnSystemStartup());
-
-    // default is now off to displaying dialog warning user of too many files deletion
-    configFile.setPromptDeleteFiles(false);
-
-    // back up all old config files
-    QStringList backupFilesList;
-    QDir configDir(configFile.configPath());
-    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
-    for (const auto &oldConfig : anyConfigFileNameList) {
-        const auto oldConfigFileName = oldConfig.fileName();
-        const auto oldConfigFilePath = oldConfig.filePath();
-        const auto newConfigFileName = configFile.configFile();
-        backupFilesList.append(configFile.backup(oldConfigFileName));
-        if (oldConfigFilePath != newConfigFileName) {
-            if (!QFile::rename(oldConfigFilePath, newConfigFileName)) {
-                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
-            }
-        }
-    }
+    configFile.applyMigrationDefaults();
+    const auto backupFilesList = configFile.backupConfigFiles();
 
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
@@ -203,7 +181,7 @@ bool Application::configVersionMigration()
                "Continuing will mean <b>%2 these settings</b>.<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%3</i>.")
-                .arg((configFile.isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
+                .arg((Migration::configVersion() > Migration::currentVersion() ? tr("newer", "newer software version") : tr("older", "older software version")),
                      deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
                      backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
@@ -672,18 +650,17 @@ void Application::setupAccountsAndFolders()
 {
     _folderManager = FolderMan::instance();
     ConfigFile configFile;
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
+    Migration::setPhase(Migration::Phase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();
     if (accountsRestoreResult == AccountManager::AccountsNotFound || accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
         qCWarning(lcApplication) << "Migration result: " << accountsRestoreResult;
         qCDebug(lcApplication) << "is migration disabled?" << DISABLE_ACCOUNT_MIGRATION;
         qCWarning(lcApplication) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
-        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
-
+        Migration::setPhase(Migration::Phase::Done);
         return;
     }
 
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupFolders);
+    Migration::setPhase(Migration::Phase::SetupFolders);
     const auto foldersListSize = FolderMan::instance()->setupFolders();
     FolderMan::instance()->setSyncEnabled(true);
 
@@ -698,9 +675,9 @@ void Application::setupAccountsAndFolders()
     const auto accounts = AccountManager::instance()->accounts();
     const auto accountsListSize = accounts.size();
     if (accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
+        && accountsListSize > 0
         && Theme::instance()->displayLegacyImportDialog()
-        && !AccountManager::instance()->forceLegacyImport()
-        && accountsListSize > 0) {
+        && !AccountManager::instance()->forceLegacyImport()) {
         const auto accountsRestoreMessage = accountsListSize > 1
             ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
             : tr("1 account");

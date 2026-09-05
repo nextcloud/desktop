@@ -14,6 +14,10 @@
 #include "theme.h"
 #include "updatechannel.h"
 #include "version.h"
+#include "settings/migration.h"
+#include "settings/managedsettings.h"
+#include "settings/managedsettingsschema.h"
+#include "settings/settingsources.h"
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
@@ -91,8 +95,6 @@ namespace chrono = std::chrono;
 Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
 QString ConfigFile::_confDir = {};
-QString ConfigFile::_discoveredLegacyConfigPath = {};
-ConfigFile::MigrationPhase ConfigFile::_migrationPhase = ConfigFile::MigrationPhase::NotStarted;
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
     chrono::milliseconds defaultValue)
@@ -330,7 +332,7 @@ void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &defaultValue) const
 {
     if (Utility::isWindows()) {
-        const auto appName = isUnbrandedToBrandedMigrationInProgress() ? unbrandedAppName : Theme::instance()->appNameGUI();
+        const auto appName = Migration::isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
         // check for policies first and return immediately if a value is found.
         QSettings userPolicy(QString::fromLatin1(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)").arg(APPLICATION_VENDOR, appName),
             QSettings::NativeFormat);
@@ -384,7 +386,9 @@ QString ConfigFile::excludeFile(Scope scope) const
         return ConfigFile::excludeFileFromSystem();
     }
 
-    const auto excludeFilePath = scope == LegacyScope ? discoveredLegacyConfigPath() : configPath();
+    const auto excludeFilePath = scope == LegacyScope
+        ? Migration::discoveredLegacyConfigPath()
+        : configPath();
 
     // prefer sync-exclude.lst, but if it does not exist, check for exclude.lst
     QFileInfo exclFileInfo(excludeFilePath, syncExclFile);
@@ -654,12 +658,7 @@ chrono::milliseconds ConfigFile::updateCheckInterval(const QString &connectionGr
 
 bool ConfigFile::skipUpdateCheck(const QString &connectionGroupName) const
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QVariant fallback = getValue(QLatin1String(skipUpdateCheckC), groupName, false);
-    fallback = getValue(QLatin1String(skipUpdateCheckC), QString(), fallback);
-
-    QVariant value = getPolicySetting(QLatin1String(skipUpdateCheckC), fallback);
-    return value.toBool();
+    return resolveManagedBool(QLatin1String(skipUpdateCheckC), connectionGroupName, false);
 }
 
 void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connectionGroupName)
@@ -674,12 +673,21 @@ void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connectionGroupNam
 
 bool ConfigFile::autoUpdateCheck(const QString &connectionGroupName) const
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QVariant fallback = getValue(QLatin1String(autoUpdateCheckC), groupName, true);
-    fallback = getValue(QLatin1String(autoUpdateCheckC), QString(), fallback);
+    return resolveManagedBool(QLatin1String(autoUpdateCheckC), connectionGroupName, true);
+}
 
-    QVariant value = getPolicySetting(QLatin1String(autoUpdateCheckC), fallback);
-    return value.toBool();
+bool ConfigFile::resolveManagedBool(const QString &key, const QString &connectionGroupName, bool builtinDefault) const
+{
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
+    const auto spec = ManagedSettingsSchema::find(key).value_or(SettingSpec{key, builtinDefault, true, SettingScope::User});
+
+    ManagedSettings resolver;
+    for (auto &deviceSource : buildDeviceSources()) {
+        resolver.addSource(std::move(deviceSource));
+    }
+    resolver.addSource(std::make_unique<UserConfigSource>(configFile(), groupName));
+
+    return resolver.resolve(spec).value.toBool();
 }
 
 void ConfigFile::setAutoUpdateCheck(bool autoCheck, const QString &connectionGroupName)
@@ -888,7 +896,7 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
     const QVariant &defaultValue) const
 {
     QVariant systemSetting;
-    const auto appName = isUnbrandedToBrandedMigrationInProgress() ? unbrandedAppName : Theme::instance()->appNameGUI();
+    const auto appName = Migration::isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
     if (Utility::isMac()) {
         QSettings systemSettings(QLatin1String("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"), QSettings::NativeFormat);
         if (!group.isEmpty()) {
@@ -1364,20 +1372,6 @@ void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
     excludedFiles.addExcludeFilePath(userList);
 }
 
-QString ConfigFile::discoveredLegacyConfigPath()
-{
-    return _discoveredLegacyConfigPath;
-}
-
-void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath)
-{
-    if (_discoveredLegacyConfigPath == discoveredLegacyConfigPath) {
-        return;
-    }
-
-    _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
-}
-
 void ConfigFile::removeFileProviderDomainMapping()
 {
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -1417,60 +1411,30 @@ void ConfigFile::setMacFileProviderModeEnabled(const bool enabled)
     settings.sync();
 }
 
-bool ConfigFile::isUpgrade() const
+void ConfigFile::applyMigrationDefaults()
 {
-    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
-    const auto previousVersion = QVersionNumber::fromString(clientPreviousVersionString());
-    return currentVersion > previousVersion;
+    const auto theme = Theme::instance();
+    setLaunchOnSystemStartup(launchOnSystemStartup());
+    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), launchOnSystemStartup());
+    setPromptDeleteFiles(false);
 }
 
-bool ConfigFile::isDowngrade() const
+QStringList ConfigFile::backupConfigFiles()
 {
-    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
-    const auto previousVersion = QVersionNumber::fromString(clientPreviousVersionString());
-    return previousVersion > currentVersion;
-}
-
-bool ConfigFile::shouldTryUnbrandedToBrandedMigration() const
-{
-    return migrationPhase() == ConfigFile::MigrationPhase::SetupFolders
-        && Theme::instance()->appName() != unbrandedAppName
-        && !discoveredLegacyConfigPath().isEmpty();
-}
-
-bool ConfigFile::isUnbrandedToBrandedMigrationInProgress() const
-{
-    return isMigrationInProgress() && Theme::instance()->appName() != unbrandedAppName;
-}
-
-bool ConfigFile::shouldTryToMigrate() const
-{
-    return hasVersionChanged() && (isUpgrade() || isDowngrade());
-}
-
-bool ConfigFile::hasVersionChanged() const
-{
-    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING); //app running
-    const auto clientConfigVersion = QVersionNumber::fromString(clientVersionString()); //config version
-    return clientConfigVersion != currentVersion;
-}
-
-bool ConfigFile::isMigrationInProgress() const
-{
-    return _migrationPhase != MigrationPhase::NotStarted && _migrationPhase != MigrationPhase::Done;
-}
-
-void ConfigFile::setMigrationPhase(const MigrationPhase phase)
-{
-    // do not rollback
-    if (phase > _migrationPhase) {
-        _migrationPhase = phase;
+    QStringList backupFilesList;
+    QDir configDir(configPath());
+    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
+    for (const auto &oldConfig : anyConfigFileNameList) {
+        const auto oldConfigFileName = oldConfig.fileName();
+        const auto oldConfigFilePath = oldConfig.filePath();
+        const auto newConfigFileName = configFile();
+        backupFilesList.append(backup(oldConfigFileName));
+        if (oldConfigFilePath != newConfigFileName && !QFile::rename(oldConfigFilePath, newConfigFileName)) {
+            qCWarning(lcConfigFile) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
+        }
     }
-}
 
-ConfigFile::MigrationPhase ConfigFile::migrationPhase() const
-{
-    return _migrationPhase;
+    return backupFilesList;
 }
 
 }
