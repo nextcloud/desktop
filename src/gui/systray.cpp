@@ -212,6 +212,7 @@ void Systray::showTrayPopup(WindowPosition position)
     }
 
 #ifdef Q_OS_MACOS
+    Q_UNUSED(position)
     if (showMacOSTrayPopup(geometry())) {
         setIsOpen(true);
         UserModel::instance()->fetchCurrentActivityModel();

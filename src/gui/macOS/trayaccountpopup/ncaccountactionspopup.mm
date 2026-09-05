@@ -207,7 +207,7 @@ static NSView *compactAccountActionsSeparator()
     }
     auto screen = self.screen;
     if (!screen) {
-        screen = NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+        screen = OCC::Mac::TrayPopupViewUtils::mainOrFirstScreen();
     }
     if (screen) {
         frame.origin = clampedPopupOrigin(frame.origin, frame.size, screen.visibleFrame);
