@@ -217,12 +217,23 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         return formatter.personNameComponents(from: metadata.ownerDisplayName)
     }
 
+    ///
+    /// The number of items directly inside this container, or `nil` when the directory has not been
+    /// enumerated and its contents are therefore unknown.
+    ///
     public var childItemCount: NSNumber? {
-        if metadata.directory {
-            NSNumber(integerLiteral: dbManager.childItemCount(directoryMetadata: metadata))
-        } else {
-            nil
-        }
+        guard metadata.directory else { return nil }
+
+        // No rows is not evidence of an empty directory, only of one nothing has read yet, and
+        // there is no flag that reliably says which: `visitedDirectory` is still false after a
+        // paginated enumeration, which is the path every server from Nextcloud 31 takes. So the
+        // only honest answer for an empty local set is "unknown".
+        //
+        // The cost is one enumeration of a genuinely empty folder, which is what the framework
+        // would do anyway on first browse. The cost of the alternative was the folder never being
+        // enumerated at all.
+        let known = dbManager.childItemCount(directoryMetadata: metadata)
+        return known > 0 ? NSNumber(integerLiteral: known) : nil
     }
 
     public var fileSystemFlags: NSFileProviderFileSystemFlags {
