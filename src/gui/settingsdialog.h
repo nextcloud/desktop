@@ -24,6 +24,7 @@ namespace OCC {
 
 class AccountState;
 class AccountSettings;
+class AdvancedSettings;
 class Application;
 class FolderMan;
 class ownCloudGui;
@@ -66,6 +67,7 @@ protected:
 private Q_SLOTS:
     void accountAdded(OCC::AccountState *);
     void accountRemoved(OCC::AccountState *);
+    void openGlobalIgnoreListEditor();
 
 private:
     void customizeStyle();
@@ -92,6 +94,8 @@ private:
     bool _styleUpdatePending = false;
     bool _updatingStyle = false;
     OCC::AccountState *_initialAccount = nullptr;
+
+    AdvancedSettings *_advancedSettings = nullptr;
 
     void setupUi();
 };
