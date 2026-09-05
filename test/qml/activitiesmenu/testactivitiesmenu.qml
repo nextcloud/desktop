@@ -278,6 +278,21 @@ Item {
             verify(findChild(header, "windowAccountHeaderCaret").visible)
         }
 
+        function test_shortAccountTextIsNotElided()
+        {
+            const header = createTemporaryObject(accountHeaderComponent, testRoot)
+            verify(header)
+
+            const accountRow = findChild(header, "windowAccountHeaderAccountRow")
+            verify(accountRow.width < header.width * 0.55)
+
+            // A name and server that comfortably fit must not be truncated.
+            const server = findChild(header, "windowAccountHeaderServerLabel")
+            const name = findChild(header, "windowAccountHeaderNameLabel")
+            verify(!name.truncated)
+            verify(!server.truncated)
+        }
+
         function test_accountAreaIsInertWhenTheMenuIsDisabled()
         {
             const header = createTemporaryObject(inertAccountHeaderComponent, testRoot)

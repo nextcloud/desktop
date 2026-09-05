@@ -106,15 +106,18 @@ Item {
         }
 
         ColumnLayout {
+            // Round up so that a fractional implicit width does not elide text that fits.
             Layout.preferredWidth: Math.min(root.maximumAccountTextWidth,
-                                            Math.max(accountNameLabel.implicitWidth,
-                                                     accountServerLabel.implicitWidth))
+                                            Math.ceil(Math.max(accountNameLabel.implicitWidth,
+                                                               accountServerLabel.implicitWidth)))
             Layout.maximumWidth: root.maximumAccountTextWidth
             Layout.minimumWidth: 0
             spacing: Style.wizardHeaderLabelSpacing
 
             EnforcedPlainTextLabel {
                 id: accountNameLabel
+
+                objectName: "windowAccountHeaderNameLabel"
 
                 Layout.fillWidth: true
                 text: root.user ? root.user.name : ""
@@ -127,6 +130,8 @@ Item {
 
             EnforcedPlainTextLabel {
                 id: accountServerLabel
+
+                objectName: "windowAccountHeaderServerLabel"
 
                 Layout.fillWidth: true
                 text: root.user ? root.user.server : ""
