@@ -2209,7 +2209,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1781"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1783"/>
         <source>Error writing metadata to the database</source>
         <translation>Fel vid skrivning av metadata till databasen</translation>
     </message>
@@ -4821,25 +4821,25 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1531"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1537"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1572"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1568"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1574"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Mappen %1 kan inte göras skrivskyddad: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>unknown exception</source>
         <translation>okänt fel</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1587"/>
         <source>Error updating metadata: %1</source>
         <translation>Ett fel uppstod när metadata skulle uppdateras: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1589"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1591"/>
         <source>File is currently in use</source>
         <translation>Filen används</translation>
     </message>
@@ -6125,12 +6125,12 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="130"/>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="156"/>
         <source>People search is unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>Personsökning är inte tillgänglig.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="192"/>
         <source>Could not load people. Try again.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att läsa in personer. Försök igen.</translation>
     </message>
 </context>
 <context>
@@ -6140,89 +6140,89 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="242"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="537"/>
         <source>Search is unavailable while this account is offline.</source>
-        <translation type="unfinished"/>
+        <translation>Sökning är inte tillgänglig när kontot är frånkopplat.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="533"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="580"/>
         <source>Failed to fetch search providers.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att hämta sökleverantörer.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="653"/>
         <source>No search providers are available.</source>
-        <translation type="unfinished"/>
+        <translation>Det finns inga tillgängliga sökleverantörer.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="687"/>
         <source>Search cleared</source>
-        <translation type="unfinished"/>
+        <translation>Sökningen rensades</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="727"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1230"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Söker</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="949"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>Delvisa träffar</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1218"/>
         <source>Search failed for all available sources. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Sökningen misslyckades i alla tillgängliga källor. Försök igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1240"/>
         <source>%1 results in %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 resultat i %2</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1242"/>
         <source>No matching results</source>
-        <translation type="unfinished"/>
+        <translation>Inga matchande resultat</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1244"/>
         <source>%1 results. Some sources are unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 resultat. Vissa källor är inte tillgängliga.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1246"/>
         <source>%1 results</source>
-        <translation type="unfinished"/>
+        <translation>%1 resultat</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1420"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>I dag</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1423"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>Senaste 7 dagarna</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1426"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>Senaste 30 dagarna</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>I år</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1434"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>Förra året</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1454"/>
         <source>%1 – %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 – %2</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
@@ -7130,33 +7130,33 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="158"/>
         <source>Remove %1 filter</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort filtret %1</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="182"/>
         <location filename="../src/gui/search/SearchWindow.qml" line="251"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Försök igen</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="215"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>Sökresultat</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="250"/>
         <source>Some sources unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Vissa källor är inte tillgängliga</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
         <source>Less from connected services</source>
-        <translation type="unfinished"/>
+        <translation>Mindre från anslutna tjänster</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
         <source>More from connected services</source>
-        <translation type="unfinished"/>
+        <translation>Mer från anslutna tjänster</translation>
     </message>
 </context>
 <context>
@@ -7514,38 +7514,38 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="22"/>
         <source>Custom date range</source>
-        <translation type="unfinished"/>
+        <translation>Anpassat datumintervall</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="40"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Tillämpa</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="52"/>
         <source>Start date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>Startdatum (ÅÅÅÅ-MM-DD)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="59"/>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="70"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>ÅÅÅÅ-MM-DD</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="63"/>
         <source>End date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>Slutdatum (ÅÅÅÅ-MM-DD)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="75"/>
         <source>Enter valid dates with the start date before the end date.</source>
-        <translation type="unfinished"/>
+        <translation>Ange giltiga datum där startdatumet är före slutdatumet.</translation>
     </message>
 </context>
 <context>
@@ -7553,12 +7553,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="28"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Tillbaka</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
         <source>Back to all search results</source>
-        <translation type="unfinished"/>
+        <translation>Tillbaka till alla sökresultat</translation>
     </message>
 </context>
 <context>
@@ -7566,77 +7566,77 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="50"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="57"/>
         <source>Filter by type</source>
-        <translation type="unfinished"/>
+        <translation>Filtrera efter typ</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Datum</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
         <source>Filter by date</source>
-        <translation type="unfinished"/>
+        <translation>Filtrera efter datum</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>
         <source>No search source supports date filtering</source>
-        <translation type="unfinished"/>
+        <translation>Ingen sökkälla har stöd för datumfiltrering</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="121"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>I dag</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="125"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>Senaste 7 dagarna</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="129"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>Senaste 30 dagarna</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="133"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>I år</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="137"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>Förra året</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="142"/>
         <source>Custom range …</source>
-        <translation type="unfinished"/>
+        <translation>Anpassat intervall …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="146"/>
         <source>Clear date</source>
-        <translation type="unfinished"/>
+        <translation>Rensa datum</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="157"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <translation>Personer</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="165"/>
         <source>Filter by person</source>
-        <translation type="unfinished"/>
+        <translation>Filtrera efter person</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="166"/>
         <source>No search source supports people filtering</source>
-        <translation type="unfinished"/>
+        <translation>Ingen sökkälla har stöd för personfiltrering</translation>
     </message>
 </context>
 <context>
@@ -7649,12 +7649,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
         <source>Clear search</source>
-        <translation type="unfinished"/>
+        <translation>Rensa sökning</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
         <source>Keeps the active filters</source>
-        <translation type="unfinished"/>
+        <translation>Behåller de aktiva filtren</translation>
     </message>
 </context>
 <context>
@@ -7662,12 +7662,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation type="unfinished"/>
+        <translation>Sök personer</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Försök igen</translation>
     </message>
 </context>
 <context>
@@ -7683,27 +7683,27 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="83"/>
         <source>More from %1  →</source>
-        <translation type="unfinished"/>
+        <translation>Mer från %1  →</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="130"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>Delvisa träffar</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="193"/>
         <source>Loading more results …</source>
-        <translation type="unfinished"/>
+        <translation>Läser in fler resultat …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
         <source>Retry loading more results</source>
-        <translation type="unfinished"/>
+        <translation>Försök läsa in fler resultat igen</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Läs in fler resultat</translation>
     </message>
 </context>
 <context>

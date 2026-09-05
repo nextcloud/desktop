@@ -2206,7 +2206,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1781"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1783"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir metadatos a la base de datos</translation>
     </message>
@@ -4797,25 +4797,25 @@ Tenga en cuenta que usar la línea de comandos para el registro anulará esta co
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1531"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1537"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1572"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1568"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1574"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>La carpeta %1 no se puede hacer de sólo lectura: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>unknown exception</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1587"/>
         <source>Error updating metadata: %1</source>
         <translation>Error al actualizar los metadatos: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1589"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1591"/>
         <source>File is currently in use</source>
         <translation>El archivo se encuentra en uso</translation>
     </message>

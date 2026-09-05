@@ -2209,7 +2209,7 @@ gagnageymslur: </translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1781"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1783"/>
         <source>Error writing metadata to the database</source>
         <translation>Villa við ritun lýsigagna í gagnagrunninn</translation>
     </message>
@@ -4796,25 +4796,25 @@ niðurhals. Uppsetta útgáfan er %3.&lt;/p&gt;</translation>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1531"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1537"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1572"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1568"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1574"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>unknown exception</source>
         <translation>óþekkt frávik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1587"/>
         <source>Error updating metadata: %1</source>
         <translation>Villa við að uppfæra lýsigögn: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1589"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1591"/>
         <source>File is currently in use</source>
         <translation>Skráin  er núna í notkun</translation>
     </message>

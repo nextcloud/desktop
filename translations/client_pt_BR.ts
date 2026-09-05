@@ -2209,7 +2209,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1781"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1783"/>
         <source>Error writing metadata to the database</source>
         <translation>Ocorreu um erro ao escrever metadados no banco de dados</translation>
     </message>
@@ -4820,25 +4820,25 @@ Observe que o uso de qualquer opção de logs na linha de comandos substituirá 
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1531"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1537"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1572"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1568"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1574"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>A pasta %1 não pode ser tornada somente leitura: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>unknown exception</source>
         <translation>exceção desconhecida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1587"/>
         <source>Error updating metadata: %1</source>
         <translation>Erro ao atualizar metadados: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1589"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1591"/>
         <source>File is currently in use</source>
         <translation>O arquivo está em uso no momento</translation>
     </message>
@@ -6124,12 +6124,12 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="130"/>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="156"/>
         <source>People search is unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>A pesquisa de pessoas não está disponível.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="192"/>
         <source>Could not load people. Try again.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível carregar pessoas. Tente novamente.</translation>
     </message>
 </context>
 <context>
@@ -6139,89 +6139,89 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="242"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="537"/>
         <source>Search is unavailable while this account is offline.</source>
-        <translation type="unfinished"/>
+        <translation>A função de pesquisa não está disponível enquanto esta conta estiver off-line.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="533"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="580"/>
         <source>Failed to fetch search providers.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível buscar os provedores de pesquisa.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="653"/>
         <source>No search providers are available.</source>
-        <translation type="unfinished"/>
+        <translation>Não há provedores de busca disponíveis.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="687"/>
         <source>Search cleared</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisa apagada</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="727"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1230"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisando</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="949"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>Correspondências parciais</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1218"/>
         <source>Search failed for all available sources. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>A pesquisa falhou em todas as fontes disponíveis. Tente novamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1240"/>
         <source>%1 results in %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 resultados em %2</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1242"/>
         <source>No matching results</source>
-        <translation type="unfinished"/>
+        <translation>Nenhum resultado encontrado</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1244"/>
         <source>%1 results. Some sources are unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 resultados. Algumas fontes estão indisponíveis.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1246"/>
         <source>%1 results</source>
-        <translation type="unfinished"/>
+        <translation>%1 resultados</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1420"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Hoje</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1423"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>Últimos 7 dias</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1426"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>Últimos 30 dias</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>Este ano</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1434"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>Ano passado</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1454"/>
         <source>%1 – %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 – %2</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
@@ -7129,33 +7129,33 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="158"/>
         <source>Remove %1 filter</source>
-        <translation type="unfinished"/>
+        <translation>Remover filtro %1</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="182"/>
         <location filename="../src/gui/search/SearchWindow.qml" line="251"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Tentar novamente</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="215"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>Resultados de pesquisa</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="250"/>
         <source>Some sources unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Algumas fontes estão indisponíveis</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
         <source>Less from connected services</source>
-        <translation type="unfinished"/>
+        <translation>Menos dos serviços conectados</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
         <source>More from connected services</source>
-        <translation type="unfinished"/>
+        <translation>Mais dos serviços conectados</translation>
     </message>
 </context>
 <context>
@@ -7513,38 +7513,38 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="22"/>
         <source>Custom date range</source>
-        <translation type="unfinished"/>
+        <translation>Intervalo de datas personalizado</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="40"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="52"/>
         <source>Start date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>Data de início (AAAA-MM-DD)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="59"/>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="70"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>AAAA-MM-DD</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="63"/>
         <source>End date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>Data de término (AAAA-MM-DD)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="75"/>
         <source>Enter valid dates with the start date before the end date.</source>
-        <translation type="unfinished"/>
+        <translation>Insira datas válidas, sendo que a data de início deve ser anterior à data de término.</translation>
     </message>
 </context>
 <context>
@@ -7552,12 +7552,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="28"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Voltar</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
         <source>Back to all search results</source>
-        <translation type="unfinished"/>
+        <translation>Voltar a todos os resultados da pesquisa</translation>
     </message>
 </context>
 <context>
@@ -7565,77 +7565,77 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="50"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="57"/>
         <source>Filter by type</source>
-        <translation type="unfinished"/>
+        <translation>Filtrar por tipo</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
         <source>Filter by date</source>
-        <translation type="unfinished"/>
+        <translation>Filtrar por data</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>
         <source>No search source supports date filtering</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma fonte de pesquisa oferece filtragem por data</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="121"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Hoje</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="125"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>Últimos 7 dias</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="129"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>Últimos 30 dias</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="133"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>Este ano</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="137"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>Ano passado</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="142"/>
         <source>Custom range …</source>
-        <translation type="unfinished"/>
+        <translation>Intervalo personalizado …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="146"/>
         <source>Clear date</source>
-        <translation type="unfinished"/>
+        <translation>Limpar data</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="157"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <translation>Pessoas</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="165"/>
         <source>Filter by person</source>
-        <translation type="unfinished"/>
+        <translation>Filtrar por pessoa</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="166"/>
         <source>No search source supports people filtering</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma fonte de pesquisa oferece filtragem por pessoa</translation>
     </message>
 </context>
 <context>
@@ -7648,12 +7648,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
         <source>Clear search</source>
-        <translation type="unfinished"/>
+        <translation>Limpar pesquisa</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
         <source>Keeps the active filters</source>
-        <translation type="unfinished"/>
+        <translation>Mantém os filtros ativos</translation>
     </message>
 </context>
 <context>
@@ -7661,12 +7661,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisar pessoas</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Tentar novamente</translation>
     </message>
 </context>
 <context>
@@ -7682,27 +7682,27 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="83"/>
         <source>More from %1  →</source>
-        <translation type="unfinished"/>
+        <translation>Mais de %1  →</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="130"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>Correspondências parciais</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="193"/>
         <source>Loading more results …</source>
-        <translation type="unfinished"/>
+        <translation>Carregando mais resultados …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
         <source>Retry loading more results</source>
-        <translation type="unfinished"/>
+        <translation>Tentar novamente carregar mais resultados</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Carregar mais resultados</translation>
     </message>
 </context>
 <context>
