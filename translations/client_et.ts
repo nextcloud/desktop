@@ -6123,12 +6123,12 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="130"/>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="156"/>
         <source>People search is unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>Inimeste otsing pole saadaval.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="192"/>
         <source>Could not load people. Try again.</source>
-        <translation type="unfinished"/>
+        <translation>Inimeste laadimine ei õnnestunud. Proovi uuesti.</translation>
     </message>
 </context>
 <context>
@@ -6138,89 +6138,89 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="242"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="537"/>
         <source>Search is unavailable while this account is offline.</source>
-        <translation type="unfinished"/>
+        <translation>Kui sellel kasutajakontol pole toimivat võrguühendust, siis otsing pole saadaval.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="533"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="580"/>
         <source>Failed to fetch search providers.</source>
-        <translation type="unfinished"/>
+        <translation>Otsinguteenuste pakkujate laadimine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="653"/>
         <source>No search providers are available.</source>
-        <translation type="unfinished"/>
+        <translation>Ühtegi otsinguteenuste pakkujat pole saadaval.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="687"/>
         <source>Search cleared</source>
-        <translation type="unfinished"/>
+        <translation>Otsing on tühjendatud</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="727"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1230"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Otsin</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="949"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>Osalised vasted</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1218"/>
         <source>Search failed for all available sources. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Ostmine kõikidest allikatest ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1240"/>
         <source>%1 results in %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 tulemust, aega kulus %2</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1242"/>
         <source>No matching results</source>
-        <translation type="unfinished"/>
+        <translation>Otsinguvastuseid ei leidu</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1244"/>
         <source>%1 results. Some sources are unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 vastust. Mõned otsinguallikad polnud saadaval.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1246"/>
         <source>%1 results</source>
-        <translation type="unfinished"/>
+        <translation>%1 tulemust</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1420"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Täna</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1423"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>Viimase 7 päeva jooksul</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1426"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>Viimase 30 päeva jooksul</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>Sel aastal</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1434"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>Eelmisel aastal</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1454"/>
         <source>%1 – %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
@@ -7128,33 +7128,33 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="158"/>
         <source>Remove %1 filter</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda filter: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="182"/>
         <location filename="../src/gui/search/SearchWindow.qml" line="251"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Proovi uuesti</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="215"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>Otsingutulemused</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="250"/>
         <source>Some sources unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Mõned otsinguallikad pole saadaval</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
         <source>Less from connected services</source>
-        <translation type="unfinished"/>
+        <translation>Vähem vastuseid ühendatud teenustest</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
         <source>More from connected services</source>
-        <translation type="unfinished"/>
+        <translation>Rohkem vastuseid ühendatud teenustest</translation>
     </message>
 </context>
 <context>
@@ -7512,38 +7512,38 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="22"/>
         <source>Custom date range</source>
-        <translation type="unfinished"/>
+        <translation>Sinu valitud kuupäevavahemik</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="40"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Rakenda</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="52"/>
         <source>Start date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>Alguskuupäev (AAAA-KK-PP)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="59"/>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="70"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>AAAA-KK-PP</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="63"/>
         <source>End date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>Lõpukuupäev (AAAA-KK-PP)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="75"/>
         <source>Enter valid dates with the start date before the end date.</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta korrektsed kuupäevad, kus algus on enne lõppu.</translation>
     </message>
 </context>
 <context>
@@ -7551,12 +7551,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="28"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Tagasi</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
         <source>Back to all search results</source>
-        <translation type="unfinished"/>
+        <translation>Tagasi kõikide otsingutulemuste juurde</translation>
     </message>
 </context>
 <context>
@@ -7564,77 +7564,77 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="50"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Tüüp</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="57"/>
         <source>Filter by type</source>
-        <translation type="unfinished"/>
+        <translation>Filtreeri tüübi alusel</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Kuupäev</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
         <source>Filter by date</source>
-        <translation type="unfinished"/>
+        <translation>Filtreeri kuupäeva alusel</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>
         <source>No search source supports date filtering</source>
-        <translation type="unfinished"/>
+        <translation>Mitte kõik otsinguteenuse pakkujad ei toeta filtreerimist kuupäevade alusel</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="121"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Täna</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="125"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>Viimase 7 päeva jooksul</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="129"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>Viimase 30 päeva jooksul</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="133"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>Sel aastal</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="137"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>Eelmisel aastal</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="142"/>
         <source>Custom range …</source>
-        <translation type="unfinished"/>
+        <translation>Sinu valitud vahemik…</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="146"/>
         <source>Clear date</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda kuupäev</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="157"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <translation>Inimesed</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="165"/>
         <source>Filter by person</source>
-        <translation type="unfinished"/>
+        <translation>Filtreeri inimese alusel</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="166"/>
         <source>No search source supports people filtering</source>
-        <translation type="unfinished"/>
+        <translation>Ükski otsinguteenuse pakkuja ei toeta filtreerimist inimeste alusel</translation>
     </message>
 </context>
 <context>
@@ -7647,12 +7647,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
         <source>Clear search</source>
-        <translation type="unfinished"/>
+        <translation>Tühjenda otsing</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
         <source>Keeps the active filters</source>
-        <translation type="unfinished"/>
+        <translation>Säilitab aktiivsed filtrid</translation>
     </message>
 </context>
 <context>
@@ -7660,12 +7660,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation type="unfinished"/>
+        <translation>Otsi inimesi</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Proovi uuesti</translation>
     </message>
 </context>
 <context>
@@ -7681,27 +7681,27 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="83"/>
         <source>More from %1  →</source>
-        <translation type="unfinished"/>
+        <translation>Vaata veel allikast/teenusest „%1“ →</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="130"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>Osalised vasted</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="193"/>
         <source>Loading more results …</source>
-        <translation type="unfinished"/>
+        <translation>Laadin veel tulemusi…</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
         <source>Retry loading more results</source>
-        <translation type="unfinished"/>
+        <translation>Proov veelkord laadida rohkem tulemusi</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Laadi veel tulemusi</translation>
     </message>
 </context>
 <context>
