@@ -7,9 +7,9 @@
 
 #include <QPointer>
 
-#include "unifiedshare.h"
 #include "recipient.h"
 #include "recipienticonutils.h"
+#include "unifiedshare.h"
 
 using namespace Qt::StringLiterals;
 using namespace OCC;
@@ -85,12 +85,17 @@ QHash<int, QByteArray> RecipientModel::roleNames() const
 
 void RecipientModel::setShare(Share *share)
 {
+    if (_share == share) {
+        return;
+    }
+
+    QObject::disconnect(_recipientsChangedConnection);
     ShareDetailsListModel::setShare(share);
     if (!_share) {
         return;
     }
 
-    connect(_share, &Share::recipientsChanged, this, [this]() -> void {
+    _recipientsChangedConnection = connect(_share, &Share::recipientsChanged, this, [this]() -> void {
         beginResetModel();
         endResetModel();
     });
