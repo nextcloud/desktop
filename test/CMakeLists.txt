@@ -142,6 +142,8 @@ add_test(NAME AssistantQmlTest
 set_tests_properties(AssistantQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(UnifiedSearchPeopleModel)
 target_link_libraries(UnifiedSearchListmodelTest PRIVATE nextcloudGuiSearch)
+target_link_libraries(UnifiedSearchPeopleModelTest PRIVATE nextcloudGuiSearch)
+set_tests_properties(UnifiedSearchPeopleModelTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(SortedActivityListModel)
 nextcloud_add_test(ActivityData)
@@ -150,7 +152,7 @@ add_test(NAME ActivityFileMenuQmlTest
         -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/activityfilemenu/testactivityfilemenu.qml"
 )
 add_executable(SearchQmlTest qml/search/searchqmltestrunner.cpp)
-target_link_libraries(SearchQmlTest PRIVATE nextcloudCore Qt::QuickTest)
+target_link_libraries(SearchQmlTest PRIVATE nextcloudCore nextcloudGuiSearch nextcloudGuiSearchplugin Qt::QuickTest)
 target_compile_definitions(SearchQmlTest PRIVATE
     SEARCH_QML_TEST_IMPORT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/qml/search/imports"
 )

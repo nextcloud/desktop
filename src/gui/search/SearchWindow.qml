@@ -9,6 +9,7 @@ import QtQuick.Layouts
 
 import Style
 import com.nextcloud.desktopclient
+import com.nextcloud.desktopclient.search
 import "qrc:/qml/src/gui"
 import "qrc:/qml/src/gui/tray"
 import "qrc:/qml/src/gui/wizard/qml"
@@ -18,7 +19,7 @@ WizardStyledWindow {
 
     property var account: null
     property int accountId: -1
-    property UnifiedSearchResultsListModel searchModel: UnifiedSearchResultsListModel {
+    property var searchModel: UnifiedSearchResultsListModel {
         accountId: root.accountId
     }
     readonly property string headline: qsTr("Search")
