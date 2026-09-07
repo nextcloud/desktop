@@ -275,12 +275,24 @@ SyncJournalFileRecord SyncFileItem::fromSyncFileItem(const SyncFileItem &syncFil
 {
     SyncJournalFileRecord rec(syncFile.destination().toUtf8(), {}, {}, syncFile._type, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {});
     rec._modtime = syncFile._modtime;
+    rec._type = syncFile._type;
 
     // Some types should never be written to the database when propagation completes
-    if (rec._type == ItemTypeVirtualFileDownload)
+    switch (syncFile._type) {
+    case CSyncEnums::ItemTypeVirtualFileDownload:
         rec._type = ItemTypeFile;
-    if (rec._type == ItemTypeVirtualFileDehydration)
+        break;
+    case CSyncEnums::ItemTypeVirtualFileDehydration:
         rec._type = ItemTypeVirtualFile;
+        break;
+    case CSyncEnums::ItemTypeFile:
+    case CSyncEnums::ItemTypeSoftLink:
+    case CSyncEnums::ItemTypeDirectory:
+    case CSyncEnums::ItemTypeSkip:
+    case CSyncEnums::ItemTypeVirtualFile:
+    case CSyncEnums::ItemTypeVirtualDirectory:
+        break;
+    }
 
     rec._etag = syncFile._etag;
     rec._fileId = syncFile._fileId;
