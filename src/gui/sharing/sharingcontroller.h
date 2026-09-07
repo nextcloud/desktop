@@ -133,6 +133,13 @@ public Q_SLOTS:
                                const QString &recipientInstance = {});
 
     void setPermission(Share *share, const QString &permissionClass, bool enabled);
+    /** @brief Enables or disables one permission for one recipient of a share. */
+    void setRecipientPermission(Share *share,
+                                const QString &recipientType,
+                                const QString &recipientValue,
+                                const QString &recipientInstance,
+                                const QString &permissionClass,
+                                bool enabled);
     void setPermissionPreset(Share *share, const QString &permissionPreset);
     void setProperty(Share *share, const QString &propertyClass, const QString &value);
 
@@ -193,6 +200,9 @@ Q_SIGNALS:
 
     /** @brief Emitted when updating an individual permission or permission preset failed. */
     void permissionUpdateFailed(Share *share, const QString &error);
+
+    /** @brief Emitted when updating a recipient-specific permission fails. */
+    void recipientPermissionUpdateFailed(Share *share, const QString &error);
 
     /** @brief Emitted after a draft share was activated. */
     void shareActivated(Share *share);
