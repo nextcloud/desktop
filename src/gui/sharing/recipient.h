@@ -11,6 +11,8 @@
 #include <QObject>
 #include <QPointer>
 
+#include <QtQmlIntegration>
+
 #include "permission.h"
 
 #include <optional>
@@ -23,6 +25,8 @@ namespace OCC::Gui::Sharing {
 class Recipient : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("created by SharingController")
     Q_PROPERTY(QString className READ className CONSTANT)
     Q_PROPERTY(QString displayName READ displayName CONSTANT)
     Q_PROPERTY(QString value READ value CONSTANT)
