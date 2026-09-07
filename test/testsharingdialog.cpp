@@ -178,10 +178,14 @@ class TestSharingDialog : public QObject
         const auto backButton = dialogObject->findChild<QObject *>(QStringLiteral("backToShareListButton"));
         QVERIFY(backButton);
         QVERIFY(backButton->property("visible").toBool());
+        QCOMPARE(backButton->property("leftPadding").toReal(), 0.0);
+        QCOMPARE(backButton->property("rightPadding").toReal(), 0.0);
 
         const auto gearButton = dialogObject->findChild<QObject *>(QStringLiteral("advancedSettingsButton"));
         QVERIFY(gearButton);
         QVERIFY(gearButton->property("visible").toBool());
+        QCOMPARE(gearButton->property("leftPadding").toReal(), 0.0);
+        QCOMPARE(gearButton->property("rightPadding").toReal(), 0.0);
         QCOMPARE(dialogObject->property("advancedSettingsVisible").toBool(), false);
 
         QVERIFY(dialogObject->setProperty("advancedSettingsVisible", true));

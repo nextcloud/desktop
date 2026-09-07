@@ -170,6 +170,8 @@ WizardStyledWindow {
                 Layout.preferredHeight: implicitHeight
                 visible: dialog.hasSelectedShare
                 text: ""
+                leftPadding: 0
+                rightPadding: 0
                 iconSource: "image://svgimage-custom-color/back.svg/" + palette.buttonText
                 Accessible.name: dialog.advancedSettingsVisible ? qsTr("Back to share details") : qsTr("Back to shares")
                 ToolTip.visible: hovered
@@ -220,6 +222,8 @@ WizardStyledWindow {
                 visible: dialog.hasSelectedShare
                     && !dialog.advancedSettingsVisible
                 text: ""
+                leftPadding: 0
+                rightPadding: 0
                 iconSource: "image://svgimage-custom-color/settings.svg/" + palette.buttonText
                 Accessible.name: qsTr("Advanced sharing settings")
                 ToolTip.visible: hovered

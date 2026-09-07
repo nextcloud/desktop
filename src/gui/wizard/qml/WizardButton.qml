@@ -69,7 +69,8 @@ BasicControls.Button {
 
         Text {
             objectName: "wizardButtonText"
-            Layout.fillWidth: true
+            Layout.fillWidth: visible
+            visible: root.text.length > 0 || root.textSuffix.length > 0
             text: root.textSuffix === "" ? root.text : root.text + " " + root.textSuffix
             font: root.font
             color: {
@@ -91,9 +92,13 @@ BasicControls.Button {
             source: root.iconSource !== "" && !root.iconBeforeText ? root.iconSource : ""
             sourceSize.width: Style.smallIconSize
             sourceSize.height: Style.smallIconSize
+            Layout.fillWidth: visible && !root.text.length && !root.textSuffix.length
+            Layout.minimumWidth: visible ? Style.smallIconSize : 0
             Layout.preferredWidth: visible ? Style.smallIconSize : 0
             Layout.preferredHeight: Style.smallIconSize
             fillMode: Image.PreserveAspectFit
+            horizontalAlignment: Image.AlignHCenter
+            verticalAlignment: Image.AlignVCenter
             Accessible.ignored: true
         }
 
