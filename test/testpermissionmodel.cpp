@@ -51,12 +51,15 @@ private Q_SLOTS:
         QCOMPARE(model.roleNames().value(PermissionModel::ClassNameRole), "className"_ba);
         QCOMPARE(model.roleNames().value(PermissionModel::PlaceholderRole), "hint"_ba);
         QCOMPARE(model.roleNames().value(PermissionModel::EnabledRole), "enabled"_ba);
+        QCOMPARE(model.roleNames().value(PermissionModel::AvailableRole), "available"_ba);
         QCOMPARE(model.rowCount(), 2);
         QCOMPARE(model.data(model.index(0), PermissionModel::LabelRole).toString(), "View files"_L1);
         QCOMPARE(model.data(model.index(0), PermissionModel::ClassNameRole).toString(), "view"_L1);
         QCOMPARE(model.data(model.index(0), PermissionModel::PlaceholderRole).toString(), "Read-only access"_L1);
         QVERIFY(model.data(model.index(0), PermissionModel::EnabledRole).toBool());
         QVERIFY(!model.data(model.index(1), PermissionModel::EnabledRole).toBool());
+        QVERIFY(model.data(model.index(0), PermissionModel::AvailableRole).toBool());
+        QVERIFY(model.data(model.index(1), PermissionModel::AvailableRole).toBool());
         QCOMPARE(model.rowCount(model.index(0)), 0);
     }
 
@@ -98,6 +101,40 @@ private Q_SLOTS:
             {"value"_L1, "alice"_L1},
             {"permissions"_L1, QJsonArray{}},
         });
+        QVERIFY(model.data(model.index(1), PermissionModel::EnabledRole).toBool());
+    }
+
+    void recipientPermissionsRespectSharePermissionCeiling()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        const auto share = shareFromJson(
+            QJsonObject{
+                {"permissions"_L1,
+                 QJsonArray{
+                     QJsonObject{{"class"_L1, "view"_L1}, {"display_name"_L1, "View files"_L1}, {"enabled"_L1, true}},
+                     QJsonObject{{"class"_L1, "download"_L1}, {"display_name"_L1, "Download files"_L1}, {"enabled"_L1, false}},
+                 }},
+                {"recipients"_L1,
+                 QJsonArray{QJsonObject{
+                     {"class"_L1, "user"_L1},
+                     {"display_name"_L1, "Alice"_L1},
+                     {"value"_L1, "alice"_L1},
+                     {"permissions"_L1,
+                      QJsonArray{
+                          QJsonObject{{"class"_L1, "view"_L1}, {"display_name"_L1, "View files"_L1}, {"enabled"_L1, true}},
+                          QJsonObject{{"class"_L1, "download"_L1}, {"display_name"_L1, "Download files"_L1}, {"enabled"_L1, true}},
+                      }},
+                 }}},
+            },
+            fakeFolder.account());
+
+        const auto recipient = share->recipients().constFirst();
+        PermissionModel model;
+        model.setShare(share.get());
+        model.setRecipient(recipient);
+
+        QVERIFY(model.data(model.index(0), PermissionModel::AvailableRole).toBool());
+        QVERIFY(!model.data(model.index(1), PermissionModel::AvailableRole).toBool());
         QVERIFY(model.data(model.index(1), PermissionModel::EnabledRole).toBool());
     }
 
