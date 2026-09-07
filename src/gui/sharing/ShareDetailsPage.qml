@@ -221,37 +221,18 @@ ColumnLayout {
         }
     }
 
-    SettingsPanel {
-        id: permissionListBackground
+    PermissionList {
+        id: sharePermissionList
 
         Layout.fillWidth: true
-        Layout.preferredHeight: visible ? permissionList.contentHeight : 0
-
+        Layout.preferredHeight: visible ? implicitHeight : 0
         visible: permissionPresetSelector.currentIndex === 2
 
-        ListView {
-            id: permissionList
+        model: PermissionModel { share: root.share }
 
-            anchors.fill: parent
-            interactive: false
-            spacing: 0
-            model: PermissionModel {
-                share: root.share
-            }
-
-            delegate: SwitchDelegate {
-                required property var model
-
-                background: null
-                width: ListView.view.width
-                text: model.label
-                checked: model.enabled
-
-                onToggled: {
+        onPermissionToggled: (permissionClass, enabled) => {
                     root.permissionUpdateError = ""
-                    root.sharingController.setPermission(root.share, model.className, checked)
-                }
-            }
+            root.sharingController.setPermission(root.share, permissionClass, enabled)
         }
     }
 
@@ -276,7 +257,6 @@ ColumnLayout {
 
         Layout.fillWidth: true
         Layout.preferredHeight: contentHeight
-        interactive: false
         spacing: Style.standardSpacing
 
         model: PropertyModel {

@@ -38,6 +38,8 @@ target_sources(nextcloudGuiSharing
     setpropertyjob.cpp
     setpermissionjob.h
     setpermissionjob.cpp
+    setrecipientpermissionjob.h
+    setrecipientpermissionjob.cpp
     setpermissionpresetjob.h
     setpermissionpresetjob.cpp
     setrecipientsecretjob.h
@@ -73,6 +75,7 @@ ecm_add_qml_module(nextcloudGuiSharing
   GENERATE_PLUGIN_SOURCE
   QML_FILES
     FieldDelegate.qml
+    PermissionList.qml
     DeleteShareConfirmation.qml
     RecipientAvatar.qml
     RecipientIcon.qml
