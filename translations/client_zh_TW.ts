@@ -12,7 +12,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="135"/>
         <source>Secure connection failed</source>
-        <translation>安全連線失敗</translation>
+        <translation>無法建立安全連線</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="138"/>
@@ -22,12 +22,12 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="148"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
-        <translation>安全連線失敗。您可以嘗試不使用加密重新連線，或新增客戶端憑證後再試一次。</translation>
+        <translation>無法建立安全連線。您可以嘗試不使用加密重新連線，或新增客戶端憑證後再試一次。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="149"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
-        <translation>安全連線失敗。您可以新增客戶端憑證後再試一次。</translation>
+        <translation>無法建立安全連線。您可以新增客戶端憑證後再試一次。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="170"/>
@@ -2210,7 +2210,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1781"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1783"/>
         <source>Error writing metadata to the database</source>
         <translation>將中介資料寫入資料庫時發生錯誤</translation>
     </message>
@@ -4822,25 +4822,25 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1531"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1537"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1572"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1568"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1574"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>無法將資料夾 %1 設為唯讀：%2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>unknown exception</source>
         <translation>未知例外</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1587"/>
         <source>Error updating metadata: %1</source>
         <translation>更新中介資料時發生錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1589"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1591"/>
         <source>File is currently in use</source>
         <translation>檔案目前正在使用中</translation>
     </message>
@@ -6126,12 +6126,12 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="130"/>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="156"/>
         <source>People search is unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>無法搜尋聯絡人。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="192"/>
         <source>Could not load people. Try again.</source>
-        <translation type="unfinished"/>
+        <translation>無法讀取聯絡人。請再試一次。</translation>
     </message>
 </context>
 <context>
@@ -6141,89 +6141,89 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="242"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="537"/>
         <source>Search is unavailable while this account is offline.</source>
-        <translation type="unfinished"/>
+        <translation>當此帳號離線時，無法使用搜尋功能。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="533"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="580"/>
         <source>Failed to fetch search providers.</source>
-        <translation type="unfinished"/>
+        <translation>找不到搜尋服務提供者。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="653"/>
         <source>No search providers are available.</source>
-        <translation type="unfinished"/>
+        <translation>沒有可用的搜尋服務提供者。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="687"/>
         <source>Search cleared</source>
-        <translation type="unfinished"/>
+        <translation>已清除搜尋</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="727"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1230"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>正在搜尋</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="949"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>部分符合</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1218"/>
         <source>Search failed for all available sources. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>搜尋所有可用來源均未成功。請重試。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1240"/>
         <source>%1 results in %2</source>
-        <translation type="unfinished"/>
+        <translation>%2 中有 %1 個結果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1242"/>
         <source>No matching results</source>
-        <translation type="unfinished"/>
+        <translation>找不到符合的結果。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1244"/>
         <source>%1 results. Some sources are unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 個結果。部分來源無法使用。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1246"/>
         <source>%1 results</source>
-        <translation type="unfinished"/>
+        <translation>%1 個結果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1420"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>今天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1423"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>過去 7 天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1426"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>過去 30 天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>今年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1434"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>去年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1454"/>
         <source>%1 – %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 – %2</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
@@ -7131,33 +7131,33 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="158"/>
         <source>Remove %1 filter</source>
-        <translation type="unfinished"/>
+        <translation>移除 %1 篩選條件</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="182"/>
         <location filename="../src/gui/search/SearchWindow.qml" line="251"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>重試</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="215"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>搜尋結果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="250"/>
         <source>Some sources unavailable</source>
-        <translation type="unfinished"/>
+        <translation>部分來源無法使用</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
         <source>Less from connected services</source>
-        <translation type="unfinished"/>
+        <translation>減少來自已連結服務的結果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
         <source>More from connected services</source>
-        <translation type="unfinished"/>
+        <translation>增加來自已連結服務的結果</translation>
     </message>
 </context>
 <context>
@@ -7515,38 +7515,38 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="22"/>
         <source>Custom date range</source>
-        <translation type="unfinished"/>
+        <translation>自訂日期範圍</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="40"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>套用</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="52"/>
         <source>Start date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>開始日期 (YYYY-MM-DD)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="59"/>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="70"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>YYYY-MM-DD</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="63"/>
         <source>End date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>結束日期 (YYYY-MM-DD)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="75"/>
         <source>Enter valid dates with the start date before the end date.</source>
-        <translation type="unfinished"/>
+        <translation>請輸入有效日期，開始日期必須早於結束日期。</translation>
     </message>
 </context>
 <context>
@@ -7554,12 +7554,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="28"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>返回</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
         <source>Back to all search results</source>
-        <translation type="unfinished"/>
+        <translation>回到所有搜尋結果</translation>
     </message>
 </context>
 <context>
@@ -7567,77 +7567,77 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="50"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>類型</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="57"/>
         <source>Filter by type</source>
-        <translation type="unfinished"/>
+        <translation>依類型篩選</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>日期</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
         <source>Filter by date</source>
-        <translation type="unfinished"/>
+        <translation>依日期篩選</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>
         <source>No search source supports date filtering</source>
-        <translation type="unfinished"/>
+        <translation>沒有任何搜尋來源支援日期篩選功能</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="121"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>今天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="125"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>過去 7 天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="129"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>過去 30 天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="133"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>今年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="137"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>去年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="142"/>
         <source>Custom range …</source>
-        <translation type="unfinished"/>
+        <translation>自訂範圍⋯⋯</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="146"/>
         <source>Clear date</source>
-        <translation type="unfinished"/>
+        <translation>清除日期</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="157"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <translation>人員</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="165"/>
         <source>Filter by person</source>
-        <translation type="unfinished"/>
+        <translation>依聯絡人篩選</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="166"/>
         <source>No search source supports people filtering</source>
-        <translation type="unfinished"/>
+        <translation>沒有任何搜尋來源支援使用者篩選功能</translation>
     </message>
 </context>
 <context>
@@ -7650,12 +7650,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
         <source>Clear search</source>
-        <translation type="unfinished"/>
+        <translation>清除搜尋</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
         <source>Keeps the active filters</source>
-        <translation type="unfinished"/>
+        <translation>保留目前的篩選條件</translation>
     </message>
 </context>
 <context>
@@ -7663,12 +7663,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation type="unfinished"/>
+        <translation>搜尋人員</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>重試</translation>
     </message>
 </context>
 <context>
@@ -7684,27 +7684,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="83"/>
         <source>More from %1  →</source>
-        <translation type="unfinished"/>
+        <translation>更多來自 %1 的結果 →</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="130"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>部份符合</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="193"/>
         <source>Loading more results …</source>
-        <translation type="unfinished"/>
+        <translation>正在載入更多結果⋯⋯</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
         <source>Retry loading more results</source>
-        <translation type="unfinished"/>
+        <translation>重試載入更多結果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>載入更多結果</translation>
     </message>
 </context>
 <context>
@@ -8414,9 +8414,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Select a certificate</source>
         <translation>選取憑證</translation>
     </message>
-</context>
-<context>
-    <name>OCC::OwncloudAdvancedSetupPage</name>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="33"/>
         <source>Certificate files (*.p12 *.pfx)</source>

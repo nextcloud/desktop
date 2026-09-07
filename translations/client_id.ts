@@ -2208,7 +2208,7 @@ Tindakan ini akan membatalkan sinkronisasi apa pun yang sedang berjalan saat ini
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1781"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1783"/>
         <source>Error writing metadata to the database</source>
         <translation>Kesalahan saat menulis metadata ke database</translation>
     </message>
@@ -3983,112 +3983,6 @@ Item yang penghapusannya diizinkan akan dihapus jika item tersebut mencegah sebu
         <source>Add a new ignore pattern:</source>
         <translation>Tambahkan pola pengabaian baru:</translation>
     </message>
-    <message>
-        <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.ui" line="81"/>
-        <source>Legal Notice</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.ui" line="152"/>
-        <source>Update channel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.ui" line="172"/>
-        <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.ui" line="193"/>
-        <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.ui" line="216"/>
-        <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.ui" line="229"/>
-        <source>Check Now</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="103"/>
-        <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="144"/>
-        <location filename="../src/gui/infosettings.cpp" line="170"/>
-        <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="201"/>
-        <source>stable</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="205"/>
-        <source>beta</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="209"/>
-        <source>daily</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="213"/>
-        <source>enterprise</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="248"/>
-        <source>- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="253"/>
-        <source>- enterprise: contains stable versions for customers.
-
-Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
-        <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="260"/>
-        <source>Changing update channel?</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="261"/>
-        <source>The channel determines which upgrades will be offered to install:
-- stable: contains tested versions considered reliable
-</source>
-        <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="267"/>
-        <source>Change update channel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/infosettings.cpp" line="268"/>
-        <source>Cancel</source>
-        <translation type="unfinished"/>
-    </message>
 </context>
 <context>
     <name>OCC::InfoSettings</name>
@@ -4919,25 +4813,25 @@ Perlu dicatat bahwa penggunaan opsi baris perintah pencatatan log apa pun akan m
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1531"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1537"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1572"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1568"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1574"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Folder %1 tidak dapat dibuat hanya-baca: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1578"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>unknown exception</source>
         <translation>pengecualian tidak diketahui</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1587"/>
         <source>Error updating metadata: %1</source>
         <translation>Kesalahan memperbarui metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1589"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1591"/>
         <source>File is currently in use</source>
         <translation>File sedang digunakan</translation>
     </message>
@@ -7514,9 +7408,6 @@ Server membalas dengan kesalahan: %2</translation>
         <source>Open</source>
         <translation type="unfinished"/>
     </message>
-</context>
-<context>
-    <name>TrayFoldersMenuButton</name>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="671"/>
         <source>Recent activity</source>
@@ -7585,16 +7476,6 @@ Server membalas dengan kesalahan: %2</translation>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="786"/>
         <source>Local folder</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>
-        <source>More apps</source>
-        <translation>Aplikasi lainnya</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="124"/>
-        <source>Open %1 in browser</source>
-        <translation>Buka %1 di browser</translation>
     </message>
 </context>
 <context>
@@ -8015,12 +7896,12 @@ Server membalas dengan kesalahan: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
         <source>Online</source>
-        <translation>Online</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <source>Away</source>
-        <translation>Away</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
@@ -8040,17 +7921,17 @@ Server membalas dengan kesalahan: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
         <source>Invisible</source>
-        <translation>Tidak terlihat</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
         <source>Appear offline</source>
-        <translation>Tampilkan offline</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation>Pesan status</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
@@ -8173,7 +8054,7 @@ Server membalas dengan kesalahan: %2</translation>
     </message>
 </context>
 <context>
-    <name>OCC::OwncloudAdvancedSetupPage</name>
+    <name>main.cpp</name>
     <message>
         <location filename="../src/gui/main.cpp" line="42"/>
         <source>System Tray not available</source>
@@ -8184,65 +8065,6 @@ Server membalas dengan kesalahan: %2</translation>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
         <translation>%1 memerlukan system tray yang berfungsi. Jika Anda menjalankan XFCE, silakan ikuti &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;instruksi ini&lt;/a&gt;. Jika tidak, silakan pasang aplikasi system tray seperti &quot;trayer&quot; dan coba lagi.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
-        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>Gunakan &amp;file virtual alih-alih langsung mengunduh konten %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
-        <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>File virtual tidak didukung untuk root partisi Windows sebagai folder lokal. Silakan pilih subfolder yang valid di bawah huruf drive.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
-        <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation>Folder %1 &quot;%2&quot; disinkronkan ke folder lokal &quot;%3&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
-        <source>Sync the folder &quot;%1&quot;</source>
-        <translation>Sinkronkan folder &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="326"/>
-        <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>Peringatan: folder lokal tidak kosong. Pilih resolusi!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="339"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="657"/>
-        <source>%1 free space</source>
-        <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation>%1 ruang kosong</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="427"/>
-        <source>Virtual files are not supported at the selected location</source>
-        <translation>File virtual tidak didukung di lokasi yang dipilih</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
-        <source>Local Sync Folder</source>
-        <translation>Folder Sinkronisasi Lokal</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="574"/>
-        <source>(%1)</source>
-        <translation>(%1)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="600"/>
-        <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>Tidak ada ruang bebas yang cukup di folder lokal!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="655"/>
-        <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation>Di bagian bilah sisi &quot;Lokasi&quot; pada Finder</translation>
-    </message>
 </context>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
@@ -8251,34 +8073,9 @@ Server membalas dengan kesalahan: %2</translation>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Dibangun dari revisi Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; pada %3, %4 menggunakan Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gagal menghubungkan ke alamat aman server yang ditentukan. Bagaimana Anda ingin melanjutkannya?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
-        <source>Select a different URL</source>
-        <translation>Pilih sebuah URL yang berbeda</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
-        <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>Coba ulang tanpa enkripsi melalui HTTP (tidak aman)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
-        <source>Configure client-side TLS certificate</source>
-        <translation>Atur sertifikat sisi-klien TLS</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="24"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gagal menghubungkan ke alamat aman server &lt;em&gt;%1&lt;/em&gt;. Bagaimana Anda ingin melanjutkannya?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
 </context>
 <context>
-    <name>OCC::OwncloudHttpCredsPage</name>
+    <name>progress</name>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="25"/>
         <source>Virtual file created</source>
@@ -8294,9 +8091,6 @@ Server membalas dengan kesalahan: %2</translation>
         <source>Downloaded</source>
         <translation>Diunduh</translation>
     </message>
-</context>
-<context>
-    <name>OCC::OwncloudSetupPage</name>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
         <source>Uploaded</source>
@@ -8317,9 +8111,6 @@ Server membalas dengan kesalahan: %2</translation>
         <source>Deleted</source>
         <translation>Dihapus</translation>
     </message>
-</context>
-<context>
-    <name>OCC::OwncloudSetupWizard</name>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
         <source>Moved to %1</source>
@@ -8402,91 +8193,9 @@ Server membalas dengan kesalahan: %2</translation>
         <source>Updating end-to-end encryption metadata</source>
         <translation>Memperbarui metadata enkripsi ujung-ke-ujung</translation>
     </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="605"/>
-        <source>No remote folder specified!</source>
-        <translation>Tidak ada folder remote yang ditentukan!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="611"/>
-        <source>Error: %1</source>
-        <translation>Galat: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
-        <source>creating folder on Nextcloud: %1</source>
-        <translation>membuat folder di Nextcloud: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>
-        <source>Remote folder %1 created successfully.</source>
-        <translation>Folder remote %1 sukses dibuat.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
-        <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Folder remote %1 sudah ada. Menghubungkan untuk sinkronisasi.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="646"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="648"/>
-        <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Pembuatan folder menghasilkan kode kesalahan HTTP %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="650"/>
-        <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Pembuatan folder jarak jauh gagal karena kredensial yang diberikan salah!&lt;br/&gt;Silakan kembali dan periksa kredensial Anda.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="654"/>
-        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Pembuatan folder jarak jauh gagal kemungkinan karena kredensial yang diberikan salah.&lt;/font&gt;&lt;br/&gt;Silakan kembali dan periksa kredensial Anda.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="659"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="660"/>
-        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Pembuatan folder jarak jauh %1 gagal dengan kesalahan &lt;tt&gt;%2&lt;/tt&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="674"/>
-        <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Koneksi sinkronisasi dari %1 ke direktori jarak jauh %2 telah disiapkan.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="679"/>
-        <source>Successfully connected to %1!</source>
-        <translation>Berhasil terhubung ke %1!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="686"/>
-        <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>Koneksi ke %1 tidak dapat dibuat. Silakan periksa kembali.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="699"/>
-        <source>Folder rename failed</source>
-        <translation>Penggantian nama folder gagal</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="700"/>
-        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Tidak dapat menghapus dan mencadangkan folder karena folder atau sebuah file di dalamnya sedang dibuka di program lain. Silakan tutup folder atau file dan klik coba lagi atau batalkan penyiapan.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="732"/>
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Akun %1 berbasis File Provider berhasil dibuat!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="774"/>
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Folder sinkronisasi lokal %1 berhasil dibuat!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
 </context>
 <context>
-    <name>OCC::OwncloudWizard</name>
+    <name>theme</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Sync status is unknown</source>
@@ -8539,7 +8248,7 @@ Server membalas dengan kesalahan: %2</translation>
     </message>
 </context>
 <context>
-    <name>OCC::TermsOfServiceCheckWidget</name>
+    <name>utility</name>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="51"/>
         <source>Could not open browser</source>
@@ -8565,9 +8274,6 @@ Server membalas dengan kesalahan: %2</translation>
         <source>Always available locally</source>
         <translation>Selalu tersedia secara lokal</translation>
     </message>
-</context>
-<context>
-    <name>OCC::WelcomePage</name>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Currently available locally</source>
