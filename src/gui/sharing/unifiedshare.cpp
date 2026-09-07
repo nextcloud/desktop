@@ -197,20 +197,27 @@ void Share::setProperties(const QJsonArray &properties)
 
 void Share::setRecipients(const QJsonArray &recipients)
 {
-    _recipients.clear();
-
-    if (recipients.isEmpty()) {
-        Q_EMIT recipientsChanged();
-        return;
-    }
-
+    auto updatedRecipients = QList<QPointer<Recipient>>{};
     for (const auto &recipientValue : recipients) {
         if (!recipientValue.isObject()) {
             continue;
         }
         const auto recipientObject = recipientValue.toObject();
-        _recipients.append(Recipient::fromJson(recipientObject));
+        const auto className = recipientObject.value("class"_L1).toString();
+        const auto value = recipientObject.value("value"_L1).toString();
+        const auto instance = recipientObject.value("instance"_L1).toString();
+        const auto existing = std::ranges::find_if(_recipients, [&className, &value, &instance](const QPointer<Recipient> &recipient) {
+            return recipient && recipient->className() == className && recipient->value() == value && recipient->instanceString() == instance;
+        });
+        if (existing != _recipients.cend()) {
+            (*existing)->updateFromJson(recipientObject);
+            updatedRecipients.append(*existing);
+        } else {
+            updatedRecipients.append(Recipient::fromJson(recipientObject));
+        }
     }
+
+    _recipients = std::move(updatedRecipients);
 
     Q_EMIT recipientsChanged();
 }
