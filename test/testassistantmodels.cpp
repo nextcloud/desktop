@@ -8,6 +8,7 @@
 #include "assistant/assistanttaskmodel.h"
 #include "assistant/assistanttasktypemodel.h"
 
+#include <QAbstractItemModelTester>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QSignalSpy>
@@ -73,6 +74,7 @@ private Q_SLOTS:
     void taskTypesFilterSortAndExposeMetadata()
     {
         AssistantTaskTypeModel model;
+        const auto modelTester = QAbstractItemModelTester(&model, QAbstractItemModelTester::FailureReportingMode::QtTest);
         const auto types = QJsonObject{
             {QStringLiteral("core:text2text:summarize"),
              QJsonObject{
@@ -109,6 +111,7 @@ private Q_SLOTS:
     void tasksFilterFlattenAndMapStatuses()
     {
         AssistantTaskModel model;
+        const auto modelTester = QAbstractItemModelTester(&model, QAbstractItemModelTester::FailureReportingMode::QtTest);
         const auto type = QStringLiteral("core:text2text:summarize");
         const auto tasks = QJsonArray{
             task(1, type, QStringLiteral("STATUS_SCHEDULED")),
@@ -150,6 +153,7 @@ private Q_SLOTS:
     void conversationsSelectRenamePrependAndClear()
     {
         AssistantConversationModel model;
+        const auto modelTester = QAbstractItemModelTester(&model, QAbstractItemModelTester::FailureReportingMode::QtTest);
         model.replaceFromResponse(QJsonDocument{QJsonArray{
                                       conversation(41, QStringLiteral("First")),
                                       conversation(42),
@@ -186,6 +190,7 @@ private Q_SLOTS:
     void messagesNormalizeRolesAndSessionKeys()
     {
         AssistantMessageModel model;
+        const auto modelTester = QAbstractItemModelTester(&model, QAbstractItemModelTester::FailureReportingMode::QtTest);
         model.replaceFromResponse(QJsonDocument{QJsonArray{
             message(1, QStringLiteral("session_id"), 41, QStringLiteral("human"), QStringLiteral("Question")),
             message(2, QStringLiteral("sessionId"), 41, QStringLiteral("assistant"), QStringLiteral("Answer")),

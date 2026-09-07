@@ -72,6 +72,18 @@ Item {
         }
     }
 
+    Component {
+        id: taskTypeDelegateComponent
+
+        Assistant.AssistantTaskTypeDelegate {
+            assistantController: assistantTestSetup.controller
+            canUseAssistant: true
+            typeId: "core:text2text:summarize"
+            name: "Summarize"
+            isChat: false
+        }
+    }
+
     TestCase {
         name: "AssistantQml"
         when: windowShown
@@ -164,6 +176,36 @@ Item {
             mouseClick(newConversationButton)
             compare(assistantTestSetup.controller.selectedChatConversationId, -1)
             compare(messageList.count, 0)
+        }
+
+        function test_chatViewShowsThinkingState() {
+            assistantTestSetup.controller.loadData()
+            assistantTestSetup.completeChatLoad()
+            assistantTestSetup.selectConversationAndCompleteMessages()
+            const chatView = createChatView()
+            const thinkingLabel = findChild(chatView, "assistantThinkingLabel")
+            const retryButton = findChild(chatView, "assistantRetryResponseButton")
+
+            verify(thinkingLabel !== null)
+            verify(retryButton !== null)
+            compare(thinkingLabel.visible, false)
+            compare(retryButton.visible, true)
+            mouseClick(retryButton)
+            tryCompare(thinkingLabel, "visible", true)
+            compare(thinkingLabel.text, "Assistant is thinking…")
+        }
+
+        function test_taskTypeDelegateSelectsTaskType() {
+            createdObject = taskTypeDelegateComponent.createObject(testRoot)
+            verify(createdObject !== null)
+            compare(createdObject.objectName, "assistantTaskTypeDelegate")
+            compare(createdObject.checked, false)
+
+            mouseClick(createdObject)
+
+            compare(assistantTestSetup.controller.selectedTaskTypeId,
+                "core:text2text:summarize")
+            compare(createdObject.checked, true)
         }
 
         function test_taskViewRetriesTask() {

@@ -23,10 +23,6 @@ ComboBox {
         ? root.assistantController.selectedChatConversationTitle
         : qsTr("No conversation selected")
     implicitHeight: Style.standardPrimaryButtonHeight
-    leftPadding: Style.assistantConversationPickerLeftPadding
-    rightPadding: Style.assistantConversationPickerRightPadding
-    topPadding: 0
-    bottomPadding: 0
     font.pixelSize: Style.assistantControlFontPixelSize
     Accessible.name: qsTr("Selected conversation")
     onActivated: root.assistantController.selectChatConversation(currentValue)
@@ -40,7 +36,8 @@ ComboBox {
     }
 
     indicator: Image {
-        x: root.width - width - Style.assistantConversationPickerLeftPadding
+        x: root.width - root.rightPadding
+            + Math.round((root.rightPadding - width) / 2)
         y: Math.round((root.height - height) / 2)
         width: Style.smallIconSize
         height: Style.smallIconSize
@@ -79,10 +76,7 @@ ComboBox {
                 Style.standardPrimaryButtonHeight * Style.assistantConversationMaximumVisibleItems)
             model: root.popup.visible ? root.delegateModel : null
             currentIndex: root.highlightedIndex
-
-            ScrollBar.vertical: ScrollBar {
-                policy: ScrollBar.AsNeeded
-            }
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
         }
 
         background: Rectangle {
@@ -91,13 +85,5 @@ ComboBox {
             border.width: Style.normalBorderWidth
             border.color: Style.wizardSecondaryButtonBorder
         }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.NoButton
-        enabled: root.enabled
-        hoverEnabled: enabled
-        cursorShape: Qt.PointingHandCursor
     }
 }

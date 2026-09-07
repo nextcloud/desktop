@@ -20,10 +20,7 @@ ListView {
     spacing: Style.wizardSectionSpacing
     boundsBehavior: Flickable.StopAtBounds
     model: root.assistantController.messages
-
-    ScrollBar.vertical: ScrollBar {
-        policy: ScrollBar.AsNeeded
-    }
+    ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
     delegate: AssistantMessageDelegate {
     }

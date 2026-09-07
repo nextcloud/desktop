@@ -17,16 +17,10 @@ Dialog {
     objectName: "assistantDeleteTaskDialog"
 
     required property NC.AssistantController assistantController
-    required property Item host
 
     property double taskId: -1
 
     modal: true
-    width: Math.min(Style.wizardDialogMaximumWidth,
-        root.host.width - Style.wizardWindowMargin * 2)
-    padding: Style.wizardWindowMargin
-    x: Math.round((root.host.width - width) / 2)
-    y: Math.round((root.host.height - height) / 2)
     header: null
     footer: null
 

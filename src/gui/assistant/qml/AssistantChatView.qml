@@ -29,6 +29,10 @@ ColumnLayout {
         AssistantConversationPicker {
             objectName: "assistantConversationPicker"
             assistantController: root.assistantController
+            leftPadding: Style.assistantConversationPickerLeftPadding
+            rightPadding: Style.assistantConversationPickerRightPadding
+            topPadding: 0
+            bottomPadding: 0
             Layout.fillWidth: true
             Layout.preferredHeight: Style.standardPrimaryButtonHeight
         }
@@ -54,7 +58,6 @@ ColumnLayout {
             }
 
             ToolTip {
-                popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
                 visible: newConversationButton.hovered
                 text: newConversationButton.actionName
             }
@@ -78,7 +81,6 @@ ColumnLayout {
             onClicked: root.assistantController.loadData()
 
             ToolTip {
-                popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
                 visible: reloadConversationsButton.hovered
                 text: reloadConversationsButton.actionName
             }
@@ -93,6 +95,7 @@ ColumnLayout {
     }
 
     EnforcedPlainTextLabel {
+        objectName: "assistantThinkingLabel"
         visible: root.assistantController.thinking
         text: qsTr("Assistant is thinking…")
         color: Style.wizardSecondaryText
