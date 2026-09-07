@@ -21,7 +21,9 @@ ColumnLayout {
     property Share share: null
     property string recipientOperationError: ""
     property string permissionUpdateError: ""
+    property string recipientPermissionUpdateError: ""
     property string propertyUpdateError: ""
+    property var selectedRecipient: null
     readonly property bool shareIsActive: !!share && share.state === Share.Active
 
     signal commitRequested
@@ -67,6 +69,7 @@ ColumnLayout {
     }
 
     ListView {
+        objectName: "recipientList"
         Layout.fillWidth: true
         Layout.preferredHeight: contentHeight
         interactive: false
@@ -120,6 +123,26 @@ ColumnLayout {
                         color: Style.wizardSecondaryText
                         elide: Text.ElideRight
                         visible: text.length > 0
+                    }
+                }
+
+                WizardButton {
+                    objectName: "recipientPermissionButton"
+                    Layout.preferredWidth: implicitHeight
+                    leftPadding: 0
+                    rightPadding: 0
+                    text: ""
+                    iconSource: "image://svgimage-custom-color/more.svg/" + palette.buttonText
+                    visible: !!root.share && !root.share.publicLink && recipientDelegate.model.recipient
+
+                    Accessible.name: qsTr("Configure recipient permissions")
+                    ToolTip.visible: hovered
+                    ToolTip.text: Accessible.name
+
+                    onClicked: {
+                        root.selectedRecipient = recipientDelegate.model.recipient
+                        root.recipientPermissionUpdateError = ""
+                        recipientPermissionDialog.open()
                     }
                 }
 
@@ -231,7 +254,7 @@ ColumnLayout {
         model: PermissionModel { share: root.share }
 
         onPermissionToggled: (permissionClass, enabled) => {
-                    root.permissionUpdateError = ""
+            root.permissionUpdateError = ""
             root.sharingController.setPermission(root.share, permissionClass, enabled)
         }
     }
@@ -342,5 +365,66 @@ ColumnLayout {
                 root.permissionUpdateError = error
             }
         }
+
+        function onRecipientPermissionUpdateFailed(share, error) {
+            if (share === root.share) {
+                root.recipientPermissionUpdateError = error
+            }
+        }
+    }
+
+    Dialog {
+        id: recipientPermissionDialog
+        objectName: "recipientPermissionDialog"
+
+        modal: true
+        width: Math.min(Style.dialogWidth, root.width)
+        padding: Style.standardSpacing
+        title: root.selectedRecipient ? qsTr("Permissions for %1").arg(root.selectedRecipient.displayName) : qsTr("Recipient permissions")
+
+        background: Rectangle {
+            color: Style.wizardWindowBackground
+            radius: Style.wizardDialogRadius
+        }
+
+        contentItem: ColumnLayout {
+            spacing: Style.standardSpacing
+
+            PermissionList {
+                id: recipientPermissionList
+
+                Layout.fillWidth: true
+                model: PermissionModel {
+                    objectName: "recipientPermissionModel"
+                    share: root.share
+                    recipient: root.selectedRecipient
+                }
+
+                onPermissionToggled: (permissionClass, enabled) => {
+                    root.recipientPermissionUpdateError = ""
+                    if (root.selectedRecipient) {
+                        root.sharingController.setRecipientPermission(root.share,
+                                                                      root.selectedRecipient.className,
+                                                                      root.selectedRecipient.value,
+                                                                      root.selectedRecipient.instance || "",
+                                                                      permissionClass,
+                                                                      enabled)
+                    }
+                }
+            }
+
+            ErrorBox {
+                Layout.fillWidth: true
+                text: root.recipientPermissionUpdateError
+                visible: text.length > 0
+            }
+        }
+
+        footer: DialogButtonBox {
+            standardButtons: DialogButtonBox.Close
+            onRejected: recipientPermissionDialog.close()
+        }
+
+        onClosed: root.selectedRecipient = null
     }
 }
