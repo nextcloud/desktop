@@ -21,14 +21,16 @@
 #include "getsharejob.h"
 #include "getsharesjob.h"
 #include "networkjobs.h"
+#include "recipient.h"
 #include "removerecipientjob.h"
 #include "setpermissionjob.h"
 #include "setpermissionpresetjob.h"
 #include "setpropertyjob.h"
+#include "setrecipientpermissionjob.h"
 #include "setrecipientsecretjob.h"
 #include "setsharestatejob.h"
-#include "unifiedshare.h"
 #include "sharingconstants.h"
+#include "unifiedshare.h"
 
 Q_LOGGING_CATEGORY(lcSharingController, "nextcloud.gui.sharing.sharingcontroller", QtInfoMsg)
 
@@ -455,6 +457,69 @@ void SharingController::setPermission(Share *share, const QString &permissionCla
         *permissionFailureReported = true;
         markDraftUpdateFailed(guardedShare);
         Q_EMIT permissionUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the permissions."));
+    });
+    job->start();
+}
+
+void SharingController::setRecipientPermission(Share *share,
+                                               const QString &recipientType,
+                                               const QString &recipientValue,
+                                               const QString &recipientInstance,
+                                               const QString &permissionClass,
+                                               bool enabled)
+{
+    if (!_account) {
+        qCWarning(lcSharingController) << "attempted to set a recipient permission without an account set";
+        return;
+    }
+
+    if (!containsShare(share)) {
+        qCWarning(lcSharingController) << "attempted to set a recipient permission on a share not owned by this controller";
+        return;
+    }
+
+    if (recipientType.isEmpty() || recipientValue.isEmpty() || permissionClass.isEmpty()) {
+        qCWarning(lcSharingController) << "attempted to set a recipient permission with incomplete identity";
+        return;
+    }
+
+    const auto guardedShare = QPointer<Share>{share};
+    const auto permissionFailureReported = std::make_shared<bool>(false);
+    const auto job =
+        new SetRecipientPermissionJob{_account, *share, recipientType, recipientValue, optionalString(recipientInstance), permissionClass, enabled};
+    trackDraftUpdate(share, job);
+    connect(job,
+            &SetRecipientPermissionJob::shareUpdated,
+            this,
+            [recipientType, recipientValue, recipientInstance, permissionClass, enabled](QPointer<Share> updatedShare) {
+                if (!updatedShare) {
+                    return;
+                }
+
+                const auto recipient = std::ranges::find_if(updatedShare->recipients(),
+                                                            [&recipientType, &recipientValue, &recipientInstance](const QPointer<Recipient> &candidate) {
+                                                                return candidate && candidate->className() == recipientType
+                                                                    && candidate->value() == recipientValue && candidate->instanceString() == recipientInstance;
+                                                            });
+                if (recipient != updatedShare->recipients().cend()) {
+                    (*recipient)->setPermissionOverride(permissionClass, enabled);
+                }
+            });
+    connect(job, &SetRecipientPermissionJob::ocsError, this, [this, guardedShare, permissionFailureReported](int, const QString &message) {
+        if (*permissionFailureReported) {
+            return;
+        }
+        *permissionFailureReported = true;
+        markDraftUpdateFailed(guardedShare);
+        Q_EMIT recipientPermissionUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the recipient permissions.") : message);
+    });
+    connect(job, &SetRecipientPermissionJob::networkError, this, [this, guardedShare, permissionFailureReported](const QNetworkReply *reply) {
+        if (*permissionFailureReported) {
+            return;
+        }
+        *permissionFailureReported = true;
+        markDraftUpdateFailed(guardedShare);
+        Q_EMIT recipientPermissionUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the recipient permissions."));
     });
     job->start();
 }
