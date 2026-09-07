@@ -58,6 +58,8 @@ QVariant RecipientModel::data(const QModelIndex &index, int role) const
         return recipient->secretUrl().value_or(QString{});
     case InitiatorDisplayNameRole:
         return recipient->initiatorDisplayName();
+    case RecipientRole:
+        return QVariant::fromValue(recipient.data());
     default:
         return {};
     }
@@ -66,17 +68,18 @@ QVariant RecipientModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> RecipientModel::roleNames() const
 {
     return {
-        { LabelRole, "label"_ba},
-        { ClassNameRole, "className"_ba},
-        { ValueRole, "value"_ba},
-        { InstanceRole, "instance"_ba},
-        { IconSvgUrlRole, "iconSvgUrl"_ba},
-        { IconLightRole, "iconLight"_ba},
-        { IconDarkRole, "iconDark"_ba},
-        { SecretUpdatableRole, "secretUpdatable"_ba},
-        { SecretValueRole, "secretValue"_ba},
-        { SecretUrlRole, "secretUrl"_ba},
-        { InitiatorDisplayNameRole, "initiatorDisplayName"_ba},
+        {LabelRole, "label"_ba},
+        {ClassNameRole, "className"_ba},
+        {ValueRole, "value"_ba},
+        {InstanceRole, "instance"_ba},
+        {IconSvgUrlRole, "iconSvgUrl"_ba},
+        {IconLightRole, "iconLight"_ba},
+        {IconDarkRole, "iconDark"_ba},
+        {SecretUpdatableRole, "secretUpdatable"_ba},
+        {SecretValueRole, "secretValue"_ba},
+        {SecretUrlRole, "secretUrl"_ba},
+        {InitiatorDisplayNameRole, "initiatorDisplayName"_ba},
+        {RecipientRole, "recipient"_ba},
     };
 }
 
