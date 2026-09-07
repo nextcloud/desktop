@@ -376,13 +376,16 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OpenVFS::updateMetada
             attributes.size = 0;
             [[fallthrough]];
         case ItemTypeDirectory:
+        case CSyncEnums::ItemTypeVirtualDirectory:
             qCDebug(lcOpenVFS) << "updateMetadata for" << syncItem._type;
             attributes.state = ::OpenVFS::Constants::States::Hydrated;
             break;
-        // case ItemTypeSymLink:
-        //     [[fallthrough]];
-        // case ItemTypeUnsupported:
-        //     Q_UNREACHABLE();
+        case ItemTypeSoftLink:
+            Q_UNREACHABLE();
+            break;
+        case CSyncEnums::ItemTypeSkip:
+            Q_UNREACHABLE();
+            break;
         }
 
         if (const auto result = setPlaceholderAttributes(attributes, syncItem._modtime); !result) {
@@ -418,6 +421,31 @@ void OpenVFS::slotHydrateJobFinished()
             qCWarning(lcOpenVFS) << u"Error when setting the file record to the database" << result.error();
         } else {
             qCInfo(lcOpenVFS) << u"Hydration succeeded" << targetPath.native();
+
+            ::OpenVFS::PlaceHolderAttributes attributes = [filePath = hydration->targetFileName(), item] {
+                if (const auto attr = placeHolderAttributes(filePath)) {
+                    return attr;
+                }
+                Q_ASSERT(QFileInfo::exists(filePath));
+                // generate new meta data for an existing file
+                auto attr = ::OpenVFS::PlaceHolderAttributes::create(FileSystem::toFilesystemPath(filePath),
+                                                                     item->_etag.toStdString(),
+                                                                     item->_fileId.toStdString(),
+                                                                     item->_size);
+                attr.state = ::OpenVFS::Constants::States::Hydrated;
+                return attr;
+            }();
+            Q_ASSERT(attributes);
+
+            if (attributes.isOk() && attributes.validate()) {
+                attributes.size = 0;
+                attributes.state = ::OpenVFS::Constants::States::Hydrated;
+
+                if (const auto result = setPlaceholderAttributes(attributes, item->_modtime); !result) {
+                    qCCritical(lcOpenVFS) << "Failed to update placeholder for" << hydration->targetFileName() << result.error();
+                    return;
+                }
+            }
         }
     } else {
         qCWarning(lcOpenVFS) << u"Hydration succeeded but the file appears to be moved" << targetPath.native();
@@ -432,9 +460,9 @@ Result<void, QString> OpenVFS::createPlaceholder(const SyncFileItem &item)
     const auto path = params().root() / item.localName();
     if (path.exists()) {
         Q_ASSERT(item._type == ItemTypeVirtualFileDehydration);
-        // if (item._type == ItemTypeVirtualFileDehydration && FileSystem::fileChanged(path, FileSystem::FileChangedInfo::fromSyncFileItem(&item))) {
-        //     return tr("Cannot dehydrate a placeholder because the file changed");
-        // }
+        if (item._type == ItemTypeVirtualFileDehydration && FileSystem::fileChanged(path.toString(), item._size, item._modtime)) {
+            return tr("Cannot dehydrate a placeholder because the file changed");
+        }
     }
     QFile file(path.get());
     if (!file.open(QFile::ReadWrite | QFile::Truncate)) {
@@ -501,12 +529,26 @@ bool OpenVFS::isPlaceHolderInSync([[maybe_unused]] const QString &filePath) cons
 
 Result<void, QString> OpenVFS::createPlaceholders([[maybe_unused]] const QList<SyncFileItemPtr> &items)
 {
-    return {};
+    auto result = Result<void, QString>{};
+
+    for (const auto &oneItem : items) {
+        const auto itemResult = createPlaceholder(*oneItem);
+        if (!itemResult) {
+            result = itemResult;
+            break;
+        }
+    }
+
+    return result;
 }
 
 Result<void, QString> OpenVFS::dehydratePlaceholder([[maybe_unused]] const SyncFileItem &item)
 {
-    return {};
+    const auto path = params().root() / item.localName();
+    if (path.exists()) {
+        FileSystem::remove(path.toString());
+    }
+    return createPlaceholder(item);
 }
 
 Result<Vfs::ConvertToPlaceholderResult, QString> OpenVFS::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &, UpdateMetadataTypes)
