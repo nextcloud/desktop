@@ -10,6 +10,7 @@
 #include <QAbstractListModel>
 #include <QPointer>
 #include <QTimer>
+#include <QtQmlIntegration>
 
 namespace OCC {
 
@@ -17,6 +18,7 @@ namespace OCC {
 class UnifiedSearchPeopleModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(AccountState *accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
     Q_PROPERTY(QString searchTerm READ searchTerm WRITE setSearchTerm NOTIFY searchTermChanged)
     Q_PROPERTY(bool busy READ busy NOTIFY busyChanged)
