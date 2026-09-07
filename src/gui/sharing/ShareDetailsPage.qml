@@ -379,7 +379,7 @@ ColumnLayout {
         share: root.share
         recipient: root.selectedRecipient
         updateError: root.recipientPermissionUpdateError
-        availableWidth: root.width
+        dialogAvailableWidth: root.width
 
         onPermissionToggled: (permissionClass, enabled) => {
             root.recipientPermissionUpdateError = ""
