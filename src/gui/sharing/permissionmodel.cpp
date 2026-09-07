@@ -5,8 +5,9 @@
 
 #include "permissionmodel.h"
 
-#include "unifiedshare.h"
 #include "permission.h"
+#include "recipient.h"
+#include "unifiedshare.h"
 
 using namespace Qt::StringLiterals;
 using namespace OCC;
@@ -18,20 +19,25 @@ PermissionModel::PermissionModel(QObject *parent)
 
 int PermissionModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.isValid() || !_share) {
+    if (parent.isValid() || (!_share && !_recipient)) {
         return 0;
     }
 
-    return _share->permissions().size();
+    const auto useRecipientPermissions = !_share && _recipient;
+    if (useRecipientPermissions) {
+        return _recipient->permissions().size();
+    }
+    return _share ? _share->permissions().size() : 0;
 }
 
 QVariant PermissionModel::data(const QModelIndex &index, int role) const
 {
-    if (!_share || !checkIndex(index, CheckIndexOption::IndexIsValid | CheckIndexOption::ParentIsInvalid)) {
+    if ((!_share && !_recipient) || !checkIndex(index, CheckIndexOption::IndexIsValid | CheckIndexOption::ParentIsInvalid)) {
         return {};
     }
 
-    const auto &permissions = _share->permissions();
+    const auto useRecipientPermissions = !_share && _recipient;
+    const auto &permissions = useRecipientPermissions ? _recipient->permissions() : _share->permissions();
     const auto permission = permissions.at(index.row());
 
     switch (role) {
@@ -42,6 +48,9 @@ QVariant PermissionModel::data(const QModelIndex &index, int role) const
     case PlaceholderRole:
         return permission->hint();
     case EnabledRole:
+        if (_recipient && _share) {
+            return _recipient->permissionOverride(permission->className()).value_or(permission->enabled());
+        }
         return permission->enabled();
     default:
         return {};
@@ -74,4 +83,29 @@ void PermissionModel::setShare(Share *share)
         beginResetModel();
         endResetModel();
     });
+}
+
+Recipient *PermissionModel::recipient() const
+{
+    return _recipient;
+}
+
+void PermissionModel::setRecipient(Recipient *recipient)
+{
+    if (_recipient == recipient) {
+        return;
+    }
+
+    QObject::disconnect(_recipientPermissionsChangedConnection);
+    beginResetModel();
+    _recipient = recipient;
+    Q_EMIT recipientChanged();
+    endResetModel();
+
+    if (_recipient) {
+        _recipientPermissionsChangedConnection = connect(_recipient, &Recipient::permissionsChanged, this, [this]() -> void {
+            beginResetModel();
+            endResetModel();
+        });
+    }
 }

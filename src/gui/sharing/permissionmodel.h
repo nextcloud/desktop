@@ -11,10 +11,13 @@
 
 namespace OCC::Gui::Sharing {
 
+class Recipient;
+
 class PermissionModel : public ShareDetailsListModel
 {
     Q_OBJECT
     QML_ELEMENT
+    Q_PROPERTY(Recipient *recipient READ recipient WRITE setRecipient NOTIFY recipientChanged)
 
 public:
     enum Roles {
@@ -31,9 +34,16 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     void setShare(Share* share) override;
+    [[nodiscard]] Recipient *recipient() const;
+    void setRecipient(Recipient *recipient);
+
+Q_SIGNALS:
+    void recipientChanged();
 
 private:
     QMetaObject::Connection _permissionsChangedConnection;
+    QMetaObject::Connection _recipientPermissionsChangedConnection;
+    Recipient *_recipient = nullptr;
 };
 
 }
