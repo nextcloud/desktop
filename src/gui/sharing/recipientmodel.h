@@ -9,7 +9,8 @@
 
 #include <QtQmlIntegration>
 
-namespace OCC::Gui::Sharing {
+namespace OCC::Gui::Sharing
+{
 
 class RecipientModel : public ShareDetailsListModel
 {
@@ -38,7 +39,10 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    void setShare(Share* share) override;
+    void setShare(Share *share) override;
+
+private:
+    QMetaObject::Connection _recipientsChangedConnection;
 };
 
 }
