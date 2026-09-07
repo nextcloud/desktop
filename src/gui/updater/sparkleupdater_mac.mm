@@ -188,7 +188,7 @@ userDidMakeChoice:(SPUUserUpdateChoice)choice
 
     const auto versionQstring = QString::fromNSString(item.displayVersionString);
     const auto errorQstring = QString::fromNSString(error.localizedDescription);
-    const auto message = QObject::tr("Error downloading version %1 update: %2", "%1 is version number, %2 is error message").arg(versionQstring);
+    const auto message = QObject::tr("Error downloading version %1 update: %2", "%1 is version number, %2 is error message").arg(versionQstring, errorQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
               displayStatus:message];
