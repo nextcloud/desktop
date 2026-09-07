@@ -81,7 +81,23 @@ def pop_vanished(target_file):
             
             if translation.attrib.get("type") == "vanished":
                 translation.attrib.pop("type")  # Remove type="vanished" attribute
-        
+
+    tree.write(target_file, encoding="utf-8", xml_declaration=True)
+
+def strip_locations(target_file):
+    """Remove all <location> tags (equivalent to lupdate's -locations none).
+
+    Kept out of the intermediate steps' diffs for readability - step 5's
+    final lupdate pass (-locations absolute) adds them back for real.
+    """
+    tree = ET.parse(target_file)
+    root = tree.getroot()
+
+    for context in root.findall("context"):
+        for message in context.findall("message"):
+            for location in message.findall("location"):
+                message.remove(location)
+
     tree.write(target_file, encoding="utf-8", xml_declaration=True)
 
 def replace_in_file(file_path):
@@ -518,10 +534,12 @@ if __name__ == "__main__":
             # merged-in side already (see .gitattributes: merge=nc-take-
             # incoming), so there's nothing to reconstruct from NC source
             # here anymore - this just brings the file into our canonical
-            # sort order/formatting before step 1's lupdate runs, so that
-            # step's commit shows real content changes instead of reorder
-            # noise.
+            # sort order/formatting (and strips <location> tags, same as
+            # lupdate's -locations none would) before step 1's lupdate
+            # runs, so that step's commit shows real content changes
+            # instead of reorder/location noise.
             for ts_file in ts_files:
+                strip_locations(ts_file)
                 sort_and_repair(ts_file)
             print("Step 0 completed: normalized incoming translations")
             # non-strict: client_en.ts is known to lag behind the other
