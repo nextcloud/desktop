@@ -1,7 +1,5 @@
 import sys
 import os
-import shutil
-import tempfile
 import subprocess
 import xml.etree.ElementTree as ET
 
@@ -410,69 +408,6 @@ def run_script(script_name, input_file, output_file):
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while running {script_name} with input '{input_file}' and output '{output_file}': {e}")
 
-def run_lupdate_from_branch(ts_files, nc_branch):
-    """Run lupdate against the unmodified NC branch source using git worktree.
-    
-    This avoids the need to manually checkout the NC branch (which would make
-    this script disappear). A temporary worktree is created, lupdate runs
-    against it, and the worktree is cleaned up afterwards.
-    """
-    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-
-    # Prune any stale worktree bookkeeping left over from a previous
-    # interrupted run before registering a new one.
-    subprocess.run(["git", "worktree", "prune"], cwd=repo_root, check=False)
-
-    # A collision-proof unique directory. A fixed or PID-based name isn't
-    # enough on Windows: PIDs of short-lived processes get recycled quickly
-    # under process churn, so a same-named leftover from an earlier run whose
-    # cleanup didn't fully land (e.g. a lingering file lock) can still be
-    # sitting there when a later run reuses that same PID/name and collides
-    # with it. mkdtemp() hands out a fresh, guaranteed-unique empty directory
-    # every time, which `git worktree add` accepts as a checkout target.
-    worktree_dir = tempfile.mkdtemp(prefix="nc_lupdate_worktree_")
-
-    try:
-        # Create worktree for the NC branch
-        print(f"Creating temporary worktree for branch '{nc_branch}'...")
-        result = subprocess.run(
-            ["git", "worktree", "add", worktree_dir, nc_branch],
-            cwd=repo_root, capture_output=True, text=True
-        )
-        if result.returncode != 0:
-            print(f"Error creating worktree: {result.stderr}")
-            sys.exit(1)
-        
-        # Build lupdate command pointing at the worktree's source directories
-        src_dirs = ["src/libsync", "src/gui", "src/csync", "src/common", "src/cmd"]
-        craft_root = r"C:\CraftRoot" if os.path.isdir(r"C:\CraftRoot") else r"C:\Craft64"
-        command = [
-            os.path.join(craft_root, "bin", "lupdate.exe"),
-            "-locations", "none",
-            "-no-obsolete",
-            "-no-ui-lines",
-            "-no-sort",
-        ]
-        for d in src_dirs:
-            command.append(os.path.join(worktree_dir, d))
-        
-        command.append("-ts")
-        # Convert ts paths to absolute so they resolve regardless of cwd
-        command.extend([os.path.abspath(f) for f in ts_files])
-        
-        print("Running lupdate against NC source...")
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-        print("Output:", result.stdout)
-    except subprocess.CalledProcessError as e:
-        print(f"lupdate error: {e.stderr}")
-        sys.exit(1)
-    finally:
-        # Always clean up the worktree
-        print("Removing temporary worktree...")
-        subprocess.run(["git", "worktree", "remove", "--force", worktree_dir],
-                        cwd=repo_root, check=False)
-        shutil.rmtree(worktree_dir, ignore_errors=True)
-
 def run_lupdate(ts_files, mode="default"):
     craft_root = r"C:\CraftRoot" if os.path.isdir(r"C:\CraftRoot") else r"C:\Craft64"
     lupdate = os.path.join(craft_root, "bin", "lupdate.exe")
@@ -564,39 +499,37 @@ if __name__ == "__main__":
         args.remove("--auto-commit")
 
     if len(args) == 0:
-        print("Usage: python merge_translation.py <step> [nc_branch] [--auto-commit]")
-        print("  step: 0-5, 'all' (0-5, needs nc_branch), or 'auto' (1-5, no nc_branch/worktree needed)")
-        print("  nc_branch: required for step 0 / 'all' (e.g. stable-4.0)")
+        print("Usage: python merge_translation.py <step> [--auto-commit]")
+        print("  step: 0-5, or 'all'/'auto' (0-5 - both names are equivalent now)")
         print("  --auto-commit: automatically commit after each step")
         sys.exit()
-    
+
     step = args[0]
-    nc_branch = args[1] if len(args) >= 2 else None
-    
-    if step == "0" or step == "all":
-        if nc_branch is None:
-            print("Error: step 0 requires the NC base branch as second argument")
-            print("  Example: python merge_translation.py 0 stable-4.0")
-            sys.exit(1)
 
     # Track keys for final validation (added in step 1, removed in step 5)
     keys_after_step0 = {}
     keys_after_step1 = {}
 
     try:
-        
-        if step == "0" or step == "all":
-            # Step 0: lupdate against unmodified NC source + sort
-            run_lupdate_from_branch(ts_files, nc_branch)
-            for ts_file in ts_files:      
-                sort_and_repair(ts_file)  
-            print("Step 0 completed: lupdate from NC source + sorted")
+
+        if step == "0" or step == "all" or step == "auto":
+            # Step 0: normalize the translations that just arrived via the
+            # merge. translations/client_*.ts always holds the incoming/
+            # merged-in side already (see .gitattributes: merge=nc-take-
+            # incoming), so there's nothing to reconstruct from NC source
+            # here anymore - this just brings the file into our canonical
+            # sort order/formatting before step 1's lupdate runs, so that
+            # step's commit shows real content changes instead of reorder
+            # noise.
+            for ts_file in ts_files:
+                sort_and_repair(ts_file)
+            print("Step 0 completed: normalized incoming translations")
             validate_ts_files(ts_files, "Step 0", strict=True)
             auto_commit(ts_files, "Step 0", auto_commit_enabled)
             # Snapshot keys after step 0
             for ts_file in ts_files:
                 keys_after_step0[ts_file] = get_source_keys(ts_file)
-        
+
         if step == "1" or step == "all" or step == "auto":
             # Step 1 lupdate Nextcloud in our latest change state, keep obsolete
             run_lupdate(ts_files)
