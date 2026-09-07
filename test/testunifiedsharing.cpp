@@ -29,11 +29,12 @@
 #include "gui/sharing/setpermissionjob.h"
 #include "gui/sharing/setpermissionpresetjob.h"
 #include "gui/sharing/setpropertyjob.h"
+#include "gui/sharing/setrecipientpermissionjob.h"
 #include "gui/sharing/setrecipientsecretjob.h"
 #include "gui/sharing/setsharestatejob.h"
-#include "gui/sharing/unifiedshare.h"
 #include "gui/sharing/sharingconstants.h"
 #include "gui/sharing/sharingcontroller.h"
+#include "gui/sharing/unifiedshare.h"
 #include "gui/sharing/unifiedsharelistmodel.h"
 #include "gui/sharing/unifiedsharingrequest.h"
 #include "gui/sharing/updatesharejob.h"
@@ -51,42 +52,45 @@ class TestUnifiedSharing : public QObject
     void recipientsPreserveServerIdentityAndCapabilities()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
-                                               {"ocs"_L1,
-                                                QJsonObject{
-                                                    {"data"_L1,
-                                                     QJsonObject{
-                                                         {"id"_L1, "share-1"_L1},
-                                                         {"recipients"_L1,
-                                                          QJsonArray{QJsonObject{
-                                                                         {"class"_L1, "federated-user"_L1},
-                                                                         {"display_name"_L1, "Alice"_L1},
-                                                                         {"value"_L1, "alice"_L1},
-                                                                         {"instance"_L1, "cloud.example.com"_L1},
-                                                                         {"icon"_L1,
-                                                                          QJsonObject{
-                                                                              {"svg"_L1, "<svg/>"_L1},
-                                                                              {"light"_L1, "https://cloud.example.com/light.svg"_L1},
-                                                                              {"dark"_L1, "https://cloud.example.com/dark.svg"_L1},
-                                                                          }},
-                                                                         {"secret"_L1,
-                                                                          QJsonObject{
-                                                                              {"updatable"_L1, true},
-                                                                              {"value"_L1, "public-secret"_L1},
-                                                                              {"url"_L1, "https://cloud.example.com/s/public-secret"_L1},
-                                                                          }},
-                                                                         {"initiator"_L1, QJsonObject{{"display_name"_L1, "Bob"_L1}}},
-                                                                     },
-                                                                     QJsonObject{
-                                                                         {"class"_L1, "user"_L1},
-                                                                         {"display_name"_L1, "Carol"_L1},
-                                                                         {"value"_L1, "carol"_L1},
-                                                                         {"secret"_L1, QJsonObject{{"updatable"_L1, false}}},
-                                                                     }}},
-                                                     }},
-                                                }},
+        auto share = std::unique_ptr<Share>(Share::fromJson(
+            QJsonDocument{QJsonObject{
+                {"ocs"_L1,
+                 QJsonObject{
+                     {"data"_L1,
+                      QJsonObject{
+                          {"id"_L1, "share-1"_L1},
+                          {"recipients"_L1,
+                           QJsonArray{QJsonObject{
+                                          {"class"_L1, "federated-user"_L1},
+                                          {"display_name"_L1, "Alice"_L1},
+                                          {"value"_L1, "alice"_L1},
+                                          {"instance"_L1, "cloud.example.com"_L1},
+                                          {"icon"_L1,
+                                           QJsonObject{
+                                               {"svg"_L1, "<svg/>"_L1},
+                                               {"light"_L1, "https://cloud.example.com/light.svg"_L1},
+                                               {"dark"_L1, "https://cloud.example.com/dark.svg"_L1},
                                            }},
-                                           fakeFolder.account()));
+                                          {"secret"_L1,
+                                           QJsonObject{
+                                               {"updatable"_L1, true},
+                                               {"value"_L1, "public-secret"_L1},
+                                               {"url"_L1, "https://cloud.example.com/s/public-secret"_L1},
+                                           }},
+                                          {"initiator"_L1, QJsonObject{{"display_name"_L1, "Bob"_L1}}},
+                                          {"permissions"_L1,
+                                           QJsonArray{QJsonObject{{"class"_L1, "view"_L1}, {"display_name"_L1, "View files"_L1}, {"enabled"_L1, true}}}},
+                                      },
+                                      QJsonObject{
+                                          {"class"_L1, "user"_L1},
+                                          {"display_name"_L1, "Carol"_L1},
+                                          {"value"_L1, "carol"_L1},
+                                          {"secret"_L1, QJsonObject{{"updatable"_L1, false}}},
+                                      }}},
+                      }},
+                 }},
+            }},
+            fakeFolder.account()));
 
         QCOMPARE(share->recipients().size(), 2);
         const auto recipient = share->recipients().constFirst();
@@ -102,6 +106,9 @@ class TestUnifiedSharing : public QObject
         QCOMPARE(recipient->secretUrl(), std::optional<QString>{"https://cloud.example.com/s/public-secret"_L1});
         QCOMPARE(recipient->secretUrlString(), "https://cloud.example.com/s/public-secret"_L1);
         QCOMPARE(recipient->initiatorDisplayName(), "Bob"_L1);
+        QCOMPARE(recipient->permissions().size(), 1);
+        QCOMPARE(recipient->permissions().constFirst()->className(), "view"_L1);
+        QVERIFY(recipient->permissions().constFirst()->enabled());
 
         RecipientModel model;
         model.setShare(share.get());
@@ -119,6 +126,128 @@ class TestUnifiedSharing : public QObject
         QVERIFY(missingSecretUrl.isValid());
         QCOMPARE(missingSecretUrl.toString(), QString{});
 
+        PermissionModel permissionModel;
+        permissionModel.setRecipient(recipient);
+        QAbstractItemModelTester permissionModelTester{&permissionModel};
+        QCOMPARE(permissionModel.rowCount(), 1);
+        QCOMPARE(permissionModel.data(permissionModel.index(0), PermissionModel::LabelRole).toString(), "View files"_L1);
+    }
+
+    void recipientPermissionModelUsesSharePermissionsWhenRecipientDataIsMissing()
+    {
+        const auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
+                                                                      {"ocs"_L1,
+                                                                       QJsonObject{
+                                                                           {"data"_L1,
+                                                                            QJsonObject{
+                                                                                {"permissions"_L1,
+                                                                                 QJsonArray{QJsonObject{
+                                                                                     {"class"_L1, "view"_L1},
+                                                                                     {"display_name"_L1, "View files"_L1},
+                                                                                     {"enabled"_L1, true},
+                                                                                 }}},
+                                                                                {"recipients"_L1,
+                                                                                 QJsonArray{QJsonObject{
+                                                                                     {"class"_L1, "OC\\Core\\Sharing\\Recipient\\UserShareRecipientType"_L1},
+                                                                                     {"display_name"_L1, "Alice"_L1},
+                                                                                     {"value"_L1, "alice"_L1},
+                                                                                 }}},
+                                                                            }},
+                                                                       }},
+                                                                  }},
+                                                                  {}));
+        QVERIFY(share);
+
+        PermissionModel model;
+        model.setShare(share.get());
+        model.setRecipient(share->recipients().constFirst());
+        QAbstractItemModelTester modelTester{&model};
+
+        QCOMPARE(model.rowCount(), 1);
+        QCOMPARE(model.data(model.index(0), PermissionModel::LabelRole).toString(), "View files"_L1);
+        QVERIFY(model.data(model.index(0), PermissionModel::EnabledRole).toBool());
+
+        share->recipients().constFirst()->setPermissionOverride("view"_L1, false);
+        QVERIFY(!model.data(model.index(0), PermissionModel::EnabledRole).toBool());
+    }
+
+    void recipientPermissionModelUsesSharePermissionsWhenRecipientPermissionsAreEmpty()
+    {
+        const auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
+                                                                      {"ocs"_L1,
+                                                                       QJsonObject{
+                                                                           {"data"_L1,
+                                                                            QJsonObject{
+                                                                                {"permissions"_L1,
+                                                                                 QJsonArray{QJsonObject{
+                                                                                     {"class"_L1, "view"_L1},
+                                                                                     {"display_name"_L1, "View files"_L1},
+                                                                                     {"enabled"_L1, true},
+                                                                                 }}},
+                                                                                {"recipients"_L1,
+                                                                                 QJsonArray{QJsonObject{
+                                                                                     {"class"_L1, "OC\\Core\\Sharing\\Recipient\\UserShareRecipientType"_L1},
+                                                                                     {"display_name"_L1, "Alice"_L1},
+                                                                                     {"value"_L1, "alice"_L1},
+                                                                                     {"permissions"_L1, QJsonArray{}},
+                                                                                 }}},
+                                                                            }},
+                                                                       }},
+                                                                  }},
+                                                                  {}));
+        QVERIFY(share);
+
+        PermissionModel model;
+        model.setShare(share.get());
+        model.setRecipient(share->recipients().constFirst());
+        QAbstractItemModelTester modelTester{&model};
+
+        QCOMPARE(model.rowCount(), 1);
+        QCOMPARE(model.data(model.index(0), PermissionModel::LabelRole).toString(), "View files"_L1);
+        QVERIFY(model.data(model.index(0), PermissionModel::EnabledRole).toBool());
+    }
+
+    void recipientPermissionModelKeepsSharePermissionsWhenRecipientOverridesOnePermission()
+    {
+        const auto share = std::unique_ptr<Share>(
+            Share::fromJson(QJsonDocument{QJsonObject{
+                                {"ocs"_L1,
+                                 QJsonObject{
+                                     {"data"_L1,
+                                      QJsonObject{
+                                          {"permissions"_L1,
+                                           QJsonArray{
+                                               QJsonObject{{"class"_L1, "view"_L1}, {"display_name"_L1, "View files"_L1}, {"enabled"_L1, true}},
+                                               QJsonObject{{"class"_L1, "download"_L1}, {"display_name"_L1, "Download files"_L1}, {"enabled"_L1, true}},
+                                           }},
+                                          {"recipients"_L1,
+                                           QJsonArray{QJsonObject{
+                                               {"class"_L1, "OC\\Core\\Sharing\\Recipient\\UserShareRecipientType"_L1},
+                                               {"display_name"_L1, "Alice"_L1},
+                                               {"value"_L1, "alice"_L1},
+                                               {"permissions"_L1,
+                                                QJsonArray{QJsonObject{
+                                                    {"class"_L1, "download"_L1},
+                                                    {"display_name"_L1, "Download files"_L1},
+                                                    {"enabled"_L1, false},
+                                                }}},
+                                           }}},
+                                      }},
+                                 }},
+                            }},
+                            {}));
+        QVERIFY(share);
+
+        PermissionModel model;
+        model.setShare(share.get());
+        model.setRecipient(share->recipients().constFirst());
+        QAbstractItemModelTester modelTester{&model};
+
+        QCOMPARE(model.rowCount(), 2);
+        QCOMPARE(model.data(model.index(0), PermissionModel::LabelRole).toString(), "View files"_L1);
+        QVERIFY(model.data(model.index(0), PermissionModel::EnabledRole).toBool());
+        QCOMPARE(model.data(model.index(1), PermissionModel::LabelRole).toString(), "Download files"_L1);
+        QVERIFY(!model.data(model.index(1), PermissionModel::EnabledRole).toBool());
     }
 
     void sharePropertiesPreserveServerMetadataAndUseTypedFields()
@@ -392,6 +521,21 @@ class TestUnifiedSharing : public QObject
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/permission",
                       {},
                       {{"class"_L1, "permission-class"_L1}, {"enabled"_L1, true}});
+        verifyRequest(new SetRecipientPermissionJob{account,
+                                                    *share,
+                                                    "recipient-class"_L1,
+                                                    "alice"_L1,
+                                                    std::optional<QString>{"https://example.com"_L1},
+                                                    "permission-class"_L1,
+                                                    false},
+                      "PUT",
+                      "/ocs/v2.php/apps/sharing/api/v1/share/share-1/recipient/permission",
+                      {},
+                      {{"recipientClass"_L1, "recipient-class"_L1},
+                       {"recipientValue"_L1, "alice"_L1},
+                       {"recipientInstance"_L1, "https://example.com"_L1},
+                       {"permissionClass"_L1, "permission-class"_L1},
+                       {"enabled"_L1, false}});
         verifyRequest(new SetPermissionPresetJob{account, *share, "preset-class"_L1},
                       "PUT",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/permission/preset",
@@ -420,7 +564,7 @@ class TestUnifiedSharing : public QObject
         QCOMPARE(requestContentType, "application/json");
         verifyRequest(new GetSharesJob{account}, "GET", "/ocs/v2.php/apps/sharing/api/v1/shares", {{"limit"_L1, "100"_L1}});
 
-        QCOMPARE(requestCount, 19);
+        QCOMPARE(requestCount, 20);
     }
 
     void requestStartsOnlyOnce()
@@ -1497,6 +1641,12 @@ class TestUnifiedSharing : public QObject
         QTRY_COMPARE(permissionFailedSpy.size(), 2);
         QCOMPARE(permissionFailedSpy.constLast().at(0).value<Share *>(), share);
         QCOMPARE(permissionFailedSpy.constLast().at(1).toString(), "Permission rejected"_L1);
+
+        QSignalSpy recipientPermissionFailedSpy{&controller, &SharingController::recipientPermissionUpdateFailed};
+        controller.setRecipientPermission(share, "user-class"_L1, "alice"_L1, {}, "permission-class"_L1, true);
+        QTRY_COMPARE(recipientPermissionFailedSpy.size(), 1);
+        QCOMPARE(recipientPermissionFailedSpy.constFirst().at(0).value<Share *>(), share);
+        QCOMPARE(recipientPermissionFailedSpy.constFirst().at(1).toString(), "Permission rejected"_L1);
     }
 
     void sharingControllerReportsPermissionNetworkFailures()
