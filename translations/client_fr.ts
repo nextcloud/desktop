@@ -7138,7 +7138,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="215"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>Résultats de la recherche</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="250"/>
