@@ -172,6 +172,7 @@ public:
     Q_INVOKABLE bool setCustomDateRange(const QString &sinceDate, const QString &untilDate);
 
 public Q_SLOTS:
+    void setAccountId(int id);
     void setSearchTerm(const QString &term);
     void resultClicked(const QString &providerId, const QUrl &resourceUrl) const;
     void fetchMoreTriggerClicked(const QString &providerId);
