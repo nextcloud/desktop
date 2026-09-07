@@ -5,6 +5,7 @@
 
 #include "gui/accountmanager.h"
 #include "gui/filedetails/filedetails.h"
+#include "gui/sharing/permissionmodel.h"
 #include "gui/sharing/propertymodel.h"
 #include "gui/sharing/sharingcontroller.h"
 #include "gui/sharing/unifiedshare.h"
@@ -28,6 +29,31 @@
 
 using namespace OCC;
 using namespace OCC::Gui::Sharing;
+
+static QQuickItem *findQuickItem(QQuickItem *parent, const QString &objectName)
+{
+    for (const auto child : parent->childItems()) {
+        if (child->objectName() == objectName) {
+            return child;
+        }
+        if (const auto descendant = findQuickItem(child, objectName)) {
+            return descendant;
+        }
+    }
+    return nullptr;
+}
+
+static QList<QQuickItem *> findQuickItems(QQuickItem *parent, const QString &objectName)
+{
+    auto matches = QList<QQuickItem *>{};
+    for (const auto child : parent->childItems()) {
+        if (child->objectName() == objectName) {
+            matches.append(child);
+        }
+        matches.append(findQuickItems(child, objectName));
+    }
+    return matches;
+}
 
 class TestSharingDialog : public QObject
 {
@@ -191,17 +217,29 @@ class TestSharingDialog : public QObject
         account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
 
         const auto shareJson = QJsonDocument{QJsonObject{
-            {QStringLiteral("ocs"), QJsonObject{
-                {QStringLiteral("data"), QJsonObject{
-                    {QStringLiteral("id"), QStringLiteral("share-1")},
-                    {QStringLiteral("state"), QStringLiteral("active")},
-                    {QStringLiteral("recipients"), QJsonArray{QJsonObject{
-                        {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
-                        {QStringLiteral("display_name"), QStringLiteral("admin")},
-                        {QStringLiteral("value"), QStringLiteral("admin")},
-                    }}},
-                }},
-            }},
+            {QStringLiteral("ocs"),
+             QJsonObject{
+                 {QStringLiteral("data"),
+                  QJsonObject{
+                      {QStringLiteral("id"), QStringLiteral("share-1")},
+                      {QStringLiteral("state"), QStringLiteral("active")},
+                      {QStringLiteral("permissions"),
+                       QJsonArray{
+                           QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
+                                       {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                       {QStringLiteral("enabled"), true}},
+                           QJsonObject{{QStringLiteral("class"), QStringLiteral("edit")},
+                                       {QStringLiteral("display_name"), QStringLiteral("Edit files")},
+                                       {QStringLiteral("enabled"), false}},
+                       }},
+                      {QStringLiteral("recipients"),
+                       QJsonArray{QJsonObject{
+                           {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                           {QStringLiteral("display_name"), QStringLiteral("admin")},
+                           {QStringLiteral("value"), QStringLiteral("admin")},
+                       }}},
+                  }},
+             }},
         }};
         const auto share = std::unique_ptr<Share>(Share::fromJson(shareJson, account));
         QVERIFY(share);
@@ -266,6 +304,365 @@ class TestSharingDialog : public QObject
         QVERIFY(frameObject->property("footerVisible").toBool());
         QVERIFY(cancelButton->property("visible").toBool());
         QVERIFY(saveButton->property("visible").toBool());
+    }
+
+    void opensRecipientPermissionEditor()
+    {
+        const auto account = AccountManager::createAccount();
+        account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
+
+        const auto share = std::unique_ptr<Share>(
+            Share::fromJson(QJsonDocument{QJsonObject{
+                                {QStringLiteral("ocs"),
+                                 QJsonObject{
+                                     {QStringLiteral("data"),
+                                      QJsonObject{
+                                          {QStringLiteral("id"), QStringLiteral("share-1")},
+                                          {QStringLiteral("state"), QStringLiteral("active")},
+                                          {QStringLiteral("permissions"),
+                                           QJsonArray{
+                                               QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
+                                                           {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                                           {QStringLiteral("enabled"), true}},
+                                               QJsonObject{{QStringLiteral("class"), QStringLiteral("edit")},
+                                                           {QStringLiteral("display_name"), QStringLiteral("Edit files")},
+                                                           {QStringLiteral("enabled"), false}},
+                                           }},
+                                          {QStringLiteral("recipients"),
+                                           QJsonArray{QJsonObject{
+                                               {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                                               {QStringLiteral("display_name"), QStringLiteral("Alice")},
+                                               {QStringLiteral("value"), QStringLiteral("alice")},
+                                               {QStringLiteral("permissions"),
+                                                QJsonArray{
+                                                    QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
+                                                                {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                                                {QStringLiteral("enabled"), true}},
+                                                    QJsonObject{{QStringLiteral("class"), QStringLiteral("edit")},
+                                                                {QStringLiteral("display_name"), QStringLiteral("Edit files")},
+                                                                {QStringLiteral("enabled"), false}},
+                                                }},
+                                           }}},
+                                      }},
+                                 }},
+                            }},
+                            account));
+        QVERIFY(share);
+
+        QQmlComponent component(Systray::instance()->trayEngine(), QStringLiteral("com.nextcloud.desktopclient.sharing"), QStringLiteral("ShareDialog"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        auto dialogObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("account"), QVariant::fromValue(account)},
+            {QStringLiteral("localPath"), QString()},
+            {QStringLiteral("fileId"), QString()},
+            {QStringLiteral("remotePath"), QStringLiteral("example.txt")},
+            {QStringLiteral("width"), 800},
+            {QStringLiteral("height"), 600},
+        }));
+        QVERIFY2(dialogObject, qPrintable(component.errorString()));
+        const auto windowDialog = qobject_cast<QQuickWindow *>(dialogObject.get());
+        QVERIFY(windowDialog);
+        QVERIFY(dialogObject->setProperty("selectedShare", QVariant::fromValue(share.get())));
+        QVERIFY(dialogObject->setProperty("hasSelectedShare", true));
+        QCoreApplication::processEvents();
+
+        const auto pageObject = dialogObject->findChild<QObject *>(QStringLiteral("shareDetailsPage"));
+        QVERIFY(pageObject);
+        const auto pageItem = qobject_cast<QQuickItem *>(pageObject);
+        QVERIFY(pageItem);
+        QCOMPARE(pageObject->property("share").value<Share *>(), share.get());
+        QVERIFY(!share->isPublicLink());
+        const auto recipientModel = pageObject->findChild<QAbstractItemModel *>(QStringLiteral("recipientModel"));
+        QVERIFY(recipientModel);
+        QCOMPARE(recipientModel->rowCount(), 1);
+        const auto recipientList = pageObject->findChild<QQuickItem *>(QStringLiteral("recipientList"));
+        QVERIFY(recipientList);
+
+        const auto permissionButton = findQuickItem(pageItem, QStringLiteral("recipientPermissionButton"));
+        QVERIFY(permissionButton);
+        QVERIFY(QMetaObject::invokeMethod(permissionButton, "clicked", Qt::DirectConnection));
+        QCoreApplication::processEvents();
+
+        const auto permissionDialog = pageObject->findChild<QObject *>(QStringLiteral("recipientPermissionDialog"));
+        QVERIFY(permissionDialog);
+        QVERIFY(permissionDialog->property("visible").toBool());
+        const auto dialogContent = permissionDialog->property("contentItem").value<QQuickItem *>();
+        QVERIFY(dialogContent);
+        const auto permissionList = findQuickItem(dialogContent, QStringLiteral("permissionList"));
+        QVERIFY(permissionList);
+        const auto permissionSwitch = findQuickItem(dialogContent, QStringLiteral("permissionSwitch"));
+        QVERIFY(permissionSwitch);
+        QCOMPARE(permissionSwitch->property("text").toString(), QStringLiteral("View files"));
+        QCOMPARE(permissionSwitch->property("checked").toBool(), true);
+
+        const auto selectedRecipient = pageObject->property("selectedRecipient").value<Recipient *>();
+        QVERIFY(selectedRecipient);
+        const auto updatedRecipient = QJsonObject{
+            {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+            {QStringLiteral("display_name"), QStringLiteral("Alice")},
+            {QStringLiteral("value"), QStringLiteral("alice")},
+            {QStringLiteral("permissions"),
+             QJsonArray{QJsonObject{
+                 {QStringLiteral("class"), QStringLiteral("view")},
+                 {QStringLiteral("display_name"), QStringLiteral("View files")},
+                 {QStringLiteral("enabled"), false},
+             }}},
+        };
+        share->updateFromJson(QJsonDocument{QJsonObject{
+            {QStringLiteral("ocs"),
+             QJsonObject{{QStringLiteral("data"),
+                          QJsonObject{
+                              {QStringLiteral("recipients"), QJsonArray{updatedRecipient}},
+                          }}}},
+        }});
+        QCoreApplication::processEvents();
+        QCOMPARE(pageObject->property("selectedRecipient").value<Recipient *>(), selectedRecipient);
+        const auto updatedPermissionModel = pageObject->findChild<QAbstractItemModel *>(QStringLiteral("recipientPermissionModel"));
+        QVERIFY(updatedPermissionModel);
+        QCOMPARE(updatedPermissionModel->data(updatedPermissionModel->index(0, 0), PermissionModel::EnabledRole).toBool(), false);
+        const auto updatedPermissionSwitch = findQuickItem(dialogContent, QStringLiteral("permissionSwitch"));
+        QVERIFY(updatedPermissionSwitch);
+        QCOMPARE(updatedPermissionSwitch->property("checked").toBool(), false);
+
+        QVERIFY(QMetaObject::invokeMethod(permissionDialog, "close"));
+        windowDialog->close();
+        dialogObject.reset();
+    }
+
+    void opensRecipientPermissionEditorWhenRecipientDataIsUnavailable()
+    {
+        const auto account = AccountManager::createAccount();
+        account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
+
+        const auto share = std::unique_ptr<Share>(
+            Share::fromJson(QJsonDocument{QJsonObject{
+                                {QStringLiteral("ocs"),
+                                 QJsonObject{
+                                     {QStringLiteral("data"),
+                                      QJsonObject{
+                                          {QStringLiteral("id"), QStringLiteral("share-1")},
+                                          {QStringLiteral("state"), QStringLiteral("active")},
+                                          {QStringLiteral("permissions"),
+                                           QJsonArray{QJsonObject{
+                                               {QStringLiteral("class"), QStringLiteral("view")},
+                                               {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                               {QStringLiteral("enabled"), true},
+                                           }}},
+                                          {QStringLiteral("recipients"),
+                                           QJsonArray{QJsonObject{
+                                               {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                                               {QStringLiteral("display_name"), QStringLiteral("Alice")},
+                                               {QStringLiteral("value"), QStringLiteral("alice")},
+                                           }}},
+                                      }},
+                                 }},
+                            }},
+                            account));
+        QVERIFY(share);
+
+        QQmlComponent component(Systray::instance()->trayEngine(), QStringLiteral("com.nextcloud.desktopclient.sharing"), QStringLiteral("ShareDialog"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        auto dialogObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("account"), QVariant::fromValue(account)},
+            {QStringLiteral("localPath"), QString()},
+            {QStringLiteral("fileId"), QString()},
+            {QStringLiteral("remotePath"), QStringLiteral("example.txt")},
+            {QStringLiteral("width"), 800},
+            {QStringLiteral("height"), 600},
+        }));
+        QVERIFY2(dialogObject, qPrintable(component.errorString()));
+        QVERIFY(qobject_cast<QQuickWindow *>(dialogObject.get()));
+        QVERIFY(dialogObject->setProperty("selectedShare", QVariant::fromValue(share.get())));
+        QVERIFY(dialogObject->setProperty("hasSelectedShare", true));
+        QCoreApplication::processEvents();
+
+        const auto pageObject = dialogObject->findChild<QObject *>(QStringLiteral("shareDetailsPage"));
+        QVERIFY(pageObject);
+        const auto pageItem = qobject_cast<QQuickItem *>(pageObject);
+        QVERIFY(pageItem);
+        const auto permissionButton = findQuickItem(pageItem, QStringLiteral("recipientPermissionButton"));
+        QVERIFY(permissionButton);
+        QVERIFY(permissionButton->property("visible").toBool());
+        QVERIFY(QMetaObject::invokeMethod(permissionButton, "clicked", Qt::DirectConnection));
+        QCoreApplication::processEvents();
+
+        const auto permissionDialog = pageObject->findChild<QObject *>(QStringLiteral("recipientPermissionDialog"));
+        QVERIFY(permissionDialog);
+        QVERIFY(permissionDialog->property("visible").toBool());
+        const auto dialogContent = permissionDialog->property("contentItem").value<QQuickItem *>();
+        QVERIFY(dialogContent);
+        const auto permissionSwitch = findQuickItem(dialogContent, QStringLiteral("permissionSwitch"));
+        QVERIFY(permissionSwitch);
+        QCOMPARE(permissionSwitch->property("text").toString(), QStringLiteral("View files"));
+        QCOMPARE(permissionSwitch->property("checked").toBool(), true);
+
+        QVERIFY(QMetaObject::invokeMethod(permissionDialog, "close"));
+        qobject_cast<QQuickWindow *>(dialogObject.get())->close();
+        dialogObject.reset();
+    }
+
+    void opensRecipientPermissionEditorWhenRecipientPermissionsAreEmpty()
+    {
+        const auto account = AccountManager::createAccount();
+        account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
+
+        const auto share = std::unique_ptr<Share>(
+            Share::fromJson(QJsonDocument{QJsonObject{
+                                {QStringLiteral("ocs"),
+                                 QJsonObject{
+                                     {QStringLiteral("data"),
+                                      QJsonObject{
+                                          {QStringLiteral("id"), QStringLiteral("share-1")},
+                                          {QStringLiteral("state"), QStringLiteral("active")},
+                                          {QStringLiteral("permissions"),
+                                           QJsonArray{QJsonObject{
+                                               {QStringLiteral("class"), QStringLiteral("view")},
+                                               {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                               {QStringLiteral("enabled"), true},
+                                           }}},
+                                          {QStringLiteral("recipients"),
+                                           QJsonArray{QJsonObject{
+                                               {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                                               {QStringLiteral("display_name"), QStringLiteral("Alice")},
+                                               {QStringLiteral("value"), QStringLiteral("alice")},
+                                               {QStringLiteral("permissions"), QJsonArray{}},
+                                           }}},
+                                      }},
+                                 }},
+                            }},
+                            account));
+        QVERIFY(share);
+
+        QQmlComponent component(Systray::instance()->trayEngine(), QStringLiteral("com.nextcloud.desktopclient.sharing"), QStringLiteral("ShareDialog"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        auto dialogObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("account"), QVariant::fromValue(account)},
+            {QStringLiteral("localPath"), QString()},
+            {QStringLiteral("fileId"), QString()},
+            {QStringLiteral("remotePath"), QStringLiteral("example.txt")},
+            {QStringLiteral("width"), 800},
+            {QStringLiteral("height"), 600},
+        }));
+        QVERIFY2(dialogObject, qPrintable(component.errorString()));
+        QVERIFY(dialogObject->setProperty("selectedShare", QVariant::fromValue(share.get())));
+        QVERIFY(dialogObject->setProperty("hasSelectedShare", true));
+        QCoreApplication::processEvents();
+
+        const auto pageObject = dialogObject->findChild<QObject *>(QStringLiteral("shareDetailsPage"));
+        QVERIFY(pageObject);
+        const auto pageItem = qobject_cast<QQuickItem *>(pageObject);
+        QVERIFY(pageItem);
+        const auto permissionButton = findQuickItem(pageItem, QStringLiteral("recipientPermissionButton"));
+        QVERIFY(permissionButton);
+        QVERIFY(QMetaObject::invokeMethod(permissionButton, "clicked", Qt::DirectConnection));
+        QCoreApplication::processEvents();
+
+        const auto permissionDialog = pageObject->findChild<QObject *>(QStringLiteral("recipientPermissionDialog"));
+        QVERIFY(permissionDialog);
+        QVERIFY(permissionDialog->property("visible").toBool());
+        const auto dialogContent = permissionDialog->property("contentItem").value<QQuickItem *>();
+        QVERIFY(dialogContent);
+        const auto permissionSwitch = findQuickItem(dialogContent, QStringLiteral("permissionSwitch"));
+        QVERIFY(permissionSwitch);
+        QCOMPARE(permissionSwitch->property("text").toString(), QStringLiteral("View files"));
+        QCOMPARE(permissionSwitch->property("checked").toBool(), true);
+
+        QVERIFY(QMetaObject::invokeMethod(permissionDialog, "close"));
+        qobject_cast<QQuickWindow *>(dialogObject.get())->close();
+        dialogObject.reset();
+    }
+
+    void opensRecipientPermissionEditorWithAllSharePermissionsWhenRecipientOverridesOne()
+    {
+        const auto account = AccountManager::createAccount();
+        account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
+
+        const auto share = std::unique_ptr<Share>(
+            Share::fromJson(QJsonDocument{QJsonObject{
+                                {QStringLiteral("ocs"),
+                                 QJsonObject{
+                                     {QStringLiteral("data"),
+                                      QJsonObject{
+                                          {QStringLiteral("id"), QStringLiteral("share-1")},
+                                          {QStringLiteral("state"), QStringLiteral("active")},
+                                          {QStringLiteral("permissions"),
+                                           QJsonArray{
+                                               QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
+                                                           {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                                           {QStringLiteral("enabled"), true}},
+                                               QJsonObject{{QStringLiteral("class"), QStringLiteral("download")},
+                                                           {QStringLiteral("display_name"), QStringLiteral("Download files")},
+                                                           {QStringLiteral("enabled"), true}},
+                                           }},
+                                          {QStringLiteral("recipients"),
+                                           QJsonArray{QJsonObject{
+                                               {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                                               {QStringLiteral("display_name"), QStringLiteral("Alice")},
+                                               {QStringLiteral("value"), QStringLiteral("alice")},
+                                               {QStringLiteral("permissions"),
+                                                QJsonArray{QJsonObject{
+                                                    {QStringLiteral("class"), QStringLiteral("download")},
+                                                    {QStringLiteral("display_name"), QStringLiteral("Download files")},
+                                                    {QStringLiteral("enabled"), false},
+                                                }}},
+                                           }}},
+                                      }},
+                                 }},
+                            }},
+                            account));
+        QVERIFY(share);
+
+        QQmlComponent component(Systray::instance()->trayEngine(), QStringLiteral("com.nextcloud.desktopclient.sharing"), QStringLiteral("ShareDialog"));
+        QVERIFY2(!component.isError(), qPrintable(component.errorString()));
+
+        auto dialogObject = std::unique_ptr<QObject>(component.createWithInitialProperties({
+            {QStringLiteral("account"), QVariant::fromValue(account)},
+            {QStringLiteral("localPath"), QString()},
+            {QStringLiteral("fileId"), QString()},
+            {QStringLiteral("remotePath"), QStringLiteral("example.txt")},
+            {QStringLiteral("width"), 800},
+            {QStringLiteral("height"), 600},
+        }));
+        QVERIFY2(dialogObject, qPrintable(component.errorString()));
+        QVERIFY(qobject_cast<QQuickWindow *>(dialogObject.get()));
+        QVERIFY(dialogObject->setProperty("selectedShare", QVariant::fromValue(share.get())));
+        QVERIFY(dialogObject->setProperty("hasSelectedShare", true));
+        QCoreApplication::processEvents();
+
+        const auto pageObject = dialogObject->findChild<QObject *>(QStringLiteral("shareDetailsPage"));
+        QVERIFY(pageObject);
+        const auto pageItem = qobject_cast<QQuickItem *>(pageObject);
+        QVERIFY(pageItem);
+        const auto permissionButton = findQuickItem(pageItem, QStringLiteral("recipientPermissionButton"));
+        QVERIFY(permissionButton);
+        QVERIFY(QMetaObject::invokeMethod(permissionButton, "clicked", Qt::DirectConnection));
+        QCoreApplication::processEvents();
+
+        const auto permissionDialog = pageObject->findChild<QObject *>(QStringLiteral("recipientPermissionDialog"));
+        QVERIFY(permissionDialog);
+        QVERIFY(permissionDialog->property("visible").toBool());
+        const auto permissionContent = permissionDialog->property("contentItem").value<QQuickItem *>();
+        QVERIFY(permissionContent);
+        const auto permissionSwitches = findQuickItems(permissionContent, QStringLiteral("permissionSwitch"));
+        QCOMPARE(permissionSwitches.size(), 2);
+
+        for (const auto permissionSwitch : permissionSwitches) {
+            const auto text = permissionSwitch->property("text").toString();
+            if (text == QStringLiteral("View files")) {
+                QVERIFY(permissionSwitch->property("checked").toBool());
+            } else if (text == QStringLiteral("Download files")) {
+                QVERIFY(!permissionSwitch->property("checked").toBool());
+            } else {
+                QFAIL(qPrintable(QStringLiteral("Unexpected permission: %1").arg(text)));
+            }
+        }
+
+        QVERIFY(QMetaObject::invokeMethod(permissionDialog, "close"));
+        qobject_cast<QQuickWindow *>(dialogObject.get())->close();
+        dialogObject.reset();
     }
 
     void createsShareRowWithDeleteAction()
