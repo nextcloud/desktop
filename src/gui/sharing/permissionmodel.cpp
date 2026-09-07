@@ -52,6 +52,8 @@ QVariant PermissionModel::data(const QModelIndex &index, int role) const
             return _recipient->permissionOverride(permission->className()).value_or(permission->enabled());
         }
         return permission->enabled();
+    case AvailableRole:
+        return !_recipient || !_share || permission->enabled();
     default:
         return {};
     }
@@ -60,10 +62,11 @@ QVariant PermissionModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> PermissionModel::roleNames() const
 {
     return {
-        { LabelRole, "label"_ba},
-        { ClassNameRole, "className"_ba},
-        { PlaceholderRole, "hint"_ba},
-        { EnabledRole, "enabled"_ba},
+        {LabelRole, "label"_ba},
+        {ClassNameRole, "className"_ba},
+        {PlaceholderRole, "hint"_ba},
+        {EnabledRole, "enabled"_ba},
+        {AvailableRole, "available"_ba},
     };
 };
 

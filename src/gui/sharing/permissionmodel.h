@@ -25,6 +25,7 @@ public:
         ClassNameRole,
         PlaceholderRole,
         EnabledRole,
+        AvailableRole,
     };
 
     explicit PermissionModel(QObject *parent = nullptr);

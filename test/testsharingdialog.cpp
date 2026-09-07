@@ -653,8 +653,38 @@ class TestSharingDialog : public QObject
             const auto text = permissionSwitch->property("text").toString();
             if (text == QStringLiteral("View files")) {
                 QVERIFY(permissionSwitch->property("checked").toBool());
+                QVERIFY(permissionSwitch->property("enabled").toBool());
             } else if (text == QStringLiteral("Download files")) {
                 QVERIFY(!permissionSwitch->property("checked").toBool());
+                QVERIFY(permissionSwitch->property("enabled").toBool());
+            } else {
+                QFAIL(qPrintable(QStringLiteral("Unexpected permission: %1").arg(text)));
+            }
+        }
+
+        share->updateFromJson(QJsonDocument{QJsonObject{
+            {QStringLiteral("ocs"),
+             QJsonObject{{QStringLiteral("data"),
+                          QJsonObject{{QStringLiteral("permissions"),
+                                       QJsonArray{
+                                           QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
+                                                       {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                                       {QStringLiteral("enabled"), true}},
+                                           QJsonObject{{QStringLiteral("class"), QStringLiteral("download")},
+                                                       {QStringLiteral("display_name"), QStringLiteral("Download files")},
+                                                       {QStringLiteral("enabled"), false}},
+                                       }}}}}},
+        }});
+        QCoreApplication::processEvents();
+
+        const auto updatedPermissionSwitches = findQuickItems(permissionContent, QStringLiteral("permissionSwitch"));
+        QCOMPARE(updatedPermissionSwitches.size(), 2);
+        for (const auto permissionSwitch : updatedPermissionSwitches) {
+            const auto text = permissionSwitch->property("text").toString();
+            if (text == QStringLiteral("View files")) {
+                QVERIFY(permissionSwitch->property("enabled").toBool());
+            } else if (text == QStringLiteral("Download files")) {
+                QVERIFY(!permissionSwitch->property("enabled").toBool());
             } else {
                 QFAIL(qPrintable(QStringLiteral("Unexpected permission: %1").arg(text)));
             }

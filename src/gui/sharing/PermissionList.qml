@@ -33,6 +33,7 @@ SettingsPanel {
             width: ListView.view.width
             text: model.label
             checked: model.enabled
+            enabled: model.available
 
             onToggled: root.permissionToggled(model.className, checked)
         }
