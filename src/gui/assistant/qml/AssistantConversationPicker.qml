@@ -76,7 +76,10 @@ ComboBox {
                 Style.standardPrimaryButtonHeight * Style.assistantConversationMaximumVisibleItems)
             model: root.popup.visible ? root.delegateModel : null
             currentIndex: root.highlightedIndex
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+
+            ScrollBar.vertical: ScrollBar {
+                policy: ScrollBar.AsNeeded
+            }
         }
 
         background: Rectangle {
