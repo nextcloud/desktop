@@ -5928,7 +5928,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося з&apos;єднатися із базою даних.</translation>
     </message>
 </context>
 <context>
@@ -6120,12 +6120,12 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="130"/>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="156"/>
         <source>People search is unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>Пошук людей недоступний.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="192"/>
         <source>Could not load people. Try again.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося завантажити перелік людей. Спробуйте ще раз.</translation>
     </message>
 </context>
 <context>
@@ -6151,18 +6151,18 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="687"/>
         <source>Search cleared</source>
-        <translation type="unfinished"/>
+        <translation>Пошук очищено</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="727"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1230"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Пошук</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="949"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>Частковий збіг</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1218"/>
@@ -6177,7 +6177,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1242"/>
         <source>No matching results</source>
-        <translation type="unfinished"/>
+        <translation>Відсутні результати збігу</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1244"/>
@@ -6187,32 +6187,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1246"/>
         <source>%1 results</source>
-        <translation type="unfinished"/>
+        <translation>%1 результатів</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1420"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Сьогодні</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1423"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>Останні 7 днів</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1426"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>Останні 30 днів</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>Цього року</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1434"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>Останнього року</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1454"/>
@@ -7125,18 +7125,18 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="158"/>
         <source>Remove %1 filter</source>
-        <translation type="unfinished"/>
+        <translation>Вилучити %1 фільтр</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="182"/>
         <location filename="../src/gui/search/SearchWindow.qml" line="251"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Повторити</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="215"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>Пошук результатів</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="250"/>
@@ -7514,33 +7514,33 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Скасувати</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="40"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Застосувати</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="52"/>
         <source>Start date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>Початкова дата (РРРР-ММ-ДД)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="59"/>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="70"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>РРРР-ММ-ДД</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="63"/>
         <source>End date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>Кінцева дата (РРРР-ММ-ДД)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="75"/>
         <source>Enter valid dates with the start date before the end date.</source>
-        <translation type="unfinished"/>
+        <translation>Зазначте правильну дату, початкова дата має передувати кінцевій.</translation>
     </message>
 </context>
 <context>
@@ -7548,12 +7548,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="28"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Назад</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
         <source>Back to all search results</source>
-        <translation type="unfinished"/>
+        <translation>Назад до результатів пошуку</translation>
     </message>
 </context>
 <context>
@@ -7561,22 +7561,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="50"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Введіть</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="57"/>
         <source>Filter by type</source>
-        <translation type="unfinished"/>
+        <translation>Фільтр за типом</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Дата</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
         <source>Filter by date</source>
-        <translation type="unfinished"/>
+        <translation>Фільтр за датою</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>

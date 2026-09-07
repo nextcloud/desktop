@@ -6173,12 +6173,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1218"/>
         <source>Search failed for all available sources. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>搜尋所有可用來源均未成功。請重試。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1240"/>
         <source>%1 results in %2</source>
-        <translation type="unfinished"/>
+        <translation>%2 中有 %1 個結果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1242"/>
@@ -7152,12 +7152,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
         <source>Less from connected services</source>
-        <translation type="unfinished"/>
+        <translation>減少來自已連結服務的結果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
         <source>More from connected services</source>
-        <translation type="unfinished"/>
+        <translation>增加來自已連結服務的結果</translation>
     </message>
 </context>
 <context>
@@ -7577,7 +7577,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>日期</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
@@ -7587,47 +7587,47 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>
         <source>No search source supports date filtering</source>
-        <translation type="unfinished"/>
+        <translation>沒有任何搜尋來源支援日期篩選功能</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="121"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>今天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="125"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>過去 7 天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="129"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>過去 30 天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="133"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>今年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="137"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>去年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="142"/>
         <source>Custom range …</source>
-        <translation type="unfinished"/>
+        <translation>自訂範圍⋯⋯</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="146"/>
         <source>Clear date</source>
-        <translation type="unfinished"/>
+        <translation>清除日期</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="157"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <translation>人員</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="165"/>
@@ -7637,7 +7637,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="166"/>
         <source>No search source supports people filtering</source>
-        <translation type="unfinished"/>
+        <translation>沒有任何搜尋來源支援使用者篩選功能</translation>
     </message>
 </context>
 <context>
@@ -7650,12 +7650,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
         <source>Clear search</source>
-        <translation type="unfinished"/>
+        <translation>清除搜尋</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
         <source>Keeps the active filters</source>
-        <translation type="unfinished"/>
+        <translation>保留目前的篩選條件</translation>
     </message>
 </context>
 <context>
@@ -7663,12 +7663,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation type="unfinished"/>
+        <translation>搜尋人員</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>重試</translation>
     </message>
 </context>
 <context>
@@ -7684,27 +7684,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="83"/>
         <source>More from %1  →</source>
-        <translation type="unfinished"/>
+        <translation>更多來自 %1 的結果 →</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="130"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>部份符合</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="193"/>
         <source>Loading more results …</source>
-        <translation type="unfinished"/>
+        <translation>正在載入更多結果⋯⋯</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
         <source>Retry loading more results</source>
-        <translation type="unfinished"/>
+        <translation>重試載入更多結果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>載入更多結果</translation>
     </message>
 </context>
 <context>
