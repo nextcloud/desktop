@@ -22,12 +22,12 @@ Dialog {
     property Share share: null
     property Recipient recipient: null
     property string updateError: ""
-    property real availableWidth: Style.dialogWidth
+    property real dialogAvailableWidth: Style.dialogWidth
 
     signal permissionToggled(string permissionClass, bool enabled)
 
     modal: true
-    width: Math.min(Style.dialogWidth, root.availableWidth)
+    width: Math.min(Style.dialogWidth, root.dialogAvailableWidth)
     padding: Style.standardSpacing
     title: root.recipient ? qsTr("Permissions for %1").arg(root.recipient.displayName) : qsTr("Recipient permissions")
 
