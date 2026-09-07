@@ -76,6 +76,7 @@ ecm_add_qml_module(nextcloudGuiSharing
   QML_FILES
     FieldDelegate.qml
     PermissionList.qml
+    RecipientPermissionDialog.qml
     DeleteShareConfirmation.qml
     RecipientAvatar.qml
     RecipientIcon.qml

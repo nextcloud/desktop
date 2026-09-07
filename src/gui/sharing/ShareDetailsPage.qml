@@ -373,56 +373,24 @@ ColumnLayout {
         }
     }
 
-    Dialog {
+    RecipientPermissionDialog {
         id: recipientPermissionDialog
-        objectName: "recipientPermissionDialog"
+        sharingController: root.sharingController
+        share: root.share
+        recipient: root.selectedRecipient
+        updateError: root.recipientPermissionUpdateError
+        availableWidth: root.width
 
-        modal: true
-        width: Math.min(Style.dialogWidth, root.width)
-        padding: Style.standardSpacing
-        title: root.selectedRecipient ? qsTr("Permissions for %1").arg(root.selectedRecipient.displayName) : qsTr("Recipient permissions")
-
-        background: Rectangle {
-            color: Style.wizardWindowBackground
-            radius: Style.wizardDialogRadius
-        }
-
-        contentItem: ColumnLayout {
-            spacing: Style.standardSpacing
-
-            PermissionList {
-                id: recipientPermissionList
-
-                Layout.fillWidth: true
-                model: PermissionModel {
-                    objectName: "recipientPermissionModel"
-                    share: root.share
-                    recipient: root.selectedRecipient
-                }
-
-                onPermissionToggled: (permissionClass, enabled) => {
-                    root.recipientPermissionUpdateError = ""
-                    if (root.selectedRecipient) {
-                        root.sharingController.setRecipientPermission(root.share,
-                                                                      root.selectedRecipient.className,
-                                                                      root.selectedRecipient.value,
-                                                                      root.selectedRecipient.instance || "",
-                                                                      permissionClass,
-                                                                      enabled)
-                    }
-                }
+        onPermissionToggled: (permissionClass, enabled) => {
+            root.recipientPermissionUpdateError = ""
+            if (root.selectedRecipient) {
+                root.sharingController.setRecipientPermission(root.share,
+                                                              root.selectedRecipient.className,
+                                                              root.selectedRecipient.value,
+                                                              root.selectedRecipient.instance || "",
+                                                              permissionClass,
+                                                              enabled)
             }
-
-            ErrorBox {
-                Layout.fillWidth: true
-                text: root.recipientPermissionUpdateError
-                visible: text.length > 0
-            }
-        }
-
-        footer: DialogButtonBox {
-            standardButtons: DialogButtonBox.Close
-            onRejected: recipientPermissionDialog.close()
         }
 
         onClosed: root.selectedRecipient = null
