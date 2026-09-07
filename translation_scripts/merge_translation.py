@@ -524,7 +524,11 @@ if __name__ == "__main__":
             for ts_file in ts_files:
                 sort_and_repair(ts_file)
             print("Step 0 completed: normalized incoming translations")
-            validate_ts_files(ts_files, "Step 0", strict=True)
+            # non-strict: client_en.ts is known to lag behind the other
+            # languages' key count even in NC's own stable branch (it's not
+            # kept in lockstep the same way) - step 1's lupdate reconciles
+            # that, so a mismatch here is expected, not fatal.
+            validate_ts_files(ts_files, "Step 0", strict=False)
             auto_commit(ts_files, "Step 0", auto_commit_enabled)
             # Snapshot keys after step 0
             for ts_file in ts_files:

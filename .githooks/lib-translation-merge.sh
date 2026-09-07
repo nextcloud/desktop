@@ -43,6 +43,16 @@ translation_merge_run_if_stable() {
         return 0
     fi
 
+    # post-merge/post-commit only fire once the merge is already finished,
+    # but .git/MERGE_HEAD can apparently still be lingering at that exact
+    # moment. `git commit` auto-detects MERGE_HEAD and silently adds it as
+    # an extra parent to whatever it commits next - so the *first* commit
+    # merge_translation.py makes below (Step 0) would otherwise turn into a
+    # spurious second merge of the same stable branch tip. Clear it: the
+    # merge already completed, this bookkeeping has served its purpose.
+    git_dir=$(git rev-parse --git-dir)
+    rm -f "$git_dir/MERGE_HEAD" "$git_dir/MERGE_MSG" "$git_dir/MERGE_MODE"
+
     # 'auto' runs steps 1-5 directly against the already-merged working tree
     # (which now contains both the NC base and our STRATO source) - unlike
     # 'all', it skips step 0's git-worktree checkout of the clean NC branch,
