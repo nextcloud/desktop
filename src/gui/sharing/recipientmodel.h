@@ -29,6 +29,7 @@ public:
         SecretValueRole,
         SecretUrlRole,
         InitiatorDisplayNameRole,
+        RecipientRole,
     };
 
     explicit RecipientModel(QObject *parent = nullptr);
