@@ -8,7 +8,9 @@ Diese Anleitung beschreibt den Prozess zur Lokalisierung des HiDrive Next Client
 - Python-Script `merge_translation.py`
 - Qt Linguist Tools (insbesondere `lupdate`)
 
-# Vorgehen bei Release
+# Vorgehen bei Release (obsolet)
+
+> **Obsolet, siehe [Automatisierung: Merge-Treiber + post-merge Hook](#automatisierung-merge-treiber--post-merge-hook).** Der separate `translations_<version source>`-Branch samt PR zurück in Richtung NC-Basisversion wird nicht mehr gebraucht: der Abgleich mit dem jeweils aktuellen NC-Basisstand passiert seitdem inplace bei jedem Merge eines `stable-x.y`-Branches, automatisch über den post-merge-Hook. Der folgende Ablauf bleibt hier nur als Referenz/Historie stehen.
 
 Um in einem Release zu erstellen und einen valider PR zur Übersetzung zu haben ist folgendes Vorgehen notwendig:
 
@@ -20,14 +22,28 @@ Um in einem Release zu erstellen und einen valider PR zur Übersetzung zu haben 
 
 Das Rebasedn der Translation-Branches lohnt sich eigentlich nicht, weil der nextcloud master sich relativ häufig ändert, was zu vielen Konflikten führen würde.
 
-## Automatisierung: post-merge Hook
+## Automatisierung: Merge-Treiber + post-merge Hook
 
-Beim Mergen eines `stable-x.y`-Branches (neue NC-Basisversion) in einen Feature-/Entwicklungs-Branch müssen die STRATO/IONOS-Übersetzungen erneut gegen die aktualisierte NC-Basis gemerged werden. Damit das nicht vergessen wird, gibt es den Hook `.githooks/post-merge`:
+Beim Mergen eines `stable-x.y`-Branches (neue NC-Basisversion) in einen Feature-/Entwicklungs-Branch (oder z.B. auch `develop` in einen Feature-Branch) müssen die `client_*.ts`-Dateien gegen die neue Basis abgeglichen werden. Das übernehmen zwei zusammenspielende Mechanismen:
 
-- Läuft automatisch nach jedem lokalen `git merge`/`git pull`.
+### 1. Merge-Treiber für `translations/client_*.ts`
+
+Diese Dateien sind maschinell generierte, stark umsortierte XML-Dateien. Ein normaler zeilenbasierter 3-way-Merge (Git-Standardverhalten) kann Message-Blöcke falsch ausrichten und Konflikte erzeugen, deren Auflösung die Datei inhaltlich beschädigt, ohne dass es auffällt (die Validierung im Skript prüft nur Struktur/Konsistenz, nicht ob eine Übersetzung noch zum richtigen Source-Text gehört). Deshalb wird für diese Dateien gar kein inhaltlicher Merge mehr versucht: `.gitattributes` markiert sie mit einem eigenen Treiber, der bei jedem Merge **immer die eingehende Seite** (das, was gerade reingemerged wird) 1:1 übernimmt – unabhängig von der Richtung. Das garantiert z.B. auch, dass ein Merge von `develop` in einen Feature-Branch dort den korrekten, aktuellen Stand ankommen lässt.
+
+**Einmalige Einrichtung pro Clone** (der Treiber-Name in `.gitattributes` ist bereits eingetragen, nur das Kommando dahinter muss lokal registriert werden – analog zu `core.hooksPath`):
+
+```
+git config merge.nc-take-incoming.driver "cp -- '%B' '%A'"
+```
+
+### 2. `post-merge`/`post-commit` Hook
+
+- Läuft automatisch nach jedem lokalen `git merge`/`git pull` (bzw. nach dem manuellen Abschluss eines Merges, der wegen Konflikten in *anderen* Dateien als den Übersetzungen manuell committet werden musste).
 - Erkennt anhand der Merge-Commit-Message, ob ein `stable-x.y`-Branch gemerged wurde (z.B. `Merge branch 'stable-33.0' into ...`).
-- Führt in diesem Fall automatisch `merge_translation.py all <branch>` aus (**ohne** `--auto-commit`).
+- Führt in diesem Fall automatisch `merge_translation.py auto` aus (**ohne** `--auto-commit`, **ohne** Branch-Argument).
 - Änderungen an `translations/client_*.ts` liegen danach ungestaged im Working Directory und müssen manuell geprüft und committet werden.
+
+`auto` durchläuft dabei Schritt 0 (jetzt nur noch Normalisieren/Sortieren der frisch eingemergten Datei, siehe unten) und Schritte 1–5 wie gewohnt.
 
 **Einmalige Aktivierung pro Clone:**
 
@@ -48,7 +64,7 @@ Die Qt-Translation Files (`.ts`-Dateien) enthalten zu jeder Resource die entspre
 Alle Schritte (0–5) können mit einem einzigen Befehl ausgeführt werden. Mit `--auto-commit` wird nach jedem Schritt automatisch committet:
 
 ```
-python3 merge_translation.py all stable-4.0 --auto-commit
+python3 merge_translation.py all --auto-commit
 ```
 
 ### Einzelne Schritte
@@ -59,16 +75,15 @@ Die Schritte können auch einzeln ausgeführt werden. Mit `--auto-commit` entfä
 python3 merge_translation.py 1 --auto-commit
 ```
 
-### 1. Nextcloud-Grundstand aktualisieren
+### 1. Eingemergte Übersetzungen normalisieren
 
-- Das Skript verwendet `git worktree`, um den unveränderten Nextcloud-Quellcode temporär verfügbar zu machen, ohne den aktuellen Branch zu wechseln.
-- Der NC-Basisbranch wird als zweites Argument übergeben:
+- Dank des Merge-Treibers (siehe oben) enthält `translations/client_*.ts` an dieser Stelle bereits 1:1 den Stand der Seite, die gerade eingemergt wurde – es muss also nichts mehr rekonstruiert werden, kein Branch-Argument nötig.
+- Das Skript sortiert die Dateien nur in unsere kanonische Reihenfolge/Formatierung, damit der Diff von Schritt 1 nachher nur echte `lupdate`-Änderungen zeigt statt Sortier-Rauschen:
 
 ```
-python3 merge_translation.py 0 stable-4.0
+python3 merge_translation.py 0
 ```
 
-- Das Skript erstellt automatisch einen temporären Worktree, führt `lupdate` gegen den NC-Quellcode aus, sortiert die Dateien und räumt den Worktree wieder auf.
 - Committen (STEP 0) — oder `--auto-commit` verwenden.
 
 ### 2. Merge-Schritt 1
@@ -137,3 +152,12 @@ python3 merge_translation.py 5
 ## Abschluss
 
 Nach dem letzten Schritt sind die `.ts`-Dateien vollständig lokalisiert, enthalten unsere Keys und Übersetzungen und sind frei von obsolete Keys.
+
+## Historie: entfernte Mechanismen
+
+Zwei frühere Mechanismen zum Abgleich mit dem NC-Basisstand wurden entfernt, weil der neue Merge-Treiber (siehe oben) das eigentliche Problem, das sie lösen sollten, gar nicht mehr entstehen lässt:
+
+- **Ursprünglich (manuell):** den `stable-x`-Branch auschecken, den `lupdate`-Befehl von Hand gegen den dort ausgecheckten Quellcode laufen lassen, die Änderung stashen, zurück auf den eigenen Branch wechseln und den Stash anwenden.
+- **Danach (automatisiert, `git worktree`):** Step 0 hat denselben Ablauf automatisiert – über ein temporäres `git worktree`-Checkout von `nc_branch` wurde `lupdate` gegen dessen Quellcode ausgeführt, mit `-ts` aber direkt auf die eigenen `client_*.ts`-Dateien zeigend.
+
+Beide Varianten haben ausschließlich die *Menge* der Source-Strings synchronisiert (neu/entfernt/Location) – `lupdate` liest nie den Übersetzungstext einer anderen `.ts`-Datei, auch nicht den von `stable-x`. Der eigentliche NC-Übersetzungsstand kam bisher nur über den normalen Git-Merge von `client_*.ts` selbst ins Repo – und genau der war durch Zeilen-basiertes 3-way-Merging auf dieser stark umsortierten, maschinengenerierten XML-Struktur nicht robust (siehe Merge-Treiber-Abschnitt oben). Mit dem Merge-Treiber übernimmt der Git-Merge selbst zuverlässig den kompletten, korrekten Stand der eingehenden Seite; Step 0 muss diesen Stand daher nicht mehr aus dem Quellcode rekonstruieren und macht seitdem nur noch die Normalisierung/Sortierung.
