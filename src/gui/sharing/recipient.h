@@ -5,9 +5,13 @@
 
 #pragma once
 
+#include <QHash>
 #include <QJsonObject>
+#include <QList>
 #include <QObject>
 #include <QPointer>
+
+#include "permission.h"
 
 #include <optional>
 
@@ -25,10 +29,14 @@ class Recipient : public QObject
     Q_PROPERTY(QString instance READ instanceString CONSTANT)
     Q_PROPERTY(bool secretUpdatable READ secretUpdatable CONSTANT)
     Q_PROPERTY(QString secretUrl READ secretUrlString CONSTANT)
+    Q_PROPERTY(bool hasPermissionData READ hasPermissionData NOTIFY permissionsChanged)
+    Q_PROPERTY(QList<QPointer<Permission>> permissions READ permissions NOTIFY permissionsChanged)
 
 public:
     /** @brief Creates a recipient from its unified sharing API representation. */
     [[nodiscard]] static QPointer<Recipient> fromJson(const QJsonObject &json);
+    /** @brief Updates this recipient from its unified sharing API representation. */
+    void updateFromJson(const QJsonObject &json);
 
     /** @brief Returns the registered server class identifying the recipient type. */
     [[nodiscard]] QString className() const;
@@ -54,6 +62,17 @@ public:
     [[nodiscard]] QString secretUrlString() const;
     /** @brief Returns the user-facing name of the user who added the recipient. */
     [[nodiscard]] QString initiatorDisplayName() const;
+    /** @brief Returns the permissions currently assigned to this recipient. */
+    [[nodiscard]] const QList<QPointer<Permission>> &permissions() const;
+    /** @brief Returns whether the server supplied recipient-specific permissions. */
+    [[nodiscard]] bool hasPermissionData() const;
+    /** @brief Returns the recipient-specific permission override for a class, if one is available. */
+    [[nodiscard]] std::optional<bool> permissionOverride(const QString &className) const;
+    /** @brief Tracks a successfully applied recipient-specific permission update. */
+    void setPermissionOverride(const QString &className, bool enabled);
+
+Q_SIGNALS:
+    void permissionsChanged();
 
 private:
     explicit Recipient(QObject *parent = nullptr);
@@ -69,6 +88,9 @@ private:
     std::optional<QString> _secretValue;
     std::optional<QString> _secretUrl;
     QString _initiatorDisplayName;
+    QList<QPointer<Permission>> _permissions;
+    bool _hasPermissionData = false;
+    QHash<QString, bool> _permissionOverrides;
 };
 
 }
