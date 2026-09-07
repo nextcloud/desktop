@@ -259,7 +259,7 @@ bool OpenVfsPluginFactory::checkAvailability() const
         qCWarning(lcOpenVFS) << u"Fuse is not installed or available on the system";
         return false;
     }
-    if (QStandardPaths::findExecutable(u"fusermount3"_s).isEmpty()) {
+    if (!QFile::exists(u"/usr/bin/fusermount3"_s) && QStandardPaths::findExecutable(u"fusermount3"_s).isEmpty()) {
         qCWarning(lcOpenVFS) << u"fusermount3 is not installed on the system";
         return false;
     }
