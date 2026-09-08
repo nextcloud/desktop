@@ -10,36 +10,50 @@ import com.nextcloud.desktopclient as NC
 import Style
 import "../../tray"
 
-ListView {
+ScrollView {
     id: root
     objectName: "assistantTaskList"
 
     required property NC.AssistantController assistantController
 
+    property alias count: taskList.count
+
     signal deleteRequested(double taskId)
 
+    function itemAtIndex(index) {
+        return taskList.itemAtIndex(index)
+    }
+
+    function forceLayout() {
+        taskList.forceLayout()
+    }
+
+    contentWidth: availableWidth
     clip: true
-    spacing: Style.wizardSectionSpacing
-    boundsBehavior: Flickable.StopAtBounds
-    model: root.assistantController.tasks
+    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+    ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-    ScrollBar.vertical: ScrollBar {
-        policy: ScrollBar.AsNeeded
-    }
+    ListView {
+        id: taskList
 
-    delegate: AssistantTaskDelegate {
-        assistantController: root.assistantController
-        onDeleteRequested: taskId => root.deleteRequested(taskId)
-    }
+        spacing: Style.wizardSectionSpacing
+        boundsBehavior: Flickable.StopAtBounds
+        model: root.assistantController.tasks
 
-    EnforcedPlainTextLabel {
-        anchors.centerIn: parent
-        width: Math.min(parent.width, Style.assistantEmptyStateMaximumWidth)
-        visible: root.count === 0 && !root.assistantController.requestInProgress
-        text: qsTr("No assistant tasks for this type.")
-        color: Style.wizardSecondaryText
-        font.pixelSize: Style.wizardBodyFontPixelSize
-        horizontalAlignment: Text.AlignHCenter
-        wrapMode: Text.WordWrap
+        delegate: AssistantTaskDelegate {
+            assistantController: root.assistantController
+            onDeleteRequested: taskId => root.deleteRequested(taskId)
+        }
+
+        EnforcedPlainTextLabel {
+            anchors.centerIn: parent
+            width: Math.min(parent.width, Style.assistantEmptyStateMaximumWidth)
+            visible: taskList.count === 0 && !root.assistantController.requestInProgress
+            text: qsTr("No assistant tasks for this type.")
+            color: Style.wizardSecondaryText
+            font.pixelSize: Style.wizardBodyFontPixelSize
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WordWrap
+        }
     }
 }

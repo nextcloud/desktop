@@ -47,7 +47,6 @@ ColumnLayout {
         width: Math.min(Style.wizardDialogMaximumWidth,
             root.width - Style.wizardWindowMargin * 2)
         padding: Style.wizardWindowMargin
-        x: Math.round((root.width - width) / 2)
-        y: Math.round((root.height - height) / 2)
+        anchors.centerIn: parent
     }
 }

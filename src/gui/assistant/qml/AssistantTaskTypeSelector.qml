@@ -30,6 +30,8 @@ ScrollView {
             delegate: AssistantTaskTypeDelegate {
                 assistantController: root.assistantController
                 canUseAssistant: root.canUseAssistant
+                leftPadding: Style.wizardSectionSpacing
+                rightPadding: Style.wizardSectionSpacing
             }
         }
     }

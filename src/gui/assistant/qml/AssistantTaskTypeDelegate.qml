@@ -34,8 +34,6 @@ Button {
     checked: root.assistantController.selectedTaskTypeId === root.typeId
     enabled: root.canUseAssistant && !root.assistantController.requestInProgress
     implicitHeight: Style.wizardFooterButtonHeight
-    leftPadding: Style.wizardSectionSpacing
-    rightPadding: Style.wizardSectionSpacing
     font.pixelSize: Style.wizardBodyFontPixelSize
     font.weight: checked ? Font.DemiBold : Font.Normal
 

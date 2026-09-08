@@ -10,34 +10,48 @@ import com.nextcloud.desktopclient as NC
 import Style
 import "../../tray"
 
-ListView {
+ScrollView {
     id: root
     objectName: "assistantMessageList"
 
     required property NC.AssistantController assistantController
 
+    property alias count: messageList.count
+
+    function itemAtIndex(index) {
+        return messageList.itemAtIndex(index)
+    }
+
+    function forceLayout() {
+        messageList.forceLayout()
+    }
+
+    contentWidth: availableWidth
     clip: true
-    spacing: Style.wizardSectionSpacing
-    boundsBehavior: Flickable.StopAtBounds
-    model: root.assistantController.messages
+    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+    ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-    ScrollBar.vertical: ScrollBar {
-        policy: ScrollBar.AsNeeded
-    }
+    ListView {
+        id: messageList
 
-    delegate: AssistantMessageDelegate {
-    }
+        spacing: Style.wizardSectionSpacing
+        boundsBehavior: Flickable.StopAtBounds
+        model: root.assistantController.messages
 
-    onCountChanged: positionViewAtEnd()
+        delegate: AssistantMessageDelegate {
+        }
 
-    EnforcedPlainTextLabel {
-        anchors.centerIn: parent
-        width: Math.min(parent.width, Style.assistantEmptyStateMaximumWidth)
-        visible: root.count === 0 && !root.assistantController.thinking
-        text: qsTr("Start a conversation with Nextcloud Assistant.")
-        color: Style.wizardSecondaryText
-        font.pixelSize: Style.wizardBodyFontPixelSize
-        horizontalAlignment: Text.AlignHCenter
-        wrapMode: Text.WordWrap
+        onCountChanged: positionViewAtEnd()
+
+        EnforcedPlainTextLabel {
+            anchors.centerIn: parent
+            width: Math.min(parent.width, Style.assistantEmptyStateMaximumWidth)
+            visible: messageList.count === 0 && !root.assistantController.thinking
+            text: qsTr("Start a conversation with Nextcloud Assistant.")
+            color: Style.wizardSecondaryText
+            font.pixelSize: Style.wizardBodyFontPixelSize
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WordWrap
+        }
     }
 }
