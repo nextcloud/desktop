@@ -48,6 +48,9 @@ public Q_SLOTS:
     void showAccount(OCC::AccountState *account);
     void setInitialAccount(OCC::AccountState *account);
     void showIssuesList(OCC::AccountState *account);
+    void showUserStatus(OCC::AccountState *account);
+    void showAssistant(OCC::AccountState *account);
+    void showSearch(OCC::AccountState *account);
     void slotSwitchPage(QAction *action);
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
@@ -58,6 +61,8 @@ Q_SIGNALS:
     void currentPageChanged();
 
 protected:
+    /** @brief Refreshes styled surfaces after application palette changes. */
+    bool event(QEvent *event) override;
     void reject() override;
     void accept() override;
     void changeEvent(QEvent *) override;
@@ -70,6 +75,7 @@ private Q_SLOTS:
 private:
     void customizeStyle();
     void requestStyleUpdate();
+    [[nodiscard]] int userIndexForAccount(OCC::AccountState *account) const;
     void updateAccountAvatar(const Account *account);
     void addSettingsPage(const QString &iconPath, const QString &title, QWidget *settingsPage, bool updateChannelAware = false);
 

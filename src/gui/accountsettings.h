@@ -69,6 +69,9 @@ Q_SIGNALS:
     void folderChanged();
     void openFolderAlias(const QString &);
     void showIssuesList(OCC::AccountState *account);
+    void showUserStatus(OCC::AccountState *account);
+    void showAssistant(OCC::AccountState *account);
+    void showSearch(OCC::AccountState *account);
     void requestMnemonic();
     void removeAccountFolders(OCC::AccountState *account);
     void styleChanged();
@@ -142,6 +145,7 @@ private Q_SLOTS:
     void removeActionFromEncryptionMessage(const QString &actionId);
     void setEncryptionPanelVisible(bool visible);
     void updateSyncFoldersPanelVisibility();
+    void updateAccountShortcutVisibility();
     void slotResetFileProviderDomain();
 
 private:
@@ -152,6 +156,7 @@ private:
     void refreshE2eEncryptionMessage();
     void setEncryptionMessageIcon(const QIcon &icon);
     void updateEncryptionMessageActions();
+    void updateAccountShortcutIcons();
 
     /// Returns the alias of the selected folder, empty string if none
     [[nodiscard]] QString selectedFolderAlias() const;
