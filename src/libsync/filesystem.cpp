@@ -786,12 +786,12 @@ bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
     }
     catch (const std::system_error &e)
     {
-        qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what() << "- path:" << path;
+        qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what() << "- path:" << path.string();
         return false;
     }
     catch (...)
     {
-        qCWarning(lcFileSystem()) << "exception when checking folder permissions -  path:" << path;
+        qCWarning(lcFileSystem()) << "exception when checking folder permissions -  path:" << path.string();
         return false;
     }
 #endif
@@ -908,7 +908,7 @@ bool FileSystem::setModTime(const std::filesystem::path &filename, time_t modTim
     std::error_code rc;
     std::filesystem::last_write_time(filename, time_tToFileTime(modTime), rc);
     if (rc) {
-        qCWarning(lcFileSystem) << u"Error setting mtime for" << filename << u"failed: rc" << rc.value() << u", error message:" << rc.message();
+        qCWarning(lcFileSystem) << u"Error setting mtime for" << filename.string() << u"failed: rc" << rc.value() << u", error message:" << rc.message();
         Q_ASSERT(!rc);
         return false;
     }
