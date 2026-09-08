@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include <QMetaMethod>
 #include <QSignalSpy>
 #include <QTest>
 #include <QUrlQuery>
@@ -49,6 +50,24 @@ class TestUnifiedSharing : public QObject
     Q_OBJECT
 
   private Q_SLOTS:
+      void typedJobSignalsExposeShareMetatypes()
+      {
+          const auto sharePointerType = QMetaType::fromType<QPointer<Share>>();
+          const auto sharePointerListType = QMetaType::fromType<QList<QPointer<Share>>>();
+          QVERIFY(sharePointerType.isValid());
+          QVERIFY(sharePointerListType.isValid());
+
+          const auto shareCreated = QMetaMethod::fromSignal(&CreateShareJob::shareCreated);
+          const auto shareFetched = QMetaMethod::fromSignal(&GetShareJob::shareFetched);
+          const auto sharesFetched = QMetaMethod::fromSignal(&GetSharesJob::sharesFetched);
+          const auto shareUpdated = QMetaMethod::fromSignal(&UpdateShareJob::shareUpdated);
+
+          QCOMPARE(shareCreated.parameterMetaType(0).id(), sharePointerType.id());
+          QCOMPARE(shareFetched.parameterMetaType(0).id(), sharePointerType.id());
+          QCOMPARE(sharesFetched.parameterMetaType(0).id(), sharePointerListType.id());
+          QCOMPARE(shareUpdated.parameterMetaType(0).id(), sharePointerType.id());
+      }
+
     void recipientsPreserveServerIdentityAndCapabilities()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};

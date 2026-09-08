@@ -5,12 +5,11 @@
 
 #pragma once
 
+#include "unifiedshare.h"
 #include "unifiedsharingrequest.h"
 
 namespace OCC::Gui::Sharing
 {
-
-class Share;
 
 /**
  * @brief Base for operations that mutate one existing share.

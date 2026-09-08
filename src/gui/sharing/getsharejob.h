@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "unifiedshare.h"
 #include "unifiedsharingrequest.h"
 
 #include <QJsonObject>
@@ -14,8 +15,6 @@
 
 namespace OCC::Gui::Sharing
 {
-
-class Share;
 
 /**
  * @brief Fetches the complete representation of one share.

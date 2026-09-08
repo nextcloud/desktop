@@ -5,12 +5,11 @@
 
 #pragma once
 
+#include "unifiedshare.h"
 #include "unifiedsharingrequest.h"
 
 namespace OCC::Gui::Sharing
 {
-
-class Share;
 
 /**
  * @brief Creates a new server-side share container.
