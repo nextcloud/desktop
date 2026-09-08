@@ -6147,78 +6147,78 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Otsinguteenuste pakkujate laadimine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="653"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="657"/>
         <source>No search providers are available.</source>
         <translation>Ühtegi otsinguteenuste pakkujat pole saadaval.</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="687"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="691"/>
         <source>Search cleared</source>
         <translation>Otsing on tühjendatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="727"/>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1230"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="731"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1234"/>
         <source>Searching</source>
         <translation>Otsin</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="949"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="953"/>
         <source>Partial matches</source>
         <translation>Osalised vasted</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1218"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1222"/>
         <source>Search failed for all available sources. Please try again.</source>
         <translation>Ostmine kõikidest allikatest ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1240"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1244"/>
         <source>%1 results in %2</source>
-        <translation>%1 tulemust, aega kulus %2</translation>
+        <translation>%1 tulemust rakendusest %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1242"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1246"/>
         <source>No matching results</source>
         <translation>Otsinguvastuseid ei leidu</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1244"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1248"/>
         <source>%1 results. Some sources are unavailable.</source>
         <translation>%1 vastust. Mõned otsinguallikad polnud saadaval.</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1246"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1250"/>
         <source>%1 results</source>
         <translation>%1 tulemust</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1420"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1424"/>
         <source>Today</source>
         <translation>Täna</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1423"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1427"/>
         <source>Last 7 days</source>
         <translation>Viimase 7 päeva jooksul</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1426"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
         <source>Last 30 days</source>
         <translation>Viimase 30 päeva jooksul</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1434"/>
         <source>This year</source>
         <translation>Sel aastal</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1434"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1438"/>
         <source>Last year</source>
         <translation>Eelmisel aastal</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1454"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1458"/>
         <source>%1 – %2</source>
         <translation>%1 - %2</translation>
     </message>
