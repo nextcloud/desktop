@@ -1123,6 +1123,7 @@ private Q_SLOTS:
         QCOMPARE(defaultModel->accountId(), -1);
         QVERIFY(!defaultModel->isAccountConnected());
         QVERIFY(!defaultModel->canEditSearch());
+        QVERIFY(defaultModel->errorString().isEmpty());
         QCOMPARE(defaultModel->searchState(), OCC::UnifiedSearchResultsListModel::SearchState::Placeholder);
     }
 
