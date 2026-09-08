@@ -6,6 +6,7 @@
 import QtQml
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Effects
 import QtQuick.Window
 import "../activity/qml"
 import QtQuick.Layouts
@@ -109,16 +110,18 @@ ApplicationWindow {
         }
     }
 
-    OpacityMask {
+    MultiEffect {
         anchors.fill: parent
         anchors.margins: Style.trayWindowBorderWidth
         source: ShaderEffectSource {
             sourceItem: trayWindowMainItem
             hideSource: true
         }
+        maskEnabled: true
         maskSource: Rectangle {
             width: trayWindow.width
             height: trayWindow.height
+            color: "white"
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         }
     }
