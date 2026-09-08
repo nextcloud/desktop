@@ -47,8 +47,9 @@ static QString findDefaultFileManager()
         QFile::ReadOnly);
     p.waitForFinished();
     QString fileName = QString::fromUtf8(p.readAll().trimmed());
-    if (fileName.isEmpty())
+    if (fileName.isEmpty()) {
         return QString();
+    }
 
     QFileInfo fi;
     const QStringList dirs = xdgDataDirs();
@@ -121,8 +122,9 @@ void showInFileManager(const QString &localPath)
         bool canHandleFile = false; // assume dumb fm
 
         args = exec.split(' ');
-        if (args.count() > 0)
+        if (args.count() > 0) {
             app = args.takeFirst();
+        }
 
         QString kdeSelectParam("--select");
 
@@ -166,9 +168,9 @@ void showInFileManager(const QString &localPath)
             args.insert(it, QString::fromLatin1("--icon")); // before
         }
 
-
-        if (args.count() == 0)
+        if (args.count() == 0) {
             args << fileToOpen;
+        }
 
         if (app.isEmpty() || args.isEmpty() || !canHandleFile) {
             // fall back: open the default file manager, without ever selecting the file

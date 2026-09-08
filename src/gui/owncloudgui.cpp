@@ -10,6 +10,8 @@
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "application.h"
+#include "assistant/assistantcontroller.h"
+#include "assistant/assistantmodule.h"
 #include "callstatechecker.h"
 #include "emojimodel.h"
 #include "notificationsoundplayer.h"
@@ -38,7 +40,9 @@
 #include "activity/syncstatussummary.h"
 #include "tray/trayactivationpolicy.h"
 #include "tray/trayaccountappsmodel.h"
+#include "search/unifiedsearchpeoplemodel.h"
 #include "search/unifiedsearchresultslistmodel.h"
+#include "tray/usermodel.h"
 #include "integration/fileactionsmodel.h"
 #include "governance/applygovernancelabel.h"
 #include "governance/deletegovernancelabel.h"
@@ -159,6 +163,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
     qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
     qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
+    qmlRegisterType<UnifiedSearchPeopleModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchPeopleModel");
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
     qmlRegisterType<FileActionsModel>("com.nextcloud.desktopclient", 1, 0, "FileActionsModel");
@@ -170,6 +175,8 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<GovernanceLabelsListModel>("com.nextcloud.desktopclient", 1, 0, "GovernanceLabelsListModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
+    qmlRegisterUncreatableType<AssistantController>(
+        "com.nextcloud.desktopclient", 1, 0, "AssistantController", "Owned by the Assistant window");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
     qmlRegisterUncreatableType<TalkNotificationData>("com.nextcloud.desktopclient", 1, 0, "talkNotificationData", "TalkNotificationData");
     qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
@@ -728,10 +735,12 @@ void ownCloudGui::slotShutdown()
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
     // those do delete on close
-    if (!_settingsDialog.isNull())
+    if (!_settingsDialog.isNull()) {
         _settingsDialog->close();
-    if (!_logBrowser.isNull())
+    }
+    if (!_logBrowser.isNull()) {
         _logBrowser->deleteLater();
+    }
 }
 
 void ownCloudGui::slotToggleLogBrowser()

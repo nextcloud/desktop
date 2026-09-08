@@ -51,6 +51,53 @@ private Q_SLOTS:
         QVERIFY(currVersion < highVersion);
     }
 
+    // Reproduces #7009: on the first start of a newly installed version the
+    // leftover installer must be gone. Application::configVersionMigration()
+    // (src/gui/application.cpp:161-164) drops the Updater/* keys before
+    // main() calls handleStartup() (src/gui/main.cpp:104 vs 142), so the
+    // cleanup in NSISUpdater::handleStartup() never sees the artifact.
+    void testLeftoverInstallerIsRemovedAfterVersionChange()
+    {
+        QTemporaryDir tempDir;
+        QVERIFY(tempDir.isValid());
+        QVERIFY(ConfigFile::setConfDir(tempDir.path()));
+
+        ConfigFile cfg;
+        const auto writeFile = [](const QString &path, const QByteArray &contents) {
+            QFile f(path);
+            return f.open(QIODevice::WriteOnly) && f.write(contents) == contents.size();
+        };
+
+        // a previous run downloaded an installer and msiexec left its log behind
+        const auto installer = FileSystem::joinPath(cfg.configPath(), "Nextcloud-1.0.0-x64.msi"_L1);
+        const auto msiLog = FileSystem::joinPath(cfg.configPath(), "msi.log"_L1);
+        QVERIFY(writeFile(installer, "this would be the installer"_ba));
+        QVERIFY(writeFile(msiLog, "this would be the msiexec log"_ba));
+
+        {
+            QSettings settings(cfg.configFile(), QSettings::IniFormat);
+            settings.setValue("Updater/updateAvailable"_L1, installer);
+            settings.setValue("Updater/updateTargetVersion"_L1, "1.0.0"_L1);
+            settings.setValue("Updater/updateTargetVersionString"_L1, "1.0.0"_L1);
+            settings.setValue("Updater/autoUpdateAttempted"_L1, true);
+            settings.sync();
+        }
+
+        // the update was installed: the running binary is newer than the target
+        QVERIFY(Updater::Helper::currentVersionToInt() > Updater::Helper::stringVersionToInt("1.0.0"_L1));
+
+        // what Application::configVersionMigration() does on that very first
+        // start, before the updater gets a chance to look at its own state
+        cfg.setClientVersionString("1.0.0"_L1);
+        cfg.cleanUpdaterConfiguration();
+
+        NSISUpdater updater(QUrl("http://localhost:1/updateinfo.xml"_L1));
+        updater.handleStartup();
+
+        QVERIFY(!QFileInfo::exists(installer));
+        QVERIFY(!QFileInfo::exists(msiLog));
+    }
+
 #ifdef HAVE_QHTTPSERVER
     void testUpdaterDownloadRedirect()
     {

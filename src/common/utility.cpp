@@ -52,8 +52,9 @@ bool Utility::writeRandomFile(const QString &fname, int size)
 {
     int maxSize = 10 * 10 * 1024;
 
-    if (size == -1)
+    if (size == -1) {
         size = rand() % maxSize;
+    }
 
     QString randString;
     for (int i = 0; i < size; i++) {
@@ -205,8 +206,9 @@ QString Utility::compactFormatDouble(double value, int prec, const QString &unit
         }
         str.chop(1);
     }
-    if (!unit.isEmpty())
+    if (!unit.isEmpty()) {
         str += (QLatin1Char(' ') + unit);
+    }
     return str;
 }
 
@@ -233,8 +235,9 @@ void Utility::usleep(int usec)
 // This can be overridden from the tests
 OCSYNC_EXPORT bool fsCasePreserving_override = []() -> bool {
     QByteArray env = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING");
-    if (!env.isEmpty())
+    if (!env.isEmpty()) {
         return env.toInt();
+    }
     return Utility::isWindows() || Utility::isMac();
 }();
 
@@ -559,23 +562,27 @@ QByteArray Utility::conflictFileBaseNameFromPattern(const QByteArray &conflictNa
 
     // A single space before "(conflicted copy" is considered part of the tag
     auto startNew = conflictName.lastIndexOf("(conflicted copy");
-    if (startNew > 0 && conflictName[startNew - 1] == ' ')
+    if (startNew > 0 && conflictName[startNew - 1] == ' ') {
         startNew -= 1;
+    }
 
     // The rightmost tag is relevant
     auto tagStart = qMax(startOld, startNew);
-    if (tagStart == -1)
+    if (tagStart == -1) {
         return "";
+    }
 
     // Find the end of the tag
     auto tagEnd = conflictName.size();
     auto dot = conflictName.lastIndexOf('.'); // dot could be part of user name for new tag!
-    if (dot > tagStart)
+    if (dot > tagStart) {
         tagEnd = dot;
+    }
     if (tagStart == startNew) {
         auto paren = conflictName.indexOf(')', tagStart);
-        if (paren != -1)
+        if (paren != -1) {
             tagEnd = paren + 1;
+        }
     }
     return conflictName.left(tagStart) + conflictName.mid(tagEnd);
 }

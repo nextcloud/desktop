@@ -89,8 +89,9 @@ bool Vfs::setPinStateInDb(const QString &folderPath, PinState state)
 {
     auto path = folderPath.toUtf8();
     _setupParams.journal->internalPinStates().wipeForPathAndBelow(path);
-    if (state != PinState::Inherited)
+    if (state != PinState::Inherited) {
         _setupParams.journal->internalPinStates().setForPath(path, state);
+    }
     return true;
 }
 
@@ -106,21 +107,25 @@ Vfs::AvailabilityResult Vfs::availabilityInDb(const QString &folderPath)
     auto pin = _setupParams.journal->internalPinStates().effectiveForPathRecursive(path);
     // not being able to retrieve the pin state isn't too bad
     auto hydrationStatus = _setupParams.journal->hasHydratedOrDehydratedFiles(path);
-    if (!hydrationStatus)
+    if (!hydrationStatus) {
         return AvailabilityError::DbError;
+    }
 
     if (hydrationStatus->hasDehydrated) {
-        if (hydrationStatus->hasHydrated)
+        if (hydrationStatus->hasHydrated) {
             return VfsItemAvailability::Mixed;
-        if (pin && *pin == PinState::OnlineOnly)
+        }
+        if (pin && *pin == PinState::OnlineOnly) {
             return VfsItemAvailability::OnlineOnly;
-        else
+        } else {
             return VfsItemAvailability::AllDehydrated;
+        }
     } else if (hydrationStatus->hasHydrated) {
-        if (pin && *pin == PinState::AlwaysLocal)
+        if (pin && *pin == PinState::AlwaysLocal) {
             return VfsItemAvailability::AlwaysLocal;
-        else
+        } else {
             return VfsItemAvailability::AllHydrated;
+        }
     }
     return AvailabilityError::NoSuchItem;
 }
@@ -134,12 +139,15 @@ VfsOff::~VfsOff() = default;
 
 static QString modeToPluginName(Vfs::Mode mode)
 {
-    if (mode == Vfs::WithSuffix)
+    if (mode == Vfs::WithSuffix) {
         return QStringLiteral("suffix");
-    if (mode == Vfs::WindowsCfApi)
+    }
+    if (mode == Vfs::WindowsCfApi) {
         return QStringLiteral("cfapi");
-    if (mode == Vfs::XAttr)
+    }
+    if (mode == Vfs::XAttr) {
         return QStringLiteral("xattr");
+    }
     return QString();
 }
 
@@ -224,8 +232,9 @@ Vfs::Mode OCC::bestAvailableVfsMode()
 
 std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
 {
-    if (mode == Vfs::Off)
+    if (mode == Vfs::Off) {
         return std::unique_ptr<Vfs>(new VfsOff);
+    }
 
     auto name = modeToPluginName(mode);
     if (name.isEmpty()) {

@@ -30,6 +30,14 @@ elif [ ! -x "$(command -v pluginkit)" ]; then
 else
     echo "$LOG_PREFIX registering extension for user '$CONSOLE_USER' (uid $CONSOLE_UID)"
 
+    # Force remove any stale registration first (failure is expected on first install).
+    run_as_console_user pluginkit -r "$APPEX"; rc=$?
+    if [ "$rc" -eq 0 ]; then
+        echo "$LOG_PREFIX pluginkit -r succeeded for $APPEX"
+    else
+        echo "$LOG_PREFIX pluginkit -r returned $rc for $APPEX (expected if nothing was registered yet)"
+    fi
+
     # Add it to the DB. This happens automatically too, but we push a bit harder (#3463).
     run_as_console_user pluginkit -a "$APPEX"; rc=$?
     if [ "$rc" -eq 0 ]; then

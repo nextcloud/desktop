@@ -1338,8 +1338,9 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
     std::function<void(const QString &url)> targetFun)
 {
     QString oldUrl;
-    if (!numericFileId.isEmpty())
+    if (!numericFileId.isEmpty()) {
         oldUrl = account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
+    }
 
     // Retrieve the new link by PROPFIND
     auto *job = new PropfindJob(account, remotePath, target);

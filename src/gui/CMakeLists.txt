@@ -287,6 +287,9 @@ IF(BUILD_UPDATER)
 endif()
 
 add_subdirectory(search)
+include(assistant/CMakeLists.txt)
+list(APPEND client_SRCS ${assistant_SRCS})
+qt_add_resources(client_UI_SRCS ${assistant_QRC})
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)

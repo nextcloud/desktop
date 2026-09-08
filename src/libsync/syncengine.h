@@ -306,7 +306,7 @@ private:
     //
     // Bucket classification is done by simply dividing the seconds until
     // scheduled sync time by the interval (note -- integer division!)
-    QHash<qint64, ScheduledSyncBucket> groupNeededScheduledSyncRuns(const qint64 interval) const;
+    [[nodiscard]] QHash<qint64, ScheduledSyncBucket> groupNeededScheduledSyncRuns(const qint64 interval) const;
 
     // Checks if there is already a scheduled sync run timer active near the
     // time provided as the parameter.
@@ -316,8 +316,7 @@ private:
     //
     // If this expiration occurs before the scheduled sync run provided as the
     // parameter, it is rescheduled to expire at the time of the parameter.
-    QSharedPointer<SyncEngine::ScheduledSyncTimer> nearbyScheduledSyncTimer(const qint64 scheduledSyncTimerSecs,
-                                                                            const qint64 intervalSecs) const;
+    [[nodiscard]] QSharedPointer<SyncEngine::ScheduledSyncTimer> nearbyScheduledSyncTimer(const qint64 scheduledSyncTimerSecs, const qint64 intervalSecs) const;
 
     static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 

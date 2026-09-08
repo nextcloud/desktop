@@ -62,7 +62,7 @@ public:
      */
     void setChecksumType(const QByteArray &type);
 
-    QByteArray checksumType() const;
+    [[nodiscard]] QByteArray checksumType() const;
 
     /**
      * Computes the checksum for the given file path.

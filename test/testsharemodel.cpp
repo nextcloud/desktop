@@ -5,13 +5,14 @@
 
 #include "gui/filedetails/sharemodel.h"
 
-#include <QTest>
 #include <QAbstractItemModelTester>
-#include <QSignalSpy>
+#include <QDateTime>
 #include <QFileInfo>
 #include <QFlags>
-#include <QDateTime>
+#include <QSignalSpy>
+#include <QTest>
 #include <QTimeZone>
+#include <QUrlQuery>
 
 #include "sharetestutils.h"
 #include "libsync/theme.h"
@@ -388,6 +389,7 @@ private Q_SLOTS:
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
         QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
+        helper.resetSharedWithMeRequestUrls();
 
         // Test if it gets added
         model.createNewLinkShare();
@@ -405,6 +407,13 @@ private Q_SLOTS:
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 3); // Check our test is working!
         QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
+
+        QVERIFY(!helper.sharedWithMeRequestUrls().isEmpty());
+        for (const auto &requestUrl : helper.sharedWithMeRequestUrls()) {
+            const auto requestedPath = QUrlQuery(requestUrl).queryItemValue(QStringLiteral("path"));
+            QVERIFY2(!requestedPath.isEmpty(), qPrintable(requestUrl.toString()));
+            QVERIFY2(requestedPath.endsWith(QString::fromLatin1(ShareTestHelper::testFileName)), qPrintable(requestUrl.toString()));
+        }
 
         // Test if it's the type we wanted
         const auto newUserGroupShareIndex = model.index(model.rowCount() - 1, 0, {});

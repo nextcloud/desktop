@@ -29,8 +29,9 @@ namespace OCC {
 static void updateFolder(const AccountPtr &account, QStringView path)
 {
     for (auto f : std::as_const(FolderMan::instance()->map())) {
-        if (f->accountState()->account() != account)
+        if (f->accountState()->account() != account) {
             continue;
+        }
         auto folderPath = f->remotePath();
         if (path.startsWith(folderPath) && (path == folderPath || folderPath.endsWith('/') || path[folderPath.size()] == '/')) {
             // Workaround the fact that the server does not invalidate the etags of parent directories
@@ -454,8 +455,9 @@ void ShareManager::createShare(const QString &path,
             const auto &dataArray = ocsObject["data"_L1].toArray();
             for (const auto &element : dataArray) {
                 auto map = element.toObject();
-                if (map["file_target"_L1] == path)
+                if (map["file_target"_L1] == path) {
                     existingPermissions = Share::Permissions(map["permissions"_L1].toInt());
+                }
             }
 
             // Limit the permissions we request for a share to the ones the item
@@ -473,7 +475,7 @@ void ShareManager::createShare(const QString &path,
             connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
             job->createShare(path, shareType, shareWith, validPermissions, password);
         });
-    job->getSharedWithMe();
+    job->getSharedWithMe(path);
 }
 
 void ShareManager::createE2EeShareJob(const QString &fullRemotePath,

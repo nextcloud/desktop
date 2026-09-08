@@ -58,10 +58,12 @@ private Q_SLOTS:
             if (req.url().path().endsWith(testFileName)) {
                 reqId = req.rawHeader("X-Request-ID");
             }
-            if (!remote && op == QNetworkAccessManager::PutOperation)
+            if (!remote && op == QNetworkAccessManager::PutOperation) {
                 ++counter;
-            if (remote && op == QNetworkAccessManager::GetOperation)
+            }
+            if (remote && op == QNetworkAccessManager::GetOperation) {
                 ++counter;
+            }
             return nullptr;
         });
 
@@ -90,8 +92,9 @@ private Q_SLOTS:
             QVERIFY(entry._ignoreDuration > 0);
             QCOMPARE(entry._requestId, reqId);
 
-            if (remote)
+            if (remote) {
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
+            }
         }
         cleanup();
 
@@ -111,8 +114,9 @@ private Q_SLOTS:
             QVERIFY(entry._ignoreDuration > 0);
             QCOMPARE(entry._requestId, reqId);
 
-            if (remote)
+            if (remote) {
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
+            }
         }
         cleanup();
 
@@ -138,8 +142,9 @@ private Q_SLOTS:
             QVERIFY(entry._ignoreDuration > 0);
             QCOMPARE(entry._requestId, reqId);
 
-            if (remote)
+            if (remote) {
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
+            }
         }
         cleanup();
 
@@ -160,8 +165,9 @@ private Q_SLOTS:
             QVERIFY(entry._ignoreDuration > 0);
             QCOMPARE(entry._requestId, reqId);
 
-            if (remote)
+            if (remote) {
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
+            }
         }
         cleanup();
 
@@ -184,8 +190,9 @@ private Q_SLOTS:
             QVERIFY(!entry.isValid());
             QCOMPARE(counter, 4);
 
-            if (remote)
+            if (remote) {
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, fakeFolder.currentRemoteState().find("A")->etag);
+            }
         }
         cleanup();
 

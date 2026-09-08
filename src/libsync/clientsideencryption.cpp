@@ -878,10 +878,7 @@ void debugOpenssl()
 
 }
 
-
-ClientSideEncryption::ClientSideEncryption()
-{
-}
+ClientSideEncryption::ClientSideEncryption() = default;
 
 bool ClientSideEncryption::isInitialized() const
 {

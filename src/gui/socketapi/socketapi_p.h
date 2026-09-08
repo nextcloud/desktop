@@ -72,8 +72,9 @@ public:
 
     void sendMessageIfDirectoryMonitored(const QString &message, uint systemDirectoryHash) const
     {
-        if (_monitoredDirectoriesBloomFilter.isHashMaybeStored(systemDirectoryHash))
+        if (_monitoredDirectoriesBloomFilter.isHashMaybeStored(systemDirectoryHash)) {
             sendMessage(message, false);
+        }
     }
 
     void registerMonitoredDirectory(uint systemDirectoryHash)
