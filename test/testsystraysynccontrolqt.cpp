@@ -90,6 +90,16 @@ private Q_SLOTS:
         QCOMPARE(nativeMenuIconPalette(&menu).color(QPalette::Active, QPalette::Text), iconColor);
     }
 
+    void defaultWindowRequestsSettings()
+    {
+        const auto systray = Systray::instance();
+        const auto settingsRequest = QSignalSpy(systray, &Systray::openSettings);
+
+        systray->showWindow();
+
+        QCOMPARE_EQ(settingsRequest.count(), 1);
+    }
+
     void globalActionIsHiddenWithoutClassicFoldersAndTogglesAllFolders()
     {
         const auto systray = Systray::instance();

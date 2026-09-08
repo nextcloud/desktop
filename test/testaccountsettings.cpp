@@ -15,6 +15,10 @@
 #include <QTextLayout>
 #include <QtTest>
 
+#include <QFrame>
+#include <QPushButton>
+#include <QVBoxLayout>
+
 #include "account.h"
 #include "foldermantestutils.h"
 #include "logger.h"
@@ -29,6 +33,24 @@ class TestAccountSettings : public QObject
     Q_OBJECT
 
     FolderManTestHelper helper;
+
+    static QVariantMap
+    shortcutCapabilities(const bool userStatusEnabled, const bool assistantEnabled, const QString &assistantVersion = QStringLiteral("1.0.9"))
+    {
+        return {
+            {QStringLiteral("user_status"), QVariantMap{{QStringLiteral("enabled"), userStatusEnabled}}},
+            {QStringLiteral("assistant"),
+             QVariantMap{
+                 {QStringLiteral("enabled"), assistantEnabled},
+                 {QStringLiteral("version"), assistantVersion},
+             }},
+        };
+    }
+
+    static QPushButton *shortcutButton(const AccountSettings &settings, const char *objectName)
+    {
+        return settings.findChild<QPushButton *>(QString::fromLatin1(objectName));
+    }
 
 private Q_SLOTS:
     void initTestCase()
