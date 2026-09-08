@@ -27,10 +27,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="accountStatusPanel">
-     <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
-     </property>
+    <widget class="QGroupBox" name="accountStatusPanel">
      <layout class="QVBoxLayout" name="accountStatusLayout">
       <property name="leftMargin">
        <number>0</number>
@@ -134,15 +131,12 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="syncFoldersPanel">
+    <widget class="QGroupBox" name="syncFoldersPanel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <layout class="QVBoxLayout" name="syncFoldersPanelLayout">
       <property name="sizeConstraint">
@@ -458,15 +452,12 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="accountActionsPanel">
+    <widget class="QGroupBox" name="accountActionsPanel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <layout class="QVBoxLayout" name="accountActionsPanelLayout">
       <item>
