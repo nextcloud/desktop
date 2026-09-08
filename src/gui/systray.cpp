@@ -7,6 +7,7 @@
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "activity/syncstatussummary.h"
+#include "assistant/assistantmodule.h"
 #include "systray.h"
 #include "theme.h"
 #include "config.h"
@@ -372,30 +373,12 @@ void Systray::showAssistantWindow(int userIndex)
         return;
     }
 
-    const QVariantMap initialProperties{
-        {"userIndex", targetUserId},
-        {"currentUser", QVariant::fromValue(user)},
-    };
-    QQmlComponent assistantWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/AssistantWindow.qml"));
-
-    if (assistantWindowComponent.isError()) {
-        qCWarning(lcSystray) << assistantWindowComponent.errorString();
-        qCWarning(lcSystray) << assistantWindowComponent.errors();
-        return;
-    }
-
-    const auto createdObject = assistantWindowComponent.createWithInitialProperties(initialProperties);
-    const auto window = qobject_cast<QQuickWindow *>(createdObject);
+    const auto window = Assistant::createWindow(trayEngine(), user->accountState());
     if (!window) {
-        qCWarning(lcSystray) << "Assistant window resulted in creation of object that was not a window!";
-        if (createdObject) {
-            createdObject->deleteLater();
-        }
         return;
     }
 
     _assistantWindows.insert(windowKey, window);
-    window->setIcon(Theme::instance()->applicationIcon());
 
 #ifdef Q_OS_MACOS
     auto *fgbg = new ForegroundBackground(this);
