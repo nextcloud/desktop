@@ -1241,6 +1241,7 @@ void UnifiedSearchResultsListModel::updateAccessibilityStatus()
         }
     }
     if (_viewMode == ViewMode::ProviderDetail) {
+        //: %1 is the number of search results. %2 is the search provider name, for example "Files".
         setAccessibilityStatus(tr("%1 results in %2").arg(resultCount).arg(detailProviderName()));
     } else if (resultCount == 0) {
         setAccessibilityStatus(tr("No matching results"));
