@@ -26,18 +26,34 @@ Dialog {
 
     signal permissionToggled(string permissionClass, bool enabled)
 
+    parent: Overlay.overlay
+    anchors.centerIn: parent
     modal: true
     width: Math.min(Style.dialogWidth, root.dialogAvailableWidth)
-    padding: Style.standardSpacing
-    title: root.recipient ? qsTr("Permissions for %1").arg(root.recipient.displayName) : qsTr("Recipient permissions")
+    padding: Style.wizardWindowMargin
+    header: null
+    footer: null
 
     background: Rectangle {
+        objectName: "recipientPermissionDialogBackground"
         color: Style.wizardWindowBackground
         radius: Style.wizardDialogRadius
+        border.width: Style.normalBorderWidth
+        border.color: Style.wizardFieldBorder
     }
 
     contentItem: ColumnLayout {
-        spacing: Style.standardSpacing
+        spacing: Style.wizardDialogSpacing
+
+        EnforcedPlainTextLabel {
+            objectName: "recipientPermissionDialogTitle"
+            Layout.fillWidth: true
+            text: root.recipient ? qsTr("Permissions for %1").arg(root.recipient.displayName) : qsTr("Recipient permissions")
+            color: Style.wizardPrimaryText
+            font.pixelSize: Style.wizardHeaderTitleFontPixelSize
+            font.bold: true
+            wrapMode: Text.WordWrap
+        }
 
         PermissionList {
             id: recipientPermissionList
@@ -60,10 +76,20 @@ Dialog {
             text: root.updateError
             visible: text.length > 0
         }
-    }
 
-    footer: DialogButtonBox {
-        standardButtons: DialogButtonBox.Close
-        onRejected: root.close()
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: Style.wizardFooterSpacing
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            WizardButton {
+                objectName: "closeRecipientPermissionDialogButton"
+                text: qsTr("Close")
+                onClicked: root.close()
+            }
+        }
     }
 }
