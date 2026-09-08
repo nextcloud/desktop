@@ -258,6 +258,19 @@ target_link_libraries(nextcloudsync
   Qt::Core5Compat
 )
 
+# needed to allow teh dynamic load of the openvfs based VFS plug-in inside the AppImage package
+find_package(OpenVFS 0.1.0 QUIET)
+set_package_properties(OpenVFS PROPERTIES TYPE OPTIONAL
+        DESCRIPTION "A Virtual Filesystem Layer for cloud storages for the free desktop"
+        URL "https://github.com/opencloud-eu/openvfs/")
+
+if(TARGET OpenVFS::OpenVFS)
+    target_link_libraries(nextcloudsync
+      PUBLIC
+      OpenVFS::LibOpenVFS
+  )
+endif()
+
 target_compile_features(nextcloudsync
     PRIVATE
         cxx_std_17
