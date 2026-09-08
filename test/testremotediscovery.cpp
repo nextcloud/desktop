@@ -192,10 +192,10 @@ private Q_SLOTS:
         fakeFolder.remoteModifier().mkdir("nopermissions");
         fakeFolder.remoteModifier().insert("nopermissions/A");
 
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *)
-                -> QNetworkReply *{
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "PROPFIND" && req.url().path().endsWith("nopermissions"))
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) -> QNetworkReply * {
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "PROPFIND" && req.url().path().endsWith("nopermissions")) {
                 return new MissingPermissionsPropfindReply(fakeFolder.remoteModifier(), op, req, this);
+            }
             return nullptr;
         });
 

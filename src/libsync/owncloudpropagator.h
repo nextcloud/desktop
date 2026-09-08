@@ -124,8 +124,9 @@ public Q_SLOTS:
      * while synchronous is expected to abort immedietaly.
     */
     virtual void abort(OCC::PropagatorJob::AbortType abortType) {
-        if (abortType == AbortType::Asynchronous)
+        if (abortType == AbortType::Asynchronous) {
             Q_EMIT abortFinished();
+        }
     }
 
     /** Starts this job, or a new subjob
@@ -329,10 +330,11 @@ public:
     [[nodiscard]] JobParallelism parallelism() const override;
     void abort(PropagatorJob::AbortType abortType) override
     {
-        if (_firstJob)
+        if (_firstJob) {
             // Force first job to abort synchronously
             // even if caller allows async abort (asyncAbort)
             _firstJob->abort(AbortType::Synchronous);
+        }
 
         if (abortType == AbortType::Asynchronous){
             connect(&_subJobs, &PropagatorCompositeJob::abortFinished, this, &PropagateDirectory::abortFinished);
@@ -545,8 +547,9 @@ public:
 
     void abort()
     {
-        if (_abortRequested)
+        if (_abortRequested) {
             return;
+        }
 
         _abortRequested = true;
         if (_rootJob) {

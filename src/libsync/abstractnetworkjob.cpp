@@ -65,8 +65,9 @@ AbstractNetworkJob::AbstractNetworkJob(const AccountPtr &account, const QString 
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
 {
-    if (reply)
+    if (reply) {
         reply->setProperty("doNotHandleAuth", true);
+    }
 
     QNetworkReply *old = _reply;
     _reply = reply;
@@ -197,8 +198,9 @@ void AbstractNetworkJob::slotFinished()
 
             resetTimeout();
             if (_requestBody) {
-                if(!_requestBody->isOpen())
-                   _requestBody->open(QIODevice::ReadOnly);
+                if (!_requestBody->isOpen()) {
+                    _requestBody->open(QIODevice::ReadOnly);
+                }
                 _requestBody->seek(0);
             }
             sendRequest(
@@ -218,8 +220,9 @@ void AbstractNetworkJob::slotFinished()
             return;
         }
 
-        if (_account->credentials()->retryIfNeeded(this))
+        if (_account->credentials()->retryIfNeeded(this)) {
             return;
+        }
 
         if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
             qCWarning(lcNetworkJob) << _reply->error() << errorString()
@@ -238,8 +241,9 @@ void AbstractNetworkJob::slotFinished()
     QUrl redirectUrl = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (_followRedirects && !redirectUrl.isEmpty()) {
         // Redirects may be relative
-        if (redirectUrl.isRelative())
+        if (redirectUrl.isRelative()) {
             redirectUrl = requestedUrl.resolved(redirectUrl);
+        }
 
         // For POST requests where the target url has query arguments, Qt automatically
         // moves these arguments to the body if no explicit body is specified.

@@ -34,8 +34,9 @@ SslButton::SslButton(QWidget *parent)
 
 static QString addCertDetailsField(const QString &key, const QString &value)
 {
-    if (value.isEmpty())
+    if (value.isEmpty()) {
         return QString();
+    }
 
     return QLatin1String("<tr><td style=\"vertical-align: top;\"><b>") + key
         + QLatin1String("</b></td><td style=\"vertical-align: bottom;\">") + value
@@ -59,8 +60,9 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
     QString country = QStringList(cert.subjectInfo(QSslCertificate::CountryName)).join(QChar(';'));
     QString state = QStringList(cert.subjectInfo(QSslCertificate::StateOrProvinceName)).join(QChar(';'));
     QString issuer = QStringList(cert.issuerInfo(QSslCertificate::CommonName)).join(QChar(';'));
-    if (issuer.isEmpty())
+    if (issuer.isEmpty()) {
         issuer = QStringList(cert.issuerInfo(QSslCertificate::OrganizationalUnitName)).join(QChar(';'));
+    }
     QString sha1 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex(), false);
     QByteArray sha265hash = cert.digest(QCryptographicHash::Sha256).toHex();
     QString sha256escaped =
@@ -211,8 +213,9 @@ void SslButton::slotUpdateMenu()
         QList<QSslCertificate> tmpChain;
         for (const auto &cert : chain) {
             tmpChain << cert;
-            if (systemCerts.contains(cert))
+            if (systemCerts.contains(cert)) {
                 break;
+            }
         }
         chain = tmpChain;
 

@@ -179,8 +179,9 @@ void SqlDatabase::close()
             q->finish();
         }
         SQLITE_DO(sqlite3_close(_db));
-        if (_errId != SQLITE_OK)
+        if (_errId != SQLITE_OK) {
             qCWarning(lcSql) << "Closing database failed" << _error;
+        }
         _db = nullptr;
     }
 }
@@ -442,8 +443,9 @@ int SqlQuery::numRowsAffected()
 
 void SqlQuery::finish()
 {
-    if (!_stmt)
+    if (!_stmt) {
         return;
+    }
     SQLITE_DO(sqlite3_finalize(_stmt));
     _stmt = nullptr;
     if (_sqldb) {

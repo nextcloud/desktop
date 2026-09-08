@@ -97,8 +97,9 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 {
     // Only update progress for the current folder
     Folder *f = FolderMan::instance()->folder(folder);
-    if (f != _folder)
+    if (f != _folder) {
         return;
+    }
 
     // Build recently changed files list
     if (!progress._lastCompletedItem.isEmpty() && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
@@ -112,8 +113,9 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
         if (f) {
             QString fullPath = f->path() + '/' + fileName;
             if (QFile(fullPath).exists()) {
-                if (_recentlyChanged.length() > 5)
+                if (_recentlyChanged.length() > 5) {
                     _recentlyChanged.removeFirst();
+                }
                 _recentlyChanged.append(qMakePair(actionText, fullPath));
             } else {
                 _recentlyChanged.append(qMakePair(actionText, QString("")));

@@ -921,8 +921,9 @@ QList<AccountStatePtr> AccountManager::accounts() const
 
 bool AccountManager::isAccountIdAvailable(const QString &id) const
 {
-    if (_additionalBlockedAccountIds.contains(id))
+    if (_additionalBlockedAccountIds.contains(id)) {
         return false;
+    }
 
     return std::none_of(_accounts.cbegin(), _accounts.cend(), [id](const auto &acc) {
         return acc->account()->id() == id;

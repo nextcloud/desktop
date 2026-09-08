@@ -202,21 +202,25 @@ QByteArray Capabilities::preferredUploadChecksumType() const
 QByteArray Capabilities::uploadChecksumType() const
 {
     QByteArray preferred = preferredUploadChecksumType();
-    if (!preferred.isEmpty())
+    if (!preferred.isEmpty()) {
         return preferred;
+    }
     QList<QByteArray> supported = supportedChecksumTypes();
-    if (!supported.isEmpty())
+    if (!supported.isEmpty()) {
         return supported.first();
+    }
     return QByteArray();
 }
 
 bool Capabilities::chunkingNg() const
 {
     static const auto chunkng = qgetenv("OWNCLOUD_CHUNKING_NG");
-    if (chunkng == "0")
+    if (chunkng == "0") {
         return false;
-    if (chunkng == "1")
+    }
+    if (chunkng == "1") {
         return true;
+    }
     return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
 }
 
@@ -373,8 +377,9 @@ bool Capabilities::uploadConflictFiles() const
 {
     static auto envIsSet = !qEnvironmentVariableIsEmpty("OWNCLOUD_UPLOAD_CONFLICT_FILES");
     static int envValue = qEnvironmentVariableIntValue("OWNCLOUD_UPLOAD_CONFLICT_FILES");
-    if (envIsSet)
+    if (envIsSet) {
         return envValue != 0;
+    }
 
     return _capabilities[QStringLiteral("uploadConflictFiles")].toBool();
 }
@@ -492,15 +497,17 @@ QList<QVariantMap> Capabilities::fileActionsByMimeType(const QMimeType &fileMime
 // Direct Editing
 void Capabilities::addDirectEditor(DirectEditor* directEditor)
 {
-    if(directEditor)
+    if (directEditor) {
         _directEditors.append(directEditor);
+    }
 }
 
 DirectEditor* Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType)
 {
     for (const auto editor : std::as_const(_directEditors)) {
-        if(editor->hasMimetype(mimeType))
+        if (editor->hasMimetype(mimeType)) {
             return editor;
+        }
     }
 
     return nullptr;
@@ -509,8 +516,9 @@ DirectEditor* Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType
 DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &mimeType)
 {
     for (const auto editor : std::as_const(_directEditors)) {
-        if(editor->hasOptionalMimetype(mimeType))
+        if (editor->hasOptionalMimetype(mimeType)) {
             return editor;
+        }
     }
 
     return nullptr;

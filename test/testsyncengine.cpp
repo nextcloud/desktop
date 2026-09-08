@@ -44,8 +44,9 @@ bool expectConflict(FileInfo state, const QString path)
 {
     PathComponents pathComponents(path);
     auto base = state.find(pathComponents.parentDirComponents());
-    if (!base)
+    if (!base) {
         return false;
+    }
     for (const auto &item : std::as_const(base->children)) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(case clash from")) {
             return true;
@@ -494,8 +495,9 @@ private Q_SLOTS:
 
         int nGET = 0;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) {
-            if (op == QNetworkAccessManager::GetOperation)
+            if (op == QNetworkAccessManager::GetOperation) {
                 ++nGET;
+            }
             return nullptr;
         });
 
@@ -509,8 +511,9 @@ private Q_SLOTS:
         fakeFolder.localModifier().setContents("A/a1", 'C');
         fakeFolder.localModifier().setModTime("A/a1", mtime);
         fakeFolder.remoteModifier().setContents("A/a1", 'C');
-        if (!sameMtime)
+        if (!sameMtime) {
             mtime = mtime.addDays(1);
+        }
         fakeFolder.remoteModifier().setModTime("A/a1", mtime);
         remoteInfo.find("A/a1")->checksums = checksums;
         QVERIFY(fakeFolder.syncOnce());
@@ -567,12 +570,15 @@ private Q_SLOTS:
         connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, [&](SyncFileItemVector &items) {
             SyncFileItemPtr a1, b1, c1;
             for (auto &item : items) {
-                if (item->_file == "A/a1")
+                if (item->_file == "A/a1") {
                     a1 = item;
-                if (item->_file == "B/b1")
+                }
+                if (item->_file == "B/b1") {
                     b1 = item;
-                if (item->_file == "C/c1")
+                }
+                if (item->_file == "C/c1") {
                     c1 = item;
+                }
             }
 
             // a1: should have local size and modtime
@@ -671,10 +677,12 @@ private Q_SLOTS:
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::GetOperation) {
                 auto reply = new FakeGetReply(fakeFolder.remoteModifier(), op, request, &parent);
-                if (!checksumValue.isNull())
+                if (!checksumValue.isNull()) {
                     reply->setRawHeader(OCC::checkSumHeaderC, checksumValue);
-                if (!contentMd5Value.isNull())
+                }
+                if (!contentMd5Value.isNull()) {
                     reply->setRawHeader(OCC::contentMd5HeaderC, contentMd5Value);
+                }
                 return reply;
             } else if (op == QNetworkAccessManager::CustomOperation) {
                 if (request.hasRawHeader(OCC::checksumRecalculateOnServerHeaderC)) {

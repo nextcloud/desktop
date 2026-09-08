@@ -1312,8 +1312,9 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
         // Wipe all non-persistent entries - as well as the persistent ones
         // in cases where a local discovery was done.
         auto f = FolderMan::instance()->folder(folder);
-        if (!f)
+        if (!f) {
             return;
+        }
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
         for (const auto errorsList = _activityModel->errorsList(); const auto &activity : errorsList) {
@@ -1336,11 +1337,13 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
             }
 
             auto path = QFileInfo(activity._file).dir().path().toUtf8();
-            if (path == ".")
+            if (path == ".") {
                 path.clear();
+            }
 
-            if (engine.shouldDiscoverLocally(path))
+            if (engine.shouldDiscoverLocally(path)) {
                 _activityModel->removeActivityFromActivityList(activity);
+            }
         }
     }
 
@@ -1362,8 +1365,9 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 void User::slotAddError(const QString &folderAlias, const QString &message, ErrorCategory category)
 {
     auto folderInstance = FolderMan::instance()->folder(folderAlias);
-    if (!folderInstance)
+    if (!folderInstance) {
         return;
+    }
 
     if (folderInstance->accountState() == _account.data()) {
         qCWarning(lcActivity) << "Item " << folderInstance->shortGuiLocalPath() << " retrieved resulted in " << message;
@@ -2541,8 +2545,9 @@ int UserModel::currentUserId() const
 
 bool UserModel::isUserConnected(const int id)
 {
-    if (id < 0 || id >= _users.size())
+    if (id < 0 || id >= _users.size()) {
         return false;
+    }
 
     return _users[id]->isConnected();
 }
@@ -2605,8 +2610,9 @@ QImage UserModel::syncStatusIconForRow(const int row) const
 
 QString UserModel::currentUserServer()
 {
-    if (_currentUserId < 0 || _currentUserId >= _users.size())
+    if (_currentUserId < 0 || _currentUserId >= _users.size()) {
         return {};
+    }
 
     return _users[_currentUserId]->server();
 }
@@ -2698,8 +2704,9 @@ int UserModel::currentUserIndex()
 
 void UserModel::openCurrentAccountLocalFolder()
 {
-    if (_currentUserId < 0 || _currentUserId >= _users.size())
+    if (_currentUserId < 0 || _currentUserId >= _users.size()) {
         return;
+    }
 
     _users[_currentUserId]->openLocalFolder();
 }
@@ -2716,8 +2723,9 @@ void UserModel::openCurrentAccountFileProviderDomain()
 
 void UserModel::openCurrentAccountServer()
 {
-    if (_currentUserId < 0 || _currentUserId >= _users.size())
+    if (_currentUserId < 0 || _currentUserId >= _users.size()) {
         return;
+    }
 
     _users[_currentUserId]->openServer();
 }
@@ -2785,16 +2793,18 @@ void UserModel::setCurrentUserId(const int id)
 
 void UserModel::login(const int id)
 {
-    if (id < 0 || id >= _users.size())
+    if (id < 0 || id >= _users.size()) {
         return;
+    }
 
     _users[id]->login();
 }
 
 void UserModel::logout(const int id)
 {
-    if (id < 0 || id >= _users.size())
+    if (id < 0 || id >= _users.size()) {
         return;
+    }
 
     _users[id]->logout();
 }
@@ -2951,16 +2961,18 @@ QHash<int, QByteArray> UserModel::roleNames() const
 
 ActivityListModel *UserModel::currentActivityModel()
 {
-    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size())
+    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size()) {
         return nullptr;
+    }
 
     return _users[currentUserIndex()]->getActivityModel();
 }
 
 void UserModel::fetchCurrentActivityModel()
 {
-    if (currentUserId() < 0 || currentUserId() >= _users.size())
+    if (currentUserId() < 0 || currentUserId() >= _users.size()) {
         return;
+    }
 
     _users[currentUserId()]->slotRefresh();
 }
@@ -2994,16 +3006,18 @@ void UserModel::triggerNotificationAction(const int id, const int activityIndex,
 
 AccountAppList UserModel::appList() const
 {
-    if (_currentUserId < 0 || _currentUserId >= _users.size())
+    if (_currentUserId < 0 || _currentUserId >= _users.size()) {
         return {};
+    }
 
     return _users[_currentUserId]->appList();
 }
 
 User *UserModel::currentUser() const
 {
-    if (currentUserId() < 0 || currentUserId() >= _users.size())
+    if (currentUserId() < 0 || currentUserId() >= _users.size()) {
         return nullptr;
+    }
 
     return _users[currentUserId()];
 }
@@ -3137,7 +3151,7 @@ public:
         Q_EMIT finished();
     }
 
-    QQuickTextureFactory *textureFactory() const override
+    [[nodiscard]] QQuickTextureFactory *textureFactory() const override
     {
         return QQuickTextureFactory::textureFactoryForImage(_image);
     }

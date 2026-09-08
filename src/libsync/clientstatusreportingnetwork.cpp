@@ -29,9 +29,7 @@ ClientStatusReportingNetwork::ClientStatusReportingNetwork(Account *account, con
     init();
 }
 
-ClientStatusReportingNetwork::~ClientStatusReportingNetwork()
-{
-}
+ClientStatusReportingNetwork::~ClientStatusReportingNetwork() = default;
 
 void ClientStatusReportingNetwork::init()
 {

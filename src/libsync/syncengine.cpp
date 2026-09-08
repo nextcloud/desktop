@@ -242,8 +242,9 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
     // Delete the stales chunk on the server.
     if (account()->capabilities().chunkingNg()) {
         for (uint transferId : std::as_const(ids)) {
-            if (!transferId)
+            if (!transferId) {
                 continue; // Was not a chunked upload
+            }
             QUrl url = Utility::concatUrlPath(account()->url(), QLatin1String("remote.php/dav/uploads/") + account()->davUser() + QLatin1Char('/') + QString::number(transferId));
             (new DeleteJob(account(), url, {}, this))->start();
         }
@@ -255,8 +256,9 @@ void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &sync
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> blacklist_file_paths;
     for (const SyncFileItemPtr &it : syncItems) {
-        if (it->_hasBlacklistEntry)
+        if (it->_hasBlacklistEntry) {
             blacklist_file_paths.insert(it->_file);
+        }
     }
 
     // Delete from journal.
@@ -323,8 +325,9 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
     Q_EMIT itemDiscovered(item);
 
-    if (Utility::isConflictFile(item->_file))
+    if (Utility::isConflictFile(item->_file)) {
         _seenConflictFiles.insert(item->_file);
+    }
     if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
         // For directories, metadata-only updates will be done after all their files are propagated.
 
@@ -362,8 +365,9 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             modificationHappened |= item->_size != prev._fileSize;
 
             auto rec = item->toSyncJournalFileRecordWithInode(filePath);
-            if (rec._checksumHeader.isEmpty())
+            if (rec._checksumHeader.isEmpty()) {
                 rec._checksumHeader = prev._checksumHeader;
+            }
             rec._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
 
             // Ensure it's a placeholder file on disk
@@ -692,8 +696,9 @@ void SyncEngine::startSync()
         // version check doesn't make sense for custom servers.
         invalidFilenamePattern = R"([\\:?*"<>|])";
     }
-    if (!invalidFilenamePattern.isEmpty())
+    if (!invalidFilenamePattern.isEmpty()) {
         _discoveryPhase->_invalidFilenameRx = QRegularExpression(invalidFilenamePattern);
+    }
     _discoveryPhase->_serverBlacklistedFiles = _account->capabilities().blacklistedFiles();
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
 
@@ -896,8 +901,9 @@ void SyncEngine::setNetworkLimits(int upload, int download)
     _uploadLimit = upload;
     _downloadLimit = download;
 
-    if (!_propagator)
+    if (!_propagator) {
         return;
+    }
 
     _propagator->_uploadLimit = upload;
     _propagator->_downloadLimit = download;
@@ -1114,8 +1120,9 @@ void SyncEngine::finishSync()
     _journal->commit(QStringLiteral("post stale entry removal"));
 
     // Emit the started signal only after the propagator has been set up.
-    if (_needsUpdate)
+    if (_needsUpdate) {
         Q_EMIT started();
+    }
 
     _propagator->start(std::move(_syncItems));
 
@@ -1251,8 +1258,9 @@ void SyncEngine::slotAddTouchedFile(const QString &fn)
     // Iterate from the oldest and remove anything older than 15 seconds.
     while (true) {
         auto first = _touchedFiles.begin();
-        if (first == _touchedFiles.end())
+        if (first == _touchedFiles.end()) {
             break;
+        }
         // Compare to our new QElapsedTimer instead of using elapsed().
         // This avoids querying the current time from the OS for every loop.
         auto elapsed = std::chrono::milliseconds(now.msecsSinceReference() - first.key().msecsSinceReference());
@@ -1288,8 +1296,9 @@ bool SyncEngine::wasFileTouched(const QString &fn) const
     // Start from the end (most recent) and look for our path. Check the time just in case.
     auto begin = _touchedFiles.constBegin();
     for (auto it = _touchedFiles.constEnd(); it != begin; --it) {
-        if (const auto prevIt = std::prev(it); prevIt.value() == fn)
+        if (const auto prevIt = std::prev(it); prevIt.value() == fn) {
             return std::chrono::milliseconds(prevIt.key().elapsed()) <= s_touchedFilesMaxAgeMs;
+        }
     }
     return false;
 }
@@ -1469,8 +1478,9 @@ void SyncEngine::abort()
 
 void SyncEngine::slotSummaryError(const QString &message)
 {
-    if (_uniqueErrors.contains(message))
+    if (_uniqueErrors.contains(message)) {
         return;
+    }
 
     _uniqueErrors.insert(message);
     Q_EMIT syncError(message, ErrorCategory::GenericError);
