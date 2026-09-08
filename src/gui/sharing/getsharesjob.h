@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "unifiedshare.h"
 #include "unifiedsharingrequest.h"
 
 #include <QList>
@@ -14,8 +15,6 @@
 
 namespace OCC::Gui::Sharing
 {
-
-class Share;
 
 /**
  * @brief Fetches a page of shares accessible to the account.
