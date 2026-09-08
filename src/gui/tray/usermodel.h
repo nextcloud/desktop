@@ -7,15 +7,16 @@
 #define USERMODEL_H
 
 #include <QAbstractListModel>
-#include <QImage>
 #include <QDateTime>
 #include <QJsonDocument>
 #include <QStringList>
 #include <QQuickImageProvider>
 #include <QHash>
+#include <QImage>
 #include <QPointer>
+#include <QQuickImageProvider>
+#include <QStringList>
 #include <QTimer>
-#include <QVector>
 #include <QVariantMap>
 
 #include "accountfwd.h"
@@ -71,9 +72,6 @@ class User : public QObject
 #ifdef BUILD_FILE_PROVIDER_MODULE
     Q_PROPERTY(bool hasFileProvider READ hasFileProvider NOTIFY accountStateChanged)
 #endif
-    Q_PROPERTY(bool isFeaturedAppEnabled READ isFeaturedAppEnabled NOTIFY featuredAppChanged)
-    Q_PROPERTY(QString featuredAppIcon READ featuredAppIcon NOTIFY featuredAppChanged)
-    Q_PROPERTY(QString featuredAppAccessibleName READ featuredAppAccessibleName NOTIFY featuredAppChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
     Q_PROPERTY(QVariantList recentActivities READ recentActivities NOTIFY recentActivitiesChanged)
     Q_PROPERTY(QVariantList trayNotifications READ trayNotifications NOTIFY trayNotificationsChanged)
@@ -117,20 +115,15 @@ public:
 #ifdef BUILD_FILE_PROVIDER_MODULE
     [[nodiscard]] bool hasFileProvider() const;
 #endif
-    [[nodiscard]] bool isFeaturedAppEnabled() const;
-    [[nodiscard]] QString featuredAppIcon() const;
-    [[nodiscard]] QString featuredAppAccessibleName() const;
     [[nodiscard]] QVariantList recentActivities() const;
     [[nodiscard]] QVariantList trayNotifications() const;
     [[nodiscard]] QVariantMap accountAlert() const;
     [[nodiscard]] bool serverHasUserStatus() const;
-    [[nodiscard]] AccountApp *talkApp() const;
     [[nodiscard]] bool hasActivities() const;
     [[nodiscard]] bool isNcAssistantEnabled() const;
     [[nodiscard]] QColor accentColor() const;
     [[nodiscard]] QColor headerColor() const;
     [[nodiscard]] QColor headerTextColor() const;
-    [[nodiscard]] AccountAppList appList() const;
     [[nodiscard]] QImage avatar() const;
     /** @brief Signs in a signed-out account or retries another disconnected state. */
     void login() const;
@@ -160,7 +153,6 @@ public:
 Q_SIGNALS:
     void nameChanged();
     void hasLocalFolderChanged();
-    void featuredAppChanged();
     void avatarChanged();
     void recentActivitiesChanged();
     void trayNotificationsChanged();
@@ -203,7 +195,6 @@ public Q_SLOTS:
     void slotRefreshUserStatus();
     void slotRefreshImmediately();
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
-    void slotRebuildNavigationAppList();
     void forceSyncNow() const;
     void openServer() const;
     void slotAccountCapabilitiesChangedRefreshGroupFolders();
@@ -268,8 +259,6 @@ private:
 
     bool notificationAlreadyShown(const qint64 notificationId);
     bool canShowNotification(const qint64 notificationId);
-
-    [[nodiscard]] bool serverHasTalk() const;
 
     AccountStatePtr _account;
     bool _isCurrentUser;
@@ -339,18 +328,12 @@ class UserModel : public QAbstractListModel
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY currentUserChanged)
     Q_PROPERTY(int currentUserId READ currentUserId WRITE setCurrentUserId NOTIFY currentUserChanged)
     Q_PROPERTY(int count READ count NOTIFY countChanged)
-    Q_PROPERTY(bool hasSyncErrors READ hasSyncErrors NOTIFY syncErrorUsersChanged)
-    Q_PROPERTY(int syncErrorUserCount READ syncErrorUserCount NOTIFY syncErrorUsersChanged)
-    Q_PROPERTY(int firstSyncErrorUserId READ firstSyncErrorUserId NOTIFY syncErrorUsersChanged)
-    Q_PROPERTY(User* firstSyncErrorUser READ firstSyncErrorUser NOTIFY syncErrorUsersChanged)
 public:
 
     static UserModel *instance();
     ~UserModel() override = default;
 
     void addUser(AccountStatePtr &user, const bool &isCurrent = false);
-    int currentUserIndex();
-
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
@@ -363,20 +346,12 @@ public:
     [[nodiscard]] User *findUserForAccount(AccountState *account) const;
     [[nodiscard]] int findUserIdForAccount(AccountState *account) const;
 
-    Q_INVOKABLE int numUsers();
     [[nodiscard]] int count() const;
-    Q_INVOKABLE QString currentUserServer();
     [[nodiscard]] int currentUserId() const;
 
     Q_INVOKABLE bool isUserConnected(const int id);
-    [[nodiscard]] bool hasSyncErrors() const;
-    [[nodiscard]] int syncErrorUserCount() const;
-    [[nodiscard]] int firstSyncErrorUserId() const;
-    [[nodiscard]] User *firstSyncErrorUser() const;
 
     Q_INVOKABLE std::shared_ptr<OCC::UserStatusConnector> userStatusConnector(int id);
-
-    ActivityListModel *currentActivityModel();
 
     enum UserRoles {
         NameRole = Qt::UserRole + 1,
@@ -401,13 +376,10 @@ public:
         AccountAlertRole,
     };
 
-    [[nodiscard]] AccountAppList appList() const;
-
 Q_SIGNALS:
     void addAccount();
     void currentUserChanged();
     void countChanged();
-    void syncErrorUsersChanged();
 
 public Q_SLOTS:
     void fetchCurrentActivityModel();
@@ -420,8 +392,6 @@ public Q_SLOTS:
 #endif
     void openCurrentAccountServer();
     void openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath);
-    void openCurrentAccountFeaturedApp();
-    Q_INVOKABLE void refreshSyncErrorUsers();
     void setCurrentUserId(const int id);
     void login(const int id);
     void logout(const int id);
@@ -436,11 +406,6 @@ private:
     QList<User*> _users;
     int _currentUserId = -1;
     bool _init = true;
-    QVector<int> _syncErrorUserIds;
-
-    void updateSyncErrorUsers();
-    [[nodiscard]] bool userHasSyncErrors(const User *user) const;
-
     void buildUserList();
     void addAccsToUserList();
     void setInitialUser();
@@ -456,38 +421,6 @@ public:
 
 private:
     QThreadPool _pool;
-};
-
-class UserAppsModel : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    static UserAppsModel *instance();
-    ~UserAppsModel() override = default;
-
-    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-
-    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
-    enum UserAppsRoles {
-        NameRole = Qt::UserRole + 1,
-        UrlRole,
-        IconUrlRole
-    };
-
-    void buildAppList();
-
-public Q_SLOTS:
-    void openAppUrl(const QUrl &url);
-
-protected:
-    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
-
-private:
-    static UserAppsModel *_instance;
-    UserAppsModel(QObject *parent = nullptr);
-
-    AccountAppList _apps;
 };
 }
 #endif // USERMODEL_H
