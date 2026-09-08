@@ -338,6 +338,76 @@ private Q_SLOTS:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testPartialRecursiveRemoteRemovalNormalisesJournalPaths()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        const auto journalRoot = fakeFolder.localPath();
+        const auto deletedCallbackPath = QDir::toNativeSeparators(journalRoot + QStringLiteral("A/a2"));
+        QVERIFY(!deletedCallbackPath.startsWith(journalRoot));
+
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        // Lock the file after discovery so the folder removal fails during recursive cleanup.
+        const auto lockedFile = makeHandle(fakeFolder.localPath() + QStringLiteral("A/a1"), 0);
+        QVERIFY(lockedFile != INVALID_HANDLE_VALUE);
+
+        const auto syncResult = fakeFolder.execUntilFinished();
+        CloseHandle(lockedFile);
+
+        QVERIFY(!syncResult);
+        QVERIFY(QFile::exists(fakeFolder.localPath() + QStringLiteral("A/a1")));
+        QVERIFY(!QFile::exists(fakeFolder.localPath() + QStringLiteral("A/a2")));
+
+        SyncJournalFileRecord lockedRecord;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &lockedRecord));
+        QVERIFY(lockedRecord.isValid());
+
+        SyncJournalFileRecord deletedRecord;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a2"), &deletedRecord));
+        QVERIFY(!deletedRecord.isValid());
+    }
+
+    void testPartialRecursiveRemoteRemovalDoesNotDeleteRemoteFileOnNextSync()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        const auto journalRoot = fakeFolder.localPath();
+        const auto deletedCallbackPath = QDir::toNativeSeparators(journalRoot + QStringLiteral("A/a2"));
+        QVERIFY(!deletedCallbackPath.startsWith(journalRoot));
+
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        const auto lockedFile = makeHandle(fakeFolder.localPath() + QStringLiteral("A/a1"), 0);
+        QVERIFY(lockedFile != INVALID_HANDLE_VALUE);
+
+        const auto syncResult = fakeFolder.execUntilFinished();
+        CloseHandle(lockedFile);
+
+        QVERIFY(!syncResult);
+
+        // Recreate the remote folder before the next sync. A stale journal entry for a2
+        // would interpret the remote file as a local removal and delete it remotely.
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("A"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a1"), 4);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a2"), 4);
+
+        auto remoteA2Deleted = false;
+        fakeFolder.setServerOverride([&remoteA2Deleted](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) {
+            if (op == QNetworkAccessManager::DeleteOperation && request.url().path().endsWith(QStringLiteral("/A/a2"))) {
+                remoteA2Deleted = true;
+            }
+            return static_cast<QNetworkReply *>(nullptr);
+        });
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!remoteA2Deleted);
+        QVERIFY(fakeFolder.remoteModifier().find(QStringLiteral("A/a2")));
+        QVERIFY(QFile::exists(fakeFolder.localPath() + QStringLiteral("A/a2")));
+    }
 #endif
 };
 
