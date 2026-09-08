@@ -124,7 +124,14 @@ QQmlApplicationEngine *Systray::trayEngine() const
 
 void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 {
-    _trayEngine = std::make_unique<QQmlApplicationEngine>(trayEngine);
+    _trayEngine.reset(trayEngine);
+    if (_trayEngine) {
+        _trayEngine->setParent(nullptr);
+    }
+
+    if (!_trayEngine) {
+        return;
+    }
 
     _trayEngine->setNetworkAccessManagerFactory(&_accessManagerFactory);
 
