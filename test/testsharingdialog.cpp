@@ -71,6 +71,8 @@ class TestSharingDialog : public QObject
         qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
 
         Systray::instance()->setTrayEngine(new QQmlApplicationEngine(QCoreApplication::instance()));
+        QVERIFY(Systray::instance()->trayEngine());
+        QVERIFY(!Systray::instance()->trayEngine()->parent());
     }
 
     void createsDialogThroughSystrayComponentPath()
