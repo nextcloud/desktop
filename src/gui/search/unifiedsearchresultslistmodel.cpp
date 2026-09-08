@@ -247,7 +247,7 @@ UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accou
 
     if (isAccountConnected()) {
         QTimer::singleShot(0, this, &UnifiedSearchResultsListModel::discoverProviders);
-    } else {
+    } else if (_accountState) {
         setErrorString(tr("Search is unavailable while this account is offline."));
     }
 }
@@ -316,8 +316,10 @@ void UnifiedSearchResultsListModel::setAccountState(AccountState *const accountS
     if (isAccountConnected()) {
         setErrorString({});
         QTimer::singleShot(0, this, &UnifiedSearchResultsListModel::discoverProviders);
-    } else {
+    } else if (_accountState) {
         setErrorString(tr("Search is unavailable while this account is offline."));
+    } else {
+        setErrorString({});
     }
 }
 
