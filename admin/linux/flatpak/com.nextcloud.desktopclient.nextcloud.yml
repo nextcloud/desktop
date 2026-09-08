@@ -1,0 +1,131 @@
+# SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2017 Nextcloud Flathub contributors
+# SPDX-License-Identifier: BSD-2-Clause
+
+app-id: com.nextcloud.desktopclient.nextcloud
+
+runtime: org.kde.Platform
+runtime-version: '6.10'
+sdk: org.kde.Sdk
+
+command: nextcloud
+
+finish-args:
+  - --device=all
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=network
+  - --share=ipc
+  - --filesystem=host:rw
+  - --filesystem=xdg-run/Nextcloud:create
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.freedesktop.secrets
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --own-name=com.nextcloudgmbh.Nextcloud
+  - --talk-name=org.kde.kwalletd5
+  - --talk-name=org.kde.kwalletd6
+  - --env=TMPDIR=/var/tmp
+
+cleanup:
+  - /lib/*.a
+  - /lib/*.la
+  - /lib/x86_64-linux-gnu/pkgconfig
+  - /share/doc
+  - /share/icons/hicolor/1024x1024
+
+modules:
+
+  - name: qtkeychain
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DBUILD_TRANSLATIONS=NO
+      - -DBUILD_WITH_QT6=1
+    cleanup:
+      - /include
+      - /mkspecs
+      - /lib/cmake
+    sources:
+      - type: archive
+        url: https://github.com/frankosterfeld/qtkeychain/archive/0.15.0.tar.gz
+        sha256: f4254dc8f0933b06d90672d683eab08ef770acd8336e44dfa030ce041dc2ca22
+        x-checker-data:
+          type: anitya
+          url-template: https://github.com/frankosterfeld/qtkeychain/archive/$version.tar.gz
+          stable-only: true
+          project-id: 4138
+
+  - name: rsvg-convert-shim
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/bin && ln -s /usr/bin/rsvg-convert /app/bin/inkscape
+    cleanup:
+      - '*'
+
+  - name: libcloudproviders
+    buildsystem: meson
+    config-opts:
+      - -Dvapigen=false
+      - -Dintrospection=false
+    cleanup:
+      - /include
+    sources:
+      - type: git
+        url: https://gitlab.gnome.org/World/libcloudproviders.git
+        tag: 0.4.1
+        commit: 74def66cd39ab692b0d477f18250add12aafd394
+        x-checker-data:
+          type: anitya
+          tag-template: $version
+          stable-only: true
+          project-id: 21207
+
+  - name: libp11
+    config-opts:
+      - --with-enginesdir=${FLATPAK_DEST}/lib/engines-3/
+      - --with-modulesdir=${FLATPAK_DEST}/lib/ossl-modules/
+    cleanup:
+      - /include
+    sources:
+      - type: archive
+        url: https://github.com/OpenSC/libp11/releases/download/libp11-0.4.21/libp11-0.4.21.tar.gz
+        sha256: efdb523aef8613d447e6a2d38227d4b389866f4bcf4b503130acd7f759490847
+        x-checker-data:
+          type: anitya
+          url-template: https://github.com/OpenSC/libp11/releases/download/libp11-$version/libp11-$version.tar.gz
+          stable-only: true
+          project-id: 1699
+
+  - name: KDSingleApplication
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DKDSingleApplication_EXAMPLES=OFF
+    sources:
+      - type: archive
+        url: https://github.com/KDAB/KDSingleApplication/releases/download/v1.2.1/kdsingleapplication-1.2.1.tar.gz
+        sha256: e3254ce9dc5ecf6d61ef83264bc61d486a307f0e3c9ed1bb2176f068cdbcbe09
+        x-checker-data:
+          type: anitya
+          project-id: 370439
+          url-template: https://github.com/KDAB/KDSingleApplication/releases/download/v$version/kdsingleapplication-$version.tar.gz
+
+  - name: nextcloud-client
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DBUILD_SHELL_INTEGRATION_DOLPHIN=0
+      - -DBUILD_SHELL_INTEGRATION_NAUTILUS=0
+      - -DBUILD_UPDATER=OFF
+      - -DPLUGIN_INSTALL_DIR=/app/lib/plugins
+      - -DPLUGINDIR=/app/lib/plugins
+      - -DQT_MAJOR_VERSION=6
+    cleanup:
+      - /include
+    post-install:
+      - install -Dm644 -t /app/share/metainfo admin/linux/flatpak/com.nextcloud.desktopclient.nextcloud.metainfo.xml
+    sources:
+      - type: dir
+        path: "../../.."
