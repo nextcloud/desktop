@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+name: Linux Flatpak Package
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, closed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  flatpak:
+    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft }}
+    name: Linux Flatpak Package
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@79327416609af08178ad73b352877e51450790b3 # v6.8
+      with:
+        bundle: com.nextcloud.desktopclient.nextcloud.flatpak
+        manifest-path: admin/linux/flatpak/com.nextcloud.desktopclient.nextcloud.yml
+        upload-artifact: true
+        artifact-name: com.nextcloud.desktopclient.nextcloud.flatpak
+        build-bundle: true
