@@ -376,6 +376,51 @@ private Q_SLOTS:
         QCOMPARE(QDir::homePath(), originalHome);
     }
 #endif
+
+    void testExpandCommandLineOptionValues_data()
+    {
+        QTest::addColumn<QStringList>("arguments");
+        QTest::addColumn<QStringList>("expected");
+
+        QTest::newRow("empty") << QStringList{} << QStringList{};
+
+        QTest::newRow("separate value is left alone") << QStringList{"nextcloud", "--userid", "alice"} << QStringList{"nextcloud", "--userid", "alice"};
+
+        QTest::newRow("inline value is split off") << QStringList{"nextcloud", "--userid=alice"} << QStringList{"nextcloud", "--userid", "alice"};
+
+        QTest::newRow("both spellings can be mixed") << QStringList{"nextcloud", "--userid=alice", "--serverurl", "https://example.com"}
+                                                     << QStringList{"nextcloud", "--userid", "alice", "--serverurl", "https://example.com"};
+
+        // Only the first '=' separates, so query strings and passwords stay intact.
+        QTest::newRow("value keeps its own equal signs")
+            << QStringList{"--serverurl=https://example.com/?a=b&c=d"} << QStringList{"--serverurl", "https://example.com/?a=b&c=d"};
+
+        QTest::newRow("password keeps its own equal signs") << QStringList{"--apppassword=pa=ss"} << QStringList{"--apppassword", "pa=ss"};
+
+        // An empty inline value must not become an empty argument: the option is left
+        // without a value so that the parsers report their usual "not specified" error.
+        QTest::newRow("empty inline value yields no value") << QStringList{"--userid="} << QStringList{"--userid"};
+
+        // Anything that is not a long option is passed through untouched, because local
+        // paths and custom URI scheme arguments may legitimately contain a '='.
+        QTest::newRow("path with an equal sign is untouched") << QStringList{"/home/alice/a=b/file.txt"} << QStringList{"/home/alice/a=b/file.txt"};
+
+        QTest::newRow("uri scheme argument is untouched") << QStringList{"nc://open/file?id=42"} << QStringList{"nc://open/file?id=42"};
+
+        QTest::newRow("short option is untouched") << QStringList{"-u=alice"} << QStringList{"-u=alice"};
+
+        QTest::newRow("bare double dash is untouched") << QStringList{"--"} << QStringList{"--"};
+
+        QTest::newRow("option without a name is untouched") << QStringList{"--=alice"} << QStringList{"--=alice"};
+    }
+
+    void testExpandCommandLineOptionValues()
+    {
+        QFETCH(QStringList, arguments);
+        QFETCH(QStringList, expected);
+
+        QCOMPARE(OCC::Utility::expandCommandLineOptionValues(arguments), expected);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestUtility)
