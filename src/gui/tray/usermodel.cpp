@@ -2316,8 +2316,6 @@ void UserModel::removeAccount(const int id)
     } else if (currentUserId() == id) {
         setCurrentUserId(id < _users.size() ? id : id - 1);
     }
-
-    updateSyncErrorUsers();
 }
 
 std::shared_ptr<OCC::UserStatusConnector> UserModel::userStatusConnector(int id)
