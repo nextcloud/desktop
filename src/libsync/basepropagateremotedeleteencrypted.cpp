@@ -12,7 +12,7 @@
 #include "deletejob.h"
 #include "owncloudpropagator.h"
 
-Q_LOGGING_CATEGORY(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED, "nextcloud.sync.propagator.remove.encrypted")
+Q_LOGGING_CATEGORY(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED, "nextcloud.sync.propagator.remove.encrypted", QtInfoMsg)
 
 namespace OCC {
 
