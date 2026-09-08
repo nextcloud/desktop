@@ -7,10 +7,10 @@
 
 Use these terms consistently in comments and documentation. The client has two related but different engines, so vocabulary is scoped below:
 
-- The **standard sync engine** is the C++ `SyncEngine`/`Folder` path, including its VFS integrations.
-- The **File Provider engine** is the macOS Swift extension built on Apple's File Provider framework.
+- The **classic sync engine** is the C++ `SyncEngine`/`Folder` path. On Windows and Linux, it drives both classic and VFS sync through platform-specific VFS integrations such as suffix, xattr, and Windows CfAPI.
+- The **File Provider engine** is the macOS file provider extension built on Apple's File Provider framework and written in Swift.
 
-Do not automatically carry a term from one engine into the other. The framework's terms are often the right choice for File Provider code, even when the standard sync engine has a similar concept with a different name.
+Do not automatically carry a term from one engine into the other. The framework's terms are often the right choice for File Provider code, even when the classic sync engine has a similar concept with a different name.
 
 ## State and lifetime
 
@@ -30,20 +30,20 @@ When the lifecycle guarantee matters, describe it separately from storage: “pe
 | Term | Use it for | Do not use it for |
 | --- | --- | --- |
 | **state** | The current condition of an object, account, or operation. | A requested setting; use **policy** or **configuration**. |
-| **status** | The result or progress of an operation, especially a transfer. | Every kind of state. Use the exact enum name when one exists. |
-| **mode** | A selected implementation or operating configuration, such as a VFS mode. | A temporary result or transfer status. |
+| **result** | The result of an operation, especially a transfer. | Every kind of state. Use the exact enum name when one exists. |
+| **mode** | The selected VFS implementation, represented by `Vfs::Mode` (`Off`, `WithSuffix`, `WindowsCfApi`, or `XAttr`). | A temporary result or transfer state. |
 | **policy** | A rule or preference that controls what should happen, such as pinning or keeping a file downloaded. | Proof that the requested result has already happened. |
 | **configuration** | Values that select or set up how a component operates. | A live operation result. |
 | **error** | A failure or failure result. | A conflict or warning unless the code treats it as an error. |
 | **conflict** | A specific sync outcome where changes cannot be applied together automatically. | A general failure. |
 
-Use the exact enum or property name when the distinction matters. For example, File Provider transfer status and the standard engine's sync result status are different concepts even though both use the word “status.”
+Use the exact enum or property name when the distinction matters. For example, File Provider transfer results and classic-engine sync results are different concepts.
 
-## Standard sync lifecycle
+## Classic sync lifecycle
 
 | Term | Use it for |
 | --- | --- |
-| **sync run** | One complete standard-engine cycle for a folder. |
+| **sync run** | One complete classic-engine cycle for a folder. |
 | **discovery** | Reading local and remote state and building the items that need action. |
 | **local discovery** | Reading the local filesystem or local database during discovery. |
 | **remote discovery** | Reading the server state during discovery. |
@@ -51,9 +51,9 @@ Use the exact enum or property name when the distinction matters. For example, F
 | **propagation** | Applying accepted sync items through operations such as upload, download, move, or delete. |
 | **reconcile** | Comparing incoming state with existing state and deciding how to combine or resolve it. |
 
-Use **enumeration** for File Provider requests. Do not use it as a general replacement for standard-engine **discovery**.
+Use **enumeration** for File Provider requests. Do not use it as a general replacement for classic-engine **discovery**.
 
-## Standard sync engine and VFS
+## Classic sync engine and VFS
 
 | Term | Use it for | Do not use it for |
 | --- | --- | --- |
@@ -68,7 +68,7 @@ In this engine, a placeholder can be hydrated or dehydrated. Hydration is the do
 
 ## File Provider engine
 
-File Provider uses its own vocabulary. Prefer these terms in the Swift package and extension rather than translating them into standard-sync terminology:
+File Provider uses its own vocabulary. Prefer these terms in the Swift package and extension rather than translating them into classic-sync terminology:
 
 | Term | Use it for |
 | --- | --- |
@@ -93,9 +93,9 @@ Use **materialized** in new prose. Preserve exact existing identifiers, includin
 
 The terms do not map one-to-one between engines:
 
-| Standard sync engine | File Provider engine | Notes |
+| Classic sync engine | File Provider engine | Notes |
 | --- | --- | --- |
-| virtual file / placeholder | File Provider item | Both are local representations, but `item` is the framework object. |
+| virtual file / placeholder | File Provider item | Both are local representations, but `item` is the actual framework object regardless of its state (either `dataless` or `materialized`), not a placeholder. |
 | hydrated / dehydrated | materialized / dataless | These describe related local-content states, but are not interchangeable API terms. |
 | `PinState` | `keepDownloaded` / content policy | Both express availability intent, but belong to different implementations. |
 | hydration | File Provider materialization or download | Use the term exposed by the code path being discussed. |
@@ -111,7 +111,6 @@ The terms do not map one-to-one between engines:
 | **folder** | A user-facing or sync-folder concept. |
 | **delete** | A deletion operation. |
 | **soft-deleted** | A record marked as deleted but not yet removed. |
-| **evict** | A provider or operating-system eviction operation. |
 | **trash** | The client or server's deleted-item area and its related operations. Describe permanent removal directly when needed. |
 
 ## Data representations
