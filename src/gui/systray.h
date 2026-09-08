@@ -10,10 +10,9 @@
 #include "accountmanager.h"
 #include "tray/usermodel.h"
 
-#include <QSystemTrayIcon>
-#include <QQmlNetworkAccessManagerFactory>
 #include <QHash>
-#include <QStringListModel>
+#include <QQmlNetworkAccessManagerFactory>
+#include <QSystemTrayIcon>
 
 class QScreen;
 class QMenu;
@@ -52,7 +51,6 @@ void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
 bool showMacOSTrayPopup(const QRect &iconRect);
 void hideMacOSTrayPopup();
-void showMacOSQMLWindow();
 #endif
 
 /**
@@ -65,8 +63,6 @@ class Systray : public QSystemTrayIcon
 
     Q_PROPERTY(QString windowTitle READ windowTitle CONSTANT)
     Q_PROPERTY(bool useNormalWindow READ useNormalWindow CONSTANT)
-    Q_PROPERTY(bool syncIsPaused READ syncIsPaused WRITE setSyncIsPaused NOTIFY syncIsPausedChanged)
-    Q_PROPERTY(bool anySyncFolders READ anySyncFolders NOTIFY anySyncFoldersChanged)
     Q_PROPERTY(bool isOpen READ isOpen WRITE setIsOpen NOTIFY isOpenChanged)
     Q_PROPERTY(bool enableAddAccount READ enableAddAccount CONSTANT)
 
@@ -98,8 +94,6 @@ public:
     [[nodiscard]] QString windowTitle() const;
     [[nodiscard]] bool useNormalWindow() const;
 
-    [[nodiscard]] bool syncIsPaused() const;
-    [[nodiscard]] bool anySyncFolders() const;
     /** @brief Returns the actions that the global tray synchronization control should offer. */
     [[nodiscard]] SyncControlState syncControlState() const;
     [[nodiscard]] bool isOpen() const;
@@ -113,7 +107,6 @@ public:
     [[nodiscard]] QQmlApplicationEngine* trayEngine() const;
 
 Q_SIGNALS:
-    void currentUserChanged();
     void openAccountWizard();
     void openSettings();
     void openSettingsForSandboxReapproval();
@@ -121,12 +114,9 @@ Q_SIGNALS:
     void shutdown();
 
     void showFileDetailsPage(const QString &fileLocalPath, const OCC::Systray::FileDetailsPage page);
-    void showFileDetails(OCC::AccountState *accountState, const QString &localPath, const OCC::Systray::FileDetailsPage fileDetailsPage);
     void sendChatMessage(const QString &token, const QString &message, const QString &replyTo);
     void showErrorMessageDialog(const QString &error);
 
-    void syncIsPausedChanged();
-    void anySyncFoldersChanged();
     void isOpenChanged();
 
     void hideSettingsDialog();
@@ -149,10 +139,7 @@ public Q_SLOTS:
     void createEncryptionTokenDiscoveryDialog();
     void destroyEncryptionTokenDiscoveryDialog();
 
-    void slotCurrentUserChanged();
-
     void forceWindowInit(QQuickWindow *window) const;
-    void positionWindowAtTray(QQuickWindow *window) const;
     void positionWindowAtScreenCenter(QQuickWindow *window) const;
     void positionNotificationWindow(QQuickWindow *window) const;
 
@@ -160,10 +147,8 @@ public Q_SLOTS:
     // only for those managed by the C++ engine
     void destroyDialog(QQuickWindow *window) const;
 
-    void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void showTrayPopup(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
-    void showQMLWindow();
     void showActivitiesWindow(int userIndex = -1);
     void showAssistantWindow(int userIndex = -1);
     void showSearchWindow(int userIndex = -1);
@@ -186,10 +171,8 @@ public Q_SLOTS:
     void presentFileActionsViewInSystray(const QString &localPath);
 
 private Q_SLOTS:
-    void slotUpdateSyncPausedState();
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();
-    void slotSyncFoldersChanged(const OCC::Folder::Map &foldeMap);
 
 private:
     // Argument allows user to specify a specific dialog to be raised
@@ -218,19 +201,14 @@ private:
     [[nodiscard]] QScreen *currentScreen() const;
     [[nodiscard]] QRect currentScreenRect() const;
     [[nodiscard]] QRect currentAvailableScreenRect() const;
-    [[nodiscard]] QPoint computeWindowReferencePoint() const;
     [[nodiscard]] QPoint computeNotificationReferencePoint(int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
     [[nodiscard]] QPoint calcTrayIconCenter() const;
     [[nodiscard]] TaskBarPosition taskbarOrientation() const;
     [[nodiscard]] QRect computeWindowRect(int spacing, const QPoint &topLeft, const QPoint &bottomRight) const;
-    [[nodiscard]] QPoint computeWindowPosition(int width, int height) const;
     [[nodiscard]] QPoint computeNotificationPosition(int width, int height, int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
 
     bool _isOpen = false;
     bool _isTrayContextMenuVisible = false;
-    bool _syncIsPaused = true;
-    bool _anySyncFolders = false;
-
     std::unique_ptr<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
     QHash<QString, QPointer<QQuickWindow>> _activitiesWindows;
@@ -243,9 +221,7 @@ private:
     QSet<qint64> _callsAlreadyNotified;
     QPointer<QObject> _editFileLocallyLoadingDialog;
     QPointer<QObject> _encryptionTokenDiscoveryDialog;
-    QVector<QQuickWindow*> _fileDetailDialogs;
-
-    QStringListModel _fakeActivityModel;
+    QVector<QQuickWindow *> _fileDetailDialogs;
 };
 
 #ifndef Q_OS_MACOS

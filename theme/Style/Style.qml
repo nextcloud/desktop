@@ -71,7 +71,6 @@ QtObject {
 
     // Dimensions and sizes
     property int trayWindowWidth: variableSize(400)
-    property int trayWindowHeight: variableSize(510)
     // text input and main windows radius
     property int trayWindowRadius: 10
     // dropdown menus radius
@@ -107,7 +106,6 @@ QtObject {
     property int filesActionsWidth: 380
     property int filesActionsHeight: 350
     property int trayListItemIconSize: accountAvatarSize
-    property int trayDrawerMargin: trayWindowHeaderHeight
     property real thumbnailImageSizeReduction: 0.2  // We reserve some space within the thumbnail "item", here about 20%.
                                                     // This is because we need to also add the added/modified icon and we
                                                     // want them to fit within the general icon size. We also need to know
@@ -181,9 +179,7 @@ QtObject {
 
     property int minimumScrollBarWidth: 12
     property real minimumScrollBarThumbSize: 0
-    property int currentAccountButtonWidth: 220
     property int currentAccountButtonRadius: 2
-    property int currentAccountLabelWidth: 128
 
     property int normalBorderWidth: 1
     property int thickBorderWidth: 2
@@ -200,22 +196,12 @@ QtObject {
     property int folderStateIndicatorSize: 16
     property int accountLabelWidth: 128
 
-    property int accountDropDownCaretSize: 10
-    property int accountDropDownCaretMargin: 8
-
     property int trayFoldersMenuButtonStateIndicatorBottomOffset: 5
-    property double trayFoldersMenuButtonDropDownCaretIconSizeFraction: 0.3
-    property double trayFoldersMenuButtonMainIconSizeFraction: 1.0 - trayFoldersMenuButtonDropDownCaretIconSizeFraction
 
     property int activityListButtonWidth: 42
     property int activityListButtonHeight: 32
     property int activityListButtonIconSize: 18
-    property int headerButtonIconSize: 48
     property int minimumActivityItemHeight: 24
-
-    property int accountIconsMenuMargin: 7
-
-    property int activityLabelBaseWidth: 240
 
     property int talkReplyTextFieldPreferredHeight: 34
     property int talkReplyTextFieldPreferredWidth: 250
@@ -230,18 +216,13 @@ QtObject {
     property int roundedButtonBackgroundVerticalMargins: 5
 
     property int userStatusEmojiSize: 8
-    property int userStatusSpacing: trayHorizontalMargin
     property int userStatusAnchorsMargin: 2
-    property int userLineSpacing: smallSpacing
     property int accountServerAnchorsMargin: 10
     property int accountLabelsSpacing: 4
     property int accountsServerMargin: 6
     property int accountLabelsAnchorsMargin: 5
     property int accountLabelsLayoutMargin: 12
     property int accountLabelsLayoutTopMargin: 10
-
-    // Visual behaviour
-    property bool hoverEffectsEnabled: true
 
     // unified search constants
     readonly property int unifiedSearchDetailHeaderHeight: standardPrimaryButtonHeight
@@ -294,19 +275,8 @@ QtObject {
     readonly property int defaultWidthGovernanceLabelsDialog: 400
     readonly property int defaultHeightGovernanceLabelsDialog: 300
 
-    readonly property double smallIconScaleFactor: 0.6
-
     readonly property double trayFolderListButtonWidthScaleFactor: 1.75
-    readonly property int trayFolderStatusIndicatorSizeOffset: 2
-    readonly property double trayFolderStatusIndicatorRadiusFactor: 0.5
     readonly property double trayFolderStatusIndicatorMouseHoverOpacityFactor: 0.2
-
-    readonly property double trayWindowMenuWidthFactor: 0.35
-
-    readonly property int trayWindowMenuOffsetX: -2
-    readonly property int trayWindowMenuOffsetY: 2
-
-    readonly property int trayWindowMenuEntriesMargin: 6
 
     // animation durations
     readonly property int shortAnimationDuration: 200
