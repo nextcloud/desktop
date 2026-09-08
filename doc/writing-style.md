@@ -7,7 +7,7 @@
 
 This guide applies to comments, documentation, commit messages, and other technical writing in the repository. Write for the next human reader: make the point quickly, use ordinary words, and include only the context needed to understand the code.
 
-Use [`doc/terminology.md`](terminology.md) when naming recurring concepts. It defines the shared vocabulary and calls out terms that differ between the standard sync engine and the File Provider engine.
+Use [`doc/terminology.md`](terminology.md) when naming recurring concepts. It defines the shared vocabulary and calls out terms that differ between the classic sync engine and the File Provider engine.
 
 ## Keep it concise
 
