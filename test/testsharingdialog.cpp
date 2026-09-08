@@ -397,8 +397,10 @@ class TestSharingDialog : public QObject
         const auto dialogY = permissionDialog->property("y").toReal();
         const auto dialogWidth = permissionDialog->property("width").toReal();
         const auto dialogHeight = permissionDialog->property("height").toReal();
-        QVERIFY(qAbs(dialogX - (windowDialog->width() - dialogWidth) / 2.0) < 1.0);
-        QVERIFY(qAbs(dialogY - (windowDialog->height() - dialogHeight) / 2.0) < 1.0);
+        const auto permissionDialogParent = permissionDialog->property("parent").value<QQuickItem *>();
+        QVERIFY(permissionDialogParent);
+        QVERIFY(qAbs(dialogX - (permissionDialogParent->width() - dialogWidth) / 2.0) < 1.0);
+        QVERIFY(qAbs(dialogY - (permissionDialogParent->height() - dialogHeight) / 2.0) < 1.0);
         const auto dialogContent = permissionDialog->property("contentItem").value<QQuickItem *>();
         QVERIFY(dialogContent);
         const auto dialogTitle = dialogContent->findChild<QObject *>(QStringLiteral("recipientPermissionDialogTitle"));

@@ -114,7 +114,7 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
             return false
         }
 
-        guard capabilities?.sharing != nil  else {
+        guard capabilities?.sharing != nil else {
             logger.info("Unified sharing is not supported; using the legacy sharing interface.", [.item: identifier])
             return false
         }
