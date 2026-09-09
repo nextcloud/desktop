@@ -675,10 +675,10 @@ bool ConfigFile::autoUpdateCheck(const QString &connectionGroupName) const
     return getConfig<bool>(QLatin1String(autoUpdateCheckC), connectionGroupName);
 }
 
-ManagedValue ConfigFile::getConfig(const QString &name, const QVariant &builtinDefault, const QString &connectionGroupName) const
+ResolvedSetting ConfigFile::getConfig(const QString &name, const QVariant &builtinDefault, const QString &connectionGroupName) const
 {
     const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    const auto spec = ManagedSettingsSchema::find(name).value_or(SettingSpec{name, builtinDefault, true, SettingScope::User});
+    const auto spec = ManagedSettingsSchema::find(name).value_or(SettingDefinition{name, builtinDefault, true, SettingScope::User});
 
     ManagedSettings resolver;
     for (auto &deviceSource : buildDeviceSources()) {
@@ -718,6 +718,19 @@ bool ConfigFile::isEnforced(const QString &name, const QString &connectionGroupN
 SettingSourceType ConfigFile::sourceOf(const QString &name, const QString &connectionGroupName) const
 {
     return getConfig(name, {}, connectionGroupName).source;
+}
+
+QString ConfigFile::sourceLabel(const QString &name) const
+{
+    const auto source = sourceOf(name);
+    switch (source) {
+    case SettingSourceType::ServerEnforced:
+        return QCoreApplication::translate("ConfigFile", "Managed by your organization", "User label when setting is enforced and cannot be changed.");
+    default:
+        return QCoreApplication::translate("ConfigFile", "Managed by your system administrator", "User label when setting is enforced and cannot be changed.");
+    }
+
+    return {};
 }
 
 void ConfigFile::setAutoUpdateCheck(bool autoCheck, const QString &connectionGroupName)
@@ -995,7 +1008,10 @@ ManagedProxySettings ConfigFile::managedProxySettings() const
     managed.typeManaged = fromPolicy(sourceOf(typeKey));
     managed.hostManaged = fromPolicy(sourceOf(hostKey));
     managed.portManaged = fromPolicy(sourceOf(portKey));
-    managed.isEnforced = isEnforced(typeKey) || isEnforced(hostKey) || isEnforced(portKey);
+    managed.typeEnforced = isEnforced(typeKey);
+    managed.hostEnforced = isEnforced(hostKey);
+    managed.portEnforced = isEnforced(portKey);
+    managed.isEnforced = managed.typeEnforced || managed.hostEnforced || managed.portEnforced;
     managed.isManaged = managed.typeManaged || managed.hostManaged || managed.portManaged;
     managed.proxyType = getConfig(typeKey, QNetworkProxy::DefaultProxy).value.toInt();
     managed.proxyHostName = getConfig(hostKey).value.toString();

@@ -509,19 +509,16 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
         accountProxyUser = configFile.proxyUser();
         qCInfo(lcAccountManager) << "Account is using global settings:" << accountProxyType;
     }
-    // A managed proxy overrides an enforced value always, and a default only when the account follows the system proxy.
-    // Only managed fields are replaced, so the account keeps its own value for the rest.
     const auto managedProxy = configFile.managedProxySettings();
-    if (managedProxy.isEnforced || (managedProxy.isManaged && accountProxyType == QNetworkProxy::DefaultProxy)) {
-        if (managedProxy.typeManaged) {
-            accountProxyType = static_cast<QNetworkProxy::ProxyType>(managedProxy.proxyType);
-        }
-        if (managedProxy.hostManaged) {
-            accountProxyHost = managedProxy.proxyHostName;
-        }
-        if (managedProxy.portManaged) {
-            accountProxyPort = managedProxy.proxyPort;
-        }
+    const auto followsSystemProxy = accountProxyType == QNetworkProxy::DefaultProxy;
+    if (managedProxy.typeEnforced || (managedProxy.typeManaged && followsSystemProxy)) {
+        accountProxyType = static_cast<QNetworkProxy::ProxyType>(managedProxy.proxyType);
+    }
+    if (managedProxy.hostEnforced || (managedProxy.hostManaged && followsSystemProxy)) {
+        accountProxyHost = managedProxy.proxyHostName;
+    }
+    if (managedProxy.portEnforced || (managedProxy.portManaged && followsSystemProxy)) {
+        accountProxyPort = managedProxy.proxyPort;
     }
 
     account->setProxyType(accountProxyType);
@@ -838,6 +835,9 @@ void AccountManager::updateServerManagedSettings()
         if (!account->account()->serverHasValidSubscription()) {
             continue;
         }
+        if (account->account()->capabilities().isValid()) {
+            _serverCapabilitiesEverLoaded = true;
+        }
         const auto accountSettings = account->account()->serverManagedSettings();
         merged.schemaVersion = qMax(merged.schemaVersion, accountSettings.schemaVersion);
         for (const auto &[key, value] : accountSettings.enforced.asKeyValueRange()) {
@@ -850,6 +850,10 @@ void AccountManager::updateServerManagedSettings()
                 merged.defaults.insert(key, value);
             }
         }
+    }
+
+    if (merged.defaults.isEmpty() && merged.enforced.isEmpty() && !_serverCapabilitiesEverLoaded) {
+        return;
     }
 
     ConfigFile().setServerManagedSettings(merged);

@@ -7,10 +7,10 @@
 
 namespace OCC::ManagedSettingsSchema {
 
-const QList<SettingSpec> &all()
+const QList<SettingDefinition> &all()
 {
     // Keys with a runtime default are resolved at the call site, not listed here.
-    static const QList<SettingSpec> specs = {
+    static const QList<SettingDefinition> specs = {
         {QStringLiteral("skipUpdateCheck"), false, true, SettingScope::User},
         {QStringLiteral("autoUpdateCheck"), true, true, SettingScope::User},
         {QStringLiteral("confirmExternalStorage"), true, true, SettingScope::User},
@@ -21,11 +21,11 @@ const QList<SettingSpec> &all()
     return specs;
 }
 
-std::optional<SettingSpec> find(const QString &key)
+std::optional<SettingDefinition> find(const QString &key)
 {
-    for (const auto &spec : all()) {
-        if (spec.key == key) {
-            return spec;
+    for (const auto &definition : all()) {
+        if (definition.key == key) {
+            return definition;
         }
     }
     return std::nullopt;

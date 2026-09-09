@@ -35,6 +35,9 @@ struct ManagedProxySettings {
     bool typeManaged = false;
     bool hostManaged = false;
     bool portManaged = false;
+    bool typeEnforced = false;
+    bool hostEnforced = false;
+    bool portEnforced = false;
     int proxyType = 0;
     QString proxyHostName;
     int proxyPort = 0;
@@ -272,8 +275,7 @@ public:
     // The single enforcement aware read path: resolves name across device enforced
     // policy, server enforced policy, user config and defaults, returning the value
     // plus its source and enforcement.
-    [[nodiscard]] ManagedValue getConfig(const QString &name, const QVariant &builtinDefault = {},
-        const QString &connectionGroupName = {}) const;
+    [[nodiscard]] ResolvedSetting getConfig(const QString &name, const QVariant &builtinDefault = {}, const QString &connectionGroupName = {}) const;
     // Typed read; the value is converted to the schema type, T is the caller's type.
     template<typename T>
     [[nodiscard]] T getConfig(const QString &name, const QString &connectionGroupName = {}) const
@@ -284,6 +286,7 @@ public:
     bool setConfig(const QString &name, const QVariant &value, const QString &connectionGroupName = {});
     [[nodiscard]] bool isEnforced(const QString &name, const QString &connectionGroupName = {}) const;
     [[nodiscard]] SettingSourceType sourceOf(const QString &name, const QString &connectionGroupName = {}) const;
+    [[nodiscard]] QString sourceLabel(const QString &connectionGroupName) const;
 
     [[nodiscard]] bool hasDesktopEnterpriseChannel() const;
 
