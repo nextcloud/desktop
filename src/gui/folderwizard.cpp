@@ -630,6 +630,9 @@ void FolderWizardSelectiveSync::initializePage()
             if (Theme::instance()->enforceVirtualFilesSyncFolder()) {
                 _virtualFilesCheckBox->setChecked(true);
                 _virtualFilesCheckBox->setDisabled(true);
+            } else if (const auto managedVfs = ConfigFile().managedVirtualFilesMode(); managedVfs.isManaged) {
+                _virtualFilesCheckBox->setChecked(managedVfs.enabled);
+                _virtualFilesCheckBox->setDisabled(managedVfs.isEnforced);
             }
         }
         //
