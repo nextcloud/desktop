@@ -141,6 +141,7 @@ private:
     // update config serverHasValidSubscription when accounts list changes
     void updateServerHasValidSubscriptionConfig();
     void updateServerDesktopEnterpriseUpdateChannel();
+    void updateServerManagedSettings();
 
     AccountManager() = default;
     QList<AccountStatePtr> _accounts;
