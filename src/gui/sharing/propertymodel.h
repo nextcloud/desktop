@@ -68,6 +68,7 @@ Q_SIGNALS:
 private:
     void resetProperties();
 
+    QMetaObject::Connection _propertiesChangedConnection;
     QList<QPointer<Property>> _properties;
     bool _advanced = false;
 };

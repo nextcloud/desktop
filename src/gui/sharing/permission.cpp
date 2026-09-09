@@ -20,7 +20,7 @@ std::unique_ptr<Permission> Permission::fromJson(const QJsonObject &json)
     const auto enabled = json.value("enabled"_L1).toBool();
     const auto hint = json.value("hint"_L1).toString();
 
-    auto permission = std::make_unique<Permission>(className, displayName, enabled, hint);
+    auto permission = std::unique_ptr<Permission>(new Permission(className, displayName, enabled, hint));
     return permission;
 }
 
