@@ -14,8 +14,7 @@
 
 namespace OCC {
 
-// Process wide cache of the parsed server managed settings, so getConfig does not
-// reparse the config file on every read. Thread safe.
+// Caches parsed server settings in memory to avoid reparsing the config file on every read. Thread safe.
 class OWNCLOUDSYNC_EXPORT ManagedConfig
 {
 public:
@@ -28,7 +27,7 @@ public:
 private:
     ManagedConfig() = default;
     [[nodiscard]] static ServerManagedSettings parse(const QString &configFilePath);
-    static void persist(const QString &configFilePath, const ServerManagedSettings &settings);
+    static void save(const QString &configFilePath, const ServerManagedSettings &settings);
 
     QReadWriteLock _lock;
     bool _loaded = false;

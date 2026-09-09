@@ -14,18 +14,21 @@ void ManagedSettings::addSource(std::unique_ptr<SettingSource> source)
     _sources.push_back(std::move(source));
 }
 
-ManagedValue ManagedSettings::resolve(const SettingSpec &spec, const QString &group) const
+ResolvedSetting ManagedSettings::resolve(const SettingDefinition &definition, const QString &group) const
 {
     // Priorities encode the precedence: device policy > server enforced > user > server default > device default.
     const SettingSource *settingSource = nullptr;
     QVariant settingValue;
     auto settingPriority = -1;
     for (const auto &source : _sources) {
-        if (source->enforcement() == EnforcementState::Enforced && !spec.enforceable) {
+        if (source->enforcement() == EnforcementState::Enforced && !definition.enforceable) {
             continue;
         }
-        const auto value = source->read(spec.key, group);
+        auto value = source->read(definition.key, group);
         if (!value.has_value()) {
+            continue;
+        }
+        if (definition.builtinDefault.isValid() && !value->convert(definition.builtinDefault.metaType())) {
             continue;
         }
         const auto priority = source->priority();
@@ -37,22 +40,18 @@ ManagedValue ManagedSettings::resolve(const SettingSpec &spec, const QString &gr
     }
 
     if (!settingSource) {
-        return {spec.key, spec.builtinDefault, SettingSourceType::BuiltinDefault, EnforcementState::NotEnforced, false};
+        return {definition.key, definition.builtinDefault, SettingSourceType::BuiltinDefault, EnforcementState::NotEnforced, false};
     }
 
-    if (spec.builtinDefault.isValid()) {
-        settingValue.convert(spec.builtinDefault.metaType());
-    }
-
-    return {spec.key, settingValue, settingSource->type(), settingSource->enforcement(), true};
+    return {definition.key, settingValue, settingSource->type(), settingSource->enforcement(), true};
 }
 
-QList<ManagedValue> ManagedSettings::resolveAll(const QList<SettingSpec> &specs, const QString &group) const
+QList<ResolvedSetting> ManagedSettings::resolveAll(const QList<SettingDefinition> &definitionsList, const QString &group) const
 {
-    QList<ManagedValue> results;
-    results.reserve(specs.size());
-    for (const auto &spec : specs) {
-        results.append(resolve(spec, group));
+    QList<ResolvedSetting> results;
+    results.reserve(definitionsList.size());
+    for (const auto &definition : definitionsList) {
+        results.append(resolve(definition, group));
     }
     return results;
 }
