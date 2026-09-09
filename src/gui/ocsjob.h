@@ -154,7 +154,7 @@ private:
     QByteArray _verb;
     QList<QPair<QString, QString>> _params;
     std::optional<QByteArray> _jsonBody;
-    QVector<int> _passStatusCodes;
+    QList<int> _passStatusCodes;
     QNetworkRequest _request;
 };
 }
