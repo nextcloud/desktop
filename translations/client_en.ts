@@ -213,41 +213,131 @@
     </message>
 </context>
 <context>
-    <name>AssistantWindow</name>
+    <name>AssistantChatView</name>
     <message>
-        <location filename="../src/gui/AssistantWindow.qml" line="19"/>
-        <source>Nextcloud Assistant</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/AssistantWindow.qml" line="91"/>
-        <location filename="../src/gui/AssistantWindow.qml" line="95"/>
-        <source>Start new conversation?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/AssistantWindow.qml" line="104"/>
-        <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/AssistantWindow.qml" line="119"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/AssistantWindow.qml" line="125"/>
-        <location filename="../src/gui/AssistantWindow.qml" line="245"/>
+        <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="44"/>
         <source>New conversation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/AssistantWindow.qml" line="236"/>
-        <source>Ask Assistant&#xa0;…</source>
+        <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="70"/>
+        <source>Reload conversations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/AssistantWindow.qml" line="252"/>
+        <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="100"/>
+        <source>Assistant is thinking…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="110"/>
+        <source>Retry response generation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AssistantConversationPicker</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantConversationPicker.qml" line="24"/>
+        <source>No conversation selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantConversationPicker.qml" line="27"/>
+        <source>Selected conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AssistantDeleteTaskDialog</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="37"/>
+        <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="40"/>
+        <source>Delete assistant task?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="49"/>
+        <source>This removes the task from the server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="66"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="73"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AssistantMessageList</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantMessageList.qml" line="50"/>
+        <source>Start a conversation with Nextcloud Assistant.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AssistantTaskDelegate</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="26"/>
+        <source>%1 · %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="59"/>
+        <source>Retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="66"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AssistantTaskList</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantTaskList.qml" line="52"/>
+        <source>No assistant tasks for this type.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AssistantTaskTypeDelegate</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantTaskTypeDelegate.qml" line="100"/>
+        <source>Select assistant task type %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AssistantWindow</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="24"/>
+        <source>Nextcloud Assistant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="65"/>
+        <source>Type a message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="66"/>
+        <source>Describe the task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="138"/>
+        <source>AI can make mistakes. Review generated content before using it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="76"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
@@ -710,57 +800,27 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="247"/>
         <source>Main content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="324"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="325"/>
         <source>Issue with account %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="326"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="327"/>
         <source>Issues with several accounts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="383"/>
-        <source>Start new conversation?</source>
+        <location filename="../src/gui/tray/MainWindow.qml" line="463"/>
+        <source>Unified search results list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="403"/>
-        <source>New conversation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="407"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="428"/>
-        <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="473"/>
-        <source>Ask Assistant&#xa0;…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="501"/>
-        <source>Send assistant question</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="522"/>
-        <source>Start a new assistant chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="691"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="529"/>
         <source>New activities</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1886,6 +1946,82 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="835"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AssistantController</name>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="219"/>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="337"/>
+        <source>Assistant is not available for this account.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="342"/>
+        <source>Assistant is already processing a request.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="431"/>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="451"/>
+        <source>No response yet. Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="480"/>
+        <source>No supported assistant task types were returned.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="557"/>
+        <source>Assistant task scheduled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="770"/>
+        <source>Scheduling assistant task…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="839"/>
+        <source>Assistant request failed (%1).</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AssistantTaskModel</name>
+    <message>
+        <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="106"/>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="108"/>
+        <source>Scheduled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="110"/>
+        <source>In progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="112"/>
+        <source>Completed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="114"/>
+        <source>Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AssistantTaskTypeModel</name>
+    <message>
+        <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="97"/>
+        <source>Chat</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5686,13 +5822,13 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1710"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1620"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1702"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1612"/>
         <source>Reauthorization required</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5710,7 +5846,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1721"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1631"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5736,7 +5872,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1722"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1632"/>
         <source>Some files could not be synced!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5774,58 +5910,58 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="148"/>
+        <location filename="../src/gui/systray.cpp" line="149"/>
         <source>Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="612"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="871"/>
         <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="614"/>
+        <location filename="../src/gui/systray.cpp" line="597"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="617"/>
-        <location filename="../src/gui/systray.cpp" line="627"/>
+        <location filename="../src/gui/systray.cpp" line="600"/>
+        <location filename="../src/gui/systray.cpp" line="610"/>
         <source>Pause sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="618"/>
-        <location filename="../src/gui/systray.cpp" line="633"/>
+        <location filename="../src/gui/systray.cpp" line="601"/>
+        <location filename="../src/gui/systray.cpp" line="616"/>
         <source>Resume sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="619"/>
+        <location filename="../src/gui/systray.cpp" line="602"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="909"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="620"/>
+        <location filename="../src/gui/systray.cpp" line="603"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="621"/>
+        <location filename="../src/gui/systray.cpp" line="604"/>
         <source>Exit %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="627"/>
+        <location filename="../src/gui/systray.cpp" line="610"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="633"/>
+        <location filename="../src/gui/systray.cpp" line="616"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"></translation>
@@ -5913,52 +6049,53 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1244"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1245"/>
         <source>%1 results in %2</source>
+        <extracomment>%1 is the number of search results. %2 is the search provider name, for example &quot;Files&quot;.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1246"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1247"/>
         <source>No matching results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1248"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1249"/>
         <source>%1 results. Some sources are unavailable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1250"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1251"/>
         <source>%1 results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1424"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1425"/>
         <source>Today</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1427"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1428"/>
         <source>Last 7 days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1431"/>
         <source>Last 30 days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1434"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1435"/>
         <source>This year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1438"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1439"/>
         <source>Last year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1458"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1459"/>
         <source>%1 – %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6020,17 +6157,17 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="487"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="489"/>
         <source>Trigger the migration</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="676"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="586"/>
         <source>%n notification(s)</source>
         <translation>
             <numerusform>%n notification</numerusform>
@@ -6038,106 +6175,71 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="919"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="958"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="829"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="868"/>
         <source>“%1” was not synchronized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="960"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="870"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="963"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="873"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="966"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="876"/>
         <source>Insufficient storage on the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="912"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1388"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="928"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1298"/>
         <source>Retry all uploads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1439"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1601"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1349"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1511"/>
         <source>Resolve conflict</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1591"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1501"/>
         <source>Rename file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1694"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1604"/>
         <source>Sync conflicts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1837"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1747"/>
         <source>Public Share Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1949"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1859"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2047"/>
-        <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2053"/>
-        <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2090"/>
-        <source>Sending your request&#xa0;…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2163"/>
-        <source>No response yet. Please try again later.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2182"/>
-        <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2264"/>
-        <source>Waiting for the assistant response…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2286"/>
-        <source>Assistant request failed (%1).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2361"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1994"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2381"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2014"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6145,32 +6247,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2819"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2452"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2820"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2453"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2824"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2457"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2825"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2458"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2911"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2544"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2911"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2544"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6355,108 +6457,108 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>Please sign in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="530"/>
         <source>There are no sync folders configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="415"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="420"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Unsupported Server Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="319"/>
         <source>Terms of service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="315"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="320"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="510"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="509"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="515"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="520"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="584"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="589"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="587"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="592"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="837"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="842"/>
         <source>Select new location …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="925"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="930"/>
         <source>Internal link copied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="926"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="931"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="423"/>
         <source>Disconnected from accounts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="420"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="425"/>
         <source>Account %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="443"/>
         <source>Account synchronization is disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="604"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="609"/>
         <source>%1 (%2, %3)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6630,32 +6732,32 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="491"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="405"/>
         <source>Answer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1430"/>
         <source>You renamed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1432"/>
         <source>You deleted %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1524"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1434"/>
         <source>You created %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1526"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1436"/>
         <source>You changed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1550"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1460"/>
         <source>Synced %1</source>
         <translation type="unfinished"></translation>
     </message>

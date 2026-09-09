@@ -226,6 +226,108 @@
     </message>
 </context>
 <context>
+    <name>AssistantChatView</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="44"/>
+        <source>New conversation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="70"/>
+        <source>Reload conversations</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="100"/>
+        <source>Assistant is thinking…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="110"/>
+        <source>Retry response generation</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AssistantConversationPicker</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantConversationPicker.qml" line="24"/>
+        <source>No conversation selected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantConversationPicker.qml" line="27"/>
+        <source>Selected conversation</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AssistantDeleteTaskDialog</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="37"/>
+        <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="40"/>
+        <source>Delete assistant task?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="49"/>
+        <source>This removes the task from the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="66"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="73"/>
+        <source>Delete</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AssistantMessageList</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantMessageList.qml" line="50"/>
+        <source>Start a conversation with Nextcloud Assistant.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AssistantTaskDelegate</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="26"/>
+        <source>%1 · %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="59"/>
+        <source>Retry</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="66"/>
+        <source>Delete</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AssistantTaskList</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantTaskList.qml" line="52"/>
+        <source>No assistant tasks for this type.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AssistantTaskTypeDelegate</name>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantTaskTypeDelegate.qml" line="100"/>
+        <source>Select assistant task type %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>AssistantWindow</name>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="19"/>
@@ -258,6 +360,21 @@
         <location filename="../src/gui/AssistantWindow.qml" line="236"/>
         <source>Ask Assistant …</source>
         <translation>Asszisztens megkérdezése …</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="65"/>
+        <source>Type a message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="66"/>
+        <source>Describe the task</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="138"/>
+        <source>AI can make mistakes. Review generated content before using it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="252"/>
@@ -371,89 +488,89 @@
 <context>
     <name>CloudProviderWrapper</name>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="111"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="112"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="128"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="130"/>
         <source>Checking for changes in &quot;%1&quot;</source>
         <translation>Változások keresése itt: „%1”</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="133"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="135"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>%1 / %2 szinkronizálása (%3 van hátra)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="138"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="140"/>
         <source>Syncing %1 of %2</source>
         <translation>%1 / %2 szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="145"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="147"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 szinkronizálása (%2 van hátra)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="148"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="150"/>
         <source>Syncing %1</source>
         <translation>%1 szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="169"/>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="250"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="171"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>No recently changed files</source>
         <translation>Nem található mostanában módosított fájl</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="189"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="191"/>
         <source>Sync paused</source>
         <translation>Szinkronizálás szüneteltetve</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="192"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="194"/>
         <source>Syncing</source>
         <translation>Szinkronizálás</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="236"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="238"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>%1 asztali alkalmazás megnyitása</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="243"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="245"/>
         <source>Open in browser</source>
         <translation>Megnyitás böngészőben</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="257"/>
         <source>Recently changed</source>
         <translation>Nemrég módosítva</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="262"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="264"/>
         <source>Pause synchronization</source>
         <translation>Szinkronizálás szüneteltetése</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="269"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="271"/>
         <source>Help</source>
         <translation>Súgó</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="272"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="274"/>
         <source>Settings</source>
         <translation>Beállítások</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="275"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="277"/>
         <source>Log out</source>
         <translation>Kijelentkezés</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="278"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="280"/>
         <source>Quit sync client</source>
         <translation>Kilépés a szinkronizálási kliensből</translation>
     </message>
@@ -613,12 +730,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="535"/>
+        <location filename="../src/libsync/filesystem.cpp" line="537"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Hiba a(z) „%1” eltávolításakor: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="583"/>
+        <location filename="../src/libsync/filesystem.cpp" line="587"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>A(z) „%1” mappa nem távolítható el</translation>
     </message>
@@ -763,11 +880,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="501"/>
-        <source>Send assistant question</source>
-        <translation>Üzenet küldése az asszisztensnek</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="777"/>
         <source>Unified search results list</source>
         <translation>Egyesített keresési találatlista</translation>
@@ -778,14 +890,19 @@
         <translation>Asszisztens megkérdezése…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="522"/>
-        <source>Start a new assistant chat</source>
-        <translation>Új asszisztensi csevegés indítása</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="691"/>
         <source>New activities</source>
         <translation>Új tevékenységek</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="501"/>
+        <source>Send assistant question</source>
+        <translation>Üzenet küldése az asszisztensnek</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="522"/>
+        <source>Start a new assistant chat</source>
+        <translation>Új asszisztensi csevegés indítása</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="795"/>
@@ -834,17 +951,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="331"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="335"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>A kiszolgáló válasza túl sokáig tartott. Ellenőrizze a kapcsolatát, és próbáljon meg újra szinkronizálni. Ha még mindig nem működik, akkor jelezze a rendszergazdának.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="335"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="339"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Váratlan hiba történt. Próbáljon újra szinkronizálni, vagy lépjen kapcsolatba a rendszergazdával, ha a probléma továbbra is fennáll.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="615"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="619"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
         <translation>A kiszolgáló szigorúan betartatja a biztonsági házirendet, és nem fogad el nem megbízható tanúsítványokat.</translation>
     </message>
@@ -1932,6 +2049,82 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     </message>
 </context>
 <context>
+    <name>OCC::AssistantController</name>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="219"/>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="337"/>
+        <source>Assistant is not available for this account.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="342"/>
+        <source>Assistant is already processing a request.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="431"/>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="451"/>
+        <source>No response yet. Please try again later.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="480"/>
+        <source>No supported assistant task types were returned.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="557"/>
+        <source>Assistant task scheduled.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="770"/>
+        <source>Scheduling assistant task…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="839"/>
+        <source>Assistant request failed (%1).</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::AssistantTaskModel</name>
+    <message>
+        <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="106"/>
+        <source>Unknown</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="108"/>
+        <source>Scheduled</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="110"/>
+        <source>In progress</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="112"/>
+        <source>Completed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="114"/>
+        <source>Failed</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::AssistantTaskTypeModel</name>
+    <message>
+        <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="97"/>
+        <source>Chat</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::AuthenticationDialog</name>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="22"/>
@@ -2208,7 +2401,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1783"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1794"/>
         <source>Error writing metadata to the database</source>
         <translation>Hiba a metaadatok adatbázisba írásakor</translation>
     </message>
@@ -2216,33 +2409,33 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1177"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1174"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
         <translation>Adja meg a PIN-kódot</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1178"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1175"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation>Adja meg a tanúsítványhoz tartozó USB token PIN-kódját:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1196"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1193"/>
         <source>Invalid PIN. Login failed</source>
         <translation>Érvénytelen PIN-kód. A bejelentkezés sikertelen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1197"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1194"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
         <translation>A tokenbe való bejelentkezés a felhasználói PIN-kód megadása után sikertelen. Lehet, hogy érvénytelen vagy hibás. Próbálja újra.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="2272"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="2269"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Adja meg a végpontok közötti titkosítási jelmondatát:&lt;br&gt;&lt;br&gt;Felhasználónév: %2&lt;br&gt;Fiók: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="2280"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="2277"/>
         <source>Enter E2E passphrase</source>
         <translation>Adja meg az E2E jelmondatot</translation>
     </message>
@@ -2409,23 +2602,23 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="583"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="587"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Kiszolgálóhiba: A PROPFIND válasz nem XML formátumú!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="613"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="617"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>A kiszolgáló váratlan választ adott vissza, amely nem olvasható. Lépjen kapcsolatba a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="644"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="698"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="648"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Titkosított metaadatok beállítási hibája!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="681"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Titkosított metaadatok beállítási hibája: a kiszolgáló kezdeti aláírása üres.</translation>
     </message>
@@ -2433,27 +2626,27 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="355"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
         <source>Error while opening directory %1</source>
         <translation>Hiba történt a(z) %1 könyvtár megnyitásakor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="359"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>A könyvtár nem érhető el a kliensen, az engedély megtagadva</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="361"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="363"/>
         <source>Directory not found: %1</source>
         <translation>A könyvtár nem található: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="393"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
         <translation>A fájlnév kódolása érvénytelen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="422"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="426"/>
         <source>Error while reading directory %1</source>
         <translation>Hiba történt a(z) %1 könyvtár olvasása során</translation>
     </message>
@@ -2762,172 +2955,172 @@ Ezt a problémát valószínűleg az OpenSSL programkönyvtárakban kell keresni
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="505"/>
+        <location filename="../src/gui/folder.cpp" line="508"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>A(z) %1 sikeresen eltávolítva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="519"/>
+        <location filename="../src/gui/folder.cpp" line="522"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>A(z) %1 sikeresen feltöltve.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="526"/>
+        <location filename="../src/gui/folder.cpp" line="529"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>A(z) %1 átnevezve erre: %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="533"/>
+        <location filename="../src/gui/folder.cpp" line="536"/>
         <source>%1 has been moved to %2.</source>
         <translation>A(z) %1 áthelyezve ide: %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="503"/>
+        <location filename="../src/gui/folder.cpp" line="506"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>A(z) %1 és %n másik fájl el lett távolítva.</numerusform><numerusform>A(z) %1 és %n másik fájl el lett távolítva.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="237"/>
+        <location filename="../src/gui/folder.cpp" line="239"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 mappa nem létezik.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="239"/>
+        <location filename="../src/gui/folder.cpp" line="241"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 mappa nem érvényes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="241"/>
+        <location filename="../src/gui/folder.cpp" line="243"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 mappa nem olvasható.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="510"/>
+        <location filename="../src/gui/folder.cpp" line="513"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>A(z) %1 és %n további fájl hozzáadva.</numerusform><numerusform>A(z) %1 és %n további fájl hozzáadva.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="512"/>
+        <location filename="../src/gui/folder.cpp" line="515"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 hozzáadva.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="517"/>
+        <location filename="../src/gui/folder.cpp" line="520"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>A(z) %1 és %n további fájl feltöltve.</numerusform><numerusform>A(z) %1 és %n további fájl feltöltve.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="524"/>
+        <location filename="../src/gui/folder.cpp" line="527"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>A(z) %1 átnevezve erre: %2, és még %n további fájl lett átnevezve.</numerusform><numerusform>A(z) %1 átnevezve erre: %2, és még %n további fájl lett átnevezve.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="531"/>
+        <location filename="../src/gui/folder.cpp" line="534"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>A(z) %1 áthelyezve ide: %2, és még %n további fájl áthelyezve.</numerusform><numerusform>A(z) %1 áthelyezve ide: %2, és még %n további fájl áthelyezve.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="538"/>
+        <location filename="../src/gui/folder.cpp" line="541"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>A(z) %1 és %n további fájl szinkronizálási ütközéssel rendelkezik.</numerusform><numerusform>A(z) %1 és %n további fájl szinkronizálási ütközéssel rendelkezik.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="540"/>
+        <location filename="../src/gui/folder.cpp" line="543"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>A(z) %1 fájl szinkronizálási ütközéssel rendelkezik. Ellenőrizze az ütközési fájlt!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="545"/>
+        <location filename="../src/gui/folder.cpp" line="548"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>A(z) %1 és %n további fájl hibák miatt nem szinkronizálható. Bővebb információk a naplófájlban.</numerusform><numerusform>A(z) %1 és %n további fájl hibák miatt nem szinkronizálható. Bővebb információk a naplófájlban.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="547"/>
+        <location filename="../src/gui/folder.cpp" line="550"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>A(z) %1 hiba miatt nem szinkronizálható. Bővebb információk a naplófájlban.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="552"/>
+        <location filename="../src/gui/folder.cpp" line="555"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>A(z) %1 és %n további fájl zárolt.</numerusform><numerusform>A(z) %1 és %n további fájl zárolt.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="554"/>
+        <location filename="../src/gui/folder.cpp" line="557"/>
         <source>%1 is currently locked.</source>
         <translation>A(z) %1 jelenleg zárolt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="562"/>
+        <location filename="../src/gui/folder.cpp" line="565"/>
         <source>Sync Activity</source>
         <translation>Szinkronizálási tevékenység</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1180"/>
+        <location filename="../src/gui/folder.cpp" line="1184"/>
         <source>Could not read system exclude file</source>
         <translation>Nem lehetett beolvasni a rendszer kizárási fájlját</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1470"/>
+        <location filename="../src/gui/folder.cpp" line="1474"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Egy %1 MB méretet meghaladó mappa lett hozzáadva: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1473"/>
+        <location filename="../src/gui/folder.cpp" line="1477"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Egy külső tárolóból származó mappa lett hozzáadva.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1474"/>
+        <location filename="../src/gui/folder.cpp" line="1478"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>A beállításoknál válassza ki, ha le szeretné tölteni.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1531"/>
+        <location filename="../src/gui/folder.cpp" line="1535"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Egy mappa túllépte a beállított %1 MB-os mappamérethatárt: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1542"/>
+        <location filename="../src/gui/folder.cpp" line="1546"/>
         <source>Keep syncing</source>
         <translation>Tovább szinkronizálás</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1550"/>
+        <location filename="../src/gui/folder.cpp" line="1554"/>
         <source>Stop syncing</source>
         <translation>Szinkronizálás megszakítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1561"/>
+        <location filename="../src/gui/folder.cpp" line="1565"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>A(z) %1 mappa túllépte a beállított %2 MB-os mappamérethatárt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1562"/>
+        <location filename="../src/gui/folder.cpp" line="1566"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Leállítja a mappa szinkronizációját?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1637"/>
+        <location filename="../src/gui/folder.cpp" line="1643"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>A(z) %1 mappa létre lett hozva, de előzőleg ki lett hagyva a szinkronizálásból. A benne lévő adatok nem lesznek szinkronizálva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1640"/>
+        <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>A(z) %1 fájl létre lett hozva, de előzőleg ki lett hagyva a szinkronizálásból. Nem lesz szinkronizálva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <location filename="../src/gui/folder.cpp" line="1657"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2940,12 +3133,12 @@ Ez azt jelenti, hogy a szinkronizációs kliens lehet, hogy nem fogja azonnal fe
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1689"/>
+        <location filename="../src/gui/folder.cpp" line="1695"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>A virtuális fájl letöltése „%1” kóddal, „%2” állapottal és „%3” hibaüzenettel sikertelen volt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1783"/>
+        <location filename="../src/gui/folder.cpp" line="1791"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2954,7 +3147,7 @@ Erősítse meg, hogy szeretné-e folytatni ezeket a törléseket.
 Ellenkező esetben az összes törölt fájlt helyreállíthatja a(z) „%1” mappából a kiszolgálóra történő feltöltéssel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1784"/>
+        <location filename="../src/gui/folder.cpp" line="1792"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2963,22 +3156,22 @@ Erősítse meg, hogy szeretné-e folytatni ezeket a törléseket.
 Ellenkező esetben az összes törölt fájlt helyreállíthatja a kiszolgálóról történő letöltéssel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1785"/>
+        <location filename="../src/gui/folder.cpp" line="1793"/>
         <source>Remove all files?</source>
         <translation>Eltávolítja az összes fájlt?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1789"/>
+        <location filename="../src/gui/folder.cpp" line="1797"/>
         <source>Proceed with Deletion</source>
         <translation>Törlés folytatása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1790"/>
+        <location filename="../src/gui/folder.cpp" line="1798"/>
         <source>Restore Files to Server</source>
         <translation>Fájlok helyreállítása a kiszolgálóra</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1790"/>
+        <location filename="../src/gui/folder.cpp" line="1798"/>
         <source>Restore Files from Server</source>
         <translation>Fájlok helyreállítása a kiszolgálóról</translation>
     </message>
@@ -3014,12 +3207,12 @@ Ellenkező esetben az összes törölt fájlt helyreállíthatja a kiszolgálór
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="512"/>
+        <location filename="../src/gui/folderman.cpp" line="517"/>
         <source>Could not reset folder state</source>
         <translation>A mappa állapotát nem lehet visszállítani</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="513"/>
+        <location filename="../src/gui/folderman.cpp" line="518"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Egy régi szinkronizálási naplófájl található: „%1”, de az nem törölhető. Győződjön meg róla, hogy jelenleg egy alkalmazás sem használja.</translation>
     </message>
@@ -3034,116 +3227,116 @@ Ellenkező esetben az összes törölt fájlt helyreállíthatja a kiszolgálór
         <translation> (biztonsági mentés: %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1886"/>
+        <location filename="../src/gui/folderman.cpp" line="1900"/>
         <source>Undefined state.</source>
         <translation>Nem definiált állapot.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1889"/>
+        <location filename="../src/gui/folderman.cpp" line="1903"/>
         <source>Waiting to start syncing.</source>
         <translation>Várakozás a szinkronizálás elindítására.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1892"/>
+        <location filename="../src/gui/folderman.cpp" line="1906"/>
         <source>Preparing for sync.</source>
         <translation>Előkészítés a szinkronizáláshoz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1902"/>
+        <location filename="../src/gui/folderman.cpp" line="1916"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>%1 / %2 szinkronizálása (néhány másodperc van hátra)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1905"/>
+        <location filename="../src/gui/folderman.cpp" line="1919"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>%1 / %2 szinkronizálása (%3 van hátra)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1908"/>
+        <location filename="../src/gui/folderman.cpp" line="1922"/>
         <source>Syncing %1 of %2</source>
         <translation>%1 / %2 szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1914"/>
+        <location filename="../src/gui/folderman.cpp" line="1928"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>%1 szinkronizálása (néhány másodperc van hátra)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1916"/>
+        <location filename="../src/gui/folderman.cpp" line="1930"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 szinkronizálása (%2 van hátra)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1919"/>
+        <location filename="../src/gui/folderman.cpp" line="1933"/>
         <source>Syncing %1</source>
         <translation>%1 szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1924"/>
+        <location filename="../src/gui/folderman.cpp" line="1938"/>
         <source>Sync is running.</source>
         <translation>A szinkronizálás fut.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1929"/>
+        <location filename="../src/gui/folderman.cpp" line="1943"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>A szinkronizálás befejeződött, feloldatlan ütközések vannak.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1931"/>
+        <location filename="../src/gui/folderman.cpp" line="1945"/>
         <source>Last sync was successful.</source>
         <translation>A legutolsó szinkronizálás sikeres volt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1937"/>
+        <location filename="../src/gui/folderman.cpp" line="1951"/>
         <source>Setup error.</source>
         <translation>Beállítási hiba.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1940"/>
+        <location filename="../src/gui/folderman.cpp" line="1954"/>
         <source>Sync request was cancelled.</source>
         <translation>Szinkronizálási kérés megszakítva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1957"/>
+        <location filename="../src/gui/folderman.cpp" line="1971"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Válasszon egy másik helyet. A kiválasztott mappa nem érvényes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1965"/>
-        <location filename="../src/gui/folderman.cpp" line="2044"/>
+        <location filename="../src/gui/folderman.cpp" line="1979"/>
+        <location filename="../src/gui/folderman.cpp" line="2058"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 már szinkronizálási mappaként van használva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1974"/>
+        <location filename="../src/gui/folderman.cpp" line="1988"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 útvonal nem létezik.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1978"/>
+        <location filename="../src/gui/folderman.cpp" line="1992"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 útvonal nem egy mappa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1986"/>
-        <location filename="../src/gui/folderman.cpp" line="1991"/>
+        <location filename="../src/gui/folderman.cpp" line="2000"/>
+        <location filename="../src/gui/folderman.cpp" line="2005"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Válasszon egy másik helyet. Nincs joga ide írni: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2051"/>
+        <location filename="../src/gui/folderman.cpp" line="2065"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 már egy szinkronizálási mappaként használt mappában van.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2066"/>
+        <location filename="../src/gui/folderman.cpp" line="2080"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Válasszon egy másik helyet. A(z) %1 már a(z) %2 szinkronizálási mappájaként van használva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2224"/>
+        <location filename="../src/gui/folderman.cpp" line="2238"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3154,17 +3347,17 @@ A probléma megoldása: távolítsa el a(z) %1 mappát az egyik fiókból, és h
 Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több szinkronizálási adatbázisfájl található egy mappában. Ellenőrizze a(z) %1 mappában az elavult és nem használt .sync_*.db fájlokat, és távolítsa el őket.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1943"/>
+        <location filename="../src/gui/folderman.cpp" line="1957"/>
         <source>Sync is paused.</source>
         <translation>Szinkronizálás megállítva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="425"/>
+        <location filename="../src/gui/folderman.cpp" line="430"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
         <translation>Nyissa meg az alkalmazás beállításait, és adjon hozzáférést a szinkronizálási mappákhoz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1949"/>
+        <location filename="../src/gui/folderman.cpp" line="1963"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (szinkronizálás megállítva)</translation>
     </message>
@@ -3243,34 +3436,34 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>Fájlok szinkronizálása a helyi mappában</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1006"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Változások keresése a(z) „%1” távoli mappában</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Változások keresése a(z) „%1” helyi mappában</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1017"/>
         <source>Syncing local and remote changes</source>
         <translation>Helyi és távoli változások szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1060"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1067"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>%1 %2 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1073"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>Letöltés: %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1132"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1139"/>
         <source>File %1 of %2</source>
         <translation>%1. / %2 fájl</translation>
     </message>
@@ -3280,8 +3473,8 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>Feloldatlan ütközések vannak. Kattintson a részletekért.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1073"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1069"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1080"/>
         <source>, </source>
         <translation>, </translation>
     </message>
@@ -3291,62 +3484,62 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>Mappalista letöltése a kiszolgálóról…</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1075"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1076"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1083"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>Feltöltés: %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1078"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;Uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 / %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1097"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;Uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1111"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1118"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>Néhány másodperc van hátra, %1 / %2, %3 / %4 fájl</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1116"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1123"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <translation>%5 van hátra, %1 / %2, %3 / %4 fájl</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1125"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1132"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 / %2, %3 / %4 fájl</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1185"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1192"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation><numerusform>Várakozás %n további mappára…</numerusform><numerusform>Várakozás %n további mappára…</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1185"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1192"/>
         <source>About to start syncing</source>
         <translation>Szinkronizálás megkezdése</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1190"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1197"/>
         <source>Preparing to sync …</source>
         <translation>Felkészülés a szinkronizálásra…</translation>
     </message>
@@ -3362,7 +3555,7 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
 <context>
     <name>OCC::FolderWatcherPrivate</name>
     <message>
-        <location filename="../src/gui/folderwatcher_linux.cpp" line="80"/>
+        <location filename="../src/gui/folderwatcher_linux.cpp" line="81"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
         <translation>Ez a probléma általában akkor történik, ha az inotify figyelők kimerültek. A részletekért nézze meg a GYIK-et.</translation>
     </message>
@@ -3370,12 +3563,12 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="703"/>
+        <location filename="../src/gui/folderwizard.cpp" line="710"/>
         <source>Add Folder Sync Connection</source>
         <translation>Mappa szinkronizálási kapcsolat hozzáadása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="705"/>
+        <location filename="../src/gui/folderwizard.cpp" line="712"/>
         <source>Add Sync Connection</source>
         <translation>Szinkronizálási kapcsolat hozzáadása</translation>
     </message>
@@ -3411,38 +3604,38 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>Adja meg a(z) „%1” alatt létrehozandó új mappa nevét:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="261"/>
+        <location filename="../src/gui/folderwizard.cpp" line="262"/>
         <source>Folder was successfully created on %1.</source>
         <translation>A mappa sikeresen létrehozva itt: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="271"/>
+        <location filename="../src/gui/folderwizard.cpp" line="272"/>
         <source>Authentication failed accessing %1</source>
         <translation>A hitelesítés sikertelen a(z) %1 elérésekor</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="273"/>
+        <location filename="../src/gui/folderwizard.cpp" line="274"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>A mappa létrehozása sikertelen itt: 1. Ellenőrizze kézzel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="291"/>
+        <location filename="../src/gui/folderwizard.cpp" line="292"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Egy mappa listázása meghiúsult. Hiba: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="372"/>
+        <location filename="../src/gui/folderwizard.cpp" line="374"/>
         <source>Choose this to sync the entire account</source>
         <translation>Válassza ezt a teljes fiókja szinkronizálásához</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="512"/>
-        <location filename="../src/gui/folderwizard.cpp" line="524"/>
+        <location filename="../src/gui/folderwizard.cpp" line="516"/>
+        <location filename="../src/gui/folderwizard.cpp" line="528"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 már ide szinkronizál: %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="519"/>
+        <location filename="../src/gui/folderwizard.cpp" line="523"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>Már szinkronizálja a(z) %2 almappát itt: %1.</translation>
     </message>
@@ -3450,24 +3643,24 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="586"/>
-        <location filename="../src/gui/folderwizard.cpp" line="623"/>
+        <location filename="../src/gui/folderwizard.cpp" line="590"/>
+        <location filename="../src/gui/folderwizard.cpp" line="628"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Virtuális fájlok használata a tartalom azonnali letöltése helyett %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="586"/>
-        <location filename="../src/gui/folderwizard.cpp" line="623"/>
+        <location filename="../src/gui/folderwizard.cpp" line="590"/>
+        <location filename="../src/gui/folderwizard.cpp" line="628"/>
         <source>(experimental)</source>
         <translation>(kísérleti)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="619"/>
+        <location filename="../src/gui/folderwizard.cpp" line="624"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>A virtuális fájlok nem támogatottak a windowsos partíciók gyökerében helyi mappaként. Válasszon érvényes almappát a meghajtó betűjele alatt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="644"/>
+        <location filename="../src/gui/folderwizard.cpp" line="649"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation>A virtuális fájlok nem támogatottak a kiválasztott helyen</translation>
     </message>
@@ -3495,7 +3688,7 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>A kiszolgáló hibás tartalomtartományt adott vissza</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="361"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="363"/>
         <source>Connection Timeout</source>
         <translation>Kapcsolati időtúllépés</translation>
     </message>
@@ -3852,22 +4045,22 @@ A verziók visszaváltása nem lehetséges azonnal: a stabilról vállalatira va
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="904"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="910"/>
         <source>Password for share required</source>
         <translation>A megosztáshoz jelszó szükséges</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="905"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="911"/>
         <source>Please enter a password for your link share:</source>
         <translation>Adjon meg egy jelszót a megosztási hivatkozásához:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="931"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="937"/>
         <source>Sharing error</source>
         <translation>Megosztási hiba</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="932"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="938"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -3894,7 +4087,7 @@ A verziók visszaváltása nem lehetséges azonnal: a stabilról vállalatira va
         <translation>Adja meg a jelszót</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Kattintson ide&lt;/a&gt;, hogy alkalmazásjelszót kérjen a webes felületről.</translation>
     </message>
@@ -3964,22 +4157,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályoznák egy mappa törlését. Ez metaadatok esetén hasznos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisttablewidget.cpp" line="107"/>
+        <location filename="../src/gui/ignorelisttablewidget.cpp" line="108"/>
         <source>Could not open file</source>
         <translation>A fájl nem nyitható meg</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisttablewidget.cpp" line="108"/>
+        <location filename="../src/gui/ignorelisttablewidget.cpp" line="109"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
         <translation>A változások nem írhatóak ide: „%1”.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisttablewidget.cpp" line="131"/>
+        <location filename="../src/gui/ignorelisttablewidget.cpp" line="132"/>
         <source>Add Ignore Pattern</source>
         <translation>Kihagyási minta hozzáadása</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisttablewidget.cpp" line="132"/>
+        <location filename="../src/gui/ignorelisttablewidget.cpp" line="133"/>
         <source>Add a new ignore pattern:</source>
         <translation>Új kihagyási minta hozzáadása:</translation>
     </message>
@@ -4301,14 +4494,14 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="377"/>
-        <location filename="../src/libsync/logger.cpp" line="411"/>
+        <location filename="../src/libsync/logger.cpp" line="380"/>
+        <location filename="../src/libsync/logger.cpp" line="414"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="378"/>
-        <location filename="../src/libsync/logger.cpp" line="412"/>
+        <location filename="../src/libsync/logger.cpp" line="381"/>
+        <location filename="../src/libsync/logger.cpp" line="415"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;A(z) „%1” fájlt&lt;br/&gt;nem lehet írásra megnyitni.&lt;br/&gt;&lt;br/&gt;A naplózás kimenete &lt;b&gt;nem&lt;/b&gt; menthető!&lt;/nobr&gt;</translation>
     </message>
@@ -4561,8 +4754,8 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="972"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1049"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="978"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1057"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>A(z) %1 ütköző fájl módosítási idejének lekérése lehetetlen</translation>
     </message>
@@ -4591,215 +4784,215 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="387"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>A szimbolikus linkek nem támogatottak a szinkronizálás során.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="399"/>
         <source>File is locked by another application.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="399"/>
+        <location filename="../src/libsync/discovery.cpp" line="402"/>
         <source>File is listed on the ignore list.</source>
         <translation>A fájl a mellőzési listán szerepel.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="403"/>
+        <location filename="../src/libsync/discovery.cpp" line="406"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>A pontokkal végződő fájlneveket ez a fájlrendszer nem támogatja.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="418"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>A(z) „%1” karaktert tartalmazó mappanevek nem támogatottak ezen a fájlrendszeren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>A(z) „%1” karaktert tartalmazó fájlnevek nem támogatottak ezen a fájlrendszeren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <location filename="../src/libsync/discovery.cpp" line="422"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>A mappanév legalább egy érvénytelen karaktert tartalmaz</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>File name contains at least one invalid character</source>
         <translation>A fájlnév legalább egy érvénytelen karaktert tartalmaz</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="423"/>
+        <location filename="../src/libsync/discovery.cpp" line="426"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation>A mappanév egy ezen a fájlrendszeren fenntartott név.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="424"/>
+        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>File name is a reserved name on this file system.</source>
         <translation>A fájlnév egy ezen a fájlrendszeren fenntartott név.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="430"/>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
         <translation>A fájlnév záró szóközt tartalmaz.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <location filename="../src/libsync/discovery.cpp" line="489"/>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
         <source>Cannot be renamed or uploaded.</source>
         <translation>Nem nevezhető át vagy tölthető fel.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
         <source>Filename contains leading spaces.</source>
         <translation>A fájlnév kezdő szóközt tartalmaz.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>A fájlnév kezdő és záró szóközt tartalmaz.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <location filename="../src/libsync/discovery.cpp" line="454"/>
         <source>Filename is too long.</source>
         <translation>A fájlnév túl hosszú.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="455"/>
+        <location filename="../src/libsync/discovery.cpp" line="458"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>A fájl/mappa figyelmen kívül hagyva, mert rejtett.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="458"/>
+        <location filename="../src/libsync/discovery.cpp" line="461"/>
         <source>Stat failed.</source>
         <translation>Az elem kizárás vagy hiba miatt kihagyva.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="461"/>
+        <location filename="../src/libsync/discovery.cpp" line="464"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Ütközés: A kiszolgáló verziója letöltve, a helyi példány átnevezve és nem lett feltöltve.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="465"/>
+        <location filename="../src/libsync/discovery.cpp" line="468"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>Kis- és nagybetűk miatti ütközés: A kiszolgálón lévő fájl letöltve és átnevezve az ütközés elkerülése érdekében.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="469"/>
+        <location filename="../src/libsync/discovery.cpp" line="472"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>A fájlnév nem kódolható a fájlrendszeren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="472"/>
+        <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>A fájlnév feketelistára került a kiszolgálón.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="475"/>
+        <location filename="../src/libsync/discovery.cpp" line="478"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>Indoklás: a teljes fájlnév tiltott.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="478"/>
+        <location filename="../src/libsync/discovery.cpp" line="481"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Indoklás: a fájlnévnek tiltott alapneve van (fájlnév kezdete).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="481"/>
+        <location filename="../src/libsync/discovery.cpp" line="484"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>Indoklás: a fájl tiltott kiterjesztésű (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="484"/>
+        <location filename="../src/libsync/discovery.cpp" line="487"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
         <translation>Indoklás: a fájlnév tiltott karaktert (%1) tartalmaz.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="630"/>
+        <location filename="../src/libsync/discovery.cpp" line="634"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>A fájlnak virtuális fájlok számára fenntartott kiterjesztése van.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="802"/>
+        <location filename="../src/libsync/discovery.cpp" line="806"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>A mappa nem érhető el a kiszolgálón.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="803"/>
+        <location filename="../src/libsync/discovery.cpp" line="807"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>A fájl nem érhető el a kiszolgálón.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1239"/>
+        <location filename="../src/libsync/discovery.cpp" line="1248"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Az érvénytelen módosítási idő miatt nem lehet szinkronizálni</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1255"/>
+        <location filename="../src/libsync/discovery.cpp" line="1264"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>A(z) %1 feltöltés nagyobb, mint a személyes fájlokra fennmaradó %2 hely.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1258"/>
+        <location filename="../src/libsync/discovery.cpp" line="1267"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>A(z) %1 feltöltés nagyobb, mint a(z) %3 mappában fennmaradó %2 hely.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1274"/>
+        <location filename="../src/libsync/discovery.cpp" line="1283"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Nem sikerült feltölteni a fájlt, mert meg van nyitva itt: „%1”.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1327"/>
+        <location filename="../src/libsync/discovery.cpp" line="1336"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Hiba történt a(z) %1 fájlrekord adatbázisból törlése során</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1615"/>
-        <location filename="../src/libsync/discovery.cpp" line="2096"/>
+        <location filename="../src/libsync/discovery.cpp" line="1624"/>
+        <location filename="../src/libsync/discovery.cpp" line="2112"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Érvénytelen célba mozgatás, helyreállítás</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1953"/>
+        <location filename="../src/libsync/discovery.cpp" line="1965"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>A titkosított elem nem módosítható, mert a kiválasztott tanúsítvány nem érvényes.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2020"/>
+        <location filename="../src/libsync/discovery.cpp" line="2035"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>A „válassza ki a szinkronizálni kívánt elemeket” feketelista miatt figyelmen kívül hagyva</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2054"/>
+        <location filename="../src/libsync/discovery.cpp" line="2069"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Nem engedélyezett, mert nincs engedélye almappák hozzáadásához az adott a mappához</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2060"/>
+        <location filename="../src/libsync/discovery.cpp" line="2075"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Nem engedélyezett, mert nincs engedélye fájlok hozzáadására az adott mappában</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2074"/>
+        <location filename="../src/libsync/discovery.cpp" line="2089"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ezt a fájlt nem lehet feltölteni, mert csak olvasható a kiszolgálón, helyreállítás</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2110"/>
+        <location filename="../src/libsync/discovery.cpp" line="2126"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Az eltávolítás nem engedélyezett, helyreállítás</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2281"/>
+        <location filename="../src/libsync/discovery.cpp" line="2299"/>
         <source>Error while reading the database</source>
         <translation>Hiba történt az adatbázis olvasása során</translation>
     </message>
@@ -4807,38 +5000,38 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1493"/>
         <source>Could not delete file %1 from local DB</source>
         <translation>A(z) %1 fájl törlése a helyi adatbázisból nem sikerült</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1499"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1507"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Az érvénytelen módosítási idő miatt hiba történt a metaadatok frissítése során</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1531"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1537"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1568"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1574"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1539"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1545"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1551"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1576"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1582"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1588"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>A(z) %1 mappa nem tehető csak olvashatóvá: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1551"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1588"/>
         <source>unknown exception</source>
         <translation>ismeretlen kivétel</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1587"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1595"/>
         <source>Error updating metadata: %1</source>
         <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1591"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1599"/>
         <source>File is currently in use</source>
         <translation>A fájl jelenleg használatban van</translation>
     </message>
@@ -4846,70 +5039,70 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="458"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>Could not get file %1 from local DB</source>
         <translation>A(z) %1 fájl lekérése a helyi adatbázisból nem sikerült</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="475"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="478"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>A(z) %1 fájl nem tölthető le, mert hiányoznak a titkosítási információk.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="515"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1310"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1317"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>A(z) %1 fájlrekord törlése a helyi adatbázisból nem sikerült</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="698"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="702"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>A letöltés a korlát alá csökkentené a szabad helyi tárterületet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="702"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="706"/>
         <source>Free space on disk is less than %1</source>
         <translation>A lemezen lévő szabad hely kevesebb mint %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="863"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="867"/>
         <source>File was deleted from server</source>
         <translation>A fájl törlésre került a kiszolgálóról</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="935"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="939"/>
         <source>The file could not be downloaded completely.</source>
         <translation>A fájl nem tölthető le teljesen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="942"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="946"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>A letöltött fájl üres, de a kiszolgáló szerint %1 méretűnek kellene lennie.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1144"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1158"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1150"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1164"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>A(z) %1 fájl módosítási ideje a kiszolgáló szerint érvénytelen. Ne mentse el.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1231"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1237"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>A(z) %1 fájl le lett töltve, de helyi fájlnévvel való ütközést eredményezett.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1342"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1350"/>
         <source>Error updating metadata: %1</source>
         <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1345"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1353"/>
         <source>The file %1 is currently in use</source>
         <translation>A(z) %1 fájl épp használatban van</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="494"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1260"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1266"/>
         <source>File has changed since discovery</source>
         <translation>A fájl változott a felfedezése óta</translation>
     </message>
@@ -4922,13 +5115,13 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
         <translation>; Sikertelen helyreállítás: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="236"/>
         <source>%1. Restoration failed: %2</source>
         <comment>%1 is the generic error string, the file restoration error (%2) will be appended here</comment>
         <translation>%1. Nem sikerült a helyreállítás: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="300"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="303"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>A fájl vagy mappa egy csak olvasható megosztásról lett törölve, de a helyreállítás meghiúsult: %1</translation>
     </message>
@@ -4936,39 +5129,39 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="217"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="221"/>
         <source>could not delete file %1, error: %2</source>
         <translation>a(z) %1 fájl nem törölhető, hiba: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="232"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="236"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation>A(z) %1 mappa nem hozható létre, mert helyi fájl- vagy mappanévvel ütközik.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="268"/>
         <source>Could not create folder %1</source>
         <translation>A(z) %1 mappa nem hozható létre</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="276"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="282"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="288"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="280"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="286"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="292"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>A(z) %1 mappa nem tehető csak olvashatóvá: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="288"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="292"/>
         <source>unknown exception</source>
         <translation>ismeretlen kivétel</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
         <source>Error updating metadata: %1</source>
         <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="324"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="328"/>
         <source>The file %1 is currently in use</source>
         <translation>A(z) %1 fájl jelenleg használatban van</translation>
     </message>
@@ -4976,19 +5169,19 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="117"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="120"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>A(z) %1 nem távolítható el egy helyi fájl névütközése miatt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="157"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="166"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="160"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="169"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="179"/>
         <source>Temporary error when removing local item removed from server.</source>
         <translation>Ideiglenes hiba a kiszolgálóról eltávolított helyi fájl eltávolításakor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="185"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="188"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>A(z) %1 fájlrekord törlése a helyi adatbázisból nem sikerült</translation>
     </message>
@@ -4996,49 +5189,49 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="384"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="389"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>A(z) %1 mappa nem nevezhető át, mert helyi fájl- vagy mappanévvel ütközik.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="392"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="397"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>A(z) %1 fájl le lett töltve, de helyi fájlnévvel való ütközést eredményezett.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="492"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="581"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="497"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="586"/>
         <source>Could not get file %1 from local DB</source>
         <translation>A(z) %1 fájl lekérése a helyi adatbázisból nem sikerült</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="505"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="568"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="510"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="573"/>
         <source>Error setting pin state</source>
         <translation>Hiba a tű állapotának beállításakor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="518"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="523"/>
         <source>Error updating metadata: %1</source>
         <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="521"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="526"/>
         <source>The file %1 is currently in use</source>
         <translation>A(z) %1 fájl épp használatban van</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="558"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>A könyvtár átnevezésének átvezetése a hierarchiában sikertelen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="568"/>
         <source>Failed to rename file</source>
         <translation>A fájl átnevezése sikertelen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="586"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="591"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>A(z) %1 fájlrekord törlése a helyi adatbázisból nem sikerült</translation>
     </message>
@@ -5046,12 +5239,12 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="116"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>A kiszolgáló hibás HTTP kódot adott vissza. 204-es kód várt, de ez érkezett: „%1 %2”.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="124"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="126"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>A(z) %1 fájlrekord törlése a helyi adatbázisból nem sikerült</translation>
     </message>
@@ -5067,27 +5260,27 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="127"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="131"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>A kiszolgáló hibás HTTP kódot adott vissza. 201-es kód várt, de ez érkezett: „%1 %2”.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="220"/>
         <source>Failed to create encrypted folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="259"/>
         <source>Failed to encrypt a folder %1</source>
         <translation>A mappa titkosítása sikertelen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="278"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="282"/>
         <source>Error writing metadata to the database: %1</source>
         <translation>Hiba a metaadatok adatbázisba írásakor: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="281"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="285"/>
         <source>The file %1 is currently in use</source>
         <translation>A(z) %1 fájl épp használatban van</translation>
     </message>
@@ -5095,44 +5288,44 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="162"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="165"/>
         <source>Could not rename %1 to %2, error: %3</source>
         <translation>A(z) %1 nem nevezhető át erre: %2, hiba: %3</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="219"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="291"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="295"/>
         <source>Error updating metadata: %1</source>
         <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="222"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="294"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="226"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="298"/>
         <source>The file %1 is currently in use</source>
         <translation>A(z) %1 fájl jelenleg használatban van</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="236"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="240"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>A kiszolgáló hibás HTTP kódot adott vissza. 201-es kód várt, de ez érkezett: „%1 %2”.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="255"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="259"/>
         <source>Could not get file %1 from local DB</source>
         <translation>A(z) %1 fájl lekérése a helyi adatbázisból nem sikerült</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="267"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="271"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>A(z) %1 fájlrekord törlése a helyi adatbázisból nem sikerült</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="300"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="304"/>
         <source>Error setting pin state</source>
         <translation>Hiba a tű állapotának beállításakor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="307"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="311"/>
         <source>Error writing metadata to the database</source>
         <translation>Hiba a metaadatok adatbázisba írásakor</translation>
     </message>
@@ -5167,23 +5360,23 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
         <translation>Nem sikerült feloldani a titkosított mappát.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="759"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="760"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>Az érvénytelen karaktereket tartalmazó elem nem tölthető fel</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="847"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="854"/>
         <source>Error updating metadata: %1</source>
         <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="850"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="857"/>
         <source>The file %1 is currently in use</source>
         <translation>A(z) %1 fájl épp használatban van</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="292"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="753"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="754"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>A(z) %1 feltöltése túllépi a mappa kvótáját</translation>
     </message>
@@ -5201,44 +5394,44 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="364"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="365"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="459"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
         <source>The local file was removed during sync.</source>
         <translation>A helyi fájl el lett távolítva szinkronizálás közben.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="474"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
         <source>Local file changed during sync.</source>
         <translation>A helyi fájl megváltozott szinkronizálás közben.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="516"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
         <source>Poll URL missing</source>
         <translation>Hiányzik a szavazás webcíme</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="525"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Nem várt visszatérési érték a kiszolgálótól (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="532"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
         <source>Missing File ID from server</source>
         <translation>Hiányzik a fájlazonosító a kiszolgálóról</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="552"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>A mappa nem érhető el a kiszolgálón.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>A fájl nem érhető el a kiszolgálón.</translation>
@@ -5247,28 +5440,28 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::PropagateUploadFileV1</name>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="141"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="142"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="233"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="235"/>
         <source>Poll URL missing</source>
         <translation>A lekérdezési webcím hiányzik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="257"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="259"/>
         <source>The local file was removed during sync.</source>
         <translation>A helyi fájl el lett távolítva a szinkronizálás alatt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="272"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="274"/>
         <source>Local file changed during sync.</source>
         <translation>A helyi fájl megváltozott szinkronizálás alatt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="286"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="288"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>A kiszolgáló nem ismerte el az utolsó darabot. (Nem volt jelen e-tag)</translation>
     </message>
@@ -5304,7 +5497,7 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="495"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="504"/>
         <source>Choose What to Sync</source>
         <translation>Szinkronizálandó elemek kiválasztása</translation>
     </message>
@@ -5332,13 +5525,13 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
         <translation>Méret</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="224"/>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="301"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="226"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="305"/>
         <source>No subfolders currently on the server.</source>
         <translation>Jelenleg nincsenek almappák a kiszolgálón.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="303"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="307"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>Hiba történt az almappák listájának betöltésekor.</translation>
     </message>
@@ -5385,7 +5578,7 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
         <translation>Információ</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="335"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="334"/>
         <source>Account</source>
         <translation>Fiók</translation>
     </message>
@@ -5393,7 +5586,7 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::ShareManager</name>
     <message>
-        <location filename="../src/gui/sharemanager.cpp" line="695"/>
+        <location filename="../src/gui/sharemanager.cpp" line="697"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
@@ -5479,48 +5672,48 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="872"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="877"/>
         <source>Context menu share</source>
         <translation>Megosztás a helyi menüből</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1160"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1171"/>
         <source>I shared something with you</source>
         <translation>Megosztottam Önnel valamit</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1173"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1184"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1223"/>
         <source>Share options</source>
         <translation>Megosztási beállítások</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1178"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Send private link by email …</source>
         <translation>Személyes hivatkozás küldése e-mailben…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1177"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1188"/>
         <source>Copy private link to clipboard</source>
         <translation>Személyes hivatkozás másolása a vágólapra</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="593"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="594"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>A következő helyen lévő mappa titkosítása sikertelen: „%1”</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="594"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="595"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>A(z) %1 fióknál nincs beállítva a végpontok közti titkosítás. A mappatitkosítás engedélyezéséhez állítsa be a fiókbeállításaiban.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="613"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="614"/>
         <source>Failed to encrypt folder</source>
         <translation>A mappa titkosítása sikertelen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="614"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="615"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5529,12 +5722,12 @@ Server replied with error: %2</source>
 A kiszolgáló hibával válaszolt: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="621"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="622"/>
         <source>Folder encrypted successfully</source>
         <translation>A mappa sikeresen titkosítva</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="622"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="623"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>A következő mappa sikeresen titkosítva lett: „%1”</translation>
     </message>
@@ -5544,101 +5737,101 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Új hely kiválasztása…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1174"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1237"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>File actions</source>
         <translation>Fájlműveletek</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1175"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1418"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1186"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1434"/>
         <source>Activity</source>
         <translation>Tevékenység</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1215"/>
         <source>Leave this share</source>
         <translation>Megosztás elhagyása</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1221"/>
         <source>Resharing this file is not allowed</source>
         <translation>Ezt a fájlt nem lehet továbbosztani</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1221"/>
         <source>Resharing this folder is not allowed</source>
         <translation>A mappa továbbosztása nem megengedett</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1270"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1282"/>
         <source>Encrypt</source>
         <translation>Titkosítás</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1293"/>
         <source>Lock file</source>
         <translation>Fájl zárolása</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1284"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1296"/>
         <source>Unlock file</source>
         <translation>Fájl feloldása</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1300"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1312"/>
         <source>Locked by %1</source>
         <translation>%1 zárolta</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1304"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1316"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>%1 perc múlva lejár</numerusform><numerusform>%1 perc múlva lejár</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1313"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1325"/>
         <source>Apply labels</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1455"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1471"/>
         <source>Resolve conflict …</source>
         <translation>Konfliktus feloldása…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1459"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1475"/>
         <source>Move and rename …</source>
         <translation>Áthelyezés és átnevezés…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1462"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1478"/>
         <source>Move, rename and upload …</source>
         <translation>Áthelyezés, átnevezés és feltöltés…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1464"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1480"/>
         <source>Delete local changes</source>
         <translation>Helyi módosítások törlése</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1470"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1486"/>
         <source>Move and upload …</source>
         <translation>Áthelyezés és feltöltés…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1471"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1487"/>
         <source>Delete</source>
         <translation>Törlés</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1215"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1227"/>
         <source>Copy internal link</source>
         <translation>Belső hivatkozás másolása</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1424"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1426"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1440"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1442"/>
         <source>Open in browser</source>
         <translation>Megnyitás böngészőben</translation>
     </message>
@@ -5646,124 +5839,124 @@ A kiszolgáló hibával válaszolt: %2</translation>
 <context>
     <name>OCC::SslButton</name>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="80"/>
+        <location filename="../src/gui/sslbutton.cpp" line="82"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Tanúsítvány részletei&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="83"/>
+        <location filename="../src/gui/sslbutton.cpp" line="85"/>
         <source>Common Name (CN):</source>
         <translation>Általános név (CN):</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="84"/>
+        <location filename="../src/gui/sslbutton.cpp" line="86"/>
         <source>Subject Alternative Names:</source>
         <translation>A tárgy további nevei:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="85"/>
+        <location filename="../src/gui/sslbutton.cpp" line="87"/>
         <source>Organization (O):</source>
         <translation>Szervezet (O):</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="86"/>
+        <location filename="../src/gui/sslbutton.cpp" line="88"/>
         <source>Organizational Unit (OU):</source>
         <translation>Szervezeti egység (OU):</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="87"/>
+        <location filename="../src/gui/sslbutton.cpp" line="89"/>
         <source>State/Province:</source>
         <translation>Tagállam/megye:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="88"/>
+        <location filename="../src/gui/sslbutton.cpp" line="90"/>
         <source>Country:</source>
         <translation>Ország:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="89"/>
+        <location filename="../src/gui/sslbutton.cpp" line="91"/>
         <source>Serial:</source>
         <translation>Sorozatszám:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="92"/>
+        <location filename="../src/gui/sslbutton.cpp" line="94"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Kibocsátó&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="95"/>
+        <location filename="../src/gui/sslbutton.cpp" line="97"/>
         <source>Issuer:</source>
         <translation>Aláíró:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="96"/>
+        <location filename="../src/gui/sslbutton.cpp" line="98"/>
         <source>Issued on:</source>
         <translation>Kibocsátva:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="97"/>
+        <location filename="../src/gui/sslbutton.cpp" line="99"/>
         <source>Expires on:</source>
         <translation>Lejárat:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="100"/>
+        <location filename="../src/gui/sslbutton.cpp" line="102"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Ujjlenyomatok&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="104"/>
+        <location filename="../src/gui/sslbutton.cpp" line="106"/>
         <source>SHA-256:</source>
         <translation>SHA-256:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="105"/>
+        <location filename="../src/gui/sslbutton.cpp" line="107"/>
         <source>SHA-1:</source>
         <translation>SHA-1:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="109"/>
+        <location filename="../src/gui/sslbutton.cpp" line="111"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Megjegyzés:&lt;/b&gt; A tanúsítvány kézileg lett jóváhagyva&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="129"/>
+        <location filename="../src/gui/sslbutton.cpp" line="131"/>
         <source>%1 (self-signed)</source>
         <translation>%1 (önaláírt)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="131"/>
+        <location filename="../src/gui/sslbutton.cpp" line="133"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="166"/>
+        <location filename="../src/gui/sslbutton.cpp" line="168"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
         <translation>Ez a kapcsolat %1 bites %2 titkosítással védett.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="183"/>
+        <location filename="../src/gui/sslbutton.cpp" line="185"/>
         <source>Server version: %1</source>
         <translation>Kiszolgáló verzió: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="197"/>
+        <location filename="../src/gui/sslbutton.cpp" line="199"/>
         <source>No support for SSL session tickets/identifiers</source>
         <translation>Az SSL munkamenet-azonosítók nem támogatottak</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="207"/>
+        <location filename="../src/gui/sslbutton.cpp" line="209"/>
         <source>Certificate information:</source>
         <translation>Tanúsítvány adatok:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="236"/>
+        <location filename="../src/gui/sslbutton.cpp" line="239"/>
         <source>The connection is not secure</source>
         <translation>A kapcsolat nem biztonságos</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="169"/>
+        <location filename="../src/gui/sslbutton.cpp" line="171"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
         <translation>Ez a kapcsolat NEM biztonságos, mivel nem titkosított.
@@ -5799,56 +5992,56 @@ A kiszolgáló hibával válaszolt: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="208"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="210"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="209"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;nincs megadva&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="211"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="236"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="214"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="239"/>
         <source>Organization: %1</source>
         <translation>Szervezet: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="237"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="215"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="240"/>
         <source>Unit: %1</source>
         <translation>Egység: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="213"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="238"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="216"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="241"/>
         <source>Country: %1</source>
         <translation>Ország: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="220"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="223"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Ellenőrzőkód (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="225"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="228"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Ujjlenyomat (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="226"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="229"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Ujjlenyomat (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="228"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="231"/>
         <source>Effective Date: %1</source>
         <translation>Érvényességi dátum: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="229"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="232"/>
         <source>Expiration Date: %1</source>
         <translation>Lejárati dátum: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="233"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="236"/>
         <source>Issuer: %1</source>
         <translation>Kibocsátó: %1</translation>
     </message>
@@ -5861,68 +6054,68 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>%1 (egy korábbi hiba miatt kihagyva, újrapróbálkozás %s múlva)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="555"/>
+        <location filename="../src/libsync/syncengine.cpp" line="559"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Csak %1 érhető el, de legalább %2 kell az indításhoz</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="588"/>
+        <location filename="../src/libsync/syncengine.cpp" line="592"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>A helyi szinkronizálási adatbázis nem nyitható meg, vagy nem hozható létre. Győződjön meg róla, hogy rendelkezik-e írási joggal a szinkronizálási mappán.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1482"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1492"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Túl kevés a tárterület: A letöltések, melyek %1 alá csökkentették volna a szabad tárhelyet, kihagyásra kerültek.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1489"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1499"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Egyes feltöltésekhez nincs elég hely a kiszolgálón.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="453"/>
+        <location filename="../src/libsync/syncengine.cpp" line="457"/>
         <source>Unresolved conflict.</source>
         <translation>Nem feloldott ütközés.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="375"/>
+        <location filename="../src/libsync/syncengine.cpp" line="379"/>
         <source>Could not update file: %1</source>
         <translation>Nem sikerült frissíteni a fájlt: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="404"/>
+        <location filename="../src/libsync/syncengine.cpp" line="408"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>Nem sikerült frissíteni a virtuális fájl metaadatait: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="411"/>
+        <location filename="../src/libsync/syncengine.cpp" line="415"/>
         <source>Could not update file metadata: %1</source>
         <translation>Nem sikerült frissíteni a fájl metaadatait: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="421"/>
+        <location filename="../src/libsync/syncengine.cpp" line="425"/>
         <source>Could not set file record to local DB: %1</source>
         <translation>A fájlrekord beállítása a helyi adatbázisban nem sikerült: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="604"/>
+        <location filename="../src/libsync/syncengine.cpp" line="608"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>Virtuális fájlok használata utótaggal, de az utótag nincs beállítva</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="616"/>
+        <location filename="../src/libsync/syncengine.cpp" line="620"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Nem lehet kiolvasni a tiltólistát a helyi adatbázisból</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="657"/>
+        <location filename="../src/libsync/syncengine.cpp" line="661"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Nem lehet olvasni a szinkronizálási naplóból.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="826"/>
+        <location filename="../src/libsync/syncengine.cpp" line="831"/>
         <source>Cannot open the sync journal</source>
         <translation>A szinkronizálási napló nem nyitható meg</translation>
     </message>
@@ -5930,7 +6123,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
 <context>
     <name>OCC::SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1064"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="1072"/>
         <source>Failed to connect database.</source>
         <translation type="unfinished"/>
     </message>
@@ -5947,13 +6140,13 @@ A kiszolgáló hibával válaszolt: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1706"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1710"/>
         <source>You need to accept the terms of service</source>
         <translation>El kell fogadnia a szolgáltatási feltételeket</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1702"/>
         <source>Reauthorization required</source>
         <translation>Újbóli engedélyezés szükséges</translation>
     </message>
@@ -5971,7 +6164,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1717"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1721"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Néhány fájlt nem lehet szinkronizálni!</translation>
     </message>
@@ -5997,7 +6190,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1722"/>
         <source>Some files could not be synced!</source>
         <translation>Néhány fájlt nem lehet szinkronizálni.</translation>
     </message>
@@ -6174,52 +6367,53 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1244"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1245"/>
         <source>%1 results in %2</source>
+        <extracomment>%1 is the number of search results. %2 is the search provider name, for example &quot;Files&quot;.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1246"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1247"/>
         <source>No matching results</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1248"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1249"/>
         <source>%1 results. Some sources are unavailable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1250"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1251"/>
         <source>%1 results</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1424"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1425"/>
         <source>Today</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1427"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1428"/>
         <source>Last 7 days</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1431"/>
         <source>Last 30 days</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1434"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1435"/>
         <source>This year</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1438"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1439"/>
         <source>Last year</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1458"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1459"/>
         <source>%1 – %2</source>
         <translation type="unfinished"/>
     </message>
@@ -6343,46 +6537,35 @@ A kiszolgáló hibával válaszolt: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1388"/>
         <source>Retry all uploads</source>
         <translation>Összes feltöltés újrapróbálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1435"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1597"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1439"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1601"/>
         <source>Resolve conflict</source>
         <translation>Ütközés feloldása</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1587"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1591"/>
         <source>Rename file</source>
         <translation>Fájl átnevezése</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
-        <source>Sync conflicts</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1833"/>
-        <source>Public Share Link</source>
-        <translation>Nyilvános megosztási hivatkozás</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1945"/>
-        <source>Open %1 Assistant</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>%1 Asszisztens megnyitása</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2043"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2047"/>
         <source>Assistant is not available for this account.</source>
         <translation>Az Asszisztens nem érhető el ehhez a fiókhoz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2049"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2053"/>
         <source>Assistant is already processing a request.</source>
         <translation>Az Asszisztens már dolgozik egy kérés feldolgozásán.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2090"/>
+        <source>Sending your request …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1507"/>
@@ -6390,37 +6573,48 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Kérés küldése…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2086"/>
-        <source>Sending your request …</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2159"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2163"/>
         <source>No response yet. Please try again later.</source>
         <translation>Még nincsenek válaszok. Próbálja újra később.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2178"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2182"/>
         <source>No supported assistant task types were returned.</source>
         <translation>Nem adott vissza támogatott asszisztensfeladat-típusokat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2260"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1694"/>
+        <source>Sync conflicts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1837"/>
+        <source>Public Share Link</source>
+        <translation>Nyilvános megosztási hivatkozás</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1949"/>
+        <source>Open %1 Assistant</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>%1 Asszisztens megnyitása</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2264"/>
         <source>Waiting for the assistant response…</source>
         <translation>Várakozás az asszisztens válaszára…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2282"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2286"/>
         <source>Assistant request failed (%1).</source>
         <translation>Nem sikerült az asszisztensi kérés (%1).</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2357"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2361"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kvóta frissítve; a teljes terület %1%-a használva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2377"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2381"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Kvótafigyelmeztetés – %1% vagy több terület használva</translation>
     </message>
@@ -6428,32 +6622,32 @@ A kiszolgáló hibával válaszolt: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2809"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2819"/>
         <source>Confirm Account Removal</source>
         <translation>Fiók törlésének megerősítése</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2820"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Biztos, hogy eltávolítja a kapcsolatot a(z) &lt;i&gt;%1&lt;/i&gt; fiókkal?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Megjegyzés:&lt;/b&gt; Ez &lt;b&gt;nem&lt;/b&gt; töröl fájlokat.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2814"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2824"/>
         <source>Remove connection</source>
         <translation>Kapcsolat eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2825"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2901"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2911"/>
         <source>Leave share</source>
         <translation>Megosztás elhagyása</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2901"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2911"/>
         <source>Remove account</source>
         <translation>Fiók eltávolítása</translation>
     </message>
@@ -6603,8 +6797,8 @@ A kiszolgáló hibával válaszolt: %2</translation>
 <context>
     <name>OCC::VfsSuffix</name>
     <message>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="74"/>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="85"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="75"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="86"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Az érvénytelen módosítási idő miatt hiba történt a metaadatok frissítése során</translation>
     </message>
@@ -6700,17 +6894,17 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Változások keresése a(z) „%1” helyi mappában</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="835"/>
         <source>Select new location …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="921"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="923"/>
         <source>Internal link copied</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="924"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
@@ -6817,46 +7011,46 @@ A kiszolgáló hibával válaszolt: %2</translation>
 <context>
     <name>QObject</name>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="398"/>
+        <location filename="../src/common/utility.cpp" line="401"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
         <translation><numerusform>%n n</numerusform><numerusform>%n n</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="402"/>
+        <location filename="../src/common/utility.cpp" line="405"/>
         <source>in the future</source>
         <translation>a jövőben</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="407"/>
+        <location filename="../src/common/utility.cpp" line="410"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
         <translation><numerusform>%n ó</numerusform><numerusform>%n ó</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="413"/>
+        <location filename="../src/common/utility.cpp" line="416"/>
         <source>now</source>
         <translation>most</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="415"/>
+        <location filename="../src/common/utility.cpp" line="418"/>
         <source>1min</source>
         <comment>one minute after activity date and time</comment>
         <translation>1 p</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="418"/>
+        <location filename="../src/common/utility.cpp" line="421"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
         <translation><numerusform>%n p</numerusform><numerusform>%n p</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="422"/>
+        <location filename="../src/common/utility.cpp" line="425"/>
         <source>Some time ago</source>
         <translation>Néhány perccel ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncresult.cpp" line="131"/>
+        <location filename="../src/libsync/syncresult.cpp" line="132"/>
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
@@ -6900,32 +7094,32 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1516"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
         <source>You renamed %1</source>
         <translation>Átnevezte: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1518"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
         <source>You deleted %1</source>
         <translation>Törölte: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1524"/>
         <source>You created %1</source>
         <translation>Létrehozta: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1526"/>
         <source>You changed %1</source>
         <translation>Megváltoztatta: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1546"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1550"/>
         <source>Synced %1</source>
         <translation>Szinkronizálta: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="573"/>
+        <location filename="../src/libsync/filesystem.cpp" line="576"/>
         <source>Error deleting the file</source>
         <translation>Hiba a fájl törlésekor</translation>
     </message>
@@ -6935,132 +7129,132 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>A „#” karakterrel kezdődő elérési utak nem támogatottak VFS módban.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>Nm sikerült feldolgozni a kérést. Próbáljon meg később szinkronizálni. Ha ez továbbra is fennáll, vegye fel a kapcsolatot a rendszergazdával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>Be kell jelentkeznie a folytatáshoz. Ha gondjai vannak a hitelesítő adataival, akkor vegye fel a kapcsolatot a rendszergazdával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>Nem fér hozzá ehhez az erőforráshoz. Ha úgy gondolja, hogy ez hiba, akkor lépjen kapcsolatba a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>A keresett tartalom nem található. Lehet, hogy áthelyezték vagy törölték. Ha segítségre van szüksége, vegye fel a kapcsolatot a rendszergazdával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation>Úgy tűnik, hogy egy hitelesítést igénylő proxyt használ. Ellenőrizze a proxybeállításait és a hitelesítő adatait. Ha segítségre van szüksége, vegye fel a kapcsolatot a rendszergazdával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>A kérés a szokásosnál tovább tart. Próbáljon meg újra szinkronizálni. Ha még mindig nem működik, vegye fel a kapcsolatot a rendszergazdával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>A kiszolgáló fájljai közben megváltoztak. Próbáljon újra szinkronizálni. Ha a probléma továbbra is fennáll, lépjen kapcsolatba a rendszergazdával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation>Ez a mappa vagy fájl már nem érhető el. Ha segítségre van szüksége, vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation>A kérés nem hajtható végre, mert a szükséges előfeltételek nem teljesülnek. Próbáljon meg újra szinkronizálni. Ha segítségre van szüksége, vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>A feltöltendő fájl túl nagy. Lehet, hogy kisebb fájlt kell választania, vagy fel kell vennie a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation>A kéréshez használt cím túl hosszú ahhoz, hogy a kiszolgáló kezelje. Próbálja meg lerövidíteni a küldött információkat, vagy vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>A fájltípus nem támogatott. Vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>A kiszolgáló nem tudta feldolgozni a kérést, mert egyes információk helytelenek vagy hiányosak. Próbáljon meg újra szinkronizálni, vagy lépjen kapcsolatba a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>Az erőforrás, amelyhez megpróbált hozzáférni, jelenleg zárolva van és nem módosítható. Próbálja meg később módosítani, vagy vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>Ez a kérés nem fejezhető be, mert a szükséges feltételek nem teljesülnek. Próbálja meg újra, vagy lépjen kapcsolatba a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="548"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>Túl sok kérést adott fel. Várjon egy kicsit, és próbálja újra. Ha továbbra is ezt látja, akkor a kiszolgáló rendszergazdája segíthet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="551"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>Hiba történt a kiszolgálón. Próbáljon meg újra szinkronizálni egy kicsit később, vagy ha a probléma továbbra is fennáll, vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>A kiszolgáló nem ismeri fel a kérési módot. Segítségért lépjen kapcsolatba a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="557"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>Problémák akadtak a kiszolgálóhoz való kapcsolódás során. Próbálja újra egy kicsit később. Ha a probléma továbbra is fennáll, akkor a kiszolgáló rendszergazdája segíthet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="556"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="560"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation>A kiszolgáló jelenleg foglalt. Próbáljon meg néhány perc múlva kapcsolódni, vagy ha sürgős, lépjen kapcsolatba a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="559"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="563"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>A kiszolgálóhoz való kapcsolódás túl sokáig tart. Próbálja meg újra később. Ha segítségre van szüksége, vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="562"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="566"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>A kiszolgáló nem támogatja a használt kapcsolat verzióját. Segítségért lépjen kapcsolatba a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="565"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="569"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>A kiszolgálón nincs elég hely a kérés teljesítéséhez. Ellenőrizze a felhasználói kvótáját, ehhez vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="568"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="572"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>A hálózata további hitelesítést igényel. Ellenőrizze a kapcsolatát. Ha a probléma továbbra is fennáll, vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="571"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="575"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>Nincs elegendő jogosultsága az erőforrás eléréséhez. Ha úgy gondolja, hogy ez hiba, akkor segítéségért vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="574"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="578"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Váratlan hiba történt. Próbáljon újra szinkronizálni, vagy lépjen kapcsolatba a rendszergazdával, ha a probléma továbbra is fennáll.</translation>
     </message>
@@ -7979,57 +8173,57 @@ A kiszolgáló hibával válaszolt: %2</translation>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/common/utility.cpp" line="107"/>
+        <location filename="../src/common/utility.cpp" line="108"/>
         <source>%L1 GB</source>
         <translation>%L1 GB</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="111"/>
+        <location filename="../src/common/utility.cpp" line="112"/>
         <source>%L1 MB</source>
         <translation>%L1 MB</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="115"/>
+        <location filename="../src/common/utility.cpp" line="116"/>
         <source>%L1 KB</source>
         <translation>%L1 kB</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="96"/>
+        <location filename="../src/common/utility.cpp" line="97"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="103"/>
+        <location filename="../src/common/utility.cpp" line="104"/>
         <source>%L1 TB</source>
         <translation>%L1 TB</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="286"/>
+        <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n year(s)</source>
         <translation><numerusform>%n év</numerusform><numerusform>%n év</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="287"/>
+        <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n hónap</numerusform><numerusform>%n hónap</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="288"/>
+        <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n nap</numerusform><numerusform>%n nap</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="289"/>
+        <location filename="../src/common/utility.cpp" line="292"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n óra</numerusform><numerusform>%d óra</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="290"/>
+        <location filename="../src/common/utility.cpp" line="293"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n perc</numerusform><numerusform>%n perc</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="291"/>
+        <location filename="../src/common/utility.cpp" line="294"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n másodperc</numerusform><numerusform>%n másodperc</numerusform></translation>
     </message>
@@ -8037,17 +8231,17 @@ A kiszolgáló hibával válaszolt: %2</translation>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="259"/>
+        <location filename="../src/common/checksums.cpp" line="260"/>
         <source>The checksum header is malformed.</source>
         <translation>Az ellenőrzőösszeg-fejléc hibásan formázott.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="293"/>
+        <location filename="../src/common/checksums.cpp" line="295"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>Az ellenőrzőösszeg-fejléc ismeretlen típusú értéket tartalmazott: „%1”</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="298"/>
+        <location filename="../src/common/checksums.cpp" line="300"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>A letöltött fájl ellenőrzőösszege nem egyezik, újra le lesz töltve. „%1” != „%2”</translation>
     </message>
@@ -8135,7 +8329,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
@@ -8171,32 +8365,32 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Feltöltés</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
         <source>Deleting</source>
         <translation>Törlés</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>Moving</source>
         <translation>Áthelyezés</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="80"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Ignoring</source>
         <translation>Kihagyás</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="85"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Updating local metadata</source>
         <translation>Helyi metaadatok frissítése</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
         <source>Updating local virtual files metadata</source>
         <translation>A helyi virtuális fájlok metaadatainak frissítése</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="89"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
         <source>Updating end-to-end encryption metadata</source>
         <translation>A végpontok közti titkosítás metaadatainak frissítése</translation>
     </message>
