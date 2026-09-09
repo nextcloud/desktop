@@ -83,6 +83,7 @@ constexpr auto e2EeUiActionSetupEncryptionId = "setup_encryption";
 constexpr auto e2EeUiActionForgetEncryptionId = "forget_encryption";
 constexpr auto e2EeUiActionDisplayMnemonicId = "display_mnemonic";
 constexpr auto e2EeUiActionMigrateCertificateId = "migrate_certificate";
+constexpr auto mnemonicVisibleLineCount = 2;
 }
 
 namespace OCC {
@@ -1260,20 +1261,24 @@ void AccountSettings::displayMnemonic(const QString &mnemonic)
            "You will need it to set-up the synchronization of encrypted folders on your other devices."));
     QFont monoFont(QStringLiteral("Monospace"));
     monoFont.setStyleHint(QFont::TypeWriter);
-    ui.lineEdit->setFont(monoFont);
-    ui.lineEdit->setText(mnemonic);
-    ui.lineEdit->setReadOnly(true);
 
-    ui.lineEdit->setStyleSheet(QStringLiteral("QLineEdit{ color: black; background: lightgrey; border-style: inset;}"));
+    ui.mnemonicTextEdit->setFont(monoFont);
+    ui.mnemonicTextEdit->setPlainText(mnemonic);
+    ui.mnemonicTextEdit->setStyleSheet(QStringLiteral("QTextEdit{ color: black; background: lightgrey; border-style: inset;}"));
 
-    ui.lineEdit->focusWidget();
-    ui.lineEdit->selectAll();
-    ui.lineEdit->setAlignment(Qt::AlignCenter);
+    const auto textHeight = mnemonicVisibleLineCount * ui.mnemonicTextEdit->fontMetrics().lineSpacing();
+    const auto documentMargins = 2.0 * ui.mnemonicTextEdit->document()->documentMargin();
+    const auto frameMargins = 2 * ui.mnemonicTextEdit->frameWidth();
 
-    const QFont font(QStringLiteral(""), 0);
-    QFontMetrics fm(font);
-    ui.lineEdit->setFixedWidth(fm.horizontalAdvance(mnemonic));
-    widget.resize(widget.sizeHint());
+    const auto mnemonicTextEditHeight = static_cast<int>(std::ceil(textHeight + documentMargins + frameMargins));
+
+    ui.mnemonicTextEdit->setFixedHeight(mnemonicTextEditHeight);
+
+    ui.mnemonicTextEdit->setFocus();
+    ui.mnemonicTextEdit->selectAll();
+    ui.mnemonicTextEdit->setAlignment(Qt::AlignCenter);
+
+    widget.resize(widget.sizeHint().expandedTo(widget.size()));
     widget.exec();
 }
 
