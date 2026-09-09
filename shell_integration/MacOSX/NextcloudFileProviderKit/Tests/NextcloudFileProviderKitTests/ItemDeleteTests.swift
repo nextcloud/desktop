@@ -64,6 +64,146 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.deleted, true)
     }
 
+    func testDeleteTreatsMissingFileAsSuccess() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        remoteInterface.deleteError = NKError(statusCode: 404, fallbackDescription: "Not Found")
+
+        let itemMetadata = SendableItemMetadata(
+            ocId: "already-deleted-file",
+            fileName: "already-deleted.txt",
+            account: Self.account
+        )
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertEqual(remoteInterface.lastDeleteRemotePath, Self.account.davFilesUrl + "/already-deleted.txt")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.deleted, true)
+    }
+
+    func testDeleteTreatsMissingFolderAsSuccessAndMarksDescendantsDeleted() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        remoteInterface.deleteError = NKError(statusCode: 404, fallbackDescription: "Not Found")
+
+        let remoteFolder = MockRemoteItem(
+            identifier: "already-deleted-folder",
+            name: "already-deleted",
+            remotePath: Self.account.davFilesUrl + "/already-deleted",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteItem = MockRemoteItem(
+            identifier: "already-deleted-child",
+            name: "child.txt",
+            remotePath: Self.account.davFilesUrl + "/already-deleted/child.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let folder = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await folder.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertEqual(remoteInterface.lastDeleteRemotePath, Self.account.davFilesUrl + "/already-deleted")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: folderMetadata.ocId)?.deleted, true)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.deleted, true)
+    }
+
+    func testTrashPurgeUsesResolvedFilename() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteTrashItem = MockRemoteItem(
+            identifier: "trashed-file",
+            name: "file.d1234567890",
+            remotePath: Self.account.trashUrl + "/file.d1234567890",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "file"
+        )
+        remoteTrashItem.parent = rootTrashItem
+        rootTrashItem.children = [remoteTrashItem]
+
+        var itemMetadata = remoteTrashItem.toItemMetadata(account: Self.account)
+        itemMetadata.fileName = "file"
+        itemMetadata.fileNameView = "file"
+        itemMetadata.name = "file"
+        itemMetadata.serverUrl = Self.account.trashUrl
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertEqual(remoteInterface.lastDeleteRemotePath, Self.account.trashUrl + "/file.d1234567890")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.deleted, true)
+    }
+
+    func testTrashPurgeDoesNotTreatFallback404AsSuccessAfterListingFailure() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        remoteInterface.deleteError = NKError(statusCode: 404, fallbackDescription: "Not Found")
+        remoteInterface.trashListingError = NKError(statusCode: 500, fallbackDescription: "Internal Server Error")
+
+        var itemMetadata = SendableItemMetadata(
+            ocId: "missing-trash-file",
+            fileName: "file",
+            account: Self.account
+        )
+        itemMetadata.serverUrl = Self.account.trashUrl
+        itemMetadata.fileId = itemMetadata.ocId
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNotNil(error)
+        XCTAssertEqual(remoteInterface.lastDeleteRemotePath, Self.account.trashUrl + "/file")
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        XCTAssertNotEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.deleted, true)
+    }
+
     func testDeleteFileDiscardsIncompleteChunkUpload() async throws {
         let remoteInterface = MockRemoteInterface(
             account: Self.account,
