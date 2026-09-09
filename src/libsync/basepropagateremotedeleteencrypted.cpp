@@ -82,6 +82,7 @@ void BasePropagateRemoteDeleteEncrypted::slotFolderUnLockFinished(const QByteArr
 {
     if (statusCode != 200) {
         _item->_httpErrorCode = statusCode;
+        //: %1 is the HTTP status code. %2 is the encrypted folder identifier.
         _errorString = tr("\"%1 Failed to unlock encrypted folder %2\".").arg(statusCode).arg(QString::fromUtf8(folderId));
         _item->_errorString = _errorString;
         taskFailed();
