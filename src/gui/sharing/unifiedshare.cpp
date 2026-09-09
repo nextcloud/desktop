@@ -13,6 +13,7 @@
 #include <QLoggingCategory>
 
 #include <algorithm>
+#include <utility>
 
 #include "property.h"
 #include "sharingconstants.h"
@@ -24,9 +25,9 @@ using namespace Qt::StringLiterals;
 
 using namespace OCC::Gui::Sharing;
 
-QPointer<Share> Share::fromJson(const QJsonDocument &json, const AccountPtr &account)
+std::unique_ptr<Share> Share::fromJson(const QJsonDocument &json, const AccountPtr &account)
 {
-    auto share = QPointer<Share>{new Share(account)};
+    auto share = std::make_unique<Share>(account);
     share->updateFromJson(json);
     return share;
 }
@@ -157,6 +158,7 @@ void Share::setPermissionPreset(const QString &permissionPreset)
 
 void Share::setPermissions(const QJsonArray &permissions)
 {
+    qDeleteAll(_permissions);
     _permissions.clear();
 
     if (permissions.isEmpty()) {
@@ -169,7 +171,10 @@ void Share::setPermissions(const QJsonArray &permissions)
             continue;
         }
         const auto permissionObject = permissionValue.toObject();
-        _permissions.append(Permission::fromJson(permissionObject));
+        auto permission = Permission::fromJson(permissionObject);
+        permission->setParent(this);
+        _permissions.append(permission.get());
+        permission.release();
     }
 
     Q_EMIT permissionsChanged();
@@ -177,6 +182,7 @@ void Share::setPermissions(const QJsonArray &permissions)
 
 void Share::setProperties(const QJsonArray &properties)
 {
+    qDeleteAll(_properties);
     _properties.clear();
 
     if (properties.isEmpty()) {
@@ -189,7 +195,10 @@ void Share::setProperties(const QJsonArray &properties)
             continue;
         }
         const auto propertyObject = propertyValue.toObject();
-        _properties.append(Property::fromJson(propertyObject));
+        auto property = Property::fromJson(propertyObject);
+        property->setParent(this);
+        _properties.append(property.get());
+        property.release();
     }
 
     Q_EMIT propertiesChanged();
@@ -213,10 +222,18 @@ void Share::setRecipients(const QJsonArray &recipients)
             (*existing)->updateFromJson(recipientObject);
             updatedRecipients.append(*existing);
         } else {
-            updatedRecipients.append(Recipient::fromJson(recipientObject));
+            auto recipient = Recipient::fromJson(recipientObject);
+            recipient->setParent(this);
+            updatedRecipients.append(recipient.get());
+            recipient.release();
         }
     }
 
+    for (const auto &recipient : std::as_const(_recipients)) {
+        if (!updatedRecipients.contains(recipient)) {
+            delete recipient.data();
+        }
+    }
     _recipients = std::move(updatedRecipients);
 
     Q_EMIT recipientsChanged();

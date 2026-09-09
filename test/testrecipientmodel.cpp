@@ -21,7 +21,7 @@ namespace
 {
 std::unique_ptr<Share> shareFromJson(const QJsonObject &data, const AccountPtr &account)
 {
-    return std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{{"ocs"_L1, QJsonObject{{"data"_L1, data}}}}}, account));
+    return Share::fromJson(QJsonDocument{QJsonObject{{"ocs"_L1, QJsonObject{{"data"_L1, data}}}}}, account);
 }
 }
 

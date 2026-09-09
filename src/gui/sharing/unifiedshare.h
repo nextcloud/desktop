@@ -9,6 +9,8 @@
 
 #include <QtQmlIntegration>
 
+#include <memory>
+
 #include "permission.h"
 #include "property.h"
 #include "recipient.h"
@@ -34,7 +36,8 @@ class Share : public QObject
     Q_PROPERTY(QString publicLinkUrl READ publicLinkUrl NOTIFY recipientsChanged)
 
 public:
-    [[nodiscard]] static QPointer<Share> fromJson(const QJsonDocument &json, const AccountPtr &account);
+    /** @brief Parses a share and returns its owning pointer. */
+    [[nodiscard]] static std::unique_ptr<Share> fromJson(const QJsonDocument &json, const AccountPtr &account);
 
     enum class State {
         Unknown,

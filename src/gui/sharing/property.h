@@ -8,6 +8,8 @@
 #include <QObject>
 #include <QVariant>
 
+#include <memory>
+
 namespace OCC::Gui::Sharing {
 
 /**
@@ -31,8 +33,8 @@ class Property : public QObject
     Q_PROPERTY(QVariant value READ value WRITE setValue NOTIFY valueChanged)
 
 public:
-    /** @brief Creates a property from its unified sharing API representation. */
-    [[nodiscard]] static QPointer<Property> fromJson(const QJsonObject &json);
+    /** @brief Creates a property from its unified sharing API representation and returns its owning pointer. */
+    [[nodiscard]] static std::unique_ptr<Property> fromJson(const QJsonObject &json);
 
     /** @brief Returns the registered server class identifying this property. */
     [[nodiscard]] QString className() const;

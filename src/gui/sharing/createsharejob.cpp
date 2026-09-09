@@ -19,7 +19,10 @@ CreateShareJob::CreateShareJob(AccountPtr account)
                             {.parameters = {}, .passStatusCodes = QList<int>{201}, .body = {}}}
 {
     connect(this, &OcsJob::jobFinished, this, [this, account = std::move(account)](const QJsonDocument &json, int) {
-        Q_EMIT shareCreated(Share::fromJson(json, account));
+        auto share = Share::fromJson(json, account);
+        share->setParent(this);
+        Q_EMIT shareCreated(share.get());
+        share.release();
     });
 }
 

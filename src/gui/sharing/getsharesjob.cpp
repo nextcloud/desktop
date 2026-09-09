@@ -55,7 +55,10 @@ GetSharesJob::GetSharesJob(AccountPtr account,
             const auto shareJson = QJsonDocument{QJsonObject{
                 {"ocs"_L1, QJsonObject{{"data"_L1, value.toObject()}}},
             }};
-            shares.append(Share::fromJson(shareJson, account));
+            auto share = Share::fromJson(shareJson, account);
+            share->setParent(this);
+            shares.append(share.get());
+            share.release();
         }
         Q_EMIT sharesFetched(shares);
     });

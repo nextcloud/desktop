@@ -13,6 +13,8 @@
 
 #include <QtQmlIntegration>
 
+#include <memory>
+
 #include "permission.h"
 
 #include <optional>
@@ -37,8 +39,8 @@ class Recipient : public QObject
     Q_PROPERTY(QList<QPointer<Permission>> permissions READ permissions NOTIFY permissionsChanged)
 
 public:
-    /** @brief Creates a recipient from its unified sharing API representation. */
-    [[nodiscard]] static QPointer<Recipient> fromJson(const QJsonObject &json);
+    /** @brief Creates a recipient from its unified sharing API representation and returns its owning pointer. */
+    [[nodiscard]] static std::unique_ptr<Recipient> fromJson(const QJsonObject &json);
     /** @brief Updates this recipient from its unified sharing API representation. */
     void updateFromJson(const QJsonObject &json);
 

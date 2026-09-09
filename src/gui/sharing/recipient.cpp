@@ -16,9 +16,9 @@ using namespace Qt::StringLiterals;
 
 using namespace OCC::Gui::Sharing;
 
-QPointer<Recipient> Recipient::fromJson(const QJsonObject &json)
+std::unique_ptr<Recipient> Recipient::fromJson(const QJsonObject &json)
 {
-    auto recipient = QPointer<Recipient>(new Recipient);
+    auto recipient = std::make_unique<Recipient>();
     recipient->updateFromJson(json);
     return recipient;
 }
@@ -52,12 +52,16 @@ void Recipient::updateFromJson(const QJsonObject &json)
 
     _initiatorDisplayName = json.value("initiator"_L1).toObject().value("display_name"_L1).toString();
     if (json.contains("permissions"_L1)) {
+        qDeleteAll(_permissions);
         _permissions.clear();
         _permissionOverrides.clear();
         const auto permissions = json.value("permissions"_L1).toArray();
         for (const auto &permissionValue : permissions) {
             if (permissionValue.isObject()) {
-                _permissions.append(Permission::fromJson(permissionValue.toObject()));
+                auto permission = Permission::fromJson(permissionValue.toObject());
+                permission->setParent(this);
+                _permissions.append(permission.get());
+                permission.release();
             }
         }
         _hasPermissionData = true;

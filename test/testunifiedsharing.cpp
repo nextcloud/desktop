@@ -71,7 +71,7 @@ class TestUnifiedSharing : public QObject
     void recipientsPreserveServerIdentityAndCapabilities()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        auto share = std::unique_ptr<Share>(Share::fromJson(
+        auto share = Share::fromJson(
             QJsonDocument{QJsonObject{
                 {"ocs"_L1,
                  QJsonObject{
@@ -109,7 +109,7 @@ class TestUnifiedSharing : public QObject
                       }},
                  }},
             }},
-            fakeFolder.account()));
+            fakeFolder.account());
 
         QCOMPARE(share->recipients().size(), 2);
         const auto recipient = share->recipients().constFirst();
@@ -123,6 +123,8 @@ class TestUnifiedSharing : public QObject
         QVERIFY(recipient->secretUpdatable());
         QCOMPARE(recipient->secretValue(), std::optional<QString>{"public-secret"_L1});
         QCOMPARE(recipient->secretUrl(), std::optional<QString>{"https://cloud.example.com/s/public-secret"_L1});
+        QCOMPARE(recipient->parent(), static_cast<QObject *>(share.get()));
+        QCOMPARE(recipient->permissions().constFirst()->parent(), static_cast<QObject *>(recipient));
         QCOMPARE(recipient->secretUrlString(), "https://cloud.example.com/s/public-secret"_L1);
         QCOMPARE(recipient->initiatorDisplayName(), "Bob"_L1);
         QCOMPARE(recipient->permissions().size(), 1);
@@ -154,27 +156,27 @@ class TestUnifiedSharing : public QObject
 
     void recipientPermissionModelUsesSharePermissionsWhenRecipientDataIsMissing()
     {
-        const auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
-                                                                      {"ocs"_L1,
-                                                                       QJsonObject{
-                                                                           {"data"_L1,
-                                                                            QJsonObject{
-                                                                                {"permissions"_L1,
-                                                                                 QJsonArray{QJsonObject{
-                                                                                     {"class"_L1, "view"_L1},
-                                                                                     {"display_name"_L1, "View files"_L1},
-                                                                                     {"enabled"_L1, true},
-                                                                                 }}},
-                                                                                {"recipients"_L1,
-                                                                                 QJsonArray{QJsonObject{
-                                                                                     {"class"_L1, "OC\\Core\\Sharing\\Recipient\\UserShareRecipientType"_L1},
-                                                                                     {"display_name"_L1, "Alice"_L1},
-                                                                                     {"value"_L1, "alice"_L1},
-                                                                                 }}},
-                                                                            }},
-                                                                       }},
-                                                                  }},
-                                                                  {}));
+        const auto share = Share::fromJson(QJsonDocument{QJsonObject{
+                                               {"ocs"_L1,
+                                                QJsonObject{
+                                                    {"data"_L1,
+                                                     QJsonObject{
+                                                         {"permissions"_L1,
+                                                          QJsonArray{QJsonObject{
+                                                              {"class"_L1, "view"_L1},
+                                                              {"display_name"_L1, "View files"_L1},
+                                                              {"enabled"_L1, true},
+                                                          }}},
+                                                         {"recipients"_L1,
+                                                          QJsonArray{QJsonObject{
+                                                              {"class"_L1, "OC\\Core\\Sharing\\Recipient\\UserShareRecipientType"_L1},
+                                                              {"display_name"_L1, "Alice"_L1},
+                                                              {"value"_L1, "alice"_L1},
+                                                          }}},
+                                                     }},
+                                                }},
+                                           }},
+                                           {});
         QVERIFY(share);
 
         PermissionModel model;
@@ -192,28 +194,28 @@ class TestUnifiedSharing : public QObject
 
     void recipientPermissionModelUsesSharePermissionsWhenRecipientPermissionsAreEmpty()
     {
-        const auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
-                                                                      {"ocs"_L1,
-                                                                       QJsonObject{
-                                                                           {"data"_L1,
-                                                                            QJsonObject{
-                                                                                {"permissions"_L1,
-                                                                                 QJsonArray{QJsonObject{
-                                                                                     {"class"_L1, "view"_L1},
-                                                                                     {"display_name"_L1, "View files"_L1},
-                                                                                     {"enabled"_L1, true},
-                                                                                 }}},
-                                                                                {"recipients"_L1,
-                                                                                 QJsonArray{QJsonObject{
-                                                                                     {"class"_L1, "OC\\Core\\Sharing\\Recipient\\UserShareRecipientType"_L1},
-                                                                                     {"display_name"_L1, "Alice"_L1},
-                                                                                     {"value"_L1, "alice"_L1},
-                                                                                     {"permissions"_L1, QJsonArray{}},
-                                                                                 }}},
-                                                                            }},
-                                                                       }},
-                                                                  }},
-                                                                  {}));
+        const auto share = Share::fromJson(QJsonDocument{QJsonObject{
+                                               {"ocs"_L1,
+                                                QJsonObject{
+                                                    {"data"_L1,
+                                                     QJsonObject{
+                                                         {"permissions"_L1,
+                                                          QJsonArray{QJsonObject{
+                                                              {"class"_L1, "view"_L1},
+                                                              {"display_name"_L1, "View files"_L1},
+                                                              {"enabled"_L1, true},
+                                                          }}},
+                                                         {"recipients"_L1,
+                                                          QJsonArray{QJsonObject{
+                                                              {"class"_L1, "OC\\Core\\Sharing\\Recipient\\UserShareRecipientType"_L1},
+                                                              {"display_name"_L1, "Alice"_L1},
+                                                              {"value"_L1, "alice"_L1},
+                                                              {"permissions"_L1, QJsonArray{}},
+                                                          }}},
+                                                     }},
+                                                }},
+                                           }},
+                                           {});
         QVERIFY(share);
 
         PermissionModel model;
@@ -228,7 +230,7 @@ class TestUnifiedSharing : public QObject
 
     void recipientPermissionModelKeepsSharePermissionsWhenRecipientOverridesOnePermission()
     {
-        const auto share = std::unique_ptr<Share>(
+        const auto share =
             Share::fromJson(QJsonDocument{QJsonObject{
                                 {"ocs"_L1,
                                  QJsonObject{
@@ -254,7 +256,7 @@ class TestUnifiedSharing : public QObject
                                       }},
                                  }},
                             }},
-                            {}));
+                            {});
         QVERIFY(share);
 
         PermissionModel model;
@@ -272,7 +274,7 @@ class TestUnifiedSharing : public QObject
     void sharePropertiesPreserveServerMetadataAndUseTypedFields()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({
+        auto share = Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {
                     "data": {
                         "id": "share-1",
@@ -330,7 +332,7 @@ class TestUnifiedSharing : public QObject
                     }
                 }
             })json"),
-                                           fakeFolder.account()));
+                                     fakeFolder.account());
 
         PropertyModel model;
         model.setShare(share.get());
@@ -364,14 +366,14 @@ class TestUnifiedSharing : public QObject
     void permissionModelIsReadOnlyAndTracksOnlyItsCurrentShare()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        auto shareWithOnePermission = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({
+        auto shareWithOnePermission = Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {"data": {
                     "id": "share-1",
                     "permissions": [{"class": "view", "display_name": "View files", "enabled": true}]
                 }}
             })json"),
-                                                            fakeFolder.account()));
-        auto shareWithTwoPermissions = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({
+                                                      fakeFolder.account());
+        auto shareWithTwoPermissions = Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {"data": {
                     "id": "share-2",
                     "permissions": [
@@ -380,7 +382,7 @@ class TestUnifiedSharing : public QObject
                     ]
                 }}
             })json"),
-                                                             fakeFolder.account()));
+                                                       fakeFolder.account());
 
         PermissionModel model;
         model.setShare(shareWithOnePermission.get());
@@ -471,7 +473,7 @@ class TestUnifiedSharing : public QObject
         });
 
         const auto account = fakeFolder.account();
-        auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1"}}})json"), fakeFolder.account()));
+        auto share = Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1"}}})json"), fakeFolder.account());
 
         const auto verifyRequest = [&](UnifiedSharingRequest *job,
                                        const QByteArray &expectedVerb,
@@ -620,7 +622,7 @@ class TestUnifiedSharing : public QObject
     void partialShareUpdatesPreserveOmittedFields()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({
+        auto share = Share::fromJson(QJsonDocument::fromJson(R"json({
                 "ocs": {
                     "data": {
                         "id": "share-1",
@@ -645,7 +647,7 @@ class TestUnifiedSharing : public QObject
                     }
                 }
             })json"),
-                                           fakeFolder.account()));
+                                     fakeFolder.account());
 
         share->updateFromJson(QJsonDocument::fromJson(R"json({
             "ocs": {
@@ -681,10 +683,10 @@ class TestUnifiedSharing : public QObject
         QCOMPARE(share->permissions().size(), 1);
         QCOMPARE(share->recipients().size(), 1);
 
-        auto unknownShare = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({
+        auto unknownShare = Share::fromJson(QJsonDocument::fromJson(R"json({
             "ocs": {"data": {"id": "unknown-share", "state": "paused"}}
         })json"),
-                                                  fakeFolder.account()));
+                                            fakeFolder.account());
         QCOMPARE(unknownShare->state(), Share::State::Unknown);
     }
 
@@ -699,7 +701,7 @@ class TestUnifiedSharing : public QObject
             ocs.insert("data"_L1, data);
             auto root = QJsonObject{};
             root.insert("ocs"_L1, ocs);
-            return std::unique_ptr<Share>(Share::fromJson(QJsonDocument{root}, fakeFolder.account()));
+            return Share::fromJson(QJsonDocument{root}, fakeFolder.account());
         };
 
         const auto viewShare = shareForPreset("OC\\Core\\Sharing\\Permission\\ViewSharePermissionPreset"_L1);
@@ -2064,6 +2066,9 @@ class TestUnifiedSharing : public QObject
         auto createdShare = std::unique_ptr<Share>{};
         const auto createJob = new CreateShareJob{account};
         connect(createJob, &CreateShareJob::shareCreated, this, [&](QPointer<Share> share) {
+            if (share) {
+                share->setParent(nullptr);
+            }
             createdShare.reset(share.data());
         });
         createJob->start();
@@ -2100,6 +2105,9 @@ class TestUnifiedSharing : public QObject
         auto fetchedShare = std::unique_ptr<Share>{};
         const auto getShareJob = new GetShareJob{account, "share-1"_L1};
         connect(getShareJob, &GetShareJob::shareFetched, this, [&](QPointer<Share> share) {
+            if (share) {
+                share->setParent(nullptr);
+            }
             fetchedShare.reset(share.data());
         });
         getShareJob->start();
@@ -2111,6 +2119,9 @@ class TestUnifiedSharing : public QObject
         connect(getSharesJob, &GetSharesJob::sharesFetched, this, [&](const QList<QPointer<Share>> &shares) {
             fetchedShares.clear();
             for (const auto &share : shares) {
+                if (share) {
+                    share->setParent(nullptr);
+                }
                 fetchedShares.emplace_back(share.data());
             }
         });
@@ -2189,7 +2200,7 @@ class TestUnifiedSharing : public QObject
         });
 
         const auto account = fakeFolder.account();
-        auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1","state":"draft"}}})json"), account));
+        auto share = Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1","state":"draft"}}})json"), account);
         const auto jobs = QList<UpdateShareJob *>{
             new AddSourceJob{account, *share, "42"_L1},
             new RemoveSourceJob{account, *share, "42"_L1},

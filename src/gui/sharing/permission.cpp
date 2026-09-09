@@ -13,19 +13,14 @@ using namespace Qt::StringLiterals;
 
 using namespace OCC::Gui::Sharing;
 
-QPointer<Permission> Permission::fromJson(const QJsonObject &json)
+std::unique_ptr<Permission> Permission::fromJson(const QJsonObject &json)
 {
     const auto className = json.value("class"_L1).toString();
     const auto displayName = json.value("display_name"_L1).toString();
     const auto enabled = json.value("enabled"_L1).toBool();
     const auto hint = json.value("hint"_L1).toString();
 
-    auto permission = QPointer<Permission>(new Permission {
-        className,
-        displayName,
-        enabled,
-        hint,
-    });
+    auto permission = std::make_unique<Permission>(className, displayName, enabled, hint);
     return permission;
 }
 
