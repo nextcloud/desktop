@@ -624,6 +624,8 @@ QString Theme::gitSHA1() const
     const QString githubPrefix(QLatin1String(
         "https://github.com/nextcloud/desktop/commit/"));
     const QString gitSha1(QLatin1String(GIT_SHA1));
+    //: %1 is the full Git commit URL. %2 is the abbreviated Git revision. %3 is the build date.
+    //: %4 is the build time. %5 is the Qt version. %6 is the TLS library version.
     devString = QCoreApplication::translate("nextcloudTheme::aboutInfo()",
         "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
         " on %3, %4 using Qt %5, %6</small></p>")

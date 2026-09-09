@@ -1960,6 +1960,7 @@ QString FolderMan::trayTooltipStatusString(SyncResult::Status syncStatus, bool h
     }
     if (paused) {
         // sync is disabled.
+        //: %1 is the current sync status message, for example "Setup error".
         folderMessage = tr("%1 (Sync is paused)").arg(folderMessage);
     }
     return folderMessage;
