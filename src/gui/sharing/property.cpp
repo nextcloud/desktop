@@ -18,7 +18,7 @@ using namespace OCC::Gui::Sharing;
 
 std::unique_ptr<Property> Property::fromJson(const QJsonObject &json)
 {
-    auto property = std::make_unique<Property>();
+    auto property = std::unique_ptr<Property>(new Property());
     property->_className = json.value("class"_L1).toString();
     property->_displayName = json.value("display_name"_L1).toString();
     property->_priority = json.value("priority"_L1).toInt();

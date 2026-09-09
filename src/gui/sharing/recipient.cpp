@@ -18,7 +18,7 @@ using namespace OCC::Gui::Sharing;
 
 std::unique_ptr<Recipient> Recipient::fromJson(const QJsonObject &json)
 {
-    auto recipient = std::make_unique<Recipient>();
+    auto recipient = std::unique_ptr<Recipient>(new Recipient());
     recipient->updateFromJson(json);
     return recipient;
 }

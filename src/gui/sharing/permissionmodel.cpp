@@ -90,7 +90,7 @@ void PermissionModel::setShare(Share *share)
 
 Recipient *PermissionModel::recipient() const
 {
-    return _recipient;
+    return _recipient.data();
 }
 
 void PermissionModel::setRecipient(Recipient *recipient)
@@ -100,6 +100,7 @@ void PermissionModel::setRecipient(Recipient *recipient)
     }
 
     QObject::disconnect(_recipientPermissionsChangedConnection);
+    QObject::disconnect(_recipientDestroyedConnection);
     beginResetModel();
     _recipient = recipient;
     Q_EMIT recipientChanged();
@@ -108,6 +109,12 @@ void PermissionModel::setRecipient(Recipient *recipient)
     if (_recipient) {
         _recipientPermissionsChangedConnection = connect(_recipient, &Recipient::permissionsChanged, this, [this]() -> void {
             beginResetModel();
+            endResetModel();
+        });
+        _recipientDestroyedConnection = connect(_recipient, &QObject::destroyed, this, [this] {
+            beginResetModel();
+            _recipient = nullptr;
+            Q_EMIT recipientChanged();
             endResetModel();
         });
     }

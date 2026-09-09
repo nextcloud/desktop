@@ -17,7 +17,7 @@ ShareDetailsListModel::ShareDetailsListModel(QObject *parent)
 
 Share *ShareDetailsListModel::share() const
 {
-    return _share;
+    return _share.data();
 }
 
 void ShareDetailsListModel::setShare(Share *share)
@@ -26,8 +26,17 @@ void ShareDetailsListModel::setShare(Share *share)
         return;
     }
 
+    QObject::disconnect(_shareDestroyedConnection);
     beginResetModel();
     _share = share;
-    Q_EMIT shareChanged();
+    if (_share) {
+        _shareDestroyedConnection = connect(_share, &QObject::destroyed, this, [this] {
+            beginResetModel();
+            _share = nullptr;
+            endResetModel();
+            Q_EMIT shareChanged();
+        });
+    }
     endResetModel();
+    Q_EMIT shareChanged();
 }

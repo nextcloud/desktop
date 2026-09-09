@@ -6,6 +6,8 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QMetaObject>
+#include <QPointer>
 
 #include "unifiedshare.h"
 
@@ -16,7 +18,7 @@ namespace OCC::Gui::Sharing {
  *
  * Derived classes expose details such as recipients, permissions, or properties
  * from the current share. Changing the share resets the model. The model does
- * not own the share, so callers must keep it alive while it is assigned.
+ * not own the share and automatically clears itself if the share is destroyed.
  */
 class ShareDetailsListModel : public QAbstractListModel
 {
@@ -43,7 +45,10 @@ Q_SIGNALS:
     void shareChanged();
 
 protected:
-    Share *_share = nullptr; //!< The non-owning share whose details this model exposes.
+    QPointer<Share> _share; //!< The non-owning share whose details this model exposes.
+
+private:
+    QMetaObject::Connection _shareDestroyedConnection;
 };
 
 }

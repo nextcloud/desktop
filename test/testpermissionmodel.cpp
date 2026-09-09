@@ -162,6 +162,47 @@ private Q_SLOTS:
         QCOMPARE(resetSpy.count(), 1);
         QVERIFY(!model.data(model.index(0), PermissionModel::EnabledRole).toBool());
     }
+
+    void clearsWhenRecipientIsRemoved()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto share = shareFromJson(
+            QJsonObject{{"recipients"_L1, QJsonArray{QJsonObject{{"class"_L1, "user"_L1}, {"display_name"_L1, "Alice"_L1}, {"value"_L1, "alice"_L1}}}}},
+            fakeFolder.account());
+
+        PermissionModel model;
+        model.setShare(share.get());
+        model.setRecipient(share->recipients().constFirst());
+        QAbstractItemModelTester modelTester{&model};
+        QSignalSpy resetSpy{&model, &QAbstractItemModel::modelReset};
+
+        share->updateFromJson(QJsonDocument{QJsonObject{
+            {"ocs"_L1, QJsonObject{{"data"_L1, QJsonObject{{"recipients"_L1, QJsonArray{}}}}}},
+        }});
+
+        QCOMPARE(model.recipient(), nullptr);
+        QCOMPARE(model.rowCount(), 0);
+        QCOMPARE(resetSpy.count(), 1);
+    }
+
+    void clearsWhenShareIsDestroyed()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto share = shareFromJson(
+            QJsonObject{{"permissions"_L1, QJsonArray{QJsonObject{{"class"_L1, "view"_L1}, {"display_name"_L1, "View files"_L1}, {"enabled"_L1, true}}}}},
+            fakeFolder.account());
+
+        PermissionModel model;
+        model.setShare(share.get());
+        QAbstractItemModelTester modelTester{&model};
+        QSignalSpy resetSpy{&model, &QAbstractItemModel::modelReset};
+
+        share.reset();
+
+        QCOMPARE(model.share(), nullptr);
+        QCOMPARE(model.rowCount(), 0);
+        QCOMPARE(resetSpy.count(), 1);
+    }
 };
 
 QTEST_MAIN(TestPermissionModel)

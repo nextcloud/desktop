@@ -27,7 +27,7 @@ using namespace OCC::Gui::Sharing;
 
 std::unique_ptr<Share> Share::fromJson(const QJsonDocument &json, const AccountPtr &account)
 {
-    auto share = std::make_unique<Share>(account);
+    auto share = std::unique_ptr<Share>(new Share(account));
     share->updateFromJson(json);
     return share;
 }

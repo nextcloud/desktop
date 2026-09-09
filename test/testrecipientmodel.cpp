@@ -120,6 +120,24 @@ private Q_SLOTS:
         QCOMPARE(resetSpy.count(), 1);
         QCOMPARE(model.rowCount(), 0);
     }
+
+    void clearsWhenShareIsDestroyed()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto share = shareFromJson(
+            QJsonObject{{"recipients"_L1, QJsonArray{QJsonObject{{"class"_L1, "user"_L1}, {"display_name"_L1, "Alice"_L1}, {"value"_L1, "alice"_L1}}}}},
+            fakeFolder.account());
+
+        RecipientModel model;
+        model.setShare(share.get());
+        QSignalSpy resetSpy{&model, &QAbstractItemModel::modelReset};
+
+        share.reset();
+
+        QCOMPARE(model.share(), nullptr);
+        QCOMPARE(model.rowCount(), 0);
+        QCOMPARE(resetSpy.count(), 1);
+    }
 };
 
 QTEST_MAIN(TestRecipientModel)
