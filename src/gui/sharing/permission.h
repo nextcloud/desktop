@@ -7,6 +7,8 @@
 
 #include <QObject>
 
+#include <memory>
+
 namespace OCC::Gui::Sharing {
 
 class Permission : public QObject
@@ -18,7 +20,8 @@ class Permission : public QObject
     Q_PROPERTY(QString hint READ hint CONSTANT)
 
 public:
-    [[nodiscard]] static QPointer<Permission> fromJson(const QJsonObject &json);
+    /** @brief Parses a permission and returns its owning pointer. */
+    [[nodiscard]] static std::unique_ptr<Permission> fromJson(const QJsonObject &json);
 
     [[nodiscard]] QString className() const;
     [[nodiscard]] QString displayName() const;

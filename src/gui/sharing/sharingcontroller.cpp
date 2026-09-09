@@ -125,6 +125,7 @@ void SharingController::initialize(const QString &fileId)
         ownedShares.reserve(shares.size());
         for (const auto &share : shares) {
             if (share) {
+                share->setParent(this);
                 ownedShares.append(share);
             }
         }

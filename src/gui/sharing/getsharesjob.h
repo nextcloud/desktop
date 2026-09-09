@@ -45,7 +45,12 @@ public:
                           qint64 limit = 100);
 
 Q_SIGNALS:
-    /** @brief Emitted with the fetched shares after a successful request. */
+    /**
+     * @brief Emitted with the fetched shares after a successful request.
+     *
+     * Each share is parented to the job until a receiver adopts it by assigning
+     * a different QObject parent.
+     */
     void sharesFetched(const QList<QPointer<Share>> &shares);
 };
 

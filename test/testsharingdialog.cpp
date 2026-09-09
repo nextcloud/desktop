@@ -133,37 +133,42 @@ class TestSharingDialog : public QObject
         QVERIFY(!dialogObject->property("hasSelectedShare").toBool());
         QCOMPARE(shareStackLayout->property("currentIndex").toInt(), 0);
 
-        const auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
-            {QStringLiteral("ocs"), QJsonObject{
-                {QStringLiteral("data"), QJsonObject{
-                    {QStringLiteral("id"), QStringLiteral("share-1")},
-                    {QStringLiteral("state"), QStringLiteral("active")},
-                    {QStringLiteral("properties"), QJsonArray{
-                        QJsonObject{
-                            {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Property\\NoteProperty")},
-                            {QStringLiteral("display_name"), QStringLiteral("Note to recipients")},
-                            {QStringLiteral("type"), QStringLiteral("string")},
-                            {QStringLiteral("advanced"), false},
-                            {QStringLiteral("required"), false},
-                            {QStringLiteral("value"), QStringLiteral("Original note")},
-                        },
-                        QJsonObject{
-                            {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Property\\ExpirationProperty")},
-                            {QStringLiteral("display_name"), QStringLiteral("Expiration date")},
-                            {QStringLiteral("type"), QStringLiteral("date")},
-                            {QStringLiteral("advanced"), true},
-                            {QStringLiteral("required"), false},
-                            {QStringLiteral("value"), QString()},
-                        },
-                    }},
-                    {QStringLiteral("recipients"), QJsonArray{QJsonObject{
-                        {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
-                        {QStringLiteral("display_name"), QStringLiteral("admin")},
-                        {QStringLiteral("value"), QStringLiteral("admin")},
-                    }}},
-                }},
-            }},
-        }}, account));
+        const auto share = Share::fromJson(QJsonDocument{QJsonObject{
+                                               {QStringLiteral("ocs"),
+                                                QJsonObject{
+                                                    {QStringLiteral("data"),
+                                                     QJsonObject{
+                                                         {QStringLiteral("id"), QStringLiteral("share-1")},
+                                                         {QStringLiteral("state"), QStringLiteral("active")},
+                                                         {QStringLiteral("properties"),
+                                                          QJsonArray{
+                                                              QJsonObject{
+                                                                  {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Property\\NoteProperty")},
+                                                                  {QStringLiteral("display_name"), QStringLiteral("Note to recipients")},
+                                                                  {QStringLiteral("type"), QStringLiteral("string")},
+                                                                  {QStringLiteral("advanced"), false},
+                                                                  {QStringLiteral("required"), false},
+                                                                  {QStringLiteral("value"), QStringLiteral("Original note")},
+                                                              },
+                                                              QJsonObject{
+                                                                  {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Property\\ExpirationProperty")},
+                                                                  {QStringLiteral("display_name"), QStringLiteral("Expiration date")},
+                                                                  {QStringLiteral("type"), QStringLiteral("date")},
+                                                                  {QStringLiteral("advanced"), true},
+                                                                  {QStringLiteral("required"), false},
+                                                                  {QStringLiteral("value"), QString()},
+                                                              },
+                                                          }},
+                                                         {QStringLiteral("recipients"),
+                                                          QJsonArray{QJsonObject{
+                                                              {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                                                              {QStringLiteral("display_name"), QStringLiteral("admin")},
+                                                              {QStringLiteral("value"), QStringLiteral("admin")},
+                                                          }}},
+                                                     }},
+                                                }},
+                                           }},
+                                           account);
         QVERIFY(share);
 
         QVERIFY(dialogObject->setProperty("selectedShare", QVariant::fromValue(share.get())));
@@ -250,7 +255,7 @@ class TestSharingDialog : public QObject
                   }},
              }},
         }};
-        const auto share = std::unique_ptr<Share>(Share::fromJson(shareJson, account));
+        const auto share = Share::fromJson(shareJson, account);
         QVERIFY(share);
 
         QQmlComponent component(
@@ -320,42 +325,41 @@ class TestSharingDialog : public QObject
         const auto account = AccountManager::createAccount();
         account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
 
-        const auto share = std::unique_ptr<Share>(
-            Share::fromJson(QJsonDocument{QJsonObject{
-                                {QStringLiteral("ocs"),
-                                 QJsonObject{
-                                     {QStringLiteral("data"),
-                                      QJsonObject{
-                                          {QStringLiteral("id"), QStringLiteral("share-1")},
-                                          {QStringLiteral("state"), QStringLiteral("active")},
-                                          {QStringLiteral("permissions"),
-                                           QJsonArray{
-                                               QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
-                                                           {QStringLiteral("display_name"), QStringLiteral("View files")},
-                                                           {QStringLiteral("enabled"), true}},
-                                               QJsonObject{{QStringLiteral("class"), QStringLiteral("edit")},
-                                                           {QStringLiteral("display_name"), QStringLiteral("Edit files")},
-                                                           {QStringLiteral("enabled"), false}},
-                                           }},
-                                          {QStringLiteral("recipients"),
-                                           QJsonArray{QJsonObject{
-                                               {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
-                                               {QStringLiteral("display_name"), QStringLiteral("Alice")},
-                                               {QStringLiteral("value"), QStringLiteral("alice")},
-                                               {QStringLiteral("permissions"),
-                                                QJsonArray{
-                                                    QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
-                                                                {QStringLiteral("display_name"), QStringLiteral("View files")},
-                                                                {QStringLiteral("enabled"), true}},
-                                                    QJsonObject{{QStringLiteral("class"), QStringLiteral("edit")},
-                                                                {QStringLiteral("display_name"), QStringLiteral("Edit files")},
-                                                                {QStringLiteral("enabled"), false}},
+        const auto share = Share::fromJson(QJsonDocument{QJsonObject{
+                                               {QStringLiteral("ocs"),
+                                                QJsonObject{
+                                                    {QStringLiteral("data"),
+                                                     QJsonObject{
+                                                         {QStringLiteral("id"), QStringLiteral("share-1")},
+                                                         {QStringLiteral("state"), QStringLiteral("active")},
+                                                         {QStringLiteral("permissions"),
+                                                          QJsonArray{
+                                                              QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
+                                                                          {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                                                          {QStringLiteral("enabled"), true}},
+                                                              QJsonObject{{QStringLiteral("class"), QStringLiteral("edit")},
+                                                                          {QStringLiteral("display_name"), QStringLiteral("Edit files")},
+                                                                          {QStringLiteral("enabled"), false}},
+                                                          }},
+                                                         {QStringLiteral("recipients"),
+                                                          QJsonArray{QJsonObject{
+                                                              {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                                                              {QStringLiteral("display_name"), QStringLiteral("Alice")},
+                                                              {QStringLiteral("value"), QStringLiteral("alice")},
+                                                              {QStringLiteral("permissions"),
+                                                               QJsonArray{
+                                                                   QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
+                                                                               {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                                                               {QStringLiteral("enabled"), true}},
+                                                                   QJsonObject{{QStringLiteral("class"), QStringLiteral("edit")},
+                                                                               {QStringLiteral("display_name"), QStringLiteral("Edit files")},
+                                                                               {QStringLiteral("enabled"), false}},
+                                                               }},
+                                                          }}},
+                                                     }},
                                                 }},
-                                           }}},
-                                      }},
-                                 }},
-                            }},
-                            account));
+                                           }},
+                                           account);
         QVERIFY(share);
 
         QQmlComponent component(Systray::instance()->trayEngine(), QStringLiteral("com.nextcloud.desktopclient.sharing"), QStringLiteral("ShareDialog"));
@@ -458,30 +462,29 @@ class TestSharingDialog : public QObject
         const auto account = AccountManager::createAccount();
         account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
 
-        const auto share = std::unique_ptr<Share>(
-            Share::fromJson(QJsonDocument{QJsonObject{
-                                {QStringLiteral("ocs"),
-                                 QJsonObject{
-                                     {QStringLiteral("data"),
-                                      QJsonObject{
-                                          {QStringLiteral("id"), QStringLiteral("share-1")},
-                                          {QStringLiteral("state"), QStringLiteral("active")},
-                                          {QStringLiteral("permissions"),
-                                           QJsonArray{QJsonObject{
-                                               {QStringLiteral("class"), QStringLiteral("view")},
-                                               {QStringLiteral("display_name"), QStringLiteral("View files")},
-                                               {QStringLiteral("enabled"), true},
-                                           }}},
-                                          {QStringLiteral("recipients"),
-                                           QJsonArray{QJsonObject{
-                                               {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
-                                               {QStringLiteral("display_name"), QStringLiteral("Alice")},
-                                               {QStringLiteral("value"), QStringLiteral("alice")},
-                                           }}},
-                                      }},
-                                 }},
-                            }},
-                            account));
+        const auto share = Share::fromJson(QJsonDocument{QJsonObject{
+                                               {QStringLiteral("ocs"),
+                                                QJsonObject{
+                                                    {QStringLiteral("data"),
+                                                     QJsonObject{
+                                                         {QStringLiteral("id"), QStringLiteral("share-1")},
+                                                         {QStringLiteral("state"), QStringLiteral("active")},
+                                                         {QStringLiteral("permissions"),
+                                                          QJsonArray{QJsonObject{
+                                                              {QStringLiteral("class"), QStringLiteral("view")},
+                                                              {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                                              {QStringLiteral("enabled"), true},
+                                                          }}},
+                                                         {QStringLiteral("recipients"),
+                                                          QJsonArray{QJsonObject{
+                                                              {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                                                              {QStringLiteral("display_name"), QStringLiteral("Alice")},
+                                                              {QStringLiteral("value"), QStringLiteral("alice")},
+                                                          }}},
+                                                     }},
+                                                }},
+                                           }},
+                                           account);
         QVERIFY(share);
 
         QQmlComponent component(Systray::instance()->trayEngine(), QStringLiteral("com.nextcloud.desktopclient.sharing"), QStringLiteral("ShareDialog"));
@@ -531,31 +534,30 @@ class TestSharingDialog : public QObject
         const auto account = AccountManager::createAccount();
         account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
 
-        const auto share = std::unique_ptr<Share>(
-            Share::fromJson(QJsonDocument{QJsonObject{
-                                {QStringLiteral("ocs"),
-                                 QJsonObject{
-                                     {QStringLiteral("data"),
-                                      QJsonObject{
-                                          {QStringLiteral("id"), QStringLiteral("share-1")},
-                                          {QStringLiteral("state"), QStringLiteral("active")},
-                                          {QStringLiteral("permissions"),
-                                           QJsonArray{QJsonObject{
-                                               {QStringLiteral("class"), QStringLiteral("view")},
-                                               {QStringLiteral("display_name"), QStringLiteral("View files")},
-                                               {QStringLiteral("enabled"), true},
-                                           }}},
-                                          {QStringLiteral("recipients"),
-                                           QJsonArray{QJsonObject{
-                                               {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
-                                               {QStringLiteral("display_name"), QStringLiteral("Alice")},
-                                               {QStringLiteral("value"), QStringLiteral("alice")},
-                                               {QStringLiteral("permissions"), QJsonArray{}},
-                                           }}},
-                                      }},
-                                 }},
-                            }},
-                            account));
+        const auto share = Share::fromJson(QJsonDocument{QJsonObject{
+                                               {QStringLiteral("ocs"),
+                                                QJsonObject{
+                                                    {QStringLiteral("data"),
+                                                     QJsonObject{
+                                                         {QStringLiteral("id"), QStringLiteral("share-1")},
+                                                         {QStringLiteral("state"), QStringLiteral("active")},
+                                                         {QStringLiteral("permissions"),
+                                                          QJsonArray{QJsonObject{
+                                                              {QStringLiteral("class"), QStringLiteral("view")},
+                                                              {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                                              {QStringLiteral("enabled"), true},
+                                                          }}},
+                                                         {QStringLiteral("recipients"),
+                                                          QJsonArray{QJsonObject{
+                                                              {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                                                              {QStringLiteral("display_name"), QStringLiteral("Alice")},
+                                                              {QStringLiteral("value"), QStringLiteral("alice")},
+                                                              {QStringLiteral("permissions"), QJsonArray{}},
+                                                          }}},
+                                                     }},
+                                                }},
+                                           }},
+                                           account);
         QVERIFY(share);
 
         QQmlComponent component(Systray::instance()->trayEngine(), QStringLiteral("com.nextcloud.desktopclient.sharing"), QStringLiteral("ShareDialog"));
@@ -603,39 +605,38 @@ class TestSharingDialog : public QObject
         const auto account = AccountManager::createAccount();
         account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
 
-        const auto share = std::unique_ptr<Share>(
-            Share::fromJson(QJsonDocument{QJsonObject{
-                                {QStringLiteral("ocs"),
-                                 QJsonObject{
-                                     {QStringLiteral("data"),
-                                      QJsonObject{
-                                          {QStringLiteral("id"), QStringLiteral("share-1")},
-                                          {QStringLiteral("state"), QStringLiteral("active")},
-                                          {QStringLiteral("permissions"),
-                                           QJsonArray{
-                                               QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
-                                                           {QStringLiteral("display_name"), QStringLiteral("View files")},
-                                                           {QStringLiteral("enabled"), true}},
-                                               QJsonObject{{QStringLiteral("class"), QStringLiteral("download")},
-                                                           {QStringLiteral("display_name"), QStringLiteral("Download files")},
-                                                           {QStringLiteral("enabled"), true}},
+        const auto share = Share::fromJson(QJsonDocument{QJsonObject{
+                                               {QStringLiteral("ocs"),
+                                                QJsonObject{
+                                                    {QStringLiteral("data"),
+                                                     QJsonObject{
+                                                         {QStringLiteral("id"), QStringLiteral("share-1")},
+                                                         {QStringLiteral("state"), QStringLiteral("active")},
+                                                         {QStringLiteral("permissions"),
+                                                          QJsonArray{
+                                                              QJsonObject{{QStringLiteral("class"), QStringLiteral("view")},
+                                                                          {QStringLiteral("display_name"), QStringLiteral("View files")},
+                                                                          {QStringLiteral("enabled"), true}},
+                                                              QJsonObject{{QStringLiteral("class"), QStringLiteral("download")},
+                                                                          {QStringLiteral("display_name"), QStringLiteral("Download files")},
+                                                                          {QStringLiteral("enabled"), true}},
+                                                          }},
+                                                         {QStringLiteral("recipients"),
+                                                          QJsonArray{QJsonObject{
+                                                              {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                                                              {QStringLiteral("display_name"), QStringLiteral("Alice")},
+                                                              {QStringLiteral("value"), QStringLiteral("alice")},
+                                                              {QStringLiteral("permissions"),
+                                                               QJsonArray{QJsonObject{
+                                                                   {QStringLiteral("class"), QStringLiteral("download")},
+                                                                   {QStringLiteral("display_name"), QStringLiteral("Download files")},
+                                                                   {QStringLiteral("enabled"), false},
+                                                               }}},
+                                                          }}},
+                                                     }},
+                                                }},
                                            }},
-                                          {QStringLiteral("recipients"),
-                                           QJsonArray{QJsonObject{
-                                               {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
-                                               {QStringLiteral("display_name"), QStringLiteral("Alice")},
-                                               {QStringLiteral("value"), QStringLiteral("alice")},
-                                               {QStringLiteral("permissions"),
-                                                QJsonArray{QJsonObject{
-                                                    {QStringLiteral("class"), QStringLiteral("download")},
-                                                    {QStringLiteral("display_name"), QStringLiteral("Download files")},
-                                                    {QStringLiteral("enabled"), false},
-                                                }}},
-                                           }}},
-                                      }},
-                                 }},
-                            }},
-                            account));
+                                           account);
         QVERIFY(share);
 
         QQmlComponent component(Systray::instance()->trayEngine(), QStringLiteral("com.nextcloud.desktopclient.sharing"), QStringLiteral("ShareDialog"));
@@ -723,19 +724,23 @@ class TestSharingDialog : public QObject
         const auto account = AccountManager::createAccount();
         account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
 
-        const auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
-            {QStringLiteral("ocs"), QJsonObject{
-                {QStringLiteral("data"), QJsonObject{
-                    {QStringLiteral("id"), QStringLiteral("share-1")},
-                    {QStringLiteral("state"), QStringLiteral("active")},
-                    {QStringLiteral("recipients"), QJsonArray{QJsonObject{
-                        {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
-                        {QStringLiteral("display_name"), QStringLiteral("admin")},
-                        {QStringLiteral("value"), QStringLiteral("admin")},
-                    }}},
-                }},
-            }},
-        }}, account));
+        const auto share = Share::fromJson(QJsonDocument{QJsonObject{
+                                               {QStringLiteral("ocs"),
+                                                QJsonObject{
+                                                    {QStringLiteral("data"),
+                                                     QJsonObject{
+                                                         {QStringLiteral("id"), QStringLiteral("share-1")},
+                                                         {QStringLiteral("state"), QStringLiteral("active")},
+                                                         {QStringLiteral("recipients"),
+                                                          QJsonArray{QJsonObject{
+                                                              {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\UserShareRecipientType")},
+                                                              {QStringLiteral("display_name"), QStringLiteral("admin")},
+                                                              {QStringLiteral("value"), QStringLiteral("admin")},
+                                                          }}},
+                                                     }},
+                                                }},
+                                           }},
+                                           account);
         QVERIFY(share);
 
         QQmlComponent component(
@@ -774,20 +779,25 @@ class TestSharingDialog : public QObject
         const auto account = AccountManager::createAccount();
         account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
 
-        const auto share = std::unique_ptr<Share>(Share::fromJson(QJsonDocument{QJsonObject{
-            {QStringLiteral("ocs"), QJsonObject{
-                {QStringLiteral("data"), QJsonObject{
-                    {QStringLiteral("id"), QStringLiteral("public-share-1")},
-                    {QStringLiteral("state"), QStringLiteral("active")},
-                    {QStringLiteral("recipients"), QJsonArray{QJsonObject{
-                        {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\TokenShareRecipientType")},
-                        {QStringLiteral("display_name"), QStringLiteral("Share link")},
-                        {QStringLiteral("value"), QStringLiteral("token")},
-                        {QStringLiteral("secret"), QJsonObject{{QStringLiteral("url"), QStringLiteral("https://cloud.example/s/token")}}},
-                    }}},
-                }},
+        const auto share = Share::fromJson(
+            QJsonDocument{QJsonObject{
+                {QStringLiteral("ocs"),
+                 QJsonObject{
+                     {QStringLiteral("data"),
+                      QJsonObject{
+                          {QStringLiteral("id"), QStringLiteral("public-share-1")},
+                          {QStringLiteral("state"), QStringLiteral("active")},
+                          {QStringLiteral("recipients"),
+                           QJsonArray{QJsonObject{
+                               {QStringLiteral("class"), QStringLiteral("OC\\Core\\Sharing\\Recipient\\TokenShareRecipientType")},
+                               {QStringLiteral("display_name"), QStringLiteral("Share link")},
+                               {QStringLiteral("value"), QStringLiteral("token")},
+                               {QStringLiteral("secret"), QJsonObject{{QStringLiteral("url"), QStringLiteral("https://cloud.example/s/token")}}},
+                           }}},
+                      }},
+                 }},
             }},
-        }}, account));
+            account);
         QVERIFY(share);
         QVERIFY(share->isPublicLink());
 

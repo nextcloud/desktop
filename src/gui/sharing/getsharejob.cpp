@@ -46,7 +46,10 @@ GetShareJob::GetShareJob(AccountPtr account,
     connect(this, &OcsJob::jobFinished, this, [this, account = std::move(account)](const QJsonDocument &json, int) {
         Q_EMIT shareJsonFetched(json);
         if (isSignalConnected(QMetaMethod::fromSignal(&GetShareJob::shareFetched))) {
-            Q_EMIT shareFetched(Share::fromJson(json, account));
+            auto share = Share::fromJson(json, account);
+            share->setParent(this);
+            Q_EMIT shareFetched(share.get());
+            share.release();
         }
     });
 }
