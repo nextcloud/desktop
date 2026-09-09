@@ -40,6 +40,14 @@ struct ManagedProxySettings {
     int proxyPort = 0;
 };
 
+// Managed virtual files mode resolved from the settings hierarchy.
+// enabled is true when the resolved mode is a virtual files mode, false when it is off.
+struct ManagedVirtualFilesMode {
+    bool isManaged = false;
+    bool isEnforced = false;
+    bool enabled = false;
+};
+
 /**
  * @brief The ConfigFile class
  * @ingroup libsync
@@ -141,6 +149,9 @@ public:
 
     // Proxy type, host and port resolved together from the settings hierarchy.
     [[nodiscard]] ManagedProxySettings managedProxySettings() const;
+
+    // Virtual files mode resolved from the settings hierarchy.
+    [[nodiscard]] ManagedVirtualFilesMode managedVirtualFilesMode() const;
     [[nodiscard]] bool proxyNeedsAuth() const;
     [[nodiscard]] QString proxyUser() const;
     [[nodiscard]] QString proxyPassword() const;

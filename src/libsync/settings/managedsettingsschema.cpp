@@ -16,6 +16,7 @@ const QList<SettingSpec> &all()
         {QStringLiteral("confirmExternalStorage"), true, true, SettingScope::User},
         {QStringLiteral("useNewBigFolderSizeLimit"), true, true, SettingScope::User},
         {QStringLiteral("notifyExistingFoldersOverLimit"), false, true, SettingScope::User},
+        {QStringLiteral("virtualFilesMode"), QStringLiteral("off"), true, SettingScope::User},
     };
     return specs;
 }
