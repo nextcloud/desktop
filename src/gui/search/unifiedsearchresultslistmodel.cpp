@@ -1246,8 +1246,10 @@ void UnifiedSearchResultsListModel::updateAccessibilityStatus()
     } else if (resultCount == 0) {
         setAccessibilityStatus(tr("No matching results"));
     } else if (_hasPartialFailure) {
+        //: %1 is the number of search results.
         setAccessibilityStatus(tr("%1 results. Some sources are unavailable.").arg(resultCount));
     } else {
+        //: %1 is the number of search results.
         setAccessibilityStatus(tr("%1 results").arg(resultCount));
     }
 }
@@ -1456,6 +1458,7 @@ bool UnifiedSearchResultsListModel::setCustomDateRange(const QString &sinceDate,
     const auto zone = QTimeZone::systemTimeZone();
     _since = QDateTime(first, QTime(0, 0), zone);
     _until = QDateTime(last, QTime(23, 59, 59, 999), zone);
+    //: %1 is the start date and %2 is the end date of a custom search date range. Both use the locale's short date format.
     _dateLabel = tr("%1 – %2").arg(QLocale().toString(first, QLocale::ShortFormat), QLocale().toString(last, QLocale::ShortFormat));
     restartForFilterChange();
     return true;

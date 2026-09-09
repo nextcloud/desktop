@@ -836,6 +836,7 @@ void AssistantController::requestFailed(const QString &context, int statusCode)
 {
     beginRequest();
     setRequestInProgress(false);
+    //: %1 is the HTTP status code returned by the server.
     _error = tr("Assistant request failed (%1).").arg(statusCode);
     Q_EMIT errorChanged();
     qCWarning(lcAssistantController) << "Assistant request error:" << context << statusCode;

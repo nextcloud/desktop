@@ -97,6 +97,7 @@ Button {
         }
     }
 
+    //: %1 is the name of an assistant task type, for example "Chat".
     Accessible.name: qsTr("Select assistant task type %1").arg(root.name)
     onClicked: root.assistantController.selectTaskType(root.typeId)
 }
