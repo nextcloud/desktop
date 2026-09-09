@@ -18,7 +18,6 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <QQuickItem>
 #include <QQuickWindow>
@@ -70,9 +69,13 @@ class TestSharingDialog : public QObject
         qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
         qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
 
-        Systray::instance()->setTrayEngine(new QQmlApplicationEngine(QCoreApplication::instance()));
-        QVERIFY(Systray::instance()->trayEngine());
-        QVERIFY(!Systray::instance()->trayEngine()->parent());
+        Systray::instance()->createTrayEngine();
+        const auto trayEngine = Systray::instance()->trayEngine();
+        QVERIFY(trayEngine);
+        QVERIFY(!trayEngine->parent());
+
+        Systray::instance()->createTrayEngine();
+        QCOMPARE(Systray::instance()->trayEngine(), trayEngine);
     }
 
     void createsDialogThroughSystrayComponentPath()

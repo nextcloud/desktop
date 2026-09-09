@@ -61,7 +61,6 @@
 #include <QFileDialog>
 #include <QGuiApplication>
 #include <QMessageBox>
-#include <QQmlApplicationEngine>
 #include <QSignalMapper>
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include <QtDBus/QDBusConnection>
@@ -69,11 +68,10 @@
 #endif
 
 #include <QAbstractItemModel>
-#include <QQmlEngine>
 #include <QQmlComponent>
-#include <QQmlApplicationEngine>
-#include <QQuickItem>
 #include <QQmlContext>
+#include <QQmlEngine>
+#include <QQuickItem>
 
 #ifdef Q_OS_MACOS
 #include "foregroundbackground_interface.h"
@@ -104,7 +102,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     , _app(parent)
 {
     _tray = Systray::instance();
-    _tray->setTrayEngine(new QQmlApplicationEngine(this));
+    _tray->createTrayEngine();
     // for the beginning, set the offline icon until the account was verified
     _tray->setIcon(Theme::instance()->folderOfflineIcon(/*systray?*/ true));
 
