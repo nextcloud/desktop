@@ -75,6 +75,8 @@ private Q_SLOTS:
 private:
     void customizeStyle();
     void requestStyleUpdate();
+    /** @brief Shows the Add account action only when an account may be configured. */
+    void updateAddAccountActionVisibility();
     [[nodiscard]] int userIndexForAccount(OCC::AccountState *account) const;
     void updateAccountAvatar(const Account *account);
     void addSettingsPage(const QString &iconPath, const QString &title, QWidget *settingsPage, bool updateChannelAware = false);
@@ -92,6 +94,7 @@ private:
 
     QToolBar *_toolBar;
     QStackedWidget *_stack = nullptr;
+    QAction *_addAccountAction = nullptr;
     QAction *_firstNonAccountAction = nullptr;
 
     ownCloudGui *_gui;

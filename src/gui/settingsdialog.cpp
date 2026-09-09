@@ -177,9 +177,19 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         accountAdded(account.data());
     }
 
+    _addAccountAction = createColorAwareAction(QLatin1String(":/client/theme/add.svg"), Systray::tr("Add account"));
+    _addAccountAction->setObjectName("settingsdialog_add_account"_L1);
+    _addAccountAction->setCheckable(false);
+    connect(_addAccountAction, &QAction::triggered, this, [] {
+        Q_EMIT Systray::instance()->openAccountWizard();
+    });
+    _toolBar->addAction(_addAccountAction);
+    _firstNonAccountAction = _addAccountAction;
+    updateAddAccountActionVisibility();
+
     auto *accountSpacer = new QWidget(this);
     accountSpacer->setFixedHeight(16);
-    _firstNonAccountAction = _toolBar->addWidget(accountSpacer);
+    _toolBar->addWidget(accountSpacer);
 
     addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("General"), new GeneralSettings(this));
     addSettingsPage(QLatin1String(":/client/theme/advanced.svg"), tr("Advanced"), new AdvancedSettings(this));
@@ -421,6 +431,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     });
     userInfo->setActive(true);
     userInfo->slotFetchInfo();
+
+    updateAddAccountActionVisibility();
 }
 
 void SettingsDialog::slotAccountAvatarChanged()
@@ -488,11 +500,20 @@ void SettingsDialog::accountRemoved(AccountState *s)
         _actionForAccount.remove(s->account().data());
     }
 
+    updateAddAccountActionVisibility();
+
     // Hide when the last account is deleted. We want to enter the same
     // state we'd be in the client was started up without an account
     // configured.
     if (AccountManager::instance()->accounts().isEmpty()) {
         hide();
+    }
+}
+
+void SettingsDialog::updateAddAccountActionVisibility()
+{
+    if (_addAccountAction) {
+        _addAccountAction->setVisible(Systray::instance()->enableAddAccount());
     }
 }
 
@@ -575,7 +596,8 @@ void SettingsDialog::customizeStyle()
                                  " margin: 0px;"
                                  " padding: 0px;"
                                  " }"
-                                 "#accountStatusPanel, #encryptionPanel, #syncFoldersPanel, #fileProviderMaintenancePanel, #accountActionsPanel {"
+                                 "#accountShortcutsPanel, #accountStatusPanel, #encryptionPanel, #syncFoldersPanel,"
+                                 "#fileProviderMaintenancePanel, #accountActionsPanel {"
                                  " background: %2;"
                                  " border: none;"
                                  " border-radius: 12px;"
@@ -605,8 +627,11 @@ void SettingsDialog::customizeStyle()
                                  " }")
                       .arg(separatorCss, panelColor.name(), windowColor.name()));
 
-    const auto &allActions = _actionGroup->actions();
-    for (const auto a : allActions) {
+    auto colorAwareActions = _actionGroup->actions();
+    if (_addAccountAction) {
+        colorAwareActions.append(_addAccountAction);
+    }
+    for (const auto a : colorAwareActions) {
         QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));

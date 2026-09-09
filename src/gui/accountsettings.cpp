@@ -180,6 +180,11 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 {
     _ui->setupUi(this);
 
+    _ui->activitiesShortcutButton->setText(Application::translate("ActivitiesWindow", "Activities"));
+    _ui->userStatusShortcutButton->setText(Application::translate("UserStatusWindow", "Online status"));
+    _ui->assistantShortcutButton->setText(Application::translate("AssistantWindow", "Assistant"));
+    _ui->searchShortcutButton->setText(Application::translate("SearchWindow", "Search"));
+
     _encryptionPanel = new QFrame(this);
     _encryptionPanel->setObjectName(QLatin1String("encryptionPanel"));
     _encryptionPanel->setFrameShape(QFrame::NoFrame);

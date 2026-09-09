@@ -140,6 +140,18 @@ private Q_SLOTS:
         QVERIFY(!searchButton->isHidden());
     }
 
+    void test_accountShortcutLabelsMatchDedicatedWindows()
+    {
+        auto account = Account::create();
+        auto accountState = FakeAccountState(account);
+        AccountSettings settings(&accountState);
+
+        QCOMPARE(shortcutButton(settings, "activitiesShortcutButton")->text(), QCoreApplication::translate("ActivitiesWindow", "Activities"));
+        QCOMPARE(shortcutButton(settings, "userStatusShortcutButton")->text(), QCoreApplication::translate("UserStatusWindow", "Online status"));
+        QCOMPARE(shortcutButton(settings, "assistantShortcutButton")->text(), QCoreApplication::translate("AssistantWindow", "Assistant"));
+        QCOMPARE(shortcutButton(settings, "searchShortcutButton")->text(), QCoreApplication::translate("SearchWindow", "Search"));
+    }
+
     void test_assistantShortcutIconUsesLightPaletteForeground()
     {
         auto account = Account::create();

@@ -499,7 +499,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Activities</string>
+            <string notr="true">Activities</string>
            </property>
           </widget>
          </item>
@@ -512,7 +512,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Online status</string>
+            <string notr="true">Online status</string>
            </property>
           </widget>
          </item>
@@ -525,7 +525,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Assistant</string>
+            <string notr="true">Assistant</string>
            </property>
           </widget>
          </item>
@@ -538,7 +538,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Search</string>
+            <string notr="true">Search</string>
            </property>
           </widget>
          </item>
