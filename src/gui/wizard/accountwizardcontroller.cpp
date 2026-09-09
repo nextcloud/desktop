@@ -103,7 +103,8 @@ AccountWizardController::AccountWizardController(QObject *parent)
     _largeFolderThresholdMb = static_cast<int>(largeFolderLimit.second);
     _askBeforeExternalStorage = cfg.confirmExternalStorage();
 
-    if (canUseVirtualFiles()) {
+    const auto managedVfs = cfg.managedVirtualFilesMode();
+    if (canUseVirtualFiles() && !(managedVfs.isManaged && !managedVfs.enabled)) {
         _syncMode = VirtualFiles;
     }
 }
@@ -340,6 +341,10 @@ bool AccountWizardController::canUseVirtualFiles() const
         return false;
     }
 
+    if (const auto managedVfs = ConfigFile().managedVirtualFilesMode(); managedVfs.isEnforced && !managedVfs.enabled) {
+        return false;
+    }
+
 #ifdef BUILD_FILE_PROVIDER_MODULE
     return Mac::FileProvider::available() && ConfigFile().macFileProviderModeEnabled();
 #elif defined(Q_OS_WIN)
@@ -360,7 +365,9 @@ bool AccountWizardController::isUsingFileProvider() const
 
 bool AccountWizardController::canUseClassicSync() const
 {
-    return !Theme::instance()->enforceVirtualFilesSyncFolder() || !canUseVirtualFiles();
+    const auto managedVfs = ConfigFile().managedVirtualFilesMode();
+    const auto vfsEnforced = Theme::instance()->enforceVirtualFilesSyncFolder() || (managedVfs.isEnforced && managedVfs.enabled);
+    return !vfsEnforced || !canUseVirtualFiles();
 }
 
 bool AccountWizardController::needsSyncOptions() const

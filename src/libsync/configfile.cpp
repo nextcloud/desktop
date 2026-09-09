@@ -8,18 +8,19 @@
 
 #include "common/asserts.h"
 #include "common/utility.h"
+#include "common/vfs.h"
 #include "config.h"
 #include "creds/keychainchunk.h"
 #include "csync_exclude.h"
+#include "settings/managedconfig.h"
+#include "settings/managedsettings.h"
+#include "settings/managedsettingsschema.h"
+#include "settings/migration.h"
+#include "settings/servermanagedsettings.h"
+#include "settings/settingsources.h"
 #include "theme.h"
 #include "updatechannel.h"
 #include "version.h"
-#include "settings/migration.h"
-#include "settings/managedsettings.h"
-#include "settings/managedsettingsschema.h"
-#include "settings/settingsources.h"
-#include "settings/servermanagedsettings.h"
-#include "settings/managedconfig.h"
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
@@ -999,6 +1000,20 @@ ManagedProxySettings ConfigFile::managedProxySettings() const
     managed.proxyType = getConfig(typeKey, QNetworkProxy::DefaultProxy).value.toInt();
     managed.proxyHostName = getConfig(hostKey).value.toString();
     managed.proxyPort = getConfig(portKey).value.toInt();
+    return managed;
+}
+
+ManagedVirtualFilesMode ConfigFile::managedVirtualFilesMode() const
+{
+    const auto key = QStringLiteral("virtualFilesMode");
+    const auto resolved = getConfig(key);
+    const auto mode = Vfs::modeFromString(resolved.value.toString());
+    const auto fromPolicy = resolved.source != SettingSourceType::BuiltinDefault && resolved.source != SettingSourceType::UserConfig;
+
+    ManagedVirtualFilesMode managed;
+    managed.isManaged = fromPolicy && static_cast<bool>(mode);
+    managed.isEnforced = managed.isManaged && isEnforced(key);
+    managed.enabled = mode && *mode != Vfs::Off;
     return managed;
 }
 

@@ -5,6 +5,8 @@
 
 #include "settings/servermanagedsettings.h"
 
+#include "common/vfs.h"
+
 #include <QHash>
 
 namespace OCC {
@@ -17,13 +19,16 @@ struct ServerKeyPolicy {
     bool serverEnforceable = false;
 };
 
-// Reject values outside the accepted range.
+// Reject values the client cannot use.
 bool valueInRange(const QString &key, const QVariant &value)
 {
     if (key == QStringLiteral("newBigFolderSizeLimit")) {
         auto ok = false;
         const auto limit = value.toLongLong(&ok);
         return ok && limit >= 0;
+    }
+    if (key == QStringLiteral("virtualFilesMode")) {
+        return static_cast<bool>(Vfs::modeFromString(value.toString()));
     }
     return true;
 }
