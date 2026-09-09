@@ -533,7 +533,7 @@ private:
 
     bool checkLocalPath();
 
-    SyncOptions initializeSyncOptions() const;
+    [[nodiscard]] SyncOptions initializeSyncOptions() const;
 
     enum LogStatus {
         LogStatusRemove,

@@ -141,16 +141,16 @@ public:
     void success(const QJsonObject &response) const;
     void failure(const QString &error) const;
 
-    const QJsonObject &arguments() const
+    [[nodiscard]] const QJsonObject &arguments() const
     {
         return _arguments;
     }
-    QString command() const
+    [[nodiscard]] QString command() const
     {
         return _command;
     }
 
-    QString warning() const;
+    [[nodiscard]] QString warning() const;
     void setWarning(const QString &warning);
 
 Q_SIGNALS:

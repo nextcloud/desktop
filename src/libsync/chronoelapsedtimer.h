@@ -21,7 +21,7 @@ class OWNCLOUDSYNC_EXPORT ChronoElapsedTimer
 public:
     ChronoElapsedTimer(bool start = true);
 
-    bool isStarted() const;
+    [[nodiscard]] bool isStarted() const;
     /**
      * Resets and start the timer
      */
@@ -34,7 +34,7 @@ public:
      * Returns the elapsed time.
      * If the timer is stopped it is the time between start and stop of the timer.
      */
-    std::chrono::nanoseconds duration() const;
+    [[nodiscard]] std::chrono::nanoseconds duration() const;
 
 private:
     std::chrono::steady_clock::time_point _start = {};

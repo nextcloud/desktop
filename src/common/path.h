@@ -34,7 +34,10 @@ namespace FileSystem {
          */
         static Path relative(QAnyStringView path);
 
-        const std::filesystem::path &get() const { return _path; }
+        [[nodiscard]] const std::filesystem::path &get() const
+        {
+            return _path;
+        }
 
         [[nodiscard]] operator std::filesystem::path() const { return _path; }
         [[nodiscard]] operator const std::filesystem::path &() const { return _path; }

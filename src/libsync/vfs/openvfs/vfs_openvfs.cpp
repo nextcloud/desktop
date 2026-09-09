@@ -398,7 +398,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OpenVFS::updateMetada
 
 void OpenVFS::slotHydrateJobFinished()
 {
-    HydrationJob *hydration = qobject_cast<HydrationJob *>(sender());
+    auto *hydration = qobject_cast<HydrationJob *>(sender());
 
     const auto targetPath = FileSystem::toFilesystemPath(hydration->targetFileName());
     Q_ASSERT(!targetPath.empty());
@@ -493,7 +493,7 @@ HydrationJob *OpenVFS::hydrateFile(const QByteArray &fileId, const QString &targ
         qCWarning(lcOpenVFS) << u"Failed to get attributes for" << targetPath;
         return nullptr;
     }
-    HydrationJob *hydration = new HydrationJob(this, fileId, std::make_unique<QFile>(targetPath), nullptr);
+    auto *hydration = new HydrationJob(this, fileId, std::make_unique<QFile>(targetPath), nullptr);
     hydration->setTargetFile(targetPath);
     _hydrationJobs.insert(fileId, hydration);
 

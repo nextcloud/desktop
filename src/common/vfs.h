@@ -93,7 +93,7 @@ struct OCSYNC_EXPORT VfsSetupParams
      */
     bool multipleAccountsRegistered = false;
 
-    const FileSystem::Path &root() const;
+    [[nodiscard]] const FileSystem::Path &root() const;
 };
 
 /** Interface describing how to deal with virtual/placeholder files.
