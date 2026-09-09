@@ -860,7 +860,7 @@ void Systray::createFileDetailsDialog(const QString &localPath, const QString &f
         return;
     }
 
-    if (unifiedSharingAvailable) {
+    if (!unifiedSharingAvailable) {
         qCWarning(lcSystray) << "Cannot open unified sharing for" << localPath
                              << "because no server file ID was available; falling back to the existing file details view";
     }
