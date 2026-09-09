@@ -15,6 +15,11 @@
 #include "updatechannel.h"
 #include "version.h"
 #include "settings/migration.h"
+#include "settings/managedsettings.h"
+#include "settings/managedsettingsschema.h"
+#include "settings/settingsources.h"
+#include "settings/servermanagedsettings.h"
+#include "settings/managedconfig.h"
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
@@ -655,12 +660,7 @@ chrono::milliseconds ConfigFile::updateCheckInterval(const QString &connectionGr
 
 bool ConfigFile::skipUpdateCheck(const QString &connectionGroupName) const
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QVariant fallback = getValue(QLatin1String(skipUpdateCheckC), groupName, false);
-    fallback = getValue(QLatin1String(skipUpdateCheckC), QString(), fallback);
-
-    QVariant value = getPolicySetting(QLatin1String(skipUpdateCheckC), fallback);
-    return value.toBool();
+    return getConfig<bool>(QLatin1String(skipUpdateCheckC), connectionGroupName);
 }
 
 void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connectionGroupName)
@@ -675,12 +675,50 @@ void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connectionGroupNam
 
 bool ConfigFile::autoUpdateCheck(const QString &connectionGroupName) const
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QVariant fallback = getValue(QLatin1String(autoUpdateCheckC), groupName, true);
-    fallback = getValue(QLatin1String(autoUpdateCheckC), QString(), fallback);
+    return getConfig<bool>(QLatin1String(autoUpdateCheckC), connectionGroupName);
+}
 
-    QVariant value = getPolicySetting(QLatin1String(autoUpdateCheckC), fallback);
-    return value.toBool();
+ManagedValue ConfigFile::getConfig(const QString &name, const QVariant &builtinDefault, const QString &connectionGroupName) const
+{
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
+    const auto spec = ManagedSettingsSchema::find(name).value_or(SettingSpec{name, builtinDefault, true, SettingScope::User});
+
+    ManagedSettings resolver;
+    for (auto &deviceSource : buildDeviceSources()) {
+        resolver.addSource(std::move(deviceSource));
+    }
+    resolver.addSource(std::make_unique<UserConfigSource>(configFile(), groupName));
+    for (auto &serverSource : buildServerSources(serverManagedSettings())) {
+        resolver.addSource(std::move(serverSource));
+    }
+
+    return resolver.resolve(spec);
+}
+
+bool ConfigFile::setConfig(const QString &name, const QVariant &value, const QString &connectionGroupName)
+{
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
+    if (getConfig(name, value, groupName).isEnforced()) {
+        return false;
+    }
+
+    QSettings settings(configFile(), QSettings::IniFormat);
+    if (!groupName.isEmpty()) {
+        settings.beginGroup(groupName);
+    }
+    settings.setValue(name, value);
+    settings.sync();
+    return true;
+}
+
+bool ConfigFile::isEnforced(const QString &name, const QString &connectionGroupName) const
+{
+    return getConfig(name, {}, connectionGroupName).isEnforced();
+}
+
+SettingSourceKind ConfigFile::sourceOf(const QString &name, const QString &connectionGroupName) const
+{
+    return getConfig(name, {}, connectionGroupName).source;
 }
 
 void ConfigFile::setAutoUpdateCheck(bool autoCheck, const QString &connectionGroupName)
@@ -1291,6 +1329,16 @@ void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(desktopEnterpriseChannelName), UpdateChannel::fromString(channel).toString());
+}
+
+ServerManagedSettings ConfigFile::serverManagedSettings() const
+{
+    return ManagedConfig::instance().serverSettings(configFile());
+}
+
+void ConfigFile::setServerManagedSettings(const ServerManagedSettings &settings)
+{
+    ManagedConfig::instance().setServerSettings(configFile(), settings);
 }
 
 QString ConfigFile::language() const
