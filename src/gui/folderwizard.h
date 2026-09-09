@@ -18,6 +18,7 @@
 #include "ui_folderwizardtargetpage.h"
 
 class QCheckBox;
+class QLabel;
 
 namespace OCC {
 
@@ -144,6 +145,7 @@ private Q_SLOTS:
 private:
     SelectiveSyncWidget *_selectiveSync;
     QCheckBox *_virtualFilesCheckBox = nullptr;
+    QLabel *_virtualFilesManagedLabel = nullptr;
 };
 
 /**
