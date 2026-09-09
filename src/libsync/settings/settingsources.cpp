@@ -33,9 +33,9 @@ std::optional<QVariant> UserConfigSource::read(const QString &key, const QString
     return settings.value(key);
 }
 
-SettingSourceKind UserConfigSource::kind() const
+SettingSourceType UserConfigSource::type() const
 {
-    return SettingSourceKind::UserConfig;
+    return SettingSourceType::UserConfig;
 }
 
 EnforcementState UserConfigSource::enforcement() const
@@ -48,7 +48,7 @@ int UserConfigSource::priority() const
     return 50;
 }
 
-NativeSettingsSource::NativeSettingsSource(QString location, SettingSourceKind kind, EnforcementState enforcement, int priority)
+NativeSettingsSource::NativeSettingsSource(QString location, SettingSourceType kind, EnforcementState enforcement, int priority)
     : _location(std::move(location))
     , _kind(kind)
     , _enforcement(enforcement)
@@ -68,7 +68,7 @@ std::optional<QVariant> NativeSettingsSource::read(const QString &key, const QSt
     return settings.value(key);
 }
 
-SettingSourceKind NativeSettingsSource::kind() const
+SettingSourceType NativeSettingsSource::type() const
 {
     return _kind;
 }
@@ -96,9 +96,9 @@ std::optional<QVariant> ForcedPreferenceSource::read(const QString &key, const Q
     return copyForcedValue(key);
 }
 
-SettingSourceKind ForcedPreferenceSource::kind() const
+SettingSourceType ForcedPreferenceSource::type() const
 {
-    return SettingSourceKind::PlatformPolicy;
+    return SettingSourceType::PlatformPolicy;
 }
 
 EnforcementState ForcedPreferenceSource::enforcement() const
@@ -119,27 +119,35 @@ std::vector<std::unique_ptr<SettingSource>> buildDeviceSources()
 
     std::vector<std::unique_ptr<SettingSource>> sources;
 #if defined(Q_OS_WIN)
-    sources.push_back(std::make_unique<NativeSettingsSource>(
-        QStringLiteral(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)").arg(QString::fromLatin1(APPLICATION_VENDOR), app),
-        SettingSourceKind::PlatformPolicy, EnforcementState::Enforced, 210));
+    sources.push_back(
+        std::make_unique<NativeSettingsSource>(QStringLiteral(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)").arg(QString::fromLatin1(APPLICATION_VENDOR), app),
+                                               SettingSourceType::PlatformPolicy,
+                                               EnforcementState::Enforced,
+                                               210));
     sources.push_back(std::make_unique<NativeSettingsSource>(
         QStringLiteral(R"(HKEY_LOCAL_MACHINE\Software\Policies\%1\%2)").arg(QString::fromLatin1(APPLICATION_VENDOR), app),
-        SettingSourceKind::PlatformPolicy, EnforcementState::Enforced, 200));
-    sources.push_back(std::make_unique<NativeSettingsSource>(
-        QStringLiteral(R"(HKEY_LOCAL_MACHINE\Software\%1\%2)").arg(QString::fromLatin1(APPLICATION_VENDOR), app),
-        SettingSourceKind::PlatformDefault, EnforcementState::NotEnforced, 20));
-#elif defined(Q_OS_MAC)
+        SettingSourceType::PlatformPolicy,
+        EnforcementState::Enforced,
+        200));
+    sources.push_back(
+        std::make_unique<NativeSettingsSource>(QStringLiteral(R"(HKEY_LOCAL_MACHINE\Software\%1\%2)").arg(QString::fromLatin1(APPLICATION_VENDOR), app),
+                                               SettingSourceType::PlatformDefault,
+                                               EnforcementState::NotEnforced,
+                                               20));
+#elif defined(Q_OS_MACOS)
     // A key counts as enforced only when the MDM profile forces it, resolved through
     // CFPreferences so both host and per user managed preferences are honored.
     sources.push_back(std::make_unique<MacForcedPreferenceSource>(
         QStringLiteral(APPLICATION_REV_DOMAIN), 200));
-    sources.push_back(std::make_unique<NativeSettingsSource>(
-        QStringLiteral("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"),
-        SettingSourceKind::PlatformDefault, EnforcementState::NotEnforced, 20));
+    sources.push_back(std::make_unique<NativeSettingsSource>(QStringLiteral("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"),
+                                                             SettingSourceType::PlatformDefault,
+                                                             EnforcementState::NotEnforced,
+                                                             20));
 #else
-    sources.push_back(std::make_unique<NativeSettingsSource>(
-        QStringLiteral(SYSCONFDIR "/%1/%1.conf").arg(app),
-        SettingSourceKind::PlatformDefault, EnforcementState::NotEnforced, 20));
+    sources.push_back(std::make_unique<NativeSettingsSource>(QStringLiteral(SYSCONFDIR "/%1/%1.conf").arg(app),
+                                                             SettingSourceType::PlatformDefault,
+                                                             EnforcementState::NotEnforced,
+                                                             20));
 #endif
     return sources;
 }

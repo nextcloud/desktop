@@ -11,7 +11,8 @@ namespace OCC {
 
 namespace {
 // Keys the client accepts from the server and whether each is server enforceable.
-// Update and proxy keys are enforceable by request; device policy still wins.
+// Update and proxy keys are default only from the server; only device policy
+// enforces them, so a server cannot disable updates or reroute traffic.
 struct ServerKeyPolicy {
     bool serverEnforceable = false;
 };
@@ -19,12 +20,12 @@ struct ServerKeyPolicy {
 const QHash<QString, ServerKeyPolicy> &acceptedServerKeys()
 {
     static const QHash<QString, ServerKeyPolicy> keys = {
-        {QStringLiteral("skipUpdateCheck"), {true}},
-        {QStringLiteral("autoUpdateCheck"), {true}},
+        {QStringLiteral("skipUpdateCheck"), {false}},
+        {QStringLiteral("autoUpdateCheck"), {false}},
         {QStringLiteral("virtualFilesMode"), {true}},
-        {QStringLiteral("proxyHost"), {true}},
-        {QStringLiteral("proxyPort"), {true}},
-        {QStringLiteral("proxyType"), {true}},
+        {QStringLiteral("proxyHost"), {false}},
+        {QStringLiteral("proxyPort"), {false}},
+        {QStringLiteral("proxyType"), {false}},
         {QStringLiteral("newBigFolderSizeLimit"), {true}},
         {QStringLiteral("confirmExternalStorage"), {true}},
         {QStringLiteral("useNewBigFolderSizeLimit"), {true}},
@@ -64,7 +65,7 @@ ServerManagedSettings sanitizeServerManagedSettings(const ServerManagedSettings 
     return clean;
 }
 
-ServerSettingsSource::ServerSettingsSource(QVariantMap values, SettingSourceKind kind, EnforcementState enforcement, int priority)
+ServerSettingsSource::ServerSettingsSource(QVariantMap values, SettingSourceType kind, EnforcementState enforcement, int priority)
     : _values(std::move(values))
     , _kind(kind)
     , _enforcement(enforcement)
@@ -80,7 +81,7 @@ std::optional<QVariant> ServerSettingsSource::read(const QString &key, const QSt
     return _values.value(key);
 }
 
-SettingSourceKind ServerSettingsSource::kind() const
+SettingSourceType ServerSettingsSource::type() const
 {
     return _kind;
 }
@@ -99,12 +100,10 @@ std::vector<std::unique_ptr<SettingSource>> buildServerSources(const ServerManag
 {
     std::vector<std::unique_ptr<SettingSource>> sources;
     if (!sanitized.enforced.isEmpty()) {
-        sources.push_back(std::make_unique<ServerSettingsSource>(
-            sanitized.enforced, SettingSourceKind::ServerEnforced, EnforcementState::Enforced, 100));
+        sources.push_back(std::make_unique<ServerSettingsSource>(sanitized.enforced, SettingSourceType::ServerEnforced, EnforcementState::Enforced, 100));
     }
     if (!sanitized.defaults.isEmpty()) {
-        sources.push_back(std::make_unique<ServerSettingsSource>(
-            sanitized.defaults, SettingSourceKind::ServerDefault, EnforcementState::NotEnforced, 30));
+        sources.push_back(std::make_unique<ServerSettingsSource>(sanitized.defaults, SettingSourceType::ServerDefault, EnforcementState::NotEnforced, 30));
     }
     return sources;
 }

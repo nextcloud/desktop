@@ -823,6 +823,7 @@ void AccountManager::updateServerManagedSettings()
             continue;
         }
         const auto accountSettings = account->account()->serverManagedSettings();
+        merged.schemaVersion = qMax(merged.schemaVersion, accountSettings.schemaVersion);
         for (const auto &[key, value] : accountSettings.enforced.asKeyValueRange()) {
             if (!merged.enforced.contains(key)) {
                 merged.enforced.insert(key, value);
@@ -931,6 +932,8 @@ void AccountManager::addAccountState(AccountState *const accountState)
 
     QObject::connect(accountState->account().data(), &Account::wantsAccountSaved, this, &AccountManager::saveAccount);
     QObject::connect(accountState->account().data(), &Account::capabilitiesChanged, this, &AccountManager::capabilitiesChanged);
+    // Re-merge and persist managed settings whenever capabilities change, not only on add or remove.
+    QObject::connect(accountState->account().data(), &Account::capabilitiesChanged, this, &AccountManager::updateServerManagedSettings);
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;

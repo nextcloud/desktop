@@ -57,6 +57,11 @@ InfoSettings::InfoSettings(QWidget *parent)
     _ui->autoCheckForUpdatesLabel->setWordWrap(true);
     _ui->autoCheckForUpdatesLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
     _ui->updateControlsRow->setStretch(0, 1);
+    // keeps it proportional to the inherited font depending on the platform
+    auto hintFont = _ui->adminEnforcedLabel->font();
+    hintFont.setItalic(true);
+    hintFont.setPointSizeF(hintFont.pointSizeF() * 0.9);
+    _ui->adminEnforcedLabel->setFont(hintFont); // managed settings label
 #endif
 
     connect(_ui->legalNoticeButton, &QPushButton::clicked, this, &InfoSettings::slotShowLegalNotice);
@@ -126,27 +131,21 @@ void InfoSettings::slotUpdateInfo()
     _ui->updatesContainer->setVisible(true);
 
     if (updater) {
-        connect(_ui->updateButton,
-                &QAbstractButton::clicked,
-                this,
-                &InfoSettings::slotUpdateCheckNow,
-                Qt::UniqueConnection);
-        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
-                &InfoSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
-        // Blocked so populating the control does not write it back to the config.
-        {
-            const QSignalBlocker blocker(_ui->autoCheckForUpdatesCheckBox);
-            _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck());
-        }
+        connect(_ui->updateButton, &QAbstractButton::clicked, this, &InfoSettings::slotUpdateCheckNow, Qt::UniqueConnection);
 
-        // Disabled and labelled when an administrator enforces the value.
+        // Disabled and label when an administrator enforces the value
         const auto enforced = config.isEnforced(QLatin1String(ConfigFile::autoUpdateCheckC));
-        _ui->autoCheckForUpdatesCheckBox->setEnabled(!enforced);
-        _ui->autoCheckForUpdatesCheckBox->setToolTip(enforced
-                ? (config.sourceOf(QLatin1String(ConfigFile::autoUpdateCheckC)) == SettingSourceKind::ServerEnforced
-                          ? tr("Managed by your organization")
-                          : tr("Managed by your system administrator"))
-                : QString());
+        _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck());
+        _ui->updateButton->setEnabled(!enforced);
+        _ui->adminEnforcedLabel->setVisible(enforced);
+        if (!enforced) {
+            // clicked fires only on user interaction, so repopulating the control never writes a user value.
+            connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::clicked, this, &InfoSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
+        } else {
+            const auto source = config.sourceOf(QLatin1String(ConfigFile::autoUpdateCheckC));
+            _ui->adminEnforcedLabel->setText(source == SettingSourceType::ServerEnforced ? tr("Managed by your organization")
+                                                                                         : tr("Managed by your system administrator"));
+        }
     }
 
     const auto ocupdater = qobject_cast<OCUpdater *>(updater);

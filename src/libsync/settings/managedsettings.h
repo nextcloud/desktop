@@ -18,13 +18,13 @@
 
 namespace OCC {
 
-enum class SettingSourceKind {
+enum class SettingSourceType {
     BuiltinDefault,
     PlatformDefault,
     UserConfig,
     PlatformPolicy,
-    ServerDefault, // phase 2
-    ServerEnforced, // phase 2
+    ServerDefault,
+    ServerEnforced,
 };
 
 enum class EnforcementState {
@@ -42,7 +42,7 @@ enum class SettingScope {
 struct ManagedValue {
     QString key;
     QVariant value;
-    SettingSourceKind source = SettingSourceKind::BuiltinDefault;
+    SettingSourceType source = SettingSourceType::BuiltinDefault;
     EnforcementState enforcement = EnforcementState::NotEnforced;
     bool present = false; // false when only the builtin default applied
 
@@ -61,50 +61,13 @@ class OWNCLOUDSYNC_EXPORT SettingSource
 public:
     virtual ~SettingSource();
 
-    // std::nullopt means the source does not define key.
     [[nodiscard]] virtual std::optional<QVariant> read(const QString &key, const QString &group) const = 0;
-    [[nodiscard]] virtual SettingSourceKind kind() const = 0;
+    [[nodiscard]] virtual SettingSourceType type() const = 0;
     [[nodiscard]] virtual EnforcementState enforcement() const = 0;
     [[nodiscard]] virtual int priority() const = 0;
 };
 
-/**
- * How a managed setting is resolved (e.g. skipUpdateCheck):
- *
- * config.php (admin)                                     [server, optional]
- *   |
- *   support app Capabilities::getCapabilities
- *   |   allow list filter, enterprise subscription gate
- *   |
- *   OCS: support.desktopClient { defaults, enforced }
- *   |
- * Account::setCapabilities                               [client]
- *   |
- *   Account::updateServerManagedSettings
- *   |   Capabilities::desktopClientManagedSettings then parseServerManagedSettings
- *   |   sanitizeServerManagedSettings  (client allow list, drops non enforceable)
- *   |
- *   AccountManager::updateServerManagedSettings
- *   |   merge subscribed accounts (the subscribed account wins)
- *   |
- *   ConfigFile::setServerManagedSettings   (JSON in .cfg, offline cache)
- *   |
- * ConfigFile::skipUpdateCheck / autoUpdateCheck          [read]
- *   |
- *   ConfigFile::resolveManagedBool
- *     |   add the sources for this key:
- *     |   buildDeviceSources()   Windows GP / macOS forced (enforced), OS default
- *     |   UserConfigSource       the user .cfg
- *     |   buildServerSources()   server enforced, server default
- *     |
- *     ManagedSettings::resolve(spec)
- *       |   highest precedence level wins, ties broken by source priority:
- *       |
- *       device enforced (200) > server enforced (100) > user (50)
- *                           > server default (30) > device default (20) > builtin
- *       |
- *   ManagedValue { value, source, enforced/default }       [return]
- */
+// Resolution and delivery flow: see README.md
 class OWNCLOUDSYNC_EXPORT ManagedSettings
 {
 public:
