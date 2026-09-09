@@ -20,7 +20,7 @@ public:
     explicit UserConfigSource(QString configFilePath, QString group = {});
 
     [[nodiscard]] std::optional<QVariant> read(const QString &key, const QString &group) const override;
-    [[nodiscard]] SettingSourceKind kind() const override;
+    [[nodiscard]] SettingSourceType type() const override;
     [[nodiscard]] EnforcementState enforcement() const override;
     [[nodiscard]] int priority() const override;
 
@@ -33,16 +33,16 @@ private:
 class OWNCLOUDSYNC_EXPORT NativeSettingsSource : public SettingSource
 {
 public:
-    NativeSettingsSource(QString location, SettingSourceKind kind, EnforcementState enforcement, int priority);
+    NativeSettingsSource(QString location, SettingSourceType kind, EnforcementState enforcement, int priority);
 
     [[nodiscard]] std::optional<QVariant> read(const QString &key, const QString &group) const override;
-    [[nodiscard]] SettingSourceKind kind() const override;
+    [[nodiscard]] SettingSourceType type() const override;
     [[nodiscard]] EnforcementState enforcement() const override;
     [[nodiscard]] int priority() const override;
 
 private:
     QString _location;
-    SettingSourceKind _kind;
+    SettingSourceType _kind;
     EnforcementState _enforcement;
     int _priority;
 };
@@ -55,7 +55,7 @@ public:
     explicit ForcedPreferenceSource(int priority);
 
     [[nodiscard]] std::optional<QVariant> read(const QString &key, const QString &group) const override;
-    [[nodiscard]] SettingSourceKind kind() const override;
+    [[nodiscard]] SettingSourceType type() const override;
     [[nodiscard]] EnforcementState enforcement() const override;
     [[nodiscard]] int priority() const override;
 
@@ -68,7 +68,7 @@ private:
     int _priority;
 };
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 // Reads macOS managed preferences for an application domain, treating a key as
 // enforced only when CFPreferencesAppValueIsForced reports it forced.
 class OWNCLOUDSYNC_EXPORT MacForcedPreferenceSource : public ForcedPreferenceSource
