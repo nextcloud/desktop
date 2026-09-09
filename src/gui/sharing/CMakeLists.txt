@@ -14,8 +14,8 @@ target_sources(nextcloudGuiSharing
     unifiedsharingrequest.cpp
     createsharejob.h
     createsharejob.cpp
-    destroysharejob.h
-    destroysharejob.cpp
+    deletesharejob.h
+    deletesharejob.cpp
     generatesecretjob.h
     generatesecretjob.cpp
     getsharejob.h

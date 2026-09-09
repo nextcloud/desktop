@@ -16,7 +16,7 @@
 #include "addrecipientjob.h"
 #include "addsourcejob.h"
 #include "createsharejob.h"
-#include "destroysharejob.h"
+#include "deletesharejob.h"
 #include "generatesecretjob.h"
 #include "getsharejob.h"
 #include "getsharesjob.h"
@@ -290,8 +290,8 @@ void SharingController::destroyShare(Share *share)
     setShareDestructionError({});
     setDestroyingShare(true);
     const auto guardedShare = QPointer<Share>{share};
-    const auto job = new DestroyShareJob{_account, share->id()};
-    connect(job, &DestroyShareJob::jobFinished, this, [this, guardedShare](const QJsonDocument &, int) {
+    const auto job = new DeleteShareJob{_account, share->id()};
+    connect(job, &DeleteShareJob::jobFinished, this, [this, guardedShare](const QJsonDocument &, int) {
         if (!guardedShare) {
             setDestroyingShare(false);
             return;
@@ -306,11 +306,11 @@ void SharingController::destroyShare(Share *share)
         share->deleteLater();
         Q_EMIT sharesChanged();
     });
-    connect(job, &DestroyShareJob::ocsError, this, [this](int, const QString &message) {
+    connect(job, &DeleteShareJob::ocsError, this, [this](int, const QString &message) {
         setShareDestructionError(message.isEmpty() ? tr("Could not delete the share.") : message);
         setDestroyingShare(false);
     });
-    connect(job, &DestroyShareJob::networkError, this, [this](const QNetworkReply *reply) {
+    connect(job, &DeleteShareJob::networkError, this, [this](const QNetworkReply *reply) {
         setShareDestructionError(reply ? reply->errorString() : tr("Could not delete the share."));
         setDestroyingShare(false);
     });
@@ -748,7 +748,7 @@ void SharingController::failShareCreation(const QString &error, QPointer<Share> 
     }
 
     if (!share->id().isEmpty()) {
-        const auto cleanupJob = new DestroyShareJob{_account, share->id()};
+        const auto cleanupJob = new DeleteShareJob{_account, share->id()};
         cleanupJob->start();
     }
     delete share.data();

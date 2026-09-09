@@ -15,7 +15,7 @@
 #include "gui/sharing/addrecipientjob.h"
 #include "gui/sharing/addsourcejob.h"
 #include "gui/sharing/createsharejob.h"
-#include "gui/sharing/destroysharejob.h"
+#include "gui/sharing/deletesharejob.h"
 #include "gui/sharing/generatesecretjob.h"
 #include "gui/sharing/getsharejob.h"
 #include "gui/sharing/getsharesjob.h"
@@ -560,7 +560,7 @@ class TestUnifiedSharing : public QObject
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/permission/preset",
                       {},
                       {{"permissionPresetClass"_L1, "preset-class"_L1}});
-        verifyRequest(new DestroyShareJob{account, "share-1"_L1}, "DELETE", "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
+        verifyRequest(new DeleteShareJob{account, "share-1"_L1}, "DELETE", "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
         verifyRequest(new GetShareJob{account, "share-1"_L1, "secret"_L1, QJsonObject{{"argument-class"_L1, QJsonObject{{"key"_L1, "value"_L1}}}}},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1",
@@ -2011,7 +2011,7 @@ class TestUnifiedSharing : public QObject
 
         const auto jobs = QList<UnifiedSharingRequest *>{
             new CreateShareJob{fakeFolder.account()},
-            new DestroyShareJob{fakeFolder.account(), "share-1"_L1},
+            new DeleteShareJob{fakeFolder.account(), "share-1"_L1},
         };
         for (const auto job : jobs) {
             auto jobFinished = false;
@@ -2119,14 +2119,13 @@ class TestUnifiedSharing : public QObject
         QCOMPARE(fetchedShares.at(0)->id(), "share-1"_L1);
         QCOMPARE(fetchedShares.at(1)->id(), "share-2"_L1);
 
-        auto destroyed = false;
-        const auto destroyJob = new DestroyShareJob{account, createdShare->id()};
-        connect(destroyJob, &DestroyShareJob::jobFinished, this, [&](const QJsonDocument &, int) {
-            destroyed = true;
+        auto deleted = false;
+        const auto deleteJob = new DeleteShareJob{account, createdShare->id()};
+        connect(deleteJob, &DeleteShareJob::jobFinished, this, [&](const QJsonDocument &, int) {
+            deleted = true;
         });
-        destroyJob->start();
-        QTRY_VERIFY(destroyed);
-
+        deleteJob->start();
+        QTRY_VERIFY(deleted);
     }
 
     void ocsErrorsAreSeparateFromSuccessfulResults()

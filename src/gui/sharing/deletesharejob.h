@@ -16,11 +16,11 @@ namespace OCC::Gui::Sharing
  * This deletes the share identified by shareId rather than changing its
  * lifecycle state or removing only one source or recipient.
  */
-class DestroyShareJob : public UnifiedSharingRequest
+class DeleteShareJob : public UnifiedSharingRequest
 {
 public:
     /** @brief Creates a request to delete the share identified by shareId. */
-    explicit DestroyShareJob(AccountPtr account, const QString &shareId);
+    explicit DeleteShareJob(AccountPtr account, const QString &shareId);
 };
 
 }
