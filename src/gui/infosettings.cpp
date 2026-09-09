@@ -133,7 +133,20 @@ void InfoSettings::slotUpdateInfo()
                 Qt::UniqueConnection);
         connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
                 &InfoSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
-        _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck());
+        // Blocked so populating the control does not write it back to the config.
+        {
+            const QSignalBlocker blocker(_ui->autoCheckForUpdatesCheckBox);
+            _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck());
+        }
+
+        // Disabled and labelled when an administrator enforces the value.
+        const auto enforced = config.isEnforced(QLatin1String(ConfigFile::autoUpdateCheckC));
+        _ui->autoCheckForUpdatesCheckBox->setEnabled(!enforced);
+        _ui->autoCheckForUpdatesCheckBox->setToolTip(enforced
+                ? (config.sourceOf(QLatin1String(ConfigFile::autoUpdateCheckC)) == SettingSourceKind::ServerEnforced
+                          ? tr("Managed by your organization")
+                          : tr("Managed by your system administrator"))
+                : QString());
     }
 
     const auto ocupdater = qobject_cast<OCUpdater *>(updater);
@@ -303,7 +316,8 @@ void InfoSettings::slotUpdateCheckNow()
 
 void InfoSettings::slotToggleAutoUpdateCheck()
 {
-    ConfigFile().setAutoUpdateCheck(_ui->autoCheckForUpdatesCheckBox->isChecked(), QString());
+    // setConfig refuses to overwrite an enforced value.
+    ConfigFile().setConfig(QLatin1String(ConfigFile::autoUpdateCheckC), _ui->autoCheckForUpdatesCheckBox->isChecked());
 }
 
 void InfoSettings::restoreUpdateChannel()

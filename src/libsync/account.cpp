@@ -770,6 +770,7 @@ void Account::setCapabilities(const QVariantMap &caps)
     updateServerColors();
     updateServerSubcription();
     updateDesktopEnterpriseChannel();
+    updateServerManagedSettings();
     updateServerHasIntegration();
 
     Q_EMIT capabilitiesChanged();
@@ -1361,6 +1362,16 @@ void Account::updateDesktopEnterpriseChannel()
     if (capabilityEnterpriseChannel > configEnterpriseChannel) {
         currentConfig.setDesktopEnterpriseChannel(capabilityEnterpriseChannel.toString());
     }
+}
+
+void Account::updateServerManagedSettings()
+{
+    _serverManagedSettings = sanitizeServerManagedSettings(_capabilities.desktopClientManagedSettings());
+}
+
+ServerManagedSettings Account::serverManagedSettings() const
+{
+    return _serverManagedSettings;
 }
 
 QNetworkProxy::ProxyType Account::proxyType() const

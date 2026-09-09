@@ -6,6 +6,7 @@
 
 #include "capabilities.h"
 #include "configfile.h"
+#include "settings/servermanagedsettings.h"
 
 #include <QVariantMap>
 #include <QLoggingCategory>
@@ -404,6 +405,12 @@ bool Capabilities::serverHasValidSubscription() const
 QString Capabilities::desktopEnterpriseChannel() const
 {
     return _capabilities[QStringLiteral("support")].toMap().value(QStringLiteral("desktopEnterpriseChannel"), ConfigFile().defaultUpdateChannel()).toString();
+}
+
+ServerManagedSettings Capabilities::desktopClientManagedSettings() const
+{
+    const auto desktopClient = _capabilities[QStringLiteral("support")].toMap().value(QStringLiteral("desktopClient")).toMap();
+    return parseServerManagedSettings(desktopClient);
 }
 
 QStringList Capabilities::blacklistedFiles() const
