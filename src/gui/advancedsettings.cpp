@@ -326,6 +326,26 @@ void AdvancedSettings::loadMiscSettings()
     _ui->stopExistingFolderNowBigSyncLabel->setEnabled(_ui->existingFolderLimitCheckBox->isChecked());
     _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
 
+    auto enforced = false;
+    auto byOrganization = false;
+    const auto disableIfEnforced = [&](QWidget *widget, const char *key) {
+        if (!cfgFile.isEnforced(QLatin1String(key))) {
+            return;
+        }
+        widget->setEnabled(false);
+        enforced = true;
+        byOrganization = cfgFile.sourceOf(QLatin1String(key)) == SettingSourceType::ServerEnforced;
+    };
+    disableIfEnforced(_ui->newExternalStorage, ConfigFile::confirmExternalStorageC);
+    disableIfEnforced(_ui->newFolderLimitCheckBox, ConfigFile::newBigFolderSizeLimitC);
+    disableIfEnforced(_ui->newFolderLimitSpinBox, ConfigFile::newBigFolderSizeLimitC);
+    disableIfEnforced(_ui->existingFolderLimitCheckBox, ConfigFile::notifyExistingFoldersOverLimitC);
+    disableIfEnforced(_ui->stopExistingFolderNowBigSyncCheckBox, ConfigFile::stopSyncingExistingFoldersOverLimitC);
+    _ui->folderLimitEnforcedLabel->setVisible(enforced);
+    if (enforced) {
+        _ui->folderLimitEnforcedLabel->setText(byOrganization ? tr("Managed by your organization") : tr("Managed by your system administrator"));
+    }
+
     const auto interval = cfgFile.remotePollInterval();
     _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));
     updatePollIntervalVisibility();
