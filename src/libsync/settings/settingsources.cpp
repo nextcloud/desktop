@@ -14,9 +14,10 @@
 
 namespace OCC {
 
-UserConfigSource::UserConfigSource(QString configFilePath, QString group)
+UserConfigSource::UserConfigSource(QString configFilePath, QString group, int priority)
     : _configFilePath(std::move(configFilePath))
     , _group(std::move(group))
+    , _priority(priority)
 {
 }
 
@@ -45,7 +46,7 @@ EnforcementState UserConfigSource::enforcement() const
 
 int UserConfigSource::priority() const
 {
-    return 50;
+    return _priority;
 }
 
 NativeSettingsSource::NativeSettingsSource(QString location, SettingSourceType kind, EnforcementState enforcement, int priority)

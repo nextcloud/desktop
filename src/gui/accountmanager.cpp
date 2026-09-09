@@ -509,11 +509,27 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
         accountProxyUser = configFile.proxyUser();
         qCInfo(lcAccountManager) << "Account is using global settings:" << accountProxyType;
     }
+    // A managed proxy overrides an enforced value always, and a default only when the account follows the system proxy.
+    // Only managed fields are replaced, so the account keeps its own value for the rest.
+    const auto managedProxy = configFile.managedProxySettings();
+    if (managedProxy.isEnforced || (managedProxy.isManaged && accountProxyType == QNetworkProxy::DefaultProxy)) {
+        if (managedProxy.typeManaged) {
+            accountProxyType = static_cast<QNetworkProxy::ProxyType>(managedProxy.proxyType);
+        }
+        if (managedProxy.hostManaged) {
+            accountProxyHost = managedProxy.proxyHostName;
+        }
+        if (managedProxy.portManaged) {
+            accountProxyPort = managedProxy.proxyPort;
+        }
+    }
+
     account->setProxyType(accountProxyType);
     account->setProxyHostName(accountProxyHost);
     account->setProxyPort(accountProxyPort);
     account->setProxyNeedsAuth(accountProxyNeedsAuth);
     account->setProxyUser(accountProxyUser);
+    account->setProxySettingsAreManaged(managedProxy.isEnforced);
     const auto globalUseUploadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(configFile.useUploadLimit());
     const auto globalUseDownloadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(configFile.useDownloadLimit());
     // User network settings

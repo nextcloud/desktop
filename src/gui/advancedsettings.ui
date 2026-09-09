@@ -156,6 +156,13 @@
        </layout>
       </item>
       <item>
+       <widget class="QLabel" name="folderLimitEnforcedLabel">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QFrame" name="remotePollIntervalSeparator">
         <property name="frameShape">
          <enum>QFrame::Shape::HLine</enum>

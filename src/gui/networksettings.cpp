@@ -57,6 +57,13 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
 
         loadProxySettings();
 
+        const auto proxyManaged = _account && _account->proxySettingsAreManaged();
+        if (proxyManaged) {
+            _ui->proxyGroupBox->setEnabled(false);
+            _ui->proxyEnforcedLabel->setText(tr("Managed by your system administrator"));
+        }
+        _ui->proxyEnforcedLabel->setVisible(proxyManaged);
+
         connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &NetworkSettings::saveProxySettings);
         connect(_ui->proxyButtonGroup, &QButtonGroup::buttonClicked, this, &NetworkSettings::saveProxySettings);
         connect(_ui->hostLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);

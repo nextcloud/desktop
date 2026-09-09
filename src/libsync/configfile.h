@@ -27,6 +27,19 @@ class AbstractCredentials;
 class Migration;
 struct ServerManagedSettings;
 
+// Managed proxy resolved from the settings hierarchy.
+// Each field flag says whether that field comes from a policy, so an account keeps its own value for the rest.
+struct ManagedProxySettings {
+    bool isManaged = false;
+    bool isEnforced = false;
+    bool typeManaged = false;
+    bool hostManaged = false;
+    bool portManaged = false;
+    int proxyType = 0;
+    QString proxyHostName;
+    int proxyPort = 0;
+};
+
 /**
  * @brief The ConfigFile class
  * @ingroup libsync
@@ -125,6 +138,9 @@ public:
     [[nodiscard]] int proxyType() const;
     [[nodiscard]] QString proxyHostName() const;
     [[nodiscard]] int proxyPort() const;
+
+    // Proxy type, host and port resolved together from the settings hierarchy.
+    [[nodiscard]] ManagedProxySettings managedProxySettings() const;
     [[nodiscard]] bool proxyNeedsAuth() const;
     [[nodiscard]] QString proxyUser() const;
     [[nodiscard]] QString proxyPassword() const;

@@ -1500,12 +1500,25 @@ void Account::setProxySettings(const QNetworkProxy::ProxyType proxyType,
                                const QString &user,
                                const QString &password)
 {
+    if (_proxySettingsAreManaged) {
+        return;
+    }
     setProxyType(proxyType);
     setProxyHostName(hostName);
     setProxyPort(port);
     setProxyNeedsAuth(needsAuth);
     setProxyUser(user);
     setProxyPassword(password);
+}
+
+bool Account::proxySettingsAreManaged() const
+{
+    return _proxySettingsAreManaged;
+}
+
+void Account::setProxySettingsAreManaged(bool managed)
+{
+    _proxySettingsAreManaged = managed;
 }
 
 Account::AccountNetworkTransferLimitSetting Account::uploadLimitSetting() const

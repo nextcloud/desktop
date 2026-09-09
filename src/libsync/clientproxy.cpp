@@ -87,6 +87,21 @@ void ClientProxy::setupQtProxyFromConfig()
         proxy = proxyFromConfig(cfg);
     }
 
+    // A managed proxy overrides an enforced value always, and a default only when following the system proxy.
+    // Only managed fields are replaced, so the config keeps its own value for the rest.
+    const auto managedProxy = cfg.managedProxySettings();
+    if (managedProxy.isEnforced || (managedProxy.isManaged && proxyType == QNetworkProxy::DefaultProxy)) {
+        if (managedProxy.typeManaged) {
+            proxyType = managedProxy.proxyType;
+        }
+        if (managedProxy.hostManaged) {
+            proxy.setHostName(managedProxy.proxyHostName);
+        }
+        if (managedProxy.portManaged) {
+            proxy.setPort(managedProxy.proxyPort);
+        }
+    }
+
     switch (proxyType) {
         case QNetworkProxy::NoProxy:
             qCInfo(lcClientProxy) << "Set proxy configuration to use NO proxy";
