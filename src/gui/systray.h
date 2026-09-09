@@ -134,7 +134,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void openUrlInBrowser(const QUrl &url) const;
 
-    void setTrayEngine(QQmlApplicationEngine *trayEngine);
+    void createTrayEngine();
     void create();
 
     void showMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon icon = Information);
