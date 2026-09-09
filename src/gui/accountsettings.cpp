@@ -1453,6 +1453,7 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
     if (total > 0) {
         const auto usedStr = Utility::octetsToString(used);
         const auto totalStr = Utility::octetsToString(total);
+        //: %1 is the used storage size. %2 is the total storage size.
         _spaceUsageText = tr("%1 of %2 in use").arg(usedStr, totalStr);
     } else {
         /* -1 means not computed; -2 means unknown; -3 means unlimited  (#owncloud/client/issues/3940)*/
@@ -1460,6 +1461,7 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
             _spaceUsageText.clear();
         } else {
             const auto usedStr = Utility::octetsToString(used);
+            //: %1 is the used storage size.
             _spaceUsageText = tr("%1 in use").arg(usedStr);
         }
     }
@@ -1489,6 +1491,7 @@ void AccountSettings::slotAccountStateChanged()
             if (user.isEmpty()) {
                 user = cred->user();
             }
+            //: %1 is a link to the server. %2 is the user display name or username.
             serverWithUser = tr("%1 as %2").arg(server, Utility::escape(user));
         }
 
@@ -1500,6 +1503,7 @@ void AccountSettings::slotAccountStateChanged()
             }
             auto statusMessage = tr("Connected to %1.").arg(serverWithUser);
             if (!_spaceUsageText.isEmpty()) {
+                //: %1 is the server and user description. %2 is the storage usage description.
                 statusMessage = tr("Connected to %1 (%2).").arg(serverWithUser, _spaceUsageText);
             }
             showConnectionLabel(statusMessage, errors);

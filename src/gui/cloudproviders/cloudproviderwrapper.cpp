@@ -109,6 +109,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
         QString timeStr = QTime::currentTime().toString("hh:mm");
         QString fileName = progress._lastCompletedItem._file;
         QString elidedFileName = fm.elidedText(fileName, Qt::ElideRight, preferredTextWidth);
+        //: %1 is the elided file name. %2 is the sync result. %3 is the current time.
         QString actionText = tr("%1 (%2, %3)").arg(elidedFileName, elidedKindStr, timeStr);
         if (f) {
             QString fullPath = f->path() + '/' + fileName;

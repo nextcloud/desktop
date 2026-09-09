@@ -22,5 +22,6 @@ EnforcedPlainTextLabel {
     font.pixelSize: Style.unifiedSearchResultTitleFontSize
 
     Accessible.role: Accessible.Separator
+    //: %1 is the search results section heading, for example "Partial matches".
     Accessible.name: qsTr("Search results section %1").arg(section)
 }

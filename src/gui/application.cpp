@@ -194,18 +194,18 @@ bool Application::configVersionMigration()
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
     if (configFile.showConfigBackupWarning() && backupFilesList.count() > 0) {
-        QMessageBox box(
-            QMessageBox::Warning,
-            APPLICATION_SHORTNAME,
-            tr("Some settings were configured in %1 versions of this client and "
-               "use features that are not available in this version.<br>"
-               "<br>"
-               "Continuing will mean <b>%2 these settings</b>.<br>"
-               "<br>"
-               "The current configuration file was already backed up to <i>%3</i>.")
-                .arg((configFile.isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
-                     deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
-                     backupFilesList.join("<br>")));
+        QMessageBox box(QMessageBox::Warning,
+                        APPLICATION_SHORTNAME,
+                        //: %1 is either "newer" or "older". %2 is either "ignoring" or "deleting". %3 is a list of configuration backup file paths.
+                        tr("Some settings were configured in %1 versions of this client and "
+                           "use features that are not available in this version.<br>"
+                           "<br>"
+                           "Continuing will mean <b>%2 these settings</b>.<br>"
+                           "<br>"
+                           "The current configuration file was already backed up to <i>%3</i>.")
+                            .arg((configFile.isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
+                                 deleteKeys.isEmpty() ? tr("ignoring") : tr("deleting"),
+                                 backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
         auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
 

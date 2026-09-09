@@ -155,6 +155,7 @@ WizardStyledWindow {
                     iconSource: modelData.icon ? "image://tray-image-provider/" + modelData.icon : ""
                     tintIcon: true
                     iconTintColor: Style.wizardPrimaryText
+                    //: %1 is an active search filter label, such as a provider name, date range, or person name.
                     Accessible.name: qsTr("Remove %1 filter").arg(modelData.label)
                     onClicked: root.searchModel.removeFilter(modelData.type, modelData.id)
                 }

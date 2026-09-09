@@ -128,8 +128,10 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
         txt += certId;
     } else {
         if (isSelfSigned(cert)) {
+            //: %1 is the certificate identifier, taken from its common name or organizational unit.
             txt += tr("%1 (self-signed)").arg(certId);
         } else {
+            //: %1 is the certificate identifier, taken from its common name or organizational unit.
             txt += tr("%1").arg(certId);
         }
     }

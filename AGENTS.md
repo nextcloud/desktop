@@ -92,6 +92,7 @@ Quit all existing client instances before starting this command, and reproduce t
 Use these defaults unless the existing code clearly calls for an exception:
 
 - No magic numbers. Use `Style.qml`, shared metrics or named constants for layout, timing and protocol values.
+- Every new translated string containing replacement placeholders (for example, `%1`, `%2` or `%n`) must have an immediately preceding `//:` translator comment that explains what each placeholder contains and, where useful, gives representative examples. This applies to both C++ `tr()` and QML `qsTr()` strings.
 - Break non-trivial QML delegates, dialogs, popups and reusable components into their own files. Keep a small, single-use visual fragment inline only when it has no meaningful state or behavior of its own.
 - Before writing a new job, connector, model, URL helper, mock or QML registration, use `rg`—or the next available recursive text-search tool, such as `grep`, if `rg` is not installed—to find code that already performs the same task. Reuse or extend that code when it exists. If a new implementation is necessary, state why the existing code cannot be used.
 - Follow ownership contracts exactly. Check whether a job self-deletes and who owns every object before adding cleanup, copies or wrappers.

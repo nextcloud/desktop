@@ -80,6 +80,7 @@ Item {
             width: root.width
             height: Style.unifiedSearchProviderHeaderHeight
             flat: true
+            //: %1 is the name of a search provider, for example "Files".
             text: root.hasOverflow ? qsTr("More from %1  →").arg(root.providerName) : root.providerName
             font.bold: false
             font.pixelSize: Style.unifiedSearchResultTitleFontSize
