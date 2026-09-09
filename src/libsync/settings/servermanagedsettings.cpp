@@ -17,6 +17,17 @@ struct ServerKeyPolicy {
     bool serverEnforceable = false;
 };
 
+// Reject values outside the accepted range.
+bool valueInRange(const QString &key, const QVariant &value)
+{
+    if (key == QStringLiteral("newBigFolderSizeLimit")) {
+        auto ok = false;
+        const auto limit = value.toLongLong(&ok);
+        return ok && limit >= 0;
+    }
+    return true;
+}
+
 const QHash<QString, ServerKeyPolicy> &acceptedServerKeys()
 {
     static const QHash<QString, ServerKeyPolicy> keys = {
@@ -52,13 +63,13 @@ ServerManagedSettings sanitizeServerManagedSettings(const ServerManagedSettings 
 
     const auto &accepted = acceptedServerKeys();
     for (const auto &[key, value] : raw.defaults.asKeyValueRange()) {
-        if (accepted.contains(key)) {
+        if (accepted.contains(key) && valueInRange(key, value)) {
             clean.defaults.insert(key, value);
         }
     }
     for (const auto &[key, value] : raw.enforced.asKeyValueRange()) {
         const auto policy = accepted.constFind(key);
-        if (policy != accepted.cend() && policy->serverEnforceable) {
+        if (policy != accepted.cend() && policy->serverEnforceable && valueInRange(key, value)) {
             clean.enforced.insert(key, value);
         }
     }
