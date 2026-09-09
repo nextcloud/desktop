@@ -198,6 +198,13 @@
             </widget>
            </item>
            <item>
+            <widget class="QLabel" name="adminEnforcedLabel">
+             <property name="text">
+              <string></string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="updateControlsSpacer">
              <property name="orientation">
               <enum>Qt::Orientation::Horizontal</enum>

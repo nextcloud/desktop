@@ -665,12 +665,8 @@ bool ConfigFile::skipUpdateCheck(const QString &connectionGroupName) const
 
 void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connectionGroupName)
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(groupName);
-
-    settings.setValue(QLatin1String(skipUpdateCheckC), QVariant(skip));
-    settings.sync();
+    // Routed through setConfig so an enforced value is never overwritten.
+    setConfig(QLatin1String(skipUpdateCheckC), skip, connectionGroupName);
 }
 
 bool ConfigFile::autoUpdateCheck(const QString &connectionGroupName) const
@@ -716,19 +712,15 @@ bool ConfigFile::isEnforced(const QString &name, const QString &connectionGroupN
     return getConfig(name, {}, connectionGroupName).isEnforced();
 }
 
-SettingSourceKind ConfigFile::sourceOf(const QString &name, const QString &connectionGroupName) const
+SettingSourceType ConfigFile::sourceOf(const QString &name, const QString &connectionGroupName) const
 {
     return getConfig(name, {}, connectionGroupName).source;
 }
 
 void ConfigFile::setAutoUpdateCheck(bool autoCheck, const QString &connectionGroupName)
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(groupName);
-
-    settings.setValue(QLatin1String(autoUpdateCheckC), QVariant(autoCheck));
-    settings.sync();
+    // Routed through setConfig so an enforced value is never overwritten.
+    setConfig(QLatin1String(autoUpdateCheckC), autoCheck, connectionGroupName);
 }
 
 int ConfigFile::updateSegment() const
