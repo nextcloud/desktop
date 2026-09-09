@@ -352,7 +352,7 @@ public:
     };
     FolderQuota _folderQuota;
 
-    QString localName() const
+    [[nodiscard]] QString localName() const
     {
         return _file;
     }

@@ -65,7 +65,7 @@ class SuffixVfsPluginFactory : public QObject, public DefaultPluginFactory<VfsSu
     Q_INTERFACES(OCC::PluginFactory)
 
 public:
-    Result<void, QString> prepare(const QString &path, const QUuid &accountUuid) const override;
+    [[nodiscard]] Result<void, QString> prepare(const QString &path, const QUuid &accountUuid) const override;
 };
 
 } // namespace OCC
