@@ -401,6 +401,9 @@ public:
                           const QString &proxyUser,
                           const QString &proxyPassword);
 
+    [[nodiscard]] bool proxySettingsAreManaged() const;
+    void setProxySettingsAreManaged(bool managed);
+
     [[nodiscard]] AccountNetworkTransferLimitSetting uploadLimitSetting() const;
     void setUploadLimitSetting(AccountNetworkTransferLimitSetting setting);
 
@@ -599,6 +602,7 @@ private:
     bool _proxyNeedsAuth = false;
     QString _proxyUser;
     QString _proxyPassword;
+    bool _proxySettingsAreManaged = false;
     AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     unsigned int _uploadLimit = 0;
