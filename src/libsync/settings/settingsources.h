@@ -34,7 +34,7 @@ private:
 class OWNCLOUDSYNC_EXPORT NativeSettingsSource : public SettingSource
 {
 public:
-    NativeSettingsSource(QString location, SettingSourceType kind, EnforcementState enforcement, int priority);
+    NativeSettingsSource(QString location, SettingSourceType type, EnforcementState enforcement, int priority);
 
     [[nodiscard]] std::optional<QVariant> read(const QString &key, const QString &group) const override;
     [[nodiscard]] SettingSourceType type() const override;
@@ -43,7 +43,7 @@ public:
 
 private:
     QString _location;
-    SettingSourceType _kind;
+    SettingSourceType _type;
     EnforcementState _enforcement;
     int _priority;
 };

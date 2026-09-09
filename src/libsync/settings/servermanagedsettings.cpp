@@ -8,6 +8,7 @@
 #include "common/vfs.h"
 
 #include <QHash>
+#include <QNetworkProxy>
 
 namespace OCC {
 
@@ -20,7 +21,7 @@ struct ServerKeyPolicy {
 };
 
 // Reject values the client cannot use.
-bool valueInRange(const QString &key, const QVariant &value)
+bool isServerKeyValueValid(const QString &key, const QVariant &value)
 {
     if (key == QStringLiteral("newBigFolderSizeLimit")) {
         auto ok = false;
@@ -30,10 +31,20 @@ bool valueInRange(const QString &key, const QVariant &value)
     if (key == QStringLiteral("virtualFilesMode")) {
         return static_cast<bool>(Vfs::modeFromString(value.toString()));
     }
+    if (key == QStringLiteral("proxyType")) {
+        auto ok = false;
+        const auto type = value.toInt(&ok);
+        return ok && type >= QNetworkProxy::DefaultProxy && type <= QNetworkProxy::HttpProxy;
+    }
+    if (key == QStringLiteral("proxyPort")) {
+        auto ok = false;
+        const auto port = value.toInt(&ok);
+        return ok && port >= 1 && port <= 65535;
+    }
     return true;
 }
 
-const QHash<QString, ServerKeyPolicy> &acceptedServerKeys()
+const QHash<QString, ServerKeyPolicy> &validServerKeys()
 {
     static const QHash<QString, ServerKeyPolicy> keys = {
         {QStringLiteral("skipUpdateCheck"), {false}},
@@ -63,27 +74,27 @@ ServerManagedSettings parseServerManagedSettings(const QVariantMap &desktopClien
 
 ServerManagedSettings sanitizeServerManagedSettings(const ServerManagedSettings &raw)
 {
-    ServerManagedSettings clean;
-    clean.schemaVersion = raw.schemaVersion;
+    ServerManagedSettings serverSettings;
+    serverSettings.schemaVersion = raw.schemaVersion;
 
-    const auto &accepted = acceptedServerKeys();
+    const auto &validKeys = validServerKeys();
     for (const auto &[key, value] : raw.defaults.asKeyValueRange()) {
-        if (accepted.contains(key) && valueInRange(key, value)) {
-            clean.defaults.insert(key, value);
+        if (validKeys.contains(key) && isServerKeyValueValid(key, value)) {
+            serverSettings.defaults.insert(key, value);
         }
     }
     for (const auto &[key, value] : raw.enforced.asKeyValueRange()) {
-        const auto policy = accepted.constFind(key);
-        if (policy != accepted.cend() && policy->serverEnforceable && valueInRange(key, value)) {
-            clean.enforced.insert(key, value);
+        const auto policy = validKeys.constFind(key);
+        if (policy != validKeys.cend() && policy->serverEnforceable && isServerKeyValueValid(key, value)) {
+            serverSettings.enforced.insert(key, value);
         }
     }
-    return clean;
+    return serverSettings;
 }
 
-ServerSettingsSource::ServerSettingsSource(QVariantMap values, SettingSourceType kind, EnforcementState enforcement, int priority)
+ServerSettingsSource::ServerSettingsSource(QVariantMap values, SettingSourceType type, EnforcementState enforcement, int priority)
     : _values(std::move(values))
-    , _kind(kind)
+    , _type(type)
     , _enforcement(enforcement)
     , _priority(priority)
 {
@@ -99,7 +110,7 @@ std::optional<QVariant> ServerSettingsSource::read(const QString &key, const QSt
 
 SettingSourceType ServerSettingsSource::type() const
 {
-    return _kind;
+    return _type;
 }
 
 EnforcementState ServerSettingsSource::enforcement() const

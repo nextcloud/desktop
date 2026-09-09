@@ -12,13 +12,13 @@ below, and migration, documented in MIGRATION.md.
 
 ## Context
 
-Issue #5497 introduced a managed settings resolver so a setting can be resolved
-across device enforced policy, server enforced policy, user config, server
-defaults, device defaults and the builtin default. Update, proxy, folder limit and
-virtual files keys now resolve through ConfigFile::getConfig. The remaining settings are still
-read with ConfigFile::getValue (OS default plus user config only),
-ConfigFile::getPolicySetting (Windows policy overlay) or raw QSettings, and are
-migrated onto getConfig as they are onboarded into the schema.
+Issue #5497 discussed the inclusion of a managed settings resolver so that a setting
+can be resolved across device enforced policy, server enforced policy, user config,
+server defaults, device defaults and the builtin default. Update, proxy, folder limit
+and virtual files keys now resolve through `ConfigFile::getConfig`. The remaining
+settings are still read with `ConfigFile::getValue` (OS default plus user config
+only), `ConfigFile::getPolicySetting` (Windows policy overlay) or raw `QSettings`,
+and are migrated onto `getConfig` as they are onboarded into the schema.
 
 Those read paths skip the enforcement hierarchy, so a setting read through them
 cannot be enforced by an administrator. getConfig is the single enforcement aware
@@ -37,7 +37,7 @@ getConfig is its single read entry point.
 ## API (on ConfigFile)
 
     // Resolved read: value plus source and enforcement metadata.
-    ManagedValue getConfig(const QString &name, const QVariant &builtinDefault = {},
+    ResolvedSetting getConfig(const QString &name, const QVariant &builtinDefault = {},
                            const QString &connectionGroupName = {}) const;
 
     // Typed convenience over getConfig().value.
@@ -53,7 +53,7 @@ getConfig is its single read entry point.
 
 ## Behavior
 
-- getConfig finds the SettingSpec in ManagedSettingsSchema, or synthesizes one
+- getConfig finds the SettingDefinition in ManagedSettingsSchema, or synthesizes one
   (builtinDefault, enforceable) for keys not yet in the schema, then builds the
   source stack (buildDeviceSources, UserConfigSource for the group,
   buildServerSources from the cached server settings) and resolves. The
@@ -70,10 +70,10 @@ getConfig is its single read entry point.
 ## The schema
 
 The schema is the declared contract for managed settings. Each entry is one
-SettingSpec:
+SettingDefinition:
 
 ```cpp
-struct SettingSpec {
+struct SettingDefinition {
     QString key;              // the setting name
     QVariant builtinDefault;  // value when no source has one, and it fixes the type
     bool enforceable = false; // may a policy force it?
@@ -90,7 +90,7 @@ source, so no registry key, managed plist or server can lock it:
 ```cpp
 // ManagedSettings::resolve
 for (const auto &source : _sources) {
-    if (source->enforcement() == EnforcementState::Enforced && !spec.enforceable) {
+    if (source->enforcement() == EnforcementState::Enforced && !definition.enforceable) {
         continue; // enforced sources do not apply to a non enforceable key
     }
     ...
@@ -114,8 +114,8 @@ Being in the schema is not required to resolve a key. getConfig synthesizes a
 definition for anything not declared, defaulting enforceable to true:
 
 ```cpp
-const auto spec = ManagedSettingsSchema::find(name)
-    .value_or(SettingSpec{name, builtinDefault, /*enforceable*/ true, SettingScope::User});
+const auto definition = ManagedSettingsSchema::find(name)
+    .value_or(SettingDefinition{name, builtinDefault, /*enforceable*/ true, SettingScope::User});
 ```
 
 So you add a key to the schema to override those defaults: to make it non
@@ -162,7 +162,7 @@ HKCU\Software\Policies\<vendor>\<app>   PlatformPolicy,  Enforced,    210
 HKLM\Software\Policies\<vendor>\<app>   PlatformPolicy,  Enforced,    200
 HKLM\Software\<vendor>\<app>            PlatformDefault, NotEnforced,  20
 // macOS: MacForcedPreferenceSource(200) + /Library/Preferences/<domain>.plist (20)
-// Linux: <sysconfdir>/<app>/<app>.conf (20)
+// Linux: <sysconfdir>/<app>/policies.conf (enforced 200), <sysconfdir>/<app>/<app>.conf (20)
 ```
 
 ```cpp
@@ -363,7 +363,7 @@ ConfigFile::getConfig                                  [read]
   device enforced (200) > server enforced (100) > user (50)
                       > server default (30) > device default (20) > builtin
   |
-  ManagedValue { value, source, enforced/default }     [return]
+  ResolvedSetting { value, source, enforced/default }     [return]
 ```
 
 ### Server delivery

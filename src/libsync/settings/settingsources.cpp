@@ -49,9 +49,9 @@ int UserConfigSource::priority() const
     return _priority;
 }
 
-NativeSettingsSource::NativeSettingsSource(QString location, SettingSourceType kind, EnforcementState enforcement, int priority)
+NativeSettingsSource::NativeSettingsSource(QString location, SettingSourceType type, EnforcementState enforcement, int priority)
     : _location(std::move(location))
-    , _kind(kind)
+    , _type(type)
     , _enforcement(enforcement)
     , _priority(priority)
 {
@@ -71,7 +71,7 @@ std::optional<QVariant> NativeSettingsSource::read(const QString &key, const QSt
 
 SettingSourceType NativeSettingsSource::type() const
 {
-    return _kind;
+    return _type;
 }
 
 EnforcementState NativeSettingsSource::enforcement() const
@@ -145,6 +145,10 @@ std::vector<std::unique_ptr<SettingSource>> buildDeviceSources()
                                                              EnforcementState::NotEnforced,
                                                              20));
 #else
+    sources.push_back(std::make_unique<NativeSettingsSource>(QStringLiteral(SYSCONFDIR "/%1/policies.conf").arg(app),
+                                                             SettingSourceType::PlatformPolicy,
+                                                             EnforcementState::Enforced,
+                                                             200));
     sources.push_back(std::make_unique<NativeSettingsSource>(QStringLiteral(SYSCONFDIR "/%1/%1.conf").arg(app),
                                                              SettingSourceType::PlatformDefault,
                                                              EnforcementState::NotEnforced,

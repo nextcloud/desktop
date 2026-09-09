@@ -148,5 +148,6 @@ private:
     /// Account ids from settings that weren't read
     QSet<QString> _additionalBlockedAccountIds;
     bool _forceLegacyImport = false;
+    bool _serverCapabilitiesEverLoaded = false;
 };
 }

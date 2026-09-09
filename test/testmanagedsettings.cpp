@@ -7,11 +7,13 @@
 #include <QTemporaryDir>
 #include <QStandardPaths>
 #include <QSet>
+#include <QNetworkProxy>
 #include <algorithm>
 #include <memory>
 #include <optional>
 
 #include "configfile.h"
+#include "account.h"
 #include "capabilities.h"
 #include "settings/managedsettings.h"
 #include "settings/managedsettingsschema.h"
@@ -32,19 +34,25 @@ public:
     {
     }
 
-    std::optional<QVariant> read(const QString &key, const QString &) const override
+    [[nodiscard]] std::optional<QVariant> read(const QString &key, const QString &) const override
     {
         if (!_values.contains(key)) {
             return std::nullopt;
         }
         return _values.value(key);
     }
-    SettingSourceType type() const override
+    [[nodiscard]] SettingSourceType type() const override
     {
         return _kind;
     }
-    EnforcementState enforcement() const override { return _enforcement; }
-    int priority() const override { return _priority; }
+    [[nodiscard]] EnforcementState enforcement() const override
+    {
+        return _enforcement;
+    }
+    [[nodiscard]] int priority() const override
+    {
+        return _priority;
+    }
 
 private:
     SettingSourceType _kind;
@@ -66,8 +74,11 @@ public:
     }
 
 protected:
-    bool isForced(const QString &key) const override { return _forcedKeys.contains(key); }
-    std::optional<QVariant> copyForcedValue(const QString &key) const override
+    [[nodiscard]] bool isForced(const QString &key) const override
+    {
+        return _forcedKeys.contains(key);
+    }
+    [[nodiscard]] std::optional<QVariant> copyForcedValue(const QString &key) const override
     {
         if (!_values.contains(key)) {
             return std::nullopt;
@@ -84,7 +95,7 @@ class TestManagedSettings : public QObject
 {
     Q_OBJECT
 
-    static SettingSpec skipSpec()
+    static SettingDefinition skipSpec()
     {
         return {QStringLiteral("skipUpdateCheck"), false, true, SettingScope::User};
     }
@@ -201,6 +212,23 @@ private Q_SLOTS:
         QVERIFY(!r.isEnforced());
     }
 
+    void testInvalidValueIsSkippedNotEnforced()
+    {
+        ManagedSettings resolver;
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                       EnforcementState::Enforced,
+                                                       200,
+                                                       QVariantMap{{QStringLiteral("timeout"), QStringLiteral("not-a-number")}}));
+        resolver.addSource(
+            std::make_unique<MapSource>(SettingSourceType::ServerDefault, EnforcementState::NotEnforced, 30, QVariantMap{{QStringLiteral("timeout"), 7}}));
+
+        const auto r = resolver.resolve({QStringLiteral("timeout"), 42, true, SettingScope::User});
+
+        QCOMPARE(r.value.toInt(), 7);
+        QCOMPARE(r.source, SettingSourceType::ServerDefault);
+        QVERIFY(!r.isEnforced());
+    }
+
     // A forced source contributes only forced keys; a present but non forced
     // value is ignored.
     void testForcedSourceContributesOnlyForcedKeys()
@@ -303,8 +331,9 @@ private Q_SLOTS:
         const auto all = resolver.resolveAll(ManagedSettingsSchema::all());
         QCOMPARE(all.size(), ManagedSettingsSchema::all().size());
 
-        const auto skip = std::find_if(all.cbegin(), all.cend(),
-            [](const ManagedValue &value) { return value.key == QStringLiteral("skipUpdateCheck"); });
+        const auto skip = std::find_if(all.cbegin(), all.cend(), [](const ResolvedSetting &value) {
+            return value.key == QStringLiteral("skipUpdateCheck");
+        });
         QVERIFY(skip != all.cend());
         QVERIFY(skip->isEnforced());
         QCOMPARE(skip->source, SettingSourceType::PlatformPolicy);
@@ -314,14 +343,14 @@ private Q_SLOTS:
     {
         const QVariantMap cap{
             {QStringLiteral("schemaVersion"), 1},
-            {QStringLiteral("defaults"), QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("enabled")}}},
+            {QStringLiteral("defaults"), QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}}},
             {QStringLiteral("enforced"), QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}},
         };
 
         const auto parsed = parseServerManagedSettings(cap);
 
         QCOMPARE(parsed.schemaVersion, 1);
-        QCOMPARE(parsed.defaults.value(QStringLiteral("virtualFilesMode")).toString(), QStringLiteral("enabled"));
+        QCOMPARE(parsed.defaults.value(QStringLiteral("virtualFilesMode")).toString(), QStringLiteral("wincfapi"));
         QCOMPARE(parsed.enforced.value(QStringLiteral("skipUpdateCheck")).toBool(), true);
     }
 
@@ -329,7 +358,7 @@ private Q_SLOTS:
     {
         ServerManagedSettings raw;
         raw.defaults = QVariantMap{{QStringLiteral("skipUpdateCheck"), false}, {QStringLiteral("bogus"), 1}};
-        raw.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("onlineOnly")},
+        raw.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")},
             {QStringLiteral("secretKey"), QStringLiteral("x")}};
 
         const auto clean = sanitizeServerManagedSettings(raw);
@@ -338,6 +367,32 @@ private Q_SLOTS:
         QVERIFY(!clean.defaults.contains(QStringLiteral("bogus")));
         QVERIFY(clean.enforced.contains(QStringLiteral("virtualFilesMode")));
         QVERIFY(!clean.enforced.contains(QStringLiteral("secretKey")));
+    }
+
+    void testSanitizeDropsInvalidVirtualFilesMode()
+    {
+        ServerManagedSettings raw;
+        raw.defaults = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("onlineOnly")}};
+        raw.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}};
+
+        const auto clean = sanitizeServerManagedSettings(raw);
+
+        QVERIFY(!clean.defaults.contains(QStringLiteral("virtualFilesMode")));
+        QCOMPARE(clean.enforced.value(QStringLiteral("virtualFilesMode")).toString(), QStringLiteral("wincfapi"));
+    }
+
+    void testSanitizeDropsInvalidProxyValues()
+    {
+        ServerManagedSettings raw;
+        raw.defaults = QVariantMap{{QStringLiteral("proxyType"), 6}, {QStringLiteral("proxyPort"), 0}};
+        raw.enforced = QVariantMap{{QStringLiteral("proxyType"), 4}, {QStringLiteral("proxyPort"), 65535}};
+
+        const auto clean = sanitizeServerManagedSettings(raw);
+
+        QVERIFY(!clean.defaults.contains(QStringLiteral("proxyType")));
+        QVERIFY(!clean.defaults.contains(QStringLiteral("proxyPort")));
+        QVERIFY(!clean.enforced.contains(QStringLiteral("proxyType")));
+        QVERIFY(!clean.enforced.contains(QStringLiteral("proxyPort")));
     }
 
     void testServerSettingsSourceExposesMapWithKindEnforcementPriority()
@@ -358,10 +413,10 @@ private Q_SLOTS:
     {
         // virtualFilesMode stays server enforceable, so it survives sanitize.
         ServerManagedSettings raw;
-        raw.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("onlineOnly")}};
+        raw.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}};
         const auto clean = sanitizeServerManagedSettings(raw);
 
-        const SettingSpec spec{QStringLiteral("virtualFilesMode"), QStringLiteral(""), true, SettingScope::User};
+        const SettingDefinition spec{QStringLiteral("virtualFilesMode"), QStringLiteral(""), true, SettingScope::User};
 
         ManagedSettings resolver;
         resolver.addSource(std::make_unique<MapSource>(SettingSourceType::UserConfig,
@@ -374,7 +429,7 @@ private Q_SLOTS:
 
         // Server enforced beats the user config.
         const auto withoutDevice = resolver.resolve(spec);
-        QCOMPARE(withoutDevice.value.toString(), QStringLiteral("onlineOnly"));
+        QCOMPARE(withoutDevice.value.toString(), QStringLiteral("wincfapi"));
         QCOMPARE(withoutDevice.source, SettingSourceType::ServerEnforced);
 
         // Device policy still beats server enforced.
@@ -395,13 +450,13 @@ private Q_SLOTS:
 
         ServerManagedSettings settings;
         settings.schemaVersion = 1;
-        settings.defaults = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("enabled")}};
+        settings.defaults = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}};
         settings.enforced = QVariantMap{{QStringLiteral("skipUpdateCheck"), true}};
         config.setServerManagedSettings(settings);
 
         const auto read = config.serverManagedSettings();
         QCOMPARE(read.schemaVersion, 1);
-        QCOMPARE(read.defaults.value(QStringLiteral("virtualFilesMode")).toString(), QStringLiteral("enabled"));
+        QCOMPARE(read.defaults.value(QStringLiteral("virtualFilesMode")).toString(), QStringLiteral("wincfapi"));
         QCOMPARE(read.enforced.value(QStringLiteral("skipUpdateCheck")).toBool(), true);
     }
 
@@ -480,6 +535,65 @@ private Q_SLOTS:
         QCOMPARE(config.sourceOf(QStringLiteral("skipUpdateCheck")), SettingSourceType::ServerEnforced);
     }
 
+    void testAccountProxyWriteIsIgnoredWhenManaged()
+    {
+        const auto account = Account::create();
+        account->setProxySettingsAreManaged(true);
+
+        account->setProxySettings(QNetworkProxy::HttpProxy,
+                                  QStringLiteral("proxy.example.com"),
+                                  8080,
+                                  true,
+                                  QStringLiteral("user"),
+                                  QStringLiteral("password"));
+
+        QCOMPARE(account->proxyType(), QNetworkProxy::NoProxy);
+        QCOMPARE(account->proxyHostName(), QString());
+        QCOMPARE(account->proxyPort(), 0);
+        QVERIFY(!account->proxyNeedsAuth());
+        QCOMPARE(account->proxyUser(), QString());
+        QCOMPARE(account->proxyPassword(), QString());
+    }
+
+    void testSourceLabelUsesRequestedSetting()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        ServerManagedSettings settings;
+        settings.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("off")}};
+        config.setServerManagedSettings(settings);
+
+        QCOMPARE(config.sourceLabel(QStringLiteral("virtualFilesMode")),
+                 QStringLiteral("Managed by your organization"));
+    }
+
+    void testManagedVirtualFilesModeReportsDefaultAndEnforcement()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        ServerManagedSettings settings;
+        settings.defaults = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}};
+        config.setServerManagedSettings(settings);
+
+        const auto defaultValue = config.managedVirtualFilesMode();
+        QVERIFY(defaultValue.isManaged);
+        QVERIFY(!defaultValue.isEnforced);
+        QVERIFY(defaultValue.enabled);
+
+        settings.defaults.clear();
+        settings.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("off")}};
+        config.setServerManagedSettings(settings);
+
+        const auto enforcedValue = config.managedVirtualFilesMode();
+        QVERIFY(enforcedValue.isManaged);
+        QVERIFY(enforcedValue.isEnforced);
+        QVERIFY(!enforcedValue.enabled);
+    }
+
     void testServerSettingsAreCachedAndPersisted()
     {
         QTemporaryDir dir;
@@ -488,14 +602,14 @@ private Q_SLOTS:
 
         ServerManagedSettings settings;
         settings.schemaVersion = 1;
-        settings.enforced = QVariantMap{{QStringLiteral("skipUpdateCheck"), true}};
+        settings.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}};
         config.setServerManagedSettings(settings);
 
-        QCOMPARE(config.serverManagedSettings().enforced.value(QStringLiteral("skipUpdateCheck")).toBool(), true);
+        QCOMPARE(config.serverManagedSettings().enforced.value(QStringLiteral("virtualFilesMode")).toString(), QStringLiteral("wincfapi"));
 
         // Dropping the cache reparses from the config file, proving persistence.
         ManagedConfig::instance().invalidate();
-        QCOMPARE(config.serverManagedSettings().enforced.value(QStringLiteral("skipUpdateCheck")).toBool(), true);
+        QCOMPARE(config.serverManagedSettings().enforced.value(QStringLiteral("virtualFilesMode")).toString(), QStringLiteral("wincfapi"));
     }
 
     void testSanitizeDropsServerEnforcedUpdateAndProxyKeys()
@@ -503,7 +617,7 @@ private Q_SLOTS:
         ServerManagedSettings raw;
         raw.enforced = QVariantMap{{QStringLiteral("skipUpdateCheck"), true},
             {QStringLiteral("proxyHost"), QStringLiteral("evil.example.com")},
-            {QStringLiteral("virtualFilesMode"), QStringLiteral("onlineOnly")}};
+            {QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}};
 
         const auto clean = sanitizeServerManagedSettings(raw);
 

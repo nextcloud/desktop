@@ -39,7 +39,7 @@ enum class SettingScope {
     Folder,
 };
 
-struct ManagedValue {
+struct ResolvedSetting {
     QString key;
     QVariant value;
     SettingSourceType source = SettingSourceType::BuiltinDefault;
@@ -49,7 +49,7 @@ struct ManagedValue {
     [[nodiscard]] bool isEnforced() const { return enforcement == EnforcementState::Enforced; }
 };
 
-struct SettingSpec {
+struct SettingDefinition {
     QString key;
     QVariant builtinDefault;
     bool enforceable = false;
@@ -67,7 +67,6 @@ public:
     [[nodiscard]] virtual int priority() const = 0;
 };
 
-// Resolution and delivery flow: see README.md
 class OWNCLOUDSYNC_EXPORT ManagedSettings
 {
 public:
@@ -81,10 +80,10 @@ public:
 
     void addSource(std::unique_ptr<SettingSource> source);
 
-    [[nodiscard]] ManagedValue resolve(const SettingSpec &spec, const QString &group = {}) const;
+    [[nodiscard]] ResolvedSetting resolve(const SettingDefinition &spec, const QString &group = {}) const;
 
     // Resolves every spec, for a diagnostics export of effective values and sources.
-    [[nodiscard]] QList<ManagedValue> resolveAll(const QList<SettingSpec> &specs, const QString &group = {}) const;
+    [[nodiscard]] QList<ResolvedSetting> resolveAll(const QList<SettingDefinition> &specs, const QString &group = {}) const;
 
 private:
     std::vector<std::unique_ptr<SettingSource>> _sources;

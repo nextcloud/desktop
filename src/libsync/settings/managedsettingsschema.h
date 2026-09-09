@@ -14,9 +14,8 @@
 
 namespace OCC::ManagedSettingsSchema {
 
-[[nodiscard]] OWNCLOUDSYNC_EXPORT const QList<SettingSpec> &all();
-[[nodiscard]] OWNCLOUDSYNC_EXPORT std::optional<SettingSpec> find(const QString &key);
-
+[[nodiscard]] OWNCLOUDSYNC_EXPORT const QList<SettingDefinition> &all();
+[[nodiscard]] OWNCLOUDSYNC_EXPORT std::optional<SettingDefinition> find(const QString &key);
 }
 
 #endif // MANAGEDSETTINGSSCHEMA_H

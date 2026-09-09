@@ -4,6 +4,7 @@
  */
 
 #include "settings/managedconfig.h"
+#include "settings/servermanagedsettings.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -42,7 +43,7 @@ ServerManagedSettings ManagedConfig::serverSettings(const QString &configFilePat
 void ManagedConfig::setServerSettings(const QString &configFilePath, const ServerManagedSettings &settings)
 {
     QWriteLocker locker(&_lock);
-    persist(configFilePath, settings);
+    save(configFilePath, settings);
     _cached = settings;
     _configFilePath = configFilePath;
     _loaded = true;
@@ -57,17 +58,17 @@ void ManagedConfig::invalidate()
 ServerManagedSettings ManagedConfig::parse(const QString &configFilePath)
 {
     QSettings settings(configFilePath, QSettings::IniFormat);
-    const auto root = QJsonDocument::fromJson(
-        settings.value(QLatin1String(serverManagedSettingsKey)).toString().toUtf8()).object();
+    const auto root = QJsonDocument::fromJson(settings.value(QLatin1String(serverManagedSettingsKey)).toString().toUtf8()).object();
 
     ServerManagedSettings managed;
     managed.schemaVersion = root.value(QStringLiteral("schemaVersion")).toInt();
     managed.defaults = root.value(QStringLiteral("defaults")).toObject().toVariantMap();
     managed.enforced = root.value(QStringLiteral("enforced")).toObject().toVariantMap();
-    return managed;
+    // Re sanitize the cache: a stale or edited file must not restore keys or enforced values the live path rejects.
+    return sanitizeServerManagedSettings(managed);
 }
 
-void ManagedConfig::persist(const QString &configFilePath, const ServerManagedSettings &settings)
+void ManagedConfig::save(const QString &configFilePath, const ServerManagedSettings &settings)
 {
     QJsonObject root;
     root[QStringLiteral("schemaVersion")] = settings.schemaVersion;
