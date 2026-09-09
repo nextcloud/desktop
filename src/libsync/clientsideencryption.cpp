@@ -2266,6 +2266,7 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
         return;
     }
 
+    //: %2 is the account username. %3 is the account display name.
     QString msg = tr("Please enter your end-to-end encryption passphrase:<br>"
                      "<br>"
                      "Username: %2<br>"

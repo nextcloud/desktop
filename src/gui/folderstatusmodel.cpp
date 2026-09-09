@@ -163,14 +163,15 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
 
         switch (role) {
         case Qt::DisplayRole: {
-            //: Example text: "File.txt (23KB)"
             const auto &xParent = static_cast<SubFolderInfo *>(index.internalPointer());
             const auto suffix = (subfolderInfo._isNonDecryptable && subfolderInfo._checked && (!xParent || !xParent->isEncrypted()))
                 ? QStringLiteral(" - ") + tr("Could not decrypt!")
                 : QString{};
+            //: %1 is the file name. %2 is the file size, for example "23 KB".
             return subfolderInfo._size < 0 ? QString(subfolderInfo._name + suffix) : QString(tr("%1 (%2)").arg(subfolderInfo._name, Utility::octetsToString(subfolderInfo._size)) + suffix);
         }
         case Qt::ToolTipRole:
+            //: %1 is the file name. %2 is the file size, for example "23 KB".
             return QString(QLatin1String("<qt>") + Utility::escape(subfolderInfo._size < 0 ? subfolderInfo._name : tr("%1 (%2)").arg(subfolderInfo._name, Utility::octetsToString(subfolderInfo._size))) + QLatin1String("</qt>"));
         case Qt::CheckStateRole:
             if (supportsSelectiveSync) {
@@ -1120,6 +1121,8 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
                                         .arg(currentFile)
                                         .arg(totalFileCount);
             } else {
+                //: %1 is the completed data size. %2 is the total data size. %3 is the current file number.
+                //: %4 is the total file count. %5 is the remaining duration.
                 overallSyncString = tr("%5 left, %1 of %2, file %3 of %4")
                                         .arg(completedSizeString, totalSizeString)
                                         .arg(currentFile)

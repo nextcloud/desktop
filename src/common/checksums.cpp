@@ -297,6 +297,7 @@ void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray &checksumTy
         return;
     }
     if (checksum != _expectedChecksum) {
+        //: %1 is the checksum expected from the server. %2 is the checksum calculated from the downloaded file.
         Q_EMIT validationFailed(tr(R"(The downloaded file does not match the checksum, it will be resumed. "%1" != "%2")").arg(QString::fromUtf8(_expectedChecksum), QString::fromUtf8(checksum)),
             _calculatedChecksumType, _calculatedChecksum, ChecksumMismatch);
         return;

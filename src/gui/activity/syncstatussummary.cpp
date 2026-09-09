@@ -365,10 +365,12 @@ void SyncStatusSummary::onFolderProgressInfo(const ProgressInfo &progress)
 
         if (progress.trustEta()) {
             setSyncStatusDetailString(
+                //: %1 is the completed data size. %2 is the total data size. %3 is the remaining duration.
                 tr("%1 of %2 · %3 left")
                     .arg(completedSizeString, totalSizeString)
                     .arg(Utility::durationToDescriptiveString1(progress.totalProgress().estimatedEta)));
         } else {
+            //: %1 is the completed data size. %2 is the total data size.
             setSyncStatusDetailString(tr("%1 of %2").arg(completedSizeString, totalSizeString));
         }
     }
