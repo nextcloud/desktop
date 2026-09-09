@@ -32,19 +32,19 @@ static QString statusText(OCC::UserStatus::OnlineStatus status)
 {
     switch (status) {
     case OCC::UserStatus::OnlineStatus::Online:
-        return QCoreApplication::translate("UserStatusSetStatusView", "Online");
+        return QCoreApplication::translate("UserStatusWindow", "Online");
     case OCC::UserStatus::OnlineStatus::Away:
-        return QCoreApplication::translate("UserStatusSetStatusView", "Away");
+        return QCoreApplication::translate("UserStatusWindow", "Away");
     case OCC::UserStatus::OnlineStatus::Busy:
-        return QCoreApplication::translate("UserStatusSetStatusView", "Busy");
+        return QCoreApplication::translate("UserStatusWindow", "Busy");
     case OCC::UserStatus::OnlineStatus::DoNotDisturb:
-        return QCoreApplication::translate("UserStatusSetStatusView", "Do not disturb");
+        return QCoreApplication::translate("UserStatusWindow", "Do not disturb");
     case OCC::UserStatus::OnlineStatus::Invisible:
-        return QCoreApplication::translate("UserStatusSetStatusView", "Invisible");
+        return QCoreApplication::translate("UserStatusWindow", "Invisible");
     case OCC::UserStatus::OnlineStatus::Offline:
         return QCoreApplication::translate("OCC::SyncStatusSummary", "Offline");
     }
-    return QCoreApplication::translate("UserStatusSetStatusView", "Online");
+    return QCoreApplication::translate("UserStatusWindow", "Online");
 }
 
 static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QString &message)
