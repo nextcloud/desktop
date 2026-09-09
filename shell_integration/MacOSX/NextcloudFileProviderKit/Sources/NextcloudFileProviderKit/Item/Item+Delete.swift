@@ -76,14 +76,8 @@ public extension Item {
             return await deleteLockFile(domain: domain, dbManager: dbManager)
         }
 
-        // Permanently deleting an item that already lives in the trash. The stored trashbin name can be
-        // the "rough" plain filename set optimistically when the item was moved to trash (see
-        // handleMetadataTrashModification below), rather than the server's real trashbin name — which
-        // carries a ".d<deletion-timestamp>" suffix whenever the name collided with an existing trash
-        // entry. DELETEing the plain path 404s forever, and macOS retries the purge with no backoff
-        // (observed: a handful of items failing thousands of times). Resolve the real trashbin name from
-        // a fresh trash listing; if the item is no longer in the trash, it has already been removed
-        // remotely, so report success and stop the retry loop. See nextcloud/desktop#10442.
+        // Trash entries may have a server-assigned name after a filename collision. Resolve the
+        // current name before permanently deleting the item.
         let isTrashbinPurge = !trashing && metadata.serverUrl.hasPrefix(account.trashUrl)
         if isTrashbinPurge {
             switch await resolveTrashbinItemRemotePath(domain: domain) {
