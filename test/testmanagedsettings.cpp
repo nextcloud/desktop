@@ -24,7 +24,7 @@ using namespace OCC;
 class MapSource : public SettingSource
 {
 public:
-    MapSource(SettingSourceKind kind, EnforcementState enforcement, int priority, QVariantMap values)
+    MapSource(SettingSourceType kind, EnforcementState enforcement, int priority, QVariantMap values)
         : _kind(kind)
         , _enforcement(enforcement)
         , _priority(priority)
@@ -39,12 +39,15 @@ public:
         }
         return _values.value(key);
     }
-    SettingSourceKind kind() const override { return _kind; }
+    SettingSourceType type() const override
+    {
+        return _kind;
+    }
     EnforcementState enforcement() const override { return _enforcement; }
     int priority() const override { return _priority; }
 
 private:
-    SettingSourceKind _kind;
+    SettingSourceType _kind;
     EnforcementState _enforcement;
     int _priority;
     QVariantMap _values;
@@ -86,7 +89,7 @@ class TestManagedSettings : public QObject
         return {QStringLiteral("skipUpdateCheck"), false, true, SettingScope::User};
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         QStandardPaths::setTestModeEnabled(true);
@@ -100,22 +103,26 @@ private slots:
 
         QCOMPARE(result.value.toBool(), false);
         QCOMPARE(result.present, false);
-        QCOMPARE(result.source, SettingSourceKind::BuiltinDefault);
+        QCOMPARE(result.source, SettingSourceType::BuiltinDefault);
         QCOMPARE(result.enforcement, EnforcementState::NotEnforced);
     }
 
     void testUserBeatsPlatformDefault()
     {
         ManagedSettings resolver;
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::PlatformDefault, EnforcementState::NotEnforced, 20,
-            QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}));
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::UserConfig, EnforcementState::NotEnforced, 50,
-            QVariantMap{{QStringLiteral("skipUpdateCheck"), false}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformDefault,
+                                                       EnforcementState::NotEnforced,
+                                                       20,
+                                                       QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::UserConfig,
+                                                       EnforcementState::NotEnforced,
+                                                       50,
+                                                       QVariantMap{{QStringLiteral("skipUpdateCheck"), false}}));
 
         const auto r = resolver.resolve(skipSpec());
 
         QCOMPARE(r.value.toBool(), false);
-        QCOMPARE(r.source, SettingSourceKind::UserConfig);
+        QCOMPARE(r.source, SettingSourceType::UserConfig);
         QCOMPARE(r.enforcement, EnforcementState::NotEnforced);
         QCOMPARE(r.present, true);
     }
@@ -123,58 +130,74 @@ private slots:
     void testEnforcedPolicyBeatsUser()
     {
         ManagedSettings resolver;
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::UserConfig, EnforcementState::NotEnforced, 50,
-            QVariantMap{{QStringLiteral("skipUpdateCheck"), false}}));
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::PlatformPolicy, EnforcementState::Enforced, 200,
-            QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::UserConfig,
+                                                       EnforcementState::NotEnforced,
+                                                       50,
+                                                       QVariantMap{{QStringLiteral("skipUpdateCheck"), false}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                       EnforcementState::Enforced,
+                                                       200,
+                                                       QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}));
 
         const auto r = resolver.resolve(skipSpec());
 
         QCOMPARE(r.value.toBool(), true);
-        QCOMPARE(r.source, SettingSourceKind::PlatformPolicy);
+        QCOMPARE(r.source, SettingSourceType::PlatformPolicy);
         QVERIFY(r.isEnforced());
     }
 
     void testHighestPriorityEnforcedWins()
     {
         ManagedSettings resolver;
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::ServerEnforced, EnforcementState::Enforced, 100,
-            QVariantMap{{QStringLiteral("skipUpdateCheck"), false}}));
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::PlatformPolicy, EnforcementState::Enforced, 200,
-            QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::ServerEnforced,
+                                                       EnforcementState::Enforced,
+                                                       100,
+                                                       QVariantMap{{QStringLiteral("skipUpdateCheck"), false}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                       EnforcementState::Enforced,
+                                                       200,
+                                                       QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}));
 
         const auto r = resolver.resolve(skipSpec());
 
         QCOMPARE(r.value.toBool(), true); // device policy (200) beats server enforced (100)
-        QCOMPARE(r.source, SettingSourceKind::PlatformPolicy);
+        QCOMPARE(r.source, SettingSourceType::PlatformPolicy);
     }
 
     void testHighestPriorityDefaultWinsWhenNoUser()
     {
         ManagedSettings resolver;
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::PlatformDefault, EnforcementState::NotEnforced, 20,
-            QVariantMap{{QStringLiteral("updateChannel"), QStringLiteral("beta")}}));
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::ServerDefault, EnforcementState::NotEnforced, 30,
-            QVariantMap{{QStringLiteral("updateChannel"), QStringLiteral("stable")}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformDefault,
+                                                       EnforcementState::NotEnforced,
+                                                       20,
+                                                       QVariantMap{{QStringLiteral("updateChannel"), QStringLiteral("beta")}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::ServerDefault,
+                                                       EnforcementState::NotEnforced,
+                                                       30,
+                                                       QVariantMap{{QStringLiteral("updateChannel"), QStringLiteral("stable")}}));
 
         const auto r = resolver.resolve({QStringLiteral("updateChannel"), QStringLiteral("stable"), false, SettingScope::User});
 
         QCOMPARE(r.value.toString(), QStringLiteral("stable")); // ServerDefault(30) beats PlatformDefault(20)
-        QCOMPARE(r.source, SettingSourceKind::ServerDefault);
+        QCOMPARE(r.source, SettingSourceType::ServerDefault);
     }
 
     void testEnforcedIgnoredWhenSettingNotEnforceable()
     {
         ManagedSettings resolver;
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::UserConfig, EnforcementState::NotEnforced, 50,
-            QVariantMap{{QStringLiteral("updateChannel"), QStringLiteral("beta")}}));
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::PlatformPolicy, EnforcementState::Enforced, 200,
-            QVariantMap{{QStringLiteral("updateChannel"), QStringLiteral("stable")}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::UserConfig,
+                                                       EnforcementState::NotEnforced,
+                                                       50,
+                                                       QVariantMap{{QStringLiteral("updateChannel"), QStringLiteral("beta")}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                       EnforcementState::Enforced,
+                                                       200,
+                                                       QVariantMap{{QStringLiteral("updateChannel"), QStringLiteral("stable")}}));
 
         const auto r = resolver.resolve({QStringLiteral("updateChannel"), QStringLiteral("stable"), false, SettingScope::User});
 
         QCOMPARE(r.value.toString(), QStringLiteral("beta"));
-        QCOMPARE(r.source, SettingSourceKind::UserConfig);
+        QCOMPARE(r.source, SettingSourceType::UserConfig);
         QVERIFY(!r.isEnforced());
     }
 
@@ -187,7 +210,7 @@ private slots:
             QVariantMap{{QStringLiteral("skipUpdateCheck"), true},
                 {QStringLiteral("autoUpdateCheck"), false}});
 
-        QCOMPARE(source.kind(), SettingSourceKind::PlatformPolicy);
+        QCOMPARE(source.type(), SettingSourceType::PlatformPolicy);
         QCOMPARE(source.enforcement(), EnforcementState::Enforced);
         QCOMPARE(source.priority(), 200);
 
@@ -227,7 +250,7 @@ private slots:
         }
         const UserConfigSource source(path);
 
-        QCOMPARE(source.kind(), SettingSourceKind::UserConfig);
+        QCOMPARE(source.type(), SettingSourceType::UserConfig);
         QCOMPARE(source.enforcement(), EnforcementState::NotEnforced);
         QCOMPARE(source.read(QStringLiteral("skipUpdateCheck"), QString())->toBool(), true);
         QCOMPARE(source.read(QStringLiteral("autoUpdateCheck"), QStringLiteral("Accounts"))->toBool(), false);
@@ -272,8 +295,10 @@ private slots:
     void testResolveAllReturnsMetadataPerSpec()
     {
         ManagedSettings resolver;
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::PlatformPolicy, EnforcementState::Enforced, 200,
-            QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                       EnforcementState::Enforced,
+                                                       200,
+                                                       QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}));
 
         const auto all = resolver.resolveAll(ManagedSettingsSchema::all());
         QCOMPARE(all.size(), ManagedSettingsSchema::all().size());
@@ -282,7 +307,7 @@ private slots:
             [](const ManagedValue &value) { return value.key == QStringLiteral("skipUpdateCheck"); });
         QVERIFY(skip != all.cend());
         QVERIFY(skip->isEnforced());
-        QCOMPARE(skip->source, SettingSourceKind::PlatformPolicy);
+        QCOMPARE(skip->source, SettingSourceType::PlatformPolicy);
     }
 
     void testParseServerManagedSettingsReadsSchemaAndMaps()
@@ -318,9 +343,11 @@ private slots:
     void testServerSettingsSourceExposesMapWithKindEnforcementPriority()
     {
         const ServerSettingsSource source(QVariantMap{{QStringLiteral("skipUpdateCheck"), true}},
-            SettingSourceKind::ServerEnforced, EnforcementState::Enforced, 100);
+                                          SettingSourceType::ServerEnforced,
+                                          EnforcementState::Enforced,
+                                          100);
 
-        QCOMPARE(source.kind(), SettingSourceKind::ServerEnforced);
+        QCOMPARE(source.type(), SettingSourceType::ServerEnforced);
         QCOMPARE(source.enforcement(), EnforcementState::Enforced);
         QCOMPARE(source.priority(), 100);
         QCOMPARE(source.read(QStringLiteral("skipUpdateCheck"), QString())->toBool(), true);
@@ -329,28 +356,35 @@ private slots:
 
     void testServerEnforcedEnforcedOverUserButDevicePolicyWins()
     {
+        // virtualFilesMode stays server enforceable, so it survives sanitize.
         ServerManagedSettings raw;
-        raw.enforced = QVariantMap{{QStringLiteral("skipUpdateCheck"), true}};
+        raw.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("onlineOnly")}};
         const auto clean = sanitizeServerManagedSettings(raw);
 
+        const SettingSpec spec{QStringLiteral("virtualFilesMode"), QStringLiteral(""), true, SettingScope::User};
+
         ManagedSettings resolver;
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::UserConfig, EnforcementState::NotEnforced, 50,
-            QVariantMap{{QStringLiteral("skipUpdateCheck"), false}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::UserConfig,
+                                                       EnforcementState::NotEnforced,
+                                                       50,
+                                                       QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("off")}}));
         for (auto &source : buildServerSources(clean)) {
             resolver.addSource(std::move(source));
         }
 
         // Server enforced beats the user config.
-        const auto withoutDevice = resolver.resolve(skipSpec());
-        QCOMPARE(withoutDevice.value.toBool(), true);
-        QCOMPARE(withoutDevice.source, SettingSourceKind::ServerEnforced);
+        const auto withoutDevice = resolver.resolve(spec);
+        QCOMPARE(withoutDevice.value.toString(), QStringLiteral("onlineOnly"));
+        QCOMPARE(withoutDevice.source, SettingSourceType::ServerEnforced);
 
         // Device policy still beats server enforced.
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceKind::PlatformPolicy, EnforcementState::Enforced, 200,
-            QVariantMap{{QStringLiteral("skipUpdateCheck"), false}}));
-        const auto withDevice = resolver.resolve(skipSpec());
-        QCOMPARE(withDevice.value.toBool(), false);
-        QCOMPARE(withDevice.source, SettingSourceKind::PlatformPolicy);
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                       EnforcementState::Enforced,
+                                                       200,
+                                                       QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("off")}}));
+        const auto withDevice = resolver.resolve(spec);
+        QCOMPARE(withDevice.value.toString(), QStringLiteral("off"));
+        QCOMPARE(withDevice.source, SettingSourceType::PlatformPolicy);
     }
 
     void testConfigFileServerManagedSettingsRoundtrip()
@@ -415,7 +449,7 @@ private slots:
         QCOMPARE(config.getConfig<bool>(QStringLiteral("skipUpdateCheck")), true);
 
         const auto resolved = config.getConfig(QStringLiteral("skipUpdateCheck"));
-        QCOMPARE(resolved.source, SettingSourceKind::UserConfig);
+        QCOMPARE(resolved.source, SettingSourceType::UserConfig);
         QVERIFY(!resolved.isEnforced());
     }
 
@@ -443,7 +477,7 @@ private slots:
         QCOMPARE(config.setConfig(QStringLiteral("skipUpdateCheck"), false), false);
         QCOMPARE(config.getConfig<bool>(QStringLiteral("skipUpdateCheck")), true);
         QVERIFY(config.isEnforced(QStringLiteral("skipUpdateCheck")));
-        QCOMPARE(config.sourceOf(QStringLiteral("skipUpdateCheck")), SettingSourceKind::ServerEnforced);
+        QCOMPARE(config.sourceOf(QStringLiteral("skipUpdateCheck")), SettingSourceType::ServerEnforced);
     }
 
     void testServerSettingsAreCachedAndPersisted()
@@ -462,6 +496,21 @@ private slots:
         // Dropping the cache reparses from the config file, proving persistence.
         ManagedConfig::instance().invalidate();
         QCOMPARE(config.serverManagedSettings().enforced.value(QStringLiteral("skipUpdateCheck")).toBool(), true);
+    }
+
+    void testSanitizeDropsServerEnforcedUpdateAndProxyKeys()
+    {
+        ServerManagedSettings raw;
+        raw.enforced = QVariantMap{{QStringLiteral("skipUpdateCheck"), true},
+            {QStringLiteral("proxyHost"), QStringLiteral("evil.example.com")},
+            {QStringLiteral("virtualFilesMode"), QStringLiteral("onlineOnly")}};
+
+        const auto clean = sanitizeServerManagedSettings(raw);
+
+        // A server cannot enforce updates or proxy; only device policy can.
+        QVERIFY(!clean.enforced.contains(QStringLiteral("skipUpdateCheck")));
+        QVERIFY(!clean.enforced.contains(QStringLiteral("proxyHost")));
+        QVERIFY(clean.enforced.contains(QStringLiteral("virtualFilesMode")));
     }
 };
 

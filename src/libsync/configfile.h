@@ -256,7 +256,7 @@ public:
     // Writes the user config, unless the effective value is enforced; returns false then.
     bool setConfig(const QString &name, const QVariant &value, const QString &connectionGroupName = {});
     [[nodiscard]] bool isEnforced(const QString &name, const QString &connectionGroupName = {}) const;
-    [[nodiscard]] SettingSourceKind sourceOf(const QString &name, const QString &connectionGroupName = {}) const;
+    [[nodiscard]] SettingSourceType sourceOf(const QString &name, const QString &connectionGroupName = {}) const;
 
     [[nodiscard]] bool hasDesktopEnterpriseChannel() const;
 
