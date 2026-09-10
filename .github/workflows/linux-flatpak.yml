@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   flatpak:
-    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft && contains(github.event.pull_request.labels.*.name, 'os: :penguin: Linux') }}
+    if: "${{ github.event.action != 'closed' && !github.event.pull_request.draft && contains(github.event.pull_request.labels.*.name, 'os: :penguin: Linux') }}"
     name: Linux Flatpak Package
     runs-on: ubuntu-latest
     container:
