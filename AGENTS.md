@@ -43,6 +43,10 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
 Avoid creating source files that implement multiple types; instead, place each type in its own dedicated source file.
 
+### Documentation comments
+
+Documentation comments must be accurate and written for human readers. Follow [`doc/terminology.md`](doc/terminology.md) for vocabulary and [`doc/writing-style.md`](doc/writing-style.md) for comment structure, concision, and language-specific conventions. A wrong or overreaching comment is worse than none.
+
 ## Commit and Pull Request Guidelines
 
 - **Commits**: Follow Conventional Commits format. Use `feat: ...`, `fix: ...`, or `refactor: ...` as appropriate in the commit message prefix.
