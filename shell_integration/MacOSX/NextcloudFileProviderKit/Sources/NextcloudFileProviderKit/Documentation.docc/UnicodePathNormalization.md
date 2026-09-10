@@ -43,21 +43,22 @@ The normalized values are local identity keys only.
 
 New objects populate both forms. Realm schema migration version 203 backfills
 the normalized properties for rows created by earlier versions, and
-`FilesDatabaseManager.repairDriftedNormalizedLocationKeys()` runs at every
-open to repair any row whose keys have drifted from its raw columns.
+`FilesDatabaseManager.repairPersistedLogicalAddresses()` runs at every open to
+repair any row whose keys have drifted from its raw columns.
 
 Drift is a mismatch between a stored key and the normalization of the raw
 column it is derived from, so it cannot be expressed as a Realm query: an
 index can only be probed for a value, and the value a drifted key should hold
 is whatever `precomposedStringWithCanonicalMapping` returns for that row. The
 repair therefore walks the whole table once per open and normalizes both raw
-columns of every row. Rows are collected into an array rather than a lazy
+columns of every row. Rows are collected into arrays rather than left as lazy
 `Results`, which is also what makes the subsequent rewrite safe, because
-mutating the columns a live query reads would let it skip rows. Deleted rows,
-lock files of local origin, and the synthetic root container are repaired
-alongside everything else: the exclusions that `cleanupPreexistingLogicalDuplicates()`
-applies are about which rows may be soft-deleted, not about which rows have to
-be findable by location.
+mutating the columns a live query reads would let it skip rows.
+
+Deleted rows, lock files of local origin, and the synthetic root container are
+repaired alongside everything else. The exclusions applied further down decide
+which rows may be soft-deleted as duplicates, not which rows have to be
+findable by location: a lock file resolved by path is a row like any other.
 
 ## Where normalization is required
 
@@ -88,10 +89,9 @@ site.
 
 ## Duplicate cleanup
 
-The startup method
-`FilesDatabaseManager.cleanupPreexistingLogicalDuplicates()` scans existing
-rows and groups them by account, normalized parent URL, and normalized file
-name. This is important even after the migration:
+The same startup walk that repairs drifted keys also groups existing rows by
+account, normalized parent URL, and normalized file name. This is important
+even after the migration:
 
 1. Before the fix, two canonically equivalent paths could have been persisted
    as different raw strings.
@@ -99,7 +99,14 @@ name. This is important even after the migration:
 3. Grouping by normalized properties makes them one logical location.
 4. The newest settled row wins; other settled rows are soft-deleted.
 5. In-flight rows are not deleted because active transfers refer to their
-   specific `ocId`.
+   specific `ocId`, and a bucket that is entirely in-flight is left intact for
+   the next run-time eviction to heal.
+
+Grouping uses the keys the walk computes rather than the ones stored on the
+row, so a drifted row is deduplicated in the pass that repairs it instead of
+in the next one. Both halves share a single write transaction, which is opened
+only when there is something to change, so a clean database pays no transaction
+cost.
 
 The related `evictLogicalDuplicates(of:in:now:)` path applies the same
 normalized-location rule while processing newly received metadata. The raw

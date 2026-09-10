@@ -115,8 +115,7 @@ public final class FilesDatabaseManager: Sendable {
         do {
             _ = try Realm()
             logger.info("Successfully created Realm.")
-            repairDriftedNormalizedLocationKeys()
-            cleanupPreexistingLogicalDuplicates()
+            repairPersistedLogicalAddresses()
         } catch {
             logger.fault("Error creating Realm: \(error)")
         }
