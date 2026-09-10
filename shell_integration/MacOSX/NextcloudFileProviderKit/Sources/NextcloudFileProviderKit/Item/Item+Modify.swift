@@ -7,6 +7,32 @@ import NextcloudFileProviderXPC
 import NextcloudKit
 
 public extension Item {
+    private func deleteRemoteItemForExcludedDestination(domain: NSFileProviderDomain?) async -> Error? {
+        let remotePath = metadata.remotePath()
+        let (_, _, error) = await remoteInterface.delete(
+            remotePath: remotePath,
+            account: account,
+            options: .init(),
+            taskHandler: { task in
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: self.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
+                }
+            }
+        )
+
+        guard error == .success || error.isNotFoundError else {
+            logger.error("Could not delete the remote item for an excluded destination.", [.item: itemIdentifier, .url: remotePath, .error: error])
+            return error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier)
+        }
+
+        logger.info("Deleted the remote item for an excluded destination.", [.item: itemIdentifier, .url: remotePath])
+        return nil
+    }
+
     func move(
         newFileName: String,
         newRemotePath: String,
@@ -412,10 +438,9 @@ public extension Item {
             )
         }
 
-        let relativePath = (metadata.serverUrl + "/" + metadata.fileName).replacingOccurrences(of: account.davFilesUrl, with: "")
-
-        guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
-            logger.info("File is in the ignore list. Will delete locally with no remote effect.", [.item: modifiedItem.itemIdentifier, .name: modifiedItem.filename])
+        let sourceRelativePath = modifiedItem.metadata.remotePath().replacingOccurrences(of: account.davFilesUrl, with: "")
+        guard ignoredFiles == nil || ignoredFiles?.isExcluded(sourceRelativePath) == false else {
+            logger.info("File is in the ignore list. Any follow-up provider deletion will have no remote effect.", [.item: modifiedItem.itemIdentifier, .name: modifiedItem.filename])
 
             guard let modifiedIgnored = await modifyUnuploaded(
                 itemTarget: itemTarget,
@@ -430,30 +455,11 @@ public extension Item {
                 progress: progress,
                 dbManager: dbManager
             ) else {
-                logger.error("Unable to modify ignored file, got nil item: \(relativePath)")
+                logger.error("Unable to modify ignored file.", [.item: modifiedItem.itemIdentifier, .name: modifiedItem.filename])
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
 
-            modifiedItem = modifiedIgnored
-            return (modifiedItem, NSFileProviderError(.excludedFromSync))
-        }
-
-        // We are handling an item that is available locally but not on the server -- so create it
-        // This can happen when a previously ignored file is no longer ignored
-        if !modifiedItem.isUploaded, modifiedItem.isDownloaded, modifiedItem.metadata.etag == "" {
-            return await modifiedItem.createUnuploaded(
-                itemTarget: itemTarget,
-                baseVersion: baseVersion,
-                changedFields: changedFields,
-                contents: newContents,
-                options: options,
-                request: request,
-                ignoredFiles: ignoredFiles,
-                domain: domain,
-                forcedChunkSize: forcedChunkSize,
-                progress: progress,
-                dbManager: dbManager
-            )
+            return (modifiedIgnored, NSFileProviderError(.excludedFromSync))
         }
 
         guard itemTarget.itemIdentifier == modifiedItem.itemIdentifier else {
@@ -494,8 +500,66 @@ public extension Item {
         }
 
         let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
+        let destinationRelativePath = newServerUrlFileName.replacingOccurrences(of: account.davFilesUrl, with: "")
+        let destinationIsExcluded = newServerUrlFileName.hasPrefix(account.davFilesUrl) &&
+            (ignoredFiles?.isExcluded(destinationRelativePath) ?? false)
 
         logger.debug("About to modify item.", [.item: modifiedItem])
+
+        if destinationIsExcluded {
+            logger.info("Destination is excluded from sync.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+
+            guard let modifiedIgnored = await modifyUnuploaded(
+                itemTarget: itemTarget,
+                baseVersion: baseVersion,
+                changedFields: changedFields,
+                contents: newContents,
+                options: options,
+                request: request,
+                ignoredFiles: ignoredFiles,
+                domain: domain,
+                forcedChunkSize: forcedChunkSize,
+                progress: progress,
+                dbManager: dbManager
+            ) else {
+                logger.error("Unable to modify item with an excluded destination.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+                return (nil, NSFileProviderError(.cannotSynchronize))
+            }
+
+            let hasRemoteCounterpart = modifiedItem.isUploaded || !modifiedItem.metadata.etag.isEmpty
+            if hasRemoteCounterpart, !modifiedItem.metadata.isTrashed {
+                guard let remoteDeletionError = await modifiedItem.deleteRemoteItemForExcludedDestination(domain: domain) else {
+                    guard dbManager.markItemAsExcludedFromSync(ocId: modifiedItem.metadata.ocId) else {
+                        logger.error("Unable to persist exclusion state for an excluded destination.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+                        return (nil, NSFileProviderError(.cannotSynchronize))
+                    }
+
+                    return (modifiedIgnored, NSFileProviderError(.excludedFromSync))
+                }
+
+                return (nil, remoteDeletionError)
+            }
+
+            return (modifiedIgnored, NSFileProviderError(.excludedFromSync))
+        }
+
+        // We are handling an item that is available locally but not on the server -- so create it
+        // This can happen when a previously ignored file is no longer ignored
+        if !modifiedItem.isUploaded, modifiedItem.isDownloaded, modifiedItem.metadata.etag == "" {
+            return await modifiedItem.createUnuploaded(
+                itemTarget: itemTarget,
+                baseVersion: baseVersion,
+                changedFields: changedFields,
+                contents: newContents,
+                options: options,
+                request: request,
+                ignoredFiles: ignoredFiles,
+                domain: domain,
+                forcedChunkSize: forcedChunkSize,
+                progress: progress,
+                dbManager: dbManager
+            )
+        }
 
         if changedFields.contains(.parentItemIdentifier)
             && newParentItemIdentifier == .trashContainer
