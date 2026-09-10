@@ -477,6 +477,27 @@ private Q_SLOTS:
         QCOMPARE(config.skipUpdateCheck(), true);
     }
 
+    void testResolverRefreshesOnServerSettingsChange()
+    {
+        QTemporaryDir dir;
+        ConfigFile reader;
+        reader.setConfDir(dir.path());
+        ManagedConfig::instance().invalidate();
+
+        // Prime the reader's cached resolver while nothing is enforced.
+        QVERIFY(!reader.isEnforced(QStringLiteral("virtualFilesMode")));
+
+        // A different ConfigFile writes enforced server settings.
+        ServerManagedSettings settings;
+        settings.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}};
+        ConfigFile writer;
+        writer.setConfDir(dir.path());
+        writer.setServerManagedSettings(settings);
+
+        // The reader picks up the change without being recreated.
+        QVERIFY(reader.isEnforced(QStringLiteral("virtualFilesMode")));
+    }
+
     void testCapabilitiesParsesDesktopClientManagedSettings()
     {
         const QVariantMap caps{

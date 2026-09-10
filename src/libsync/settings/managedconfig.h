@@ -29,7 +29,7 @@ private:
     [[nodiscard]] static ServerManagedSettings parse(const QString &configFilePath);
     static void save(const QString &configFilePath, const ServerManagedSettings &settings);
 
-    QReadWriteLock _lock;
+    mutable QReadWriteLock _lock;
     bool _loaded = false;
     QString _configFilePath;
     ServerManagedSettings _cached;
