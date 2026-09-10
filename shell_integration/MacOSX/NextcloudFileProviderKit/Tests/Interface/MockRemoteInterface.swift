@@ -606,6 +606,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Use this to simulate server-side upload rejections (e.g. 404 path gone, 507 quota).
     public var uploadError: NKError?
 
+    /// When set, the next created folder uses this as its identifier (including "") instead of a
+    /// random one. Simulates a server response lacking an ocId. See #10701.
+    public var createFolderIdentifierOverride: String?
+
     /// Records the `If-Match` header the most recent upload call carried (nil if none).
     /// Lets tests assert the optimistic-concurrency precondition was sent, and with
     /// which etag. Captured before any injected `uploadError` short-circuit.
@@ -762,7 +766,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         }
 
         let item = MockRemoteItem(
-            identifier: randomIdentifier(),
+            identifier: createFolderIdentifierOverride ?? randomIdentifier(),
             name: itemName,
             remotePath: remotePath,
             directory: true,

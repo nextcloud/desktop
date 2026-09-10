@@ -483,6 +483,13 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     public static func storedItem(identifier: NSFileProviderItemIdentifier, account: Account, remoteInterface: RemoteInterface, dbManager: FilesDatabaseManager, log: any FileProviderLogging) async -> Item? {
         // resolve the given identifier to a record in the model
 
+        // An empty identifier can only come from a corrupt empty-ocId row. Resolving it would vend
+        // an item with an empty identifier and crash the framework, e.g. via the 405 collision
+        // path. See #10701.
+        guard !identifier.rawValue.isEmpty else {
+            return nil
+        }
+
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
 
         guard identifier != .rootContainer else {
