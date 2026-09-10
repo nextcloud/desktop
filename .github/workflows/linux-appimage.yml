@@ -3,7 +3,7 @@
 name: Linux Appimage Package
 on:
   pull_request:
-    types: [opened, reopened, synchronize, ready_for_review, closed]
+    types: [opened, reopened, synchronize, ready_for_review, labeled, closed]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft }}
+    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft && contains(github.event.pull_request.labels.*.name, 'os: linux') }}
     name: Linux Appimage Package
     runs-on: ubuntu-latest
     container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.10.2-4
