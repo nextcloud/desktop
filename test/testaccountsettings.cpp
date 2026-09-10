@@ -56,8 +56,18 @@ class TestAccountSettings : public QObject
     /** @brief Creates an account backed by the test network access manager. */
     static AccountPtr accountWithFakeNetworkAccessManager()
     {
+        auto *const fakeNetworkAccessManager = new FakeQNAM({});
+        fakeNetworkAccessManager->setOverride(
+            [fakeNetworkAccessManager](QNetworkAccessManager::Operation operation, const QNetworkRequest &request, QIODevice *) {
+                return new FakePayloadReply(operation,
+                                            request,
+                                            QByteArrayLiteral(R"({"ocs":{"meta":{"status":"ok","statuscode":200,"message":"OK"},"data":{}}})"),
+                                            fakeNetworkAccessManager);
+            });
+
         auto account = Account::create();
-        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        account->setUrl(QUrl(QStringLiteral("https://example.invalid")));
+        account->setCredentials(new FakeCredentials{fakeNetworkAccessManager});
         return account;
     }
 
