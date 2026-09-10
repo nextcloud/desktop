@@ -16,6 +16,7 @@
 #include "account.h"
 #include "foldermantestutils.h"
 #include "logger.h"
+#include "syncenginetestutils.h"
 #include "testhelper.h"
 #include "theme.h"
 
@@ -45,6 +46,14 @@ class TestAccountSettings : public QObject
     static QPushButton *shortcutButton(const AccountSettings &settings, const char *objectName)
     {
         return settings.findChild<QPushButton *>(QString::fromLatin1(objectName));
+    }
+
+    /** @brief Creates an account backed by the test network access manager. */
+    static AccountPtr accountWithFakeNetworkAccessManager()
+    {
+        auto account = Account::create();
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        return account;
     }
 
 private Q_SLOTS:
@@ -109,7 +118,7 @@ private Q_SLOTS:
 
     void test_accountShortcutsFollowConnectionState()
     {
-        auto account = Account::create();
+        auto account = accountWithFakeNetworkAccessManager();
         account->setCapabilities(shortcutCapabilities(true, true));
         auto accountState = FakeAccountState(account);
         AccountSettings settings(&accountState);
@@ -154,7 +163,7 @@ private Q_SLOTS:
 
     void test_assistantShortcutIconUsesLightPaletteForeground()
     {
-        auto account = Account::create();
+        auto account = accountWithFakeNetworkAccessManager();
         account->setCapabilities(shortcutCapabilities(true, true));
         auto accountState = FakeAccountState(account);
         auto parent = QWidget{};
@@ -175,7 +184,7 @@ private Q_SLOTS:
 
     void test_accountShortcutsFollowLiveCapabilities()
     {
-        auto account = Account::create();
+        auto account = accountWithFakeNetworkAccessManager();
         auto accountState = FakeAccountState(account);
         AccountSettings settings(&accountState);
 
@@ -207,7 +216,7 @@ private Q_SLOTS:
 
     void test_accountShortcutButtonsEmitAccountSpecificRequests()
     {
-        auto account = Account::create();
+        auto account = accountWithFakeNetworkAccessManager();
         account->setCapabilities(shortcutCapabilities(true, true));
         auto accountState = FakeAccountState(account);
         AccountSettings settings(&accountState);
