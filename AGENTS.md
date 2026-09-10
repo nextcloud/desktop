@@ -242,16 +242,16 @@ These instructions are restricted to `./shell_integration/MacOSX/NextcloudIntegr
 
 ### Tests
 
-#### QML and sharing UI workflow
+#### GUI changes
 
-Changes to a QML sharing component must be validated in four stages, in this order:
+Validate GUI changes in stages, using the smallest suitable test or harness:
 
-1. Run the narrowest automated test and verify the component's state, properties, and supported interactions. For QtQuick behavior, use QtQuick Test; use C++ tests for component construction and C++ integration seams only.
-2. Open the smallest standalone QML harness that instantiates the changed component, rather than launching the complete desktop client. Supply a deterministic mocked backend and representative data for each relevant state.
-3. Observe the harness visually, capturing a screenshot when layout or interaction is relevant. Check that every expected control, state transition, and action is present and usable with the mocked backend; a passing build or test is not visual proof.
-4. Report the observed result and any remaining discrepancy. If the harness does not match the expected UX, continue debugging and repeat the relevant stages before reporting the change as complete.
+1. Run the narrowest automated test and verify the component's state, properties, and supported interactions.
+2. Exercise the changed component with representative data for each relevant state, using a deterministic mock backend when needed.
+3. Inspect the result visually when layout or interaction is relevant; a passing build or test is not visual proof.
+4. Report the observed result and any remaining discrepancy. If a failure is only reproducible in the full application, retain the isolated reproduction as far as possible and collect the relevant application logs.
 
-When a failure is only reproducible in the full application, retain the isolated harness as far as possible and collect the desktop client's application log for the full-app reproduction. Do not claim a UI issue is fixed from static validation alone.
+#### General testing guidance
 
 - **Mandatory coverage for features and bugfixes.** Every feature or bugfix implemented by an AI agent must ship with corresponding automated tests in the same change. Bugfixes require a regression test for the original failure mode; features require tests for the new behavior and relevant boundary and failure cases. Tests must exercise behavior through a supported public or testable interface rather than merely increasing line coverage.
 - **Testability is part of implementation.** Before changing production code, locate the relevant test target and its existing fixtures, mocks, and helpers. Prefer designs that allow deterministic isolation and reuse existing test infrastructure; if the code is not testable, make the smallest focused production change needed to establish an appropriate test seam.
