@@ -63,8 +63,8 @@ final class NormalizedLocationKeyTests: XCTestCase {
         )
     }
 
-    /// The safety net for a row that lacks its keys anyway, repaired at open for the cost of one
-    /// indexed equality against an empty result set.
+    /// The safety net for a row that lacks its keys anyway, repaired the next time the database
+    /// is opened.
     func testOpeningTheDatabaseRepairsARowWithMissingNormalizedKeys() throws {
         let manager = makeManager()
         let serverUrl = Self.account.davFilesUrl + "/folder"
@@ -110,7 +110,7 @@ final class NormalizedLocationKeyTests: XCTestCase {
         }
 
         // The first pass legitimately fills in the key the empty name left behind.
-        manager.repairDriftedNormalizedLocationKeys()
+        manager.repairPersistedLogicalAddresses()
 
         let rewritten = expectation(description: "A later repair pass modified a row.")
         rewritten.isInverted = true
@@ -121,11 +121,75 @@ final class NormalizedLocationKeyTests: XCTestCase {
         }
         defer { token.invalidate() }
 
-        manager.repairDriftedNormalizedLocationKeys()
+        manager.repairPersistedLogicalAddresses()
 
         // A rewrite of the row would be notified on the first run-loop turn after the pass
         // returns, so waiting longer buys nothing but suite time.
         wait(for: [rewritten], timeout: 0.2)
+    }
+
+    /// A drifted row has to be deduplicated by the pass that repairs it, which holds only while
+    /// the walk buckets on the keys it computes rather than the ones already stored.
+    func testADriftedDuplicateIsRepairedAndEvictedInOnePass() throws {
+        let manager = makeManager()
+        let serverUrl = Self.account.davFilesUrl + "/folder"
+
+        try manager.ncDatabase().write {
+            let older = RealmItemMetadata()
+            older.ocId = "older"
+            older.account = Self.account.ncKitAccount
+            older.updateLocation(serverUrl: serverUrl, fileName: "dup.txt")
+            older.syncTime = Date(timeIntervalSince1970: 1000)
+            older.uploaded = true
+            // The row a client older than the migration left behind, raw columns only.
+            older.normalizedServerUrl = ""
+            older.normalizedFileName = ""
+            manager.ncDatabase().add(older, update: .all)
+
+            let newer = RealmItemMetadata()
+            newer.ocId = "newer"
+            newer.account = Self.account.ncKitAccount
+            newer.updateLocation(serverUrl: serverUrl, fileName: "dup.txt")
+            newer.syncTime = Date(timeIntervalSince1970: 2000)
+            newer.uploaded = true
+            manager.ncDatabase().add(newer, update: .all)
+        }
+
+        manager.repairPersistedLogicalAddresses()
+
+        let database = manager.ncDatabase()
+        let older = try XCTUnwrap(database.object(ofType: RealmItemMetadata.self, forPrimaryKey: "older"))
+        let newer = try XCTUnwrap(database.object(ofType: RealmItemMetadata.self, forPrimaryKey: "newer"))
+
+        XCTAssertEqual(older.normalizedFileName, "dup.txt", "The drifted row should have been repaired.")
+        XCTAssertTrue(older.deleted, "The older row at the address should have been evicted.")
+        XCTAssertFalse(newer.deleted, "The newest settled row at the address should survive.")
+    }
+
+    /// The repair covers the rows deduplication excludes, because a tombstone or a lock file is
+    /// still resolved by path.
+    func testARowExcludedFromDeduplicationIsStillRepaired() throws {
+        let manager = makeManager()
+
+        try manager.ncDatabase().write {
+            let tombstone = RealmItemMetadata()
+            tombstone.ocId = "tombstone"
+            tombstone.account = Self.account.ncKitAccount
+            tombstone.updateLocation(serverUrl: Self.account.davFilesUrl + "/folder", fileName: "gone.txt")
+            tombstone.deleted = true
+            tombstone.normalizedServerUrl = ""
+            tombstone.normalizedFileName = ""
+            manager.ncDatabase().add(tombstone, update: .all)
+        }
+
+        manager.repairPersistedLogicalAddresses()
+
+        let repaired = try XCTUnwrap(
+            manager.ncDatabase().object(ofType: RealmItemMetadata.self, forPrimaryKey: "tombstone")
+        )
+
+        XCTAssertEqual(repaired.normalizedFileName, "gone.txt")
+        XCTAssertEqual(repaired.normalizedServerUrl, Self.account.davFilesUrl + "/folder")
     }
 
     /// Normalization is why the comparison can be an equality at all, since a decomposed name
