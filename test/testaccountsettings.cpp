@@ -22,6 +22,7 @@
 #include "account.h"
 #include "foldermantestutils.h"
 #include "logger.h"
+#include "syncenginetestutils.h"
 #include "testhelper.h"
 
 #include "accountsettings.h"
@@ -50,6 +51,14 @@ class TestAccountSettings : public QObject
     static QPushButton *shortcutButton(const AccountSettings &settings, const char *objectName)
     {
         return settings.findChild<QPushButton *>(QString::fromLatin1(objectName));
+    }
+
+    /** @brief Creates an account backed by the test network access manager. */
+    static AccountPtr accountWithFakeNetworkAccessManager()
+    {
+        auto account = Account::create();
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        return account;
     }
 
 private Q_SLOTS:
