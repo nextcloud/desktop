@@ -8,6 +8,7 @@
 #include "account.h"
 #include "accountmanager.h"
 #include "accountsettings.h"
+#include "configfile.h"
 #include "systray.h"
 
 #include <QAction>
@@ -18,6 +19,7 @@
 #include <QScrollArea>
 #include <QSignalSpy>
 #include <QStandardPaths>
+#include <QTemporaryDir>
 #include <QTest>
 #include <QToolBar>
 
@@ -25,6 +27,7 @@ class TestSettingsDialog : public QObject
 {
     Q_OBJECT
 
+    QTemporaryDir _configDir;
     QPalette _originalPalette;
 
 private Q_SLOTS:
@@ -32,6 +35,8 @@ private Q_SLOTS:
     {
         Q_INIT_RESOURCE(resources);
         QStandardPaths::setTestModeEnabled(true);
+        QVERIFY(_configDir.isValid());
+        OCC::ConfigFile::setConfDir(_configDir.path());
     }
 
     void init()
