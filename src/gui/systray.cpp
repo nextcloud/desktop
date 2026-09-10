@@ -28,14 +28,12 @@
 #include <QCursor>
 #include <QEvent>
 #include <QGuiApplication>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
 #include <QQuickWindow>
-#include <QVariantMap>
 #include <QScreen>
-#include <QGuiApplication>
-#include <QMenu>
+#include <QVariantMap>
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
@@ -154,8 +152,6 @@ Systray::Systray()
     setupContextMenu();
 #endif
 
-    connect(UserModel::instance(), &UserModel::currentUserChanged,
-        this, &Systray::slotCurrentUserChanged);
     connect(UserModel::instance(), &UserModel::addAccount,
             this, &Systray::openAccountWizard);
 
@@ -171,33 +167,12 @@ Systray::Systray()
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, [this]{ showTrayPopup(WindowPosition::Center); });
 #endif
-
-    if (FolderMan::instance()) {
-        connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &Systray::slotSyncFoldersChanged);
-        slotSyncFoldersChanged(FolderMan::instance()->map());
-    }
 }
 
 void Systray::create()
 {
-    if (_trayEngine) {
-        if (!AccountManager::instance()->accounts().isEmpty()) {
-            _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
-        } else {
-            _trayEngine->rootContext()->setContextProperty("activityModel", &_fakeActivityModel);
-        }
-    }
     hideWindow();
     Q_EMIT activated(QSystemTrayIcon::ActivationReason::Unknown);
-    slotUpdateSyncPausedState();
-    connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &Systray::slotUpdateSyncPausedState);
-}
-
-void Systray::showWindow(WindowPosition position)
-{
-    Q_UNUSED(position)
-
-    showActivitiesWindow();
 }
 
 void Systray::showTrayPopup(WindowPosition position)
@@ -235,11 +210,6 @@ void Systray::hideWindow()
     hideQtTrayPopup();
 #endif
     setIsOpen(false);
-}
-
-void Systray::showQMLWindow()
-{
-    showActivitiesWindow();
 }
 
 void Systray::showActivitiesWindow(int userIndex)
@@ -1005,33 +975,6 @@ void Systray::presentFileActionsViewInSystray(const QString &localPath)
     createFileActionsDialog(localPath);
 }
 
-void Systray::slotCurrentUserChanged()
-{
-    if (_trayEngine) {
-        // Change ActivityModel
-        _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
-    }
-
-    // Rebuild App list
-    UserAppsModel::instance()->buildAppList();
-}
-
-void Systray::slotUpdateSyncPausedState()
-{
-    const auto folderMap = FolderMan::instance()->map();
-    for (const auto folder : folderMap) {
-        connect(folder, &Folder::syncPausedChanged, this, &Systray::slotUpdateSyncPausedState, Qt::UniqueConnection);
-        if (!folder->syncPaused()) {
-            _syncIsPaused = false;
-            Q_EMIT syncIsPausedChanged();
-            return;
-        }
-    }
-
-    _syncIsPaused = true;
-    Q_EMIT syncIsPausedChanged();
-}
-
 void Systray::slotUnpauseAllFolders()
 {
     setPauseOnAllFoldersHelper(false);
@@ -1040,14 +983,6 @@ void Systray::slotUnpauseAllFolders()
 void Systray::slotPauseAllFolders()
 {
     setPauseOnAllFoldersHelper(true);
-}
-
-void Systray::slotSyncFoldersChanged(const OCC::Folder::Map &folderMap)
-{
-    if (const auto currentAnySyncFolders = !folderMap.isEmpty(); currentAnySyncFolders != _anySyncFolders) {
-        _anySyncFolders = currentAnySyncFolders;
-        Q_EMIT anySyncFoldersChanged();
-    }
 }
 
 void Systray::setPauseOnAllFoldersHelper(bool pause)
@@ -1174,25 +1109,13 @@ void Systray::showTalkMessage(const QString &title, const QString &message, cons
 #endif
 }
 
-bool Systray::syncIsPaused() const
-{
-    return _syncIsPaused;
-}
-
 void Systray::setSyncIsPaused(const bool syncIsPaused)
 {
-    _syncIsPaused = syncIsPaused;
-    if (_syncIsPaused) {
+    if (syncIsPaused) {
         slotPauseAllFolders();
     } else {
         slotUnpauseAllFolders();
     }
-    Q_EMIT syncIsPausedChanged();
-}
-
-bool Systray::anySyncFolders() const
-{
-    return _anySyncFolders;
 }
 
 Systray::SyncControlState Systray::syncControlState() const
@@ -1217,23 +1140,6 @@ Systray::SyncControlState Systray::syncControlState() const
 /********************************************************************************************/
 /* Helper functions for cross-platform tray icon position and taskbar orientation detection */
 /********************************************************************************************/
-
-void Systray::positionWindowAtTray(QQuickWindow *window) const
-{
-    if (useNormalWindow()) {
-        return;
-    }
-
-    // need to store the current window size before moving the window to another screen,
-    // otherwise it is being incorrectly resized by the OS or Qt when switching to a screen
-    // with a different DPI setting
-    const auto initialSize = window->size();
-    window->setScreen(currentScreen());
-    window->resize(initialSize);
-
-    const auto position = computeWindowPosition(initialSize.width(), initialSize.height());
-    window->setPosition(position);
-}
 
 void Systray::positionWindowAtScreenCenter(QQuickWindow *window) const
 {
@@ -1363,42 +1269,6 @@ QRect Systray::currentAvailableScreenRect() const
     return screen->availableGeometry();
 }
 
-QPoint Systray::computeWindowReferencePoint() const
-{
-    constexpr auto spacing = 4;
-    const auto trayIconCenter = calcTrayIconCenter();
-    const auto taskbarScreenEdge = taskbarOrientation();
-    const auto screenRect = currentAvailableScreenRect();
-
-    qCDebug(lcSystray) << "screenRect:" << screenRect;
-    qCDebug(lcSystray) << "taskbarScreenEdge:" << taskbarScreenEdge;
-    qCDebug(lcSystray) << "trayIconCenter:" << trayIconCenter;
-
-    switch(taskbarScreenEdge) {
-    case TaskBarPosition::Bottom:
-        return {
-            trayIconCenter.x(),
-            screenRect.bottom() - spacing
-        };
-    case TaskBarPosition::Left:
-        return {
-            screenRect.left() + spacing,
-            trayIconCenter.y()
-        };
-    case TaskBarPosition::Top:
-        return {
-            trayIconCenter.x(),
-            screenRect.top() + spacing
-        };
-    case TaskBarPosition::Right:
-        return {
-            screenRect.right() - spacing,
-            trayIconCenter.y()
-        };
-    }
-    Q_UNREACHABLE();
-}
-
 QPoint Systray::computeNotificationReferencePoint(int spacing, NotificationPosition position) const
 {
     auto trayIconCenter = calcTrayIconCenter();
@@ -1467,38 +1337,6 @@ QRect Systray::computeWindowRect(int spacing, const QPoint &topLeft, const QPoin
     }
 
     return rect.translated(offset);
-}
-
-QPoint Systray::computeWindowPosition(int width, int height) const
-{
-    constexpr auto spacing = 4;
-    const auto referencePoint = computeWindowReferencePoint();
-
-    const auto taskbarScreenEdge = taskbarOrientation();
-    const auto screenRect = currentScreenRect();
-
-    const auto topLeft = [=]() {
-        switch(taskbarScreenEdge) {
-        case TaskBarPosition::Bottom:
-            return referencePoint - QPoint(width / 2, height);
-        case TaskBarPosition::Left:
-            return referencePoint;
-        case TaskBarPosition::Top:
-            return referencePoint - QPoint(width / 2, 0);
-        case TaskBarPosition::Right:
-            return referencePoint - QPoint(width, 0);
-        }
-        Q_UNREACHABLE();
-    }();
-    const auto bottomRight = topLeft + QPoint(width, height);
-    const auto windowRect = computeWindowRect(spacing, topLeft, bottomRight);
-
-    qCDebug(lcSystray) << "taskbarScreenEdge:" << taskbarScreenEdge;
-    qCDebug(lcSystray) << "screenRect:" << screenRect;
-    qCDebug(lcSystray) << "windowRect (reference)" << QRect(topLeft, bottomRight);
-    qCDebug(lcSystray) << "windowRect (adjusted)" << windowRect;
-
-    return windowRect.topLeft();
 }
 
 QPoint Systray::computeNotificationPosition(int width, int height, int spacing, NotificationPosition position) const
