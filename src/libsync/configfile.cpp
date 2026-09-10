@@ -679,18 +679,16 @@ ResolvedSetting ConfigFile::getConfig(const QString &name, const QVariant &built
 {
     const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
     const auto spec = ManagedSettingsSchema::find(name).value_or(SettingDefinition{name, builtinDefault, true, SettingScope::User});
-
+    // Keep the resolver local so live sources are current and no mutable cache needs synchronization.
     ManagedSettings resolver;
     for (auto &deviceSource : buildDeviceSources()) {
         resolver.addSource(std::move(deviceSource));
     }
     resolver.addSource(std::make_unique<UserConfigSource>(configFile(), groupName));
-    // Also read legacy top level values at a lower priority.
     resolver.addSource(std::make_unique<UserConfigSource>(configFile(), QString(), 49));
     for (auto &serverSource : buildServerSources(serverManagedSettings())) {
         resolver.addSource(std::move(serverSource));
     }
-
     return resolver.resolve(spec);
 }
 
