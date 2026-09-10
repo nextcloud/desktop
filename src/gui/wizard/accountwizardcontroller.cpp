@@ -103,9 +103,11 @@ AccountWizardController::AccountWizardController(QObject *parent)
     _largeFolderThresholdMb = static_cast<int>(largeFolderLimit.second);
     _askBeforeExternalStorage = cfg.confirmExternalStorage();
 
+#ifndef Q_OS_LINUX
     if (canUseVirtualFiles()) {
         _syncMode = VirtualFiles;
     }
+#endif
 }
 
 AccountWizardController::~AccountWizardController() = default;

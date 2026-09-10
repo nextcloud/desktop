@@ -164,6 +164,10 @@ set(libsync_SRCS
     creds/keychainchunk.cpp
     caseclashconflictsolver.h
     caseclashconflictsolver.cpp
+    chronoelapsedtimer.h
+    chronoelapsedtimer.cpp
+    hydrationjob.h
+    hydrationjob.cpp
 )
 
 if (WIN32)
@@ -206,6 +210,19 @@ set(creds_HEADERS
     creds/httpcredentials.h
 )
 
+try_compile(HAS_CLOCK_CAST
+        SOURCE_FROM_CONTENT chrono_test.cpp "
+#include <chrono>
+int main() {
+    std::chrono::clock_cast<std::chrono::system_clock>;
+}"
+)
+message(STATUS "HAS_CLOCK_CAST: ${HAS_CLOCK_CAST}")
+
+if(HAS_CLOCK_CAST)
+    set_source_files_properties(filesystem.cpp PROPERTIES COMPILE_DEFINITIONS HAS_CLOCK_CAST)
+endif()
+
 IF (NOT APPLE)
     INSTALL(
         FILES ${owncloudsync_HEADERS}
@@ -240,6 +257,19 @@ target_link_libraries(nextcloudsync
   KF6::Archive
   Qt::Core5Compat
 )
+
+# needed to allow teh dynamic load of the openvfs based VFS plug-in inside the AppImage package
+find_package(OpenVFS 0.1.0 QUIET)
+set_package_properties(OpenVFS PROPERTIES TYPE OPTIONAL
+        DESCRIPTION "A Virtual Filesystem Layer for cloud storages for the free desktop"
+        URL "https://github.com/opencloud-eu/openvfs/")
+
+if(TARGET OpenVFS::OpenVFS)
+    target_link_libraries(nextcloudsync
+      PUBLIC
+      OpenVFS::LibOpenVFS
+  )
+endif()
 
 target_compile_features(nextcloudsync
     PRIVATE

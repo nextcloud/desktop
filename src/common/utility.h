@@ -227,6 +227,11 @@ namespace Utility {
     // if false, the two cases are two different files.
     OCSYNC_EXPORT bool fsCasePreserving();
 
+    inline auto fsCaseSensitivity()
+    {
+        return fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive;
+    }
+
     // Check if two paths that MUST exist are equal. This function
     // uses QDir::canonicalPath() to judge and cares for the systems
     // case sensitivity.

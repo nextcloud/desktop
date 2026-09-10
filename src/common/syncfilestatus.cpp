@@ -5,6 +5,8 @@
 
 #include "syncfilestatus.h"
 
+#include <QDebugStateSaver>
+
 namespace OCC {
 SyncFileStatus::SyncFileStatus() = default;
 
@@ -67,4 +69,12 @@ QString SyncFileStatus::toSocketAPIString() const
 
     return statusString;
 }
+}
+
+QDebug &operator<<(QDebug &debug, const OCC::SyncFileStatus &item)
+{
+    QDebugStateSaver saver(debug);
+    debug.setAutoInsertSpaces(false);
+    debug << u"OCC::SyncFileStatus(shared=" << item.shared() << u", tag=" << item.tag() << u")";
+    return debug;
 }
