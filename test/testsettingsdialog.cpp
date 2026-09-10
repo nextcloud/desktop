@@ -8,6 +8,7 @@
 #include <QApplication>
 #include <QGroupBox>
 #include <QScrollArea>
+#include <QSignalSpy>
 #include <QStandardPaths>
 #include <QTest>
 
