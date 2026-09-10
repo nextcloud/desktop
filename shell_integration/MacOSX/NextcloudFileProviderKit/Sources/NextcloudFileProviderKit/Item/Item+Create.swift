@@ -3,7 +3,6 @@
 
 @preconcurrency import FileProvider
 import Foundation
-import NextcloudCapabilitiesKit
 import NextcloudFileProviderXPC
 import NextcloudKit
 import UniformTypeIdentifiers

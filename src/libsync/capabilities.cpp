@@ -19,7 +19,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerCapabilities, "nextcloud.sync.server.capabilities", QtInfoMsg)
 
-
 Capabilities::Capabilities(const QVariantMap &capabilities)
     : _capabilities(capabilities)
 {
@@ -102,6 +101,11 @@ int Capabilities::shareDefaultPermissions() const
     }
     
     return {};
+}
+
+bool Capabilities::unifiedSharingAvailable() const
+{
+    return _capabilities.contains("sharing"_L1);
 }
 
 bool Capabilities::clientSideEncryptionAvailable() const

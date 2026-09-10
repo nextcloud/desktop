@@ -98,6 +98,14 @@ if (NOT WIN32)
 endif()
 
 nextcloud_add_test(Capabilities)
+nextcloud_add_test(UnifiedSharing)
+target_link_libraries(UnifiedSharingTest PRIVATE nextcloudGuiSharing)
+nextcloud_add_test(PermissionModel)
+target_link_libraries(PermissionModelTest PRIVATE nextcloudGuiSharing)
+nextcloud_add_test(RecipientModel)
+target_link_libraries(RecipientModelTest PRIVATE nextcloudGuiSharing)
+nextcloud_add_test(SharingDialog)
+target_link_libraries(SharingDialogTest PRIVATE nextcloudGuiSharing nextcloudGuiSharingplugin)
 nextcloud_add_test(PushNotifications)
 nextcloud_add_test(Theme)
 nextcloud_add_test(IconUtils)
@@ -133,6 +141,9 @@ add_test(NAME AssistantQmlTest
 )
 set_tests_properties(AssistantQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(UnifiedSearchPeopleModel)
+target_link_libraries(UnifiedSearchListmodelTest PRIVATE nextcloudGuiSearch)
+target_link_libraries(UnifiedSearchPeopleModelTest PRIVATE nextcloudGuiSearch)
+set_tests_properties(UnifiedSearchPeopleModelTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(SortedActivityListModel)
 nextcloud_add_test(ActivityData)
@@ -141,7 +152,7 @@ add_test(NAME ActivityFileMenuQmlTest
         -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/activityfilemenu/testactivityfilemenu.qml"
 )
 add_executable(SearchQmlTest qml/search/searchqmltestrunner.cpp)
-target_link_libraries(SearchQmlTest PRIVATE nextcloudCore Qt::QuickTest)
+target_link_libraries(SearchQmlTest PRIVATE nextcloudCore nextcloudGuiSearch nextcloudGuiSearchplugin Qt::QuickTest)
 target_compile_definitions(SearchQmlTest PRIVATE
     SEARCH_QML_TEST_IMPORT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/qml/search/imports"
 )

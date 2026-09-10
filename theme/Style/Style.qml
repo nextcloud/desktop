@@ -136,6 +136,10 @@ QtObject {
     readonly property int wizardDialogSpacing: wizardSectionSpacing + extraSmallSpacing
     readonly property int wizardDialogRadius: wizardSectionSpacing
     readonly property int wizardBodyFontPixelSize: pixelSize + extraSmallSpacing
+    readonly property int wizardTextInputHorizontalPadding: trayAccountPopupRowPadding
+    readonly property int wizardTextInputVerticalPadding: trayAccountPopupActionVerticalPadding
+    readonly property int wizardTextInputRadius: mediumRoundedButtonRadius
+    readonly property int wizardTextAreaHeight: standardPrimaryButtonHeight + wizardSectionSpacing + wizardSectionSpacing
     readonly property int wizardHeaderSpacing: trayAccountPopupActionVerticalPadding
     readonly property int wizardHeaderRowSpacing: trayAccountPopupRowSpacing
     readonly property int wizardHeaderLabelSpacing: extraExtraSmallSpacing
@@ -145,9 +149,20 @@ QtObject {
     readonly property int wizardHeaderAccountServerFontPixelSize: subLinePixelSize
     readonly property int wizardStandaloneWindowMinimumWidth: 520
     readonly property int wizardStandaloneWindowMinimumHeight: 420
-    readonly property int accountWizardWindowWidth: 600
-    readonly property int accountWizardCompactHeight: 420
+    readonly property int dialogWidth: 600
+    readonly property int compactDialogHeight: 420
     readonly property int accountWizardSyncOptionsHeight: 520
+
+    // Sharing dialog
+    readonly property int sharingDialogWidth: 720
+    readonly property int sharingDialogHeight: 500
+    readonly property int sharingDialogWindowMargin: 2 * standardSpacing
+    readonly property int sharingDialogPaneHeaderHeight: iconButtonWidth
+    readonly property int sharingDialogShareListMaximumHeight: 3 * sharingDialogPaneHeaderHeight
+    readonly property int sharingDialogSidebarMinimumWidth: sharingDialogWidth / 4
+    readonly property int sharingDialogSidebarPreferredWidth: sharingDialogWidth / 3
+    readonly property int sharingDialogSidebarMaximumWidth: sharingDialogWidth / 2
+
     readonly property int activitiesWindowWidth: 680
     readonly property int activitiesWindowHeight: 700
     readonly property int searchWindowWidth: 640

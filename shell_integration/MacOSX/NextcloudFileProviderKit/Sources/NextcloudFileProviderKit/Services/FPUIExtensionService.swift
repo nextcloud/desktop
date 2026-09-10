@@ -36,4 +36,11 @@ public let fpUiExtensionServiceName = NSFileProviderServiceName("com.nextcloud.d
     /// Get a server URL for the given local file provider item.
     ///
     func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString?
+
+    ///
+    /// Present the unified sharing dialog for the given local file provider item when supported.
+    ///
+    /// - Returns: `true` when the request was handed to the main app, otherwise `false` so the caller can use the legacy sharing interface.
+    ///
+    func presentUnifiedSharingDialog(identifier: NSFileProviderItemIdentifier, localPath: NSString) async -> Bool
 }

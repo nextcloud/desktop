@@ -9,6 +9,7 @@ import QtQuick.Layouts
 
 import Style
 import com.nextcloud.desktopclient
+import com.nextcloud.desktopclient.search
 import "qrc:/qml/src/gui"
 import "qrc:/qml/src/gui/tray"
 import "qrc:/qml/src/gui/wizard/qml"
@@ -17,10 +18,19 @@ WizardStyledWindow {
     id: root
 
     property var account: null
-    property var searchModel: null
+    property int accountId: -1
+    property var searchModel: UnifiedSearchResultsListModel {
+        accountId: root.accountId
+    }
+    readonly property string headline: qsTr("Search")
     readonly property bool aggregateView: searchModel && searchModel.viewMode === UnifiedSearchResultsListModel.Aggregate
     readonly property bool filtersVisible: aggregateView && searchModel && searchModel.providersReady
-    readonly property int searchState: searchModel ? searchModel.searchState : UnifiedSearchResultsListModel.Placeholder
+    readonly property int searchState: searchModel
+        ? searchModel.searchState
+        : UnifiedSearchResultsListModel.Placeholder
+    readonly property bool isSearchInProgress: searchModel !== null && searchModel.isSearchInProgress
+    readonly property bool canEditSearch: searchModel !== null && searchModel.canEditSearch
+    readonly property bool isAccountConnected: searchModel !== null && searchModel.isAccountConnected
     readonly property bool peoplePopupOpened: peoplePopupLoader.status === Loader.Ready && peoplePopupLoader.item.opened
     readonly property bool customRangeDialogOpened: customRangeDialogLoader.status === Loader.Ready && customRangeDialogLoader.item.opened
 

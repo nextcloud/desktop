@@ -287,6 +287,7 @@ IF(BUILD_UPDATER)
 endif()
 
 add_subdirectory(search)
+add_subdirectory(sharing)
 include(assistant/CMakeLists.txt)
 list(APPEND client_SRCS ${assistant_SRCS})
 qt_add_resources(client_UI_SRCS ${assistant_QRC})
@@ -585,9 +586,6 @@ target_link_libraries(nextcloudCore
   Qt::QuickWidgets
   KF6::Archive
   KDAB::kdsingleapplication
-
-  nextcloudGuiSearch
-  nextcloudGuiSearchplugin
   )
 
 if(KF6GuiAddons_FOUND)
@@ -701,7 +699,13 @@ set_target_properties(nextcloud PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
 
-target_link_libraries(nextcloud PRIVATE nextcloudCore)
+target_link_libraries(nextcloud PRIVATE
+    nextcloudCore
+    nextcloudGuiSearch
+    nextcloudGuiSearchplugin
+    nextcloudGuiSharing
+    nextcloudGuiSharingplugin
+)
 target_compile_definitions(nextcloud PRIVATE QT_NO_KEYWORDS)
 
 if(TARGET PkgConfig::CLOUDPROVIDERS)
