@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft && contains(github.event.pull_request.labels.*.name, 'os: :penguin: Linux') }}
+    if: "${{ github.event.action != 'closed' && !github.event.pull_request.draft && contains(github.event.pull_request.labels.*.name, 'os: :penguin: Linux') }}"
     name: Linux Appimage Package
     runs-on: ubuntu-latest
     container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.10.2-4
