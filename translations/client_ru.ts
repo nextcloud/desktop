@@ -296,17 +296,18 @@
 <context>
     <name>AssistantTaskDelegate</name>
     <message>
-        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="26"/>
+        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="27"/>
         <source>%1 · %2</source>
+        <extracomment>%1 is the assistant task status and %2 is the task's date and time in the locale's short format.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="59"/>
+        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="60"/>
         <source>Retry</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="66"/>
+        <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="67"/>
         <source>Delete</source>
         <translation type="unfinished"/>
     </message>
@@ -322,8 +323,9 @@
 <context>
     <name>AssistantTaskTypeDelegate</name>
     <message>
-        <location filename="../src/gui/assistant/qml/AssistantTaskTypeDelegate.qml" line="100"/>
+        <location filename="../src/gui/assistant/qml/AssistantTaskTypeDelegate.qml" line="101"/>
         <source>Select assistant task type %1</source>
+        <extracomment>%1 is the name of an assistant task type, for example &quot;Chat&quot;.</extracomment>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -488,89 +490,90 @@
 <context>
     <name>CloudProviderWrapper</name>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="112"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="113"/>
         <source>%1 (%2, %3)</source>
+        <extracomment>%1 is the elided file name. %2 is the sync result. %3 is the current time.</extracomment>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="130"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="131"/>
         <source>Checking for changes in &quot;%1&quot;</source>
         <translation>Проверка изменений в «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="135"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="136"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Синхронизировано %1 из %2 (осталось %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="140"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 of %2</source>
         <translation>Синхронизировано %1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="147"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="148"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Синхронизировано %1 (осталось %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="150"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="151"/>
         <source>Syncing %1</source>
         <translation>Синхронизация «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="171"/>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="172"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="253"/>
         <source>No recently changed files</source>
         <translation>Недавно изменённых файлов нет</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="191"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="192"/>
         <source>Sync paused</source>
         <translation>Синхронизация приостановлена</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="194"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="195"/>
         <source>Syncing</source>
         <translation>Синхронизация</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="238"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>Открыть %1 для ПК</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="245"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in browser</source>
         <translation>Открыть в браузере</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="257"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="258"/>
         <source>Recently changed</source>
         <translation>Недавние изменения</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="264"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="265"/>
         <source>Pause synchronization</source>
         <translation>Приостановить синхронизацию</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="271"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="272"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="274"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="275"/>
         <source>Settings</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="277"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="278"/>
         <source>Log out</source>
         <translation>Выйти</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="280"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="281"/>
         <source>Quit sync client</source>
         <translation>Выйти из клиента синхронизации</translation>
     </message>
@@ -586,66 +589,6 @@
         <location filename="../src/gui/ConflictDelegate.qml" line="68"/>
         <source>Server version</source>
         <translation>Версия сервера</translation>
-    </message>
-</context>
-<context>
-    <name>CurrentAccountHeaderButton</name>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="28"/>
-        <source>Current account</source>
-        <translation>Текущая учётная запись</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="162"/>
-        <source>Resume sync for all</source>
-        <translation>Возобновить синхронизацию</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="162"/>
-        <source>Pause sync for all</source>
-        <translation>Приостановить синхронизацию</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="143"/>
-        <source>Add account</source>
-        <translation>Добавить учётную запись</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="147"/>
-        <source>Add new account</source>
-        <translation>Создать учётную запись</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="181"/>
-        <source>Settings</source>
-        <translation>Настройки</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="205"/>
-        <source>Exit</source>
-        <translation>Выйти</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="246"/>
-        <source>Current account avatar</source>
-        <translation>Текущее изображение учётной записи</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="275"/>
-        <source>Current account status is online</source>
-        <translation>Текущий статус пользователя: в сети</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="275"/>
-        <source>Current account status is do not disturb</source>
-        <translation>Текущий статус пользователя: не беспокоить</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="350"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Переключение уч. записей и настройки</translation>
     </message>
 </context>
 <context>
@@ -714,8 +657,9 @@
 <context>
     <name>FileDetailsWindow</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="28"/>
+        <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="29"/>
         <source>File details of %1 · %2</source>
+        <extracomment>%1 is the file name. %2 is the application window title, for example &quot;Nextcloud&quot;.</extracomment>
         <translation>Сведения о файле  %1 · %2</translation>
     </message>
 </context>
@@ -840,49 +784,44 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="795"/>
+        <source>Assistant</source>
+        <translation>Помощник</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="248"/>
         <source>Main content</source>
         <translation>Главное окно</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="324"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="330"/>
         <source>Issue with account %1</source>
         <translation>Проблема с учётной записью %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="326"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="332"/>
         <source>Issues with several accounts</source>
         <translation>Проблемы с несколькими учётными записями</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="383"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="413"/>
         <source>Start new conversation?</source>
         <translation>Начать новый диалог?</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="403"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="433"/>
         <source>New conversation</source>
         <translation>Новый диалог</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="407"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="437"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="428"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="458"/>
         <source>This will clear the existing conversation.</source>
         <translation>Это действие удалит существующий диалог.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="473"/>
-        <source>Ask Assistant …</source>
-        <translation>Спросить Ассистента …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="777"/>
-        <source>Unified search results list</source>
-        <translation>Единый список результатов поиска</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
@@ -890,24 +829,24 @@
         <translation>Спросить помощника…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="691"/>
-        <source>New activities</source>
-        <translation>Новые события</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="501"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="531"/>
         <source>Send assistant question</source>
         <translation>Отправить вопрос помощнику</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="522"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="552"/>
         <source>Start a new assistant chat</source>
         <translation>Начать новый чат с помощником</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="795"/>
-        <source>Assistant</source>
-        <translation>Помощник</translation>
+        <location filename="../src/gui/tray/MainWindow.qml" line="777"/>
+        <source>Unified search results list</source>
+        <translation>Единый список результатов поиска</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="841"/>
+        <source>New activities</source>
+        <translation>Новые события</translation>
     </message>
 </context>
 <context>
@@ -1071,25 +1010,25 @@ Should the account be imported?</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="521"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2071"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2075"/>
         <source>Reset File Provider Domain</source>
         <translation>Сбросить домен Поставщика файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="558"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1554"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1558"/>
         <source>Log out, log back in, or remove this account from the client.</source>
         <translation>Выйдите из системы, войдите снова или удалите этот аккаунт из клиента.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="574"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1550"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1554"/>
         <source>Log out</source>
         <translation>Выйти</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="587"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1555"/>
         <source>Remove account</source>
         <translation>Удалить аккаунт</translation>
     </message>
@@ -1107,7 +1046,7 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.ui" line="325"/>
         <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <location filename="../src/gui/accountsettings.cpp" line="1170"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2072"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2076"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1397,48 +1336,50 @@ This action will abort any currently running synchronization.</source>
         <translation>Выполняется синхронизация.&lt;br/&gt;Действительно прервать операцию? </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1463"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
         <source>%1 in use</source>
+        <extracomment>%1 is the used storage size.</extracomment>
         <translation>Используется %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1503"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1507"/>
         <source>Connected to %1 (%2).</source>
+        <extracomment>%1 is the server and user description. %2 is the storage usage description.</extracomment>
         <translation>Подключено к %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1550"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1554"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="745"/>
         <source>Log in</source>
         <translation>Войти</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1555"/>
         <source>Leave share</source>
         <translation>Оставить общедоступное</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1553"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1557"/>
         <source>Remove this public share connection from the client.</source>
         <translation>Удалить это общедоступное подключение к клиенту.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1740"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1744"/>
         <source>Migrate certificate to a new one</source>
         <translation>Перенести сертификат на новый</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1847"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1851"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Обнаружены папки, размер которых превысил %1 МБ: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1905"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>Для этой учётной записи сквозное шифрование уже было настроено на другом устройстве.&lt;br&gt;Для работы с зашифрованными папками на этом устройстве необходимо ввести секретную фразу из двенадцати слов.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1974"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1978"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Эта учётная запись поддерживает сквозное шифрование. Для использования сквозного шифрования необходимо выполнить его первоначальную настройку.</translation>
     </message>
@@ -1448,62 +1389,62 @@ This action will abort any currently running synchronization.</source>
         <translation>Интеграция виртуальных файлов пока не поддерживает сквозное шифрование.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2057"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2061"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
         <translation>Это действие сбрасывает настройки Поставщика файлов для %1 до исходного состояния. Используйте его, когда файлы этой учетной записи оказываются заблокированными, отсутствующими или не синхронизированными в Finder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2061"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2065"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
         <translation>Расположение на короткое время исчезнет из Finder и снова появится в нем. Все локальные изменения, которые еще не были загружены, будут сохранены и отображены в папке в Finder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2066"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2070"/>
         <source>Reset File Provider Domain for this account?</source>
         <translation>Сбросить домен Поставщика файлов для данного аккаунта?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1969"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1973"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
         <translation>Расширение File Provider пока не поддерживает сквозное шифрование.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1976"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1980"/>
         <source>Set up encryption</source>
         <translation>Настроить шифрование</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1501"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1504"/>
         <source>Connected to %1.</source>
         <translation>Соединён с %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1509"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1513"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Сервер %1 временно недоступен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1512"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1516"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Сервер %1 в настоящее время находится в режиме технического обслуживания.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1518"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Signed out from %1.</source>
         <translation>Успешно вышли из %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1834"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1838"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Есть папки, которые не синхронизированы, так как их размер превышает установленное ограничение:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1835"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1839"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Есть папки, которые не были синхронизированы, так как они являются внешними хранилищами:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1836"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1840"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Есть папки, которые не были синхронизированы, так как их размер превышает установленное ограничение или они являются внешними хранилищами:</translation>
     </message>
@@ -1534,47 +1475,49 @@ This action will abort any currently running synchronization.</source>
         <translation>&lt;p&gt;Действительно остановить синхронизацию папки &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примечание:&lt;/b&gt; Это действие &lt;b&gt;НЕ&lt;/b&gt; приведёт к удалению файлов.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1456"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1457"/>
         <source>%1 of %2 in use</source>
+        <extracomment>%1 is the used storage size. %2 is the total storage size.</extracomment>
         <translation>Используется %1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1495"/>
         <source>%1 as %2</source>
+        <extracomment>%1 is a link to the server. %2 is the user display name or username.</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1499"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1502"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Сервер версии %1 не поддерживается. Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1515"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1519"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Сервер %1 использует перенаправление или для подключения к интернету используется страница входа.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1521"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1525"/>
         <source>Connecting to %1 …</source>
         <translation>Подключение к %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1529"/>
         <source>Unable to connect to %1.</source>
         <translation>Не удалось подключиться к %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1530"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1534"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Ошибка конфигурации сервера: %1: %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1539"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1543"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>Вам необходимо принять условия использования %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1544"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1548"/>
         <source>No %1 connection configured.</source>
         <translation>Нет настроенного подключения %1.</translation>
     </message>
@@ -1970,6 +1913,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="200"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <extracomment>%1 is either &quot;newer&quot; or &quot;older&quot;. %2 is either &quot;ignoring&quot; or &quot;deleting&quot;. %3 is a list of configuration backup file paths.</extracomment>
         <translation>Некоторые параметры были настроены в %1 версиях этого клиента и используют функции, недоступные в этой версии.&lt;br&gt;&lt;br&gt;Продолжение будет означать &lt;b&gt;%2 этих параметров&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Текущий файл конфигурации уже был скопирован до &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
@@ -2085,8 +2029,9 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="839"/>
+        <location filename="../src/gui/assistant/assistantcontroller.cpp" line="840"/>
         <source>Assistant request failed (%1).</source>
+        <extracomment>%1 is the HTTP status code returned by the server.</extracomment>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2152,12 +2097,13 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::BasePropagateRemoteDeleteEncrypted</name>
     <message>
-        <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="85"/>
+        <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="86"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
+        <extracomment>%1 is the HTTP status code. %2 is the encrypted folder identifier.</extracomment>
         <translation>«%1 Не удалось разблокировать зашифрованную папку %2».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="127"/>
+        <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="128"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Получен неверный код HTTP-ответа сервера: ожидался код 204, но был получен «%1 %2».</translation>
     </message>
@@ -2432,12 +2378,13 @@ This action will abort any currently running synchronization.</source>
         <translation>Подключение к токену было прервано после ввода ПИН-кода. Возможно, ПИН-код был указан неверно. Попробуйте ещё раз.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="2269"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="2270"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <extracomment>%2 is the account username. %3 is the account display name.</extracomment>
         <translation>Введите свою парольную фразу сквозного шифрования: &lt;br&gt;&lt;br&gt;Пользователь: %2&lt;br&gt;Учётная запись: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="2277"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="2278"/>
         <source>Enter E2E passphrase</source>
         <translation>Введите парольную фразу сквозного шифрования</translation>
     </message>
@@ -3298,46 +3245,46 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Запрос синхронизации был отменён.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1971"/>
+        <location filename="../src/gui/folderman.cpp" line="1972"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Выберите другое расположение: эта папка не является допустимой.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1979"/>
-        <location filename="../src/gui/folderman.cpp" line="2058"/>
+        <location filename="../src/gui/folderman.cpp" line="1980"/>
+        <location filename="../src/gui/folderman.cpp" line="2059"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Выберите другое расположение: папка «%1» уже используется для синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1988"/>
+        <location filename="../src/gui/folderman.cpp" line="1989"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Выберите другое расположение: путь «%1» не существует.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1992"/>
+        <location filename="../src/gui/folderman.cpp" line="1993"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Выберите другое расположение: путь «%1» не ведёт к папке.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2000"/>
-        <location filename="../src/gui/folderman.cpp" line="2005"/>
+        <location filename="../src/gui/folderman.cpp" line="2001"/>
+        <location filename="../src/gui/folderman.cpp" line="2006"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Выберите другое расположение: у вас отсутствуют права записи в «%1».</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2065"/>
+        <location filename="../src/gui/folderman.cpp" line="2066"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Выберите другое расположение: папка «%1» уже содержит папку, настроенную для синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2080"/>
+        <location filename="../src/gui/folderman.cpp" line="2081"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Выберите другое расположение: папка «%1» уже используется для синхронизации %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2238"/>
+        <location filename="../src/gui/folderman.cpp" line="2239"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3358,8 +3305,9 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Откройте настройки приложения, чтобы предоставить доступ к папкам синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1963"/>
+        <location filename="../src/gui/folderman.cpp" line="1964"/>
         <source>%1 (Sync is paused)</source>
+        <extracomment>%1 is the current sync status message, for example &quot;Setup error&quot;.</extracomment>
         <translation>%1 (синхронизация приостановлена)</translation>
     </message>
 </context>
@@ -3396,151 +3344,153 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Добавление синхронизируемой папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
         <source>Could not decrypt!</source>
         <translation>Не удалось расшифровать!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="171"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="174"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="175"/>
         <source>%1 (%2)</source>
+        <extracomment>%1 is the file name. %2 is the file size, for example &quot;23 KB&quot;.</extracomment>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="214"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Ошибка загрузки списка папок с сервера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="256"/>
         <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
         <translation>Из-за недавних улучшений безопасности клиент больше не имеет доступа к папке. Ваше одобрение требуется один раз для восстановления доступа. Пожалуйста, выберите корень папки синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="262"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="263"/>
         <source>Virtual file support is enabled.</source>
         <translation>Поддержка виртуальных файлов включена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="285"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="286"/>
         <source>Signed out</source>
         <translation>Выполнен выход из учётной записи</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="325"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="326"/>
         <source>Synchronizing virtual files in local folder</source>
         <translation>Синхронизация виртуальных файлов в локальную папку</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="327"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="328"/>
         <source>Synchronizing files in local folder</source>
         <translation>Синхронизация файлов в локальную папку</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1006"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1007"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Проверка изменений на сервере «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1011"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Проверка изменений в локальной папке «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1017"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1018"/>
         <source>Syncing local and remote changes</source>
         <translation>Синхронизация локальных и удалённых изменений</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1067"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>%1 %2 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1073"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>Скачать %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1139"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1142"/>
         <source>File %1 of %2</source>
         <translation>Файл %1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="244"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="245"/>
         <source>There are unresolved conflicts. Click for details.</source>
         <translation>Имеются неразрешенные конфликты, нажмите для просмотра подробных сведений.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1069"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1080"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1081"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="219"/>
         <source>Fetching folder list from server …</source>
         <translation>Получение с сервера списка папок…</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1075"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1076"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/с</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1083"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>Загрузить %1/с</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1086"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/с</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1092"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;Uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 из %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1097"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1098"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;Uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1118"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1119"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>До завершения несколько секунд, %1 из %2, файл %3 из %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1123"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1126"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
+        <extracomment>%1 is the completed data size. %2 is the total data size. %3 is the current file number. %4 is the total file count. %5 is the remaining duration.</extracomment>
         <translation>Синхронизировано файлов %3 из %4 (%1 из %2), до завершения %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1132"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1135"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 из %2, %3 из %4 файлов(а)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1192"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1195"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation><numerusform>Ожидание %n другой папки…</numerusform><numerusform>Ожидание %n другие папки…</numerusform><numerusform>Ожидание %n других папок…</numerusform><numerusform>Ожидание %n других папок…</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1192"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1195"/>
         <source>About to start syncing</source>
         <translation>Синхронизация запускается</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1197"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1200"/>
         <source>Preparing to sync …</source>
         <translation>Подготовка к синхронизации…</translation>
     </message>
@@ -5918,44 +5868,46 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;&lt;b&gt;Внимание:&lt;/b&gt; Этот сертификат был одобрен вручную&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="131"/>
+        <location filename="../src/gui/sslbutton.cpp" line="132"/>
         <source>%1 (self-signed)</source>
+        <extracomment>%1 is the certificate identifier, taken from its common name or organizational unit.</extracomment>
         <translation>%1 (самоподписанный)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="133"/>
+        <location filename="../src/gui/sslbutton.cpp" line="135"/>
         <source>%1</source>
+        <extracomment>%1 is the certificate identifier, taken from its common name or organizational unit.</extracomment>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="168"/>
+        <location filename="../src/gui/sslbutton.cpp" line="170"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
         <translation>Это соединение зашифровано %1-битным %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="185"/>
+        <location filename="../src/gui/sslbutton.cpp" line="187"/>
         <source>Server version: %1</source>
         <translation>Версия сервера: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="199"/>
+        <location filename="../src/gui/sslbutton.cpp" line="201"/>
         <source>No support for SSL session tickets/identifiers</source>
         <translation>Нет поддержки для тикетов/идентификаторов SSL сессии</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="209"/>
+        <location filename="../src/gui/sslbutton.cpp" line="211"/>
         <source>Certificate information:</source>
         <translation>Информация о TLS-сертификатах:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="239"/>
+        <location filename="../src/gui/sslbutton.cpp" line="241"/>
         <source>The connection is not secure</source>
         <translation>Соединение небезопасно</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="171"/>
+        <location filename="../src/gui/sslbutton.cpp" line="173"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
         <translation>Это соединение НЕ безопасно, используется протокол без шифрования.
@@ -6132,7 +6084,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="211"/>
-        <location filename="../src/gui/activity/syncstatussummary.cpp" line="477"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="479"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="221"/>
         <source>Offline</source>
         <translation>Не в сети</translation>
@@ -6156,7 +6108,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="237"/>
-        <location filename="../src/gui/activity/syncstatussummary.cpp" line="483"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="485"/>
         <location filename="../src/gui/activity/syncstatussummary.h" line="105"/>
         <source>All synced!</source>
         <translation>Всё синхронизировано!</translation>
@@ -6204,22 +6156,24 @@ Server replied with error: %2</source>
         <translation>Выполняется синхронизация</translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/syncstatussummary.cpp" line="368"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="369"/>
         <source>%1 of %2 · %3 left</source>
+        <extracomment>%1 is the completed data size. %2 is the total data size. %3 is the remaining duration.</extracomment>
         <translation>%1 из %2, осталось %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/syncstatussummary.cpp" line="372"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="374"/>
         <source>%1 of %2</source>
+        <extracomment>%1 is the completed data size. %2 is the total data size.</extracomment>
         <translation>%1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/syncstatussummary.cpp" line="377"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="379"/>
         <source>Syncing file %1 of %2</source>
         <translation>Синхронизируется файл %1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/syncstatussummary.cpp" line="480"/>
+        <location filename="../src/gui/activity/syncstatussummary.cpp" line="482"/>
         <source>No synchronisation configured</source>
         <translation>Синхронизация не настроена</translation>
     </message>
@@ -6298,12 +6252,12 @@ Server replied with error: %2</source>
         <translation>%1Версия десктопного клиента %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="646"/>
+        <location filename="../src/libsync/theme.cpp" line="648"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Используемый модуль поддержки виртуальных файлов: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="664"/>
+        <location filename="../src/libsync/theme.cpp" line="666"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Этот выпуск подготовлен %1.&lt;/p&gt;</translation>
     </message>
@@ -6377,43 +6331,46 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1249"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1250"/>
         <source>%1 results. Some sources are unavailable.</source>
+        <extracomment>%1 is the number of search results.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1251"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1253"/>
         <source>%1 results</source>
+        <extracomment>%1 is the number of search results.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1425"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1427"/>
         <source>Today</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1428"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
         <source>Last 7 days</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1431"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1433"/>
         <source>Last 30 days</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1435"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1437"/>
         <source>This year</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1439"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1441"/>
         <source>Last year</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1459"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1462"/>
         <source>%1 – %2</source>
+        <extracomment>%1 is the start date and %2 is the end date of a custom search date range. Both use the locale's short date format.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -6552,6 +6509,12 @@ Server replied with error: %2</source>
         <translation>Переименовать файл</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1949"/>
+        <source>Open %1 Assistant</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>Открыть %1 Assistant</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2047"/>
         <source>Assistant is not available for this account.</source>
         <translation>Помощник недоступен для этой учётной записи.</translation>
@@ -6572,16 +6535,6 @@ Server replied with error: %2</source>
         <translation>Выполняется отправка запроса…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2163"/>
-        <source>No response yet. Please try again later.</source>
-        <translation>Ответа пока нет. Повторите попытку позже.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2182"/>
-        <source>No supported assistant task types were returned.</source>
-        <translation>Не найдено ни одного поддерживаемого типа задачи помощника.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1694"/>
         <source>Sync conflicts</source>
         <translation>Ошибки синхронизации</translation>
@@ -6592,10 +6545,14 @@ Server replied with error: %2</source>
         <translation>Общедоступная ссылка</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1949"/>
-        <source>Open %1 Assistant</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>Открыть %1 Assistant</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2163"/>
+        <source>No response yet. Please try again later.</source>
+        <translation>Ответа пока нет. Повторите попытку позже.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2182"/>
+        <source>No supported assistant task types were returned.</source>
+        <translation>Не найдено ни одного поддерживаемого типа задачи помощника.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2264"/>
@@ -6822,12 +6779,12 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="432"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="433"/>
         <source>Please sign in</source>
         <translation>Войдите в систему</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="524"/>
         <source>There are no sync folders configured.</source>
         <translation>Синхронизация папок не настроена.</translation>
     </message>
@@ -6857,53 +6814,53 @@ Server replied with error: %2</source>
         <translation>Ваша учётная запись %1 требует, чтобы вы приняли условия предоставления услуг вашего сервера. Вы будете перенаправлены на страницу %2 для ознакомления и подтверждения согласия с ними.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="504"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="507"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>mac OS VFS для %1: синхронизация запущена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="510"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>mac OS VFS для %1: синхронизация прошла успешно.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="513"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS для %1: возникла проблема.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>macOS VFS для %1: произошла ошибка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="582"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="583"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Проверка изменений на сервере «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="585"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="586"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Проверка изменений в локальной папке «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="835"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="837"/>
         <source>Select new location …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="923"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="925"/>
         <source>Internal link copied</source>
         <translation>Внутренняя ссылка скопирована</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="924"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="926"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>Внутренняя ссылка скопирована в буфер обмена.</translation>
     </message>
@@ -6913,18 +6870,20 @@ Server replied with error: %2</source>
         <translation>Отключён от учётных записей:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Account %1: %2</source>
+        <extracomment>%1 is the account display name. %2 is the account connection status.</extracomment>
         <translation>Учётная запись %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="436"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="437"/>
         <source>Account synchronization is disabled</source>
         <translation>Синхронизация учётной записи отключена</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="602"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="604"/>
         <source>%1 (%2, %3)</source>
+        <extracomment>%1 is the file name. %2 is the sync result. %3 is the current time.</extracomment>
         <translation>%1 (%2, %3)</translation>
     </message>
 </context>
@@ -7320,33 +7279,34 @@ Server replied with error: %2</source>
         <translation>Результаты поиска</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="158"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="159"/>
         <source>Remove %1 filter</source>
+        <extracomment>%1 is an active search filter label, such as a provider name, date range, or person name.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="182"/>
-        <location filename="../src/gui/search/SearchWindow.qml" line="251"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="183"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="252"/>
         <source>Retry</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="215"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="216"/>
         <source>Search results</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="250"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="251"/>
         <source>Some sources unavailable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="259"/>
         <source>Less from connected services</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="258"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="259"/>
         <source>More from connected services</source>
         <translation type="unfinished"/>
     </message>
@@ -7642,6 +7602,12 @@ Server replied with error: %2</source>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="733"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="786"/>
+        <source>Local folder</source>
+        <translation>Локальная папка</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="62"/>
         <source>Open local folder</source>
         <translation>Открыть локальную папку</translation>
@@ -7671,15 +7637,14 @@ Server replied with error: %2</source>
         <source>User group and local folders menu</source>
         <translation>Меню пользователя групповых и локальных папок</translation>
     </message>
-    <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="733"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="786"/>
-        <source>Local folder</source>
-        <translation>Локальная папка</translation>
-    </message>
 </context>
 <context>
     <name>TrayWindowHeader</name>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="810"/>
+        <source>Apps</source>
+        <translation>Приложения</translation>
+    </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="76"/>
         <source>Open local or team folders</source>
@@ -7694,11 +7659,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="142"/>
         <source>Open %1 in browser</source>
         <translation>Открыть %1 в браузере</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="810"/>
-        <source>Apps</source>
-        <translation>Приложения</translation>
     </message>
 </context>
 <context>
@@ -7873,27 +7833,28 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultDelegate</name>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="83"/>
+        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="84"/>
         <source>More from %1  →</source>
+        <extracomment>%1 is the name of a search provider, for example &quot;Files&quot;.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="130"/>
+        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="131"/>
         <source>Partial matches</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="193"/>
+        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="194"/>
         <source>Loading more results …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
+        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Retry loading more results</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="195"/>
+        <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Load more results</source>
         <translation type="unfinished"/>
     </message>
@@ -7949,141 +7910,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/urischemehandler.cpp" line="191"/>
         <source>Adding another account is not allowed in this client.</source>
         <translation>Добавление ещё одного аккаунта в этом клиенте запрещено.</translation>
-    </message>
-</context>
-<context>
-    <name>UserLine</name>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="24"/>
-        <source>Switch to account</source>
-        <translation>Переключить учётную запись</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="67"/>
-        <source>Current account status is online</source>
-        <translation>Текущий статус пользователя: в сети</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="67"/>
-        <source>Current account status is do not disturb</source>
-        <translation>Текущий статус пользователя: не беспокоить</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="166"/>
-        <source>Account sync status requires attention</source>
-        <translation>Статус синхронизации учётной записи требует внимания</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="177"/>
-        <source>Account actions</source>
-        <translation>Действия над аккаунтом</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="197"/>
-        <source>Set status</source>
-        <translation>Установить статус</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="211"/>
-        <source>Status message</source>
-        <translation>Описание статуса</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="225"/>
-        <source>Log out</source>
-        <translation>Выйти</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="225"/>
-        <source>Log in</source>
-        <translation>Войти</translation>
-    </message>
-</context>
-<context>
-    <name>UserStatusMessageView</name>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="43"/>
-        <source>Status message</source>
-        <translation>Описание статуса</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="120"/>
-        <source>What is your status?</source>
-        <translation>Опишите свой статус</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="174"/>
-        <source>Clear status message after</source>
-        <translation>Убрать описание статуса через</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
-        <source>Cancel</source>
-        <translation>Отмена</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="219"/>
-        <source>Clear</source>
-        <translation>Очистить</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="229"/>
-        <source>Apply</source>
-        <translation>Применить</translation>
-    </message>
-</context>
-<context>
-    <name>UserStatusSetStatusView</name>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="44"/>
-        <source>Online status</source>
-        <translation>Статус подключения</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="54"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="211"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="223"/>
-        <source>Online</source>
-        <translation>В сети</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="65"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
-        <source>Away</source>
-        <translation>Отошёл</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="77"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
-        <source>Busy</source>
-        <translation>Занят</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="88"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
-        <source>Do not disturb</source>
-        <translation>Не беспокоить</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="89"/>
-        <source>Mute all notifications</source>
-        <translation>Отключить все уведомления</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="101"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
-        <source>Invisible</source>
-        <translation>Невидимый</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="102"/>
-        <source>Appear offline</source>
-        <translation>«Не в сети» для остальных</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="113"/>
-        <source>Status message</source>
-        <translation>Описание статуса</translation>
     </message>
 </context>
 <context>
@@ -8240,8 +8066,9 @@ Server replied with error: %2</source>
         <translation>Заголовок контрольной суммы содержит контрольную сумму неизвестного типа: «%1»</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="300"/>
+        <location filename="../src/common/checksums.cpp" line="301"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
+        <extracomment>%1 is the checksum expected from the server. %2 is the checksum calculated from the downloaded file.</extracomment>
         <translation>Вычисленная контрольная сумма файла не соответствует ожидаемой, операция будет возобновлена: %1 != %2</translation>
     </message>
 </context>
@@ -8269,8 +8096,9 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="627"/>
+        <location filename="../src/libsync/theme.cpp" line="629"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
+        <extracomment>%1 is the full Git commit URL. %2 is the abbreviated Git revision. %3 is the build date. %4 is the build time. %5 is the Qt version. %6 is the TLS library version.</extracomment>
         <translation>&lt;p&gt;&lt;small&gt;Собрано из исходников Git-версии &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; на %3, %4 с использованием библиотек Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
@@ -8530,6 +8358,66 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/guiutility.cpp" line="147"/>
         <source>Stay safe</source>
         <translation>Будьте в безопасности</translation>
+    </message>
+</context>
+<context>
+    <name>CurrentAccountHeaderButton</name>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="28"/>
+        <source>Current account</source>
+        <translation>Текущая учётная запись</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="162"/>
+        <source>Resume sync for all</source>
+        <translation>Возобновить синхронизацию</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="162"/>
+        <source>Pause sync for all</source>
+        <translation>Приостановить синхронизацию</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="143"/>
+        <source>Add account</source>
+        <translation>Добавить учётную запись</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="147"/>
+        <source>Add new account</source>
+        <translation>Создать учётную запись</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="181"/>
+        <source>Settings</source>
+        <translation>Настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="205"/>
+        <source>Exit</source>
+        <translation>Выйти</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="246"/>
+        <source>Current account avatar</source>
+        <translation>Текущее изображение учётной записи</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="275"/>
+        <source>Current account status is online</source>
+        <translation>Текущий статус пользователя: в сети</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="275"/>
+        <source>Current account status is do not disturb</source>
+        <translation>Текущий статус пользователя: не беспокоить</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="350"/>
+        <source>Account switcher and settings menu</source>
+        <translation>Переключение уч. записей и настройки</translation>
     </message>
 </context>
 <context>
@@ -9311,6 +9199,141 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
         <translation>Перейти в браузер для принятия условий использования</translation>
+    </message>
+</context>
+<context>
+    <name>UserLine</name>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="24"/>
+        <source>Switch to account</source>
+        <translation>Переключить учётную запись</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="67"/>
+        <source>Current account status is online</source>
+        <translation>Текущий статус пользователя: в сети</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="67"/>
+        <source>Current account status is do not disturb</source>
+        <translation>Текущий статус пользователя: не беспокоить</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="166"/>
+        <source>Account sync status requires attention</source>
+        <translation>Статус синхронизации учётной записи требует внимания</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="177"/>
+        <source>Account actions</source>
+        <translation>Действия над аккаунтом</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="197"/>
+        <source>Set status</source>
+        <translation>Установить статус</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="211"/>
+        <source>Status message</source>
+        <translation>Описание статуса</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="225"/>
+        <source>Log out</source>
+        <translation>Выйти</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="225"/>
+        <source>Log in</source>
+        <translation>Войти</translation>
+    </message>
+</context>
+<context>
+    <name>UserStatusMessageView</name>
+    <message>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="43"/>
+        <source>Status message</source>
+        <translation>Описание статуса</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="120"/>
+        <source>What is your status?</source>
+        <translation>Опишите свой статус</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="174"/>
+        <source>Clear status message after</source>
+        <translation>Убрать описание статуса через</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="219"/>
+        <source>Clear</source>
+        <translation>Очистить</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="229"/>
+        <source>Apply</source>
+        <translation>Применить</translation>
+    </message>
+</context>
+<context>
+    <name>UserStatusSetStatusView</name>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="44"/>
+        <source>Online status</source>
+        <translation>Статус подключения</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="54"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="211"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="223"/>
+        <source>Online</source>
+        <translation>В сети</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="65"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
+        <source>Away</source>
+        <translation>Отошёл</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="77"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
+        <source>Busy</source>
+        <translation>Занят</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="88"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
+        <source>Do not disturb</source>
+        <translation>Не беспокоить</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="89"/>
+        <source>Mute all notifications</source>
+        <translation>Отключить все уведомления</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="101"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
+        <source>Invisible</source>
+        <translation>Невидимый</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="102"/>
+        <source>Appear offline</source>
+        <translation>«Не в сети» для остальных</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="113"/>
+        <source>Status message</source>
+        <translation>Описание статуса</translation>
     </message>
 </context>
 </TS>
