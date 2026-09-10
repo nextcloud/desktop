@@ -16,6 +16,7 @@
 #include <QGroupBox>
 #include <QScopeGuard>
 #include <QScrollArea>
+#include <QSignalSpy>
 #include <QStandardPaths>
 #include <QTest>
 #include <QToolBar>
@@ -144,7 +145,7 @@ private Q_SLOTS:
         if (addAccountAction->isVisible()) {
             const auto wizardRequest = QSignalSpy(systray, &OCC::Systray::openAccountWizard);
             addAccountAction->trigger();
-            QCOMPARE(wizardRequest.count(), 1);
+            QCOMPARE_EQ(wizardRequest.size(), 1);
         }
 
         dialog.ensurePolished();
