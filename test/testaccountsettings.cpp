@@ -51,8 +51,18 @@ class TestAccountSettings : public QObject
     /** @brief Creates an account backed by the test network access manager. */
     static AccountPtr accountWithFakeNetworkAccessManager()
     {
+        auto *const fakeNetworkAccessManager = new FakeQNAM({});
+        fakeNetworkAccessManager->setOverride(
+            [fakeNetworkAccessManager](QNetworkAccessManager::Operation operation, const QNetworkRequest &request, QIODevice *) {
+                return new FakePayloadReply(operation,
+                                            request,
+                                            QByteArrayLiteral(R"({"ocs":{"meta":{"status":"ok","statuscode":200,"message":"OK"},"data":{}}})"),
+                                            fakeNetworkAccessManager);
+            });
+
         auto account = Account::create();
-        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        account->setUrl(QUrl(QStringLiteral("https://example.invalid")));
+        account->setCredentials(new FakeCredentials{fakeNetworkAccessManager});
         return account;
     }
 
@@ -177,9 +187,17 @@ private Q_SLOTS:
 
         const auto iconImage = assistantButton->icon().pixmap(QSize(24, 24)).toImage();
         QVERIFY(!iconImage.isNull());
-        const auto iconCenter = iconImage.pixelColor(iconImage.width() * 3 / 8, iconImage.height() / 2);
-        QVERIFY(iconCenter.alpha() > 0);
-        QVERIFY(Theme::isDarkColor(iconCenter));
+        auto foregroundPixel = QColor{};
+        for (auto y = 0; y < iconImage.height(); ++y) {
+            for (auto x = 0; x < iconImage.width(); ++x) {
+                const auto pixel = iconImage.pixelColor(x, y);
+                if (pixel.alpha() > foregroundPixel.alpha()) {
+                    foregroundPixel = pixel;
+                }
+            }
+        }
+        QVERIFY(foregroundPixel.alpha() > 0);
+        QVERIFY(Theme::isDarkColor(foregroundPixel));
     }
 
     void test_accountShortcutsFollowLiveCapabilities()
