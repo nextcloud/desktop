@@ -48,8 +48,11 @@ public Q_SLOTS:
     void showAccount(OCC::AccountState *account);
     void setInitialAccount(OCC::AccountState *account);
     void showIssuesList(OCC::AccountState *account);
+    /** @brief Requests the Online status window for the user associated with @p account. */
     void showUserStatus(OCC::AccountState *account);
+    /** @brief Requests the Assistant window for the user associated with @p account. */
     void showAssistant(OCC::AccountState *account);
+    /** @brief Requests the Search window for the user associated with @p account. */
     void showSearch(OCC::AccountState *account);
     void slotSwitchPage(QAction *action);
     void slotAccountAvatarChanged();

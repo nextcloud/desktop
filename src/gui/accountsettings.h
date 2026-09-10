@@ -69,8 +69,11 @@ Q_SIGNALS:
     void folderChanged();
     void openFolderAlias(const QString &);
     void showIssuesList(OCC::AccountState *account);
+    /** @brief Emitted when opening Online status is requested for @p account. */
     void showUserStatus(OCC::AccountState *account);
+    /** @brief Emitted when opening Assistant is requested for @p account. */
     void showAssistant(OCC::AccountState *account);
+    /** @brief Emitted when opening Search is requested for @p account. */
     void showSearch(OCC::AccountState *account);
     void requestMnemonic();
     void removeAccountFolders(OCC::AccountState *account);
@@ -145,6 +148,7 @@ private Q_SLOTS:
     void removeActionFromEncryptionMessage(const QString &actionId);
     void setEncryptionPanelVisible(bool visible);
     void updateSyncFoldersPanelVisibility();
+    /** @brief Refreshes account shortcut visibility from the current connection state and capabilities. */
     void updateAccountShortcutVisibility();
     void slotResetFileProviderDomain();
 
@@ -156,6 +160,7 @@ private:
     void refreshE2eEncryptionMessage();
     void setEncryptionMessageIcon(const QIcon &icon);
     void updateEncryptionMessageActions();
+    /** @brief Refreshes the account shortcut icons for the current palette. */
     void updateAccountShortcutIcons();
 
     /// Returns the alias of the selected folder, empty string if none
