@@ -27,6 +27,12 @@ ScrollView {
         scrollingToTop = true
     }
 
+    function positionAtTop() {
+        scrollingToTop = false
+        activityList.currentIndex = -1
+        activityList.positionViewAtBeginning()
+    }
+
     signal openFile(string filePath)
     signal activityItemClicked(int index)
 
@@ -52,6 +58,7 @@ ScrollView {
 
     ListView {
         id: activityList
+        objectName: "activityListView"
 
         Accessible.role: Accessible.List
         Accessible.name: qsTr("Activity list")
@@ -81,7 +88,7 @@ ScrollView {
             anchors.fill: activityList.currentItem
             color: palette.highlight
             radius: Style.mediumRoundedButtonRadius
-            visible: activityList.activeFocus
+            visible: activityList.activeFocus && activityList.currentItem !== null
         }
 
         highlightFollowsCurrentItem: true
