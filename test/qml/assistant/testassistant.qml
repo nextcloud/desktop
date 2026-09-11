@@ -129,6 +129,12 @@ Item {
             return createdObject
         }
 
+        function test_windowHeadlineIsBrandNeutral() {
+            const window = createAssistantWindow()
+            compare(window.headline, "Assistant")
+            verify(window.headline.indexOf("Nextcloud") === -1)
+        }
+
         function test_windowBlocksSubmissionWithoutSupportedTaskType() {
             const window = createAssistantWindow()
             assistantTestSetup.completeEmptyTaskTypes()

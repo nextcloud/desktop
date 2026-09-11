@@ -48,6 +48,12 @@ public Q_SLOTS:
     void showAccount(OCC::AccountState *account);
     void setInitialAccount(OCC::AccountState *account);
     void showIssuesList(OCC::AccountState *account);
+    /** @brief Requests the Online status window for the user associated with @p account. */
+    void showUserStatus(OCC::AccountState *account);
+    /** @brief Requests the Assistant window for the user associated with @p account. */
+    void showAssistant(OCC::AccountState *account);
+    /** @brief Requests the Search window for the user associated with @p account. */
+    void showSearch(OCC::AccountState *account);
     void slotSwitchPage(QAction *action);
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
@@ -58,6 +64,8 @@ Q_SIGNALS:
     void currentPageChanged();
 
 protected:
+    /** @brief Refreshes styled surfaces after application palette changes. */
+    bool event(QEvent *event) override;
     void reject() override;
     void accept() override;
     void changeEvent(QEvent *) override;
@@ -70,6 +78,10 @@ private Q_SLOTS:
 private:
     void customizeStyle();
     void requestStyleUpdate();
+    /** @brief Shows the Add account action only when an account may be configured. */
+    void updateAddAccountActionVisibility();
+    /** @brief Returns the current user-model index for @p account, or -1 if it is not found. */
+    [[nodiscard]] int userIndexForAccount(OCC::AccountState *account) const;
     void updateAccountAvatar(const Account *account);
     void addSettingsPage(const QString &iconPath, const QString &title, QWidget *settingsPage, bool updateChannelAware = false);
 
@@ -86,6 +98,7 @@ private:
 
     QToolBar *_toolBar;
     QStackedWidget *_stack = nullptr;
+    QAction *_addAccountAction = nullptr;
     QAction *_firstNonAccountAction = nullptr;
 
     ownCloudGui *_gui;
