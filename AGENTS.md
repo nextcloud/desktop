@@ -241,6 +241,14 @@ These instructions are restricted to `./shell_integration/MacOSX/NextcloudIntegr
 - Relevant run time values to log must be provided through the `arguments` argument.
 - Inclusion of `.debug`-level messages is controlled at runtime by the `debugLoggingEnabled` boolean key under the `com.nextcloud.desktopclient.FileProviderExt` domain in `UserDefaults.standard`. When unset, DEBUG builds include debug messages and release builds do not. Administrators can flip the value with `defaults write` for troubleshooting; changes propagate live via KVO. The gate applies to both Apple unified logging and the JSONL file output. See `Logging.md`.
 
+#### Blocking synchronization
+
+- Synchronization is blocked at runtime by the `blockSync` boolean key under the `com.nextcloud.desktopclient.FileProviderExt` domain in `UserDefaults.standard`, the counterpart on the file provider path to "pause synchronisation" for classic sync folders. When unset, synchronization is not blocked, in every build configuration.
+- Flip it with `defaults write com.nextcloud.desktopclient.FileProviderExt blockSync -bool true` and clear it with `defaults delete com.nextcloud.desktopclient.FileProviderExt blockSync`. It takes effect immediately, without restarting the extension.
+- While blocked, the extension performs no network input or output with the server. Every request from the system which would need it is refused with `NSFileProviderErrorServerUnreachable`, which is what the situation genuinely is as far as the file provider framework is concerned.
+- Both directions are covered by refusing requests in the extension alone. Remote changes are discovered by the main app, but the signal it sends carries no data and reaches the extension as a request for an enumerator, so declining that declines the push and the polling path alike.
+- See `BlockSync.md` for the semantics, including what blocking deliberately does not do.
+
 ### Tests
 
 #### GUI changes
