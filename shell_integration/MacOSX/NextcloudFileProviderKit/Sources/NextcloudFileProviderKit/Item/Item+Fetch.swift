@@ -103,6 +103,10 @@ public extension Item {
 
                 if !metadata.directory {
                     downloadedFileOcIds.append(metadata.ocId)
+                    // See the matching call in `fetchContents`: this row is downloaded ahead of
+                    // the system's materialized set, and must not be reconciled as evicted in
+                    // the meantime.
+                    PendingMaterializationRegistry.shared.recordDownloaded(NSFileProviderItemIdentifier(metadata.ocId))
                 }
 
                 progress.completedUnitCount += 1
@@ -236,6 +240,12 @@ public extension Item {
         updatedMetadata.sessionError = ""
 
         dbManager.addItemMetadata(updatedMetadata)
+
+        // The same ordering the comment below relies on — our `downloaded = true` lands before
+        // the system adds the file to its materialized set — is what would otherwise make the
+        // observer reconcile this row straight back to dataless. Hold it until the system
+        // confirms the materialisation.
+        PendingMaterializationRegistry.shared.recordDownloaded(itemIdentifier)
 
         // A newly downloaded file changes the "Remove download" visibility of every
         // ancestor folder and the root. This must happen here, not via the
