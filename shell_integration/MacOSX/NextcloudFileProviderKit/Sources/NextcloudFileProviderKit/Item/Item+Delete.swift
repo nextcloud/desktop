@@ -76,26 +76,24 @@ public extension Item {
             return await deleteLockFile(domain: domain, dbManager: dbManager)
         }
 
-        // Permanently deleting an item that already lives in the trash. The stored trashbin name can be
-        // the "rough" plain filename set optimistically when the item was moved to trash (see
-        // handleMetadataTrashModification below), rather than the server's real trashbin name — which
-        // carries a ".d<deletion-timestamp>" suffix whenever the name collided with an existing trash
-        // entry. DELETEing the plain path 404s forever, and macOS retries the purge with no backoff
-        // (observed: a handful of items failing thousands of times). Resolve the real trashbin name from
-        // a fresh trash listing; if the item is no longer in the trash, it has already been removed
-        // remotely, so report success and stop the retry loop. See nextcloud/desktop#10442.
+        // Trash entries may have a server-assigned name after a filename collision. Resolve the
+        // current name before permanently deleting the item.
         let isTrashbinPurge = !trashing && metadata.serverUrl.hasPrefix(account.trashUrl)
+        var usedAuthoritativeTrashbinPath = false
         if isTrashbinPurge {
             switch await resolveTrashbinItemRemotePath(domain: domain) {
                 case let .resolved(resolvedUrl):
                     serverFileNameUrl = resolvedUrl
+                    usedAuthoritativeTrashbinPath = true
                 case .alreadyGone:
                     logger.info(
                         "Trashbin item no longer present in a fresh trash listing; treating permanent delete as already complete.",
                         [.item: ocId, .name: filename]
                     )
+                    guard handleMetadataDeletion() else {
+                        return NSFileProviderError(.cannotSynchronize)
+                    }
                     deletionCompleted = true
-                    handleMetadataDeletion()
                     return nil
                 case .unresolved:
                     logger.info(
@@ -121,15 +119,18 @@ public extension Item {
         )
 
         guard error == .success else {
-            // A purge that 404s means the item is already gone from the trash — the desired end state.
-            // Report success so macOS stops re-issuing the (now pointless) permanent delete.
-            if isTrashbinPurge, error.isNotFoundError {
+            // Treat 404s as success unless a trash purge used an unresolved fallback path.
+            // That path may be stale when the server renamed a colliding trash entry.
+            let canTreatMissingItemAsSuccess = !isTrashbinPurge || usedAuthoritativeTrashbinPath
+            if error.isNotFoundError, canTreatMissingItemAsSuccess {
                 logger.info(
-                    "Trashbin item returned 404 on permanent delete; it is already gone, treating as complete.",
+                    "Delete returned 404; treating the item as already gone.",
                     [.item: ocId, .url: serverFileNameUrl]
                 )
+                guard handleMetadataDeletion() else {
+                    return NSFileProviderError(.cannotSynchronize)
+                }
                 deletionCompleted = true
-                handleMetadataDeletion()
                 return nil
             }
             logger.error("Could not delete item.", [.item: ocId, .url: serverFileNameUrl, .error: error])

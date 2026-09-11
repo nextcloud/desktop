@@ -606,6 +606,16 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Use this to simulate server-side upload rejections (e.g. 404 path gone, 507 quota).
     public var uploadError: NKError?
 
+    /// When set, every delete call returns this error immediately without touching the mock tree.
+    /// Use this to simulate an already-missing remote item.
+    public var deleteError: NKError?
+
+    /// The remote path supplied to the most recent delete call.
+    public private(set) var lastDeleteRemotePath: String?
+
+    /// When set, trash listings return this error without reading the mock trash tree.
+    public var trashListingError: NKError?
+
     /// Records the `If-Match` header the most recent upload call carried (nil if none).
     /// Lets tests assert the optimistic-concurrency precondition was sent, and with
     /// which etag. Captured before any injected `uploadError` short-circuit.
@@ -1283,6 +1293,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         options _: NKRequestOptions = .init(),
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
+        lastDeleteRemotePath = remotePath
+
+        if let deleteError {
+            return (account.ncKitAccount, nil, deleteError)
+        }
+
         guard let item = item(remotePath: remotePath, account: account.ncKitAccount) else {
             return (account.ncKitAccount, nil, .urlError)
         }
@@ -1326,6 +1342,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         responseData: AFDataResponse<Data>?,
         error: NKError
     ) {
+        if let trashListingError {
+            return (account, nil, nil, trashListingError)
+        }
+
         guard let rootTrashItem else {
             return (account, [], nil, .invalidData)
         }
