@@ -102,6 +102,13 @@
        <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
       </property>
       <item>
+       <widget class="QLabel" name="ignorePatternsDescription">
+        <property name="text">
+         <string>Global exclusion list for all accounts and synchronized folders</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="ignoredPatternsPanelTitle">
         <property name="font">
          <font>

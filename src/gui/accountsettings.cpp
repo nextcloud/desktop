@@ -39,27 +39,28 @@
 
 #include <cmath>
 
+#include <QAbstractScrollArea>
+#include <QAction>
 #include <QColor>
 #include <QDesktopServices>
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDir>
-#include <QListWidgetItem>
-#include <QMessageBox>
-#include <QAction>
-#include <QAbstractScrollArea>
-#include <QSizePolicy>
-#include <QVBoxLayout>
-#include <QTreeView>
-#include <QKeySequence>
-#include <QIcon>
-#include <QVariant>
-#include <QJsonDocument>
-#include <QToolTip>
-#include <QPushButton>
-#include <QStyle>
 #include <QFileDialog>
 #include <QFrame>
+#include <QIcon>
+#include <QJsonDocument>
+#include <QKeySequence>
+#include <QLabel>
+#include <QListWidgetItem>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QSizePolicy>
+#include <QStyle>
+#include <QToolTip>
+#include <QTreeView>
+#include <QVBoxLayout>
+#include <QVariant>
 
 using namespace Qt::StringLiterals;
 
@@ -632,6 +633,27 @@ void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
 
     const QString ignoreFile{absFolderPath + ".sync-exclude.lst"};
     const auto layout = new QVBoxLayout();
+
+    const auto folderName = QFileInfo(QDir::cleanPath(absFolderPath)).fileName();
+
+    const auto descriptionLabel = new QLabel(tr("This is specific exclude list for folder \"%1\".<br/>"
+                                                "Global settings (found <a href=\"global-ignore-list\">here</a>) "
+                                                "are also applied.")
+                                                 .arg(folderName.toHtmlEscaped()));
+    descriptionLabel->setObjectName(QStringLiteral("specificIgnoreListDescription"));
+    descriptionLabel->setTextFormat(Qt::RichText);
+    descriptionLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    descriptionLabel->setOpenExternalLinks(false);
+    descriptionLabel->setWordWrap(true);
+
+    connect(descriptionLabel, &QLabel::linkActivated, this, [this](const QString &link) {
+        if (link == QStringLiteral("global-ignore-list")) {
+            Q_EMIT openGlobalIgnoreListEditorRequested();
+        }
+    });
+
+    layout->addWidget(descriptionLabel);
+
     const auto ignoreListWidget = new IgnoreListTableWidget(this);
     ignoreListWidget->readIgnoreFile(ignoreFile);
     layout->addWidget(ignoreListWidget);
