@@ -537,4 +537,134 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
             "A push with no locally known ids is correctly ignored."
         )
     }
+
+    /// Headline regression for nextcloud/desktop#9688 and #10681: a folder the user creates on the Mac,
+    /// then an item created inside it on the server, which stays invisible unless creation marks the
+    /// folder visited.
+    func testItemCreatedOnServerInLocallyCreatedFolderIsReported() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        // Create the folder the way Finder does, through the extension's create path.
+        var folderMetadata = SendableItemMetadata(
+            ocId: "folder-id", fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        folderMetadata.classFile = NKTypeClassFile.directory.rawValue
+        folderMetadata.serverUrl = Self.account.davFilesUrl
+
+        let (createdFolderMaybe, createError) = await Item.create(
+            basedOn: Item(
+                metadata: folderMetadata,
+                parentItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            ),
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(createError)
+        let createdFolder = try XCTUnwrap(createdFolderMaybe)
+
+        // The server-side creation inside that folder, with nothing in the subtree materialised.
+        let remoteFolder = try XCTUnwrap(rootItem.children.first { $0.name == "folder" })
+        let newFile = makeFile(name: "createdOnServer.txt", parent: remoteFolder, etag: "new-v1")
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        // Assert the user-visible outcome first, so a regression fails on the symptom rather than on
+        // the flag that causes it.
+        XCTAssertNil(observer.error)
+        XCTAssertTrue(
+            reportedIds(observer).contains(newFile.identifier),
+            "An item created on the server inside a locally created folder must be reported. Reported: \(reportedIds(observer).sorted())"
+        )
+
+        // Then the mechanism: creation must record the folder as visited, or the working-set scan has
+        // no reason to read it.
+        let storedFolder = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: createdFolder.itemIdentifier.rawValue)
+        )
+        XCTAssertTrue(
+            storedFolder.visitedDirectory,
+            "A locally created folder must be recorded as visited; macOS will not enumerate it again."
+        )
+    }
+
+    /// The eviction-shaped variant of the same hole: a folder Finder has enumerated whose contents are
+    /// all dataless, where a new server-side child must still surface through the depth-1 read.
+    func testItemCreatedOnServerInVisitedFolderWithNoMaterialisedContentIsReported() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let existingFile = makeFile(name: "itemA", parent: folder, etag: "itemA-v1")
+
+        seed(folder, visitedDirectory: true) // enumerated once by Finder
+        seed(existingFile, downloaded: false) // evicted / never downloaded
+
+        // A new item appears on the server; the parent ETag is deliberately left alone, so discovery
+        // cannot lean on the parent looking changed.
+        let newFile = makeFile(name: "createdOnServer.txt", parent: folder, etag: "new-v1")
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        XCTAssertNil(observer.error)
+        XCTAssertTrue(
+            reportedIds(observer).contains(newFile.identifier),
+            "An item created on the server inside a visited folder must be reported even when nothing in that folder is materialised."
+        )
+    }
+
+    ///
+    /// A trashed folder must not be scanned through the ordinary DAV path, whose 404 the scan would
+    /// read as a deletion.
+    ///
+    func testTrashedFolderIsNotScannedThroughTheRegularDavPath() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let liveFolder = makeFolder(name: "live", parent: rootItem, etag: "live-v1")
+        seed(liveFolder, visitedDirectory: true)
+
+        // A folder the user trashed: still visited, not soft-deleted, but living in the trashbin.
+        var trashed = makeFolder(name: "gone", parent: rootItem, etag: "gone-v1")
+            .toItemMetadata(account: Self.account)
+        trashed.ocId = "trashed-folder"
+        trashed.visitedDirectory = true
+        trashed.deleted = false
+        trashed.syncTime = oldSyncTime
+        trashed.serverUrl = Self.account.trashUrl
+        trashed.apply(fileName: "gone.d1788354069")
+        Self.dbManager.addItemMetadata(trashed)
+        XCTAssertTrue(trashed.isTrashed, "Precondition: the row must look trashed.")
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+        let enumeratedPaths = recorder.paths
+
+        XCTAssertNil(observer.error)
+        XCTAssertTrue(
+            enumeratedPaths.contains { $0.hasSuffix("/live") },
+            "Sanity: the live materialised folder is still scanned."
+        )
+        XCTAssertFalse(
+            enumeratedPaths.contains { $0.contains("/trashbin/") },
+            "A trashed row must never be PROPFINDed through the regular DAV path. Got: \(enumeratedPaths)"
+        )
+        XCTAssertNotNil(
+            Self.dbManager.itemMetadata(ocId: "trashed-folder"),
+            "The trash row must survive the scan; trash reconciliation derives deletions from it."
+        )
+    }
 }
