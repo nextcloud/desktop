@@ -80,6 +80,8 @@ Item {
 
             activitiesWindow.show();
             tryCompare(activitiesWindow, "visible", true);
+            tryCompare(activityListView, "count", fakeActivityModel.count);
+            activityListView.forceLayout();
             tryVerify(() => activityListView.contentHeight > activityListView.height);
         }
 
