@@ -132,6 +132,19 @@ add_test(NAME AssistantQmlTest
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 set_tests_properties(AssistantQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+add_executable(WindowCloseQmlTest
+    qml/windowclose/windowcloseqmltestrunner.cpp
+)
+target_link_libraries(WindowCloseQmlTest PRIVATE nextcloudCore Qt::QuickTest)
+set_target_properties(WindowCloseQmlTest PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
+    FOLDER Tests
+)
+add_test(NAME WindowCloseQmlTest
+    COMMAND WindowCloseQmlTest -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/windowclose/testwindowclose.qml"
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+set_tests_properties(WindowCloseQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(UnifiedSearchPeopleModel)
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(SortedActivityListModel)

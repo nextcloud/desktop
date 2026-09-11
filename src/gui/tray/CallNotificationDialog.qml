@@ -33,6 +33,11 @@ ApplicationWindow {
 
     readonly property bool usingUserAvatar: root.talkNotificationData.userAvatar !== ""
 
+    Shortcut {
+        sequences: [StandardKey.Close]
+        onActivated: root.closeNotification()
+    }
+
     function closeNotification() {
         callStateChecker.checking = false;
         ringSound.stop();
