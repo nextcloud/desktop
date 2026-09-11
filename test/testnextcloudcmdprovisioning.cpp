@@ -3,10 +3,13 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-#include <QtTest>
+#include <QByteArray>
+#include <QDir>
+#include <QFile>
 #include <QProcess>
 #include <QString>
-#include <QByteArray>
+#include <QTemporaryDir>
+#include <QtTest>
 
 #include "config.h"
 
@@ -33,11 +36,44 @@ private:
         proc.setProcessChannelMode(QProcess::MergedChannels);
         proc.start(nextcloudCmdBinary(), args);
         proc.closeWriteChannel(); // close stdin — no interactive reads
-        proc.waitForFinished(timeoutMs);
+        if (!proc.waitForFinished(timeoutMs)) {
+            // Kill rather than let the QProcess destructor block on a wedged child, and
+            // leave an exit code behind that no expectation below accepts.
+            proc.kill();
+            proc.waitForFinished();
+        }
         if (exitCodeOut) {
             *exitCodeOut = proc.exitCode();
         }
         return proc.readAll();
+    }
+
+    // Returns true once an account section has been written to the configuration in
+    // confDir.  A failed setup must leave the configuration without one.
+    static bool configHasAccount(const QString &confDir)
+    {
+        const QDir dir(confDir);
+        const auto configFileNames = dir.entryList({QStringLiteral("*.cfg")}, QDir::Files);
+
+        for (const auto &configFileName : configFileNames) {
+            QFile configFile(dir.filePath(configFileName));
+            if (!configFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                continue;
+            }
+
+            if (configFile.readAll().contains("webflow_user")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // A port nothing listens on, so the provisioning setup always fails on the first
+    // request instead of depending on a server being available to the test.
+    static QString unreachableServerUrl()
+    {
+        return QStringLiteral("http://127.0.0.1:1");
     }
 
 private Q_SLOTS:
@@ -145,6 +181,102 @@ private Q_SLOTS:
         QCOMPARE(exitCode, expectedExitCode);
         QVERIFY2(output.contains("--serverurl"), output.constData());
         QVERIFY2(!output.contains("Please enter username"), output.constData());
+    }
+
+    // The same as testUserIdAlonePrintsServerUrlError, but with the inline
+    // "--option=value" spelling.  Provisioning mode is selected by looking for
+    // --userid in the arguments, so before the inline form was expanded this fell
+    // through into sync mode and printed the generic help instead.
+    void testInlineOptionValuesSelectProvisioningMode()
+    {
+#if defined Q_OS_WINDOWS
+        constexpr auto expectedExitCode = -1;
+#else
+        constexpr auto expectedExitCode = 255;
+#endif
+
+        int exitCode = 0;
+        const auto output = runCmd({QStringLiteral("--userid=alice")}, &exitCode);
+
+        QCOMPARE(exitCode, expectedExitCode);
+        QVERIFY2(output.contains("--serverurl"), output.constData());
+        QVERIFY2(!output.contains("Please enter username"), output.constData());
+    }
+
+    // A full set of provisioning options in the inline spelling has to reach the
+    // account setup.  Sync mode would instead have taken the last two arguments as
+    // the positional source directory and server URL and complained about the
+    // source directory not existing.
+    void testInlineOptionValuesReachAccountSetup()
+    {
+        QTemporaryDir confDir;
+        QVERIFY(confDir.isValid());
+
+        int exitCode = 0;
+        const auto output = runCmd({QStringLiteral("--confdir"),
+                                    confDir.path(),
+                                    QStringLiteral("--userid=alice"),
+                                    QStringLiteral("--apppassword=secret"),
+                                    QStringLiteral("--serverurl=") + unreachableServerUrl()},
+                                   &exitCode);
+
+        QVERIFY2(output.contains("Could not fetch username"), output.constData());
+        QVERIFY2(!output.contains("does not exist"), output.constData());
+        QCOMPARE(exitCode, 1);
+    }
+
+    // --localdirpath is documented as optional.  Leaving it out used to abort the
+    // setup right away with "Could not create local folder because the name is
+    // empty", so the credentials were never even sent to the server.
+    void testSetupWithoutLocalDirPathIsNotRejected()
+    {
+        QTemporaryDir confDir;
+        QVERIFY(confDir.isValid());
+
+        int exitCode = 0;
+        const auto output = runCmd({QStringLiteral("--confdir"),
+                                    confDir.path(),
+                                    QStringLiteral("--userid"),
+                                    QStringLiteral("alice"),
+                                    QStringLiteral("--apppassword"),
+                                    QStringLiteral("secret"),
+                                    QStringLiteral("--serverurl"),
+                                    unreachableServerUrl()},
+                                   &exitCode);
+
+        QVERIFY2(!output.contains("local folder because the name is empty"), output.constData());
+        // The setup got as far as contacting the server, which is where it fails here.
+        QVERIFY2(output.contains("Could not fetch username"), output.constData());
+        QCOMPARE(exitCode, 1);
+    }
+
+    // With an app password the setup is asynchronous: the credentials are checked
+    // against the server before the account is written.  nextcloudcmd has to run an
+    // event loop for any of that to happen — without one it returned success before
+    // the first reply arrived.  So an unreachable server has to be reported as a
+    // failure, and nothing may be left in the configuration.
+    void testAppPasswordSetupRunsTheEventLoop()
+    {
+        QTemporaryDir confDir;
+        QVERIFY(confDir.isValid());
+
+        int exitCode = 0;
+        const auto output = runCmd({QStringLiteral("--confdir"),
+                                    confDir.path(),
+                                    QStringLiteral("--userid"),
+                                    QStringLiteral("alice"),
+                                    QStringLiteral("--apppassword"),
+                                    QStringLiteral("secret"),
+                                    QStringLiteral("--serverurl"),
+                                    unreachableServerUrl()},
+                                   &exitCode);
+
+        // 1 is the code the setup job exits with.  The options were accepted, so this
+        // is neither the 255 of a rejected command line nor the 0 of an early return
+        // that never waited for the result.
+        QCOMPARE(exitCode, 1);
+        QVERIFY2(output.contains("Could not fetch username"), output.constData());
+        QVERIFY2(!configHasAccount(confDir.path()), "a failed setup must not store an account");
     }
 };
 
