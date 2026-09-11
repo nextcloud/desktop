@@ -442,6 +442,8 @@ public final class FilesDatabaseManager: Sendable {
                 }
             }
 
+            var visitToRecord: String?
+
             if var readTargetMetadata {
                 if readTargetMetadata.directory {
                     readTargetMetadata.visitedDirectory = true
@@ -450,6 +452,13 @@ public final class FilesDatabaseManager: Sendable {
                 if let existing = itemMetadata(ocId: readTargetMetadata.ocId) {
                     if readTargetMetadata.etag == existing.etag {
                         readTargetMetadata.fileProviderContentVersion = existing.fileProviderContentVersion
+                    }
+
+                    // `visitedDirectory` is local-only, so it takes no part in the remote-state
+                    // comparison and is recorded separately from `metadatasToUpdate`, which is also
+                    // the change set handed to the framework.
+                    if readTargetMetadata.directory, !existing.visitedDirectory {
+                        visitToRecord = readTargetMetadata.ocId
                     }
 
                     if existing.status == Status.normal.rawValue,
@@ -486,6 +495,12 @@ public final class FilesDatabaseManager: Sendable {
                 database.add(metadatasToDelete.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToCreate.map { RealmItemMetadata(value: $0) }, update: .all)
+
+                if let visitToRecord,
+                   let row = database.objects(RealmItemMetadata.self).where({ $0.ocId == visitToRecord }).first
+                {
+                    row.visitedDirectory = true
+                }
             }
 
             return ChangeSet(
