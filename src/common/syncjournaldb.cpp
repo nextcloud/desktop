@@ -506,10 +506,12 @@ bool SyncJournalDb::checkConnect()
     }
 
     // create the selectivesync table.
-    createQuery.prepare("CREATE TABLE IF NOT EXISTS selectivesync ("
-                        "path VARCHAR(4096),"
-                        "type INTEGER"
-                        ");");
+    createQuery.prepare(
+        "CREATE TABLE IF NOT EXISTS selectivesync ("
+        "path VARCHAR(4096) PRIMARY KEY ON CONFLICT REPLACE, "
+        "pathWithPrimaryKey VARCHAR(4096) NULL, "
+        "type INTEGER"
+        ");");
 
     if (!createQuery.exec()) {
         return sqlFail(QStringLiteral("Create table selectivesync"), createQuery);
@@ -720,6 +722,9 @@ bool SyncJournalDb::updateDatabaseStructure()
         return false;
     }
     if (!updateErrorBlacklistTableStructure()) {
+        return false;
+    }
+    if (!updateSelectiveSyncTableStructure()) {
         return false;
     }
     return true;
@@ -992,6 +997,48 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
     }
 
     return re;
+}
+
+bool SyncJournalDb::updateSelectiveSyncTableStructure()
+{
+    auto createQuery = SqlQuery{_db};
+
+    auto columns = tableColumns("selectivesync");
+
+    if (columns.isEmpty()) {
+        return false;
+    }
+
+    if (columns.indexOf("pathWithPrimaryKey") == 1) {
+        return true;
+    }
+
+    createQuery.prepare(
+        "CREATE TABLE IF NOT EXISTS newselectivesync ("
+        "path VARCHAR(4096) PRIMARY KEY ON CONFLICT REPLACE, "
+        "pathWithPrimaryKey VARCHAR(4096) NULL, "
+        "type INTEGER"
+        ");");
+    if (!createQuery.exec()) {
+        return sqlFail(QStringLiteral("Create table newselectivesync"), createQuery);
+    }
+
+    createQuery.prepare("INSERT INTO newselectivesync (path, type) FROM SELECT path, type FROM selectivesync;");
+    if (!createQuery.exec()) {
+        return sqlFail(QStringLiteral("Copy data from selectivesync to newselectivesync"), createQuery);
+    }
+
+    createQuery.prepare("DROP TABLE selectivesync;");
+    if (!createQuery.exec()) {
+        return sqlFail(QStringLiteral("Drop table selectivesync"), createQuery);
+    }
+
+    createQuery.prepare("ALTER TABLE newselectivesync RENAME TO selectivesync;");
+    if (!createQuery.exec()) {
+        return sqlFail(QStringLiteral("Rename table newselectivesync to selectivesync"), createQuery);
+    }
+
+    return true;
 }
 
 QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
@@ -2450,7 +2497,7 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
         qCWarning(lcDb) << "SQL error when deleting selective sync list" << list << delQuery.error();
     }
 
-    SqlQuery insQuery("INSERT INTO selectivesync VALUES (?1, ?2)", _db);
+    SqlQuery insQuery("INSERT INTO selectivesync (path, type) VALUES (?1, ?2)", _db);
     for (const auto &path : list) {
         insQuery.reset_and_clear_bindings();
         insQuery.bindValue(1, path);
