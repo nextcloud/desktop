@@ -179,7 +179,8 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             Int(storedFolderItem.contentModificationDate?.timeIntervalSince1970 ?? 0),
             Int(remoteFolder.modificationDate.timeIntervalSince1970)
         )
-        XCTAssertEqual(storedFolderItem.childItemCount?.intValue, 0) // Not visited yet, so no kids
+        // Not read yet, so the count is unknown rather than zero — see `Item.childItemCount`.
+        XCTAssertNil(storedFolderItem.childItemCount)
     }
 
     func testWorkingSetEnumeration() async throws {
@@ -1629,9 +1630,9 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
+        // 0, not nil: the enumeration above read this folder, so the empty result is knowledge.
         let childItemCount = storedFolderItem.childItemCount as? Int
-        let expectedChildItemCount = remoteFolder.children.count
-        XCTAssertEqual(childItemCount, expectedChildItemCount)
+        XCTAssertEqual(childItemCount, remoteFolder.children.count)
     }
 
     func testFolderWithFewItemsPaginatedEnumeration() async throws {
