@@ -606,6 +606,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Use this to simulate server-side upload rejections (e.g. 404 path gone, 507 quota).
     public var uploadError: NKError?
 
+    public var deleteError: NKError?
+    public var lastDeleteRemotePath: String?
+
     /// Records the `If-Match` header the most recent upload call carried (nil if none).
     /// Lets tests assert the optimistic-concurrency precondition was sent, and with
     /// which etag. Captured before any injected `uploadError` short-circuit.
@@ -1283,6 +1286,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         options _: NKRequestOptions = .init(),
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
+        lastDeleteRemotePath = remotePath
+
+        if let deleteError {
+            return (account.ncKitAccount, nil, deleteError)
+        }
+
         guard let item = item(remotePath: remotePath, account: account.ncKitAccount) else {
             return (account.ncKitAccount, nil, .urlError)
         }
