@@ -27,6 +27,13 @@ import OSLog
     ///
     let manager: NSFileProviderManager?
 
+    ///
+    /// Observation of the process-global `blockSync` user default, used only to notice when synchronization is unblocked.
+    ///
+    /// See ``observeBlockSync()`` for why the gates do not depend on this.
+    ///
+    var blockSyncObservation: NSKeyValueObservation?
+
     // MARK: XPC
 
     ///
@@ -107,10 +114,13 @@ import OSLog
         logger.info("NextcloudKit logging configured.", [.url: NKLogFileManager.shared.currentLogFileURL()])
         keychain = Keychain(log: log)
         super.init()
+        observeBlockSync()
     }
 
     public func invalidate() {
         logger.debug("File provider extension process is being invalidated.")
+        blockSyncObservation?.invalidate()
+        blockSyncObservation = nil
     }
 
     func insertSyncAction(_ actionId: UUID) {
@@ -183,6 +193,13 @@ import OSLog
     }
 
     public func fetchContents(for itemIdentifier: NSFileProviderItemIdentifier, version requestedVersion: NSFileProviderItemVersion?, request _: NSFileProviderRequest, completionHandler: @Sendable @escaping (URL?, NSFileProviderItem?, Error?) -> Void) -> Progress {
+        guard !blockSync else {
+            logger.info("Not fetching contents of item because synchronization is blocked.", [.item: itemIdentifier])
+            completionHandler(nil, nil, NSFileProviderError(.serverUnreachable))
+
+            return Progress()
+        }
+
         let actionId = UUID()
         insertSyncAction(actionId)
         logger.debug("Received request to fetch contents of item.", [.item: itemIdentifier])
@@ -248,6 +265,13 @@ import OSLog
             NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?
         ) -> Void
     ) -> Progress {
+        guard !blockSync else {
+            logger.info("Not creating item because synchronization is blocked.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
+            completionHandler(itemTemplate, [], false, NSFileProviderError(.serverUnreachable))
+
+            return Progress()
+        }
+
         let actionId = UUID()
         insertSyncAction(actionId)
         logger.debug("Received request to create item.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
@@ -324,6 +348,13 @@ import OSLog
     ) -> Progress {
         // An item was modified on disk, process the item's modification
         // TODO: Handle finder things like tags, other possible item changed fields
+        guard !blockSync else {
+            logger.info("Not modifying item because synchronization is blocked.", [.item: item.itemIdentifier])
+            completionHandler(item, [], false, NSFileProviderError(.serverUnreachable))
+
+            return Progress()
+        }
+
         let actionId = UUID()
         insertSyncAction(actionId)
 
@@ -409,6 +440,13 @@ import OSLog
         request _: NSFileProviderRequest,
         completionHandler: @Sendable @escaping (Error?) -> Void
     ) -> Progress {
+        guard !blockSync else {
+            logger.info("Not deleting item because synchronization is blocked.", [.item: identifier])
+            completionHandler(NSFileProviderError(.serverUnreachable))
+
+            return Progress()
+        }
+
         let actionId = UUID()
         insertSyncAction(actionId)
 
@@ -469,6 +507,14 @@ import OSLog
 
     public func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest) throws -> NSFileProviderEnumerator {
         logger.debug("System requested enumerator.", [.item: containerItemIdentifier])
+
+        // Refusing here is what stops remote changes arriving: the app discovers them and signals the working set, but the signal carries no data and reaches this extension as a request for an enumerator, so declining it declines both the push and the polling path.
+        //
+        // It has to be an error rather than an enumerator which reports nothing. An empty but successful enumeration tells the framework that the container is empty, which for a replicated extension is an instruction to delete every child of it from disk. Failing loses nothing; succeeding emptily loses the user's files.
+        guard !blockSync else {
+            logger.info("Not providing enumerator for item because synchronization is blocked.", [.item: containerItemIdentifier])
+            throw NSFileProviderError(.serverUnreachable)
+        }
 
         guard let ncAccount else {
             logger.debug("Not providing enumerator for item because account is not set up yet.", [.item: containerItemIdentifier])
