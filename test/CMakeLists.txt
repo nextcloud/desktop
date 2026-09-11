@@ -125,6 +125,7 @@ set_target_properties(ActivitiesWindowQmlTest PROPERTIES
 )
 add_test(NAME ActivitiesWindowQmlTest
     COMMAND ActivitiesWindowQmlTest
+        -o -,txt
         -import "${CMAKE_CURRENT_SOURCE_DIR}/qml/imports"
         -import "${CMAKE_SOURCE_DIR}/theme"
         -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/activitieswindow/tst_activitieswindow.qml"

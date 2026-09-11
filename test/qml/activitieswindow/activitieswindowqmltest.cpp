@@ -5,11 +5,9 @@
 
 #include "tray/svgimageprovider.h"
 
-#include "logger.h"
-
-#include <QStandardPaths>
 #include <QQmlEngine>
 #include <QResource>
+#include <QStandardPaths>
 #include <QtQuickTest>
 
 /** @brief Provides production image resources to the Activities window QML tests. */
@@ -27,9 +25,6 @@ public:
 public slots:
     void initTestCase()
     {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
         QStandardPaths::setTestModeEnabled(true);
     }
 
