@@ -143,7 +143,7 @@ ScrollView {
             Accessible.name: qsTr("Scroll to top")
             Accessible.onPressAction: scrollToTopButton.clicked()
 
-            icon.source: "image://svgimage-custom-color/chevron-double-up.svg/" + palette.buttonText
+            icon.source: "image://svgimage-custom-color/chevron-double-up.svg/" + palette.windowText
             icon.width: Style.activityListButtonIconSize
             icon.height: Style.activityListButtonIconSize
 
