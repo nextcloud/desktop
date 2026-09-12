@@ -41,6 +41,14 @@ find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIE
      TYPE REQUIRED
  )
 
+if(UNIX AND NOT APPLE)
+  find_package(Qt${QT_VERSION_MAJOR}DBus ${REQUIRED_QT_VERSION} CONFIG QUIET)
+  set_package_properties(Qt${QT_VERSION_MAJOR}DBus PROPERTIES
+      DESCRIPTION "Qt${QT_VERSION_MAJOR} DBus component."
+      TYPE REQUIRED
+  )
+endif()
+
 get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
 message(STATUS "Using Qt ${Qt${QT_MAJOR_VERSION}Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
 
