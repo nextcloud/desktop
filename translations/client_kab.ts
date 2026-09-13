@@ -3690,12 +3690,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="189"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Azen-iyi-d alɣu ticki ikaramen ttimɣuṛen ugar n talast i d-yettunefken</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="216"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Sens s wudem awurman antawi n yikaramen iɛeddan talast </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
@@ -3741,7 +3741,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="376"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Amsaɣ n tnarit x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="400"/>
@@ -3771,7 +3771,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="503"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Alɣu usḍif</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="513"/>
@@ -3821,7 +3821,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="245"/>
         <source>Unknown account</source>
-        <translation type="unfinished"/>
+        <translation>Amiḍan arussin</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="252"/>
@@ -3831,7 +3831,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="261"/>
         <source>This removes classic sync folder connections from the following accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Ayagi ad ikkes tuqqniwin tiklasikin n ukaram seg yimiḍanen-agi:</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="265"/>
@@ -3841,12 +3841,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="269"/>
         <source>Enable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Rmed asaǧǧaw n ufaylu?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="274"/>
         <source>Enable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Rmed asaǧǧaw n ufaylu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="275"/>
@@ -3867,12 +3867,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="291"/>
         <source>Disable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Sens asaǧǧaw n ufaylu?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="296"/>
         <source>Disable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Sens asaǧǧaw n ufaylu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -3883,7 +3883,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/generalsettings.cpp" line="448"/>
         <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Iqqen ɣer yiwen unagraw n tkebbanit. Leqqem ubadu (%1) ur yezmir ara ad yettwabeddel.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="505"/>
@@ -4041,7 +4041,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="62"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Anekcum-agi i d-ittunefken sɣur anagraw ar &quot;%1&quot; yerna ulamek ara yettwabeddel deg teskant-agi.</translation>
     </message>
 </context>
 <context>
@@ -4150,7 +4150,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/infosettings.cpp" line="151"/>
         <location filename="../src/gui/infosettings.cpp" line="177"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Iqqen ɣer yiwen unagraw n tkebbanit. Leqqem ubadu (%1) ur yezmir ara ad yettwabeddel.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="208"/>
@@ -4248,17 +4248,17 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu &quot;%1&quot; ur yezmir ara ad yemtawi acku isem-is yegber isekkilen ur nettusireg ara deg unagraw-agi.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Isekkilen-agi ur ttwasirgen ara deg unagraw: \ / : ? * &quot; &lt; &gt; | tallunin deg tazwara d taggara n izirig</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu &quot;%1&quot; ur yezmir ara ad yemtawi acku isem-is yegber isekkilen ur nettusireg ara deg uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="107"/>
@@ -4288,7 +4288,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="161"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Ur tesɛiḍ ara tisirag akken ad tbeddeleḍ isem n ufaylu-agi. Ma ulac aɣilif, steqsi ameskar n ufaylu akken ad t-tbeddeleḍ.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="166"/>
@@ -4318,17 +4318,17 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="249"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Isem n ufaylu yesɛa isekkilen yeffɣen i usaḍuf: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="262"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi abeddel n yisem n ufaylu. Ttxil-k·m, tḥeqqeq belli teqqneḍ ɣer uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="273"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi abeddel n yisem n ufaylu acku afaylu s yisem-agi yella yakan deg uqeddac. Ttxil-k·m, fren isem-nniḍen.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="309"/>
