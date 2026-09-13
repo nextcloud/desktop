@@ -68,6 +68,40 @@ private Q_SLOTS:
         QCOMPARE(account->davUser(), expectedDavUser);
     }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void testFileProviderDomainVolumeUuid()
+    {
+        const auto account = Account::create();
+        QSignalSpy saveSpy(account.data(), &Account::wantsAccountSaved);
+
+        QVERIFY(account->fileProviderDomainVolumeUuid().isEmpty());
+
+        const auto volumeUuid = u"A1B2C3D4-E5F6-47A8-9012-3456789ABCDE"_s;
+        account->setFileProviderDomainVolumeUuid(volumeUuid);
+        QCOMPARE(account->fileProviderDomainVolumeUuid(), volumeUuid);
+        QCOMPARE(saveSpy.count(), 1);
+
+        account->setFileProviderDomainVolumeUuid(volumeUuid);
+        QCOMPARE(saveSpy.count(), 1);
+
+        account->setFileProviderDomainVolumeUuid({});
+        QVERIFY(account->fileProviderDomainVolumeUuid().isEmpty());
+        QCOMPARE(saveSpy.count(), 2);
+
+        const QByteArray bookmark("test-bookmark");
+        account->setFileProviderDomainVolumeBookmark(bookmark);
+        QCOMPARE(account->fileProviderDomainVolumeBookmark(), bookmark);
+        QCOMPARE(saveSpy.count(), 3);
+
+        account->setFileProviderDomainVolumeBookmark(bookmark);
+        QCOMPARE(saveSpy.count(), 3);
+
+        account->setFileProviderDomainVolumeBookmark({});
+        QVERIFY(account->fileProviderDomainVolumeBookmark().isEmpty());
+        QCOMPARE(saveSpy.count(), 4);
+    }
+#endif
+
     void testAccount_setLimitSettings_globalNetworkLimitFallback()
     {
         using LimitSetting = Account::AccountNetworkTransferLimitSetting;
