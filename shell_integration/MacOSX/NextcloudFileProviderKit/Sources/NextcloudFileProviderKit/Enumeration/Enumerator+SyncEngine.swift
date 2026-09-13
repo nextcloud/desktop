@@ -101,8 +101,10 @@ extension Enumerator {
         logger.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl) for user: \(account.ncKitAccount)")
 
         if let pageIndex {
-            let (metadatas, error) =
+            // Persist on the database queue: see `FilesDatabaseManager.perform(_:)`.
+            let (metadatas, error) = await dbManager.perform { dbManager in
                 handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager, log: log)
+            }
             return (metadatas, nil, error)
         }
 
@@ -118,7 +120,7 @@ extension Enumerator {
         let convertedDirectory = await files.toSendableDirectoryMetadata(account: account, directoryToRead: serverUrl)
         signposter.endInterval("ConvertDirectoryMetadata", convDirState)
 
-        guard var (directory, _, files) = convertedDirectory else {
+        guard let (directory, _, files) = convertedDirectory else {
             logger.error("Failed to convert array of NKFile to directory and files metadata objects!")
             return (nil, nil, .invalidData)
         }
@@ -129,42 +131,55 @@ extension Enumerator {
             return (nil, nil, .invalidData)
         }
 
-        if let existingMetadata = dbManager.itemMetadata(ocId: directory.ocId) {
-            directory.downloaded = existingMetadata.downloaded
-            directory.keepDownloaded = existingMetadata.keepDownloaded
-        }
-
-        directory.visitedDirectory = true
-
-        files.insert(directory, at: 0)
-
         let batchClock = ContinuousClock()
         let batchStart = batchClock.now
-        let batchWriteState = signposter.beginInterval(
-            "Depth1BatchWrite",
-            id: signposter.makeSignpostID(),
-            "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
-        )
-        let changes = dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
-            serverUrl: serverUrl,
-            updatedMetadatas: files,
-            keepExistingDownloadState: true
-        )
-        signposter.endInterval("Depth1BatchWrite", batchWriteState)
+
+        // Read the existing row, merge and write on the database queue rather than in the enclosing
+        // task. This is a Realm write whose commit walks the reachable object graph, so on a large
+        // database it parks its thread for a long time; doing that on the cooperative pool starves
+        // every other task in the extension. See `FilesDatabaseManager.perform(_:)`.
+        let (mergedFiles, changes) = await dbManager.perform {
+            dbManager -> ([SendableItemMetadata], ChangeSet?) in
+            var directory = directory
+            var files = files
+
+            if let existingMetadata = dbManager.itemMetadata(ocId: directory.ocId) {
+                directory.downloaded = existingMetadata.downloaded
+                directory.keepDownloaded = existingMetadata.keepDownloaded
+            }
+
+            directory.visitedDirectory = true
+
+            files.insert(directory, at: 0)
+
+            let batchWriteState = signposter.beginInterval(
+                "Depth1BatchWrite",
+                id: signposter.makeSignpostID(),
+                "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
+            )
+            let changes = dbManager.depth1ReadUpdateItemMetadatas(
+                account: account.ncKitAccount,
+                serverUrl: serverUrl,
+                updatedMetadatas: files,
+                keepExistingDownloadState: true
+            )
+            signposter.endInterval("Depth1BatchWrite", batchWriteState)
+
+            return (files, changes)
+        }
 
         // The non-paginated depth-1 write (change / working-set full-folder re-read) is the measured
         // enumeration bottleneck: its per-item logical-dedup scans are O(N²) over a flat folder. Log its
         // wall-clock + items/sec so the effect of the normalizedFileName index is visible in the JSONL
         // (the `Depth1BatchWrite` signpost shows the same in Instruments).
         let batchElapsed = batchClock.now - batchStart
-        let batchRate = batchElapsed.fpSeconds > 0 ? Double(files.count) / batchElapsed.fpSeconds : 0
+        let batchRate = batchElapsed.fpSeconds > 0 ? Double(mergedFiles.count) / batchElapsed.fpSeconds : 0
         logger.performance(
-            "PERF Depth1BatchWrite items=\(files.count) write_s=\(batchElapsed.fpSeconds) items_per_s=\(batchRate)",
+            "PERF Depth1BatchWrite items=\(mergedFiles.count) write_s=\(batchElapsed.fpSeconds) items_per_s=\(batchRate)",
             [.url: serverUrl]
         )
 
-        return (files, changes, nil)
+        return (mergedFiles, changes, nil)
     }
 
     /// READ THIS CAREFULLY.
@@ -306,28 +321,37 @@ extension Enumerator {
         }
 
         if depth == .target {
-            var metadata = receivedFile.toItemMetadata()
-            let existing = dbManager.itemMetadata(ocId: metadata.ocId)
-            let isNew = existing == nil
-            let updatedMetadatas = isNew ? [] : [metadata]
-            let newMetadatas = isNew ? [metadata] : []
+            let received = receivedFile.toItemMetadata()
 
-            metadata.lockToken = existing?.lockToken
-            metadata.visitedDirectory = existing?.visitedDirectory == true
-            metadata.downloaded = existing?.downloaded == true
+            // Read, merge and write as one hop onto the database queue: see
+            // `FilesDatabaseManager.perform(_:)`.
+            let (metadata, newMetadatas, updatedMetadatas) = await dbManager.perform {
+                dbManager -> ([SendableItemMetadata], [SendableItemMetadata], [SendableItemMetadata]) in
+                var metadata = received
+                let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+                let isNew = existing == nil
+                let updatedMetadatas = isNew ? [] : [metadata]
+                let newMetadatas = isNew ? [metadata] : []
 
-            if let existing {
-                metadata.keepDownloaded = existing.keepDownloaded
-            } else {
-                // Genuinely new item: inherit the parent's pin so the
-                // overlay and `contentPolicy` match its siblings (#10054).
-                metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+                metadata.lockToken = existing?.lockToken
+                metadata.visitedDirectory = existing?.visitedDirectory == true
+                metadata.downloaded = existing?.downloaded == true
+
+                if let existing {
+                    metadata.keepDownloaded = existing.keepDownloaded
+                } else {
+                    // Genuinely new item: inherit the parent's pin so the
+                    // overlay and `contentPolicy` match its siblings (#10054).
+                    metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+                }
+
+                dbManager.addItemMetadata(metadata)
+
+                return ([metadata], newMetadatas, updatedMetadatas)
             }
 
-            dbManager.addItemMetadata(metadata)
-
             return RemoteReadResult(
-                metadatas: [metadata],
+                metadatas: metadata,
                 changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas),
                 nextPage: nextPage
             )
@@ -348,9 +372,12 @@ extension Enumerator {
                 error: depth1Read.readError
             )
         } else if let pageIndex = pageSettings?.index {
-            let (metadatas, error) = handlePagedReadResults(
-                files: files, pageIndex: pageIndex, dbManager: dbManager, log: log
-            )
+            // Persist on the database queue: see `FilesDatabaseManager.perform(_:)`.
+            let (metadatas, error) = await dbManager.perform { dbManager in
+                handlePagedReadResults(
+                    files: files, pageIndex: pageIndex, dbManager: dbManager, log: log
+                )
+            }
             return RemoteReadResult(metadatas: metadatas, nextPage: nextPage, error: error)
         } else {
             // Infinite depth unpaged reads are a bad idea

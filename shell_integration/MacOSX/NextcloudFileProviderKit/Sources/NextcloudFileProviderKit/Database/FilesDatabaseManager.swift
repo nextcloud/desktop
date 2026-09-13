@@ -127,6 +127,50 @@ public final class FilesDatabaseManager: Sendable {
         return realm
     }
 
+    ///
+    /// Serial queue owning every Realm access made from a concurrent context.
+    ///
+    /// Realm's refresh, write promotion and commit all block on process-wide mutexes, and a commit
+    /// costs a walk of the reachable object graph, so it is slow on a large database. Running that
+    /// directly inside a `Task` blocks a thread of the Swift cooperative pool, which the runtime
+    /// cannot reclaim while it is parked in a mutex. With several reads in flight the pool is
+    /// exhausted, and unrelated work — the enumeration for a folder the user has just opened —
+    /// never gets a thread at all, so it never even begins.
+    ///
+    /// The queue is serial because concurrent writers gain nothing: Realm serializes commits
+    /// internally anyway, and contending for that lock is what made the stall long enough to
+    /// exhaust the pool.
+    ///
+    private let databaseQueue: DispatchQueue = {
+        let queue = DispatchQueue(
+            label: "com.nextcloud.desktopclient.fileprovider.database", qos: .userInitiated
+        )
+        queue.setSpecific(key: databaseQueueKey, value: ())
+        return queue
+    }()
+
+    private static let databaseQueueKey = DispatchSpecificKey<Void>()
+
+    /// Whether the caller is running on ``databaseQueue``. Lets a test assert that database work
+    /// left the cooperative pool rather than inferring it from timing.
+    var isOnDatabaseQueue: Bool {
+        DispatchQueue.getSpecific(key: Self.databaseQueueKey) != nil
+    }
+
+    ///
+    /// Run `work` on the dedicated database queue, suspending the caller rather than blocking it.
+    ///
+    /// Use this for any database access reached from an `async` context that can run concurrently
+    /// with other database access. See ``databaseQueue``.
+    ///
+    public func perform<T: Sendable>(
+        _ work: @escaping @Sendable (FilesDatabaseManager) -> T
+    ) async -> T {
+        await withCheckedContinuation { continuation in
+            databaseQueue.async { continuation.resume(returning: work(self)) }
+        }
+    }
+
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
         !itemMetadatas.where { $0.account == account }.isEmpty
     }
