@@ -94,6 +94,8 @@
 				<string>Copy internal link</string>
 			</dict>
 		</array>
+		<key>NSExtensionFileProviderAllowsExternalVolumes</key>
+		<true/>
 		<key>NSExtensionFileProviderAllowsContextualMenuDownloadEntry</key>
 		<false/>
 		<key>NSExtensionFileProviderAllowsUserControlledEviction</key>
