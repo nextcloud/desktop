@@ -103,6 +103,8 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QByteArray encryptionCertificateFingerprint READ encryptionCertificateFingerprint WRITE setEncryptionCertificateFingerprint NOTIFY encryptionCertificateFingerprintChanged)
 #ifdef BUILD_FILE_PROVIDER_MODULE
     Q_PROPERTY(QString fileProviderDomainIdentifier READ fileProviderDomainIdentifier WRITE setFileProviderDomainIdentifier)
+    Q_PROPERTY(QString fileProviderDomainVolumeUuid READ fileProviderDomainVolumeUuid WRITE setFileProviderDomainVolumeUuid)
+    Q_PROPERTY(QByteArray fileProviderDomainVolumeBookmark READ fileProviderDomainVolumeBookmark WRITE setFileProviderDomainVolumeBookmark)
 #endif
 
 public:
@@ -446,6 +448,14 @@ public:
     [[nodiscard]] QString fileProviderDomainIdentifier() const;
     void setFileProviderDomainIdentifier(const QString &identifier);
 
+    /** @brief UUID of the external volume that stores this account's File Provider domain, or empty for internal storage. */
+    [[nodiscard]] QString fileProviderDomainVolumeUuid() const;
+    void setFileProviderDomainVolumeUuid(const QString &uuid);
+
+    /** @brief Security-scoped bookmark granting persistent access to the configured external File Provider volume. */
+    [[nodiscard]] QByteArray fileProviderDomainVolumeBookmark() const;
+    void setFileProviderDomainVolumeBookmark(const QByteArray &bookmark);
+
     /**
      * Runtime-only property for tracking the last fetched root folder ETag.
      * Used for detecting remote changes without persisting the value.
@@ -631,6 +641,8 @@ private:
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     QString _fileProviderDomainIdentifier;
+    QString _fileProviderDomainVolumeUuid;
+    QByteArray _fileProviderDomainVolumeBookmark;
     QByteArray _lastRootETag; // Runtime-only, not persisted
 #endif
 

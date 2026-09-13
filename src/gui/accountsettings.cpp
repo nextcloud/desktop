@@ -46,6 +46,7 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDir>
+#include <QFileDialog>
 #include <QFrame>
 #include <QIcon>
 #include <QJsonDocument>
@@ -54,6 +55,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSizePolicy>
+#include <QStorageInfo>
 #include <QStyle>
 #include <QToolTip>
 #include <QTreeView>
@@ -64,6 +66,7 @@ using namespace Qt::StringLiterals;
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
+#include "macOS/fileproviderdomainmanager.h"
 #endif
 
 #ifdef Q_OS_MACOS
@@ -293,6 +296,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     });
     connect(_ui->fileProviderResetButton, &QPushButton::clicked,
             this, &AccountSettings::slotResetFileProviderDomain);
+    connect(_ui->fileProviderChooseStorageButton, &QPushButton::clicked, this, &AccountSettings::slotChooseFileProviderStorageVolume);
+    connect(_ui->fileProviderUseInternalStorageButton, &QPushButton::clicked, this, &AccountSettings::slotUseInternalFileProviderStorage);
+    connect(Mac::FileProvider::instance()->domainManager(),
+            &Mac::FileProviderDomainManager::domainsChanged,
+            this,
+            &AccountSettings::updateSyncFoldersPanelVisibility);
     // Re-evaluate the maintenance row when this account's domain is (re)created/removed.
     connect(fpSettingsController, &Mac::FileProviderSettingsController::vfsEnabledForAccountChanged,
             this, &AccountSettings::updateSyncFoldersPanelVisibility);
@@ -2078,7 +2087,26 @@ void AccountSettings::updateSyncFoldersPanelVisibility()
     const auto fpController = Mac::FileProviderSettingsController::instance();
     const auto domainReady = fpModeOn && fpController->vfsEnabledForAccount(userIdAtHost);
     _ui->fileProviderMaintenancePanel->setVisible(domainReady);
-    _ui->fileProviderResetButton->setEnabled(domainReady && !fpController->isOperationInProgress());
+
+    const auto domainManager = Mac::FileProvider::instance()->domainManager();
+    const auto storageControlsVisible = domainReady && domainManager->externalVolumeStorageAvailable();
+    const auto configuredVolumeUuid = _accountState->account()->fileProviderDomainVolumeUuid();
+    const auto volumeName = domainManager->externalVolumeDisplayNameForUuid(configuredVolumeUuid);
+    const auto externalVolumeConnected = configuredVolumeUuid.isEmpty() || !volumeName.isEmpty();
+
+    _ui->fileProviderStoragePanel->setVisible(storageControlsVisible);
+    _ui->fileProviderResetButton->setEnabled(domainReady && externalVolumeConnected && !fpController->isOperationInProgress());
+    _ui->fileProviderChooseStorageButton->setEnabled(storageControlsVisible && externalVolumeConnected && !fpController->isOperationInProgress());
+    _ui->fileProviderUseInternalStorageButton->setVisible(storageControlsVisible && !configuredVolumeUuid.isEmpty());
+    _ui->fileProviderUseInternalStorageButton->setEnabled(storageControlsVisible && externalVolumeConnected && !fpController->isOperationInProgress());
+
+    if (configuredVolumeUuid.isEmpty()) {
+        _ui->fileProviderStorageLocationLabel->setText(tr("Internal storage"));
+    } else if (volumeName.isEmpty()) {
+        _ui->fileProviderStorageLocationLabel->setText(tr("External volume (not connected)"));
+    } else {
+        _ui->fileProviderStorageLocationLabel->setText(volumeName);
+    }
 
     if (fpModeOn && hasClassicFolders && _ui->fileProviderConflictBannerIcon->pixmap().isNull()) {
         const auto iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize, nullptr, this);
@@ -2089,6 +2117,95 @@ void AccountSettings::updateSyncFoldersPanelVisibility()
     _ui->syncFoldersPanel->setVisible(true);
     _ui->fileProviderConflictBanner->setVisible(false);
     _ui->fileProviderMaintenancePanel->setVisible(false);
+    _ui->fileProviderStoragePanel->setVisible(false);
+#endif
+}
+
+void AccountSettings::slotChooseFileProviderStorageVolume()
+{
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    const auto controller = Mac::FileProviderSettingsController::instance();
+    if (controller->isOperationInProgress()) {
+        return;
+    }
+
+    const auto selectedUrl = QFileDialog::getExistingDirectoryUrl(this,
+                                                                  tr("Choose File Provider storage volume"),
+                                                                  QUrl::fromLocalFile(QStringLiteral("/Volumes")),
+                                                                  QFileDialog::ShowDirsOnly);
+    if (selectedUrl.isEmpty()) {
+        return;
+    }
+
+    auto temporaryAccess = Utility::MacSandboxSecurityScopedAccess::create(selectedUrl);
+    if (!temporaryAccess || !temporaryAccess->isValid()) {
+        QMessageBox::warning(this, tr("Access Error"), tr("Could not access the selected volume. Please try again."));
+        return;
+    }
+
+    const QStorageInfo storageInfo(selectedUrl.toLocalFile());
+    if (!storageInfo.isValid() || !storageInfo.isReady() || QDir::cleanPath(selectedUrl.toLocalFile()) != QDir::cleanPath(storageInfo.rootPath())) {
+        QMessageBox::warning(this, tr("Choose a volume"), tr("Select the external volume itself, not a folder inside it."));
+        return;
+    }
+
+    const auto volumeBookmark = Utility::createSecurityScopedBookmarkData(selectedUrl.toLocalFile());
+    if (volumeBookmark.isEmpty()) {
+        QMessageBox::warning(this, tr("Access Error"), tr("Could not save access to the selected volume. Please try again."));
+        return;
+    }
+
+    QString validationError;
+    QString volumeName;
+    const auto domainManager = Mac::FileProvider::instance()->domainManager();
+    const auto volumeUuid = domainManager->externalVolumeUuidForPath(selectedUrl.toLocalFile(), &validationError, &volumeName);
+    if (volumeUuid.isEmpty()) {
+        QMessageBox::warning(this,
+                             tr("Unsupported File Provider volume"),
+                             validationError.isEmpty() ? tr("The selected volume cannot be used for File Provider storage.") : validationError);
+        return;
+    }
+
+    if (_accountState->account()->fileProviderDomainVolumeUuid().compare(volumeUuid, Qt::CaseInsensitive) == 0) {
+        return;
+    }
+
+    //: %1 is an account name and %2 is a mounted volume name.
+    const auto text = tr("Move File Provider storage for %1 to %2?").arg(_accountState->account()->prettyName(), volumeName) + QStringLiteral("\n\n")
+        + tr("The Finder location will briefly disappear and reappear. Cached files may need to download again. Any local changes that have not been uploaded "
+             "are preserved separately.");
+
+    if (QMessageBox::question(this, tr("Move File Provider storage?"), text) == QMessageBox::Yes) {
+        controller->setStorageVolumeForAccount(_accountState->account()->userIdAtHostWithPort(), volumeUuid, volumeBookmark);
+    }
+#endif
+}
+
+void AccountSettings::slotUseInternalFileProviderStorage()
+{
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    const auto controller = Mac::FileProviderSettingsController::instance();
+    if (controller->isOperationInProgress() || _accountState->account()->fileProviderDomainVolumeUuid().isEmpty()) {
+        return;
+    }
+
+    const auto volumeName =
+        Mac::FileProvider::instance()->domainManager()->externalVolumeDisplayNameForUuid(_accountState->account()->fileProviderDomainVolumeUuid());
+    if (volumeName.isEmpty()) {
+        QMessageBox::warning(this,
+                             tr("External volume not connected"),
+                             tr("Reconnect the external volume before moving File Provider storage back to internal storage."));
+        return;
+    }
+
+    //: %1 is an account name.
+    const auto text = tr("Move File Provider storage for %1 back to internal storage?").arg(_accountState->account()->prettyName()) + QStringLiteral("\n\n")
+        + tr("The Finder location will briefly disappear and reappear. Cached files may need to download again. Any local changes that have not been uploaded "
+             "are preserved separately.");
+
+    if (QMessageBox::question(this, tr("Move File Provider storage?"), text) == QMessageBox::Yes) {
+        controller->setStorageVolumeForAccount(_accountState->account()->userIdAtHostWithPort(), {});
+    }
 #endif
 }
 
