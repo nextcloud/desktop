@@ -141,9 +141,9 @@ public:
         } else {
             // Check if the extension has dirty user data before removing the domain.
             const auto xpc = Mac::FileProvider::instance()->xpc();
-            const auto hasDirtyUserData = xpc && xpc->fileProviderDomainHasDirtyUserData(existingDomainId);
+            const auto dirtyUserDataState = xpc ? xpc->fileProviderDomainHasDirtyUserData(existingDomainId) : std::nullopt;
 
-            if (hasDirtyUserData) {
+            if (dirtyUserDataState.value_or(false)) {
                 qCWarning(lcFileProviderSettingsController) << "File provider domain" << existingDomainId << "has dirty user data.";
             }
 
@@ -154,7 +154,8 @@ public:
                 return VfsAccountsAction::VfsAccountsFailed;
             }
 
-            if (!preservedDataUrl.isEmpty()) {
+            const auto shouldWarnAboutPreservedData = dirtyUserDataState.value_or(!preservedDataUrl.isEmpty());
+            if (!preservedDataUrl.isEmpty() && shouldWarnAboutPreservedData) {
                 // UI operations must be dispatched to main queue
                 // Copy the URL to ensure it's valid in the block
                 const QString capturedUrl = preservedDataUrl;
@@ -166,8 +167,12 @@ public:
                     qCDebug(lcFileProviderSettingsController) << "Opening directory in file viewer:" << url.path;
                     [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[ url ]];
                 });
-            } else if (hasDirtyUserData) {
+            } else if (dirtyUserDataState.value_or(false)) {
                 qCWarning(lcFileProviderSettingsController) << "Domain reported dirty user data but macOS returned no preserved data URL" << existingDomainId;
+            } else if (!preservedDataUrl.isEmpty()) {
+                qCInfo(lcFileProviderSettingsController)
+                    << "Suppressing preserved-data warning for clean File Provider domain" << existingDomainId
+                    << "at" << preservedDataUrl;
             }
 
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, "");
