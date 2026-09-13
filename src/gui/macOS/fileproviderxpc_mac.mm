@@ -195,7 +195,7 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
     return response;
 }
 
-bool FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const
+std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const
 {
     qCInfo(lcFileProviderXPC) << "Checking for dirty user data in file provider domain" << fileProviderDomainIdentifier;
 
@@ -203,7 +203,7 @@ bool FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProv
 
     if (service == nil) {
         qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
-        return false;
+        return std::nullopt;
     }
 
     __block auto hasDirtyUserData = false;
