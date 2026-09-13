@@ -3210,7 +3210,7 @@ Vous pouvez également restaurer tous les fichiers supprimés en les télécharg
     <message>
         <location filename="../src/gui/folderman.cpp" line="1930"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Synchronisation de %1 (%2 restant⸱s)</translation>
+        <translation>Synchronisation de %1 (%2 restante⸱s)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1933"/>
@@ -7281,7 +7281,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/search/SearchWindow.qml" line="159"/>
         <source>Remove %1 filter</source>
         <extracomment>%1 is an active search filter label, such as a provider name, date range, or person name.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Retirer le filtre de %1</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="183"/>
@@ -7835,7 +7835,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="84"/>
         <source>More from %1  →</source>
         <extracomment>%1 is the name of a search provider, for example &quot;Files&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Plus de résultats provenant de %1  →</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="131"/>
@@ -7850,7 +7850,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Retry loading more results</source>
-        <translation type="unfinished"/>
+        <translation>Réessayer de charger plus de résultats</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
