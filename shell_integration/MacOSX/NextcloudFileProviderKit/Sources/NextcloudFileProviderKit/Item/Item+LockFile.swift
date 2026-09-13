@@ -299,10 +299,24 @@ extension Item {
             } else {
                 logger.info("Unlocked file but did not receive lock information.", [.name: originalFileName])
             }
+        } catch let error as NKError where error.isPreconditionFailedError {
+            // files_lock returns 412 when UNLOCK finds no server-side lock. The requested state is
+            // therefore already reached, so finish the local cleanup instead of reporting a sync error.
+            logger.info("Server reported that the file is already unlocked.", [.name: originalFileName])
+        } catch {
+            logger.error("Could not unlock item.", [.name: filename, .error: error])
 
-            logger.info("Removing lock from locally stored target item.", [.name: originalFileName])
+            if let error = error as? NKError {
+                return error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier)
+            }
 
-            if let targetMetadata = dbManager.itemMetadatas.where({ $0.fileName.equals(originalFileName) }).where({ $0.serverUrl.equals(metadata.serverUrl) }).first {
+            return nil
+        }
+
+        logger.info("Removing lock from locally stored target item.", [.name: originalFileName])
+
+        if let targetMetadata = dbManager.itemMetadatas.where({ $0.fileName.equals(originalFileName) }).where({ $0.serverUrl.equals(metadata.serverUrl) }).first {
+            do {
                 try dbManager.ncDatabase().write {
                     targetMetadata.lock = false
                     targetMetadata.lockOwner = nil
@@ -313,15 +327,11 @@ extension Item {
                     targetMetadata.lockTimeOut = nil
                     targetMetadata.lockToken = nil
                 }
-            } else {
-                logger.error("Failed to find target item for released lock.", [.lock: lock])
+            } catch {
+                logger.error("Could not remove lock from locally stored target item.", [.name: originalFileName, .error: error])
             }
-        } catch {
-            logger.error("Could not unlock item.", [.name: filename, .error: error])
-
-            if let error = error as? NKError {
-                return error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier)
-            }
+        } else {
+            logger.error("Failed to find target item for released lock.", [.name: originalFileName])
         }
 
         return nil
