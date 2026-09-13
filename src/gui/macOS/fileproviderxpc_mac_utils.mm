@@ -185,7 +185,12 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
         dispatch_group_leave(group);
     }];
 
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    constexpr auto replyTimeout = 5 * NSEC_PER_SEC;
+    const auto waitResult = dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, replyTimeout));
+    if (waitResult != 0) {
+        qCWarning(lcFileProviderXPCUtils) << "Timed out getting domain id from file provider service";
+        return nil;
+    }
 
     return domainIdentifier;
 }

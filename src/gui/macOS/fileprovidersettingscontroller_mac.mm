@@ -178,7 +178,13 @@ public:
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, "");
         }
 
-        Mac::FileProvider::instance()->configureXPC();
+        if ([NSThread isMainThread]) {
+            Mac::FileProvider::instance()->configureXPC();
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                Mac::FileProvider::instance()->configureXPC();
+            });
+        }
 
         return VfsAccountsAction::VfsAccountsEnabledChanged;
     }
