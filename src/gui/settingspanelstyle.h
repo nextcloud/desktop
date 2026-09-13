@@ -7,10 +7,12 @@
 #define SETTINGSPANELSTYLE_H
 
 class QWidget;
+class QLabel;
 
 namespace OCC::SettingsPanelStyle {
 
 void apply(QWidget *root);
+void applyManagedLabelStyle(QLabel *label);
 
 } // namespace OCC::SettingsPanelStyle
 

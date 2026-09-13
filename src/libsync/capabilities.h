@@ -17,6 +17,7 @@
 namespace OCC {
 
 class DirectEditor;
+struct ServerManagedSettings;
 
 enum PushNotificationType {
     None = 0,
@@ -170,6 +171,7 @@ public:
 
     [[nodiscard]] bool serverHasValidSubscription() const;
     [[nodiscard]] QString desktopEnterpriseChannel() const;
+    [[nodiscard]] ServerManagedSettings desktopClientManagedSettings() const;
 
     [[nodiscard]] bool serverHasClientIntegration() const;
     [[nodiscard]] QList<QVariantMap> fileActionsByMimeType(const QMimeType &fileMimeType) const;

@@ -57,6 +57,7 @@ InfoSettings::InfoSettings(QWidget *parent)
     _ui->autoCheckForUpdatesLabel->setWordWrap(true);
     _ui->autoCheckForUpdatesLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
     _ui->updateControlsRow->setStretch(0, 1);
+    SettingsPanelStyle::applyManagedLabelStyle(_ui->adminEnforcedLabel);
 #endif
 
     connect(_ui->legalNoticeButton, &QPushButton::clicked, this, &InfoSettings::slotShowLegalNotice);
@@ -126,14 +127,18 @@ void InfoSettings::slotUpdateInfo()
     _ui->updatesContainer->setVisible(true);
 
     if (updater) {
-        connect(_ui->updateButton,
-                &QAbstractButton::clicked,
-                this,
-                &InfoSettings::slotUpdateCheckNow,
-                Qt::UniqueConnection);
-        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
-                &InfoSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
+        connect(_ui->updateButton, &QAbstractButton::clicked, this, &InfoSettings::slotUpdateCheckNow, Qt::UniqueConnection);
+
+        const auto enforced = config.isEnforced(QLatin1String(ConfigFile::autoUpdateCheckC));
         _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck());
+        _ui->autoCheckForUpdatesCheckBox->setEnabled(!enforced);
+        _ui->adminEnforcedLabel->setVisible(enforced);
+        if (!enforced) {
+            // clicked fires only on user interaction, so repopulating the control never writes a user value.
+            connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::clicked, this, &InfoSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
+        } else {
+            _ui->adminEnforcedLabel->setText(config.sourceLabel(ConfigFile::autoUpdateCheckC));
+        }
     }
 
     const auto ocupdater = qobject_cast<OCUpdater *>(updater);
@@ -303,7 +308,8 @@ void InfoSettings::slotUpdateCheckNow()
 
 void InfoSettings::slotToggleAutoUpdateCheck()
 {
-    ConfigFile().setAutoUpdateCheck(_ui->autoCheckForUpdatesCheckBox->isChecked(), QString());
+    // setConfig refuses to overwrite an enforced value.
+    ConfigFile().setConfig(QLatin1String(ConfigFile::autoUpdateCheckC), _ui->autoCheckForUpdatesCheckBox->isChecked());
 }
 
 void InfoSettings::restoreUpdateChannel()

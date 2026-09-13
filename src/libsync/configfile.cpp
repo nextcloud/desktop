@@ -8,13 +8,19 @@
 
 #include "common/asserts.h"
 #include "common/utility.h"
+#include "common/vfs.h"
 #include "config.h"
 #include "creds/keychainchunk.h"
 #include "csync_exclude.h"
+#include "settings/managedconfig.h"
+#include "settings/managedsettings.h"
+#include "settings/managedsettingsschema.h"
+#include "settings/migration.h"
+#include "settings/servermanagedsettings.h"
+#include "settings/settingsources.h"
 #include "theme.h"
 #include "updatechannel.h"
 #include "version.h"
-#include "settings/migration.h"
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
@@ -655,42 +661,80 @@ chrono::milliseconds ConfigFile::updateCheckInterval(const QString &connectionGr
 
 bool ConfigFile::skipUpdateCheck(const QString &connectionGroupName) const
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QVariant fallback = getValue(QLatin1String(skipUpdateCheckC), groupName, false);
-    fallback = getValue(QLatin1String(skipUpdateCheckC), QString(), fallback);
-
-    QVariant value = getPolicySetting(QLatin1String(skipUpdateCheckC), fallback);
-    return value.toBool();
+    return getConfig<bool>(QLatin1String(skipUpdateCheckC), connectionGroupName);
 }
 
 void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connectionGroupName)
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(groupName);
-
-    settings.setValue(QLatin1String(skipUpdateCheckC), QVariant(skip));
-    settings.sync();
+    // Routed through setConfig so an enforced value is never overwritten.
+    setConfig(QLatin1String(skipUpdateCheckC), skip, connectionGroupName);
 }
 
 bool ConfigFile::autoUpdateCheck(const QString &connectionGroupName) const
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QVariant fallback = getValue(QLatin1String(autoUpdateCheckC), groupName, true);
-    fallback = getValue(QLatin1String(autoUpdateCheckC), QString(), fallback);
+    return getConfig<bool>(QLatin1String(autoUpdateCheckC), connectionGroupName);
+}
 
-    QVariant value = getPolicySetting(QLatin1String(autoUpdateCheckC), fallback);
-    return value.toBool();
+ResolvedSetting ConfigFile::getConfig(const QString &name, const QVariant &builtinDefault, const QString &connectionGroupName) const
+{
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
+    const auto spec = ManagedSettingsSchema::find(name).value_or(SettingDefinition{name, builtinDefault, true, SettingScope::User});
+    // Keep the resolver local so live sources are current and no mutable cache needs synchronization.
+    ManagedSettings resolver;
+    for (auto &deviceSource : buildDeviceSources()) {
+        resolver.addSource(std::move(deviceSource));
+    }
+    resolver.addSource(std::make_unique<UserConfigSource>(configFile(), groupName));
+    resolver.addSource(std::make_unique<UserConfigSource>(configFile(), QString(), 49));
+    for (auto &serverSource : buildServerSources(serverManagedSettings())) {
+        resolver.addSource(std::move(serverSource));
+    }
+    return resolver.resolve(spec);
+}
+
+bool ConfigFile::setConfig(const QString &name, const QVariant &value, const QString &connectionGroupName)
+{
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
+    if (getConfig(name, value, groupName).isEnforced()) {
+        return false;
+    }
+
+    QSettings settings(configFile(), QSettings::IniFormat);
+    if (!groupName.isEmpty()) {
+        settings.beginGroup(groupName);
+    }
+    settings.setValue(name, value);
+    settings.sync();
+    return true;
+}
+
+bool ConfigFile::isEnforced(const QString &name, const QString &connectionGroupName) const
+{
+    return getConfig(name, {}, connectionGroupName).isEnforced();
+}
+
+SettingSourceType ConfigFile::sourceOf(const QString &name, const QString &connectionGroupName) const
+{
+    return getConfig(name, {}, connectionGroupName).source;
+}
+
+QString ConfigFile::sourceLabel(const QString &name) const
+{
+    const auto source = sourceOf(name);
+    switch (source) {
+    case SettingSourceType::ServerEnforced:
+        return QCoreApplication::translate("ConfigFile", "Managed by your organization", "User label when setting is enforced and cannot be changed.");
+    default:
+        return QCoreApplication::translate("ConfigFile", "Managed by your system administrator", "User label when setting is enforced and cannot be changed.");
+    }
+
+    return {};
 }
 
 void ConfigFile::setAutoUpdateCheck(bool autoCheck, const QString &connectionGroupName)
 {
-    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(groupName);
-
-    settings.setValue(QLatin1String(autoUpdateCheckC), QVariant(autoCheck));
-    settings.sync();
+    // Routed through setConfig so an enforced value is never overwritten.
+    setConfig(QLatin1String(autoUpdateCheckC), autoCheck, connectionGroupName);
 }
 
 int ConfigFile::updateSegment() const
@@ -944,6 +988,49 @@ int ConfigFile::proxyPort() const
     return getValue(QLatin1String(proxyPortC)).toInt();
 }
 
+ManagedProxySettings ConfigFile::managedProxySettings() const
+{
+    // Policy overlay only. It reports the fields a server or device policy sets, keyed
+    // proxyType/proxyHost/proxyPort. The user's own proxy lives in the account or the
+    // legacy Proxy/type storage, so the caller merges this over that base and keeps its
+    // own value where a field is not managed.
+    const auto typeKey = QStringLiteral("proxyType");
+    const auto hostKey = QStringLiteral("proxyHost");
+    const auto portKey = QStringLiteral("proxyPort");
+
+    const auto fromPolicy = [](SettingSourceType source) {
+        return source != SettingSourceType::BuiltinDefault && source != SettingSourceType::UserConfig;
+    };
+
+    ManagedProxySettings managed;
+    managed.typeManaged = fromPolicy(sourceOf(typeKey));
+    managed.hostManaged = fromPolicy(sourceOf(hostKey));
+    managed.portManaged = fromPolicy(sourceOf(portKey));
+    managed.typeEnforced = isEnforced(typeKey);
+    managed.hostEnforced = isEnforced(hostKey);
+    managed.portEnforced = isEnforced(portKey);
+    managed.isEnforced = managed.typeEnforced || managed.hostEnforced || managed.portEnforced;
+    managed.isManaged = managed.typeManaged || managed.hostManaged || managed.portManaged;
+    managed.proxyType = getConfig(typeKey, QNetworkProxy::DefaultProxy).value.toInt();
+    managed.proxyHostName = getConfig(hostKey).value.toString();
+    managed.proxyPort = getConfig(portKey).value.toInt();
+    return managed;
+}
+
+ManagedVirtualFilesMode ConfigFile::managedVirtualFilesMode() const
+{
+    const auto key = QStringLiteral("virtualFilesMode");
+    const auto resolved = getConfig(key);
+    const auto mode = Vfs::modeFromString(resolved.value.toString());
+    const auto fromPolicy = resolved.source != SettingSourceType::BuiltinDefault && resolved.source != SettingSourceType::UserConfig;
+
+    ManagedVirtualFilesMode managed;
+    managed.isManaged = fromPolicy && static_cast<bool>(mode);
+    managed.isEnforced = managed.isManaged && isEnforced(key);
+    managed.enabled = mode && *mode != Vfs::Off;
+    return managed;
+}
+
 bool ConfigFile::proxyNeedsAuth() const
 {
     return getValue(QLatin1String(proxyNeedsAuthC)).toBool();
@@ -1028,57 +1115,51 @@ void ConfigFile::setDownloadLimit(int kbytes)
 
 QPair<bool, qint64> ConfigFile::newBigFolderSizeLimit() const
 {
-    auto defaultValue = Theme::instance()->newBigFolderSizeLimit();
-    const auto fallback = getValue(newBigFolderSizeLimitC, QString(), defaultValue).toLongLong();
-    const auto value = getPolicySetting(QLatin1String(newBigFolderSizeLimitC), fallback).toLongLong();
+    const auto themeDefault = QVariant::fromValue<qint64>(Theme::instance()->newBigFolderSizeLimit());
+    const auto value = getConfig(QLatin1String(newBigFolderSizeLimitC), themeDefault).value.toLongLong();
     const bool use = value >= 0 && useNewBigFolderSizeLimit();
     return qMakePair(use, qMax<qint64>(0, value));
 }
 
 void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes)
 {
-    setValue(newBigFolderSizeLimitC, mbytes);
-    setValue(useNewBigFolderSizeLimitC, isChecked);
+    setConfig(QLatin1String(newBigFolderSizeLimitC), mbytes);
+    setConfig(QLatin1String(useNewBigFolderSizeLimitC), isChecked);
 }
 
 bool ConfigFile::confirmExternalStorage() const
 {
-    const auto fallback = getValue(confirmExternalStorageC, QString(), true);
-    return getPolicySetting(QLatin1String(confirmExternalStorageC), fallback).toBool();
+    return getConfig<bool>(QLatin1String(confirmExternalStorageC));
 }
 
 bool ConfigFile::useNewBigFolderSizeLimit() const
 {
-    const auto fallback = getValue(useNewBigFolderSizeLimitC, QString(), true);
-    return getPolicySetting(QLatin1String(useNewBigFolderSizeLimitC), fallback).toBool();
+    return getConfig<bool>(QLatin1String(useNewBigFolderSizeLimitC));
 }
 
 bool ConfigFile::notifyExistingFoldersOverLimit() const
 {
-    const auto fallback = getValue(notifyExistingFoldersOverLimitC, {}, false);
-    return getPolicySetting(QString(notifyExistingFoldersOverLimitC), fallback).toBool();
+    return getConfig<bool>(QLatin1String(notifyExistingFoldersOverLimitC));
 }
 
 void ConfigFile::setNotifyExistingFoldersOverLimit(const bool notify)
 {
-    setValue(notifyExistingFoldersOverLimitC, notify);
+    setConfig(QLatin1String(notifyExistingFoldersOverLimitC), notify);
 }
 
 bool ConfigFile::stopSyncingExistingFoldersOverLimit() const
 {
-    const auto notifyExistingBigEnabled = notifyExistingFoldersOverLimit();
-    const auto fallback = getValue(stopSyncingExistingFoldersOverLimitC, {}, notifyExistingBigEnabled);
-    return getPolicySetting(QString(stopSyncingExistingFoldersOverLimitC), fallback).toBool();
+    return getConfig(QLatin1String(stopSyncingExistingFoldersOverLimitC), notifyExistingFoldersOverLimit()).value.toBool();
 }
 
 void ConfigFile::setStopSyncingExistingFoldersOverLimit(const bool stopSyncing)
 {
-    setValue(stopSyncingExistingFoldersOverLimitC, stopSyncing);
+    setConfig(QLatin1String(stopSyncingExistingFoldersOverLimitC), stopSyncing);
 }
 
 void ConfigFile::setConfirmExternalStorage(bool isChecked)
 {
-    setValue(confirmExternalStorageC, isChecked);
+    setConfig(QLatin1String(confirmExternalStorageC), isChecked);
 }
 
 bool ConfigFile::moveToTrash() const
@@ -1291,6 +1372,16 @@ void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(desktopEnterpriseChannelName), UpdateChannel::fromString(channel).toString());
+}
+
+ServerManagedSettings ConfigFile::serverManagedSettings() const
+{
+    return ManagedConfig::instance().serverSettings(configFile());
+}
+
+void ConfigFile::setServerManagedSettings(const ServerManagedSettings &settings)
+{
+    ManagedConfig::instance().setServerSettings(configFile(), settings);
 }
 
 QString ConfigFile::language() const

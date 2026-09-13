@@ -8,6 +8,7 @@
 #define CONFIGFILE_H
 
 #include "owncloudlib.h"
+#include "settings/managedsettings.h"
 #include <memory>
 #include <QSharedPointer>
 #include <QSettings>
@@ -24,6 +25,31 @@ namespace OCC {
 
 class AbstractCredentials;
 class Migration;
+struct ServerManagedSettings;
+
+// Managed proxy resolved from the settings hierarchy.
+// Each field flag says whether that field comes from a policy, so an account keeps its own value for the rest.
+struct ManagedProxySettings {
+    bool isManaged = false;
+    bool isEnforced = false;
+    bool typeManaged = false;
+    bool hostManaged = false;
+    bool portManaged = false;
+    bool typeEnforced = false;
+    bool hostEnforced = false;
+    bool portEnforced = false;
+    int proxyType = 0;
+    QString proxyHostName;
+    int proxyPort = 0;
+};
+
+// Managed virtual files mode resolved from the settings hierarchy.
+// enabled is true when the resolved mode is a virtual files mode, false when it is off.
+struct ManagedVirtualFilesMode {
+    bool isManaged = false;
+    bool isEnforced = false;
+    bool enabled = false;
+};
 
 /**
  * @brief The ConfigFile class
@@ -123,6 +149,12 @@ public:
     [[nodiscard]] int proxyType() const;
     [[nodiscard]] QString proxyHostName() const;
     [[nodiscard]] int proxyPort() const;
+
+    // Proxy type, host and port resolved together from the settings hierarchy.
+    [[nodiscard]] ManagedProxySettings managedProxySettings() const;
+
+    // Virtual files mode resolved from the settings hierarchy.
+    [[nodiscard]] ManagedVirtualFilesMode managedVirtualFilesMode() const;
     [[nodiscard]] bool proxyNeedsAuth() const;
     [[nodiscard]] QString proxyUser() const;
     [[nodiscard]] QString proxyPassword() const;
@@ -236,6 +268,25 @@ public:
 
     [[nodiscard]] QString desktopEnterpriseChannel() const;
     void setDesktopEnterpriseChannel(const QString &channel);
+
+    [[nodiscard]] ServerManagedSettings serverManagedSettings() const;
+    void setServerManagedSettings(const ServerManagedSettings &settings);
+
+    // The single enforcement aware read path: resolves name across device enforced
+    // policy, server enforced policy, user config and defaults, returning the value
+    // plus its source and enforcement.
+    [[nodiscard]] ResolvedSetting getConfig(const QString &name, const QVariant &builtinDefault = {}, const QString &connectionGroupName = {}) const;
+    // Typed read; the value is converted to the schema type, T is the caller's type.
+    template<typename T>
+    [[nodiscard]] T getConfig(const QString &name, const QString &connectionGroupName = {}) const
+    {
+        return getConfig(name, QVariant{}, connectionGroupName).value.template value<T>();
+    }
+    // Writes the user config, unless the effective value is enforced; returns false then.
+    bool setConfig(const QString &name, const QVariant &value, const QString &connectionGroupName = {});
+    [[nodiscard]] bool isEnforced(const QString &name, const QString &connectionGroupName = {}) const;
+    [[nodiscard]] SettingSourceType sourceOf(const QString &name, const QString &connectionGroupName = {}) const;
+    [[nodiscard]] QString sourceLabel(const QString &connectionGroupName) const;
 
     [[nodiscard]] bool hasDesktopEnterpriseChannel() const;
 

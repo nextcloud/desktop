@@ -13,6 +13,7 @@
 #include "clientstatusreporting.h"
 #include "common/utility.h"
 #include "common/vfs.h"
+#include "settings/servermanagedsettings.h"
 #include "syncfileitem.h"
 #include "updatechannel.h"
 
@@ -372,6 +373,7 @@ public:
 
     void updateServerSubcription();
     void updateDesktopEnterpriseChannel();
+    void updateServerManagedSettings();
 
     // Network-related settings
     [[nodiscard]] QNetworkProxy::ProxyType proxyType() const;
@@ -399,6 +401,9 @@ public:
                           const QString &proxyUser,
                           const QString &proxyPassword);
 
+    [[nodiscard]] bool proxySettingsAreManaged() const;
+    void setProxySettingsAreManaged(bool managed);
+
     [[nodiscard]] AccountNetworkTransferLimitSetting uploadLimitSetting() const;
     void setUploadLimitSetting(AccountNetworkTransferLimitSetting setting);
 
@@ -417,6 +422,8 @@ public:
 
     [[nodiscard]] UpdateChannel enterpriseUpdateChannel() const;
     void setEnterpriseUpdateChannel(const UpdateChannel &channel);
+
+    [[nodiscard]] ServerManagedSettings serverManagedSettings() const;
 
     [[nodiscard]] bool enforceUseHardwareTokenEncryption() const;
 
@@ -595,12 +602,14 @@ private:
     bool _proxyNeedsAuth = false;
     QString _proxyUser;
     QString _proxyPassword;
+    bool _proxySettingsAreManaged = false;
     AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     unsigned int _uploadLimit = 0;
     unsigned int _downloadLimit = 0;
     bool _serverHasValidSubscription = false;
     UpdateChannel _enterpriseUpdateChannel = UpdateChannel::Invalid;
+    ServerManagedSettings _serverManagedSettings;
     QByteArray _encryptionCertificateFingerprint;
 #ifdef BUILD_FILE_PROVIDER_MODULE
     QString _fileProviderDomainIdentifier;
