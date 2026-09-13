@@ -6,6 +6,54 @@ import Foundation
 import Testing
 
 struct FileProviderDomainStorageTests {
+    @Test func noDomainUsesFallbackTemporaryDirectory() throws {
+        let expected = URL(fileURLWithPath: "/fallback-temp")
+        var fallbackRequested = false
+
+        let directory = try FileProviderDomainStorage.temporaryDirectory(
+            domainTemporaryDirectory: nil,
+            fallbackDirectory: {
+                fallbackRequested = true
+                return expected
+            }
+        )
+
+        #expect(directory == expected)
+        #expect(fallbackRequested)
+    }
+
+    @Test func domainUsesFileProviderTemporaryDirectory() throws {
+        let expected = URL(fileURLWithPath: "/domain-temp")
+        var fallbackRequested = false
+
+        let directory = try FileProviderDomainStorage.temporaryDirectory(
+            domainTemporaryDirectory: { expected },
+            fallbackDirectory: {
+                fallbackRequested = true
+                return URL(fileURLWithPath: "/fallback-temp")
+            }
+        )
+
+        #expect(directory == expected)
+        #expect(!fallbackRequested)
+    }
+
+    @Test func domainPropagatesTemporaryDirectoryError() {
+        enum TestError: Error {
+            case expected
+        }
+
+        #expect(throws: TestError.self) {
+            try FileProviderDomainStorage.temporaryDirectory(
+                domainTemporaryDirectory: { throw TestError.expected },
+                fallbackDirectory: {
+                    Issue.record("Fallback must not be used when a domain temporary directory lookup fails.")
+                    return URL(fileURLWithPath: "/fallback-temp")
+                }
+            )
+        }
+    }
+
     @Test func internalDomainUsesDefaultDatabaseDirectory() throws {
         var stateDirectoryRequested = false
         var stateDirectoryAccessRequested = false

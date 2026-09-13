@@ -143,7 +143,24 @@ public extension Item {
 
         logger.debug("Fetching item.", [.name: metadata.fileName, .url: serverUrlFileName])
 
-        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(metadata.ocId)
+        let domainTemporaryDirectory: (() throws -> URL)? = if let domain, let manager = NSFileProviderManager(for: domain) {
+            { try manager.temporaryDirectoryURL() }
+        } else {
+            nil
+        }
+
+        let localDirectory: URL
+        do {
+            localDirectory = try FileProviderDomainStorage.temporaryDirectory(
+                domainTemporaryDirectory: domainTemporaryDirectory,
+                fallbackDirectory: { FileManager.default.temporaryDirectory }
+            )
+        } catch {
+            logger.error("Could not acquire File Provider temporary directory for item.", [.item: itemIdentifier, .error: error])
+            return (nil, nil, error)
+        }
+
+        let localPath = localDirectory.appendingPathComponent(metadata.ocId)
         guard var updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .downloading) else {
             logger.error("Could not acquire updated metadata, unable to update item status to downloading.", [.item: itemIdentifier])
 
