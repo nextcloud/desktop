@@ -20,8 +20,8 @@ extension FileProviderExtension: ClientCommunicationProtocol {
         }
 
         let observer = DirtyUserDataObserver(log: log, completionHandler: completionHandler)
-        let page = NSFileProviderPage(NSFileProviderPage.initialPageSortedByName as Data)
-        let enumerator = manager.enumeratorForMaterializedItems()
+        let page = NSFileProviderPage(Data())
+        let enumerator = manager.enumeratorForPendingItems()
         enumerator.enumerateItems(for: observer, startingAt: page)
     }
 
