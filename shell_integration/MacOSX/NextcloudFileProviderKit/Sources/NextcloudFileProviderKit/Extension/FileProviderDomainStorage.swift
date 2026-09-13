@@ -9,6 +9,17 @@ import Foundation
 /// that volume. Keeping the Realm database there makes the metadata follow volume snapshots
 /// instead of diverging from restored file contents.
 enum FileProviderDomainStorage {
+    static func temporaryDirectory(
+        domainTemporaryDirectory: (() throws -> URL)?,
+        fallbackDirectory: () -> URL
+    ) throws -> URL {
+        guard let domainTemporaryDirectory else {
+            return fallbackDirectory()
+        }
+
+        return try domainTemporaryDirectory()
+    }
+
     static func databaseDirectory(
         volumeUUID: UUID?,
         stateDirectory: () throws -> URL,
