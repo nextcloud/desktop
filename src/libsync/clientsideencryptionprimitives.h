@@ -37,7 +37,7 @@ private:
 class PKeyCtx
 {
 public:
-    explicit PKeyCtx(int id, ENGINE *e = nullptr);
+    explicit PKeyCtx(int id);
 
     ~PKeyCtx();
 
@@ -48,7 +48,7 @@ public:
     PKeyCtx(PKeyCtx &&other);
     PKeyCtx &operator=(PKeyCtx &&other) = delete;
 
-    static PKeyCtx forKey(EVP_PKEY *pkey, ENGINE *e = nullptr);
+    static PKeyCtx forKey(EVP_PKEY *pkey);
 
     operator EVP_PKEY_CTX *();
 
