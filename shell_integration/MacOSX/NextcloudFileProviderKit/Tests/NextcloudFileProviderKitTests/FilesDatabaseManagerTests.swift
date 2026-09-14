@@ -36,11 +36,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(
             Self.dbManager.createChangeDeliverySession(
                 sessionId: sessionId,
+                containerKey: "working-set",
                 anchorKey: "initial-anchor-\(name)",
                 finalAnchorRawValue: Data("final-anchor".utf8),
                 updated: [metadata],
                 deleted: [],
-                incomplete: false
+                incomplete: false,
+                hardRemoveDeleted: true
             )
         )
 
@@ -53,11 +55,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             1
         )
 
-        Self.dbManager.advanceChangeDeliverySession(
-            sessionId: sessionId,
-            nextSequence: 1,
-            nextAnchorKey: nil,
-            completed: true
+        XCTAssertTrue(
+            Self.dbManager.prepareChangeDeliveryBatch(
+                sessionId: sessionId,
+                endSequence: 1,
+                nextAnchorKey: nil,
+                moreComing: false
+            )
+        )
+        XCTAssertTrue(
+            Self.dbManager.acknowledgeChangeDeliveryBatch(
+                sessionId: sessionId,
+                deletedOcIds: []
+            )
         )
 
         let cleanedDatabase = Self.dbManager.ncDatabase()
