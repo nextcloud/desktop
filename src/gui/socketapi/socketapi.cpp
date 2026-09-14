@@ -211,7 +211,25 @@ void setClipboardText(const QString &text)
     QApplication::clipboard()->setText(text);
 #endif
 }
-}
+
+// Context menu entries use Title Case on macOS and Linux, matching each
+// platform's HIG, while Windows keeps sentence case.
+// https://github.com/nextcloud/desktop/issues/10525
+#if defined(Q_OS_WIN)
+QString contextMenuLockFileText() { return OCC::SocketApi::tr("Lock file"); }
+QString contextMenuUnlockFileText() { return OCC::SocketApi::tr("Unlock file"); }
+QString contextMenuShareOptionsText() { return OCC::SocketApi::tr("Share options"); }
+QString contextMenuOpenInBrowserText() { return OCC::SocketApi::tr("Open in browser"); }
+QString contextMenuCopyInternalLinkText() { return OCC::SocketApi::tr("Copy internal link"); }
+QString contextMenuFileActionsText() { return OCC::SocketApi::tr("File actions"); }
+#else
+QString contextMenuLockFileText() { return OCC::SocketApi::tr("Lock File"); }
+QString contextMenuUnlockFileText() { return OCC::SocketApi::tr("Unlock File"); }
+QString contextMenuShareOptionsText() { return OCC::SocketApi::tr("Share Options"); }
+QString contextMenuOpenInBrowserText() { return OCC::SocketApi::tr("Open in Browser"); }
+QString contextMenuCopyInternalLinkText() { return OCC::SocketApi::tr("Copy Internal Link"); }
+QString contextMenuFileActionsText() { return OCC::SocketApi::tr("File Actions"); }
+#endif
 
 namespace OCC {
 
@@ -1181,8 +1199,8 @@ void OCC::SocketApi::openPrivateLink(const QString &link)
 void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
 {
     static std::array<std::pair<const char *, QString>, 7> strings { {
-        { "SHARE_MENU_TITLE", tr("Share options") },
-        { "FILE_ACTIONS_MENU_TITLE", tr("File actions") },
+        { "SHARE_MENU_TITLE", contextMenuShareOptionsText() },
+        { "FILE_ACTIONS_MENU_TITLE", contextMenuFileActionsText() },
         { "FILE_ACTIVITY_MENU_TITLE", tr("Activity") },
         { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
@@ -1220,11 +1238,11 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     if (isOnTheServer && !record._remotePerm.isNull() && !record._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
         listener->sendMessage(QLatin1String("MENU_ITEM:DISABLED:d:") + (!record.isDirectory() ? tr("Resharing this file is not allowed") : tr("Resharing this folder is not allowed")));
     } else {
-        listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + tr("Share options"));
+        listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + contextMenuShareOptionsText());
     }
 
     if (itemEncryptionFlag == SharingContextItemEncryptedFlag::NotEncryptedItem) {
-        listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK") + flagString + tr("Copy internal link"));
+        listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK") + flagString + contextMenuCopyInternalLinkText());
     }
 
     // Disabled: only providing email option for private links would look odd,
@@ -1246,7 +1264,7 @@ void SocketApi::sendFileActionsContextMenuOptions(const FileData &fileData, Sock
 
     const auto flagString = isOnTheServer && serverHasIntegration ? QLatin1String("::")
                                                                   : QLatin1String(":d:");
-    listener->sendMessage(QLatin1String("MENU_ITEM:FILE_ACTIONS") + flagString + tr("File actions"));
+    listener->sendMessage(QLatin1String("MENU_ITEM:FILE_ACTIONS") + flagString + contextMenuFileActionsText());
 }
 
 void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
@@ -1290,10 +1308,10 @@ void SocketApi::sendLockFileCommandMenuEntries(const QFileInfo &fileInfo,
 {
     if (!FileSystem::isDir(fileInfo.absoluteFilePath()) && syncFolder->accountState()->account()->capabilities().filesLockAvailable()) {
         if (syncFolder->accountState()->account()->fileLockStatus(syncFolder->journalDb(), fileData.folderRelativePath) == SyncFileItem::LockStatus::UnlockedItem) {
-            listener->sendMessage(QLatin1String("MENU_ITEM:LOCK_FILE::") + tr("Lock file"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:LOCK_FILE::") + contextMenuLockFileText());
         } else {
             if (syncFolder->accountState()->account()->fileCanBeUnlocked(syncFolder->journalDb(), fileData.folderRelativePath)) {
-                listener->sendMessage(QLatin1String("MENU_ITEM:UNLOCK_FILE::") + tr("Unlock file"));
+                listener->sendMessage(QLatin1String("MENU_ITEM:UNLOCK_FILE::") + contextMenuUnlockFileText());
             }
         }
     }
@@ -1437,9 +1455,9 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
         if (editor) {
             //listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit via ") + editor->name());
-            listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Open in browser"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + contextMenuOpenInBrowserText());
         } else {
-            listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + contextMenuOpenInBrowserText());
         }
 
         sendEncryptFolderCommandMenuEntries(fileInfo, fileData, isE2eEncryptedPath, listener);
