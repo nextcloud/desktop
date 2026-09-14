@@ -5,13 +5,26 @@
 
 #include "settingsdialog.h"
 
+#include "account.h"
+#include "accountmanager.h"
+#include "accountsettings.h"
+#include "configfile.h"
+#include "systray.h"
+
+#include <QAction>
 #include <QApplication>
+#include <QColor>
+#include <QEvent>
+#include <QFrame>
 #include <QGroupBox>
+#include <QPalette>
+#include <QScopeGuard>
 #include <QScrollArea>
 #include <QSignalSpy>
 #include <QStandardPaths>
 #include <QTemporaryDir>
 #include <QTest>
+#include <QToolBar>
 
 class TestSettingsDialog : public QObject
 {
@@ -110,6 +123,47 @@ private Q_SLOTS:
             QVERIFY(reopenedPanel);
             QCOMPARE(reopenedPanel->palette().color(QPalette::Window), expected);
         }
+    }
+
+    void addAccountActionFollowsAccountsAndOpensWizard()
+    {
+        auto *const accountManager = OCC::AccountManager::instance();
+        QVERIFY(accountManager->accounts().isEmpty());
+
+        auto account = OCC::Account::create();
+        account->setUrl(QUrl(QStringLiteral("https://cloud.example.com")));
+        account->setDavUser(QStringLiteral("alice"));
+        const auto accountState = accountManager->addAccount(account);
+        const auto removeAccount = qScopeGuard([accountManager, accountState] {
+            accountManager->removeAccountState(accountState);
+        });
+
+        OCC::SettingsDialog dialog(nullptr);
+        const auto addAccountAction = dialog.findChild<QAction *>(QStringLiteral("settingsdialog_add_account"));
+        const auto toolbar = dialog.findChild<QToolBar *>();
+        QVERIFY(addAccountAction);
+        QVERIFY(toolbar);
+        QCOMPARE(toolbar->actions().indexOf(addAccountAction), 1);
+        QVERIFY(!addAccountAction->isCheckable());
+        QVERIFY(!addAccountAction->icon().isNull());
+        QCOMPARE(addAccountAction->text(), OCC::Systray::tr("Add account"));
+
+        const auto systray = OCC::Systray::instance();
+        QCOMPARE(addAccountAction->isVisible(), systray->enableAddAccount());
+        if (addAccountAction->isVisible()) {
+            const auto wizardRequest = QSignalSpy(systray, &OCC::Systray::openAccountWizard);
+            addAccountAction->trigger();
+            QCOMPARE_EQ(wizardRequest.size(), 1);
+        }
+
+        dialog.ensurePolished();
+        const auto shortcutsPanel = dialog.findChild<QFrame *>(QStringLiteral("accountShortcutsPanel"));
+        const auto statusPanel = dialog.findChild<QFrame *>(QStringLiteral("accountStatusPanel"));
+        QVERIFY(shortcutsPanel);
+        QVERIFY(statusPanel);
+        shortcutsPanel->ensurePolished();
+        statusPanel->ensurePolished();
+        QCOMPARE(shortcutsPanel->palette().color(QPalette::Window), statusPanel->palette().color(QPalette::Window));
     }
 };
 
