@@ -80,10 +80,16 @@ function(run_generate_queued_pngs_from_svg)
 
   list(LENGTH pending_jobs job_count)
 
-  get_filename_component(converter_name "${SVG_CONVERTER}" NAME_WE)
-  string(TOLOWER "${converter_name}" converter_name)
+  # Probe the converter instead of trusting its file name: the Flatpak
+  # manifest ships rsvg-convert behind an "inkscape" symlink, so only the
+  # --version output identifies the real tool.
+  execute_process(COMMAND "${SVG_CONVERTER}" --version
+    OUTPUT_VARIABLE converter_version_output
+    ERROR_VARIABLE converter_version_error
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_STRIP_TRAILING_WHITESPACE)
 
-  if (converter_name MATCHES "inkscape")
+  if ("${converter_version_output}\n${converter_version_error}" MATCHES "[Ii]nkscape")
     message(STATUS "Generating ${job_count} icon(s) from SVG in one Inkscape batch")
     _run_inkscape_shell_jobs("${pending_jobs}")
     return()
