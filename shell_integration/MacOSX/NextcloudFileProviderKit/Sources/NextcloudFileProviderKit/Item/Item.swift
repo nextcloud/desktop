@@ -217,12 +217,21 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         return formatter.personNameComponents(from: metadata.ownerDisplayName)
     }
 
+    ///
+    /// The number of items directly inside this container, or `nil` when the directory has not been
+    /// enumerated and its contents are therefore unknown.
+    ///
     public var childItemCount: NSNumber? {
-        if metadata.directory {
-            NSNumber(integerLiteral: dbManager.childItemCount(directoryMetadata: metadata))
-        } else {
-            nil
-        }
+        guard metadata.directory else { return nil }
+
+        let known = dbManager.childItemCount(directoryMetadata: metadata)
+
+        // Any children at all means the database has something to say.
+        guard known == 0 else { return NSNumber(integerLiteral: known) }
+
+        // Zero is ambiguous, and `visitedDirectory` separates a directory that has been read
+        // and is empty from one that simply holds no rows yet.
+        return metadata.visitedDirectory ? NSNumber(integerLiteral: 0) : nil
     }
 
     public var fileSystemFlags: NSFileProviderFileSystemFlags {

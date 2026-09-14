@@ -1,4 +1,4 @@
-find_package(Qt6 ${REQUIRED_QT_VERSION} COMPONENTS REQUIRED Core Test Xml Network Qml Quick)
+find_package(Qt6 ${REQUIRED_QT_VERSION} COMPONENTS REQUIRED Core Test Xml Network Qml Quick QuickTest)
 
 # SPDX-FileCopyrightText: 2028 Nextcloud GmbH and Nextcloud contributors
 # SPDX-FileCopyrightText: 2012 ownCloud GmbH

@@ -560,9 +560,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         let parent = RealmItemMetadata()
         parent.ocId = "parent"
-        parent.fileName = "Parent"
+        parent.updateLocation(serverUrl: "https://example.com", fileName: "Parent")
         parent.account = "TestAccount"
-        parent.serverUrl = "https://example.com"
         parent.directory = true
         parent.downloaded = true
         parent.uploaded = true
@@ -570,9 +569,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // Simulate existing metadata in the database
         let existingMetadata = RealmItemMetadata()
         existingMetadata.ocId = "id-1"
-        existingMetadata.fileName = "File.pdf"
+        existingMetadata.updateLocation(serverUrl: "https://example.com/Parent", fileName: "File.pdf")
         existingMetadata.account = "TestAccount"
-        existingMetadata.serverUrl = "https://example.com/Parent"
         existingMetadata.downloaded = true
         existingMetadata.uploaded = true
 
@@ -619,18 +617,16 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // 1. Item that exists locally and is marked as uploaded
         let uploadedItem = RealmItemMetadata()
         uploadedItem.ocId = "ocid-uploaded-123"
-        uploadedItem.fileName = "SyncedFile.txt"
+        uploadedItem.updateLocation(serverUrl: testServerUrl, fileName: "SyncedFile.txt")
         uploadedItem.account = testAccount
-        uploadedItem.serverUrl = testServerUrl
         uploadedItem.downloaded = true
         uploadedItem.uploaded = true // IMPORTANT: Marked as uploaded
 
         // 2. Item that exists locally but is NOT marked as uploaded (e.g., new local file)
         let unuploadedItem = RealmItemMetadata()
         unuploadedItem.ocId = "ocid-local-456" // May or may not have ocId yet
-        unuploadedItem.fileName = "NewLocalFile.txt"
+        unuploadedItem.updateLocation(serverUrl: testServerUrl, fileName: "NewLocalFile.txt")
         unuploadedItem.account = testAccount
-        unuploadedItem.serverUrl = testServerUrl
         unuploadedItem.downloaded = true
         unuploadedItem.uploaded = false // IMPORTANT: Not marked as uploaded
         unuploadedItem.status = Status.normal.rawValue // Ensure it's not in a transient state if relevant

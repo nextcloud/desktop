@@ -18,7 +18,9 @@ public extension Item {
         ignoredFiles: IgnoredFilesMatcher? = nil,
         dbManager: FilesDatabaseManager
     ) async -> Error? {
-        let isEmptyDirOrIsFile = childItemCount == nil || childItemCount == 0
+        // `childItemCount` is nil both for a file and for a directory nobody has enumerated, so
+        // a directory whose contents are unknown must not be treated as empty here.
+        let isEmptyDirOrIsFile = !metadata.directory || childItemCount == 0
 
         guard trashing || isEmptyDirOrIsFile || options.contains(.recursive) else {
             return NSFileProviderError(.directoryNotEmpty)

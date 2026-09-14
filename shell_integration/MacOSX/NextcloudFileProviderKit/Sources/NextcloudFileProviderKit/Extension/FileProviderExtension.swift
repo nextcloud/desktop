@@ -27,6 +27,13 @@ import OSLog
     ///
     let manager: NSFileProviderManager?
 
+    ///
+    /// Observation of the process-global `blockSync` user default, used only to notice when synchronization is unblocked.
+    ///
+    /// See ``observeBlockSync()`` for why the gates do not depend on this.
+    ///
+    var blockSyncObservation: NSKeyValueObservation?
+
     // MARK: XPC
 
     ///
@@ -64,6 +71,10 @@ import OSLog
     private let setupLock = NSLock()
     private var pendingAccount: Account?
     private var setupChain: Task<Void, Never> = Task {}
+
+    // Waiters parked in `awaitAccount(…)` until `ncAccount` is published.
+    private let accountReadyLock = NSLock()
+    private var accountReadyWaiters = [UUID: CheckedContinuation<Void, Never>]()
 
     /// Whether or not we are going to recursively scan new folders when they are discovered.
     /// Apple's recommendation is that we should always scan the file hierarchy fully.
@@ -103,10 +114,13 @@ import OSLog
         logger.info("NextcloudKit logging configured.", [.url: NKLogFileManager.shared.currentLogFileURL()])
         keychain = Keychain(log: log)
         super.init()
+        observeBlockSync()
     }
 
     public func invalidate() {
         logger.debug("File provider extension process is being invalidated.")
+        blockSyncObservation?.invalidate()
+        blockSyncObservation = nil
     }
 
     func insertSyncAction(_ actionId: UUID) {
@@ -146,21 +160,27 @@ import OSLog
     public func item(for identifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest, completionHandler: @Sendable @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
         logger.debug("Received request for item.", [.item: identifier])
 
-        guard let ncAccount else {
-            logger.debug("Not fetching item because account not set up yet.", [.item: identifier])
-            completionHandler(nil, NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
-        guard let dbManager else {
-            logger.debug("Not fetching item because database is unavailable.", [.item: identifier])
-            completionHandler(nil, NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
         let progress = Progress(totalUnitCount: 1)
 
         Task {
+            // Same startup race as `fetchContents`, where answering `notAuthenticated` would
+            // make the framework treat the item as unreachable rather than not-ready-yet.
+            let ncAccount: Account
+
+            do {
+                ncAccount = try await awaitAccount()
+            } catch {
+                logger.error("Not fetching item because account was never set up.", [.item: identifier])
+                completionHandler(nil, NSFileProviderError(.notAuthenticated))
+                return
+            }
+
+            guard let dbManager else {
+                logger.debug("Not fetching item because database is unavailable.", [.item: identifier])
+                completionHandler(nil, NSFileProviderError(.notAuthenticated))
+                return
+            }
+
             if let item = await Item.storedItem(identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log), item.metadata.deleted == false {
                 progress.completedUnitCount = 1
                 completionHandler(item, nil)
@@ -173,6 +193,13 @@ import OSLog
     }
 
     public func fetchContents(for itemIdentifier: NSFileProviderItemIdentifier, version requestedVersion: NSFileProviderItemVersion?, request _: NSFileProviderRequest, completionHandler: @Sendable @escaping (URL?, NSFileProviderItem?, Error?) -> Void) -> Progress {
+        guard !blockSync else {
+            logger.info("Not fetching contents of item because synchronization is blocked.", [.item: itemIdentifier])
+            completionHandler(nil, nil, NSFileProviderError(.serverUnreachable))
+
+            return Progress()
+        }
+
         let actionId = UUID()
         insertSyncAction(actionId)
         logger.debug("Received request to fetch contents of item.", [.item: itemIdentifier])
@@ -189,22 +216,30 @@ import OSLog
             return Progress()
         }
 
-        guard let ncAccount else {
-            logger.debug("Not fetching contents for item because account not set up yet.", [.item: itemIdentifier])
-            insertErrorAction(actionId)
-            completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
-        guard let dbManager else {
-            logger.debug("Not fetching contents for item because database is unavailable.", [.item: itemIdentifier])
-            completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
-            return Progress()
-        }
-
         let progress = Progress()
 
         Task {
+            // Wait for the account rather than failing outright: the system starts this process and
+            // begins requesting content before the main app has handed the account over, and a
+            // rejected fetch is a download the framework may never ask for again.
+            let ncAccount: Account
+
+            do {
+                ncAccount = try await awaitAccount()
+            } catch {
+                logger.error("Not fetching contents for item because account was never set up.", [.item: itemIdentifier])
+                insertErrorAction(actionId)
+                completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
+                return
+            }
+
+            guard let dbManager else {
+                logger.debug("Not fetching contents for item because database is unavailable.", [.item: itemIdentifier])
+                insertErrorAction(actionId)
+                completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
+                return
+            }
+
             guard let item = await Item.storedItem(identifier: itemIdentifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log) else {
                 logger.error("Not fetching contents for item because item was not found.", [.item: itemIdentifier])
                 completionHandler(nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
@@ -230,6 +265,13 @@ import OSLog
             NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?
         ) -> Void
     ) -> Progress {
+        guard !blockSync else {
+            logger.info("Not creating item because synchronization is blocked.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
+            completionHandler(itemTemplate, [], false, NSFileProviderError(.serverUnreachable))
+
+            return Progress()
+        }
+
         let actionId = UUID()
         insertSyncAction(actionId)
         logger.debug("Received request to create item.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
@@ -306,6 +348,13 @@ import OSLog
     ) -> Progress {
         // An item was modified on disk, process the item's modification
         // TODO: Handle finder things like tags, other possible item changed fields
+        guard !blockSync else {
+            logger.info("Not modifying item because synchronization is blocked.", [.item: item.itemIdentifier])
+            completionHandler(item, [], false, NSFileProviderError(.serverUnreachable))
+
+            return Progress()
+        }
+
         let actionId = UUID()
         insertSyncAction(actionId)
 
@@ -391,6 +440,13 @@ import OSLog
         request _: NSFileProviderRequest,
         completionHandler: @Sendable @escaping (Error?) -> Void
     ) -> Progress {
+        guard !blockSync else {
+            logger.info("Not deleting item because synchronization is blocked.", [.item: identifier])
+            completionHandler(NSFileProviderError(.serverUnreachable))
+
+            return Progress()
+        }
+
         let actionId = UUID()
         insertSyncAction(actionId)
 
@@ -451,6 +507,14 @@ import OSLog
 
     public func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest) throws -> NSFileProviderEnumerator {
         logger.debug("System requested enumerator.", [.item: containerItemIdentifier])
+
+        // Refusing here is what stops remote changes arriving: the app discovers them and signals the working set, but the signal carries no data and reaches this extension as a request for an enumerator, so declining it declines both the push and the polling path.
+        //
+        // It has to be an error rather than an enumerator which reports nothing. An empty but successful enumeration tells the framework that the container is empty, which for a replicated extension is an instruction to delete every child of it from disk. Failing loses nothing; succeeding emptily loses the user's files.
+        guard !blockSync else {
+            logger.info("Not providing enumerator for item because synchronization is blocked.", [.item: containerItemIdentifier])
+            throw NSFileProviderError(.serverUnreachable)
+        }
 
         guard let ncAccount else {
             logger.debug("Not providing enumerator for item because account is not set up yet.", [.item: containerItemIdentifier])
@@ -800,8 +864,77 @@ import OSLog
             dbManager = databaseManager
 
             ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!)
+            signalAccountReady()
             completionHandler?(nil)
             signalEnumeratorAfterAccountSetup()
+        }
+    }
+
+    ///
+    /// The domain account, waiting up to `timeoutNanoseconds` for setup to publish it.
+    ///
+    /// - Throws: `NSFileProviderError(.notAuthenticated)` when no account arrives within
+    ///   `timeoutNanoseconds`.
+    ///
+    func awaitAccount(timeoutNanoseconds: UInt64 = 10_000_000_000) async throws -> Account {
+        if let ncAccount {
+            return ncAccount
+        }
+
+        let token = UUID()
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            accountReadyLock.lock()
+            accountReadyWaiters[token] = continuation
+            accountReadyLock.unlock()
+
+            // The account may have been published between the check above and the enqueue.
+            if ncAccount != nil {
+                resumeAccountWaiter(token)
+                return
+            }
+
+            Task { [weak self] in
+                try? await Task.sleep(nanoseconds: timeoutNanoseconds)
+                self?.resumeAccountWaiter(token)
+            }
+        }
+
+        // Read after the resume, not at the resume site: a timeout that races an account landing a
+        // moment later should still hand back the account rather than fail the request.
+        guard let account = ncAccount else {
+            throw NSFileProviderError(.notAuthenticated)
+        }
+
+        return account
+    }
+
+    ///
+    /// Resume one parked waiter, if it has not been resumed already.
+    ///
+    private func resumeAccountWaiter(_ token: UUID) {
+        accountReadyLock.lock()
+        let continuation = accountReadyWaiters.removeValue(forKey: token)
+        accountReadyLock.unlock()
+        continuation?.resume()
+    }
+
+    ///
+    /// Release everything parked in ``awaitAccount(timeoutNanoseconds:)`` once setup has published
+    /// ``ncAccount``.
+    ///
+    func signalAccountReady() {
+        accountReadyLock.lock()
+        let waiters = accountReadyWaiters
+        accountReadyWaiters.removeAll()
+        accountReadyLock.unlock()
+
+        if !waiters.isEmpty {
+            logger.debug("Account is set up; releasing \(waiters.count) waiting request(s).")
+        }
+
+        for continuation in waiters.values {
+            continuation.resume()
         }
     }
 

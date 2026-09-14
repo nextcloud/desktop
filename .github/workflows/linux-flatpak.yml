@@ -15,7 +15,7 @@ jobs:
     name: Linux Flatpak Package
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-flatpak-kde-sdk-6.11-1
       options: --privileged
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

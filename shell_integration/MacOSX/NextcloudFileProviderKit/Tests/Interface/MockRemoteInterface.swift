@@ -617,6 +617,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Lock information returned by lock and unlock requests.
     public var lockUnlockResult: NKLock?
 
+    /// When set, every lock or unlock call throws this error without changing the mock item.
+    public var lockUnlockError: NKError?
+
     /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
@@ -1304,6 +1307,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public func lockUnlockFile(serverUrlFileName: String, type _: NKLockType?, shouldLock: Bool, account: Account, options _: NKRequestOptions, taskHandler _: @escaping (URLSessionTask) -> Void) async throws -> NKLock? {
         guard let item = item(remotePath: serverUrlFileName, account: account.ncKitAccount) else {
             throw NKError.urlError
+        }
+
+        if let lockUnlockError {
+            throw lockUnlockError
         }
 
         item.locked = shouldLock

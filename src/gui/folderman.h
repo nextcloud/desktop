@@ -30,6 +30,7 @@ class TestRemoteWipe;
 class FolderManTestHelper;
 class TestFileActionsModel;
 class TestBrowserReAuthController;
+class TestMigration;
 
 namespace OCC {
 
@@ -38,6 +39,7 @@ class SyncResult;
 class SocketApi;
 class LockWatcher;
 class UpdateE2eeFolderUsersMetadataJob;
+class Migration;
 
 /**
  * @brief The FolderMan class
@@ -421,6 +423,7 @@ private:
     friend class ::FolderManTestHelper;
     friend class ::TestFileActionsModel;
     friend class ::TestBrowserReAuthController;
+    friend class ::TestMigration;
 };
 
 } // namespace OCC

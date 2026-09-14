@@ -65,6 +65,15 @@ bool shouldPreferSvg()
 constexpr QRgb darkDestructiveActionTextColor = 0xffdad6;
 constexpr QRgb lightDestructiveActionTextColor = 0xba1a1a;
 
+#ifdef Q_OS_WIN
+constexpr auto settingsPanelBackgroundRole = QPalette::AlternateBase;
+#else
+constexpr auto settingsPanelBackgroundRole = QPalette::Light;
+#endif
+constexpr auto minimumSettingsPanelBrightnessDifference = 8;
+constexpr auto lightSettingsPanelForegroundFraction = 0.03;
+constexpr auto darkSettingsPanelForegroundFraction = 0.06;
+
 QColor destructiveActionColor(const bool darkMode, const QRgb darkColor, const QRgb lightColor)
 {
     return QColor(darkMode ? darkColor : lightColor);
@@ -932,6 +941,24 @@ double Theme::getColorDarkness(const QColor &color)
 bool Theme::isDarkColor(const QColor &color)
 {
     return getColorDarkness(color) > 0.5;
+}
+
+QColor Theme::settingsPanelColor(const QPalette &palette)
+{
+    const auto windowColor = palette.color(QPalette::Window);
+    auto panelColor = palette.color(settingsPanelBackgroundRole);
+    if (qAbs(qGray(panelColor.rgb()) - qGray(windowColor.rgb())) >= minimumSettingsPanelBrightnessDifference) {
+        return panelColor;
+    }
+
+    const auto foreground = palette.color(QPalette::WindowText);
+    const auto fraction = isDarkColor(windowColor) ? darkSettingsPanelForegroundFraction : lightSettingsPanelForegroundFraction;
+    const auto blend = [fraction](const auto background, const auto text) {
+        return background * (1.0 - fraction) + text * fraction;
+    };
+    return QColor::fromRgbF(blend(windowColor.redF(), foreground.redF()),
+                            blend(windowColor.greenF(), foreground.greenF()),
+                            blend(windowColor.blueF(), foreground.blueF()));
 }
 
 QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)

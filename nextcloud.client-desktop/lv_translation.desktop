@@ -22,6 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Comment[lv]=@APPLICATION_NAME@ darbavirsmas sinhronizešanas klients
-GenericName[lv]=Mapju sinhronizēšana
+Comment[lv]=@APPLICATION_NAME@ darbavirsmas vienādošanas klients
+GenericName[lv]=Mapju vienādošana
 Icon[lv]=@APPLICATION_ICON_NAME@

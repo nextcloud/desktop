@@ -7,23 +7,33 @@
 
 #include "accountmanager.h"
 #include "accountstate.h"
+#include "common/filesystembase.h"
+#include "configfile.h"
 #include "creds/abstractcredentials.h"
 #include "creds/webflowcredentials.h"
-#include "common/filesystembase.h"
 #include "folder.h"
 #include "folderman.h"
 #include "networkjobs.h"
+#include "theme.h"
+
+#include <chrono>
+#include <iostream>
 
 #include <QDir>
 #include <QGuiApplication>
 #include <QJsonObject>
 #include <QLoggingCategory>
+#include <QTimer>
 
 using namespace Qt::StringLiterals;
 
 namespace OCC
 {
 Q_LOGGING_CATEGORY(lcAccountSetupCommandLineJob, "nextcloud.gui.accountsetupcommandlinejob", QtInfoMsg)
+
+// How long to wait for the keychain to confirm that the credentials were written before
+// finishing the setup without them.
+constexpr auto credentialsPersistTimeout = std::chrono::seconds(30);
 
 AccountSetupFromCommandLineJob::AccountSetupFromCommandLineJob(QString appPassword,
                                                                QString userId,
@@ -42,6 +52,44 @@ AccountSetupFromCommandLineJob::AccountSetupFromCommandLineJob(QString appPasswo
 {
 }
 
+bool AccountSetupFromCommandLineJob::localSyncFolderRequired() const
+{
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Mirrors the guard in FolderMan::addFolder(): while the app-level File Provider mode
+    // is enabled, a classic sync folder cannot be created at all. The account is synced
+    // through the File Provider domain that is set up for it instead.
+    return !ConfigFile().macFileProviderModeEnabled();
+#else
+    return true;
+#endif
+}
+
+QString AccountSetupFromCommandLineJob::defaultLocalDirPath() const
+{
+    const auto overrideLocalDir = ConfigFile().overrideLocalDir();
+    auto localDirPath = overrideLocalDir;
+
+    if (localDirPath.isEmpty()) {
+        localDirPath = Theme::instance()->defaultClientFolder();
+
+        if (localDirPath.isEmpty()) {
+            return {};
+        }
+
+        if (!QDir(localDirPath).isAbsolute()) {
+            localDirPath = QDir::homePath() + QLatin1Char('/') + localDirPath;
+        }
+    }
+
+    auto serverUrlForFolder = _serverUrl;
+    serverUrlForFolder.setUserName(_userId);
+
+    return FolderMan::instance()->findGoodPathForNewSyncFolder(localDirPath,
+                                                               serverUrlForFolder,
+                                                               overrideLocalDir.isEmpty() ? FolderMan::GoodPathStrategy::AllowOnlyNewPath
+                                                                                          : FolderMan::GoodPathStrategy::AllowOverrideExistingPath);
+}
+
 bool AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 {
     if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId, _serverUrl.host()))) {
@@ -49,30 +97,32 @@ bool AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
         return false;
     }
 
-    if (_localDirPath.isEmpty()) {
-        printAccountSetupFromCommandLineStatusAndExit(
-            QStringLiteral("Folder creation failed. Could not create local folder because the name is empty"),
-            true);
-        return false;
+    if (!localSyncFolderRequired()) {
+        if (!_localDirPath.isEmpty()) {
+            qCInfo(lcAccountSetupCommandLineJob) << "Ignoring the given local folder, File Provider mode is enabled";
+            _localDirPath.clear();
+        }
     } else {
-        QDir dir(_localDirPath);
-        if (dir.exists() && !dir.isEmpty()) {
+        if (_localDirPath.isEmpty()) {
+            // The local folder is documented as optional, so fall back to the folder the
+            // account wizard would suggest rather than refusing to set the account up.
+            _localDirPath = defaultLocalDirPath();
+        }
+
+        if (_localDirPath.isEmpty()) {
+            printAccountSetupFromCommandLineStatusAndExit(
+                QStringLiteral("Could not determine a local folder to sync into. Please pass one with --localdirpath."),
+                true);
+            return false;
+        }
+
+        const QDir localDir(_localDirPath);
+        if (localDir.exists() && !localDir.isEmpty()) {
             printAccountSetupFromCommandLineStatusAndExit(
                 QStringLiteral("Local folder %1 already exists and is non-empty!").arg(QDir::toNativeSeparators(_localDirPath)),
                 true);
             return false;
         }
-
-        qCInfo(lcAccountSetupCommandLineJob) << "Creating folder" << _localDirPath;
-        if (!dir.exists() && !dir.mkpath(".")) {
-            printAccountSetupFromCommandLineStatusAndExit(
-                QStringLiteral("Folder creation failed. Could not create local folder %1").arg(QDir::toNativeSeparators(_localDirPath)),
-                true);
-            return false;
-        }
-
-        FileSystem::setFolderMinimumPermissions(_localDirPath);
-        Utility::setupFavLink(_localDirPath);
     }
 
     const auto credentials = new WebFlowCredentials(_userId, _appPassword);
@@ -81,12 +131,16 @@ bool AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
     _account->setCredentials(credentials);
     _account->setCredentialSetting(u"user"_s, _userId);
     _account->setUrl(_serverUrl);
-    auto accountState = AccountManager::instance()->addAccount(_account);
-    setupLocalSyncFolder(accountState);
 
-    Q_EMIT _account->wantsAccountSaved(_account);
-
+    // The account is only added, saved and given a sync folder once the credentials have
+    // been checked against the server, so that a failed setup leaves nothing behind. Both
+    // that check and the keychain write are asynchronous: the job keeps running until
+    // printAccountSetupFromCommandLineStatusAndExit() ends the event loop.
     if (_appPassword.isEmpty()) {
+        // Nothing to authenticate with, so the server cannot be asked for the dav user
+        // either. Store what was given and let the user log in from the client later on.
+        _account->setDavUser(_userId);
+        accountSetupFromCommandLinePropfindHandleSuccess();
         return true;
     }
 
@@ -112,18 +166,39 @@ void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSu
     const auto accountManager = AccountManager::instance();
     const auto accountState = accountManager->addAccount(_account);
 
-    // credentials->persist() (called by save()) is asynchronous — it chains
-    // multiple keychain write jobs before the password actually lands in the
-    // keychain.  Wait for the final write to complete before exiting so that
-    // the credentials are not lost when the process quits.
-    connect(_account->credentials(), &AbstractCredentials::credentialsPersisted, this, [this, accountState]() {
+    const auto finishAccountSetup = [this, accountState]() {
         if (!_localDirPath.isEmpty()) {
             setupLocalSyncFolder(accountState);
         } else {
             qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
             printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
         }
+    };
+
+    // credentials->persist() (called by save()) is asynchronous — it chains
+    // multiple keychain write jobs before the password actually lands in the
+    // keychain.  Wait for the final write to complete before exiting so that
+    // the credentials are not lost when the process quits, but give up eventually:
+    // a keychain that never answers must not turn the setup into a hang.
+    const auto credentialsPersistTimer = new QTimer(this);
+    credentialsPersistTimer->setSingleShot(true);
+
+    connect(_account->credentials(), &AbstractCredentials::credentialsPersisted, this, [credentialsPersistTimer, finishAccountSetup]() {
+        if (!credentialsPersistTimer->isActive()) {
+            return;
+        }
+
+        credentialsPersistTimer->stop();
+        finishAccountSetup();
     });
+
+    connect(credentialsPersistTimer, &QTimer::timeout, this, [finishAccountSetup]() {
+        qCWarning(lcAccountSetupCommandLineJob) << "Timed out waiting for the credentials to be written to the keychain,"
+                                                << "the account may have to be authenticated again";
+        finishAccountSetup();
+    });
+
+    credentialsPersistTimer->start(credentialsPersistTimeout);
 
     accountManager->save();
 }
@@ -183,6 +258,22 @@ void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleFa
 
 void AccountSetupFromCommandLineJob::setupLocalSyncFolder(AccountState *accountState)
 {
+    QDir localDir(_localDirPath);
+    if (!localDir.exists()) {
+        qCInfo(lcAccountSetupCommandLineJob) << "Creating folder" << _localDirPath;
+
+        if (!localDir.mkpath(QStringLiteral("."))) {
+            AccountManager::instance()->removeAccountState(accountState);
+            printAccountSetupFromCommandLineStatusAndExit(
+                QStringLiteral("Folder creation failed. Could not create local folder %1").arg(QDir::toNativeSeparators(_localDirPath)),
+                true);
+            return;
+        }
+    }
+
+    FileSystem::setFolderMinimumPermissions(_localDirPath);
+    Utility::setupFavLink(_localDirPath);
+
     FolderDefinition definition;
     definition.localPath = _localDirPath;
     definition.targetPath = FolderDefinition::prepareTargetPath(!_remoteDirPath.isEmpty() ? _remoteDirPath : QStringLiteral("/"));
@@ -209,7 +300,9 @@ void AccountSetupFromCommandLineJob::setupLocalSyncFolder(AccountState *accountS
         qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Folder %1 setup from command line success.").arg(definition.localPath);
         printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
     } else {
-        AccountManager::instance()->deleteAccount(accountState);
+        // Drop the account again, but keep the app password valid: it was passed in on the
+        // command line and revoking it would make a retry impossible.
+        AccountManager::instance()->removeAccountState(accountState);
         printAccountSetupFromCommandLineStatusAndExit(
             QStringLiteral("Account %1 setup from command line failed, due to folder creation failure.").arg(_account->displayName()),
             true);
@@ -220,8 +313,10 @@ void AccountSetupFromCommandLineJob::printAccountSetupFromCommandLineStatusAndEx
 {
     if (isFailure) {
         qCWarning(lcAccountSetupCommandLineJob) << status;
+        std::cerr << qUtf8Printable(status) << std::endl;
     } else {
         qCInfo(lcAccountSetupCommandLineJob) << status;
+        std::cout << qUtf8Printable(status) << std::endl;
     }
     QTimer::singleShot(0, this, [this, isFailure]() {
         this->deleteLater();

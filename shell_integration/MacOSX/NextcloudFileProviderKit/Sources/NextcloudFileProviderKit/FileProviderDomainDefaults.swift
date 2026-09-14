@@ -22,6 +22,7 @@ public struct FileProviderDomainDefaults {
         case serverUrl
         case lastSeenExtensionVersion
         case debugLoggingEnabled
+        case blockSync
     }
 
     ///
@@ -213,6 +214,43 @@ public struct FileProviderDomainDefaults {
                 logger.debug("Removing key \"debugLoggingEnabled\" (process-global) because the new value is nil.")
                 UserDefaults.standard.removeObject(forKey: key)
             }
+        }
+    }
+
+    ///
+    /// Controls whether synchronization with the server is blocked.
+    ///
+    /// Like ``debugLoggingEnabled`` and unlike the other properties on this type, this value is **process-global and shared across all file provider domains**. It is stored at the top level of `UserDefaults.standard`, bypassing the per-domain `internalConfig` dictionary, so that it can be flipped with a single `defaults write` command per extension bundle.
+    ///
+    /// While this is `true` the extension performs no network input or output with the server: every request from the system which would require it fails with `NSFileProviderErrorServerUnreachable`, which is what the situation genuinely is from the perspective of the file provider framework. Work already in progress when the value is set runs to completion, because blocking refuses new requests rather than cancelling accepted ones.
+    ///
+    /// When unset, synchronization is not blocked. This holds in every build configuration: a debug build must not synchronize differently from a release build, and a value which cannot be read as a boolean is treated as unset rather than as a reason to stop synchronizing.
+    ///
+    public var blockSync: Bool? {
+        get {
+            let key = ConfigKey.blockSync.rawValue
+
+            guard let value = UserDefaults.standard.object(forKey: key) as? Bool else {
+                logger.debug("No existing value for \"blockSync\" (process-global) found.")
+                return nil
+            }
+
+            logger.debug(value ? "Synchronization is blocked (process-global)." : "Synchronization is not blocked (process-global).")
+
+            return value
+        }
+
+        set {
+            let key = ConfigKey.blockSync.rawValue
+
+            guard let newValue else {
+                logger.debug("Removing key \"blockSync\" (process-global) because the new value is nil.")
+                UserDefaults.standard.removeObject(forKey: key)
+
+                return
+            }
+
+            UserDefaults.standard.set(newValue, forKey: key)
         }
     }
 }
