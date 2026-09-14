@@ -175,6 +175,13 @@ void Systray::create()
     Q_EMIT activated(QSystemTrayIcon::ActivationReason::Unknown);
 }
 
+void Systray::showWindow(WindowPosition position)
+{
+    Q_UNUSED(position)
+
+    Q_EMIT openSettings();
+}
+
 void Systray::showTrayPopup(WindowPosition position)
 {
     if (isOpen()) {
@@ -182,7 +189,7 @@ void Systray::showTrayPopup(WindowPosition position)
     }
 
     if (!isSystemTrayAvailable()) {
-        showActivitiesWindow();
+        showWindow(position);
         return;
     }
 

@@ -983,7 +983,7 @@ bool showQtTrayPopup(Systray *systray, const QRect &iconRect, const Systray::Win
 
     // Wayland cannot create an arbitrary QWidget popup from a tray activation.
     if (isWaylandPlatform()) {
-        systray->showActivitiesWindow();
+        systray->showWindow();
         return false;
     }
 

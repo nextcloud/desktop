@@ -55,15 +55,17 @@
 
 using namespace Qt::StringLiterals;
 
+namespace
+{
 #ifdef Q_OS_WIN
-    // "light" looks too bright on dark mode on Windows only
-    #define BACKGROUND_PALETTE "alternate-base"
+constexpr auto panelBackgroundRole = QPalette::AlternateBase;
 #else
-    // ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
-    #define BACKGROUND_PALETTE "light"
+constexpr auto panelBackgroundRole = QPalette::Light;
 #endif
+constexpr auto minimumPanelBrightnessDifference = 8;
+constexpr auto lightPanelForegroundFraction = 0.03;
+constexpr auto darkPanelForegroundFraction = 0.06;
 
-namespace {
 class CurrentPageSizeStackedWidget : public QStackedWidget
 {
 public:
@@ -137,7 +139,6 @@ QString shortDisplayNameForSettings(OCC::Account *account, int width)
 }
 }
 
-
 namespace OCC {
 
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
@@ -176,9 +177,19 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         accountAdded(account.data());
     }
 
+    _addAccountAction = createColorAwareAction(QLatin1String(":/client/theme/add.svg"), Systray::tr("Add account"));
+    _addAccountAction->setObjectName("settingsdialog_add_account"_L1);
+    _addAccountAction->setCheckable(false);
+    connect(_addAccountAction, &QAction::triggered, this, [] {
+        Q_EMIT Systray::instance()->openAccountWizard();
+    });
+    _toolBar->addAction(_addAccountAction);
+    _firstNonAccountAction = _addAccountAction;
+    updateAddAccountActionVisibility();
+
     auto *accountSpacer = new QWidget(this);
     accountSpacer->setFixedHeight(16);
-    _firstNonAccountAction = _toolBar->addWidget(accountSpacer);
+    _toolBar->addWidget(accountSpacer);
 
     addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("General"), new GeneralSettings(this));
     addSettingsPage(QLatin1String(":/client/theme/advanced.svg"), tr("Advanced"), new AdvancedSettings(this));
@@ -251,9 +262,19 @@ void SettingsDialog::showEvent(QShowEvent *event)
 #endif
 }
 
+bool SettingsDialog::event(QEvent *event)
+{
+    const auto handled = QDialog::event(event);
+    if (event->type() == QEvent::ApplicationPaletteChange) {
+        changeEvent(event);
+    }
+    return handled;
+}
+
 void SettingsDialog::changeEvent(QEvent *e)
 {
     switch (e->type()) {
+    case QEvent::ApplicationPaletteChange:
     case QEvent::StyleChange:
     case QEvent::PaletteChange:
     case QEvent::ThemeChange:
@@ -320,10 +341,43 @@ void SettingsDialog::showAccount(AccountState *account)
 
 void SettingsDialog::showIssuesList(AccountState *account)
 {
+    const auto userIndex = userIndexForAccount(account);
+    if (userIndex < 0) {
+        return;
+    }
+
+    UserModel::instance()->setCurrentUserId(userIndex);
+    Systray::instance()->showActivitiesWindow(userIndex);
+}
+
+void SettingsDialog::showUserStatus(AccountState *account)
+{
+    const auto userIndex = userIndexForAccount(account);
+    if (userIndex >= 0) {
+        Systray::instance()->showUserStatusWindow(userIndex);
+    }
+}
+
+void SettingsDialog::showAssistant(AccountState *account)
+{
+    const auto userIndex = userIndexForAccount(account);
+    if (userIndex >= 0) {
+        Systray::instance()->showAssistantWindow(userIndex);
+    }
+}
+
+void SettingsDialog::showSearch(AccountState *account)
+{
+    const auto userIndex = userIndexForAccount(account);
+    if (userIndex >= 0) {
+        Systray::instance()->showSearchWindow(userIndex);
+    }
+}
+
+int SettingsDialog::userIndexForAccount(AccountState *account) const
+{
     const auto userModel = UserModel::instance();
-    const auto id = userModel->findUserIdForAccount(account);
-    UserModel::instance()->setCurrentUserId(id);
-    Systray::instance()->showActivitiesWindow(id);
+    return userModel ? userModel->findUserIdForAccount(account) : -1;
 }
 
 void SettingsDialog::accountAdded(AccountState *s)
@@ -360,6 +414,9 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(accountSettings, &AccountSettings::openFolderAlias,
         _gui, &ownCloudGui::slotFolderOpenAction);
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
+    connect(accountSettings, &AccountSettings::showUserStatus, this, &SettingsDialog::showUserStatus);
+    connect(accountSettings, &AccountSettings::showAssistant, this, &SettingsDialog::showAssistant);
+    connect(accountSettings, &AccountSettings::showSearch, this, &SettingsDialog::showSearch);
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
@@ -374,6 +431,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     });
     userInfo->setActive(true);
     userInfo->slotFetchInfo();
+
+    updateAddAccountActionVisibility();
 }
 
 void SettingsDialog::slotAccountAvatarChanged()
@@ -441,11 +500,20 @@ void SettingsDialog::accountRemoved(AccountState *s)
         _actionForAccount.remove(s->account().data());
     }
 
+    updateAddAccountActionVisibility();
+
     // Hide when the last account is deleted. We want to enter the same
     // state we'd be in the client was started up without an account
     // configured.
     if (AccountManager::instance()->accounts().isEmpty()) {
         hide();
+    }
+}
+
+void SettingsDialog::updateAddAccountActionVisibility()
+{
+    if (_addAccountAction) {
+        _addAccountAction->setVisible(Systray::instance()->enableAddAccount());
     }
 }
 
@@ -488,6 +556,20 @@ void SettingsDialog::customizeStyle()
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
     _toolBar->setStyleSheet(TOOLBAR_CSS);
 
+    const auto applicationPalette = QGuiApplication::palette();
+    const auto windowColor = applicationPalette.color(QPalette::Window);
+    auto panelColor = applicationPalette.color(panelBackgroundRole);
+    if (qAbs(qGray(panelColor.rgb()) - qGray(windowColor.rgb())) < minimumPanelBrightnessDifference) {
+        const auto foreground = applicationPalette.color(QPalette::WindowText);
+        const auto fraction = Theme::isDarkColor(windowColor) ? darkPanelForegroundFraction : lightPanelForegroundFraction;
+        const auto blend = [fraction](const auto background, const auto text) {
+            return background * (1.0 - fraction) + text * fraction;
+        };
+        panelColor = QColor::fromRgbF(blend(windowColor.redF(), foreground.redF()),
+                                      blend(windowColor.greenF(), foreground.greenF()),
+                                      blend(windowColor.blueF(), foreground.blueF()));
+    }
+
     auto separatorColor = palette().color(QPalette::Mid);
     separatorColor.setAlpha(48);
     const auto separatorCss = QStringLiteral("rgba(%1, %2, %3, %4)")
@@ -496,57 +578,60 @@ void SettingsDialog::customizeStyle()
         .arg(separatorColor.blue())
         .arg(separatorColor.alpha());
 
-    setStyleSheet(QStringLiteral(
-        "#Settings { background: palette(window); border-radius: 0; }"
+    setStyleSheet(QStringLiteral("#Settings { background: %3; border-radius: 0; }"
 
-        /* Navigation */
-        "#settings_navigation_scroll { background: palette(" BACKGROUND_PALETTE "); border-radius: 12px; padding: 4px; }"
-        "#settings_navigation { background: transparent; border: none; padding: 0px; }"
+                                 /* Navigation */
+                                 "#settings_navigation_scroll { background: %2; border-radius: 12px; padding: 4px; }"
+                                 "#settings_navigation { background: transparent; border: none; padding: 0px; }"
 
-        /* Content area */
-        "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
+                                 /* Content area */
+                                 "#settings_content, #settings_content_scroll { background: %3; border-radius: 12px; }"
 
-        /* Panels */
-        "#generalGroupBox, #fileProviderGroupBox, #notificationsGroupBox, #advancedGroupBox, #syncBehaviorGroupBox,"
-        "#advancedActionsGroupBox, #aboutAndUpdatesGroupBox, #updatesGroupBox {"
-        " background: palette(" BACKGROUND_PALETTE ");"
-        " border: none;"
-        " border-radius: 12px;"
-        " margin: 0px;"
-        " padding: 0px;"
-        " }"
-        "#accountStatusPanel, #encryptionPanel, #syncFoldersPanel, #accountActionsPanel {"
-        " background: palette(" BACKGROUND_PALETTE ");"
-        " border: none;"
-        " border-radius: 12px;"
-        " margin: 0px;"
-        " padding: 6px;"
-        " }"
-        "#generalGroupBox QLabel, #fileProviderGroupBox QLabel, #notificationsGroupBox QLabel, #advancedGroupBox QLabel,"
-        "#syncBehaviorGroupBox QLabel, #advancedActionsGroupBox QLabel,"
-        "#aboutAndUpdatesGroupBox QLabel, #updatesGroupBox QLabel {"
-        " margin: 0px;"
-        " padding: 0px;"
-        " }"
-        "#advancedGroupBox QSpinBox, #updatesGroupBox QComboBox {"
-        " min-height: 18px;"
-        " max-height: 20px;"
-        " }"
-        "#startupSeparator, #serverNotificationsSeparator, #chatNotificationsSeparator,"
-        "#callNotificationsSeparator, #existingFolderLimitSeparator,"
-        "#stopExistingFolderNowBigSyncSeparator, #remotePollIntervalSeparator,"
-        "#moveFilesToTrashSeparator, #showInExplorerNavigationPaneSeparator,"
-        "#updateControlsSeparator {"
-        " color: %1;"
-        " background: %1;"
-        " border: none;"
-        " min-height: 1px;"
-        " max-height: 1px;"
-        " }"
-    ).arg(separatorCss));
+                                 /* Panels */
+                                 "#generalGroupBox, #fileProviderGroupBox, #notificationsGroupBox, #advancedGroupBox, #syncBehaviorGroupBox,"
+                                 "#advancedActionsGroupBox, #aboutAndUpdatesGroupBox, #updatesGroupBox {"
+                                 " background: %2;"
+                                 " border: none;"
+                                 " border-radius: 12px;"
+                                 " margin: 0px;"
+                                 " padding: 0px;"
+                                 " }"
+                                 "#accountShortcutsPanel, #accountStatusPanel, #encryptionPanel, #syncFoldersPanel,"
+                                 "#fileProviderMaintenancePanel, #accountActionsPanel {"
+                                 " background: %2;"
+                                 " border: none;"
+                                 " border-radius: 12px;"
+                                 " margin: 0px;"
+                                 " padding: 6px;"
+                                 " }"
+                                 "#generalGroupBox QLabel, #fileProviderGroupBox QLabel, #notificationsGroupBox QLabel, #advancedGroupBox QLabel,"
+                                 "#syncBehaviorGroupBox QLabel, #advancedActionsGroupBox QLabel,"
+                                 "#aboutAndUpdatesGroupBox QLabel, #updatesGroupBox QLabel {"
+                                 " margin: 0px;"
+                                 " padding: 0px;"
+                                 " }"
+                                 "#advancedGroupBox QSpinBox, #updatesGroupBox QComboBox {"
+                                 " min-height: 18px;"
+                                 " max-height: 20px;"
+                                 " }"
+                                 "#startupSeparator, #serverNotificationsSeparator, #chatNotificationsSeparator,"
+                                 "#callNotificationsSeparator, #existingFolderLimitSeparator,"
+                                 "#stopExistingFolderNowBigSyncSeparator, #remotePollIntervalSeparator,"
+                                 "#moveFilesToTrashSeparator, #showInExplorerNavigationPaneSeparator,"
+                                 "#updateControlsSeparator {"
+                                 " color: %1;"
+                                 " background: %1;"
+                                 " border: none;"
+                                 " min-height: 1px;"
+                                 " max-height: 1px;"
+                                 " }")
+                      .arg(separatorCss, panelColor.name(), windowColor.name()));
 
-    const auto &allActions = _actionGroup->actions();
-    for (const auto a : allActions) {
+    auto colorAwareActions = _actionGroup->actions();
+    if (_addAccountAction) {
+        colorAwareActions.append(_addAccountAction);
+    }
+    for (const auto a : colorAwareActions) {
         QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
