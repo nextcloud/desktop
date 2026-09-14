@@ -387,6 +387,18 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
             continue;
         }
 
+        // Server-side external storage mounts can opt out of client sync
+        // entirely (nc:sync-enabled == "false") while remaining browsable
+        // on the web/mobile apps. Exclude the mount itself and everything
+        // beneath it from the folder picker so it can never be selected
+        // for automatic sync.
+        const auto isSyncDisabled = std::any_of(std::cbegin(_syncDisabledPaths), std::cend(_syncDisabledPaths), [=](const QString &disabledPath) {
+            return path.size() >= disabledPath.size() && path.startsWith(disabledPath);
+        });
+        if (isSyncDisabled) {
+            continue;
+        }
+
         QStringList paths = path.split('/');
         if (paths.last().isEmpty()) {
             paths.removeLast();
@@ -406,6 +418,18 @@ void FolderWizardRemotePath::slotGatherEncryptedPaths(const QString &path, const
     const auto webdavFolder = QUrl(_account->davUrl()).path();
     Q_ASSERT(path.startsWith(webdavFolder));
     _encryptedPaths << path.mid(webdavFolder.size());
+}
+
+void FolderWizardRemotePath::slotGatherSyncDisabledPaths(const QString &path, const QMap<QString, QString> &properties)
+{
+    const auto it = properties.find("sync-enabled");
+    if (it == properties.cend() || *it != QStringLiteral("false")) {
+        return;
+    }
+
+    const auto webdavFolder = QUrl(_account->davUrl()).path();
+    Q_ASSERT(path.startsWith(webdavFolder));
+    _syncDisabledPaths << path.mid(webdavFolder.size());
 }
 
 void FolderWizardRemotePath::slotRefreshFolders()
@@ -478,7 +502,8 @@ LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
 {
     auto *job = new LsColJob(_account, path);
     const auto props = QList<QByteArray>() << "resourcetype"
-                                           << "http://nextcloud.org/ns:is-encrypted";
+                                           << "http://nextcloud.org/ns:is-encrypted"
+                                           << "http://nextcloud.org/ns:sync-enabled";
     job->setProperties(props);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotUpdateDirectories);
@@ -486,6 +511,8 @@ LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
         this, &FolderWizardRemotePath::slotHandleLsColNetworkError);
     connect(job, &LsColJob::directoryListingIterated,
         this, &FolderWizardRemotePath::slotGatherEncryptedPaths);
+    connect(job, &LsColJob::directoryListingIterated,
+        this, &FolderWizardRemotePath::slotGatherSyncDisabledPaths);
     job->start();
 
     return job;
