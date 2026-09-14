@@ -31,7 +31,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedFileProviderContentVersion
+    private static let schemaVersion = SchemaVersion.addedChangeDeliveryAcknowledgementState
     let logger: FileProviderLogger
     let account: Account
 
