@@ -2859,7 +2859,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Yettwasekkeṛ sɣur %1 - Ad ifakk deg %2 n tesdat</numerusform><numerusform>Yettwasekkeṛ sɣur %1 - Ad ifakk deg %2 n tesdatin</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2960,27 +2960,27 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="534"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 yettwasmutti ɣer %2 d %n n ufaylu-nniḍen ttwasmuttin.</numerusform><numerusform>%1 yettwasmutti ɣer %2 d %n n ifuyla-nniḍen ttwasmuttin.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="541"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 yesɛa akked %n ufaylu-nniḍen ccwal deg umtawi.</numerusform><numerusform>%1 yesɛa akked %n n ifuyla-nniḍen ccwal deg umtawi.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="543"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 yesɛa ccwal deg umtawi. Ttxil-k·m senqed afaylu n ccwal-a!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="548"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 akked %n ufaylu-nniḍen ur zmiren ara ad mtawin acku llant tuccḍiwin. Wali aɣmis i telqayt.</numerusform><numerusform>%1 akked %n ifuyla-nniḍen ur zmiren ara ad mtawin acku llant tuccḍiwin. Wali aɣmis i telqayt.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="550"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ur izmer ara ad yemtawi acku llant tuccḍiwin. Wali aɣmis i telqayt.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="555"/>
@@ -3145,7 +3145,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="518"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Yettwaf-d yiwen uɣmis amtawi aqbur &quot;%1&quot;, maca ur yezmir ara ad yettwakkes. Ttxil-k·m, ẓer ma ulac asnas ara t-yesseqdacen akka tura.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1613"/>
@@ -3480,7 +3480,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="171"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Amsenqad ur d-yeṭṭif ara alɣu n ukayad.</translation>
     </message>
 </context>
 <context>
@@ -3588,12 +3588,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="624"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Ifuyla uhlisen ur ttwasefraken ara i uẓar n uḥric n Windows am ukaram adigan. Ttxil-k·m fren akaram anaddaw ddaw usekkil n imeɣri.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="649"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Ifuyla uhlisen ur ttwasefraken ara deg wadig yettwafernen</translation>
     </message>
 </context>
 <context>
@@ -3601,22 +3601,22 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="189"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Ulac E-Tag i d-yewwḍen seg uqeddac, selken Apṛuksi/Tanezgert</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="196"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Yewweḍ-aɣ-d E-Tag yemgaraden i ukemmel. Ɛreḍ tikkelt nniḍen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="207"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Yewweḍ-aɣ-d yiwen n usider ur netturaǧu ara seg tama n teɣzi n ugbur.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="235"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Aqeddac yerra-d yir azilal n ugbur</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="363"/>
@@ -3659,7 +3659,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="93"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Seqdec tignitin s wudem &amp;Ammaɣay</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="112"/>

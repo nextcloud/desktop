@@ -2948,7 +2948,7 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="513"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 a %n iných súbor(ov) bolo pridaných.</numerusform><numerusform>%1 a %n iných súbor(ov) bolo pridaných.</numerusform><numerusform>%1 a %n iných súbor(ov) bolo pridaných.</numerusform><numerusform>%1 a %n iných súbor(ov) bolo pridaných.</numerusform></translation>
+        <translation><numerusform>%1 a %n iný súbor bol pridaný.</numerusform><numerusform>%1 a %n iné súbory boli pridané.</numerusform><numerusform>%1 a %n iných súborov bolo pridaných.</numerusform><numerusform>%1 a %n iných súborov bolo pridaných.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="515"/>
@@ -2969,7 +2969,7 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="534"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 bol presunuý do %2 a %n iných súbor bol presunutý.</numerusform><numerusform>%1 bol presunuý do %2 a %n iné súbory boli presunuté.</numerusform><numerusform>%1 bol presunuý do %2 a %n iných súborov bolo presunutých.</numerusform><numerusform>%1 bol presunuý do %2 a %n iných súborov bolo presunutých.</numerusform></translation>
+        <translation><numerusform>%1 bol presunutý do %2 a %n iný súbor bol presunutý.</numerusform><numerusform>%1 bol presunutý do %2 a %n iné súbory boli presunuté.</numerusform><numerusform>%1 bol presunutý do %2 a %n iných súborov bolo presunutých.</numerusform><numerusform>%1 bol presunutý do %2 a %n iných súborov bolo presunutých.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="541"/>
@@ -2984,7 +2984,7 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="548"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 a %n iný súbor nie je možné synchronizovať kvôli chybe. Skontrolujte log pre podrobnosti.</numerusform><numerusform>%1 a %n iné súbory nie je možné synchronizovať kvôli chybe. Skontrolujte log pre podrobnosti.</numerusform><numerusform>%1 a %n iných súborov nie je možné synchronizovať kvôli chybe. Skontrolujte log pre podrobnosti.</numerusform><numerusform>%1 a %n iných súborov nie je možné synchronizovať kvôli chybe.  Skontrolujte log pre podrobnosti.</numerusform></translation>
+        <translation><numerusform>%1 a %n iný súbor nie je možné synchronizovať kvôli chybe. Skontrolujte log pre podrobnosti.</numerusform><numerusform>%1 a %n iné súbory nie je možné synchronizovať kvôli chybe. Skontrolujte log pre podrobnosti.</numerusform><numerusform>%1 a %n iných súborov nie je možné synchronizovať kvôli chybe. Skontrolujte log pre podrobnosti.</numerusform><numerusform>%1 a %n iných súborov nie je možné synchronizovať kvôli chybe. Skontrolujte log pre podrobnosti.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="550"/>
@@ -2994,7 +2994,7 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="555"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1 a %n ďalších súborov je práve blokovaných.</numerusform><numerusform>%1 a %n ďalších súborov je práve blokovaných.</numerusform><numerusform>%1 a %n ďalších súborov je práve blokovaných.</numerusform><numerusform>%1 a %n ďalších súborov je práve blokovaných.</numerusform></translation>
+        <translation><numerusform>%1 a %n ďalší súbor je práve blokovaný.</numerusform><numerusform>%1 a %n ďalšie súbory sú práve blokované.</numerusform><numerusform>%1 a %n ďalších súborov je práve blokovaných.</numerusform><numerusform>%1 a %n ďalších súborov je práve blokovaných.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="557"/>
@@ -3482,7 +3482,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1195"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Čakám na %n ďalší priečinok …</numerusform><numerusform>Čakám na %n ďalších priečinkov …</numerusform><numerusform>Čakám na %n ďalších priečinkov …</numerusform><numerusform>Čakám na %n ďalších priečinkov …</numerusform></translation>
+        <translation><numerusform>Čakám na %n ďalší priečinok …</numerusform><numerusform>Čakám na %n ďalšie priečinky …</numerusform><numerusform>Čakám na %n ďalších priečinkov …</numerusform><numerusform>Čakám na %n ďalších priečinkov …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1195"/>
@@ -6683,12 +6683,12 @@ Server odpovedal chybou: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="506"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minúta</numerusform><numerusform>%n minút</numerusform><numerusform>%n minút</numerusform><numerusform>%n minút</numerusform></translation>
+        <translation><numerusform>%n minúta</numerusform><numerusform>%n minúty</numerusform><numerusform>%n minút</numerusform><numerusform>%n minút</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="509"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hodina</numerusform><numerusform>%n hodín</numerusform><numerusform>%n hodín</numerusform><numerusform>%n hodiny</numerusform></translation>
+        <translation><numerusform>%n hodina</numerusform><numerusform>%n hodiny</numerusform><numerusform>%n hodín</numerusform><numerusform>%n hodín</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="512"/>
@@ -8033,12 +8033,12 @@ Server odpovedal chybou: %2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n year(s)</source>
-        <translation><numerusform>%n rok</numerusform><numerusform>%n rokov</numerusform><numerusform>%n rokov</numerusform><numerusform>%n roky</numerusform></translation>
+        <translation><numerusform>%n rok</numerusform><numerusform>%n roky</numerusform><numerusform>%n rokov</numerusform><numerusform>%n rokov</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n mesiac</numerusform><numerusform>%n mesiace</numerusform><numerusform>%n mesiacov</numerusform><numerusform>%n mesiace</numerusform></translation>
+        <translation><numerusform>%n mesiac</numerusform><numerusform>%n mesiace</numerusform><numerusform>%n mesiacov</numerusform><numerusform>%n mesiaca</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
@@ -8048,17 +8048,17 @@ Server odpovedal chybou: %2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="292"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hodina</numerusform><numerusform>%n hodín</numerusform><numerusform>%n hodín</numerusform><numerusform>%n hodiny</numerusform></translation>
+        <translation><numerusform>%n hodina</numerusform><numerusform>%n hodiny</numerusform><numerusform>%n hodín</numerusform><numerusform>%n hodín</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="293"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minúta</numerusform><numerusform>%n minút</numerusform><numerusform>%n minút</numerusform><numerusform>%n minúty</numerusform></translation>
+        <translation><numerusform>%n minúta</numerusform><numerusform>%n minúty</numerusform><numerusform>%n minút</numerusform><numerusform>%n minút</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="294"/>
         <source>%n second(s)</source>
-        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekúnd</numerusform><numerusform>%n sekúnd</numerusform><numerusform>%n sekundy</numerusform></translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekúnd</numerusform><numerusform>%n sekúnd</numerusform></translation>
     </message>
 </context>
 <context>
