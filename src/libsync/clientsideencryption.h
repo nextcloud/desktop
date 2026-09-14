@@ -275,8 +275,6 @@ public:
 
     [[nodiscard]] const QSslCertificate& getCertificate() const;
 
-    [[nodiscard]] ENGINE* sslEngine() const;
-
     [[nodiscard]] QByteArray generateSignatureCryptographicMessageSyntax(const QByteArray &data) const;
 
     [[nodiscard]] bool verifySignatureCryptographicMessageSyntax(const QByteArray &cmsContent, const QByteArray &data, const QVector<QByteArray> &certificatePems) const;
