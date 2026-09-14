@@ -25,10 +25,19 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
     private let lock = NSLock()
     private let dbManager: FilesDatabaseManager
     private let logger: FileProviderLogger
+    private let containerKey: String
+    private let hardRemoveDeleted: Bool
     private var sessionId: String?
 
-    init(dbManager: FilesDatabaseManager, log: any FileProviderLogging) {
+    init(
+        dbManager: FilesDatabaseManager,
+        containerKey: String,
+        hardRemoveDeleted: Bool,
+        log: any FileProviderLogging
+    ) {
         self.dbManager = dbManager
+        self.containerKey = containerKey
+        self.hardRemoveDeleted = hardRemoveDeleted
         logger = FileProviderLogger(category: "ChangeDeliveryBuffer", log: log)
     }
 
@@ -43,12 +52,37 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
                 return false
             }
 
-            return session.currentAnchorKey == key
+            if session.currentAnchorKey == key {
+                return true
+            }
+
+            guard session.pendingReported,
+                  session.pendingAnchorKey == key
+            else {
+                return false
+            }
+
+            let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: sessionId)
+            guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, deletedOcIds: deletedOcIds) else {
+                logger.error("Could not acknowledge the previously reported change delivery batch.")
+                return false
+            }
+
+            return true
         }
 
-        guard key.hasPrefix(Self.continuationPrefix),
-              let session = dbManager.changeDeliverySession(forAnchorKey: key)
-        else {
+        if let session = dbManager.changeDeliverySession(forAnchorKey: key, containerKey: containerKey) {
+            sessionId = session.sessionId
+            return true
+        }
+
+        guard let session = dbManager.changeDeliverySession(forPendingAnchorKey: key, containerKey: containerKey) else {
+            return false
+        }
+
+        let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: session.sessionId)
+        guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: session.sessionId, deletedOcIds: deletedOcIds) else {
+            logger.error("Could not acknowledge the previously reported change delivery batch.")
             return false
         }
 
@@ -90,18 +124,18 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         lock.lock()
         defer { lock.unlock() }
 
-        if let sessionId {
-            dbManager.removeChangeDeliverySession(sessionId: sessionId)
-        }
+        dbManager.removeChangeDeliverySessions(containerKey: containerKey)
 
         let newSessionId = UUID().uuidString
         guard dbManager.createChangeDeliverySession(
             sessionId: newSessionId,
+            containerKey: containerKey,
             anchorKey: key,
             finalAnchorRawValue: finalAnchorRawValue,
             updated: updated,
             deleted: deleted,
-            incomplete: incomplete
+            incomplete: incomplete,
+            hardRemoveDeleted: hardRemoveDeleted
         ) else {
             sessionId = nil
             logger.error("Could not persist change delivery session.")
@@ -112,14 +146,9 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         logger.debug("Persisted change delivery session.")
     }
 
-    ///
-    /// Consume the next combined update/delete batch and persist the cursor before returning it.
-    ///
-    /// `moreComing` is false when this batch consumed the final stored item. Intermediate batches return a
-    /// durable continuation anchor; the final batch returns the sync anchor captured when the session was
-    /// primed.
-    ///
-    func takeBatch(
+    /// Prepare the next update/delete batch without advancing the committed cursor.
+    /// Returns a continuation anchor for intermediate batches and the session's final anchor for the last.
+    func prepareChangeDeliveryBatch(
         maxItems: Int
     ) -> (
         updated: [SendableItemMetadata],
@@ -174,14 +203,17 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
             nextAnchorKey = nil
         }
 
-        dbManager.advanceChangeDeliverySession(
+        guard dbManager.prepareChangeDeliveryBatch(
             sessionId: sessionId,
-            nextSequence: nextSequence,
+            endSequence: nextSequence,
             nextAnchorKey: nextAnchorKey,
-            completed: !moreComing
-        )
+            moreComing: moreComing
+        ) else {
+            logger.error("Could not prepare change delivery batch.")
+            return ([], [], false, nil, nil)
+        }
 
-        logger.debug("Consumed change delivery batch.")
+        logger.debug("Prepared change delivery batch.")
         return (
             updated,
             deleted,
@@ -191,8 +223,8 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         )
     }
 
-    /// Discard the active durable session when a fresh enumeration replaces an abandoned drain.
-    func reset() {
+    /// Commit the prepared batch after `finishEnumeratingChanges` returns.
+    func acknowledgeBatch(deletedOcIds: [String]) {
         lock.lock()
         defer { lock.unlock() }
 
@@ -200,8 +232,23 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
             return
         }
 
-        dbManager.removeChangeDeliverySession(sessionId: sessionId)
-        self.sessionId = nil
+        guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, deletedOcIds: deletedOcIds) else {
+            logger.error("Could not acknowledge change delivery batch.")
+            return
+        }
+
+        if dbManager.changeDeliverySession(sessionId: sessionId) == nil {
+            self.sessionId = nil
+        }
+    }
+
+    /// Discard the active durable session when a fresh enumeration replaces an abandoned drain.
+    func reset() {
+        lock.lock()
+        defer { lock.unlock() }
+
+        dbManager.removeChangeDeliverySessions(containerKey: containerKey)
+        sessionId = nil
         logger.info("Reset change delivery session.")
     }
 }
