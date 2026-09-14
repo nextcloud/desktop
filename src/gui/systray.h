@@ -148,6 +148,7 @@ public Q_SLOTS:
     // only for those managed by the C++ engine
     void destroyDialog(QQuickWindow *window) const;
 
+    void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void showTrayPopup(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
     void showActivitiesWindow(int userIndex = -1);

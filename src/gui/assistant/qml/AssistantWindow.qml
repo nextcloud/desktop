@@ -21,7 +21,7 @@ WizardStyledWindow {
     required property string accountAvatar
     required property NC.AssistantController assistantController
 
-    readonly property string headline: qsTr("Nextcloud Assistant")
+    readonly property string headline: qsTr("Assistant")
     readonly property bool canUseAssistant: assistantController.assistantEnabled
         && assistantController.accountConnected
     readonly property bool canSend: canUseAssistant
