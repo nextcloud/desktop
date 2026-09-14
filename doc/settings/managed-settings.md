@@ -12,12 +12,7 @@ Auto update, proxy, folder limit and virtual files keys now resolve through
 `ConfigFile::getConfig`. It is the only public enforcement aware function.
 
 ## Principle
-<<<<<<< Updated upstream
-There is exactly one way to read a managed setting:`ConfigFile::getConfig`. 
-It walks the full hierarchy and returns the effective value and 
-=======
 `ConfigFile::getConfig` walks the full hierarchy and returns the effective value and 
->>>>>>> Stashed changes
 metadata - the source of the setting and if it is enforced.
 
 ## API (on ConfigFile)
@@ -44,15 +39,16 @@ metadata - the source of the setting and if it is enforced.
 - `ConfigFile::setConfig` resolves first: if the effective value is enforced it returns false
   and writes nothing, so a user can never override an enforced value. Otherwise it
   writes the user config.
-- `ConfigFile::isEnforced` and sourceOf read the resolved metadata. The settings UI disables a
-  control when `ConfigFile::isEnforced` is true and shows who set it from `ConfigFile::sourceOf`. 
-  Enforced settings are disabled, never hidden - a server default stays editable.
+- `ConfigFile::isEnforced` and `ConfigFile::sourceOf` read the resolved metadata. 
+  The settings UI disables a control when `ConfigFile::isEnforced` is true and 
+  shows who set it from `ConfigFile::sourceOf`. Enforced settings are disabled, 
+  never hidden - a server default stays editable.
 - Update and proxy keys are default only from the server. Only device policy can
   enforce them, so a server cannot disable updates or reroute traffic.
 
 ## The schema
 The schema is the declared contract for managed settings. Each entry is one
-SettingDefinition:
+`SettingDefinition`:
 ```cpp
 struct SettingDefinition {
     QString key;              // the setting name
@@ -61,33 +57,27 @@ struct SettingDefinition {
     SettingScope scope = SettingScope::User; // Device, User, Account, Folder
 };
 ```
-<<<<<<< Updated upstream
-- ManagedSettingsSchema::all() lists them and find(key) looks one up.
-- *enforceable is the security gate*: a non enforceable key ignores every enforced
-source, so no registry key, managed plist or server can lock it.
-=======
+
 - `ManagedSettingsSchema::all()` lists them and find(key) looks one up.
-- a non enforceable key ignores every enforced source, so no registry key, managed plist or server can enforce it.
->>>>>>> Stashed changes
+- *a non enforceable key ignores every enforced source*, so no registry key, managed plist or server can enforce it.
 - `builtinDefault` is the fallback value and it also fixes the type, so a registry or
 plist string is coerced to a real bool or int.
-- *A key that is not declared in the schema still resolves*, and it is treated as
-*enforceable* so device policy can lock it even before it is formally declared.
-Declaring a key in the schema is how you opt it out of enforcement (enforceable =
-false), give it a fixed default and type, or have it appear in the resolveAll
-diagnostics.
+- *A key that is not declared in the schema still resolves*, but it is treated as
+*not enforceable*. Declaring a key in the schema is how you allow it to be 
+enforced (enforceable = true), give it a fixed default and type, or have 
+it appear in the `ManagedSettings::resolveAll` diagnostics.
 - *There are two separate enforceable flags*. The schema enforceable above decides
 whether any enforced source (device or server) is honored. A second flag,
 serverEnforceable in servermanagedsettings, decides whether the server specifically
 may enforce a key. That is why update and proxy keys are serverEnforceable false (a
-server may only default them) yet still lockable by device policy, whose schema
+server may only default them) yet still enforceable by device policy, whose schema
 enforceable is true.
 
 ## Sources and the resolver
-A *source* is the place a value can come from: a registry key, a managed plist, 
-the server settings, the user .cfg. It reads the value live and tags
-it with its *source*, an enforcement state and a priority. 
-The *resolver* gathers the sources for a key and keeps the highest priority
+- **source**: it is the place a value can come from: a registry key, a managed plist, 
+the server settings, the user .cfg. It reads the value live and tags it with its kind 
+(where it came from), an enforcement state and a priority.  
+- **resolver**: it gathers the sources for a key and keeps the highest priority
 one that has a value, subject to the enforceable option.
 
 ### Device sources by platform
@@ -101,7 +91,7 @@ one that has a value, subject to the enforceable option.
 | Linux | `<sysconfdir>/<app>/policies.conf` | PlatformPolicy | Enforced | 200 |
 | Linux | `<sysconfdir>/<app>/<app>.conf` | PlatformDefault | NotEnforced | 20 |
 
-The user config contributes at priority 50 (with legacy settings level at 49), and
+The user config contributes at priority 50 (with the legacy top level at 49), and
 the server settings contribute a server enforced source at 100 and a server default
 at 30. The full precedence is shown in the resolution flow diagram below.
 
@@ -110,19 +100,6 @@ Every managed key, its type, whether the server may enforce it (not only default
 it), and whether it is declared in the schema:
 | Key | Type | Server may enforce | In schema |
 |---|---|---|---|
-<<<<<<< Updated upstream
-| skipUpdateCheck | bool | no, default only | yes |
-| autoUpdateCheck | bool | no, default only | yes |
-| confirmExternalStorage | bool | yes | yes |
-| useNewBigFolderSizeLimit | bool | yes | yes |
-| notifyExistingFoldersOverLimit | bool | yes | yes |
-| newBigFolderSizeLimit | int, MB | yes | no, runtime default |
-| stopSyncingExistingFoldersOverLimit | bool | yes | no, runtime default |
-| virtualFilesMode | string | yes | yes |
-| proxyType | int | no, default only | no |
-| proxyHost | string | no, default only | no |
-| proxyPort | int | no, default only | no |
-=======
 | `skipUpdateCheck` | bool | no, default only | yes |
 | `autoUpdateCheck` | bool | no, default only | yes |
 | `confirmExternalStorage` | bool | yes | yes |
@@ -134,23 +111,9 @@ it), and whether it is declared in the schema:
 | `proxyType` | int | no, default only | yes |
 | `proxyHost` | string | no, default only | yes |
 | `proxyPort` | int | no, default only | yes |
->>>>>>> Stashed changes
 
-- **Out of scope**: Secrets (proxyPass) and pure runtime state (geometry, lastSelectedAccount) are
+- **Out of scope**: Secrets (`proxyPass`) and pure runtime state (`geometry`, `lastSelectedAccount`) are
 not managed and kept only in the config file.
-<<<<<<< Updated upstream
-- *Device policy can set any key name*, but only these keys actually take effect.
-newBigFolderSizeLimit and stopSyncingExistingFoldersOverLimit carry a runtime or
-theme default, so they resolve with that default at the call site and are not in the
-schema.
-- The *In schema* column above: a listed key has a declared SettingDefinition, 
-an unlisted key resolves through a synthesized definition.
-- *Proxy resolves through getConfig as well*, wrapped in
-ConfigFile::managedProxySettings, which reads proxyType, proxyHost and proxyPort
-together so the type, host and port are always managed as one tuple.
-- *virtualFilesMode resolves through ConfigFile::managedVirtualFilesMode*. It is per
-folder (FolderDefinition), so the value is applied where a new folder is created:
-=======
 - **Device policy can set any key name**, but only these keys actually take effect.
 `newBigFolderSizeLimit` and `stopSyncingExistingFoldersOverLimit` carry a runtime or
 theme default. They are still declared in the schema so they can be enforced, and
@@ -162,7 +125,6 @@ schema, so a policy can not enforce a setting the client did not declare.
 together so the type, host and port are always managed as one tuple.
 - **`virtualFilesMode` resolves through `ConfigFile::managedVirtualFilesMode`**. It is per
 folder - `FolderDefinition`, so the value is applied where a new folder is created:
->>>>>>> Stashed changes
 the add folder wizard preselects and, when enforced, disables the virtual files
 checkbox, and the account setup wizard forces or hides the virtual files sync mode
 the same way. The server may enforce it, so an enforced value can come from the
@@ -170,23 +132,15 @@ server or from device policy.
 - **Legacy keys are stored in the general group in the config file** while managed writes use the
 account group, so getConfig reads both: the account group at priority 50 and the
 general group at 49, the group value winning when both exist.
-<<<<<<< Updated upstream
-- *Server delivered values are validated* in `ServerManagedSettings::sanitizeServerManagedSettings` (the
-folder size limit and virtualFilesMode) - invalid values are dropped.
-- *Setters refuse an enforced write*: the folder limit setters go through `ConfigFile::setConfig` and
-`Account::setProxySettings` refuses a managed proxy write. 
-- *UI options are disabled and display a message* explaining the setting is locked by a system administrator or by the organization (for auto update, folder limit and proxy settings).
-=======
 - **Server delivered values are validated** in `sanitizeServerManagedSettings` (the folder size 
 limit and `virtualFilesMode`) - invalid values are dropped.
 - **Setters refuse an enforced write**: the folder limit setters go through `ConfigFile::setConfig` and
 `Account::setProxySettings` refuses a managed proxy write. 
 - **UI options are disabled and display a message** explaining the setting is enforced by a system 
 administrator or by the organization (for auto update, folder limit and proxy settings).
->>>>>>> Stashed changes
 
 ### Proxy unifies the two layers
-- The network dialog edits per account state (Account) while the resolver reads the 
+- The network dialog edits per account state (`Account`) while the resolver reads the 
 managed proxy keys, so `ConfigFile::managedProxySettings` resolves type, host and port as one 
 tuple and `AccountManager` applies it at account load: an enforced value always wins, 
 a default only when the account follows the system proxy. 
@@ -206,7 +160,7 @@ or restart* - there is no live reapply on capability refresh.
 ## Nextcloud instances without an enterprise subscription
 Server managed settings are an enterprise feature. *The support app returns no
 desktopClient capability for an account without a valid subscription*, and *the client
-drops any account that is not subscribe*: `AccountManager::updateServerManagedSettings`
+drops any account that is not subscribed*: `AccountManager::updateServerManagedSettings`
 merges only subscribed accounts, so with none subscribed the server managed cache is
 cleared.
 
@@ -227,15 +181,10 @@ the proxy per field merge and the global proxy honoring a managed default, and
 The `Account::setProxySettings` write guard is not covered there because `Account::create` 
 self references and trips the leak checker, it is owed in a non ASAN test.
 
-<<<<<<< Updated upstream
-### Resolution
-How a managed setting is resolved - e.g. virtualFilesMode, which is server
-enforceable - update and proxy keys never take the server enforced step):
-=======
 ## Resolution
 How a managed setting is resolved - e.g. `virtualFilesMode`, which is server
 enforceable - update and proxy keys never take the server enforced step:
->>>>>>> Stashed changes
+
 ```text
 config.php (admin)                                     [server, optional]
   |
@@ -270,7 +219,7 @@ ConfigFile::getConfig                                  [read]
   ResolvedSetting { value, source, enforced/default }     [return]
 ```
 
-### Server managed settings
+## Server managed settings
 From the admin's config.php to a source the resolver can read:
 ```text
 [server, support app]                     (separate repo, enterprise gated)

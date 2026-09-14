@@ -678,8 +678,10 @@ bool ConfigFile::autoUpdateCheck(const QString &connectionGroupName) const
 ResolvedSetting ConfigFile::getConfig(const QString &name, const QVariant &builtinDefault, const QString &connectionGroupName) const
 {
     const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    const auto spec = ManagedSettingsSchema::find(name).value_or(SettingDefinition{name, builtinDefault, true, SettingScope::User});
-    // Keep the resolver local so live sources are current and no mutable cache needs synchronization.
+    auto spec = ManagedSettingsSchema::find(name).value_or(SettingDefinition{name, builtinDefault, false, SettingScope::User});
+    if (builtinDefault.isValid()) {
+        spec.builtinDefault = builtinDefault;
+    }
     ManagedSettings resolver;
     for (auto &deviceSource : buildDeviceSources()) {
         resolver.addSource(std::move(deviceSource));
