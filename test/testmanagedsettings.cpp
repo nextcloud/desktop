@@ -264,6 +264,22 @@ private Q_SLOTS:
         QVERIFY(!ManagedSettingsSchema::find(QStringLiteral("nonexistent")).has_value());
     }
 
+    // Enforcement is opt in: only keys declared in the schema may be enforced. Proxy and the runtime
+    // default folder limits must therefore be declared, and an undeclared key is not enforceable.
+    void testEnforceableKeysAreDeclaredInSchema()
+    {
+        for (const auto &key : {QStringLiteral("proxyType"),
+                                QStringLiteral("proxyHost"),
+                                QStringLiteral("proxyPort"),
+                                QStringLiteral("newBigFolderSizeLimit"),
+                                QStringLiteral("stopSyncingExistingFoldersOverLimit")}) {
+            const auto spec = ManagedSettingsSchema::find(key);
+            QVERIFY2(spec.has_value(), qPrintable(key));
+            QVERIFY2(spec->enforceable, qPrintable(key));
+        }
+        QVERIFY(!ManagedSettingsSchema::find(QStringLiteral("someUndeclaredKey")).has_value());
+    }
+
     void testUserConfigSourceReadsIniValueAndGroup()
     {
         QTemporaryDir dir;

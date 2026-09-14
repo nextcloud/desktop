@@ -14,7 +14,7 @@ namespace OCC {
 
 namespace {
 // Keys the client accepts from the server and whether each is server enforceable.
-// Update and proxy keys are default only from the server; only device policy
+// Update and proxy keys are default only from the server - only device policy
 // enforces them, so a server cannot disable updates or reroute traffic.
 struct ServerKeyPolicy {
     bool serverEnforceable = false;
