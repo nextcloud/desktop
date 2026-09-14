@@ -9,7 +9,6 @@ namespace OCC::ManagedSettingsSchema {
 
 const QList<SettingDefinition> &all()
 {
-    // Keys with a runtime default are resolved at the call site, not listed here.
     static const QList<SettingDefinition> specs = {
         {QStringLiteral("skipUpdateCheck"), false, true, SettingScope::User},
         {QStringLiteral("autoUpdateCheck"), true, true, SettingScope::User},
@@ -17,6 +16,11 @@ const QList<SettingDefinition> &all()
         {QStringLiteral("useNewBigFolderSizeLimit"), true, true, SettingScope::User},
         {QStringLiteral("notifyExistingFoldersOverLimit"), false, true, SettingScope::User},
         {QStringLiteral("virtualFilesMode"), QStringLiteral("off"), true, SettingScope::User},
+        {QStringLiteral("newBigFolderSizeLimit"), 0, true, SettingScope::User},
+        {QStringLiteral("stopSyncingExistingFoldersOverLimit"), false, true, SettingScope::User},
+        {QStringLiteral("proxyType"), 0, true, SettingScope::User},
+        {QStringLiteral("proxyHost"), QString(), true, SettingScope::User},
+        {QStringLiteral("proxyPort"), 0, true, SettingScope::User},
     };
     return specs;
 }
