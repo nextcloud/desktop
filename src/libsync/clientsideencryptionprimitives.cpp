@@ -24,8 +24,8 @@ Bio::operator BIO *()
     return _bio;
 }
 
-PKeyCtx::PKeyCtx(int id, ENGINE *e)
-    : _ctx(EVP_PKEY_CTX_new_id(id, e))
+PKeyCtx::PKeyCtx(int id)
+    : _ctx(EVP_PKEY_CTX_new_id(id, nullptr))
 {
 }
 
@@ -39,10 +39,10 @@ PKeyCtx::~PKeyCtx()
     EVP_PKEY_CTX_free(_ctx);
 }
 
-PKeyCtx PKeyCtx::forKey(EVP_PKEY *pkey, ENGINE *e)
+PKeyCtx PKeyCtx::forKey(EVP_PKEY *pkey)
 {
     PKeyCtx ctx;
-    ctx._ctx = EVP_PKEY_CTX_new(pkey, e);
+    ctx._ctx = EVP_PKEY_CTX_new(pkey, nullptr);
     Q_ASSERT(ctx._ctx);
     return ctx;
 }

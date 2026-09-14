@@ -45,7 +45,6 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/err.h>
-#include <openssl/engine.h>
 #include <openssl/rand.h>
 #include <openssl/cms.h>
 
@@ -744,15 +743,14 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
 
 namespace internals {
 
-OCC::Result<QByteArray, OCC::ClientSideEncryption::EncryptionErrorType> decryptStringAsymmetric(ClientSideEncryption &encryptionEngine,
+OCC::Result<QByteArray, OCC::ClientSideEncryption::EncryptionErrorType> decryptStringAsymmetric(ClientSideEncryption &,
                                                                                                 EVP_PKEY *privateKey,
                                                                                                 int pad_mode,
                                                                                                 const QByteArray& binaryData)
 {
-    const auto sslEngine = encryptionEngine.sslEngine();
     int err = -1;
 
-    auto ctx = PKeyCtx::forKey(privateKey, sslEngine);
+    auto ctx = PKeyCtx::forKey(privateKey);
     if (!ctx) {
         qCInfo(lcCseDecryption()) << "Could not create the PKEY context." << handleErrors();
         return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
@@ -806,10 +804,9 @@ OCC::Result<QByteArray, ClientSideEncryption::EncryptionErrorType> encryptString
                                                                                            EVP_PKEY *publicKey,
                                                                                            int pad_mode,
                                                                                            const QByteArray& binaryData) {
-    const auto sslEngine = encryptionEngine.sslEngine();
-    auto ctx = PKeyCtx::forKey(publicKey, sslEngine);
+    auto ctx = PKeyCtx::forKey(publicKey);
     if (!ctx) {
-        qCInfo(lcCseEncryption()) << "Could not initialize the pkey context." << publicKey << sslEngine;
+        qCInfo(lcCseEncryption()) << "Could not initialize the pkey context." << publicKey;
         return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
@@ -977,11 +974,6 @@ void ClientSideEncryption::setCertificate(const QSslCertificate &certificate)
 const QSslCertificate& ClientSideEncryption::getCertificate() const
 {
     return _encryptionCertificate.getCertificate();
-}
-
-ENGINE* ClientSideEncryption::sslEngine() const
-{
-    return ENGINE_get_default_RSA();
 }
 
 ClientSideEncryptionTokenSelector *ClientSideEncryption::usbTokenInformation()
