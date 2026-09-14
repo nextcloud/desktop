@@ -15,4 +15,5 @@ enum SchemaVersion: UInt64 {
     case addedPendingChunkUploadCleanup = 206
     case addedChangeDeliverySessions = 207
     case addedFileProviderContentVersion = 208
+    case addedChangeDeliveryAcknowledgementState = 209
 }
