@@ -66,6 +66,11 @@ extension Enumerator {
 
         logger.debug("Enumerating page: \(String(data: page.rawValue, encoding: .utf8) ?? "")", [.account: account.ncKitAccount, .url: serverUrl])
 
+        // Capture the wall-clock for the first paint metric: from the framework's enumerateItems
+        // call to the first didEnumerate callback. The value is passed through to the observer
+        // reporting path because that is where didEnumerate fires.
+        let firstPaintStart = ContinuousClock().now
+
         Task {
             // Bound the synchronous page work (cursor decode + capabilities + network + convert +
             // persist) for a trace, and record its wall-clock for the JSONL fallback. The `defer` ends
@@ -170,7 +175,21 @@ extension Enumerator {
                 [.url: self.serverUrl]
             )
 
-            completeEnumerationObserver(observer, nextPage: rawNextPage, itemMetadatas: items)
+            // All children of a container (root or folder) share the same parent identifier.
+            // For a file target, the parent is the containing folder and must be resolved per item.
+            let parentOverride: NSFileProviderItemIdentifier? = if enumeratedItemIdentifier == .rootContainer || enumeratedItemMetadata?.directory == true {
+                enumeratedItemIdentifier
+            } else {
+                nil
+            }
+
+            completeEnumerationObserver(
+                observer,
+                nextPage: rawNextPage,
+                itemMetadatas: items,
+                firstPaintStart: firstPaintStart,
+                parentItemIdentifierOverride: parentOverride
+            )
         }
     }
 

@@ -1,13 +1,25 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+@preconcurrency import FileProvider
 import Foundation
 
 extension [SendableItemMetadata] {
     ///
     /// Concurrently compact chunks of an array of ``SendableItemMetadata`` to an array of ``Item``.
     ///
-    func toFileProviderItems(account: Account, remoteInterface: RemoteInterface, dbManager: FilesDatabaseManager, log: any FileProviderLogging) async throws -> [Item] {
+    /// - Parameter parentItemIdentifierOverride: When all items in the array share the same parent
+    ///   (e.g. the children of a single container during item enumeration), pass the parent's
+    ///   identifier to avoid a DB lookup per item. Leave `nil` when items may have different parents
+    ///   (working set, change batches).
+    ///
+    func toFileProviderItems(
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        parentItemIdentifierOverride: NSFileProviderItemIdentifier? = nil,
+        log: any FileProviderLogging
+    ) async throws -> [Item] {
         let logger = FileProviderLogger(category: "toFileProviderItems", log: log)
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
         let allFilters = await Item.getContextMenuItemTypeFilters(account: account, remoteInterface: remoteInterface)
@@ -23,7 +35,12 @@ extension [SendableItemMetadata] {
                 return nil
             }
 
-            guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(itemMetadata) else {
+            let parentItemIdentifier: NSFileProviderItemIdentifier
+            if let override = parentItemIdentifierOverride {
+                parentItemIdentifier = override
+            } else if let resolved = dbManager.parentItemIdentifierFromMetadata(itemMetadata) {
+                parentItemIdentifier = resolved
+            } else {
                 logger.error("Could not get valid parentItemIdentifier for item by ocId.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 let targetUrl = itemMetadata.serverUrl
                 throw FilesDatabaseManager.parentMetadataNotFoundError(itemUrl: targetUrl)
