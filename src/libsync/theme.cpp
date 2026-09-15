@@ -947,7 +947,11 @@ QColor Theme::settingsPanelColor(const QPalette &palette)
 {
     const auto windowColor = palette.color(QPalette::Window);
     auto panelColor = palette.color(settingsPanelBackgroundRole);
-    if (qAbs(qGray(panelColor.rgb()) - qGray(windowColor.rgb())) >= minimumSettingsPanelBrightnessDifference) {
+    auto derivePanelColor = qAbs(qGray(panelColor.rgb()) - qGray(windowColor.rgb())) < minimumSettingsPanelBrightnessDifference;
+#ifdef Q_OS_WIN
+    derivePanelColor = derivePanelColor || (isDarkColor(windowColor) && !isDarkColor(panelColor));
+#endif
+    if (!derivePanelColor) {
         return panelColor;
     }
 

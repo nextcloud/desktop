@@ -62,6 +62,9 @@ private Q_SLOTS:
         QTest::newRow("dark") << QColor("#202020") << QColor(Qt::white) << QColor("#202020") << QColor("#2d2d2d");
         QTest::newRow("preserve-light") << QColor(Qt::white) << QColor(Qt::black) << QColor("#f7f7f7") << QColor("#f7f7f7");
         QTest::newRow("preserve-dark") << QColor("#202020") << QColor(Qt::white) << QColor("#404040") << QColor("#404040");
+#ifdef Q_OS_WIN
+        QTest::newRow("dark-window-with-light-panel") << QColor("#202020") << QColor(Qt::white) << QColor(Qt::white) << QColor("#2d2d2d");
+#endif
     }
 
     void panelColors()
