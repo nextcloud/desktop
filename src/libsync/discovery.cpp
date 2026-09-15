@@ -1686,7 +1686,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // local copy for deletion at the end of the sync, removing the duplicate. A genuinely new
         // local file never reaches this move branch and is kept by checkPermissions (#7797/#10099).
         if (!localEntry.isVirtualFile && item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
-            emit _discoveryData->remnantReadOnlyFolderDiscovered(item);
+            Q_EMIT _discoveryData->remnantReadOnlyFolderDiscovered(item);
         }
 
         // Here we know the new location can't be uploaded: must prevent the source delete.
