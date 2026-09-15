@@ -301,6 +301,7 @@ IF( APPLE )
         # macOS tray account popup: one type per header/implementation pair.
         # Shared foundation first, then the base hover view, rows, popups and the
         # public entry point (OCC::showMacOSTrayPopup / hideMacOSTrayPopup).
+        macOS/trayaccountpopup/trayaccountpopupgeometry.h
         macOS/trayaccountpopup/trayaccountpopupmetrics.h
         macOS/trayaccountpopup/trayaccountpopuppresentation.h
         macOS/trayaccountpopup/trayaccountpopupimageutils.h
