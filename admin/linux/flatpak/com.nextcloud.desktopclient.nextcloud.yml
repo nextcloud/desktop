@@ -132,7 +132,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/opencloud-eu/openvfs.git
-        commit: 3d72711ebb42ac78ae40ee5fcbd1783abb419e7e
+        commit: 56fc0514d09875f0ab8c754d8242318ab47e584f
 
   - name: KDSingleApplication
     buildsystem: cmake-ninja
