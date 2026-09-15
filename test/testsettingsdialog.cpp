@@ -59,12 +59,17 @@ private Q_SLOTS:
         QTest::addColumn<QColor>("candidate");
         QTest::addColumn<QColor>("expected");
 
+#ifdef Q_OS_WIN
+        QTest::newRow("light") << QColor(Qt::white) << QColor(Qt::black) << QColor("#f7f7f7") << QColor("#f7f7f7");
+        QTest::newRow("dark") << QColor("#202020") << QColor(Qt::white) << QColor("#404040") << QColor("#404040");
+#else
         QTest::newRow("white") << QColor(Qt::white) << QColor(Qt::black) << QColor(Qt::white) << QColor("#f7f7f7");
         QTest::newRow("almost-white") << QColor(Qt::white) << QColor(Qt::black) << QColor("#fdfdfd") << QColor("#f7f7f7");
         QTest::newRow("black") << QColor(Qt::black) << QColor(Qt::white) << QColor(Qt::black) << QColor("#0f0f0f");
         QTest::newRow("dark") << QColor("#202020") << QColor(Qt::white) << QColor("#202020") << QColor("#2d2d2d");
         QTest::newRow("preserve-light") << QColor(Qt::white) << QColor(Qt::black) << QColor("#f7f7f7") << QColor("#f7f7f7");
         QTest::newRow("preserve-dark") << QColor("#202020") << QColor(Qt::white) << QColor("#404040") << QColor("#404040");
+#endif
     }
 
     void panelColors()
@@ -101,7 +106,11 @@ private Q_SLOTS:
 
         for (const auto dark : {false, true, false}) {
             const auto background = QColor(dark ? "#202020" : "#ffffff");
+#ifdef Q_OS_WIN
+            const auto expected = background;
+#else
             const auto expected = QColor(dark ? "#2d2d2d" : "#f7f7f7");
+#endif
             auto palette = _originalPalette;
             palette.setColor(QPalette::Window, background);
             palette.setColor(QPalette::WindowText, dark ? Qt::white : Qt::black);

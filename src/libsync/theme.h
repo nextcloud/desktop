@@ -516,7 +516,15 @@ public:
      * 2019/12/08: Moved here from SettingsDialog.
      */
     Q_INVOKABLE static bool isDarkColor(const QColor &color);
-    
+
+    /**
+     * @brief Returns the background colour for settings panels in the supplied application palette.
+     *
+     * Uses the platform-appropriate palette role when it contrasts sufficiently with the window,
+     * otherwise derives a subtle contrasting colour from the window foreground.
+     */
+    [[nodiscard]] static QColor settingsPanelColor(const QPalette &palette);
+
     /**
      * @brief Return the colour to be used for HTML links (e.g. used in QLabel), based on the current app palette or given colour (Dark-/Light-Mode switching).
      *
