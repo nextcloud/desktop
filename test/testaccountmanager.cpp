@@ -87,6 +87,35 @@ private Q_SLOTS:
         QVERIFY(!notFound);
     }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void testFileProviderExternalVolumeSettingsPersistAcrossRestore()
+    {
+        const auto userId = u"alice@cloud.example.com"_s;
+        auto *const accountState = addTestAccount(u"https://cloud.example.com"_s, u"alice"_s);
+        QVERIFY(accountState);
+
+        const auto account = accountState->account();
+        const auto volumeUuid = u"A1B2C3D4-E5F6-47A8-9012-3456789ABCDE"_s;
+        const QByteArray volumeBookmark("test-security-scoped-bookmark");
+        account->setFileProviderDomainVolumeUuid(volumeUuid);
+        account->setFileProviderDomainVolumeBookmark(volumeBookmark);
+        AccountManager::instance()->saveAccount(account);
+
+        // Keep the settings on disk while dropping the in-memory account, then
+        // restore through the same path used at application startup.
+        _accountState = nullptr;
+        AccountManager::instance()->shutdown();
+        QCOMPARE(AccountManager::instance()->restore(false), AccountManager::AccountsRestoreSuccess);
+
+        const auto restoredState = AccountManager::instance()->accountFromUserId(userId);
+        QVERIFY(restoredState);
+        QCOMPARE(restoredState->account()->fileProviderDomainVolumeUuid(), volumeUuid);
+        QCOMPARE(restoredState->account()->fileProviderDomainVolumeBookmark(), volumeBookmark);
+
+        _accountState = restoredState.data();
+    }
+#endif
+
     // ---------------------------------------------------------------------------
     // accountFromUserId – IDN / Punycode domain normalisation
     // ---------------------------------------------------------------------------
