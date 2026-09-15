@@ -547,9 +547,14 @@ void SettingsDialog::customizeStyle()
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
     _toolBar->setStyleSheet(TOOLBAR_CSS);
 
+#ifdef Q_OS_WIN
+    const auto windowColor = QStringLiteral("palette(window)");
+    const auto panelColor = QStringLiteral("palette(alternate-base)");
+#else
     const auto applicationPalette = QGuiApplication::palette();
-    const auto windowColor = applicationPalette.color(QPalette::Window);
-    const auto panelColor = Theme::settingsPanelColor(applicationPalette);
+    const auto windowColor = applicationPalette.color(QPalette::Window).name();
+    const auto panelColor = Theme::settingsPanelColor(applicationPalette).name();
+#endif
 
     auto separatorColor = palette().color(QPalette::Mid);
     separatorColor.setAlpha(48);
@@ -606,7 +611,7 @@ void SettingsDialog::customizeStyle()
                                  " min-height: 1px;"
                                  " max-height: 1px;"
                                  " }")
-                      .arg(separatorCss, panelColor.name(), windowColor.name()));
+                      .arg(separatorCss, panelColor, windowColor));
 
     auto colorAwareActions = _actionGroup->actions();
     if (_addAccountAction) {
