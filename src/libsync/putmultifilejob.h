@@ -54,7 +54,7 @@ public:
     [[nodiscard]] QString errorString() const override;
     [[nodiscard]] std::chrono::milliseconds msSinceStart() const;
 
-signals:
+Q_SIGNALS:
     void finishedSignal();
     void uploadProgress(qint64, qint64);
 

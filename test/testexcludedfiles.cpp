@@ -67,7 +67,7 @@ static auto check_dir_traversal(const char *path)
 }
 
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

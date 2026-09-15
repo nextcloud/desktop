@@ -65,8 +65,9 @@ AbstractNetworkJob::AbstractNetworkJob(const AccountPtr &account, const QString 
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
 {
-    if (reply)
+    if (reply) {
         reply->setProperty("doNotHandleAuth", true);
+    }
 
     QNetworkReply *old = _reply;
     _reply = reply;
@@ -109,7 +110,7 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
     connect(reply, &QNetworkReply::metaDataChanged, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::uploadProgress, this, &AbstractNetworkJob::networkActivity);
-    connect(reply, &QNetworkReply::redirected, this, [reply, this] (const QUrl &url) { emit redirected(reply, url, 0);});
+    connect(reply, &QNetworkReply::redirected, this, [reply, this] (const QUrl &url) { Q_EMIT redirected(reply, url, 0);});
 }
 
 QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
@@ -197,8 +198,9 @@ void AbstractNetworkJob::slotFinished()
 
             resetTimeout();
             if (_requestBody) {
-                if(!_requestBody->isOpen())
-                   _requestBody->open(QIODevice::ReadOnly);
+                if (!_requestBody->isOpen()) {
+                    _requestBody->open(QIODevice::ReadOnly);
+                }
                 _requestBody->seek(0);
             }
             sendRequest(
@@ -211,9 +213,16 @@ void AbstractNetworkJob::slotFinished()
     }
 
     if (_reply->error() != QNetworkReply::NoError) {
-
-        if (_account->credentials()->retryIfNeeded(this))
+        if (!_wasRetriedAfterConnectionClosed && _reply->error() == QNetworkReply::RemoteHostClosedError) {
+            qCWarning(lcNetworkJob()) << "Will retry sending the request once when we detect a remote host closed error";
+            _wasRetriedAfterConnectionClosed = true;
+            retry();
             return;
+        }
+
+        if (_account->credentials()->retryIfNeeded(this)) {
+            return;
+        }
 
         if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
             qCWarning(lcNetworkJob) << _reply->error() << errorString()
@@ -222,7 +231,7 @@ void AbstractNetworkJob::slotFinished()
                 qCWarning(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
             }
         }
-        emit networkError(_reply);
+        Q_EMIT networkError(_reply);
     }
 
     // get the Date timestamp from reply
@@ -232,8 +241,9 @@ void AbstractNetworkJob::slotFinished()
     QUrl redirectUrl = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (_followRedirects && !redirectUrl.isEmpty()) {
         // Redirects may be relative
-        if (redirectUrl.isRelative())
+        if (redirectUrl.isRelative()) {
             redirectUrl = requestedUrl.resolved(redirectUrl);
+        }
 
         // For POST requests where the target url has query arguments, Qt automatically
         // moves these arguments to the body if no explicit body is specified.
@@ -257,7 +267,7 @@ void AbstractNetworkJob::slotFinished()
         } else if (verb.isEmpty()) {
             qCWarning(lcNetworkJob) << this << "cannot redirect request: could not detect original verb";
         } else {
-            emit redirected(_reply, redirectUrl, _redirectCount);
+            Q_EMIT redirected(_reply, redirectUrl, _redirectCount);
 
             // The signal emission may have changed this value
             if (_followRedirects) {

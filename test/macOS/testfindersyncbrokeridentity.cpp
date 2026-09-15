@@ -37,7 +37,7 @@ class TestFinderSyncBrokerIdentity : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void testAppGroupIsTeamPrefixed()
     {
         const auto appGroup = FinderSyncBrokerIdentity::appGroupIdentifier();

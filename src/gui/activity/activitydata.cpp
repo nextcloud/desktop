@@ -178,7 +178,7 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
 QString Activity::relativeServerFileTypeIconPath(const QMimeType &mimeType)
 {
     const auto iconPath = QStringLiteral("/index.php/apps/theming/img/core/filetypes/");
-    const auto defaultIcon = iconPath + QStringLiteral("file.svg");
+    const QString defaultIcon = iconPath + QStringLiteral("file.svg");
     if (!mimeType.isValid()) {
         return defaultIcon;
     }

@@ -86,7 +86,7 @@ public:
     void setShouldWatchForFileUnlocking(bool shouldWatchForFileUnlocking);
     [[nodiscard]] int lockChangeDebouncingTimout() const;
 
-signals:
+Q_SIGNALS:
     /** Emitted when one of the watched directories or one
      *  of the contained files is changed. */
     void pathChanged(const QString &path);
@@ -119,13 +119,13 @@ signals:
      */
     void becameUnreliable(const QString &message);
 
-protected slots:
+protected Q_SLOTS:
     // called from the implementations to indicate a change in path
     void changeDetected(const QString &path);
     void changeDetected(const QStringList &paths);
     void folderAccountCapabilitiesChanged();
 
-private slots:
+private Q_SLOTS:
     void startNotificationTestWhenReady();
     void lockChangeDebouncingTimerTimedOut();
 

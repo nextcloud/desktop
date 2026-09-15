@@ -8,27 +8,27 @@
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(LINUX TRUE)
-endif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+endif()
 
 if (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
     set(FREEBSD TRUE)
     set(BSD TRUE)
-endif (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+endif ()
 
 if (CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
     set(OPENBSD TRUE)
     set(BSD TRUE)
-endif (CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
+endif ()
 
 if (CMAKE_SYSTEM_NAME MATCHES "NetBSD")
     set(NETBSD TRUE)
     set(BSD TRUE)
-endif (CMAKE_SYSTEM_NAME MATCHES "NetBSD")
+endif ()
 
 if (CMAKE_SYSTEM_NAME MATCHES "(Solaris|SunOS)")
     set(SOLARIS TRUE)
-endif (CMAKE_SYSTEM_NAME MATCHES "(Solaris|SunOS)")
+endif ()
 
 if (CMAKE_SYSTEM_NAME MATCHES "OS2")
     set(OS2 TRUE)
-endif (CMAKE_SYSTEM_NAME MATCHES "OS2")
+endif ()

@@ -30,7 +30,7 @@ public:
 
     virtual void start() = 0;
 
-signals:
+Q_SIGNALS:
     void finished(bool success);
 
 protected:
@@ -48,7 +48,7 @@ protected:
     void unlockFolder(const EncryptedFolderMetadataHandler::UnlockFolderWithResult result);
     void taskFailed();
 
-protected slots:
+protected Q_SLOTS:
     virtual void slotFolderUnLockFinished(const QByteArray &folderId, int statusCode);
     virtual void slotFetchMetadataJobFinished(int statusCode, const QString &message) = 0;
     virtual void slotUpdateMetadataJobFinished(int statusCode, const QString &message) = 0;

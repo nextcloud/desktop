@@ -33,8 +33,9 @@ bool expectConflict(FileInfo state, const QString path)
 {
     PathComponents pathComponents(path);
     auto base = state.find(pathComponents.parentDirComponents());
-    if (!base)
+    if (!base) {
         return false;
+    }
     for (const auto &item : std::as_const(base->children)) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(case clash from")) {
             return true;
@@ -99,7 +100,7 @@ class TestSyncVirtualFiles : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);
@@ -127,8 +128,9 @@ private slots:
 
         auto cleanup = [&]() {
             completeSpy.clear();
-            if (!doLocalDiscovery)
+            if (!doLocalDiscovery) {
                 fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
+            }
         };
         cleanup();
 
@@ -179,8 +181,9 @@ private slots:
         cleanup();
 
         // If the local virtual file is removed, it should be gone remotely too
-        if (!doLocalDiscovery)
+        if (!doLocalDiscovery) {
             fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, { "A" });
+        }
         fakeFolder.localModifier().remove("A/a1" DVSUFFIX);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));

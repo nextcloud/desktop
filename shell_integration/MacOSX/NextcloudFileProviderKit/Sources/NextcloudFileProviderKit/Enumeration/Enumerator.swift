@@ -51,16 +51,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let remoteInterface: RemoteInterface
     let serverUrl: String
 
-    /// Holds the undelivered remainder of a large change set so it can be reported one batch at a time
-    /// across the framework's `moreComing` re-invocations without re-running the destructive derivation.
-    /// See ``ChangeDeliveryBuffer`` and ``drainChangeBuffer(for:startAnchor:finalAnchor:suggested:)``.
-    ///
-    /// Load-bearing assumption: the framework continues a `moreComing` chain on the *same* enumerator
-    /// instance, re-invoking `enumerateChanges(for:from:)` with the anchor the previous batch returned
-    /// (see `NSFileProviderEnumerating.h`, `currentSyncAnchorWithCompletionHandler`). The in-memory
-    /// buffer therefore survives the chain. If the extension process is recycled mid-drain, a fresh
-    /// instance re-derives from the original anchor; see ``ChangeDeliveryBuffer`` for the bounded
-    /// created/updated loss this can cause for change sets larger than ``maxBatchSize``.
+    /// Stores pending changes between File Provider requests. The changes are stored in Realm so a new
+    /// enumerator can resume the next batch.
     let changeBuffer: ChangeDeliveryBuffer
 
     /// Default number of items reported per page/batch when the system does not suggest one. Mirrors the
@@ -94,7 +86,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         self.domain = domain
         pageItemCount = pageSize
         logger = FileProviderLogger(category: "Enumerator", log: log)
-        changeBuffer = ChangeDeliveryBuffer(log: log)
+        changeBuffer = ChangeDeliveryBuffer(dbManager: dbManager, log: log)
 
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
             logger.info("Providing enumerator for a system defined container.", [.item: enumeratedItemIdentifier])
@@ -149,6 +141,23 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
     public func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
         logger.debug("Enumerating changes (anchor: \(String(data: anchor.rawValue, encoding: .utf8) ?? "")).", [.url: serverUrl])
+
+        let anchorKey = String(data: anchor.rawValue, encoding: .utf8) ?? ""
+
+        // An intermediate anchor means that File Provider is asking for the next part of the same change
+        // list. Check for that saved list before parsing the anchor as a normal sync anchor. If the list is
+        // found, deliver its next batch; otherwise continue with normal validation, which rejects an
+        // unknown or stale anchor.
+        if changeBuffer.isContinuation(forKey: anchorKey) {
+            if enumeratedItemIdentifier == .workingSet {
+                enumerateWorkingSetChanges(for: observer, since: Date(), anchor: anchor)
+            } else if enumeratedItemIdentifier == .trashContainer {
+                enumerateTrashChanges(for: observer, anchor: anchor)
+            } else {
+                enumerateContainerChanges(for: observer, anchor: anchor)
+            }
+            return
+        }
 
         // The version-tagged anchor check applies to every container. An anchor that does not parse,
         // or whose embedded extension version differs from the running build, is rejected as expired

@@ -26,5 +26,9 @@ let package = Package(
                 .enableUpcomingFeature("StrictConcurrency")
             ]
         ),
+        .testTarget(
+            name: "mac-crafter-tests",
+            dependencies: ["mac-crafter"]
+        ),
     ]
 )

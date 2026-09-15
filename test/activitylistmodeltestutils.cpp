@@ -544,10 +544,10 @@ void TestingALM::slotProcessReceivedActivities()
     }
 
     _finalList = finalListCopy;
-    emit allConflictsChanged();
+    Q_EMIT allConflictsChanged();
 
     setAndRefreshCurrentlyFetching(false);
-    emit activitiesProcessed();
+    Q_EMIT activitiesProcessed();
 }
 
 }

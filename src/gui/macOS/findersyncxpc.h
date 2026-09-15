@@ -62,7 +62,7 @@ public:
      */
     [[nodiscard]] bool isEndpointPublished() const;
 
-signals:
+Q_SIGNALS:
     /**
      * @brief Emitted whenever a new FinderSync extension establishes a connection.
      *
@@ -83,7 +83,7 @@ signals:
      */
     void brokerReachableChanged(bool reachable);
 
-public slots:
+public Q_SLOTS:
     /**
      * @brief Register a sync folder path with all connected FinderSync extensions.
      * @param path The absolute path to register.

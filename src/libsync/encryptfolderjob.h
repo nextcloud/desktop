@@ -37,13 +37,13 @@ public:
 
     [[nodiscard]] QString errorString() const;
 
-signals:
+Q_SIGNALS:
     void finished(int status, OCC::EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus);
 
 private:
     void uploadMetadata();
 
-private slots:
+private Q_SLOTS:
     void slotEncryptionFlagSuccess(const QByteArray &folderId);
     void slotEncryptionFlagError(const QByteArray &folderId, const int httpReturnCode, const QString &errorMessage);
     void slotUploadMetadataFinished(int statusCode, const QString &message);

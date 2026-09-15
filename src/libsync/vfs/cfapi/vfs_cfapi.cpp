@@ -436,7 +436,7 @@ void VfsCfApi::requestHydration(const QString &requestId, const QString &path)
     SyncJournalFileRecord record;
     if (!journal->getFileRecord(relativePath, &record) || !record.isValid()) {
         qCInfo(lcCfApi) << "Couldn't hydrate, did not find file in db";
-        emit hydrationRequestFailed(requestId);
+        Q_EMIT hydrationRequestFailed(requestId);
         return;
     }
 
@@ -453,7 +453,7 @@ void VfsCfApi::requestHydration(const QString &requestId, const QString &path)
 
     if (isNotVirtualFileFailure) {
         qCWarning(lcCfApi) << "Couldn't hydrate, the file is not virtual";
-        emit hydrationRequestFailed(requestId);
+        Q_EMIT hydrationRequestFailed(requestId);
         return;
     }
 
@@ -475,12 +475,12 @@ void VfsCfApi::scheduleHydrationJob(const QString &requestId, const QString &fol
 
     if (jobAlreadyScheduled) {
         qCWarning(lcCfApi) << "The OS submitted again a hydration request which is already on-going" << requestId << folderPath;
-        emit hydrationRequestFailed(requestId);
+        Q_EMIT hydrationRequestFailed(requestId);
         return;
     }
 
     if (d->hydrationJobs.isEmpty()) {
-        emit beginHydrating();
+        Q_EMIT beginHydrating();
     }
 
     auto job = new HydrationJob(this);
@@ -496,17 +496,17 @@ void VfsCfApi::scheduleHydrationJob(const QString &requestId, const QString &fol
     connect(job, &HydrationJob::finished, this, &VfsCfApi::onHydrationJobFinished);
     d->hydrationJobs << job;
     job->start();
-    emit hydrationRequestReady(requestId);
+    Q_EMIT hydrationRequestReady(requestId);
 }
 
 void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
 {
     Q_ASSERT(d->hydrationJobs.contains(job));
     qCInfo(lcCfApi) << "Hydration job finished" << job->requestId() << job->folderPath() << job->status();
-    emit hydrationRequestFinished(job->requestId());
+    Q_EMIT hydrationRequestFinished(job->requestId());
     if (!job->errorString().isEmpty()) {
         params().account->reportClientStatus(ClientStatusReportingStatus::DownloadError_Virtual_File_Hydration_Failure);
-        emit failureHydrating(job->errorCode(), job->statusCode(), job->errorString(), job->folderPath());
+        Q_EMIT failureHydrating(job->errorCode(), job->statusCode(), job->errorString(), job->folderPath());
     }
 }
 
@@ -522,7 +522,7 @@ int VfsCfApi::finalizeHydrationJob(const QString &requestId)
         d->hydrationJobs.removeAll(hydrationJob);
         hydrationJob->deleteLater();
         if (d->hydrationJobs.isEmpty()) {
-            emit doneHydrating();
+            Q_EMIT doneHydrating();
         }
         return hydrationJob->status();
     }

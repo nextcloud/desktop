@@ -59,8 +59,9 @@ void OwncloudDolphinPluginHelper::tryConnect()
     QString socketPath = QStandardPaths::locate(QStandardPaths::RuntimeLocation,
                                                 QStringLiteral(APPLICATION_SHORTNAME),
                                                 QStandardPaths::LocateDirectory);
-    if(socketPath.isEmpty())
+    if (socketPath.isEmpty()) {
         return;
+    }
 
     _socket.connectToServer(socketPath + QLatin1String("/socket"));
 }
@@ -69,13 +70,15 @@ void OwncloudDolphinPluginHelper::slotReadyRead()
 {
     while (_socket.bytesAvailable()) {
         _line += _socket.readLine();
-        if (!_line.endsWith("\n"))
+        if (!_line.endsWith("\n")) {
             continue;
+        }
         QByteArray line;
         qSwap(line, _line);
         line.chop(1);
-        if (line.isEmpty())
+        if (line.isEmpty()) {
             continue;
+        }
 
         if (line.startsWith("REGISTER_PATH:")) {
             auto col = line.indexOf(':');

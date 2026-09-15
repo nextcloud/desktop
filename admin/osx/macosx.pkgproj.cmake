@@ -17,6 +17,8 @@
 							<key>CHILDREN</key>
 							<array>
 								<dict>
+									<key>BUNDLE_CAN_DOWNGRADE</key>
+									<true/>
 									<key>CHILDREN</key>
 									<array/>
 									<key>GID</key>

@@ -50,7 +50,7 @@ public:
     bool isChoked() { return _choked; }
     void giveBandwidthQuota(qint64 bwq);
 
-signals:
+Q_SIGNALS:
 
 private:
     /// The local file to read data from
@@ -70,7 +70,7 @@ private:
     bool _bandwidthLimited = false; // if _bandwidthQuota will be used
     bool _choked = false; // if upload is paused (readData() will return 0)
     friend class BandwidthManager;
-public slots:
+public Q_SLOTS:
     void slotJobUploadProgress(qint64 sent, qint64 t);
 };
 
@@ -133,7 +133,7 @@ public:
         return std::chrono::milliseconds(_requestTimer.elapsed());
     }
 
-signals:
+Q_SIGNALS:
     void finishedSignal();
     void uploadProgress(qint64, qint64);
 
@@ -167,7 +167,7 @@ public:
     void start() override;
     bool finished() override;
 
-signals:
+Q_SIGNALS:
     void finishedSignal();
 };
 
@@ -248,7 +248,7 @@ public:
     void callUnlockFolder();
     bool isLikelyFinishedQuickly() override { return _item->_size < propagator()->smallFileSize(); }
 
-private slots:
+private Q_SLOTS:
     void slotComputeContentChecksum();
     // Content checksum computed, compute the transmission checksum
     void slotComputeTransmissionChecksum(const QByteArray &contentChecksumType, const QByteArray &contentChecksum);
@@ -266,10 +266,10 @@ public:
     void finalize();
     void abortWithError(SyncFileItem::Status status, const QString &error);
 
-public slots:
+public Q_SLOTS:
     void slotJobDestroyed(QObject *job);
 
-private slots:
+private Q_SLOTS:
     void slotPollFinished();
 
 protected:
@@ -353,9 +353,9 @@ public:
     }
 
     void doStartUpload() override;
-public slots:
+public Q_SLOTS:
     void abort(OCC::PropagatorJob::AbortType abortType) override;
-private slots:
+private Q_SLOTS:
     void startNextChunk();
     void slotPutFinished();
     void slotUploadProgress(qint64, qint64);
@@ -379,10 +379,10 @@ public:
 
     void doStartUpload() override;
 
-public slots:
+public Q_SLOTS:
     void abort(OCC::PropagatorJob::AbortType abortType) override;
 
-private slots:
+private Q_SLOTS:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();
     void slotPropfindIterate(const QString &name, const QMap<QString, QString> &properties);

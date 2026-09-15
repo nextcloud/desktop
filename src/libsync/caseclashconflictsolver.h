@@ -37,7 +37,7 @@ public:
 
     [[nodiscard]] QString errorString() const;
 
-signals:
+Q_SIGNALS:
     void allowedToRenameChanged();
 
     void errorStringChanged();
@@ -46,12 +46,12 @@ signals:
 
     void failed();
 
-public slots:
+public Q_SLOTS:
     void solveConflict(const QString &newFilename);
 
     void checkIfAllowedToRename();
 
-private slots:
+private Q_SLOTS:
     void onRemoteDestinationFileAlreadyExists();
 
     void onRemoteDestinationFileDoesNotExist();

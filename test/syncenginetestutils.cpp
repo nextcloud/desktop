@@ -165,8 +165,9 @@ FileInfo FileInfo::A12_B12_C12_S12()
 FileInfo::FileInfo(const QString &name, const std::initializer_list<FileInfo> &children)
     : name { name }
 {
-    for (const auto &source : children)
+    for (const auto &source : children) {
         addChild(source);
+    }
 }
 
 void FileInfo::addChild(const FileInfo &info)
@@ -429,8 +430,9 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
                 totalSize += child.size;
             }
             xml.writeTextElement(ocUri, QStringLiteral("size"), QString::number(totalSize));
-        } else
+        } else {
             xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
+        }
 
         auto gmtDate = fileInfo.lastModified.toUTC();
         auto stringDate = QLocale::c().toString(gmtDate, QStringLiteral("ddd, dd MMM yyyy HH:mm:ss 'GMT'"));
@@ -476,7 +478,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     };
 
     writeFileResponse(*fileInfo);
-    foreach (const FileInfo &childFileInfo, fileInfo->children)
+    Q_FOREACH (const FileInfo &childFileInfo, fileInfo->children)
         writeFileResponse(childFileInfo);
     xml.writeEndElement(); // multistatus
     xml.writeEndDocument();
@@ -502,18 +504,19 @@ void FakePropfindReply::respond()
     setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/xml; charset=utf-8"));
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 207);
     setFinished(true);
-    emit metaDataChanged();
-    if (bytesAvailable())
-        emit readyRead();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    if (bytesAvailable()) {
+        Q_EMIT readyRead();
+    }
+    Q_EMIT finished();
 }
 
 void FakePropfindReply::respond404()
 {
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 404);
     setError(InternalServerError, QStringLiteral("Not Found"));
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 qint64 FakePropfindReply::bytesAvailable() const
@@ -564,25 +567,25 @@ void FakePutReply::respond()
 {
     if (!fileInfo) {
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 412);
-        emit metaDataChanged();
-        emit finished();
+        Q_EMIT metaDataChanged();
+        Q_EMIT finished();
         return;
     }
 
-    emit uploadProgress(fileInfo->size, fileInfo->size);
+    Q_EMIT uploadProgress(fileInfo->size, fileInfo->size);
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileID", fileInfo->fileId);
     setRawHeader("X-OC-MTime", "accepted"); // Prevents Q_ASSERT(!_runningNow) since we'll call PropagateItemJob::done twice in that case.
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 void FakePutReply::abort()
 {
     setError(OperationCanceledError, QStringLiteral("abort"));
-    emit finished();
+    Q_EMIT finished();
 }
 
 FakePutMultiFileReply::FakePutMultiFileReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QString &contentType, const QByteArray &putPayload, const QString &serverVersion, QObject *parent)
@@ -697,7 +700,7 @@ void FakePutMultiFileReply::respond()
         QJsonObject fileInfoReply;
         fileInfoReply.insert("error", QStringLiteral("false"));
         fileInfoReply.insert("etag", QLatin1String{fileInfo->etag});
-        emit uploadProgress(fileInfo->size, totalSize);
+        Q_EMIT uploadProgress(fileInfo->size, totalSize);
         allFileInfoReply.insert(QChar('/') + fileInfo->path(), fileInfoReply);
     }
     reply.setObject(allFileInfoReply);
@@ -707,17 +710,17 @@ void FakePutMultiFileReply::respond()
 
     setFinished(true);
     if (bytesAvailable()) {
-        emit readyRead();
+        Q_EMIT readyRead();
     }
 
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 void FakePutMultiFileReply::abort()
 {
     setError(OperationCanceledError, QStringLiteral("abort"));
-    emit finished();
+    Q_EMIT finished();
 }
 
 qint64 FakePutMultiFileReply::bytesAvailable() const
@@ -756,8 +759,8 @@ void FakeMkcolReply::respond()
 {
     setRawHeader("OC-FileId", fileInfo->fileId);
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 FakeDeleteReply::FakeDeleteReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
@@ -777,8 +780,8 @@ FakeDeleteReply::FakeDeleteReply(FileInfo &remoteRootFileInfo, QNetworkAccessMan
 void FakeDeleteReply::respond()
 {
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 204);
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 FakeMoveReply::FakeMoveReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
@@ -800,8 +803,8 @@ FakeMoveReply::FakeMoveReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager
 void FakeMoveReply::respond()
 {
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 FakeGetReply::FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
@@ -827,14 +830,14 @@ void FakeGetReply::respond()
 {
     if (aborted) {
         setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
-        emit metaDataChanged();
-        emit finished();
+        Q_EMIT metaDataChanged();
+        Q_EMIT finished();
         return;
     }
     if (!fileInfo) {
         setError(ContentNotFoundError, QStringLiteral("File Not Found"));
-        emit metaDataChanged();
-        emit finished();
+        Q_EMIT metaDataChanged();
+        Q_EMIT finished();
         return;
     }
     payload = fileInfo->contentChar;
@@ -844,10 +847,11 @@ void FakeGetReply::respond()
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileId", fileInfo->fileId);
-    emit metaDataChanged();
-    if (bytesAvailable())
-        emit readyRead();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    if (bytesAvailable()) {
+        Q_EMIT readyRead();
+    }
+    Q_EMIT finished();
 }
 
 void FakeGetReply::abort()
@@ -858,8 +862,9 @@ void FakeGetReply::abort()
 
 qint64 FakeGetReply::bytesAvailable() const
 {
-    if (aborted)
+    if (aborted) {
         return 0;
+    }
     return size + QIODevice::bytesAvailable();
 }
 
@@ -902,8 +907,8 @@ void FakeGetWithDataReply::respond()
 {
     if (aborted) {
         setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
-        emit metaDataChanged();
-        emit finished();
+        Q_EMIT metaDataChanged();
+        Q_EMIT finished();
         return;
     }
     setHeader(QNetworkRequest::ContentLengthHeader, payload.size());
@@ -911,10 +916,11 @@ void FakeGetWithDataReply::respond()
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileId", fileInfo->fileId);
-    emit metaDataChanged();
-    if (bytesAvailable())
-        emit readyRead();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    if (bytesAvailable()) {
+        Q_EMIT readyRead();
+    }
+    Q_EMIT finished();
 }
 
 void FakeGetWithDataReply::abort()
@@ -925,8 +931,9 @@ void FakeGetWithDataReply::abort()
 
 qint64 FakeGetWithDataReply::bytesAvailable() const
 {
-    if (aborted)
+    if (aborted) {
         return 0;
+    }
     return payload.size() - offset + QIODevice::bytesAvailable();
 }
 
@@ -1015,22 +1022,22 @@ void FakeChunkMoveReply::respond()
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileId", fileInfo->fileId);
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 void FakeChunkMoveReply::respondPreconditionFailed()
 {
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 412);
     setError(InternalServerError, QStringLiteral("Precondition Failed"));
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 void FakeChunkMoveReply::abort()
 {
     setError(OperationCanceledError, QStringLiteral("abort"));
-    emit finished();
+    Q_EMIT finished();
 }
 
 FakePayloadReply::FakePayloadReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QByteArray &body, QObject *parent)
@@ -1057,10 +1064,10 @@ void FakePayloadReply::respond()
     for (auto it = _additionalHeaders.constKeyValueBegin(); it != _additionalHeaders.constKeyValueEnd(); ++it) {
         setHeader(it->first, it->second);
     }
-    emit metaDataChanged();
-    emit readyRead();
+    Q_EMIT metaDataChanged();
+    Q_EMIT readyRead();
     setFinished(true);
-    emit finished();
+    Q_EMIT finished();
 }
 
 qint64 FakePayloadReply::readData(char *buf, qint64 max)
@@ -1091,8 +1098,8 @@ FakeErrorReply::FakeErrorReply(QNetworkAccessManager::Operation op, const QNetwo
 
 void FakeErrorReply::respond()
 {
-    emit metaDataChanged();
-    emit readyRead();
+    Q_EMIT metaDataChanged();
+    Q_EMIT readyRead();
     // finishing can come strictly after readyRead was called
     QTimer::singleShot(5, this, &FakeErrorReply::slotSetFinished);
 }
@@ -1100,7 +1107,7 @@ void FakeErrorReply::respond()
 void FakeErrorReply::slotSetFinished()
 {
     setFinished(true);
-    emit finished();
+    Q_EMIT finished();
 }
 
 qint64 FakeErrorReply::readData(char *buf, qint64 max)
@@ -1130,9 +1137,9 @@ void FakeHangingReply::abort()
     // Follow more or less the implementation of QNetworkReplyImpl::abort
     close();
     setError(OperationCanceledError, tr("Operation canceled"));
-    emit errorOccurred(OperationCanceledError);
+    Q_EMIT errorOccurred(OperationCanceledError);
     setFinished(true);
-    emit finished();
+    Q_EMIT finished();
 }
 
 FakeQNAM::FakeQNAM(FileInfo initialRoot)
@@ -1451,8 +1458,9 @@ void FakeFolder::execUntilItemCompleted(const QString &relativePath)
         QVERIFY(spy.wait());
         for (const QList<QVariant> &args : spy) {
             auto item = args[0].value<OCC::SyncFileItemPtr>();
-            if (item->destination() == relativePath)
+            if (item->destination() == relativePath) {
                 return;
+            }
         }
     }
     QVERIFY(false);
@@ -1507,8 +1515,9 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
 
 static FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components)
 {
-    if (components.isEmpty())
+    if (components.isEmpty()) {
         return base;
+    }
     auto childName = components.pathRoot();
     auto it = base.children.find(childName);
     if (it != base.children.end()) {
@@ -1545,8 +1554,9 @@ OCC::SyncFileItemPtr ItemCompletedSpy::findItem(const QString &path) const
 {
     for (const QList<QVariant> &args : *this) {
         auto item = args[0].value<OCC::SyncFileItemPtr>();
-        if (item->destination() == path)
+        if (item->destination() == path) {
             return item;
+        }
     }
     return OCC::SyncFileItemPtr::create();
 }
@@ -1646,8 +1656,8 @@ FakeJsonReply::FakeJsonReply(QNetworkAccessManager::Operation op,
 
 void FakeJsonReply::respond()
 {
-    emit metaDataChanged();
-    emit readyRead();
+    Q_EMIT metaDataChanged();
+    Q_EMIT readyRead();
     // finishing can come strictly after readyRead was called
     QTimer::singleShot(5, this, &FakeJsonReply::slotSetFinished);
 }
@@ -1655,7 +1665,7 @@ void FakeJsonReply::respond()
 void FakeJsonReply::slotSetFinished()
 {
     setFinished(true);
-    emit finished();
+    Q_EMIT finished();
 }
 
 qint64 FakeJsonReply::readData(char *buf, qint64 max)

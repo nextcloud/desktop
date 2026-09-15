@@ -36,7 +36,7 @@ public:
 protected:
     bool eventFilter(QObject *obj, QEvent *ev) override;
 
-private slots:
+private Q_SLOTS:
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
 
 private:

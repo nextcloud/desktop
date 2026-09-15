@@ -40,7 +40,7 @@ public:
      */
     void setDeleteExisting(bool enabled);
 
-private slots:
+private Q_SLOTS:
     void slotMkdir();
     void slotStartMkcolJob();
     void slotStartEncryptedMkcolJob(const QString &path, const QString &filename, quint64 size);

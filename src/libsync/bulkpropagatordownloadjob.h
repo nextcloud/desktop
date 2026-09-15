@@ -25,12 +25,12 @@ public:
 
     [[nodiscard]] JobParallelism parallelism() const override;
 
-public slots:
+public Q_SLOTS:
     void addDownloadItem(const OCC::SyncFileItemPtr &item);
 
     void start();
 
-private slots:
+private Q_SLOTS:
     void finalizeOneFile(const OCC::SyncFileItemPtr &file);
 
     void done(const OCC::SyncFileItem::Status status);

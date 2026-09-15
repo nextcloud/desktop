@@ -31,7 +31,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedNormalizedFileNameIndexToRealmItemMetadata
+    private static let schemaVersion = SchemaVersion.addedFileProviderContentVersion
     let logger: FileProviderLogger
     let account: Account
 
@@ -100,7 +100,14 @@ public final class FilesDatabaseManager: Sendable {
                     }
                 }
             },
-            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
+            objectTypes: [
+                RealmItemMetadata.self,
+                RealmExcludedFromSyncItem.self,
+                RemoteFileChunk.self,
+                RealmPendingChunkUploadCleanup.self,
+                RealmChangeDeliverySession.self,
+                RealmChangeDeliveryItem.self
+            ]
         )
 
         Realm.Configuration.defaultConfiguration = configuration
@@ -108,7 +115,7 @@ public final class FilesDatabaseManager: Sendable {
         do {
             _ = try Realm()
             logger.info("Successfully created Realm.")
-            cleanupPreexistingLogicalDuplicates()
+            repairPersistedLogicalAddresses()
         } catch {
             logger.fault("Error creating Realm: \(error)")
         }
@@ -309,6 +316,10 @@ public final class FilesDatabaseManager: Sendable {
 
         for var updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingByOcId[updatedMetadata.ocId] {
+                if updatedMetadata.etag == existingMetadata.etag {
+                    updatedMetadata.fileProviderContentVersion = existingMetadata.fileProviderContentVersion
+                }
+
                 if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
@@ -431,12 +442,25 @@ public final class FilesDatabaseManager: Sendable {
                 }
             }
 
+            var visitToRecord: String?
+
             if var readTargetMetadata {
                 if readTargetMetadata.directory {
                     readTargetMetadata.visitedDirectory = true
                 }
 
                 if let existing = itemMetadata(ocId: readTargetMetadata.ocId) {
+                    if readTargetMetadata.etag == existing.etag {
+                        readTargetMetadata.fileProviderContentVersion = existing.fileProviderContentVersion
+                    }
+
+                    // `visitedDirectory` is local-only, so it takes no part in the remote-state
+                    // comparison and is recorded separately from `metadatasToUpdate`, which is also
+                    // the change set handed to the framework.
+                    if readTargetMetadata.directory, !existing.visitedDirectory {
+                        visitToRecord = readTargetMetadata.ocId
+                    }
+
                     if existing.status == Status.normal.rawValue,
                        !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
@@ -471,6 +495,12 @@ public final class FilesDatabaseManager: Sendable {
                 database.add(metadatasToDelete.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToCreate.map { RealmItemMetadata(value: $0) }, update: .all)
+
+                if let visitToRecord,
+                   let row = database.objects(RealmItemMetadata.self).where({ $0.ocId == visitToRecord }).first
+                {
+                    row.visitedDirectory = true
+                }
             }
 
             return ChangeSet(
@@ -536,10 +566,66 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    /**
+     * @brief Records that the provider returned `.excludedFromSync` for an item.
+     *
+     * The marker is stored separately from item metadata so remote enumeration and
+     * materialization updates cannot overwrite it before the system calls `deleteItem`.
+     *
+     * @param ocId The file provider item identifier to mark.
+     * @return `true` when the marker was stored successfully.
+     */
+    @discardableResult
+    func markItemAsExcludedFromSync(ocId: String) -> Bool {
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                database.add(RealmExcludedFromSyncItem(ocId: ocId), update: .all)
+            }
+            return true
+        } catch {
+            logger.error("Could not mark item as excluded from sync.", [.item: ocId, .error: error])
+            return false
+        }
+    }
+
+    /**
+     * @brief Returns whether an item is awaiting the deletion callback caused by `.excludedFromSync`.
+     * @param ocId The file provider item identifier to look up.
+     */
+    func isItemExcludedFromSync(ocId: String) -> Bool {
+        ncDatabase().object(ofType: RealmExcludedFromSyncItem.self, forPrimaryKey: ocId) != nil
+    }
+
+    /**
+     * @brief Removes the durable exclusion marker after local metadata deletion succeeds.
+     * @param ocId The file provider item identifier whose marker should be removed.
+     * @return `true` when the marker was removed successfully or was already absent.
+     */
+    @discardableResult
+    func removeExcludedFromSyncMarker(ocId: String) -> Bool {
+        let database = ncDatabase()
+
+        guard let marker = database.object(ofType: RealmExcludedFromSyncItem.self, forPrimaryKey: ocId) else {
+            return true
+        }
+
+        do {
+            try database.write {
+                database.delete(marker)
+            }
+            return true
+        } catch {
+            logger.error("Could not remove excluded-from-sync marker.", [.item: ocId, .error: error])
+            return false
+        }
+    }
+
     ///
     /// Add or replace `metadata` while carrying over local-only fields the
     /// server payload cannot know about: ``keepDownloaded``, ``downloaded``,
-    /// ``visitedDirectory``, and ``lockToken``.
+    /// ``visitedDirectory``, ``lockToken``, and the content version File Provider has already seen.
     ///
     /// Mirrors the preservation set applied by
     /// ``processItemMetadatasToUpdate`` for non-paginated reads. Use this from
@@ -578,6 +664,9 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             toWrite.lockToken = existing.lockToken
+            if toWrite.etag == existing.etag {
+                toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
+            }
         } else {
             // The ocId lookup missed. Before falling back to defaults from the
             // server payload, look for a single non-deleted, non-local-lock row
@@ -610,6 +699,9 @@ public final class FilesDatabaseManager: Sendable {
                 }
 
                 toWrite.lockToken = existing.lockToken
+                if toWrite.etag == existing.etag {
+                    toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
+                }
             } else {
                 // No prior row at this ocId or logical address: this is a
                 // genuinely new item. Inherit the parent's "Always keep

@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
  * unregister completion handler before re-registering, because registering too early
  * fails with SMAppServiceErrorDomain code 1.
  *
- * @param reply Invoked with the broker's CFBundleVersion.
+ * @param reply Invoked with the broker's CFBundleShortVersionString.
  */
 - (void)brokerVersionWithReply:(void(^)(NSString *version))reply;
 

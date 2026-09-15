@@ -233,8 +233,9 @@ bool HttpCredentials::keychainUnavailableRetryLater(QKeychain::ReadPasswordJob *
 void HttpCredentials::slotReadClientCertPasswordJobDone(QKeychain::Job *job)
 {
     auto readJob = qobject_cast<QKeychain::ReadPasswordJob*>(job);
-    if (keychainUnavailableRetryLater(readJob))
+    if (keychainUnavailableRetryLater(readJob)) {
         return;
+    }
 
     if (readJob->error() == QKeychain::NoError) {
         _clientCertPassword = readJob->binaryData();
@@ -254,8 +255,9 @@ void HttpCredentials::slotReadClientCertPasswordJobDone(QKeychain::Job *job)
 void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
 {
     auto readJob = qobject_cast<QKeychain::ReadPasswordJob*>(incoming);
-    if (keychainUnavailableRetryLater(readJob))
+    if (keychainUnavailableRetryLater(readJob)) {
         return;
+    }
 
     // Store PEM in memory
     if (readJob->error() == QKeychain::NoError && readJob->binaryData().length() > 0) {
@@ -353,7 +355,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
         // Still, the password can be empty which indicates a problem and
         // the password dialog has to be opened.
         _ready = true;
-        emit fetched();
+        Q_EMIT fetched();
     } else {
         // we come here if the password is empty or any other keychain
         // error happened.
@@ -362,7 +364,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
 
         _password = QString();
         _ready = false;
-        emit fetched();
+        Q_EMIT fetched();
     }
 
     // If keychain data was read from legacy location, wipe these entries and store new ones
@@ -426,7 +428,7 @@ void HttpCredentials::persist()
         // it's just written if it gets passed into the constructor.
         _account->setCredentialSetting(QLatin1String(clientCertBundleC), _clientCertBundle);
     }
-    emit _account->wantsAccountSaved(_account->sharedFromThis());
+    Q_EMIT _account->wantsAccountSaved(_account->sharedFromThis());
 
     // write secrets to the keychain
     if (!_clientCertBundle.isEmpty()) {
@@ -522,8 +524,9 @@ void HttpCredentials::slotWriteJobDone(QKeychain::Job *job)
 
 void HttpCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator)
 {
-    if (!_ready)
+    if (!_ready) {
         return;
+    }
 
     Q_UNUSED(authenticator)
     // Because of issue #4326, we need to set the login and password manually at every requests
@@ -535,8 +538,9 @@ void HttpCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *a
 bool HttpCredentials::retryIfNeeded(AbstractNetworkJob *job)
 {
     auto *reply = job->reply();
-    if (!reply || !reply->property(needRetryC).toBool())
+    if (!reply || !reply->property(needRetryC).toBool()) {
         return false;
+    }
 
     job->retry();
     return true;
@@ -544,8 +548,9 @@ bool HttpCredentials::retryIfNeeded(AbstractNetworkJob *job)
 
 bool HttpCredentials::unpackClientCertBundle()
 {
-    if (_clientCertBundle.isEmpty())
+    if (_clientCertBundle.isEmpty()) {
         return true;
+    }
 
     QBuffer certBuffer(&_clientCertBundle);
     certBuffer.open(QIODevice::ReadOnly);
@@ -555,3 +560,5 @@ bool HttpCredentials::unpackClientCertBundle()
 }
 
 } // namespace OCC
+
+#include "moc_httpcredentials.cpp"

@@ -23,6 +23,6 @@ void OcsNavigationAppsJob::getNavigationApps()
 
 void OcsNavigationAppsJob::jobDone(const QJsonDocument &reply, int statusCode)
 {
-    emit appsJobFinished(reply, statusCode);
+    Q_EMIT appsJobFinished(reply, statusCode);
 }
 }

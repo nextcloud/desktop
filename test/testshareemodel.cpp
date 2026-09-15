@@ -215,7 +215,7 @@ private:
 
     bool _alwaysReturnErrors = false;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

@@ -34,7 +34,7 @@ private:
     [[nodiscard]] QVariantMap prepareReport() const;
     void reportToServerSentSuccessfully();
 
-private slots:
+private Q_SLOTS:
     void sendReportToServer();
 
 public:

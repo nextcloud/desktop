@@ -91,11 +91,11 @@ class TestFileActionsModel : public QObject
 
 private:
     std::unique_ptr<FakeFolder> _fakeFolder;
-    std::unique_ptr<FolderMan> _folderMan;
+    QPointer<FolderMan> _folderMan;
     FileActionsModel _model;
     QString _mimeType;
 
-private slots:
+private Q_SLOTS:
 
     void initTestCase()
     {
@@ -106,7 +106,8 @@ private slots:
         _fakeFolder.reset(new FakeFolder{FileInfo{}});
         QCOMPARE(_fakeFolder->currentLocalState(), _fakeFolder->currentRemoteState());
 
-        _folderMan.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _folderMan = FolderMan::instance();
         auto syncFolderDefinition = folderDefinition(_fakeFolder->localPath());
         const auto folder = FolderMan::instance()->addFolder(&_fakeFolder->accountState(),
                                                              syncFolderDefinition);
@@ -138,7 +139,7 @@ private slots:
         QVERIFY(!fileInfo->fileId.isEmpty());
         _model.setFileId(fileInfo->fileId);
         QCOMPARE(_model.fileId(), fileInfo->fileId);
-        // emit fileChanged
+        // Q_EMIT fileChanged
         QSignalSpy fileChangedSpy(&_model,
                                   &FileActionsModel::fileChanged);
         _model.setLocalPath(_fakeFolder->localPath() + fileName);
@@ -165,7 +166,7 @@ private slots:
         QVERIFY(!fileInfo->fileId.isEmpty());
         _model.setFileId(fileInfo->fileId);
         QCOMPARE(_model.fileId(), fileInfo->fileId);
-        // emit fileChanged
+        // Q_EMIT fileChanged
         QSignalSpy fileChangedSpy(&_model,
                                   &FileActionsModel::fileChanged);
         _model.setLocalPath(_fakeFolder->localPath() + fileName);
@@ -189,7 +190,7 @@ private slots:
         QVERIFY(!fileInfo->fileId.isEmpty());
         _model.setFileId(fileInfo->fileId);
         QCOMPARE(_model.fileId(), fileInfo->fileId);
-        // emit fileChanged
+        // Q_EMIT fileChanged
         QSignalSpy fileChangedSpy(&_model,
                                   &FileActionsModel::fileChanged);
         _model.setLocalPath(_fakeFolder->localPath() + fileName);
@@ -213,7 +214,7 @@ private slots:
         QVERIFY(!fileInfo->fileId.isEmpty());
         _model.setFileId(fileInfo->fileId);
         QCOMPARE(_model.fileId(), fileInfo->fileId);
-        // emit fileChanged
+        // Q_EMIT fileChanged
         QSignalSpy fileChangedSpy(&_model,
                                   &FileActionsModel::fileChanged);
         _model.setLocalPath(_fakeFolder->localPath() + fileName);
@@ -237,7 +238,7 @@ private slots:
         QVERIFY(!fileInfo->fileId.isEmpty());
         _model.setFileId(fileInfo->fileId);
         QCOMPARE(_model.fileId(), fileInfo->fileId);
-        // emit fileChanged
+        // Q_EMIT fileChanged
         QSignalSpy fileChangedSpy(&_model,
                                   &FileActionsModel::fileChanged);
         _model.setLocalPath(_fakeFolder->localPath() + fileName);
@@ -265,7 +266,7 @@ private slots:
         QVERIFY(!fileInfo->fileId.isEmpty());
         _model.setFileId(fileInfo->fileId);
         QCOMPARE(_model.fileId(), fileInfo->fileId);
-        // emit fileChanged
+        // Q_EMIT fileChanged
         _model.setLocalPath(_fakeFolder->localPath() + fileName);
         // get file actions from capabilities
         QCOMPARE(_model.rowCount(), 6);
@@ -294,7 +295,7 @@ private slots:
         QVERIFY(!fileInfo->fileId.isEmpty());
         _model.setFileId(fileInfo->fileId);
         QCOMPARE(_model.fileId(), fileInfo->fileId);
-        // emit fileChanged
+        // Q_EMIT fileChanged
         _model.setLocalPath(_fakeFolder->localPath() + fileName);
         // get file actions from capabilities
         QCOMPARE(_model.rowCount(), 4);

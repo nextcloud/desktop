@@ -64,9 +64,9 @@ void CaseClashConflictSolver::solveConflict(const QString &newFilename)
 void CaseClashConflictSolver::onRemoteDestinationFileAlreadyExists()
 {
     _allowedToRename = false;
-    emit allowedToRenameChanged();
+    Q_EMIT allowedToRenameChanged();
     _errorString = tr("Cannot rename file because a file with the same name already exists on the server. Please pick another name.");
-    emit errorStringChanged();
+    Q_EMIT errorStringChanged();
 }
 
 void CaseClashConflictSolver::onRemoteDestinationFileDoesNotExist()
@@ -109,9 +109,9 @@ void CaseClashConflictSolver::onMoveJobFinished()
 
     if (error != QNetworkReply::NoError) {
         _errorString = tr("Could not rename file. Please make sure you are connected to the server.");
-        emit errorStringChanged();
+        Q_EMIT errorStringChanged();
 
-        emit failed();
+        Q_EMIT failed();
         return;
     }
 
@@ -158,22 +158,22 @@ void CaseClashConflictSolver::onCheckIfAllowedToRenameComplete(const QVariantMap
 
     if (values.contains("permissions") && !isAllowedToRename(RemotePermissions::fromServerString(values["permissions"].toString()))) {
         _allowedToRename = false;
-        emit allowedToRenameChanged();
+        Q_EMIT allowedToRenameChanged();
         _errorString = tr("You don't have the permission to rename this file. Please ask the author of the file to rename it.");
-        emit errorStringChanged();
+        Q_EMIT errorStringChanged();
 
         return;
     } else if (reply && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != CONTENT_NOT_FOUND_ERROR) {
         _allowedToRename = false;
-        emit allowedToRenameChanged();
+        Q_EMIT allowedToRenameChanged();
         _errorString = tr("Failed to fetch permissions with error %1").arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
-        emit errorStringChanged();
+        Q_EMIT errorStringChanged();
 
         return;
     }
 
     _allowedToRename = true;
-    emit allowedToRenameChanged();
+    Q_EMIT allowedToRenameChanged();
 
     const auto filePathFileInfo = QFileInfo(_newFilename);
     const auto fileName = filePathFileInfo.fileName();
@@ -188,23 +188,23 @@ void CaseClashConflictSolver::processLeadingOrTrailingSpacesError(const QString 
     if (hasLeadingSpaces || hasTrailingSpaces) {
         if (hasLeadingSpaces && hasTrailingSpaces) {
             _errorString = tr("Filename contains leading and trailing spaces.");
-            emit errorStringChanged();
+            Q_EMIT errorStringChanged();
         } else if (hasLeadingSpaces) {
             _errorString = tr("Filename contains leading spaces.");
-            emit errorStringChanged();
+            Q_EMIT errorStringChanged();
         } else if (hasTrailingSpaces) {
             _errorString = tr("Filename contains trailing spaces.");
-            emit errorStringChanged();
+            Q_EMIT errorStringChanged();
         }
 
         _allowedToRename = false;
-        emit allowedToRenameChanged();
+        Q_EMIT allowedToRenameChanged();
 
         return;
     }
 
     _allowedToRename = true;
-    emit allowedToRenameChanged();
+    Q_EMIT allowedToRenameChanged();
 }
 
 void CaseClashConflictSolver::checkIfAllowedToRename()

@@ -59,11 +59,11 @@ public:
     int finalizeNewPlaceholders(const QList<OCC::PlaceholderCreateInfo> &newEntries,
                                 const QString &pathString);
 
-public slots:
+public Q_SLOTS:
     void requestHydration(const QString &requestId, const QString &path);
     void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus) override;
 
-signals:
+Q_SIGNALS:
     void hydrationRequestReady(const QString &requestId);
     void hydrationRequestFailed(const QString &requestId);
     void hydrationRequestFinished(const QString &requestId);

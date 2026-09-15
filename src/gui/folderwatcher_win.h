@@ -44,7 +44,7 @@ protected:
         bool *increaseBufferSize);
     void closeHandle();
 
-signals:
+Q_SIGNALS:
     void changed(const QString &path);
     void lostChanges();
     void ready();

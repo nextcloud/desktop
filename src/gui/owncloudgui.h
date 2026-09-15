@@ -59,12 +59,12 @@ public:
 
     void hideAndShowTray();
 
-signals:
+Q_SIGNALS:
     void setupProxy();
     void serverError(int code, const QString &message);
     void isShowingSettingsDialog();
 
-public slots:
+public Q_SLOTS:
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowTrayUpdateMessage(const QString &title, const QString &msg, const QUrl &webUrl);
@@ -102,6 +102,8 @@ public slots:
                                         const QString &fileId) const;
     void slotShowFileActivityDialog(const QString &localPath) const;
     void slotShowFileActionsDialog(const QString &localPath) const;
+    void slotResolveConflict(const QString &conflictedPath, const QString &basePath, const QString &baseName, const QString &folderAlias) const;
+    void slotMoveItem(const QString &localPath, const QString &defaultTarget) const;
 #ifdef BUILD_FILE_PROVIDER_MODULE
     /**
      * @brief Open an item's web page in the user's browser on behalf of the macOS file provider extension.
@@ -136,7 +138,7 @@ public slots:
 #endif
     void slotNewAccountWizard();
 
-private slots:
+private Q_SLOTS:
     void slotLogin();
     void slotLogout();
 

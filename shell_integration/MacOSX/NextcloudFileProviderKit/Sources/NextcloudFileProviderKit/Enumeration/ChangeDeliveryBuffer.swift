@@ -4,160 +4,204 @@
 import Foundation
 
 ///
-/// A thread-safe FIFO buffer of change metadata still to be delivered to an
-/// `NSFileProviderChangeObserver` across the successive `enumerateChanges(for:from:)` invocations the
-/// framework drives with `moreComing: true`.
+/// Durable FIFO state for a multi-batch File Provider change enumeration.
 ///
-/// The framework asserts (`__FILEPROVIDER_OBSERVER_TOO_MANY_ITEMS__`) when a single batch reports more
-/// than 100× its suggested batch size — ≈20000 items for the default suggestion. Large change sets
-/// (especially the working set, which aggregates the whole reachable tree) must therefore be split
-/// across several batches, and the SDK resumes a split enumeration by *re-invoking* `enumerateChanges`
-/// with the anchor that the previous batch returned — there is one `finishEnumeratingChanges` per call.
+/// The framework can invalidate an enumerator after an intermediate batch and invoke the next batch on a
+/// new enumerator. The pending changes and their position are therefore stored in Realm. An intermediate
+/// anchor identifies those pending changes and must be handled before ordinary sync-anchor validation.
 ///
-/// The change derivation that feeds this buffer is **destructive**: the working-set scan
-/// (``Enumerator/scanMaterialisedItemsForRemoteChanges()``) and the depth-1 container read both persist
-/// the discovered creations and updates (matching etags) to the local database as they run, so
-/// re-deriving on a continuation invocation would surface (almost) no created/updated items and that
-/// undelivered remainder would be silently dropped. The buffer therefore holds the full derived change
-/// set after a single derivation and hands it out one batch at a time; the derivation never runs again
-/// while the buffer stays primed for the same sync anchor.
+/// Updates are stored before deletions and are already sorted parents-before-children by the caller. Each
+/// batch consumes one combined item budget, so the framework never receives an oversized update/delete
+/// payload.
 ///
-/// Durability: the buffer is in memory. Within a normal `moreComing` chain the framework reuses the same
-/// ``Enumerator`` instance, so the remainder survives. If the extension process is recycled mid-drain (only
-/// reachable for change sets larger than ``Enumerator/maxBatchSize``), a fresh instance re-derives from the
-/// original anchor: undelivered **deletions** are recovered (their soft-deleted rows persist with a fresh
-/// `syncTime` until ``FilesDatabaseManager/removeItemMetadata(ocId:)`` runs after delivery, and the
-/// working-set re-derivation re-surfaces them via `pendingWorkingSetChanges(since:)`), but undelivered
-/// **created/updated** items can be lost — for a regular container entirely, and for the working set when
-/// the item is not materialised. This replaces a guaranteed crash with a rare, bounded partial loss.
-///
-/// ``Enumerator`` is `Sendable` with only immutable members, so the mutable delivery state lives behind
+/// ``Enumerator`` is `Sendable` with only immutable members, so the mutable session identifier lives behind
 /// this `@unchecked Sendable`, `NSLock`-guarded box — the established concurrency idiom in this target
 /// (see `FileProviderExtension.actionsLock`). `Synchronization.Mutex` is unavailable because the
 /// deployment target is macOS 13.
 ///
 final class ChangeDeliveryBuffer: @unchecked Sendable {
-    private let lock = NSLock()
-    private let logger: FileProviderLogger
-    private var anchorKey: String?
-    private var remainingUpdated: [SendableItemMetadata] = []
-    private var remainingDeleted: [SendableItemMetadata] = []
-    /// Whether the derivation that primed this buffer was incomplete (at least one remote read failed
-    /// and was skipped). The caller uses this to avoid advancing the working-set sync point past changes
-    /// it could not discover this pass. Preserved across the whole `moreComing` drain sequence and cleared
-    /// alongside `anchorKey`.
-    private var primedIncomplete = false
+    private static let continuationPrefix = "fp-continuation|"
 
-    init(log: any FileProviderLogging) {
+    private let lock = NSLock()
+    private let dbManager: FilesDatabaseManager
+    private let logger: FileProviderLogger
+    private var sessionId: String?
+
+    init(dbManager: FilesDatabaseManager, log: any FileProviderLogging) {
+        self.dbManager = dbManager
         logger = FileProviderLogger(category: "ChangeDeliveryBuffer", log: log)
     }
 
-    ///
-    /// Whether a derivation has already filled the buffer for the given sync-anchor key and changes are
-    /// still waiting to be delivered. A continuation invocation that sees `true` must drain rather than
-    /// re-derive.
-    ///
+    /// Whether an active durable session is positioned at the given anchor.
     func isPrimed(forKey key: String) -> Bool {
         lock.lock()
         defer { lock.unlock() }
-        return anchorKey == key
+
+        if let sessionId {
+            guard let session = dbManager.changeDeliverySession(sessionId: sessionId) else {
+                self.sessionId = nil
+                return false
+            }
+
+            return session.currentAnchorKey == key
+        }
+
+        guard key.hasPrefix(Self.continuationPrefix),
+              let session = dbManager.changeDeliverySession(forAnchorKey: key)
+        else {
+            return false
+        }
+
+        sessionId = session.sessionId
+        return true
     }
 
-    ///
-    /// Whether the currently-primed derivation was incomplete (a remote read failed and was skipped).
-    /// Returns `false` once the buffer has fully drained. See ``prime(key:updated:deleted:incomplete:)``.
-    ///
+    /// Whether `key` is an active durable continuation anchor.
+    func isContinuation(forKey key: String) -> Bool {
+        guard key.hasPrefix(Self.continuationPrefix) else {
+            return false
+        }
+
+        return isPrimed(forKey: key)
+    }
+
+    /// Whether the currently active derivation was incomplete and must retain its incoming sync anchor.
     func isPrimedIncomplete() -> Bool {
         lock.lock()
         defer { lock.unlock() }
-        return anchorKey != nil && primedIncomplete
+
+        guard let sessionId,
+              let session = dbManager.changeDeliverySession(sessionId: sessionId)
+        else {
+            return false
+        }
+
+        return session.incomplete
     }
 
-    ///
-    /// Store the full derived change set for a drain sequence, keyed by the originating sync anchor.
-    ///
-    /// `updated` must already be sorted parents-before-children (ascending remote-path length) so that
-    /// draining the single combined list front-to-back never reports a child in an earlier batch than
-    /// its parent.
-    ///
+    /// Persist the complete ordered change set for a new drain sequence.
     func prime(
         key: String,
+        finalAnchorRawValue: Data,
         updated: [SendableItemMetadata],
         deleted: [SendableItemMetadata],
         incomplete: Bool = false
     ) {
         lock.lock()
         defer { lock.unlock() }
-        anchorKey = key
-        remainingUpdated = updated
-        remainingDeleted = deleted
-        primedIncomplete = incomplete
-        logger.debug(
-            "Primed change delivery buffer. anchor: \(key), updated: \(updated.count), deleted: \(deleted.count), incomplete: \(incomplete)."
-        )
+
+        if let sessionId {
+            dbManager.removeChangeDeliverySession(sessionId: sessionId)
+        }
+
+        let newSessionId = UUID().uuidString
+        guard dbManager.createChangeDeliverySession(
+            sessionId: newSessionId,
+            anchorKey: key,
+            finalAnchorRawValue: finalAnchorRawValue,
+            updated: updated,
+            deleted: deleted,
+            incomplete: incomplete
+        ) else {
+            sessionId = nil
+            logger.error("Could not persist change delivery session.")
+            return
+        }
+
+        sessionId = newSessionId
+        logger.debug("Persisted change delivery session.")
     }
 
     ///
-    /// Pop the next batch, budgeting updates and deletions *together* against `maxItems` so the combined
-    /// `didUpdate` + `didDeleteItems` payload of a single `finishEnumeratingChanges` stays under the cap.
-    /// Updates are drained before deletions, preserving the parent-before-child ordering of the updates.
+    /// Consume the next combined update/delete batch and persist the cursor before returning it.
     ///
-    /// `moreComing` reflects whether anything is still buffered *after* this batch (so an exactly-full
-    /// final batch does not provoke a spurious empty follow-up). The key is cleared once both lists drain,
-    /// so a later signal starts a fresh derivation.
+    /// `moreComing` is false when this batch consumed the final stored item. Intermediate batches return a
+    /// durable continuation anchor; the final batch returns the sync anchor captured when the session was
+    /// primed.
     ///
     func takeBatch(
         maxItems: Int
-    ) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata], moreComing: Bool) {
+    ) -> (
+        updated: [SendableItemMetadata],
+        deleted: [SendableItemMetadata],
+        moreComing: Bool,
+        continuationAnchorRawValue: Data?,
+        finalAnchorRawValue: Data?
+    ) {
         lock.lock()
         defer { lock.unlock() }
 
-        let key = anchorKey ?? "nil"
         let budget = max(1, maxItems)
-
-        let updatedCount = Swift.min(remainingUpdated.count, budget)
-        let batchUpdated = Array(remainingUpdated.prefix(updatedCount))
-        remainingUpdated.removeFirst(updatedCount)
-
-        let deletedCount = Swift.min(remainingDeleted.count, budget - updatedCount)
-        let batchDeleted = Array(remainingDeleted.prefix(deletedCount))
-        remainingDeleted.removeFirst(deletedCount)
-
-        let moreComing = !remainingUpdated.isEmpty || !remainingDeleted.isEmpty
-        if !moreComing {
-            anchorKey = nil
-            primedIncomplete = false
+        guard let sessionId,
+              let session = dbManager.changeDeliverySession(sessionId: sessionId)
+        else {
+            return ([], [], false, nil, nil)
         }
 
-        logger.debug(
-            "Drained change batch. anchor: \(key), maxItems: \(budget), tookUpdated: \(updatedCount), tookDeleted: \(deletedCount), remainingUpdated: \(remainingUpdated.count), remainingDeleted: \(remainingDeleted.count), moreComing: \(moreComing)"
+        let storedItems = dbManager.changeDeliveryItems(
+            sessionId: sessionId,
+            fromSequence: session.nextSequence,
+            limit: budget + 1
+        )
+        let batchItems = Array(storedItems.prefix(budget))
+        let moreComing = storedItems.count > budget
+        let decoder = JSONDecoder()
+        var updated = [SendableItemMetadata]()
+        var deleted = [SendableItemMetadata]()
+
+        for item in batchItems {
+            guard let metadata = try? decoder.decode(SendableItemMetadata.self, from: item.metadataData) else {
+                logger.error("Could not decode change delivery item.")
+                return ([], [], false, nil, session.finalAnchorRawValue)
+            }
+
+            if item.deleted {
+                deleted.append(metadata)
+            } else {
+                updated.append(metadata)
+            }
+        }
+
+        let nextSequence = batchItems.last.map { $0.sequence + 1 } ?? session.nextSequence
+        let continuationAnchor: Data?
+        let nextAnchorKey: String?
+        if moreComing {
+            let key = "\(Self.continuationPrefix)\(sessionId)|\(nextSequence)"
+            continuationAnchor = Data(key.utf8)
+            nextAnchorKey = key
+        } else {
+            continuationAnchor = nil
+            nextAnchorKey = nil
+        }
+
+        dbManager.advanceChangeDeliverySession(
+            sessionId: sessionId,
+            nextSequence: nextSequence,
+            nextAnchorKey: nextAnchorKey,
+            completed: !moreComing
         )
 
-        return (batchUpdated, batchDeleted, moreComing)
+        logger.debug("Consumed change delivery batch.")
+        return (
+            updated,
+            deleted,
+            moreComing,
+            continuationAnchor,
+            session.finalAnchorRawValue
+        )
     }
 
-    ///
-    /// Discard any buffered state. Used when a fresh enumeration arrives under a different anchor than
-    /// the one the buffer was primed for, so a stale remainder is never served against a new sync point.
-    ///
+    /// Discard the active durable session when a fresh enumeration replaces an abandoned drain.
     func reset() {
         lock.lock()
         defer { lock.unlock() }
-        let previousKey = anchorKey
-        let discardedUpdated = remainingUpdated.count
-        let discardedDeleted = remainingDeleted.count
 
-        anchorKey = nil
-        remainingUpdated = []
-        remainingDeleted = []
-        primedIncomplete = false
-
-        // A non-empty discard means an in-progress drain was abandoned (a fresh enumeration arrived under
-        // a different anchor). Log it loudly enough to spot potential change loss from a debug archive.
-        if discardedUpdated > 0 || discardedDeleted > 0 {
-            logger.info(
-                "Reset change delivery buffer, discarding undelivered remainder. anchor: \(previousKey ?? "nil"), discardedUpdated: \(discardedUpdated), discardedDeleted: \(discardedDeleted)"
-            )
+        guard let sessionId else {
+            return
         }
+
+        dbManager.removeChangeDeliverySession(sessionId: sessionId)
+        self.sessionId = nil
+        logger.info("Reset change delivery session.")
     }
 }

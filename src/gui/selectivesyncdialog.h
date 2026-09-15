@@ -46,7 +46,7 @@ public:
 
     [[nodiscard]] QSize sizeHint() const override;
 
-private slots:
+private Q_SLOTS:
     void slotUpdateDirectories(QStringList);
     void slotUpdateRootFolderFilesSize(const QStringList &subfolders);
     void slotItemExpanded(QTreeWidgetItem *);

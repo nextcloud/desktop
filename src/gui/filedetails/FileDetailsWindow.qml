@@ -25,6 +25,7 @@ ApplicationWindow {
     minimumWidth: 300
     minimumHeight: 300
 
+    //: %1 is the file name. %2 is the application window title, for example "Nextcloud".
     title: qsTr("File details of %1 · %2").arg(fileDetailsPage.fileDetails.name).arg(Systray.windowTitle)
 
     FileDetailsView {

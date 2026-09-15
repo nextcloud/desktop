@@ -20,7 +20,7 @@ public:
 
     void sendReplyMessage(const QString &conversationToken, const QString &message, const QString &replyTo = {});
 
-signals:
+Q_SIGNALS:
     void replyMessageSent(const QString &message);
 
 private:

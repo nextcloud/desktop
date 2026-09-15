@@ -41,7 +41,7 @@ public:
         return accountState->_remoteWipe;
     }
 
-public slots:
+public Q_SLOTS:
     void checkConnectivity() override {};
 
     void setStateForTesting(OCC::AccountState::State state)
@@ -54,7 +54,7 @@ public slots:
         Q_EMIT stateChanged(state);
     }
 
-private slots:
+private Q_SLOTS:
     void setState(OCC::AccountState::State state) override { Q_UNUSED(state) };
 };
 

@@ -53,7 +53,6 @@ set(client_UI_SRCS
     proxyauthdialog.ui
     mnemonicdialog.ui
     vfsdownloaderrordialog.ui
-    wizard/flow2authwidget.ui
 )
 
 qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
@@ -241,6 +240,7 @@ set(client_SRCS
     tray/asyncimageresponse.cpp
     tray/trayimageprovider.cpp
     tray/trayaccountmenupolicy.h
+    tray/trayactivationpolicy.h
     tray/trayaccountappsmodel.h
     tray/trayaccountappsmodel.cpp
     tray/usermodel.h
@@ -258,16 +258,12 @@ set(client_SRCS
     creds/flow2auth.cpp
     creds/webflowcredentials.h
     creds/webflowcredentials.cpp
-    creds/webflowcredentialsdialog.h
-    creds/webflowcredentialsdialog.cpp
     wizard/accountwizardcontroller.h
     wizard/accountwizardcontroller.cpp
-    wizard/flow2authwidget.h
-    wizard/flow2authwidget.cpp
-    wizard/providersignuppage.h
-    wizard/providersignuppage.cpp
-    wizard/linklabel.h
-    wizard/linklabel.cpp
+    wizard/browserreauthcontroller.h
+    wizard/browserreauthcontroller.cpp
+    wizard/browserreauthwindow.h
+    wizard/browserreauthwindow.cpp
     integration/fileactionsmodel.h
     integration/fileactionsmodel.cpp
     )
@@ -291,6 +287,9 @@ IF(BUILD_UPDATER)
 endif()
 
 add_subdirectory(search)
+include(assistant/CMakeLists.txt)
+list(APPEND client_SRCS ${assistant_SRCS})
+qt_add_resources(client_UI_SRCS ${assistant_QRC})
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
@@ -303,6 +302,7 @@ IF( APPLE )
         # Shared foundation first, then the base hover view, rows, popups and the
         # public entry point (OCC::showMacOSTrayPopup / hideMacOSTrayPopup).
         macOS/trayaccountpopup/trayaccountpopupmetrics.h
+        macOS/trayaccountpopup/trayaccountpopuppresentation.h
         macOS/trayaccountpopup/trayaccountpopupimageutils.h
         macOS/trayaccountpopup/trayaccountpopupimageutils.mm
         macOS/trayaccountpopup/trayaccountpopupviewutils.h
@@ -422,8 +422,6 @@ IF( APPLE )
 ENDIF()
 
 set(3rdparty_SRC
-    ../3rdparty/QProgressIndicator/QProgressIndicator.h
-    ../3rdparty/QProgressIndicator/QProgressIndicator.cpp
     ../3rdparty/kmessagewidget/kmessagewidget.h
     ../3rdparty/kmessagewidget/kmessagewidget.cpp
     ../3rdparty/kirigami/wheelhandler.h
@@ -600,6 +598,8 @@ if(KF6GuiAddons_FOUND)
   add_definitions(-DHAVE_KGUIADDONS)
 endif()
 
+target_compile_definitions(nextcloudCore PRIVATE -DQT_NO_KEYWORDS)
+
 if(KF6DBusAddons_FOUND)
     target_link_libraries(nextcloudCore PUBLIC KF6::DBusAddons)
 endif()
@@ -623,7 +623,6 @@ set_target_properties(nextcloudCore
 
 target_include_directories(nextcloudCore
   PUBLIC
-  ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
   ${CMAKE_SOURCE_DIR}/src/3rdparty/kirigami
   ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
   ${CMAKE_CURRENT_BINARY_DIR}
@@ -637,7 +636,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
             string(REPLACE "${theme_dir}/colored/" "" _res ${_file})
             string(REPLACE "-${APPLICATION_ICON_NAME}-icon.png" "" _res ${_res})
             install(FILES ${_file} RENAME ${APPLICATION_ICON_NAME}.png DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${_res}x${_res}/apps)
-        endforeach(_file)
+        endforeach()
         install(FILES ${client_I18N} DESTINATION ${CMAKE_INSTALL_DATADIR}/${APPLICATION_EXECUTABLE}/i18n)
     else()
         file(GLOB_RECURSE VISUAL_ELEMENTS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-w10startmenu*")
@@ -694,6 +693,7 @@ IF(BUILD_UPDATER)
     target_link_libraries(updater Nextcloud::sync ${updater_DEPS} Qt::Widgets Qt::Svg Qt::Network Qt::Xml)
     target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
     set_target_properties(updater PROPERTIES AUTOMOC ON)
+    target_compile_definitions(updater PRIVATE QT_NO_KEYWORDS)
     target_link_libraries(nextcloudCore PUBLIC updater)
 endif()
 
@@ -702,6 +702,7 @@ set_target_properties(nextcloud PROPERTIES
 )
 
 target_link_libraries(nextcloud PRIVATE nextcloudCore)
+target_compile_definitions(nextcloud PRIVATE QT_NO_KEYWORDS)
 
 if(TARGET PkgConfig::CLOUDPROVIDERS)
     message("Building with libcloudproviderssupport")
@@ -712,7 +713,7 @@ if(TARGET PkgConfig::CLOUDPROVIDERS)
     string(REGEX REPLACE "[^A-z0-9]" "" DBUS_APPLICATION_NAME "${APPLICATION_SHORTNAME}")
     if(NOT DBUS_PREFIX)
         set(DBUS_PREFIX "com")
-    endif(NOT DBUS_PREFIX)
+    endif()
     set(LIBCLOUDPROVIDERS_DBUS_BUS_NAME "${DBUS_PREFIX}.${DBUS_VENDOR}.${DBUS_APPLICATION_NAME}")
     set(LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH "/${DBUS_PREFIX}/${DBUS_VENDOR}/${DBUS_APPLICATION_NAME}")
 
@@ -842,7 +843,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
     find_package(SharedMimeInfo)
     if(SharedMimeInfo_FOUND)
         update_xdg_mimetypes( ${CMAKE_INSTALL_DATADIR}/mime/packages )
-    endif(SharedMimeInfo_FOUND)
+    endif()
 endif()
 
 configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)

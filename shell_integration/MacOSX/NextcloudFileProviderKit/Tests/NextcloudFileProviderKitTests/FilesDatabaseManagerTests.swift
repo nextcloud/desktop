@@ -25,6 +25,50 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager, "FilesDatabaseManager should be initialized")
     }
 
+    func testCompletedChangeDeliverySessionRemovesPersistedState() {
+        let sessionId = "completed-change-delivery-\(name)"
+        let metadata = SendableItemMetadata(
+            ocId: "change-delivery-item-\(name)",
+            fileName: "item.txt",
+            account: Self.account
+        )
+
+        XCTAssertTrue(
+            Self.dbManager.createChangeDeliverySession(
+                sessionId: sessionId,
+                anchorKey: "initial-anchor-\(name)",
+                finalAnchorRawValue: Data("final-anchor".utf8),
+                updated: [metadata],
+                deleted: [],
+                incomplete: false
+            )
+        )
+
+        let database = Self.dbManager.ncDatabase()
+        XCTAssertNotNil(database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId))
+        XCTAssertEqual(
+            database.objects(RealmChangeDeliveryItem.self)
+                .where { $0.sessionId == sessionId }
+                .count,
+            1
+        )
+
+        Self.dbManager.advanceChangeDeliverySession(
+            sessionId: sessionId,
+            nextSequence: 1,
+            nextAnchorKey: nil,
+            completed: true
+        )
+
+        let cleanedDatabase = Self.dbManager.ncDatabase()
+        XCTAssertNil(cleanedDatabase.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId))
+        XCTAssertTrue(
+            cleanedDatabase.objects(RealmChangeDeliveryItem.self)
+                .where { $0.sessionId == sessionId }
+                .isEmpty
+        )
+    }
+
     func testSchema203MigrationBackfillsCanonicalPathKeys() throws {
         let databaseDirectory = makeDatabaseDirectory()
         let domainIdentifier = NSFileProviderDomainIdentifier("migration-test")
@@ -516,9 +560,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         let parent = RealmItemMetadata()
         parent.ocId = "parent"
-        parent.fileName = "Parent"
+        parent.updateLocation(serverUrl: "https://example.com", fileName: "Parent")
         parent.account = "TestAccount"
-        parent.serverUrl = "https://example.com"
         parent.directory = true
         parent.downloaded = true
         parent.uploaded = true
@@ -526,9 +569,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // Simulate existing metadata in the database
         let existingMetadata = RealmItemMetadata()
         existingMetadata.ocId = "id-1"
-        existingMetadata.fileName = "File.pdf"
+        existingMetadata.updateLocation(serverUrl: "https://example.com/Parent", fileName: "File.pdf")
         existingMetadata.account = "TestAccount"
-        existingMetadata.serverUrl = "https://example.com/Parent"
         existingMetadata.downloaded = true
         existingMetadata.uploaded = true
 
@@ -575,18 +617,16 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // 1. Item that exists locally and is marked as uploaded
         let uploadedItem = RealmItemMetadata()
         uploadedItem.ocId = "ocid-uploaded-123"
-        uploadedItem.fileName = "SyncedFile.txt"
+        uploadedItem.updateLocation(serverUrl: testServerUrl, fileName: "SyncedFile.txt")
         uploadedItem.account = testAccount
-        uploadedItem.serverUrl = testServerUrl
         uploadedItem.downloaded = true
         uploadedItem.uploaded = true // IMPORTANT: Marked as uploaded
 
         // 2. Item that exists locally but is NOT marked as uploaded (e.g., new local file)
         let unuploadedItem = RealmItemMetadata()
         unuploadedItem.ocId = "ocid-local-456" // May or may not have ocId yet
-        unuploadedItem.fileName = "NewLocalFile.txt"
+        unuploadedItem.updateLocation(serverUrl: testServerUrl, fileName: "NewLocalFile.txt")
         unuploadedItem.account = testAccount
-        unuploadedItem.serverUrl = testServerUrl
         unuploadedItem.downloaded = true
         unuploadedItem.uploaded = false // IMPORTANT: Not marked as uploaded
         unuploadedItem.status = Status.normal.rawValue // Ensure it's not in a transient state if relevant
@@ -2159,6 +2199,26 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(storedRotated.deleted)
         XCTAssertTrue(storedRotated.keepDownloaded, "Persisted row should reflect the merged state")
         XCTAssertTrue(storedRotated.downloaded)
+    }
+
+    func testAddItemMetadataPreservingLocalStateKeepsContentVersionForSameEtag() {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        var original = SendableItemMetadata(ocId: "item", fileName: "locked.txt", account: account)
+        original.etag = "etag-after-lock"
+        original.fileProviderContentVersion = "etag-before-lock"
+        Self.dbManager.addItemMetadata(original)
+
+        var refreshed = SendableItemMetadata(ocId: "item", fileName: "locked.txt", account: account)
+        refreshed.etag = "etag-after-lock"
+
+        let merged = Self.dbManager.addItemMetadataPreservingLocalState(refreshed)
+
+        XCTAssertEqual(merged.fileProviderContentVersion, "etag-before-lock")
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: "item")?.fileProviderContentVersion,
+            "etag-before-lock"
+        )
     }
 
     func testAddItemMetadataPreservingLocalStateFallbackDoesNotMergeWhenAlreadyDuplicated() throws {

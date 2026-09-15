@@ -103,6 +103,7 @@ QByteArray FakeShareDefinition::toRequestReply() const
 // Below is ShareTestHelper
 ShareTestHelper::ShareTestHelper(QObject *parent)
     : QObject(parent)
+    , fm{FolderMan::instance()}
 {
 }
 
@@ -133,7 +134,7 @@ void ShareTestHelper::setup()
     fakeFolder.localModifier().insert(testFileName);
 
     const auto folderMan = FolderMan::instance();
-    QCOMPARE(folderMan, &fm);
+    QCOMPARE(folderMan, fm);
     auto folderDef = folderDefinition(fakeFolder.localPath());
     folderDef.targetPath = QString();
     QVERIFY(folderMan->addFolder(accountState.data(), folderDef));
@@ -215,7 +216,7 @@ void ShareTestHelper::setup()
         fileStorageId,
     };
 
-    emit setupSucceeded();
+    Q_EMIT setupSucceeded();
 }
 
 QNetworkReply *ShareTestHelper::qnamOverride(QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device)
@@ -390,7 +391,12 @@ QNetworkReply *ShareTestHelper::handleShareGetOperation(const QNetworkAccessMana
     const auto urlQuery = QUrlQuery(req.url());
     const auto pathParam = urlQuery.queryItemValue(QStringLiteral("path"));
     const auto resharesParam = urlQuery.queryItemValue(QStringLiteral("reshares"));
+    const auto sharedWithMeParam = urlQuery.queryItemValue(QStringLiteral("shared_with_me"));
     const auto formatParam = urlQuery.queryItemValue(QStringLiteral("format"));
+
+    if (sharedWithMeParam == QStringLiteral("true")) {
+        _sharedWithMeRequestUrls.append(req.url());
+    }
 
     if (formatParam != QStringLiteral("json") || (!pathParam.isEmpty() && !pathParam.endsWith(QString(testFileName)))) {
         reply = new FakeErrorReply(op, req, this, 400, _fake400Response);
@@ -417,6 +423,16 @@ const QByteArray ShareTestHelper::createNewShare(const Share::ShareType shareTyp
 int ShareTestHelper::shareCount() const
 {
     return _sharesReplyData.count();
+}
+
+const QList<QUrl> &ShareTestHelper::sharedWithMeRequestUrls() const
+{
+    return _sharedWithMeRequestUrls;
+}
+
+void ShareTestHelper::resetSharedWithMeRequestUrls()
+{
+    _sharedWithMeRequestUrls.clear();
 }
 
 void ShareTestHelper::appendShareReplyData(const FakeShareDefinition &definition)

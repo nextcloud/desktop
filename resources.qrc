@@ -1,19 +1,13 @@
 <RCC>
     <qresource prefix="/qml">
-        <file>src/gui/UserStatusMessageView.qml</file>
         <file>src/gui/WizardStyledWindow.qml</file>
         <file>src/gui/UserStatusWindow.qml</file>
         <file>src/gui/WindowAccountHeader.qml</file>
         <file>src/gui/activity/qml/ActivitiesWindow.qml</file>
-        <file>src/gui/AssistantWindow.qml</file>
         <file>src/gui/search/SearchWindow.qml</file>
         <file>src/gui/UserStatusWindowStatusRow.qml</file>
         <file>src/gui/UserStatusWindowPredefinedStatusRow.qml</file>
-        <file>src/gui/UserStatusSelectorPage.qml</file>
         <file>src/gui/EmojiPicker.qml</file>
-        <file>src/gui/UserStatusSelectorButton.qml</file>
-        <file>src/gui/UserStatusSetStatusView.qml</file>
-        <file>src/gui/PredefinedStatusButton.qml</file>
         <file>src/gui/ErrorBox.qml</file>
         <file>src/gui/filedetails/FileActivityView.qml</file>
         <file>src/gui/filedetails/FileDetailsPage.qml</file>
@@ -29,15 +23,10 @@
         <file>src/gui/filedetails/ShareDetailsPage.qml</file>
         <file>src/gui/filedetails/ShareeSearchField.qml</file>
         <file>src/gui/filedetails/ShareView.qml</file>
-        <file>src/gui/tray/MainWindow.qml</file>
-        <file>src/gui/tray/UserLine.qml</file>
-        <file>src/gui/tray/HeaderButton.qml</file>
         <file>src/gui/activity/qml/SyncStatus.qml</file>
         <file>src/gui/activity/qml/ActivityItem.qml</file>
         <file>src/gui/tray/AutoSizingMenu.qml</file>
         <file>src/gui/activity/qml/ActivityList.qml</file>
-        <file>src/gui/tray/CurrentAccountHeaderButton.qml</file>
-        <file>src/gui/tray/TrayWindowHeader.qml</file>
         <file>src/gui/activity/qml/ActivityItemContextMenu.qml</file>
         <file>src/gui/activity/qml/ActivityItemActions.qml</file>
         <file>src/gui/activity/qml/ActivityFileMenu.qml</file>
@@ -48,14 +37,10 @@
         <file>src/gui/tray/EditFileLocallyLoadingDialog.qml</file>
         <file>src/gui/tray/EncryptionTokenDiscoveryDialog.qml</file>
         <file>src/gui/tray/NCBusyIndicator.qml</file>
-        <file>src/gui/tray/NCIconWithBackgroundImage.qml</file>
         <file>src/gui/tray/NCProgressBar.qml</file>
         <file>src/gui/tray/EnforcedPlainTextLabel.qml</file>
         <file>theme/Style/Style.qml</file>
         <file>theme/Style/qmldir</file>
-        <file>src/gui/tray/ListItemLineAndSubline.qml</file>
-        <file>src/gui/tray/TrayFoldersMenuButton.qml</file>
-        <file>src/gui/tray/TrayFolderListItem.qml</file>
         <file>src/gui/ResolveConflictsDialog.qml</file>
         <file>src/gui/ConflictDelegate.qml</file>
         <file>src/gui/ConflictItemFileInfo.qml</file>
@@ -63,15 +48,20 @@
         <file>src/gui/wizard/qml/AccountWizardWindow.qml</file>
         <file>src/gui/wizard/qml/AdvancedOptionsDialog.qml</file>
         <file>src/gui/wizard/qml/BasicAuthPage.qml</file>
+        <file>src/gui/wizard/qml/BrowserAuthFooter.qml</file>
         <file>src/gui/wizard/qml/BrowserAuthPage.qml</file>
+        <file>src/gui/wizard/qml/BrowserReAuthWindow.qml</file>
         <file>src/gui/wizard/qml/ClientCertificateDialog.qml</file>
         <file>src/gui/wizard/qml/OptionRow.qml</file>
         <file>src/gui/wizard/qml/ProxySettingsDialog.qml</file>
         <file>src/gui/wizard/qml/ServerPage.qml</file>
         <file>src/gui/wizard/qml/SyncOptionsPage.qml</file>
         <file>src/gui/wizard/qml/WizardButton.qml</file>
+        <file>src/gui/wizard/qml/WizardChipButton.qml</file>
         <file>src/gui/wizard/qml/WizardComboBox.qml</file>
         <file>src/gui/wizard/qml/WizardDialogFrame.qml</file>
+        <file>src/gui/wizard/qml/WizardMenu.qml</file>
+        <file>src/gui/wizard/qml/WizardMenuItem.qml</file>
         <file>src/gui/wizard/qml/WizardTextField.qml</file>
         <file>src/gui/macOS/ui/FileProviderFileDelegate.qml</file>
         <file>src/gui/integration/FileActionsWindow.qml</file>

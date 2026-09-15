@@ -20,7 +20,7 @@ class TestDateFieldBackend : public QObject
 private:
     static constexpr auto dateStringFormat = "dd/MM/yyyy";
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

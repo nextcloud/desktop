@@ -23,7 +23,7 @@ class ServerNotificationHandler : public QObject
 public:
     explicit ServerNotificationHandler(AccountState *accountState, QObject *parent = nullptr);
 
-signals:
+Q_SIGNALS:
     void newNotificationList(OCC::ActivityList);
     void newIncomingCallsList(OCC::ActivityList);
     void jobFinished();
@@ -31,7 +31,7 @@ signals:
 public:
     bool startFetchNotifications();
 
-private slots:
+private Q_SLOTS:
     void slotNotificationsReceived(const QJsonDocument &json, int statusCode);
     void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);
 

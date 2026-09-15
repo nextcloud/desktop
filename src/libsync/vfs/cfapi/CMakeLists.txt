@@ -19,6 +19,8 @@ if (WIN32)
         cldapi
     )
 
+    target_compile_definitions(nextcloudsync_vfs_cfapi PRIVATE QT_NO_KEYWORDS)
+
     set_target_properties(nextcloudsync_vfs_cfapi
       PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY

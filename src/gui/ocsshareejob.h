@@ -31,7 +31,7 @@ public:
      * @param path Path to request shares for (default all shares)
      */
     void getSharees(const QString &search, const QString &itemType, int page = 1, int perPage = 50, bool lookup = false);
-signals:
+Q_SIGNALS:
     /**
      * Result of the OCS request
      *
@@ -39,7 +39,7 @@ signals:
      */
     void shareeJobFinished(const QJsonDocument &reply);
 
-private slots:
+private Q_SLOTS:
     void jobDone(const QJsonDocument &reply);
 };
 }

@@ -29,8 +29,9 @@ namespace OCC {
 static void updateFolder(const AccountPtr &account, QStringView path)
 {
     for (auto f : std::as_const(FolderMan::instance()->map())) {
-        if (f->accountState()->account() != account)
+        if (f->accountState()->account() != account) {
             continue;
+        }
         auto folderPath = f->remotePath();
         if (path.startsWith(folderPath) && (path == folderPath || folderPath.endsWith('/') || path[folderPath.size()] == '/')) {
             // Workaround the fact that the server does not invalidate the etags of parent directories
@@ -133,7 +134,7 @@ void Share::setPermissions(Permissions permissions)
 void Share::slotPermissionsSet(const QJsonDocument &, const QVariant &value)
 {
     _permissions = (Permissions)value.toInt();
-    emit permissionsSet();
+    Q_EMIT permissionsSet();
 }
 
 Share::Permissions Share::getPermissions() const
@@ -158,23 +159,23 @@ bool Share::isShareTypeUserGroupEmailRoomOrRemote(const ShareType type)
 void Share::slotDeleted()
 {
     updateFolder(_account, _path);
-    emit shareDeleted();
+    Q_EMIT shareDeleted();
 }
 
 void Share::slotOcsError(int statusCode, const QString &message)
 {
-    emit serverError(statusCode, message);
+    Q_EMIT serverError(statusCode, message);
 }
 
 void Share::slotPasswordSet(const QJsonDocument &, const QVariant &value)
 {
     _isPasswordSet = !value.toString().isEmpty();
-    emit passwordSet();
+    Q_EMIT passwordSet();
 }
 
 void Share::slotSetPasswordError(int statusCode, const QString &message)
 {
-    emit passwordSetError(statusCode, message);
+    Q_EMIT passwordSetError(statusCode, message);
 }
 
 QUrl LinkShare::getLink() const
@@ -251,7 +252,7 @@ void LinkShare::setNote(const QString &note)
 void LinkShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
 {
     _note = note.toString();
-    emit noteSet();
+    Q_EMIT noteSet();
 }
 
 QString LinkShare::getToken() const
@@ -295,14 +296,14 @@ void LinkShare::slotExpireDateSet(const QJsonDocument &reply, const QVariant &va
     } else {
         _expireDate = value.toDate();
     }
-    emit expireDateSet();
+    Q_EMIT expireDateSet();
 }
 
 void LinkShare::slotLabelSet(const QJsonDocument &, const QVariant &label)
 {
     if (_label != label.toString()) {
         _label = label.toString();
-        emit labelSet();
+        Q_EMIT labelSet();
     }
 }
 
@@ -313,7 +314,7 @@ void LinkShare::slotHideDownloadSet(const QJsonDocument &jsonDoc, const QVariant
         return;
     }
     _hideDownload = hideDownload.toBool();
-    emit hideDownloadSet();
+    Q_EMIT hideDownloadSet();
 }
 
 UserGroupShare::UserGroupShare(AccountPtr account,
@@ -352,7 +353,7 @@ QString UserGroupShare::getNote() const
 void UserGroupShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
 {
     _note = note.toString();
-    emit noteSet();
+    Q_EMIT noteSet();
 }
 
 QDate UserGroupShare::getExpireDate() const
@@ -363,7 +364,7 @@ QDate UserGroupShare::getExpireDate() const
 void UserGroupShare::setExpireDate(const QDate &date)
 {
     if (_expireDate == date) {
-        emit expireDateSet();
+        Q_EMIT expireDateSet();
         return;
     }
 
@@ -386,7 +387,7 @@ void UserGroupShare::slotExpireDateSet(const QJsonDocument &reply, const QVarian
     } else {
         _expireDate = value.toDate();
     }
-    emit expireDateSet();
+    Q_EMIT expireDateSet();
 }
 
 ShareManager::ShareManager(AccountPtr account, QObject *parent)
@@ -423,7 +424,7 @@ void ShareManager::slotLinkShareCreated(const QJsonDocument &reply)
      * meant that a share was password protected
      */
     if (code == 403) {
-        emit linkShareRequiresPassword(message);
+        Q_EMIT linkShareRequiresPassword(message);
         return;
     }
 
@@ -431,7 +432,7 @@ void ShareManager::slotLinkShareCreated(const QJsonDocument &reply)
     auto data = reply.object().value("ocs").toObject().value("data").toObject();
     QSharedPointer<LinkShare> share(parseLinkShare(data));
 
-    emit linkShareCreated(share);
+    Q_EMIT linkShareCreated(share);
 
     updateFolder(_account, share->path());
 }
@@ -454,8 +455,9 @@ void ShareManager::createShare(const QString &path,
             const auto &dataArray = ocsObject["data"_L1].toArray();
             for (const auto &element : dataArray) {
                 auto map = element.toObject();
-                if (map["file_target"_L1] == path)
+                if (map["file_target"_L1] == path) {
                     existingPermissions = Share::Permissions(map["permissions"_L1].toInt());
+                }
             }
 
             // Limit the permissions we request for a share to the ones the item
@@ -473,7 +475,7 @@ void ShareManager::createShare(const QString &path,
             connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
             job->createShare(path, shareType, shareWith, validPermissions, password);
         });
-    job->getSharedWithMe();
+    job->getSharedWithMe(path);
 }
 
 void ShareManager::createE2EeShareJob(const QString &fullRemotePath,
@@ -490,7 +492,7 @@ void ShareManager::createE2EeShareJob(const QString &fullRemotePath,
     }
 
     if (!folder) {
-        emit serverError(0, "Failed creating share");
+        Q_EMIT serverError(0, "Failed creating share");
         return;
     }
 
@@ -518,7 +520,7 @@ void ShareManager::slotShareCreated(const QJsonDocument &reply)
     auto data = reply.object().value("ocs"_L1).toObject().value("data"_L1).toObject();
     SharePtr share(parseShare(data));
 
-    emit shareCreated(share);
+    Q_EMIT shareCreated(share);
 
     updateFolder(_account, share->path());
 }
@@ -573,13 +575,13 @@ const QList<SharePtr> ShareManager::parseShares(const QJsonDocument &reply) cons
 void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 {
     const auto shares = parseShares(reply);
-    emit sharesFetched(shares);
+    Q_EMIT sharesFetched(shares);
 }
 
 void ShareManager::slotSharedWithMeFetched(const QJsonDocument &reply)
 {
     const auto shares = parseShares(reply);
-    emit sharedWithMeFetched(shares);
+    Q_EMIT sharedWithMeFetched(shares);
 }
 
 QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObject &data) const
@@ -675,7 +677,7 @@ SharePtr ShareManager::parseShare(const QJsonObject &data) const
 
 void ShareManager::slotOcsError(int statusCode, const QString &message)
 {
-    emit serverError(statusCode, message);
+    Q_EMIT serverError(statusCode, message);
 }
 
 
@@ -692,11 +694,11 @@ void ShareManager::slotCreateE2eeShareJobFinised(int statusCode, const QString &
     Q_ASSERT(userData.sharee);
     if (!userData.sharee) {
         qCWarning(lcUserGroupShare) << "missing userData Map in UpdateE2eeShareMetadataJob instance!";
-        emit serverError(-1, tr("Error"));
+        Q_EMIT serverError(-1, tr("Error"));
         return;
     }
     if (statusCode != 200) {
-        emit serverError(statusCode, message);
+        Q_EMIT serverError(statusCode, message);
     } else {
         createShare(job->path(), Share::ShareType(userData.sharee->type()), userData.sharee->shareWith(), userData.desiredPermissions, userData.password);
     }

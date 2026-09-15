@@ -42,7 +42,7 @@ void HttpCredentialsGui::askFromUserAsync()
         } else {
             // Shibboleth?
             qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
-            emit asked();
+            Q_EMIT asked();
         }
     });
     job->start();
@@ -87,7 +87,7 @@ void HttpCredentialsGui::showDialog()
             _ready = true;
             persist();
         }
-        emit asked();
+        Q_EMIT asked();
     });
 }
 
@@ -95,8 +95,9 @@ QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
 {
     int version = account->serverVersionInt();
     auto url = account->url().toString();
-    if (url.endsWith('/'))
+    if (url.endsWith('/')) {
         url.chop(1);
+    }
 
     if (version >= Account::makeServerVersion(13, 0, 0)) {
         url += QLatin1String("/index.php/settings/user/security");

@@ -81,7 +81,7 @@ public:
     ShareTestHelper(QObject *parent = nullptr);
     ~ShareTestHelper() override;
 
-    FolderMan fm;
+    FolderMan *fm = nullptr;
     FakeFolder fakeFolder{FileInfo{}};
     FakeFileReplyDefinition fakeFileDefinition;
 
@@ -96,17 +96,19 @@ public:
 
     const QByteArray createNewShare(const Share::ShareType shareType, const QString &shareWith, const QString &password);
     [[nodiscard]] int shareCount() const;
+    [[nodiscard]] const QList<QUrl> &sharedWithMeRequestUrls() const;
+    void resetSharedWithMeRequestUrls();
 
-signals:
+Q_SIGNALS:
     void setupSucceeded();
 
-public slots:
+public Q_SLOTS:
     void setup();
     void appendShareReplyData(const FakeShareDefinition &definition);
     void resetTestShares();
     void resetTestData();
 
-private slots:
+private Q_SLOTS:
     [[nodiscard]] QNetworkReply *qnamOverride(const QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device);
     [[nodiscard]] QNetworkReply *handleSharePostOperation(const QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device);
     [[nodiscard]] QNetworkReply *handleSharePutOperation(const QNetworkAccessManager::Operation op, const QNetworkRequest &req, const QString &reqPath, QIODevice *device);
@@ -122,6 +124,7 @@ private:
     QByteArray _fake200JsonResponse = R"({"ocs":{"data":[],"meta":{"message":"OK","status":"ok","statuscode":200}}})";
 
     QJsonArray _sharesReplyData;
+    QList<QUrl> _sharedWithMeRequestUrls;
     QVariantMap _fakeCapabilities;
     QSet<int> _liveShareIds;
 };

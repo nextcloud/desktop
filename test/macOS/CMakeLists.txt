@@ -5,3 +5,10 @@
 # no GUI, so it runs in PR CI — unlike the signed-bundle checks, which need a signing identity
 # and a login session and therefore belong to the release pipeline.
 nextcloud_add_test(FinderSyncBrokerIdentity)
+nextcloud_add_test(SystraySyncControlMacOS)
+nextcloud_add_test(MacSandboxUtility)
+
+if(BUILD_FILE_PROVIDER_MODULE)
+    nextcloud_add_test(FileProviderXPCUtils)
+    set_source_files_properties(testfileproviderxpcutils.cpp PROPERTIES COMPILE_FLAGS "-x objective-c++")
+endif()

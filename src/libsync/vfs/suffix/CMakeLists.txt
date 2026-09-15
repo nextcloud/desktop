@@ -8,6 +8,8 @@ add_library(nextcloudsync_vfs_suffix SHARED
 
 target_link_libraries(nextcloudsync_vfs_suffix PRIVATE Nextcloud::sync)
 
+target_compile_definitions(nextcloudsync_vfs_suffix PRIVATE QT_NO_KEYWORDS)
+
 set_target_properties(nextcloudsync_vfs_suffix
   PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY

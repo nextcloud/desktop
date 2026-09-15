@@ -26,7 +26,7 @@ class TestSecureFileDrop : public QObject
     QScopedPointer<FolderMetadata> _parsedMetadataWithFileDrop;
     QScopedPointer<FolderMetadata> _parsedMetadataAfterProcessingFileDrop;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

@@ -27,7 +27,7 @@ include(../common/common.cmake)
 
 if (MEM_NULL_TESTS)
   add_definitions(-DCSYNC_MEM_NULL_TESTS)
-endif (MEM_NULL_TESTS)
+endif ()
 
 # Specific option for builds tied to servers that do not support renaming extensions
 set(NO_RENAME_EXTENSION 0 CACHE BOOL "Do not issue rename if the extension changes")
@@ -62,6 +62,8 @@ configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 add_library(nextcloud_csync SHARED ${common_SOURCES} ${csync_SRCS})
 add_library(Nextcloud::csync ALIAS nextcloud_csync)
 
+target_compile_definitions(nextcloud_csync PRIVATE QT_NO_KEYWORDS)
+
 target_include_directories(
   nextcloud_csync
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/std
@@ -80,7 +82,7 @@ target_link_libraries(nextcloud_csync
 
 if(ZLIB_FOUND)
   target_link_libraries(nextcloud_csync PUBLIC ZLIB::ZLIB)
-endif(ZLIB_FOUND)
+endif()
 
 target_link_libraries(nextcloud_csync PRIVATE SQLite::SQLite3)
 

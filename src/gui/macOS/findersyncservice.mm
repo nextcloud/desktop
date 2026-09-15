@@ -25,6 +25,25 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
 
 } // namespace OCC
 
+// SocketApi handlers require a listener and write output via sendMessage()
+namespace {
+class ResponseCapturingListener : public OCC::SocketListener
+{
+public:
+    mutable QStringList messages;
+
+    explicit ResponseCapturingListener()
+        : SocketListener(nullptr)
+    {
+    }
+
+    void sendMessage(const QString &message, bool = false) const override
+    {
+        messages.append(message);
+    }
+};
+} // anonymous namespace
+
 /**
  * @brief Objective-C delegate that implements the FinderSyncAppProtocol.
  */
@@ -237,13 +256,11 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
         // Build the command method name (e.g., "SHARE" -> "command_SHARE")
         const QString methodName = QStringLiteral("command_%1").arg(qCommand);
 
-        // Create a null listener since we're not sending responses back via socket
-        // Commands will execute but won't send socket responses
-        OCC::SocketListener *nullListener = nullptr;
-
         // Join all paths with record separator (same encoding as the socket protocol)
         // to preserve multi-selection for commands like MAKE_AVAILABLE_LOCALLY
         const QString argument = qPaths.join(QChar(0x1e));
+
+        ResponseCapturingListener captureListener;
 
         // Try to invoke the command using Qt's meta-object system
         bool invoked = QMetaObject::invokeMethod(
@@ -251,7 +268,7 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
             methodName.toUtf8().constData(),
             Qt::DirectConnection,
             Q_ARG(QString, argument),
-            Q_ARG(OCC::SocketListener*, nullListener)
+            Q_ARG(OCC::SocketListener*, &captureListener)
         );
 
         if (invoked) {
@@ -351,39 +368,6 @@ std::pair<bool, QString> FinderSyncService::getFileStatus(const QString &path) c
     const auto statusString = fileData.syncFileStatus().toSocketAPIString();
     return {true, statusString};
 }
-
-/**
- * @brief SocketListener subclass that captures command responses in-memory.
- *
- * SocketApi command methods (e.g., command_GET_STRINGS, command_GET_MENU_ITEMS)
- * produce their output by calling listener->sendMessage(). This design dates
- * back to the UNIX-socket transport where responses were written directly to
- * the socket.
- *
- * With the XPC transport there is no socket, yet we still need to invoke these
- * commands and collect their output. ResponseCapturingListener acts as an
- * in-memory adapter: it receives the sendMessage() calls and stores them in a
- * QStringList that the caller can parse and convert into XPC reply values.
- *
- * This is production code, not a test helper.
- */
-namespace {
-class ResponseCapturingListener : public SocketListener
-{
-public:
-    mutable QStringList messages;
-
-    explicit ResponseCapturingListener()
-        : SocketListener(nullptr)
-    {
-    }
-
-    void sendMessage(const QString &message, bool = false) const override
-    {
-        messages.append(message);
-    }
-};
-} // anonymous namespace
 
 QMap<QString, QString> FinderSyncService::getLocalizedStrings() const
 {

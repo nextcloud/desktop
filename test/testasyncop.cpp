@@ -36,8 +36,8 @@ public:
     {
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 202);
         setRawHeader("OC-JobStatus-Location", _pollLocation);
-        emit metaDataChanged();
-        emit finished();
+        Q_EMIT metaDataChanged();
+        Q_EMIT finished();
     }
 
     void abort() override {}
@@ -49,7 +49,7 @@ class TestAsyncOp : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

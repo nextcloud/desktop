@@ -46,18 +46,19 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     func handleEnumeratedItems(_ identifiers: Set<NSFileProviderItemIdentifier>, account: Account, dbManager: FilesDatabaseManager, completionHandler: @escaping (_ materialized: Set<NSFileProviderItemIdentifier>, _ evicted: Set<NSFileProviderItemIdentifier>) -> Void) {
         let metadataForMaterializedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
         var metadataForMaterializedItemsByIdentifier = [NSFileProviderItemIdentifier: SendableItemMetadata]()
+        var evictionCandidates = Set<NSFileProviderItemIdentifier>()
         var evictedItems = Set<NSFileProviderItemIdentifier>()
         var stillMaterializedItems = Set<NSFileProviderItemIdentifier>()
 
         for metadata in metadataForMaterializedItems {
             let identifier = NSFileProviderItemIdentifier(metadata.ocId)
             metadataForMaterializedItemsByIdentifier[identifier] = metadata
-            evictedItems.insert(identifier) // Assume the item related to the metadata object was evicted until proven otherwise below.
+            evictionCandidates.insert(identifier) // Assume the item related to the metadata object was evicted until proven otherwise below.
         }
 
         for enumeratedIdentifier in identifiers {
-            if evictedItems.contains(enumeratedIdentifier) {
-                evictedItems.remove(enumeratedIdentifier) // The enumerated item cannot be assumed as evicted any longer.
+            if evictionCandidates.contains(enumeratedIdentifier) {
+                evictionCandidates.remove(enumeratedIdentifier) // The enumerated item cannot be assumed as evicted any longer.
             } else {
                 stillMaterializedItems.insert(enumeratedIdentifier)
 
@@ -88,14 +89,13 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
             }
         }
 
-        for evictedItemIdentifier in evictedItems {
-            guard var metadata = metadataForMaterializedItemsByIdentifier[evictedItemIdentifier] else {
-                logger.error("No metadata found for apparently evicted identifier.", [.item: evictedItemIdentifier])
+        for candidateIdentifier in evictionCandidates {
+            guard let materializedMetadata = metadataForMaterializedItemsByIdentifier[candidateIdentifier] else {
+                logger.error("No metadata found for apparently evicted identifier.", [.item: candidateIdentifier])
                 continue
             }
 
-            logger.info("Updating item state to dataless.", [.name: metadata.fileName, .item: evictedItemIdentifier])
-
+            var metadata = materializedMetadata
             metadata.downloaded = false
 
             // Being absent from enumeratorForMaterializedItems only means the item has no
@@ -107,7 +107,21 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                 metadata.visitedDirectory = false
             }
 
+            // Because visitedDirectory is preserved above, a visited directory without local
+            // content remains in the database's materialized set and thus reappears as an
+            // eviction candidate on every reconciliation pass. Persist and report only actual
+            // state transitions so reconciliation converges instead of re-marking the same
+            // items dataless on every pass (#10558).
+            guard metadata.downloaded != materializedMetadata.downloaded
+                || metadata.visitedDirectory != materializedMetadata.visitedDirectory
+            else {
+                continue
+            }
+
+            logger.info("Updating item state to dataless.", [.name: metadata.fileName, .item: candidateIdentifier])
+
             dbManager.addItemMetadata(metadata)
+            evictedItems.insert(candidateIdentifier)
         }
 
         completionHandler(stillMaterializedItems, evictedItems)

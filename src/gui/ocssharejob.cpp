@@ -189,7 +189,7 @@ void OcsShareJob::getSharedWithMe(const QString &path)
 
 void OcsShareJob::jobDone(QJsonDocument reply)
 {
-    emit shareJobFinished(reply, _value);
+    Q_EMIT shareJobFinished(reply, _value);
 }
 
 QString const OcsShareJob::_pathForSharesRequest = QStringLiteral("ocs/v2.php/apps/files_sharing/api/v1/shares");

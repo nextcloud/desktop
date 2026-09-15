@@ -172,7 +172,7 @@ void SyncConflictsModel::setConflictActivities(ActivityList conflicts)
     beginResetModel();
 
     _data = conflicts;
-    emit conflictActivitiesChanged();
+    Q_EMIT conflictActivitiesChanged();
 
     updateConflictsData();
 

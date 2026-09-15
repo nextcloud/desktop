@@ -31,7 +31,7 @@ if (NOT LINUX)
     if(HAVE_ARGP_H AND HAVE_LIBARGP)
         set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} argp)
     endif()
-endif (NOT LINUX)
+endif ()
 
 if(WIN32)
   set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} psapi kernel32 Rstrtmgr)

@@ -30,7 +30,7 @@ public:
     QString dbFilePath;
     QVariantMap bodyReceivedAndParsed;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

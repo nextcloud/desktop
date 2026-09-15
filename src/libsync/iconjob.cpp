@@ -26,10 +26,10 @@ void IconJob::finished()
 
     const auto networkError = reply->error();
     if (networkError != QNetworkReply::NoError) {
-        emit error(networkError);
+        Q_EMIT error(networkError);
         return;
     }
 
-    emit jobFinished(reply->readAll());
+    Q_EMIT jobFinished(reply->readAll());
 }
 }

@@ -196,3 +196,5 @@ void PropagateRemoteDeleteEncryptedRootFolder::decryptAndRemoteDelete()
     });
     job->start();
 }
+
+#include "moc_propagateremotedeleteencryptedrootfolder.cpp"

@@ -136,8 +136,9 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
         return SyncFileStatus::StatusExcluded;
     }
 
-    if (_dirtyPaths.contains(relativePath))
+    if (_dirtyPaths.contains(relativePath)) {
         return SyncFileStatus::StatusSync;
+    }
 
     // First look it up in the database to know if it's shared
     SyncJournalFileRecord rec;
@@ -157,14 +158,14 @@ void SyncFileStatusTracker::slotPathTouched(const QString &fileName)
     QString localPath = fileName.mid(folderPath.size());
     _dirtyPaths.insert(localPath);
 
-    emit fileStatusChanged(fileName, SyncFileStatus::StatusSync);
+    Q_EMIT fileStatusChanged(fileName, SyncFileStatus::StatusSync);
 }
 
 void SyncFileStatusTracker::slotAddSilentlyExcluded(const QString &folderPath)
 {
     _syncProblems[folderPath] = SyncFileStatus::StatusExcluded;
     _syncSilentExcludes[folderPath] = SyncFileStatus::StatusExcluded;
-    emit fileStatusChanged(getSystemDestination(folderPath), resolveSyncAndErrorStatus(folderPath, NotShared));
+    Q_EMIT fileStatusChanged(getSystemDestination(folderPath), resolveSyncAndErrorStatus(folderPath, NotShared));
 }
 
 void SyncFileStatusTracker::slotCheckAndRemoveSilentlyExcluded(const QString &folderPath)
@@ -172,7 +173,7 @@ void SyncFileStatusTracker::slotCheckAndRemoveSilentlyExcluded(const QString &fo
     const auto foundIt = _syncSilentExcludes.find(folderPath);
     if (foundIt != _syncSilentExcludes.end()) {
         _syncSilentExcludes.erase(foundIt);
-        emit fileStatusChanged(getSystemDestination(folderPath), SyncFileStatus::StatusUpToDate);
+        Q_EMIT fileStatusChanged(getSystemDestination(folderPath), SyncFileStatus::StatusUpToDate);
     }
 }
 
@@ -184,16 +185,17 @@ void SyncFileStatusTracker::incSyncCountAndEmitStatusChanged(const QString &rela
         SyncFileStatus status = sharedFlag == UnknownShared
             ? fileStatus(relativePath)
             : resolveSyncAndErrorStatus(relativePath, sharedFlag);
-        emit fileStatusChanged(getSystemDestination(relativePath), status);
+        Q_EMIT fileStatusChanged(getSystemDestination(relativePath), status);
 
         // We passed from OK to SYNC, increment the parent to keep it marked as
         // SYNC while we propagate ourselves and our own children.
         ASSERT(!relativePath.endsWith('/'));
         int lastSlashIndex = relativePath.lastIndexOf('/');
-        if (lastSlashIndex != -1)
+        if (lastSlashIndex != -1) {
             incSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
-        else if (!relativePath.isEmpty())
+        } else if (!relativePath.isEmpty()) {
             incSyncCountAndEmitStatusChanged(QString(), UnknownShared);
+        }
     }
 }
 
@@ -207,15 +209,16 @@ void SyncFileStatusTracker::decSyncCountAndEmitStatusChanged(const QString &rela
         SyncFileStatus status = sharedFlag == UnknownShared
             ? fileStatus(relativePath)
             : resolveSyncAndErrorStatus(relativePath, sharedFlag);
-        emit fileStatusChanged(getSystemDestination(relativePath), status);
+        Q_EMIT fileStatusChanged(getSystemDestination(relativePath), status);
 
         // We passed from SYNC to OK, decrement our parent.
         ASSERT(!relativePath.endsWith('/'));
         int lastSlashIndex = relativePath.lastIndexOf('/');
-        if (lastSlashIndex != -1)
+        if (lastSlashIndex != -1) {
             decSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
-        else if (!relativePath.isEmpty())
+        } else if (!relativePath.isEmpty()) {
             decSyncCountAndEmitStatusChanged(QString(), UnknownShared);
+        }
     }
 }
 
@@ -254,7 +257,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
             // Mark this path as syncing for instructions that will result in propagation.
             incSyncCountAndEmitStatusChanged(item->destination(), sharedFlag);
         } else {
-            emit fileStatusChanged(getSystemDestination(item->destination()), resolveSyncAndErrorStatus(item->destination(), sharedFlag));
+            Q_EMIT fileStatusChanged(getSystemDestination(item->destination()), resolveSyncAndErrorStatus(item->destination(), sharedFlag));
         }
     }
 
@@ -263,19 +266,22 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
     // Swap into a copy since fileStatus() reads _dirtyPaths to determine the status
     QSet<QString> oldDirtyPaths;
     std::swap(_dirtyPaths, oldDirtyPaths);
-    for (const auto &oldDirtyPath : std::as_const(oldDirtyPaths))
-        emit fileStatusChanged(getSystemDestination(oldDirtyPath), fileStatus(oldDirtyPath));
+    for (const auto &oldDirtyPath : std::as_const(oldDirtyPaths)) {
+        Q_EMIT fileStatusChanged(getSystemDestination(oldDirtyPath), fileStatus(oldDirtyPath));
+    }
 
     // Make sure to push any status that might have been resolved indirectly since the last sync
     // (like an error file being deleted from disk)
-    for (const auto &syncProblem : _syncProblems)
+    for (const auto &syncProblem : _syncProblems) {
         oldProblems.erase(syncProblem.first);
+    }
     for (const auto &oldProblem : oldProblems) {
         const QString &path = oldProblem.first;
         SyncFileStatus::SyncFileStatusTag severity = oldProblem.second;
-        if (severity == SyncFileStatus::StatusError)
+        if (severity == SyncFileStatus::StatusError) {
             invalidateParentPaths(path);
-        emit fileStatusChanged(getSystemDestination(path), fileStatus(path));
+        }
+        Q_EMIT fileStatusChanged(getSystemDestination(path), fileStatus(path));
     }
 }
 
@@ -301,7 +307,7 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
         // decSyncCount calls *must* be symmetric with incSyncCount calls in slotAboutToPropagate
         decSyncCountAndEmitStatusChanged(item->destination(), sharedFlag);
     } else {
-        emit fileStatusChanged(getSystemDestination(item->destination()), resolveSyncAndErrorStatus(item->destination(), sharedFlag));
+        Q_EMIT fileStatusChanged(getSystemDestination(item->destination()), resolveSyncAndErrorStatus(item->destination(), sharedFlag));
     }
 }
 
@@ -316,13 +322,13 @@ void SyncFileStatusTracker::slotSyncFinished()
             continue;
         }
 
-        emit fileStatusChanged(getSystemDestination(it.key()), fileStatus(it.key()));
+        Q_EMIT fileStatusChanged(getSystemDestination(it.key()), fileStatus(it.key()));
     }
 }
 
 void SyncFileStatusTracker::slotSyncEngineRunningChanged()
 {
-    emit fileStatusChanged(getSystemDestination(QString()), resolveSyncAndErrorStatus(QString(), NotShared));
+    Q_EMIT fileStatusChanged(getSystemDestination(QString()), resolveSyncAndErrorStatus(QString(), NotShared));
 }
 
 SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &relativePath, SharedFlag sharedFlag, PathKnownFlag isPathKnown)
@@ -336,14 +342,16 @@ SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &r
         // After a sync finished, we need to show the users issues from that last sync like the activity list does.
         // Also used for parent directories showing a warning for an error child.
         SyncFileStatus::SyncFileStatusTag problemStatus = lookupProblem(relativePath, _syncProblems);
-        if (problemStatus != SyncFileStatus::StatusNone)
+        if (problemStatus != SyncFileStatus::StatusNone) {
             status.set(problemStatus);
+        }
     }
 
     ASSERT(sharedFlag != UnknownShared,
         "The shared status needs to have been fetched from a SyncFileItem or the DB at this point.");
-    if (sharedFlag == Shared)
+    if (sharedFlag == Shared) {
         status.setShared(true);
+    }
 
     return status;
 }
@@ -353,7 +361,7 @@ void SyncFileStatusTracker::invalidateParentPaths(const QString &path)
     QStringList splitPath = path.split('/', Qt::SkipEmptyParts);
     for (int i = 0; i < splitPath.size(); ++i) {
         QString parentPath = QStringList(splitPath.mid(0, i)).join(QLatin1String("/"));
-        emit fileStatusChanged(getSystemDestination(parentPath), fileStatus(parentPath));
+        Q_EMIT fileStatusChanged(getSystemDestination(parentPath), fileStatus(parentPath));
     }
 }
 

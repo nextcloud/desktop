@@ -1,4 +1,4 @@
-find_package(Qt6 ${REQUIRED_QT_VERSION} COMPONENTS REQUIRED Core Test Xml Network Qml Quick)
+find_package(Qt6 ${REQUIRED_QT_VERSION} COMPONENTS REQUIRED Core Test Xml Network Qml Quick QuickTest)
 
 # SPDX-FileCopyrightText: 2028 Nextcloud GmbH and Nextcloud contributors
 # SPDX-FileCopyrightText: 2012 ownCloud GmbH
@@ -21,6 +21,8 @@ macro(nextcloud_build_test test_class)
       Qt::Quick
       Qt::Core5Compat
     )
+
+    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE QT_NO_KEYWORDS)
 
     if (WIN32)
         target_link_libraries(${OWNCLOUD_TEST_CLASS}Test PRIVATE nextcloudsync_vfs_cfapi)
@@ -59,6 +61,8 @@ macro(nextcloud_add_test test_class)
       Qt::Quick
       Qt::Core5Compat
     )
+
+    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE QT_NO_KEYWORDS)
 
     if (WIN32)
         target_link_libraries(${OWNCLOUD_TEST_CLASS}Test PRIVATE
@@ -111,6 +115,8 @@ macro(nextcloud_add_benchmark test_class)
       Qt::Network
       Qt::Core5Compat
     )
+
+    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Bench PRIVATE QT_NO_KEYWORDS)
 
     IF(BUILD_UPDATER)
         target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench

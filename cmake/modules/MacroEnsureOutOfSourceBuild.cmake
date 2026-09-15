@@ -13,6 +13,6 @@ macro (MACRO_ENSURE_OUT_OF_SOURCE_BUILD _errorMessage)
    if (_insource)
      message(SEND_ERROR "${_errorMessage}")
      message(FATAL_ERROR "Remove the file CMakeCache.txt in ${CMAKE_SOURCE_DIR} first.")
-   endif (_insource)
+   endif ()
 
-endmacro (MACRO_ENSURE_OUT_OF_SOURCE_BUILD)
+endmacro ()

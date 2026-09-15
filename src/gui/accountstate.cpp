@@ -17,6 +17,7 @@
 #include "ocsuserstatusconnector.h"
 #include "pushnotifications.h"
 #include "networkjobs.h"
+#include "settings/migration.h"
 
 #include <QSettings>
 #include <QTimer>
@@ -122,6 +123,10 @@ void AccountState::setState(State state)
 
         if (_state == SignedOut) {
             _connectionStatus = ConnectionValidator::Undefined;
+            if (oldState != _state && oldState == Disconnected) {
+                qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString() << "login needed";
+                setState(AskingCredentials);
+            }
         } else if (oldState == SignedOut && _state == Disconnected) {
             // If we stop being voluntarily signed-out, try to connect and
             // auth right now!
@@ -134,7 +139,7 @@ void AccountState::setState(State state)
             checkConnectivity();
         }
         if (oldState == Connected || _state == Connected) {
-            emit isConnectedChanged();
+            Q_EMIT isConnectedChanged();
         }
         if (_state == Connected) {
             resetRetryCount();
@@ -142,7 +147,7 @@ void AccountState::setState(State state)
     }
 
     // might not have changed but the underlying _connectionErrors might have
-    emit stateChanged(_state);
+    Q_EMIT stateChanged(_state);
 }
 
 QString AccountState::stateString(State state)
@@ -258,7 +263,7 @@ void AccountState::setDesktopNotificationsAllowed(bool isAllowed)
     }
     
     _isDesktopNotificationsAllowed = isAllowed;
-    emit desktopNotificationsAllowedChanged();
+    Q_EMIT desktopNotificationsAllowedChanged();
 }
 
 AccountState::ConnectionStatus AccountState::lastConnectionStatus() const
@@ -297,9 +302,9 @@ void AccountState::checkConnectivity()
     if (!account()->credentials()->wasFetched()) {
         _waitingForNewCredentials = true;
         ConfigFile configFile;
-        const auto shouldTryUnbrandedToBrandedMigration = configFile.shouldTryUnbrandedToBrandedMigration();
+        const auto shouldTryUnbrandedToBrandedMigration = Migration::shouldTryUnbrandedToBrandedMigration();
         qCDebug(lcAccountState) << "shouldTryUnbrandedToBrandedMigration?" << shouldTryUnbrandedToBrandedMigration;
-        qCDebug(lcAccountState) << "migrationPhase?" << configFile.migrationPhase();
+        qCDebug(lcAccountState) << "migration Phase?" << Migration::phase();
         const auto appName = shouldTryUnbrandedToBrandedMigration ? configFile.unbrandedAppName : "";
         account()->credentials()->fetchFromKeychain(appName);
         return;
@@ -391,7 +396,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
                                << _connectionStatus << "->"
                                << status;
         _connectionStatus = status;
-        emit stateChanged(_state);
+        Q_EMIT stateChanged(_state);
     }
     _connectionErrors = errors;
 
@@ -454,7 +459,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     if ((oldConnectionValidatorStatus == ConnectionValidator::NeedToSignTermsOfService && status == ConnectionValidator::Connected) ||
         (status == ConnectionValidator::NeedToSignTermsOfService && oldConnectionValidatorStatus != status)) {
 
-        emit termsOfServiceChanged(_account, status == ConnectionValidator::NeedToSignTermsOfService ? AccountState::NeedToSignTermsOfService : AccountState::Connected);
+        Q_EMIT termsOfServiceChanged(_account, status == ConnectionValidator::NeedToSignTermsOfService ? AccountState::NeedToSignTermsOfService : AccountState::Connected);
     }
 }
 
@@ -465,16 +470,14 @@ void AccountState::slotHandleRemoteWipeCheck()
 
     qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString()
                            << "checking for remote wipe request";
-
-    _waitingForNewCredentials = false;
-    setState(SignedOut);
 }
 
 
 void AccountState::handleInvalidCredentials()
 {
-    if (isSignedOut() || _waitingForNewCredentials)
+    if (isSignedOut() || _waitingForNewCredentials) {
         return;
+    }
 
     qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString()
                            << "asking user";
@@ -497,9 +500,8 @@ void AccountState::slotCredentialsFetched(AbstractCredentials *)
     qCInfo(lcAccountState) << "Fetched credentials for" << _account->url().toString()
                            << "attempting to connect";
     _waitingForNewCredentials = false;
-    ConfigFile configFile;
-    if (configFile.isMigrationInProgress()) {
-        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
+    if (Migration::isInProgress()) {
+        Migration::setPhase(Migration::Phase::Done);
     }
     checkConnectivity();
 }
@@ -648,7 +650,7 @@ void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int sta
                 }
             }
 
-            emit hasFetchedNavigationApps();
+            Q_EMIT hasFetchedNavigationApps();
         }
     }
 }

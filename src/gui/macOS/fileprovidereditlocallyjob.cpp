@@ -79,7 +79,7 @@ void FileProviderEditLocallyJob::idGetFinished(const QVariantMap &data)
     }
 
     qCDebug(lcFileProviderEditLocallyJob) << "Got file ocId for" << _relPath << ocId;
-    emit ocIdAcquired(ocId);
+    Q_EMIT ocIdAcquired(ocId);
 }
 
 } // namespace OCC::Mac

@@ -29,6 +29,8 @@ class TestSyncConflictsModel;
 class TestRemoteWipe;
 class FolderManTestHelper;
 class TestFileActionsModel;
+class TestBrowserReAuthController;
+class TestMigration;
 
 namespace OCC {
 
@@ -37,6 +39,7 @@ class SyncResult;
 class SocketApi;
 class LockWatcher;
 class UpdateE2eeFolderUsersMetadataJob;
+class Migration;
 
 /**
  * @brief The FolderMan class
@@ -80,7 +83,9 @@ public:
     };
 
     ~FolderMan() override;
-    static FolderMan *instance() { return _instance; }
+
+    static FolderMan *instance();
+    static void resetInstance();
 
     int setupFolders();
     int setupFoldersMigration();
@@ -233,7 +238,7 @@ public:
 
     /** If the folder configuration is no longer supported this will return an error string */
     [[nodiscard]] Result<void, QString> unsupportedConfiguration(const QString &path) const;
-signals:
+Q_SIGNALS:
     /**
       * signal to indicate a folder has changed its sync state.
       *
@@ -256,7 +261,7 @@ signals:
      */
     void wipeDone(OCC::AccountState *account, bool success);
 
-public slots:
+public Q_SLOTS:
 
     /**
      * Schedules folders of newly connected accounts, terminates and
@@ -287,7 +292,9 @@ public slots:
 
     void removeE2eFiles(const OCC::AccountPtr &account) const;
 
-private slots:
+    void slotServerVersionChanged(const OCC::AccountPtr &account);
+
+private Q_SLOTS:
     void slotFolderSyncPaused(OCC::Folder *, bool paused);
     void slotFolderCanSyncChanged();
     void slotFolderSyncStarted();
@@ -307,8 +314,6 @@ private slots:
     // Wraps the Folder::syncStateChange() signal into the
     // FolderMan::folderSyncStateChange(Folder*) signal.
     void slotForwardFolderSyncStateChange();
-
-    void slotServerVersionChanged(const OCC::AccountPtr &account);
 
     /**
      * A file whose locks were being monitored has become unlocked.
@@ -404,9 +409,10 @@ private:
 
     bool _appRestartRequired = false;
 
-    static FolderMan *_instance;
     explicit FolderMan(QObject *parent = nullptr);
-    friend class OCC::Application;
+
+    static std::unique_ptr<FolderMan> _instance;
+
     friend class ::TestFolderMan;
     friend class ::TestSyncConflictsModel;
     friend class ::TestCfApiShellExtensionsIPC;
@@ -416,6 +422,8 @@ private:
     friend class ::TestRemoteWipe;
     friend class ::FolderManTestHelper;
     friend class ::TestFileActionsModel;
+    friend class ::TestBrowserReAuthController;
+    friend class ::TestMigration;
 };
 
 } // namespace OCC

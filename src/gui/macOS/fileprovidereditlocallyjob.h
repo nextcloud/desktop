@@ -25,16 +25,16 @@ public:
                                         const QString &relPath,
                                         QObject * const parent = nullptr);
 
-public slots:
+public Q_SLOTS:
     void start();
 
-signals:
+Q_SIGNALS:
     void error(const QString &message, const QString &informativeText);
     void ocIdAcquired(const QString &ocId);
     void notAvailable();
     void finished();
 
-private slots:
+private Q_SLOTS:
     void showError(const QString &message, const QString &informativeText);
     void idGetError(const QNetworkReply *const reply);
     void idGetFinished(const QVariantMap &data);

@@ -78,8 +78,8 @@ bool FolderWatcher::canSetPermissions() const
 void FolderWatcher::appendSubPaths(QDir dir, QStringList &subPaths)
 {
     QStringList newSubPaths = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
-    for (int i = 0; i < newSubPaths.size(); i++) {
-        QString path = dir.path() + "/" + newSubPaths[i];
+    for (auto &newSubPath : newSubPaths) {
+        QString path = dir.path() + "/" + newSubPath;
         QFileInfo fileInfo(path);
         subPaths.append(path);
         if (FileSystem::isDir(path)) {
@@ -167,8 +167,9 @@ void FolderWatcher::startNotificationTestWhenReady()
     FileSystem::setFileHidden(path, true);
 
     QTimer::singleShot(5000, this, [this]() {
-        if (!_testNotificationPath.isEmpty())
-            emit becameUnreliable(tr("The watcher did not receive a test notification."));
+        if (!_testNotificationPath.isEmpty()) {
+            Q_EMIT becameUnreliable(tr("The watcher did not receive a test notification."));
+        }
         _testNotificationPath.clear();
     });
 }
@@ -177,13 +178,13 @@ void FolderWatcher::lockChangeDebouncingTimerTimedOut()
 {
     if (!_unlockedFiles.isEmpty()) {
         const auto unlockedFilesCopy = _unlockedFiles;
-        emit filesLockReleased(unlockedFilesCopy);
+        Q_EMIT filesLockReleased(unlockedFilesCopy);
         _unlockedFiles.clear();
     }
     if (!_lockedFiles.isEmpty()) {
         const auto lockedFilesCopy = _lockedFiles;
-        emit filesLockImposed(lockedFilesCopy);
-        emit lockedFilesFound(lockedFilesCopy);
+        Q_EMIT filesLockImposed(lockedFilesCopy);
+        Q_EMIT lockedFilesFound(lockedFilesCopy);
         _lockedFiles.clear();
     }
 }
@@ -285,7 +286,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
 
     for (const auto &path : changedPaths) {
         qCInfo(lcFolderWatcher) << "change on path" << path;
-        emit pathChanged(path);
+        Q_EMIT pathChanged(path);
     }
 }
 

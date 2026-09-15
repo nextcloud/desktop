@@ -83,6 +83,7 @@ constexpr auto e2EeUiActionSetupEncryptionId = "setup_encryption";
 constexpr auto e2EeUiActionForgetEncryptionId = "forget_encryption";
 constexpr auto e2EeUiActionDisplayMnemonicId = "display_mnemonic";
 constexpr auto e2EeUiActionMigrateCertificateId = "migrate_certificate";
+constexpr auto mnemonicVisibleLineCount = 2;
 }
 
 namespace OCC {
@@ -180,6 +181,11 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 {
     _ui->setupUi(this);
 
+    _ui->activitiesShortcutButton->setText(Application::translate("ActivitiesWindow", "Activities"));
+    _ui->userStatusShortcutButton->setText(Application::translate("UserStatusWindow", "Online status"));
+    _ui->assistantShortcutButton->setText(Application::translate("AssistantWindow", "Assistant"));
+    _ui->searchShortcutButton->setText(Application::translate("SearchWindow", "Search"));
+
     _encryptionPanel = new QFrame(this);
     _encryptionPanel->setObjectName(QLatin1String("encryptionPanel"));
     _encryptionPanel->setFrameShape(QFrame::NoFrame);
@@ -198,12 +204,16 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->verticalLayout_2->removeWidget(_ui->accountStatusPanel);
     _ui->verticalLayout_2->removeWidget(_ui->syncFoldersPanel);
     _ui->verticalLayout_2->removeWidget(_ui->connectionSettingsPanel);
+    _ui->verticalLayout_2->removeWidget(_ui->accountShortcutsPanel);
+    _ui->verticalLayout_2->removeWidget(_ui->fileProviderMaintenancePanel);
     _ui->verticalLayout_2->removeWidget(_ui->accountActionsPanel);
     _ui->connectionSettingsPanel->hide();
-    _ui->verticalLayout_2->insertWidget(0, _ui->syncFoldersPanel);
-    _ui->verticalLayout_2->insertWidget(1, _encryptionPanel);
-    _ui->verticalLayout_2->insertWidget(2, _ui->accountStatusPanel);
-    _ui->verticalLayout_2->insertWidget(3, _ui->accountActionsPanel);
+    _ui->verticalLayout_2->insertWidget(0, _ui->accountShortcutsPanel);
+    _ui->verticalLayout_2->insertWidget(1, _ui->syncFoldersPanel);
+    _ui->verticalLayout_2->insertWidget(2, _ui->fileProviderMaintenancePanel);
+    _ui->verticalLayout_2->insertWidget(3, _encryptionPanel);
+    _ui->verticalLayout_2->insertWidget(4, _ui->accountStatusPanel);
+    _ui->verticalLayout_2->insertWidget(5, _ui->accountActionsPanel);
 
     _model->setAccountState(_accountState);
     _model->setParent(this);
@@ -216,9 +226,30 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->connectionSettingsPanelContents->setAutoFillBackground(false);
     _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->connectionSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
+    _ui->accountShortcutsPanelContents->setAutoFillBackground(false);
+    _ui->accountShortcutsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
+    _ui->accountShortcutsPanelContents->setContentsMargins(0, 0, 0, 0);
     _ui->accountActionsPanelContents->setAutoFillBackground(false);
     _ui->accountActionsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->accountActionsPanelContents->setContentsMargins(0, 0, 0, 0);
+
+    connect(_ui->activitiesShortcutButton, &QPushButton::clicked, this, [this] {
+        Q_EMIT showIssuesList(_accountState);
+    });
+    connect(_ui->userStatusShortcutButton, &QPushButton::clicked, this, [this] {
+        Q_EMIT showUserStatus(_accountState);
+    });
+    connect(_ui->assistantShortcutButton, &QPushButton::clicked, this, [this] {
+        Q_EMIT showAssistant(_accountState);
+    });
+    connect(_ui->searchShortcutButton, &QPushButton::clicked, this, [this] {
+        Q_EMIT showSearch(_accountState);
+    });
+    setTabOrder(_ui->activitiesShortcutButton, _ui->searchShortcutButton);
+    setTabOrder(_ui->searchShortcutButton, _ui->userStatusShortcutButton);
+    setTabOrder(_ui->userStatusShortcutButton, _ui->assistantShortcutButton);
+    connect(_accountState->account().data(), &Account::capabilitiesChanged, this, &AccountSettings::updateAccountShortcutVisibility);
+    updateAccountShortcutIcons();
 
     connect(_ui->_toggleSignInOutButton, &QPushButton::clicked, this, &AccountSettings::slotToggleSignInState);
     connect(_ui->_removeAccountButton, &QPushButton::clicked, this, &AccountSettings::slotRemoveAccount);
@@ -859,7 +890,7 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
                 return;
             }
 #endif
-            emit showIssuesList(_accountState);
+            Q_EMIT showIssuesList(_accountState);
             return;
         }
 
@@ -945,7 +976,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
             QStringList() << QLatin1String("/"));
         folderMan->scheduleAllFolders();
-        emit folderChanged();
+        Q_EMIT folderChanged();
     } else {
         // addFolder can refuse (e.g. classic sync folders are unavailable while the
         // File Provider integration is enabled). Don't leave the user believing the
@@ -989,7 +1020,7 @@ void AccountSettings::slotRemoveCurrentFolder()
                 _model->removeRow(row);
 
                 // single folder fix to show add-button and hide remove-button
-                emit folderChanged();
+                Q_EMIT folderChanged();
             }
         });
         messageBox->open();
@@ -1000,7 +1031,7 @@ void AccountSettings::slotOpenCurrentFolder()
 {
     const auto alias = selectedFolderAlias();
     if (!alias.isEmpty()) {
-        emit openFolderAlias(alias);
+        Q_EMIT openFolderAlias(alias);
     }
 }
 
@@ -1260,20 +1291,24 @@ void AccountSettings::displayMnemonic(const QString &mnemonic)
            "You will need it to set-up the synchronization of encrypted folders on your other devices."));
     QFont monoFont(QStringLiteral("Monospace"));
     monoFont.setStyleHint(QFont::TypeWriter);
-    ui.lineEdit->setFont(monoFont);
-    ui.lineEdit->setText(mnemonic);
-    ui.lineEdit->setReadOnly(true);
 
-    ui.lineEdit->setStyleSheet(QStringLiteral("QLineEdit{ color: black; background: lightgrey; border-style: inset;}"));
+    ui.mnemonicTextEdit->setFont(monoFont);
+    ui.mnemonicTextEdit->setPlainText(mnemonic);
+    ui.mnemonicTextEdit->setStyleSheet(QStringLiteral("QTextEdit{ color: black; background: lightgrey; border-style: inset;}"));
 
-    ui.lineEdit->focusWidget();
-    ui.lineEdit->selectAll();
-    ui.lineEdit->setAlignment(Qt::AlignCenter);
+    const auto textHeight = mnemonicVisibleLineCount * ui.mnemonicTextEdit->fontMetrics().lineSpacing();
+    const auto documentMargins = 2.0 * ui.mnemonicTextEdit->document()->documentMargin();
+    const auto frameMargins = 2 * ui.mnemonicTextEdit->frameWidth();
 
-    const QFont font(QStringLiteral(""), 0);
-    QFontMetrics fm(font);
-    ui.lineEdit->setFixedWidth(fm.horizontalAdvance(mnemonic));
-    widget.resize(widget.sizeHint());
+    const auto mnemonicTextEditHeight = static_cast<int>(std::ceil(textHeight + documentMargins + frameMargins));
+
+    ui.mnemonicTextEdit->setFixedHeight(mnemonicTextEditHeight);
+
+    ui.mnemonicTextEdit->setFocus();
+    ui.mnemonicTextEdit->selectAll();
+    ui.mnemonicTextEdit->setAlignment(Qt::AlignCenter);
+
+    widget.resize(widget.sizeHint().expandedTo(widget.size()));
     widget.exec();
 }
 
@@ -1453,6 +1488,7 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
     if (total > 0) {
         const auto usedStr = Utility::octetsToString(used);
         const auto totalStr = Utility::octetsToString(total);
+        //: %1 is the used storage size. %2 is the total storage size.
         _spaceUsageText = tr("%1 of %2 in use").arg(usedStr, totalStr);
     } else {
         /* -1 means not computed; -2 means unknown; -3 means unlimited  (#owncloud/client/issues/3940)*/
@@ -1460,6 +1496,7 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
             _spaceUsageText.clear();
         } else {
             const auto usedStr = Utility::octetsToString(used);
+            //: %1 is the used storage size.
             _spaceUsageText = tr("%1 in use").arg(usedStr);
         }
     }
@@ -1489,6 +1526,7 @@ void AccountSettings::slotAccountStateChanged()
             if (user.isEmpty()) {
                 user = cred->user();
             }
+            //: %1 is a link to the server. %2 is the user display name or username.
             serverWithUser = tr("%1 as %2").arg(server, Utility::escape(user));
         }
 
@@ -1500,6 +1538,7 @@ void AccountSettings::slotAccountStateChanged()
             }
             auto statusMessage = tr("Connected to %1.").arg(serverWithUser);
             if (!_spaceUsageText.isEmpty()) {
+                //: %1 is the server and user description. %2 is the storage usage description.
                 statusMessage = tr("Connected to %1 (%2).").arg(serverWithUser, _spaceUsageText);
             }
             showConnectionLabel(statusMessage, errors);
@@ -1552,6 +1591,7 @@ void AccountSettings::slotAccountStateChanged()
     _ui->accountActionsDescription->setText(isPublicShareLink
             ? tr("Remove this public share connection from the client.")
             : tr("Log out, log back in, or remove this account from the client."));
+    updateAccountShortcutVisibility();
 
     /* Allow to expand the item if the account is connected. */
     _ui->_folderList->setItemsExpandable(state == AccountState::Connected);
@@ -1869,9 +1909,30 @@ bool AccountSettings::event(QEvent *e)
 void AccountSettings::slotStyleChanged()
 {
     customizeStyle();
+    updateAccountShortcutIcons();
 
     // Notify the other widgets (Dark-/Light-Mode switching)
-    emit styleChanged();
+    Q_EMIT styleChanged();
+}
+
+void AccountSettings::updateAccountShortcutVisibility()
+{
+    const auto connected = _accountState->isConnected();
+    const auto &capabilities = _accountState->account()->capabilities();
+
+    _ui->activitiesShortcutButton->setVisible(connected);
+    _ui->userStatusShortcutButton->setVisible(connected && capabilities.userStatus());
+    _ui->assistantShortcutButton->setVisible(connected && capabilities.ncAssistantEnabled());
+    _ui->searchShortcutButton->setVisible(connected);
+    _ui->accountShortcutsPanel->setVisible(connected);
+}
+
+void AccountSettings::updateAccountShortcutIcons()
+{
+    _ui->activitiesShortcutButton->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/activity.svg"), palette()));
+    _ui->userStatusShortcutButton->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/user.svg"), palette()));
+    _ui->assistantShortcutButton->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/nc-assistant-app.svg"), palette()));
+    _ui->searchShortcutButton->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/search.svg"), palette()));
 }
 
 void AccountSettings::customizeStyle()

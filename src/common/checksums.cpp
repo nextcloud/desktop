@@ -96,8 +96,9 @@ QByteArray calcSha256(const QByteArray &data)
 
 QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum)
 {
-    if (checksumType.isEmpty() || checksum.isEmpty())
+    if (checksumType.isEmpty() || checksum.isEmpty()) {
         return QByteArray();
+    }
     QByteArray header = checksumType;
     header.append(':');
     header.append(checksum);
@@ -234,9 +235,9 @@ void ComputeChecksum::slotCalculationDone()
 {
     QByteArray checksum = _watcher.future().result();
     if (!checksum.isNull()) {
-        emit done(_checksumType, checksum);
+        Q_EMIT done(_checksumType, checksum);
     } else {
-        emit done(QByteArray(), QByteArray());
+        Q_EMIT done(QByteArray(), QByteArray());
     }
 }
 
@@ -250,13 +251,13 @@ ComputeChecksum *ValidateChecksumHeader::prepareStart(const QByteArray &checksum
 {
     // If the incoming header is empty no validation can happen. Just continue.
     if (checksumHeader.isEmpty()) {
-        emit validated(QByteArray(), QByteArray());
+        Q_EMIT validated(QByteArray(), QByteArray());
         return nullptr;
     }
 
     if (!parseChecksumHeader(checksumHeader, &_expectedChecksumType, &_expectedChecksum)) {
         qCWarning(lcChecksums) << "Checksum header malformed:" << checksumHeader;
-        emit validationFailed(tr("The checksum header is malformed."), _calculatedChecksumType, _calculatedChecksum, ChecksumHeaderMalformed);
+        Q_EMIT validationFailed(tr("The checksum header is malformed."), _calculatedChecksumType, _calculatedChecksum, ChecksumHeaderMalformed);
         return nullptr;
     }
 
@@ -269,8 +270,9 @@ ComputeChecksum *ValidateChecksumHeader::prepareStart(const QByteArray &checksum
 
 void ValidateChecksumHeader::start(const QString &filePath, const QByteArray &checksumHeader)
 {
-    if (auto calculator = prepareStart(checksumHeader))
+    if (auto calculator = prepareStart(checksumHeader)) {
         calculator->start(filePath);
+    }
 }
 
 QByteArray ValidateChecksumHeader::calculatedChecksumType() const
@@ -290,16 +292,17 @@ void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray &checksumTy
     _calculatedChecksum = checksum;
 
     if (checksumType != _expectedChecksumType) {
-        emit validationFailed(tr("The checksum header contained an unknown checksum type \"%1\"").arg(QString::fromLatin1(_expectedChecksumType)),
+        Q_EMIT validationFailed(tr("The checksum header contained an unknown checksum type \"%1\"").arg(QString::fromLatin1(_expectedChecksumType)),
             _calculatedChecksumType, _calculatedChecksum, ChecksumTypeUnknown);
         return;
     }
     if (checksum != _expectedChecksum) {
-        emit validationFailed(tr(R"(The downloaded file does not match the checksum, it will be resumed. "%1" != "%2")").arg(QString::fromUtf8(_expectedChecksum), QString::fromUtf8(checksum)),
+        //: %1 is the checksum expected from the server. %2 is the checksum calculated from the downloaded file.
+        Q_EMIT validationFailed(tr(R"(The downloaded file does not match the checksum, it will be resumed. "%1" != "%2")").arg(QString::fromUtf8(_expectedChecksum), QString::fromUtf8(checksum)),
             _calculatedChecksumType, _calculatedChecksum, ChecksumMismatch);
         return;
     }
-    emit validated(checksumType, checksum);
+    Q_EMIT validated(checksumType, checksum);
 }
 
 CSyncChecksumHook::CSyncChecksumHook() = default;
@@ -307,8 +310,9 @@ CSyncChecksumHook::CSyncChecksumHook() = default;
 QByteArray CSyncChecksumHook::hook(const QByteArray &path, const QByteArray &otherChecksumHeader, void * /*this_obj*/)
 {
     QByteArray type = parseChecksumHeaderType(QByteArray(otherChecksumHeader));
-    if (type.isEmpty())
+    if (type.isEmpty()) {
         return nullptr;
+    }
 
     qCInfo(lcChecksums) << "Computing" << type << "checksum of" << path << "in the csync hook";
     QByteArray checksum = ComputeChecksum::computeNowOnFile(QString::fromUtf8(path), type);

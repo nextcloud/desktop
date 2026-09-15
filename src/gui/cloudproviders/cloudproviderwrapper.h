@@ -40,7 +40,7 @@ public:
     void updateStatusText(QString statusText);
     void updatePauseStatus();
 
-public slots:
+public Q_SLOTS:
     void slotSyncStarted();
     void slotSyncFinished(const OCC::SyncResult &);
     void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);

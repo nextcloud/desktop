@@ -11,6 +11,8 @@ import Style
 ApplicationWindow {
     id: root
 
+    property bool minimizable: false
+
     LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
@@ -19,6 +21,7 @@ ApplicationWindow {
         | Qt.WindowTitleHint
         | Qt.WindowSystemMenuHint
         | Qt.WindowCloseButtonHint
+        | (root.minimizable ? Qt.WindowMinimizeButtonHint : 0)
     color: Style.wizardWindowBackground
     palette.window: Style.wizardWindowBackground
     palette.base: Style.wizardFieldBackground

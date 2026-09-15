@@ -21,20 +21,30 @@ struct UnifiedSearchResult
 {
     enum Type : quint8 {
         Default,
+        ProviderHeader,
+        PartialMatchesHeader,
         FetchMoreTrigger,
+        RetryFetchMoreTrigger,
     };
 
     static QString typeAsString(UnifiedSearchResult::Type type);
 
-    QString _title;
-    QString _subline;
-    QString _providerId;
-    QString _providerName;
+    QString _title = QString();
+    QString _subline = QString();
+    QString _providerId = QString();
+    QString _providerName = QString();
+    QString _providerIcon = QString();
+    QString _stableKey = QString();
     bool _isRounded = false;
+    bool _isSelected = false;
+    bool _isSelectable = false;
+    bool _isPartialMatch = false;
+    bool _hasOverflow = false;
+    bool _isLoading = false;
     qint32 _order = std::numeric_limits<qint32>::max();
-    QUrl _resourceUrl;
-    QString _darkIcons;
-    QString _lightIcons;
+    QUrl _resourceUrl = QUrl();
+    QString _darkIcons = QString();
+    QString _lightIcons = QString();
     bool _darkIconsIsThumbnail = false;
     bool _lightIconsIsThumbnail = false;
     Type _type = Type::Default;

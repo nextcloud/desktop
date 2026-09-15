@@ -20,7 +20,7 @@ class RemoteWipe : public QObject
 public:
     explicit RemoteWipe(AccountPtr account, QObject *parent = nullptr);
 
-signals:
+Q_SIGNALS:
     /**
      * Notify if wipe was requested
      */
@@ -31,14 +31,14 @@ signals:
      */
     void askUserCredentials();
 
-public slots:
+public Q_SLOTS:
     /**
      * Once receives a 401 or 403 status response it will do a fetch to
      * <server>/index.php/core/wipe/check
      */
     void startCheckJobWithAppPassword(QString);
 
-private slots:
+private Q_SLOTS:
     /**
      * If wipe is requested, delete account and data, if not continue by asking
      * the user to login again

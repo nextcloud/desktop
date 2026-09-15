@@ -50,14 +50,14 @@ public:
      */
     void performStartupReconciliation();
 
-signals:
+Q_SIGNALS:
     void operationInProgressChanged();
     void operationMessageChanged();
     void vfsEnabledForAccountChanged(const QString &userIdAtHost);
     void fileProviderModeEnabledChanged(bool enabled);
     void fileProviderModeApplyFinished(bool enabled, const QStringList &failedAccounts);
 
-public slots:
+public Q_SLOTS:
     /**
      * @brief Switches the app-level File Provider mode. The caller is responsible for
      * having obtained explicit user confirmation. Enabling discards all classic sync

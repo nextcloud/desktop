@@ -14,6 +14,7 @@
 #include "theme.h"
 #include "updatechannel.h"
 #include "version.h"
+#include "settings/migration.h"
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
@@ -91,8 +92,6 @@ namespace chrono = std::chrono;
 Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
 QString ConfigFile::_confDir = {};
-QString ConfigFile::_discoveredLegacyConfigPath = {};
-ConfigFile::MigrationPhase ConfigFile::_migrationPhase = ConfigFile::MigrationPhase::NotStarted;
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
     chrono::milliseconds defaultValue)
@@ -152,8 +151,9 @@ ConfigFile::ConfigFile()
 bool ConfigFile::setConfDir(const QString &value)
 {
     QString dirPath = value;
-    if (dirPath.isEmpty())
+    if (dirPath.isEmpty()) {
         return false;
+    }
 
     QFileInfo fi(dirPath);
     if (!fi.exists()) {
@@ -296,8 +296,9 @@ void ConfigFile::restoreGeometry(QWidget *w)
 void ConfigFile::saveGeometryHeader(QHeaderView *header)
 {
 #ifndef TOKEN_AUTH_ONLY
-    if (!header)
+    if (!header) {
         return;
+    }
     ASSERT(!header->objectName().isEmpty());
 
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -312,8 +313,9 @@ void ConfigFile::saveGeometryHeader(QHeaderView *header)
 void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 {
 #ifndef TOKEN_AUTH_ONLY
-    if (!header)
+    if (!header) {
         return;
+    }
     ASSERT(!header->objectName().isNull());
 
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -327,7 +329,7 @@ void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &defaultValue) const
 {
     if (Utility::isWindows()) {
-        const auto appName = isUnbrandedToBrandedMigrationInProgress() ? unbrandedAppName : Theme::instance()->appNameGUI();
+        const auto appName = Migration::isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
         // check for policies first and return immediately if a value is found.
         QSettings userPolicy(QString::fromLatin1(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)").arg(APPLICATION_VENDOR, appName),
             QSettings::NativeFormat);
@@ -381,7 +383,9 @@ QString ConfigFile::excludeFile(Scope scope) const
         return ConfigFile::excludeFileFromSystem();
     }
 
-    const auto excludeFilePath = scope == LegacyScope ? discoveredLegacyConfigPath() : configPath();
+    const auto excludeFilePath = scope == LegacyScope
+        ? Migration::discoveredLegacyConfigPath()
+        : configPath();
 
     // prefer sync-exclude.lst, but if it does not exist, check for exclude.lst
     QFileInfo exclFileInfo(excludeFilePath, syncExclFile);
@@ -434,10 +438,38 @@ QString ConfigFile::excludeFileFromSystem()
     return fi.absoluteFilePath();
 }
 
+namespace {
+void removeUpdaterArtifact(const QString &path)
+{
+    if (path.isEmpty() || !QFile::exists(path)) {
+        return;
+    }
+
+    if (QFile::remove(path)) {
+        qCInfo(lcConfigFile) << "Removed leftover updater file:" << path;
+    } else {
+        qCWarning(lcConfigFile) << "Failed to remove leftover updater file:" << path;
+    }
+}
+}
+
+QString ConfigFile::msiLogFilePath() const
+{
+    return configPath() + QStringLiteral("msi.log");
+}
+
 void OCC::ConfigFile::cleanUpdaterConfiguration()
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup("Updater");
+
+    // The config is the only record of where the downloaded installer lives.
+    // Delete it before dropping the keys, or every version change orphans
+    // another installer in the config folder with nothing left to find it by.
+    // See https://github.com/nextcloud/desktop/issues/7009
+    removeUpdaterArtifact(settings.value("updateAvailable").toString());
+    removeUpdaterArtifact(msiLogFilePath());
+
     settings.remove("autoUpdateAttempted");
     settings.remove("updateTargetVersion");
     settings.remove("updateTargetVersionString");
@@ -857,7 +889,7 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
     const QVariant &defaultValue) const
 {
     QVariant systemSetting;
-    const auto appName = isUnbrandedToBrandedMigrationInProgress() ? unbrandedAppName : Theme::instance()->appNameGUI();
+    const auto appName = Migration::isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
     if (Utility::isMac()) {
         QSettings systemSettings(QLatin1String("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"), QSettings::NativeFormat);
         if (!group.isEmpty()) {
@@ -880,8 +912,9 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
     }
 
     QSettings settings(configFile(), QSettings::IniFormat);
-    if (!group.isEmpty())
+    if (!group.isEmpty()) {
         settings.beginGroup(group);
+    }
 
     return settings.value(param, systemSetting);
 }
@@ -1332,20 +1365,6 @@ void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
     excludedFiles.addExcludeFilePath(userList);
 }
 
-QString ConfigFile::discoveredLegacyConfigPath()
-{
-    return _discoveredLegacyConfigPath;
-}
-
-void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath)
-{
-    if (_discoveredLegacyConfigPath == discoveredLegacyConfigPath) {
-        return;
-    }
-
-    _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
-}
-
 void ConfigFile::removeFileProviderDomainMapping()
 {
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -1385,60 +1404,34 @@ void ConfigFile::setMacFileProviderModeEnabled(const bool enabled)
     settings.sync();
 }
 
-bool ConfigFile::isUpgrade() const
+void ConfigFile::applyMigrationDefaults()
 {
-    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
-    const auto previousVersion = QVersionNumber::fromString(clientPreviousVersionString());
-    return currentVersion > previousVersion;
+    const auto theme = Theme::instance();
+    // Launch on system startup defaults to true after 3.11.x.
+    setLaunchOnSystemStartup(launchOnSystemStartup());
+    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), launchOnSystemStartup());
+    // Do not warn about deleting many files by default.
+    setPromptDeleteFiles(false);
 }
 
-bool ConfigFile::isDowngrade() const
+QStringList ConfigFile::backupConfigFiles()
 {
-    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
-    const auto previousVersion = QVersionNumber::fromString(clientPreviousVersionString());
-    return previousVersion > currentVersion;
-}
-
-bool ConfigFile::shouldTryUnbrandedToBrandedMigration() const
-{
-    return migrationPhase() == ConfigFile::MigrationPhase::SetupFolders
-        && Theme::instance()->appName() != unbrandedAppName
-        && !discoveredLegacyConfigPath().isEmpty();
-}
-
-bool ConfigFile::isUnbrandedToBrandedMigrationInProgress() const
-{
-    return isMigrationInProgress() && Theme::instance()->appName() != unbrandedAppName;
-}
-
-bool ConfigFile::shouldTryToMigrate() const
-{
-    return hasVersionChanged() && (isUpgrade() || isDowngrade());
-}
-
-bool ConfigFile::hasVersionChanged() const
-{
-    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING); //app running
-    const auto clientConfigVersion = QVersionNumber::fromString(clientVersionString()); //config version
-    return clientConfigVersion != currentVersion;
-}
-
-bool ConfigFile::isMigrationInProgress() const
-{
-    return _migrationPhase != MigrationPhase::NotStarted && _migrationPhase != MigrationPhase::Done;
-}
-
-void ConfigFile::setMigrationPhase(const MigrationPhase phase)
-{
-    // do not rollback
-    if (phase > _migrationPhase) {
-        _migrationPhase = phase;
+    QStringList backupFilesList;
+    QDir configDir(configPath());
+    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
+    for (const auto &oldConfig : anyConfigFileNameList) {
+        const auto oldConfigFilePath = oldConfig.filePath();
+        const auto newConfigFilePath = configFile();
+        backupFilesList.append(backup(oldConfig.fileName()));
+        if (oldConfigFilePath == newConfigFilePath || QFileInfo::exists(newConfigFilePath)) {
+            continue;
+        }
+        if (!QFile::rename(oldConfigFilePath, newConfigFilePath)) {
+            qCWarning(lcConfigFile) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFilePath;
+        }
     }
-}
 
-ConfigFile::MigrationPhase ConfigFile::migrationPhase() const
-{
-    return _migrationPhase;
+    return backupFilesList;
 }
 
 }

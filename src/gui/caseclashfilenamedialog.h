@@ -39,10 +39,10 @@ public:
 
     void accept() override;
 
-signals:
+Q_SIGNALS:
     void successfulRename(const QString &filePath);
 
-private slots:
+private Q_SLOTS:
     void updateFileWidgetGroup(const QString &filePath,
                                const QString &linkText,
                                QLabel *filenameLabel,

@@ -60,7 +60,7 @@ public:
     /** Access list of files that shall be locally rediscovered. */
     [[nodiscard]] const std::set<QString> &localDiscoveryPaths() const;
 
-public slots:
+public Q_SLOTS:
     /**
      * Success and failure of sync items adjust what the next sync is
      * supposed to do.

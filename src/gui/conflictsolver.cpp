@@ -62,7 +62,7 @@ void ConflictSolver::setLocalVersionFilename(const QString &localVersionFilename
     }
 
     _localVersionFilename = localVersionFilename;
-    emit localVersionFilenameChanged();
+    Q_EMIT localVersionFilenameChanged();
 }
 
 void ConflictSolver::setRemoteVersionFilename(const QString &remoteVersionFilename)
@@ -72,7 +72,7 @@ void ConflictSolver::setRemoteVersionFilename(const QString &remoteVersionFilena
     }
 
     _remoteVersionFilename = remoteVersionFilename;
-    emit remoteVersionFilenameChanged();
+    Q_EMIT remoteVersionFilenameChanged();
 }
 
 void ConflictSolver::setIsBulkSolution(bool isBulkSolution)
@@ -82,7 +82,7 @@ void ConflictSolver::setIsBulkSolution(bool isBulkSolution)
     }
 
     _isBulkSolution = isBulkSolution;
-    emit isBulkSolutionChanged();
+    Q_EMIT isBulkSolutionChanged();
 }
 
 void ConflictSolver::setYesToAllRequested(bool yesToAllRequested)
@@ -92,7 +92,7 @@ void ConflictSolver::setYesToAllRequested(bool yesToAllRequested)
     }
 
     _yesToAllRequested = yesToAllRequested;
-    emit yesToAllRequestedChanged();
+    Q_EMIT yesToAllRequestedChanged();
 }
 
 bool ConflictSolver::deleteLocalVersion()

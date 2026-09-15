@@ -20,14 +20,14 @@ public:
 
     [[nodiscard]] QString localPath() const;
 
-signals:
+Q_SIGNALS:
     void localPathChanged();
 
-public slots:
+public Q_SLOTS:
     void setLocalPath(const QString &localPath);
     void load();
 
-protected slots:
+protected Q_SLOTS:
     void startFetchJob() override;
 
 private:

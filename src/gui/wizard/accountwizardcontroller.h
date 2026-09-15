@@ -208,7 +208,7 @@ public:
     Q_INVOKABLE void retrySecureConnectionWithoutTls();
     Q_INVOKABLE void useClientCertificateForSecureConnection();
 
-signals:
+Q_SIGNALS:
     void currentStepChanged();
     void serverUrlChanged();
     void serverUrlEditableChanged();
@@ -242,7 +242,7 @@ signals:
     void secureConnectionFailed(const QString &host, bool retryHttpOnly);
     void clientCertificateChanged();
 
-private slots:
+private Q_SLOTS:
     void slotSystemProxyLookupDone(const QNetworkProxy &proxy);
     void slotFindServer();
     void slotFindServerBehindRedirect();

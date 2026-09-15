@@ -9,6 +9,8 @@ target_sources(nextcloudGuiSearch
     unifiedsearchresult.cpp
     unifiedsearchresultslistmodel.h
     unifiedsearchresultslistmodel.cpp
+    unifiedsearchpeoplemodel.h
+    unifiedsearchpeoplemodel.cpp
 )
 
 ecm_add_qml_module(nextcloudGuiSearch
@@ -16,7 +18,13 @@ ecm_add_qml_module(nextcloudGuiSearch
   GENERATE_PLUGIN_SOURCE
   QML_FILES
     SearchWindow.qml
+    UnifiedSearchCustomDateRangeDialog.qml
+    UnifiedSearchDetailHeader.qml
+    UnifiedSearchFilterBar.qml
     UnifiedSearchInputContainer.qml
+    UnifiedSearchPeopleDelegate.qml
+    UnifiedSearchPeoplePopup.qml
+    UnifiedSearchResultDelegate.qml
     UnifiedSearchResultFetchMoreTrigger.qml
     UnifiedSearchResultItem.qml
     UnifiedSearchResultItemSkeleton.qml
@@ -29,3 +37,5 @@ ecm_add_qml_module(nextcloudGuiSearch
 )
 
 target_link_libraries(nextcloudGuiSearch PRIVATE nextcloudCore)
+target_compile_definitions(nextcloudGuiSearch PRIVATE QT_NO_KEYWORDS)
+target_compile_definitions(nextcloudGuiSearchplugin PRIVATE QT_NO_KEYWORDS)

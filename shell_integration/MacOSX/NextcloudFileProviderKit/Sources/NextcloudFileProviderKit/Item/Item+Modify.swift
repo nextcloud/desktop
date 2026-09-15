@@ -128,7 +128,6 @@ public extension Item {
         }
 
         var headers = [String: String]()
-
         if let token = metadata.lockToken {
             headers["If"] = "<\(remotePath)> (<opaquelocktoken:\(token)>)"
         }
@@ -165,10 +164,11 @@ public extension Item {
             shouldSendIfMatch = true
         }
 
-        // We can only guard the write if we know the version to match against. When we
-        // do, a subsequent 412 is a real content conflict (below); when we don't, the
-        // upload stays unconditional and 412 keeps its previous stale-lock meaning.
-        let sentIfMatch = shouldSendIfMatch && baseEtag != nil
+        // A lock token is already an exclusive write precondition. Its acquisition also changes
+        // the server etag, while File Provider's base version intentionally remains the version the
+        // document was opened from. Do not combine that pre-lock etag with the current lock token.
+        // Without a lock token, keep using the etag as the optimistic-concurrency guard.
+        let sentIfMatch = shouldSendIfMatch && baseEtag != nil && metadata.lockToken == nil
         if sentIfMatch, let baseEtag {
             // Our stored etag is normalized (unquoted); Sabre/DAV compares If-Match
             // against the quoted resource ETag, so re-add the quotes.
@@ -201,6 +201,12 @@ public extension Item {
             },
             progressHandler: { $0.copyCurrentStateToProgress(progress) }
         )
+
+        // `metadata` is a value snapshot captured before `upload()`. A partial chunked-upload
+        // failure leaves the current resumable upload identifier in Realm, but the error paths
+        // below write this snapshot back. Refresh the identifier so that write does not replace the
+        // current identifier with its pre-upload value. Successful and non-resumable uploads clear it.
+        metadata.chunkUploadId = dbManager.itemMetadata(ocId: ocId)?.chunkUploadId
 
         guard error == .success else {
             logger.error(
@@ -316,6 +322,7 @@ public extension Item {
         // "changed by another application" right after they save it.
         newMetadata.date = newContentModificationDate ?? date ?? metadata.date
         newMetadata.etag = etag ?? metadata.etag
+        newMetadata.fileProviderContentVersion = newMetadata.etag
         newMetadata.ocId = ocId
         newMetadata.size = size ?? 0
         newMetadata.session = ""
@@ -323,6 +330,7 @@ public extension Item {
         newMetadata.sessionTaskIdentifier = 0
         newMetadata.downloaded = true
         newMetadata.uploaded = true
+        newMetadata.chunkUploadId = metadata.chunkUploadId
 
         dbManager.addItemMetadata(newMetadata)
 
@@ -377,6 +385,11 @@ public extension Item {
 
             guard let modifiedIgnored = await modifyUnuploaded(itemTarget: itemTarget, baseVersion: baseVersion, changedFields: changedFields, contents: newContents, options: options, request: request, ignoredFiles: ignoredFiles, domain: domain, forcedChunkSize: forcedChunkSize, progress: progress, dbManager: dbManager) else {
                 logger.error("Unable to mark bundle as excluded.", [.name: filename])
+                return (nil, NSFileProviderError(.cannotSynchronize))
+            }
+
+            guard dbManager.markItemAsExcludedFromSync(ocId: metadata.ocId) else {
+                logger.error("Unable to persist bundle exclusion state.", [.item: itemIdentifier, .name: filename])
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
 

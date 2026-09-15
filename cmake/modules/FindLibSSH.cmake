@@ -46,7 +46,7 @@ else (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
 
   if (LIBSSH_INCLUDE_DIR AND SSH_LIBRARY)
     set(SSH_FOUND TRUE)
-  endif (LIBSSH_INCLUDE_DIR AND SSH_LIBRARY)
+  endif ()
 
   set(LIBSSH_INCLUDE_DIRS
     ${LIBSSH_INCLUDE_DIR}
@@ -78,9 +78,9 @@ else (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
       else (LIBSSH_VERSION_MAJOR)
         message(STATUS "LIBSSH_VERSION_MAJOR not found in ${LIBSSH_INCLUDE_DIR}/libssh/libssh.h, assuming libssh is too old")
         set(LIBSSH_FOUND FALSE)
-      endif (LIBSSH_VERSION_MAJOR)
-    endif (LibSSH_FIND_VERSION)
-  endif (SSH_FOUND)
+      endif ()
+    endif ()
+  endif ()
 
   # If the version is too old, but libs and includes are set,
   # find_package_handle_standard_args will set LIBSSH_FOUND to TRUE again,
@@ -88,10 +88,10 @@ else (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
   if (LIBSSH_FOUND)
     include(FindPackageHandleStandardArgs)
     find_package_handle_standard_args(LibSSH DEFAULT_MSG LIBSSH_LIBRARIES LIBSSH_INCLUDE_DIRS)
-  endif (LIBSSH_FOUND)
+  endif ()
 
   # show the LIBSSH_INCLUDE_DIRS and LIBSSH_LIBRARIES variables only in the advanced view
   mark_as_advanced(LIBSSH_INCLUDE_DIRS LIBSSH_LIBRARIES)
 
-endif (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
+endif ()
 

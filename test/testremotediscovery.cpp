@@ -62,7 +62,7 @@ class TestRemoteDiscovery : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         AbstractNetworkJob::enableTimeout = true;
@@ -192,10 +192,10 @@ private slots:
         fakeFolder.remoteModifier().mkdir("nopermissions");
         fakeFolder.remoteModifier().insert("nopermissions/A");
 
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *)
-                -> QNetworkReply *{
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "PROPFIND" && req.url().path().endsWith("nopermissions"))
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) -> QNetworkReply * {
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "PROPFIND" && req.url().path().endsWith("nopermissions")) {
                 return new MissingPermissionsPropfindReply(fakeFolder.remoteModifier(), op, req, this);
+            }
             return nullptr;
         });
 

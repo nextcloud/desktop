@@ -224,7 +224,7 @@ void InvalidFilenameDialog::allowRenaming()
 
 void InvalidFilenameDialog::useInvalidName()
 {
-    emit acceptedInvalidName(_filePath);
+    Q_EMIT acceptedInvalidName(_filePath);
 }
 
 void InvalidFilenameDialog::accept()

@@ -34,12 +34,10 @@ extension Enumerator {
 
             // Continuation of an in-progress drain: serve the next buffered batch without re-reading
             // the container (the depth-1 read is destructive, so re-deriving would lose the remainder).
-            // A regular container preserves its incoming anchor, so startAnchor and finalAnchor match.
             if changeBuffer.isPrimed(forKey: anchorKey) {
                 logger.debug("Container change buffer primed for anchor \(anchorKey); draining next batch without re-reading.", [.url: serverUrl])
                 drainChangeBuffer(
                     for: observer,
-                    startAnchor: anchor,
                     finalAnchor: anchor,
                     suggested: observer.suggestedBatchSize
                 )
@@ -116,11 +114,15 @@ extension Enumerator {
             // re-invocations without exceeding the per-batch limit.
             let sortedUpdated = changes.createdAndUpdated
                 .sorted { $0.remotePath().count < $1.remotePath().count }
-            changeBuffer.prime(key: anchorKey, updated: sortedUpdated, deleted: changes.deleted)
+            changeBuffer.prime(
+                key: anchorKey,
+                finalAnchorRawValue: anchor.rawValue,
+                updated: sortedUpdated,
+                deleted: changes.deleted
+            )
 
             drainChangeBuffer(
                 for: observer,
-                startAnchor: anchor,
                 finalAnchor: anchor,
                 suggested: observer.suggestedBatchSize
             )

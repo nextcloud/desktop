@@ -37,7 +37,7 @@ public:
 
     [[nodiscard]] QString overflowTagsString() const;
 
-signals:
+Q_SIGNALS:
     void serverRelativePathChanged();
     void accountChanged();
 
@@ -45,7 +45,7 @@ signals:
     void totalTagsChanged();
     void overflowTagsStringChanged();
 
-public slots:
+public Q_SLOTS:
     void setServerRelativePath(const QString &serverRelativePath);
     void setAccount(const OCC::AccountPtr &account);
 
@@ -54,7 +54,7 @@ public slots:
 
     void resetForNewFile();
 
-private slots:
+private Q_SLOTS:
     void fetchFileTags();
     void processFileTagRequestFinished(const QVariantMap &result);
     void processFileTagRequestFinishedWithError();

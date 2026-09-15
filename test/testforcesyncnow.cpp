@@ -39,7 +39,7 @@ class TestForceSyncNow : public QObject
 
     FolderManTestHelper _folderManHelper;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

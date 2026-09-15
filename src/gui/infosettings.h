@@ -26,7 +26,7 @@ public:
     ~InfoSettings() override;
     [[nodiscard]] QSize sizeHint() const override;
 
-public slots:
+public Q_SLOTS:
     void slotStyleChanged();
 #if defined(BUILD_UPDATER)
     void loadUpdateChannelsList();
@@ -35,7 +35,7 @@ public slots:
     void restoreUpdateChannel();
 #endif
 
-private slots:
+private Q_SLOTS:
     void slotShowLegalNotice();
 #if defined(BUILD_UPDATER)
     void slotUpdateInfo();

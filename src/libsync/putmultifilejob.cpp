@@ -97,7 +97,7 @@ bool PutMultiFileJob::finished()
         }
     }
 
-    emit finishedSignal();
+    Q_EMIT finishedSignal();
     return true;
 }
 
@@ -112,3 +112,5 @@ std::chrono::milliseconds PutMultiFileJob::msSinceStart() const
 }
 
 }
+
+#include "moc_putmultifilejob.cpp"

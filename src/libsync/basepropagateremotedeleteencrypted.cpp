@@ -82,6 +82,7 @@ void BasePropagateRemoteDeleteEncrypted::slotFolderUnLockFinished(const QByteArr
 {
     if (statusCode != 200) {
         _item->_httpErrorCode = statusCode;
+        //: %1 is the HTTP status code. %2 is the encrypted folder identifier.
         _errorString = tr("\"%1 Failed to unlock encrypted folder %2\".").arg(statusCode).arg(QString::fromUtf8(folderId));
         _item->_errorString = _errorString;
         taskFailed();
@@ -161,7 +162,7 @@ void BasePropagateRemoteDeleteEncrypted::unlockFolder(const EncryptedFolderMetad
         qCWarning(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Null _encryptedFolderMetadataHandler";
     }
     if (!_encryptedFolderMetadataHandler || !_encryptedFolderMetadataHandler->isFolderLocked()) {
-        emit finished(true);
+        Q_EMIT finished(true);
         return;
     }
 
@@ -178,7 +179,7 @@ void BasePropagateRemoteDeleteEncrypted::taskFailed()
     if (_encryptedFolderMetadataHandler && _encryptedFolderMetadataHandler->isFolderLocked()) {
         unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
     } else {
-        emit finished(false);
+        Q_EMIT finished(false);
     }
 }
 
@@ -197,3 +198,5 @@ const QByteArray BasePropagateRemoteDeleteEncrypted::folderToken() const
 }
 
 } // namespace OCC
+
+#include "moc_basepropagateremotedeleteencrypted.cpp"

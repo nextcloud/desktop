@@ -26,11 +26,11 @@ public:
     void readIgnoreFile(const QString &file, bool readOnly = false);
     int addPattern(const QString &pattern, bool deletable, bool readOnly);
 
-public slots:
+public Q_SLOTS:
     void slotRemoveAllItems();
     void slotWriteIgnoreFile(const QString &file);
 
-private slots:
+private Q_SLOTS:
     void slotItemSelectionChanged();
     void slotRemoveCurrentItem();
     void slotAddPattern();

@@ -115,7 +115,7 @@ public:
      */
     QModelIndex indexForPath(Folder *f, const QString &path) const;
 
-public slots:
+public Q_SLOTS:
     void slotUpdateFolderState(OCC::Folder *);
     void slotApplySelectiveSync();
     void resetFolders();
@@ -124,7 +124,7 @@ public slots:
     void slotSetProgress(const OCC::ProgressInfo &progress);
     void e2eInitializationFinished(bool isNewMnemonicGenerated);
 
-private slots:
+private Q_SLOTS:
     void slotUpdateDirectories(const QStringList &);
     void slotGatherPermissions(const QString &name, const QMap<QString, QString> &properties);
     void slotGatherEncryptionStatus(const QString &href, const QMap<QString, QString> &properties);
@@ -156,7 +156,7 @@ private:
 
     QFileIconProvider _fileIconProvider;
 
-signals:
+Q_SIGNALS:
     void dirtyChanged();
 
     // Tell the view that this item should be expanded because it has an undecided item

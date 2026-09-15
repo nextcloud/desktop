@@ -18,6 +18,7 @@ https://en.wikipedia.org/wiki/Developer_Certificate_of_Origin
 
 ## Checklist
 - [ ] [Sign-off message](https://github.com/src-d/guide/blob/master/developer-community/fix-DCO.md) is added to all commits.
+- [ ] The commit messages are following [The Conventional Commits specification](https://www.conventionalcommits.org).
 - [ ] The commit history is clean with no merge commits.
   - [How to rebase your commits](https://docs.github.com/en/get-started/using-git/about-git-rebase)
   - [How to squash commits with rebase](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History#_squashing)

@@ -71,15 +71,15 @@ public:
 
     OCC::Folder *configureSyncFolder(const QString &targetPath = QStringLiteral(""));
 
-signals:
+Q_SIGNALS:
     void accountReady(const OCC::AccountPtr &account);
 
-public slots:
+public Q_SLOTS:
     void startAccountConfig();
     void removeConfiguredAccount();
     void removeConfiguredSyncFolder();
 
-private slots:
+private Q_SLOTS:
     void slotConnectToNCUrl(const QString &url);
     void setupFolderMan();
 

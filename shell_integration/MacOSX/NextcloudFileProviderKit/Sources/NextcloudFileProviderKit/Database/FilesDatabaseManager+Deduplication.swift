@@ -108,60 +108,59 @@ public extension FilesDatabaseManager {
     }
 
     ///
-    /// One-shot startup pass that heals pre-existing logical duplicates
-    /// already persisted in the database.
+    /// One-shot startup pass that rewrites drifted normalized location keys and soft-deletes rows
+    /// that share a logical address, in a single walk of the table.
     ///
-    /// Buckets all non-deleted, non-lock-file rows (except the synthetic
-    /// root-container row) by `(serverUrl, fileName)`. Within each
-    /// bucket containing more than one row, picks a winner among the
-    /// settled (non-in-flight) rows by greatest ``ItemMetadata/syncTime``
-    /// — with the lexicographically greater `ocId` breaking ties — and
-    /// soft-deletes every other settled row. In-flight rows are never
-    /// touched (the still-running NSURLSession task references the
-    /// specific `ocId`) and an `error`-level log records each skip. If a
-    /// bucket is entirely in-flight, the whole bucket is left intact; the
-    /// next run-time eviction will heal it once the row settles.
-    ///
-    /// A write transaction is opened only when at least one bucket has
-    /// more than one row, so clean databases pay no transaction cost.
-    ///
-    func cleanupPreexistingLogicalDuplicates() {
+    func repairPersistedLogicalAddresses() {
         let database = ncDatabase()
         let rootContainerOcId = NSFileProviderItemIdentifier.rootContainer.rawValue
-
-        let candidates = database
-            .objects(RealmItemMetadata.self)
-            .where {
-                !$0.deleted
-                    && !$0.isLockFileOfLocalOrigin
-                    && $0.ocId != rootContainerOcId
-            }
 
         struct LogicalKey: Hashable {
             let serverUrl: String
             let fileName: String
         }
 
+        var drifted: [RealmItemMetadata] = []
         var buckets: [LogicalKey: [RealmItemMetadata]] = [:]
 
-        for candidate in candidates {
-            let key = LogicalKey(
-                serverUrl: candidate.normalizedServerUrl,
-                fileName: candidate.normalizedFileName
-            )
-            buckets[key, default: []].append(candidate)
+        // Bucketing on the keys computed here rather than on the stored ones is what lets a
+        // drifted row be repaired and deduplicated in the same walk.
+        for row in database.objects(RealmItemMetadata.self) {
+            let serverUrl = row.serverUrl.precomposedStringWithCanonicalMapping
+            let fileName = row.fileName.precomposedStringWithCanonicalMapping
+
+            if row.normalizedServerUrl != serverUrl || row.normalizedFileName != fileName {
+                drifted.append(row)
+            }
+
+            // The exclusions decide which rows may be soft-deleted, not which rows are repaired.
+            guard !row.deleted, !row.isLockFileOfLocalOrigin, row.ocId != rootContainerOcId else {
+                continue
+            }
+
+            buckets[LogicalKey(serverUrl: serverUrl, fileName: fileName), default: []].append(row)
         }
 
         let collisions = buckets.values.filter { $0.count > 1 }
 
-        guard !collisions.isEmpty else {
+        guard !drifted.isEmpty || !collisions.isEmpty else {
             return
+        }
+
+        if !drifted.isEmpty {
+            logger.error(
+                "Repairing \(drifted.count) row(s) whose normalized location keys do not match their raw columns."
+            )
         }
 
         let now = Date()
 
         do {
             try database.write {
+                for row in drifted {
+                    row.updateLocation(serverUrl: row.serverUrl, fileName: row.fileName)
+                }
+
                 for group in collisions {
                     let settled = group.filter { $0.status == Status.normal.rawValue }
 
@@ -212,7 +211,7 @@ public extension FilesDatabaseManager {
                 }
             }
         } catch {
-            logger.error("Startup deduplication: write transaction failed.", [.error: error])
+            logger.error("Startup repair: write transaction failed.", [.error: error])
         }
     }
 }

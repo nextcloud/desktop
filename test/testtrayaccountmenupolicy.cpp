@@ -19,7 +19,7 @@ class TestTrayAccountMenuPolicy : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void testConnectedAccountShowsServerBackedSections()
     {
         const auto policy = TrayAccountMenuPolicy{true, true};

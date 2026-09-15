@@ -38,6 +38,59 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(item.contentType, UTType.text)
     }
 
+    func testItemVersionFallsBackToEtagWithoutStoredContentVersion() {
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadata.etag = "test-etag"
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.itemVersion.contentVersion, Data("test-etag".utf8))
+    }
+
+    func testRecoveringLockTokenWithSameEtagRefreshesCapabilitiesWithoutChangingContentVersion() {
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadata.etag = "unchanged-lock-etag"
+        metadata.fileProviderContentVersion = "content-etag"
+        metadata.lock = true
+        metadata.ownerId = Self.account.id
+        metadata.lockOwner = Self.account.id
+        metadata.lockOwnerType = NKLockType.token.rawValue
+        metadata.lockTimeOut = Date().addingTimeInterval(3600)
+        metadata.lockToken = nil
+
+        let itemWithoutToken = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        metadata.lockToken = "files_lock/recovered-token"
+        let itemWithToken = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertFalse(itemWithoutToken.capabilities.contains(.allowsWriting))
+        XCTAssertTrue(itemWithToken.capabilities.contains(.allowsWriting))
+        XCTAssertFalse(itemWithoutToken.fileSystemFlags.contains(.userWritable))
+        XCTAssertTrue(itemWithToken.fileSystemFlags.contains(.userWritable))
+        XCTAssertNotEqual(itemWithoutToken.itemVersion.metadataVersion, itemWithToken.itemVersion.metadataVersion)
+        XCTAssertEqual(itemWithoutToken.itemVersion.contentVersion, itemWithToken.itemVersion.contentVersion)
+    }
+
     func testMetadataExtensionContentType() {
         var metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.pdf", account: Self.account)

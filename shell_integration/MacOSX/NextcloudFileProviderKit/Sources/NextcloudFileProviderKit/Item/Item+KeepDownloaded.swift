@@ -85,6 +85,13 @@ public extension Item {
                     isDownloaded: child.downloaded,
                     manager: manager
                 )
+            } catch let error as NSFileProviderError where error.code == .noSuchItem {
+                // Expected, because the framework's item store only knows what enumeration
+                // handed it and the flag written above applies when it first enumerates the item.
+                logger.debug(
+                    "Framework does not know this descendant yet; its pin applies when the item is first enumerated.",
+                    [.item: child.ocId, .name: child.fileName]
+                )
             } catch {
                 logger.error(
                     "Could not signal keep-downloaded change to framework for descendant.",

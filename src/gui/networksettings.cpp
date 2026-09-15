@@ -264,8 +264,9 @@ void NetworkSettings::checkAccountLocalhost()
         for (const auto &account : accounts) {
             const auto host = account->account()->url().host();
             // Some typical url for localhost
-            if (host == "localhost" || host.startsWith("127.") || host == "[::1]")
+            if (host == "localhost" || host.startsWith("127.") || host == "[::1]") {
                 visible = true;
+            }
         }
     }
     _ui->labelLocalhost->setVisible(visible);

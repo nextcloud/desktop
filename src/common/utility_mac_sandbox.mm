@@ -54,7 +54,11 @@ QByteArray createSecurityScopedBookmarkData(const QString &localPath)
 QString getRealHomeDirectory()
 {
     @autoreleasepool {
-        NSString *homeDir = NSHomeDirectory();
+        NSString * const homeDir = NSHomeDirectoryForUser(NSUserName());
+        if (!homeDir) {
+            qCWarning(lcMacSandboxUtility) << "Failed to resolve the logged-in user's home directory";
+            return {};
+        }
         return QString::fromNSString(homeDir);
     }
 }

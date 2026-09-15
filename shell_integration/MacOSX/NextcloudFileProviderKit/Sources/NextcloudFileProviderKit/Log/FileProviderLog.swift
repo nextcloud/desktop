@@ -62,6 +62,12 @@ public actor FileProviderLog: FileProviderLogging {
     var handle: FileHandle?
 
     ///
+    /// Bytes written through ``handle`` since it was opened, so rotation can be decided without a
+    /// file system round trip.
+    ///
+    var bytesWrittenToCurrentFile: Int64 = 0
+
+    ///
     /// Unified logger used for self-diagnostics of this actor, tagged with the category `"FileProviderLog"`.
     ///
     /// Used for messages about this actor's own concerns — log file rotation, startup and KVO transitions of the debug-logging gate, and errors that prevent writing to the JSONL file.
@@ -75,9 +81,9 @@ public actor FileProviderLog: FileProviderLogging {
     let logsDirectory: URL?
 
     ///
-    /// Maximum log file size in bytes (100 MB).
+    /// Maximum log file size in bytes, defaulting to 100 MB.
     ///
-    let maxLogFileSize: Int64 = 100 * 1024 * 1024
+    let maxLogFileSize: Int64
 
     ///
     /// The subsystem string to be used as with the unified logging system.
@@ -117,9 +123,17 @@ public actor FileProviderLog: FileProviderLogging {
     ///
     /// - Parameters:
     ///     - fileProviderDomainIdentifier: The raw string value of the file provider domain which this file provider extension process is managing.
+    ///     - logsDirectory: Where to write log files, defaulting to the domain's directory
+    ///       inside the application group container.
+    ///     - maxLogFileSize: Size at which the current file is closed and a new one started.
     ///
-    public init(fileProviderDomainIdentifier identifier: NSFileProviderDomainIdentifier) {
+    public init(
+        fileProviderDomainIdentifier identifier: NSFileProviderDomainIdentifier,
+        logsDirectory overrideLogsDirectory: URL? = nil,
+        maxLogFileSize: Int64 = 100 * 1024 * 1024
+    ) {
         domainIdentifier = identifier
+        self.maxLogFileSize = maxLogFileSize
         encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys]
         fileManager = FileManager.default
@@ -149,7 +163,17 @@ public actor FileProviderLog: FileProviderLogging {
             logger.error("Ignoring non-boolean value for `debugLoggingEnabled` user default. Falling back to build default (\(defaultFallback ? "enabled" : "disabled", privacy: .public)).")
         }
 
-        guard let logsDirectory = fileManager.fileProviderDomainLogDirectory(for: identifier) else {
+        // Not `??`: the right-hand side would be a nonisolated autoclosure over actor state.
+        let resolvedLogsDirectory: URL?
+
+        if let overrideLogsDirectory {
+            try? fileManager.createDirectory(at: overrideLogsDirectory, withIntermediateDirectories: true)
+            resolvedLogsDirectory = overrideLogsDirectory
+        } else {
+            resolvedLogsDirectory = fileManager.fileProviderDomainLogDirectory(for: identifier)
+        }
+
+        guard let logsDirectory = resolvedLogsDirectory else {
             logger.error("Failed to get URL for file provider domain logs!")
             file = nil
             handle = nil
@@ -226,28 +250,21 @@ public actor FileProviderLog: FileProviderLogging {
             return
         }
 
-        do {
-            if let currentFile = file {
-                let fileAttributes = try fileManager.attributesOfItem(atPath: currentFile.path)
+        if let currentFile = file, bytesWrittenToCurrentFile >= maxLogFileSize {
+            try? handle?.synchronize()
+            handle?.closeFile()
+            logger.debug("Closed current log file at \"\(currentFile.path, privacy: .public)\" because it exceeds the size limit.")
 
-                if let fileSize = fileAttributes[.size] as? Int64, fileSize >= maxLogFileSize {
-                    // Close current handle
-                    handle?.closeFile()
-                    logger.debug("Closed current log file at \"\(currentFile.path, privacy: .public)\" because it exceeds the size limit.")
-
-                    file = nil
-                    handle = nil
-                }
-            }
-        } catch {
-            // swiftformat:disable:next redundantSelf
-            logger.error("Failed to close open log file at \"\(self.file?.path ?? "nil")\": \(error.localizedDescription, privacy: .public)")
+            file = nil
+            handle = nil
         }
 
         guard handle == nil else {
             // Already have an active handle which was not closed previously, stick with that file.
             return
         }
+
+        bytesWrittenToCurrentFile = 0
 
         let creationDate = Date()
         let formattedDate = fileDateFormatter.string(from: creationDate)
@@ -347,9 +364,14 @@ public actor FileProviderLog: FileProviderLogging {
 
         do {
             let object = try encoder.encode(entry)
+            let newline = Data("\n".utf8)
+
+            // No `synchronize()` here, because `FileHandle.write(contentsOf:)` is an
+            // unbuffered `write(2)` and a per-line fsync would serialize every caller of this
+            // actor behind a disk flush.
             try handle.write(contentsOf: object)
-            try handle.write(contentsOf: "\n".data(using: .utf8)!)
-            try handle.synchronize()
+            try handle.write(contentsOf: newline)
+            bytesWrittenToCurrentFile += Int64(object.count + newline.count)
         } catch {
             logger.error("Failed to encode and write message: \(message, privacy: .public)!")
             return

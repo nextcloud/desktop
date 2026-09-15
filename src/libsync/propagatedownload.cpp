@@ -286,8 +286,9 @@ qint64 GETFileJob::writeToDevice(const QByteArray &data)
 
 void GETFileJob::slotReadyRead()
 {
-    if (!reply())
+    if (!reply()) {
         return;
+    }
     int bufferSize = qMin(1024 * 8ll, reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
 
@@ -335,7 +336,7 @@ void GETFileJob::slotReadyRead()
                              << replyStatusString()
                              << reply()->rawHeader("Content-Range") << reply()->rawHeader("Content-Length");
 
-            emit finishedSignal();
+            Q_EMIT finishedSignal();
         }
         _hasEmittedFinishedSignal = true;
         deleteLater();
@@ -356,8 +357,9 @@ void GETFileJob::cancel()
 void GETFileJob::onTimedOut()
 {
     qCWarning(lcGetJob) << "Timeout" << (reply() ? reply()->request().url() : path());
-    if (!reply())
+    if (!reply()) {
         return;
+    }
     _errorString = tr("Connection Timeout");
     _errorStatus = SyncFileItem::FatalError;
     reply()->abort();
@@ -442,8 +444,9 @@ qint64 GETEncryptedFileJob::writeToDevice(const QByteArray &data)
 
 void PropagateDownloadFile::start()
 {
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
     _isEncrypted = false;
 
     qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
@@ -610,7 +613,7 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
             Q_ASSERT(_item->_modtime > 0);
             qCDebug(lcPropagateDownload()) << "setModTime" << fn << _item->_modtime;
             FileSystem::setModTime(fn, _item->_modtime);
-            emit propagator()->touchedFile(fn);
+            Q_EMIT propagator()->touchedFile(fn);
         }
         _item->_modtime = FileSystem::getModTime(fn);
         Q_ASSERT(_item->_modtime > 0);
@@ -626,8 +629,9 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
 
 void PropagateDownloadFile::startDownload()
 {
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     // do a klaas' case clash check.
     if (propagator()->localFileNameClash(_item->_file) && _item->_type != ItemTypeVirtualFile) {
@@ -696,7 +700,7 @@ void PropagateDownloadFile::startDownload()
             // these detail errors only in the error view.
             done(SyncFileItem::DetailError,
                 tr("The download would reduce free local disk space below the limit"), ErrorCategory::GenericError);
-            emit propagator()->insufficientLocalStorage();
+            Q_EMIT propagator()->insufficientLocalStorage();
         } else if (diskSpaceResult == OwncloudPropagator::DiskSpaceCritical) {
             done(SyncFileItem::FatalError,
                 tr("Free space on disk is less than %1").arg(Utility::octetsToString(criticalFreeSpaceLimit())), ErrorCategory::GenericError);
@@ -766,7 +770,7 @@ void PropagateDownloadFile::done(const SyncFileItem::Status status, const QStrin
 {
     if (_needParentFolderRestorePermissions) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
-        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        Q_EMIT propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
     PropagateItemJob::done(status, errorString, category);
@@ -794,7 +798,7 @@ void PropagateDownloadFile::makeParentFolderModifiable(const QString &fileName)
 
     if (FileSystem::isFolderReadOnly(_parentPath)) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
-        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        Q_EMIT propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = true;
     }
 }
@@ -957,8 +961,9 @@ void PropagateDownloadFile::slotGetFinished()
         _conflictRecord.baseEtag = job->reply()->rawHeader("OC-ConflictBaseEtag");
 
         auto mtimeHeader = job->reply()->rawHeader("OC-ConflictBaseMtime");
-        if (!mtimeHeader.isEmpty())
+        if (!mtimeHeader.isEmpty()) {
             _conflictRecord.baseModtime = mtimeHeader.toLongLong();
+        }
 
         // We don't set it yet. That will only be done when the download finished
         // successfully, much further down. Here we just grab the headers because the
@@ -975,8 +980,9 @@ void PropagateDownloadFile::slotGetFinished()
         this, &PropagateDownloadFile::slotChecksumFail);
     auto checksumHeader = findBestChecksum(job->reply()->rawHeader(checkSumHeaderC));
     auto contentMd5Header = job->reply()->rawHeader(contentMd5HeaderC);
-    if (checksumHeader.isEmpty() && !contentMd5Header.isEmpty())
+    if (checksumHeader.isEmpty() && !contentMd5Header.isEmpty()) {
         checksumHeader = "MD5:" + contentMd5Header;
+    }
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
 
@@ -1263,14 +1269,14 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     QString error;
-    emit propagator()->touchedFile(filename);
+    Q_EMIT propagator()->touchedFile(filename);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), filename, &error)) {
         qCWarning(lcPropagateDownload) << QStringLiteral("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(filename);
         // If the file is locked, we want to retry this sync when it
         // becomes available again, otherwise try again directly
         if (FileSystem::isFileLocked(filename, FileSystem::LockMode::SharedRead)) {
-            emit propagator()->seenLockedFile(filename);
+            Q_EMIT propagator()->seenLockedFile(filename);
         } else {
             propagator()->_anotherSyncNeeded = true;
         }
@@ -1283,7 +1289,7 @@ void PropagateDownloadFile::downloadFinished()
 
     if (_needParentFolderRestorePermissions) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
-        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        Q_EMIT propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
 
@@ -1293,8 +1299,9 @@ void PropagateDownloadFile::downloadFinished()
 
     // Maybe what we downloaded was a conflict file? If so, set a conflict record.
     // (the data was prepared in slotGetFinished above)
-    if (_conflictRecord.isValid())
+    if (_conflictRecord.isValid()) {
         propagator()->_journal->setConflictRecord(_conflictRecord);
+    }
 
     if (vfs && vfs->mode() == Vfs::WithSuffix) {
         // If the virtual file used to have a different name and db
@@ -1325,10 +1332,11 @@ void PropagateDownloadFile::downloadFinished()
 
         // Ensure the pin state isn't contradictory
         auto pin = vfs->pinState(_item->_file);
-        if (pin && *pin == PinState::OnlineOnly)
+        if (pin && *pin == PinState::OnlineOnly) {
             if (!vfs->setPinState(_item->_file, PinState::Unspecified)) {
                 qCWarning(lcPropagateDownload) << "Could not set pin state of" << _item->_file << "to unspecified";
             }
+        }
     }
 
     updateMetadata(isConflict);
@@ -1377,8 +1385,9 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
 
 void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)
 {
-    if (!_job)
+    if (!_job) {
         return;
+    }
     _downloadProgress = received;
     propagator()->reportProgress(*_item, _resumeStart + received);
 }
@@ -1386,11 +1395,14 @@ void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)
 
 void PropagateDownloadFile::abort(PropagatorJob::AbortType abortType)
 {
-    if (_job && _job->reply())
+    if (_job && _job->reply()) {
         _job->reply()->abort();
+    }
 
     if (abortType == AbortType::Asynchronous) {
-        emit abortFinished();
+        Q_EMIT abortFinished();
     }
 }
 }
+
+#include "moc_propagatedownload.cpp"

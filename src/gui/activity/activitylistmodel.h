@@ -114,7 +114,7 @@ public:
 
     [[nodiscard]] OCC::ActivityList allConflicts() const;
 
-public slots:
+public Q_SLOTS:
     void fetchMore(const QModelIndex &) override;
 
     void slotRefreshActivity();
@@ -161,7 +161,7 @@ public slots:
     void removeFileProviderQuotaActivitiesForDomain(const QString &domainIdentifier);
 #endif
 
-signals:
+Q_SIGNALS:
     void accountStateChanged();
     void hasSyncConflictsChanged();
     void allConflictsChanged();
@@ -189,7 +189,7 @@ signals:
 protected:
     [[nodiscard]] bool currentlyFetching() const;
 
-protected slots:
+protected Q_SLOTS:
     void activitiesReceived(const QJsonDocument &json, int statusCode);
     void setAndRefreshCurrentlyFetching(bool value);
     void setDoneFetching(bool value);
@@ -198,7 +198,7 @@ protected slots:
 
     virtual void startFetchJob();
 
-private slots:
+private Q_SLOTS:
     void addEntriesToActivityList(const OCC::ActivityList &activityList);
     void accountStateHasChanged();
     void ingestActivities(const QJsonArray &activities);

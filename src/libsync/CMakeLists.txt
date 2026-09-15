@@ -144,8 +144,6 @@ set(libsync_SRCS
     rootencryptedfolderinfo.cpp
     foldermetadata.h
     foldermetadata.cpp
-    ocsassistantconnector.h
-    ocsassistantconnector.cpp
     ocsuserstatusconnector.h
     ocsuserstatusconnector.cpp
     rootencryptedfolderinfo.cpp
@@ -166,6 +164,8 @@ set(libsync_SRCS
     creds/keychainchunk.cpp
     caseclashconflictsolver.h
     caseclashconflictsolver.cpp
+    settings/migration.h
+    settings/migration.cpp
 )
 
 if (WIN32)
@@ -217,7 +217,7 @@ IF (NOT APPLE)
         FILES ${creds_HEADERS}
 	DESTINATION ${INCLUDE_INSTALL_DIR}/nextcloudsync/creds
     )
-ENDIF(NOT APPLE)
+ENDIF()
 
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS WebSockets Xml Sql Gui Svg Widgets)
 
@@ -249,6 +249,7 @@ target_compile_features(nextcloudsync
 )
 
 target_compile_definitions(nextcloudsync PRIVATE OPENSSL_SUPPRESS_DEPRECATED)
+target_compile_definitions(nextcloudsync PRIVATE QT_NO_KEYWORDS)
 
 if (NOT TOKEN_AUTH_ONLY)
     find_package(Qt${QT_MAJOR_VERSION} COMPONENTS REQUIRED Widgets Svg)

@@ -5,6 +5,7 @@
 
 #import "nctraypopup.h"
 
+#import "trayaccountpopuppresentation.h"
 #import "trayaccountpopupmetrics.h"
 #import "trayaccountpopupviewutils.h"
 
@@ -19,7 +20,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
 static NSScreen *nsScreenForQtScreen(QScreen *qtScreen)
 {
     if (!qtScreen) {
-        return NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+        return mainOrFirstScreen();
     }
 
     const auto qtScreenName = qtScreen->name().toNSString();
@@ -35,14 +36,14 @@ static NSScreen *nsScreenForQtScreen(QScreen *qtScreen)
         return [NSScreen.screens objectAtIndex:screenIndex];
     }
 
-    return NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+    return mainOrFirstScreen();
 }
 
 namespace OCC {
 
 static NCTrayPopup *s_popup = nil;
 
-void showMacOSTrayPopup(const QRect &iconRect)
+bool showMacOSTrayPopup(const QRect &iconRect)
 {
     if (!s_popup) {
         s_popup = [[NCTrayPopup alloc] init];
@@ -75,11 +76,21 @@ void showMacOSTrayPopup(const QRect &iconRect)
     const auto popupOrigin = clampedPopupOrigin(NSMakePoint(x, y), NSMakeSize(popupW, popupH), visibleFrame);
 
     [s_popup setFrameOrigin:popupOrigin];
+    Mac::TrayAccountPopupPresentation::present(
+        [] {
+            [s_popup orderFrontRegardless];
+        },
+        [] {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [NSApp activateIgnoringOtherApps:YES];
+            [NSApp activateIgnoringOtherApps:YES];
 #pragma clang diagnostic pop
-    [s_popup makeKeyAndOrderFront:nil];
+        },
+        [] {
+            [s_popup makeKeyAndOrderFront:nil];
+        });
+
+    return s_popup.visible;
 }
 
 void hideMacOSTrayPopup()

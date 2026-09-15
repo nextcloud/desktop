@@ -27,14 +27,14 @@ public:
     [[nodiscard]] static bool isTokenValid(const QString &token);
     [[nodiscard]] static bool isRelPathValid(const QString &relPath);
 
-signals:
+Q_SIGNALS:
     void error(const QString &message, const QString &informativeText);
     void finished();
 
-public slots:
+public Q_SLOTS:
     void start();
 
-private slots:
+private Q_SLOTS:
     void responseReceived(const int statusCode);
 
 private:

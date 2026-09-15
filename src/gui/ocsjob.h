@@ -104,14 +104,14 @@ public:
     [[nodiscard]] QString getParamValue(const QString &key) const;
 
 
-protected slots:
+protected Q_SLOTS:
 
     /**
      * Start the OCS request
      */
     void start() override;
 
-signals:
+Q_SIGNALS:
 
     /**
      * Result of the OCS request
@@ -137,7 +137,7 @@ signals:
      */
     void etagResponseHeaderReceived(const QByteArray &value, int statusCode);
 
-private slots:
+private Q_SLOTS:
     bool finished() override;
 
 private:

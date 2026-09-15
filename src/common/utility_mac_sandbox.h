@@ -29,13 +29,14 @@ namespace Utility {
 [[nodiscard]] QByteArray createSecurityScopedBookmarkData(const QString &localPath);
 
 /**
- * @brief Get the real user home directory path
+ * @brief Get the logged-in user's home directory path
  *
- * In sandboxed macOS apps, QStandardPaths::HomeLocation returns the sandbox
- * container directory, not the actual user home directory. This function uses
- * NSHomeDirectory() to retrieve the real home directory path.
+ * In sandboxed macOS apps, QStandardPaths::HomeLocation and NSHomeDirectory()
+ * return the app's sandbox container. This function resolves the logged-in
+ * user's home directory instead.
  *
- * @return The real user home directory path
+ * @return The logged-in user's home directory path, or an empty string if it
+ *         cannot be resolved
  */
 [[nodiscard]] QString getRealHomeDirectory();
 

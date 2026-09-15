@@ -32,7 +32,7 @@ public:
     void askFromUser() override;
 
     static QString requestAppPasswordText(const Account *account);
-private slots:
+private Q_SLOTS:
     void showDialog();
     void askFromUserAsync();
 };

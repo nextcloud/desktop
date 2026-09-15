@@ -120,7 +120,7 @@ void RemoteWipe::slotCheckJob()
         // <-- FIXME MS@2019-12-07
 
         // delete data
-        emit authorized(accountState);
+        Q_EMIT authorized(accountState);
 
         if (!_canWipeLocalFiles) {
             qCInfo(lcRemoteWipe) << "Deleting account" << _account->displayName();

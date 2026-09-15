@@ -341,8 +341,9 @@ void PropagateUploadFileNG::finishUpload()
 
 void PropagateUploadFileNG::startNextChunk()
 {
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     const auto fileSize = _fileToUpload._size;
     ENFORCE(fileSize >= _sent, "Sent data exceeds file size")
@@ -358,7 +359,7 @@ void PropagateUploadFileNG::startNextChunk()
     if (FileSystem::isFileLocked(fileName, FileSystem::LockMode::SharedRead)) {
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
-        emit propagator()->seenLockedFile(fileName);
+        Q_EMIT propagator()->seenLockedFile(fileName);
 
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError(SyncFileItem::FileLocked, tr("File is locked preventing syncing it", "Generic warning message when a locked file cannot be synced"));

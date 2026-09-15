@@ -20,7 +20,7 @@ class TestClientSideEncryptionV2 : public QObject
     AccountPtr _account;
     AccountPtr _secondAccount;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

@@ -24,7 +24,7 @@ private:
   QStringList _subdirs;
   QStringList _items;
 
-public slots:
+public Q_SLOTS:
   void slotDirectoryListingSubFolders(const QStringList& list)
   {
      qDebug() << "subfolders: " << list;
@@ -42,7 +42,7 @@ public slots:
       _success = true;
   }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

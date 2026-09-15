@@ -87,7 +87,7 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
         return;
     }
 
-    emit owncloudSetupWizard->ownCloudWizardDone(QDialog::Rejected);
+    Q_EMIT owncloudSetupWizard->ownCloudWizardDone(QDialog::Rejected);
     owncloudSetupWizard->deleteLater();
     owncloudSetupWizard.clear();
 }
@@ -118,7 +118,7 @@ void OwncloudSetupWizard::runWizardForLoginFlow(QObject *obj, const char *amembe
         return;
     }
 
-    emit owncloudSetupWizard->ownCloudWizardDone(QDialog::Rejected);
+    Q_EMIT owncloudSetupWizard->ownCloudWizardDone(QDialog::Rejected);
     owncloudSetupWizard->deleteLater();
     owncloudSetupWizard.clear();
 }
@@ -279,7 +279,7 @@ void OwncloudSetupWizard::finish(int result)
 
     _finished = true;
     Systray::instance()->setIsOpen(false);
-    emit ownCloudWizardDone(result);
+    Q_EMIT ownCloudWizardDone(result);
     if (_qmlWizardWindow) {
         _qmlWizardWindow->deleteLater();
         _qmlWizardWindow.clear();

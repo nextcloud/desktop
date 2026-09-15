@@ -38,8 +38,9 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
 
 void PropagateRemoteMkdir::start()
 {
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     qCDebug(lcPropagateRemoteMkdir) << _item->_file;
 
@@ -60,8 +61,9 @@ void PropagateRemoteMkdir::start()
 
 void PropagateRemoteMkdir::slotStartMkcolJob()
 {
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     qCDebug(lcPropagateRemoteMkdir) << _item->_file;
 
@@ -78,8 +80,9 @@ void PropagateRemoteMkdir::slotStartEncryptedMkcolJob(const QString &path, const
     Q_UNUSED(path)
     Q_UNUSED(size)
 
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     qDebug() << filename;
     qCDebug(lcPropagateRemoteMkdir) << filename;
@@ -96,11 +99,12 @@ void PropagateRemoteMkdir::slotStartEncryptedMkcolJob(const QString &path, const
 
 void PropagateRemoteMkdir::abort(PropagatorJob::AbortType abortType)
 {
-    if (_job && _job->reply())
+    if (_job && _job->reply()) {
         _job->reply()->abort();
+    }
 
     if (abortType == AbortType::Asynchronous) {
-        emit abortFinished();
+        Q_EMIT abortFinished();
     }
 }
 
@@ -184,8 +188,8 @@ void PropagateRemoteMkdir::slotMkdir()
             done(SyncFileItem::NormalError, renameError, ErrorCategory::GenericError);
             return;
         }
-        emit propagator()->touchedFile(existingFile);
-        emit propagator()->touchedFile(targetFile);
+        Q_EMIT propagator()->touchedFile(existingFile);
+        Q_EMIT propagator()->touchedFile(targetFile);
     }
 
     const auto path = _item->_file;
@@ -285,3 +289,5 @@ void PropagateRemoteMkdir::success()
     done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }
 }
+
+#include "moc_propagateremotemkdir.cpp"

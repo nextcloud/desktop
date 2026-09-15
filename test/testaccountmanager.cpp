@@ -43,7 +43,7 @@ private:
         return _accountState;
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

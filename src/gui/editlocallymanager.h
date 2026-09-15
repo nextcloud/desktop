@@ -26,10 +26,10 @@ public:
     [[nodiscard]] static EditLocallyManager *instance();
     static void showError(const QString &message, const QString &informativeText);
 
-public slots:
+public Q_SLOTS:
     void handleRequest(const QUrl &url);
 
-private slots:
+private Q_SLOTS:
     void verify(const OCC::AccountStatePtr &accountState,
                 const QString &relPath,
                 const QString &token);

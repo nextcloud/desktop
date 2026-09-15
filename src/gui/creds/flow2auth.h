@@ -45,7 +45,7 @@ public:
     void copyLinkToClipboard();
     [[nodiscard]] QUrl authorisationLink() const;
 
-signals:
+Q_SIGNALS:
     /**
      * The state has changed.
      * when logged in, appPassword has the value of the app password.
@@ -55,10 +55,10 @@ signals:
 
     void statusChanged(const OCC::Flow2Auth::PollStatus status, int secondsLeft);
 
-public slots:
+public Q_SLOTS:
     void slotPollNow();
 
-private slots:
+private Q_SLOTS:
     void slotPollTimerTimeout();
 
 private:

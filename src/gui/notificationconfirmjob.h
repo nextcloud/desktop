@@ -44,7 +44,7 @@ public:
      */
     void start() override;
 
-signals:
+Q_SIGNALS:
 
     /**
      * Result of the OCS request
@@ -53,7 +53,7 @@ signals:
      */
     void jobFinished(QString reply, int replyCode);
 
-private slots:
+private Q_SLOTS:
     bool finished() override;
 
 private:

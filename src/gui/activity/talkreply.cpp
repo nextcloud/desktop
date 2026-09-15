@@ -37,7 +37,7 @@ void TalkReply::sendReplyMessage(const QString &conversationToken, const QString
         }
 
         const auto responseObj = response.object().value("ocs"_L1).toObject().value("data"_L1).toObject();
-        emit replyMessageSent(responseObj.value("message"_L1).toString());
+        Q_EMIT replyMessageSent(responseObj.value("message"_L1).toString());
 
         deleteLater();
     });

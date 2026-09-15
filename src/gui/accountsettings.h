@@ -65,22 +65,28 @@ public:
     bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* folderInfo);
     [[nodiscard]] OCC::AccountState *accountsState() const { return _accountState; }
 
-signals:
+Q_SIGNALS:
     void folderChanged();
     void openFolderAlias(const QString &);
     void showIssuesList(OCC::AccountState *account);
+    /** @brief Emitted when opening Online status is requested for @p account. */
+    void showUserStatus(OCC::AccountState *account);
+    /** @brief Emitted when opening Assistant is requested for @p account. */
+    void showAssistant(OCC::AccountState *account);
+    /** @brief Emitted when opening Search is requested for @p account. */
+    void showSearch(OCC::AccountState *account);
     void requestMnemonic();
     void removeAccountFolders(OCC::AccountState *account);
     void styleChanged();
 
-public slots:
+public Q_SLOTS:
     void slotOpenOC();
     void slotUpdateQuota(qint64 total, qint64 used);
     void slotAccountStateChanged();
     void slotStyleChanged();
     void slotHideSelectiveSyncWidget();
 
-protected slots:
+protected Q_SLOTS:
     void slotAddFolder();
     void slotEnableCurrentFolder(bool terminate = false);
 #ifdef Q_OS_MACOS
@@ -123,11 +129,11 @@ protected slots:
 
     void slotE2eEncryptionCertificateNeedMigration();
 
-private slots:
+private Q_SLOTS:
     void updateBlackListAndScheduleFolderSync(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist) const;
     void folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist);
 
-private slots:
+private Q_SLOTS:
     void displayMnemonic(const QString &mnemonic);
     void forgetEncryptionOnDeviceForAccount(const OCC::AccountPtr &account) const;
     void migrateCertificateForAccount(const OCC::AccountPtr &account);
@@ -142,6 +148,8 @@ private slots:
     void removeActionFromEncryptionMessage(const QString &actionId);
     void setEncryptionPanelVisible(bool visible);
     void updateSyncFoldersPanelVisibility();
+    /** @brief Refreshes account shortcut visibility from the current connection state and capabilities. */
+    void updateAccountShortcutVisibility();
     void slotResetFileProviderDomain();
 
 private:
@@ -152,6 +160,8 @@ private:
     void refreshE2eEncryptionMessage();
     void setEncryptionMessageIcon(const QIcon &icon);
     void updateEncryptionMessageActions();
+    /** @brief Refreshes the account shortcut icons for the current palette. */
+    void updateAccountShortcutIcons();
 
     /// Returns the alias of the selected folder, empty string if none
     [[nodiscard]] QString selectedFolderAlias() const;

@@ -82,7 +82,7 @@ NEXTCLOUD_CFAPI_EXPORT bool isSparseFile(const QString &path);
 
 NEXTCLOUD_CFAPI_EXPORT FileHandle handleForPath(const QString &path);
 
-PlaceHolderInfo findPlaceholderInfo(const QString &path);
+NEXTCLOUD_CFAPI_EXPORT PlaceHolderInfo findPlaceholderInfo(const QString &path);
 
 enum SetPinRecurseMode {
     NoRecurse = 0,

@@ -38,7 +38,7 @@ public:
     QScopedPointer<FakeQNAM> fakeQnam;
     QScopedPointer<OCC::AccountState> accountState;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

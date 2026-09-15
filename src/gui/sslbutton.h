@@ -30,7 +30,7 @@ public:
     explicit SslButton(QWidget *parent = nullptr);
     void updateAccountState(AccountState *accountState);
 
-public slots:
+public Q_SLOTS:
     void slotUpdateMenu();
 
 private:

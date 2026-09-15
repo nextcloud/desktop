@@ -97,8 +97,9 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 {
     // Only update progress for the current folder
     Folder *f = FolderMan::instance()->folder(folder);
-    if (f != _folder)
+    if (f != _folder) {
         return;
+    }
 
     // Build recently changed files list
     if (!progress._lastCompletedItem.isEmpty() && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
@@ -108,12 +109,14 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
         QString timeStr = QTime::currentTime().toString("hh:mm");
         QString fileName = progress._lastCompletedItem._file;
         QString elidedFileName = fm.elidedText(fileName, Qt::ElideRight, preferredTextWidth);
+        //: %1 is the elided file name. %2 is the sync result. %3 is the current time.
         QString actionText = tr("%1 (%2, %3)").arg(elidedFileName, elidedKindStr, timeStr);
         if (f) {
             QString fullPath = f->path() + '/' + fileName;
             if (QFile(fullPath).exists()) {
-                if (_recentlyChanged.length() > 5)
+                if (_recentlyChanged.length() > 5) {
                     _recentlyChanged.removeFirst();
+                }
                 _recentlyChanged.append(qMakePair(actionText, fullPath));
             } else {
                 _recentlyChanged.append(qMakePair(actionText, QString("")));

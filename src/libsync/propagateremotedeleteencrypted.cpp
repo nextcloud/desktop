@@ -32,7 +32,7 @@ void PropagateRemoteDeleteEncrypted::start()
 void PropagateRemoteDeleteEncrypted::slotFolderUnLockFinished(const QByteArray &folderId, int statusCode)
 {
     BasePropagateRemoteDeleteEncrypted::slotFolderUnLockFinished(folderId, statusCode);
-    emit finished(!_isTaskFailed);
+    Q_EMIT finished(!_isTaskFailed);
 }
 
 void PropagateRemoteDeleteEncrypted::slotFetchMetadataJobFinished(int statusCode, const QString &message)
@@ -74,3 +74,5 @@ void PropagateRemoteDeleteEncrypted::slotUpdateMetadataJobFinished(int statusCod
     Q_UNUSED(message);
     deleteRemoteItem(_item->_encryptedFileName);
 }
+
+#include "moc_propagateremotedeleteencrypted.cpp"

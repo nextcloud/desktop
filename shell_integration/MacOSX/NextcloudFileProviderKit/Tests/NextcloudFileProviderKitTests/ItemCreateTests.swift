@@ -650,8 +650,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     func testCreateFileChunkedResumed() async throws {
         let chunkSize = 2
-        let expectedChunkUploadIdBase = UUID().uuidString // Check that illegal characters are stripped.
-        let illegalChunkUploadId = expectedChunkUploadIdBase + "/" // Check that illegal characters are stripped.
+        let expectedChunkUploadIdBase = UUID().uuidString
+        let illegalChunkUploadId = expectedChunkUploadIdBase + "/" // Check that path separators are encoded safely.
 
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
         let tempData = Data(repeating: 1, count: chunkSize * 3)
@@ -667,7 +667,11 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             fileSize: Int64(tempData.count),
             modificationDate: modificationDate
         )
-        XCTAssertTrue(chunkUploadId.hasPrefix(expectedChunkUploadIdBase + "_"))
+        XCTAssertTrue(
+            chunkUploadId.hasPrefix(
+                chunkUploadIdentifierPrefix(forItemWithIdentifier: illegalChunkUploadId)
+            )
+        )
         XCTAssertFalse(chunkUploadId.contains("/"))
 
         let previousUploadedChunkNum = 1
@@ -788,6 +792,16 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.lockUnlockResult = NKLock(
+            owner: Self.account.id,
+            ownerEditor: "",
+            ownerType: .token,
+            ownerDisplayName: Self.account.username,
+            time: nil,
+            timeOut: nil,
+            token: "files_lock/test-token",
+            etag: "etag-after-lock"
+        )
 
         // Setup remote folder and file
         let folderRemote = MockRemoteItem(
@@ -816,6 +830,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             serverUrl: Self.account.serverUrl
         )
 
+        targetRemote.parent = folderRemote
         folderRemote.children = [targetRemote]
         folderRemote.parent = rootItem
         rootItem.children = [folderRemote]
@@ -831,6 +846,9 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             ocId: targetRemote.identifier, fileName: targetFileName, account: Self.account
         )
         targetMetadata.serverUrl += "/folder"
+        targetMetadata.etag = "etag-before-lock"
+        targetMetadata.downloaded = true
+        targetMetadata.syncTime = Date(timeIntervalSince1970: 1)
         Self.dbManager.addItemMetadata(targetMetadata)
 
         // Construct the lock file metadata
@@ -864,6 +882,57 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(error)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
         XCTAssertTrue(targetRemote.locked)
+        let lockedMetadata = Self.dbManager.itemMetadata(ocId: targetRemote.identifier)
+        XCTAssertEqual(lockedMetadata?.etag, "etag-after-lock")
+        XCTAssertEqual(lockedMetadata?.lockToken, "files_lock/test-token")
+        XCTAssertEqual(
+            lockedMetadata?.fileProviderContentVersion,
+            "etag-before-lock",
+            "A lock-only etag transition must preserve File Provider's content version."
+        )
+        XCTAssertTrue(
+            Self.dbManager.pendingWorkingSetChanges(since: Date(timeIntervalSince1970: 2)).updated
+                .contains(where: { $0.ocId == targetRemote.identifier }),
+            "Recovering the lock token must queue the target item for a File Provider metadata refresh."
+        )
+
+        if let lockedMetadata {
+            let lockedItem = Item(
+                metadata: lockedMetadata,
+                parentItemIdentifier: .init(folderMetadata.ocId),
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+            XCTAssertEqual(lockedItem.itemVersion.contentVersion, Data("etag-before-lock".utf8))
+        }
+
+        let targetRead = await Enumerator.readServerUrl(
+            targetRemote.remotePath,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+        XCTAssertEqual(
+            targetRead.metadatas?.first?.fileProviderContentVersion,
+            "etag-before-lock",
+            "Refreshing the locked target must keep the content version from before the lock."
+        )
+
+        let laterRead = await Enumerator.readServerUrl(
+            folderRemote.remotePath,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
+        )
+        XCTAssertFalse(
+            laterRead.changes?.createdAndUpdated.contains(where: { $0.ocId == targetRemote.identifier }) ?? true,
+            "A later enumeration must not report the owner's lock etag as a content update."
+        )
     }
 
     func testCreateLockFileUnactionableWithoutCapabilities() async throws {

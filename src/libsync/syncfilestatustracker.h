@@ -29,16 +29,16 @@ public:
     explicit SyncFileStatusTracker(SyncEngine *syncEngine);
     SyncFileStatus fileStatus(const QString &relativePath);
 
-public slots:
+public Q_SLOTS:
     void slotPathTouched(const QString &fileName);
     // path relative to folder
     void slotAddSilentlyExcluded(const QString &folderPath);
     void slotCheckAndRemoveSilentlyExcluded(const QString &folderPath);
 
-signals:
+Q_SIGNALS:
     void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus);
 
-private slots:
+private Q_SLOTS:
     void slotAboutToPropagate(OCC::SyncFileItemVector &items);
     void slotItemCompleted(const OCC::SyncFileItemPtr &item);
     void slotSyncFinished();

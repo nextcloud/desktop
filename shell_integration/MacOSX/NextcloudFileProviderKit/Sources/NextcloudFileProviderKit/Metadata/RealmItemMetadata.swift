@@ -27,6 +27,7 @@ class RealmItemMetadata: Object, ItemMetadata {
     @Persisted var downloadURL = ""
     @Persisted var e2eEncrypted: Bool = false
     @Persisted var etag = ""
+    @Persisted var fileProviderContentVersion: String?
     @Persisted var favorite: Bool = false
     @Persisted var fileId = ""
     @Persisted var fileName = "" // What the file's real file name is
@@ -140,6 +141,7 @@ class RealmItemMetadata: Object, ItemMetadata {
         downloadURL = value.downloadURL
         e2eEncrypted = value.e2eEncrypted
         etag = value.etag
+        fileProviderContentVersion = value.fileProviderContentVersion
         favorite = value.favorite
         fileId = value.fileId
         fileNameView = value.fileNameView

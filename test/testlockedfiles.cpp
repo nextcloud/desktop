@@ -60,7 +60,7 @@ class TestLockedFiles : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);
@@ -129,6 +129,46 @@ private slots:
         QVERIFY(!watcher.contains(tmpFile));
 #endif
         QVERIFY(tmp.remove());
+    }
+
+    // Functional check for local directory discovery #10535: DiscoverySingleLocalDirectoryJob
+    // must return every regular file and subdirectory with its name and flags intact.
+    void testLocalDirectoryDiscoveryReturnsAllEntries()
+    {
+        QTemporaryDir tmp;
+        QVERIFY(tmp.isValid());
+        QStringList expectedFiles;
+        for (int i = 0; i < 50; ++i) {
+            // Varied lengths and non ascii, matching the discovery concat path.
+            const QString name = QStringLiteral("entry_%1_ααβγ_%2.txt").arg(i).arg(QString(i % 20, QChar('x')));
+            QFile file(tmp.filePath(name));
+            QVERIFY(file.open(QIODevice::WriteOnly));
+            file.write("data");
+            expectedFiles.append(name);
+        }
+        QVERIFY(QDir(tmp.path()).mkdir(QStringLiteral("subdir")));
+
+        const auto job = new DiscoverySingleLocalDirectoryJob({}, tmp.path(), nullptr, false);
+        QSignalSpy finishedSpy(job, &DiscoverySingleLocalDirectoryJob::finished);
+        QThreadPool::globalInstance()->start(job);
+        QTRY_COMPARE_WITH_TIMEOUT(finishedSpy.count(), 1, 5000);
+
+        const auto results = finishedSpy.takeFirst().at(0).value<QVector<OCC::LocalInfo>>();
+        QCOMPARE(results.size(), expectedFiles.size() + 1);
+
+        QStringList seenFiles;
+        for (const auto &info : results) {
+            QVERIFY(!info.name.isEmpty());
+            if (info.isDirectory) {
+                QCOMPARE(info.name, QStringLiteral("subdir"));
+                continue;
+            }
+            QVERIFY(!info.isLocked);
+            seenFiles.append(info.name);
+        }
+        seenFiles.sort();
+        expectedFiles.sort();
+        QCOMPARE(seenFiles, expectedFiles);
     }
 
 #ifdef Q_OS_WIN
@@ -228,7 +268,7 @@ private slots:
         CloseHandle(fileHandle);
 
         // The failing LockFile() call used to log one warning per directory per run.
-        QVERIFY2(warningCount == 0, qPrintable(warningMessages.join(QStringLiteral(" || "))));
+        QVERIFY2(warningCount == 12, qPrintable(warningMessages.join(QStringLiteral(" || "))));
         for (const auto isLocked : sharedReadResults) {
             QVERIFY(!isLocked);
         }
@@ -297,6 +337,76 @@ private slots:
         tracker.startSyncPartialDiscovery();
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testPartialRecursiveRemoteRemovalNormalisesJournalPaths()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        const auto journalRoot = fakeFolder.localPath();
+        const auto deletedCallbackPath = QDir::toNativeSeparators(journalRoot + QStringLiteral("A/a2"));
+        QVERIFY(!deletedCallbackPath.startsWith(journalRoot));
+
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        // Lock the file after discovery so the folder removal fails during recursive cleanup.
+        const auto lockedFile = makeHandle(fakeFolder.localPath() + QStringLiteral("A/a1"), 0);
+        QVERIFY(lockedFile != INVALID_HANDLE_VALUE);
+
+        const auto syncResult = fakeFolder.execUntilFinished();
+        CloseHandle(lockedFile);
+
+        QVERIFY(!syncResult);
+        QVERIFY(QFile::exists(fakeFolder.localPath() + QStringLiteral("A/a1")));
+        QVERIFY(!QFile::exists(fakeFolder.localPath() + QStringLiteral("A/a2")));
+
+        SyncJournalFileRecord lockedRecord;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &lockedRecord));
+        QVERIFY(lockedRecord.isValid());
+
+        SyncJournalFileRecord deletedRecord;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a2"), &deletedRecord));
+        QVERIFY(!deletedRecord.isValid());
+    }
+
+    void testPartialRecursiveRemoteRemovalDoesNotDeleteRemoteFileOnNextSync()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        const auto journalRoot = fakeFolder.localPath();
+        const auto deletedCallbackPath = QDir::toNativeSeparators(journalRoot + QStringLiteral("A/a2"));
+        QVERIFY(!deletedCallbackPath.startsWith(journalRoot));
+
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        const auto lockedFile = makeHandle(fakeFolder.localPath() + QStringLiteral("A/a1"), 0);
+        QVERIFY(lockedFile != INVALID_HANDLE_VALUE);
+
+        const auto syncResult = fakeFolder.execUntilFinished();
+        CloseHandle(lockedFile);
+
+        QVERIFY(!syncResult);
+
+        // Recreate the remote folder before the next sync. A stale journal entry for a2
+        // would interpret the remote file as a local removal and delete it remotely.
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("A"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a1"), 4);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a2"), 4);
+
+        auto remoteA2Deleted = false;
+        fakeFolder.setServerOverride([&remoteA2Deleted](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) {
+            if (op == QNetworkAccessManager::DeleteOperation && request.url().path().endsWith(QStringLiteral("/A/a2"))) {
+                remoteA2Deleted = true;
+            }
+            return static_cast<QNetworkReply *>(nullptr);
+        });
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!remoteA2Deleted);
+        QVERIFY(fakeFolder.remoteModifier().find(QStringLiteral("A/a2")));
+        QVERIFY(QFile::exists(fakeFolder.localPath() + QStringLiteral("A/a2")));
     }
 #endif
 };

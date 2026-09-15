@@ -44,7 +44,9 @@ void SyncRunFileLog::start(const QString &folderPath)
         QTextStream in(&file);
         QString line = in.readLine();
 
-        if(QString::compare(folderPath,line,Qt::CaseSensitive)!=0) {
+        if (QString::compare(folderPath, line, Qt::CaseSensitive) == 0) {
+            break;
+        } else {
             depthIndex++;
             if(depthIndex <= length) {
                 filenameSingle = folderPath.split(QLatin1String("/")).at(length - depthIndex) + QStringLiteral("_") ///
@@ -56,7 +58,6 @@ void SyncRunFileLog::start(const QString &folderPath)
                 filename = logpath + QLatin1String("/") + filenameSingle + QLatin1String("_sync.log");
             }
         }
-        else break;
     }
 
     // When the file is too big, just rename it to an old name.

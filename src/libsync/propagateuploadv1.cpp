@@ -76,8 +76,9 @@ void PropagateUploadFileV1::doStartUpload()
 
 void PropagateUploadFileV1::startNextChunk()
 {
-    if (propagator()->_abortRequested)
+    if (propagator()->_abortRequested) {
         return;
+    }
 
     if (!_jobs.isEmpty() && _currentChunk + _startChunk >= _chunkCount - 1) {
         // Don't do parallel upload of chunk if this might be the last chunk because the server cannot handle that
@@ -135,7 +136,7 @@ void PropagateUploadFileV1::startNextChunk()
 
     const QString fileName = _fileToUpload._path;
     if (FileSystem::isFileLocked(fileName, FileSystem::LockMode::SharedRead)) {
-        emit propagator()->seenLockedFile(fileName);
+        Q_EMIT propagator()->seenLockedFile(fileName);
 
                // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError(SyncFileItem::FileLocked, tr("File is locked preventing syncing it", "Generic warning message when a locked file cannot be synced"));
@@ -160,8 +161,9 @@ void PropagateUploadFileV1::startNextChunk()
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
     connect(job, &PUTFileJob::uploadProgress, devicePtr, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
-    if (isFinalChunk)
+    if (isFinalChunk) {
         adjustLastJobTimeout(job, fileSize);
+    }
     job->start();
     propagator()->_activeJobList.append(this);
     _currentChunk++;
@@ -359,8 +361,9 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
     }
 
     int progressChunk = _currentChunk + _startChunk - 1;
-    if (progressChunk >= _chunkCount)
+    if (progressChunk >= _chunkCount) {
         progressChunk = _currentChunk - 1;
+    }
 
     // amount is the number of bytes already sent by all the other chunks that were sent
     // not including this one.

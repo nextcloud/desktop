@@ -10,6 +10,8 @@
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "application.h"
+#include "assistant/assistantcontroller.h"
+#include "assistant/assistantmodule.h"
 #include "callstatechecker.h"
 #include "emojimodel.h"
 #include "notificationsoundplayer.h"
@@ -25,6 +27,8 @@
 #include "theme.h"
 #include "wheelhandler.h"
 #include "syncconflictsmodel.h"
+#include "conflictdialog.h"
+#include "conflictsolver.h"
 #include "syncengine.h"
 #include "wizard/accountwizardcontroller.h"
 #include "filedetails/datefieldbackend.h"
@@ -34,8 +38,11 @@
 #include "filedetails/sortedsharemodel.h"
 #include "activity/sortedactivitylistmodel.h"
 #include "activity/syncstatussummary.h"
+#include "tray/trayactivationpolicy.h"
 #include "tray/trayaccountappsmodel.h"
+#include "search/unifiedsearchpeoplemodel.h"
 #include "search/unifiedsearchresultslistmodel.h"
+#include "tray/usermodel.h"
 #include "integration/fileactionsmodel.h"
 #include "governance/applygovernancelabel.h"
 #include "governance/deletegovernancelabel.h"
@@ -43,6 +50,7 @@
 #include "governance/getgovernancelabels.h"
 #include "governance/governancelabelslistmodel.h"
 #include "filesystem.h"
+#include "common/utility_mac_sandbox.h"
 
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "cloudproviders/cloudprovidermanager.h"
@@ -51,6 +59,7 @@
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QDir>
+#include <QFileDialog>
 #include <QGuiApplication>
 #include <QMessageBox>
 #include <QQmlApplicationEngine>
@@ -154,6 +163,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
     qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
     qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
+    qmlRegisterType<UnifiedSearchPeopleModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchPeopleModel");
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
     qmlRegisterType<FileActionsModel>("com.nextcloud.desktopclient", 1, 0, "FileActionsModel");
@@ -165,6 +175,8 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<GovernanceLabelsListModel>("com.nextcloud.desktopclient", 1, 0, "GovernanceLabelsListModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
+    qmlRegisterUncreatableType<AssistantController>(
+        "com.nextcloud.desktopclient", 1, 0, "AssistantController", "Owned by the Assistant window");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
     qmlRegisterUncreatableType<TalkNotificationData>("com.nextcloud.desktopclient", 1, 0, "talkNotificationData", "TalkNotificationData");
     qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
@@ -185,7 +197,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     qRegisterMetaType<OCC::ActivityList>("ActivityList");
 
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", UserModel::instance());
-    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "TrayAccountAppsModel", TrayAccountAppsModel::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Systray", Systray::instance());
@@ -236,7 +247,7 @@ void ownCloudGui::slotOpenSettingsDialog()
 
 void ownCloudGui::slotOpenMainDialog()
 {
-    _tray->showActivitiesWindow();
+    _tray->showWindow();
 }
 
 void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
@@ -244,7 +255,7 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
     const auto currentUser = UserModel::instance()->currentUser();
     if (reason == QSystemTrayIcon::DoubleClick && currentUser && currentUser->hasLocalFolder()) {
         currentUser->openLocalFolder();
-    } else if (reason == QSystemTrayIcon::Trigger) {
+    } else if (TrayActivationPolicy::opensPrimaryPopup(reason)) {
         if (AccountManager::instance()->accounts().isEmpty()) {
             // Without a configured account the tray icon drives the setup wizard
             // directly: open it, or bring the existing one back to front instead
@@ -410,6 +421,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         QStringList messages;
         messages.append(tr("Disconnected from accounts:"));
         for (const auto &accountState : std::as_const(problemAccounts)) {
+            //: %1 is the account display name. %2 is the account connection status.
             QString message = tr("Account %1: %2").arg(accountState->account()->displayName(), accountState->stateString(accountState->state()));
             if (!accountState->connectionErrors().empty()) {
                 message += QLatin1String("\n");
@@ -594,6 +606,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
 
         QString kindStr = Progress::asResultString(progress._lastCompletedItem);
         QString timeStr = QTime::currentTime().toString("hh:mm");
+        //: %1 is the file name. %2 is the sync result. %3 is the current time.
         QString actionText = tr("%1 (%2, %3)").arg(progress._lastCompletedItem._file, kindStr, timeStr);
         auto *action = new QAction(actionText, this);
         Folder *f = FolderMan::instance()->folder(folder);
@@ -680,7 +693,7 @@ void ownCloudGui::slotShowSettings()
 
 void ownCloudGui::slotSettingsDialogActivated()
 {
-    emit isShowingSettingsDialog();
+    Q_EMIT isShowingSettingsDialog();
 }
 
 #ifdef Q_OS_MACOS
@@ -723,10 +736,12 @@ void ownCloudGui::slotShutdown()
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
     // those do delete on close
-    if (!_settingsDialog.isNull())
+    if (!_settingsDialog.isNull()) {
         _settingsDialog->close();
-    if (!_logBrowser.isNull())
+    }
+    if (!_logBrowser.isNull()) {
         _logBrowser->deleteLater();
+    }
 }
 
 void ownCloudGui::slotToggleLogBrowser()
@@ -803,6 +818,52 @@ void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
 void ownCloudGui::slotShowFileActionsDialog(const QString &localPath) const
 {
     _tray->showFileActionsDialog(localPath);
+}
+
+void ownCloudGui::slotResolveConflict(const QString &conflictedPath, const QString &basePath, const QString &baseName, const QString &folderAlias) const
+{
+    // Show with open(), never exec(): this runs inside SocketApi::slotReadSocket and a modal loop would crash on a nullptr socket.
+    auto dialog = new ConflictDialog;
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setBaseFilename(baseName);
+    dialog->setLocalVersionFilename(conflictedPath);
+    dialog->setRemoteVersionFilename(basePath);
+    connect(dialog, &ConflictDialog::accepted, dialog, [folderAlias] {
+        if (const auto folder = FolderMan::instance()->folder(folderAlias)) {
+            folder->scheduleThisFolderSoon();
+        }
+    });
+    dialog->open();
+    raiseDialog(dialog);
+}
+
+void ownCloudGui::slotMoveItem(const QString &localPath, const QString &defaultTarget) const
+{
+    // Show with open(), never exec(): this runs inside SocketApi::slotReadSocket and a modal loop would crash on a freed socket.
+    auto dialog = new QFileDialog(nullptr, tr("Select new location …"), QFileInfo(defaultTarget).absolutePath());
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setAcceptMode(QFileDialog::AcceptSave);
+    dialog->setOptions(QFileDialog::HideNameFilterDetails);
+    dialog->selectUrl(QUrl::fromLocalFile(defaultTarget));
+    connect(dialog, &QFileDialog::urlSelected, dialog, [localPath](const QUrl &targetUrl) {
+        if (targetUrl.isEmpty()) {
+            return;
+        }
+
+#ifdef Q_OS_MACOS
+        const auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(targetUrl);
+        if (!scopedAccess->isValid()) {
+            qCWarning(lcOwnCloudGui) << "Could not access resource for conflict resolution:" << targetUrl;
+            return;
+        }
+#endif
+
+        ConflictSolver solver;
+        solver.setLocalVersionFilename(localPath);
+        solver.setRemoteVersionFilename(targetUrl.toLocalFile());
+    });
+    dialog->open();
+    raiseDialog(dialog);
 }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE

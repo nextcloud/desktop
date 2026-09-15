@@ -30,6 +30,10 @@ void Utility::setupFavLink(const QString &folder)
     CFURLRef urlRef = CFURLCreateWithFileSystemPath(nullptr, folderCFStr, kCFURLPOSIXPathStyle, true);
     QScopeGuard freeUrl([urlRef]() { CFRelease(urlRef); });
 
+    // LSSharedFileList was deprecated in macOS 10.11 with no public replacement for
+    // adding items to the Finder sidebar, so keep the best-effort call and silence the warning.
+    QT_WARNING_PUSH
+    QT_WARNING_DISABLE_DEPRECATED
     LSSharedFileListRef placesItems = LSSharedFileListCreate(nullptr, kLSSharedFileListFavoriteItems, nullptr);
     QScopeGuard freePlaces([placesItems]() { CFRelease(placesItems); });
 
@@ -40,6 +44,7 @@ void Utility::setupFavLink(const QString &folder)
             CFRelease(item);
         }
     }
+    QT_WARNING_POP
 }
 
 bool Utility::hasSystemLaunchOnStartup(const QString &appName)

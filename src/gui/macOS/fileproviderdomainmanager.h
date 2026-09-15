@@ -103,7 +103,7 @@ public:
      */
     void clearInsufficientQuotaErrorAndEnumerate(const QString &domainIdentifier) const;
 
-public slots:
+public Q_SLOTS:
     /**
      * @brief Handle file ID changes from push notifications
      * @param account The account for which file IDs changed
@@ -111,7 +111,7 @@ public slots:
      */
     void slotHandleFileIdsChanged(const OCC::Account *account, const QList<qint64> &fileIds);
 
-private slots:
+private Q_SLOTS:
     void disconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState, const QString &reason);
     void reconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState);
     void slotAccountStateChanged(const OCC::AccountState * const accountState);

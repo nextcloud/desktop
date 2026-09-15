@@ -27,8 +27,9 @@ static void applyPermissionsFromName(FileInfo &info) {
         info.permissions = RemotePermissions::fromServerString(m.captured(1));
     }
 
-    for (FileInfo &sub : info.children)
+    for (FileInfo &sub : info.children) {
         applyPermissionsFromName(sub);
+    }
 }
 
 // Check if the expected rows in the DB are non-empty. Note that in some cases they might be, then we cannot use this function
@@ -57,8 +58,9 @@ static bool isReadOnlyFolder(const std::wstring &path)
 SyncFileItemPtr findDiscoveryItem(const SyncFileItemVector &spy, const QString &path)
 {
     for (const auto &item : spy) {
-        if (item->destination() == path)
+        if (item->destination() == path) {
             return item;
+        }
     }
     return SyncFileItemPtr(new SyncFileItem);
 }
@@ -89,7 +91,7 @@ class TestPermissions : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         Logger::instance()->setLogFlush(true);
@@ -441,8 +443,9 @@ private slots:
     static void setAllPerm(FileInfo *fi, OCC::RemotePermissions perm)
     {
         fi->permissions = perm;
-        for (auto &subFi : fi->children)
+        for (auto &subFi : fi->children) {
             setAllPerm(&subFi, perm);
+        }
     }
 
     // What happens if the source can't be moved or the target can't be created?

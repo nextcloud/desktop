@@ -131,7 +131,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     if (_account->url() != url) {
         qCInfo(lcConnectionValidator()) << "status.php was redirected to" << url.toString();
         _account->setUrl(url);
-        emit _account->wantsAccountSaved(_account);
+        Q_EMIT _account->wantsAccountSaved(_account);
     }
 
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
@@ -358,7 +358,7 @@ void ConnectionValidator::reportConnected() {
 
 void ConnectionValidator::reportResult(Status status)
 {
-    emit connectionResult(status, _errors);
+    Q_EMIT connectionResult(status, _errors);
 
     // TODO: notify user of errors
     if (!_errors.isEmpty() && _previousErrors != _errors) {
@@ -398,23 +398,23 @@ void TermsOfServiceChecker::slotServerTermsOfServiceRecieved(const QJsonDocument
         if (needToSign != _needToSign) {
             _needToSign = needToSign;
             qCInfo(lcConnectionValidator) << "_needToSign" << (_needToSign ? "need to sign" : "no need to sign");
-            emit needToSignChanged();
+            Q_EMIT needToSignChanged();
         }
     } else if (_needToSign) {
         _needToSign = false;
         qCInfo(lcConnectionValidator) << "_needToSign" << (_needToSign ? "need to sign" : "no need to sign");
-        emit needToSignChanged();
+        Q_EMIT needToSignChanged();
     }
 
     qCInfo(lcConnectionValidator) << "done";
-    emit done();
+    Q_EMIT done();
 }
 
 void TermsOfServiceChecker::checkServerTermsOfService()
 {
     if (!_account) {
         qCInfo(lcConnectionValidator) << "done";
-        emit done();
+        Q_EMIT done();
     }
 
     // The main flow now needs the capabilities

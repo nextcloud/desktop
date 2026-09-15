@@ -22,7 +22,7 @@ public:
         Q_INIT_RESOURCE(theme);
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);
@@ -42,6 +42,13 @@ private slots:
         QVERIFY(!OCC::Ui::IconUtils::drawSvgWithCustomFillColor(blackSvgDirPath + QStringLiteral("/") + blackImages.at(0), QColorConstants::Svg::red).isNull());
 
         QVERIFY(!OCC::Ui::IconUtils::drawSvgWithCustomFillColor(blackSvgDirPath + QStringLiteral("/") + blackImages.at(0), QColorConstants::Svg::green).isNull());
+
+        const auto imageFromZeroWidthRequest = OCC::Ui::IconUtils::drawSvgWithCustomFillColor(
+            blackSvgDirPath + QStringLiteral("/") + blackImages.at(0),
+            QColorConstants::Svg::green,
+            nullptr,
+            QSize(0, 24));
+        QVERIFY(!imageFromZeroWidthRequest.isNull());
 
         const QString whiteSvgDirPath{QString{OCC::Theme::themePrefix} + QStringLiteral("white")};
         const QDir whiteSvgDir(whiteSvgDirPath);

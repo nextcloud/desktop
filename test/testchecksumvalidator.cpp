@@ -37,7 +37,7 @@ using namespace OCC::Utility;
         bool           _successDown = false;
         bool           _errorSeen = false;
 
-    public slots:
+    public Q_SLOTS:
 
     void slotUpValidated(const QByteArray& type, const QByteArray& checksum) {
          qDebug() << "Checksum: " << checksum;
@@ -76,7 +76,7 @@ using namespace OCC::Utility;
         return sumShell;
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);
@@ -100,8 +100,9 @@ private slots:
         const auto sum = checksumCalculator.calculate();
 
         QByteArray sSum = shellSum("md5sum", file);
-        if (sSum.isEmpty())
+        if (sSum.isEmpty()) {
             QSKIP("Couldn't execute md5sum to calculate checksum, executable missing?", SkipSingle);
+        }
 
         QVERIFY(!sum.isEmpty());
         QCOMPARE(sSum, sum);
@@ -119,8 +120,9 @@ private slots:
         const auto sum = checksumCalculator.calculate();
 
         QByteArray sSum = shellSum("sha1sum", file);
-        if (sSum.isEmpty())
+        if (sSum.isEmpty()) {
             QSKIP("Couldn't execute sha1sum to calculate checksum, executable missing?", SkipSingle);
+        }
 
         QVERIFY(!sum.isEmpty());
         QCOMPARE(sSum, sum);

@@ -494,7 +494,7 @@ FolderMetadata::MetadataVersion FolderMetadata::setupVersionFromExistingMetadata
 void FolderMetadata::emitSetupComplete()
 {
     QTimer::singleShot(0, this, [this]() {
-        emit setupComplete();
+        Q_EMIT setupComplete();
     });
 }
 
@@ -1270,3 +1270,5 @@ bool FolderMetadata::verifyMetadataKey(const QByteArray &metadataKey) const
     return _keyChecksums.contains(calcSha256(metadataKeyLimitedLength)) || _keyChecksums.isEmpty();
 }
 }
+
+#include "moc_foldermetadata.cpp"

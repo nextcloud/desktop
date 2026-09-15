@@ -73,10 +73,10 @@ public:
     void cancel();
     void finalize(OCC::VfsCfApi *vfs);
 
-signals:
+Q_SIGNALS:
     void finished(HydrationJob *job);
 
-private slots:
+private Q_SLOTS:
     void slotFetchMetadataJobFinished(int statusCode, const QString &message);
 
 private:

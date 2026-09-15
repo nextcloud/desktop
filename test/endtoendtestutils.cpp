@@ -108,7 +108,7 @@ void EndToEndTestHelper::slotConnectToNCUrl(const QString &url)
 
         _accountState = new OCC::AccountState(_account);
 
-        emit accountReady(_account);
+        Q_EMIT accountReady(_account);
     });
     fetchUserNameJob->start();
 }
@@ -158,7 +158,7 @@ void EndToEndTestHelper::setupFolderMan()
         return;
     }
 
-    auto folderMan = new OCC::FolderMan;
+    auto folderMan = OCC::FolderMan::instance();
     Q_ASSERT(folderMan);
     folderMan->setSyncEnabled(true);
     _folderMan.reset(folderMan);

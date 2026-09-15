@@ -336,6 +336,19 @@ namespace Utility {
     OCSYNC_EXPORT QString noTrailingSlashPath(const QString &path);
     OCSYNC_EXPORT QString fullRemotePathToRemoteSyncRootRelative(const QString &fullRemotePath, const QString &remoteSyncRoot);
 
+    /**
+     * @brief Splits "--option=value" arguments into a separate "--option" and "value" entry
+     *
+     * The option parsers of the client and of nextcloudcmd walk the argument list with an
+     * iterator and expect the value of an option in the entry that follows it. Normalising
+     * the list before parsing makes both spellings work without teaching every single
+     * option about the inline form.
+     *
+     * Only entries starting with "--" are split, and only at their first '='. "--option="
+     * keeps no value so that the parsers report their usual "not specified" error.
+     */
+    OCSYNC_EXPORT QStringList expandCommandLineOptionValues(const QStringList &arguments);
+
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT bool registryKeyExists(HKEY hRootKey, const QString &subKey);
     OCSYNC_EXPORT QVariant registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);

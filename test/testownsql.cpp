@@ -22,7 +22,7 @@ class TestOwnSql : public QObject
     Q_OBJECT
     QTemporaryDir _tempDir;
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

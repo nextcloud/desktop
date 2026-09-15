@@ -76,7 +76,7 @@ public:
                 _bandwidthManager->unregisterDownloadJob(this);
             }
             if (!_hasEmittedFinishedSignal) {
-                emit finishedSignal();
+                Q_EMIT finishedSignal();
             }
             _hasEmittedFinishedSignal = true;
             return true; // discard
@@ -115,10 +115,10 @@ public:
 protected:
     virtual qint64 writeToDevice(const QByteArray &data);
 
-signals:
+Q_SIGNALS:
     void finishedSignal();
     void downloadProgress(qint64, qint64);
-private slots:
+private Q_SLOTS:
     void slotReadyRead();
     void slotMetaDataChanged();
 };
@@ -219,7 +219,7 @@ protected:
 
     void makeParentFolderModifiable(const QString &fileName);
 
-private slots:
+private Q_SLOTS:
     /// Called when ComputeChecksum on the local file finishes,
     /// maybe the local and remote checksums are identical?
     void conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);

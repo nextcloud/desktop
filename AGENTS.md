@@ -64,6 +64,48 @@ All contributions generated or assisted by this agent must fully comply with:
 
 ## General Guidance
 
+### Collecting desktop-client application logs
+
+For client behaviour bugs, collect the desktop client's own application log rather than relying only on the operating system log or Qt plugin tracing. The client logger supports these command-line options:
+
+- `--logdebug` enables debug-level messages, including the detailed GUI and sync categories.
+- `--logflush` flushes each message promptly so the log is useful while reproducing a failure.
+- `--logfile <path>` writes to the specified file. `--logfile -` writes to standard output.
+- `--logdir <path>` writes rotating timestamped logs to a directory.
+
+On macOS, the application sandbox can prevent the client from opening an arbitrary path such as the Desktop. Capturing standard output and letting the shell write the copy avoids that problem:
+
+```sh
+logfile="$HOME/Desktop/nextcloud-client-$(date +%Y%m%d-%H%M%S).log"
+
+"/path/to/Nextcloud.app/Contents/MacOS/Nextcloud" \
+  --logfile - \
+  --logdebug \
+  --logflush \
+  2>&1 | tee "$logfile"
+```
+
+Quit all existing client instances before starting this command, and reproduce the problem in the instance launched by the command. The client is single-instance: launching another copy can forward the action to an already-running process, leaving the captured process without the relevant application log entries. Stop the capture with `Ctrl-C` after reproducing the issue and attach the resulting file. For a sharing or file-details issue, retain entries from the relevant `nextcloud.gui.*` categories and any warnings or errors around the reproduction.
+
+### Rules of thumb for feature work
+
+Use these defaults unless the existing code clearly calls for an exception:
+
+- No magic numbers. Use `Style.qml`, shared metrics or named constants for layout, timing and protocol values.
+- Every new translated string containing replacement placeholders (for example, `%1`, `%2` or `%n`) must have an immediately preceding `//:` translator comment that explains what each placeholder contains and, where useful, gives representative examples. This applies to both C++ `tr()` and QML `qsTr()` strings.
+- Break non-trivial QML delegates, dialogs, popups and reusable components into their own files. Keep a small, single-use visual fragment inline only when it has no meaningful state or behavior of its own.
+- Before writing a new job, connector, model, URL helper, mock or QML registration, use `rg`—or the next available recursive text-search tool, such as `grep`, if `rg` is not installed—to find code that already performs the same task. Reuse or extend that code when it exists. If a new implementation is necessary, state why the existing code cannot be used.
+- Follow ownership contracts exactly. Check whether a job self-deletes and who owns every object before adding cleanup, copies or wrappers.
+- Register QML types once, in the same place as neighboring types. Keep the module import, resource list, CMake entry and consuming window in agreement.
+- Treat server and platform APIs as strict contracts. Send all required fields and do not advertise a capability that the UI cannot fully submit.
+- Give every asynchronous operation a way out. Timers, jobs and busy flags must finish or reset on success, error, cancellation, timeout and destruction; retries must be bounded; stale results must not overwrite newer state.
+- When a view is reopened or a filter changes, make sure the text in the controls matches the results and warnings on screen. Do not show results for an old query under an empty search field, or hide a warning while displaying results that are only partial.
+- Start with one simple case and make it work from beginning to end: user input, processing, result, error handling and a test. Only then add the other providers, task types, filters or UI variants.
+- Tests must call the code and check its result or state. Do not stop at checking that a file exists or that an object can be constructed. QML tests must load and instantiate the application module; network tests must check the request and response; all tests must include error and boundary cases as well as the successful case.
+- Keep changes focused. Remove unrelated edits, dead code, duplicate logic and opportunistic formatting. If a feature spans several subsystems or grows to hundreds of changed lines, split it into reviewable slices or recommend a design ticket.
+- After review feedback, search the whole change for the same problem. Fixing one magic number, inline component, registration site or lifecycle mistake is not enough if the pattern remains elsewhere.
+- Before handoff, run `git diff --check`, inspect `git diff --name-only`, run the narrowest relevant test and build the consuming target. Report exactly what was run; do not call an unavailable integration check validated.
+
 ### License headers
 
 Every new file must include the correct SPDX license header. For GPL-2.0-or-later (the default for this repository):
@@ -80,14 +122,7 @@ Avoid creating source files that implement multiple types; instead, place each t
 
 ### Documentation comments
 
-Documentation must be trustworthy: only write a comment you can back with the implementation in front of you. **A wrong or overreaching comment is worse than none** - when a behaviour is unclear or you cannot state it with confidence, leave it undocumented. This is the same verifiability rule that governs commit messages and PR text, applied to code comments.
-
-- **Style.** Use Doxygen `/** @brief ... */` blocks for types and their members - the established convention across this codebase. Use a trailing `//!< ...` for a single instance variable or field, and plain `//` for free helper functions and file-local statics.
-- **Document the type and each declared member.** For a type, state what it is and how it behaves. For each public property, method or protocol callback, state what it does. Add `@param` entries only where the meaning is not obvious from the name - in particular, spell out what `nil`, `NO`, an empty string or `0` does, and which event triggers a callback block.
-- **Do not overreach.** Describe what the code actually does, not what it looks like it should do. Avoid absolute claims the implementation does not guarantee - for example, do not write "keeps the window on screen" for a helper that only best-effort clamps and can still overflow, or "loads a remote URL" for one that only reads local files.
-- **Overload sets.** When a type has many overloaded initializers or methods that funnel into one, fully document the designated one (with its `@param` list) and simply mark the rest as convenience overloads rather than repeating the text.
-- **Comment members selectively.** Document instance variables and file-local statics whose purpose is not obvious from their name and type; leave self-explanatory ones (a backing `_stack`, a counter) uncommented to avoid noise. In Objective-C(++), instance variables live in the `@implementation` block, so their comments belong there, not in the header.
-- **Verify before you trust it.** Re-read the implementation and confirm every comment is literally true before considering the work done.
+Documentation comments must be accurate and written for human readers. Follow [`doc/terminology.md`](doc/terminology.md) for vocabulary and [`doc/writing-style.md`](doc/writing-style.md) for comment structure, concision, language-specific conventions, and verification. A wrong or overreaching comment is worse than none. AI-generated comments must be edited to meet the same standard.
 
 ## Commit and Pull Request Guidelines
 
@@ -152,6 +187,10 @@ Our C++ code should can make use of C++ 20 standard features whenever possible.
 
 Do not use C++ modules. Use standard header inclusion instead.
 
+After editing or adding any C++ source files, anywhere in the repository, run `clang-format -i` on the touched files before considering the task done.
+
+After editing or adding any C++ source files, anywhere in the repository, run `run-clang-tidy -p build -header-filter='.*' -config-file .clang-tidy -fix` from the repository root and confirm it produces no further changes. This is a mandatory step: apply any fixes the tool makes, review them, re-run the command, and repeat until it reports no changes before considering the task done. Do not skip or silently waive this step; if `run-clang-tidy` cannot be run (for example because `./build` is not configured), state that explicitly rather than proceeding as if it passed.
+
 ## macOS Specifics
 
 The following details are important and only relevant when working on the desktop client on macOS.
@@ -202,10 +241,30 @@ These instructions are restricted to `./shell_integration/MacOSX/NextcloudIntegr
 - Relevant run time values to log must be provided through the `arguments` argument.
 - Inclusion of `.debug`-level messages is controlled at runtime by the `debugLoggingEnabled` boolean key under the `com.nextcloud.desktopclient.FileProviderExt` domain in `UserDefaults.standard`. When unset, DEBUG builds include debug messages and release builds do not. Administrators can flip the value with `defaults write` for troubleshooting; changes propagate live via KVO. The gate applies to both Apple unified logging and the JSONL file output. See `Logging.md`.
 
+#### Blocking synchronization
+
+- Synchronization is blocked at runtime by the `blockSync` boolean key under the `com.nextcloud.desktopclient.FileProviderExt` domain in `UserDefaults.standard`, the counterpart on the file provider path to "pause synchronisation" for classic sync folders. When unset, synchronization is not blocked, in every build configuration.
+- Flip it with `defaults write com.nextcloud.desktopclient.FileProviderExt blockSync -bool true` and clear it with `defaults delete com.nextcloud.desktopclient.FileProviderExt blockSync`. It takes effect immediately, without restarting the extension.
+- While blocked, the extension performs no network input or output with the server. Every request from the system which would need it is refused with `NSFileProviderErrorServerUnreachable`, which is what the situation genuinely is as far as the file provider framework is concerned.
+- Both directions are covered by refusing requests in the extension alone. Remote changes are discovered by the main app, but the signal it sends carries no data and reaches the extension as a request for an enumerator, so declining that declines the push and the polling path alike.
+- See `BlockSync.md` for the semantics, including what blocking deliberately does not do.
+
 ### Tests
+
+#### GUI changes
+
+Validate GUI changes in stages, using the smallest suitable test or harness:
+
+1. Run the narrowest automated test and verify the component's state, properties, and supported interactions.
+2. Exercise the changed component with representative data for each relevant state, using a deterministic mock backend when needed.
+3. Inspect the result visually when layout or interaction is relevant; a passing build or test is not visual proof.
+4. Report the observed result and any remaining discrepancy. If a failure is only reproducible in the full application, retain the isolated reproduction as far as possible and collect the relevant application logs.
+
+#### General testing guidance
 
 - **Mandatory coverage for features and bugfixes.** Every feature or bugfix implemented by an AI agent must ship with corresponding automated tests in the same change. Bugfixes require a regression test for the original failure mode; features require tests for the new behavior and relevant boundary and failure cases. Tests must exercise behavior through a supported public or testable interface rather than merely increasing line coverage.
 - **Testability is part of implementation.** Before changing production code, locate the relevant test target and its existing fixtures, mocks, and helpers. Prefer designs that allow deterministic isolation and reuse existing test infrastructure; if the code is not testable, make the smallest focused production change needed to establish an appropriate test seam.
+- **Test the behavior and its contracts.** Tests must exercise the public or testable workflow, not only file existence, object construction or line coverage. For networked features, assert the important request parameters and realistic success, malformed-response and server-error paths. For asynchronous features, cover retry limits, cancellation, timeout, stale results, teardown and reopening/reset behavior. For QML features, instantiate the affected component through the same module/import path used by the application and test the relevant object state and user interaction.
 - **Validation is required.** Run the smallest existing test command that covers the changed behavior, then broaden validation when the targeted test exposes integration or build issues. A feature or bugfix is incomplete if its tests are absent, unrelated, not executed, or failing without an explicitly documented blocker.
 - When implementing new test suites, prefer Swift Testing over XCTest for implementation.
 - When implementing test cases using Swift Testing, do not prefix test method names with "test".

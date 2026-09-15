@@ -30,16 +30,16 @@ public:
     [[nodiscard]] static OCC::Folder *findFolderForFile(const QString &relPath, const QString &userId);
     [[nodiscard]] static QString prefixSlashToPath(const QString &path);
 
-signals:
+Q_SIGNALS:
     void error(const QString &message, const QString &informativeText);
     void finished();
     void callShowError(const QString &message, const QString &informativeText);
 
-public slots:
+public Q_SLOTS:
     void startSetup();
     void startEditLocally();
 
-private slots:
+private Q_SLOTS:
     void fetchRemoteFileParentInfo();
     void startSyncBeforeOpening();
 

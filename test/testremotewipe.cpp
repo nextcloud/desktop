@@ -29,7 +29,7 @@ class TestRemoteWipe: public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);
@@ -44,7 +44,6 @@ private slots:
         ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
 
         // RemoteWipe needs FolderMan for actually wiping local data
-        FolderMan fm;
         auto folderMan = FolderMan::instance();
         QVERIFY(folderMan);
 

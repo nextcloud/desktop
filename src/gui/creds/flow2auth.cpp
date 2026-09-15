@@ -71,7 +71,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
     _isBusy = true;
     _hasToken = false;
 
-    emit statusChanged(PollStatus::statusFetchToken, 0);
+    Q_EMIT statusChanged(PollStatus::statusFetchToken, 0);
 
     // Step 1: Initiate a login, do an anonymous POST request
     const auto loginV2url = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/login/v2"));
@@ -124,7 +124,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
         qCInfo(lcFlow2auth) << "setting login flow poll timer interval to" << _pollTimer.interval() << "msec";
         _secondsInterval = loginFlowPollIntervalSeconds;
         _secondsLeft = _secondsInterval;
-        emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
+        Q_EMIT statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
 
         if (!_pollTimer.isActive()) {
             _pollTimer.start();
@@ -136,12 +136,12 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
             if (!Utility::openBrowser(authorisationLink())) {
                 // We cannot open the browser, then we claim we don't support Flow2Auth.
                 // Our UI callee will ask the user to copy and open the link.
-                emit result(NotSupported);
+                Q_EMIT result(NotSupported);
             }
             break;
         case actionCopyLinkToClipboard:
             QApplication::clipboard()->setText(authorisationLink().toString(QUrl::FullyEncoded));
-            emit statusChanged(PollStatus::statusCopyLinkToClipboard, 0);
+            Q_EMIT statusChanged(PollStatus::statusCopyLinkToClipboard, 0);
             break;
         }
 
@@ -160,11 +160,11 @@ void Flow2Auth::slotPollTimerTimeout()
 
     _secondsLeft--;
     if(_secondsLeft > 0) {
-        emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
+        Q_EMIT statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
         _isBusy = false;
         return;
     }
-    emit statusChanged(PollStatus::statusPollNow, 0);
+    Q_EMIT statusChanged(PollStatus::statusPollNow, 0);
 
     // Step 2: Poll
     QNetworkRequest request;
@@ -195,7 +195,7 @@ void Flow2Auth::slotPollTimerTimeout()
 
             // Failed: poll again
             _secondsLeft = _secondsInterval;
-            emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
+            Q_EMIT statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
             _isBusy = false;
             return;
         }
@@ -207,7 +207,7 @@ void Flow2Auth::slotPollTimerTimeout()
 
         _account->setUrl(serverUrl);
 
-        emit result(LoggedIn, QString(), loginName, appPassword);
+        Q_EMIT result(LoggedIn, QString(), loginName, appPassword);
 
         // Forget sensitive data
         appPassword.clear();
@@ -248,7 +248,7 @@ QJsonObject Flow2Auth::handleResponse(QNetworkReply *reply)
 
         if (_enforceHttps && !isHttps()) {
             qCWarning(lcFlow2auth) << "Returned server url | poll endpoint does not start with https";
-            emit result(Error, tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. "
+            Q_EMIT result(Error, tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. "
                                   "Login will not be possible because this might be a security issue. Please contact your administrator."));
             return {};
         }
@@ -291,7 +291,7 @@ QJsonObject Flow2Auth::handleResponse(QNetworkReply *reply)
 
         // We get a 404 until authentication is done, so don't show this error in the GUI.
         if (reply->error() != QNetworkReply::ContentNotFoundError) {
-            emit result(Error, errorReason);
+            Q_EMIT result(Error, errorReason);
         }
 
         return {};

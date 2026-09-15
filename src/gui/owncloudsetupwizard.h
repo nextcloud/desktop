@@ -31,7 +31,7 @@ public:
     static void runWizardForLoginFlow(QObject *obj, const char *amember, const QUrl &serverUrl, QWidget *parent = nullptr);
     static bool bringWizardToFrontIfVisible();
 
-signals:
+Q_SIGNALS:
     // overall dialog close signal.
     void ownCloudWizardDone(int);
 

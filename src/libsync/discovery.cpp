@@ -127,8 +127,9 @@ void ProcessDirectoryJob::process()
     auto pathU8 = _currentFolder._original.toUtf8();
     if (!_discoveryData->_statedb->listFilesInPath(pathU8, [&](const SyncJournalFileRecord &rec) {
             auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.constData() + (pathU8.size() + 1));
-            if (rec.isVirtualFile() && isVfsWithSuffix())
+            if (rec.isVirtualFile() && isVfsWithSuffix()) {
                 chopVirtualFileSuffix(name);
+            }
             auto &dbEntry = entries[name].dbEntry;
             dbEntry = rec;
             setupDbPinStateActions(dbEntry);
@@ -147,8 +148,9 @@ void ProcessDirectoryJob::process()
         // This is done in a second path in order to not depend on the order of
         // _localNormalQueryEntries.
         for (auto &e : _localNormalQueryEntries) {
-            if (!e.isVirtualFile)
+            if (!e.isVirtualFile) {
                 continue;
+            }
             auto &suffixedEntry = entries[e.name];
             bool hasOtherData = suffixedEntry.serverEntry.isValid() || suffixedEntry.dbEntry.isValid();
 
@@ -158,8 +160,9 @@ void ProcessDirectoryJob::process()
             // If the non-suffixed entry has no data, move it
             if (!nonvirtualEntry.localEntry.isValid()) {
                 std::swap(nonvirtualEntry.localEntry, suffixedEntry.localEntry);
-                if (!hasOtherData)
+                if (!hasOtherData) {
                     entries.erase(e.name);
+                }
             } else if (!hasOtherData) {
                 // Normally a lone local suffixed file would be processed under the
                 // unsuffixed name. In this special case it's under the suffixed name.
@@ -359,13 +362,13 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         qCInfo(lcDisco) << _discoveryData->_localDir + path << "is locked" << "exluding it from sync";
         excluded = CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED;
 
-        emit _discoveryData->seenLockedFile(_discoveryData->_localDir + path);
+        Q_EMIT _discoveryData->seenLockedFile(_discoveryData->_localDir + path);
     }
 
     if (excluded == CSYNC_NOT_EXCLUDED && !entries.localEntry.isSymLink) {
         return false;
     } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
-        emit _discoveryData->silentlyExcluded(path);
+        Q_EMIT _discoveryData->silentlyExcluded(path);
         return true;
     }
 
@@ -378,7 +381,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         excluded = CSYNC_NOT_EXCLUDED;
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
         item->_direction = SyncFileItem::Down;
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
         return true;
     }
 
@@ -500,9 +503,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     _childIgnored = true;
 
     if (isBlacklisted) {
-        emit _discoveryData->silentlyExcluded(path);
+        Q_EMIT _discoveryData->silentlyExcluded(path);
     } else {
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
     }
 
     return true;
@@ -520,8 +523,8 @@ bool ProcessDirectoryJob::canRemoveCaseClashConflictedCopy(const QString &path, 
     }
 
     auto numMatchingEntries = 0;
-    for (auto it = allEntries.cbegin(); it != allEntries.cend(); ++it) {
-        if (it->first.compare(originalBaseFileName, Qt::CaseInsensitive) == 0 && it->second.serverEntry.isValid()) {
+    for (const auto &allEntrie : allEntries) {
+        if (allEntrie.first.compare(originalBaseFileName, Qt::CaseInsensitive) == 0 && allEntrie.second.serverEntry.isValid()) {
             // only case-insensitive matching entries that are present on the server
             ++numMatchingEntries;
         }
@@ -613,8 +616,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // The item shall only have this type if the db request for the virtual download
     // was successful (like: no conflicting remote remove etc). This decision is done
     // either in processFileAnalyzeRemoteInfo() or further down here.
-    if (item->_type == ItemTypeVirtualFileDownload)
+    if (item->_type == ItemTypeVirtualFileDownload) {
         item->_type = ItemTypeVirtualFile;
+    }
     // Similarly db entries with a dehydration request denote a regular file
     // until the request is processed.
     if (item->_type == ItemTypeVirtualFileDehydration) {
@@ -629,7 +633,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("File has extension reserved for virtual files.");
             _childIgnored = true;
-            emit _discoveryData->itemDiscovered(item);
+            Q_EMIT _discoveryData->itemDiscovered(item);
             return;
         }
     }
@@ -801,7 +805,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             _childIgnored = true;
             item->_errorString = serverEntry.isDirectory ? tr("Folder is not accessible on the server.", "server error")
                                                          : tr("File is not accessible on the server.", "server error");
-            emit _discoveryData->itemDiscovered(item);
+            Q_EMIT _discoveryData->itemDiscovered(item);
             return;
         }
     }
@@ -953,14 +957,14 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
                              << "item->isEncrypted()" << (item->isEncrypted() ? "true" : "false");
 
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
 
         return;
     }
 
     if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
 
         return;
     }
@@ -979,10 +983,12 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     bool async = false;
     // This function will be executed for every candidate
     auto renameCandidateProcessing = [&](const OCC::SyncJournalFileRecord &base) {
-        if (done)
+        if (done) {
             return;
-        if (!base.isValid())
+        }
+        if (!base.isValid()) {
             return;
+        }
 
         // Remote rename of a virtual file we have locally scheduled for download.
         if (base._type == ItemTypeVirtualFileDownload) {
@@ -1174,8 +1180,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     bool noServerEntry = (_queryServer != ParentNotChanged && !serverEntry.isValid())
         || (_queryServer == ParentNotChanged && !dbEntry.isValid());
 
-    if (noServerEntry)
+    if (noServerEntry) {
         recurseQueryServer = ParentDontExist;
+    }
 
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
         || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
@@ -1223,10 +1230,12 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         bool recurse = item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory;
         // Even if we have a local directory: If the remote is a file that's propagated as a
         // conflict we don't need to recurse into it. (local c1.owncloud, c1/ ; remote: c1)
-        if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT && !item->isDirectory())
+        if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT && !item->isDirectory()) {
             recurse = false;
-        if (_queryLocal != NormalQuery && _queryServer != NormalQuery)
+        }
+        if (_queryLocal != NormalQuery && _queryServer != NormalQuery) {
             recurse = false;
+        }
 
         if (localEntry.isPermissionsInvalid) {
             recurse = true;
@@ -1324,7 +1333,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 << " db_etag=" << dbEntry._etag
                 << " db_inode=" << dbEntry._inode;
             if (!_discoveryData->_statedb->deleteFileRecord(path._original, true)) {
-                emit _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original), ErrorCategory::GenericError);
+                Q_EMIT _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original), ErrorCategory::GenericError);
                 qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << path._original;
             }
             return;
@@ -1597,6 +1606,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return true;
     };
     const auto isMove = moveCheck();
+    const auto isStaleVirtualDirectory = localEntry.type == ItemTypeVirtualDirectory && noServerEntry;
     const auto isE2eeMove = isMove && (base.isE2eEncrypted() || isInsideEncryptedTree());
     const auto isCfApiVfsMode = _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi;
     const bool isOnlineOnlyItem = isCfApiVfsMode && (localEntry.isDirectory || _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local));
@@ -1629,7 +1639,17 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
             Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
         }
-        postProcessLocalNew();
+        if (isStaleVirtualDirectory && !isMove) {
+            // A virtual directory without a database record is a stale placeholder.
+            // A newly created local directory is not a virtual directory, so it can
+            // still follow the normal local-new path below.
+            qCWarning(lcDisco) << "Wiping virtual directory without db entry for" << path._local;
+            item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+            item->_direction = SyncFileItem::Down;
+            item->_type = ItemTypeVirtualDirectory;
+        } else {
+            postProcessLocalNew();
+        }
         finalize();
         return;
     }
@@ -1713,8 +1733,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // Discard any download/dehydrate tags on the base file.
         // They could be preserved and honored in a follow-up sync,
         // but it complicates handling a lot and will happen rarely.
-        if (item->_type == ItemTypeVirtualFileDownload)
+        if (item->_type == ItemTypeVirtualFileDownload) {
             item->_type = ItemTypeVirtualFile;
+        }
         if (item->_type == ItemTypeVirtualFileDehydration) {
             item->_type = ItemTypeFile;
             qCInfo(lcDisco) << "Changing item type from virtual to normal file" << item->_file;
@@ -1729,8 +1750,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // We must query the server to know if the etag has not changed
         _pendingAsyncJobs++;
         QString serverOriginalPath = _discoveryData->_remoteFolder + _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
-        if (base.isVirtualFile() && isVfsWithSuffix())
+        if (base.isVirtualFile() && isVfsWithSuffix()) {
             chopVirtualFileSuffix(serverOriginalPath);
+        }
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
         connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
 
@@ -1772,8 +1794,9 @@ void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, Proce
     }
 
     // A conflict with a virtual should lead to virtual file download
-    if (dbEntry.isVirtualFile() || localEntry.isVirtualFile)
+    if (dbEntry.isVirtualFile() || localEntry.isVirtualFile) {
         item->_type = ItemTypeVirtualFileDownload;
+    }
 
     // If there's no content hash, use heuristics
     if (serverEntry.checksumHeader.isEmpty()) {
@@ -1868,7 +1891,7 @@ void ProcessDirectoryJob::processFileFinalize(
     if (item->isEncrypted() && !_discoveryData->_account->capabilities().clientSideEncryptionAvailable()) {
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
         item->_direction = SyncFileItem::None;
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
         return;
     }
 
@@ -1951,12 +1974,14 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_status = SyncFileItem::Status::NormalError;
     }
 
-    if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
+    if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC) {
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+    }
     bool removed = item->_instruction == CSYNC_INSTRUCTION_REMOVE;
     if (checkPermissions(item)) {
-        if (item->_isRestoration && item->isDirectory())
+        if (item->_isRestoration && item->isDirectory()) {
             recurse = true;
+        }
     } else {
         recurse = false;
     }
@@ -1993,15 +2018,16 @@ void ProcessDirectoryJob::processFileFinalize(
             || (item->_type == ItemTypeVirtualFile && item->_instruction == CSYNC_INSTRUCTION_NEW)) {
             _discoveryData->_deletedItem[path._original] = item;
         }
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
     }
 }
 
 void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::LocalInfo &localEntry,
     const SyncJournalFileRecord &dbEntry)
 {
-    if (!localEntry.isValid())
+    if (!localEntry.isValid()) {
         return;
+    }
 
     auto item = SyncFileItem::fromSyncJournalFileRecord(dbEntry);
     item->_file = path._target;
@@ -2026,7 +2052,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);
     } else {
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
     }
 }
 
@@ -2085,8 +2111,9 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
     case CSYNC_INSTRUCTION_REMOVE: {
         QString fileSlash = item->_file + '/';
         auto forbiddenIt = _discoveryData->_forbiddenDeletes.upperBound(fileSlash);
-        if (forbiddenIt != _discoveryData->_forbiddenDeletes.begin())
+        if (forbiddenIt != _discoveryData->_forbiddenDeletes.begin()) {
             forbiddenIt = std::prev(forbiddenIt);
+        }
         if (forbiddenIt != _discoveryData->_forbiddenDeletes.end()
             && fileSlash.startsWith(forbiddenIt.key())) {
             item->_instruction = CSYNC_INSTRUCTION_NEW;
@@ -2227,8 +2254,9 @@ void ProcessDirectoryJob::subJobFinished()
     _childIgnored |= job->_childIgnored;
     _childModified |= job->_childModified;
 
-    if (job->_dirItem)
-        emit _discoveryData->itemDiscovered(job->_dirItem);
+    if (job->_dirItem) {
+        Q_EMIT _discoveryData->itemDiscovered(job->_dirItem);
+    }
 
     int count = _runningJobs.removeAll(job);
     ASSERT(count == 1);
@@ -2255,14 +2283,15 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
                 _dirItem->_instruction = CSYNC_INSTRUCTION_NONE;
             }
         }
-        emit finished();
+        Q_EMIT finished();
     }
 
     int started = 0;
     for (const auto rj : std::as_const(_runningJobs)) {
         started += rj->processSubJobs(nbJobs - started);
-        if (started >= nbJobs)
+        if (started >= nbJobs) {
             return started;
+        }
     }
 
     while (started < nbJobs && !_queuedJobs.empty()) {
@@ -2277,7 +2306,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
 
 void ProcessDirectoryJob::dbError()
 {
-    emit _discoveryData->fatalError(tr("Error while reading the database"), ErrorCategory::GenericError);
+    Q_EMIT _discoveryData->fatalError(tr("Error while reading the database"), ErrorCategory::GenericError);
 }
 
 void ProcessDirectoryJob::addVirtualFileSuffix(QString &str) const
@@ -2287,8 +2316,9 @@ void ProcessDirectoryJob::addVirtualFileSuffix(QString &str) const
 
 bool ProcessDirectoryJob::hasVirtualFileSuffix(const QString &str) const
 {
-    if (!isVfsWithSuffix())
+    if (!isVfsWithSuffix()) {
         return false;
+    }
     return str.endsWith(_discoveryData->_syncOptions._vfs->fileSuffix());
 }
 
@@ -2355,11 +2385,13 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
         if (results) {
             _serverNormalQueryEntries = *results;
             _serverQueryDone = true;
-            if (!serverJob->_dataFingerprint.isEmpty() && _discoveryData->_dataFingerprint.isEmpty())
+            if (!serverJob->_dataFingerprint.isEmpty() && _discoveryData->_dataFingerprint.isEmpty()) {
                 _discoveryData->_dataFingerprint = serverJob->_dataFingerprint;
+            }
 
-            if (_localQueryDone)
+            if (_localQueryDone) {
                 this->process();
+            }
         } else {
             auto code = results.error().code;
             qCWarning(lcDisco) << "Server error in directory" << _currentFolder._server << code;
@@ -2374,11 +2406,11 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 // Similarly, the server might also return 404 or 50x in case of bugs. #7199 #7586
                 _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
                 _dirItem->_errorString = results.error().message;
-                emit this->finished();
+                Q_EMIT this->finished();
             } else {
                 qCWarning(lcDisco) << "Error:" << results.error().message;
                 // Fatal for the root job since it has no SyncFileItem, or for the network errors
-                emit _discoveryData->fatalError(results.error().message, ErrorCategory::NetworkError);
+                Q_EMIT _discoveryData->fatalError(results.error().message, ErrorCategory::NetworkError);
             }
         }
     });
@@ -2397,7 +2429,7 @@ void ProcessDirectoryJob::setFolderQuota(const FolderQuota &folderQuota)
     _folderQuota.bytesAvailable = folderQuota.bytesAvailable;
 
     if (_currentFolder._original.isEmpty()) {
-        emit updatedRootFolderQuota(_folderQuota.bytesUsed, _folderQuota.bytesAvailable);
+        Q_EMIT updatedRootFolderQuota(_folderQuota.bytesUsed, _folderQuota.bytesAvailable);
     }
 }
 
@@ -2418,10 +2450,11 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
     connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedFatalError, this, [this](const QString &msg) {
         _discoveryData->_currentlyActiveJobs--;
         _pendingAsyncJobs--;
-        if (_serverJob)
+        if (_serverJob) {
             _serverJob->abort();
+        }
 
-        emit _discoveryData->fatalError(msg, ErrorCategory::NetworkError);
+        Q_EMIT _discoveryData->fatalError(msg, ErrorCategory::NetworkError);
     });
 
     connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedNonFatalError, this, [this](const QString &msg) {
@@ -2431,10 +2464,10 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
         if (_dirItem) {
             _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
             _dirItem->_errorString = msg;
-            emit this->finished();
+            Q_EMIT this->finished();
         } else {
             // Fatal for the root job since it has no SyncFileItem
-            emit _discoveryData->fatalError(msg, ErrorCategory::GenericError);
+            Q_EMIT _discoveryData->fatalError(msg, ErrorCategory::GenericError);
         }
     });
 
@@ -2445,8 +2478,9 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
         _localNormalQueryEntries = results;
         _localQueryDone = true;
 
-        if (_serverQueryDone)
+        if (_serverQueryDone) {
             this->process();
+        }
     });
 
     QThreadPool *pool = QThreadPool::globalInstance();
@@ -2463,8 +2497,9 @@ void ProcessDirectoryJob::computePinState(PinState parentState)
 {
     _pinState = parentState;
     if (_queryLocal != ParentDontExist && FileSystem::fileExists(_discoveryData->_localDir + _currentFolder._local)) {
-        if (auto state = _discoveryData->_syncOptions._vfs->pinState(_currentFolder._local)) // ouch! pin local or original?
+        if (auto state = _discoveryData->_syncOptions._vfs->pinState(_currentFolder._local)) { // ouch! pin local or original?
             _pinState = *state;
+        }
     }
 }
 
@@ -2551,7 +2586,7 @@ bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item) co
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
         item->_direction = SyncFileItem::Down;
         item->_wantsSpecificActions = SyncFileItem::SynchronizationOptions::MoveToClientTrashBin;
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
         return true;
     }
 
@@ -2559,3 +2594,5 @@ bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item) co
 }
 
 }
+
+#include "moc_discovery.cpp"

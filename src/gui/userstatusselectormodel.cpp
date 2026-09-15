@@ -76,7 +76,7 @@ void UserStatusSelectorModel::setUserIndex(const int userIndex)
     reset();
 
     _userIndex = userIndex;
-    emit userIndexChanged();
+    Q_EMIT userIndexChanged();
 
     qCDebug(lcUserStatusDialogModel) << "Loading user status connector for user with index: " << _userIndex;
     _userStatusConnector = UserModel::instance()->userStatusConnector(_userIndex);
@@ -105,11 +105,11 @@ void UserStatusSelectorModel::reset()
     _errorMessage.clear();
 
     setUserStatusLoaded(false);
-    emit userStatusChanged();
-    emit clearAtDisplayStringChanged();
-    emit predefinedStatusesChanged();
-    emit errorMessageChanged();
-    emit busyStatusSupportedChanged();
+    Q_EMIT userStatusChanged();
+    Q_EMIT clearAtDisplayStringChanged();
+    Q_EMIT predefinedStatusesChanged();
+    Q_EMIT errorMessageChanged();
+    Q_EMIT busyStatusSupportedChanged();
 }
 
 void UserStatusSelectorModel::init()
@@ -133,7 +133,7 @@ void UserStatusSelectorModel::init()
     _userStatusConnector->fetchUserStatus();
     _userStatusConnector->fetchPredefinedStatuses();
     
-    emit busyStatusSupportedChanged();
+    Q_EMIT busyStatusSupportedChanged();
 }
 
 void UserStatusSelectorModel::onUserStatusSet()
@@ -150,12 +150,12 @@ void UserStatusSelectorModel::onUserStatusSet()
         return;
     }
 
-    emit finished();
+    Q_EMIT finished();
 }
 
 void UserStatusSelectorModel::onMessageCleared()
 {
-    emit finished();
+    Q_EMIT finished();
 }
 
 void UserStatusSelectorModel::onError(UserStatusConnector::Error error)
@@ -170,16 +170,16 @@ void UserStatusSelectorModel::onError(UserStatusConnector::Error error)
     case UserStatusConnector::Error::CouldNotFetchUserStatus:
         _userStatus = {};
         setUserStatusLoaded(false);
-        emit userStatusChanged();
-        emit clearAtDisplayStringChanged();
+        Q_EMIT userStatusChanged();
+        Q_EMIT clearAtDisplayStringChanged();
         setError(tr("Could not fetch status. Make sure you are connected to the server."));
         return;
 
     case UserStatusConnector::Error::UserStatusNotSupported:
         _userStatus = {};
         setUserStatusLoaded(false);
-        emit userStatusChanged();
-        emit clearAtDisplayStringChanged();
+        Q_EMIT userStatusChanged();
+        Q_EMIT clearAtDisplayStringChanged();
         setError(tr("Status feature is not supported. You will not be able to set your status."));
         return;
 
@@ -205,7 +205,7 @@ void UserStatusSelectorModel::onError(UserStatusConnector::Error error)
 void UserStatusSelectorModel::setError(const QString &reason)
 {
     _errorMessage = reason;
-    emit errorMessageChanged();
+    Q_EMIT errorMessageChanged();
 }
 
 void UserStatusSelectorModel::clearError()
@@ -230,7 +230,7 @@ void UserStatusSelectorModel::setUserStatusLoaded(bool userStatusLoaded)
     }
 
     _userStatusLoaded = userStatusLoaded;
-    emit userStatusLoadedChanged();
+    Q_EMIT userStatusLoadedChanged();
 }
 
 void UserStatusSelectorModel::setFinishOnOnlineStatusSet(bool finishOnOnlineStatusSet)
@@ -240,7 +240,7 @@ void UserStatusSelectorModel::setFinishOnOnlineStatusSet(bool finishOnOnlineStat
     }
 
     _finishOnOnlineStatusSet = finishOnOnlineStatusSet;
-    emit finishOnOnlineStatusSetChanged();
+    Q_EMIT finishOnOnlineStatusSetChanged();
 }
 
 void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
@@ -251,7 +251,7 @@ void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
 
     _userStatus.setState(status);
     setUserStatus(SetUserStatusOperation::OnlineStatus);
-    emit userStatusChanged();
+    Q_EMIT userStatusChanged();
 }
 
 QUrl UserStatusSelectorModel::onlineIcon() const
@@ -294,7 +294,7 @@ void UserStatusSelectorModel::setUserStatusMessage(const QString &message)
 
     _userStatus.setMessage(message);
     _userStatus.setMessagePredefined(false);
-    emit userStatusChanged();
+    Q_EMIT userStatusChanged();
 }
 
 void UserStatusSelectorModel::setUserStatusEmoji(const QString &emoji)
@@ -305,7 +305,7 @@ void UserStatusSelectorModel::setUserStatusEmoji(const QString &emoji)
 
     _userStatus.setIcon(emoji);
     _userStatus.setMessagePredefined(false);
-    emit userStatusChanged();
+    Q_EMIT userStatusChanged();
 }
 
 QString UserStatusSelectorModel::userStatusEmoji() const
@@ -323,8 +323,8 @@ void UserStatusSelectorModel::onUserStatusFetched(const UserStatus &userStatus)
 
     _userStatus.setIcon(userStatus.icon());
 
-    emit userStatusChanged();
-    emit clearAtDisplayStringChanged();
+    Q_EMIT userStatusChanged();
+    Q_EMIT clearAtDisplayStringChanged();
     setUserStatusLoaded(true);
 }
 
@@ -410,7 +410,7 @@ void UserStatusSelectorModel::clearUserStatus()
 void UserStatusSelectorModel::onPredefinedStatusesFetched(const QVector<UserStatus> &statuses)
 {
     _predefinedStatuses = statuses;
-    emit predefinedStatusesChanged();
+    Q_EMIT predefinedStatusesChanged();
 }
 
 QVector<UserStatus> UserStatusSelectorModel::predefinedStatuses() const
@@ -430,8 +430,8 @@ void UserStatusSelectorModel::setPredefinedStatus(const UserStatus &predefinedSt
     _userStatus.setIcon(predefinedStatus.icon());
     _userStatus.setClearAt(predefinedStatus.clearAt());
 
-    emit userStatusChanged();
-    emit clearAtDisplayStringChanged();
+    Q_EMIT userStatusChanged();
+    Q_EMIT clearAtDisplayStringChanged();
 }
 
 QString UserStatusSelectorModel::clearAtStageToString(ClearStageType stage) const
@@ -481,7 +481,7 @@ void UserStatusSelectorModel::setClearAt(const ClearStageType clearStageType)
     }
 
     _userStatus.setClearAt(clearStageTypeToDateTime(clearStageType));
-    emit clearAtDisplayStringChanged();
+    Q_EMIT clearAtDisplayStringChanged();
 }
 
 QString UserStatusSelectorModel::errorMessage() const

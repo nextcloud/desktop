@@ -127,15 +127,15 @@ bool OcsJob::finished()
                          << Utility::concatUrlPath(account()->url(), path())
                          << _params
                          << "has unexpected status code:" << statusCode << replyData;
-        emit ocsError(statusCode, message);
+        Q_EMIT ocsError(statusCode, message);
 
     } else {
         // save new ETag value
         if (const auto etagHeader = reply()->header(QNetworkRequest::ETagHeader); etagHeader.isValid()) {
-            emit etagResponseHeaderReceived(etagHeader.toByteArray(), statusCode);
+            Q_EMIT etagResponseHeaderReceived(etagHeader.toByteArray(), statusCode);
         }
 
-        emit jobFinished(json, statusCode);
+        Q_EMIT jobFinished(json, statusCode);
     }
     return true;
 }

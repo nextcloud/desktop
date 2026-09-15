@@ -72,7 +72,7 @@ public:
         QVERIFY(index.isValid());
     }
 
-private slots:
+private Q_SLOTS:
     void initTestCase()
     {
         OCC::Logger::instance()->setLogFlush(true);

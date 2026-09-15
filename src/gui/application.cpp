@@ -27,12 +27,14 @@
 #include "updater/ocupdater.h"
 #endif
 
+#include "common/utility.h"
+#include "common/vfs.h"
+#include "csync_exclude.h"
 #include "owncloudsetupwizard.h"
 #include "version.h"
-#include "csync_exclude.h"
-#include "common/vfs.h"
 
 #include "config.h"
+#include "settings/migration.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
@@ -143,21 +145,19 @@ namespace {
 bool Application::configVersionMigration()
 {
     ConfigFile configFile;
-    const auto shouldTryToMigrate = configFile.shouldTryToMigrate();
+    const auto shouldTryToMigrate = Migration::shouldTryToMigrate();
     if (!shouldTryToMigrate) {
         qCInfo(lcApplication) << "This is not an upgrade/downgrade/migration. Proceed to read current application config file.";
-        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
+        Migration::setPhase(Migration::Phase::Done);
         return false;
     }
 
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupConfigFile);
+    Migration::setPhase(Migration::Phase::SetupConfigFile);
     QStringList deleteKeys, ignoreKeys;
     AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
     FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
-    configFile.setClientPreviousVersionString(configFile.clientVersionString());
-
-    qCDebug(lcApplication) << "Migration is in progress:"  << configFile.isMigrationInProgress();
-    const auto versionChanged = configFile.hasVersionChanged();
+    qCDebug(lcApplication) << "Migration is in progress:"  << Migration::isInProgress();
+    const auto versionChanged = Migration::versionChanged();
     if (versionChanged) {
         qCInfo(lcApplication) << "Version changed. Removing updater settings from config.";
         configFile.cleanUpdaterConfiguration();
@@ -167,45 +167,24 @@ bool Application::configVersionMigration()
         return true;
     }
 
-    // 'Launch on system startup' defaults to true > 3.11.x
-    const auto theme = Theme::instance();
-    configFile.setLaunchOnSystemStartup(configFile.launchOnSystemStartup());
-    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), configFile.launchOnSystemStartup());
-
-    // default is now off to displaying dialog warning user of too many files deletion
-    configFile.setPromptDeleteFiles(false);
-
-    // back up all old config files
-    QStringList backupFilesList;
-    QDir configDir(configFile.configPath());
-    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
-    for (const auto &oldConfig : anyConfigFileNameList) {
-        const auto oldConfigFileName = oldConfig.fileName();
-        const auto oldConfigFilePath = oldConfig.filePath();
-        const auto newConfigFileName = configFile.configFile();
-        backupFilesList.append(configFile.backup(oldConfigFileName));
-        if (oldConfigFilePath != newConfigFileName) {
-            if (!QFile::rename(oldConfigFilePath, newConfigFileName)) {
-                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
-            }
-        }
-    }
+    configFile.applyMigrationDefaults();
+    const auto backupFilesList = configFile.backupConfigFiles();
 
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
     if (configFile.showConfigBackupWarning() && backupFilesList.count() > 0) {
-        QMessageBox box(
-            QMessageBox::Warning,
-            APPLICATION_SHORTNAME,
-            tr("Some settings were configured in %1 versions of this client and "
-               "use features that are not available in this version.<br>"
-               "<br>"
-               "Continuing will mean <b>%2 these settings</b>.<br>"
-               "<br>"
-               "The current configuration file was already backed up to <i>%3</i>.")
-                .arg((configFile.isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
-                     deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
-                     backupFilesList.join("<br>")));
+        QMessageBox box(QMessageBox::Warning,
+                        APPLICATION_SHORTNAME,
+                        //: %1 is either "newer" or "older". %2 is either "ignoring" or "deleting". %3 is a list of configuration backup file paths.
+                        tr("Some settings were configured in %1 versions of this client and "
+                           "use features that are not available in this version.<br>"
+                           "<br>"
+                           "Continuing will mean <b>%2 these settings</b>.<br>"
+                           "<br>"
+                           "The current configuration file was already backed up to <i>%3</i>.")
+                            .arg((Migration::isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
+                                 deleteKeys.isEmpty() ? tr("ignoring") : tr("deleting"),
+                                 backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
         auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
 
@@ -389,7 +368,10 @@ Application::Application(int &argc, char **argv)
             shouldExit = true;
         }
 
-        if (AccountSetupCommandLineManager::instance()) {
+        // Only a command line that actually provisions an account carries a meaningful
+        // --isvfsenabled value; on a normal start this would overwrite the user's setting
+        // with the default of an unused parser.
+        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
             cfg.setVfsEnabled(AccountSetupCommandLineManager::instance()->isVfsEnabled());
         }
 
@@ -436,7 +418,9 @@ Application::Application(int &argc, char **argv)
     setupAccountsAndFolders();
 
     if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+        if (!AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine()) {
+            qCWarning(lcApplication()) << "setup of the account had some issues and could not be completed";
+        }
         _quitInstance = true;
     }
     AccountSetupCommandLineManager::destroy();
@@ -490,6 +474,12 @@ Application::Application(int &argc, char **argv)
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::fileActionsCommandReceived,
             _gui.data(), &ownCloudGui::slotShowFileActionsDialog);
+
+    connect(FolderMan::instance()->socketApi(), &SocketApi::resolveConflictCommandReceived,
+            _gui.data(), &ownCloudGui::slotResolveConflict);
+
+    connect(FolderMan::instance()->socketApi(), &SocketApi::moveItemCommandReceived,
+            _gui.data(), &ownCloudGui::slotMoveItem);
 
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
@@ -662,20 +652,19 @@ Application::~Application()
 
 void Application::setupAccountsAndFolders()
 {
-    _folderManager.reset(new FolderMan);
+    _folderManager = FolderMan::instance();
     ConfigFile configFile;
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
+    Migration::setPhase(Migration::Phase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();
     if (accountsRestoreResult == AccountManager::AccountsNotFound || accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
         qCWarning(lcApplication) << "Migration result: " << accountsRestoreResult;
         qCDebug(lcApplication) << "is migration disabled?" << DISABLE_ACCOUNT_MIGRATION;
         qCWarning(lcApplication) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
-        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
-
+        Migration::setPhase(Migration::Phase::Done);
         return;
     }
 
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupFolders);
+    Migration::setPhase(Migration::Phase::SetupFolders);
     const auto foldersListSize = FolderMan::instance()->setupFolders();
     FolderMan::instance()->setSyncEnabled(true);
 
@@ -690,9 +679,9 @@ void Application::setupAccountsAndFolders()
     const auto accounts = AccountManager::instance()->accounts();
     const auto accountsListSize = accounts.size();
     if (accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
+        && accountsListSize > 0
         && Theme::instance()->displayLegacyImportDialog()
-        && !AccountManager::instance()->forceLegacyImport()
-        && accountsListSize > 0) {
+        && !AccountManager::instance()->forceLegacyImport()) {
         const auto accountsRestoreMessage = accountsListSize > 1
             ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
             : tr("1 account");
@@ -748,7 +737,9 @@ void Application::parseOptionsRemoteCommand(const QStringList &options)
     handleUriFromOptions();
 
     if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+        if (!AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine()) {
+            qCWarning(lcApplication()) << "setup of the account had some issues and could not be completed";
+        }
     }
     AccountSetupCommandLineManager::destroy();
 }
@@ -996,7 +987,10 @@ void Application::slotActivateRequestedMessage(const QStringList &arguments, con
 
 void Application::parseOptions(const QStringList &options)
 {
-    QStringListIterator it(options);
+    // Accept both "--option value" and "--option=value" for every option below.
+    const auto expandedOptions = Utility::expandCommandLineOptionValues(options);
+
+    QStringListIterator it(expandedOptions);
     // skip file name;
     if (it.hasNext()) {
         it.next();
@@ -1153,11 +1147,6 @@ void Application::showHelp()
     stream << QLatin1String("File synchronisation desktop utility.") << Qt::endl
            << Qt::endl
            << QLatin1String(optionsC);
-
-    if (_theme->appName() == QLatin1String("ownCloud"))
-        stream << Qt::endl
-               << "For more information, see http://www.owncloud.org" << Qt::endl
-               << Qt::endl;
 
     displayHelpText(helpText);
 }
@@ -1353,7 +1342,7 @@ void Application::showMainDialog()
 
 void Application::slotGuiIsShowingSettings()
 {
-    emit isShowingSettingsDialog();
+    Q_EMIT isShowingSettingsDialog();
 }
 
 void Application::openVirtualFile(const QString &filename)
@@ -1413,7 +1402,7 @@ bool Application::event(QEvent *event)
         }
     } else if (event->type() == QEvent::ApplicationPaletteChange) {
         qCInfo(lcApplication) << "application palette changed";
-        emit systemPaletteChanged();
+        Q_EMIT systemPaletteChanged();
     }
     return QGuiApplication::event(event);
 }

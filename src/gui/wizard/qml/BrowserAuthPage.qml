@@ -11,7 +11,8 @@ import "../../tray"
 Item {
     id: root
 
-    required property var controller
+    required property QtObject controller
+    property string descriptionText: ""
     readonly property color primaryTextColor: Style.wizardPrimaryText
     readonly property color primaryButtonColor: Style.wizardPrimaryButtonBackground
 
@@ -25,13 +26,13 @@ Item {
         }
 
         Image {
-            Layout.alignment: Qt.AlignHCenter
             source: "image://svgimage-custom-color/globe.svg/" + root.primaryButtonColor
             sourceSize.width: 72
             sourceSize.height: 72
+            fillMode: Image.PreserveAspectFit
+            Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: 72
             Layout.preferredHeight: 72
-            fillMode: Image.PreserveAspectFit
         }
 
         EnforcedPlainTextLabel {
@@ -40,16 +41,26 @@ Item {
             font.pixelSize: Style.pixelSize + 8
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
-            Layout.fillWidth: true
             wrapMode: Text.WordWrap
+            Layout.fillWidth: true
+        }
+
+        EnforcedPlainTextLabel {
+            visible: root.descriptionText.length > 0
+            text: root.descriptionText
+            color: Style.wizardSecondaryText
+            font.pixelSize: Style.wizardBodyFontPixelSize
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WordWrap
+            Layout.fillWidth: true
         }
 
         RowLayout {
             id: activityIndicatorRow
 
             visible: root.controller.busy || root.controller.authPolling
-            Layout.fillWidth: true
             spacing: 8
+            Layout.fillWidth: true
 
             Item {
                 Layout.fillWidth: true
@@ -68,13 +79,13 @@ Item {
         }
 
         EnforcedPlainTextLabel {
-            visible: root.controller.errorText !== ""
+            visible: root.controller.errorText.length > 0
             text: root.controller.errorText
             color: Style.wizardErrorText
             font.pixelSize: Style.pixelSize + 1
             horizontalAlignment: Text.AlignHCenter
-            Layout.fillWidth: true
             wrapMode: Text.WordWrap
+            Layout.fillWidth: true
         }
 
         Item {

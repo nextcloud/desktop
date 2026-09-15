@@ -169,7 +169,7 @@ public:
 
     void systemOnlineConfigurationChanged();
 
-public slots:
+public Q_SLOTS:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
     virtual void checkConnectivity();
@@ -182,7 +182,7 @@ private:
     void increaseRetryCount();
     void resetRetryCount();
 
-signals:
+Q_SIGNALS:
     void stateChanged(OCC::AccountState::State state);
     void isConnectedChanged();
     void hasFetchedNavigationApps();

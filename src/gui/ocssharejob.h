@@ -121,7 +121,7 @@ public:
 
     static const QString _pathForSharesRequest;
 
-signals:
+Q_SIGNALS:
     /**
      * Result of the OCS request
      * The value parameter is only set if this was a put request.
@@ -133,7 +133,7 @@ signals:
      */
     void shareJobFinished(QJsonDocument reply, QVariant value);
 
-private slots:
+private Q_SLOTS:
     void jobDone(QJsonDocument reply);
 
 private:

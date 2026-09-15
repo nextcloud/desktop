@@ -41,9 +41,10 @@ void VfsSuffix::startImpl(const VfsSetupParams &params)
     // files that were synced before vfs was enabled.
     QByteArrayList toWipe;
     if (!params.journal->getFilesBelowPath("", [&toWipe](const SyncJournalFileRecord &rec) {
-        if (!rec.isVirtualFile() && rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX))
-            toWipe.append(rec._path);
-    })) {
+            if (!rec.isVirtualFile() && rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX)) {
+                toWipe.append(rec._path);
+            }
+        })) {
         qWarning() << "Could not get files below path \"\" from local DB";
     }
     for (const auto &path : toWipe) {
@@ -98,8 +99,9 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
         return QStringLiteral("Cannot create a placeholder because a file with the placeholder name already exist");
     }
 
-    if (!file.open(QFile::ReadWrite | QFile::Truncate))
+    if (!file.open(QFile::ReadWrite | QFile::Truncate)) {
         return file.errorString();
+    }
 
     file.write(" ");
     file.close();
@@ -128,8 +130,9 @@ Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
     SyncFileItem virtualItem(item);
     virtualItem._file = item._renameTarget;
     auto r = createPlaceholder(virtualItem);
-    if (!r)
+    if (!r) {
         return r;
+    }
 
     if (item._file != item._renameTarget) { // can be the same when renaming foo -> foo.owncloud to dehydrate
         QFile::remove(_setupParams.filesystemPath + item._file);
@@ -144,8 +147,9 @@ Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
 
     // Ensure the pin state isn't contradictory
     pin = pinState(item._renameTarget);
-    if (pin && *pin == PinState::AlwaysLocal)
+    if (pin && *pin == PinState::AlwaysLocal) {
         setPinState(item._renameTarget, PinState::Unspecified);
+    }
     return {};
 }
 
@@ -157,8 +161,9 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::convertToPlaceholder
 
 bool VfsSuffix::isDehydratedPlaceholder(const QString &filePath)
 {
-    if (!filePath.endsWith(fileSuffix()))
+    if (!filePath.endsWith(fileSuffix())) {
         return false;
+    }
     return FileSystem::fileExists(filePath) && FileSystem::getSize(filePath) == 1;
 }
 

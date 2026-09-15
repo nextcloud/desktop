@@ -97,7 +97,7 @@ public:
     [[nodiscard]] bool userStatusLoaded() const;
     [[nodiscard]] bool finishOnOnlineStatusSet() const;
 
-public slots:
+public Q_SLOTS:
     void setUserIndex(const int userIndex);
     void setFinishOnOnlineStatusSet(bool finishOnOnlineStatusSet);
     void setUserStatus();
@@ -105,7 +105,7 @@ public slots:
     void setClearAt(const OCC::UserStatusSelectorModel::ClearStageType clearStageType);
     void setPredefinedStatus(const OCC::UserStatus &predefinedStatus);
 
-signals:
+Q_SIGNALS:
     void userIndexChanged();
     void errorMessageChanged();
     void busyStatusSupportedChanged();

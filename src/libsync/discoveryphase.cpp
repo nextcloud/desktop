@@ -103,7 +103,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
             return callback(false);
         }
 
-        emit newBigFolder(path, true);
+        Q_EMIT newBigFolder(path, true);
         return callback(true);
     }
 
@@ -115,7 +115,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
     checkFolderSizeLimit(path, [this, path, callback](const bool bigFolder) {
         if (bigFolder) {
             // we tell the UI there is a new folder
-            emit newBigFolder(path, false);
+            Q_EMIT newBigFolder(path, false);
             return callback(true);
         }
 
@@ -137,7 +137,7 @@ void DiscoveryPhase::checkSelectiveSyncExistingFolder(const QString &path)
     checkFolderSizeLimit(path, [this, path](const bool bigFolder) {
         if (bigFolder) {
             // Notify the user and prompt for response.
-            emit existingFolderNowBig(path);
+            Q_EMIT existingFolderNowBig(path);
         }
     });
 }
@@ -189,8 +189,8 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
                 qCWarning(lcDiscovery) << "(*it)->_type" << (*it)->_type;
                 qCWarning(lcDiscovery) << "(*it)->_isRestoration " << (*it)->_isRestoration;
                 Q_ASSERT(false);
-                emit addErrorToGui(SyncFileItem::Status::FatalError, tr("Error while canceling deletion of a file"), originalPath, ErrorCategory::GenericError);
-                emit fatalError(tr("Error while canceling deletion of %1").arg(originalPath), ErrorCategory::GenericError);
+                Q_EMIT addErrorToGui(SyncFileItem::Status::FatalError, tr("Error while canceling deletion of a file"), originalPath, ErrorCategory::GenericError);
+                Q_EMIT fatalError(tr("Error while canceling deletion of %1").arg(originalPath), ErrorCategory::GenericError);
             }
             (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
             result = true;
@@ -275,8 +275,9 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
         Q_ASSERT(_currentRootJob == sender());
         _currentRootJob = nullptr;
-        if (job->_dirItem)
-            emit itemDiscovered(job->_dirItem);
+        if (job->_dirItem) {
+            Q_EMIT itemDiscovered(job->_dirItem);
+        }
         job->deleteLater();
 
         // Once the main job has finished recurse here to execute the remaining
@@ -286,7 +287,7 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
             startJob(nextJob);
         } else {
             markPermanentDeletionRequests();
-            emit finished();
+            Q_EMIT finished();
         }
     });
     _currentRootJob = job;
@@ -346,8 +347,9 @@ DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const Account
 // Use as QRunnable
 void DiscoverySingleLocalDirectoryJob::run() {
     QString localPath = _localPath;
-    if (localPath.endsWith('/')) // Happens if _currentFolder._local.isEmpty()
+    if (localPath.endsWith('/')) { // Happens if _currentFolder._local.isEmpty()
         localPath.chop(1);
+    }
 
     auto dh = csync_vio_local_opendir(localPath);
     if (!dh) {
@@ -355,17 +357,17 @@ void DiscoverySingleLocalDirectoryJob::run() {
         QString errorString = tr("Error while opening directory %1").arg(localPath);
         if (errno == EACCES) {
             errorString = tr("Directory not accessible on client, permission denied");
-            emit finishedNonFatalError(errorString);
+            Q_EMIT finishedNonFatalError(errorString);
             return;
         } else if (errno == ENOENT) {
             errorString = tr("Directory not found: %1").arg(localPath);
         } else if (errno == ENOTDIR) {
             // Not a directory..
             // Just consider it is empty
-            emit finished(QVector<LocalInfo>{});
+            Q_EMIT finished(QVector<LocalInfo>{});
             return;
         }
-        emit finishedFatalError(errorString);
+        Q_EMIT finishedFatalError(errorString);
         return;
     }
 
@@ -373,17 +375,19 @@ void DiscoverySingleLocalDirectoryJob::run() {
     while (true) {
         errno = 0;
         auto dirent = csync_vio_local_readdir(dh, _vfs, _fileSystemReliablePermissions);
-        if (!dirent)
+        if (!dirent) {
             break;
-        if (dirent->type == ItemTypeSkip)
+        }
+        if (dirent->type == ItemTypeSkip) {
             continue;
+        }
         LocalInfo i;
         static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
         ASSERT(codec);
         QTextCodec::ConverterState state;
         i.name = codec->toUnicode(dirent->path, dirent->path.size(), &state);
         if (state.invalidChars > 0 || state.remainingChars > 0) {
-            emit childIgnored(true);
+            Q_EMIT childIgnored(true);
             auto item = SyncFileItemPtr::create();
             //item->_file = _currentFolder._target + i.name;
             // FIXME ^^ do we really need to use _target or is local fine?
@@ -391,7 +395,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_status = SyncFileItem::NormalError;
             item->_errorString = tr("Filename encoding is not valid");
-            emit itemDiscovered(item);
+            Q_EMIT itemDiscovered(item);
             continue;
         }
         i.modtime = dirent->modtime;
@@ -407,7 +411,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
 
         // Access lock state on the worker thread so a blocking open cannot freeze the GUI #10464
         if (!i.isSymLink && !i.isVirtualFile && !i.isDirectory) {
-            const auto absoluteLocalPath = localPath + QLatin1Char('/') + i.name;
+            const QString absoluteLocalPath = localPath + QLatin1Char('/') + i.name;
             i.isLocked = FileSystem::isFileLocked(absoluteLocalPath, FileSystem::LockMode::SharedRead);
             qCDebug(lcDiscovery) << "File" << absoluteLocalPath << "isLocked" << i.isLocked;
         }
@@ -419,7 +423,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
 
         // Note: Windows vio converts any error into EACCES
         qCWarning(lcDiscovery) << "readdir failed for file in " << localPath << " - errno: " << errno;
-        emit finishedFatalError(tr("Error while reading directory %1").arg(localPath));
+        Q_EMIT finishedFatalError(tr("Error while reading directory %1").arg(localPath));
         return;
     }
 
@@ -429,7 +433,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         qCWarning(lcDiscovery) << "closedir failed for file in " << localPath << " - errno: " << errno;
     }
 
-    emit finished(results);
+    Q_EMIT finished(results);
 }
 
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account,
@@ -502,7 +506,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             const auto perm = RemotePermissions::fromServerString(map.value("permissions"),
                                                             _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                                             map);
-            emit firstDirectoryPermissions(perm);
+            Q_EMIT firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
         if (map.contains("data-fingerprint"_L1)) {
@@ -519,7 +523,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             bool ok = false;
             if (qint64 numericFileId = _localFileId.toLongLong(&ok, 10); ok) {
                 qCDebug(lcDiscovery).nospace() << "received numericFileId=" << numericFileId;
-                emit firstDirectoryFileId(numericFileId);
+                Q_EMIT firstDirectoryFileId(numericFileId);
             } else {
                 qCWarning(lcDiscovery).nospace() << "conversion to qint64 failed _localFileId=" << _localFileId;
             }
@@ -550,7 +554,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
                                  << "bytesUsed:" << _folderQuota.bytesUsed
                                  << "bytesAvailable:" << _folderQuota.bytesAvailable
                                  << "ok:" << ok;
-            emit setfolderQuota(_folderQuota);
+            Q_EMIT setfolderQuota(_folderQuota);
         }
     } else {
         RemoteInfo result;
@@ -580,20 +584,20 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
     if (!_ignoredFirst) {
         // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
         // which means somehow the server XML was bogus
-        emit finished(HttpError{ 0, tr("Server error: PROPFIND reply is not XML formatted!") });
+        Q_EMIT finished(HttpError{ 0, tr("Server error: PROPFIND reply is not XML formatted!") });
         deleteLater();
         return;
     } else if (!_error.isEmpty()) {
-        emit finished(HttpError{ 0, _error });
+        Q_EMIT finished(HttpError{ 0, _error });
         deleteLater();
         return;
     } else if (isE2eEncrypted() && _account->capabilities().clientSideEncryptionAvailable()) {
-        emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
+        Q_EMIT etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
         fetchE2eMetadata();
         return;
     }
-    emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
-    emit finished(_results);
+    Q_EMIT etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
+    Q_EMIT finished(_results);
     deleteLater();
 }
 
@@ -615,10 +619,10 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *repl
     }
 
     if (reply->error() == QNetworkReply::ContentAccessDenied) {
-        emit _account->termsOfServiceNeedToBeChecked();
+        Q_EMIT _account->termsOfServiceNeedToBeChecked();
     }
 
-    emit finished(HttpError{ httpCode, errorString });
+    Q_EMIT finished(HttpError{ httpCode, errorString });
     deleteLater();
 }
 
@@ -641,7 +645,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     Q_ASSERT(job);
     if (!job) {
         qCDebug(lcDiscovery) << "metadataReceived must be called from GetMetadataApiJob's signal";
-        emit finished(HttpError{0, tr("Encrypted metadata setup error!")});
+        Q_EMIT finished(HttpError{0, tr("Encrypted metadata setup error!")});
         deleteLater();
         return;
     }
@@ -674,7 +678,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         if (job->signature().isEmpty()) {
             qCDebug(lcDiscovery) << "Initial signature is empty.";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
-            emit finished(HttpError{0, tr("Encrypted metadata setup error: initial signature from server is empty.")});
+            Q_EMIT finished(HttpError{0, tr("Encrypted metadata setup error: initial signature from server is empty.")});
             deleteLater();
             return;
         }
@@ -695,7 +699,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     connect(e2EeFolderMetadata, &FolderMetadata::setupComplete, this, [this, e2EeFolderMetadata] {
         e2EeFolderMetadata->deleteLater();
         if (!e2EeFolderMetadata->isValid()) {
-            emit finished(HttpError{0, tr("Encrypted metadata setup error!")});
+            Q_EMIT finished(HttpError{0, tr("Encrypted metadata setup error!")});
             deleteLater();
             return;
         }
@@ -731,7 +735,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
             return result;
         });
 
-        emit finished(_results);
+        Q_EMIT finished(_results);
         deleteLater();
     });
 }
@@ -739,7 +743,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
 void DiscoverySingleDirectoryJob::metadataError(const QByteArray &fileId, int httpReturnCode)
 {
     qCWarning(lcDiscovery) << "E2EE Metadata job error. Trying to proceed without it." << fileId << httpReturnCode;
-    emit finished(_results);
+    Q_EMIT finished(_results);
     deleteLater();
 }
 }
