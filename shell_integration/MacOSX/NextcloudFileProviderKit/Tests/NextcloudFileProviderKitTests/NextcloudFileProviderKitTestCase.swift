@@ -1,12 +1,21 @@
 //  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+@testable import NextcloudFileProviderKit
 import XCTest
 
 ///
 /// Common base class for all tests in this target.
 ///
 class NextcloudFileProviderKitTestCase: XCTestCase {
+    override func setUp() {
+        super.setUp()
+
+        // `PendingMaterializationRegistry` is a process-wide singleton, so entries recorded by a
+        // download in one test would otherwise suppress the eviction reconciliation in another.
+        PendingMaterializationRegistry.shared.removeAll()
+    }
+
     ///
     /// Create a unique and temporary directory for Realm database testing purposes.
     ///
