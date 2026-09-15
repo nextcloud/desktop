@@ -87,7 +87,7 @@ extension Enumerator {
         finalAnchor: NSFileProviderSyncAnchor,
         suggested: Int?
     ) {
-        let batch = changeBuffer.takeBatch(maxItems: effectiveBatchSize(suggested: suggested))
+        let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested))
         let reportedAnchor = if let continuationAnchorRawValue = batch.continuationAnchorRawValue {
             NSFileProviderSyncAnchor(rawValue: continuationAnchorRawValue)
         } else if let finalAnchorRawValue = batch.finalAnchorRawValue {
@@ -111,17 +111,9 @@ extension Enumerator {
         )
     }
 
-    ///
-    /// Report one already-sized batch of changes to the change observer and finish the batch.
-    ///
-    /// `updated` and `deleted` are a single batch's worth of metadata (kept under the framework's per-batch
-    /// limit by the caller via ``effectiveBatchSize(suggested:)``). The file-provider framework does not
-    /// distinguish created from updated items, so both arrive through `updated`; it must already be sorted
-    /// parents-before-children. A deleted item's database row is removed only once *its* batch has been
-    /// delivered, so a batch still waiting in the ``changeBuffer`` keeps its rows for re-derivation should
-    /// the drain be interrupted. The missing-parent recovery mirrors ``completeEnumerationObserver`` and is
-    /// scoped to this batch.
-    ///
+    /// Report one batch of changes and acknowledge it after the observer finishes.
+    /// The caller keeps the batch within the framework's size limit and orders updates parents-first.
+    /// Deletions remain available for replay until acknowledgement.
     func completeChangesBatch(
         _ observer: NSFileProviderChangeObserver,
         updated: [SendableItemMetadata],
@@ -162,11 +154,9 @@ extension Enumerator {
     }
 
     ///
-    /// Convert this batch's `updated` metadata to items, report them, finish the batch, and hard-remove
-    /// the delivered deletions from the database. On a missing-parent error it recovers the parent and
-    /// retries the conversion once — deletions are already reported by ``completeChangesBatch`` and are
-    /// not re-issued here.
-    ///
+    /// Convert and report updated items, finish the batch, then acknowledge it.
+    /// If an update has a missing parent, recover the parent and retry once. Deletions are reported
+    /// separately by ``completeChangesBatch``.
     private func reportBatchUpdates(
         _ observer: NSFileProviderChangeObserver,
         updated: [SendableItemMetadata],
@@ -187,15 +177,8 @@ extension Enumerator {
                         observer.didUpdate(updatedItems)
                     }
 
-                    // Hard-remove delivered deletions before finishing the batch: the items are already
-                    // reported (didDeleteItems ran in completeChangesBatch), and doing the DB write before
-                    // finishEnumeratingChanges keeps the database consistent with what the observer has
-                    // been told by the time the batch is acknowledged.
-                    for metadata in deletedToRemove {
-                        dbManager.removeItemMetadata(ocId: metadata.ocId)
-                    }
-
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: moreComing)
+                    changeBuffer.acknowledgeBatch(deletedOcIds: deletedToRemove.map(\.ocId))
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {

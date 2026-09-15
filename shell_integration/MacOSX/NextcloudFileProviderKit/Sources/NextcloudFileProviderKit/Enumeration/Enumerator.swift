@@ -86,7 +86,12 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         self.domain = domain
         pageItemCount = pageSize
         logger = FileProviderLogger(category: "Enumerator", log: log)
-        changeBuffer = ChangeDeliveryBuffer(dbManager: dbManager, log: log)
+        changeBuffer = ChangeDeliveryBuffer(
+            dbManager: dbManager,
+            containerKey: enumeratedItemIdentifier.rawValue,
+            hardRemoveDeleted: enumeratedItemIdentifier != .trashContainer,
+            log: log
+        )
 
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
             logger.info("Providing enumerator for a system defined container.", [.item: enumeratedItemIdentifier])
