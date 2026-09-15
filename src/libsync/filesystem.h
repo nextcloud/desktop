@@ -82,6 +82,11 @@ namespace FileSystem {
 
     bool OWNCLOUDSYNC_EXPORT setModTime(const QString &filename, time_t modTime);
 
+    OWNCLOUDSYNC_EXPORT time_t fileTimeToTime_t(std::filesystem::file_time_type fileTime);
+    OWNCLOUDSYNC_EXPORT std::filesystem::file_time_type time_tToFileTime(time_t fileTime);
+
+    bool OWNCLOUDSYNC_EXPORT setModTime(const std::filesystem::path &filename, time_t modTime);
+
     /**
      * @brief Get the size for a file
      *

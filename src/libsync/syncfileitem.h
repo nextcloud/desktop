@@ -231,6 +231,8 @@ public:
 
     void updateLockStateFromDbRecord(const SyncJournalFileRecord &dbRecord);
 
+    [[nodiscard]] static SyncJournalFileRecord fromSyncFileItem(const SyncFileItem &syncFile);
+
     // Variables useful for everybody
 
     /** The syncfolder-relative filesystem path that the operation is about
@@ -349,6 +351,11 @@ public:
         static constexpr char usedBytesC[] = "quota-used-bytes";
     };
     FolderQuota _folderQuota;
+
+    [[nodiscard]] QString localName() const
+    {
+        return _file;
+    }
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)
