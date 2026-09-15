@@ -2,6 +2,77 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 @preconcurrency import FileProvider
+import Foundation
+
+///
+/// Batches ancestor-container refresh nudges over a short window, so a bulk materialisation nudges
+/// each shared ancestor once per window rather than once per file.
+///
+private final class AncestorRefreshCoalescer: @unchecked Sendable {
+    static let shared = AncestorRefreshCoalescer()
+
+    ///
+    /// How long to accumulate before nudging, short enough to stay imperceptible in the context
+    /// menu and long enough to collapse a folder's sibling files into one pass.
+    ///
+    private static let windowNanoseconds: UInt64 = 400_000_000
+
+    private let lock = NSLock()
+    private var pendingOcIds = Set<String>()
+    private var drainScheduled = false
+
+    ///
+    /// Take the accumulated batch and reopen the window, so downloads finishing while the batch is
+    /// being nudged start a fresh one rather than being dropped.
+    ///
+    private func claimBatch() -> Set<String> {
+        lock.lock()
+        defer { lock.unlock() }
+
+        let claimed = pendingOcIds
+        pendingOcIds.removeAll()
+        drainScheduled = false
+
+        return claimed
+    }
+
+    func enqueue(
+        ocIds: Set<String>,
+        manager: NSFileProviderManager,
+        dbManager: FilesDatabaseManager,
+        logger: FileProviderLogger
+    ) {
+        lock.lock()
+        pendingOcIds.formUnion(ocIds)
+
+        guard !drainScheduled else {
+            lock.unlock()
+            return
+        }
+
+        drainScheduled = true
+        lock.unlock()
+
+        Task {
+            try? await Task.sleep(nanoseconds: Self.windowNanoseconds)
+
+            let ocIds = claimBatch()
+            let ancestors = dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ocIds)
+
+            guard !ancestors.isEmpty else { return }
+
+            logger.debug("Refreshing \(ancestors.count) ancestor container(s) for \(ocIds.count) item(s) to update Remove download visibility.")
+
+            for ancestor in ancestors {
+                do {
+                    try await manager.requestModification(of: [.lastUsedDate], forItemWithIdentifier: ancestor)
+                } catch {
+                    logger.error("Could not nudge ancestor container to refresh Remove download visibility.", [.item: ancestor, .error: error.localizedDescription])
+                }
+            }
+        }
+    }
+}
 
 ///
 /// Refresh the framework's cached snapshot of every ancestor container of the
@@ -25,6 +96,9 @@
 /// - The observer covers eviction (a file going dataless) and out-of-band
 ///   materialization it discovers itself.
 ///
+/// Calls are coalesced over a short window — see ``AncestorRefreshCoalescer`` — so the ancestor
+/// walk happens on the drain and latency-sensitive callers are never blocked.
+///
 func refreshRemoveDownloadVisibility(
     forAncestorsOfFileOcIds ocIds: Set<String>,
     manager: NSFileProviderManager,
@@ -33,22 +107,5 @@ func refreshRemoveDownloadVisibility(
 ) {
     guard !ocIds.isEmpty else { return }
 
-    // Everything — the ancestor walk (a synchronous Realm read) and the nudges —
-    // runs inside the Task so callers on latency-sensitive paths (the
-    // materialized-set completion handler, `fetchContents`) are never blocked.
-    Task {
-        let ancestors = dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ocIds)
-
-        guard !ancestors.isEmpty else { return }
-
-        logger.debug("Refreshing \(ancestors.count) ancestor container(s) to update Remove download visibility after materialization change.")
-
-        for ancestor in ancestors {
-            do {
-                try await manager.requestModification(of: [.lastUsedDate], forItemWithIdentifier: ancestor)
-            } catch {
-                logger.error("Could not nudge ancestor container to refresh Remove download visibility.", [.item: ancestor, .error: error.localizedDescription])
-            }
-        }
-    }
+    AncestorRefreshCoalescer.shared.enqueue(ocIds: ocIds, manager: manager, dbManager: dbManager, logger: logger)
 }
