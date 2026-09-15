@@ -87,6 +87,18 @@ void ClientProxy::setupQtProxyFromConfig()
         proxy = proxyFromConfig(cfg);
     }
 
+    const auto managedProxy = cfg.managedProxySettings();
+    const auto followsSystemProxy = proxyType == QNetworkProxy::DefaultProxy;
+    if (managedProxy.typeEnforced || (managedProxy.typeManaged && followsSystemProxy)) {
+        proxyType = managedProxy.proxyType;
+    }
+    if (managedProxy.hostEnforced || (managedProxy.hostManaged && followsSystemProxy)) {
+        proxy.setHostName(managedProxy.proxyHostName);
+    }
+    if (managedProxy.portEnforced || (managedProxy.portManaged && followsSystemProxy)) {
+        proxy.setPort(managedProxy.proxyPort);
+    }
+
     switch (proxyType) {
         case QNetworkProxy::NoProxy:
             qCInfo(lcClientProxy) << "Set proxy configuration to use NO proxy";

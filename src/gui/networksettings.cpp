@@ -12,6 +12,7 @@
 #include "application.h"
 #include "configfile.h"
 #include "folderman.h"
+#include "settingspanelstyle.h"
 #include "theme.h"
 
 #include <QShowEvent>
@@ -56,6 +57,14 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
         connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, this, &NetworkSettings::checkAccountLocalhost);
 
         loadProxySettings();
+
+        const auto proxyManaged = _account && _account->proxySettingsAreManaged();
+        if (proxyManaged) {
+            _ui->proxyGroupBox->setEnabled(false);
+            SettingsPanelStyle::applyManagedLabelStyle(_ui->proxyEnforcedLabel);
+            _ui->proxyEnforcedLabel->setText(tr("Managed by your system administrator"));
+        }
+        _ui->proxyEnforcedLabel->setVisible(proxyManaged);
 
         connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &NetworkSettings::saveProxySettings);
         connect(_ui->proxyButtonGroup, &QButtonGroup::buttonClicked, this, &NetworkSettings::saveProxySettings);

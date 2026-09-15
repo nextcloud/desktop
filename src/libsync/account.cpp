@@ -770,6 +770,7 @@ void Account::setCapabilities(const QVariantMap &caps)
     updateServerColors();
     updateServerSubcription();
     updateDesktopEnterpriseChannel();
+    updateServerManagedSettings();
     updateServerHasIntegration();
 
     Q_EMIT capabilitiesChanged();
@@ -1363,6 +1364,16 @@ void Account::updateDesktopEnterpriseChannel()
     }
 }
 
+void Account::updateServerManagedSettings()
+{
+    _serverManagedSettings = sanitizeServerManagedSettings(_capabilities.desktopClientManagedSettings());
+}
+
+ServerManagedSettings Account::serverManagedSettings() const
+{
+    return _serverManagedSettings;
+}
+
 QNetworkProxy::ProxyType Account::proxyType() const
 {
     return _proxyType;
@@ -1489,12 +1500,25 @@ void Account::setProxySettings(const QNetworkProxy::ProxyType proxyType,
                                const QString &user,
                                const QString &password)
 {
+    if (_proxySettingsAreManaged) {
+        return;
+    }
     setProxyType(proxyType);
     setProxyHostName(hostName);
     setProxyPort(port);
     setProxyNeedsAuth(needsAuth);
     setProxyUser(user);
     setProxyPassword(password);
+}
+
+bool Account::proxySettingsAreManaged() const
+{
+    return _proxySettingsAreManaged;
+}
+
+void Account::setProxySettingsAreManaged(bool managed)
+{
+    _proxySettingsAreManaged = managed;
 }
 
 Account::AccountNetworkTransferLimitSetting Account::uploadLimitSetting() const
