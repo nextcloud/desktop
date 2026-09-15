@@ -110,7 +110,7 @@ rm ./${APPIMAGE_NAME}
 cp -r ./squashfs-root ./linuxdeploy-squashfs-root
 
 export LD_LIBRARY_PATH=${QT_BASE_DIR}/lib:${QT_BASE_DIR}/lib64:/app/usr/lib64:/app/usr/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
-./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --library=${OPENVFS_VFS_PLUGIN} --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
+./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud-icon.png --library=${OPENVFS_VFS_PLUGIN} --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
 
 mv AppDir/usr/lib/*sync_vfs_openvfs.so AppDir/usr/plugins
 mv /root/linux-gcc-x86_64/bin/openvfs  /root/linux-gcc-x86_64/bin/openvfs_stat AppDir/usr/bin
