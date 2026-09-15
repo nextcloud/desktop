@@ -2,6 +2,8 @@
 # SPDX-FileCopyrightText: 2014 ownCloud GmbH
 # SPDX-License-Identifier: GPL-2.0-or-later
 project(gui)
+include(CheckQmlWindowCloseShortcuts)
+
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
 find_package(KF6Archive REQUIRED)
 find_package(KF6GuiAddons)
@@ -571,6 +573,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
 endif()
 
 add_library(nextcloudCore STATIC ${final_src})
+add_qml_window_close_shortcut_check("${CMAKE_CURRENT_SOURCE_DIR}" nextcloudCore)
 
 target_link_libraries(nextcloudCore
   PUBLIC
