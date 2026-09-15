@@ -39,27 +39,26 @@
 
 #include <cmath>
 
+#include <QAbstractScrollArea>
+#include <QAction>
 #include <QColor>
 #include <QDesktopServices>
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDir>
+#include <QFrame>
+#include <QIcon>
+#include <QJsonDocument>
+#include <QKeySequence>
 #include <QListWidgetItem>
 #include <QMessageBox>
-#include <QAction>
-#include <QAbstractScrollArea>
-#include <QSizePolicy>
-#include <QVBoxLayout>
-#include <QTreeView>
-#include <QKeySequence>
-#include <QIcon>
-#include <QVariant>
-#include <QJsonDocument>
-#include <QToolTip>
 #include <QPushButton>
+#include <QSizePolicy>
 #include <QStyle>
-#include <QFileDialog>
-#include <QFrame>
+#include <QToolTip>
+#include <QTreeView>
+#include <QVBoxLayout>
+#include <QVariant>
 
 using namespace Qt::StringLiterals;
 
@@ -68,9 +67,9 @@ using namespace Qt::StringLiterals;
 #endif
 
 #ifdef Q_OS_MACOS
-#include "common/utility_mac_sandbox.h"
-#include "common/macsandboxsecurityscopedaccess.h"
 #include "common/macsandboxpersistentaccess.h"
+#include "common/utility_mac_sandbox.h"
+#include "macOS/macsandboxfolderpicker.h"
 #endif
 
 #include "account.h"
@@ -1044,59 +1043,45 @@ void AccountSettings::slotFixSandboxBookmark(Folder *folder)
 
     const auto expectedPath = FolderDefinition::prepareLocalPath(folder->path());
 
-    // Use URL-based variant to preserve security-scoped bookmark from NSOpenPanel
-    const auto selectedUrl = QFileDialog::getExistingDirectoryUrl(
-        this,
+    const QPointer<AccountSettings> settings(this);
+    const QPointer<Folder> pendingFolder(folder);
+    Mac::SandboxFolderPicker::select(
         tr("Grant access to sync folder"),
-        QUrl::fromLocalFile(expectedPath),
-        QFileDialog::ShowDirsOnly);
+        expectedPath,
+        [settings, pendingFolder, expectedPath](Mac::SandboxFolderPicker::FolderSelection selection) {
+            if (!settings || !pendingFolder || selection.path.isEmpty() || !pendingFolder->needsSandboxBookmark()) {
+                return;
+            }
 
-    if (selectedUrl.isEmpty()) {
-        return;
-    }
+            // Validate that the selected path matches the folder's configured local path
+            const auto selectedPath = FolderDefinition::prepareLocalPath(selection.path);
+            if (selectedPath != expectedPath) {
+                QMessageBox::warning(settings,
+                                     settings->tr("Wrong Folder"),
+                                     settings->tr("Please select the original sync folder: %1").arg(QDir::toNativeSeparators(expectedPath)));
+                return;
+            }
 
-    // Acquire temporary security-scoped access from the dialog-returned URL
-    auto tempAccess = Utility::MacSandboxSecurityScopedAccess::create(selectedUrl);
-    if (!tempAccess || !tempAccess->isValid()) {
-        QMessageBox::warning(this,
-            tr("Access Error"),
-            tr("Could not acquire access to the selected folder. Please try again."));
-        return;
-    }
+            if (selection.bookmarkData.isEmpty()) {
+                QMessageBox::warning(settings,
+                                     settings->tr("Bookmark Error"),
+                                     settings->tr("Could not create a security bookmark for the folder. Please try again."));
+                return;
+            }
 
-    // Validate that the selected path matches the folder's configured local path
-    const auto selectedPath = FolderDefinition::prepareLocalPath(selectedUrl.toLocalFile());
-    if (selectedPath != expectedPath) {
-        QMessageBox::warning(this,
-            tr("Wrong Folder"),
-            tr("Please select the original sync folder: %1")
-                .arg(QDir::toNativeSeparators(expectedPath)));
-        return;
-    }
+            // Resolve the bookmark to get a persistent access handle
+            auto persistentAccess = Utility::MacSandboxPersistentAccess::createFromBookmarkData(selection.bookmarkData);
+            if (!persistentAccess || !persistentAccess->isValid()) {
+                QMessageBox::warning(settings, settings->tr("Bookmark Error"), settings->tr("Could not resolve the security bookmark. Please try again."));
+                return;
+            }
 
-    // Create the persistent security-scoped bookmark
-    const auto bookmarkData = Utility::createSecurityScopedBookmarkData(selectedPath);
-    if (bookmarkData.isEmpty()) {
-        QMessageBox::warning(this,
-            tr("Bookmark Error"),
-            tr("Could not create a security bookmark for the folder. Please try again."));
-        return;
-    }
+            // Apply the bookmark: stores data, sets access, un-pauses, and saves settings
+            pendingFolder->applySandboxBookmark(selection.bookmarkData, std::move(persistentAccess));
 
-    // Resolve the bookmark to get a persistent access handle
-    auto persistentAccess = Utility::MacSandboxPersistentAccess::createFromBookmarkData(bookmarkData);
-    if (!persistentAccess || !persistentAccess->isValid()) {
-        QMessageBox::warning(this,
-            tr("Bookmark Error"),
-            tr("Could not resolve the security bookmark. Please try again."));
-        return;
-    }
-
-    // Apply the bookmark: stores data, sets access, un-pauses, and saves settings
-    folder->applySandboxBookmark(bookmarkData, std::move(persistentAccess));
-
-    FolderMan::instance()->scheduleFolder(folder);
-    _model->slotUpdateFolderState(folder);
+            FolderMan::instance()->scheduleFolder(pendingFolder);
+            settings->_model->slotUpdateFolderState(pendingFolder);
+        });
 }
 #endif
 
