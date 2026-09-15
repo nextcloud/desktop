@@ -13,6 +13,7 @@ export DESKTOP_CLIENT_ROOT=${DESKTOP_CLIENT_ROOT:-/home/user}
 export QT_BASE_DIR=${QT_BASE_DIR:-/usr}
 export OPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR:-/usr/lib/x86_64-linux-gnu}
 export VERSION_SUFFIX=${VERSION_SUFFIX:stable}
+export OPENVFS_COMMIT_SHA=${OPENVFS_COMMIT_SHA:"56fc0514d09875f0ab8c754d8242318ab47e584f"}
 
 # Set defaults
 export SUFFIX=${PR_ID:=${DRONE_PULL_REQUEST:=master}}
@@ -39,7 +40,7 @@ ninja install
 cd /home
 git clone https://github.com/opencloud-eu/openvfs.git
 cd openvfs
-git switch --detach 3d72711ebb42ac78ae40ee5fcbd1783abb419e7e
+git switch --detach ${OPENVFS_COMMIT_SHA}
 mkdir build
 cd build
 cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/root/linux-gcc-x86_64 -DCMAKE_BUILD_TYPE=Release
