@@ -23,7 +23,7 @@ let package = Package(
         .package(url: "https://github.com/nextcloud/NextcloudCapabilitiesKit.git", from: "2.5.0"),
         .package(url: "https://github.com/nextcloud/NextcloudKit", from: "7.5.0"),
         .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.55.0"),
-        .package(url: "https://github.com/realm/realm-swift.git", from: "20.0.4")
+        .package(url: "https://github.com/realm/realm-swift.git", from: "20.0.5")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
