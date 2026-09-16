@@ -335,7 +335,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="186"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Yardımcı</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="65"/>

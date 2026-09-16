@@ -2065,7 +2065,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="97"/>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Adiwenni</translation>
     </message>
 </context>
 <context>
@@ -2102,7 +2102,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="128"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Tangalt HTTP tarameɣtut tuɣal-d sɣur aqeddac. Yetturaǧu 204, acukan yettwarmes &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -2110,7 +2110,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="79"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 ur yezmir ara ad d-yettwasider acku yella yisem n ufaylu adigan i d-yewwin ccwal!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="101"/>
@@ -2134,32 +2134,32 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="141"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 ur yezmir ara ad yettwasali acku afaylu-nniḍen s yisem-a yella yakan, yemgarad kan deg tejṛut n usekkil</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
         <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu yesɛa tallunin n tazwara d taggara yerna ur yezmer ad yettwabeddel isem</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="200"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yesɛa abeddil n wakud armeɣtu. Ur ssalay ara ɣer uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="352"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu ittwakkes (senker asali) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="371"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yesɛa abeddil armeɣtu. Ur ssalay ara ɣer uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="384"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwabeddel deg umtawi. Ad ikemmel waya.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="398"/>
@@ -2185,12 +2185,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="716"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwakkes deg umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="764"/>
         <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tiririt ur teddi ara: %1</translation>
     </message>
 </context>
 <context>
@@ -2198,37 +2198,37 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="68"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi abeddel n yisem n ufaylu acku afaylu s yisem-agi yella yakan ɣef uqeddac. Ma ulac aɣilif, fren isem nniḍen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="111"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi abeddel n yisem n ufaylu. Ttxil-k·m, tḥeqqeq belli teqqneḍ ɣer uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="162"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Ur tesɛiḍ ara tisirag akken ad tbeddeleḍ isem n ufaylu-agi. Ma ulac aɣilif, steqsi ameskar n ufaylu ara tbeddeleḍ.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="169"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Ur izmir ara ad d-yawi tisirag s tuccḍa %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="190"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Isem n ufaylu yegber tallunin n tazwara d taggara.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="193"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Isem n ufaylu yegber tallunin n tazwara.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="196"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Isem n ufaylu yegber tallunin n tagarra.</translation>
     </message>
 </context>
 <context>
@@ -2236,12 +2236,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Ccwal n tejṛut usekkil</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu ur yezmir ara ad yemtawi acku isirew-d umennuɣ n usekkil yellan akked ufaylu yellan deg unagraw-agi.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -2279,7 +2279,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation>Afaylu n ccwan n tejṛut</translation>
+        <translation>Afaylu n ccwan n tejṛut usekkil</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
@@ -2295,7 +2295,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m sekcem isem amaynut i ufaylu n ccwal:</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
