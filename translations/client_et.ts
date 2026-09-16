@@ -335,7 +335,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="186"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Abiline</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="65"/>
@@ -1190,7 +1190,7 @@ Oota kuni sünkroonimine lõppeb ja seejärel krüpti.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="797"/>
         <source>Choose what to sync</source>
-        <translation>Vali, mida sünkroniseerida</translation>
+        <translation>Vali, mida soovid sünkroonida</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="803"/>
@@ -1423,7 +1423,7 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1539"/>
         <source>Connected to %1.</source>
-        <translation>Ühendatud %1</translation>
+        <translation>Ühendatud teenusega %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1548"/>
@@ -1602,7 +1602,7 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Unknown account state</source>
-        <translation>Tundmatu konto olek</translation>
+        <translation>Kasutajakonto olek pole teada</translation>
     </message>
 </context>
 <context>
@@ -3535,7 +3535,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="84"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Klõpsa valimaks kohalikku sünkroniseeritavat kausta.</translation>
+        <translation>Klõpsa valimaks kohalikku sünkroonitavat kausta.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="88"/>
@@ -4063,7 +4063,7 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="64"/>
         <source>Sync hidden files</source>
-        <translation>Sünkroniseeri peidetud failid</translation>
+        <translation>Sünkrooni peidetud failid</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="112"/>
@@ -5877,7 +5877,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/sslbutton.cpp" line="132"/>
         <source>%1 (self-signed)</source>
         <extracomment>%1 is the certificate identifier, taken from its common name or organizational unit.</extracomment>
-        <translation>%1 (oma-signeering)</translation>
+        <translation>%1 (iseenda poolt allkirjastatud)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="135"/>
@@ -5905,7 +5905,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="211"/>
         <source>Certificate information:</source>
-        <translation>Seritifikaadi informatsioon:</translation>
+        <translation>Sertifikaadi teave:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="241"/>
@@ -5990,7 +5990,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="231"/>
         <source>Effective Date: %1</source>
-        <translation>Efektiivne kuupäev: %1</translation>
+        <translation>Jõustumiskuupäev: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="232"/>
@@ -6000,7 +6000,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="236"/>
         <source>Issuer: %1</source>
-        <translation>Esitaja: %1</translation>
+        <translation>Väljastaja: %1</translation>
     </message>
 </context>
 <context>
@@ -6724,7 +6724,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
         <source>Download error</source>
-        <translation>Allalaadimise viga</translation>
+        <translation>Viga allalaadimisel</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
@@ -6749,7 +6749,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="17"/>
         <source>Error downloading %1</source>
-        <translation>Viga %1 allaladimisel</translation>
+        <translation>Viga allaladimisel: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="18"/>
@@ -8611,7 +8611,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="499"/>
         <source>Local Sync Folder</source>
-        <translation>Kohalik sünkroniseerimiskaust</translation>
+        <translation>Kohalik sünkroonimiskaust</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="542"/>

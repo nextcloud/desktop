@@ -4587,42 +4587,42 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1624"/>
-        <location filename="../src/libsync/discovery.cpp" line="2112"/>
+        <location filename="../src/libsync/discovery.cpp" line="2122"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1965"/>
+        <location filename="../src/libsync/discovery.cpp" line="1973"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2035"/>
+        <location filename="../src/libsync/discovery.cpp" line="2043"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2069"/>
+        <location filename="../src/libsync/discovery.cpp" line="2077"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2075"/>
+        <location filename="../src/libsync/discovery.cpp" line="2084"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2089"/>
+        <location filename="../src/libsync/discovery.cpp" line="2099"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2126"/>
+        <location filename="../src/libsync/discovery.cpp" line="2136"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2299"/>
+        <location filename="../src/libsync/discovery.cpp" line="2309"/>
         <source>Error while reading the database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5756,13 +5756,13 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1565"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1570"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1557"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1562"/>
         <source>Reauthorization required</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5780,7 +5780,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1576"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1581"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5806,7 +5806,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1577"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1582"/>
         <source>Some files could not be synced!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6158,22 +6158,22 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1549"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1554"/>
         <source>Sync conflicts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1692"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1697"/>
         <source>Public Share Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1909"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1914"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1929"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1934"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6181,32 +6181,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2291"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2296"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2292"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2297"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2296"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2297"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2302"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2381"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2386"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2381"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2386"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
