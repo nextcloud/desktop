@@ -17,9 +17,9 @@
 #include "libsync/filesystem.h"
 
 #ifdef Q_OS_WIN
-#include <securitybaseapi.h>
 #include <aclapi.h>
 #include <sddl.h>
+#include <securitybaseapi.h>
 #endif
 
 using namespace OCC;
@@ -186,7 +186,7 @@ private Q_SLOTS:
         QVERIFY2(fileHandle.get() != INVALID_HANDLE_VALUE, qPrintable(Utility::formatWinError(GetLastError())));
         fileHandle.reset();
 
-        QVERIFY(pathExists(sourcePath));
+        QVERIFY2(pathExists(sourcePath), qPrintable(u"Source file does not exist: "_s + sourcePath));
 
         QString error;
         QVERIFY2(FileSystem::rename(sourcePath, destinationPath, &error), qPrintable(error));
