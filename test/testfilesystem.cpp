@@ -161,6 +161,39 @@ private Q_SLOTS:
     }
 
 #ifdef Q_OS_WIN
+    // Regression for issue #10836: a trailing period must remain addressable during a rename.
+    void testRenameFileWithTrailingPeriod()
+    {
+        QTemporaryDir tempDir;
+        QVERIFY(tempDir.isValid());
+
+        const auto sourcePath = tempDir.filePath(u"trailing-period."_s);
+        const auto destinationPath = tempDir.filePath(u"renamed-file"_s);
+        const auto pathExists = [](const QString &path) {
+            const auto extendedPath = FileSystem::longWinPath(path);
+            return GetFileAttributesW(reinterpret_cast<const wchar_t *>(extendedPath.utf16())) != INVALID_FILE_ATTRIBUTES;
+        };
+        const auto sourcePathLong = FileSystem::longWinPath(sourcePath);
+
+        Utility::UniqueHandle fileHandle;
+        fileHandle.reset(CreateFileW(reinterpret_cast<const wchar_t *>(sourcePathLong.utf16()),
+                                     GENERIC_WRITE,
+                                     FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+                                     nullptr,
+                                     CREATE_NEW,
+                                     FILE_ATTRIBUTE_NORMAL,
+                                     nullptr));
+        QVERIFY2(fileHandle.get() != INVALID_HANDLE_VALUE, qPrintable(Utility::formatWinError(GetLastError())));
+        fileHandle.reset();
+
+        QVERIFY(pathExists(sourcePath));
+
+        QString error;
+        QVERIFY2(FileSystem::rename(sourcePath, destinationPath, &error), qPrintable(error));
+        QVERIFY(!pathExists(sourcePath));
+        QVERIFY(pathExists(destinationPath));
+    }
+
     void testAclWithManyDeniedAces()
     {
         // Regression from client versions < 4.0.2; see GH issue nextcloud/desktop#8860
