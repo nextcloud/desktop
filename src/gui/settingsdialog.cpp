@@ -57,15 +57,6 @@ using namespace Qt::StringLiterals;
 
 namespace
 {
-#ifdef Q_OS_WIN
-constexpr auto panelBackgroundRole = QPalette::AlternateBase;
-#else
-constexpr auto panelBackgroundRole = QPalette::Light;
-#endif
-constexpr auto minimumPanelBrightnessDifference = 8;
-constexpr auto lightPanelForegroundFraction = 0.03;
-constexpr auto darkPanelForegroundFraction = 0.06;
-
 class CurrentPageSizeStackedWidget : public QStackedWidget
 {
 public:
@@ -556,19 +547,14 @@ void SettingsDialog::customizeStyle()
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
     _toolBar->setStyleSheet(TOOLBAR_CSS);
 
+#ifdef Q_OS_WIN
+    const auto windowColor = QStringLiteral("palette(window)");
+    const auto panelColor = QStringLiteral("palette(alternate-base)");
+#else
     const auto applicationPalette = QGuiApplication::palette();
-    const auto windowColor = applicationPalette.color(QPalette::Window);
-    auto panelColor = applicationPalette.color(panelBackgroundRole);
-    if (qAbs(qGray(panelColor.rgb()) - qGray(windowColor.rgb())) < minimumPanelBrightnessDifference) {
-        const auto foreground = applicationPalette.color(QPalette::WindowText);
-        const auto fraction = Theme::isDarkColor(windowColor) ? darkPanelForegroundFraction : lightPanelForegroundFraction;
-        const auto blend = [fraction](const auto background, const auto text) {
-            return background * (1.0 - fraction) + text * fraction;
-        };
-        panelColor = QColor::fromRgbF(blend(windowColor.redF(), foreground.redF()),
-                                      blend(windowColor.greenF(), foreground.greenF()),
-                                      blend(windowColor.blueF(), foreground.blueF()));
-    }
+    const auto windowColor = applicationPalette.color(QPalette::Window).name();
+    const auto panelColor = Theme::settingsPanelColor(applicationPalette).name();
+#endif
 
     auto separatorColor = palette().color(QPalette::Mid);
     separatorColor.setAlpha(48);
@@ -625,7 +611,7 @@ void SettingsDialog::customizeStyle()
                                  " min-height: 1px;"
                                  " max-height: 1px;"
                                  " }")
-                      .arg(separatorCss, panelColor.name(), windowColor.name()));
+                      .arg(separatorCss, panelColor, windowColor));
 
     auto colorAwareActions = _actionGroup->actions();
     if (_addAccountAction) {
