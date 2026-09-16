@@ -95,6 +95,7 @@ if (NOT WIN32)
     nextcloud_add_test(FolderWatcher)
 endif()
 
+nextcloud_add_test(InvalidFilenameDialog)
 nextcloud_add_test(Capabilities)
 nextcloud_add_test(UnifiedSharing)
 target_link_libraries(UnifiedSharingTest PRIVATE nextcloudGuiSharing)
