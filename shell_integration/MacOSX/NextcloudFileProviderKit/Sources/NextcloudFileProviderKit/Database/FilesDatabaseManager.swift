@@ -566,6 +566,51 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    ///
+    /// Persist several metadata rows in a **single** write transaction, semantically identical to
+    /// calling ``addItemMetadata(_:)`` per element.
+    ///
+    public func addItemMetadatas(_ metadatas: [SendableItemMetadata]) {
+        guard !metadatas.isEmpty else { return }
+
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                for metadata in metadatas {
+                    evictLogicalDuplicates(of: metadata, in: database)
+                    database.add(RealmItemMetadata(value: metadata), update: .all)
+                }
+            }
+
+            logger.debug("Added \(metadatas.count) item metadata records in one transaction.")
+        } catch {
+            logger.error("Failed to add \(metadatas.count) item metadata records in one transaction.", [.error: error])
+        }
+    }
+
+    ///
+    /// Hard delete several items in a **single** write transaction, the batched counterpart of
+    /// ``removeItemMetadata(ocId:)``.
+    ///
+    public func removeItemMetadatas(ocIds: [String]) {
+        guard !ocIds.isEmpty else { return }
+
+        let database = ncDatabase()
+
+        do {
+            let results = itemMetadatas.where { $0.ocId.in(ocIds) }
+
+            try database.write {
+                database.delete(results)
+            }
+
+            logger.debug("Removed \(ocIds.count) item metadata records in one transaction.")
+        } catch {
+            logger.error("Could not remove \(ocIds.count) item metadata records in one transaction.", [.error: error])
+        }
+    }
+
     /**
      * @brief Records that the provider returned `.excludedFromSync` for an item.
      *
