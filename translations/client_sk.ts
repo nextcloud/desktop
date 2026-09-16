@@ -3791,7 +3791,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Používateľská dokumentácia</translation>
     </message>
     <message>
@@ -4143,7 +4143,7 @@ Položky, pri ktorých je povolené odstraňovanie budú vymazané, ak bránia o
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Dokumentácia k používaniu</translation>
     </message>
     <message>

@@ -3791,7 +3791,7 @@ Dla zaawansowanych użytkowników: ten problem może być związany z wieloma pl
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Dokumentacja użytkowania</translation>
     </message>
     <message>
@@ -4143,7 +4143,7 @@ Elementy, dla których usunięcie jest dozwolone, zostaną usunięte, o ile umo�
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation type="unfinished"/>
     </message>
     <message>

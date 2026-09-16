@@ -3791,7 +3791,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Documentación de uso</translation>
     </message>
     <message>
@@ -4143,7 +4143,7 @@ Los elementos que se permite su borrado se eliminarán si impiden que un directo
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Documentación de uso</translation>
     </message>
     <message>

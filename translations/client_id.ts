@@ -3790,7 +3790,7 @@ Untuk pengguna tingkat lanjut: masalah ini mungkin terkait dengan beberapa file 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Dokumentasi Penggunaan</translation>
     </message>
     <message>
@@ -4142,7 +4142,7 @@ Item yang penghapusannya diizinkan akan dihapus jika item tersebut mencegah sebu
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation type="unfinished"/>
     </message>
     <message>

@@ -3791,7 +3791,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Anvendelsesdokumentation</translation>
     </message>
     <message>
@@ -4143,7 +4143,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Brugsdokumentation</translation>
     </message>
     <message>

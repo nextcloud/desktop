@@ -3792,7 +3792,7 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Manuale d&apos;uso</translation>
     </message>
     <message>
@@ -4144,7 +4144,7 @@ Gli elementi per i quali è consentita l&apos;eliminazione saranno eliminati se 
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation type="unfinished"/>
     </message>
     <message>

@@ -3789,7 +3789,7 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Dokumentace k používání</translation>
     </message>
     <message>
@@ -4141,7 +4141,7 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Dokumentace k používání</translation>
     </message>
     <message>

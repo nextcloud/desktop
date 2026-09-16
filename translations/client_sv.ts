@@ -3791,7 +3791,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Användardokumentation</translation>
     </message>
     <message>
@@ -4143,7 +4143,7 @@ Objekt där radering är tillåtet raderas om de förhindrar att en mapp tas bor
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Användardokumentation</translation>
     </message>
     <message>
