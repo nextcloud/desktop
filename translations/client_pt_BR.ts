@@ -318,7 +318,7 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskList.qml" line="52"/>
         <source>No assistant tasks for this type.</source>
-        <translation>Nenhum tarefa do assistente para este tipo.</translation>
+        <translation>Nenhuma tarefa do assistente para este tipo.</translation>
     </message>
 </context>
 <context>
@@ -335,7 +335,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="186"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Assistente</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="65"/>
