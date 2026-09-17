@@ -26,7 +26,7 @@ public:
      * @param permissionClass Registered permission type class to update
      * @param enabled Whether recipients should receive that capability
      */
-    explicit SetPermissionJob(AccountPtr account, Share &share, const QString &permissionClass, bool enabled);
+    explicit SetPermissionJob(AccountPtr account, const QString &shareId, const QString &permissionClass, bool enabled);
 };
 
 }

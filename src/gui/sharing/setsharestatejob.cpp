@@ -28,10 +28,9 @@ QString stateName(Share::State state)
 }
 }
 
-SetShareStateJob::SetShareStateJob(AccountPtr account, Share &share, Share::State state)
+SetShareStateJob::SetShareStateJob(AccountPtr account, const QString &shareId, Share::State state)
     : UpdateShareJob{std::move(account),
-                     share,
-                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/state"_L1.arg(share.id()),
+                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/state"_L1.arg(shareId),
                      "PUT"_ba,
                      {.parameters = {}, .passStatusCodes = {}, .body = QJsonObject{{"state"_L1, stateName(state)}}}}
 {

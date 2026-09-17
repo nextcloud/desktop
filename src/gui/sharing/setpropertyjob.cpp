@@ -5,8 +5,6 @@
 
 #include "setpropertyjob.h"
 
-#include "unifiedshare.h"
-
 #include <QJsonValue>
 
 using namespace Qt::StringLiterals;
@@ -14,15 +12,13 @@ using namespace Qt::StringLiterals;
 namespace OCC::Gui::Sharing
 {
 
-SetPropertyJob::SetPropertyJob(AccountPtr account,
-                               Share &share,
-                               const QString &propertyClass,
-                               const std::optional<QString> &value)
+SetPropertyJob::SetPropertyJob(AccountPtr account, const QString &shareId, const QString &propertyClass, const std::optional<QString> &value)
     : UpdateShareJob{std::move(account),
-                     share,
-                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/property"_L1.arg(share.id()),
+                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/property"_L1.arg(shareId),
                      "PUT"_ba,
-                     {.parameters = {}, .passStatusCodes = {}, .body = QJsonObject{{"class"_L1, propertyClass}, {"value"_L1, value ? QJsonValue{*value} : QJsonValue{QJsonValue::Null}}}}}
+                     {.parameters = {},
+                      .passStatusCodes = {},
+                      .body = QJsonObject{{"class"_L1, propertyClass}, {"value"_L1, value ? QJsonValue{*value} : QJsonValue{QJsonValue::Null}}}}}
 {
 }
 

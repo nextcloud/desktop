@@ -25,7 +25,7 @@ public:
      *
      * @param permissionPreset Registered permission preset class to select
      */
-    explicit SetPermissionPresetJob(AccountPtr account, Share &share, const QString &permissionPreset);
+    explicit SetPermissionPresetJob(AccountPtr account, const QString &shareId, const QString &permissionPreset);
 };
 
 }

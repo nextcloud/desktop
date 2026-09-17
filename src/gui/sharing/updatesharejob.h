@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "unifiedshare.h"
 #include "unifiedsharingrequest.h"
 
 namespace OCC::Gui::Sharing
@@ -15,24 +14,19 @@ namespace OCC::Gui::Sharing
  * @brief Base for operations that mutate one existing share.
  *
  * Successful Unified Sharing mutation endpoints return the complete updated
- * share. This base applies that response to the same Share object supplied to
- * the concrete job and then emits shareUpdated. It does not own the Share and
- * safely handles the object being deleted while the request is running.
+ * share. The controller applies the response to the current Share identified
+ * by the request after the job completes.
  */
 class UpdateShareJob : public UnifiedSharingRequest
 {
     Q_OBJECT
 
 protected:
-    explicit UpdateShareJob(AccountPtr account,
-                            Share &share,
-                            const QString &path,
-                            const QByteArray &verb,
-                            const UnifiedSharingRequest::Options &options = {});
+    explicit UpdateShareJob(AccountPtr account, const QString &path, const QByteArray &verb, const UnifiedSharingRequest::Options &options = {});
 
 Q_SIGNALS:
-    /** @brief Emitted after a successful response, or with null if the Share was deleted while the request was running. */
-    void shareUpdated(QPointer<Share> share);
+    /** @brief Emitted with the complete updated share response after success. */
+    void shareUpdated(const QJsonDocument &json);
 };
 
 }

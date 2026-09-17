@@ -504,46 +504,46 @@ class TestUnifiedSharing : public QObject
                        {"id"_L1, "share-1"_L1}});
         verifyRequest(new GenerateSecretJob{account}, "GET", "/ocs/v2.php/apps/sharing/api/v1/secret");
         verifyRequest(new CreateShareJob{account}, "POST", "/ocs/v2.php/apps/sharing/api/v1/share");
-        verifyRequest(new SetShareStateJob{account, *share, Share::State::Active},
+        verifyRequest(new SetShareStateJob{account, share->id(), Share::State::Active},
                       "PUT",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/state",
                       {},
                       {{"state"_L1, "active"_L1}});
-        verifyRequest(new AddSourceJob{account, *share, "42"_L1},
+        verifyRequest(new AddSourceJob{account, share->id(), "42"_L1},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/source",
                       {},
                       {{"class"_L1, SourceTypeClasses::node}, {"value"_L1, "42"_L1}});
-        verifyRequest(new RemoveSourceJob{account, *share, "42"_L1},
+        verifyRequest(new RemoveSourceJob{account, share->id(), "42"_L1},
                       "DELETE",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/source",
                       {{"class"_L1, SourceTypeClasses::node}, {"value"_L1, "42"_L1}});
-        verifyRequest(new AddRecipientJob{account, *share, "recipient-class"_L1, "alice"_L1, "https://example.com"_L1},
+        verifyRequest(new AddRecipientJob{account, share->id(), "recipient-class"_L1, "alice"_L1, "https://example.com"_L1},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/recipient",
                       {},
                       {{"class"_L1, "recipient-class"_L1}, {"value"_L1, "alice"_L1}, {"instance"_L1, "https://example.com"_L1}});
-        verifyRequest(new RemoveRecipientJob{account, *share, "recipient-class"_L1, "alice"_L1, "https://example.com"_L1},
+        verifyRequest(new RemoveRecipientJob{account, share->id(), "recipient-class"_L1, "alice"_L1, "https://example.com"_L1},
                       "DELETE",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/recipient",
                       {{"class"_L1, "recipient-class"_L1}, {"value"_L1, "alice"_L1}, {"instance"_L1, "https%3A%2F%2Fexample.com"_L1}});
-        verifyRequest(new SetRecipientSecretJob{account, *share, "recipient-class"_L1, "alice"_L1, "secret"_L1, "https://example.com"_L1},
+        verifyRequest(new SetRecipientSecretJob{account, share->id(), "recipient-class"_L1, "alice"_L1, "secret"_L1, "https://example.com"_L1},
                       "PUT",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/recipient/secret",
                       {},
                       {{"class"_L1, "recipient-class"_L1}, {"value"_L1, "alice"_L1}, {"secret"_L1, "secret"_L1}, {"instance"_L1, "https://example.com"_L1}});
-        verifyRequest(new SetPropertyJob{account, *share, "property-class"_L1, std::nullopt},
+        verifyRequest(new SetPropertyJob{account, share->id(), "property-class"_L1, std::nullopt},
                       "PUT",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/property",
                       {},
                       {{"class"_L1, "property-class"_L1}, {"value"_L1, QJsonValue::Null}});
-        verifyRequest(new SetPermissionJob{account, *share, "permission-class"_L1, true},
+        verifyRequest(new SetPermissionJob{account, share->id(), "permission-class"_L1, true},
                       "PUT",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/permission",
                       {},
                       {{"class"_L1, "permission-class"_L1}, {"enabled"_L1, true}});
         verifyRequest(new SetRecipientPermissionJob{account,
-                                                    *share,
+                                                    share->id(),
                                                     "recipient-class"_L1,
                                                     "alice"_L1,
                                                     std::optional<QString>{"https://example.com"_L1},
@@ -557,7 +557,7 @@ class TestUnifiedSharing : public QObject
                        {"recipientInstance"_L1, "https://example.com"_L1},
                        {"permissionClass"_L1, "permission-class"_L1},
                        {"enabled"_L1, false}});
-        verifyRequest(new SetPermissionPresetJob{account, *share, "preset-class"_L1},
+        verifyRequest(new SetPermissionPresetJob{account, share->id(), "preset-class"_L1},
                       "PUT",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/permission/preset",
                       {},
@@ -573,7 +573,7 @@ class TestUnifiedSharing : public QObject
             "GET",
             "/ocs/v2.php/apps/sharing/api/v1/shares",
             {{"filterSourceTypeClass"_L1, "source-class"_L1}, {"filterSourceTypeValue"_L1, "42"_L1}, {"lastShareID"_L1, "share-0"_L1}, {"limit"_L1, "50"_L1}});
-        verifyRequest(new AddRecipientJob{account, *share, "recipient-class"_L1, "alice"_L1},
+        verifyRequest(new AddRecipientJob{account, share->id(), "recipient-class"_L1, "alice"_L1},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/recipient",
                       {},
@@ -2065,20 +2065,18 @@ class TestUnifiedSharing : public QObject
 
         auto createdShare = std::unique_ptr<Share>{};
         const auto createJob = new CreateShareJob{account};
-        connect(createJob, &CreateShareJob::shareCreated, this, [&](QPointer<Share> share) {
-            if (share) {
-                share->setParent(nullptr);
-            }
-            createdShare.reset(share.data());
+        connect(createJob, &CreateShareJob::shareCreated, this, [&](const QJsonDocument &json) {
+            createdShare = Share::fromJson(json, account);
         });
         createJob->start();
         QTRY_VERIFY(createdShare);
         QCOMPARE(createdShare->id(), "share-1"_L1);
 
         auto updateReceived = false;
-        const auto updateJob = new SetPermissionJob{account, *createdShare, "permission-class"_L1, true};
-        connect(updateJob, &UpdateShareJob::shareUpdated, this, [&](QPointer<Share> share) {
-            updateReceived = share == createdShare.get();
+        const auto updateJob = new SetPermissionJob{account, createdShare->id(), "permission-class"_L1, true};
+        connect(updateJob, &UpdateShareJob::shareUpdated, this, [&](const QJsonDocument &json) {
+            createdShare->updateFromJson(json);
+            updateReceived = true;
         });
         updateJob->start();
         QTRY_VERIFY(updateReceived);
@@ -2104,11 +2102,8 @@ class TestUnifiedSharing : public QObject
 
         auto fetchedShare = std::unique_ptr<Share>{};
         const auto getShareJob = new GetShareJob{account, "share-1"_L1};
-        connect(getShareJob, &GetShareJob::shareFetched, this, [&](QPointer<Share> share) {
-            if (share) {
-                share->setParent(nullptr);
-            }
-            fetchedShare.reset(share.data());
+        connect(getShareJob, &GetShareJob::shareJsonFetched, this, [&](const QJsonDocument &json) {
+            fetchedShare = Share::fromJson(json, account);
         });
         getShareJob->start();
         QTRY_VERIFY(fetchedShare);
@@ -2116,13 +2111,12 @@ class TestUnifiedSharing : public QObject
 
         auto fetchedShares = std::vector<std::unique_ptr<Share>>{};
         const auto getSharesJob = new GetSharesJob{account};
-        connect(getSharesJob, &GetSharesJob::sharesFetched, this, [&](const QList<QPointer<Share>> &shares) {
+        connect(getSharesJob, &GetSharesJob::sharesFetched, this, [&](const QJsonDocument &json) {
             fetchedShares.clear();
-            for (const auto &share : shares) {
-                if (share) {
-                    share->setParent(nullptr);
-                }
-                fetchedShares.emplace_back(share.data());
+            const auto data = json.object().value("ocs"_L1).toObject().value("data"_L1).toArray();
+            for (const auto &value : data) {
+                const auto shareJson = QJsonDocument{QJsonObject{{"ocs"_L1, QJsonObject{{"data"_L1, value}}}}};
+                fetchedShares.emplace_back(Share::fromJson(shareJson, account));
             }
         });
         getSharesJob->start();
@@ -2202,21 +2196,21 @@ class TestUnifiedSharing : public QObject
         const auto account = fakeFolder.account();
         auto share = Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1","state":"draft"}}})json"), account);
         const auto jobs = QList<UpdateShareJob *>{
-            new AddSourceJob{account, *share, "42"_L1},
-            new RemoveSourceJob{account, *share, "42"_L1},
-            new AddRecipientJob{account, *share, "recipient-class"_L1, "alice"_L1},
-            new RemoveRecipientJob{account, *share, "recipient-class"_L1, "alice"_L1},
-            new SetRecipientSecretJob{account, *share, "recipient-class"_L1, "alice"_L1, "secret"_L1},
-            new SetPropertyJob{account, *share, "property-class"_L1, "value"_L1},
-            new SetPermissionJob{account, *share, "permission-class"_L1, true},
-            new SetPermissionPresetJob{account, *share, "preset-class"_L1},
-            new SetShareStateJob{account, *share, Share::State::Active},
+            new AddSourceJob{account, share->id(), "42"_L1},
+            new RemoveSourceJob{account, share->id(), "42"_L1},
+            new AddRecipientJob{account, share->id(), "recipient-class"_L1, "alice"_L1},
+            new RemoveRecipientJob{account, share->id(), "recipient-class"_L1, "alice"_L1},
+            new SetRecipientSecretJob{account, share->id(), "recipient-class"_L1, "alice"_L1, "secret"_L1},
+            new SetPropertyJob{account, share->id(), "property-class"_L1, "value"_L1},
+            new SetPermissionJob{account, share->id(), "permission-class"_L1, true},
+            new SetPermissionPresetJob{account, share->id(), "preset-class"_L1},
+            new SetShareStateJob{account, share->id(), Share::State::Active},
         };
 
         for (const auto job : jobs) {
             auto shareUpdated = false;
             auto ocsError = false;
-            connect(job, &UpdateShareJob::shareUpdated, this, [&](QPointer<Share>) {
+            connect(job, &UpdateShareJob::shareUpdated, this, [&](const QJsonDocument &) {
                 shareUpdated = true;
             });
             connect(job, &UpdateShareJob::ocsError, this, [&](int, const QString &) {

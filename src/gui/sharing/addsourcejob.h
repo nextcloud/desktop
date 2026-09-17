@@ -21,7 +21,7 @@ class AddSourceJob : public UpdateShareJob
 {
 public:
     /** @brief Creates a request to add the node identified by fileId to share. */
-    explicit AddSourceJob(AccountPtr account, Share &share, const QString &fileId);
+    explicit AddSourceJob(AccountPtr account, const QString &shareId, const QString &fileId);
 };
 
 }

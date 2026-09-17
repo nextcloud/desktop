@@ -31,7 +31,7 @@ public:
      * @param instance Absolute URL of the recipient's remote instance, or no value for a local recipient
      */
     explicit SetRecipientSecretJob(AccountPtr account,
-                                   Share &share,
+                                   const QString &shareId,
                                    const QString &recipientTypeClass,
                                    const QString &recipientValue,
                                    const QString &secret,

@@ -5,7 +5,6 @@
 
 #include "addsourcejob.h"
 
-#include "unifiedshare.h"
 #include "sharingconstants.h"
 
 using namespace Qt::StringLiterals;
@@ -13,10 +12,9 @@ using namespace Qt::StringLiterals;
 namespace OCC::Gui::Sharing
 {
 
-AddSourceJob::AddSourceJob(AccountPtr account, Share &share, const QString &fileId)
+AddSourceJob::AddSourceJob(AccountPtr account, const QString &shareId, const QString &fileId)
     : UpdateShareJob{std::move(account),
-                     share,
-                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/source"_L1.arg(share.id()),
+                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/source"_L1.arg(shareId),
                      "POST"_ba,
                      {.parameters = {}, .passStatusCodes = {}, .body = QJsonObject{{"class"_L1, SourceTypeClasses::node}, {"value"_L1, fileId}}}}
 {

@@ -31,10 +31,7 @@ public:
      * @param propertyClass Registered property type class to update
      * @param value Serialized property value, or no value to clear it
      */
-    explicit SetPropertyJob(AccountPtr account,
-                            Share &share,
-                            const QString &propertyClass,
-                            const std::optional<QString> &value);
+    explicit SetPropertyJob(AccountPtr account, const QString &shareId, const QString &propertyClass, const std::optional<QString> &value);
 };
 
 }

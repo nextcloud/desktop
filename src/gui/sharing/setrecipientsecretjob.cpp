@@ -5,8 +5,6 @@
 
 #include "setrecipientsecretjob.h"
 
-#include "unifiedshare.h"
-
 using namespace Qt::StringLiterals;
 
 namespace OCC::Gui::Sharing
@@ -32,14 +30,13 @@ QJsonObject setRecipientSecretBody(const QString &recipientTypeClass,
 }
 
 SetRecipientSecretJob::SetRecipientSecretJob(AccountPtr account,
-                                             Share &share,
+                                             const QString &shareId,
                                              const QString &recipientTypeClass,
                                              const QString &recipientValue,
                                              const QString &secret,
                                              const std::optional<QString> &instance)
     : UpdateShareJob{std::move(account),
-                     share,
-                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient/secret"_L1.arg(share.id()),
+                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient/secret"_L1.arg(shareId),
                      "PUT"_ba,
                      {.parameters = {}, .passStatusCodes = {}, .body = setRecipientSecretBody(recipientTypeClass, recipientValue, secret, instance)}}
 {

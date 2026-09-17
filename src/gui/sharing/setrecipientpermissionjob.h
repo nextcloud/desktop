@@ -20,7 +20,7 @@ class SetRecipientPermissionJob : public UpdateShareJob
 public:
     /** @brief Creates a request for a recipient-specific permission change. */
     explicit SetRecipientPermissionJob(AccountPtr account,
-                                       Share &share,
+                                       const QString &shareId,
                                        const QString &recipientType,
                                        const QString &recipientValue,
                                        const std::optional<QString> &recipientInstance,

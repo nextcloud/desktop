@@ -29,7 +29,7 @@ public:
      * @param instance Absolute URL of the recipient's remote instance, or no value for a local recipient
      */
     explicit AddRecipientJob(AccountPtr account,
-                             Share &share,
+                             const QString &shareId,
                              const QString &recipientTypeClass,
                              const QString &recipientValue,
                              const std::optional<QString> &instance = std::nullopt);

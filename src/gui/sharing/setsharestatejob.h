@@ -27,7 +27,7 @@ public:
      *
      * @param state New lifecycle state
      */
-    explicit SetShareStateJob(AccountPtr account, Share &share, Share::State state);
+    explicit SetShareStateJob(AccountPtr account, const QString &shareId, Share::State state);
 };
 
 }

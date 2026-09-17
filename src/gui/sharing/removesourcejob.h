@@ -20,7 +20,7 @@ class RemoveSourceJob : public UpdateShareJob
 {
 public:
     /** @brief Creates a request to remove the item identified by @p fileId from the share. */
-    explicit RemoveSourceJob(AccountPtr account, Share &share, const QString &fileId);
+    explicit RemoveSourceJob(AccountPtr account, const QString &shareId, const QString &fileId);
 };
 
 }

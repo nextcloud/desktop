@@ -5,17 +5,14 @@
 
 #include "setpermissionjob.h"
 
-#include "unifiedshare.h"
-
 using namespace Qt::StringLiterals;
 
 namespace OCC::Gui::Sharing
 {
 
-SetPermissionJob::SetPermissionJob(AccountPtr account, Share &share, const QString &permissionClass, bool enabled)
+SetPermissionJob::SetPermissionJob(AccountPtr account, const QString &shareId, const QString &permissionClass, bool enabled)
     : UpdateShareJob{std::move(account),
-                     share,
-                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/permission"_L1.arg(share.id()),
+                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/permission"_L1.arg(shareId),
                      "PUT"_ba,
                      {.parameters = {}, .passStatusCodes = {}, .body = QJsonObject{{"class"_L1, permissionClass}, {"enabled"_L1, enabled}}}}
 {

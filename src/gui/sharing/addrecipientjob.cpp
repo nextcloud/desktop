@@ -5,8 +5,6 @@
 
 #include "addrecipientjob.h"
 
-#include "unifiedshare.h"
-
 using namespace Qt::StringLiterals;
 
 namespace OCC::Gui::Sharing
@@ -27,13 +25,12 @@ QJsonObject addRecipientBody(const QString &recipientTypeClass,
 }
 
 AddRecipientJob::AddRecipientJob(AccountPtr account,
-                                 Share &share,
+                                 const QString &shareId,
                                  const QString &recipientTypeClass,
                                  const QString &recipientValue,
                                  const std::optional<QString> &instance)
     : UpdateShareJob{std::move(account),
-                     share,
-                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient"_L1.arg(share.id()),
+                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient"_L1.arg(shareId),
                      "POST"_ba,
                      {.parameters = {}, .passStatusCodes = {}, .body = addRecipientBody(recipientTypeClass, recipientValue, instance)}}
 {

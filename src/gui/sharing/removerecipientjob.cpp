@@ -5,8 +5,6 @@
 
 #include "removerecipientjob.h"
 
-#include "unifiedshare.h"
-
 using namespace Qt::StringLiterals;
 
 namespace OCC::Gui::Sharing
@@ -27,13 +25,12 @@ QList<QPair<QString, QString>> removeRecipientParameters(const QString &recipien
 }
 
 RemoveRecipientJob::RemoveRecipientJob(AccountPtr account,
-                                       Share &share,
+                                       const QString &shareId,
                                        const QString &recipientTypeClass,
                                        const QString &recipientValue,
                                        const std::optional<QString> &instance)
     : UpdateShareJob{std::move(account),
-                     share,
-                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient"_L1.arg(share.id()),
+                     "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient"_L1.arg(shareId),
                      "DELETE"_ba,
                      {.parameters = removeRecipientParameters(recipientTypeClass, recipientValue, instance), .passStatusCodes = {}, .body = {}}}
 {
