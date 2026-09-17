@@ -4905,42 +4905,42 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1624"/>
-        <location filename="../src/libsync/discovery.cpp" line="2112"/>
+        <location filename="../src/libsync/discovery.cpp" line="2122"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Přesunuto do neplatného cíle – obnovuje se</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1965"/>
+        <location filename="../src/libsync/discovery.cpp" line="1973"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Není možné upravit šifrovanou položku, protože vybraný certifikát není platný.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2035"/>
+        <location filename="../src/libsync/discovery.cpp" line="2043"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorováno podle nastavení „vybrat co synchronizovat“</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2069"/>
+        <location filename="../src/libsync/discovery.cpp" line="2077"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Neumožněno, protože nemáte oprávnění přidávat podsložky do této složky</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2075"/>
+        <location filename="../src/libsync/discovery.cpp" line="2084"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Neumožněno, protože nemáte oprávnění přidávat soubory do této složky</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2089"/>
+        <location filename="../src/libsync/discovery.cpp" line="2099"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Není možné tento soubor nahrát, protože je na serveru povoleno pouze čtení – obnovuje se</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2126"/>
+        <location filename="../src/libsync/discovery.cpp" line="2136"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranění není umožněno – obnovuje se</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2299"/>
+        <location filename="../src/libsync/discovery.cpp" line="2309"/>
         <source>Error while reading the database</source>
         <translation>Chyba při čtení databáze</translation>
     </message>
@@ -5500,33 +5500,33 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="722"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="708"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="161"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="152"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation>Nastavení %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="194"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="185"/>
         <source>General</source>
         <translation>Obecné</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="195"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="186"/>
         <source>Advanced</source>
         <translation>Pokročilé</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="196"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="187"/>
         <source>Info</source>
         <translation>Informace</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="388"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="379"/>
         <source>Account</source>
         <translation>Účet</translation>
     </message>
@@ -6090,13 +6090,13 @@ Server odpověděl chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1655"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1660"/>
         <source>You need to accept the terms of service</source>
         <translation>Je třeba přijmout všeobecné podmínky</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1647"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1652"/>
         <source>Reauthorization required</source>
         <translation>Je vyžadováno opětovné ověření se</translation>
     </message>
@@ -6114,7 +6114,7 @@ Server odpověděl chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1666"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1671"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Některé soubory nebylo možné synchronizovat!</translation>
     </message>
@@ -6140,7 +6140,7 @@ Server odpověděl chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1667"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1672"/>
         <source>Some files could not be synced!</source>
         <translation>Některé soubory nebylo možné synchronizovat!</translation>
     </message>
@@ -6185,7 +6185,7 @@ Server odpověděl chybou: %2</translation>
         <translation>Stáhnout</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="180"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="171"/>
         <location filename="../src/gui/systray.cpp" line="589"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="871"/>
         <source>Add account</source>
@@ -6246,18 +6246,18 @@ Server odpověděl chybou: %2</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="462"/>
+        <location filename="../src/libsync/theme.cpp" line="471"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="648"/>
+        <location filename="../src/libsync/theme.cpp" line="657"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Používá zásuvný modul pro virtuální soubory: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="666"/>
+        <location filename="../src/libsync/theme.cpp" line="675"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Toto vydání bylo dodáno %1.&lt;/p&gt;</translation>
     </message>
@@ -6509,7 +6509,7 @@ Server odpověděl chybou: %2</translation>
         <translation>Přejmenovat soubor</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2005"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
         <source>Sending your request …</source>
         <translation type="unfinished"/>
     </message>
@@ -6520,12 +6520,12 @@ Server odpověděl chybou: %2</translation>
         <translation>Otevřít %1 Asistenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1962"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1967"/>
         <source>Assistant is not available for this account.</source>
         <translation>Asistent není pro tento účet k dispozici.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1968"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
         <source>Assistant is already processing a request.</source>
         <translation>Asistent už zpracovává požadavek.</translation>
     </message>
@@ -6535,42 +6535,42 @@ Server odpověděl chybou: %2</translation>
         <translation>Odesílání vašeho požadavku…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1639"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1644"/>
         <source>Sync conflicts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1782"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1787"/>
         <source>Public Share Link</source>
         <translation>Odkaz pro veřejné sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2078"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2083"/>
         <source>No response yet. Please try again later.</source>
         <translation>Doposud žádná odezva. Zkuste to znovu později.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2097"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2102"/>
         <source>No supported assistant task types were returned.</source>
         <translation>Nebyly vráceny žádné podporované typy úloh asistenta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2184"/>
         <source>Waiting for the assistant response…</source>
         <translation>Čeká se na odezvu od asistenta…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2201"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2206"/>
         <source>Assistant request failed (%1).</source>
         <translation>Požadavek na asistenta se nezdařil (%1).</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2276"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2281"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kvóta je aktualizována; %1 procent celkového prostoru je využito.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2296"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Varování ohledně kvóty – využíváno %1 procent nebo více z úložiště</translation>
     </message>
@@ -6578,32 +6578,32 @@ Server odpověděl chybou: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2658"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2663"/>
         <source>Confirm Account Removal</source>
         <translation>Potvrďte odebrání účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2659"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2664"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Opravdu chcete odebrat propojení s účtem &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Pozn.:&lt;/b&gt; Toto &lt;b&gt;nesmaže&lt;/b&gt; žádné soubory.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2663"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2668"/>
         <source>Remove connection</source>
         <translation>Odebrat spojení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2664"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2669"/>
         <source>Cancel</source>
         <translation>Storno</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2748"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2753"/>
         <source>Leave share</source>
         <translation>Opustit sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2748"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2753"/>
         <source>Remove account</source>
         <translation>Odebrat účet</translation>
     </message>
@@ -8104,7 +8104,7 @@ Server odpověděl chybou: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="629"/>
+        <location filename="../src/libsync/theme.cpp" line="638"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <extracomment>%1 is the full Git commit URL. %2 is the abbreviated Git revision. %3 is the build date. %4 is the build time. %5 is the Qt version. %6 is the TLS library version.</extracomment>
         <translation>&lt;p&gt;&lt;small&gt;Sestaveno z Git revize &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; na %3, %4 s použitím Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
@@ -8233,52 +8233,52 @@ Server odpověděl chybou: %2</translation>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="105"/>
+        <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync status is unknown</source>
         <translation>Stav synchronizace není znám</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="108"/>
+        <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Waiting to start syncing</source>
         <translation>Čeká se na spuštění synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="111"/>
+        <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Sync is running</source>
         <translation>Synchronizace probíhá</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="114"/>
+        <location filename="../src/libsync/theme.cpp" line="123"/>
         <source>Sync was successful</source>
         <translation>Synchronizace byla úspěšná</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="117"/>
+        <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Sync was successful but some files were ignored</source>
         <translation>Synchronizace byla úspěšná, ale některé soubory byly ingorovány</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="120"/>
+        <location filename="../src/libsync/theme.cpp" line="129"/>
         <source>Error occurred during sync</source>
         <translation>Při synchronizaci došlo k chybě</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="123"/>
+        <location filename="../src/libsync/theme.cpp" line="132"/>
         <source>Error occurred during setup</source>
         <translation>Při nastavování došlo k chybě</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="129"/>
+        <location filename="../src/libsync/theme.cpp" line="138"/>
         <source>Stopping sync</source>
         <translation>Zastavování synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="126"/>
+        <location filename="../src/libsync/theme.cpp" line="135"/>
         <source>Preparing to sync</source>
         <translation>Připravuje se na synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="132"/>
+        <location filename="../src/libsync/theme.cpp" line="141"/>
         <source>Sync is paused</source>
         <translation>Synchronizace pozastavena</translation>
     </message>

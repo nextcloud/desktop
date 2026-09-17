@@ -1866,38 +1866,38 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="363"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Ẓreg yerna Zeggel Ifuyla</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="370"/>
         <location filename="../src/gui/advancedsettings.cpp" line="383"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Snulfu-d aɣbaṛ n useɣti</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="251"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Talqayt</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="385"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Iɣbaren Zip</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="398"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Anekcum ar ufaylu ur yeddi ara</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="399"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi adduf ɣer wadig yettwafernen. Ma ulac aɣilif, ɛreḍ tikelt nniḍen neɣ fren adig nniḍen.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="408"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Aɣbar n useɣti yettwarna</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="409"/>
@@ -1917,7 +1917,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="207"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation type="unfinished"/>
+        <translation>Amaynut n melmi kan</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="207"/>
@@ -1988,7 +1988,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="839"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation type="unfinished"/>
+        <translation>Teḍra-d tuccḍa deg unekcum ɣer ufaylu n twila di %1. Ma ulac aɣilif, tḥeqqeq belli afaylu yezmer ad yeqqen ɣer umiḍan-inek·inem n unagraw.</translation>
     </message>
 </context>
 <context>
@@ -1997,39 +1997,39 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="219"/>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="337"/>
         <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"/>
+        <translation>Amalal ur yewjid ara i umiḍan-a</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="342"/>
         <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"/>
+        <translation>Amalal yessesfer yakan asuter.</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="431"/>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="451"/>
         <source>No response yet. Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac tiririt akka tura. Ma ulac aɣilif, ɛreḍ tikelt nniḍen ticki.</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="480"/>
         <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac anaw n twuriwin n umalal ittusefraken i d-yuɣalen.</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="557"/>
         <source>Assistant task scheduled.</source>
-        <translation type="unfinished"/>
+        <translation>Tawuri n umalal tettwasɣiwes.</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="770"/>
         <source>Scheduling assistant task…</source>
-        <translation type="unfinished"/>
+        <translation>Asɣiwes n twuri n umalal...</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="840"/>
         <source>Assistant request failed (%1).</source>
         <extracomment>%1 is the HTTP status code returned by the server.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Asuter ɣef umalal ur yeddi ara (%1).</translation>
     </message>
 </context>
 <context>
@@ -2037,27 +2037,27 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="106"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Arussin</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="108"/>
         <source>Scheduled</source>
-        <translation type="unfinished"/>
+        <translation>Yettwasɣiwes</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="110"/>
         <source>In progress</source>
-        <translation type="unfinished"/>
+        <translation>Deg usfari</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="112"/>
         <source>Completed</source>
-        <translation type="unfinished"/>
+        <translation>Immed</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="114"/>
         <source>Failed</source>
-        <translation type="unfinished"/>
+        <translation>Ur yeddi ara</translation>
     </message>
 </context>
 <context>
@@ -4876,42 +4876,42 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1624"/>
-        <location filename="../src/libsync/discovery.cpp" line="2112"/>
+        <location filename="../src/libsync/discovery.cpp" line="2122"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1965"/>
+        <location filename="../src/libsync/discovery.cpp" line="1973"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2035"/>
+        <location filename="../src/libsync/discovery.cpp" line="2043"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2069"/>
+        <location filename="../src/libsync/discovery.cpp" line="2077"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2075"/>
+        <location filename="../src/libsync/discovery.cpp" line="2084"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2089"/>
+        <location filename="../src/libsync/discovery.cpp" line="2099"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2126"/>
+        <location filename="../src/libsync/discovery.cpp" line="2136"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2299"/>
+        <location filename="../src/libsync/discovery.cpp" line="2309"/>
         <source>Error while reading the database</source>
         <translation type="unfinished"/>
     </message>
@@ -5471,33 +5471,33 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="722"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="708"/>
         <source>Settings</source>
         <translation>Iɣewwaṛen</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="161"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="152"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="194"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="185"/>
         <source>General</source>
         <translation>Amatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="195"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="186"/>
         <source>Advanced</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="196"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="187"/>
         <source>Info</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="388"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="379"/>
         <source>Account</source>
         <translation>Amiḍan</translation>
     </message>
@@ -6057,13 +6057,13 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1655"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1660"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1647"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1652"/>
         <source>Reauthorization required</source>
         <translation type="unfinished"/>
     </message>
@@ -6081,7 +6081,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1666"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1671"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation type="unfinished"/>
     </message>
@@ -6107,7 +6107,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1667"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1672"/>
         <source>Some files could not be synced!</source>
         <translation type="unfinished"/>
     </message>
@@ -6152,7 +6152,7 @@ Server replied with error: %2</source>
         <translation>Sader</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="180"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="171"/>
         <location filename="../src/gui/systray.cpp" line="589"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="871"/>
         <source>Add account</source>
@@ -6213,18 +6213,18 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="462"/>
+        <location filename="../src/libsync/theme.cpp" line="471"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="648"/>
+        <location filename="../src/libsync/theme.cpp" line="657"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="666"/>
+        <location filename="../src/libsync/theme.cpp" line="675"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -6476,7 +6476,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2005"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
         <source>Sending your request …</source>
         <translation type="unfinished"/>
     </message>
@@ -6487,12 +6487,12 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1962"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1967"/>
         <source>Assistant is not available for this account.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1968"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
         <source>Assistant is already processing a request.</source>
         <translation type="unfinished"/>
     </message>
@@ -6502,42 +6502,42 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1639"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1644"/>
         <source>Sync conflicts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1782"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1787"/>
         <source>Public Share Link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2078"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2083"/>
         <source>No response yet. Please try again later.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2097"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2102"/>
         <source>No supported assistant task types were returned.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2184"/>
         <source>Waiting for the assistant response…</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2201"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2206"/>
         <source>Assistant request failed (%1).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2276"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2281"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2296"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"/>
     </message>
@@ -6545,32 +6545,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2658"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2663"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2659"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2664"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2663"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2668"/>
         <source>Remove connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2664"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2669"/>
         <source>Cancel</source>
         <translation>Sefex</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2748"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2753"/>
         <source>Leave share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2748"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2753"/>
         <source>Remove account</source>
         <translation type="unfinished"/>
     </message>
@@ -8071,7 +8071,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="629"/>
+        <location filename="../src/libsync/theme.cpp" line="638"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <extracomment>%1 is the full Git commit URL. %2 is the abbreviated Git revision. %3 is the build date. %4 is the build time. %5 is the Qt version. %6 is the TLS library version.</extracomment>
         <translation type="unfinished"/>
@@ -8200,52 +8200,52 @@ Server replied with error: %2</source>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="105"/>
+        <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync status is unknown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="108"/>
+        <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Waiting to start syncing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="111"/>
+        <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Sync is running</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="114"/>
+        <location filename="../src/libsync/theme.cpp" line="123"/>
         <source>Sync was successful</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="117"/>
+        <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Sync was successful but some files were ignored</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="120"/>
+        <location filename="../src/libsync/theme.cpp" line="129"/>
         <source>Error occurred during sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="123"/>
+        <location filename="../src/libsync/theme.cpp" line="132"/>
         <source>Error occurred during setup</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="129"/>
+        <location filename="../src/libsync/theme.cpp" line="138"/>
         <source>Stopping sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="126"/>
+        <location filename="../src/libsync/theme.cpp" line="135"/>
         <source>Preparing to sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="132"/>
+        <location filename="../src/libsync/theme.cpp" line="141"/>
         <source>Sync is paused</source>
         <translation type="unfinished"/>
     </message>

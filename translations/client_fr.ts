@@ -4914,42 +4914,42 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1624"/>
-        <location filename="../src/libsync/discovery.cpp" line="2112"/>
+        <location filename="../src/libsync/discovery.cpp" line="2122"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Déplacé vers une cible invalide, restauration</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1965"/>
+        <location filename="../src/libsync/discovery.cpp" line="1973"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Impossible de modifier l&apos;élément chiffré car le certificat sélectionné n&apos;est pas valide.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2035"/>
+        <location filename="../src/libsync/discovery.cpp" line="2043"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Exclus en raison de la liste noire &quot;Sélectionner le contenu à synchroniser&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2069"/>
+        <location filename="../src/libsync/discovery.cpp" line="2077"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des sous-dossiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2075"/>
+        <location filename="../src/libsync/discovery.cpp" line="2084"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des fichiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2089"/>
+        <location filename="../src/libsync/discovery.cpp" line="2099"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non autorisé à téléverser ce fichier, car il est en lecture seule sur le serveur, restauration en cours</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2126"/>
+        <location filename="../src/libsync/discovery.cpp" line="2136"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Suppression non autorisée, restauration en cours</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2299"/>
+        <location filename="../src/libsync/discovery.cpp" line="2309"/>
         <source>Error while reading the database</source>
         <translation>Erreur de lecture de la base de données</translation>
     </message>
@@ -5509,33 +5509,33 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="722"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="708"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="161"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="152"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation>Paramètres %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="194"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="185"/>
         <source>General</source>
         <translation>Général</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="195"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="186"/>
         <source>Advanced</source>
         <translation>Avancé</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="196"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="187"/>
         <source>Info</source>
         <translation>Informations</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="388"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="379"/>
         <source>Account</source>
         <translation>Compte</translation>
     </message>
@@ -6099,13 +6099,13 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1655"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1660"/>
         <source>You need to accept the terms of service</source>
         <translation>Vous devez accepter les conditions d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1647"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1652"/>
         <source>Reauthorization required</source>
         <translation>Réautorisation requise</translation>
     </message>
@@ -6123,7 +6123,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1666"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1671"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Certains fichiers n’ont pas pu être synchronisés !</translation>
     </message>
@@ -6149,7 +6149,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1667"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1672"/>
         <source>Some files could not be synced!</source>
         <translation>Certains fichiers n’ont pas pu être synchronisés !</translation>
     </message>
@@ -6194,7 +6194,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Télécharger</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="180"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="171"/>
         <location filename="../src/gui/systray.cpp" line="589"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="871"/>
         <source>Add account</source>
@@ -6255,18 +6255,18 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="462"/>
+        <location filename="../src/libsync/theme.cpp" line="471"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
         <translation>Client de bureau %1 version %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="648"/>
+        <location filename="../src/libsync/theme.cpp" line="657"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Utilise l&apos;extension de fichiers virtuels : %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="666"/>
+        <location filename="../src/libsync/theme.cpp" line="675"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cette version a été fournie par %1.&lt;/p&gt;</translation>
     </message>
@@ -6518,7 +6518,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Renommer le fichier</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2005"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
         <source>Sending your request …</source>
         <translation>Envoi de votre demande…</translation>
     </message>
@@ -6529,12 +6529,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Ouvrir l’assistant %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1962"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1967"/>
         <source>Assistant is not available for this account.</source>
         <translation>L’assistant n’est pas disponible pour ce compte.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1968"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
         <source>Assistant is already processing a request.</source>
         <translation>L’assistant traite déjà une demande.</translation>
     </message>
@@ -6544,42 +6544,42 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Envoi de votre requête…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1639"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1644"/>
         <source>Sync conflicts</source>
         <translation>Conflits de synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1782"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1787"/>
         <source>Public Share Link</source>
         <translation>Lien de partage public</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2078"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2083"/>
         <source>No response yet. Please try again later.</source>
         <translation>Aucune réponse pour le moment. Veuillez réessayer plus tard.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2097"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2102"/>
         <source>No supported assistant task types were returned.</source>
         <translation>Aucun type de tâche d’assistant pris en charge n’a été renvoyé.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2184"/>
         <source>Waiting for the assistant response…</source>
         <translation>En attente de la réponse de l’assistant…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2201"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2206"/>
         <source>Assistant request failed (%1).</source>
         <translation>La demande à l’assistant a échoué (%1).</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2276"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2281"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Quota mis à jour ; %1 pour cent de l’espace total est utilisé.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2296"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Alerte quota - %1 pour cent ou plus de stockage utilisé</translation>
     </message>
@@ -6587,32 +6587,32 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2658"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2663"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmer le retrait du compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2659"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2664"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Êtes-vous certain de vouloir retirer la connexion au compte &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt; cette opération &lt;b&gt;ne supprimera aucun de vos fichiers&lt;/b&gt; et ne supprimera pas non plus votre compte du serveur.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2663"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2668"/>
         <source>Remove connection</source>
         <translation>Supprimer la connexion</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2664"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2669"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2748"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2753"/>
         <source>Leave share</source>
         <translation>Quitter le partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2748"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2753"/>
         <source>Remove account</source>
         <translation>Retirer le compte</translation>
     </message>
@@ -8113,7 +8113,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="629"/>
+        <location filename="../src/libsync/theme.cpp" line="638"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <extracomment>%1 is the full Git commit URL. %2 is the abbreviated Git revision. %3 is the build date. %4 is the build time. %5 is the Qt version. %6 is the TLS library version.</extracomment>
         <translation>&lt;p&gt;&lt;small&gt;Généré à partir de la révision Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; du %3, %4 en utilisant Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
@@ -8242,52 +8242,52 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="105"/>
+        <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync status is unknown</source>
         <translation>L’état de la synchronisation est inconnu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="108"/>
+        <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Waiting to start syncing</source>
         <translation>En attente du démarrage de la synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="111"/>
+        <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Sync is running</source>
         <translation>Synchronisation en cours</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="114"/>
+        <location filename="../src/libsync/theme.cpp" line="123"/>
         <source>Sync was successful</source>
         <translation>Synchronisation réussie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="117"/>
+        <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Sync was successful but some files were ignored</source>
         <translation>La synchronisation a réussi, mais certains fichiers ont été ignorés</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="120"/>
+        <location filename="../src/libsync/theme.cpp" line="129"/>
         <source>Error occurred during sync</source>
         <translation>Une erreur est survenue pendant la synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="123"/>
+        <location filename="../src/libsync/theme.cpp" line="132"/>
         <source>Error occurred during setup</source>
         <translation>Une erreur est survenue lors de la préparation</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="129"/>
+        <location filename="../src/libsync/theme.cpp" line="138"/>
         <source>Stopping sync</source>
         <translation>Arrêt de la synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="126"/>
+        <location filename="../src/libsync/theme.cpp" line="135"/>
         <source>Preparing to sync</source>
         <translation>Préparation à la synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="132"/>
+        <location filename="../src/libsync/theme.cpp" line="141"/>
         <source>Sync is paused</source>
         <translation>La synchronisation est en pause</translation>
     </message>
