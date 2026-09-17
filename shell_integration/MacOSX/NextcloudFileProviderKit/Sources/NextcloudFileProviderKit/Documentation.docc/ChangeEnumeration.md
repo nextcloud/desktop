@@ -86,12 +86,16 @@ File Provider supplies `suggestedBatchSize` on the change observer. The
 enumerator uses that value, falls back to 1,000 when it is absent or zero, and
 limits it to 4,000.
 
-`ChangeDeliveryBuffer.takeBatch(maxItems:)` then:
+`ChangeDeliveryBuffer.prepareChangeDeliveryBatch(maxItems:)` then:
 
 1. Reads the next `maxItems + 1` stored changes.
 2. Reports at most `maxItems` changes.
 3. Uses the extra item to determine `moreComing`.
-4. Advances the stored cursor.
+4. Stores a pending acknowledgement boundary without advancing the committed cursor.
+
+After `finishEnumeratingChanges(upTo:moreComing:)` returns, the enumerator acknowledges the batch and
+advances the committed cursor. If delivery is interrupted before that acknowledgement, the same batch is
+replayed from its original anchor.
 
 Updates and deletions share the same limit. For a limit of three, two updates
 and one deletion consume the whole batch.
