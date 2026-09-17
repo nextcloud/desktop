@@ -1,3 +1,33 @@
 # SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
 # SPDX-License-Identifier: GPL-2.0-or-later
-* @camilasan @i2h3 @mgallien @nilsding @claucambra
+
+* @camilasan @claucambra @i2h3 @mgallien @nilsding
+
+# Linux-specific
+/admin/linux/ @camilasan @claucambra @mgallien @nilsding
+/shell_integration/dolphin/ @camilasan @claucambra @mgallien @nilsding
+/shell_integration/libcloudproviders/ @camilasan @claucambra @mgallien @nilsding
+/shell_integration/nautilus/ @camilasan @claucambra @mgallien @nilsding
+/src/**/*_linux.* @camilasan @claucambra @mgallien @nilsding
+/src/gui/cloudproviders/ @camilasan @claucambra @mgallien @nilsding
+/src/libsync/vfs/openvfs/ @camilasan @claucambra @mgallien @nilsding
+/systemd/ @camilasan @claucambra @mgallien @nilsding
+/test/testinotifywatcher.cpp @camilasan @claucambra @mgallien @nilsding
+
+# macOS-specific
+/*.xcworkspace/ @camilasan @claucambra @i2h3
+/admin/osx/ @camilasan @claucambra @i2h3
+/doc/macOS-* @camilasan @claucambra @i2h3
+/shell_integration/MacOSX/ @camilasan @claucambra @i2h3
+/src/**/*.mm @camilasan @claucambra @i2h3
+/src/common/*mac_sandbox* @camilasan @claucambra @i2h3
+/src/common/macsandbox* @camilasan @claucambra @i2h3
+/src/gui/macOS/ @camilasan @claucambra @i2h3
+/test/macOS/ @camilasan @claucambra @i2h3
+
+# Windows-specific
+/admin/win/ @camilasan @claucambra @mgallien @nilsding
+/shell_integration/windows/ @camilasan @claucambra @mgallien @nilsding
+/src/**/*_win.* @camilasan @claucambra @mgallien @nilsding
+/src/libsync/vfs/cfapi/ @camilasan @claucambra @mgallien @nilsding
+/test/test*cfapi* @camilasan @claucambra @mgallien @nilsding
