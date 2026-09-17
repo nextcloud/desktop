@@ -5,11 +5,7 @@
 
 #include "getsharesjob.h"
 
-#include "unifiedshare.h"
-
-#include <QJsonArray>
 #include <QJsonDocument>
-#include <QJsonObject>
 
 using namespace Qt::StringLiterals;
 
@@ -47,20 +43,8 @@ GetSharesJob::GetSharesJob(AccountPtr account,
                             "GET"_ba,
                             {.parameters = getSharesParameters(sourceTypeClass, sourceTypeValue, lastShareId, limit), .passStatusCodes = {}, .body = {}}}
 {
-    connect(this, &OcsJob::jobFinished, this, [this, account = std::move(account)](const QJsonDocument &json, int) {
-        auto shares = QList<QPointer<Share>>{};
-        const auto data = json.object().value("ocs"_L1).toObject().value("data"_L1).toArray();
-        shares.reserve(data.size());
-        for (const auto &value : data) {
-            const auto shareJson = QJsonDocument{QJsonObject{
-                {"ocs"_L1, QJsonObject{{"data"_L1, value.toObject()}}},
-            }};
-            auto share = Share::fromJson(shareJson, account);
-            share->setParent(this);
-            shares.append(share.get());
-            share.release();
-        }
-        Q_EMIT sharesFetched(shares);
+    connect(this, &OcsJob::jobFinished, this, [this](const QJsonDocument &json, int) {
+        Q_EMIT sharesFetched(json);
     });
 }
 

@@ -37,7 +37,7 @@ QVariant PermissionModel::data(const QModelIndex &index, int role) const
     }
 
     const auto useRecipientPermissions = !_share && _recipient;
-    const auto &permissions = useRecipientPermissions ? _recipient->permissions() : _share->permissions();
+    const auto permissions = useRecipientPermissions ? _recipient->permissions() : _share->permissions();
     const auto permission = permissions.at(index.row());
 
     switch (role) {
@@ -90,7 +90,7 @@ void PermissionModel::setShare(Share *share)
 
 Recipient *PermissionModel::recipient() const
 {
-    return _recipient.data();
+    return _recipient;
 }
 
 void PermissionModel::setRecipient(Recipient *recipient)

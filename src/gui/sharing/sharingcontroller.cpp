@@ -5,7 +5,9 @@
 
 #include "sharingcontroller.h"
 
+#include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QLoggingCategory>
 #include <QNetworkReply>
 
@@ -52,10 +54,7 @@ SharingController::SharingController(QObject *parent)
 {
 }
 
-SharingController::~SharingController()
-{
-    qDeleteAll(_shares);
-}
+SharingController::~SharingController() = default;
 
 AccountPtr SharingController::account() const
 {
@@ -72,9 +71,14 @@ void SharingController::setAccount(AccountPtr account)
     Q_EMIT accountChanged();
 }
 
-const QList<Share *> &SharingController::shares() const
+QList<Share *> SharingController::shares() const
 {
-    return _shares;
+    auto result = QList<Share *>{};
+    result.reserve(static_cast<qsizetype>(_shares.size()));
+    for (const auto &share : _shares) {
+        result.append(share.get());
+    }
+    return result;
 }
 
 bool SharingController::creatingShare() const
@@ -120,16 +124,20 @@ void SharingController::initialize(const QString &fileId)
     }
 
     const auto job = new GetSharesJob{_account, SourceTypeClasses::node, fileId};
-    connect(job, &GetSharesJob::sharesFetched, this, [this](const QList<QPointer<Share>> &shares) {
-        auto ownedShares = QList<Share *>{};
-        ownedShares.reserve(shares.size());
-        for (const auto &share : shares) {
-            if (share) {
-                share->setParent(this);
-                ownedShares.append(share);
+    connect(job, &GetSharesJob::sharesFetched, this, [this](const QJsonDocument &json) {
+        auto ownedShares = std::vector<std::unique_ptr<Share>>{};
+        const auto data = json.object().value("ocs"_L1).toObject().value("data"_L1).toArray();
+        ownedShares.reserve(static_cast<size_t>(data.size()));
+        for (const auto &value : data) {
+            if (!value.isObject()) {
+                continue;
             }
+            const auto shareJson = QJsonDocument{QJsonObject{
+                {"ocs"_L1, QJsonObject{{"data"_L1, value.toObject()}}},
+            }};
+            ownedShares.emplace_back(Share::fromJson(shareJson, _account));
         }
-        replaceShares(ownedShares);
+        replaceShares(std::move(ownedShares));
     });
     job->start();
 }
@@ -151,7 +159,7 @@ void SharingController::createShareForRecipient(const QString &fileId,
 
 void SharingController::createPublicLink(const QString &fileId)
 {
-    if (std::ranges::any_of(_shares, [](const Share *share) {
+    if (std::ranges::any_of(_shares, [](const auto &share) {
             return share && share->isPublicLink();
         })) {
         qCDebug(lcSharingController) << "ignoring attempt to create a second public link";
@@ -191,11 +199,11 @@ void SharingController::fetchShareDetails(Share *share)
         return;
     }
 
-    const auto guardedShare = QPointer<Share>{share};
-    const auto job = new GetShareJob{_account, share->id()};
-    connect(job, &GetShareJob::shareJsonFetched, this, [guardedShare](const QJsonDocument &json) {
-        if (guardedShare) {
-            guardedShare->updateFromJson(json);
+    const auto shareId = share->id();
+    const auto job = new GetShareJob{_account, shareId};
+    connect(job, &GetShareJob::shareJsonFetched, this, [this, shareId](const QJsonDocument &json) {
+        if (const auto currentShare = shareById(shareId)) {
+            currentShare->updateFromJson(json);
         }
     });
     job->start();
@@ -252,16 +260,21 @@ void SharingController::startShareCreation(const QString &fileId,
     }
 
     const auto job = new CreateShareJob{_account};
-    connect(job, &CreateShareJob::shareCreated, this, [this, fileId, recipientType, recipientValue, recipientInstance, activateAfterCreation](QPointer<Share> share) -> void {
-        if (!share || share->id().isEmpty()) {
-            qCWarning(lcSharingController) << "share created without a valid Share object";
-            failShareCreation(tr("The server returned an invalid share."), share);
-            return;
-        }
+    connect(job,
+            &CreateShareJob::shareCreated,
+            this,
+            [this, fileId, recipientType, recipientValue, recipientInstance, activateAfterCreation](const QJsonDocument &json) -> void {
+                auto share = Share::fromJson(json, _account);
+                if (!share || share->id().isEmpty()) {
+                    qCWarning(lcSharingController) << "share created without a valid Share object";
+                    failShareCreation(tr("The server returned an invalid share."));
+                    return;
+                }
 
-        share->setParent(this);
-        addSourceAfterCreation(share, fileId, recipientType, recipientValue, recipientInstance, activateAfterCreation);
-    });
+                const auto shareId = share->id();
+                _draftShare = std::move(share);
+                addSourceAfterCreation(shareId, fileId, recipientType, recipientValue, recipientInstance, activateAfterCreation);
+            });
     connect(job, &CreateShareJob::ocsError, this, [this](int, const QString &message) {
         failShareCreation(message.isEmpty() ? tr("Could not create the share.") : message);
     });
@@ -290,21 +303,24 @@ void SharingController::destroyShare(Share *share)
 
     setShareDestructionError({});
     setDestroyingShare(true);
-    const auto guardedShare = QPointer<Share>{share};
-    const auto job = new DeleteShareJob{_account, share->id()};
-    connect(job, &DeleteShareJob::jobFinished, this, [this, guardedShare](const QJsonDocument &, int) {
-        if (!guardedShare) {
+    const auto shareId = share->id();
+    const auto job = new DeleteShareJob{_account, shareId};
+    connect(job, &DeleteShareJob::jobFinished, this, [this, shareId](const QJsonDocument &, int) {
+        const auto shareIterator = std::ranges::find_if(_shares, [shareId](const auto &candidate) {
+            return candidate && candidate->id() == shareId;
+        });
+        if (shareIterator == _shares.end()) {
             setDestroyingShare(false);
             return;
         }
 
-        const auto share = guardedShare.data();
-        _shares.removeAll(share);
-        _pendingDraftUpdates.remove(share);
-        _activationRequested.remove(share);
-        _activationBlocked.remove(share);
+        _pendingDraftUpdates.remove(shareId);
+        _activationRequested.remove(shareId);
+        _activationBlocked.remove(shareId);
+        auto removedShare = std::move(*shareIterator);
+        _shares.erase(shareIterator);
+        Q_UNUSED(removedShare);
         setDestroyingShare(false);
-        share->deleteLater();
         Q_EMIT sharesChanged();
     });
     connect(job, &DeleteShareJob::ocsError, this, [this](int, const QString &message) {
@@ -333,18 +349,18 @@ void SharingController::addRecipient(Share *share,
         return;
     }
 
-    const auto guardedShare = QPointer<Share>{share};
-    const auto job = new AddRecipientJob{_account, *share, recipientType, recipientValue, optionalString(recipientInstance)};
-    connect(job, &AddRecipientJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
-        if (updatedShare) {
+    const auto shareId = share->id();
+    const auto job = new AddRecipientJob{_account, shareId, recipientType, recipientValue, optionalString(recipientInstance)};
+    connect(job, &AddRecipientJob::shareUpdated, this, [this, shareId](const QJsonDocument &json) {
+        if (const auto updatedShare = updateShareFromJson(shareId, json)) {
             Q_EMIT recipientAdded(updatedShare);
         }
     });
-    connect(job, &AddRecipientJob::ocsError, this, [this, guardedShare](int, const QString &message) {
-        Q_EMIT recipientAdditionFailed(guardedShare, message.isEmpty() ? tr("Could not add the recipient.") : message);
+    connect(job, &AddRecipientJob::ocsError, this, [this, shareId](int, const QString &message) {
+        Q_EMIT recipientAdditionFailed(shareById(shareId), message.isEmpty() ? tr("Could not add the recipient.") : message);
     });
-    connect(job, &AddRecipientJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
-        Q_EMIT recipientAdditionFailed(guardedShare, reply ? reply->errorString() : tr("Could not add the recipient."));
+    connect(job, &AddRecipientJob::networkError, this, [this, shareId](const QNetworkReply *reply) {
+        Q_EMIT recipientAdditionFailed(shareById(shareId), reply ? reply->errorString() : tr("Could not add the recipient."));
     });
     job->start();
 }
@@ -364,18 +380,18 @@ void SharingController::removeRecipient(Share *share,
         return;
     }
 
-    const auto guardedShare = QPointer<Share>{share};
-    const auto job = new RemoveRecipientJob{_account, *share, recipientType, recipientValue, optionalString(recipientInstance)};
-    connect(job, &RemoveRecipientJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
-        if (updatedShare) {
+    const auto shareId = share->id();
+    const auto job = new RemoveRecipientJob{_account, shareId, recipientType, recipientValue, optionalString(recipientInstance)};
+    connect(job, &RemoveRecipientJob::shareUpdated, this, [this, shareId](const QJsonDocument &json) {
+        if (const auto updatedShare = updateShareFromJson(shareId, json)) {
             Q_EMIT recipientRemoved(updatedShare);
         }
     });
-    connect(job, &RemoveRecipientJob::ocsError, this, [this, guardedShare](int, const QString &message) {
-        Q_EMIT recipientRemovalFailed(guardedShare, message.isEmpty() ? tr("Could not remove the recipient.") : message);
+    connect(job, &RemoveRecipientJob::ocsError, this, [this, shareId](int, const QString &message) {
+        Q_EMIT recipientRemovalFailed(shareById(shareId), message.isEmpty() ? tr("Could not remove the recipient.") : message);
     });
-    connect(job, &RemoveRecipientJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
-        Q_EMIT recipientRemovalFailed(guardedShare, reply ? reply->errorString() : tr("Could not remove the recipient."));
+    connect(job, &RemoveRecipientJob::networkError, this, [this, shareId](const QNetworkReply *reply) {
+        Q_EMIT recipientRemovalFailed(shareById(shareId), reply ? reply->errorString() : tr("Could not remove the recipient."));
     });
     job->start();
 }
@@ -395,34 +411,34 @@ void SharingController::updateRecipientSecret(Share *share,
         return;
     }
 
-    const auto guardedShare = QPointer<Share>{share};
+    const auto shareId = share->id();
     const auto instance = optionalString(recipientInstance);
     const auto generateJob = new GenerateSecretJob{_account};
-    connect(generateJob, &GenerateSecretJob::secretGenerated, this, [this, guardedShare, recipientType, recipientValue, instance](const QString &secret) {
-        if (!guardedShare || secret.isEmpty()) {
-            Q_EMIT recipientSecretUpdateFailed(guardedShare, tr("The server did not generate a valid sharing link."));
+    connect(generateJob, &GenerateSecretJob::secretGenerated, this, [this, shareId, recipientType, recipientValue, instance](const QString &secret) {
+        if (!shareById(shareId) || secret.isEmpty()) {
+            Q_EMIT recipientSecretUpdateFailed(shareById(shareId), tr("The server did not generate a valid sharing link."));
             return;
         }
 
-        const auto updateJob = new SetRecipientSecretJob{_account, *guardedShare, recipientType, recipientValue, secret, instance};
-        connect(updateJob, &SetRecipientSecretJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
-            if (updatedShare) {
+        const auto updateJob = new SetRecipientSecretJob{_account, shareId, recipientType, recipientValue, secret, instance};
+        connect(updateJob, &SetRecipientSecretJob::shareUpdated, this, [this, shareId](const QJsonDocument &json) {
+            if (const auto updatedShare = updateShareFromJson(shareId, json)) {
                 Q_EMIT recipientSecretUpdated(updatedShare);
             }
         });
-        connect(updateJob, &SetRecipientSecretJob::ocsError, this, [this, guardedShare](int, const QString &message) {
-            Q_EMIT recipientSecretUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the sharing link.") : message);
+        connect(updateJob, &SetRecipientSecretJob::ocsError, this, [this, shareId](int, const QString &message) {
+            Q_EMIT recipientSecretUpdateFailed(shareById(shareId), message.isEmpty() ? tr("Could not update the sharing link.") : message);
         });
-        connect(updateJob, &SetRecipientSecretJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
-            Q_EMIT recipientSecretUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the sharing link."));
+        connect(updateJob, &SetRecipientSecretJob::networkError, this, [this, shareId](const QNetworkReply *reply) {
+            Q_EMIT recipientSecretUpdateFailed(shareById(shareId), reply ? reply->errorString() : tr("Could not update the sharing link."));
         });
         updateJob->start();
     });
-    connect(generateJob, &GenerateSecretJob::ocsError, this, [this, guardedShare](int, const QString &message) {
-        Q_EMIT recipientSecretUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not generate a sharing link.") : message);
+    connect(generateJob, &GenerateSecretJob::ocsError, this, [this, shareId](int, const QString &message) {
+        Q_EMIT recipientSecretUpdateFailed(shareById(shareId), message.isEmpty() ? tr("Could not generate a sharing link.") : message);
     });
-    connect(generateJob, &GenerateSecretJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
-        Q_EMIT recipientSecretUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not generate a sharing link."));
+    connect(generateJob, &GenerateSecretJob::networkError, this, [this, shareId](const QNetworkReply *reply) {
+        Q_EMIT recipientSecretUpdateFailed(shareById(shareId), reply ? reply->errorString() : tr("Could not generate a sharing link."));
     });
     generateJob->start();
 }
@@ -439,25 +455,28 @@ void SharingController::setPermission(Share *share, const QString &permissionCla
         return;
     }
 
-    const auto guardedShare = QPointer<Share>{share};
+    const auto shareId = share->id();
     const auto permissionFailureReported = std::make_shared<bool>(false);
-    const auto job = new SetPermissionJob{_account, *share, permissionClass, enabled};
-    trackDraftUpdate(share, job);
-    connect(job, &SetPermissionJob::ocsError, this, [this, guardedShare, permissionFailureReported](int, const QString &message) {
-        if (*permissionFailureReported) {
-            return;
-        }
-        *permissionFailureReported = true;
-        markDraftUpdateFailed(guardedShare);
-        Q_EMIT permissionUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the permissions.") : message);
+    const auto job = new SetPermissionJob{_account, shareId, permissionClass, enabled};
+    trackDraftUpdate(shareId, job);
+    connect(job, &SetPermissionJob::shareUpdated, this, [this, shareId](const QJsonDocument &json) {
+        updateShareFromJson(shareId, json);
     });
-    connect(job, &SetPermissionJob::networkError, this, [this, guardedShare, permissionFailureReported](const QNetworkReply *reply) {
+    connect(job, &SetPermissionJob::ocsError, this, [this, shareId, permissionFailureReported](int, const QString &message) {
         if (*permissionFailureReported) {
             return;
         }
         *permissionFailureReported = true;
-        markDraftUpdateFailed(guardedShare);
-        Q_EMIT permissionUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the permissions."));
+        markDraftUpdateFailed(shareId);
+        Q_EMIT permissionUpdateFailed(shareById(shareId), message.isEmpty() ? tr("Could not update the permissions.") : message);
+    });
+    connect(job, &SetPermissionJob::networkError, this, [this, shareId, permissionFailureReported](const QNetworkReply *reply) {
+        if (*permissionFailureReported) {
+            return;
+        }
+        *permissionFailureReported = true;
+        markDraftUpdateFailed(shareId);
+        Q_EMIT permissionUpdateFailed(shareById(shareId), reply ? reply->errorString() : tr("Could not update the permissions."));
     });
     job->start();
 }
@@ -484,43 +503,44 @@ void SharingController::setRecipientPermission(Share *share,
         return;
     }
 
-    const auto guardedShare = QPointer<Share>{share};
+    const auto shareId = share->id();
     const auto permissionFailureReported = std::make_shared<bool>(false);
     const auto job =
-        new SetRecipientPermissionJob{_account, *share, recipientType, recipientValue, optionalString(recipientInstance), permissionClass, enabled};
-    trackDraftUpdate(share, job);
+        new SetRecipientPermissionJob{_account, shareId, recipientType, recipientValue, optionalString(recipientInstance), permissionClass, enabled};
+    trackDraftUpdate(shareId, job);
     connect(job,
             &SetRecipientPermissionJob::shareUpdated,
             this,
-            [recipientType, recipientValue, recipientInstance, permissionClass, enabled](QPointer<Share> updatedShare) {
+            [this, shareId, recipientType, recipientValue, recipientInstance, permissionClass, enabled](const QJsonDocument &json) {
+                const auto updatedShare = updateShareFromJson(shareId, json);
                 if (!updatedShare) {
                     return;
                 }
 
-                const auto recipient = std::ranges::find_if(updatedShare->recipients(),
-                                                            [&recipientType, &recipientValue, &recipientInstance](const QPointer<Recipient> &candidate) {
-                                                                return candidate && candidate->className() == recipientType
-                                                                    && candidate->value() == recipientValue && candidate->instanceString() == recipientInstance;
-                                                            });
-                if (recipient != updatedShare->recipients().cend()) {
+                const auto recipients = updatedShare->recipients();
+                const auto recipient = std::ranges::find_if(recipients, [&recipientType, &recipientValue, &recipientInstance](const Recipient *candidate) {
+                    return candidate && candidate->className() == recipientType && candidate->value() == recipientValue
+                        && candidate->instanceString() == recipientInstance;
+                });
+                if (recipient != recipients.cend()) {
                     (*recipient)->setPermissionOverride(permissionClass, enabled);
                 }
             });
-    connect(job, &SetRecipientPermissionJob::ocsError, this, [this, guardedShare, permissionFailureReported](int, const QString &message) {
+    connect(job, &SetRecipientPermissionJob::ocsError, this, [this, shareId, permissionFailureReported](int, const QString &message) {
         if (*permissionFailureReported) {
             return;
         }
         *permissionFailureReported = true;
-        markDraftUpdateFailed(guardedShare);
-        Q_EMIT recipientPermissionUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the recipient permissions.") : message);
+        markDraftUpdateFailed(shareId);
+        Q_EMIT recipientPermissionUpdateFailed(shareById(shareId), message.isEmpty() ? tr("Could not update the recipient permissions.") : message);
     });
-    connect(job, &SetRecipientPermissionJob::networkError, this, [this, guardedShare, permissionFailureReported](const QNetworkReply *reply) {
+    connect(job, &SetRecipientPermissionJob::networkError, this, [this, shareId, permissionFailureReported](const QNetworkReply *reply) {
         if (*permissionFailureReported) {
             return;
         }
         *permissionFailureReported = true;
-        markDraftUpdateFailed(guardedShare);
-        Q_EMIT recipientPermissionUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the recipient permissions."));
+        markDraftUpdateFailed(shareId);
+        Q_EMIT recipientPermissionUpdateFailed(shareById(shareId), reply ? reply->errorString() : tr("Could not update the recipient permissions."));
     });
     job->start();
 }
@@ -542,25 +562,28 @@ void SharingController::setPermissionPreset(Share *share, const QString &permiss
         return;
     }
 
-    const auto guardedShare = QPointer<Share>{share};
+    const auto shareId = share->id();
     const auto permissionFailureReported = std::make_shared<bool>(false);
-    const auto job = new SetPermissionPresetJob{_account, *share, permissionPreset};
-    trackDraftUpdate(share, job);
-    connect(job, &SetPermissionPresetJob::ocsError, this, [this, guardedShare, permissionFailureReported](int, const QString &message) {
-        if (*permissionFailureReported) {
-            return;
-        }
-        *permissionFailureReported = true;
-        markDraftUpdateFailed(guardedShare);
-        Q_EMIT permissionUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the permissions.") : message);
+    const auto job = new SetPermissionPresetJob{_account, shareId, permissionPreset};
+    trackDraftUpdate(shareId, job);
+    connect(job, &SetPermissionPresetJob::shareUpdated, this, [this, shareId](const QJsonDocument &json) {
+        updateShareFromJson(shareId, json);
     });
-    connect(job, &SetPermissionPresetJob::networkError, this, [this, guardedShare, permissionFailureReported](const QNetworkReply *reply) {
+    connect(job, &SetPermissionPresetJob::ocsError, this, [this, shareId, permissionFailureReported](int, const QString &message) {
         if (*permissionFailureReported) {
             return;
         }
         *permissionFailureReported = true;
-        markDraftUpdateFailed(guardedShare);
-        Q_EMIT permissionUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the permissions."));
+        markDraftUpdateFailed(shareId);
+        Q_EMIT permissionUpdateFailed(shareById(shareId), message.isEmpty() ? tr("Could not update the permissions.") : message);
+    });
+    connect(job, &SetPermissionPresetJob::networkError, this, [this, shareId, permissionFailureReported](const QNetworkReply *reply) {
+        if (*permissionFailureReported) {
+            return;
+        }
+        *permissionFailureReported = true;
+        markDraftUpdateFailed(shareId);
+        Q_EMIT permissionUpdateFailed(shareById(shareId), reply ? reply->errorString() : tr("Could not update the permissions."));
     });
     job->start();
 }
@@ -582,22 +605,22 @@ void SharingController::setProperty(Share *share, const QString &propertyClass, 
         return;
     }
 
-    const auto guardedShare = QPointer<Share>{share};
+    const auto shareId = share->id();
     const auto propertyValue = value.isEmpty() ? std::nullopt : std::optional{value};
-    const auto job = new SetPropertyJob{_account, *share, propertyClass, propertyValue};
-    trackDraftUpdate(share, job);
-    connect(job, &SetPropertyJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
-        if (updatedShare) {
+    const auto job = new SetPropertyJob{_account, shareId, propertyClass, propertyValue};
+    trackDraftUpdate(shareId, job);
+    connect(job, &SetPropertyJob::shareUpdated, this, [this, shareId](const QJsonDocument &json) {
+        if (const auto updatedShare = updateShareFromJson(shareId, json)) {
             Q_EMIT propertyUpdated(updatedShare);
         }
     });
-    connect(job, &SetPropertyJob::ocsError, this, [this, guardedShare](int, const QString &message) {
-        markDraftUpdateFailed(guardedShare);
-        Q_EMIT propertyUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the sharing setting.") : message);
+    connect(job, &SetPropertyJob::ocsError, this, [this, shareId](int, const QString &message) {
+        markDraftUpdateFailed(shareId);
+        Q_EMIT propertyUpdateFailed(shareById(shareId), message.isEmpty() ? tr("Could not update the sharing setting.") : message);
     });
-    connect(job, &SetPropertyJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
-        markDraftUpdateFailed(guardedShare);
-        Q_EMIT propertyUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the sharing setting."));
+    connect(job, &SetPropertyJob::networkError, this, [this, shareId](const QNetworkReply *reply) {
+        markDraftUpdateFailed(shareId);
+        Q_EMIT propertyUpdateFailed(shareById(shareId), reply ? reply->errorString() : tr("Could not update the sharing setting."));
     });
     job->start();
 }
@@ -619,12 +642,13 @@ void SharingController::activateShare(Share *share)
         return;
     }
 
-    if (_activationRequested.contains(share)) {
+    const auto shareId = share->id();
+    if (_activationRequested.contains(shareId)) {
         return;
     }
 
-    if (_pendingDraftUpdates.value(share) > 0) {
-        _activationRequested.insert(share);
+    if (_pendingDraftUpdates.value(shareId) > 0) {
+        _activationRequested.insert(shareId);
         return;
     }
 
@@ -637,96 +661,129 @@ void SharingController::startShareActivation(Share *share)
         return;
     }
 
-    const auto guardedShare = QPointer<Share>{share};
-    const auto job = new SetShareStateJob{_account, *share, Share::State::Active};
-    connect(job, &SetShareStateJob::shareUpdated, this, [this, guardedShare](QPointer<Share> updatedShare) {
+    const auto shareId = share->id();
+    const auto job = new SetShareStateJob{_account, shareId, Share::State::Active};
+    connect(job, &SetShareStateJob::shareUpdated, this, [this, shareId](const QJsonDocument &json) {
+        const auto updatedShare = updateShareFromJson(shareId, json);
         if (updatedShare && updatedShare->state() == Share::State::Active) {
             Q_EMIT shareActivated(updatedShare);
             return;
         }
 
-        Q_EMIT shareActivationFailed(guardedShare, tr("The server did not activate the share."));
+        Q_EMIT shareActivationFailed(shareById(shareId), tr("The server did not activate the share."));
     });
-    connect(job, &SetShareStateJob::ocsError, this, [this, guardedShare](int, const QString &message) {
-        Q_EMIT shareActivationFailed(guardedShare, message.isEmpty() ? tr("Could not send the share.") : message);
+    connect(job, &SetShareStateJob::ocsError, this, [this, shareId](int, const QString &message) {
+        Q_EMIT shareActivationFailed(shareById(shareId), message.isEmpty() ? tr("Could not send the share.") : message);
     });
-    connect(job, &SetShareStateJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
-        Q_EMIT shareActivationFailed(guardedShare, reply ? reply->errorString() : tr("Could not send the share."));
+    connect(job, &SetShareStateJob::networkError, this, [this, shareId](const QNetworkReply *reply) {
+        Q_EMIT shareActivationFailed(shareById(shareId), reply ? reply->errorString() : tr("Could not send the share."));
     });
     job->start();
 }
 
 bool SharingController::containsShare(const Share *share) const
 {
-    return share && _shares.contains(share);
+    return share && std::ranges::any_of(_shares, [share](const auto &candidate) {
+               return candidate.get() == share;
+           });
 }
 
-void SharingController::addSourceAfterCreation(QPointer<Share> share,
+Share *SharingController::shareById(const QString &shareId) const
+{
+    if (_draftShare && _draftShare->id() == shareId) {
+        return _draftShare.get();
+    }
+
+    const auto share = std::ranges::find_if(_shares, [shareId](const auto &candidate) {
+        return candidate && candidate->id() == shareId;
+    });
+    return share == _shares.cend() ? nullptr : share->get();
+}
+
+Share *SharingController::updateShareFromJson(const QString &shareId, const QJsonDocument &json)
+{
+    const auto share = shareById(shareId);
+    if (share) {
+        share->updateFromJson(json);
+    }
+    return share;
+}
+
+void SharingController::addSourceAfterCreation(const QString &shareId,
                                                const QString &fileId,
                                                const QString &recipientType,
                                                const QString &recipientValue,
                                                const QString &recipientInstance,
                                                bool activateAfterCreation)
 {
-    if (!share) {
+    if (!shareById(shareId)) {
         failShareCreation(tr("The newly created share is no longer available."));
         return;
     }
 
-    const auto job = new AddSourceJob{_account, *share, fileId};
-    connect(job, &AddSourceJob::shareUpdated, this, [this, recipientType, recipientValue, recipientInstance, activateAfterCreation](QPointer<Share> updatedShare) {
-        if (!updatedShare) {
-            failShareCreation(tr("The newly created share is no longer available."));
-            return;
-        }
+    const auto job = new AddSourceJob{_account, shareId, fileId};
+    connect(job,
+            &AddSourceJob::shareUpdated,
+            this,
+            [this, shareId, recipientType, recipientValue, recipientInstance, activateAfterCreation](const QJsonDocument &json) {
+                if (!updateShareFromJson(shareId, json)) {
+                    failShareCreation(tr("The newly created share is no longer available."), shareId);
+                    return;
+                }
 
-        if (recipientType.isEmpty()) {
-            finishShareCreation(updatedShare, activateAfterCreation);
-            return;
-        }
+                if (recipientType.isEmpty()) {
+                    finishShareCreation(shareId, activateAfterCreation);
+                    return;
+                }
 
-        addRecipientAfterCreation(updatedShare, recipientType, recipientValue, recipientInstance, activateAfterCreation);
+                addRecipientAfterCreation(shareId, recipientType, recipientValue, recipientInstance, activateAfterCreation);
+            });
+    connect(job, &AddSourceJob::ocsError, this, [this, shareId](int, const QString &message) {
+        failShareCreation(message.isEmpty() ? tr("Could not attach the item to the share.") : message, shareId);
     });
-    connect(job, &AddSourceJob::ocsError, this, [this, share](int, const QString &message) {
-        failShareCreation(message.isEmpty() ? tr("Could not attach the item to the share.") : message, share);
-    });
-    connect(job, &AddSourceJob::networkError, this, [this, share](const QNetworkReply *reply) {
-        failShareCreation(reply ? reply->errorString() : tr("Could not attach the item to the share."), share);
+    connect(job, &AddSourceJob::networkError, this, [this, shareId](const QNetworkReply *reply) {
+        failShareCreation(reply ? reply->errorString() : tr("Could not attach the item to the share."), shareId);
     });
     job->start();
 }
 
-void SharingController::addRecipientAfterCreation(QPointer<Share> share,
+void SharingController::addRecipientAfterCreation(const QString &shareId,
                                                   const QString &recipientType,
                                                   const QString &recipientValue,
                                                   const QString &recipientInstance,
                                                   bool activateAfterCreation)
 {
-    if (!share) {
+    if (!shareById(shareId)) {
         failShareCreation(tr("The newly created share is no longer available."));
         return;
     }
 
-    const auto job = new AddRecipientJob{_account, *share, recipientType, recipientValue, optionalString(recipientInstance)};
-    connect(job, &AddRecipientJob::shareUpdated, this, [this, activateAfterCreation](QPointer<Share> updatedShare) {
-        if (!updatedShare) {
-            failShareCreation(tr("The newly created share is no longer available."));
+    const auto job = new AddRecipientJob{_account, shareId, recipientType, recipientValue, optionalString(recipientInstance)};
+    connect(job, &AddRecipientJob::shareUpdated, this, [this, shareId, activateAfterCreation](const QJsonDocument &json) {
+        if (!updateShareFromJson(shareId, json)) {
+            failShareCreation(tr("The newly created share is no longer available."), shareId);
             return;
         }
-        finishShareCreation(updatedShare, activateAfterCreation);
+        finishShareCreation(shareId, activateAfterCreation);
     });
-    connect(job, &AddRecipientJob::ocsError, this, [this, share](int, const QString &message) {
-        failShareCreation(message.isEmpty() ? tr("Could not add the recipient.") : message, share);
+    connect(job, &AddRecipientJob::ocsError, this, [this, shareId](int, const QString &message) {
+        failShareCreation(message.isEmpty() ? tr("Could not add the recipient.") : message, shareId);
     });
-    connect(job, &AddRecipientJob::networkError, this, [this, share](const QNetworkReply *reply) {
-        failShareCreation(reply ? reply->errorString() : tr("Could not add the recipient."), share);
+    connect(job, &AddRecipientJob::networkError, this, [this, shareId](const QNetworkReply *reply) {
+        failShareCreation(reply ? reply->errorString() : tr("Could not add the recipient."), shareId);
     });
     job->start();
 }
 
-void SharingController::finishShareCreation(QPointer<Share> share, bool activateAfterCreation)
+void SharingController::finishShareCreation(const QString &shareId, bool activateAfterCreation)
 {
-    _shares.append(share);
+    if (!_draftShare || _draftShare->id() != shareId) {
+        failShareCreation(tr("The newly created share is no longer available."), shareId);
+        return;
+    }
+
+    _shares.emplace_back(std::move(_draftShare));
+    const auto share = _shares.back().get();
     setCreatingShare(false);
     Q_EMIT shareCreated(share);
     Q_EMIT sharesChanged();
@@ -735,7 +792,7 @@ void SharingController::finishShareCreation(QPointer<Share> share, bool activate
     }
 }
 
-void SharingController::failShareCreation(const QString &error, QPointer<Share> share)
+void SharingController::failShareCreation(const QString &error, const QString &shareId)
 {
     if (!_creatingShare) {
         return;
@@ -744,31 +801,28 @@ void SharingController::failShareCreation(const QString &error, QPointer<Share> 
     setShareCreationError(error);
     setCreatingShare(false);
 
-    if (!share) {
-        return;
-    }
-
-    if (!share->id().isEmpty()) {
-        const auto cleanupJob = new DeleteShareJob{_account, share->id()};
+    if (!shareId.isEmpty()) {
+        const auto cleanupJob = new DeleteShareJob{_account, shareId};
         cleanupJob->start();
     }
-    delete share.data();
+    _draftShare.reset();
 }
 
-void SharingController::trackDraftUpdate(Share *share, QObject *job)
+void SharingController::trackDraftUpdate(const QString &shareId, QObject *job)
 {
+    const auto share = shareById(shareId);
     if (!share || !job || share->state() != Share::State::Draft) {
         return;
     }
 
-    ++_pendingDraftUpdates[share];
-    connect(job, &QObject::destroyed, this, [this, guardedShare = QPointer<Share>{share}] {
-        if (!guardedShare) {
+    ++_pendingDraftUpdates[shareId];
+    connect(job, &QObject::destroyed, this, [this, shareId] {
+        const auto share = shareById(shareId);
+        if (!share) {
             return;
         }
 
-        const auto share = guardedShare.data();
-        auto pendingUpdate = _pendingDraftUpdates.find(share);
+        auto pendingUpdate = _pendingDraftUpdates.find(shareId);
         if (pendingUpdate == _pendingDraftUpdates.end()) {
             return;
         }
@@ -779,11 +833,11 @@ void SharingController::trackDraftUpdate(Share *share, QObject *job)
         }
 
         _pendingDraftUpdates.erase(pendingUpdate);
-        if (!_activationRequested.remove(share)) {
+        if (!_activationRequested.remove(shareId)) {
             return;
         }
 
-        if (_activationBlocked.remove(share)) {
+        if (_activationBlocked.remove(shareId)) {
             Q_EMIT shareActivationFailed(share, tr("Could not save all changes to the share."));
             return;
         }
@@ -792,10 +846,10 @@ void SharingController::trackDraftUpdate(Share *share, QObject *job)
     });
 }
 
-void SharingController::markDraftUpdateFailed(Share *share)
+void SharingController::markDraftUpdateFailed(const QString &shareId)
 {
-    if (share && _activationRequested.contains(share)) {
-        _activationBlocked.insert(share);
+    if (shareById(shareId) && _activationRequested.contains(shareId)) {
+        _activationBlocked.insert(shareId);
     }
 }
 
@@ -853,9 +907,13 @@ void SharingController::setInternalLinkError(const QString &error)
     Q_EMIT internalLinkErrorChanged();
 }
 
-void SharingController::replaceShares(const QList<Share *> &shares)
+void SharingController::replaceShares(std::vector<std::unique_ptr<Share>> shares)
 {
-    qDeleteAll(_shares);
-    _shares = shares;
+    _pendingDraftUpdates.clear();
+    _activationRequested.clear();
+    _activationBlocked.clear();
+    auto oldShares = std::move(_shares);
+    _shares = std::move(shares);
+    Q_UNUSED(oldShares);
     Q_EMIT sharesChanged();
 }

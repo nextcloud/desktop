@@ -9,7 +9,6 @@
 
 #include <QJsonArray>
 
-#include <QPointer>
 #include <QJsonObject>
 
 using namespace Qt::StringLiterals;
@@ -52,16 +51,13 @@ void Recipient::updateFromJson(const QJsonObject &json)
 
     _initiatorDisplayName = json.value("initiator"_L1).toObject().value("display_name"_L1).toString();
     if (json.contains("permissions"_L1)) {
-        qDeleteAll(_permissions);
         _permissions.clear();
         _permissionOverrides.clear();
         const auto permissions = json.value("permissions"_L1).toArray();
         for (const auto &permissionValue : permissions) {
             if (permissionValue.isObject()) {
                 auto permission = Permission::fromJson(permissionValue.toObject());
-                permission->setParent(this);
-                _permissions.append(permission.get());
-                permission.release();
+                _permissions.emplace_back(std::move(permission));
             }
         }
         _hasPermissionData = true;
@@ -139,9 +135,14 @@ QString Recipient::initiatorDisplayName() const
     return _initiatorDisplayName;
 }
 
-const QList<QPointer<Permission>> &Recipient::permissions() const
+QList<Permission *> Recipient::permissions() const
 {
-    return _permissions;
+    auto permissions = QList<Permission *>{};
+    permissions.reserve(static_cast<qsizetype>(_permissions.size()));
+    for (const auto &permission : _permissions) {
+        permissions.append(permission.get());
+    }
+    return permissions;
 }
 
 bool Recipient::hasPermissionData() const
@@ -156,10 +157,10 @@ std::optional<bool> Recipient::permissionOverride(const QString &className) cons
         return it.value();
     }
 
-    const auto permission = std::ranges::find_if(_permissions, [&className](const QPointer<Permission> &candidate) {
+    const auto permission = std::ranges::find_if(_permissions, [&className](const auto &candidate) {
         return candidate && candidate->className() == className;
     });
-    return permission == _permissions.cend() || !*permission ? std::nullopt : std::optional{(*permission)->enabled()};
+    return permission == _permissions.cend() ? std::nullopt : std::optional{(*permission)->enabled()};
 }
 
 void Recipient::setPermissionOverride(const QString &className, bool enabled)

@@ -8,7 +8,6 @@
 #include "sharedetailslistmodel.h"
 #include "property.h"
 
-#include <QPointer>
 #include <QtQmlIntegration>
 
 namespace OCC::Gui::Sharing {
@@ -69,7 +68,7 @@ private:
     void resetProperties();
 
     QMetaObject::Connection _propertiesChangedConnection;
-    QList<QPointer<Property>> _properties;
+    QList<Property *> _properties;
     bool _advanced = false;
 };
 

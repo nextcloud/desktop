@@ -17,7 +17,7 @@ ShareDetailsListModel::ShareDetailsListModel(QObject *parent)
 
 Share *ShareDetailsListModel::share() const
 {
-    return _share.data();
+    return _share;
 }
 
 void ShareDetailsListModel::setShare(Share *share)

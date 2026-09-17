@@ -5,12 +5,10 @@
 
 #pragma once
 
-#include "unifiedshare.h"
 #include "unifiedsharingrequest.h"
 
+#include <QJsonDocument>
 #include <QList>
-#include <QPointer>
-
 #include <optional>
 
 namespace OCC::Gui::Sharing
@@ -21,7 +19,7 @@ namespace OCC::Gui::Sharing
  *
  * Results can be restricted to shares containing a particular source type and
  * source value. Pagination continues after lastShareId and returns at most
- * limit complete Share objects.
+ * limit complete share representations.
  */
 class GetSharesJob : public UnifiedSharingRequest
 {
@@ -46,12 +44,9 @@ public:
 
 Q_SIGNALS:
     /**
-     * @brief Emitted with the fetched shares after a successful request.
-     *
-     * Each share is parented to the job until a receiver adopts it by assigning
-     * a different QObject parent.
+     * @brief Emitted with the fetched share representations after a successful request.
      */
-    void sharesFetched(const QList<QPointer<Share>> &shares);
+    void sharesFetched(const QJsonDocument &json);
 };
 
 }

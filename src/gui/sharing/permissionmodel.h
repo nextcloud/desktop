@@ -7,7 +7,6 @@
 
 #include "sharedetailslistmodel.h"
 
-#include <QPointer>
 #include <QtQmlIntegration>
 
 namespace OCC::Gui::Sharing {
@@ -46,7 +45,7 @@ private:
     QMetaObject::Connection _permissionsChangedConnection;
     QMetaObject::Connection _recipientPermissionsChangedConnection;
     QMetaObject::Connection _recipientDestroyedConnection;
-    QPointer<Recipient> _recipient;
+    Recipient *_recipient = nullptr;
 };
 
 }

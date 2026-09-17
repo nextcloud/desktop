@@ -5,8 +5,6 @@
 
 #include "recipientmodel.h"
 
-#include <QPointer>
-
 #include "recipient.h"
 #include "recipienticonutils.h"
 #include "unifiedshare.h"
@@ -59,7 +57,7 @@ QVariant RecipientModel::data(const QModelIndex &index, int role) const
     case InitiatorDisplayNameRole:
         return recipient->initiatorDisplayName();
     case RecipientRole:
-        return QVariant::fromValue(recipient.data());
+        return QVariant::fromValue(recipient);
     default:
         return {};
     }

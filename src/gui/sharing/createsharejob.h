@@ -5,8 +5,9 @@
 
 #pragma once
 
-#include "unifiedshare.h"
 #include "unifiedsharingrequest.h"
+
+#include <QJsonDocument>
 
 namespace OCC::Gui::Sharing
 {
@@ -16,7 +17,7 @@ namespace OCC::Gui::Sharing
  *
  * This operation creates the share itself without selecting a source or
  * recipient. Those are attached by separate update jobs. The returned JSON is
- * parsed into a new Share object.
+ * The response is emitted as JSON for the controller to parse and own.
  */
 class CreateShareJob : public UnifiedSharingRequest
 {
@@ -27,8 +28,8 @@ public:
     explicit CreateShareJob(AccountPtr account);
 
 Q_SIGNALS:
-    /** @brief Emitted with the newly created share after a successful request. */
-    void shareCreated(QPointer<Share> share);
+    /** @brief Emitted with the newly created share representation after a successful request. */
+    void shareCreated(const QJsonDocument &json);
 };
 
 }

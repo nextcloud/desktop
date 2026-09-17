@@ -5,11 +5,9 @@
 
 #pragma once
 
+#include "unifiedshare.h"
 #include <QAbstractListModel>
 #include <QMetaObject>
-#include <QPointer>
-
-#include "unifiedshare.h"
 
 namespace OCC::Gui::Sharing {
 
@@ -31,21 +29,21 @@ public:
     explicit ShareDetailsListModel(QObject *parent = nullptr);
 
     /** @brief Returns the share whose details this model exposes, or `nullptr` when none is assigned. */
-    [[nodiscard]] Share* share() const;
+    [[nodiscard]] Share *share() const;
     /**
      * @brief Sets the share whose details this model exposes.
      *
      * The model resets when the assigned share changes. The model does not take
      * ownership of `share`.
      */
-    virtual void setShare(Share* share);
+    virtual void setShare(Share *share);
 
 Q_SIGNALS:
     /** @brief Emitted after the assigned share changes. */
     void shareChanged();
 
 protected:
-    QPointer<Share> _share; //!< The non-owning share whose details this model exposes.
+    Share *_share = nullptr; //!< The non-owning share whose details this model exposes.
 
 private:
     QMetaObject::Connection _shareDestroyedConnection;

@@ -9,11 +9,11 @@
 #include <QJsonObject>
 #include <QList>
 #include <QObject>
-#include <QPointer>
 
 #include <QtQmlIntegration>
 
 #include <memory>
+#include <vector>
 
 #include "permission.h"
 
@@ -36,7 +36,7 @@ class Recipient : public QObject
     Q_PROPERTY(bool secretUpdatable READ secretUpdatable CONSTANT)
     Q_PROPERTY(QString secretUrl READ secretUrlString CONSTANT)
     Q_PROPERTY(bool hasPermissionData READ hasPermissionData NOTIFY permissionsChanged)
-    Q_PROPERTY(QList<QPointer<Permission>> permissions READ permissions NOTIFY permissionsChanged)
+    Q_PROPERTY(QList<Permission *> permissions READ permissions NOTIFY permissionsChanged)
 
 public:
     /** @brief Creates a recipient from its unified sharing API representation and returns its owning pointer. */
@@ -69,7 +69,7 @@ public:
     /** @brief Returns the user-facing name of the user who added the recipient. */
     [[nodiscard]] QString initiatorDisplayName() const;
     /** @brief Returns the permissions currently assigned to this recipient. */
-    [[nodiscard]] const QList<QPointer<Permission>> &permissions() const;
+    [[nodiscard]] QList<Permission *> permissions() const;
     /** @brief Returns whether the server supplied recipient-specific permissions. */
     [[nodiscard]] bool hasPermissionData() const;
     /** @brief Returns the recipient-specific permission override for a class, if one is available. */
@@ -94,7 +94,7 @@ private:
     std::optional<QString> _secretValue;
     std::optional<QString> _secretUrl;
     QString _initiatorDisplayName;
-    QList<QPointer<Permission>> _permissions;
+    std::vector<std::unique_ptr<Permission>> _permissions;
     bool _hasPermissionData = false;
     QHash<QString, bool> _permissionOverrides;
 };

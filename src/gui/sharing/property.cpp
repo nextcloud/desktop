@@ -6,7 +6,6 @@
 
 #include "property.h"
 
-#include <QPointer>
 #include <QJsonArray>
 #include <QJsonObject>
 

@@ -5,10 +5,6 @@
 
 #include "getsharejob.h"
 
-#include "unifiedshare.h"
-
-#include <QMetaMethod>
-
 using namespace Qt::StringLiterals;
 
 namespace OCC::Gui::Sharing
@@ -43,14 +39,8 @@ GetShareJob::GetShareJob(AccountPtr account,
                             "POST"_ba,
                             {.parameters = {}, .passStatusCodes = {}, .body = getShareBody(secret, arguments)}}
 {
-    connect(this, &OcsJob::jobFinished, this, [this, account = std::move(account)](const QJsonDocument &json, int) {
+    connect(this, &OcsJob::jobFinished, this, [this](const QJsonDocument &json, int) {
         Q_EMIT shareJsonFetched(json);
-        if (isSignalConnected(QMetaMethod::fromSignal(&GetShareJob::shareFetched))) {
-            auto share = Share::fromJson(json, account);
-            share->setParent(this);
-            Q_EMIT shareFetched(share.get());
-            share.release();
-        }
     });
 }
 

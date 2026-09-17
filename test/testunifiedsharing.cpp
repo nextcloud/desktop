@@ -50,22 +50,18 @@ class TestUnifiedSharing : public QObject
     Q_OBJECT
 
   private Q_SLOTS:
-      void typedJobSignalsExposeShareMetatypes()
+      void typedJobSignalsExposeJsonMetatypes()
       {
-          const auto sharePointerType = QMetaType::fromType<QPointer<Share>>();
-          const auto sharePointerListType = QMetaType::fromType<QList<QPointer<Share>>>();
-          QVERIFY(sharePointerType.isValid());
-          QVERIFY(sharePointerListType.isValid());
+          const auto jsonType = QMetaType::fromType<QJsonDocument>();
+          QVERIFY(jsonType.isValid());
 
           const auto shareCreated = QMetaMethod::fromSignal(&CreateShareJob::shareCreated);
-          const auto shareFetched = QMetaMethod::fromSignal(&GetShareJob::shareFetched);
           const auto sharesFetched = QMetaMethod::fromSignal(&GetSharesJob::sharesFetched);
           const auto shareUpdated = QMetaMethod::fromSignal(&UpdateShareJob::shareUpdated);
 
-          QCOMPARE(shareCreated.parameterMetaType(0).id(), sharePointerType.id());
-          QCOMPARE(shareFetched.parameterMetaType(0).id(), sharePointerType.id());
-          QCOMPARE(sharesFetched.parameterMetaType(0).id(), sharePointerListType.id());
-          QCOMPARE(shareUpdated.parameterMetaType(0).id(), sharePointerType.id());
+          QCOMPARE(shareCreated.parameterMetaType(0).id(), jsonType.id());
+          QCOMPARE(sharesFetched.parameterMetaType(0).id(), jsonType.id());
+          QCOMPARE(shareUpdated.parameterMetaType(0).id(), jsonType.id());
       }
 
     void recipientsPreserveServerIdentityAndCapabilities()
@@ -123,8 +119,6 @@ class TestUnifiedSharing : public QObject
         QVERIFY(recipient->secretUpdatable());
         QCOMPARE(recipient->secretValue(), std::optional<QString>{"public-secret"_L1});
         QCOMPARE(recipient->secretUrl(), std::optional<QString>{"https://cloud.example.com/s/public-secret"_L1});
-        QCOMPARE(recipient->parent(), static_cast<QObject *>(share.get()));
-        QCOMPARE(recipient->permissions().constFirst()->parent(), static_cast<QObject *>(recipient));
         QCOMPARE(recipient->secretUrlString(), "https://cloud.example.com/s/public-secret"_L1);
         QCOMPARE(recipient->initiatorDisplayName(), "Bob"_L1);
         QCOMPARE(recipient->permissions().size(), 1);

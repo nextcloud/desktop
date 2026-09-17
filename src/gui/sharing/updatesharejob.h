@@ -7,6 +7,8 @@
 
 #include "unifiedsharingrequest.h"
 
+#include <QJsonDocument>
+
 namespace OCC::Gui::Sharing
 {
 

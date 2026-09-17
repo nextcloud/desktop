@@ -5,12 +5,10 @@
 
 #pragma once
 
-#include "unifiedshare.h"
 #include "unifiedsharingrequest.h"
 
+#include <QJsonDocument>
 #include <QJsonObject>
-#include <QPointer>
-
 #include <optional>
 
 namespace OCC::Gui::Sharing
@@ -44,13 +42,6 @@ public:
                          const std::optional<QJsonObject> &arguments = std::nullopt);
 
 Q_SIGNALS:
-    /**
-     * @brief Emitted with the fetched share after a successful request.
-     *
-     * The share is parented to the job until a receiver adopts it by assigning
-     * a different QObject parent.
-     */
-    void shareFetched(QPointer<Share> share);
     /** @brief Emitted with the complete share response after a successful request. */
     void shareJsonFetched(const QJsonDocument &json);
 };

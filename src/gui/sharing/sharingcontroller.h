@@ -6,11 +6,14 @@
 #pragma once
 
 #include <QHash>
+#include <QJsonDocument>
 #include <QList>
 #include <QObject>
-#include <QPointer>
 #include <QSet>
 #include <QtQmlIntegration>
+
+#include <memory>
+#include <vector>
 
 #include "accountfwd.h"
 
@@ -41,7 +44,7 @@ public:
     void setAccount(AccountPtr account);
 
     /** @brief Returns all shares associated with the initialized file. */
-    [[nodiscard]] const QList<Share *> &shares() const;
+    [[nodiscard]] QList<Share *> shares() const;
 
     /** @brief Returns whether a share, its source, and its initial recipient are currently being created. */
     [[nodiscard]] bool creatingShare() const;
@@ -218,21 +221,21 @@ private:
                             const QString &recipientValue,
                             const QString &recipientInstance,
                             bool activateAfterCreation = false);
-    void addSourceAfterCreation(QPointer<Share> share,
+    void addSourceAfterCreation(const QString &shareId,
                                 const QString &fileId,
                                 const QString &recipientType,
                                 const QString &recipientValue,
                                 const QString &recipientInstance,
                                 bool activateAfterCreation);
-    void addRecipientAfterCreation(QPointer<Share> share,
+    void addRecipientAfterCreation(const QString &shareId,
                                    const QString &recipientType,
                                    const QString &recipientValue,
                                    const QString &recipientInstance,
                                    bool activateAfterCreation);
-    void finishShareCreation(QPointer<Share> share, bool activateAfterCreation);
-    void failShareCreation(const QString &error, QPointer<Share> share = {});
-    void trackDraftUpdate(Share *share, QObject *job);
-    void markDraftUpdateFailed(Share *share);
+    void finishShareCreation(const QString &shareId, bool activateAfterCreation);
+    void failShareCreation(const QString &error, const QString &shareId = {});
+    void trackDraftUpdate(const QString &shareId, QObject *job);
+    void markDraftUpdateFailed(const QString &shareId);
     void startShareActivation(Share *share);
     void setCreatingShare(bool creatingShare);
     void setShareCreationError(const QString &error);
@@ -240,19 +243,22 @@ private:
     void setShareDestructionError(const QString &error);
     void setResolvingInternalLink(bool resolvingInternalLink);
     void setInternalLinkError(const QString &error);
-    void replaceShares(const QList<Share *> &shares);
+    [[nodiscard]] Share *shareById(const QString &shareId) const;
+    [[nodiscard]] Share *updateShareFromJson(const QString &shareId, const QJsonDocument &json);
+    void replaceShares(std::vector<std::unique_ptr<Share>> shares);
 
     AccountPtr _account;
-    QList<Share *> _shares;
+    std::vector<std::unique_ptr<Share>> _shares;
+    std::unique_ptr<Share> _draftShare;
     bool _creatingShare = false;
     QString _shareCreationError;
     bool _destroyingShare = false;
     QString _shareDestructionError;
     bool _resolvingInternalLink = false;
     QString _internalLinkError;
-    QHash<Share *, int> _pendingDraftUpdates;
-    QSet<Share *> _activationRequested;
-    QSet<Share *> _activationBlocked;
+    QHash<QString, int> _pendingDraftUpdates;
+    QSet<QString> _activationRequested;
+    QSet<QString> _activationBlocked;
 };
 
 }

@@ -7,8 +7,6 @@
 
 #include <QAbstractListModel>
 #include <QMetaObject>
-#include <QPointer>
-
 #include <QtQmlIntegration>
 
 namespace OCC::Gui::Sharing
@@ -72,12 +70,12 @@ private:
     struct Item
     {
         ItemType type;
-        QPointer<Share> share;
+        Share *share = nullptr;
     };
 
     void rebuild();
 
-    QPointer<SharingController> _sharingController;
+    SharingController *_sharingController = nullptr;
     QList<Item> _items;
     QList<QMetaObject::Connection> _shareConnections;
 };

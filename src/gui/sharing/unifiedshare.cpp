@@ -6,10 +6,9 @@
 
 #include "unifiedshare.h"
 
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonArray>
-#include <QPointer>
 #include <QLoggingCategory>
 
 #include <algorithm>
@@ -86,34 +85,49 @@ QString Share::permissionPresetLabel() const
     return {};
 }
 
-const QList<QPointer<Permission>> &Share::permissions() const
+QList<Permission *> Share::permissions() const
 {
-    return _permissions;
+    auto permissions = QList<Permission *>{};
+    permissions.reserve(static_cast<qsizetype>(_permissions.size()));
+    for (const auto &permission : _permissions) {
+        permissions.append(permission.get());
+    }
+    return permissions;
 }
 
-const QList<QPointer<Property>> &Share::properties() const
+QList<Property *> Share::properties() const
 {
-    return _properties;
+    auto properties = QList<Property *>{};
+    properties.reserve(static_cast<qsizetype>(_properties.size()));
+    for (const auto &property : _properties) {
+        properties.append(property.get());
+    }
+    return properties;
 }
 
-const QList<QPointer<Recipient>> &Share::recipients() const
+QList<Recipient *> Share::recipients() const
 {
-    return _recipients;
+    auto recipients = QList<Recipient *>{};
+    recipients.reserve(static_cast<qsizetype>(_recipients.size()));
+    for (const auto &recipient : _recipients) {
+        recipients.append(recipient.get());
+    }
+    return recipients;
 }
 
 bool Share::isPublicLink() const
 {
-    return std::ranges::any_of(_recipients, [](const QPointer<Recipient> &recipient) {
+    return std::ranges::any_of(_recipients, [](const auto &recipient) {
         return recipient && recipient->className() == RecipientTypeClasses::token;
     });
 }
 
 QString Share::publicLinkUrl() const
 {
-    const auto recipient = std::ranges::find_if(_recipients, [](const QPointer<Recipient> &recipient) {
+    const auto recipient = std::ranges::find_if(_recipients, [](const auto &recipient) {
         return recipient && recipient->className() == RecipientTypeClasses::token;
     });
-    return recipient == _recipients.cend() || !*recipient ? QString{} : (*recipient)->secretUrlString();
+    return recipient == _recipients.cend() ? QString{} : (*recipient)->secretUrlString();
 }
 
 void Share::setId(const QString &id)
@@ -158,7 +172,6 @@ void Share::setPermissionPreset(const QString &permissionPreset)
 
 void Share::setPermissions(const QJsonArray &permissions)
 {
-    qDeleteAll(_permissions);
     _permissions.clear();
 
     if (permissions.isEmpty()) {
@@ -172,9 +185,7 @@ void Share::setPermissions(const QJsonArray &permissions)
         }
         const auto permissionObject = permissionValue.toObject();
         auto permission = Permission::fromJson(permissionObject);
-        permission->setParent(this);
-        _permissions.append(permission.get());
-        permission.release();
+        _permissions.emplace_back(std::move(permission));
     }
 
     Q_EMIT permissionsChanged();
@@ -182,7 +193,6 @@ void Share::setPermissions(const QJsonArray &permissions)
 
 void Share::setProperties(const QJsonArray &properties)
 {
-    qDeleteAll(_properties);
     _properties.clear();
 
     if (properties.isEmpty()) {
@@ -196,9 +206,7 @@ void Share::setProperties(const QJsonArray &properties)
         }
         const auto propertyObject = propertyValue.toObject();
         auto property = Property::fromJson(propertyObject);
-        property->setParent(this);
-        _properties.append(property.get());
-        property.release();
+        _properties.emplace_back(std::move(property));
     }
 
     Q_EMIT propertiesChanged();
@@ -206,7 +214,8 @@ void Share::setProperties(const QJsonArray &properties)
 
 void Share::setRecipients(const QJsonArray &recipients)
 {
-    auto updatedRecipients = QList<QPointer<Recipient>>{};
+    auto updatedRecipients = std::vector<std::unique_ptr<Recipient>>{};
+    updatedRecipients.reserve(static_cast<size_t>(recipients.size()));
     for (const auto &recipientValue : recipients) {
         if (!recipientValue.isObject()) {
             continue;
@@ -215,23 +224,15 @@ void Share::setRecipients(const QJsonArray &recipients)
         const auto className = recipientObject.value("class"_L1).toString();
         const auto value = recipientObject.value("value"_L1).toString();
         const auto instance = recipientObject.value("instance"_L1).toString();
-        const auto existing = std::ranges::find_if(_recipients, [&className, &value, &instance](const QPointer<Recipient> &recipient) {
+        const auto existing = std::ranges::find_if(_recipients, [&className, &value, &instance](const auto &recipient) {
             return recipient && recipient->className() == className && recipient->value() == value && recipient->instanceString() == instance;
         });
         if (existing != _recipients.cend()) {
             (*existing)->updateFromJson(recipientObject);
-            updatedRecipients.append(*existing);
+            updatedRecipients.emplace_back(std::move(*existing));
         } else {
             auto recipient = Recipient::fromJson(recipientObject);
-            recipient->setParent(this);
-            updatedRecipients.append(recipient.get());
-            recipient.release();
-        }
-    }
-
-    for (const auto &recipient : std::as_const(_recipients)) {
-        if (!updatedRecipients.contains(recipient)) {
-            delete recipient.data();
+            updatedRecipients.emplace_back(std::move(recipient));
         }
     }
     _recipients = std::move(updatedRecipients);

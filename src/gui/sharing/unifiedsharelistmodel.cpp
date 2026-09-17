@@ -82,7 +82,7 @@ QVariant UnifiedShareListModel::data(const QModelIndex &index, int role) const
     }
 
     const auto &item = _items.at(index.row());
-    const auto share = item.share.data();
+    const auto share = item.share;
     switch (role) {
     case ShareRole:
         return QVariant::fromValue<Share *>(share);

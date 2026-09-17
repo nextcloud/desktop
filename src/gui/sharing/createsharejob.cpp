@@ -5,8 +5,6 @@
 
 #include "createsharejob.h"
 
-#include "unifiedshare.h"
-
 using namespace Qt::StringLiterals;
 
 namespace OCC::Gui::Sharing
@@ -18,11 +16,8 @@ CreateShareJob::CreateShareJob(AccountPtr account)
                             "POST"_ba,
                             {.parameters = {}, .passStatusCodes = QList<int>{201}, .body = {}}}
 {
-    connect(this, &OcsJob::jobFinished, this, [this, account = std::move(account)](const QJsonDocument &json, int) {
-        auto share = Share::fromJson(json, account);
-        share->setParent(this);
-        Q_EMIT shareCreated(share.get());
-        share.release();
+    connect(this, &OcsJob::jobFinished, this, [this](const QJsonDocument &json, int) {
+        Q_EMIT shareCreated(json);
     });
 }
 

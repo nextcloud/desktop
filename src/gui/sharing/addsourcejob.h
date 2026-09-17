@@ -14,8 +14,8 @@ namespace OCC::Gui::Sharing
  * @brief Adds a local filesystem node as content of an existing share.
  *
  * In Unified Sharing, a source is an object being shared. This job registers
- * the node identified by fileId as a node source and applies the server's
- * complete updated representation to the supplied Share object.
+ * the node identified by fileId as a node source. The server returns the
+ * complete updated share representation through UpdateShareJob.
  */
 class AddSourceJob : public UpdateShareJob
 {

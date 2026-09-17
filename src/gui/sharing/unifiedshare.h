@@ -5,11 +5,14 @@
 
 #pragma once
 
+#include <QJsonArray>
+#include <QJsonDocument>
 #include <QObject>
 
 #include <QtQmlIntegration>
 
 #include <memory>
+#include <vector>
 
 #include "permission.h"
 #include "property.h"
@@ -29,9 +32,9 @@ class Share : public QObject
     Q_PROPERTY(Share::State state READ state NOTIFY stateChanged)
     Q_PROPERTY(QString permissionPreset READ permissionPreset NOTIFY permissionPresetChanged)
     Q_PROPERTY(QString permissionPresetLabel READ permissionPresetLabel NOTIFY permissionPresetChanged)
-    Q_PROPERTY(QList<QPointer<Permission>> permissions READ permissions NOTIFY permissionsChanged)
-    Q_PROPERTY(QList<QPointer<Property>> properties READ properties NOTIFY propertiesChanged)
-    Q_PROPERTY(QList<QPointer<Recipient>> recipients READ recipients NOTIFY recipientsChanged)
+    Q_PROPERTY(QList<Permission *> permissions READ permissions NOTIFY permissionsChanged)
+    Q_PROPERTY(QList<Property *> properties READ properties NOTIFY propertiesChanged)
+    Q_PROPERTY(QList<Recipient *> recipients READ recipients NOTIFY recipientsChanged)
     Q_PROPERTY(bool publicLink READ isPublicLink NOTIFY recipientsChanged)
     Q_PROPERTY(QString publicLinkUrl READ publicLinkUrl NOTIFY recipientsChanged)
 
@@ -54,9 +57,9 @@ public:
     [[nodiscard]] QString permissionPreset() const;
     /** @brief Returns the localized label for the known permission preset, or an empty string for custom or unknown presets. */
     [[nodiscard]] QString permissionPresetLabel() const;
-    [[nodiscard]] const QList<QPointer<Permission>> &permissions() const;
-    [[nodiscard]] const QList<QPointer<Property>> &properties() const;
-    [[nodiscard]] const QList<QPointer<Recipient>> &recipients() const;
+    [[nodiscard]] QList<Permission *> permissions() const;
+    [[nodiscard]] QList<Property *> properties() const;
+    [[nodiscard]] QList<Recipient *> recipients() const;
     /** @brief Returns whether this share has the server's public-link recipient type. */
     [[nodiscard]] bool isPublicLink() const;
     /** @brief Returns the public URL exposed by the public-link recipient, if available. */
@@ -84,9 +87,9 @@ private:
     QString _id;
     State _state = State::Unknown;
     QString _permissionPreset;
-    QList<QPointer<Permission>> _permissions;
-    QList<QPointer<Property>> _properties;
-    QList<QPointer<Recipient>> _recipients;
+    std::vector<std::unique_ptr<Permission>> _permissions;
+    std::vector<std::unique_ptr<Property>> _properties;
+    std::vector<std::unique_ptr<Recipient>> _recipients;
 };
 
 }
