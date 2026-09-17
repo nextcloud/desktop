@@ -29,7 +29,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib")
 endif()
 
-if(NOT BUILD_LIBRARIES_ONLY)
+if(NOT BUILD_LIBRARIES_ONLY AND BUILD_GUI)
+  # nextcloudcmd links against nextcloudCore for AccountManager/FolderMan,
+  # so it needs the GUI library to be built.
   add_executable(nextcloudcmd
       cmd.h
       cmd.cpp)
