@@ -132,6 +132,39 @@ protected:
     QJsonObject _arguments;
 };
 
+class SocketApiJobV2 : public QObject
+{
+    Q_OBJECT
+public:
+    explicit SocketApiJobV2(const QSharedPointer<SocketListener> &socketListener, const QString &command, const QJsonObject &arguments);
+
+    void success(const QJsonObject &response) const;
+    void failure(const QString &error) const;
+
+    [[nodiscard]] const QJsonObject &arguments() const
+    {
+        return _arguments;
+    }
+    [[nodiscard]] QString command() const
+    {
+        return _command;
+    }
+
+    [[nodiscard]] QString warning() const;
+    void setWarning(const QString &warning);
+
+Q_SIGNALS:
+    void finished() const;
+
+private:
+    void doFinish(const QJsonObject &obj) const;
+
+    QSharedPointer<SocketListener> _socketListener;
+    const QString _command;
+    QString _jobId;
+    QJsonObject _arguments;
+    QString _warning;
+};
 }
 
 Q_DECLARE_METATYPE(OCC::SocketListener *)

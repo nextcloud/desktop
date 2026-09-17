@@ -37,6 +37,9 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcFileSystem)
 namespace FileSystem {
     OCSYNC_EXPORT Q_NAMESPACE;
 
+    OCSYNC_EXPORT std::filesystem::path toFilesystemPath(const QString &path);
+    OCSYNC_EXPORT QString fromFilesystemPath(const std::filesystem::path &path);
+
     enum class FolderPermissions {
         ReadOnly,
         ReadWrite,
@@ -206,6 +209,20 @@ namespace FileSystem {
      * Returns whether the file is a junction (windows only)
      */
     bool OCSYNC_EXPORT isJunction(const QString &filename);
+
+    /**
+     * Returns whether a Path is a child of another
+     */
+    enum class ChildResult : uint8_t { IsNoChild = 0, IsChild = 0x1 << 0, IsEqual = 0x1 << 1, IsParentEmpty = 0x1 << 2 };
+    Q_FLAG_NS(ChildResult);
+    Q_DECLARE_FLAGS(ChildResults, ChildResult)
+    Q_DECLARE_OPERATORS_FOR_FLAGS(ChildResults)
+
+    ChildResults OCSYNC_EXPORT isChildPathOf2(QStringView child, QStringView parent);
+    inline bool isChildPathOf(QStringView child, QStringView parent)
+    {
+        return isChildPathOf2(child, parent) & ChildResult::IsChild;
+    }
 }
 
 /** @} */
