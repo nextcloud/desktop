@@ -206,25 +206,24 @@ bool FileSystem::rename(const QString &originFileName,
     bool success = false;
     QString error;
 #ifdef Q_OS_WIN
-    QString orig = longWinPath(originFileName);
-    QString dest = longWinPath(destinationFileName);
-
-    if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
-        success = MoveFileEx((wchar_t *)orig.utf16(),
-            (wchar_t *)dest.utf16(),
-            MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
-        if (!success) {
-            error = Utility::formatWinError(GetLastError());
-        }
-    } else
-#endif
+    // Use the extended paths directly so Win32 does not normalize trailing periods or spaces.
+    const auto originPath = longWinPath(originFileName);
+    const auto destinationPath = longWinPath(destinationFileName);
+    success = MoveFileExW(reinterpret_cast<const wchar_t *>(originPath.utf16()),
+                          reinterpret_cast<const wchar_t *>(destinationPath.utf16()),
+                          MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
+    if (!success) {
+        error = Utility::formatWinError(GetLastError());
+    }
+#else
     {
-        QFile orig(originFileName);
-        success = orig.rename(destinationFileName);
+        QFile file(originFileName);
+        success = file.rename(destinationFileName);
         if (!success) {
-            error = orig.errorString();
+            error = file.errorString();
         }
     }
+#endif
 
     if (!success) {
         qCWarning(lcFileSystem) << "Error renaming file" << originFileName
