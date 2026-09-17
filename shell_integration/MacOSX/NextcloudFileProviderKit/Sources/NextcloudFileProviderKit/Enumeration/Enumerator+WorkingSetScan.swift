@@ -63,13 +63,8 @@ extension Enumerator {
                 )
             }
 
-            // Intermediate batches use a durable continuation anchor. The final batch normally advances
-            // the working-set sync point to
-            // currentAnchor — but when the scan was incomplete (a remote read failed and was skipped) we
-            // keep the incoming anchor instead, so we do not tell the framework we are synced up to "now"
-            // past changes we could not discover this pass. The next working-set signal re-derives and
-            // picks up the previously-unreadable folders once they succeed. (isPrimedIncomplete() is read
-            // before the final takeBatch clears the buffer, so it reflects this drain sequence.)
+            // Intermediate batches use continuation anchors. If the scan was incomplete, keep the
+            // incoming anchor for the final batch so missed changes are retried on the next signal.
             let finalAnchor = changeBuffer.isPrimedIncomplete() ? anchor : currentAnchor
             drainChangeBuffer(
                 for: observer,

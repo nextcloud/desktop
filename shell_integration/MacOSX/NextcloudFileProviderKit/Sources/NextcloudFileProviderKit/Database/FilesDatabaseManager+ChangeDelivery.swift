@@ -7,11 +7,13 @@ extension FilesDatabaseManager {
     /// Create a durable change-delivery session and store the complete ordered change snapshot.
     func createChangeDeliverySession(
         sessionId: String,
+        containerKey: String,
         anchorKey: String,
         finalAnchorRawValue: Data,
         updated: [SendableItemMetadata],
         deleted: [SendableItemMetadata],
-        incomplete: Bool
+        incomplete: Bool,
+        hardRemoveDeleted: Bool
     ) -> Bool {
         let encoder = JSONEncoder()
         let allChanges: [(metadata: SendableItemMetadata, deleted: Bool)] =
@@ -33,9 +35,11 @@ extension FilesDatabaseManager {
             try database.write {
                 let session = RealmChangeDeliverySession(
                     sessionId: sessionId,
+                    containerKey: containerKey,
                     currentAnchorKey: anchorKey,
                     finalAnchorRawValue: finalAnchorRawValue,
-                    incomplete: incomplete
+                    incomplete: incomplete,
+                    hardRemoveDeleted: hardRemoveDeleted
                 )
                 database.add(session, update: .modified)
 
@@ -56,19 +60,49 @@ extension FilesDatabaseManager {
         }
     }
 
-    /// Return the active delivery session whose current continuation anchor matches `anchorKey`.
-    func changeDeliverySession(forAnchorKey anchorKey: String) -> (
+    /// Return the active delivery session whose committed anchor matches `anchorKey`.
+    func changeDeliverySession(forAnchorKey anchorKey: String, containerKey: String) -> (
         sessionId: String,
+        containerKey: String,
         currentAnchorKey: String,
         nextSequence: Int,
         finalAnchorRawValue: Data,
-        incomplete: Bool
+        incomplete: Bool,
+        pendingEndSequence: Int,
+        pendingAnchorKey: String?,
+        pendingMoreComing: Bool,
+        pendingReported: Bool,
+        hardRemoveDeleted: Bool
     )? {
         let sessions = ncDatabase()
             .objects(RealmChangeDeliverySession.self)
-            .filter("currentAnchorKey == %@ AND completed == false", anchorKey)
+            .filter("currentAnchorKey == %@ AND containerKey == %@ AND completed == false", anchorKey, containerKey)
         guard let session = sessions.first
         else {
+            return nil
+        }
+
+        return changeDeliverySession(sessionId: session.sessionId)
+    }
+
+    /// Return an active delivery session whose pending continuation anchor matches `anchorKey`.
+    func changeDeliverySession(forPendingAnchorKey anchorKey: String, containerKey: String) -> (
+        sessionId: String,
+        containerKey: String,
+        currentAnchorKey: String,
+        nextSequence: Int,
+        finalAnchorRawValue: Data,
+        incomplete: Bool,
+        pendingEndSequence: Int,
+        pendingAnchorKey: String?,
+        pendingMoreComing: Bool,
+        pendingReported: Bool,
+        hardRemoveDeleted: Bool
+    )? {
+        let sessions = ncDatabase()
+            .objects(RealmChangeDeliverySession.self)
+            .filter("pendingAnchorKey == %@ AND containerKey == %@ AND pendingReported == true AND completed == false", anchorKey, containerKey)
+        guard let session = sessions.first else {
             return nil
         }
 
@@ -78,10 +112,16 @@ extension FilesDatabaseManager {
     /// Return an active delivery session by its durable identifier.
     func changeDeliverySession(sessionId: String) -> (
         sessionId: String,
+        containerKey: String,
         currentAnchorKey: String,
         nextSequence: Int,
         finalAnchorRawValue: Data,
-        incomplete: Bool
+        incomplete: Bool,
+        pendingEndSequence: Int,
+        pendingAnchorKey: String?,
+        pendingMoreComing: Bool,
+        pendingReported: Bool,
+        hardRemoveDeleted: Bool
     )? {
         guard let session = ncDatabase().object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId),
               !session.completed
@@ -91,10 +131,16 @@ extension FilesDatabaseManager {
 
         return (
             session.sessionId,
+            session.containerKey,
             session.currentAnchorKey,
             session.nextSequence,
             session.finalAnchorRawValue,
-            session.incomplete
+            session.incomplete,
+            session.pendingEndSequence,
+            session.pendingAnchorKey,
+            session.pendingMoreComing,
+            session.pendingReported,
+            session.hardRemoveDeleted
         )
     }
 
@@ -112,50 +158,134 @@ extension FilesDatabaseManager {
             .map { ($0.sequence, $0.metadataData, $0.deleted) }
     }
 
-    /// Advance an active session to its next continuation anchor, or remove it after the final batch.
-    func advanceChangeDeliverySession(
-        sessionId: String,
-        nextSequence: Int,
-        nextAnchorKey: String?,
-        completed: Bool
-    ) {
-        let database = ncDatabase()
-        guard let session = database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId) else {
-            return
+    /// Return the deleted item identifiers in the currently prepared batch.
+    func pendingChangeDeliveryDeletedOcIds(sessionId: String) -> [String] {
+        guard let session = changeDeliverySession(sessionId: sessionId),
+              session.pendingReported,
+              session.pendingEndSequence > session.nextSequence
+        else {
+            return []
         }
 
-        try? database.write {
-            if completed {
-                database.objects(RealmChangeDeliveryItem.self)
-                    .filter("sessionId == %@", sessionId)
-                    .forEach { database.delete($0) }
-                database.delete(session)
-            } else {
-                session.nextSequence = nextSequence
-                session.completed = false
-                if let nextAnchorKey {
-                    session.currentAnchorKey = nextAnchorKey
-                }
-
-                database.objects(RealmChangeDeliveryItem.self)
-                    .filter("sessionId == %@ AND sequence < %@", sessionId, nextSequence)
-                    .forEach { database.delete($0) }
+        let decoder = JSONDecoder()
+        return changeDeliveryItems(
+            sessionId: sessionId,
+            fromSequence: session.nextSequence,
+            limit: session.pendingEndSequence - session.nextSequence
+        ).compactMap { item in
+            guard item.deleted,
+                  let metadata = try? decoder.decode(SendableItemMetadata.self, from: item.metadataData)
+            else {
+                return nil
             }
+            return metadata.ocId
         }
     }
 
-    /// Remove an abandoned change-delivery session and all of its queued items.
-    func removeChangeDeliverySession(sessionId: String) {
+    func prepareChangeDeliveryBatch(
+        sessionId: String,
+        endSequence: Int,
+        nextAnchorKey: String?,
+        moreComing: Bool
+    ) -> Bool {
         let database = ncDatabase()
-        guard let session = database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId) else {
-            return
+        guard let session = database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId),
+              !session.completed
+        else {
+            return false
         }
 
+        if session.pendingReported {
+            return session.pendingEndSequence == endSequence
+                && session.pendingAnchorKey == nextAnchorKey
+                && session.pendingMoreComing == moreComing
+        }
+
+        do {
+            try database.write {
+                session.pendingEndSequence = endSequence
+                session.pendingAnchorKey = nextAnchorKey
+                session.pendingMoreComing = moreComing
+                session.pendingReported = true
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    /// Acknowledge the prepared batch after the observer accepted it.
+    func acknowledgeChangeDeliveryBatch(sessionId: String, deletedOcIds: [String]) -> Bool {
+        let database = ncDatabase()
+        guard let session = database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId),
+              !session.completed
+        else {
+            return true
+        }
+
+        guard session.pendingReported else {
+            return false
+        }
+
+        if session.pendingMoreComing, session.pendingAnchorKey == nil {
+            return false
+        }
+
+        let pendingEndSequence = session.pendingEndSequence
+        let pendingAnchorKey = session.pendingAnchorKey
+        let pendingMoreComing = session.pendingMoreComing
+
+        do {
+            try database.write {
+                let deletedItems = deletedOcIds.isEmpty
+                    ? database.objects(RealmItemMetadata.self).filter("ocId == %@", "")
+                    : database.objects(RealmItemMetadata.self).filter("ocId IN %@", deletedOcIds)
+                if session.hardRemoveDeleted {
+                    database.delete(deletedItems)
+                } else {
+                    deletedItems.forEach { $0.deleted = true }
+                }
+
+                if pendingMoreComing, let pendingAnchorKey {
+                    session.nextSequence = pendingEndSequence
+                    session.currentAnchorKey = pendingAnchorKey
+                    database.objects(RealmChangeDeliveryItem.self)
+                        .filter("sessionId == %@ AND sequence < %@", sessionId, pendingEndSequence)
+                        .forEach { database.delete($0) }
+                } else {
+                    database.objects(RealmChangeDeliveryItem.self)
+                        .filter("sessionId == %@", sessionId)
+                        .forEach { database.delete($0) }
+                    database.delete(session)
+                }
+
+                if database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId) != nil {
+                    session.pendingEndSequence = 0
+                    session.pendingAnchorKey = nil
+                    session.pendingMoreComing = false
+                    session.pendingReported = false
+                }
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    /// Remove all active delivery sessions for one enumerated container.
+    func removeChangeDeliverySessions(containerKey: String) {
+        let database = ncDatabase()
+        let sessions = database.objects(RealmChangeDeliverySession.self)
+            .filter("containerKey == %@ AND completed == false", containerKey)
+
         try? database.write {
-            database.objects(RealmChangeDeliveryItem.self)
-                .filter("sessionId == %@", sessionId)
-                .forEach { database.delete($0) }
-            database.delete(session)
+            let sessionIds = sessions.map(\.sessionId)
+            if sessionIds.isEmpty == false {
+                database.objects(RealmChangeDeliveryItem.self)
+                    .filter("sessionId IN %@", sessionIds)
+                    .forEach { database.delete($0) }
+            }
+            database.delete(sessions)
         }
     }
 }

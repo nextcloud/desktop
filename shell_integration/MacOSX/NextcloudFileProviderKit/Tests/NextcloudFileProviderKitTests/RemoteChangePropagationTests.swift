@@ -252,6 +252,88 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    /// A delivered deletion must remain durable until the framework acknowledges the finished batch.
+    /// The first observer is paused immediately before its finish callback returns; a second
+    /// enumerator using the original anchor must then receive the same downloaded and placeholder
+    /// deletions instead of seeing an already-consumed queue.
+    func testWorkingSetDeletionIsReplayedUntilObserverAcknowledges() async throws {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let downloaded = makeFile(name: "downloaded", parent: folder, etag: "downloaded-v1")
+        let placeholder = makeFile(name: "placeholder", parent: folder, etag: "placeholder-v1")
+
+        seed(folder, visitedDirectory: true)
+        seed(downloaded, downloaded: true)
+        seed(placeholder)
+
+        folder.children = []
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let inputAnchor = Enumerator.syncAnchor(at: anchorDate)
+        let firstEnumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let firstObserver = MockChangeObserver(enumerator: firstEnumerator)
+        let finishEntered = expectation(description: "First observer reaches the acknowledgement boundary")
+        let releaseFinish = DispatchSemaphore(value: 0)
+        firstObserver.beforeFinishEnumeratingChanges = {
+            finishEntered.fulfill()
+            _ = releaseFinish.wait(timeout: .distantFuture)
+        }
+        defer { releaseFinish.signal() }
+
+        firstEnumerator.enumerateChanges(for: firstObserver, from: inputAnchor)
+
+        await fulfillment(of: [finishEntered], timeout: 5)
+        XCTAssertEqual(
+            Set(firstObserver.deletedItemIdentifiers.map(\.rawValue)),
+            Set([downloaded.identifier, placeholder.identifier])
+        )
+
+        let secondEnumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let secondObserver = MockChangeObserver(enumerator: secondEnumerator)
+        let expectedDeletedIds = Set([downloaded.identifier, placeholder.identifier])
+        let replayExpectation = expectation(description: "Second observer receives the replayed deletions")
+        secondObserver.didDeleteItemsHandler = { identifiers in
+            if Set(identifiers.map(\.rawValue)) == expectedDeletedIds {
+                replayExpectation.fulfill()
+            }
+        }
+        secondEnumerator.enumerateChanges(for: secondObserver, from: inputAnchor)
+
+        await fulfillment(of: [replayExpectation], timeout: 5)
+
+        XCTAssertNil(secondObserver.error)
+        XCTAssertEqual(
+            Set(secondObserver.deletedItemIdentifiers.map(\.rawValue)),
+            Set([downloaded.identifier, placeholder.identifier]),
+            "An interrupted delivery must be replayed from the original anchor."
+        )
+
+        let cleanupExpectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in
+                Self.dbManager.itemMetadata(ocId: downloaded.identifier) == nil
+                    && Self.dbManager.itemMetadata(ocId: placeholder.identifier) == nil
+            },
+            object: NSObject()
+        )
+        releaseFinish.signal()
+
+        await fulfillment(of: [cleanupExpectation], timeout: 5)
+        XCTAssertNil(firstObserver.error)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: downloaded.identifier))
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: placeholder.identifier))
+    }
+
     /// Scenario A (S1/S2 control): a NON-materialized file changed inside a visited (materialized)
     /// folder, AND the folder's ETag is bumped too (a well-behaved server propagates child changes
     /// up to the parent's ETag). Expected to PASS — the parent's bumped `syncTime` lets the child
