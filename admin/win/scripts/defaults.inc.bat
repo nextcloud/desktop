@@ -132,6 +132,22 @@ if "%SIGN_TIMESTAMP_URL%" == ""             set "SIGN_TIMESTAMP_URL=http://times
 if "%SIGN_TIMESTAMP_DIGEST_ALG%" == ""      set "SIGN_TIMESTAMP_DIGEST_ALG=sha256"
 
 Rem ********************************************************************************************
+Rem Second Code Signing Options: 1 = enable, 0 = disable (default)
+Rem Optional additional signature appended to the first one (dual signing). Not required
+Rem even when USE_CODE_SIGNING=1 - only used when explicitly enabled.
+if "%USE_SECOND_CODE_SIGNING%" == ""        set "USE_SECOND_CODE_SIGNING=0"
+
+Rem PFX Key and Password for the second certificate - same scheme as the first one
+if "%SECOND_CERTIFICATE_FILENAME%" == ""           set "SECOND_CERTIFICATE_FILENAME="
+if "%SECOND_CERTIFICATE_CSP%" == ""                set "SECOND_CERTIFICATE_CSP="
+if "%SECOND_CERTIFICATE_KEY_CONTAINER_NAME%" == "" set "SECOND_CERTIFICATE_KEY_CONTAINER_NAME="
+if "%SECOND_CERTIFICATE_PASSWORD%" == ""           set "SECOND_CERTIFICATE_PASSWORD="
+
+if "%SECOND_SIGN_FILE_DIGEST_ALG%" == ""           set "SECOND_SIGN_FILE_DIGEST_ALG=sha256"
+if "%SECOND_SIGN_TIMESTAMP_URL%" == ""             set "SECOND_SIGN_TIMESTAMP_URL=http://timestamp.digicert.com"
+if "%SECOND_SIGN_TIMESTAMP_DIGEST_ALG%" == ""      set "SECOND_SIGN_TIMESTAMP_DIGEST_ALG=sha256"
+
+Rem ********************************************************************************************
 Rem Upload build: 1 = enable (default), 0 = disable
 if "%UPLOAD_BUILD%" == ""                   set "UPLOAD_BUILD=1"
 

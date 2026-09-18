@@ -62,6 +62,23 @@ To do a dry run (validates all required variables without building):
 TEST_RUN=1 ./build.bat
 ```
 
+### Code signing with a second certificate (dual signing)
+
+- Signed files (the collected exe/dll payload as well as the final MSI) are always signed with
+  the certificate configured via `CERTIFICATE_FILENAME`, `CERTIFICATE_CSP`,
+  `CERTIFICATE_KEY_CONTAINER_NAME` and `CERTIFICATE_PASSWORD` whenever `USE_CODE_SIGNING=1`
+  (default).
+- Optionally, a second, independent signature can be appended on top of the first one by
+  setting `USE_SECOND_CODE_SIGNING=1` and configuring `SECOND_CERTIFICATE_FILENAME`,
+  `SECOND_CERTIFICATE_CSP`, `SECOND_CERTIFICATE_KEY_CONTAINER_NAME` and
+  `SECOND_CERTIFICATE_PASSWORD` (same scheme as the first certificate).
+  `SECOND_SIGN_FILE_DIGEST_ALG`, `SECOND_SIGN_TIMESTAMP_URL` and
+  `SECOND_SIGN_TIMESTAMP_DIGEST_ALG` mirror the equivalent `SIGN_*` variables for the second
+  signature.
+- `USE_SECOND_CODE_SIGNING` is disabled by default (`0`) and has no effect unless
+  `USE_CODE_SIGNING=1`, since the second signature is appended (`signtool sign /as`) to the
+  first one rather than replacing it.
+
 ---
 
 ## Environment Variables
@@ -105,6 +122,18 @@ For code signing, additionally set:
 | `SIGN_TIMESTAMP_URL` | Timestamp server URL (default: `http://timestamp.digicert.com`) |
 | `SIGN_TIMESTAMP_DIGEST_ALG` | Timestamp digest algorithm (default: `sha256`) |
 | `APPLICATION_VENDOR` | Vendor string used in the signing description (default: `Nextcloud GmbH`) |
+
+For an optional second (appended) signature, additionally set `USE_SECOND_CODE_SIGNING=1` and:
+
+| Variable | Description |
+|---|---|
+| `SECOND_CERTIFICATE_FILENAME` | Path to the second PFX certificate file |
+| `SECOND_CERTIFICATE_CSP` | Cryptographic Service Provider name for the second certificate |
+| `SECOND_CERTIFICATE_KEY_CONTAINER_NAME` | Key container name inside the second CSP |
+| `SECOND_CERTIFICATE_PASSWORD` | Second certificate password |
+| `SECOND_SIGN_FILE_DIGEST_ALG` | Digest algorithm for the second signature (default: `sha256`) |
+| `SECOND_SIGN_TIMESTAMP_URL` | Timestamp server URL for the second signature (default: `http://timestamp.digicert.com`) |
+| `SECOND_SIGN_TIMESTAMP_DIGEST_ALG` | Timestamp digest algorithm for the second signature (default: `sha256`) |
 
 For uploading (`UPLOAD_BUILD=1`), additionally set:
 
