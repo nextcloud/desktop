@@ -184,6 +184,19 @@ Item {
             compare(messageList.count, 0)
         }
 
+        function test_chatActionIconsAreCentered() {
+            const chatView = createChatView()
+            for (const buttonName of ["assistantNewConversationButton", "assistantReloadConversationsButton"]) {
+                const button = findChild(chatView, buttonName)
+                verify(button !== null)
+                const icon = findChild(button, "wizardButtonLeadingIcon")
+                verify(icon !== null)
+                const center = icon.mapToItem(button, icon.width / 2, icon.height / 2)
+                verify(Math.abs(center.x - button.width / 2) < 1)
+                verify(Math.abs(center.y - button.height / 2) < 1)
+            }
+        }
+
         function test_chatViewShowsThinkingState() {
             assistantTestSetup.controller.loadData()
             assistantTestSetup.completeChatLoad()
