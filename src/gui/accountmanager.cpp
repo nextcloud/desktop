@@ -583,8 +583,12 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         acc->setUrl(urlConfig.toUrl());
     }
 
-    // Migrate to webflow
-    if (authType == QLatin1String(httpAuthTypeC)) {
+    // Public share links always use HTTP Basic authentication. They must not be
+    // migrated to webflow, even if an earlier client version already persisted
+    // the account with the webflow auth type.
+    if (acc->isPublicShareLink()) {
+    } else if (authType == QLatin1String(httpAuthTypeC)) {
+        // Migrate to webflow
         authType = webflowAuthTypeC;
         acc->_settingsMap.insert(QLatin1String(authTypeC), authType);
 
