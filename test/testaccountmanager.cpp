@@ -10,6 +10,7 @@
 #include <QtTest>
 
 #include <QStandardPaths>
+#include <QTemporaryDir>
 #include <QUrl>
 
 #include "account.h"
@@ -23,11 +24,18 @@
 using namespace OCC;
 using namespace Qt::StringLiterals;
 
+namespace
+{
+constexpr auto accountSettingsVersion = 13;
+}
+
 class TestAccountManager : public QObject
 {
     Q_OBJECT
 
 private:
+    QTemporaryDir _configDir;
+
     //! @brief The account state registered with AccountManager for the current
     //! test. Set by addTestAccount() and cleared by the cleanup() slot.
     AccountState *_accountState = nullptr;
@@ -65,6 +73,8 @@ private Q_SLOTS:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+        QVERIFY(_configDir.isValid());
+        QVERIFY(ConfigFile::setConfDir(_configDir.path()));
     }
 
     //! @brief Keeps tests off the device policy of the machine running them.
@@ -295,6 +305,43 @@ private Q_SLOTS:
         QVERIFY(!account->serverHasValidSubscription());
 
         QVERIFY(ConfigFile().serverManagedSettings().enforced.isEmpty());
+    }
+
+    void restoresPublicShareLinkWithBasicCredentials()
+    {
+        const auto accountId = QStringLiteral("public-share");
+        const auto shareUrl = QStringLiteral("https://cloud.example/s/share-token");
+        const auto writeAccount = [&accountId, &shareUrl](const QString &authType, const QString &userKey) {
+            QSettings settings(ConfigFile().configFile(), QSettings::IniFormat);
+            settings.beginGroup(QStringLiteral("Accounts"));
+            settings.setValue(QStringLiteral("version"), accountSettingsVersion);
+            settings.beginGroup(accountId);
+            settings.setValue(QStringLiteral("version"), accountSettingsVersion);
+            settings.setValue(QStringLiteral("url"), shareUrl);
+            settings.setValue(QStringLiteral("authType"), authType);
+            settings.setValue(userKey, QStringLiteral("share-token"));
+            settings.setValue(QStringLiteral("dav_user"), QStringLiteral("share-token"));
+            settings.endGroup();
+            settings.endGroup();
+            settings.sync();
+        };
+
+        for (const auto &authType : {QStringLiteral("http"), QStringLiteral("webflow")}) {
+            AccountManager::instance()->shutdown();
+            QSettings settings(ConfigFile().configFile(), QSettings::IniFormat);
+            settings.clear();
+            settings.sync();
+
+            writeAccount(authType, authType == QStringLiteral("http") ? QStringLiteral("http_user") : QStringLiteral("webflow_user"));
+
+            QCOMPARE(AccountManager::instance()->restore(false), AccountManager::AccountsRestoreSuccess);
+            const auto accounts = AccountManager::instance()->accounts();
+            QCOMPARE(accounts.size(), 1);
+            QCOMPARE(accounts.first()->account()->credentials()->authType(), QStringLiteral("http"));
+            QVERIFY(accounts.first()->account()->isPublicShareLink());
+        }
+
+        AccountManager::instance()->shutdown();
     }
 };
 
