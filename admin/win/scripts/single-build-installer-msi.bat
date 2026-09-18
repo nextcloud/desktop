@@ -50,6 +50,7 @@ echo "* WIX=%WIX%"
 echo "* PATH=%PATH%"
 
 echo "* USE_CODE_SIGNING=%USE_CODE_SIGNING%"
+echo "* USE_SECOND_CODE_SIGNING=%USE_SECOND_CODE_SIGNING%"
 echo "* UPLOAD_BUILD=%UPLOAD_BUILD%"
 
 Rem ********************************************************************************************
@@ -75,6 +76,16 @@ if "%USE_CODE_SIGNING%" == "1" (
     call :testEnv SIGN_FILE_DIGEST_ALG
     call :testEnv SIGN_TIMESTAMP_URL
     call :testEnv SIGN_TIMESTAMP_DIGEST_ALG
+
+    if "%USE_SECOND_CODE_SIGNING%" == "1" (
+        call :testEnv SECOND_CERTIFICATE_FILENAME
+        call :testEnv SECOND_CERTIFICATE_CSP
+        call :testEnv SECOND_CERTIFICATE_KEY_CONTAINER_NAME
+        call :testEnv SECOND_CERTIFICATE_PASSWORD
+        call :testEnv SECOND_SIGN_FILE_DIGEST_ALG
+        call :testEnv SECOND_SIGN_TIMESTAMP_URL
+        call :testEnv SECOND_SIGN_TIMESTAMP_DIGEST_ALG
+    )
 )
 
 if %ERRORLEVEL% neq 0 goto onError
