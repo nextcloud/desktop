@@ -37,6 +37,11 @@ echo "* SIGN_TIMESTAMP_URL=%SIGN_TIMESTAMP_URL%"
 echo "* SIGN_TIMESTAMP_DIGEST_ALG=%SIGN_TIMESTAMP_DIGEST_ALG%"
 echo "* USE_CODE_SIGNING=%USE_CODE_SIGNING%"
 
+echo "* USE_SECOND_CODE_SIGNING=%USE_SECOND_CODE_SIGNING%"
+echo "* SECOND_SIGN_FILE_DIGEST_ALG=%SECOND_SIGN_FILE_DIGEST_ALG%"
+echo "* SECOND_SIGN_TIMESTAMP_URL=%SECOND_SIGN_TIMESTAMP_URL%"
+echo "* SECOND_SIGN_TIMESTAMP_DIGEST_ALG=%SECOND_SIGN_TIMESTAMP_DIGEST_ALG%"
+
 echo "* PATH=%PATH%"
 
 Rem ********************************************************************************************
@@ -59,6 +64,18 @@ call :testEnv CERTIFICATE_PASSWORD
 call :testEnv SIGN_FILE_DIGEST_ALG
 call :testEnv SIGN_TIMESTAMP_URL
 call :testEnv SIGN_TIMESTAMP_DIGEST_ALG
+
+if %ERRORLEVEL% neq 0 goto onError
+
+if "%USE_SECOND_CODE_SIGNING%" == "1" (
+    call :testEnv SECOND_CERTIFICATE_FILENAME
+    call :testEnv SECOND_CERTIFICATE_CSP
+    call :testEnv SECOND_CERTIFICATE_KEY_CONTAINER_NAME
+    call :testEnv SECOND_CERTIFICATE_PASSWORD
+    call :testEnv SECOND_SIGN_FILE_DIGEST_ALG
+    call :testEnv SECOND_SIGN_TIMESTAMP_URL
+    call :testEnv SECOND_SIGN_TIMESTAMP_DIGEST_ALG
+)
 
 if %ERRORLEVEL% neq 0 goto onError
 
@@ -100,6 +117,16 @@ rem Reference: https://ss64.com/nt/start.html
 echo "* Run signtool on file: %~1"
 start "signtool" /D "%PROJECT_PATH%" /B /wait "%SIGNTOOL%" sign /debug /v /d "%APPLICATION_NAME% %TAG_DESKTOP%" /tr "%SIGN_TIMESTAMP_URL%" /td %SIGN_TIMESTAMP_DIGEST_ALG% /fd %SIGN_FILE_DIGEST_ALG% /f "%CERTIFICATE_FILENAME%" /csp "%CERTIFICATE_CSP%" /kc "[{{%CERTIFICATE_PASSWORD%}}]=%CERTIFICATE_KEY_CONTAINER_NAME%" "%~1"
 if %ERRORLEVEL% neq 0 goto onError
+
+Rem ********************************************************************************************
+rem     "sign (second, optional certificate - appended signature)"
+Rem ********************************************************************************************
+
+if "%USE_SECOND_CODE_SIGNING%" == "1" (
+    echo "* Run signtool (second signature, appended) on file: %~1"
+    start "signtool-second" /D "%PROJECT_PATH%" /B /wait "%SIGNTOOL%" sign /as /debug /v /d "%APPLICATION_NAME% %TAG_DESKTOP%" /tr "%SECOND_SIGN_TIMESTAMP_URL%" /td %SECOND_SIGN_TIMESTAMP_DIGEST_ALG% /fd %SECOND_SIGN_FILE_DIGEST_ALG% /f "%SECOND_CERTIFICATE_FILENAME%" /csp "%SECOND_CERTIFICATE_CSP%" /kc "[{{%SECOND_CERTIFICATE_PASSWORD%}}]=%SECOND_CERTIFICATE_KEY_CONTAINER_NAME%" "%~1"
+    if %ERRORLEVEL% neq 0 goto onError
+)
 
 Rem ********************************************************************************************
 
