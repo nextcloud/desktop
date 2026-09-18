@@ -184,11 +184,15 @@ public:
 
     [[nodiscard]] bool governanceAvailable() const;
 
+    [[nodiscard]] QByteArray etag() const;
+    void setEtag(const QByteArray &etag);
+
 private:
     [[nodiscard]] QMap<QString, QVariant> serverThemingMap() const;
 
     QVariantMap _capabilities;
     QList<DirectEditor*> _directEditors;
+    QByteArray _etag;
 };
 
 /*-------------------------------------------------------------------------------------*/

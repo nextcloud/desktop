@@ -30,6 +30,10 @@ Q_LOGGING_CATEGORY(lcConnectionValidator, "nextcloud.sync.connectionvalidator", 
 // This makes sure we get tried often enough without "ConnectionValidator already running"
 static qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5 * 1000);
 
+constexpr auto notModifiedStatusCode = 304;
+constexpr auto successStatusCode = 100;
+constexpr auto httpOkStatusCode = 200;
+
 ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QStringList &previousErrors, QObject *parent)
     : QObject(parent)
     , _previousErrors(previousErrors)
@@ -264,12 +268,45 @@ void ConnectionValidator::checkServerCapabilities()
     // The main flow now needs the capabilities
     auto *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
     job->setTimeout(timeoutToUseMsec);
-    QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotCapabilitiesRecieved);
+    if (_account->capabilities().isValid() && !_account->capabilitiesEtag().isEmpty()) {
+        job->addRawHeader("If-None-Match", _account->capabilitiesEtag());
+    }
+    QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotCapabilitiesReceived);
+    QObject::connect(job, &JsonApiJob::etagResponseHeaderReceived, this, &ConnectionValidator::slotCapabilitiesEtagReceived);
     job->start();
+}
+
+void ConnectionValidator::slotCapabilitiesEtagReceived(const QByteArray &value, int statusCode)
+{
+    if ((statusCode == successStatusCode || statusCode == httpOkStatusCode || statusCode == notModifiedStatusCode) && !value.isEmpty()) {
+        qCDebug(lcConnectionValidator) << "New capabilities ETag response header received:" << value;
+        _account->setCapabilitiesEtag(value);
+    }
 }
 
 void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
 {
+    slotCapabilitiesReceived(json, 0);
+}
+
+void ConnectionValidator::slotCapabilitiesReceived(const QJsonDocument &json, int statusCode)
+{
+    if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
+        if (auto reply = job->reply()) {
+            _account->setHttp2Supported(reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool());
+        }
+    }
+
+    if (statusCode == notModifiedStatusCode) {
+        qCInfo(lcConnectionValidator) << "Server capabilities not modified (HTTP 304)";
+        checkServerTermsOfService();
+
+        if (_account->isPublicShareLink()) {
+            slotUserFetched(nullptr);
+        }
+        return;
+    }
+
     auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
     qCInfo(lcConnectionValidator) << "Server capabilities" << caps;
     _account->setCapabilities(caps.toVariantMap());

@@ -153,7 +153,9 @@ protected Q_SLOTS:
     void slotAuthFailed(QNetworkReply *reply);
     void slotAuthSuccess();
 
+    void slotCapabilitiesReceived(const QJsonDocument &json, int statusCode = 0);
     void slotCapabilitiesRecieved(const QJsonDocument &);
+    void slotCapabilitiesEtagReceived(const QByteArray &value, int statusCode);
     void slotUserFetched(OCC::UserInfo *userInfo);
 
     void termsOfServiceCheckDone();

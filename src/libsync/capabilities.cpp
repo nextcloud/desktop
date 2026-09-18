@@ -547,6 +547,15 @@ bool Capabilities::governanceAvailable() const
     return _capabilities.contains(u"governance"_s);
 }
 
+QByteArray Capabilities::etag() const
+{
+    return _etag;
+}
+
+void Capabilities::setEtag(const QByteArray &etag)
+{
+    _etag = etag;
+}
 
 /*-------------------------------------------------------------------------------------*/
 
