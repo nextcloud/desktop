@@ -222,6 +222,8 @@ class TestSharingDialog : public QObject
 
         QVERIFY(dialogObject->setProperty("hasSelectedShare", false));
         QCOMPARE(shareStackLayout->property("currentIndex").toInt(), 0);
+        QVERIFY(dialogObject->setProperty("selectedShare", QVariant::fromValue<Share *>(nullptr)));
+        QCoreApplication::processEvents();
 
         dialog->close();
     }
