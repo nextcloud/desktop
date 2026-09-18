@@ -55,6 +55,32 @@ Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservi
                               Q_ARG(QString, domainId));
 }
 
+- (void)presentUnifiedSharingForItem:(NSString *)fileId
+                           localPath:(NSString *)localPath
+                      remoteItemPath:(NSString *)remoteItemPath
+                 forDomainIdentifier:(NSString *)domainIdentifier
+{
+    qCDebug(OCC::lcMacFileProviderService) << "Should present unified sharing for item with fileId:"
+                                           << fileId
+                                           << "and path:"
+                                           << localPath
+                                           << "remote item path:"
+                                           << remoteItemPath
+                                           << "domain identifier:"
+                                           << domainIdentifier;
+
+    const auto qFileId = QString::fromNSString(fileId);
+    const auto qLocalPath = QString::fromNSString(localPath);
+    const auto qRemoteItemPath = QString::fromNSString(remoteItemPath);
+    const auto domainId = QString::fromNSString(domainIdentifier);
+
+    QMetaObject::invokeMethod(_service, "showUnifiedSharingDialog", Qt::QueuedConnection,
+                              Q_ARG(QString, qFileId),
+                              Q_ARG(QString, qLocalPath),
+                              Q_ARG(QString, qRemoteItemPath),
+                              Q_ARG(QString, domainId));
+}
+
 - (void)openItemInBrowser:(NSString *)fileId
            remoteItemPath:(NSString *)remoteItemPath
       forDomainIdentifier:(NSString *)domainIdentifier
@@ -277,4 +303,3 @@ void FileProviderService::setLatestReceivedSyncStatus(const QString &userId, Syn
 } // namespace Mac
 
 } // namespace OCC
-

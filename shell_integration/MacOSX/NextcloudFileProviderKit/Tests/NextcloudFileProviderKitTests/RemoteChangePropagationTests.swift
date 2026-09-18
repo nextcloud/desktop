@@ -82,7 +82,10 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        let database = Self.dbManager.ncDatabase()
+        try! database.write {
+            database.deleteAll()
+        }
         rootItem = MockRemoteItem.rootItem(account: Self.account)
     }
 
@@ -303,12 +306,21 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         let secondObserver = MockChangeObserver(enumerator: secondEnumerator)
         let expectedDeletedIds = Set([downloaded.identifier, placeholder.identifier])
         let replayExpectation = expectation(description: "Second observer receives the replayed deletions")
+        let secondFinishExpectation = expectation(description: "Second observer finishes the replayed batch")
         secondObserver.didDeleteItemsHandler = { identifiers in
             if Set(identifiers.map(\.rawValue)) == expectedDeletedIds {
                 replayExpectation.fulfill()
             }
         }
-        secondEnumerator.enumerateChanges(for: secondObserver, from: inputAnchor)
+        secondObserver.beforeFinishEnumeratingChanges = {
+            secondFinishExpectation.fulfill()
+        }
+        // The first observer deliberately blocks the main actor until its acknowledgement is released.
+        // Start the replacement enumerator from a background queue so it can observe the durable pending
+        // batch while that callback is still blocked, matching File Provider's independent callbacks.
+        DispatchQueue.global().async {
+            secondEnumerator.enumerateChanges(for: secondObserver, from: inputAnchor)
+        }
 
         await fulfillment(of: [replayExpectation], timeout: 5)
 
@@ -328,7 +340,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         )
         releaseFinish.signal()
 
-        await fulfillment(of: [cleanupExpectation], timeout: 5)
+        await fulfillment(of: [cleanupExpectation, secondFinishExpectation], timeout: 5)
         XCTAssertNil(firstObserver.error)
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: downloaded.identifier))
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: placeholder.identifier))

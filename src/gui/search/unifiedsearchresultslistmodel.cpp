@@ -10,6 +10,7 @@
 #include "folderman.h"
 #include "guiutility.h"
 #include "networkjobs.h"
+#include "tray/usermodel.h"
 
 #include <QDesktopServices>
 #include <QFileInfo>
@@ -177,7 +178,15 @@ QString navigationAppIconForResult(const OCC::AccountState *accountState,
 namespace OCC {
 Q_LOGGING_CATEGORY(lcUnifiedSearch, "nextcloud.gui.unifiedsearch", QtInfoMsg)
 
-UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accountState, int debounceInterval, int revealInterval, QObject *parent)
+UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(QObject *parent)
+    : UnifiedSearchResultsListModel(nullptr, 300, 1000, parent)
+{
+}
+
+UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accountState,
+                                                             int debounceInterval,
+                                                             int revealInterval,
+                                                             QObject *parent)
     : QAbstractListModel(parent)
     , _accountState(accountState)
 {
@@ -238,8 +247,79 @@ UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accou
 
     if (isAccountConnected()) {
         QTimer::singleShot(0, this, &UnifiedSearchResultsListModel::discoverProviders);
-    } else {
+    } else if (_accountState) {
         setErrorString(tr("Search is unavailable while this account is offline."));
+    }
+}
+
+int UnifiedSearchResultsListModel::accountId() const
+{
+    return _accountId;
+}
+
+void UnifiedSearchResultsListModel::setAccountId(const int id)
+{
+    if (_accountId == id) {
+        return;
+    }
+
+    _accountId = id;
+    Q_EMIT accountIdChanged();
+
+    const auto userModel = UserModel::instance();
+    const auto user = userModel ? userModel->user(id) : nullptr;
+    setAccountState(user ? user->accountState().data() : nullptr);
+    Q_EMIT canEditSearchChanged();
+}
+
+void UnifiedSearchResultsListModel::setAccountState(AccountState *const accountState)
+{
+    if (_accountState == accountState) {
+        return;
+    }
+
+    if (_accountState) {
+        disconnect(_accountState, nullptr, this, nullptr);
+    }
+
+    _accountState = accountState;
+    if (_accountState) {
+        connect(_accountState, &AccountState::isConnectedChanged, this, [this] {
+            const auto connected = isAccountConnected();
+            Q_EMIT canEditSearchChanged();
+            if (_lastKnownConnected && !connected) {
+                const auto wasInProgress = isSearchInProgress();
+                ++_queryGeneration;
+                abortSearchJobs();
+                abortProviderDiscovery();
+                _debounceTimer.stop();
+                setWaitingForSearchTermEditEnd(false);
+                resetProviderRuntime();
+                setProvidersReady(false);
+                rebuildProjection();
+                setErrorString(tr("Search is unavailable while this account is offline."));
+                updateProgressSignals(wasInProgress);
+            } else if (!_lastKnownConnected && connected) {
+                setErrorString({});
+                _pendingSearch = hasSearchTerm();
+                discoverProviders();
+            }
+            _lastKnownConnected = connected;
+        });
+        connect(_accountState, &QObject::destroyed, this, [this] {
+            _accountState = nullptr;
+            Q_EMIT canEditSearchChanged();
+        });
+    }
+
+    _lastKnownConnected = isAccountConnected();
+    if (isAccountConnected()) {
+        setErrorString({});
+        QTimer::singleShot(0, this, &UnifiedSearchResultsListModel::discoverProviders);
+    } else if (_accountState) {
+        setErrorString(tr("Search is unavailable while this account is offline."));
+    } else {
+        setErrorString({});
     }
 }
 

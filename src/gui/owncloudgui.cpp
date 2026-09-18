@@ -9,46 +9,45 @@
 #include "account.h"
 #include "accountmanager.h"
 #include "accountstate.h"
+#include "activity/sortedactivitylistmodel.h"
+#include "activity/syncstatussummary.h"
 #include "application.h"
 #include "assistant/assistantcontroller.h"
 #include "assistant/assistantmodule.h"
 #include "callstatechecker.h"
-#include "emojimodel.h"
-#include "notificationsoundplayer.h"
-#include "fileactivitylistmodel.h"
-#include "folderman.h"
-#include "guiutility.h"
-#include "logbrowser.h"
-#include "logger.h"
-#include "openfilemanager.h"
-#include "owncloudsetupwizard.h"
-#include "progressdispatcher.h"
-#include "settingsdialog.h"
-#include "theme.h"
-#include "wheelhandler.h"
-#include "syncconflictsmodel.h"
 #include "conflictdialog.h"
 #include "conflictsolver.h"
-#include "syncengine.h"
-#include "wizard/accountwizardcontroller.h"
+#include "emojimodel.h"
+#include "fileactivitylistmodel.h"
 #include "filedetails/datefieldbackend.h"
 #include "filedetails/filedetails.h"
 #include "filedetails/shareemodel.h"
 #include "filedetails/sharemodel.h"
 #include "filedetails/sortedsharemodel.h"
-#include "activity/sortedactivitylistmodel.h"
-#include "activity/syncstatussummary.h"
-#include "tray/trayactivationpolicy.h"
-#include "tray/trayaccountappsmodel.h"
-#include "search/unifiedsearchpeoplemodel.h"
-#include "search/unifiedsearchresultslistmodel.h"
+#include "folderman.h"
 #include "tray/usermodel.h"
-#include "integration/fileactionsmodel.h"
 #include "governance/applygovernancelabel.h"
 #include "governance/deletegovernancelabel.h"
 #include "governance/getavailablegovernancelabels.h"
 #include "governance/getgovernancelabels.h"
 #include "governance/governancelabelslistmodel.h"
+#include "guiutility.h"
+#include "integration/fileactionsmodel.h"
+#include "logbrowser.h"
+#include "logger.h"
+#include "notificationsoundplayer.h"
+#include "openfilemanager.h"
+#include "owncloudsetupwizard.h"
+#include "progressdispatcher.h"
+#include "settingsdialog.h"
+#include "syncconflictsmodel.h"
+#include "syncengine.h"
+#include "theme.h"
+#include "tray/trayaccountappsmodel.h"
+#include "tray/trayactivationpolicy.h"
+#include "wheelhandler.h"
+#include "wizard/accountwizardcontroller.h"
+
 #include "filesystem.h"
 #include "common/utility_mac_sandbox.h"
 
@@ -62,7 +61,6 @@
 #include <QFileDialog>
 #include <QGuiApplication>
 #include <QMessageBox>
-#include <QQmlApplicationEngine>
 #include <QSignalMapper>
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include <QtDBus/QDBusConnection>
@@ -70,11 +68,10 @@
 #endif
 
 #include <QAbstractItemModel>
-#include <QQmlEngine>
 #include <QQmlComponent>
-#include <QQmlApplicationEngine>
-#include <QQuickItem>
 #include <QQmlContext>
+#include <QQmlEngine>
+#include <QQuickItem>
 
 #ifdef Q_OS_MACOS
 #include "foregroundbackground_interface.h"
@@ -105,7 +102,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     , _app(parent)
 {
     _tray = Systray::instance();
-    _tray->setTrayEngine(new QQmlApplicationEngine(this));
+    _tray->createTrayEngine();
     // for the beginning, set the offline icon until the account was verified
     _tray->setIcon(Theme::instance()->folderOfflineIcon(/*systray?*/ true));
 
@@ -143,6 +140,7 @@ ownCloudGui::ownCloudGui(Application *parent)
 #ifdef BUILD_FILE_PROVIDER_MODULE
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::showFileActionsDialog, _tray.data(), &Systray::slotShowFileProviderFileActionsDialog);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::showUnifiedSharingDialog, _tray.data(), &Systray::slotShowFileProviderUnifiedSharingDialog);
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::openItemInBrowserRequested, this, &ownCloudGui::slotOpenItemInBrowserFromFileProvider);
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::copyInternalLinkRequested, this, &ownCloudGui::slotCopyInternalLinkFromFileProvider);
 #endif
@@ -163,7 +161,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
     qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
     qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
-    qmlRegisterType<UnifiedSearchPeopleModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchPeopleModel");
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
     qmlRegisterType<FileActionsModel>("com.nextcloud.desktopclient", 1, 0, "FileActionsModel");
@@ -179,7 +176,6 @@ ownCloudGui::ownCloudGui(Application *parent)
         "com.nextcloud.desktopclient", 1, 0, "AssistantController", "Owned by the Assistant window");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
     qmlRegisterUncreatableType<TalkNotificationData>("com.nextcloud.desktopclient", 1, 0, "talkNotificationData", "TalkNotificationData");
-    qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
     qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "userStatus", "Access to Status enum");
     qmlRegisterUncreatableType<Sharee>("com.nextcloud.desktopclient", 1, 0, "sharee", "Access to Type enum");
     qmlRegisterUncreatableType<ClientSideEncryptionTokenSelector>("com.nextcloud.desktopclient", 1, 0, "ClientSideEncryptionTokenSelector", "Access to the certificate selector");
@@ -189,7 +185,6 @@ ownCloudGui::ownCloudGui(Application *parent)
 
     qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
     qRegisterMetaType<SyncStatusSummary *>("SyncStatusSummary*");
-    qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
     qRegisterMetaType<UserStatus>("UserStatus");
     qRegisterMetaType<SharePtr>("SharePtr");
     qRegisterMetaType<ShareePtr>("ShareePtr");
@@ -798,9 +793,9 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 }
 
 
-void ownCloudGui::slotShowShareDialog(const QString &localPath) const
+void ownCloudGui::slotShowShareDialog(const QString &localPath, const QString &fileId) const
 {
-    _tray->createShareDialog(localPath);
+    _tray->createShareDialog(localPath, fileId);
 }
 
 void ownCloudGui::slotShowGovernanceLabelsDialog(AccountPtr account,
