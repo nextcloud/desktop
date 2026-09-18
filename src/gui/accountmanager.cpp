@@ -587,6 +587,20 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     // migrated to webflow, even if an earlier client version already persisted
     // the account with the webflow auth type.
     if (acc->isPublicShareLink()) {
+        if (authType == QLatin1String(webflowAuthTypeC)) {
+            authType = QLatin1String(httpAuthTypeC);
+            acc->_settingsMap.insert(QLatin1String(authTypeC), authType);
+
+            const auto settingsChildKeys = settings.childKeys();
+            for (const auto &key : settingsChildKeys) {
+                if (!key.startsWith(webflowAuthPrefix)) {
+                    continue;
+                }
+
+                const auto newkey = QString::fromLatin1(httpAuthPrefix).append(key.mid(QString::fromLatin1(webflowAuthPrefix).size()));
+                acc->_settingsMap.insert(newkey, settings.value(key));
+            }
+        }
     } else if (authType == QLatin1String(httpAuthTypeC)) {
         // Migrate to webflow
         authType = webflowAuthTypeC;
