@@ -5,7 +5,7 @@
 import Foundation
 import NextcloudFileProviderKit
 
-public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
+public class MockChangeObserver: NSObject, NSFileProviderChangeObserver, @unchecked Sendable {
     public var changedItems: [any NSFileProviderItemProtocol] = []
     public var deletedItemIdentifiers: [NSFileProviderItemIdentifier] = []
     public var didDeleteItemsHandler: (([NSFileProviderItemIdentifier]) -> Void)?
