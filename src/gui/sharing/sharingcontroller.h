@@ -244,7 +244,11 @@ private:
     void setResolvingInternalLink(bool resolvingInternalLink);
     void setInternalLinkError(const QString &error);
     [[nodiscard]] Share *shareById(const QString &shareId) const;
-    [[nodiscard]] Share *updateShareFromJson(const QString &shareId, const QJsonDocument &json);
+    /**
+     * @brief Applies the JSON to the matching share in place and emits any applicable change notifications.
+     * @return The updated share, or nullptr when no share with shareId is managed.
+     */
+    Share *updateShareFromJson(const QString &shareId, const QJsonDocument &json);
     void replaceShares(std::vector<std::unique_ptr<Share>> shares);
 
     AccountPtr _account;
