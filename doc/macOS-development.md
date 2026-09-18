@@ -7,13 +7,13 @@
 
 This is the entry point for contributors who want to work on the Nextcloud desktop client on macOS and submit bug fixes or feature implementations through pull requests.
 
-**tl;dr:** Open "[Nextcloud Desktop Client.xcworkspace](../Nextcloud%20Desktop%20Client.xcworkspace/)", select the "NextcloudDev" scheme and hit `⌘ + R`.
+**tl;dr:** Open "[Nextcloud Desktop Client.xcworkspace](../Nextcloud%20Desktop%20Client.xcworkspace/)", select the "Nextcloud Developer Client" scheme and hit `⌘ + R`.
 
 ## Quick Start
 
 1. Clone the repository.
 2. Replace the Apple Development Team identifier with your own — see [Set Your Apple Development Team](#set-your-apple-development-team).
-3. Open `Nextcloud Desktop Client.xcworkspace`, select the "NextcloudDev" scheme and run.
+3. Open `Nextcloud Desktop Client.xcworkspace`, select the "Nextcloud Developer Client" scheme and run.
 
 ## System Requirements
 
@@ -48,7 +48,7 @@ Being signed in to Xcode with any Apple developer account is sufficient to gener
 
 ### Open the Xcode Workspace
 
-Open [`Nextcloud Desktop Client.xcworkspace`](../Nextcloud%20Desktop%20Client.xcworkspace/) in Xcode. Select the "NextcloudDev" scheme and run (`⌘ + R`).
+Open [`Nextcloud Desktop Client.xcworkspace`](../Nextcloud%20Desktop%20Client.xcworkspace/) in Xcode. Select the "Nextcloud Developer Client" scheme and run (`⌘ + R`).
 
 ## Project Structure
 
@@ -102,7 +102,7 @@ columns 3
 To isolate working environments and simplify cache busting, build artifacts and derived data are stored in unconventional locations. This also helps to resolve KDE Craft build errors caused by overly long file paths.
 
 - **`mac-crafter`:** the tool is invoked with the `build` directory at the repository clone root as its build data location. See [`Craft.sh`](../shell_integration/MacOSX/NextcloudIntegration/NextcloudDev/Craft.sh). A top-level location reduces path-length issues that have surfaced in KDE Craft dependencies in the past. You might still encounter that problem, if your repository clone has a too long path prefix.
-- **Built app bundle:** the NextcloudDev build deliberately places the built app at `/Applications` rather than in Xcode's derived data. Derived-data paths would otherwise be absolute and contain the current user name, making the scheme non-portable.
+- **Built app bundle:** the Nextcloud Developer Client build deliberately places the built app at `/Applications` rather than in Xcode's derived data. Derived-data paths would otherwise be absolute and contain the current user name, making the scheme non-portable.
 
 When no build is running, it is safe to remove the `build` directory in the project root. This is sometimes necessary to resolve build errors caused by outdated intermediate artifacts.
 
@@ -110,7 +110,7 @@ When no build is running, it is safe to remove the `build` directory in the proj
 
 ### Build & Run
 
-The "NextcloudDev" scheme integrates `mac-crafter` as an external build system. Selecting it and running (`⌘ + R`) builds, runs, and attaches the debugger.
+The "Nextcloud Developer Client" scheme integrates `mac-crafter` as an external build system. Selecting it and running (`⌘ + R`) builds, runs, and attaches the debugger.
 
 Internally, the scheme runs [`Craft.sh`](../shell_integration/MacOSX/NextcloudIntegration/NextcloudDev/Craft.sh), which invokes `mac-crafter` with the arguments required to produce a debug-friendly bundle. One of the key factors is the `Debug` build type, which flips switches in the CMake build scripts (for example app hardening and the `get-task-allow` entitlement, see [PR #8474](https://github.com/nextcloud/desktop/pull/8474/files)).
 
