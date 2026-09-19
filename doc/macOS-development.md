@@ -42,9 +42,34 @@ Two files default the Apple Development Team to Nextcloud GmbH's identifier `NKU
 - [`NEXTCLOUD.cmake`](../NEXTCLOUD.cmake) — the `DEVELOPMENT_TEAM` cache variable
 - [`shell_integration/MacOSX/NextcloudIntegration/NextcloudDev/Build.xcconfig`](../shell_integration/MacOSX/NextcloudIntegration/NextcloudDev/Build.xcconfig) — the `DEVELOPMENT_TEAM` default
 
-You can find your team ID on the [Apple Developer Account page](https://developer.apple.com/account) under "Membership details". After substitution, `grep -rn 'NKUJUXUJ3B' .` from the repo root should return no results.
+After substitution, `grep -rn 'NKUJUXUJ3B' .` from the repo root should return no results.
 
 Being signed in to Xcode with any Apple developer account is sufficient to generate a personal development signing certificate. The team identifier you substitute above must match the team that issued that certificate.
+
+### Finding Your Apple Developer Team ID
+
+- **Paid Apple Developer Program:**  
+  You can find your team ID directly on the [Apple Developer Account page](https://developer.apple.com/account) under **Membership details**.
+
+- **Free Apple Account (Personal Team):**  
+  If you are not a member of the Apple Developer Program and you are using a free Apple developer account, the "Membership details" section is not available on the website. You can obtain your Team ID via Xcode and Keychain Access instead:
+
+**Make your Apple Account an Apple Developer Account:**
+
+1. Open **Xcode > Settings > Accounts** (or `⌘ + ,`).
+2. Select your Apple account (or click **+** to add it).
+
+**Create your development certificate:**
+
+3. Select your **Personal Team** and click **Manage Certificates…**.
+4. In the bottom-left corner, click **+** and choose **Apple Development** to create a local certificate.
+
+**Find your Personal Team ID in the certificate:**
+
+5. Open the **Keychain Access** app on macOS (not the Passwords app).
+6. Search for `Apple Development` and double-click the certificate (not the private key).
+7. Under **Details**, locate the **Organizational Unit** field — this 10-character code is your Personal Team ID.
+
 
 ### Open the Xcode Workspace
 
