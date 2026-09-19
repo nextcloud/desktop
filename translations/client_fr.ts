@@ -598,6 +598,29 @@
     </message>
 </context>
 <context>
+    <name>DeleteShareConfirmation</name>
+    <message>
+        <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="17"/>
+        <source>Delete share?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="21"/>
+        <source>This removes the share and its access for all recipients.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
+        <source>Delete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="34"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="83"/>
@@ -637,6 +660,35 @@
         <location filename="../src/gui/ErrorBox.qml" line="54"/>
         <source>Error</source>
         <translation>Erreur</translation>
+    </message>
+</context>
+<context>
+    <name>FieldDelegate</name>
+    <message>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="25"/>
+        <source>%1 (required)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="103"/>
+        <source>YYYY-MM-DD</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="133"/>
+        <source>Enter a valid date within the allowed range.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="288"/>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="347"/>
+        <source>This value is shorter than the minimum length.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="363"/>
+        <source>This setting is not supported by this version of the desktop client.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4027,6 +4079,137 @@ Il n’est pas possible de revenir immédiatement à une version antérieure : p
     </message>
 </context>
 <context>
+    <name>OCC::Gui::Sharing::Share</name>
+    <message>
+        <location filename="../src/gui/sharing/unifiedshare.cpp" line="80"/>
+        <source>View only</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/unifiedshare.cpp" line="83"/>
+        <source>Can edit</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::Gui::Sharing::SharingController</name>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
+        <source>The server did not generate a valid public-link identifier.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="185"/>
+        <source>Could not create the public link.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="223"/>
+        <source>Could not retrieve the internal link.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
+        <source>The server returned an invalid share.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="282"/>
+        <source>Could not create the share.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="327"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="331"/>
+        <source>Could not delete the share.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="360"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="363"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="770"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="773"/>
+        <source>Could not add the recipient.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="391"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="394"/>
+        <source>Could not remove the recipient.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
+        <source>The server did not generate a valid sharing link.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="433"/>
+        <source>Could not update the sharing link.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="438"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="441"/>
+        <source>Could not generate a sharing link.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="471"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="479"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="578"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="586"/>
+        <source>Could not update the permissions.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="543"/>
+        <source>Could not update the recipient permissions.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="623"/>
+        <source>Could not update the sharing setting.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="673"/>
+        <source>The server did not activate the share.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="676"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="679"/>
+        <source>Could not send the share.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="720"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="730"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="757"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="764"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="781"/>
+        <source>The newly created share is no longer available.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="745"/>
+        <source>Could not attach the item to the share.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
+        <source>Could not save all changes to the share.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="53"/>
@@ -4054,13 +4237,13 @@ Il n’est pas possible de revenir immédiatement à une version antérieure : p
     <message>
         <location filename="../src/libsync/hydrationjob.cpp" line="37"/>
         <source>Failed to find fileId: %1 in db</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de trouver l&apos;ID de fichier : %1 dans la base de données</translation>
     </message>
     <message>
         <location filename="../src/libsync/hydrationjob.cpp" line="63"/>
         <source>Unexpected file size transferred. Expected %1 received %2</source>
         <extracomment>%1: expected file size in bytes, %2: actual file size in bytes</extracomment>
-        <translation type="unfinished"/>
+        <translation>Taille de fichier transférée imprévue. Prévu : %1, reçu : %2</translation>
     </message>
 </context>
 <context>
@@ -4728,12 +4911,12 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="201"/>
         <source>Unable to claim the sync root for files on demand, the folder is already claimed by %1</source>
         <extracomment>%1: system user name who is the owner of the sync root directory</extracomment>
-        <translation type="unfinished"/>
+        <translation>Impossible de revendiquer la racine de synchronisation des fichiers à la demande, le dossier est déjà revendiqué par %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="204"/>
         <source>Unable to retrieve registration info. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de récupérer les informations d&apos;inscription. Erreur : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="465"/>
@@ -4746,32 +4929,32 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="289"/>
         <source>Failed to read /proc/self/mountinfo</source>
-        <translation type="unfinished"/>
+        <translation>Échec de la lecture de /proc/self/mountinfo</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="302"/>
         <source>Failed to unmount the OpenVFS mount %1 Error:%2</source>
-        <translation type="unfinished"/>
+        <translation>Échec du démontage du montage OpenVFS %1 Erreur :%2</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="311"/>
         <source>The filesystem for %1 does not support xattributes.</source>
-        <translation type="unfinished"/>
+        <translation>Le système de fichiers pour %1 ne prend pas en charge les attributs étendus.</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="314"/>
         <source>The sync path is already claimed by %1</source>
-        <translation type="unfinished"/>
+        <translation>Le chemin de synchronisation est déjà revendiqué par %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="318"/>
         <source>OpenVFS executable not found, please install it</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;exécutable OpenVFS est introuvable, veuillez l&apos;installer</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="324"/>
         <source>Failed to find the OpenVFS config file, please check your installation.</source>
-        <translation type="unfinished"/>
+        <translation>Échec de l&apos;accès au fichier de configuration d&apos;OpenVFS, veuillez vérifier votre installation.</translation>
     </message>
 </context>
 <context>
@@ -6356,94 +6539,96 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="228"/>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="242"/>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="537"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="237"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="251"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="300"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="320"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="617"/>
         <source>Search is unavailable while this account is offline.</source>
         <translation>La recherche n&apos;est pas disponible tant que ce compte est déconnecté.</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="533"/>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="580"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="613"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="660"/>
         <source>Failed to fetch search providers.</source>
         <translation>Échec de la récupération des fournisseurs de recherche.</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="657"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="737"/>
         <source>No search providers are available.</source>
         <translation>Aucun fournisseur de recherche n&apos;est disponible.</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="691"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="771"/>
         <source>Search cleared</source>
         <translation>Recherche effacée</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="731"/>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1234"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="811"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1314"/>
         <source>Searching</source>
         <translation>Recherche en cours</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="953"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1033"/>
         <source>Partial matches</source>
         <translation>Correspondances partielles</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1222"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1302"/>
         <source>Search failed for all available sources. Please try again.</source>
         <translation>La recherche a échoué pour toutes les sources disponibles. Veuillez réessayer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1245"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1325"/>
         <source>%1 results in %2</source>
         <extracomment>%1 is the number of search results. %2 is the search provider name, for example &quot;Files&quot;.</extracomment>
         <translation>%1 résultats en %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1247"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1327"/>
         <source>No matching results</source>
         <translation>Aucun résultat correspondant</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1250"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1330"/>
         <source>%1 results. Some sources are unavailable.</source>
         <extracomment>%1 is the number of search results.</extracomment>
         <translation>%1 résultats. Certaines sources ne sont pas disponibles.</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1253"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1333"/>
         <source>%1 results</source>
         <extracomment>%1 is the number of search results.</extracomment>
         <translation>%1 résultats</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1427"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1507"/>
         <source>Today</source>
         <translation>Aujourd&apos;hui</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1510"/>
         <source>Last 7 days</source>
         <translation>7 derniers jours</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1433"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1513"/>
         <source>Last 30 days</source>
         <translation>30 derniers jours</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1437"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1517"/>
         <source>This year</source>
         <translation>Cette année</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1441"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1521"/>
         <source>Last year</source>
         <translation>L&apos;année dernière</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1462"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1542"/>
         <source>%1 – %2</source>
         <extracomment>%1 is the start date and %2 is the end date of a custom search date range. Both use the locale's short date format.</extracomment>
         <translation>%1 – %2</translation>
@@ -7293,6 +7478,37 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
 </context>
 <context>
+    <name>RecipientPermissionDialog</name>
+    <message>
+        <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
+        <source>Permissions for %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
+        <source>Recipient permissions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
+        <source>Close</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>RecipientSearchField</name>
+    <message>
+        <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
+        <source>Search for recipients</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
+        <source>Sharing is not available for this folder</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ResolveConflictsDialog</name>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="31"/>
@@ -7355,34 +7571,34 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Liste des résultats de recherche</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="159"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="169"/>
         <source>Remove %1 filter</source>
         <extracomment>%1 is an active search filter label, such as a provider name, date range, or person name.</extracomment>
         <translation>Retirer le filtre de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="183"/>
-        <location filename="../src/gui/search/SearchWindow.qml" line="252"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="193"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="262"/>
         <source>Retry</source>
         <translation>Réessayer</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="216"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="226"/>
         <source>Search results</source>
         <translation>Résultats de la recherche</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="251"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="261"/>
         <source>Some sources unavailable</source>
         <translation>Quelques sources indisponibles</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="259"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="269"/>
         <source>Less from connected services</source>
         <translation>Moins de résultats provenant des services connectés</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="259"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="269"/>
         <source>More from connected services</source>
         <translation>Plus de résultats provenant des services connectés</translation>
     </message>
@@ -7411,11 +7627,57 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     </message>
 </context>
 <context>
+    <name>ShareAdvancedSettingsPage</name>
+    <message>
+        <location filename="../src/gui/sharing/ShareAdvancedSettingsPage.qml" line="71"/>
+        <source>No advanced settings are available for this share.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ShareDelegate</name>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="182"/>
         <source>Copied!</source>
         <translation>Copié !</translation>
+    </message>
+</context>
+<context>
+    <name>ShareDetailsFrame</name>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="115"/>
+        <source>Changes to this share are applied immediately.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
+        <source>Delete share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
+        <source>Close</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
+        <source>Cancelling…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
+        <source>Saving…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
+        <source>Save</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -7501,6 +7763,178 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <source>Copy share link</source>
         <translation>Copier le lien de partage</translation>
     </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="119"/>
+        <source>Added by %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
+        <source>Configure recipient permissions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="159"/>
+        <source>Copy recipient link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
+        <source>Regenerate recipient link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
+        <source>Generate recipient link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
+        <source>Remove recipient</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
+        <source>Can view</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="227"/>
+        <source>Can edit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="231"/>
+        <source>Custom permissions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
+        <source>Sharing settings</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShareDialog</name>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
+        <source>Share &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="197"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="209"/>
+        <source>File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="61"/>
+        <source>Share settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
+        <source>Share with %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
+        <source>New share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
+        <source>Back to share details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
+        <source>Back to shares</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="196"/>
+        <source>Sharing settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="228"/>
+        <source>Advanced sharing settings</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShareListPage</name>
+    <message>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="78"/>
+        <source>Creating share…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="150"/>
+        <source>Internal link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="151"/>
+        <source>For people who already have access</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="153"/>
+        <source>Copy internal link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="164"/>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="167"/>
+        <source>Create public link</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShareRow</name>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <source>Share link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <source>Unfinished share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <source>Share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="55"/>
+        <source>Not active — select to finish</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/sharing/ShareRow.qml" line="60"/>
+        <source>%n recipient(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="77"/>
+        <source>Copy public link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="90"/>
+        <source>Configure share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="106"/>
+        <source>Delete share</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ShareView</name>
@@ -7568,12 +8002,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files (beta)</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers virtuels (bêta)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="92"/>
         <source>Download files on-demand. This feature is in an early preview. Recommended only for testing.</source>
-        <translation type="unfinished"/>
+        <translation>Téléchargement de fichiers à la demande. Cette fonctionnalité en est à ses tout premiers débuts. Recommandée uniquement pour tests.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
