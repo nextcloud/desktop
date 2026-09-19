@@ -5,37 +5,39 @@
  */
 
 #include "folderwizard.h"
-#include "folderman.h"
-#include "configfile.h"
-#include "theme.h"
-#include "networkjobs.h"
 #include "account.h"
-#include "selectivesyncdialog.h"
 #include "accountstate.h"
-#include "creds/abstractcredentials.h"
-#include "guiutility.h"
 #include "common/asserts.h"
+#include "configfile.h"
+#include "creds/abstractcredentials.h"
+#include "folderman.h"
+#include "guiutility.h"
+#include "networkjobs.h"
+#include "selectivesyncdialog.h"
+#include "settingspanelstyle.h"
+#include "theme.h"
 
 #ifdef Q_OS_MACOS
 #include "common/utility_mac_sandbox.h"
 #endif
 
+#include <QCheckBox>
 #include <QDesktopServices>
 #include <QDir>
-#include <QFileDialog>
-#include <QFileInfo>
-#include <QFileIconProvider>
-#include <QInputDialog>
-#include <QLoggingCategory>
-#include <QUrl>
-#include <QValidator>
-#include <QWizardPage>
-#include <QTreeWidget>
-#include <QVBoxLayout>
 #include <QEvent>
-#include <QCheckBox>
+#include <QFileDialog>
+#include <QFileIconProvider>
+#include <QFileInfo>
+#include <QInputDialog>
+#include <QLabel>
+#include <QLoggingCategory>
 #include <QMessageBox>
 #include <QStandardPaths>
+#include <QTreeWidget>
+#include <QUrl>
+#include <QVBoxLayout>
+#include <QValidator>
+#include <QWizardPage>
 
 #include <cstdlib>
 
@@ -594,6 +596,10 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
         });
         _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
         layout->addWidget(_virtualFilesCheckBox);
+        _virtualFilesManagedLabel = new QLabel(this);
+        _virtualFilesManagedLabel->setVisible(false);
+        SettingsPanelStyle::applyManagedLabelStyle(_virtualFilesManagedLabel);
+        layout->addWidget(_virtualFilesManagedLabel);
     }
 }
 
@@ -617,6 +623,7 @@ void FolderWizardSelectiveSync::initializePage()
     _selectiveSync->setFolderInfo(targetPath, alias, initialBlacklist);
 
     if (_virtualFilesCheckBox) {
+        _virtualFilesManagedLabel->setVisible(false);
         // TODO: remove when UX decision is made
         if (Utility::isPathWindowsDrivePartitionRoot(wizard()->field(QStringLiteral("sourceFolder")).toString())) {
             _virtualFilesCheckBox->setChecked(false);
@@ -630,6 +637,13 @@ void FolderWizardSelectiveSync::initializePage()
             if (Theme::instance()->enforceVirtualFilesSyncFolder()) {
                 _virtualFilesCheckBox->setChecked(true);
                 _virtualFilesCheckBox->setDisabled(true);
+            } else if (const auto managedVfs = ConfigFile().managedVirtualFilesMode(); managedVfs.isManaged) {
+                _virtualFilesCheckBox->setChecked(managedVfs.enabled);
+                _virtualFilesCheckBox->setDisabled(managedVfs.isEnforced);
+                if (managedVfs.isEnforced) {
+                    _virtualFilesManagedLabel->setText(ConfigFile().sourceLabel(QStringLiteral("virtualFilesMode")));
+                    _virtualFilesManagedLabel->setVisible(true);
+                }
             }
         }
         //

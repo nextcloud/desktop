@@ -15,6 +15,7 @@
 #include "libsync/clientsideencryption.h"
 #include "libsync/configfile.h"
 #include "libsync/cookiejar.h"
+#include "libsync/settings/servermanagedsettings.h"
 #include "libsync/theme.h"
 #include "libsync/clientproxy.h"
 #if !DISABLE_ACCOUNT_MIGRATION
@@ -510,11 +511,24 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
         accountProxyUser = configFile.proxyUser();
         qCInfo(lcAccountManager) << "Account is using global settings:" << accountProxyType;
     }
+    const auto managedProxy = configFile.managedProxySettings();
+    const auto followsSystemProxy = accountProxyType == QNetworkProxy::DefaultProxy;
+    if (managedProxy.typeEnforced || (managedProxy.typeManaged && followsSystemProxy)) {
+        accountProxyType = static_cast<QNetworkProxy::ProxyType>(managedProxy.proxyType);
+    }
+    if (managedProxy.hostEnforced || (managedProxy.hostManaged && followsSystemProxy)) {
+        accountProxyHost = managedProxy.proxyHostName;
+    }
+    if (managedProxy.portEnforced || (managedProxy.portManaged && followsSystemProxy)) {
+        accountProxyPort = managedProxy.proxyPort;
+    }
+
     account->setProxyType(accountProxyType);
     account->setProxyHostName(accountProxyHost);
     account->setProxyPort(accountProxyPort);
     account->setProxyNeedsAuth(accountProxyNeedsAuth);
     account->setProxyUser(accountProxyUser);
+    account->setProxySettingsAreManaged(managedProxy.isEnforced);
     const auto globalUseUploadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(configFile.useUploadLimit());
     const auto globalUseDownloadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(configFile.useDownloadLimit());
     // User network settings
@@ -781,6 +795,7 @@ void AccountManager::removeAccountState(OCC::AccountState *account, AccountRemov
     // clean up config from subscriptions and enterprise channel
     updateServerHasValidSubscriptionConfig();
     updateServerDesktopEnterpriseUpdateChannel();
+    updateServerManagedSettings();
 
     Q_EMIT accountSyncConnectionRemoved(account);
     Q_EMIT accountRemoved(account);
@@ -812,6 +827,39 @@ void AccountManager::updateServerDesktopEnterpriseUpdateChannel()
     }
 
     ConfigFile().setDesktopEnterpriseChannel(most_stable_channel.toString());
+}
+
+void AccountManager::updateServerManagedSettings()
+{
+    // Merge subscribed accounts into one set; the first account wins on a key
+    // conflict.
+    ServerManagedSettings merged;
+    for (const auto &account : std::as_const(_accounts)) {
+        if (!account->account()->serverHasValidSubscription()) {
+            continue;
+        }
+        if (account->account()->capabilities().isValid()) {
+            _serverCapabilitiesEverLoaded = true;
+        }
+        const auto accountSettings = account->account()->serverManagedSettings();
+        merged.schemaVersion = qMax(merged.schemaVersion, accountSettings.schemaVersion);
+        for (const auto &[key, value] : accountSettings.enforced.asKeyValueRange()) {
+            if (!merged.enforced.contains(key)) {
+                merged.enforced.insert(key, value);
+            }
+        }
+        for (const auto &[key, value] : accountSettings.defaults.asKeyValueRange()) {
+            if (!merged.defaults.contains(key)) {
+                merged.defaults.insert(key, value);
+            }
+        }
+    }
+
+    if (merged.defaults.isEmpty() && merged.enforced.isEmpty() && !_serverCapabilitiesEverLoaded) {
+        return;
+    }
+
+    ConfigFile().setServerManagedSettings(merged);
 }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
@@ -907,6 +955,8 @@ void AccountManager::addAccountState(AccountState *const accountState)
 
     QObject::connect(accountState->account().data(), &Account::wantsAccountSaved, this, &AccountManager::saveAccount);
     QObject::connect(accountState->account().data(), &Account::capabilitiesChanged, this, &AccountManager::capabilitiesChanged);
+    // Re-merge and persist managed settings whenever capabilities change, not only on add or remove.
+    QObject::connect(accountState->account().data(), &Account::capabilitiesChanged, this, &AccountManager::updateServerManagedSettings);
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;
@@ -914,6 +964,7 @@ void AccountManager::addAccountState(AccountState *const accountState)
 
     updateServerHasValidSubscriptionConfig();
     updateServerDesktopEnterpriseUpdateChannel();
+    updateServerManagedSettings();
 
     Q_EMIT accountAdded(accountState);
 }

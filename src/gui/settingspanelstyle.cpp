@@ -10,6 +10,7 @@
 #include <QFrame>
 #include <QGroupBox>
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QLayout>
 #include <QSizePolicy>
 #include <QSpinBox>
@@ -110,6 +111,18 @@ void apply(QWidget *root)
             settingsSwitch->setFixedSize(settingsSwitch->sizeHint());
         }
     }
+}
+
+void applyManagedLabelStyle(QLabel *label)
+{
+    auto font = label->font();
+    font.setItalic(true);
+    font.setPointSizeF(font.pointSizeF() * 0.9);
+    label->setFont(font);
+
+    label->setContentsMargins(0, 0, 12, 0);
+    label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }
 
 } // namespace OCC::SettingsPanelStyle
