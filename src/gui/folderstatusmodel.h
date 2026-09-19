@@ -128,6 +128,7 @@ private Q_SLOTS:
     void slotUpdateDirectories(const QStringList &);
     void slotGatherPermissions(const QString &name, const QMap<QString, QString> &properties);
     void slotGatherEncryptionStatus(const QString &href, const QMap<QString, QString> &properties);
+    void slotGatherSyncEnabledStatus(const QString &href, const QMap<QString, QString> &properties);
     void slotLscolFinishedWithError(QNetworkReply *r);
     void slotFolderSyncStateChange(OCC::Folder *f);
     void slotFolderScheduleQueueChanged();
