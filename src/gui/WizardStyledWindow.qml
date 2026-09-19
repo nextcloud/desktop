@@ -38,6 +38,11 @@ ApplicationWindow {
     palette.inactive.buttonText: Style.wizardPrimaryText
     palette.disabled.buttonText: Style.wizardDisabledText
 
+    Shortcut {
+        sequences: [StandardKey.Close]
+        onActivated: root.close()
+    }
+
     background: Rectangle {
         color: Style.wizardWindowBackground
     }
