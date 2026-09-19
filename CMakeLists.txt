@@ -325,10 +325,12 @@ if(BUILD_SHELL_INTEGRATION)
     add_subdirectory(shell_integration)
 endif()
 
-if(BUILD_TESTING)
+if(BUILD_TESTING AND BUILD_GUI)
     include(CTest)
     enable_testing()
     add_subdirectory(test)
+elseif(BUILD_TESTING)
+    message(STATUS "Skipping tests: BUILD_TESTING requires BUILD_GUI to be enabled.")
 endif()
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
