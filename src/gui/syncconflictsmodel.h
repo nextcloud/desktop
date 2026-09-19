@@ -59,6 +59,8 @@ public:
         ConflictSelected,
         ExistingPreviewUrl,
         ConflictPreviewUrl,
+        ExistingFilePath,
+        ConflictFilePath,
     };
 
     Q_ENUM(SyncConflictRoles)

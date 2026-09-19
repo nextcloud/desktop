@@ -157,6 +157,11 @@ void ConflictDialog::updateWidgets()
 
     setBoldFont(_ui->localVersionMtime, localMtime > remoteMtime);
     setBoldFont(_ui->remoteVersionMtime, remoteMtime > localMtime);
+
+    const QString localPath = _solver->localVersionFilename();
+    const QUrl folderUrl = QUrl::fromLocalFile(QFileInfo(localPath).absolutePath());
+
+    _ui->openInFileManagerLink->setText(QStringLiteral("<a href=\"%1\">Open in file manager</a>").arg(folderUrl.toString()));
 }
 
 void ConflictDialog::updateButtonStates()
