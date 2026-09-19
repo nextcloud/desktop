@@ -3832,7 +3832,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Dokumentacija uporabe</translation>
     </message>
     <message>
@@ -4322,7 +4322,7 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation type="unfinished"/>
     </message>
     <message>

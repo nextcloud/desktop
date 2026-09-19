@@ -3841,7 +3841,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Kullanım belgeleri</translation>
     </message>
     <message>
@@ -4338,7 +4338,7 @@ Silme izni verildiğinde bir klasörün silinmesini engelleyen ögeler silinir. 
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Kullanım belgeleri</translation>
     </message>
     <message>

@@ -3843,7 +3843,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Documentação de Uso</translation>
     </message>
     <message>
@@ -4340,7 +4340,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Documentação de uso</translation>
     </message>
     <message>

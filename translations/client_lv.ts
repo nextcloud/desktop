@@ -3833,7 +3833,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Lietošanas dokumentācija</translation>
     </message>
     <message>
@@ -4323,7 +4323,7 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation type="unfinished"/>
     </message>
     <message>

@@ -3843,7 +3843,7 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Naudojimo dokumentacija</translation>
     </message>
     <message>
@@ -4340,7 +4340,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Naudojimo dokumentacija</translation>
     </message>
     <message>

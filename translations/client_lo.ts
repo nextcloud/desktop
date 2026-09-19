@@ -3842,8 +3842,8 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
-        <translation>Usage Documentation</translation>
+        <source>User documentation</source>
+        <translation>User documentation</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="503"/>
@@ -4339,7 +4339,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation type="unfinished"/>
     </message>
     <message>

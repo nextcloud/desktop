@@ -3833,7 +3833,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Documentación de uso</translation>
     </message>
     <message>
@@ -4323,7 +4323,7 @@ Los elementos en los que se permite el borrado se eliminarán si impiden que un 
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation type="unfinished"/>
     </message>
     <message>

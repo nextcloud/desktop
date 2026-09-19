@@ -3842,7 +3842,7 @@ Kwa watumiaji wa hali ya juu: suala hili linaweza kuhusishwa na faili nyingi za 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Hati za Matumizi</translation>
     </message>
     <message>
@@ -4339,7 +4339,7 @@ Vipengee ambavyo ufutaji unaruhusiwa vitafutwa ikiwa vitazuia saraka kuondolewa.
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation type="unfinished"/>
     </message>
     <message>

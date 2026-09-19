@@ -3843,7 +3843,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Doiciméadú Úsáide</translation>
     </message>
     <message>
@@ -4340,7 +4340,7 @@ Scriosfar míreanna a gceadaítear iad a scriosadh má chuireann siad cosc ​�
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Doiciméadú Úsáide</translation>
     </message>
     <message>

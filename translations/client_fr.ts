@@ -3843,7 +3843,7 @@ Pour les utilisateurs avancés : ce problème peut être lié à la présence de
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Documentation d&apos;utilisation</translation>
     </message>
     <message>
@@ -4340,7 +4340,7 @@ Les éléments dont la suppression est autorisée seront supprimés s’ils emp�
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
-        <source>Usage Documentation</source>
+        <source>User documentation</source>
         <translation>Documentation d&apos;utilisation</translation>
     </message>
     <message>
