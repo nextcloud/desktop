@@ -1213,6 +1213,36 @@ void Account::setFileProviderDomainIdentifier(const QString &identifier)
     Q_EMIT wantsAccountSaved(sharedFromThis());
 }
 
+QString Account::fileProviderDomainVolumeUuid() const
+{
+    return _fileProviderDomainVolumeUuid;
+}
+
+void Account::setFileProviderDomainVolumeUuid(const QString &uuid)
+{
+    if (_fileProviderDomainVolumeUuid == uuid) {
+        return;
+    }
+
+    _fileProviderDomainVolumeUuid = uuid;
+    Q_EMIT wantsAccountSaved(sharedFromThis());
+}
+
+QByteArray Account::fileProviderDomainVolumeBookmark() const
+{
+    return _fileProviderDomainVolumeBookmark;
+}
+
+void Account::setFileProviderDomainVolumeBookmark(const QByteArray &bookmark)
+{
+    if (_fileProviderDomainVolumeBookmark == bookmark) {
+        return;
+    }
+
+    _fileProviderDomainVolumeBookmark = bookmark;
+    Q_EMIT wantsAccountSaved(sharedFromThis());
+}
+
 QByteArray Account::lastRootETag() const
 {
     return _lastRootETag;
