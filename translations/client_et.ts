@@ -602,22 +602,22 @@
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="17"/>
         <source>Delete share?</source>
-        <translation type="unfinished"/>
+        <translation>Kas kustutad jagamise?</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="21"/>
         <source>This removes the share and its access for all recipients.</source>
-        <translation type="unfinished"/>
+        <translation>Järgnevaga kaob see jagamine ja kõikide saajate võimalus seda kasutada.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Kustuta</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -667,28 +667,28 @@
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="25"/>
         <source>%1 (required)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (nõutav)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="103"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>AAAA-KK-PP</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="133"/>
         <source>Enter a valid date within the allowed range.</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta korrektne kuupäev lubatud vahemikust.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="288"/>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="347"/>
         <source>This value is shorter than the minimum length.</source>
-        <translation type="unfinished"/>
+        <translation>See väärtus on väikseimast lubatud väärtusest lühem.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="363"/>
         <source>This setting is not supported by this version of the desktop client.</source>
-        <translation type="unfinished"/>
+        <translation>See seadistus pole antud töölauakliendi poolt toetatud.</translation>
     </message>
 </context>
 <context>
@@ -4082,12 +4082,12 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="80"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Ainult vaatamiseks</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="83"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Võib muuta</translation>
     </message>
 </context>
 <context>
@@ -4095,35 +4095,35 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
         <source>The server did not generate a valid public-link identifier.</source>
-        <translation type="unfinished"/>
+        <translation>Server ei suutnud luua korrektset avaliku lingi tunnust.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="185"/>
         <source>Could not create the public link.</source>
-        <translation type="unfinished"/>
+        <translation>Avaliku jagamislingi loomine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="223"/>
         <source>Could not retrieve the internal link.</source>
-        <translation type="unfinished"/>
+        <translation>Sisemise jagamislingi laadimine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
         <source>The server returned an invalid share.</source>
-        <translation type="unfinished"/>
+        <translation>Server andis päringuvastuseks vigase jagamise.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="282"/>
         <source>Could not create the share.</source>
-        <translation type="unfinished"/>
+        <translation>Selle jagamise loomine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="327"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="331"/>
         <source>Could not delete the share.</source>
-        <translation type="unfinished"/>
+        <translation>Selle jagamise kustutamine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="360"/>
@@ -4131,30 +4131,30 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="770"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="773"/>
         <source>Could not add the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>Saaja lisamine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="391"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="394"/>
         <source>Could not remove the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>Saaja eemaldamine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
         <source>The server did not generate a valid sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Server ei suutnud luua korrektset jagamislinki.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="433"/>
         <source>Could not update the sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Jagamislingi uuendamine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="438"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="441"/>
         <source>Could not generate a sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Jagamislingi loomine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="471"/>
@@ -4162,30 +4162,30 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="578"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="586"/>
         <source>Could not update the permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Õiguste uuendamine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="543"/>
         <source>Could not update the recipient permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Saajate õiguste uuendamine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="623"/>
         <source>Could not update the sharing setting.</source>
-        <translation type="unfinished"/>
+        <translation>Jagamise seadistuse uuendamine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="673"/>
         <source>The server did not activate the share.</source>
-        <translation type="unfinished"/>
+        <translation>Server ei suutnud jagamist aktiveerida.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="676"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="679"/>
         <source>Could not send the share.</source>
-        <translation type="unfinished"/>
+        <translation>Selle jagamise edastamine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="720"/>
@@ -4194,18 +4194,18 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="764"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="781"/>
         <source>The newly created share is no longer available.</source>
-        <translation type="unfinished"/>
+        <translation>Äsjaloodud jagamine pole enam saadaval.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="745"/>
         <source>Could not attach the item to the share.</source>
-        <translation type="unfinished"/>
+        <translation>Objekti sidumine jagamisega ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
         <source>Could not save all changes to the share.</source>
-        <translation type="unfinished"/>
+        <translation>Kõikide jagamise muudatuste salvestamine ei õnnestunud.</translation>
     </message>
 </context>
 <context>
@@ -4236,13 +4236,13 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
     <message>
         <location filename="../src/libsync/hydrationjob.cpp" line="37"/>
         <source>Failed to find fileId: %1 in db</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ välja ei õnnestunud andmebaasist leida</translation>
     </message>
     <message>
         <location filename="../src/libsync/hydrationjob.cpp" line="63"/>
         <source>Unexpected file size transferred. Expected %1 received %2</source>
         <extracomment>%1: expected file size in bytes, %2: actual file size in bytes</extracomment>
-        <translation type="unfinished"/>
+        <translation>Edastatud failisuurus polnud ootuspärane: eeldatud oli %1, tegelikult sa vastu võetud %2</translation>
     </message>
 </context>
 <context>
@@ -4909,17 +4909,17 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="201"/>
         <source>Unable to claim the sync root for files on demand, the folder is already claimed by %1</source>
         <extracomment>%1: system user name who is the owner of the sync root directory</extracomment>
-        <translation type="unfinished"/>
+        <translation>Sünkroonimise juurkausta kasutuselevõtmine ei õnnestu - „%1“ juba väidab, et kasutab seda sünkroonimise kausta</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="204"/>
         <source>Unable to retrieve registration info. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Registreerimise teabe laadimine ei õnnestu. Viga: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="465"/>
         <source>Cannot dehydrate a placeholder because the file changed</source>
-        <translation type="unfinished"/>
+        <translation>Kuna fail on serveris muutunud, siis kohalikus andmeruumis asuva kohatäitja vormistamine ei õnnestu.</translation>
     </message>
 </context>
 <context>
@@ -4932,17 +4932,17 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="302"/>
         <source>Failed to unmount the OpenVFS mount %1 Error:%2</source>
-        <translation type="unfinished"/>
+        <translation>OpenVFS-i „%1“ haakepunkti lahtihaakimine ei õnnestunud. Viga: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="311"/>
         <source>The filesystem for %1 does not support xattributes.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ failisüsteem ei toeta xattributes&apos;i.</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="314"/>
         <source>The sync path is already claimed by %1</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ juba väidab, et kasutab sünkroonimise asukohta</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="318"/>
@@ -7480,17 +7480,17 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Permissions for %1</source>
-        <translation type="unfinished"/>
+        <translation>Õigused: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Saaja õigused</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -7498,12 +7498,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Search for recipients</source>
-        <translation type="unfinished"/>
+        <translation>Otsi jagamise saajaid</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Jagamine pole selle kausta jaoks saadaval</translation>
     </message>
 </context>
 <context>
@@ -7629,7 +7629,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareAdvancedSettingsPage.qml" line="71"/>
         <source>No advanced settings are available for this share.</source>
-        <translation type="unfinished"/>
+        <translation>Täiendavaid seadistusi pole selle jagamise jaoks saadaval.</translation>
     </message>
 </context>
 <context>
@@ -7645,37 +7645,37 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="115"/>
         <source>Changes to this share are applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>Selle jagamise muudatused rakenduvad kohe.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Kustuta jagamine</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Sulge</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancelling…</source>
-        <translation type="unfinished"/>
+        <translation>Katkestan…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Saving…</source>
-        <translation type="unfinished"/>
+        <translation>Salvestamisel …</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Salvesta</translation>
     </message>
 </context>
 <context>
@@ -7764,52 +7764,52 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="119"/>
         <source>Added by %1</source>
-        <translation type="unfinished"/>
+        <translation>Lisaja: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
         <source>Configure recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Seadista saaja õigusi</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="159"/>
         <source>Copy recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri saaja link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Regenerate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Loo saaja link uuesti</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Generate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Loo saaja link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
         <source>Remove recipient</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda jagamise saaja</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
         <source>Can view</source>
-        <translation type="unfinished"/>
+        <translation>Võib vaadata</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="227"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Võib muuta</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="231"/>
         <source>Custom permissions</source>
-        <translation type="unfinished"/>
+        <translation>Sinu kohendatud õigused</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Jagamise seadistused</translation>
     </message>
 </context>
 <context>
@@ -7817,49 +7817,49 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
         <source>Share &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Jagamine: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="197"/>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="209"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Fail</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="61"/>
         <source>Share settings</source>
-        <translation type="unfinished"/>
+        <translation>Jagamise seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
         <source>Share with %1</source>
-        <translation type="unfinished"/>
+        <translation>Jaga kasutajaga %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
         <source>New share</source>
-        <translation type="unfinished"/>
+        <translation>Uus jagamine</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
         <source>Back to share details</source>
-        <translation type="unfinished"/>
+        <translation>Tagasi jagamise üksikasjade juurde</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
         <source>Back to shares</source>
-        <translation type="unfinished"/>
+        <translation>Tagasi jagamise juurde</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="196"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Jagamise seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="228"/>
         <source>Advanced sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Jagamise täiendavad valikud</translation>
     </message>
 </context>
 <context>
@@ -7867,28 +7867,28 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="78"/>
         <source>Creating share…</source>
-        <translation type="unfinished"/>
+        <translation>Jagamine on loomisel…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="150"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Sisemine link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="151"/>
         <source>For people who already have access</source>
-        <translation type="unfinished"/>
+        <translation>Neile, kellel juba on ligipääs</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="153"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri sisemine link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="164"/>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="167"/>
         <source>Create public link</source>
-        <translation type="unfinished"/>
+        <translation>Lisa avalik link</translation>
     </message>
 </context>
 <context>
@@ -7896,42 +7896,42 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Jaga linki</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
         <source>Unfinished share</source>
-        <translation type="unfinished"/>
+        <translation>Lõpetamata jagamine</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <translation>Jaga</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="55"/>
         <source>Not active — select to finish</source>
-        <translation type="unfinished"/>
+        <translation>Pole aktiivne - lõpetamiseks vali</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharing/ShareRow.qml" line="60"/>
         <source>%n recipient(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n saaja</numerusform><numerusform>%n saajat</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="77"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri avalik link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="90"/>
         <source>Configure share</source>
-        <translation type="unfinished"/>
+        <translation>Seadista jagamist</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="106"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Kustuta jagamine</translation>
     </message>
 </context>
 <context>
@@ -8005,7 +8005,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="92"/>
         <source>Download files on-demand. This feature is in an early preview. Recommended only for testing.</source>
-        <translation type="unfinished"/>
+        <translation>Failide allalaadimine vastavalt vajadusele. See funktsionaalsus on alles varases arendusjärgus. Mõeldud vaid testimiseks.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
