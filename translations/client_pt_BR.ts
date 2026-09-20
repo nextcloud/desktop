@@ -602,7 +602,7 @@
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="17"/>
         <source>Delete share?</source>
-        <translation type="unfinished"/>
+        <translation>Excluir compartilhamento?</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="21"/>
@@ -612,12 +612,12 @@
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Excluir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -667,17 +667,17 @@
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="25"/>
         <source>%1 (required)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (obrigatório)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="103"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>AAAA-MM-DD</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="133"/>
         <source>Enter a valid date within the allowed range.</source>
-        <translation type="unfinished"/>
+        <translation>Insira uma data válida no intervalo permitido.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="288"/>
@@ -4083,12 +4083,12 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="80"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Somente visualização</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="83"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Pode editar</translation>
     </message>
 </context>
 <context>
@@ -4102,12 +4102,12 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="185"/>
         <source>Could not create the public link.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível criar o link público.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="223"/>
         <source>Could not retrieve the internal link.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível obter o link interno.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
@@ -4118,13 +4118,13 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="282"/>
         <source>Could not create the share.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível criar o compartilhamento.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="327"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="331"/>
         <source>Could not delete the share.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível excluir o compartilhamento.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="360"/>
@@ -4149,13 +4149,13 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="433"/>
         <source>Could not update the sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível atualizar o link de compartilhamento.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="438"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="441"/>
         <source>Could not generate a sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível gerar o link de compartilhamento.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="471"/>
@@ -4163,7 +4163,7 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="578"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="586"/>
         <source>Could not update the permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível atualizar as permissões.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
@@ -4175,18 +4175,18 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="623"/>
         <source>Could not update the sharing setting.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível atualizar a configuração do compartilhamento.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="673"/>
         <source>The server did not activate the share.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor não ativou o compartilhamento.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="676"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="679"/>
         <source>Could not send the share.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível enviar o compartilhamento.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="720"/>
@@ -4201,7 +4201,7 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="745"/>
         <source>Could not attach the item to the share.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível anexar o item ao compartilhamento.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
@@ -4933,7 +4933,7 @@ Observe que o uso de qualquer opção de logs na linha de comandos substituirá 
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="302"/>
         <source>Failed to unmount the OpenVFS mount %1 Error:%2</source>
-        <translation>Falha ao desmontar a montagem %1 do OpenVFS. Erro: %2</translation>
+        <translation>Falha ao desmontar a montagem OpenVFS %1. Erro: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="311"/>
@@ -7481,7 +7481,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Permissions for %1</source>
-        <translation type="unfinished"/>
+        <translation>Permissões para %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
@@ -7491,7 +7491,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Fechar</translation>
     </message>
 </context>
 <context>
@@ -7651,32 +7651,32 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Excluir compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Fechar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancelling…</source>
-        <translation type="unfinished"/>
+        <translation>Cancelando…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Saving…</source>
-        <translation type="unfinished"/>
+        <translation>Salvando…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Salvar</translation>
     </message>
 </context>
 <context>
@@ -7765,7 +7765,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="119"/>
         <source>Added by %1</source>
-        <translation type="unfinished"/>
+        <translation>Adicionado por %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
@@ -7795,22 +7795,22 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
         <source>Can view</source>
-        <translation type="unfinished"/>
+        <translation>Pode visualizar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="227"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Pode editar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="231"/>
         <source>Custom permissions</source>
-        <translation type="unfinished"/>
+        <translation>Permissões personalizadas</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações do compartilhamento</translation>
     </message>
 </context>
 <context>
@@ -7818,39 +7818,39 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
         <source>Share &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Compartilhar “%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="197"/>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="209"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="61"/>
         <source>Share settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações do compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
         <source>Share with %1</source>
-        <translation type="unfinished"/>
+        <translation>Compartilhar com %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
         <source>New share</source>
-        <translation type="unfinished"/>
+        <translation>Novo compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
         <source>Back to share details</source>
-        <translation type="unfinished"/>
+        <translation>Voltar aos detalhes do compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
         <source>Back to shares</source>
-        <translation type="unfinished"/>
+        <translation>Voltar aos compartilhamentos</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="196"/>
@@ -7868,28 +7868,28 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="78"/>
         <source>Creating share…</source>
-        <translation type="unfinished"/>
+        <translation>Criando compartilhamento…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="150"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Link interno</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="151"/>
         <source>For people who already have access</source>
-        <translation type="unfinished"/>
+        <translation>Para pessoas que já têm acesso</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="153"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link interno</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="164"/>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="167"/>
         <source>Create public link</source>
-        <translation type="unfinished"/>
+        <translation>Criar link público</translation>
     </message>
 </context>
 <context>
@@ -7897,22 +7897,22 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Compartilhar link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
         <source>Unfinished share</source>
-        <translation type="unfinished"/>
+        <translation>Compartilhamento não finalizado</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <translation>Compartilhar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="55"/>
         <source>Not active — select to finish</source>
-        <translation type="unfinished"/>
+        <translation>Não ativo — selecione para finalizar</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharing/ShareRow.qml" line="60"/>
@@ -7922,17 +7922,17 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="77"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link público</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="90"/>
         <source>Configure share</source>
-        <translation type="unfinished"/>
+        <translation>Configurar compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="106"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Excluir compartilhamento</translation>
     </message>
 </context>
 <context>
