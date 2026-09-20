@@ -1403,7 +1403,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/accountsettings.cpp" line="1574"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="745"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Qqen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1575"/>
@@ -1418,12 +1418,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1765"/>
         <source>Migrate certificate to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Seddu aselken ɣer yiwen d amaynut</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1872"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>Llan ikaramen i d-yeffɣen deg teɣzi akkin %1MAṬ: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1947"/>
@@ -1453,12 +1453,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2112"/>
         <source>Reset File Provider Domain for this account?</source>
-        <translation type="unfinished"/>
+        <translation>Ales asbadu n taɣult n Usaɣɣaw n Ufaylu i umiḍan-agi?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2015"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Asiɣzef n Usaǧǧaw n Ufaylu ur yezmir ara ad isefrek awgelhen n yixef ɣer yixef.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2022"/>
@@ -1488,17 +1488,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1859"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Llan ikaramen ur nemtawi ara acku meqqrit aṭas:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1860"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Llan ikaramen ur nemtawi ara acku llan s wudem usekles azɣaray:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1861"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Llan ikaramen ur nemtawi ara acku llan meqqrit aṭas neɣ s wudem azɣaray:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="691"/>
@@ -1541,7 +1541,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Lqem n uqeddac %1 ur yettusefrak ara! Ɛreḍ s umihi-inek·inem.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1539"/>
@@ -1579,17 +1579,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="234"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Asuter n usesteb i uqeddac yettuwelleh ɣer &quot;%1&quot;. URL diri-t, aqeddac ur yettwaswel ara akken iwata.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="244"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Anekcum igdel-it uqeddac. Iwakken ad tesneqdeḍ belli tesɛiḍ anekcum, &lt;a href=&quot;%1&quot;&gt;sit dagi&lt;/a&gt; iwakken ad tkecmeḍ ɣer umeẓlu s yiminig-ik·im.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="252"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Tella-d tririt mačči d tameɣtut i usuter n usesteb WebDAV</translation>
     </message>
 </context>
 <context>
@@ -1655,38 +1655,38 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="294"/>
         <source>Will require local storage</source>
-        <translation type="unfinished"/>
+        <translation>Ad isra asekles adigan</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="674"/>
         <source>Proxy settings are incomplete.</source>
-        <translation type="unfinished"/>
+        <translation>Iɣewwaṛen n upṛuksi ur immiden ara</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="681"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Tansa n uqeddac ur tettban ara d tameɣtut</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="702"/>
         <source>Username must not be empty.</source>
-        <translation type="unfinished"/>
+        <translation>Isem n useqdac ur ilaq ara ad yili d ilem.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="708"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1026"/>
         <source>Checking account access</source>
-        <translation type="unfinished"/>
+        <translation>Asenqed n wadduf n umiḍan</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="786"/>
         <source>Checking server address</source>
-        <translation type="unfinished"/>
+        <translation>Asenqed n tansa n uqeddac</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="851"/>
         <source>Preparing browser login</source>
-        <translation type="unfinished"/>
+        <translation>Aheggi n tuqqna n iminig</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="872"/>
@@ -1703,7 +1703,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="890"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Tafuli n wakud mi yeɛreḍ ad yeqqen ɣer %1 deg %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>

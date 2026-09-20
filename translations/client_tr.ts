@@ -602,22 +602,22 @@
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="17"/>
         <source>Delete share?</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım silinsin mi?</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="21"/>
         <source>This removes the share and its access for all recipients.</source>
-        <translation type="unfinished"/>
+        <translation>Bu işlem, paylaşımı siler ve tüm alıcıların erişimini kaldırır.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Sil</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
@@ -667,28 +667,28 @@
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="25"/>
         <source>%1 (required)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (zorunlu)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="103"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>YYYY-AA-GG</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="133"/>
         <source>Enter a valid date within the allowed range.</source>
-        <translation type="unfinished"/>
+        <translation>İzin verilen aralıkta geçerli bir tarih yazın.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="288"/>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="347"/>
         <source>This value is shorter than the minimum length.</source>
-        <translation type="unfinished"/>
+        <translation>Bu değer en az uzunluktan daha kısadır.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="363"/>
         <source>This setting is not supported by this version of the desktop client.</source>
-        <translation type="unfinished"/>
+        <translation>Bu ayar bilgisayar istemcisinin bu sürümü tarafından desteklenmiyor.</translation>
     </message>
 </context>
 <context>
@@ -4081,12 +4081,12 @@ Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme ge�
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="80"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Yalnızca görüntüleyebilir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="83"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Düzenleyebilir</translation>
     </message>
 </context>
 <context>
@@ -4094,35 +4094,35 @@ Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme ge�
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
         <source>The server did not generate a valid public-link identifier.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu geçerli bir herkese bağlantı tanımlayıcısı oluşturmadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="185"/>
         <source>Could not create the public link.</source>
-        <translation type="unfinished"/>
+        <translation>Herkese açık bağlantı oluşturulamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="223"/>
         <source>Could not retrieve the internal link.</source>
-        <translation type="unfinished"/>
+        <translation>İç bağlantı alınamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
         <source>The server returned an invalid share.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu geçersiz bir paylaşım döndürdü.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="282"/>
         <source>Could not create the share.</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım oluşturulamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="327"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="331"/>
         <source>Could not delete the share.</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım silinemedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="360"/>
@@ -4130,30 +4130,30 @@ Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme ge�
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="770"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="773"/>
         <source>Could not add the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>Alıcı eklenemedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="391"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="394"/>
         <source>Could not remove the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>Alıcı kaldırılamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
         <source>The server did not generate a valid sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu geçerli bir paylaşım bağlantısı oluşturmadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="433"/>
         <source>Could not update the sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım bağlantısı güncellenemedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="438"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="441"/>
         <source>Could not generate a sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Bir paylaşım bağlantısı oluşturulamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="471"/>
@@ -4161,30 +4161,30 @@ Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme ge�
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="578"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="586"/>
         <source>Could not update the permissions.</source>
-        <translation type="unfinished"/>
+        <translation>İzinler güncellenemedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="543"/>
         <source>Could not update the recipient permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Alıcı izinleri güncellenemedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="623"/>
         <source>Could not update the sharing setting.</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım ayarı güncellenemedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="673"/>
         <source>The server did not activate the share.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu paylaşımı etkinleştirmedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="676"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="679"/>
         <source>Could not send the share.</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım gönderilemedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="720"/>
@@ -4193,18 +4193,18 @@ Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme ge�
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="764"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="781"/>
         <source>The newly created share is no longer available.</source>
-        <translation type="unfinished"/>
+        <translation>Yeni oluşturulan paylaşım artık yok.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="745"/>
         <source>Could not attach the item to the share.</source>
-        <translation type="unfinished"/>
+        <translation>Öge paylaşıma eklenemedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
         <source>Could not save all changes to the share.</source>
-        <translation type="unfinished"/>
+        <translation>Tüm değişiklikler paylaşıma kaydedilemedi.</translation>
     </message>
 </context>
 <context>
@@ -7480,17 +7480,17 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Permissions for %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 izinleri</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Alıcı izinleri</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Kapat</translation>
     </message>
 </context>
 <context>
@@ -7498,12 +7498,12 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Search for recipients</source>
-        <translation type="unfinished"/>
+        <translation>Alıcı ara</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Bu klasör için paylaşım kullanılamaz</translation>
     </message>
 </context>
 <context>
@@ -7629,7 +7629,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareAdvancedSettingsPage.qml" line="71"/>
         <source>No advanced settings are available for this share.</source>
-        <translation type="unfinished"/>
+        <translation>Bu paylaşım için gelişmiş ayarlar kullanılmaz.</translation>
     </message>
 </context>
 <context>
@@ -7645,37 +7645,37 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="115"/>
         <source>Changes to this share are applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>Bu paylaşımda yapılan değişiklikler hemen uygulanır.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşımı sil</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Kapat</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancelling…</source>
-        <translation type="unfinished"/>
+        <translation>İptal ediliyor…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Saving…</source>
-        <translation type="unfinished"/>
+        <translation>Kaydediliyor…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Kaydet</translation>
     </message>
 </context>
 <context>
@@ -7699,22 +7699,22 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="314"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="360"/>
         <source>Allow upload and editing</source>
-        <translation>Yüklenebilsin ve düzenlenebilsin</translation>
+        <translation>Yüklenebilir ve düzenlenebilir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="347"/>
         <source>View only</source>
-        <translation>Yalnızca görüntüleme</translation>
+        <translation>Yalnızca görüntülenebilir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>File drop (upload only)</source>
-        <translation>Dosya bırakma (yalnızca yükleme)</translation>
+        <translation>Dosya bırakılabilir (yalnızca yükleme)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="393"/>
         <source>Allow resharing</source>
-        <translation>Yeniden paylaşılabilsin</translation>
+        <translation>Yeniden paylaşılabilir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="432"/>
@@ -7764,52 +7764,52 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="119"/>
         <source>Added by %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 tarafından eklendi</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
         <source>Configure recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Alıcı izinlerini yapılandır</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="159"/>
         <source>Copy recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Alıcı bağlantısını kopyala</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Regenerate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Alıcı bağlantısını yeniden oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Generate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Alıcı bağlantısını oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
         <source>Remove recipient</source>
-        <translation type="unfinished"/>
+        <translation>Alıcıyı kaldır</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
         <source>Can view</source>
-        <translation type="unfinished"/>
+        <translation>Görüntüleyebilir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="227"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Düzenleyebilir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="231"/>
         <source>Custom permissions</source>
-        <translation type="unfinished"/>
+        <translation>Özel izinler</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım ayarları</translation>
     </message>
 </context>
 <context>
@@ -7817,49 +7817,49 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
         <source>Share &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; paylaş</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="197"/>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="209"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Dosya</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="61"/>
         <source>Share settings</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım ayarları</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
         <source>Share with %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 ile paylaş</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
         <source>New share</source>
-        <translation type="unfinished"/>
+        <translation>Yeni paylaşım</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
         <source>Back to share details</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım ayrıntılarına dön</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
         <source>Back to shares</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşımlara geri dön</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="196"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım ayarları</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="228"/>
         <source>Advanced sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Gelişmiş paylaşım ayarları</translation>
     </message>
 </context>
 <context>
@@ -7867,28 +7867,28 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="78"/>
         <source>Creating share…</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım oluşturuluyor…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="150"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>İç bağlantı</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="151"/>
         <source>For people who already have access</source>
-        <translation type="unfinished"/>
+        <translation>Zaten erişme izni olan kişiler için</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="153"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>İç bağlantıyı kopyala</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="164"/>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="167"/>
         <source>Create public link</source>
-        <translation type="unfinished"/>
+        <translation>Herkese açık bağlantı oluştur</translation>
     </message>
 </context>
 <context>
@@ -7896,42 +7896,42 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantıyı paylaş</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
         <source>Unfinished share</source>
-        <translation type="unfinished"/>
+        <translation>Tamamlanmamış paylaşım</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <translation>Paylaş</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="55"/>
         <source>Not active — select to finish</source>
-        <translation type="unfinished"/>
+        <translation>Etkin değil — Tamamlamak için seçin</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharing/ShareRow.qml" line="60"/>
         <source>%n recipient(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n alıcı</numerusform><numerusform>%n alıcı</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="77"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Herkese açık bağlantıyı kopyala</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="90"/>
         <source>Configure share</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşımı yapılandır</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="106"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşımı sil</translation>
     </message>
 </context>
 <context>
