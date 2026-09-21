@@ -52,6 +52,15 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         fileName = sanitise(string: id) + "_" + sanitisedUrl
     }
 
+    /// Returns a remote path relative to this account's DAV files root.
+    ///
+    /// Paths outside the files root, such as trash paths, do not have a sync-relative path.
+    public func filesRootRelativePath(for remotePath: String) -> String? {
+        let filesRootPrefix = davFilesUrl + "/"
+        guard remotePath.hasPrefix(filesRootPrefix) else { return nil }
+        return String(remotePath.dropFirst(filesRootPrefix.count))
+    }
+
     public init?(dictionary: [String: String]) {
         guard let username = dictionary[AccountDictUsernameKey],
               let id = dictionary[AccountDictIdKey],

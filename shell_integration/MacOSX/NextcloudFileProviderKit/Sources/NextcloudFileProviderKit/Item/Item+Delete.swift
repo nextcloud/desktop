@@ -39,7 +39,8 @@ public extension Item {
         }
 
         let ocId = itemIdentifier.rawValue
-        let relativePath = (metadata.remotePath()).replacingOccurrences(of: metadata.urlBase, with: "")
+        let relativePath = account.filesRootRelativePath(for: metadata.remotePath())
+        let isExcluded = relativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
 
         guard metadata.isLockFileOfLocalOrigin == false else {
             return await deleteLockFile(domain: domain, dbManager: dbManager)
@@ -60,7 +61,7 @@ public extension Item {
             return nil
         }
 
-        guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
+        guard !isExcluded else {
             logger.info("File is in the ignore list. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: filename])
             deletionCompleted = true
             dbManager.deleteItemMetadata(ocId: ocId)
