@@ -26,6 +26,11 @@ public extension Item {
 
         guard error == .success || error.isNotFoundError else {
             logger.error("Could not delete the remote item for an excluded destination.", [.item: itemIdentifier, .url: remotePath, .error: error])
+
+            if error == .urlError || error.isCouldntConnectError {
+                return NSFileProviderError(.serverUnreachable)
+            }
+
             return error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier)
         }
 
