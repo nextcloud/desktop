@@ -9,7 +9,7 @@ import XCTest
 
 /// Captures `AppProtocol` calls in-memory so the reporter can be exercised without a real XPC
 /// connection.
-private final class CapturingAppProxy: NSObject, AppProtocol {
+final class ExclusionCapturingAppProxy: NSObject, AppProtocol {
     struct Capture: Equatable {
         let relativePath: String
         let fileName: String
@@ -80,9 +80,9 @@ private final class CapturingAppProxy: NSObject, AppProtocol {
 
 final class BundleExclusionReporterTests: XCTestCase {
     func testReportSendsExpectedArgumentsToProxy() {
-        let proxy = CapturingAppProxy()
+        let proxy = ExclusionCapturingAppProxy()
 
-        BundleExclusionReporter.report(
+        ItemExclusionReporter.report(
             relativePath: "/Inbox/PluginKit Monitor.app",
             fileName: "PluginKit Monitor.app",
             domainIdentifier: NSFileProviderDomainIdentifier("test-domain"),
@@ -100,7 +100,7 @@ final class BundleExclusionReporterTests: XCTestCase {
 
     func testReportWithoutProxyDropsSilently() {
         // No assertion crash, no exception, just an info-level log line.
-        BundleExclusionReporter.report(
+        ItemExclusionReporter.report(
             relativePath: "/Inbox/foo.app",
             fileName: "foo.app",
             domainIdentifier: NSFileProviderDomainIdentifier("test-domain"),
@@ -110,6 +110,21 @@ final class BundleExclusionReporterTests: XCTestCase {
     }
 
     func testReasonTextIsNonEmpty() {
-        XCTAssertFalse(BundleExclusionReporter.reasonText().isEmpty)
+        XCTAssertFalse(ItemExclusionReporter.reasonText().isEmpty)
+    }
+
+    func testReportUsesExcludedDestinationReason() {
+        let proxy = ExclusionCapturingAppProxy()
+
+        ItemExclusionReporter.report(
+            relativePath: "/ignored/item.blend1",
+            fileName: "item.blend1",
+            reason: .excludedDestination,
+            domainIdentifier: NSFileProviderDomainIdentifier("test-domain"),
+            appProxy: proxy,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(proxy.captured.first?.reason, ItemExclusionReporter.reasonText(for: .excludedDestination))
     }
 }
