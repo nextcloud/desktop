@@ -615,6 +615,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     /// When set, trash listings return this error without reading the mock trash tree.
     public var trashListingError: NKError?
+   
+	/// Optional hook invoked after a delete path is captured and before the mock applies it.
+    public var deleteCallHandler: (() -> Void)?
 
     /// Records the `If-Match` header the most recent upload call carried (nil if none).
     /// Lets tests assert the optimistic-concurrency precondition was sent, and with
@@ -1297,6 +1300,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
         lastDeleteRemotePath = remotePath
+        deleteCallHandler?()
+        deleteCallHandler?()
 
         if let deleteError {
             return (account.ncKitAccount, nil, deleteError)
