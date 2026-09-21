@@ -393,7 +393,8 @@ public extension Item {
         forcedChunkSize: Int? = nil,
         progress: Progress = .init(),
         dbManager: FilesDatabaseManager,
-        appProxy: (any AppProtocol)? = nil
+        appProxy: (any AppProtocol)? = nil,
+        exclusionMarkerWriter: (@Sendable (String) -> Bool)? = nil
     ) async -> (Item?, Error?) {
         // For your own good: don't use "self" below here, it'll save you pain debugging when you do
         // refactors later on. Just use modifiedItem
@@ -419,7 +420,7 @@ public extension Item {
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
 
-            guard dbManager.markItemAsExcludedFromSync(ocId: metadata.ocId) else {
+            guard exclusionMarkerWriter?(metadata.ocId) ?? dbManager.markItemAsExcludedFromSync(ocId: metadata.ocId) else {
                 logger.error("Unable to persist bundle exclusion state.", [.item: itemIdentifier, .name: filename])
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
@@ -534,7 +535,7 @@ public extension Item {
             // The provider will call deleteItem after receiving .excludedFromSync. Persist this
             // intent before deleting remotely so a successful remote delete cannot be followed by
             // an unrecognised local deletion if the database write fails.
-            guard dbManager.markItemAsExcludedFromSync(ocId: modifiedItem.metadata.ocId) else {
+            guard exclusionMarkerWriter?(modifiedItem.metadata.ocId) ?? dbManager.markItemAsExcludedFromSync(ocId: modifiedItem.metadata.ocId) else {
                 logger.error("Unable to persist exclusion state for an excluded destination.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
