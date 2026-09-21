@@ -246,7 +246,6 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
-
         let error = await item.delete(dbManager: Self.dbManager)
 
         XCTAssertNil(error)
@@ -282,6 +281,52 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteInterface.lastDeleteRemotePath, Self.account.trashUrl + "/file")
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
         XCTAssertNotEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.deleted, true)
+    }
+
+    func testDeleteUsesFilesRootRelativeIgnorePath() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteFolder = MockRemoteItem(
+            identifier: "folder",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteItem = MockRemoteItem(
+            identifier: "ignored-item",
+            name: "item.blend1",
+            remotePath: Self.account.davFilesUrl + "/folder/item.blend1",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["folder/*.blend1"], log: FileProviderLogMock())
+
+        let error = await item.delete(ignoredFiles: ignoredMatcher, dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        XCTAssertTrue(remoteFolder.children.contains { $0.identifier == remoteItem.identifier })
+        XCTAssertNil(remoteInterface.lastDeleteRemotePath)
+        XCTAssertTrue(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.deleted == true)
     }
 
     func testDeleteFileDiscardsIncompleteChunkUpload() async throws {
