@@ -565,10 +565,20 @@ public extension Item {
 
             let hasRemoteCounterpart = modifiedItem.isUploaded || !modifiedItem.metadata.etag.isEmpty
             if hasRemoteCounterpart, !modifiedItem.metadata.isTrashed {
-                let remoteDeletionResult = await modifiedItem.deleteRemoteItem(domain: domain, dbManager: dbManager)
-                switch remoteDeletionResult {
+                switch await modifiedItem.deleteRemoteItem(domain: domain, dbManager: dbManager) {
                     case .success:
-                        break
+                        if let domain, let destinationRelativePath {
+                            ItemExclusionReporter.report(
+                                relativePath: destinationRelativePath,
+                                fileName: itemTarget.filename,
+                                reason: .excludedDestination,
+                                domainIdentifier: domain.identifier,
+                                appProxy: appProxy,
+                                log: logger.log
+                            )
+                        }
+
+                        return (modifiedIgnored, NSFileProviderError(.excludedFromSync))
                     case .retryableServerFailure:
                         if !dbManager.removeExcludedFromSyncMarker(ocId: modifiedItem.metadata.ocId) {
                             logger.error("Unable to roll back exclusion state after remote deletion failed.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
