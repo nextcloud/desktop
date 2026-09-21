@@ -42,8 +42,23 @@ WizardItemDelegate {
             spacing: 0
 
             EnforcedPlainTextLabel {
+                objectName: "shareRowTitle"
                 Layout.fillWidth: true
-                text: root.publicLink ? qsTr("Share link") : root.recipientNames || (root.pending ? qsTr("Unfinished share") : qsTr("Share"))
+                text: {
+                    if (root.publicLink) {
+                        //: "Share link" is a noun phrase referring to a public link that grants access to the shared item.
+                        return qsTr("Share link")
+                    }
+                    if (root.recipientNames) {
+                        return root.recipientNames
+                    }
+                    if (root.pending) {
+                        //: "Unfinished share" is a noun phrase referring to a share entry that has not been sent yet.
+                        return qsTr("Unfinished share")
+                    }
+                    //: "Share" is a noun referring to a share entry without a recipient name.
+                    return qsTr("Share")
+                }
                 color: Style.wizardPrimaryText
                 elide: Text.ElideRight
             }

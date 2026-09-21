@@ -32,12 +32,17 @@ WizardStyledWindow {
     property bool activatingShare: false
     property string shareActivationError: ""
     property alias controller: controllerObject
+    readonly property string fallbackItemName: {
+        //: Generic fallback name for a shared item when its name is unavailable.
+        return qsTr("File")
+    }
 
     property FileDetails fileDetails: FileDetails {
         localPath: dialog.localPath
     }
 
-    title: qsTr("Share \"%1\"").arg(dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File"))
+    //: %1 is the name of the item. "Share" is a verb.
+    title: qsTr("Share \"%1\"").arg(dialog.fileDetails.name || dialog.shortLocalPath || dialog.fallbackItemName)
     width: Style.sharingDialogWidth
     height: Style.sharingDialogHeight
     minimumWidth: Style.dialogWidth
@@ -58,6 +63,7 @@ WizardStyledWindow {
 
     function shareTitle(share): string {
         if (!share || !share.recipients) {
+            //: "Share" is a noun referring to the share whose settings are shown.
             return qsTr("Share settings")
         }
 
@@ -70,7 +76,12 @@ WizardStyledWindow {
                 }
             }
         }
-        return names.length > 0 ? qsTr("Share with %1").arg(names.join(", ")) : qsTr("New share")
+        if (names.length > 0) {
+            //: %1 is a list of recipient names. "Share" is a verb.
+            return qsTr("Share with %1").arg(names.join(", "))
+        }
+        //: "Share" is a noun referring to a newly created share.
+        return qsTr("New share")
     }
 
     function fileMetadataText(): string {
@@ -194,7 +205,7 @@ WizardStyledWindow {
                     objectName: "shareDialogTitle"
                     text: dialog.advancedSettingsVisible
                         ? qsTr("Sharing settings")
-                        : (dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File"))
+                        : (dialog.fileDetails.name || dialog.shortLocalPath || dialog.fallbackItemName)
                     elide: Text.ElideRight
                     font.pointSize: Style.titleFontPtSize
                     font.weight: Font.DemiBold
@@ -206,7 +217,7 @@ WizardStyledWindow {
 
                     objectName: "shareDialogSubtitle"
                     text: dialog.advancedSettingsVisible
-                        ? (dialog.fileDetails.name || dialog.shortLocalPath || qsTr("File"))
+                        ? (dialog.fileDetails.name || dialog.shortLocalPath || dialog.fallbackItemName)
                         : dialog.fileMetadataText()
                     color: Style.wizardSecondaryText
                     elide: Text.ElideRight

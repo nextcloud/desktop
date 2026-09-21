@@ -8,13 +8,17 @@
 #include "account.h"
 #include "accountmanager.h"
 #include "accountsettings.h"
+#include "advancedsettings.h"
 #include "configfile.h"
 #include "systray.h"
+
+#include <algorithm>
 
 #include <QAction>
 #include <QApplication>
 #include <QFrame>
 #include <QGroupBox>
+#include <QLabel>
 #include <QScopeGuard>
 #include <QScrollArea>
 #include <QSignalSpy>
@@ -22,6 +26,26 @@
 #include <QTemporaryDir>
 #include <QTest>
 #include <QToolBar>
+#include <QTranslator>
+
+namespace
+{
+
+class AdvancedSettingsTranslator : public QTranslator
+{
+public:
+    QString translate(const char *context, const char *sourceText, const char *, int) const override
+    {
+        if (QLatin1StringView(sourceText) != QLatin1StringView("Advanced")) {
+            return {};
+        }
+
+        return QLatin1StringView(context) == QLatin1StringView("OCC::AdvancedSettings") ? QStringLiteral("Shared advanced settings translation")
+                                                                                        : QStringLiteral("Wrong advanced settings translation context");
+    }
+};
+
+}
 
 class TestSettingsDialog : public QObject
 {
@@ -129,6 +153,30 @@ private Q_SLOTS:
             QVERIFY(reopenedPanel);
             QCOMPARE(reopenedPanel->palette().color(QPalette::Window), expected);
         }
+    }
+
+    void advancedLabelsUseSharedTranslationContext()
+    {
+        AdvancedSettingsTranslator translator;
+        QVERIFY(QCoreApplication::installTranslator(&translator));
+        const auto removeTranslator = qScopeGuard([&translator] {
+            QCoreApplication::removeTranslator(&translator);
+        });
+
+        OCC::SettingsDialog dialog(nullptr);
+        const auto advancedSettings = dialog.findChild<OCC::AdvancedSettings *>();
+        const auto toolbar = dialog.findChild<QToolBar *>();
+        QVERIFY(advancedSettings);
+        QVERIFY(toolbar);
+        const auto advancedActionsLabel = advancedSettings->findChild<QLabel *>(QStringLiteral("advancedActionsLabel"));
+        QVERIFY(advancedActionsLabel);
+
+        const auto expectedText = QStringLiteral("Shared advanced settings translation");
+        QCOMPARE(advancedActionsLabel->text(), expectedText);
+        const auto actions = toolbar->actions();
+        QVERIFY(std::any_of(actions.cbegin(), actions.cend(), [&expectedText](const QAction *action) {
+            return action->text() == expectedText;
+        }));
     }
 
     void addAccountActionFollowsAccountsAndOpensWizard()
