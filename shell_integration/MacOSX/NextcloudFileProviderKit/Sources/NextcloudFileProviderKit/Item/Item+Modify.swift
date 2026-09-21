@@ -505,9 +505,11 @@ public extension Item {
         }
 
         let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
-        let destinationRelativePath = newServerUrlFileName.replacingOccurrences(of: account.davFilesUrl, with: "")
-        let destinationIsExcluded = newServerUrlFileName.hasPrefix(account.davFilesUrl) &&
-            (ignoredFiles?.isExcluded(destinationRelativePath) ?? false)
+        let filesRootPrefix = account.davFilesUrl + "/"
+        let destinationRelativePath = newServerUrlFileName.hasPrefix(filesRootPrefix)
+            ? String(newServerUrlFileName.dropFirst(filesRootPrefix.count))
+            : nil
+        let destinationIsExcluded = destinationRelativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
 
         logger.debug("About to modify item.", [.item: modifiedItem])
 

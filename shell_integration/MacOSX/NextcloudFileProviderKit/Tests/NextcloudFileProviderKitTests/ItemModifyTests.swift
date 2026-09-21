@@ -1083,6 +1083,51 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
     }
 
+    func testDestinationWithSimilarFilesRootPrefixIsNotExcluded() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        var similarFilesRootMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        similarFilesRootMetadata.ocId = "similar-files-root-parent"
+        similarFilesRootMetadata.serverUrl = Self.account.davFilesUrl + "-backup"
+        Self.dbManager.addItemMetadata(similarFilesRootMetadata)
+
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.fileName = "item.blend1"
+        targetMetadata.fileNameView = "item.blend1"
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .init(similarFilesRootMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.filename, .parentItemIdentifier],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNotEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertNil(modifiedItem)
+        XCTAssertNil(remoteInterface.lastDeleteRemotePath)
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+    }
+
     func testMoveFileToTrash() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
 
@@ -1130,6 +1175,47 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
                 .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
         )
         XCTAssertEqual(trashedItem.parentItemIdentifier, .trashContainer)
+    }
+
+    func testMoveFileIntoTrashDoesNotApplySyncExclusions() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.name = "item.blend1"
+        targetMetadata.fileName = "item.blend1"
+        targetMetadata.fileNameView = "item.blend1"
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let trashItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (trashedItem, error) = await item.modify(
+            itemTarget: trashItem,
+            changedFields: [.filename, .parentItemIdentifier],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(error)
+        XCTAssertEqual(trashedItem?.metadata.isTrashed, true)
+        XCTAssertEqual(remoteInterface.lastDeleteRemotePath, targetMetadata.remotePath())
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
     }
 
     func testRenameMoveFileToTrash() async throws {
