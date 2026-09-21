@@ -2,8 +2,31 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 @preconcurrency import FileProvider
+import Foundation
 import NextcloudKit
 import UniformTypeIdentifiers
+
+///
+/// Compute-once box for a flag an ``Item`` derives from a database query, behind an `NSLock` so
+/// ``Item`` keeps its `Sendable` conformance with `let` storage throughout.
+///
+private final class MemoizedDatabaseFlag: @unchecked Sendable {
+    private let lock = NSLock()
+    private var memo: Bool?
+
+    func value(_ compute: () -> Bool) -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
+
+        if let memo {
+            return memo
+        }
+
+        let computed = compute()
+        memo = computed
+        return computed
+    }
+}
 
 ///
 /// Data model implementation for file provider items as defined by the file provider framework and `NSFileProviderItemProtocol`.
@@ -22,6 +45,20 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
 
     private let displayFileActions: Bool
     private let remoteSupportsTrash: Bool
+    private let evictableDescendantFileMemo = MemoizedDatabaseFlag()
+
+    ///
+    /// Whether this directory holds at least one evictable descendant file, memoized because the
+    /// framework reads several properties off the same item and each call is an unindexed prefix
+    /// query over the item's descendants.
+    ///
+    private var hasEvictableDescendantFile: Bool {
+        guard metadata.directory else { return false }
+
+        return evictableDescendantFileMemo.value {
+            dbManager.hasEvictableDescendantFile(directoryMetadata: metadata)
+        }
+    }
 
     private var lockStateAllowsModifications: Bool {
         metadata.lock == false || (
@@ -123,7 +160,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         // the folder action itself flips, so it does not over-invalidate on every
         // descendant change.
         if metadata.directory {
-            metadataVersionString += "|\(dbManager.hasEvictableDescendantFile(directoryMetadata: metadata))"
+            metadataVersionString += "|\(hasEvictableDescendantFile)"
         }
 
         let contentVersion = metadata.fileProviderContentVersion ?? metadata.etag
@@ -297,7 +334,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         let notPinned = !metadata.keepDownloaded
         if metadata.directory {
             userInfoDict["displayEvict"] = false
-            userInfoDict["displayEvictDescendants"] = dbManager.hasEvictableDescendantFile(directoryMetadata: metadata) && notPinned
+            userInfoDict["displayEvictDescendants"] = hasEvictableDescendantFile && notPinned
         } else {
             userInfoDict["displayEvict"] = metadata.downloaded && notPinned
             userInfoDict["displayEvictDescendants"] = false
@@ -368,7 +405,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             account: account.ncKitAccount,
             classFile: NKTypeClassFile.directory.rawValue,
             contentType: "", // Placeholder as not set in original code
-            creationDate: Date(), // Default as not set in original code
+            creationDate: syntheticContainerFallbackDate,
+            date: syntheticContainerFallbackDate,
             directory: true,
             e2eEncrypted: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
@@ -396,10 +434,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         // even after the user has enabled it — `displayKeepDownloaded` /
         // `displayAllowAutoEvicting` and `contentPolicy` all derive from the
         // freshly-synthesised (and therefore stale) metadata.
-        if let existing = dbManager.itemMetadata(ocId: metadata.ocId) {
-            metadata.keepDownloaded = existing.keepDownloaded
-            metadata.downloaded = existing.downloaded
-        }
+        metadata.mergePersistedSyntheticContainerState(dbManager: dbManager)
 
         return Item(
             metadata: metadata,
@@ -425,7 +460,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             account: account.ncKitAccount,
             classFile: NKTypeClassFile.directory.rawValue,
             contentType: "", // Placeholder as not set in original code
-            creationDate: Date(), // Default as not set in original code
+            creationDate: syntheticContainerFallbackDate,
+            date: syntheticContainerFallbackDate,
             directory: true,
             e2eEncrypted: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
@@ -449,10 +485,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         // See the matching rationale in `rootContainer(...)`: merge persisted
         // per-item toggles from the database so the trash container does not
         // forget its state between factory invocations.
-        if let existing = dbManager.itemMetadata(ocId: metadata.ocId) {
-            metadata.keepDownloaded = existing.keepDownloaded
-            metadata.downloaded = existing.downloaded
-        }
+        metadata.mergePersistedSyntheticContainerState(dbManager: dbManager)
 
         return Item(
             metadata: metadata,
