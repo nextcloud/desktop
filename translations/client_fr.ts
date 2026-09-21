@@ -4096,7 +4096,7 @@ Il n’est pas possible de revenir immédiatement à une version antérieure : p
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
         <source>The server did not generate a valid public-link identifier.</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur n&apos;a pas généré d&apos;identificateur de lien public valide.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
@@ -4201,12 +4201,12 @@ Il n’est pas possible de revenir immédiatement à une version antérieure : p
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="745"/>
         <source>Could not attach the item to the share.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;attacher l&apos;élément au partage.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
         <source>Could not save all changes to the share.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;enregistrer toutes les modifications pour ce partage.</translation>
     </message>
 </context>
 <context>
@@ -7505,7 +7505,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>La création de partage n&apos;est pas disponible pour ce dossier</translation>
     </message>
 </context>
 <context>
@@ -7647,12 +7647,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="115"/>
         <source>Changes to this share are applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>Les modifications de ce partage sont appliquées immédiatement.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer le partage</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
@@ -7791,27 +7791,27 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
         <source>Remove recipient</source>
-        <translation type="unfinished"/>
+        <translation>Retirer le destinataire</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
         <source>Can view</source>
-        <translation type="unfinished"/>
+        <translation>Peut voir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="227"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Peut modifier</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="231"/>
         <source>Custom permissions</source>
-        <translation type="unfinished"/>
+        <translation>Permissions personnalisées</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Paramètres de partage</translation>
     </message>
 </context>
 <context>
@@ -7879,7 +7879,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="151"/>
         <source>For people who already have access</source>
-        <translation type="unfinished"/>
+        <translation>Pour les personnes qui y ont déjà accès</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="153"/>
@@ -7923,7 +7923,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="77"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien public</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="90"/>
