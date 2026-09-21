@@ -56,6 +56,7 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         var evictionCandidates = Set<NSFileProviderItemIdentifier>()
         var evictedItems = Set<NSFileProviderItemIdentifier>()
         var stillMaterializedItems = Set<NSFileProviderItemIdentifier>()
+        var metadatasToPersist = [SendableItemMetadata]()
 
         for metadata in metadataForMaterializedItems {
             let identifier = NSFileProviderItemIdentifier(metadata.ocId)
@@ -64,6 +65,10 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         }
 
         for enumeratedIdentifier in identifiers {
+            // The system now accounts for this item itself, so the download record that protected
+            // it from the reconciliation below has served its purpose.
+            PendingMaterializationRegistry.shared.confirmMaterialized(enumeratedIdentifier)
+
             if evictionCandidates.contains(enumeratedIdentifier) {
                 evictionCandidates.remove(enumeratedIdentifier) // The enumerated item cannot be assumed as evicted any longer.
             } else {
@@ -91,9 +96,19 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                     metadata.downloaded = true
                 }
 
-                logger.info("Updating state for item to materialized.", [.item: enumeratedIdentifier, .name: metadata.fileName])
-                dbManager.addItemMetadata(metadata, durability: .relaxed)
+                logger.debug("Updating state for item to materialized.", [.item: enumeratedIdentifier, .name: metadata.fileName])
+                metadatasToPersist.append(metadata)
             }
+        }
+
+        // An item this process downloaded moments ago is legitimately absent from the system's
+        // materialized set until the system catches up, so it must not be reconciled as evicted
+        // yet — see `PendingMaterializationRegistry`.
+        let unconfirmed = PendingMaterializationRegistry.shared.awaitingConfirmation(among: evictionCandidates)
+
+        if !unconfirmed.isEmpty {
+            logger.debug("Deferring \(unconfirmed.count) recently downloaded item(s) awaiting confirmation from the system.")
+            evictionCandidates.subtract(unconfirmed)
         }
 
         for candidateIdentifier in evictionCandidates {
@@ -114,22 +129,25 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                 metadata.visitedDirectory = false
             }
 
-            // Because visitedDirectory is preserved above, a visited directory without local
-            // content remains in the database's materialized set and thus reappears as an
-            // eviction candidate on every reconciliation pass. Persist and report only actual
-            // state transitions so reconciliation converges instead of re-marking the same
-            // items dataless on every pass (#10558).
+            // Persist and report only genuine state transitions, so a file already recorded as
+            // dataless is not rewritten on every pass (#10558).
             guard metadata.downloaded != materializedMetadata.downloaded
                 || metadata.visitedDirectory != materializedMetadata.visitedDirectory
             else {
                 continue
             }
 
-            logger.info("Updating item state to dataless.", [.name: metadata.fileName, .item: candidateIdentifier])
+            logger.debug("Updating item state to dataless.", [.name: metadata.fileName, .item: candidateIdentifier])
 
-            dbManager.addItemMetadata(metadata, durability: .relaxed)
+            metadatasToPersist.append(metadata)
             evictedItems.insert(candidateIdentifier)
         }
+
+        // One transaction and one log line for the whole pass, which runs synchronously on the
+        // framework's callback thread.
+        dbManager.addItemMetadatas(metadatasToPersist, durability: .relaxed)
+
+        logger.info("Reconciled materialized set: \(stillMaterializedItems.count) newly materialized, \(evictedItems.count) evicted, \(unconfirmed.count) deferred.")
 
         completionHandler(stillMaterializedItems, evictedItems)
     }
