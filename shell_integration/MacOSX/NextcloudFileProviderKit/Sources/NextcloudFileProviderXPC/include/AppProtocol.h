@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reportSyncStatus:(NSString *)status forDomainIdentifier:(NSString *)domainIdentifier;
 
 /**
- * @brief The file provider extension reports an item it refused to sync because that kind of item isn't supported yet (currently: macOS bundles).
+ * @brief The file provider extension reports an item it excluded from synchronization.
  *
  * The main app surfaces the message in its activity view in the systray's tray window — the same place the classic sync engine reports excluded items.
  *
@@ -120,4 +120,3 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 #endif /* AppProtocol_h */
-

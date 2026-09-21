@@ -412,7 +412,7 @@ public extension Item {
 
             if let domain {
                 let relativePath = (metadata.serverUrl + "/" + metadata.fileName).replacingOccurrences(of: account.davFilesUrl, with: "")
-                BundleExclusionReporter.report(relativePath: relativePath, fileName: filename, domainIdentifier: domain.identifier, appProxy: appProxy, log: logger.log)
+                ItemExclusionReporter.report(relativePath: relativePath, fileName: filename, domainIdentifier: domain.identifier, appProxy: appProxy, log: logger.log)
             }
 
             guard let modifiedIgnored = await modifyUnuploaded(itemTarget: itemTarget, baseVersion: baseVersion, changedFields: changedFields, contents: newContents, options: options, request: request, ignoredFiles: ignoredFiles, domain: domain, forcedChunkSize: forcedChunkSize, progress: progress, dbManager: dbManager) else {
@@ -548,6 +548,17 @@ public extension Item {
                     logger.error("Unable to roll back exclusion state after remote deletion failed.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
                 }
                 return (nil, remoteDeletionError)
+            }
+
+            if let domain, let destinationRelativePath {
+                ItemExclusionReporter.report(
+                    relativePath: destinationRelativePath,
+                    fileName: itemTarget.filename,
+                    reason: .excludedDestination,
+                    domainIdentifier: domain.identifier,
+                    appProxy: appProxy,
+                    log: logger.log
+                )
             }
 
             return (modifiedIgnored, NSFileProviderError(.excludedFromSync))
