@@ -566,6 +566,29 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    ///
+    /// Persist several metadata rows in a **single** write transaction, semantically identical to
+    /// calling ``addItemMetadata(_:)`` per element.
+    ///
+    public func addItemMetadatas(_ metadatas: [SendableItemMetadata]) {
+        guard !metadatas.isEmpty else { return }
+
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                for metadata in metadatas {
+                    evictLogicalDuplicates(of: metadata, in: database)
+                    database.add(RealmItemMetadata(value: metadata), update: .all)
+                }
+            }
+
+            logger.debug("Added \(metadatas.count) item metadata records in one transaction.")
+        } catch {
+            logger.error("Failed to add \(metadatas.count) item metadata records in one transaction.", [.error: error])
+        }
+    }
+
     /**
      * @brief Records that the provider returned `.excludedFromSync` for an item.
      *
