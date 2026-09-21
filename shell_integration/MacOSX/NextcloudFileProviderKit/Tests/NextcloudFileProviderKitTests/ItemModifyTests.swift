@@ -954,7 +954,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
 
         XCTAssertNil(modifiedItem)
-        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .serverUnreachable)
         XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteItem.identifier })
         XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
     }
@@ -2043,7 +2043,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
 
         XCTAssertNil(modifiedItem)
-        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .serverUnreachable)
         XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteItem.identifier })
         XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
     }
