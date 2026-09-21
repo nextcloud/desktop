@@ -39,6 +39,9 @@ public final class FilesDatabaseManager: Sendable {
         ncDatabase().objects(RealmItemMetadata.self)
     }
 
+    /// Downloads of this domain which the system has not yet reported as materialized, kept here because one process can host several domains and each has its own manager.
+    let pendingMaterializations = PendingMaterializationRegistry()
+
     ///
     /// Convenience initializer which defines a default configuration for Realm.
     ///
@@ -563,6 +566,31 @@ public final class FilesDatabaseManager: Sendable {
             }
         } catch {
             logger.error("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl, .error: error])
+        }
+    }
+
+    /// Set the given `downloaded` and `visitedDirectory` values of several rows in one write transaction, leaving every other column and every missing row untouched; a failure discards the whole batch.
+    func setMaterializationStates(_ states: [(ocId: String, downloaded: Bool?, visitedDirectory: Bool?)]) {
+        guard !states.isEmpty else { return }
+
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                for state in states {
+                    guard let item = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: state.ocId) else { continue }
+
+                    if let downloaded = state.downloaded {
+                        item.downloaded = downloaded
+                    }
+
+                    if let visitedDirectory = state.visitedDirectory {
+                        item.visitedDirectory = visitedDirectory
+                    }
+                }
+            }
+        } catch {
+            logger.error("Failed to update the materialization state of item metadata records.", [.error: error])
         }
     }
 

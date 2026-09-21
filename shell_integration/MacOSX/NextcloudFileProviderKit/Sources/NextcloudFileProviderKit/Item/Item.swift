@@ -368,7 +368,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             account: account.ncKitAccount,
             classFile: NKTypeClassFile.directory.rawValue,
             contentType: "", // Placeholder as not set in original code
-            creationDate: Date(), // Default as not set in original code
+            creationDate: syntheticContainerFallbackDate,
+            date: syntheticContainerFallbackDate,
             directory: true,
             e2eEncrypted: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
@@ -396,10 +397,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         // even after the user has enabled it — `displayKeepDownloaded` /
         // `displayAllowAutoEvicting` and `contentPolicy` all derive from the
         // freshly-synthesised (and therefore stale) metadata.
-        if let existing = dbManager.itemMetadata(ocId: metadata.ocId) {
-            metadata.keepDownloaded = existing.keepDownloaded
-            metadata.downloaded = existing.downloaded
-        }
+        metadata.mergePersistedSyntheticContainerState(dbManager: dbManager)
 
         return Item(
             metadata: metadata,
@@ -425,7 +423,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             account: account.ncKitAccount,
             classFile: NKTypeClassFile.directory.rawValue,
             contentType: "", // Placeholder as not set in original code
-            creationDate: Date(), // Default as not set in original code
+            creationDate: syntheticContainerFallbackDate,
+            date: syntheticContainerFallbackDate,
             directory: true,
             e2eEncrypted: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
@@ -449,10 +448,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         // See the matching rationale in `rootContainer(...)`: merge persisted
         // per-item toggles from the database so the trash container does not
         // forget its state between factory invocations.
-        if let existing = dbManager.itemMetadata(ocId: metadata.ocId) {
-            metadata.keepDownloaded = existing.keepDownloaded
-            metadata.downloaded = existing.downloaded
-        }
+        metadata.mergePersistedSyntheticContainerState(dbManager: dbManager)
 
         return Item(
             metadata: metadata,
