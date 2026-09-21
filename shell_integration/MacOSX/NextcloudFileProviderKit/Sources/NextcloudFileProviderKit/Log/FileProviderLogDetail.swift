@@ -93,6 +93,8 @@ public enum FileProviderLogDetail: Encodable {
         if let someValue = anyOptional {
             if someValue.self is String {
                 self = .string(someValue as! String)
+            } else if let number = someValue as? Int {
+                self = .int(number)
             } else if let date = someValue as? Date {
                 self = .date(date)
             } else if let url = someValue as? URL {
