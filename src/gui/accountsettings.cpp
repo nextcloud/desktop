@@ -834,7 +834,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         !folder->virtualFilesEnabled() &&
         mode != Vfs::Off &&
         Vfs::checkAvailability(folder->path(), mode)) {
-        if (mode == Vfs::WindowsCfApi || ConfigFile().showExperimentalOptions()) {
+        if (mode == Vfs::WindowsCfApi || mode == Vfs::OpenVFS || ConfigFile().showExperimentalOptions()) {
             ac = menu->addAction(tr("Enable virtual file support %1 …").arg(mode == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
             // TODO: remove when UX decision is made
             ac->setEnabled(!Utility::isPathWindowsDrivePartitionRoot(folder->path()));

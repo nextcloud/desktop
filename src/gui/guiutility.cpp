@@ -154,6 +154,10 @@ void Utility::askExperimentalVirtualFilesFeature(QWidget *receiver, const std::f
         Q_UNREACHABLE();
     }
 
+    if (!msgBox) {
+        return;
+    }
+
     QObject::connect(msgBox, &QMessageBox::accepted, receiver, [callback, msgBox, acceptButton] {
         callback(msgBox->clickedButton() == acceptButton);
         msgBox->deleteLater();
