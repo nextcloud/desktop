@@ -10,8 +10,10 @@
 
 #include <QStringList>
 #include <QWidget>
+#include <functional>
 
 namespace OCC {
+class Updater;
 
 namespace Ui {
     class InfoSettings;
@@ -22,7 +24,7 @@ class InfoSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit InfoSettings(QWidget *parent = nullptr);
+    explicit InfoSettings(QWidget *parent = nullptr, std::function<Updater *()> updater = {});
     ~InfoSettings() override;
     [[nodiscard]] QSize sizeHint() const override;
 
@@ -48,6 +50,7 @@ private Q_SLOTS:
 private:
     void customizeStyle();
 
+    std::function<Updater *()> _updater;
     Ui::InfoSettings *_ui;
     QStringList _currentUpdateChannelList;
 };

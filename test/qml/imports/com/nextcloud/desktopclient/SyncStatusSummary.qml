@@ -5,7 +5,7 @@
 
 import QtQml
 
-// Test replacement for the production C++ type, which SyncStatus instantiates even with an injected model.
+// Test replacement for the production C++ type, used when SyncStatus has no injected model.
 QtObject {
     readonly property url syncIcon: ""
     readonly property string syncStatusString: ""

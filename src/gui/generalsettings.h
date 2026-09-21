@@ -10,6 +10,7 @@
 // For BUILD_FILE_PROVIDER_MODULE, which gates the File Provider members below.
 #include "config.h"
 
+#include "generalsettingsservices.h"
 #include <QWidget>
 
 namespace OCC {
@@ -27,7 +28,7 @@ class GeneralSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit GeneralSettings(QWidget *parent = nullptr);
+    explicit GeneralSettings(QWidget *parent = nullptr, GeneralSettingsServices services = GeneralSettingsServices::production());
     ~GeneralSettings() override;
     [[nodiscard]] QSize sizeHint() const override;
 
@@ -52,6 +53,7 @@ private:
     void confirmDisableFileProviderMode();
 #endif
 
+    GeneralSettingsServices _services;
     Ui::GeneralSettings *_ui;
     bool _currentlyLoading = false;
 };

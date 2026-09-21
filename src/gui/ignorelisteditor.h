@@ -8,6 +8,7 @@
 #define IGNORELISTEDITOR_H
 
 #include <QDialog>
+#include <optional>
 
 class QListWidgetItem;
 class QAbstractButton;
@@ -27,7 +28,7 @@ class IgnoreListEditor : public QDialog
     Q_OBJECT
 
 public:
-    IgnoreListEditor(QWidget *parent = nullptr);
+    IgnoreListEditor(QWidget *parent = nullptr, std::optional<bool> syncHiddenFiles = {});
     ~IgnoreListEditor() override;
 
     bool ignoreHiddenFiles();

@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include <utility>
+
 #include "infosettings.h"
 #include "ui_infosettings.h"
 
@@ -41,10 +43,18 @@ QString aboutTextForInfoPanel()
 }
 }
 
-InfoSettings::InfoSettings(QWidget *parent)
+InfoSettings::InfoSettings(QWidget *parent, std::function<Updater *()> updater)
     : QWidget(parent)
+    , _updater(std::move(updater))
     , _ui(new Ui::InfoSettings)
 {
+#ifdef BUILD_UPDATER
+    if (!_updater) {
+        _updater = [] {
+            return Updater::instance();
+        };
+    }
+#endif
     _ui->setupUi(this);
 
     _ui->infoAndUpdatesLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
@@ -115,7 +125,7 @@ void InfoSettings::loadUpdateChannelsList() {
 void InfoSettings::slotUpdateInfo()
 {
     ConfigFile config;
-    const auto updater = Updater::instance();
+    const auto updater = _updater();
     if (config.skipUpdateCheck() || !updater) {
         _ui->updatesContainer->setVisible(false);
         _ui->updatesGroupBox->setVisible(false);
@@ -190,12 +200,12 @@ void InfoSettings::slotUpdateInfo()
 
 void InfoSettings::setAndCheckNewUpdateChannel(const QString &newChannel) {
     ConfigFile().setUpdateChannel(newChannel);
-    if (auto updater = qobject_cast<OCUpdater *>(Updater::instance())) {
+    if (auto updater = qobject_cast<OCUpdater *>(_updater())) {
         updater->setUpdateUrl(Updater::updateUrl());
         updater->checkForUpdate();
     }
 #if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
-    else if (auto updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
+    else if (auto updater = qobject_cast<SparkleUpdater *>(_updater())) {
         updater->setUpdateUrl(Updater::updateUrl());
         updater->checkForUpdate();
     }
@@ -287,9 +297,9 @@ void InfoSettings::slotUpdateChannelChanged()
 void InfoSettings::slotUpdateCheckNow()
 {
 #if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
-    auto *updater = qobject_cast<SparkleUpdater *>(Updater::instance());
+    auto *updater = qobject_cast<SparkleUpdater *>(_updater());
 #else
-    auto *updater = qobject_cast<OCUpdater *>(Updater::instance());
+    auto *updater = qobject_cast<OCUpdater *>(_updater());
 #endif
     if (ConfigFile().skipUpdateCheck()) {
         updater = nullptr;

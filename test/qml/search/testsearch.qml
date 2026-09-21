@@ -184,6 +184,15 @@ Item {
             fakeSearchModel.retriedPages = 0
         }
 
+        function test_accessibilityAnnouncementUsesVisualItem() {
+            failOnWarning(/Accessible attached property/)
+            const model = createTemporaryObject(windowSearchModel, parent)
+            const searchWindow = createTemporaryObject(productionSearchWindow, null, { searchModel: model })
+            verify(searchWindow)
+            model.accessibilityStatus = "Three results"
+            wait(0)
+        }
+
         function test_searchWindowLoadsFromPackagedModule() {
             const searchWindow = productionSearchWindow.createObject(null)
             verify(searchWindow !== null)

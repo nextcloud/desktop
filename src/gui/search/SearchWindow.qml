@@ -89,7 +89,7 @@ WizardStyledWindow {
         }
         function onAccessibilityStatusChanged() {
             if (root.searchModel.accessibilityStatus.length > 0)
-                Accessible.announce(root.searchModel.accessibilityStatus, Accessible.Polite)
+                searchInput.Accessible.announce(root.searchModel.accessibilityStatus, Accessible.Polite)
         }
     }
 

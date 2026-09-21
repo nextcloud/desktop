@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include <utility>
+
 #include "generalsettings.h"
 #include "ui_generalsettings.h"
 
@@ -28,11 +30,41 @@
 #include <QPushButton>
 #include <QScopedValueRollback>
 #include <QSignalBlocker>
+#include <QStringList>
 
 namespace OCC {
 
-GeneralSettings::GeneralSettings(QWidget *parent)
+GeneralSettingsServices GeneralSettingsServices::production()
+{
+    GeneralSettingsServices services;
+    services.systemAutoStart = [] {
+        return Utility::hasSystemLaunchOnStartup(Theme::instance()->appName());
+    };
+    services.autoStart = [] {
+        return Utility::hasLaunchOnStartup(Theme::instance()->appName());
+    };
+    services.setAutoStart = [](bool enabled) {
+        Utility::setLaunchOnStartup(Theme::instance()->appName(), Theme::instance()->appNameGUI(), enabled);
+    };
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    services.fileProviderEnabled = [] {
+        return Mac::FileProviderSettingsController::instance()->fileProviderModeEnabled();
+    };
+    services.fileProviderBusy = [] {
+        return Mac::FileProviderSettingsController::instance()->isOperationInProgress();
+    };
+    services.observeFileProvider = [](QObject *context, const std::function<void()> &changed) {
+        const auto controller = Mac::FileProviderSettingsController::instance();
+        QObject::connect(controller, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged, context, changed);
+        QObject::connect(controller, &Mac::FileProviderSettingsController::operationInProgressChanged, context, changed);
+    };
+#endif
+    return services;
+}
+
+GeneralSettings::GeneralSettings(QWidget *parent, GeneralSettingsServices services)
     : QWidget(parent)
+    , _services(std::move(services))
     , _ui(new Ui::GeneralSettings)
 {
     _ui->setupUi(this);
@@ -52,13 +84,13 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->quotaWarningNotificationsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleQuotaWarningNotifications);
     _ui->quotaWarningNotificationsCheckBox->setToolTip(tr("Show notification when quota usage exceeds 80%."));
 
-    if (const auto hasSystemAutoStart = Utility::hasSystemLaunchOnStartup(Theme::instance()->appName())) {
+    if (const auto hasSystemAutoStart = _services.systemAutoStart()) {
         _ui->autostartCheckBox->setChecked(hasSystemAutoStart);
         _ui->autostartCheckBox->setDisabled(hasSystemAutoStart);
         _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
     } else {
         connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
-        _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
+        _ui->autostartCheckBox->setChecked(_services.autoStart());
     }
 
     loadMiscSettings();
@@ -77,16 +109,12 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     if (Mac::FileProvider::available() && !Theme::instance()->disableVirtualFilesSyncFolder()) {
-        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-
         // "clicked" rather than "toggled": only direct user interaction may open the
         // confirmation flow, never the programmatic setChecked in loadMiscSettings().
-        connect(_ui->fileProviderCheckBox, &QAbstractButton::clicked,
-                this, &GeneralSettings::slotFileProviderSwitchClicked);
-        connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
-                this, &GeneralSettings::loadMiscSettings);
-        connect(fpSettingsController, &Mac::FileProviderSettingsController::operationInProgressChanged,
-                this, &GeneralSettings::loadMiscSettings);
+        connect(_ui->fileProviderCheckBox, &QAbstractButton::clicked, this, &GeneralSettings::slotFileProviderSwitchClicked);
+        _services.observeFileProvider(this, [this] {
+            loadMiscSettings();
+        });
     } else {
         // macOS 13 Ventura (feature unsupported) or branding that bans virtual files.
         _ui->fileProviderGroupBox->setVisible(false);
@@ -130,9 +158,8 @@ void GeneralSettings::loadMiscSettings()
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     if (Mac::FileProvider::available()) {
-        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-        const auto fpOperationInProgress = fpSettingsController->isOperationInProgress();
-        _ui->fileProviderCheckBox->setChecked(fpSettingsController->fileProviderModeEnabled());
+        const auto fpOperationInProgress = _services.fileProviderBusy();
+        _ui->fileProviderCheckBox->setChecked(_services.fileProviderEnabled());
         _ui->fileProviderCheckBox->setEnabled(!fpOperationInProgress);
         _ui->fileProviderLabel->setEnabled(!fpOperationInProgress);
     }
@@ -152,14 +179,13 @@ void GeneralSettings::saveMiscSettings()
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
 {
-    const auto theme = Theme::instance();
-    if (enable == Utility::hasLaunchOnStartup(theme->appName())) {
+    if (enable == _services.autoStart()) {
         return;
     }
 
-    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), enable);
+    _services.setAutoStart(enable);
 
-    const auto actualState = Utility::hasLaunchOnStartup(theme->appName());
+    const auto actualState = _services.autoStart();
     ConfigFile().setLaunchOnSystemStartup(actualState);
 
     if (actualState != enable) {
@@ -169,12 +195,11 @@ void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
 
 #ifdef Q_OS_MACOS
     if (enable && Utility::launchOnStartupRequiresApproval()) {
-        QMessageBox::information(
-            this,
-            tr("Login Item Requires Approval"),
-            tr("The login item has been registered but needs your approval to become active. "
-               "Please open System Settings → General → Login Items and enable %1 there.")
-                .arg(theme->appNameGUI()));
+        QMessageBox::information(this,
+                                 tr("Login Item Requires Approval"),
+                                 tr("The login item has been registered but needs your approval to become active. "
+                                    "Please open System Settings → General → Login Items and enable %1 there.")
+                                     .arg(Theme::instance()->appNameGUI()));
     }
 #endif
 }
@@ -208,16 +233,14 @@ void GeneralSettings::slotToggleQuotaWarningNotifications(bool enable)
 void GeneralSettings::slotFileProviderSwitchClicked(bool checked)
 {
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-
     // The switch must not lead the actual state: snap it back immediately and only let
     // it move once the controller confirms the change via fileProviderModeEnabledChanged.
     {
         const QSignalBlocker blocker(_ui->fileProviderCheckBox);
-        _ui->fileProviderCheckBox->setChecked(fpSettingsController->fileProviderModeEnabled());
+        _ui->fileProviderCheckBox->setChecked(_services.fileProviderEnabled());
     }
 
-    if (checked == fpSettingsController->fileProviderModeEnabled()) {
+    if (checked == _services.fileProviderEnabled()) {
         return;
     }
 

@@ -31,6 +31,8 @@ class SyncStatusSummary : public QObject
 
 public:
     explicit SyncStatusSummary(QObject *parent = nullptr);
+    /** Creates a summary from supplied state without subscribing to sync services. */
+    explicit SyncStatusSummary(SyncResult::Status state, QObject *parent = nullptr);
 
     [[nodiscard]] double syncProgress() const;
     [[nodiscard]] QUrl syncIcon() const;

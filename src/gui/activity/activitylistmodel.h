@@ -7,7 +7,9 @@
 #ifndef ACTIVITYLISTMODEL_H
 #define ACTIVITYLISTMODEL_H
 
+#include "accountfwd.h"
 #include <QtCore>
+#include <functional>
 
 #include "activitydata.h"
 
@@ -85,7 +87,8 @@ public:
     Q_ENUM(ErrorType)
 
     explicit ActivityListModel(QObject *parent = nullptr);
-    explicit ActivityListModel(AccountState *accountState, QObject *parent = nullptr);
+    using AccountLookup = std::function<AccountStatePtr(const QString &)>;
+    explicit ActivityListModel(AccountState *accountState, QObject *parent = nullptr, AccountLookup accountLookup = {});
 
     [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -232,6 +235,7 @@ private:
     QSet<qint64> _presentedActivities;
     QSet<qint64> _activeNotificationIds;
 
+    AccountLookup _accountLookup;
     bool _displayActions = true;
 
     qint64 _currentItem = 0;

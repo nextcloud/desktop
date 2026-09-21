@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include <utility>
+
 #include "activitylistmodel.h"
 
 #include "account.h"
@@ -51,9 +53,9 @@ ActivityListModel::ActivityListModel(QObject *parent)
 {
 }
 
-ActivityListModel::ActivityListModel(AccountState *accountState,
-    QObject *parent)
+ActivityListModel::ActivityListModel(AccountState *accountState, QObject *parent, AccountLookup accountLookup)
     : QAbstractListModel(parent)
+    , _accountLookup(std::move(accountLookup))
     , _accountState(accountState)
 {
     if (_accountState) {
@@ -168,7 +170,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid));
 
     const auto activity = _finalList.at(index.row());
-    const auto accountState = AccountManager::instance()->account(activity._accName);
+    const auto accountState = _accountLookup ? _accountLookup(activity._accName) : AccountManager::instance()->account(activity._accName);
     if (!accountState && _accountState != accountState.data()) {
         return QVariant();
     }

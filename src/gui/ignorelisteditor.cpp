@@ -28,7 +28,7 @@
 
 namespace OCC {
 
-IgnoreListEditor::IgnoreListEditor(QWidget *parent)
+IgnoreListEditor::IgnoreListEditor(QWidget *parent, std::optional<bool> syncHiddenFiles)
     : QDialog(parent)
     , ui(new Ui::IgnoreListEditor)
 {
@@ -67,21 +67,22 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     const auto userConfig = cfgFile.excludeFile(ConfigFile::Scope::UserScope);
     ui->ignoreTableWidget->readIgnoreFile(userConfig);
 
-    connect(this, &QDialog::accepted, [=, this]() {
-        ui->ignoreTableWidget->slotWriteIgnoreFile(userConfig);
-        /* handle the hidden file checkbox */
+    if (!syncHiddenFiles.has_value()) {
+        connect(this, &QDialog::accepted, [=, this]() {
+            ui->ignoreTableWidget->slotWriteIgnoreFile(userConfig);
+            /* handle the hidden file checkbox */
 
-        /* the ignoreHiddenFiles flag is a folder specific setting, but for now, it is
-        * handled globally. Save it to every folder that is defined.
-        * TODO this can now be fixed, simply attach this IgnoreListEditor to top-level account
-        * settings
-        */
-        FolderMan::instance()->setIgnoreHiddenFiles(ignoreHiddenFiles());
-    });
-    connect(ui->buttonBox, &QDialogButtonBox::clicked,
-            this, &IgnoreListEditor::slotRestoreDefaults);
+            /* the ignoreHiddenFiles flag is a folder specific setting, but for now, it is
+             * handled globally. Save it to every folder that is defined.
+             * TODO this can now be fixed, simply attach this IgnoreListEditor to top-level account
+             * settings
+             */
+            FolderMan::instance()->setIgnoreHiddenFiles(ignoreHiddenFiles());
+        });
+    }
+    connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &IgnoreListEditor::slotRestoreDefaults);
 
-    ui->syncHiddenFilesCheckBox->setChecked(!FolderMan::instance()->ignoreHiddenFiles());
+    ui->syncHiddenFilesCheckBox->setChecked(syncHiddenFiles.has_value() ? *syncHiddenFiles : !FolderMan::instance()->ignoreHiddenFiles());
 }
 
 IgnoreListEditor::~IgnoreListEditor()

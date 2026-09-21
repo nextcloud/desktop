@@ -9,6 +9,7 @@
 
 #include <QDialog>
 #include <QStyledItemDelegate>
+#include <functional>
 
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
@@ -38,10 +39,16 @@ class SettingsDialog : public QDialog
     Q_PROPERTY(QWidget* currentPage READ currentPage NOTIFY currentPageChanged)
 
 public:
-    explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
+    using PageFactory = std::function<QWidget *(QWidget *)>;
+    explicit SettingsDialog(ownCloudGui *gui,
+                            QWidget *parent = nullptr,
+                            PageFactory generalPage = {},
+                            PageFactory infoPage = {},
+                            std::function<bool()> canAddAccount = {});
     ~SettingsDialog() override;
 
     QWidget* currentPage();
+    void addAccountPage(AccountState *account, AccountSettings *page, bool fetchUserInfo = true);
 
 public Q_SLOTS:
     void showFirstPage();
@@ -102,6 +109,7 @@ private:
     QAction *_firstNonAccountAction = nullptr;
 
     ownCloudGui *_gui;
+    std::function<bool()> _canAddAccount;
     bool _styleUpdatePending = false;
     bool _updatingStyle = false;
     OCC::AccountState *_initialAccount = nullptr;

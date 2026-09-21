@@ -24,7 +24,7 @@ Rectangle {
 
     //: %1 is the assistant task status and %2 is the task's date and time in the locale's short format.
     readonly property string statusSummary: root.dateText.length > 0
-        ? qsTr("%1 · %2").arg(root.statusText, root.dateText)
+        ? qsTr("%1 · %2").arg(root.statusText).arg(root.dateText)
         : root.statusText
 
     signal deleteRequested(double taskId)

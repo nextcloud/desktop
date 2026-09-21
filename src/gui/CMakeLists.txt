@@ -63,6 +63,7 @@ set(client_SRCS
     advancedsettings.h
     advancedsettings.cpp
     accountsettings.h
+    accountsettingsservices.h
     accountsettings.cpp
     accountsetupfromcommandlinejob.h
     accountsetupfromcommandlinejob.cpp
@@ -111,6 +112,7 @@ set(client_SRCS
     folderwizard.h
     folderwizard.cpp
     generalsettings.h
+    generalsettingsservices.h
     generalsettings.cpp
     infosettings.h
     infosettings.cpp
