@@ -443,8 +443,9 @@ public extension Item {
             )
         }
 
-        let sourceRelativePath = modifiedItem.metadata.remotePath().replacingOccurrences(of: account.davFilesUrl, with: "")
-        guard ignoredFiles == nil || ignoredFiles?.isExcluded(sourceRelativePath) == false else {
+        let sourceRelativePath = account.filesRootRelativePath(for: modifiedItem.metadata.remotePath())
+        let sourceIsExcluded = sourceRelativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
+        guard !sourceIsExcluded else {
             logger.info("File is in the ignore list. Any follow-up provider deletion will have no remote effect.", [.item: modifiedItem.itemIdentifier, .name: modifiedItem.filename])
 
             guard let modifiedIgnored = await modifyUnuploaded(
@@ -505,10 +506,7 @@ public extension Item {
         }
 
         let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
-        let filesRootPrefix = account.davFilesUrl + "/"
-        let destinationRelativePath = newServerUrlFileName.hasPrefix(filesRootPrefix)
-            ? String(newServerUrlFileName.dropFirst(filesRootPrefix.count))
-            : nil
+        let destinationRelativePath = account.filesRootRelativePath(for: newServerUrlFileName)
         let destinationIsExcluded = destinationRelativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
 
         logger.debug("About to modify item.", [.item: modifiedItem])
