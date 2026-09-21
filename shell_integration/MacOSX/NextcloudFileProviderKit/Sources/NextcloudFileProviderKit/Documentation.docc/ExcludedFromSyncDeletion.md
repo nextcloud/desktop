@@ -41,9 +41,13 @@ cannot be written, the modification fails with `.cannotSynchronize` instead of
 starting a deletion sequence that cannot be recognized safely.
 
 For an item moved into an excluded destination, the remote counterpart is
-deleted only after the exclusion record has been stored. If that remote delete
-fails, the record is rolled back and the remote error is returned, so a later
-provider deletion cannot mistake the failed operation for a durable exclusion.
+deleted only after the exclusion record has been stored. Connectivity and
+authentication failures roll the record back and return a retryable provider
+error. Other server rejections, such as a permission failure, retain the
+record and return `.excludedFromSync`; the follow-up provider deletion then
+removes only local state and cannot retry the forbidden remote deletion. The
+remote counterpart remains available for reconciliation, and the failure is
+reported in the activity view.
 
 The exclusion record is stored separately from `RealmItemMetadata`. Fetching,
 materializing, and enumerating an item can replace its item metadata with a

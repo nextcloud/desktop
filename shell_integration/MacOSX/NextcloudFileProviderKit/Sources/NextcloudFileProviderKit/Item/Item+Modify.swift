@@ -7,7 +7,14 @@ import NextcloudFileProviderXPC
 import NextcloudKit
 
 public extension Item {
-    private func deleteRemoteItemForExcludedDestination(domain: NSFileProviderDomain?) async -> Error? {
+    private enum RemoteDeletionResult {
+        case success
+        case retryableServerFailure
+        case retryableAuthenticationFailure
+        case permanentFailure
+    }
+
+    private func deleteRemoteItem(domain: NSFileProviderDomain?) async -> RemoteDeletionResult {
         let remotePath = metadata.remotePath()
         let (_, _, error) = await remoteInterface.delete(
             remotePath: remotePath,
@@ -28,14 +35,20 @@ public extension Item {
             logger.error("Could not delete the remote item for an excluded destination.", [.item: itemIdentifier, .url: remotePath, .error: error])
 
             if error == .urlError || error.isCouldntConnectError {
-                return NSFileProviderError(.serverUnreachable)
+                return .retryableServerFailure
             }
 
-            return error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier)
+            if error.isUnauthenticatedError || error.isUnauthorizedError {
+                return .retryableAuthenticationFailure
+            }
+
+            // Server-side permission and policy failures are not made recoverable by retrying.
+            // Keep the exclusion marker so the provider's follow-up delete remains local-only.
+            return .permanentFailure
         }
 
         logger.info("Deleted the remote item for an excluded destination.", [.item: itemIdentifier, .url: remotePath])
-        return nil
+        return .success
     }
 
     func move(
@@ -541,13 +554,37 @@ public extension Item {
             }
 
             let hasRemoteCounterpart = modifiedItem.isUploaded || !modifiedItem.metadata.etag.isEmpty
-            if hasRemoteCounterpart, !modifiedItem.metadata.isTrashed,
-               let remoteDeletionError = await modifiedItem.deleteRemoteItemForExcludedDestination(domain: domain)
-            {
-                if !dbManager.removeExcludedFromSyncMarker(ocId: modifiedItem.metadata.ocId) {
-                    logger.error("Unable to roll back exclusion state after remote deletion failed.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+            if hasRemoteCounterpart, !modifiedItem.metadata.isTrashed {
+                let remoteDeletionResult = await modifiedItem.deleteRemoteItem(domain: domain)
+                switch remoteDeletionResult {
+                    case .success:
+                        break
+                    case .retryableServerFailure:
+                        if !dbManager.removeExcludedFromSyncMarker(ocId: modifiedItem.metadata.ocId) {
+                            logger.error("Unable to roll back exclusion state after remote deletion failed.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+                        }
+
+                        return (nil, NSFileProviderError(.serverUnreachable))
+                    case .retryableAuthenticationFailure:
+                        if !dbManager.removeExcludedFromSyncMarker(ocId: modifiedItem.metadata.ocId) {
+                            logger.error("Unable to roll back exclusion state after remote deletion failed.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+                        }
+
+                        return (nil, NSFileProviderError(.notAuthenticated))
+                    case .permanentFailure:
+                        logger.error("Retaining exclusion state after a permanent remote deletion failure.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+                        if let domain, let destinationRelativePath {
+                            ItemExclusionReporter.report(
+                                relativePath: destinationRelativePath,
+                                fileName: itemTarget.filename,
+                                reason: .remoteDeletionFailed,
+                                domainIdentifier: domain.identifier,
+                                appProxy: appProxy,
+                                log: logger.log
+                            )
+                        }
+                        return (modifiedIgnored, NSFileProviderError(.excludedFromSync))
                 }
-                return (nil, remoteDeletionError)
             }
 
             if let domain, let destinationRelativePath {
