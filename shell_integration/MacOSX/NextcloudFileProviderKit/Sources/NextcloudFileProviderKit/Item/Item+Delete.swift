@@ -26,7 +26,7 @@ public extension Item {
             return NSFileProviderError(.directoryNotEmpty)
         }
 
-        let chunkUploadOwnerIdentifiersToDiscard = chunkUploadItemIdentifiersToDiscard()
+        let chunkUploadOwnerIdentifiersToDiscard = chunkUploadItemIdentifiersToDiscard(dbManager: dbManager)
         var deletionCompleted = false
         defer {
             if deletionCompleted {
@@ -151,7 +151,7 @@ public extension Item {
         return handleMetadataTrashModification()
     }
 
-    private func chunkUploadItemIdentifiersToDiscard() -> [String] {
+    internal func chunkUploadItemIdentifiersToDiscard(dbManager: FilesDatabaseManager) -> [String] {
         guard metadata.directory else {
             return [metadata.ocId]
         }
