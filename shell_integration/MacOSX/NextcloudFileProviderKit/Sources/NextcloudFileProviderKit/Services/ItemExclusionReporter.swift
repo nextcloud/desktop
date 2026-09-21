@@ -17,6 +17,7 @@ enum ItemExclusionReporter {
     enum Reason {
         case bundle
         case excludedDestination
+        case remoteDeletionFailed
 
         var localizedText: String {
             switch self {
@@ -33,6 +34,13 @@ enum ItemExclusionReporter {
                         bundle: .module,
                         value: "This item was moved into a destination excluded from synchronization — it remains on this Mac only.",
                         comment: "Activity-view explanation when an item is moved into a folder excluded from synchronization."
+                    )
+                case .remoteDeletionFailed:
+                    NSLocalizedString(
+                        "ExcludedDestination.RemoteDeletionFailedReason",
+                        bundle: .module,
+                        value: "This item was moved into a destination excluded from synchronization, but its remote copy could not be removed.",
+                        comment: "Activity-view explanation when the remote copy of an item moved into an excluded folder could not be removed."
                     )
             }
         }
