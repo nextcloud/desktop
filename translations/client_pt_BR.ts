@@ -4132,13 +4132,13 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="770"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="773"/>
         <source>Could not add the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível adicionar o destinatário.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="391"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="394"/>
         <source>Could not remove the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível remover o destinatário.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
@@ -7499,7 +7499,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Search for recipients</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisar destinatários</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
@@ -7810,7 +7810,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
         <source>Sharing settings</source>
-        <translation>Configurações do compartilhamento</translation>
+        <translation>Configurações de compartilhamento</translation>
     </message>
 </context>
 <context>
@@ -7830,7 +7830,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="61"/>
         <source>Share settings</source>
-        <translation>Configurações do compartilhamento</translation>
+        <translation>Configurações de compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
