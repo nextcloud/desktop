@@ -962,6 +962,11 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     func testModifyIntoIgnoredFolderDeletesRemoteFileAfterPersistingExclusionMarker() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["ignored-folder/*"], log: FileProviderLogMock())
+        let domain = NSFileProviderDomain(
+            identifier: NSFileProviderDomainIdentifier("test-domain-ignored-destination"),
+            displayName: "test"
+        )
+        let proxy = ExclusionCapturingAppProxy()
         let ignoredFolder = MockRemoteItem(
             identifier: "ignored-folder",
             name: "ignored-folder",
@@ -1001,7 +1006,9 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             changedFields: [.parentItemIdentifier],
             contents: nil,
             ignoredFiles: ignoredMatcher,
-            dbManager: Self.dbManager
+            domain: domain,
+            dbManager: Self.dbManager,
+            appProxy: proxy
         )
 
         XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
@@ -1009,6 +1016,11 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
         XCTAssertFalse(rootItem.children.contains { $0.identifier == remoteItem.identifier })
         XCTAssertTrue(rootTrashItem.children.contains { $0.identifier == itemMetadata.ocId + trashedItemIdSuffix })
+        XCTAssertEqual(proxy.captured.count, 1)
+        XCTAssertEqual(proxy.captured.first?.relativePath, "ignored-folder/item.txt")
+        XCTAssertEqual(proxy.captured.first?.fileName, "item.txt")
+        XCTAssertEqual(proxy.captured.first?.domainIdentifier, domain.identifier.rawValue)
+        XCTAssertEqual(proxy.captured.first?.reason, ItemExclusionReporter.reasonText(for: .excludedDestination))
     }
 
     func testModifyDirectoryIntoIgnoredFolderDeletesRemoteDirectoryAfterPersistingExclusionMarker() async {
