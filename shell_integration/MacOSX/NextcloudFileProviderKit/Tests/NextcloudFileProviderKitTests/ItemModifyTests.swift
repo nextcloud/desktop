@@ -1023,7 +1023,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(proxy.captured.first?.reason, ItemExclusionReporter.reasonText(for: .excludedDestination))
     }
 
-    func testModifyDirectoryIntoIgnoredFolderDeletesRemoteDirectoryAfterPersistingExclusionMarker() async {
+    func testModifyDirectoryIntoIgnoredFolderDeletesRemoteDirectoryAfterPersistingExclusionMarker() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["ignored-folder/*"], log: FileProviderLogMock())
         let ignoredFolder = MockRemoteItem(
@@ -1041,6 +1041,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         ignoredFolder.parent = rootItem
         remoteFolder.children = [remoteItem]
         remoteItem.parent = remoteFolder
+        remoteItem.remotePath = remoteFolder.remotePath + "/" + remoteItem.name
 
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         let ignoredFolderMetadata = ignoredFolder.toItemMetadata(account: Self.account)
@@ -1048,6 +1049,27 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(ignoredFolderMetadata)
         Self.dbManager.addItemMetadata(itemMetadata)
+
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: itemMetadata.ocId,
+            fileSize: 8,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+        )
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("excluded-directory-chunks-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: chunksDirectory, withIntermediateDirectories: true)
+        try Data([1]).write(to: chunksDirectory.appendingPathComponent("2"))
+        remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        let db = Self.dbManager.ncDatabase()
+        try db.write {
+            db.add(RemoteFileChunk(
+                fileName: "2",
+                size: 3,
+                remoteChunkStoreFolderName: chunkUploadId
+            ))
+        }
 
         var targetMetadata = SendableItemMetadata(value: folderMetadata)
         targetMetadata.apply(fileName: "renamed-folder")
@@ -1081,6 +1103,13 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: folderMetadata.ocId))
         XCTAssertFalse(rootItem.children.contains { $0.identifier == remoteFolder.identifier })
         XCTAssertTrue(rootTrashItem.children.contains { $0.identifier == folderMetadata.ocId + trashedItemIdSuffix })
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertEqual(
+            db.objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
+                .count,
+            0
+        )
     }
 
     func testModifyIntoIgnoredDestinationFailsWhenExclusionMarkerCannotBeWritten() async {

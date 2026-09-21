@@ -14,8 +14,12 @@ public extension Item {
         case permanentFailure
     }
 
-    private func deleteRemoteItem(domain: NSFileProviderDomain?) async -> RemoteDeletionResult {
+    private func deleteRemoteItem(
+        domain: NSFileProviderDomain?,
+        dbManager: FilesDatabaseManager
+    ) async -> RemoteDeletionResult {
         let remotePath = metadata.remotePath()
+        let chunkUploadOwnerIdentifiersToDiscard = chunkUploadItemIdentifiersToDiscard(dbManager: dbManager)
         let (_, _, error) = await remoteInterface.delete(
             remotePath: remotePath,
             account: account,
@@ -48,6 +52,12 @@ public extension Item {
         }
 
         logger.info("Deleted the remote item for an excluded destination.", [.item: itemIdentifier, .url: remotePath])
+        discardChunkUploads(
+            forItemIdentifiers: chunkUploadOwnerIdentifiersToDiscard,
+            usingRemoteInterface: remoteInterface,
+            dbManager: dbManager,
+            logger: logger
+        )
         return .success
     }
 
@@ -555,7 +565,7 @@ public extension Item {
 
             let hasRemoteCounterpart = modifiedItem.isUploaded || !modifiedItem.metadata.etag.isEmpty
             if hasRemoteCounterpart, !modifiedItem.metadata.isTrashed {
-                let remoteDeletionResult = await modifiedItem.deleteRemoteItem(domain: domain)
+                let remoteDeletionResult = await modifiedItem.deleteRemoteItem(domain: domain, dbManager: dbManager)
                 switch remoteDeletionResult {
                     case .success:
                         break
