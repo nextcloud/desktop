@@ -526,17 +526,21 @@ public extension Item {
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
 
+            // The provider will call deleteItem after receiving .excludedFromSync. Persist this
+            // intent before deleting remotely so a successful remote delete cannot be followed by
+            // an unrecognised local deletion if the database write fails.
+            guard dbManager.markItemAsExcludedFromSync(ocId: modifiedItem.metadata.ocId) else {
+                logger.error("Unable to persist exclusion state for an excluded destination.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+                return (nil, NSFileProviderError(.cannotSynchronize))
+            }
+
             let hasRemoteCounterpart = modifiedItem.isUploaded || !modifiedItem.metadata.etag.isEmpty
-            if hasRemoteCounterpart, !modifiedItem.metadata.isTrashed {
-                guard let remoteDeletionError = await modifiedItem.deleteRemoteItemForExcludedDestination(domain: domain) else {
-                    guard dbManager.markItemAsExcludedFromSync(ocId: modifiedItem.metadata.ocId) else {
-                        logger.error("Unable to persist exclusion state for an excluded destination.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
-                        return (nil, NSFileProviderError(.cannotSynchronize))
-                    }
-
-                    return (modifiedIgnored, NSFileProviderError(.excludedFromSync))
+            if hasRemoteCounterpart, !modifiedItem.metadata.isTrashed,
+               let remoteDeletionError = await modifiedItem.deleteRemoteItemForExcludedDestination(domain: domain)
+            {
+                if !dbManager.removeExcludedFromSyncMarker(ocId: modifiedItem.metadata.ocId) {
+                    logger.error("Unable to roll back exclusion state after remote deletion failed.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
                 }
-
                 return (nil, remoteDeletionError)
             }
 
