@@ -41,12 +41,24 @@ public extension FilesDatabaseManager {
         } ?? []
     }
 
+    ///
+    /// The number of **direct** children of a directory, as vended by `Item.childItemCount`,
+    /// excluding tombstones, other accounts' rows and the container's own row, which for the root
+    /// carries the same `serverUrl` its children do.
+    ///
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let account = directoryMetadata.account
+        let ocId = directoryMetadata.ocId
 
         return read("Could not count the items below a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
-                .filter(ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true))
+                .filter(
+                    ItemMetadataRecord.Columns.account == account
+                        && ItemMetadataRecord.Columns.deleted == false
+                        && ItemMetadataRecord.Columns.ocId != ocId
+                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: false)
+                )
                 .fetchCount(db)
         } ?? 0
     }

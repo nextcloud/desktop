@@ -77,6 +77,9 @@ public final class FilesDatabaseManager: Sendable {
     /// Location of the database file, `nil` when the database lives in memory.
     let databaseURL: URL?
 
+    /// Downloads of this domain which the system has not yet reported as materialized, kept here because one process can host several domains and each has its own manager.
+    let pendingMaterializations = PendingMaterializationRegistry()
+
     ///
     /// Open the domain's database, creating, importing or migrating it as needed.
     ///
@@ -717,6 +720,34 @@ public final class FilesDatabaseManager: Sendable {
     public func addItemMetadata(_ metadata: SendableItemMetadata, durability: WriteDurability = .full) {
         write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl], durability: durability) { db in
             try insertItemMetadata(metadata, in: db)
+        }
+    }
+
+    /// Set the given `downloaded` and `visitedDirectory` values of several rows in one write transaction, leaving every other column and every missing row untouched; a failure discards the whole batch.
+    ///
+    /// - Parameter durability: ``WriteDurability/full`` unless the flags only mirror the system's materialized set, which the next reconciliation pass rebuilds.
+    ///
+    func setMaterializationStates(_ states: [(ocId: String, downloaded: Bool?, visitedDirectory: Bool?)], durability: WriteDurability = .full) {
+        guard !states.isEmpty else { return }
+
+        write("Failed to update the materialization state of item metadata records.", durability: durability) { db in
+            for state in states {
+                var assignments = [ColumnAssignment]()
+
+                if let downloaded = state.downloaded {
+                    assignments.append(ItemMetadataRecord.Columns.downloaded.set(to: downloaded))
+                }
+
+                if let visitedDirectory = state.visitedDirectory {
+                    assignments.append(ItemMetadataRecord.Columns.visitedDirectory.set(to: visitedDirectory))
+                }
+
+                guard !assignments.isEmpty else { continue }
+
+                try ItemMetadataRecord
+                    .filter(key: state.ocId)
+                    .updateAll(db, assignments)
+            }
         }
     }
 

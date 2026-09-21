@@ -152,7 +152,7 @@ public struct FileProviderLogger: Sendable {
     /// by the per-item debug traces that flag enables.
     ///
     /// - Parameters:
-    ///     - message: A human-readable message; interpolate the timing numbers directly (the structured `details` channel has no numeric branch).
+    ///     - message: A human-readable message; interpolate the timing numbers directly (the structured `details` channel has no floating-point branch).
     ///     - details: Structured and contextual details about a message.
     ///     - file: Implementations should have `#filePath` as the default value for this.
     ///     - function: Implementations should have `#function` as the default value for this.
@@ -200,6 +200,8 @@ public struct FileProviderLogger: Sendable {
                     url.absoluteString
                 case let text as String:
                     text
+                case let number as Int:
+                    String(number)
                 case let request as NSFileProviderRequest:
                     "requestingExecutable: \(request.requestingExecutable?.path ?? "nil"), isFileViewerRequest: \(request.isFileViewerRequest), isSystemRequest: \(request.isSystemRequest)"
                 case nil:
