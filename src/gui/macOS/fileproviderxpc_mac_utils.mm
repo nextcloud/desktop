@@ -214,6 +214,7 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
 
         if (clientCommService == nil) {
             qCWarning(lcFileProviderXPCUtils) << "Client communication service is nil";
+            [connection invalidate];
             continue;
         }
 
@@ -223,12 +224,16 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
 
         if (domainIdentifier == nil) {
             qCWarning(lcFileProviderXPCUtils) << "Could not retrieve domain id from file provider service";
+            [clientCommService release];
+            [connection invalidate];
             continue;
         }
 
         qCInfo(lcFileProviderXPCUtils) << "Got domain id"
                                        << domainIdentifier.UTF8String
                                        << "from file provider service";
+
+        [connection retain];
 
         ClientCommunicationConnection clientCommConnection;
         clientCommConnection.clientCommunicationService = clientCommService;

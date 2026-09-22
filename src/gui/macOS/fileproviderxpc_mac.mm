@@ -45,6 +45,13 @@ void FileProviderXPC::disconnectFromFileProviderDomain(const QString &fileProvid
     if (connection) {
         const auto xpcConnection = (NSXPCConnection *)connection;
         [xpcConnection invalidate];
+        [xpcConnection release];
+    }
+
+    const auto service = _clientCommServices.take(fileProviderDomainIdentifier);
+
+    if (service) {
+        [(NSObject *)service release];
     }
 }
 
@@ -78,6 +85,10 @@ void FileProviderXPC::connectToFileProviderDomains()
         _clientCommServices.insert(domainIdentifier, clientCommConnection.clientCommunicationService);
         _clientCommConnections.insert(domainIdentifier, clientCommConnection.xpcConnection);
     }
+
+    [connections release];
+    [fpServices release];
+    [managers release];
 }
 
 void FileProviderXPC::authenticateFileProviderDomains()
@@ -223,6 +234,9 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
                 _clientCommServices.insert(domainIdentifier, clientCommConnection.clientCommunicationService);
                 _clientCommConnections.insert(domainIdentifier, clientCommConnection.xpcConnection);
             }
+
+            [connections release];
+            [fpServices release];
         }
 
         if (retry) {
