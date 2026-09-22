@@ -29,6 +29,15 @@ else
     exit 1
 fi
 
+# Unset so the Realm package builds: Xcode exports the outer build's index store settings into
+# this script without INDEX_DATA_STORE_DIR, leaving clang a valueless -index-store-path.
+unset COMPILER_INDEX_STORE_ENABLE
+unset INDEX_ENABLE_DATA_STORE
+unset INDEX_DATA_STORE_DIR
+unset INDEX_ENABLE_OPTIMIZATION_LEVEL_OVERRIDE
+unset INDEX_STORE_COMPRESS
+unset INDEX_STORE_ONLY_PROJECT_FILES
+
 swift run mac-crafter \
     --build-path="$DESKTOP_CLIENT_PROJECT_ROOT/build" \
     --product-path="/Applications" \
