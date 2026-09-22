@@ -43,7 +43,13 @@ void FileProviderXPC::connectToFileProviderDomains()
     
     // Get the FileProviderService singleton from FileProvider
     const auto fileProviderService = FileProvider::instance()->service();
-    _clientCommServices = FileProviderXPCUtils::processClientCommunicationConnections(connections, fileProviderService);
+    const auto clientCommConnections = FileProviderXPCUtils::processClientCommunicationConnections(connections, fileProviderService);
+
+    for (const auto &domainIdentifier : clientCommConnections.keys()) {
+        const auto clientCommConnection = clientCommConnections.value(domainIdentifier);
+        _clientCommServices.insert(domainIdentifier, clientCommConnection.clientCommunicationService);
+        _clientCommConnections.insert(domainIdentifier, clientCommConnection.xpcConnection);
+    }
 }
 
 void FileProviderXPC::authenticateFileProviderDomains()
@@ -181,8 +187,14 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
             const auto fpServices = FileProviderXPCUtils::getFileProviderServices(@[manager]);
             const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
             const auto fileProviderService = FileProvider::instance()->service();
-            const auto services = FileProviderXPCUtils::processClientCommunicationConnections(connections, fileProviderService);
-            _clientCommServices.insert(services);
+            const auto clientCommConnections = FileProviderXPCUtils::processClientCommunicationConnections(connections, fileProviderService);
+
+            for (const auto &domainIdentifier : clientCommConnections.keys()) {
+                const auto clientCommConnection = clientCommConnections.value(domainIdentifier);
+                disconnectFromFileProviderDomain(domainIdentifier);
+                _clientCommServices.insert(domainIdentifier, clientCommConnection.clientCommunicationService);
+                _clientCommConnections.insert(domainIdentifier, clientCommConnection.xpcConnection);
+            }
         }
 
         if (retry) {
