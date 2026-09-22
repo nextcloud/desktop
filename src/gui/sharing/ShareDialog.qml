@@ -32,10 +32,8 @@ WizardStyledWindow {
     property bool activatingShare: false
     property string shareActivationError: ""
     property alias controller: controllerObject
-    readonly property string fallbackItemName: {
-        //: Generic fallback name for a shared item when its name is unavailable.
-        return qsTr("File")
-    }
+    //: Generic fallback name for a shared item when its name is unavailable.
+    readonly property string fallbackItemName: qsTr("File")
 
     property FileDetails fileDetails: FileDetails {
         localPath: dialog.localPath
