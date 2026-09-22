@@ -239,16 +239,28 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
             continue;
         }
 
+        const auto domainIdentifierString = QString::fromNSString(domainIdentifier);
+
         qCInfo(lcFileProviderXPCUtils) << "Got domain id"
-                                       << domainIdentifier.UTF8String
+                                       << domainIdentifierString
                                        << "from file provider service";
+
+        [domainIdentifier release];
+
+        if (clientCommConnections.contains(domainIdentifierString)) {
+            qCWarning(lcFileProviderXPCUtils) << "Duplicate domain id from file provider service"
+                                              << domainIdentifierString;
+            [connection invalidate];
+            [clientCommService release];
+            continue;
+        }
 
         [connection retain];
 
         ClientCommunicationConnection clientCommConnection;
         clientCommConnection.clientCommunicationService = clientCommService;
         clientCommConnection.xpcConnection = connection;
-        clientCommConnections.insert(QString::fromNSString(domainIdentifier), clientCommConnection);
+        clientCommConnections.insert(domainIdentifierString, clientCommConnection);
     }
 
     return clientCommConnections;
