@@ -42,6 +42,9 @@ private Q_SLOTS:
     void slotAccountStateChanged(AccountState::State state) const;
 
 private:
+    void disconnectFromFileProviderDomains();
+    void disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier);
+
     //! keys are File Provider domain identifiers
     QHash<QString, void*> _clientCommServices;
     //! keys are File Provider domain identifiers
