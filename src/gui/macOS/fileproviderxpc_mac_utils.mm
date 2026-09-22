@@ -166,6 +166,8 @@ NSObject *getRemoteServiceObject(NSXPCConnection *const connection, Protocol *co
         qCWarning(lcFileProviderXPCUtils) << "Remote service object does not conform to protocol";
         return nil;
     }
+
+    [remoteServiceObject retain];
     return remoteServiceObject;
 }
 
@@ -227,8 +229,6 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
             [connection invalidate];
             continue;
         }
-
-        [clientCommService retain];
 
         const auto domainIdentifier = getFileProviderDomainIdentifier(clientCommService);
 
