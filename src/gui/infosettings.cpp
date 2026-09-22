@@ -205,18 +205,22 @@ void InfoSettings::setAndCheckNewUpdateChannel(const QString &newChannel) {
 QString InfoSettings::updateChannelToLocalized(const QString &channel) const
 {
     if (channel == QStringLiteral("stable")) {
+        //: Name of the stable update channel.
         return tr("stable");
     }
 
     if (channel == QStringLiteral("beta")) {
+        //: Name of the beta update channel.
         return tr("beta");
     }
 
     if (channel == QStringLiteral("daily")) {
+        //: Name of the daily update channel.
         return tr("daily");
     }
 
     if (channel == QStringLiteral("enterprise")) {
+        //: Name of the enterprise update channel.
         return tr("enterprise");
     }
 

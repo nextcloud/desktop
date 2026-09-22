@@ -123,7 +123,7 @@
              <item>
               <widget class="QLabel" name="hostLabel">
                <property name="text">
-                <string>Host</string>
+                <string extracomment="Label for the proxy server hostname field.">Host</string>
                </property>
               </widget>
              </item>

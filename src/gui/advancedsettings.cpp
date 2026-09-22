@@ -248,6 +248,7 @@ AdvancedSettings::AdvancedSettings(QWidget *parent)
     _ui->moveFilesToTrashRow->setStretch(0, 1);
     _ui->showInExplorerNavigationPaneRow->setStretch(0, 1);
 
+    //: Name of the Advanced settings feature.
     auto *advancedActionsLabel = new QLabel(tr("Advanced"), this);
     advancedActionsLabel->setObjectName(QLatin1String("advancedActionsLabel"));
     _ui->advancedActionsLayout->insertWidget(0, advancedActionsLabel);

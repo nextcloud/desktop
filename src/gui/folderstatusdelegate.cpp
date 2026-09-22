@@ -344,6 +344,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     // Sync File Progress Bar: Show it if syncFile is not empty.
     if (showProgess) {
+        //: Representative file label used to calculate the height of a file progress row.
         const auto fileNameTextHeight = subFm.boundingRect(tr("File")).height();
         constexpr auto barHeight = 7; // same height as quota bar
         const auto overallWidth = option.rect.right() - aliasMargin - optionsButtonVisualRect.width() - nextToIcon;

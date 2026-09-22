@@ -1241,15 +1241,16 @@ void OCC::SocketApi::openPrivateLink(const QString &link)
 
 void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
 {
-    static std::array<std::pair<const char *, QString>, 7> strings { {
-        { "SHARE_MENU_TITLE", tr("Share options") },
-        { "FILE_ACTIONS_MENU_TITLE", tr("File actions") },
-        { "FILE_ACTIVITY_MENU_TITLE", tr("Activity") },
-        { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
-        { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
-        { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email …") },
-        { "CONTEXT_MENU_ICON", APPLICATION_ICON_NAME },
-    } };
+    static std::array<std::pair<const char *, QString>, 7> strings{{
+        {"SHARE_MENU_TITLE", tr("Share options")},
+        {"FILE_ACTIONS_MENU_TITLE", tr("File actions")},
+        //: Name of the Activity file action.
+        {"FILE_ACTIVITY_MENU_TITLE", tr("Activity")},
+        {"CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI()},
+        {"COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard")},
+        {"EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email …")},
+        {"CONTEXT_MENU_ICON", APPLICATION_ICON_NAME},
+    }};
     listener->sendMessage(QStringLiteral("GET_STRINGS:BEGIN"));
     for (const auto& key_value : strings) {
         if (argument.isEmpty() || argument == QLatin1String(key_value.first)) {
@@ -1492,6 +1493,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         sendLockFileInfoMenuEntries(fileInfo, syncFolder, fileData, listener, record);
 
         if (!FileSystem::isDir(fileData.localPath)) {
+            //: Name of the Activity file action.
             listener->sendMessage(QLatin1String("MENU_ITEM:ACTIVITY") + flagString + tr("Activity"));
         }
 

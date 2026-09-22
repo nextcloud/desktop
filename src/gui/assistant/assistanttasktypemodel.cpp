@@ -94,6 +94,7 @@ void AssistantTaskTypeModel::replaceFromResponse(const QJsonDocument &json)
 
         auto name = typeObject.value("name"_L1).toString();
         if (name.isEmpty()) {
+            //: Name of the Chat assistant task type.
             name = isChat ? tr("Chat") : typeId;
         }
         items.append({typeId, name, typeObject.value("description"_L1).toString(), isChat});
