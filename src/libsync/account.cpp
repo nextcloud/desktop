@@ -585,7 +585,7 @@ void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 void Account::setUrl(const QUrl &url)
 {
     if (_url != url) {
-        _capabilitiesEtag.clear();
+        _capabilities.setEtag({});
     }
 
     const QRegularExpression discoverPublicLinks(R"(((https|http)://[^/]*).*/s/([^/]*)$)");
@@ -761,12 +761,11 @@ const Capabilities &Account::capabilities() const
 
 QByteArray Account::capabilitiesEtag() const
 {
-    return _capabilitiesEtag;
+    return _capabilities.etag();
 }
 
 void Account::setCapabilitiesEtag(const QByteArray &etag)
 {
-    _capabilitiesEtag = etag;
     _capabilities.setEtag(etag);
 }
 
@@ -783,8 +782,7 @@ void Account::updateServerColors()
 
 void Account::setCapabilities(const QVariantMap &caps)
 {
-    _capabilities = Capabilities(caps);
-    _capabilities.setEtag(_capabilitiesEtag);
+    _capabilities = Capabilities(caps, _capabilities.etag());
 
     updateServerColors();
     updateServerSubcription();

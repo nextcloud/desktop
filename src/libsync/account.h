@@ -579,7 +579,6 @@ private:
     QList<QSslCertificate> _approvedCerts;
     QSslConfiguration _sslConfiguration;
     Capabilities _capabilities;
-    QByteArray _capabilitiesEtag;
     QString _serverVersion;
     QColor _serverColor;
     QColor _serverTextColor = QColorConstants::White;

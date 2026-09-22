@@ -477,6 +477,9 @@ private Q_SLOTS:
         const auto testEtag = QByteArrayLiteral("\"123456789\"");
         capabilities.setEtag(testEtag);
         QCOMPARE(capabilities.etag(), testEtag);
+
+        OCC::Capabilities capabilitiesWithEtag(QVariantMap{}, testEtag);
+        QCOMPARE(capabilitiesWithEtag.etag(), testEtag);
     }
 };
 

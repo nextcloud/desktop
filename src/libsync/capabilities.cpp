@@ -20,8 +20,9 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerCapabilities, "nextcloud.sync.server.capabilities", QtInfoMsg)
 
-Capabilities::Capabilities(const QVariantMap &capabilities)
+Capabilities::Capabilities(const QVariantMap &capabilities, const QByteArray &etag)
     : _capabilities(capabilities)
+    , _etag(etag)
 {
 }
 
