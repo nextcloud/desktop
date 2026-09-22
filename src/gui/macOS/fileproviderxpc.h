@@ -25,6 +25,7 @@ class FileProviderXPC : public QObject
 
 public:
     explicit FileProviderXPC(QObject *parent = nullptr);
+    ~FileProviderXPC() override;
 
     [[nodiscard]] bool fileProviderDomainReachable(const QString &fileProviderDomainIdentifier, bool retry = true, bool reconfigureOnFail = true);
     [[nodiscard]] bool fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const;

@@ -33,6 +33,11 @@ FileProviderXPC::FileProviderXPC(QObject *parent)
 {
 }
 
+FileProviderXPC::~FileProviderXPC()
+{
+    disconnectFromFileProviderDomains();
+}
+
 void FileProviderXPC::disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier)
 {
     const auto connection = _clientCommConnections.take(fileProviderDomainIdentifier);
