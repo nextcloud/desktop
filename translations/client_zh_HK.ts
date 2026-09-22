@@ -2734,23 +2734,29 @@ This action will abort any currently running synchronization.</source>
         <translation>請再試一次。</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="523"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="538"/>
+        <source>Lock has no expiry. You can unlock this file manually once you are finished editing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="527"/>
         <source>File %1 already locked.</source>
         <translation>檔案 %1 已經上鎖。</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="535"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="525"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="539"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
         <translation>鎖定將持續 %1 分鐘。完成編輯後，您也可以手動解鎖此檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="534"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="541"/>
         <source>File %1 now locked.</source>
         <translation>檔案 %1 現已被上鎖。</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="543"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="549"/>
         <source>File %1 could not be locked.</source>
         <translation>無法鎖上檔案 %1。</translation>
     </message>
