@@ -187,6 +187,10 @@ Our C++ code should can make use of C++ 20 standard features whenever possible.
 
 Do not use C++ modules. Use standard header inclusion instead.
 
+For new code, do not use QStringLiteral and related features from Qt and rather use string literals (from the namespace Qt::StringLiterals). This rule applies only to new code; do not convert existing uses of QStringLiteral and related features in code you are not otherwise changing.
+
+Do not repeat yourself and try to use existing functions instead of cherry-picking code from them and duplicating it. Possibly create lambda or class methods to prevent duplicating code. Avoid ad-hoc free functions outside an established utility namespace (such as `OCC::Utility`); prefer extending such a namespace or adding private class methods over duplicating logic.
+
 After editing or adding any C++ source files, anywhere in the repository, run `clang-format -i` on the touched files before considering the task done.
 
 After editing or adding any C++ source files, anywhere in the repository, run `run-clang-tidy -p build -header-filter='.*' -config-file .clang-tidy -fix` from the repository root and confirm it produces no further changes. This is a mandatory step: apply any fixes the tool makes, review them, re-run the command, and repeat until it reports no changes before considering the task done. Do not skip or silently waive this step; if `run-clang-tidy` cannot be run (for example because `./build` is not configured), state that explicitly rather than proceeding as if it passed.
