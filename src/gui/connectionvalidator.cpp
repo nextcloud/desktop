@@ -284,43 +284,27 @@ void ConnectionValidator::slotCapabilitiesEtagReceived(const QByteArray &value, 
     }
 }
 
-void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
-{
-    slotCapabilitiesReceived(json, 0);
-}
-
 void ConnectionValidator::slotCapabilitiesReceived(const QJsonDocument &json, int statusCode)
 {
-    if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
-        if (auto reply = job->reply()) {
-            _account->setHttp2Supported(reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool());
-        }
-    }
-
     if (statusCode == notModifiedStatusCode) {
         qCInfo(lcConnectionValidator) << "Server capabilities not modified (HTTP 304)";
-        checkServerTermsOfService();
+        setAndCheckServerVersion(_account->serverVersion());
+    } else {
+        auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
+        qCInfo(lcConnectionValidator) << "Server capabilities" << caps;
+        _account->setCapabilities(caps.toVariantMap());
 
-        if (_account->isPublicShareLink()) {
-            slotUserFetched(nullptr);
+        // New servers also report the version in the capabilities
+        QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
+        if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
+            return;
         }
-        return;
+
+        // Check for the directEditing capability
+        QUrl directEditingURL = QUrl(caps["files"].toObject()["directEditing"].toObject()["url"].toString());
+        QString directEditingETag = caps["files"].toObject()["directEditing"].toObject()["etag"].toString();
+        _account->fetchDirectEditors(directEditingURL, directEditingETag);
     }
-
-    auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
-    qCInfo(lcConnectionValidator) << "Server capabilities" << caps;
-    _account->setCapabilities(caps.toVariantMap());
-
-    // New servers also report the version in the capabilities
-    QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
-    if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
-        return;
-    }
-
-    // Check for the directEditing capability
-    QUrl directEditingURL = QUrl(caps["files"].toObject()["directEditing"].toObject()["url"].toString());
-    QString directEditingETag = caps["files"].toObject()["directEditing"].toObject()["etag"].toString();
-    _account->fetchDirectEditors(directEditingURL, directEditingETag);
 
     checkServerTermsOfService();
 
