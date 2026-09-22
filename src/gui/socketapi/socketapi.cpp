@@ -231,6 +231,7 @@ QString contextMenuOpenInBrowserText() { return OCC::SocketApi::tr("Open in Brow
 QString contextMenuCopyInternalLinkText() { return OCC::SocketApi::tr("Copy Internal Link"); }
 QString contextMenuFileActionsText() { return OCC::SocketApi::tr("File Actions"); }
 #endif
+}
 
 namespace OCC {
 
@@ -1908,5 +1909,5 @@ void SocketApiJobV2::setWarning(const QString &warning)
 
 } // namespace OCC
 
-#include "socketapi.moc"
 #include "moc_socketapi_p.cpp"
+#include "socketapi.moc"
