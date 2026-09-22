@@ -66,7 +66,7 @@ void FileProvider::configureXPC()
         return;
     }
 
-    _xpc = std::make_unique<FileProviderXPC>(new FileProviderXPC(this));
+    _xpc = std::make_unique<FileProviderXPC>();
 
     if (_xpc) {
         qCInfo(lcMacFileProvider) << "Initialised file provider XPC.";
