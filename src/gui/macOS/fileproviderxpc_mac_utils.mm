@@ -190,9 +190,10 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
     return domainIdentifier;
 }
 
-QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections, OCC::Mac::FileProviderService *const service)
+ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections,
+                                                                      OCC::Mac::FileProviderService *const service)
 {
-    QHash<QString, void*> clientCommServices;
+    ClientCommunicationConnections clientCommConnections;
 
     for (NSXPCConnection * const connection in connections) {
         const auto exportedInterfaceProtocol = @protocol(AppProtocol);
@@ -229,10 +230,13 @@ QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnect
                                        << domainIdentifier.UTF8String
                                        << "from file provider service";
 
-        clientCommServices.insert(QString::fromNSString(domainIdentifier), clientCommService);
+        ClientCommunicationConnection clientCommConnection;
+        clientCommConnection.clientCommunicationService = clientCommService;
+        clientCommConnection.xpcConnection = connection;
+        clientCommConnections.insert(QString::fromNSString(domainIdentifier), clientCommConnection);
     }
 
-    return clientCommServices;
+    return clientCommConnections;
 }
 
 } // namespace OCC::Mac::FileProviderXPCUtils
