@@ -51,6 +51,7 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
     }];
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    dispatch_release(group);
 
     if (managers.count == 0) {
         qCWarning(lcFileProviderXPCUtils) << "No file provider domains found!";
@@ -89,6 +90,7 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
     }
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    dispatch_release(group);
     return fpServices.copy;
 }
 
@@ -134,6 +136,7 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
     }
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    dispatch_release(group);
     return connections.copy;
 }
 
@@ -169,7 +172,7 @@ NSObject *getRemoteServiceObject(NSXPCConnection *const connection, Protocol *co
 NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> *const clientCommService)
 {
     Q_ASSERT(clientCommService != nil);
-    __block NSString *domainIdentifier;
+    __block NSString *domainIdentifier = nil;
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_enter(group);
 
@@ -181,11 +184,18 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
             return;
         }
 
+        if (extensionAccountId == nil) {
+            qCWarning(lcFileProviderXPCUtils) << "File provider service returned no domain id";
+            dispatch_group_leave(group);
+            return;
+        }
+
         domainIdentifier = [[NSString alloc] initWithString:extensionAccountId];
         dispatch_group_leave(group);
     }];
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    dispatch_release(group);
 
     return domainIdentifier;
 }
