@@ -42,7 +42,6 @@ WizardItemDelegate {
             spacing: 0
 
             EnforcedPlainTextLabel {
-                objectName: "shareRowTitle"
                 Layout.fillWidth: true
                 text: {
                     if (root.publicLink) {

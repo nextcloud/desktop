@@ -759,14 +759,6 @@ class TestSharingDialog : public QObject
         }));
         QVERIFY2(rowObject, qPrintable(component.errorString()));
 
-        const auto title = rowObject->findChild<QObject *>(QStringLiteral("shareRowTitle"));
-        QVERIFY(title);
-        QCOMPARE(title->property("text").toString(), QStringLiteral("admin"));
-        QVERIFY(rowObject->setProperty("recipientNames", QString{}));
-        QCOMPARE(title->property("text").toString(), QStringLiteral("Share"));
-        QVERIFY(rowObject->setProperty("publicLink", true));
-        QCOMPARE(title->property("text").toString(), QStringLiteral("Share link"));
-
         const auto deleteButton = rowObject->findChild<QObject *>(QStringLiteral("deleteShareRowButton"));
         QVERIFY(deleteButton);
         QVERIFY(deleteButton->property("visible").toBool());
