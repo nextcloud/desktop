@@ -30,6 +30,11 @@ namespace {
 // NSUserDefaults entries
 constexpr auto enabledAccountsSettingsKey = "enabledAccounts";
 
+bool domainRestorationRequiresXpcReconfiguration(const QString &storedIdentifier, const QString &restoredIdentifier)
+{
+    return !storedIdentifier.isEmpty() && !restoredIdentifier.isEmpty() && storedIdentifier != restoredIdentifier;
+}
+
 } // namespace
 
 namespace OCC {
@@ -271,6 +276,7 @@ public:
         if (modeEnabled) {
             const auto domains = Mac::FileProvider::instance()->domainManager()->getDomains();
             QSet<QString> existingDomainIdentifiers;
+            auto restoredDomain = false;
 
             for (NSFileProviderDomain * const domain : domains) {
                 existingDomainIdentifiers.insert(QString::fromNSString(domain.identifier));
@@ -299,8 +305,14 @@ public:
 
                     if (newIdentifier.isEmpty() == false) {
                         AccountManager::instance()->setFileProviderDomainIdentifier(userIdAtHost, newIdentifier);
+                        restoredDomain |= domainRestorationRequiresXpcReconfiguration(identifier, newIdentifier);
                     }
                 }
+            }
+
+            if (restoredDomain) {
+                // A changed identifier means addDomainForAccount() registered a new domain; rediscover its XPC service.
+                Mac::FileProvider::instance()->configureXPC();
             }
         } else {
             for (const auto &accountState : accountStates) {
