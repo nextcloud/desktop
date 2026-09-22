@@ -45,6 +45,8 @@ private:
     //! keys are File Provider domain identifiers
     QHash<QString, void*> _clientCommServices;
     //! keys are File Provider domain identifiers
+    QHash<QString, void *> _clientCommConnections;
+    //! keys are File Provider domain identifiers
     QHash<QString, QDateTime> _unreachableFileProviderDomains;
 };
 
