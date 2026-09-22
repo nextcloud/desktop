@@ -724,6 +724,7 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
 
     const auto folder = info->_folder;
     if (folder && folder->virtualFilesEnabled()) {
+        //: Name of the submenu containing virtual-file availability actions.
         auto availabilityMenu = menu.addMenu(tr("Availability"));
 
         // Has '/' suffix convention for paths here but VFS and
@@ -814,6 +815,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
 
     if (folder->virtualFilesEnabled()) {
+        //: Name of the submenu containing virtual-file availability actions.
         auto availabilityMenu = menu->addMenu(tr("Availability"));
 
         ac = availabilityMenu->addAction(Utility::vfsPinActionText());

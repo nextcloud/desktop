@@ -270,7 +270,8 @@ WizardStyledWindow {
                     && root.controller.currentStep === AccountWizardController.SyncOptionsStep
                     && root.controller.hasAdvancedOptions
                 enabled: root.controller && !root.controller.busy
-                text: qsTr("Advanced")
+                //: Name of the Advanced settings feature.
+                text: qsTranslate("OCC::AdvancedSettings", "Advanced")
                 Layout.fillWidth: true
                 Layout.preferredWidth: 1
                 onClicked: root.controller.openAdvancedOptions()

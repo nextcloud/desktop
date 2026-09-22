@@ -741,7 +741,13 @@ QString ShareModel::displayStringForShare(const SharePtr &share, const bool verb
 
         const auto isSecureFileDropShare = isSecureFileDropSupportedFolder() && linkShare->getPermissions().testFlag(OCC::SharePermission::SharePermissionCreate);
 
-        const auto displayString = isSecureFileDropShare ? tr("Secure file drop link") : tr("Share link");
+        auto displayString = QString{};
+        if (isSecureFileDropShare) {
+            displayString = tr("Secure file drop link");
+        } else {
+            //: "Share link" is a noun phrase referring to a public link that grants access to the shared item.
+            displayString = tr("Share link");
+        }
 
         if (!linkShare->getLabel().isEmpty()) {
             return QStringLiteral("%1 (%2)").arg(displayString, linkShare->getLabel());

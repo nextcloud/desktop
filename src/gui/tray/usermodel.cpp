@@ -356,6 +356,7 @@ bool showDebugCallNotification(const OCC::AccountStatePtr &account)
     }
 
     OCC::ActivityLink answer;
+    //: Action for answering an incoming Talk call.
     answer._label = QObject::tr("Answer");
     answer._verb = "WEB";
     answer._link = account->account()->url().toString();
