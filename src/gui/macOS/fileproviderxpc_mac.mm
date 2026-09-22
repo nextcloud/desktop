@@ -33,9 +33,32 @@ FileProviderXPC::FileProviderXPC(QObject *parent)
 {
 }
 
+void FileProviderXPC::disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier)
+{
+    const auto connection = _clientCommConnections.take(fileProviderDomainIdentifier);
+
+    if (connection) {
+        const auto xpcConnection = (NSXPCConnection *)connection;
+        [xpcConnection invalidate];
+    }
+}
+
+void FileProviderXPC::disconnectFromFileProviderDomains()
+{
+    for (const auto &fileProviderDomainIdentifier : _clientCommConnections.keys()) {
+        disconnectFromFileProviderDomain(fileProviderDomainIdentifier);
+    }
+
+    for (const auto &fileProviderDomainIdentifier : _clientCommServices.keys()) {
+        disconnectFromFileProviderDomain(fileProviderDomainIdentifier);
+    }
+}
+
 void FileProviderXPC::connectToFileProviderDomains()
 {
     qCInfo(lcFileProviderXPC) << "Connecting to file provider domains.";
+
+    disconnectFromFileProviderDomains();
 
     const auto managers = FileProviderXPCUtils::getDomainManagers();
     const auto fpServices = FileProviderXPCUtils::getFileProviderServices(managers);
