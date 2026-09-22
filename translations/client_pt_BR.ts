@@ -607,7 +607,7 @@
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="21"/>
         <source>This removes the share and its access for all recipients.</source>
-        <translation type="unfinished"/>
+        <translation>Isso remove o compartilhamento e o acesso a ele para todos os destinatários.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
@@ -683,12 +683,12 @@
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="288"/>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="347"/>
         <source>This value is shorter than the minimum length.</source>
-        <translation type="unfinished"/>
+        <translation>Esse valor é menor do que o comprimento mínimo.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="363"/>
         <source>This setting is not supported by this version of the desktop client.</source>
-        <translation type="unfinished"/>
+        <translation>Essa configuração não é compatível com esta versão do cliente para desktop.</translation>
     </message>
 </context>
 <context>
@@ -2730,23 +2730,29 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Por favor, tente novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="523"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="538"/>
+        <source>Lock has no expiry. You can unlock this file manually once you are finished editing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="527"/>
         <source>File %1 already locked.</source>
         <translation>Arquivo %1 já está trancado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="535"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="525"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="539"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
         <translation>O trancamento terá duração de %1 minutos. Você também pode destrancar este arquivo manualmente quando terminar de editá-lo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="534"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="541"/>
         <source>File %1 now locked.</source>
         <translation>Arquivo %1 agora está trancado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="543"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="549"/>
         <source>File %1 could not be locked.</source>
         <translation>Não foi possível trancar o arquivo %1</translation>
     </message>
@@ -4096,7 +4102,7 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
         <source>The server did not generate a valid public-link identifier.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor não gerou um identificador válido para o link público.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
@@ -4112,7 +4118,7 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
         <source>The server returned an invalid share.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor retornou um compartilhamento inválido.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
@@ -4143,7 +4149,7 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
         <source>The server did not generate a valid sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor não gerou um link de compartilhamento válido.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
@@ -4169,7 +4175,7 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="543"/>
         <source>Could not update the recipient permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível atualizar as permissões do destinatário.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
@@ -4195,7 +4201,7 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="764"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="781"/>
         <source>The newly created share is no longer available.</source>
-        <translation type="unfinished"/>
+        <translation>O compartilhamento recém-criado não está mais disponível.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
@@ -4206,7 +4212,7 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
         <source>Could not save all changes to the share.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível salvar todas as alterações no compartilhamento.</translation>
     </message>
 </context>
 <context>
@@ -7486,7 +7492,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Permissões do destinatário</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
@@ -7504,7 +7510,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>O compartilhamento não está disponível para esta pasta</translation>
     </message>
 </context>
 <context>
@@ -7630,7 +7636,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareAdvancedSettingsPage.qml" line="71"/>
         <source>No advanced settings are available for this share.</source>
-        <translation type="unfinished"/>
+        <translation>Não há configurações avançadas disponíveis para este compartilhamento.</translation>
     </message>
 </context>
 <context>
@@ -7646,7 +7652,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="115"/>
         <source>Changes to this share are applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>As alterações feitas neste compartilhamento são aplicadas imediatamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
@@ -7770,27 +7776,27 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
         <source>Configure recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Configurar permissões do destinatário</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="159"/>
         <source>Copy recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link do destinatário</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Regenerate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Regenerar o link do destinatário</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Generate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Gerar o link do destinatário</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
         <source>Remove recipient</source>
-        <translation type="unfinished"/>
+        <translation>Remover destinatário</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
@@ -7855,12 +7861,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="196"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações de compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="228"/>
         <source>Advanced sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações avançadas de compartilhamento</translation>
     </message>
 </context>
 <context>
@@ -7917,7 +7923,7 @@ Servidor respondeu com erro: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/sharing/ShareRow.qml" line="60"/>
         <source>%n recipient(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n destinatário</numerusform><numerusform>%n de destinatários</numerusform><numerusform>%n destinatários</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="77"/>

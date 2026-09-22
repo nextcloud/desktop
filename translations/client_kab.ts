@@ -808,12 +808,12 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Ales awennez</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Snes</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
@@ -836,7 +836,7 @@
     <message>
         <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
         <source>Local Network access is disabled. Enable it to connect to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Yensa wadaf ɣer uzeṭṭa adigan. Rmed-it akken ad yeqqen ɣer uqeddac.</translation>
     </message>
 </context>
 <context>
@@ -844,7 +844,7 @@
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="795"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Amalal</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="248"/>
@@ -899,7 +899,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="777"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Tabdart n igmaḍ n unadi yedduklen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="841"/>
@@ -912,37 +912,37 @@
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="20"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Semmet</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="26"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>Ales tikkelt nniḍen</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="34"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>Gzem</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="40"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Nɣel</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="46"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>Senteḍ</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="52"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Kkes</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="60"/>
         <source>Select All</source>
-        <translation type="unfinished"/>
+        <translation>Fren-iten akk</translation>
     </message>
 </context>
 <context>
@@ -978,12 +978,12 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="1091"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Asekkeṛ n temhelt ɣef %1 ur yeddi ara s tuccḍa %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1093"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Tukksa n usekkeṛ i temhelt ɣef %1 ur yeddi ara s tuccḍa %2</translation>
     </message>
 </context>
 <context>
@@ -992,7 +992,8 @@
         <location filename="../src/gui/accountmanager.cpp" line="255"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Yettwaf umiḍan seg umsaɣ n tnarit aqbur.
+Ilaq ad tketreḍ amiḍan-a?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="257"/>
@@ -1031,7 +1032,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="216"/>
         <source>Resolve…</source>
-        <translation type="unfinished"/>
+        <translation>Fru...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
@@ -1069,25 +1070,25 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.ui" line="591"/>
         <location filename="../src/gui/accountsettings.cpp" line="2117"/>
         <source>Reset File Provider Domain</source>
-        <translation type="unfinished"/>
+        <translation>Ales awennez n taɣult n usaǧǧaw n ufaylu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="640"/>
         <location filename="../src/gui/accountsettings.cpp" line="1578"/>
         <source>Log out, log back in, or remove this account from the client.</source>
-        <translation type="unfinished"/>
+        <translation>Ffeɣ, tkecmeḍ tikkelt nniḍen, neɣ kkes amiḍan-agi seg umsaɣ.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="656"/>
         <location filename="../src/gui/accountsettings.cpp" line="1574"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Ffeɣ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="669"/>
         <location filename="../src/gui/accountsettings.cpp" line="1575"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Kkes amiḍan</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="338"/>
@@ -2723,23 +2724,29 @@ This action will abort any currently running synchronization.</source>
         <translation>Ttxil-k eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="523"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="538"/>
+        <source>Lock has no expiry. You can unlock this file manually once you are finished editing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="527"/>
         <source>File %1 already locked.</source>
         <translation>Afaylu %1 yettwasekkeṛ yakan.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="535"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="525"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="539"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
         <translation>Asekkeṛ ad yeṭṭef %1n tesdatin. Tzemreḍ daɣen ad teldiḍ afaylu-agi s ufus ticki tfukkeḍ taẓrigt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="534"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="541"/>
         <source>File %1 now locked.</source>
         <translation>Afaylu %1 tura yettwasekkeṛ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="543"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="549"/>
         <source>File %1 could not be locked.</source>
         <translation>Afaylu %1 ulamek ara yettwasekkeṛ.</translation>
     </message>
