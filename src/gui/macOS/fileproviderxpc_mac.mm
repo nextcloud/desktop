@@ -266,7 +266,7 @@ std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QS
         return std::nullopt;
     }
 
-    qCInfo(lcFileProviderXPC) << "File provider domain" << fileProviderDomainIdentifier << (*hasDirtyUserData ? "has" : "does not have") << "dirty user data";
+    qCInfo(lcFileProviderXPC) << "File provider domain" << fileProviderDomainIdentifier << (hasDirtyUserData ? "has" : "does not have") << "dirty user data";
 
     return hasDirtyUserData;
 }
