@@ -602,22 +602,22 @@
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="17"/>
         <source>Delete share?</source>
-        <translation type="unfinished"/>
+        <translation>Odstrániť zdieľanie?</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="21"/>
         <source>This removes the share and its access for all recipients.</source>
-        <translation type="unfinished"/>
+        <translation>Týmto sa zruší zdieľanie a prístup k nemu pre všetkých príjemcov.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Zmazať</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Zrušiť</translation>
     </message>
 </context>
 <context>
@@ -667,28 +667,28 @@
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="25"/>
         <source>%1 (required)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (povinné)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="103"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>RRRR-MM-DD</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="133"/>
         <source>Enter a valid date within the allowed range.</source>
-        <translation type="unfinished"/>
+        <translation>Zadajte platný dátum v povolenom rozsahu.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="288"/>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="347"/>
         <source>This value is shorter than the minimum length.</source>
-        <translation type="unfinished"/>
+        <translation>Táto hodnota je kratšia ako minimálna dĺžka.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="363"/>
         <source>This setting is not supported by this version of the desktop client.</source>
-        <translation type="unfinished"/>
+        <translation>Toto nastavenie nie je podporované touto verziou desktopového klienta.</translation>
     </message>
 </context>
 <context>
@@ -2123,8 +2123,9 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
 <context>
     <name>OCC::AssistantTaskTypeModel</name>
     <message>
-        <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="97"/>
+        <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="98"/>
         <source>Chat</source>
+        <extracomment>Name of the Chat assistant task type.</extracomment>
         <translation>Chat</translation>
     </message>
 </context>
@@ -2194,7 +2195,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="141"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Súbor %1 nie je možné nahrať, pretože existuje iný súbor s rovnakým názvom, ktorý sa líši len veľkostou písmen</translation>
+        <translation>Súbor %1 nie je možné nahrať, pretože existuje iný súbor s rovnakým názvom, ktorý sa líši len v písaní veľkých a malých písmen</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
@@ -2733,7 +2734,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="538"/>
         <source>Lock has no expiry. You can unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>Zámok nemá čas vypršania. Tento súbor môžete manuálne odomknúť po dokončení úprav.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="527"/>
@@ -3556,7 +3557,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1200"/>
         <source>Preparing to sync …</source>
-        <translation>Pripravuje sa synchronizácia...</translation>
+        <translation>Pripravuje sa synchronizácia…</translation>
     </message>
 </context>
 <context>
@@ -3870,7 +3871,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="42"/>
         <source>Server notifications that require attention.</source>
-        <translation>Zobrazovať hlásenie, ktoré vyžadujú pozornosť.</translation>
+        <translation>Notifikácie zo servera, ktoré vyžadujú pozornosť.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="46"/>
@@ -4089,12 +4090,12 @@ Prechod na nižšiu verziu nie je možný okamžite: zmena zo stabilnej na podni
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="80"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Iba na zobrazenie</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="83"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Môže upravovať</translation>
     </message>
 </context>
 <context>
@@ -4102,35 +4103,35 @@ Prechod na nižšiu verziu nie je možný okamžite: zmena zo stabilnej na podni
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
         <source>The server did not generate a valid public-link identifier.</source>
-        <translation type="unfinished"/>
+        <translation>Server nevygeneroval platný identifikátor verejného odkazu.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="185"/>
         <source>Could not create the public link.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa vytvoriť verejný odkaz.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="223"/>
         <source>Could not retrieve the internal link.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa získať interný odkaz.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
         <source>The server returned an invalid share.</source>
-        <translation type="unfinished"/>
+        <translation>Server vrátil neplatné zdieľanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="282"/>
         <source>Could not create the share.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa vytvoriť zdieľanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="327"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="331"/>
         <source>Could not delete the share.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa odstrániť zdieľanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="360"/>
@@ -4138,30 +4139,30 @@ Prechod na nižšiu verziu nie je možný okamžite: zmena zo stabilnej na podni
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="770"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="773"/>
         <source>Could not add the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa pridať príjemcu.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="391"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="394"/>
         <source>Could not remove the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa odstrániť príjemcu.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
         <source>The server did not generate a valid sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Server nevygeneroval platný odkaz na zdieľanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="433"/>
         <source>Could not update the sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa aktualizovať odkaz na zdieľanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="438"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="441"/>
         <source>Could not generate a sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa vygenerovať odkaz na zdieľanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="471"/>
@@ -4169,30 +4170,30 @@ Prechod na nižšiu verziu nie je možný okamžite: zmena zo stabilnej na podni
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="578"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="586"/>
         <source>Could not update the permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa aktualizovať oprávnenia.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="543"/>
         <source>Could not update the recipient permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa aktualizovať povolenia príjemcu.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="623"/>
         <source>Could not update the sharing setting.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa aktualizovať nastavenie zdieľania.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="673"/>
         <source>The server did not activate the share.</source>
-        <translation type="unfinished"/>
+        <translation>Server neaktivoval zdieľanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="676"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="679"/>
         <source>Could not send the share.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa odoslať zdieľanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="720"/>
@@ -4201,18 +4202,18 @@ Prechod na nižšiu verziu nie je možný okamžite: zmena zo stabilnej na podni
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="764"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="781"/>
         <source>The newly created share is no longer available.</source>
-        <translation type="unfinished"/>
+        <translation>Novo vytvorené zdieľanie už nie je k dispozícii.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="745"/>
         <source>Could not attach the item to the share.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa pripojiť položku k zdieľaniu.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
         <source>Could not save all changes to the share.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa uložiť všetky zmeny zdieľania.</translation>
     </message>
 </context>
 <context>
@@ -4243,13 +4244,13 @@ Prechod na nižšiu verziu nie je možný okamžite: zmena zo stabilnej na podni
     <message>
         <location filename="../src/libsync/hydrationjob.cpp" line="37"/>
         <source>Failed to find fileId: %1 in db</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa nájsť fileId: %1 v databáze</translation>
     </message>
     <message>
         <location filename="../src/libsync/hydrationjob.cpp" line="63"/>
         <source>Unexpected file size transferred. Expected %1 received %2</source>
         <extracomment>%1: expected file size in bytes, %2: actual file size in bytes</extracomment>
-        <translation type="unfinished"/>
+        <translation>Neočakávaná veľkosť preneseného súboru. Očakávaná %1, prijatá %2</translation>
     </message>
 </context>
 <context>
@@ -4622,7 +4623,7 @@ Nie je možné okamžite prejsť na nižšiu verziu: zmena zo stabilnej na enter
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="36"/>
         <source>Log Output</source>
-        <translation>Systémový záznam výstupu</translation>
+        <translation>Výstup denníka</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="42"/>
@@ -4917,17 +4918,17 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="201"/>
         <source>Unable to claim the sync root for files on demand, the folder is already claimed by %1</source>
         <extracomment>%1: system user name who is the owner of the sync root directory</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nie je možné prevziať koreň synchronizácie pre súbory na požiadanie, priečinok už prevzal %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="204"/>
         <source>Unable to retrieve registration info. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné získať informácie o registrácii. Chyba: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="465"/>
         <source>Cannot dehydrate a placeholder because the file changed</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné dehydrovať zástupný objekt, pretože sa súbor zmenil</translation>
     </message>
 </context>
 <context>
@@ -4935,32 +4936,32 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="289"/>
         <source>Failed to read /proc/self/mountinfo</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa prečítať /proc/self/mountinfo</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="302"/>
         <source>Failed to unmount the OpenVFS mount %1 Error:%2</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa odpojiť prípojný bod OpenVFS %1. Chyba: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="311"/>
         <source>The filesystem for %1 does not support xattributes.</source>
-        <translation type="unfinished"/>
+        <translation>Súborový systém pre %1 nepodporuje xattributes.</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="314"/>
         <source>The sync path is already claimed by %1</source>
-        <translation type="unfinished"/>
+        <translation>Cesta synchronizácie je už obsadená klientom %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="318"/>
         <source>OpenVFS executable not found, please install it</source>
-        <translation type="unfinished"/>
+        <translation>Spustiteľný súbor OpenVFS sa nenašiel, nainštalujte ho</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="324"/>
         <source>Failed to find the OpenVFS config file, please check your installation.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa nájsť konfiguračný súbor OpenVFS, skontrolujte inštaláciu.</translation>
     </message>
 </context>
 <context>
@@ -6276,7 +6277,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="592"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Nie je možné otvoriť alebo vytvoriť miestnu synchronizačnú databázu. Skontrolujte či máte právo na zápis do synchronizačného priečinku.</translation>
+        <translation>Nie je možné otvoriť alebo vytvoriť miestnu synchronizačnú databázu. Skontrolujte, či máte právo na zápis do synchronizačného priečinku.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1492"/>
@@ -6316,7 +6317,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="608"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation>Používate virtuálne súbory s príponou, ale prípona nie je nastavená</translation>
+        <translation>Používajú sa virtuálne súbory s príponou, ale prípona nie je nastavená</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="620"/>
@@ -6884,7 +6885,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Nemôžem načítať stav. Uistite sa že ste pripojený k serveru.</translation>
+        <translation>Nepodarilo sa načítať stav. Uistite sa, že ste pripojený k serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="183"/>
@@ -7488,17 +7489,17 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Permissions for %1</source>
-        <translation type="unfinished"/>
+        <translation>Oprávnenia pre %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Povolenia príjemcu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Zavrieť</translation>
     </message>
 </context>
 <context>
@@ -7506,12 +7507,12 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Search for recipients</source>
-        <translation type="unfinished"/>
+        <translation>Hľadať príjemcov</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľanie nie je pre tento priečinok dostupné</translation>
     </message>
 </context>
 <context>
@@ -7577,34 +7578,34 @@ Server odpovedal chybou: %2</translation>
         <translation>Zoznam výsledkov vyhľadávania</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="169"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="171"/>
         <source>Remove %1 filter</source>
         <extracomment>%1 is an active search filter label, such as a provider name, date range, or person name.</extracomment>
         <translation>Odstrániť filter %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="193"/>
-        <location filename="../src/gui/search/SearchWindow.qml" line="262"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="195"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="264"/>
         <source>Retry</source>
         <translation>Skúsiť znova</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="226"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="228"/>
         <source>Search results</source>
         <translation>Výsledky vyhľadávania</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="261"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="263"/>
         <source>Some sources unavailable</source>
         <translation>Niektoré zdroje nie sú dostupné</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="269"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>Less from connected services</source>
         <translation>Menej z pripojených služieb</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="269"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>More from connected services</source>
         <translation>Viac z pripojených služieb</translation>
     </message>
@@ -7637,7 +7638,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareAdvancedSettingsPage.qml" line="71"/>
         <source>No advanced settings are available for this share.</source>
-        <translation type="unfinished"/>
+        <translation>Pre toto zdieľanie nie sú dostupné žiadne rozšírené nastavenia.</translation>
     </message>
 </context>
 <context>
@@ -7653,37 +7654,37 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="115"/>
         <source>Changes to this share are applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>Zmeny v tomto zdieľaní sa prejavia okamžite.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Odstrániť zdieľanie</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Zavrieť</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancelling…</source>
-        <translation type="unfinished"/>
+        <translation>Ruším…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Zrušiť</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Saving…</source>
-        <translation type="unfinished"/>
+        <translation>Ukladá sa…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Uložiť</translation>
     </message>
 </context>
 <context>
@@ -7772,102 +7773,105 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="119"/>
         <source>Added by %1</source>
-        <translation type="unfinished"/>
+        <translation>Pridané používateľom %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
         <source>Configure recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Nastaviť oprávnenia príjemcu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="159"/>
         <source>Copy recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Skopírovať odkaz príjemcu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Regenerate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Vygenerovať nový odkaz príjemcu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Generate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Vygenerovať odkaz príjemcu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
         <source>Remove recipient</source>
-        <translation type="unfinished"/>
+        <translation>Odstrániť príjemcu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
         <source>Can view</source>
-        <translation type="unfinished"/>
+        <translation>Môže zobraziť</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="227"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Môže upravovať</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="231"/>
         <source>Custom permissions</source>
-        <translation type="unfinished"/>
+        <translation>Vlastné oprávnenia</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavenia zdieľania</translation>
     </message>
 </context>
 <context>
     <name>ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="43"/>
         <source>Share &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <extracomment>%1 is the name of the item. &quot;Share&quot; is a verb.</extracomment>
+        <translation>Zdieľať &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="197"/>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="209"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="36"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <extracomment>Generic fallback name for a shared item when its name is unavailable.</extracomment>
+        <translation>Súbor</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="61"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="65"/>
         <source>Share settings</source>
-        <translation type="unfinished"/>
+        <extracomment>&quot;Share&quot; is a noun referring to the share whose settings are shown.</extracomment>
+        <translation>Nastavenia zdieľania</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="79"/>
         <source>Share with %1</source>
-        <translation type="unfinished"/>
+        <extracomment>%1 is a list of recipient names. &quot;Share&quot; is a verb.</extracomment>
+        <translation>Zdieľať s %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="82"/>
         <source>New share</source>
-        <translation type="unfinished"/>
+        <extracomment>&quot;Share&quot; is a noun referring to a newly created share.</extracomment>
+        <translation>Nové zdieľanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to share details</source>
-        <translation type="unfinished"/>
+        <translation>Späť na podrobnosti zdieľania</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to shares</source>
-        <translation type="unfinished"/>
+        <translation>Späť na zdieľania</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="196"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="205"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavenia zdieľania</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="228"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="237"/>
         <source>Advanced sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Rozšírené nastavenia zdieľania</translation>
     </message>
 </context>
 <context>
@@ -7875,71 +7879,74 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="78"/>
         <source>Creating share…</source>
-        <translation type="unfinished"/>
+        <translation>Vytvára sa zdieľanie…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="150"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Interný odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="151"/>
         <source>For people who already have access</source>
-        <translation type="unfinished"/>
+        <translation>Pre ľudí, ktorí už majú prístup</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="153"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Kopírovať interný odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="164"/>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="167"/>
         <source>Create public link</source>
-        <translation type="unfinished"/>
+        <translation>Vytvoriť verejný odkaz</translation>
     </message>
 </context>
 <context>
     <name>ShareRow</name>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="49"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
+        <translation>Odkaz na zdieľanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="56"/>
         <source>Unfinished share</source>
-        <translation type="unfinished"/>
+        <extracomment>&quot;Unfinished share&quot; is a noun phrase referring to a share entry that has not been sent yet.</extracomment>
+        <translation>Nedokončené zdieľanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="59"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <extracomment>&quot;Share&quot; is a noun referring to a share entry without a recipient name.</extracomment>
+        <translation>Zdieľať</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="55"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="69"/>
         <source>Not active — select to finish</source>
-        <translation type="unfinished"/>
+        <translation>Neaktívne — výberom dokončíte</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/sharing/ShareRow.qml" line="60"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="74"/>
         <source>%n recipient(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="77"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="91"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Skopírovať verejný odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="90"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="104"/>
         <source>Configure share</source>
-        <translation type="unfinished"/>
+        <translation>Konfigurovať zdieľanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="106"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="120"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Zmazať zdieľanie</translation>
     </message>
 </context>
 <context>
@@ -8008,12 +8015,12 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files (beta)</source>
-        <translation type="unfinished"/>
+        <translation>Virtuálne súbory (beta)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="92"/>
         <source>Download files on-demand. This feature is in an early preview. Recommended only for testing.</source>
-        <translation type="unfinished"/>
+        <translation>Sťahovanie súborov na požiadanie. Táto funkcia je v predbežnom náhľade. Odporúča sa len na testovanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
@@ -8242,77 +8249,80 @@ Server odpovedal chybou: %2</translation>
 <context>
     <name>UnifiedSearchFilterBar</name>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="50"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="51"/>
         <source>Type</source>
+        <extracomment>Search filter for selecting a result provider type.</extracomment>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="57"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="58"/>
         <source>Filter by type</source>
         <translation>Filtrovať podľa typu</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="103"/>
         <source>Date</source>
+        <extracomment>Search filter for restricting results by date.</extracomment>
         <translation>Dátum</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="111"/>
         <source>Filter by date</source>
         <translation>Filtrovať podľa dátumu</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="112"/>
         <source>No search source supports date filtering</source>
         <translation>Žiadny zdroj vyhľadávania nepodporuje filtrovanie podľa dátumu</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="121"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="123"/>
         <source>Today</source>
         <translation>Dnes</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="125"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="127"/>
         <source>Last 7 days</source>
         <translation>Posledných 7 dní</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="129"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="131"/>
         <source>Last 30 days</source>
         <translation>Posledných 30 dní</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="133"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="135"/>
         <source>This year</source>
         <translation>Tento rok</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="137"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="139"/>
         <source>Last year</source>
         <translation>Minulý rok</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="142"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="144"/>
         <source>Custom range …</source>
         <translation>Vlastný rozsah …</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="146"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="148"/>
         <source>Clear date</source>
         <translation>Vymazať dátum</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="157"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="160"/>
         <source>People</source>
+        <extracomment>Search filter for restricting results to a person.</extracomment>
         <translation>Osoby</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="165"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="168"/>
         <source>Filter by person</source>
         <translation>Filtrovať podľa osoby</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="166"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="169"/>
         <source>No search source supports people filtering</source>
         <translation>Žiadny zdroj vyhľadávania nepodporuje filtrovanie podľa osôb</translation>
     </message>
@@ -8340,7 +8350,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation>Vyhľadávanie osôb</translation>
+        <translation>Hľadať osoby</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
@@ -8701,7 +8711,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local virtual files metadata</source>
-        <translation>Lokálne metadáta virtuálných súborov boli aktualizované</translation>
+        <translation>Aktualizované lokálne metadáta virtuálných súborov</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
@@ -8818,7 +8828,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="52"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>Pri spustení prehliadača sa vyskytla chyba, keď sa má prejsť na adresu URL %1. Možno nie je nakonfigurovaný žiadny predvolený prehliadač?</translation>
+        <translation>Pri spustení prehliadača pre adresu URL %1 sa vyskytla chyba. Možno nie je nakonfigurovaný žiadny predvolený prehliadač?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="75"/>
@@ -9158,7 +9168,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste ak
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nepodarilo sa pripojenie k tomuto zabezpečenému serveru. Ako chcete pokračovať?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nepodarilo sa pripojiť na zadanú adresu zabezpečeného servera. Ako chcete pokračovať?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
