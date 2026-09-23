@@ -86,7 +86,7 @@ RowLayout {
         }
     }
 
-    ListItemLineAndSubline {
+    ColumnLayout {
         id: unifiedSearchResultTextContainer
 
         spacing: Style.standardSpacing
@@ -94,8 +94,26 @@ RowLayout {
         Layout.fillWidth: true
         Layout.rightMargin: Style.trayHorizontalMargin
 
-        lineText: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
-        sublineText: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")
+        EnforcedPlainTextLabel {
+            objectName: "searchResultTitle"
+            Layout.fillWidth: true
+            text: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
+            textFormat: Text.PlainText
+            color: unifiedSearchResultItemDetails.titleColor
+            elide: Text.ElideRight
+            font.pixelSize: unifiedSearchResultItemDetails.titleFontSize
+        }
+
+        EnforcedPlainTextLabel {
+            objectName: "searchResultSubline"
+            Layout.fillWidth: true
+            text: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")
+            textFormat: Text.PlainText
+            color: unifiedSearchResultItemDetails.sublineColor
+            visible: text.length > 0
+            elide: Text.ElideRight
+            font.pixelSize: unifiedSearchResultItemDetails.sublineFontSize
+        }
     }
 
 }
