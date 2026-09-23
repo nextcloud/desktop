@@ -10,7 +10,6 @@
 #include <optional>
 #include <thread>
 
-#include "common/utility.h"
 #include "macOS/fileprovider.h"
 #include "macOS/fileproviderxpc_mac_utils.h"
 
@@ -204,12 +203,12 @@ private Q_SLOTS:
 
     void clientCommunicationConnectionValuesHaveOneRetain()
     {
-        auto serviceDeallocated = false;
+        BOOL serviceDeallocated = NO;
         const auto service = [TestClientCommunicationService new];
         service.domainIdentifier = @"domain-id";
         service.deallocatedFlag = &serviceDeallocated;
 
-        auto connectionDeallocated = false;
+        BOOL connectionDeallocated = NO;
         const auto connection = [TestXPCConnection new];
         connection.remoteService = service;
         connection.deallocatedFlag = &connectionDeallocated;
@@ -234,6 +233,81 @@ private Q_SLOTS:
 
         QVERIFY(serviceDeallocated);
         QVERIFY(connectionDeallocated);
+    }
+
+    void nilDomainIdentifierInvalidatesConnectionAndReleasesService()
+    {
+        BOOL serviceDeallocated = NO;
+        const auto service = [TestClientCommunicationService new];
+        service.domainIdentifier = nil;
+        service.deallocatedFlag = &serviceDeallocated;
+
+        BOOL connectionDeallocated = NO;
+        const auto connection = [TestXPCConnection new];
+        connection.remoteService = service;
+        connection.deallocatedFlag = &connectionDeallocated;
+
+        const auto connections = [[NSMutableArray alloc] initWithObjects:(NSXPCConnection *)connection, nil];
+
+        const auto clientCommConnections = OCC::Mac::FileProviderXPCUtils::processClientCommunicationConnections(connections, nullptr);
+
+        QCOMPARE(clientCommConnections.size(), 0);
+        QVERIFY(connection.invalidated);
+
+        [connections release];
+        [connection release];
+        [service release];
+
+        QVERIFY(serviceDeallocated);
+        QVERIFY(connectionDeallocated);
+    }
+
+    void duplicateDomainIdentifierInvalidatesDuplicateConnectionAndReleasesService()
+    {
+        BOOL firstServiceDeallocated = NO;
+        const auto firstService = [TestClientCommunicationService new];
+        firstService.domainIdentifier = @"domain-id";
+        firstService.deallocatedFlag = &firstServiceDeallocated;
+
+        BOOL firstConnectionDeallocated = NO;
+        const auto firstConnection = [TestXPCConnection new];
+        firstConnection.remoteService = firstService;
+        firstConnection.deallocatedFlag = &firstConnectionDeallocated;
+
+        BOOL duplicateServiceDeallocated = NO;
+        const auto duplicateService = [TestClientCommunicationService new];
+        duplicateService.domainIdentifier = @"domain-id";
+        duplicateService.deallocatedFlag = &duplicateServiceDeallocated;
+
+        BOOL duplicateConnectionDeallocated = NO;
+        const auto duplicateConnection = [TestXPCConnection new];
+        duplicateConnection.remoteService = duplicateService;
+        duplicateConnection.deallocatedFlag = &duplicateConnectionDeallocated;
+
+        const auto connections = [[NSMutableArray alloc] initWithObjects:(NSXPCConnection *)firstConnection, (NSXPCConnection *)duplicateConnection, nil];
+
+        const auto clientCommConnections = OCC::Mac::FileProviderXPCUtils::processClientCommunicationConnections(connections, nullptr);
+
+        QCOMPARE(clientCommConnections.size(), 1);
+        QVERIFY(duplicateConnection.invalidated);
+
+        const auto clientCommConnection = clientCommConnections.value(QStringLiteral("domain-id"));
+        const auto returnedService = (NSObject *)clientCommConnection.clientCommunicationService;
+        const auto returnedConnection = (TestXPCConnection *)clientCommConnection.xpcConnection;
+        [returnedService release];
+        [returnedConnection invalidate];
+        [returnedConnection release];
+
+        [connections release];
+        [firstConnection release];
+        [duplicateConnection release];
+        [firstService release];
+        [duplicateService release];
+
+        QVERIFY(firstServiceDeallocated);
+        QVERIFY(firstConnectionDeallocated);
+        QVERIFY(duplicateServiceDeallocated);
+        QVERIFY(duplicateConnectionDeallocated);
     }
 
     void configureXPCFromBackgroundThreadUsesFileProviderThread()
