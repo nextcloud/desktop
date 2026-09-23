@@ -95,6 +95,31 @@ void FileProvider::configureXPC()
     }
 }
 
+bool FileProvider::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier)
+{
+    if (QThread::currentThread() == thread()) {
+        const auto xpc = _xpc.get();
+        return xpc && xpc->fileProviderDomainHasDirtyUserData(fileProviderDomainIdentifier);
+    }
+
+    auto hasDirtyUserData = false;
+    const auto invoked = QMetaObject::invokeMethod(
+        this,
+        [this, &hasDirtyUserData, fileProviderDomainIdentifier] {
+            const auto xpc = _xpc.get();
+            hasDirtyUserData = xpc && xpc->fileProviderDomainHasDirtyUserData(fileProviderDomainIdentifier);
+        },
+        Qt::BlockingQueuedConnection);
+
+    if (!invoked) {
+        qCWarning(lcMacFileProvider) << "Could not check file provider domain for dirty user data; treating it as dirty."
+                                      << fileProviderDomainIdentifier;
+        return true;
+    }
+
+    return hasDirtyUserData;
+}
+
 FileProviderXPC *FileProvider::xpc() const
 {
     return _xpc.get();

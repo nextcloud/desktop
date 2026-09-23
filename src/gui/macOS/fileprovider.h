@@ -38,9 +38,12 @@ public:
     [[nodiscard]] static bool available();
 
     void configureXPC();
+
     [[nodiscard]] FileProviderXPC *xpc() const;
     [[nodiscard]] FileProviderDomainManager *domainManager() const;
     [[nodiscard]] FileProviderService *service() const;
+
+    [[nodiscard]] bool fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier);
 
 private:
     std::unique_ptr<FileProviderDomainManager> _domainManager;
