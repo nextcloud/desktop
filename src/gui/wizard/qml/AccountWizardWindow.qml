@@ -20,9 +20,9 @@ WizardStyledWindow {
     readonly property int syncOptionsHeight: Style.accountWizardSyncOptionsHeight
 
     minimizable: true
-    width: Style.dialogWidth
+    width: Style.accountWizardWidth
     height: compactHeight
-    minimumWidth: Style.dialogWidth
+    minimumWidth: Style.accountWizardWidth
     minimumHeight: compactHeight
     title: ""
     function defaultHeightForCurrentStep() {

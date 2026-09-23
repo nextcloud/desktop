@@ -154,7 +154,7 @@ Item {
 
                 WizardButton {
                     text: qsTr("Choose")
-                    Layout.preferredWidth: 96
+                    Layout.minimumWidth: Style.wizardInlineButtonMinimumWidth
                     Layout.preferredHeight: Style.wizardFooterButtonHeight
                     enabled: root.controller.canUseClassicSync
                     onClicked: root.controller.chooseLocalSyncFolder()

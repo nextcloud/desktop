@@ -168,6 +168,13 @@ add_test(NAME ActivityFileMenuQmlTest
     COMMAND Qt6::qmltestrunner
         -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/activityfilemenu/testactivityfilemenu.qml"
 )
+add_test(NAME AccountWizardWindowQmlTest
+    COMMAND Qt6::qmltestrunner
+        -import "${CMAKE_CURRENT_SOURCE_DIR}/qml/imports"
+        -import "${CMAKE_SOURCE_DIR}/theme"
+        -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/accountwizard/tst_accountwizardwindow.qml"
+)
+set_tests_properties(AccountWizardWindowQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 add_executable(SearchQmlTest qml/search/searchqmltestrunner.cpp)
 target_link_libraries(SearchQmlTest PRIVATE nextcloudCore nextcloudGuiSearch nextcloudGuiSearchplugin Qt::QuickTest)
 target_compile_definitions(SearchQmlTest PRIVATE
