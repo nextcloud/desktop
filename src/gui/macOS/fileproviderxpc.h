@@ -13,6 +13,8 @@
 
 namespace OCC::Mac {
 
+class FileProvider;
+
 /*
  * Establishes communication between the app and the file provider extension processes.
  * This is done via services exposed by the file provider extension through XPC.
@@ -28,7 +30,6 @@ public:
     ~FileProviderXPC() override;
 
     [[nodiscard]] bool fileProviderDomainReachable(const QString &fileProviderDomainIdentifier, bool retry = true, bool reconfigureOnFail = true);
-    [[nodiscard]] bool fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const;
     [[nodiscard]] bool processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const;
 
 public Q_SLOTS:
@@ -43,6 +44,10 @@ private Q_SLOTS:
     void slotAccountStateChanged(AccountState::State state) const;
 
 private:
+    friend class FileProvider;
+
+    [[nodiscard]] bool fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const;
+
     void disconnectFromFileProviderDomains();
     void disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier);
 
