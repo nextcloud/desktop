@@ -3,9 +3,14 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include <QThread>
 #include <QtTest>
 
+#include <atomic>
+#include <thread>
+
 #include "common/utility.h"
+#include "macOS/fileprovider.h"
 #include "macOS/fileproviderxpc_mac_utils.h"
 
 #import <FileProvider/FileProvider.h>
@@ -226,6 +231,27 @@ private Q_SLOTS:
 
         QVERIFY(serviceDeallocated);
         QVERIFY(connectionDeallocated);
+    }
+
+    void configureXPCFromBackgroundThreadUsesFileProviderThread()
+    {
+        if (!OCC::Mac::FileProvider::available()) {
+            QSKIP("File Provider is unavailable on this macOS version.");
+        }
+
+        auto *const fileProvider = OCC::Mac::FileProvider::instance();
+        std::atomic_bool configured = false;
+
+        std::thread backgroundThread([fileProvider, &configured] {
+            fileProvider->configureXPC();
+            configured.store(true, std::memory_order_release);
+        });
+
+        QTRY_VERIFY_WITH_TIMEOUT(configured.load(std::memory_order_acquire), 5000);
+        backgroundThread.join();
+
+        QVERIFY(fileProvider->xpc());
+        QCOMPARE(fileProvider->xpc()->thread(), QThread::currentThread());
     }
 };
 
