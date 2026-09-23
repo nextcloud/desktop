@@ -41,7 +41,7 @@ public:
     explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
     ~SettingsDialog() override;
 
-    QWidget *currentPage();
+    QWidget* currentPage();
 
 public Q_SLOTS:
     void showFirstPage();

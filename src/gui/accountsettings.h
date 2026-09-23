@@ -7,11 +7,11 @@
 #ifndef ACCOUNTSETTINGS_H
 #define ACCOUNTSETTINGS_H
 
-#include <QHash>
-#include <QPointer>
-#include <QTimer>
-#include <QUrl>
 #include <QWidget>
+#include <QUrl>
+#include <QPointer>
+#include <QHash>
+#include <QTimer>
 
 #include "folder.h"
 #include "userinfo.h"

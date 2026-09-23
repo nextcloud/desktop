@@ -3,14 +3,14 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "logger.h"
 #include "userstatusconnector.h"
 #include "userstatusselectormodel.h"
+#include "logger.h"
 
-#include <QDateTime>
-#include <QSignalSpy>
-#include <QStandardPaths>
 #include <QTest>
+#include <QSignalSpy>
+#include <QDateTime>
+#include <QStandardPaths>
 
 #include <memory>
 
@@ -86,24 +86,16 @@ public:
         _userStatus = userStatus;
     }
 
-    void setFakePredefinedStatuses(const QVector<OCC::UserStatus> &statuses)
+    void setFakePredefinedStatuses(
+        const QVector<OCC::UserStatus> &statuses)
     {
         _predefinedStatuses = statuses;
     }
 
-    [[nodiscard]] OCC::UserStatus userStatusSetByCallerOfSetUserStatus() const
-    {
-        return _userStatusSetByCallerOfSetUserStatus;
-    }
-    [[nodiscard]] int setUserStatusCallCount() const
-    {
-        return _setUserStatusCallCount;
-    }
+    [[nodiscard]] OCC::UserStatus userStatusSetByCallerOfSetUserStatus() const { return _userStatusSetByCallerOfSetUserStatus; }
+    [[nodiscard]] int setUserStatusCallCount() const { return _setUserStatusCallCount; }
 
-    [[nodiscard]] bool messageCleared() const
-    {
-        return _isMessageCleared;
-    }
+    [[nodiscard]] bool messageCleared() const { return _isMessageCleared; }
 
     void emitUserStatusSet()
     {

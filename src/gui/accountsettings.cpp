@@ -274,27 +274,31 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     // "Classic sync" panel, except when the account still has classic folders
     // configured (a conflict the banner asks the user to resolve).
     const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-    connect(fpSettingsController,
-            &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
-            this,
-            &AccountSettings::updateSyncFoldersPanelVisibility);
-    connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged, this, &AccountSettings::refreshE2eEncryptionMessage);
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
+            this, &AccountSettings::updateSyncFoldersPanelVisibility);
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
+            this, &AccountSettings::refreshE2eEncryptionMessage);
     // The reconciliation "Keep File Provider" path applies the mode without emitting
     // fileProviderModeEnabledChanged (the flag was already on), so also refresh on the
     // bulk-apply completion to update a page that is open during the transition.
-    connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeApplyFinished, this, [this](bool, const QStringList &) {
-        refreshE2eEncryptionMessage();
-        updateSyncFoldersPanelVisibility();
-    });
-    connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &AccountSettings::updateSyncFoldersPanelVisibility);
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeApplyFinished,
+            this, [this](bool, const QStringList &) {
+                refreshE2eEncryptionMessage();
+                updateSyncFoldersPanelVisibility();
+            });
+    connect(FolderMan::instance(), &FolderMan::folderListChanged,
+            this, &AccountSettings::updateSyncFoldersPanelVisibility);
     connect(_ui->fileProviderConflictResolveButton, &QPushButton::clicked, this, [fpSettingsController] {
         fpSettingsController->performStartupReconciliation();
     });
-    connect(_ui->fileProviderResetButton, &QPushButton::clicked, this, &AccountSettings::slotResetFileProviderDomain);
+    connect(_ui->fileProviderResetButton, &QPushButton::clicked,
+            this, &AccountSettings::slotResetFileProviderDomain);
     // Re-evaluate the maintenance row when this account's domain is (re)created/removed.
-    connect(fpSettingsController, &Mac::FileProviderSettingsController::vfsEnabledForAccountChanged, this, &AccountSettings::updateSyncFoldersPanelVisibility);
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::vfsEnabledForAccountChanged,
+            this, &AccountSettings::updateSyncFoldersPanelVisibility);
     // Block the reset while any File Provider operation (mode toggle, another reset) runs.
-    connect(fpSettingsController, &Mac::FileProviderSettingsController::operationInProgressChanged, this, &AccountSettings::updateSyncFoldersPanelVisibility);
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::operationInProgressChanged,
+            this, &AccountSettings::updateSyncFoldersPanelVisibility);
 #endif
     updateSyncFoldersPanelVisibility();
 
@@ -381,14 +385,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     customizeStyle();
 
-    connect(_accountState->account()->e2e(),
-            &ClientSideEncryption::startingDiscoveryEncryptionUsbToken,
-            Systray::instance(),
-            &Systray::createEncryptionTokenDiscoveryDialog);
-    connect(_accountState->account()->e2e(),
-            &ClientSideEncryption::finishedDiscoveryEncryptionUsbToken,
-            Systray::instance(),
-            &Systray::destroyEncryptionTokenDiscoveryDialog);
+    connect(_accountState->account()->e2e(), &ClientSideEncryption::startingDiscoveryEncryptionUsbToken,
+            Systray::instance(), &Systray::createEncryptionTokenDiscoveryDialog);
+    connect(_accountState->account()->e2e(), &ClientSideEncryption::finishedDiscoveryEncryptionUsbToken,
+            Systray::instance(), &Systray::destroyEncryptionTokenDiscoveryDialog);
 }
 
 void AccountSettings::slotE2eEncryptionMnemonicReady()
@@ -724,7 +724,6 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
 
     const auto folder = info->_folder;
     if (folder && folder->virtualFilesEnabled()) {
-        //: Name of the submenu containing virtual-file availability actions.
         auto availabilityMenu = menu.addMenu(tr("Availability"));
 
         // Has '/' suffix convention for paths here but VFS and
@@ -815,7 +814,6 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
 
     if (folder->virtualFilesEnabled()) {
-        //: Name of the submenu containing virtual-file availability actions.
         auto availabilityMenu = menu->addMenu(tr("Availability"));
 
         ac = availabilityMenu->addAction(Utility::vfsPinActionText());
@@ -2051,7 +2049,8 @@ void AccountSettings::setEncryptionPanelVisible(bool visible)
 void AccountSettings::updateSyncFoldersPanelVisibility()
 {
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    const auto fpModeOn = Mac::FileProvider::available() && Mac::FileProviderSettingsController::instance()->fileProviderModeEnabled();
+    const auto fpModeOn = Mac::FileProvider::available()
+        && Mac::FileProviderSettingsController::instance()->fileProviderModeEnabled();
 
     auto hasClassicFolders = false;
     const auto folderMap = FolderMan::instance()->map();

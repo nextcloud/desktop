@@ -182,11 +182,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     accountSpacer->setFixedHeight(16);
     _toolBar->addWidget(accountSpacer);
 
-    //: Name of the General settings page.
     addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("General"), new GeneralSettings(this));
-    //: Name of the Advanced settings feature.
-    addSettingsPage(QLatin1String(":/client/theme/advanced.svg"), AdvancedSettings::tr("Advanced"), new AdvancedSettings(this));
-    //: Name of the Info settings page.
+    addSettingsPage(QLatin1String(":/client/theme/advanced.svg"), tr("Advanced"), new AdvancedSettings(this));
     addSettingsPage(QLatin1String(":/client/theme/info.svg"), tr("Info"), new InfoSettings(this), true);
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
@@ -379,11 +376,10 @@ void SettingsDialog::accountAdded(AccountState *s)
     auto height = _toolBar->sizeHint().height();
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
-    //: Name of the account settings entry shown when only one account is allowed.
     const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     const auto accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"), actionText);
     updateAccountAvatar(s->account().data());
-
+    
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), static_cast<int>(height * buttonSizeRatio)));
@@ -406,7 +402,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     accountAction->trigger();
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotComputeOverallSyncStatus);
-    connect(accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
+    connect(accountSettings, &AccountSettings::openFolderAlias,
+        _gui, &ownCloudGui::slotFolderOpenAction);
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(accountSettings, &AccountSettings::showUserStatus, this, &SettingsDialog::showUserStatus);
     connect(accountSettings, &AccountSettings::showAssistant, this, &SettingsDialog::showAssistant);

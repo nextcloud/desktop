@@ -81,9 +81,12 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
         // "clicked" rather than "toggled": only direct user interaction may open the
         // confirmation flow, never the programmatic setChecked in loadMiscSettings().
-        connect(_ui->fileProviderCheckBox, &QAbstractButton::clicked, this, &GeneralSettings::slotFileProviderSwitchClicked);
-        connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged, this, &GeneralSettings::loadMiscSettings);
-        connect(fpSettingsController, &Mac::FileProviderSettingsController::operationInProgressChanged, this, &GeneralSettings::loadMiscSettings);
+        connect(_ui->fileProviderCheckBox, &QAbstractButton::clicked,
+                this, &GeneralSettings::slotFileProviderSwitchClicked);
+        connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
+                this, &GeneralSettings::loadMiscSettings);
+        connect(fpSettingsController, &Mac::FileProviderSettingsController::operationInProgressChanged,
+                this, &GeneralSettings::loadMiscSettings);
     } else {
         // macOS 13 Ventura (feature unsupported) or branding that bans virtual files.
         _ui->fileProviderGroupBox->setVisible(false);
@@ -166,11 +169,12 @@ void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
 
 #ifdef Q_OS_MACOS
     if (enable && Utility::launchOnStartupRequiresApproval()) {
-        QMessageBox::information(this,
-                                 tr("Login Item Requires Approval"),
-                                 tr("The login item has been registered but needs your approval to become active. "
-                                    "Please open System Settings → General → Login Items and enable %1 there.")
-                                     .arg(theme->appNameGUI()));
+        QMessageBox::information(
+            this,
+            tr("Login Item Requires Approval"),
+            tr("The login item has been registered but needs your approval to become active. "
+               "Please open System Settings → General → Login Items and enable %1 there.")
+                .arg(theme->appNameGUI()));
     }
 #endif
 }

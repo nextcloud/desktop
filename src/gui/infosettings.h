@@ -11,8 +11,7 @@
 #include <QStringList>
 #include <QWidget>
 
-namespace OCC
-{
+namespace OCC {
 
 namespace Ui {
     class InfoSettings;
