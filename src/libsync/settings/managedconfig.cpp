@@ -10,6 +10,8 @@
 #include <QJsonObject>
 #include <QSettings>
 
+#include <utility>
+
 namespace OCC {
 
 namespace {
@@ -31,9 +33,12 @@ ServerManagedSettings ManagedConfig::serverSettings(const QString &configFilePat
         }
     }
 
+    // Read outside the lock so readers are not blocked on disk access.
+    auto parsed = parse(configFilePath);
+
     QWriteLocker locker(&_lock);
     if (!_loaded || _configFilePath != configFilePath) {
-        _cached = parse(configFilePath);
+        _cached = std::move(parsed);
         _configFilePath = configFilePath;
         _loaded = true;
     }
@@ -42,6 +47,7 @@ ServerManagedSettings ManagedConfig::serverSettings(const QString &configFilePat
 
 void ManagedConfig::setServerSettings(const QString &configFilePath, const ServerManagedSettings &settings)
 {
+    // Under the lock so concurrent writers cannot leave an older set in the file.
     QWriteLocker locker(&_lock);
     save(configFilePath, settings);
     _cached = settings;

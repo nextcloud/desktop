@@ -17,6 +17,7 @@
 #include "clientproxy.h"
 #include "configfile.h"
 #include "managedsettingstestutils.h"
+#include "settings/devicesources.h"
 #include "settings/managedconfig.h"
 #include "settings/managedsettings.h"
 #include "settings/managedsettingsschema.h"

@@ -9,12 +9,12 @@
 namespace OCC::SettingPriority
 {
 
-// The precedence order, highest first. The resolver picks the source with the highest value.
+// Highest first; the resolver picks the highest.
 constexpr auto userPolicy = 210;
 constexpr auto machinePolicy = 200;
 constexpr auto serverEnforced = 100;
 constexpr auto userConfig = 50;
-// Values written by earlier versions at the top level of the config file.
+// Written by earlier versions at the top level of the config file.
 constexpr auto legacyUserConfig = 49;
 constexpr auto serverDefault = 30;
 constexpr auto deviceDefault = 20;

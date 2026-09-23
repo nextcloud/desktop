@@ -12,6 +12,7 @@
 #include "config.h"
 #include "creds/keychainchunk.h"
 #include "csync_exclude.h"
+#include "settings/devicesources.h"
 #include "settings/managedconfig.h"
 #include "settings/managedsettings.h"
 #include "settings/managedsettingsschema.h"

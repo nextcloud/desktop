@@ -87,9 +87,6 @@ private:
 };
 #endif
 
-// Ordered device sources for the running platform.
-[[nodiscard]] OWNCLOUDSYNC_EXPORT std::vector<std::unique_ptr<SettingSource>> buildDeviceSources();
-
 } // namespace OCC
 
 #endif // SETTINGSOURCES_H
