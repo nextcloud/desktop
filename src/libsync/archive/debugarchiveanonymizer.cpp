@@ -120,11 +120,14 @@ bool writeLookupTable(const Anonymizer &anonymizer, const QString &destinationPa
         return false;
     }
     QTextStream destinationStream(&destinationFile);
-    destinationStream << "# real\tanonymized\n";
-    destinationStream << "# Keep this file private. Do not share it with the archive.\n";
+    destinationStream << "########################################################################\n";
+    destinationStream << "# Keep this file with yourself. Do not share it with the debug archive #\n";
+    destinationStream << "########################################################################\n";
+    destinationStream << "\n--- real value --> anonymized\n";
     const auto table = anonymizer.mapping();
+    auto lineNumber = 1;
     for (auto iterator = table.cbegin(); iterator != table.cend(); ++iterator) {
-        destinationStream << iterator.key() << '\t' << iterator.value() << '\n';
+        destinationStream << lineNumber++ << " - " << iterator.key() << " --> " << iterator.value() << "\n";
     }
     destinationStream.flush();
     return destinationFile.commit();

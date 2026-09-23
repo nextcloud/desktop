@@ -6,23 +6,22 @@
 #include "advancedsettings.h"
 #include "ui_advancedsettings.h"
 
+#include "account.h"
 #include "accountmanager.h"
 #include "application.h"
 #include "capabilities.h"
 #include "common/utility.h"
 #include "configfile.h"
-#include "folderman.h"
 #include "folder.h"
+#include "folderman.h"
 #include "ignorelisteditor.h"
 #include "logger.h"
 #include "owncloudgui.h"
 #include "settingspanelstyle.h"
 #include "theme.h"
-#include "common/syncjournaldb.h"
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "macOS/fileproviderutils.h"
-#endif
+#include "archive/anonymizer.h"
+#include "archive/debugarchiveanonymizer.h"
 
 #ifdef Q_OS_MACOS
 #include "common/utility_mac_sandbox.h"
@@ -30,21 +29,22 @@
 
 #include <KZip>
 
-#include <QDir>
-#include <QDirIterator>
 #include <QAbstractButton>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
+#include <QDirIterator>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QLoggingCategory>
 #include <QLabel>
+#include <QLoggingCategory>
 #include <QMessageBox>
 #include <QOperatingSystemVersion>
 #include <QScopedValueRollback>
 #include <QSpinBox>
 #include <QStandardPaths>
+#include <QTemporaryDir>
 #include <QVector>
 
 #include <algorithm>
@@ -58,77 +58,80 @@ struct ZipEntry {
     QString zipFilename;
 };
 
-ZipEntry fileInfoToZipEntry(const QFileInfo &info)
+void seedAnonymizer(OCC::Anonymizer &anonymizer)
 {
-    return {
-        info.absoluteFilePath(),
-        info.fileName()
-    };
-}
-
-ZipEntry fileInfoToLogZipEntry(const QFileInfo &info)
-{
-    auto entry = fileInfoToZipEntry(info);
-    entry.zipFilename.prepend(QStringLiteral("logs/"));
-    return entry;
-}
-
-QVector<ZipEntry> syncFolderToDatabaseZipEntry(OCC::Folder *f)
-{
-    QVector<ZipEntry> result;
-
-    const auto journalPath = f->journalDb()->databaseFilePath();
-    const auto journalInfo = QFileInfo(journalPath);
-    const auto walJournalInfo = QFileInfo(journalPath + "-wal");
-    const auto shmJournalInfo = QFileInfo(journalPath + "-shm");
-
-    result += fileInfoToZipEntry(journalInfo);
-    if (walJournalInfo.exists()) {
-        result += fileInfoToZipEntry(walJournalInfo);
-    }
-    if (shmJournalInfo.exists()) {
-        result += fileInfoToZipEntry(shmJournalInfo);
+    const auto accounts = OCC::AccountManager::instance()->accounts();
+    for (const auto &accountState : accounts) {
+        const auto account = accountState->account();
+        if (!account) {
+            continue;
+        }
+        anonymizer.seedServer(account->url().toString());
+        anonymizer.seedUser(account->davUser());
+        anonymizer.seedUser(account->davDisplayName());
+        anonymizer.seedUser(account->displayName());
     }
 
-    return result;
-}
-
-QVector<ZipEntry> createDebugArchiveFileList()
-{
-    auto list = QVector<ZipEntry>();
-    OCC::ConfigFile cfg;
-
-    list.append(fileInfoToZipEntry(QFileInfo(cfg.configFile())));
-
-    const auto logger = OCC::Logger::instance();
-
-    if (!logger->logDir().isEmpty()) {
-        QDir dir(logger->logDir());
-        const auto infoList = dir.entryInfoList(QDir::Files);
-        std::transform(std::cbegin(infoList), std::cend(infoList),
-                       std::back_inserter(list),
-                       fileInfoToLogZipEntry);
-    } else if (!logger->logFile().isEmpty()) {
-        list.append(fileInfoToZipEntry(QFileInfo(logger->logFile())));
-    }
+    anonymizer.seedUser(QFileInfo(QDir::homePath()).fileName());
 
     const auto folders = OCC::FolderMan::instance()->map().values();
-    std::for_each(std::cbegin(folders), std::cend(folders),
-                  [&list] (auto &folderIt) {
-                      const auto &newEntries = syncFolderToDatabaseZipEntry(folderIt);
-                      std::copy(std::cbegin(newEntries), std::cend(newEntries), std::back_inserter(list));
-                  });
+    for (const auto folder : folders) {
+        anonymizer.seedPath(folder->path());
+        anonymizer.seedPath(folder->remotePath());
+    }
+    anonymizer.seedPath(QDir::homePath());
+}
 
-    return list;
+bool addAnonymizedText(OCC::Anonymizer &anonymizer, KZip &zip, const QString &content, const QString &zipName)
+{
+    const auto anonymized = anonymizer.anonymizeText(content).toUtf8();
+    zip.prepareWriting(zipName, {}, {}, anonymized.size());
+    zip.writeData(anonymized, anonymized.size());
+    return zip.finishWriting(anonymized.size());
 }
 
 bool createDebugArchive(const QString &filename)
 {
-    const auto entries = createDebugArchiveFileList();
+    OCC::Anonymizer anonymizer;
+    seedAnonymizer(anonymizer);
 
-    const auto tempDir = QDir::temp();
-    const auto tempFilePath = tempDir.filePath(QStringLiteral("nextcloud-debug-archive-temp.zip"));
+    QTemporaryDir stagingDir;
+    if (!stagingDir.isValid()) {
+        QMessageBox::critical(nullptr,
+                              QObject::tr("Failed to create debug archive"),
+                              QObject::tr("Could not create a temporary staging directory!"),
+                              QMessageBox::Ok);
+        return false;
+    }
 
+    QVector<ZipEntry> entries;
+
+    OCC::ConfigFile cfg;
+    const auto configStaged = stagingDir.filePath(QStringLiteral("nextcloud.cfg"));
+    if (OCC::DebugArchiveAnonymizer::anonymizeConfigFile(anonymizer, cfg.configFile(), configStaged)) {
+        entries.append({configStaged, QStringLiteral("nextcloud.cfg")});
+    }
+
+    const auto logger = OCC::Logger::instance();
+    QFileInfoList logFiles;
+    if (!logger->logDir().isEmpty()) {
+        logFiles = QDir(logger->logDir()).entryInfoList(QDir::Files);
+    } else if (!logger->logFile().isEmpty()) {
+        logFiles.append(QFileInfo(logger->logFile()));
+    }
+
+    for (const auto &logInfo : logFiles) {
+        QString zipName = QStringLiteral("logs/") + logInfo.fileName();
+        if (zipName.endsWith(QStringLiteral(".gz"))) {
+            zipName.chop(3); // output is plain text; the zip recompresses
+        }
+        const auto staged = stagingDir.filePath(zipName);
+        if (QDir().mkpath(QFileInfo(staged).absolutePath()) && OCC::DebugArchiveAnonymizer::anonymizeLogFile(anonymizer, logInfo.absoluteFilePath(), staged)) {
+            entries.append({staged, zipName});
+        }
+    }
+
+    const auto tempFilePath = QDir::temp().filePath(QStringLiteral("nextcloud-debug-archive-temp.zip"));
     KZip zip(tempFilePath);
 
     if (!zip.open(QIODevice::WriteOnly)) {
@@ -151,35 +154,11 @@ bool createDebugArchive(const QString &filename)
         zip.addLocalFile(entry.localFilename, entry.zipFilename);
     }
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    qDebug() << "Trying to add file provider domain database and log files...";
-    const auto fileProviderDomainsSupportDirectory = OCC::Mac::FileProviderUtils::fileProviderDomainsSupportDirectory();
-
-    if (fileProviderDomainsSupportDirectory.exists()) {
-        QDirIterator it(fileProviderDomainsSupportDirectory.path(), QStringList() << "*.jsonl" << "*.realm", QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
-
-        while (it.hasNext()) {
-            const auto filePath = it.next();
-            const auto relativePath = fileProviderDomainsSupportDirectory.relativeFilePath(filePath);
-            const auto zipPath = QStringLiteral("File Provider Domains/%1").arg(relativePath);
-
-            zip.addLocalFile(filePath, zipPath);
-            qDebug() << "Added file from" << filePath;
-        }
-    } else {
-        qWarning() << "file provider domain container log directory not found at" << fileProviderDomainsSupportDirectory.path();
-    }
-#endif
-
-    const auto clientParameters = QCoreApplication::arguments().join(' ').toUtf8();
-    zip.prepareWriting("_client_parameters.txt", {}, {}, clientParameters.size());
-    zip.writeData(clientParameters, clientParameters.size());
-    zip.finishWriting(clientParameters.size());
-
-    const auto buildInfo = QString(OCC::Theme::instance()->aboutInfo() + "\n\n" + OCC::Theme::instance()->aboutDetails()).toUtf8();
-    zip.prepareWriting("_client_buildinfo.txt", {}, {}, buildInfo.size());
-    zip.writeData(buildInfo, buildInfo.size());
-    zip.finishWriting(buildInfo.size());
+    addAnonymizedText(anonymizer, zip, QCoreApplication::arguments().join(' '), QStringLiteral("_client_parameters.txt"));
+    addAnonymizedText(anonymizer,
+                      zip,
+                      OCC::Theme::instance()->aboutInfo() + "\n\n" + OCC::Theme::instance()->aboutDetails(),
+                      QStringLiteral("_client_buildinfo.txt"));
 
     zip.close();
 
@@ -217,6 +196,11 @@ bool createDebugArchive(const QString &filename)
             QMessageBox::Ok
         );
         return false;
+    }
+
+    auto lookupFile = QString("%1-lookup.txt").arg(filename);
+    if (!OCC::DebugArchiveAnonymizer::writeLookupTable(anonymizer, lookupFile)) {
+        qWarning() << "Failed to write anonymization lookup table to" << lookupFile;
     }
 
     return true;
@@ -456,12 +440,14 @@ void AdvancedSettings::slotCreateDebugArchive()
     }
 #endif
 
-    if (createDebugArchive(destination.toLocalFile())) {
-        QMessageBox::information(
-            this,
-            tr("Debug Archive Created"),
-            tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(destination.toLocalFile())
-        );
+    if (const auto archiveLocalFile = destination.toLocalFile(); createDebugArchive(archiveLocalFile)) {
+        const auto archiveInfo = QFileInfo(archiveLocalFile);
+        const auto lookupInfo = QFileInfo(QStringLiteral("%1-lookup.txt").arg(archiveLocalFile));
+        QMessageBox::information(this,
+                                 tr("Debug Archive Created"),
+                                 tr("The anonymized debug archive %1 was created with its lookup file at %2.\n"
+                                    "Keep %3 private and never share it with the archive.")
+                                     .arg(archiveInfo.fileName(), archiveInfo.absoluteDir().path(), lookupInfo.fileName()));
     }
 }
 
