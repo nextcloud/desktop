@@ -15,7 +15,9 @@
 #include "account.h"
 #include "accountmanager.h"
 #include "accountstate.h"
+#include "configfile.h"
 #include "logger.h"
+#include "managedsettingstestutils.h"
 #include "syncenginetestutils.h"
 
 using namespace OCC;
@@ -41,6 +43,19 @@ private:
         account->setCredentials(new FakeCredentials{new FakeQNAM({})});
         _accountState = AccountManager::instance()->addAccount(account);
         return _accountState;
+    }
+
+    static void installEnforcedDeviceProxy()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(
+                SettingSourceType::PlatformPolicy,
+                EnforcementState::Enforced,
+                200,
+                QVariantMap{{u"proxyType"_s, int(QNetworkProxy::HttpProxy)}, {u"proxyHost"_s, u"proxy.example.com"_s}, {u"proxyPort"_s, 8080}}));
+            return sources;
+        });
     }
 
 private Q_SLOTS:
@@ -219,6 +234,44 @@ private Q_SLOTS:
         } else {
             QVERIFY2(!found, qPrintable(u"Expected no account for userId '%1' but found one"_s.arg(incomingUserId)));
         }
+    }
+
+    // ---------------------------------------------------------------------------
+    // managed proxy
+    // ---------------------------------------------------------------------------
+
+    //! @brief New accounts get the policy without a restart.
+    void testAddAccountAppliesEnforcedDeviceProxy()
+    {
+        installEnforcedDeviceProxy();
+        const auto restorePlatformSources = qScopeGuard([] {
+            ConfigFile::setDeviceSourcesFactory({});
+        });
+
+        const auto account = addTestAccount(u"https://cloud.example.com"_s, u"alice"_s)->account();
+
+        QCOMPARE(account->proxyType(), QNetworkProxy::HttpProxy);
+        QCOMPARE(account->proxyHostName(), u"proxy.example.com"_s);
+        QCOMPARE(account->proxyPort(), 8080);
+        QVERIFY(account->proxySettingsAreManaged());
+    }
+
+    //! @brief Saving never stores the policy value as the user's.
+    void testSaveAccountKeepsAccountProxyUnderEnforcedPolicy()
+    {
+        installEnforcedDeviceProxy();
+        const auto restorePlatformSources = qScopeGuard([] {
+            ConfigFile::setDeviceSourcesFactory({});
+        });
+        const auto account = addTestAccount(u"https://cloud.example.com"_s, u"bob"_s)->account();
+
+        AccountManager::instance()->saveAccount(account);
+
+        const auto settings = ConfigFile::settingsWithGroup(u"Accounts"_s);
+        settings->beginGroup(account->id());
+        QCOMPARE(settings->value(u"networkProxyType"_s).toInt(), int(QNetworkProxy::NoProxy));
+        QCOMPARE(settings->value(u"networkProxyHostName"_s).toString(), QString());
+        QCOMPARE(settings->value(u"networkProxyPort"_s).toInt(), 0);
     }
 };
 

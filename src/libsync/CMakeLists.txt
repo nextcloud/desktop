@@ -166,6 +166,7 @@ set(libsync_SRCS
     caseclashconflictsolver.cpp
     settings/migration.h
     settings/migration.cpp
+    settings/managedproxysettings.h
     settings/managedsettings.h
     settings/managedsettings.cpp
     settings/managedsettingsschema.h

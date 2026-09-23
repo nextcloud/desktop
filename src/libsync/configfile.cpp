@@ -32,10 +32,12 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QLoggingCategory>
-#include <QSettings>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QNetworkProxy>
-#include <QStandardPaths>
 #include <QOperatingSystemVersion>
+#include <QSettings>
+#include <QStandardPaths>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000
 #define DEFAULT_MAX_LOG_LINES 20000
@@ -98,6 +100,30 @@ namespace chrono = std::chrono;
 Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
 QString ConfigFile::_confDir = {};
+
+namespace
+{
+struct DeviceSourcesOverride {
+    QMutex mutex;
+    ConfigFile::DeviceSourcesFactory factory;
+};
+
+DeviceSourcesOverride &deviceSourcesOverride()
+{
+    static DeviceSourcesOverride instance;
+    return instance;
+}
+
+std::vector<std::unique_ptr<SettingSource>> deviceSources()
+{
+    auto &sourcesOverride = deviceSourcesOverride();
+    const auto factory = [&sourcesOverride] {
+        const QMutexLocker locker(&sourcesOverride.mutex);
+        return sourcesOverride.factory;
+    }();
+    return factory ? factory() : buildDeviceSources();
+}
+}
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
     chrono::milliseconds defaultValue)
@@ -677,18 +703,26 @@ bool ConfigFile::autoUpdateCheck(const QString &connectionGroupName) const
 
 ResolvedSetting ConfigFile::getConfig(const QString &name, const QVariant &builtinDefault, const QString &connectionGroupName) const
 {
+    return resolveSetting(name, builtinDefault, connectionGroupName, serverManagedSettings());
+}
+
+ResolvedSetting ConfigFile::resolveSetting(const QString &name,
+                                           const QVariant &builtinDefault,
+                                           const QString &connectionGroupName,
+                                           const ServerManagedSettings &serverSettings) const
+{
     const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
     auto spec = ManagedSettingsSchema::find(name).value_or(SettingDefinition{name, builtinDefault, false, SettingScope::User});
     if (builtinDefault.isValid()) {
         spec.builtinDefault = builtinDefault;
     }
     ManagedSettings resolver;
-    for (auto &deviceSource : buildDeviceSources()) {
+    for (auto &deviceSource : deviceSources()) {
         resolver.addSource(std::move(deviceSource));
     }
     resolver.addSource(std::make_unique<UserConfigSource>(configFile(), groupName));
     resolver.addSource(std::make_unique<UserConfigSource>(configFile(), QString(), 49));
-    for (auto &serverSource : buildServerSources(serverManagedSettings())) {
+    for (auto &serverSource : buildServerSources(serverSettings)) {
         resolver.addSource(std::move(serverSource));
     }
     return resolver.resolve(spec);
@@ -731,6 +765,13 @@ QString ConfigFile::sourceLabel(const QString &name) const
     }
 
     return {};
+}
+
+void ConfigFile::setDeviceSourcesFactory(DeviceSourcesFactory factory)
+{
+    auto &sourcesOverride = deviceSourcesOverride();
+    const QMutexLocker locker(&sourcesOverride.mutex);
+    sourcesOverride.factory = std::move(factory);
 }
 
 void ConfigFile::setAutoUpdateCheck(bool autoCheck, const QString &connectionGroupName)
@@ -992,43 +1033,51 @@ int ConfigFile::proxyPort() const
 
 ManagedProxySettings ConfigFile::managedProxySettings() const
 {
-    // Policy overlay only. It reports the fields a server or device policy sets, keyed
-    // proxyType/proxyHost/proxyPort. The user's own proxy lives in the account or the
-    // legacy Proxy/type storage, so the caller merges this over that base and keeps its
-    // own value where a field is not managed.
-    const auto typeKey = QStringLiteral("proxyType");
-    const auto hostKey = QStringLiteral("proxyHost");
-    const auto portKey = QStringLiteral("proxyPort");
+    // Device policy only; a server proxy default must not reach the shared application proxy.
+    return managedProxySettings(ServerManagedSettings{});
+}
 
+ManagedProxySettings ConfigFile::managedProxySettings(const ServerManagedSettings &accountServerSettings) const
+{
+    // Policy overlay only; the account keeps its own proxy.
     const auto fromPolicy = [](SettingSourceType source) {
         return source != SettingSourceType::BuiltinDefault && source != SettingSourceType::UserConfig;
     };
 
+    const auto type = resolveSetting(QStringLiteral("proxyType"), QNetworkProxy::DefaultProxy, {}, accountServerSettings);
+    const auto host = resolveSetting(QStringLiteral("proxyHost"), {}, {}, accountServerSettings);
+    const auto port = resolveSetting(QStringLiteral("proxyPort"), {}, {}, accountServerSettings);
+
     ManagedProxySettings managed;
-    managed.typeManaged = fromPolicy(sourceOf(typeKey));
-    managed.hostManaged = fromPolicy(sourceOf(hostKey));
-    managed.portManaged = fromPolicy(sourceOf(portKey));
-    managed.typeEnforced = isEnforced(typeKey);
-    managed.hostEnforced = isEnforced(hostKey);
-    managed.portEnforced = isEnforced(portKey);
+    managed.typeManaged = fromPolicy(type.source);
+    managed.hostManaged = fromPolicy(host.source);
+    managed.portManaged = fromPolicy(port.source);
+    managed.typeEnforced = type.isEnforced();
+    managed.hostEnforced = host.isEnforced();
+    managed.portEnforced = port.isEnforced();
     managed.isEnforced = managed.typeEnforced || managed.hostEnforced || managed.portEnforced;
     managed.isManaged = managed.typeManaged || managed.hostManaged || managed.portManaged;
-    managed.proxyType = getConfig(typeKey, QNetworkProxy::DefaultProxy).value.toInt();
-    managed.proxyHostName = getConfig(hostKey).value.toString();
-    managed.proxyPort = getConfig(portKey).value.toInt();
+    managed.proxyType = type.value.toInt();
+    managed.proxyHostName = host.value.toString();
+    managed.proxyPort = port.value.toInt();
     return managed;
 }
 
 ManagedVirtualFilesMode ConfigFile::managedVirtualFilesMode() const
 {
+    return managedVirtualFilesMode(serverManagedSettings());
+}
+
+ManagedVirtualFilesMode ConfigFile::managedVirtualFilesMode(const ServerManagedSettings &accountServerSettings) const
+{
     const auto key = QStringLiteral("virtualFilesMode");
-    const auto resolved = getConfig(key);
+    const auto resolved = resolveSetting(key, {}, {}, accountServerSettings);
     const auto mode = Vfs::modeFromString(resolved.value.toString());
     const auto fromPolicy = resolved.source != SettingSourceType::BuiltinDefault && resolved.source != SettingSourceType::UserConfig;
 
     ManagedVirtualFilesMode managed;
     managed.isManaged = fromPolicy && static_cast<bool>(mode);
-    managed.isEnforced = managed.isManaged && isEnforced(key);
+    managed.isEnforced = managed.isManaged && resolved.isEnforced();
     managed.enabled = mode && *mode != Vfs::Off;
     return managed;
 }
@@ -1480,6 +1529,10 @@ void ConfigFile::setFileProviderDomainsAppSandboxMigrationCompleted(const bool c
 
 bool ConfigFile::macFileProviderModeEnabled() const
 {
+    // The File Provider is the macOS virtual files implementation, so an enforced mode of off turns it off too.
+    if (const auto managedVfs = managedVirtualFilesMode(); managedVfs.isEnforced && !managedVfs.enabled) {
+        return false;
+    }
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(macFileProviderModeEnabledC, false).toBool();
 }

@@ -22,6 +22,8 @@
 #include <QPalette>
 #include <type_traits>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
@@ -58,13 +60,25 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
 
         loadProxySettings();
 
-        const auto proxyManaged = _account && _account->proxySettingsAreManaged();
-        if (proxyManaged) {
-            _ui->proxyGroupBox->setEnabled(false);
-            SettingsPanelStyle::applyManagedLabelStyle(_ui->proxyEnforcedLabel);
-            _ui->proxyEnforcedLabel->setText(tr("Managed by your system administrator"));
+        // Only enforced fields are locked, so the credentials of an enforced proxy stay editable.
+        const auto managedProxy = _account ? _account->managedProxySettings() : ManagedProxySettings{};
+        if (managedProxy.typeEnforced) {
+            _ui->noProxyRadioButton->setEnabled(false);
+            _ui->systemProxyRadioButton->setEnabled(false);
+            _ui->manualProxyRadioButton->setEnabled(false);
+            _ui->typeComboBox->setEnabled(false);
         }
-        _ui->proxyEnforcedLabel->setVisible(proxyManaged);
+        if (managedProxy.hostEnforced) {
+            _ui->hostLineEdit->setEnabled(false);
+        }
+        if (managedProxy.portEnforced) {
+            _ui->portSpinBox->setEnabled(false);
+        }
+        if (managedProxy.isEnforced) {
+            SettingsPanelStyle::applyManagedLabelStyle(_ui->proxyEnforcedLabel);
+            _ui->proxyEnforcedLabel->setText(ConfigFile().sourceLabel(u"proxyType"_s));
+        }
+        _ui->proxyEnforcedLabel->setVisible(managedProxy.isEnforced);
 
         connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &NetworkSettings::saveProxySettings);
         connect(_ui->proxyButtonGroup, &QButtonGroup::buttonClicked, this, &NetworkSettings::saveProxySettings);

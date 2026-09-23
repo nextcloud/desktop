@@ -12,54 +12,20 @@
 #include <memory>
 #include <optional>
 
-#include "configfile.h"
 #include "account.h"
 #include "capabilities.h"
+#include "clientproxy.h"
+#include "configfile.h"
+#include "managedsettingstestutils.h"
+#include "settings/managedconfig.h"
 #include "settings/managedsettings.h"
 #include "settings/managedsettingsschema.h"
-#include "settings/settingsources.h"
 #include "settings/servermanagedsettings.h"
-#include "settings/managedconfig.h"
+#include "settings/settingsources.h"
+#include "syncenginetestutils.h"
 
 using namespace OCC;
-
-class MapSource : public SettingSource
-{
-public:
-    MapSource(SettingSourceType kind, EnforcementState enforcement, int priority, QVariantMap values)
-        : _kind(kind)
-        , _enforcement(enforcement)
-        , _priority(priority)
-        , _values(std::move(values))
-    {
-    }
-
-    [[nodiscard]] std::optional<QVariant> read(const QString &key, const QString &) const override
-    {
-        if (!_values.contains(key)) {
-            return std::nullopt;
-        }
-        return _values.value(key);
-    }
-    [[nodiscard]] SettingSourceType type() const override
-    {
-        return _kind;
-    }
-    [[nodiscard]] EnforcementState enforcement() const override
-    {
-        return _enforcement;
-    }
-    [[nodiscard]] int priority() const override
-    {
-        return _priority;
-    }
-
-private:
-    SettingSourceType _kind;
-    EnforcementState _enforcement;
-    int _priority;
-    QVariantMap _values;
-};
+using namespace Qt::StringLiterals;
 
 // Fake ForcedPreferenceSource with test controlled forced keys and values, no
 // CoreFoundation dependency.
@@ -98,6 +64,13 @@ class TestManagedSettings : public QObject
     static SettingDefinition skipSpec()
     {
         return {QStringLiteral("skipUpdateCheck"), false, true, SettingScope::User};
+    }
+
+    static AccountPtr createAccountWithNetworkAccessManager()
+    {
+        const auto account = Account::create();
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        return account;
     }
 
 private Q_SLOTS:
@@ -572,24 +545,274 @@ private Q_SLOTS:
         QCOMPARE(config.sourceOf(QStringLiteral("skipUpdateCheck")), SettingSourceType::ServerEnforced);
     }
 
-    void testAccountProxyWriteIsIgnoredWhenManaged()
+    void testOutOfRangeProxyPolicyValueFallsBackToUserValue_data()
     {
-        const auto account = Account::create();
-        account->setProxySettingsAreManaged(true);
+        QTest::addColumn<QString>("key");
+        QTest::addColumn<int>("policyValue");
+        QTest::addColumn<int>("userValue");
 
-        account->setProxySettings(QNetworkProxy::HttpProxy,
-                                  QStringLiteral("proxy.example.com"),
-                                  8080,
-                                  true,
-                                  QStringLiteral("user"),
-                                  QStringLiteral("password"));
+        QTest::newRow("port above range") << u"proxyPort"_s << 70000 << 3128;
+        QTest::newRow("port zero") << u"proxyPort"_s << 0 << 3128;
+        QTest::newRow("unknown proxy type") << u"proxyType"_s << 7 << int(QNetworkProxy::HttpProxy);
+        QTest::newRow("negative proxy type") << u"proxyType"_s << -1 << int(QNetworkProxy::HttpProxy);
+    }
 
-        QCOMPARE(account->proxyType(), QNetworkProxy::NoProxy);
-        QCOMPARE(account->proxyHostName(), QString());
-        QCOMPARE(account->proxyPort(), 0);
-        QVERIFY(!account->proxyNeedsAuth());
-        QCOMPARE(account->proxyUser(), QString());
-        QCOMPARE(account->proxyPassword(), QString());
+    // Port 70000 would wrap to 4464.
+    void testOutOfRangeProxyPolicyValueFallsBackToUserValue()
+    {
+        QFETCH(QString, key);
+        QFETCH(int, policyValue);
+        QFETCH(int, userValue);
+
+        ManagedSettings resolver;
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200, QVariantMap{{key, policyValue}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::UserConfig, EnforcementState::NotEnforced, 50, QVariantMap{{key, userValue}}));
+
+        const auto definition = ManagedSettingsSchema::find(key);
+        QVERIFY(definition.has_value());
+        const auto resolved = resolver.resolve(*definition);
+
+        QCOMPARE(resolved.value.toInt(), userValue);
+        QCOMPARE(resolved.source, SettingSourceType::UserConfig);
+        QVERIFY(!resolved.isEnforced());
+    }
+
+    void testInRangeProxyPolicyValueIsEnforced_data()
+    {
+        QTest::addColumn<QString>("key");
+        QTest::addColumn<int>("policyValue");
+
+        QTest::newRow("lowest port") << u"proxyPort"_s << 1;
+        QTest::newRow("highest port") << u"proxyPort"_s << 65535;
+        QTest::newRow("system proxy type") << u"proxyType"_s << int(QNetworkProxy::DefaultProxy);
+        QTest::newRow("http proxy type") << u"proxyType"_s << int(QNetworkProxy::HttpProxy);
+    }
+
+    void testInRangeProxyPolicyValueIsEnforced()
+    {
+        QFETCH(QString, key);
+        QFETCH(int, policyValue);
+
+        ManagedSettings resolver;
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200, QVariantMap{{key, policyValue}}));
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::UserConfig, EnforcementState::NotEnforced, 50, QVariantMap{{key, 42}}));
+
+        const auto definition = ManagedSettingsSchema::find(key);
+        QVERIFY(definition.has_value());
+        const auto resolved = resolver.resolve(*definition);
+
+        QCOMPARE(resolved.value.toInt(), policyValue);
+        QVERIFY(resolved.isEnforced());
+    }
+
+    void testDeviceProxyPolicyReachesManagedProxySettings()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        ConfigFile::setDeviceSourcesFactory([] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                          EnforcementState::Enforced,
+                                                          200,
+                                                          QVariantMap{{u"proxyHost"_s, u"proxy.example.com"_s}, {u"proxyPort"_s, 70000}}));
+            return sources;
+        });
+        const auto restorePlatformSources = qScopeGuard([] {
+            ConfigFile::setDeviceSourcesFactory({});
+        });
+
+        const auto managedProxy = config.managedProxySettings();
+
+        QVERIFY(managedProxy.hostEnforced);
+        QCOMPARE(managedProxy.proxyHostName, u"proxy.example.com"_s);
+        QVERIFY(!managedProxy.typeManaged);
+        QVERIFY(!managedProxy.portManaged);
+        QVERIFY(!managedProxy.portEnforced);
+    }
+
+    // A server default must not reach the application proxy, which every account shares.
+    void testServerProxyDefaultAppliesToItsAccountButNotTheApplicationProxy()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        ServerManagedSettings accountServerSettings;
+        accountServerSettings.defaults = QVariantMap{{u"proxyHost"_s, u"server.example.com"_s}, {u"proxyPort"_s, 8080}};
+
+        const auto scopedToAccount = config.managedProxySettings(accountServerSettings);
+        QVERIFY(scopedToAccount.hostManaged);
+        QCOMPARE(scopedToAccount.proxyHostName, u"server.example.com"_s);
+        QVERIFY(!scopedToAccount.isEnforced);
+
+        const auto applicationProxy = config.managedProxySettings();
+        QVERIFY(!applicationProxy.hostManaged);
+        QVERIFY(!applicationProxy.portManaged);
+    }
+
+    // The File Provider is the macOS virtual files implementation, so an enforced off must disable it.
+    void testEnforcedVirtualFilesOffDisablesFileProviderMode()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        config.setMacFileProviderModeEnabled(true);
+        QVERIFY(config.macFileProviderModeEnabled());
+
+        ConfigFile::setDeviceSourcesFactory([] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                          EnforcementState::Enforced,
+                                                          200,
+                                                          QVariantMap{{u"virtualFilesMode"_s, u"off"_s}}));
+            return sources;
+        });
+        const auto restorePlatformSources = qScopeGuard([] {
+            ConfigFile::setDeviceSourcesFactory({});
+        });
+
+        QVERIFY(!config.macFileProviderModeEnabled());
+    }
+
+    void testEnforcedVirtualFilesModeKeepsFileProviderModeWhenEnabled()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        config.setMacFileProviderModeEnabled(true);
+
+        ConfigFile::setDeviceSourcesFactory([] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                          EnforcementState::Enforced,
+                                                          200,
+                                                          QVariantMap{{u"virtualFilesMode"_s, u"wincfapi"_s}}));
+            return sources;
+        });
+        const auto restorePlatformSources = qScopeGuard([] {
+            ConfigFile::setDeviceSourcesFactory({});
+        });
+
+        QVERIFY(config.macFileProviderModeEnabled());
+    }
+
+    void testEnforcedProxyFieldReplacesOnlyThatField()
+    {
+        const auto account = createAccountWithNetworkAccessManager();
+        account->setProxyType(QNetworkProxy::HttpProxy);
+        account->setProxyHostName(u"account.example.com"_s);
+        account->setProxyPort(1111);
+
+        account->applyManagedProxySettings(managedProxyFields(true, std::nullopt, std::nullopt, 8080));
+
+        QCOMPARE(account->proxyPort(), 8080);
+        QCOMPARE(account->networkAccessManager()->proxy().port(), 8080);
+        QCOMPARE(account->proxyHostName(), u"account.example.com"_s);
+        QCOMPARE(account->proxyType(), QNetworkProxy::HttpProxy);
+        QVERIFY(account->proxySettingsAreManaged());
+        QCOMPARE(account->accountProxyPort(), 1111);
+    }
+
+    void testManagedProxyDefaultAppliesOnlyWhileFollowingSystemProxy_data()
+    {
+        QTest::addColumn<int>("accountProxyType");
+        QTest::addColumn<int>("expectedProxyType");
+
+        QTest::newRow("follows system proxy") << int(QNetworkProxy::DefaultProxy) << int(QNetworkProxy::HttpProxy);
+        QTest::newRow("manual proxy") << int(QNetworkProxy::Socks5Proxy) << int(QNetworkProxy::Socks5Proxy);
+        QTest::newRow("no proxy") << int(QNetworkProxy::NoProxy) << int(QNetworkProxy::NoProxy);
+    }
+
+    void testManagedProxyDefaultAppliesOnlyWhileFollowingSystemProxy()
+    {
+        QFETCH(int, accountProxyType);
+        QFETCH(int, expectedProxyType);
+
+        const auto account = createAccountWithNetworkAccessManager();
+        account->setProxyType(static_cast<QNetworkProxy::ProxyType>(accountProxyType));
+
+        account->applyManagedProxySettings(managedProxyFields(false, int(QNetworkProxy::HttpProxy), u"proxy.example.com"_s, 8080));
+
+        QCOMPARE(int(account->proxyType()), expectedProxyType);
+        QCOMPARE(int(account->accountProxyType()), accountProxyType);
+        QVERIFY(!account->proxySettingsAreManaged());
+    }
+
+    void testReapplyingManagedProxyKeepsAccountValue()
+    {
+        const auto account = createAccountWithNetworkAccessManager();
+        account->setProxyPort(1111);
+        const auto managedProxy = managedProxyFields(true, std::nullopt, std::nullopt, 8080);
+
+        account->applyManagedProxySettings(managedProxy);
+        account->applyManagedProxySettings(managedProxy);
+
+        QCOMPARE(account->accountProxyPort(), 1111);
+    }
+
+    void testRemovedProxyPolicyRestoresAccountValue()
+    {
+        const auto account = createAccountWithNetworkAccessManager();
+        account->setProxyType(QNetworkProxy::HttpProxy);
+        account->setProxyPort(1111);
+        account->applyManagedProxySettings(managedProxyFields(true, int(QNetworkProxy::NoProxy), std::nullopt, 8080));
+
+        account->applyManagedProxySettings({});
+
+        QCOMPARE(account->proxyType(), QNetworkProxy::HttpProxy);
+        QCOMPARE(account->proxyPort(), 1111);
+        QVERIFY(!account->proxySettingsAreManaged());
+    }
+
+    void testEnforcedProxyFieldsIgnoreWritesButKeepCredentialsWritable()
+    {
+        const auto account = createAccountWithNetworkAccessManager();
+        account->setProxyType(QNetworkProxy::HttpProxy);
+        account->setProxyHostName(u"account.example.com"_s);
+        account->setProxyPort(1111);
+        account->applyManagedProxySettings(managedProxyFields(true, std::nullopt, u"proxy.example.com"_s, 8080));
+
+        account->setProxySettings(QNetworkProxy::Socks5Proxy, u"user.example.com"_s, 9999, true, u"alice"_s, u"secret"_s);
+
+        QCOMPARE(account->proxyHostName(), u"proxy.example.com"_s);
+        QCOMPARE(account->proxyPort(), 8080);
+        QCOMPARE(account->proxyType(), QNetworkProxy::Socks5Proxy);
+        QVERIFY(account->proxyNeedsAuth());
+        QCOMPARE(account->proxyUser(), u"alice"_s);
+        QCOMPARE(account->proxyPassword(), u"secret"_s);
+        QCOMPARE(account->accountProxyHostName(), u"account.example.com"_s);
+        QCOMPARE(account->accountProxyPort(), 1111);
+    }
+
+    void testAccountProxyModeKeepsEnforcedProxy_data()
+    {
+        QTest::addColumn<int>("enforcedProxyType");
+        QTest::addColumn<ClientProxy::AccountProxyMode>("expectedMode");
+
+        QTest::newRow("enforced no proxy") << int(QNetworkProxy::NoProxy) << ClientProxy::AccountProxyMode::AccountProxy;
+        QTest::newRow("enforced http proxy") << int(QNetworkProxy::HttpProxy) << ClientProxy::AccountProxyMode::AccountProxy;
+        QTest::newRow("enforced system proxy") << int(QNetworkProxy::DefaultProxy) << ClientProxy::AccountProxyMode::SystemProxy;
+    }
+
+    void testAccountProxyModeKeepsEnforcedProxy()
+    {
+        QFETCH(int, enforcedProxyType);
+        QFETCH(ClientProxy::AccountProxyMode, expectedMode);
+
+        const auto account = createAccountWithNetworkAccessManager();
+        account->setProxyType(QNetworkProxy::DefaultProxy);
+        account->applyManagedProxySettings(managedProxyFields(true, enforcedProxyType, std::nullopt, std::nullopt));
+
+        QCOMPARE(ClientProxy::accountProxyMode(*account), expectedMode);
+    }
+
+    void testAccountProxyModeLooksUpSystemProxyForUnmanagedAccount()
+    {
+        const auto account = createAccountWithNetworkAccessManager();
+        account->setProxyType(QNetworkProxy::DefaultProxy);
+
+        QCOMPARE(ClientProxy::accountProxyMode(*account), ClientProxy::AccountProxyMode::SystemProxy);
     }
 
     void testSourceLabelUsesRequestedSetting()

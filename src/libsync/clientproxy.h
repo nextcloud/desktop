@@ -34,6 +34,14 @@ public:
     static bool isUsingSystemDefault();
     static void lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot);
 
+    enum class AccountProxyMode {
+        SystemProxy,
+        AccountProxy,
+        ApplicationProxy,
+    };
+    Q_ENUM(AccountProxyMode)
+    [[nodiscard]] static AccountProxyMode accountProxyMode(const Account &account);
+
     static QString printQNetworkProxy(const QNetworkProxy &proxy);
     static const char *proxyTypeToCStr(QNetworkProxy::ProxyType type);
 

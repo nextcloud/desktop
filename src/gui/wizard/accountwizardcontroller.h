@@ -18,6 +18,7 @@
 #include <memory>
 
 #include "accountfwd.h"
+#include "configfile.h"
 #include "creds/flow2auth.h"
 #include "networkjobs.h"
 
@@ -261,6 +262,8 @@ private:
 
     friend class AccountWizardControllerTestAccess;
 
+    // The wizard account is not registered yet, so its own server settings have to be used.
+    [[nodiscard]] ManagedVirtualFilesMode accountManagedVirtualFilesMode() const;
     void initialiseAccount();
     void ensureAccount();
     void initialiseOverrideServerChoices();

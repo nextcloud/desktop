@@ -50,6 +50,18 @@ bool ClientProxy::isUsingSystemDefault()
     return true;
 }
 
+ClientProxy::AccountProxyMode ClientProxy::accountProxyMode(const Account &account)
+{
+    const auto followsSystemProxy = account.proxyType() == QNetworkProxy::DefaultProxy;
+    if (account.proxySettingsAreManaged()) {
+        return followsSystemProxy ? AccountProxyMode::SystemProxy : AccountProxyMode::AccountProxy;
+    }
+    if (isUsingSystemDefault() || followsSystemProxy) {
+        return AccountProxyMode::SystemProxy;
+    }
+    return AccountProxyMode::ApplicationProxy;
+}
+
 const char *ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 {
     switch (type) {

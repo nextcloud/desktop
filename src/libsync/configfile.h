@@ -8,14 +8,17 @@
 #define CONFIGFILE_H
 
 #include "owncloudlib.h"
+#include "settings/managedproxysettings.h"
 #include "settings/managedsettings.h"
-#include <memory>
-#include <QSharedPointer>
 #include <QSettings>
+#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
-#include <chrono>
 #include <QVersionNumber>
+#include <chrono>
+#include <functional>
+#include <memory>
+#include <vector>
 
 class QWidget;
 class QHeaderView;
@@ -26,22 +29,6 @@ namespace OCC {
 class AbstractCredentials;
 class Migration;
 struct ServerManagedSettings;
-
-// Managed proxy resolved from the settings hierarchy.
-// Each field flag says whether that field comes from a policy, so an account keeps its own value for the rest.
-struct ManagedProxySettings {
-    bool isManaged = false;
-    bool isEnforced = false;
-    bool typeManaged = false;
-    bool hostManaged = false;
-    bool portManaged = false;
-    bool typeEnforced = false;
-    bool hostEnforced = false;
-    bool portEnforced = false;
-    int proxyType = 0;
-    QString proxyHostName;
-    int proxyPort = 0;
-};
 
 // Managed virtual files mode resolved from the settings hierarchy.
 // enabled is true when the resolved mode is a virtual files mode, false when it is off.
@@ -152,9 +139,13 @@ public:
 
     // Proxy type, host and port resolved together from the settings hierarchy.
     [[nodiscard]] ManagedProxySettings managedProxySettings() const;
+    // Server values apply only to the account that supplied them.
+    [[nodiscard]] ManagedProxySettings managedProxySettings(const ServerManagedSettings &accountServerSettings) const;
 
     // Virtual files mode resolved from the settings hierarchy.
     [[nodiscard]] ManagedVirtualFilesMode managedVirtualFilesMode() const;
+    // Server values apply only to the supplying account.
+    [[nodiscard]] ManagedVirtualFilesMode managedVirtualFilesMode(const ServerManagedSettings &accountServerSettings) const;
     [[nodiscard]] bool proxyNeedsAuth() const;
     [[nodiscard]] QString proxyUser() const;
     [[nodiscard]] QString proxyPassword() const;
@@ -288,6 +279,10 @@ public:
     [[nodiscard]] SettingSourceType sourceOf(const QString &name, const QString &connectionGroupName = {}) const;
     [[nodiscard]] QString sourceLabel(const QString &connectionGroupName) const;
 
+    using DeviceSourcesFactory = std::function<std::vector<std::unique_ptr<SettingSource>>()>;
+    // For tests; an empty factory restores the platform sources.
+    static void setDeviceSourcesFactory(DeviceSourcesFactory factory);
+
     [[nodiscard]] bool hasDesktopEnterpriseChannel() const;
 
     /// Enforce a specific language used for the UI
@@ -361,6 +356,9 @@ protected:
     [[nodiscard]] bool dataExists(const QString &group, const QString &key) const;
 
 private:
+    [[nodiscard]] ResolvedSetting
+    resolveSetting(const QString &name, const QVariant &builtinDefault, const QString &connectionGroupName, const ServerManagedSettings &serverSettings) const;
+
     [[nodiscard]] QVariant getValue(const QString &param, const QString &group = QString(),
         const QVariant &defaultValue = QVariant()) const;
     void setValue(const QString &key, const QVariant &value);

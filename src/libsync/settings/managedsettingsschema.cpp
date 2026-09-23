@@ -5,7 +5,32 @@
 
 #include "settings/managedsettingsschema.h"
 
+#include <QNetworkProxy>
+
+#include <limits>
+
 namespace OCC::ManagedSettingsSchema {
+
+namespace
+{
+
+constexpr auto minimumProxyPort = 1;
+
+bool isValidProxyType(const QVariant &value)
+{
+    auto isNumber = false;
+    const auto proxyType = value.toInt(&isNumber);
+    return isNumber && proxyType >= QNetworkProxy::DefaultProxy && proxyType <= QNetworkProxy::HttpProxy;
+}
+
+bool isValidProxyPort(const QVariant &value)
+{
+    auto isNumber = false;
+    const auto proxyPort = value.toInt(&isNumber);
+    return isNumber && proxyPort >= minimumProxyPort && proxyPort <= std::numeric_limits<quint16>::max();
+}
+
+}
 
 const QList<SettingDefinition> &all()
 {
@@ -18,9 +43,9 @@ const QList<SettingDefinition> &all()
         {QStringLiteral("virtualFilesMode"), QStringLiteral("off"), true, SettingScope::User},
         {QStringLiteral("newBigFolderSizeLimit"), 0, true, SettingScope::User},
         {QStringLiteral("stopSyncingExistingFoldersOverLimit"), false, true, SettingScope::User},
-        {QStringLiteral("proxyType"), 0, true, SettingScope::User},
+        {QStringLiteral("proxyType"), 0, true, SettingScope::User, isValidProxyType},
         {QStringLiteral("proxyHost"), QString(), true, SettingScope::User},
-        {QStringLiteral("proxyPort"), 0, true, SettingScope::User},
+        {QStringLiteral("proxyPort"), 0, true, SettingScope::User, isValidProxyPort},
     };
     return specs;
 }

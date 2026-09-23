@@ -104,7 +104,7 @@ AccountWizardController::AccountWizardController(QObject *parent)
     _askBeforeExternalStorage = cfg.confirmExternalStorage();
 
 #ifndef Q_OS_LINUX
-    const auto managedVfs = cfg.managedVirtualFilesMode();
+    const auto managedVfs = accountManagedVirtualFilesMode();
     if (canUseVirtualFiles() && !(managedVfs.isManaged && !managedVfs.enabled)) {
         _syncMode = VirtualFiles;
     }
@@ -337,13 +337,18 @@ bool AccountWizardController::canFinish() const
     return !localSyncFolderRequired() || _localSyncFolderValid;
 }
 
+ManagedVirtualFilesMode AccountWizardController::accountManagedVirtualFilesMode() const
+{
+    return _account ? ConfigFile().managedVirtualFilesMode(_account->serverManagedSettings()) : ConfigFile().managedVirtualFilesMode();
+}
+
 bool AccountWizardController::canUseVirtualFiles() const
 {
     if (Theme::instance()->disableVirtualFilesSyncFolder()) {
         return false;
     }
 
-    if (const auto managedVfs = ConfigFile().managedVirtualFilesMode(); managedVfs.isEnforced && !managedVfs.enabled) {
+    if (const auto managedVfs = accountManagedVirtualFilesMode(); managedVfs.isEnforced && !managedVfs.enabled) {
         return false;
     }
 
@@ -367,7 +372,7 @@ bool AccountWizardController::isUsingFileProvider() const
 
 bool AccountWizardController::canUseClassicSync() const
 {
-    const auto managedVfs = ConfigFile().managedVirtualFilesMode();
+    const auto managedVfs = accountManagedVirtualFilesMode();
     const auto vfsEnforced = Theme::instance()->enforceVirtualFilesSyncFolder() || (managedVfs.isEnforced && managedVfs.enabled);
     return !vfsEnforced || !canUseVirtualFiles();
 }
@@ -794,8 +799,12 @@ void AccountWizardController::startServerCheck(const QUrl &serverUrl)
     setBusy(true);
     setAuthStatusText(tr("Checking server address") + QStringLiteral("…"));
 
-    if (proxySettingsAvailable() && (ClientProxy::isUsingSystemDefault() || _account->proxyType() == QNetworkProxy::DefaultProxy)) {
+    const auto proxyMode = ClientProxy::accountProxyMode(*_account);
+    if (proxySettingsAvailable() && proxyMode == ClientProxy::AccountProxyMode::SystemProxy) {
         ClientProxy::lookupSystemProxyAsync(_account->url(), this, SLOT(slotSystemProxyLookupDone(QNetworkProxy)));
+    } else if (proxyMode == ClientProxy::AccountProxyMode::AccountProxy) {
+        // An enforced proxy is already on the QNAM.
+        QMetaObject::invokeMethod(this, "slotFindServer", Qt::QueuedConnection);
     } else {
         _account->networkAccessManager()->setProxy(QNetworkProxy(proxySettingsAvailable() ? QNetworkProxy::DefaultProxy : QNetworkProxy::NoProxy));
         QMetaObject::invokeMethod(this, "slotFindServer", Qt::QueuedConnection);

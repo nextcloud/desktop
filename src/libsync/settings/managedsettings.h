@@ -54,6 +54,8 @@ struct SettingDefinition {
     QVariant builtinDefault;
     bool enforceable = false;
     SettingScope scope = SettingScope::User;
+    // A source whose value fails this check is skipped.
+    bool (*isValidValue)(const QVariant &value) = nullptr;
 };
 
 class OWNCLOUDSYNC_EXPORT SettingSource

@@ -401,9 +401,9 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
         settings.setValue(QLatin1String(skipE2eeMetadataChecksumValidationC), account->_skipE2eeMetadataChecksumValidation);
     }
 
-    settings.setValue(networkProxyTypeC, account->proxyType());
-    settings.setValue(networkProxyHostNameC, account->proxyHostName());
-    settings.setValue(networkProxyPortC, account->proxyPort());
+    settings.setValue(networkProxyTypeC, account->accountProxyType());
+    settings.setValue(networkProxyHostNameC, account->accountProxyHostName());
+    settings.setValue(networkProxyPortC, account->accountProxyPort());
     settings.setValue(networkProxyNeedsAuthC, account->proxyNeedsAuth());
     settings.setValue(networkProxyUserC, account->proxyUser());
     settings.setValue(networkUploadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->uploadLimitSetting()));
@@ -511,24 +511,12 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
         accountProxyUser = configFile.proxyUser();
         qCInfo(lcAccountManager) << "Account is using global settings:" << accountProxyType;
     }
-    const auto managedProxy = configFile.managedProxySettings();
-    const auto followsSystemProxy = accountProxyType == QNetworkProxy::DefaultProxy;
-    if (managedProxy.typeEnforced || (managedProxy.typeManaged && followsSystemProxy)) {
-        accountProxyType = static_cast<QNetworkProxy::ProxyType>(managedProxy.proxyType);
-    }
-    if (managedProxy.hostEnforced || (managedProxy.hostManaged && followsSystemProxy)) {
-        accountProxyHost = managedProxy.proxyHostName;
-    }
-    if (managedProxy.portEnforced || (managedProxy.portManaged && followsSystemProxy)) {
-        accountProxyPort = managedProxy.proxyPort;
-    }
-
     account->setProxyType(accountProxyType);
     account->setProxyHostName(accountProxyHost);
     account->setProxyPort(accountProxyPort);
     account->setProxyNeedsAuth(accountProxyNeedsAuth);
     account->setProxyUser(accountProxyUser);
-    account->setProxySettingsAreManaged(managedProxy.isEnforced);
+    account->applyManagedProxySettings(configFile.managedProxySettings(account->serverManagedSettings()));
     const auto globalUseUploadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(configFile.useUploadLimit());
     const auto globalUseDownloadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(configFile.useDownloadLimit());
     // User network settings
@@ -746,6 +734,7 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
         id = generateFreeAccountId();
     }
     newAccount->_id = id;
+    newAccount->applyManagedProxySettings(ConfigFile().managedProxySettings(newAccount->serverManagedSettings()));
 
     const auto newAccountState = new AccountState(newAccount);
     addAccountState(newAccountState);
@@ -897,6 +886,8 @@ AccountPtr AccountManager::createAccount()
 {
     const auto acc = Account::create();
     acc->setSslErrorHandler(new SslDialogErrorHandler);
+    // The wizard reaches the server before the account is added, so an enforced proxy has to apply from the start.
+    acc->applyManagedProxySettings(ConfigFile().managedProxySettings());
 
     if (qobject_cast<QGuiApplication*>(QCoreApplication::instance())) {
         connect(acc.data(), &Account::proxyAuthenticationRequired,

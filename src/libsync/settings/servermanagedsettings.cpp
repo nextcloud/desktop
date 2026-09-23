@@ -6,9 +6,9 @@
 #include "settings/servermanagedsettings.h"
 
 #include "common/vfs.h"
+#include "settings/managedsettingsschema.h"
 
 #include <QHash>
-#include <QNetworkProxy>
 
 namespace OCC {
 
@@ -29,15 +29,8 @@ bool isServerKeyValueValid(const QString &key, const QVariant &value)
     if (key == QStringLiteral("virtualFilesMode")) {
         return static_cast<bool>(Vfs::modeFromString(value.toString()));
     }
-    if (key == QStringLiteral("proxyType")) {
-        auto ok = false;
-        const auto type = value.toInt(&ok);
-        return ok && type >= QNetworkProxy::DefaultProxy && type <= QNetworkProxy::HttpProxy;
-    }
-    if (key == QStringLiteral("proxyPort")) {
-        auto ok = false;
-        const auto port = value.toInt(&ok);
-        return ok && port >= 1 && port <= 65535;
+    if (const auto definition = ManagedSettingsSchema::find(key); definition && definition->isValidValue) {
+        return definition->isValidValue(value);
     }
     return true;
 }

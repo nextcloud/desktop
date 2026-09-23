@@ -13,6 +13,7 @@
 #include "clientstatusreporting.h"
 #include "common/utility.h"
 #include "common/vfs.h"
+#include "settings/managedproxysettings.h"
 #include "settings/servermanagedsettings.h"
 #include "syncfileitem.h"
 #include "updatechannel.h"
@@ -404,7 +405,13 @@ public:
                           const QString &proxyPassword);
 
     [[nodiscard]] bool proxySettingsAreManaged() const;
-    void setProxySettingsAreManaged(bool managed);
+
+    void applyManagedProxySettings(const OCC::ManagedProxySettings &managedProxy);
+    [[nodiscard]] const OCC::ManagedProxySettings &managedProxySettings() const;
+
+    [[nodiscard]] QNetworkProxy::ProxyType accountProxyType() const;
+    [[nodiscard]] QString accountProxyHostName() const;
+    [[nodiscard]] int accountProxyPort() const;
 
     [[nodiscard]] AccountNetworkTransferLimitSetting uploadLimitSetting() const;
     void setUploadLimitSetting(AccountNetworkTransferLimitSetting setting);
@@ -534,6 +541,7 @@ private:
     Account(QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
     void updateServerColors();
+    void updateProxyInUse();
 
     [[nodiscard]] static QString davPathBase();
     [[nodiscard]] QColor serverColor() const;
@@ -600,13 +608,17 @@ private:
 
     QHash<QString, QVector<SyncFileItem::LockStatus>> _lockStatusChangeInprogress;
 
+    // The proxy used for requests: the account values with managed ones applied.
     QNetworkProxy::ProxyType _proxyType = QNetworkProxy::NoProxy;
     QString _proxyHostName;
     int _proxyPort = 0;
     bool _proxyNeedsAuth = false;
     QString _proxyUser;
     QString _proxyPassword;
-    bool _proxySettingsAreManaged = false;
+    QNetworkProxy::ProxyType _accountProxyType = QNetworkProxy::NoProxy;
+    QString _accountProxyHostName;
+    int _accountProxyPort = 0;
+    OCC::ManagedProxySettings _managedProxy;
     AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     unsigned int _uploadLimit = 0;

@@ -31,6 +31,9 @@ ResolvedSetting ManagedSettings::resolve(const SettingDefinition &definition, co
         if (definition.builtinDefault.isValid() && !value->convert(definition.builtinDefault.metaType())) {
             continue;
         }
+        if (definition.isValidValue && !definition.isValidValue(*value)) {
+            continue;
+        }
         const auto priority = source->priority();
         if (priority > settingPriority) {
             settingSource = source.get();
