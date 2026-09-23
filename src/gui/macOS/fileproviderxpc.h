@@ -10,6 +10,7 @@
 #include <optional>
 
 #include "accountstate.h"
+#include "fileproviderxpc_mac_utils.h"
 
 #pragma once
 
@@ -54,9 +55,7 @@ private:
     void disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier);
 
     //! keys are File Provider domain identifiers
-    QHash<QString, void*> _clientCommServices;
-    //! keys are File Provider domain identifiers
-    QHash<QString, void *> _clientCommConnections;
+    FileProviderXPCUtils::ClientCommunicationConnections _clientCommConnections;
     //! keys are File Provider domain identifiers
     QHash<QString, QDateTime> _unreachableFileProviderDomains;
 };

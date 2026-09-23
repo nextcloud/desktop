@@ -40,28 +40,15 @@ FileProviderXPC::~FileProviderXPC()
 
 void FileProviderXPC::disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier)
 {
-    const auto connection = _clientCommConnections.take(fileProviderDomainIdentifier);
-
-    if (connection) {
-        const auto xpcConnection = (NSXPCConnection *)connection;
-        [xpcConnection invalidate];
-        [xpcConnection release];
-    }
-
-    const auto service = _clientCommServices.take(fileProviderDomainIdentifier);
-
-    if (service) {
-        [(NSObject *)service release];
-    }
+    const auto clientCommConnection = _clientCommConnections.take(fileProviderDomainIdentifier);
+    [(NSXPCConnection *)clientCommConnection.xpcConnection invalidate];
+    [(NSXPCConnection *)clientCommConnection.xpcConnection release];
+    [(NSObject *)clientCommConnection.clientCommunicationService release];
 }
 
 void FileProviderXPC::disconnectFromFileProviderDomains()
 {
     for (const auto &fileProviderDomainIdentifier : _clientCommConnections.keys()) {
-        disconnectFromFileProviderDomain(fileProviderDomainIdentifier);
-    }
-
-    for (const auto &fileProviderDomainIdentifier : _clientCommServices.keys()) {
         disconnectFromFileProviderDomain(fileProviderDomainIdentifier);
     }
 }
@@ -82,8 +69,7 @@ void FileProviderXPC::connectToFileProviderDomains()
 
     for (const auto &domainIdentifier : clientCommConnections.keys()) {
         const auto clientCommConnection = clientCommConnections.value(domainIdentifier);
-        _clientCommServices.insert(domainIdentifier, clientCommConnection.clientCommunicationService);
-        _clientCommConnections.insert(domainIdentifier, clientCommConnection.xpcConnection);
+        _clientCommConnections.insert(domainIdentifier, clientCommConnection);
     }
 
     [connections release];
@@ -95,7 +81,7 @@ void FileProviderXPC::authenticateFileProviderDomains()
 {
     qCInfo(lcFileProviderXPC) << "Authenticating file provider domains...";
 
-    for (const auto &fileProviderDomainIdentifier : _clientCommServices.keys()) {
+    for (const auto &fileProviderDomainIdentifier : _clientCommConnections.keys()) {
         authenticateFileProviderDomain(fileProviderDomainIdentifier);
     }
 }
@@ -120,7 +106,8 @@ void FileProviderXPC::authenticateFileProviderDomain(const QString &fileProvider
     NSString *const passwordDescription = password.length > 0 ? @"SOME PASSWORD" : @"EMPTY PASSWORD";
     NSString *const userAgent = QString::fromUtf8(Utility::userAgentString()).toNSString();
 
-    const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+    const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
+    const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
 
     qCInfo(lcFileProviderXPC) << "Authenticating file provider domain with identifier"
                               << fileProviderDomainIdentifier
@@ -141,7 +128,8 @@ void FileProviderXPC::authenticateFileProviderDomain(const QString &fileProvider
 void FileProviderXPC::unauthenticateFileProviderDomain(const QString &fileProviderDomainIdentifier) const
 {
     qCInfo(lcFileProviderXPC) << "Unauthenticating file provider domain with identifier" << fileProviderDomainIdentifier;
-    const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+    const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
+    const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
     [clientCommService removeAccountConfig];
 }
 
@@ -189,7 +177,8 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
         return false;
     }
 
-    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+    const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
+    const auto service = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
 
     if (service == nil) {
         qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
@@ -203,7 +192,7 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
         dispatch_semaphore_signal(semaphore);
     }];
     dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
-    
+
     if (response) {
         _unreachableFileProviderDomains.remove(fileProviderDomainIdentifier);
     } else {
@@ -231,8 +220,7 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
             for (const auto &domainIdentifier : clientCommConnections.keys()) {
                 const auto clientCommConnection = clientCommConnections.value(domainIdentifier);
                 disconnectFromFileProviderDomain(domainIdentifier);
-                _clientCommServices.insert(domainIdentifier, clientCommConnection.clientCommunicationService);
-                _clientCommConnections.insert(domainIdentifier, clientCommConnection.xpcConnection);
+                _clientCommConnections.insert(domainIdentifier, clientCommConnection);
             }
 
             [connections release];
@@ -253,7 +241,8 @@ std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QS
 {
     qCInfo(lcFileProviderXPC) << "Checking for dirty user data in file provider domain" << fileProviderDomainIdentifier;
 
-    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+    const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
+    const auto service = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
 
     if (service == nil) {
         qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
@@ -281,7 +270,8 @@ std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QS
 
 bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const
 {
-    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+    const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
+    const auto service = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
 
     if (service == nil) {
         qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
@@ -328,9 +318,10 @@ void FileProviderXPC::setIgnoreList() const
 
     NSArray<NSString *> *const nsPatterns = [mutableNsPatterns copy];
 
-    for (const auto &fileProviderDomainIdentifier : _clientCommServices.keys()) {
+    for (const auto &fileProviderDomainIdentifier : _clientCommConnections.keys()) {
         qCInfo(lcFileProviderXPC) << "Updating ignore list of file provider domain" << fileProviderDomainIdentifier;
-        const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+        const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
+        const auto service = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
         [service setIgnoreList:nsPatterns];
     }
 }
