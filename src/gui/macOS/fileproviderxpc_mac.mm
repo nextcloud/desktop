@@ -328,6 +328,8 @@ void FileProviderXPC::setIgnoreList() const
         const auto service = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
         [service setIgnoreList:nsPatterns];
     }
+
+    [nsPatterns release];
 }
 
 } // namespace OCC::Mac
