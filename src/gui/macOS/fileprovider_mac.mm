@@ -6,7 +6,9 @@
 #include "fileprovider.h"
 
 #include <QLoggingCategory>
+#include <QMetaObject>
 #include <QOperatingSystemVersion>
+#include <QThread>
 
 #include "libsync/configfile.h"
 #include "gui/macOS/fileproviderxpc.h"
@@ -61,6 +63,16 @@ FileProvider::~FileProvider()
 
 void FileProvider::configureXPC()
 {
+    if (QThread::currentThread() != thread()) {
+        QMetaObject::invokeMethod(
+            this,
+            [this] {
+                configureXPC();
+            },
+            Qt::BlockingQueuedConnection);
+        return;
+    }
+
     if (!available()) {
         qCInfo(lcMacFileProvider) << "Skipping file provider XPC configuration on unsupported macOS version.";
         return;
