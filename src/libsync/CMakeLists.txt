@@ -62,6 +62,8 @@ set(libsync_SRCS
     updatechannel.cpp
     logger.h
     logger.cpp
+    archive/anonymizer.h
+    archive/anonymizer.cpp
     accessmanager.h
     accessmanager.cpp
     configfile.h
