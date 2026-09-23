@@ -15,6 +15,8 @@
 
 #import <FileProvider/FileProvider.h>
 
+using namespace Qt::StringLiterals;
+
 @interface TestFileProviderService : NSObject
 @property (nonatomic, copy) NSString *name;
 @end
@@ -252,6 +254,27 @@ private Q_SLOTS:
 
         QVERIFY(fileProvider->xpc());
         QCOMPARE(fileProvider->xpc()->thread(), QThread::currentThread());
+    }
+
+    void dirtyUserDataCheckFromBackgroundThreadCompletes()
+    {
+        if (!OCC::Mac::FileProvider::available()) {
+            QSKIP("File Provider is unavailable on this macOS version.");
+        }
+
+        auto *const fileProvider = OCC::Mac::FileProvider::instance();
+        auto hasDirtyUserData = true;
+        std::atomic_bool completed = false;
+
+        std::thread backgroundThread([fileProvider, &hasDirtyUserData, &completed] {
+            hasDirtyUserData = fileProvider->fileProviderDomainHasDirtyUserData("missing-domain"_L1);
+            completed.store(true, std::memory_order_release);
+        });
+
+        QTRY_VERIFY_WITH_TIMEOUT(completed.load(std::memory_order_acquire), 5000);
+        backgroundThread.join();
+
+        QVERIFY(!hasDirtyUserData);
     }
 };
 
