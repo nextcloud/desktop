@@ -16,23 +16,11 @@ add_library(docAssetsSupport STATIC
     capturescene.cpp capturescene.h
     exporter.cpp exporter.h
     iconexport.cpp iconexport.h
+    livecapture.cpp livecapture.h
+    liveprofile.cpp liveprofile.h
+    sharingsource.cpp sharingsource.h
     wizardfixtures.cpp wizardfixtures.h
-    fixtureaccount.cpp fixtureaccount.h
-    fixtureactivitylistmodel.cpp fixtureactivitylistmodel.h
-    settingsfixtures.cpp settingsfixtures.h
-    fixturefolderstatusmodel.cpp fixturefolderstatusmodel.h
     fixtureimageprovider.cpp fixtureimageprovider.h
-    fixturecredentials.h
-    fixtureuserstatusmodel.cpp fixtureuserstatusmodel.h
-    ../fakeuserstatusconnector.h
-    fixturereply.cpp fixturereply.h
-    fixturenetworkaccessmanager.cpp fixturenetworkaccessmanager.h
-    searchresponses.cpp searchresponses.h
-    searchfixtures.cpp searchfixtures.h
-    sharingfixtures.cpp sharingfixtures.h
-    assistantfixtures.cpp assistantfixtures.h
-    ../testhelper.h
-    ../assistant/fakeassistantclient.cpp ../assistant/fakeassistantclient.h
 )
 target_link_libraries(docAssetsSupport PUBLIC
     nextcloudCore
@@ -46,12 +34,12 @@ target_compile_definitions(docAssetsSupport PRIVATE QT_NO_KEYWORDS)
 target_include_directories(docAssetsSupport PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/.." "${CMAKE_SOURCE_DIR}/src")
 set_target_properties(docAssetsSupport PROPERTIES AUTOMOC ON)
 
-add_executable(DocAssetsCapture main.cpp)
+add_executable(DocAssetsCapture MACOSX_BUNDLE main.cpp)
 target_link_libraries(DocAssetsCapture PRIVATE docAssetsSupport)
 target_compile_definitions(DocAssetsCapture PRIVATE QT_NO_KEYWORDS)
-ecm_mark_nongui_executable(DocAssetsCapture)
 set_target_properties(DocAssetsCapture PROPERTIES
-    MACOSX_BUNDLE FALSE
+    MACOSX_BUNDLE TRUE
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in"
     RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_DIRECTORY}"
 )
 

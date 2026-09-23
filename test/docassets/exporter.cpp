@@ -115,6 +115,11 @@ bool exportCatalogue(const QString &executable, const QString &output, const QSt
             continue;
         }
         drain();
+        if (worker.exitStatus() == QProcess::NormalExit && worker.exitCode() == captureSkippedExitCode && scenario == QStringLiteral("assistant-chat")) {
+            filenames.remove(captureFilename(scenario));
+            qCInfo(lcExport).noquote() << "Skipped assistant-chat: Assistant is not available for this account.";
+            continue;
+        }
         if (worker.exitStatus() != QProcess::NormalExit || worker.exitCode() != 0) {
             recordFailure(QStringLiteral("%1: worker failed (exit %2)\n%3").arg(scenario).arg(worker.exitCode()).arg(QString::fromUtf8(diagnostics)));
             continue;

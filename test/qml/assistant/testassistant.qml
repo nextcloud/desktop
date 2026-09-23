@@ -84,18 +84,6 @@ Item {
         }
     }
 
-    Component {
-        id: taskDelegateComponent
-        Assistant.AssistantTaskDelegate {
-            assistantController: assistantTestSetup.controller
-            taskId: 7
-            input: "Input"
-            output: "Result"
-            statusText: "Completed"
-            dateText: "Today"
-        }
-    }
-
     TestCase {
         name: "AssistantQml"
         when: windowShown
@@ -139,14 +127,6 @@ Item {
             })
             verify(createdObject !== null)
             return createdObject
-        }
-
-        function test_taskSummaryFormatsStatusAndDate() {
-            const delegate = createTemporaryObject(taskDelegateComponent, parent)
-            verify(delegate)
-            compare(delegate.statusSummary, "Completed · Today")
-            delegate.dateText = ""
-            compare(delegate.statusSummary, "Completed")
         }
 
         function test_windowHeadlineIsBrandNeutral() {

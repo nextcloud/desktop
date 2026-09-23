@@ -171,38 +171,13 @@ protected:
     }
 };
 
-AccountSettingsServices AccountSettings::productionServices()
-{
-    auto services = AccountSettingsServices{};
-    services.model = new FolderStatusModel;
-    services.model->setAccountState(_accountState);
-    services.folders = [] {
-        return FolderMan::instance()->map().values();
-    };
-    services.setUserInfoActive = [this](bool active) {
-        _userInfo.setActive(active);
-    };
-    services.initializeEncryption = [this] {
-        setupE2eEncryption();
-    };
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    services.fileProviderEnabled = [] {
-        return Mac::FileProvider::available() && Mac::FileProviderSettingsController::instance()->fileProviderModeEnabled();
-    };
-#endif
-    return services;
-}
-
-AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent, std::optional<AccountSettingsServices> services)
+AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::AccountSettings)
-    , _model(nullptr)
+    , _model(new FolderStatusModel)
     , _accountState(accountState)
     , _userInfo(accountState, false, true)
 {
-    const auto isolated = services.has_value();
-    _services = services ? std::move(*services) : productionServices();
-    _model = _services.model;
     _ui->setupUi(this);
 
     _ui->activitiesShortcutButton->setText(Application::translate("ActivitiesWindow", "Activities"));
@@ -239,6 +214,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent, st
     _ui->verticalLayout_2->insertWidget(4, _ui->accountStatusPanel);
     _ui->verticalLayout_2->insertWidget(5, _ui->accountActionsPanel);
 
+    _model->setAccountState(_accountState);
     _model->setParent(this);
     const auto delegate = new FolderStatusDelegate;
     delegate->setParent(this);
@@ -293,43 +269,32 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent, st
     new ToolTipUpdater(_ui->_folderList);
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    if (!isolated) {
-        // The File Provider integration is an app-level mode, toggled in the General
-        // settings. While it is enabled, classic sync folders are unavailable: hide the
-        // "Classic sync" panel, except when the account still has classic folders
-        // configured (a conflict the banner asks the user to resolve).
-        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-        connect(fpSettingsController,
-                &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
-                this,
-                &AccountSettings::updateSyncFoldersPanelVisibility);
-        connect(fpSettingsController,
-                &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
-                this,
-                &AccountSettings::refreshE2eEncryptionMessage);
-        // The reconciliation "Keep File Provider" path applies the mode without emitting
-        // fileProviderModeEnabledChanged (the flag was already on), so also refresh on the
-        // bulk-apply completion to update a page that is open during the transition.
-        connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeApplyFinished, this, [this](bool, const QStringList &) {
-            refreshE2eEncryptionMessage();
-            updateSyncFoldersPanelVisibility();
-        });
-        connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &AccountSettings::updateSyncFoldersPanelVisibility);
-        connect(_ui->fileProviderConflictResolveButton, &QPushButton::clicked, this, [fpSettingsController] {
-            fpSettingsController->performStartupReconciliation();
-        });
-        connect(_ui->fileProviderResetButton, &QPushButton::clicked, this, &AccountSettings::slotResetFileProviderDomain);
-        // Re-evaluate the maintenance row when this account's domain is (re)created/removed.
-        connect(fpSettingsController,
-                &Mac::FileProviderSettingsController::vfsEnabledForAccountChanged,
-                this,
-                &AccountSettings::updateSyncFoldersPanelVisibility);
-        // Block the reset while any File Provider operation (mode toggle, another reset) runs.
-        connect(fpSettingsController,
-                &Mac::FileProviderSettingsController::operationInProgressChanged,
-                this,
-                &AccountSettings::updateSyncFoldersPanelVisibility);
-    }
+    // The File Provider integration is an app-level mode, toggled in the General
+    // settings. While it is enabled, classic sync folders are unavailable: hide the
+    // "Classic sync" panel, except when the account still has classic folders
+    // configured (a conflict the banner asks the user to resolve).
+    const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
+    connect(fpSettingsController,
+            &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
+            this,
+            &AccountSettings::updateSyncFoldersPanelVisibility);
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged, this, &AccountSettings::refreshE2eEncryptionMessage);
+    // The reconciliation "Keep File Provider" path applies the mode without emitting
+    // fileProviderModeEnabledChanged (the flag was already on), so also refresh on the
+    // bulk-apply completion to update a page that is open during the transition.
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeApplyFinished, this, [this](bool, const QStringList &) {
+        refreshE2eEncryptionMessage();
+        updateSyncFoldersPanelVisibility();
+    });
+    connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &AccountSettings::updateSyncFoldersPanelVisibility);
+    connect(_ui->fileProviderConflictResolveButton, &QPushButton::clicked, this, [fpSettingsController] {
+        fpSettingsController->performStartupReconciliation();
+    });
+    connect(_ui->fileProviderResetButton, &QPushButton::clicked, this, &AccountSettings::slotResetFileProviderDomain);
+    // Re-evaluate the maintenance row when this account's domain is (re)created/removed.
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::vfsEnabledForAccountChanged, this, &AccountSettings::updateSyncFoldersPanelVisibility);
+    // Block the reset while any File Provider operation (mode toggle, another reset) runs.
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::operationInProgressChanged, this, &AccountSettings::updateSyncFoldersPanelVisibility);
 #endif
     updateSyncFoldersPanelVisibility();
 
@@ -387,14 +352,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent, st
     connect(_ui->bigFolderSyncAll, &QAbstractButton::clicked, _model, &FolderStatusModel::slotSyncAllPendingBigFolders);
     connect(_ui->bigFolderSyncNone, &QAbstractButton::clicked, _model, &FolderStatusModel::slotSyncNoPendingBigFolders);
 
-    if (!isolated) {
-        connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
-        connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
-    }
+    connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
+    connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
 
     // Connect E2E stuff
     if (_accountState->isConnected()) {
-        _services.initializeEncryption();
+        setupE2eEncryption();
         _e2eEncryptionSetupDone = true;
     } else {
         // Not connected yet: setupE2eEncryption() (which builds the File-Provider-aware
@@ -418,16 +381,14 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent, st
 
     customizeStyle();
 
-    if (!isolated) {
-        connect(_accountState->account()->e2e(),
-                &ClientSideEncryption::startingDiscoveryEncryptionUsbToken,
-                Systray::instance(),
-                &Systray::createEncryptionTokenDiscoveryDialog);
-        connect(_accountState->account()->e2e(),
-                &ClientSideEncryption::finishedDiscoveryEncryptionUsbToken,
-                Systray::instance(),
-                &Systray::destroyEncryptionTokenDiscoveryDialog);
-    }
+    connect(_accountState->account()->e2e(),
+            &ClientSideEncryption::startingDiscoveryEncryptionUsbToken,
+            Systray::instance(),
+            &Systray::createEncryptionTokenDiscoveryDialog);
+    connect(_accountState->account()->e2e(),
+            &ClientSideEncryption::finishedDiscoveryEncryptionUsbToken,
+            Systray::instance(),
+            &Systray::destroyEncryptionTokenDiscoveryDialog);
 }
 
 void AccountSettings::slotE2eEncryptionMnemonicReady()
@@ -763,6 +724,7 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
 
     const auto folder = info->_folder;
     if (folder && folder->virtualFilesEnabled()) {
+        //: Name of the submenu containing virtual-file availability actions.
         auto availabilityMenu = menu.addMenu(tr("Availability"));
 
         // Has '/' suffix convention for paths here but VFS and
@@ -853,6 +815,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
 
     if (folder->virtualFilesEnabled()) {
+        //: Name of the submenu containing virtual-file availability actions.
         auto availabilityMenu = menu->addMenu(tr("Availability"));
 
         ac = availabilityMenu->addAction(Utility::vfsPinActionText());
@@ -1536,7 +1499,7 @@ void AccountSettings::slotAccountStateChanged()
         const auto account = _accountState->account();
         auto safeUrl = account->url();
         safeUrl.setPassword({}); // Remove the password from the URL to avoid showing it in the UI
-        const auto folders = _services.folders();
+        const auto folders = FolderMan::instance()->map().values();
         for (const auto folder : folders) {
             _model->slotUpdateFolderState(folder);
         }
@@ -1643,7 +1606,7 @@ void AccountSettings::slotAccountStateChanged()
         // File-Provider-aware text. Guarded so e2e initialization is set up only once;
         // File-Provider-mode changes are handled separately via the controller signals.
         if (!_e2eEncryptionSetupDone) {
-            _services.initializeEncryption();
+            setupE2eEncryption();
             _e2eEncryptionSetupDone = true;
         }
         checkClientSideEncryptionState();
@@ -1841,7 +1804,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
     QString unsyncedFoldersString;
     QString becameBigFoldersString;
 
-    const auto folders = _services.folders();
+    const auto folders = FolderMan::instance()->map().values();
 
     static const auto folderSeparatorString = QStringLiteral(", ");
     static const auto folderLinkString = [](const QString &slashlessFolderPath, const QString &folderName) {
@@ -1918,7 +1881,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
 bool AccountSettings::event(QEvent *e)
 {
     if (e->type() == QEvent::Hide || e->type() == QEvent::Show) {
-        _services.setUserInfoActive(isVisible());
+        _userInfo.setActive(isVisible());
     }
     if (e->type() == QEvent::Show) {
         // Expand the folder automatically only if there's only one, see #4283
@@ -2047,7 +2010,7 @@ void AccountSettings::setupE2eEncryptionMessage()
     setEncryptionPanelVisible(false);
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    if (_services.fileProviderEnabled()) {
+    if (Mac::FileProvider::available() && Mac::FileProviderSettingsController::instance()->fileProviderModeEnabled()) {
         // The File Provider extension does not support end-to-end encryption yet, so it
         // cannot be set up while File Provider mode is enabled. Replace the whole setup
         // prompt with an informational message and offer no "Set up encryption" action.
@@ -2088,10 +2051,10 @@ void AccountSettings::setEncryptionPanelVisible(bool visible)
 void AccountSettings::updateSyncFoldersPanelVisibility()
 {
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    const auto fpModeOn = _services.fileProviderEnabled();
+    const auto fpModeOn = Mac::FileProvider::available() && Mac::FileProviderSettingsController::instance()->fileProviderModeEnabled();
 
     auto hasClassicFolders = false;
-    const auto folderMap = _services.folders();
+    const auto folderMap = FolderMan::instance()->map();
 
     for (const auto folder : folderMap) {
         if (folder->accountState() == _accountState) {
@@ -2111,8 +2074,8 @@ void AccountSettings::updateSyncFoldersPanelVisibility()
     // classic-folder conflict state above. Disable the button while any File Provider
     // operation is running.
     const auto userIdAtHost = _accountState->account()->userIdAtHostWithPort();
-    const auto fpController = fpModeOn ? Mac::FileProviderSettingsController::instance() : nullptr;
-    const auto domainReady = fpController && fpController->vfsEnabledForAccount(userIdAtHost);
+    const auto fpController = Mac::FileProviderSettingsController::instance();
+    const auto domainReady = fpModeOn && fpController->vfsEnabledForAccount(userIdAtHost);
     _ui->fileProviderMaintenancePanel->setVisible(domainReady);
     _ui->fileProviderResetButton->setEnabled(domainReady && !fpController->isOperationInProgress());
 

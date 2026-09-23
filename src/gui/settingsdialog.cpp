@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include <utility>
-
 #include "settingsdialog.h"
 
 #include "advancedsettings.h"
@@ -134,12 +132,9 @@ QString shortDisplayNameForSettings(OCC::Account *account, int width)
 
 namespace OCC {
 
-SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent, PageFactory generalPage, PageFactory infoPage, std::function<bool()> canAddAccount)
+SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     : QDialog(parent)
     , _gui(gui)
-    , _canAddAccount(canAddAccount ? std::move(canAddAccount) : std::function<bool()>([] {
-        return Systray::instance()->enableAddAccount();
-    }))
 {
     ConfigFile cfg;
 
@@ -187,29 +182,26 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent, PageFactory ge
     accountSpacer->setFixedHeight(16);
     _toolBar->addWidget(accountSpacer);
 
-    addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("General"), generalPage ? generalPage(this) : new GeneralSettings(this));
-    addSettingsPage(QLatin1String(":/client/theme/advanced.svg"), tr("Advanced"), new AdvancedSettings(this));
-    addSettingsPage(QLatin1String(":/client/theme/info.svg"), tr("Info"), infoPage ? infoPage(this) : new InfoSettings(this), true);
+    //: Name of the General settings page.
+    addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("General"), new GeneralSettings(this));
+    //: Name of the Advanced settings feature.
+    addSettingsPage(QLatin1String(":/client/theme/advanced.svg"), AdvancedSettings::tr("Advanced"), new AdvancedSettings(this));
+    //: Name of the Info settings page.
+    addSettingsPage(QLatin1String(":/client/theme/info.svg"), tr("Info"), new InfoSettings(this), true);
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
     auto *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
-    if (gui) {
-        connect(showLogWindow, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
-    }
+    connect(showLogWindow, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
     addAction(showLogWindow);
 
     auto *showLogWindow2 = new QAction(this);
     showLogWindow2->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
-    if (gui) {
-        connect(showLogWindow2, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
-    }
+    connect(showLogWindow2, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
     addAction(showLogWindow2);
 
-    if (gui) {
-        connect(this, &SettingsDialog::onActivate, gui, &ownCloudGui::slotSettingsDialogActivated);
-    }
+    connect(this, &SettingsDialog::onActivate, gui, &ownCloudGui::slotSettingsDialogActivated);
 
     customizeStyle();
 
@@ -384,14 +376,10 @@ int SettingsDialog::userIndexForAccount(AccountState *account) const
 
 void SettingsDialog::accountAdded(AccountState *s)
 {
-    addAccountPage(s, new AccountSettings(s, this));
-}
-
-void SettingsDialog::addAccountPage(AccountState *s, AccountSettings *accountSettings, bool fetchUserInfo)
-{
     auto height = _toolBar->sizeHint().height();
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
+    //: Name of the account settings entry shown when only one account is allowed.
     const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     const auto accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"), actionText);
     updateAccountAvatar(s->account().data());
@@ -406,6 +394,7 @@ void SettingsDialog::addAccountPage(AccountState *s, AccountSettings *accountSet
     } else {
         _toolBar->addAction(accountAction);
     }
+    auto accountSettings = new AccountSettings(s, this);
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
     accountSettings->setObjectName(objectName);
@@ -416,10 +405,8 @@ void SettingsDialog::addAccountPage(AccountState *s, AccountSettings *accountSet
     _actionForAccount.insert(s->account().data(), accountAction);
     accountAction->trigger();
 
-    if (_gui) {
-        connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotComputeOverallSyncStatus);
-        connect(accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
-    }
+    connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotComputeOverallSyncStatus);
+    connect(accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(accountSettings, &AccountSettings::showUserStatus, this, &SettingsDialog::showUserStatus);
     connect(accountSettings, &AccountSettings::showAssistant, this, &SettingsDialog::showAssistant);
@@ -430,16 +417,15 @@ void SettingsDialog::addAccountPage(AccountState *s, AccountSettings *accountSet
     // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
 
-    if (fetchUserInfo) {
-        const auto userInfo = new UserInfo(s, false, true, this);
-        connect(userInfo, &UserInfo::fetchedLastInfo, this, [userInfo](const UserInfo *fetchedInfo) {
-            // UserInfo will go and update the account avatar
-            Q_UNUSED(fetchedInfo);
-            userInfo->deleteLater();
-        });
-        userInfo->setActive(true);
-        userInfo->slotFetchInfo();
-    }
+    const auto userInfo = new UserInfo(s, false, true, this);
+    connect(userInfo, &UserInfo::fetchedLastInfo, this, [userInfo](const UserInfo *fetchedInfo) {
+        // UserInfo will go and update the account avatar
+        Q_UNUSED(fetchedInfo);
+        userInfo->deleteLater();
+    });
+    userInfo->setActive(true);
+    userInfo->slotFetchInfo();
+
     updateAddAccountActionVisibility();
 }
 
@@ -521,7 +507,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
 void SettingsDialog::updateAddAccountActionVisibility()
 {
     if (_addAccountAction) {
-        _addAccountAction->setVisible(_canAddAccount());
+        _addAccountAction->setVisible(Systray::instance()->enableAddAccount());
     }
 }
 

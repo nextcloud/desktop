@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include <utility>
-
 #include "infosettings.h"
 #include "ui_infosettings.h"
 
@@ -43,18 +41,10 @@ QString aboutTextForInfoPanel()
 }
 }
 
-InfoSettings::InfoSettings(QWidget *parent, std::function<Updater *()> updater)
+InfoSettings::InfoSettings(QWidget *parent)
     : QWidget(parent)
-    , _updater(std::move(updater))
     , _ui(new Ui::InfoSettings)
 {
-#ifdef BUILD_UPDATER
-    if (!_updater) {
-        _updater = [] {
-            return Updater::instance();
-        };
-    }
-#endif
     _ui->setupUi(this);
 
     _ui->infoAndUpdatesLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
@@ -125,7 +115,7 @@ void InfoSettings::loadUpdateChannelsList() {
 void InfoSettings::slotUpdateInfo()
 {
     ConfigFile config;
-    const auto updater = _updater();
+    const auto updater = Updater::instance();
     if (config.skipUpdateCheck() || !updater) {
         _ui->updatesContainer->setVisible(false);
         _ui->updatesGroupBox->setVisible(false);
@@ -200,12 +190,12 @@ void InfoSettings::slotUpdateInfo()
 
 void InfoSettings::setAndCheckNewUpdateChannel(const QString &newChannel) {
     ConfigFile().setUpdateChannel(newChannel);
-    if (auto updater = qobject_cast<OCUpdater *>(_updater())) {
+    if (auto updater = qobject_cast<OCUpdater *>(Updater::instance())) {
         updater->setUpdateUrl(Updater::updateUrl());
         updater->checkForUpdate();
     }
 #if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
-    else if (auto updater = qobject_cast<SparkleUpdater *>(_updater())) {
+    else if (auto updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
         updater->setUpdateUrl(Updater::updateUrl());
         updater->checkForUpdate();
     }
@@ -215,18 +205,22 @@ void InfoSettings::setAndCheckNewUpdateChannel(const QString &newChannel) {
 QString InfoSettings::updateChannelToLocalized(const QString &channel) const
 {
     if (channel == QStringLiteral("stable")) {
+        //: Name of the stable update channel.
         return tr("stable");
     }
 
     if (channel == QStringLiteral("beta")) {
+        //: Name of the beta update channel.
         return tr("beta");
     }
 
     if (channel == QStringLiteral("daily")) {
+        //: Name of the daily update channel.
         return tr("daily");
     }
 
     if (channel == QStringLiteral("enterprise")) {
+        //: Name of the enterprise update channel.
         return tr("enterprise");
     }
 
@@ -297,9 +291,9 @@ void InfoSettings::slotUpdateChannelChanged()
 void InfoSettings::slotUpdateCheckNow()
 {
 #if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
-    auto *updater = qobject_cast<SparkleUpdater *>(_updater());
+    auto *updater = qobject_cast<SparkleUpdater *>(Updater::instance());
 #else
-    auto *updater = qobject_cast<OCUpdater *>(_updater());
+    auto *updater = qobject_cast<OCUpdater *>(Updater::instance());
 #endif
     if (ConfigFile().skipUpdateCheck()) {
         updater = nullptr;

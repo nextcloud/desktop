@@ -7,13 +7,11 @@
 #ifndef ACCOUNTSETTINGS_H
 #define ACCOUNTSETTINGS_H
 
-#include "accountsettingsservices.h"
 #include <QHash>
 #include <QPointer>
 #include <QTimer>
 #include <QUrl>
 #include <QWidget>
-#include <optional>
 
 #include "folder.h"
 #include "userinfo.h"
@@ -55,7 +53,7 @@ class AccountSettings : public QWidget
     Q_PROPERTY(AccountState* accountState MEMBER _accountState)
 
 public:
-    explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr, std::optional<AccountSettingsServices> services = {});
+    explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
     [[nodiscard]] QSize sizeHint() const override
     {
@@ -155,9 +153,6 @@ private Q_SLOTS:
     void slotResetFileProviderDomain();
 
 private:
-    AccountSettingsServices productionServices();
-    AccountSettingsServices _services;
-
     bool event(QEvent *) override;
     QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
 

@@ -5,11 +5,19 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "$0")/../.." && pwd)"
-build_dir="${DOC_ASSETS_BUILD_DIR:-$repo_root/build/macos-clang-$(uname -m)/build/nextcloud-client/work/build}"
+build_dir="$repo_root/build/macos-clang-$(uname -m)/build/nextcloud-client/work/build"
+if [[ ! -f "$build_dir/CMakeCache.txt" ]]; then
+    while IFS= read -r candidate; do
+        if [[ "$(sed -n 's/^CMAKE_HOME_DIRECTORY:INTERNAL=//p' "$candidate")" == "$repo_root" ]]; then
+            build_dir="$(dirname "$candidate")"
+            break
+        fi
+    done < <(find "$repo_root/build" -name CMakeCache.txt -print 2>/dev/null)
+fi
 cache="$build_dir/CMakeCache.txt"
 
 if [[ ! -f "$cache" ]]; then
-    printf 'Missing configured client build: %s\nSet DOC_ASSETS_BUILD_DIR to the existing CMake build directory.\n' "$build_dir" >&2
+    printf 'No configured client build found under %s/build. Build NextcloudDev from this checkout first.\n' "$repo_root" >&2
     exit 1
 fi
 
@@ -17,6 +25,11 @@ configured_source="$(sed -n 's/^CMAKE_HOME_DIRECTORY:INTERNAL=//p' "$cache")"
 if [[ "$configured_source" != "$repo_root" ]]; then
     printf 'The selected build belongs to a different source directory: %s\n' "$configured_source" >&2
     exit 1
+fi
+
+if [[ "${1:-}" == --print-build-dir ]]; then
+    printf '%s\n' "$build_dir"
+    exit 0
 fi
 
 cmake_command="$(sed -n 's/^CMAKE_COMMAND:INTERNAL=//p' "$cache")"

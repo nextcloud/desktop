@@ -4,20 +4,11 @@
  */
 
 #include "capture.h"
-#include "account.h"
 #include "accountmanager.h"
-#include "activity/syncstatussummary.h"
-#include "assistantfixtures.h"
 #include "capturescene.h"
-#include "fixtureaccount.h"
-#include "fixtureactivitylistmodel.h"
 #include "fixtureimageprovider.h"
-#include "fixturenetworkaccessmanager.h"
 #include "nativetitlebar_mac.h"
 #include "offlinenetworkfactory.h"
-#include "searchfixtures.h"
-#include "settingsfixtures.h"
-#include "sharingfixtures.h"
 #include "theme.h"
 #include "tray/svgimageprovider.h"
 #include "tray/usermodel.h"
@@ -114,41 +105,11 @@ bool captureScenario(const QString &scenario, const QString &stagingDirectory, i
         return false;
     }
     CaptureScene scene;
-    auto prepared = true;
-    if (scenario == QStringLiteral("user-status")) {
-        scene.source = QUrl(QStringLiteral("qrc:/qml/src/gui/UserStatusWindow.qml"));
-        scene.settled = [](QQuickWindow *window, QString *) {
-            return window->property("statusLoaded").toBool();
-        };
-    } else if (scenario.startsWith(QStringLiteral("settings-"))) {
-        prepared = prepareSettings(scene, scenario, error);
-    } else if (scenario == QStringLiteral("activities")) {
-        prepareAccount(scene);
-        auto *model = new FixtureActivityListModel(scene.accountState, &scene);
-        auto *summary = new SyncStatusSummary(SyncResult::Problem, &scene);
-        scene.source = QUrl(QStringLiteral("qrc:/qml/src/gui/activity/qml/ActivitiesWindow.qml"));
-        scene.properties = {{QStringLiteral("activityModel"), QVariant::fromValue<QObject *>(model)},
-                            {QStringLiteral("syncStatusModel"), QVariant::fromValue<QObject *>(summary)},
-                            {QStringLiteral("account"),
-                             QVariantMap{{QStringLiteral("name"), QStringLiteral("Alex Morgan")},
-                                         {QStringLiteral("server"), QStringLiteral("cloud.example.com")},
-                                         {QStringLiteral("avatar"), QStringLiteral("qrc:/client/theme/black/user.svg")},
-                                         {QStringLiteral("accentColor"), QStringLiteral("#0082c9")}}},
-                            {QStringLiteral("activityUser"),
-                             QVariantMap{{QStringLiteral("hasLocalFolder"), true},
-                                         {QStringLiteral("hasFileProvider"), false},
-                                         {QStringLiteral("isConnected"), true},
-                                         {QStringLiteral("needsToSignTermsOfService"), false}}}};
-        scene.ready = [model, summary](QString *) {
-            return model->rowCount() == 3 && model->hasSyncConflicts() && !summary->syncing();
-        };
-    } else {
-        prepared = scenario.startsWith(QStringLiteral("wizard-")) ? prepareWizard(scene, scenario, error)
-            : scenario.startsWith(QStringLiteral("search-"))      ? prepareSearch(scene)
-            : scenario.startsWith(QStringLiteral("sharing-"))     ? prepareSharing(scene, scenario, error)
-                                                                  : prepareAssistant(scene);
-    }
+    const auto prepared = scenario.startsWith(QStringLiteral("wizard-")) && prepareWizard(scene, scenario, error);
     if (!prepared) {
+        if (error->isEmpty()) {
+            *error = QStringLiteral("Scenario requires the dedicated live-account worker: %1").arg(scenario);
+        }
         return false;
     }
     OfflineNetworkFactory networkFactory;
@@ -215,12 +176,6 @@ bool captureScenario(const QString &scenario, const QString &stagingDirectory, i
         }
         if (networkFactory.requestAttempted() || images->rejectedRequest()) {
             *error = QStringLiteral("Unexpected network request from production QML");
-        }
-        if (scene.account) {
-            auto *network = static_cast<FixtureNetworkAccessManager *>(scene.account->networkAccessManager());
-            if (!network->missingFixtures.isEmpty()) {
-                *error = QStringLiteral("Missing fixture: %1").arg(network->missingFixtures.join(QStringLiteral(", ")));
-            }
         }
         const auto controllerReady = scene.ready(error);
         if (!error->isEmpty()) {

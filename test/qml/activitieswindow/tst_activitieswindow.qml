@@ -98,19 +98,6 @@ Item {
             tryCompare(activityList, "atYBeginning", false);
         }
 
-        function test_injectedSummaryDoesNotCreateDefaultServices()
-        {
-            const loader = findChild(activitiesWindow, "defaultSyncStatusLoader");
-            verify(loader);
-            compare(loader.active, false);
-            compare(loader.item, null);
-            activitiesWindow.syncStatusModel = null;
-            tryCompare(loader, "active", true);
-            tryVerify(() => loader.item !== null);
-            activitiesWindow.syncStatusModel = fakeSyncStatusModel;
-            tryCompare(loader, "item", null);
-        }
-
         function test_reopeningResetsViewport()
         {
             positionAtEnd();

@@ -17,6 +17,7 @@ inline const auto windowSource = QUrl(QStringLiteral("qrc:/qml/src/gui/wizard/qm
 inline const auto fixtureServer = QStringLiteral("https://cloud.example.com");
 inline constexpr auto captureTimeoutMs = 15000;
 inline constexpr auto workerStartupTimeoutMs = 10000;
+inline constexpr auto captureSkippedExitCode = 77;
 QMap<QString, QString> statusIconSources();
 QStringList captureScenarios();
 QStringList captureOmissions();

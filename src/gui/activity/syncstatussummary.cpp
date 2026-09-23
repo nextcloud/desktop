@@ -78,12 +78,6 @@ SyncStatusSummary::SyncStatusSummary(QObject *parent)
 #endif
 }
 
-SyncStatusSummary::SyncStatusSummary(SyncResult::Status state, QObject *parent)
-    : QObject(parent)
-{
-    setSyncState(state);
-}
-
 bool SyncStatusSummary::reloadNeeded(AccountState *accountState) const
 {
     if (_accountState.data() == accountState) {

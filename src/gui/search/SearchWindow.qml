@@ -22,6 +22,7 @@ WizardStyledWindow {
     property var searchModel: UnifiedSearchResultsListModel {
         accountId: root.accountId
     }
+    //: Name of the Search feature.
     readonly property string headline: qsTr("Search")
     readonly property bool aggregateView: searchModel && searchModel.viewMode === UnifiedSearchResultsListModel.Aggregate
     readonly property bool filtersVisible: aggregateView && searchModel && searchModel.providersReady
@@ -89,7 +90,7 @@ WizardStyledWindow {
         }
         function onAccessibilityStatusChanged() {
             if (root.searchModel.accessibilityStatus.length > 0)
-                searchInput.Accessible.announce(root.searchModel.accessibilityStatus, Accessible.Polite)
+                Accessible.announce(root.searchModel.accessibilityStatus, Accessible.Polite)
         }
     }
 
@@ -104,6 +105,7 @@ WizardStyledWindow {
 
         WindowAccountHeader {
             Layout.fillWidth: true
+            //: Name of the Search feature.
             title: qsTr("Search")
             user: root.account
         }

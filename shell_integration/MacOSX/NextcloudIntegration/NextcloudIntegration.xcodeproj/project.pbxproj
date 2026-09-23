@@ -373,18 +373,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		D0CA55012FBE000100000001 /* DocAssetsCapture */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "\"$(SOURCE_ROOT)/../../../test/docassets/compile.sh\"";
-			buildConfigurationList = D0CA55042FBE000100000001 /* Build configuration list for PBXLegacyTarget "DocAssetsCapture" */;
-			buildPhases = ();
-			buildToolPath = /bin/bash;
-			buildWorkingDirectory = "";
-			dependencies = ();
-			name = DocAssetsCapture;
-			passBuildSettingsInEnvironment = 1;
-			productName = DocAssetsCapture;
-		};
 		AA0A62F22E8EA929007F4A7A /* NextcloudDev */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "\"$(SOURCE_ROOT)/NextcloudDev/Craft.sh\"";
@@ -665,7 +653,6 @@
 				538E396627F4765000FA63D5 /* FileProviderExt */,
 				53B9797D2B84C81F002DA742 /* FileProviderUIExt */,
 				AA0A62F22E8EA929007F4A7A /* NextcloudDev */,
-				D0CA55012FBE000100000001 /* DocAssetsCapture */,
 			);
 		};
 /* End PBXProject section */
@@ -818,22 +805,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		D0CA55022FBE000100000001 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DOC_ASSETS_BUILD_DIR = "$(SOURCE_ROOT)/../../../build/macos-clang-$(NATIVE_ARCH_ACTUAL)/build/nextcloud-client/work/build";
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-			};
-			name = Debug;
-		};
-		D0CA55032FBE000100000001 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DOC_ASSETS_BUILD_DIR = "$(SOURCE_ROOT)/../../../build/macos-clang-$(NATIVE_ARCH_ACTUAL)/build/nextcloud-client/work/build";
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-			};
-			name = Release;
-		};
 		AABF000F2F4A000100662E00 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1482,15 +1453,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D0CA55042FBE000100000001 /* Build configuration list for PBXLegacyTarget "DocAssetsCapture" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D0CA55022FBE000100000001 /* Debug */,
-				D0CA55032FBE000100000001 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 		AABF00112F4A000100662E00 /* Build configuration list for PBXNativeTarget "FinderSyncBroker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

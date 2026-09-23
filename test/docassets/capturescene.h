@@ -4,7 +4,6 @@
  */
 
 #pragma once
-#include "accountfwd.h"
 #include <QObject>
 #include <QUrl>
 #include <QVariantMap>
@@ -25,8 +24,6 @@ public:
     QString module;
     QString type;
     QVariantMap properties;
-    AccountPtr account;
-    AccountStatePtr accountState;
     std::unique_ptr<QWidget> widget;
     bool expectsPopup = false;
     std::function<bool(QString *)> ready = [](QString *) {

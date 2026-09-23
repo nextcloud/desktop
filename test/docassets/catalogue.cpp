@@ -62,10 +62,9 @@ QStringList captureScenarios()
 QStringList captureOmissions()
 {
     auto omissions = QStringList{
-        QStringLiteral("Assistant task selection: the production selector is deliberately hidden in this build."),
-        QStringLiteral("File Provider Account Settings and activity file actions still require folder and platform services."),
+        QStringLiteral("File Provider Account Settings and activity file actions are not catalogued."),
         QStringLiteral("File Provider enable/disable confirmations are not yet catalogued."),
-        QStringLiteral("Selective sync, per-folder ignored files, and folder setup: production paths initialize FolderMan and shell integration."),
+        QStringLiteral("Selective sync, per-folder ignored files, and folder setup are not catalogued."),
         QStringLiteral("Native tray window capture remains omitted."),
         QStringLiteral("Browser-hosted login pages, OS file pickers and OS-owned File Provider indicators are excluded."),
     };
