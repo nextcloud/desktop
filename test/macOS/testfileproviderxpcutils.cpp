@@ -45,12 +45,17 @@ using namespace Qt::StringLiterals;
 @property (nonatomic, copy) NSString *domainIdentifier;
 @property (nonatomic, retain) NSError *error;
 @property (nonatomic, assign) BOOL *deallocatedFlag;
+@property (nonatomic, assign) BOOL suppressDomainIdentifierReply;
 @end
 
 @implementation TestClientCommunicationService
 
 - (void)getFileProviderDomainIdentifierWithCompletionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
+    if (self.suppressDomainIdentifierReply) {
+        return;
+    }
+
     completionHandler(self.domainIdentifier, self.error);
 }
 
@@ -198,6 +203,17 @@ private Q_SLOTS:
 
         QCOMPARE(QString::fromNSString(domainIdentifier), QStringLiteral("domain-id"));
         [domainIdentifier release];
+        [service release];
+    }
+
+    void domainIdentifierRequestTimesOut()
+    {
+        const auto service = [TestClientCommunicationService new];
+        service.suppressDomainIdentifierReply = YES;
+
+        const auto domainIdentifier = OCC::Mac::FileProviderXPCUtils::getFileProviderDomainIdentifier((NSObject<ClientCommunicationProtocol> *)service);
+
+        QVERIFY(domainIdentifier == nil);
         [service release];
     }
 
