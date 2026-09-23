@@ -192,6 +192,7 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
         dispatch_semaphore_signal(semaphore);
     }];
     dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    dispatch_release(semaphore);
 
     if (response) {
         _unreachableFileProviderDomains.remove(fileProviderDomainIdentifier);
@@ -258,6 +259,8 @@ std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QS
     }];
 
     const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    dispatch_release(semaphore);
+
     if (waitResult != 0) {
         qCWarning(lcFileProviderXPC) << "Timed out while checking for dirty user data in file provider domain" << fileProviderDomainIdentifier;
         return std::nullopt;
@@ -292,6 +295,7 @@ bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIde
     }];
 
     const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    dispatch_release(semaphore);
 
     if (waitResult != 0) {
         qCWarning(lcFileProviderXPC) << "Timed out while forwarding file ID changes to file provider domain"
