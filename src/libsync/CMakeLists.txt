@@ -64,6 +64,8 @@ set(libsync_SRCS
     logger.cpp
     archive/anonymizer.h
     archive/anonymizer.cpp
+    archive/debugarchiveanonymizer.h
+    archive/debugarchiveanonymizer.cpp
     accessmanager.h
     accessmanager.cpp
     configfile.h

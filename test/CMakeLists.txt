@@ -62,6 +62,8 @@ endif()
 
 nextcloud_add_test(Utility)
 nextcloud_add_test(Anonymizer)
+nextcloud_add_test(DebugArchiveAnonymizer)
+target_link_libraries(DebugArchiveAnonymizerTest PRIVATE ZLIB::ZLIB)
 
 if (APPLE)
     add_subdirectory(macOS)
