@@ -128,6 +128,7 @@ QtObject {
     readonly property int wizardButtonHorizontalPadding: 18
     readonly property int wizardButtonContentSpacing: 6
     readonly property int wizardButtonFontPixelSize: pixelSize + 3
+    readonly property int wizardInlineButtonMinimumWidth: 96
     readonly property int wizardChipButtonHeight: variableSize(26)
     readonly property int wizardMenuItemHorizontalPadding: wizardSectionSpacing
     readonly property int wizardFooterSpacing: trayAccountPopupActionVerticalPadding
@@ -150,6 +151,7 @@ QtObject {
     readonly property int wizardStandaloneWindowMinimumWidth: 520
     readonly property int wizardStandaloneWindowMinimumHeight: 420
     readonly property int dialogWidth: 600
+    readonly property int accountWizardWidth: 720
     readonly property int compactDialogHeight: 420
     readonly property int accountWizardSyncOptionsHeight: 520
 
