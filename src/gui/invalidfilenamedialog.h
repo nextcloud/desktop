@@ -73,7 +73,8 @@ private:
     void onPropfindPermissionSuccess(const QVariantMap &values);
     void onPropfindPermissionError(QNetworkReply *reply = nullptr);
     void allowRenaming();
-    QString remoteFilePath(const QString &filePath) const;
+    [[nodiscard]] QString remoteFilePath(const QString &filePath) const;
+
 private Q_SLOTS:
     void useInvalidName();
 };
