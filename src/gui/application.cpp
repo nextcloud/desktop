@@ -69,34 +69,38 @@ Q_LOGGING_CATEGORY(lcApplication, "nextcloud.gui.application", QtInfoMsg)
 
 namespace {
 
-    static const char optionsC[] =
-        "Options:\n"
-        "  --help, -h                 : show this help screen.\n"
-        "  --version, -v              : show version information.\n"
-        "  -q --quit                  : quit the running instance\n"
-        "  --logwindow, -l            : open a window to show log output.\n"
-        "  --logfile <filename>       : write log output to file <filename>.\n"
-        "  --logdir <name>            : write each sync log output in a new file\n"
-        "                               in folder <name>.\n"
-        "  --logexpire <hours>        : removes logs older than <hours> hours.\n"
-        "                               (to be used with --logdir)\n"
-        "  --logflush                 : flush the log file after every write.\n"
-        "  --logdebug                 : also output debug-level messages in the log.\n"
-        "  --confdir <dirname>        : Use the given configuration folder.\n"
-        "  --background               : launch the application in the background.\n"
-        "  --overrideserverurl        : specify a server URL to use for the force override to be used in the account setup wizard.\n"
-        "  --overridelocaldir         : specify a local dir to be used in the account setup wizard.\n"
-        "  --userid                   : userId (username as on the server) to pass when creating an account via command-line.\n"
-        "  --apppassword              : appPassword to pass when creating an account via command-line.\n"
-        "  --set-language <lang>      : specify a language to use for the client, regardless of the OS language.\n"
-        "  --localdirpath             : (optional) path where to create a local sync folder when creating an account via command-line.\n"
-        "  --isvfsenabled             : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
-        "  --remotedirpath            : (optional) path to a remote subfolder when creating an account via command-line.\n"
-        "  --serverurl                : a server URL to use when creating an account via command-line.\n"
+static const char optionsC[] =
+    "General options:\n"
+    "  --help, -h                       Show the available command-line options and exit.\n"
+    "  --version, -v                    Show version information and exit.\n"
+    "  --quit, -q                       Quit the running desktop client.\n"
+    "  --confdir <directory>            Use a different configuration directory.\n"
+    "  --background                     Start without opening the main dialog.\n"
+    "  --set-language <language>        Save the interface language and exit.\n"
+    "  --overrideserverurl <url>        Save the server URL for the next account setup.\n"
+    "  --overridelocaldir <path>        Save the local directory for the next account setup.\n"
 #if !DISABLE_ACCOUNT_MIGRATION
-        "  --forcelegacyconfigimport  : forcefully import account configurations from legacy clients (if available).\n"
+    "  --forcelegacyconfigimport        Force import of an available legacy client configuration.\n"
 #endif
-        "  --reverse            : use a reverse layout direction.\n";
+    "  --reverse                         Reverse the interface layout direction for this run.\n"
+    "\n"
+    "Logging options:\n"
+    "  --logwindow, -l                  Open the log output window.\n"
+    "  --logfile <filename>             Write logs to this file. Use '-' for standard output.\n"
+    "                                     Takes precedence over --logdir.\n"
+    "  --logdir <directory>             Write rotating log files to this directory.\n"
+    "  --logexpire <hours>              Set retention for rotating logs.\n"
+    "  --logflush                       Flush the log after each write.\n"
+    "  --logdebug                       Enable debug messages in Nextcloud logging categories.\n"
+    "  --debug                          Also enable debug logging. Prefer --logdebug for diagnostics.\n"
+    "\n"
+    "Account setup options:\n"
+    "  --userid <user-id>               User ID for the new account.\n"
+    "  --apppassword <password>         App password for the new account.\n"
+    "  --localdirpath <path>            Optional local sync folder path.\n"
+    "  --isvfsenabled <0|1>             Create a non-VFS (0) or VFS (1) sync folder.\n"
+    "  --remotedirpath <path>           Optional remote subfolder path.\n"
+    "  --serverurl <url>                Server URL for the new account.\n";
 
     QString applicationTrPath()
     {
