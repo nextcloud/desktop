@@ -3,6 +3,9 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include <QCoreApplication>
+#include <QElapsedTimer>
+#include <QEventLoop>
 #include <QThread>
 #include <QtTest>
 
@@ -16,6 +19,26 @@
 #import <FileProvider/FileProvider.h>
 
 using namespace Qt::StringLiterals;
+
+namespace
+{
+
+constexpr auto backgroundThreadTimeoutMs = 5000;
+
+bool waitForBackgroundThread(std::atomic_bool &completed)
+{
+    QElapsedTimer timer;
+    timer.start();
+
+    while (!completed.load(std::memory_order_acquire) && timer.elapsed() < backgroundThreadTimeoutMs) {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 10);
+        QThread::msleep(1);
+    }
+
+    return completed.load(std::memory_order_acquire);
+}
+
+} // namespace
 
 @interface TestFileProviderService : NSObject
 @property (nonatomic, copy) NSString *name;
@@ -340,9 +363,10 @@ private Q_SLOTS:
             configured.store(true, std::memory_order_release);
         });
 
-        QTRY_VERIFY_WITH_TIMEOUT(configured.load(std::memory_order_acquire), 5000);
+        const auto configuredInTime = waitForBackgroundThread(configured);
         backgroundThread.join();
 
+        QVERIFY(configuredInTime);
         QVERIFY(fileProvider->xpc());
         QCOMPARE(fileProvider->xpc()->thread(), QThread::currentThread());
     }
@@ -362,12 +386,13 @@ private Q_SLOTS:
             completed.store(true, std::memory_order_release);
         });
 
-        QTRY_VERIFY_WITH_TIMEOUT(completed.load(std::memory_order_acquire), 5000);
+        const auto completedInTime = waitForBackgroundThread(completed);
         backgroundThread.join();
 
+        QVERIFY(completedInTime);
         QVERIFY(!hasDirtyUserData.has_value());
     }
 };
 
-QTEST_APPLESS_MAIN(TestFileProviderXPCUtils)
+QTEST_GUILESS_MAIN(TestFileProviderXPCUtils)
 #include "testfileproviderxpcutils.moc"
