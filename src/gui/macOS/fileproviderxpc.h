@@ -7,6 +7,8 @@
 #include <QHash>
 #include <QDateTime>
 
+#include <optional>
+
 #include "accountstate.h"
 
 #pragma once
@@ -46,7 +48,7 @@ private Q_SLOTS:
 private:
     friend class FileProvider;
 
-    [[nodiscard]] bool fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const;
+    [[nodiscard]] std::optional<bool> fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const;
 
     void disconnectFromFileProviderDomains();
     void disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier);
