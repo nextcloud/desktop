@@ -15,6 +15,7 @@
 namespace {
 const char *const clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
 NSString *const nsClientCommunicationServiceName = [NSString stringWithUTF8String:clientCommunicationServiceName];
+constexpr int64_t fileProviderRequestWaitDelta = 1000000000; // 1 second
 }
 
 namespace OCC::Mac::FileProviderXPCUtils {
@@ -174,32 +175,36 @@ NSObject *getRemoteServiceObject(NSXPCConnection *const connection, Protocol *co
 NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> *const clientCommService)
 {
     Q_ASSERT(clientCommService != nil);
-    __block NSString *domainIdentifier = nil;
+    __block QString domainIdentifier;
+    __block auto gotDomainIdentifier = false;
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_enter(group);
 
-    [clientCommService getFileProviderDomainIdentifierWithCompletionHandler:^(NSString *const extensionAccountId, NSError *const error){
+    [clientCommService getFileProviderDomainIdentifierWithCompletionHandler:^(NSString *const extensionAccountId, NSError *const error) {
         if (error != nil) {
             qCWarning(lcFileProviderXPCUtils) << "Error getting domain id from file provider service" << error;
-            dispatch_group_leave(group);
-
-            return;
-        }
-
-        if (extensionAccountId == nil) {
+        } else if (extensionAccountId == nil) {
             qCWarning(lcFileProviderXPCUtils) << "File provider service returned no domain id";
-            dispatch_group_leave(group);
-            return;
+        } else {
+            domainIdentifier = QString::fromNSString(extensionAccountId);
+            gotDomainIdentifier = true;
         }
 
-        domainIdentifier = [[NSString alloc] initWithString:extensionAccountId];
         dispatch_group_leave(group);
     }];
 
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    const auto waitResult = dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, fileProviderRequestWaitDelta));
+    if (waitResult != 0) {
+        qCWarning(lcFileProviderXPCUtils) << "Timed out while getting domain id from file provider service";
+    }
+
     dispatch_release(group);
 
-    return domainIdentifier;
+    if (waitResult != 0 || !gotDomainIdentifier) {
+        return nil;
+    }
+
+    return [[NSString alloc] initWithString:domainIdentifier.toNSString()];
 }
 
 ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections,
