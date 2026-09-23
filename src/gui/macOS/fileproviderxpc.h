@@ -3,16 +3,16 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include <QObject>
-#include <QHash>
+#pragma once
+
 #include <QDateTime>
+#include <QHash>
+#include <QObject>
 
 #include <optional>
 
 #include "accountstate.h"
-#include "fileproviderxpc_mac_utils.h"
-
-#pragma once
+#include "fileproviderxpcconnection.h"
 
 namespace OCC::Mac {
 

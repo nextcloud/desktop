@@ -3,8 +3,12 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#pragma once
+
 #include <QHash>
 #include <QLoggingCategory>
+
+#include "fileproviderxpcconnection.h"
 
 #import <Foundation/Foundation.h>
 #import <FileProvider/FileProvider.h>
@@ -24,16 +28,6 @@ NSObject *getRemoteServiceObject(NSXPCConnection *connection, Protocol *protocol
  * @brief Get the domain identifier for and from a given client communication service.
  */
 NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> *clientCommService);
-
-/**
- * @brief Holds a client communication service and its XPC connection for one File Provider domain.
- */
-struct ClientCommunicationConnection {
-    void *clientCommunicationService = nullptr; //!< Remote ClientCommunicationProtocol proxy used to send requests.
-    void *xpcConnection = nullptr; //!< Underlying NSXPCConnection used to transport and invalidate those requests.
-};
-
-using ClientCommunicationConnections = QHash<QString, ClientCommunicationConnection>;
 
 /**
  * @brief Configures client communication connections and indexes them by domain identifier.
