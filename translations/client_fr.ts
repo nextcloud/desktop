@@ -683,7 +683,7 @@
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="288"/>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="347"/>
         <source>This value is shorter than the minimum length.</source>
-        <translation type="unfinished"/>
+        <translation>Cette valeur n’atteint pas la longueur minimale requise.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="363"/>
@@ -2123,8 +2123,9 @@ Cette action interrompra toute synchronisation en cours.</translation>
 <context>
     <name>OCC::AssistantTaskTypeModel</name>
     <message>
-        <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="97"/>
+        <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="98"/>
         <source>Chat</source>
+        <extracomment>Name of the Chat assistant task type.</extracomment>
         <translation>Discussion</translation>
     </message>
 </context>
@@ -2733,7 +2734,7 @@ Cette action interrompra toute synchronisation en cours.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="538"/>
         <source>Lock has no expiry. You can unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>Le verrouillage n&apos;expire pas. Vous pouvez déverrouiller ce fichier manuellement une fois que vous avez terminé l&apos;édition.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="527"/>
@@ -4089,7 +4090,7 @@ Il n’est pas possible de revenir immédiatement à une version antérieure : p
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="80"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Lecture seule</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="83"/>
@@ -4927,7 +4928,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="465"/>
         <source>Cannot dehydrate a placeholder because the file changed</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de rendre le fichier virtuel disponible uniquement en ligne, car il a été modifié</translation>
     </message>
 </context>
 <context>
@@ -7493,7 +7494,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Permissions du destinataire</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
@@ -7506,7 +7507,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Search for recipients</source>
-        <translation type="unfinished"/>
+        <translation>Rechercher des destinataires</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
@@ -7577,34 +7578,34 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Liste des résultats de recherche</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="169"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="171"/>
         <source>Remove %1 filter</source>
         <extracomment>%1 is an active search filter label, such as a provider name, date range, or person name.</extracomment>
         <translation>Retirer le filtre de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="193"/>
-        <location filename="../src/gui/search/SearchWindow.qml" line="262"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="195"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="264"/>
         <source>Retry</source>
         <translation>Réessayer</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="226"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="228"/>
         <source>Search results</source>
         <translation>Résultats de la recherche</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="261"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="263"/>
         <source>Some sources unavailable</source>
         <translation>Quelques sources indisponibles</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="269"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>Less from connected services</source>
         <translation>Moins de résultats provenant des services connectés</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="269"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>More from connected services</source>
         <translation>Plus de résultats provenant des services connectés</translation>
     </message>
@@ -7777,22 +7778,22 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
         <source>Configure recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Configurer les permissions du destinataire</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="159"/>
         <source>Copy recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien du destinataire</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Regenerate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Régénérer le lien du destinataire</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Generate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Générer le lien du destinataire</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
@@ -7823,49 +7824,52 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 <context>
     <name>ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="43"/>
         <source>Share &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <extracomment>%1 is the name of the item. &quot;Share&quot; is a verb.</extracomment>
+        <translation>Partager « %1 »</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="197"/>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="209"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="36"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <extracomment>Generic fallback name for a shared item when its name is unavailable.</extracomment>
+        <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="61"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="65"/>
         <source>Share settings</source>
-        <translation type="unfinished"/>
+        <extracomment>&quot;Share&quot; is a noun referring to the share whose settings are shown.</extracomment>
+        <translation>Paramètres de partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="79"/>
         <source>Share with %1</source>
-        <translation type="unfinished"/>
+        <extracomment>%1 is a list of recipient names. &quot;Share&quot; is a verb.</extracomment>
+        <translation>Partager avec %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="82"/>
         <source>New share</source>
+        <extracomment>&quot;Share&quot; is a noun referring to a newly created share.</extracomment>
         <translation>Nouveau partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to share details</source>
         <translation>Retour aux détails du partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to shares</source>
         <translation>Retour aux partages</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="196"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="205"/>
         <source>Sharing settings</source>
         <translation>Paramètres de partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="228"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="237"/>
         <source>Advanced sharing settings</source>
         <translation>Paramètres de partage avancés</translation>
     </message>
@@ -7902,42 +7906,45 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 <context>
     <name>ShareRow</name>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="49"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
+        <translation>Lien de partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="56"/>
         <source>Unfinished share</source>
-        <translation type="unfinished"/>
+        <extracomment>&quot;Unfinished share&quot; is a noun phrase referring to a share entry that has not been sent yet.</extracomment>
+        <translation>Partage non finalisé</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="59"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <extracomment>&quot;Share&quot; is a noun referring to a share entry without a recipient name.</extracomment>
+        <translation>Partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="55"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="69"/>
         <source>Not active — select to finish</source>
-        <translation type="unfinished"/>
+        <translation>Inactif — sélectionnez-le pour finaliser</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/sharing/ShareRow.qml" line="60"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="74"/>
         <source>%n recipient(s)</source>
         <translation><numerusform>%n destinataire(s)</numerusform><numerusform>%n destinataire(s)</numerusform><numerusform>%n destinataire(s)</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="77"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="91"/>
         <source>Copy public link</source>
         <translation>Copier le lien public</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="90"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="104"/>
         <source>Configure share</source>
         <translation>Configurer le partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="106"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="120"/>
         <source>Delete share</source>
         <translation>Supprimer le partage</translation>
     </message>
@@ -8242,77 +8249,80 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 <context>
     <name>UnifiedSearchFilterBar</name>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="50"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="51"/>
         <source>Type</source>
+        <extracomment>Search filter for selecting a result provider type.</extracomment>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="57"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="58"/>
         <source>Filter by type</source>
         <translation>Filtrer par type</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="103"/>
         <source>Date</source>
+        <extracomment>Search filter for restricting results by date.</extracomment>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="111"/>
         <source>Filter by date</source>
         <translation>Filtrer par date</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="112"/>
         <source>No search source supports date filtering</source>
         <translation>Aucune source de recherche ne prend en charge le filtrage sur les dates</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="121"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="123"/>
         <source>Today</source>
         <translation>Aujourd&apos;hui</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="125"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="127"/>
         <source>Last 7 days</source>
         <translation>7 derniers jours</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="129"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="131"/>
         <source>Last 30 days</source>
         <translation>30 derniers jours</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="133"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="135"/>
         <source>This year</source>
         <translation>Cette année</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="137"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="139"/>
         <source>Last year</source>
         <translation>L&apos;année dernière</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="142"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="144"/>
         <source>Custom range …</source>
         <translation>Plage personnalisée…</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="146"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="148"/>
         <source>Clear date</source>
         <translation>Effacer la date</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="157"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="160"/>
         <source>People</source>
+        <extracomment>Search filter for restricting results to a person.</extracomment>
         <translation>Personnes</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="165"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="168"/>
         <source>Filter by person</source>
         <translation>Filtrer par personne</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="166"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="169"/>
         <source>No search source supports people filtering</source>
         <translation>Aucune source de recherche ne prend en charge le filtrage sur les personnes</translation>
     </message>

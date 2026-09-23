@@ -59,22 +59,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="273"/>
-        <source>Advanced</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="282"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="283"/>
         <source>Sign up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="292"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="293"/>
         <source>Self-host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="308"/>
         <source>Proxy settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -89,17 +84,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="358"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="359"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="360"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="362"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
         <source>Log in</source>
         <translation type="unfinished"></translation>
     </message>
@@ -658,13 +653,15 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="218"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="219"/>
         <source>Activity</source>
+        <extracomment>Name of the Activity feature.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="227"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="229"/>
         <source>Sharing</source>
+        <extracomment>Name of the Sharing feature.</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -952,7 +949,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="443"/>
         <location filename="../src/gui/accountsettings.cpp" line="198"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1364"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1366"/>
         <source>Connection settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -963,25 +960,25 @@ Should the account be imported?</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="591"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2117"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2119"/>
         <source>Reset File Provider Domain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="640"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1580"/>
         <source>Log out, log back in, or remove this account from the client.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="656"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1574"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1576"/>
         <source>Log out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="669"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1575"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -992,9 +989,9 @@ Should the account be imported?</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="325"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1015"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1186"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2118"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1017"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1188"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2120"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1110,116 +1107,117 @@ Wait for the new sync, then encrypt it.</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="718"/>
-        <location filename="../src/gui/accountsettings.cpp" line="788"/>
+        <location filename="../src/gui/accountsettings.cpp" line="789"/>
         <source>Edit Ignored Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="721"/>
-        <location filename="../src/gui/accountsettings.cpp" line="791"/>
+        <location filename="../src/gui/accountsettings.cpp" line="792"/>
         <source>Create new folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="727"/>
-        <location filename="../src/gui/accountsettings.cpp" line="817"/>
+        <location filename="../src/gui/accountsettings.cpp" line="728"/>
+        <location filename="../src/gui/accountsettings.cpp" line="819"/>
         <source>Availability</source>
+        <extracomment>Name of the submenu containing virtual-file availability actions.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="796"/>
+        <location filename="../src/gui/accountsettings.cpp" line="797"/>
         <source>Choose what to sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="803"/>
         <source>Force sync now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="804"/>
+        <location filename="../src/gui/accountsettings.cpp" line="805"/>
         <source>Restart sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="813"/>
+        <location filename="../src/gui/accountsettings.cpp" line="814"/>
         <source>Remove folder sync connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="826"/>
+        <location filename="../src/gui/accountsettings.cpp" line="828"/>
         <source>Disable virtual file support …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="838"/>
+        <location filename="../src/gui/accountsettings.cpp" line="840"/>
         <source>Enable virtual file support %1 …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="838"/>
+        <location filename="../src/gui/accountsettings.cpp" line="840"/>
         <source>(experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="940"/>
-        <location filename="../src/gui/accountsettings.cpp" line="983"/>
+        <location filename="../src/gui/accountsettings.cpp" line="942"/>
+        <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <source>Folder creation failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="984"/>
+        <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1007"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1014"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>Remove Folder Sync Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1049"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
         <source>Grant access to sync folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1060"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1062"/>
         <source>Wrong Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1061"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1063"/>
         <source>Please select the original sync folder: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1067"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1075"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1069"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1077"/>
         <source>Bookmark Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1068"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1075"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1077"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1177"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1179"/>
         <source>Disable virtual file support?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1178"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1180"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1228,223 +1226,223 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1185"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1187"/>
         <source>Disable support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1272"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1274"/>
         <source>End-to-end encryption mnemonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1274"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1303"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1305"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1304"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1306"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1305"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1410"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1412"/>
         <source>Sync Running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1411"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1413"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1485"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>%1 in use</source>
         <extracomment>%1 is the used storage size.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1527"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1529"/>
         <source>Connected to %1 (%2).</source>
         <extracomment>%1 is the server and user description. %2 is the storage usage description.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1574"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1576"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="745"/>
         <source>Log in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1575"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Remove this public share connection from the client.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1765"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1767"/>
         <source>Migrate certificate to a new one</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1872"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1874"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1947"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1949"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2020"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2022"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2103"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2105"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2107"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2109"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2112"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2114"/>
         <source>Reset File Provider Domain for this account?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2015"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2017"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2022"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2024"/>
         <source>Set up encryption</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1524"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
         <source>Connected to %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1533"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1535"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1536"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1542"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1544"/>
         <source>Signed out from %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1859"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1861"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1860"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1862"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1861"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1863"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="691"/>
-        <location filename="../src/gui/accountsettings.cpp" line="785"/>
+        <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Open folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810"/>
+        <location filename="../src/gui/accountsettings.cpp" line="811"/>
         <source>Resume sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810"/>
+        <location filename="../src/gui/accountsettings.cpp" line="811"/>
         <source>Pause sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="941"/>
+        <location filename="../src/gui/accountsettings.cpp" line="943"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1477"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1479"/>
         <source>%1 of %2 in use</source>
         <extracomment>%1 is the used storage size. %2 is the total storage size.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1515"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1517"/>
         <source>%1 as %2</source>
         <extracomment>%1 is a link to the server. %2 is the user display name or username.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1522"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1524"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1539"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1541"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1545"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1547"/>
         <source>Connecting to %1 …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1549"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
         <source>Unable to connect to %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1554"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1556"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1563"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1565"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1568"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1570"/>
         <source>No %1 connection configured.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1797,37 +1795,40 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="370"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="383"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="384"/>
         <source>Create Debug Archive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="251"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="252"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="188"/>
         <source>Advanced</source>
+        <extracomment>Name of the Advanced settings feature.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="385"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="386"/>
         <source>Zip Archives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="398"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="399"/>
         <source>Failed to Access File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="399"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="400"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="408"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="409"/>
         <source>Debug Archive Created</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="409"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="410"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1989,8 +1990,9 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AssistantTaskTypeModel</name>
     <message>
-        <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="97"/>
+        <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="98"/>
         <source>Chat</source>
+        <extracomment>Name of the Chat assistant task type.</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3269,13 +3271,14 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="103"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="324"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="466"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="467"/>
         <source>Grant access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="347"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="348"/>
         <source>File</source>
+        <extracomment>Representative file label used to calculate the height of a file progress row.</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3960,6 +3963,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="45"/>
         <source>Pattern</source>
+        <extracomment>Ignore-list table column containing filename patterns.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4064,27 +4068,31 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="208"/>
+        <location filename="../src/gui/infosettings.cpp" line="209"/>
         <source>stable</source>
+        <extracomment>Name of the stable update channel.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="212"/>
+        <location filename="../src/gui/infosettings.cpp" line="214"/>
         <source>beta</source>
+        <extracomment>Name of the beta update channel.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="216"/>
+        <location filename="../src/gui/infosettings.cpp" line="219"/>
         <source>daily</source>
+        <extracomment>Name of the daily update channel.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="220"/>
+        <location filename="../src/gui/infosettings.cpp" line="224"/>
         <source>enterprise</source>
+        <extracomment>Name of the enterprise update channel.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="255"/>
+        <location filename="../src/gui/infosettings.cpp" line="259"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -4093,7 +4101,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="260"/>
+        <location filename="../src/gui/infosettings.cpp" line="264"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -4101,12 +4109,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="267"/>
+        <location filename="../src/gui/infosettings.cpp" line="271"/>
         <source>Changing update channel?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="268"/>
+        <location filename="../src/gui/infosettings.cpp" line="272"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -4114,12 +4122,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="274"/>
+        <location filename="../src/gui/infosettings.cpp" line="278"/>
         <source>Change update channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="275"/>
+        <location filename="../src/gui/infosettings.cpp" line="279"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4425,6 +4433,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="126"/>
         <source>Host</source>
+        <extracomment>Label for the proxy server hostname field.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5422,7 +5431,7 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="708"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="712"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5433,23 +5442,21 @@ Note that using any logging command line options will override this setting.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="185"/>
-        <source>General</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/settingsdialog.cpp" line="186"/>
-        <source>Advanced</source>
+        <source>General</source>
+        <extracomment>Name of the General settings page.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="187"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="190"/>
         <source>Info</source>
+        <extracomment>Name of the Info settings page.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="379"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="383"/>
         <source>Account</source>
+        <extracomment>Name of the account settings entry shown when only one account is allowed.</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5479,32 +5486,33 @@ Note that using any logging command line options will override this setting.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="744"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="746"/>
         <source>Secure file drop link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="744"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="749"/>
         <source>Share link</source>
+        <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="752"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="758"/>
         <source>Link share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="754"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="760"/>
         <source>Internal link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="756"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="762"/>
         <source>Secure file drop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="945"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
         <source>Could not find local folder for %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5548,17 +5556,17 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1284"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1285"/>
         <source>Share options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
         <source>Send private link by email …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
         <source>Copy private link to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5596,53 +5604,54 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1310"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1311"/>
         <source>File actions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1247"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1495"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1497"/>
         <source>Activity</source>
+        <extracomment>Name of the Activity file action.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1276"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1277"/>
         <source>Leave this share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1282"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
         <source>Resharing this file is not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1282"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
         <source>Resharing this folder is not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1343"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1344"/>
         <source>Encrypt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1354"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1355"/>
         <source>Lock file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1357"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1358"/>
         <source>Unlock file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1373"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1374"/>
         <source>Locked by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1377"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation>
@@ -5651,48 +5660,48 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1386"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1387"/>
         <source>Apply labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1532"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1534"/>
         <source>Resolve conflict …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1536"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1538"/>
         <source>Move and rename …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1539"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
         <source>Move, rename and upload …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1543"/>
         <source>Delete local changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1547"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1549"/>
         <source>Move and upload …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1548"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1550"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1288"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1289"/>
         <source>Copy internal link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1501"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1505"/>
         <source>Open in browser</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6001,13 +6010,13 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1570"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1571"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1562"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1563"/>
         <source>Reauthorization required</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6025,7 +6034,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1581"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1582"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6051,7 +6060,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1582"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1583"/>
         <source>Some files could not be synced!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6091,59 +6100,60 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="151"/>
+        <location filename="../src/gui/systray.cpp" line="152"/>
         <source>Download</source>
+        <extracomment>Name of the macOS notification category for file downloads.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
-        <location filename="../src/gui/systray.cpp" line="569"/>
+        <location filename="../src/gui/systray.cpp" line="570"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="871"/>
         <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="571"/>
+        <location filename="../src/gui/systray.cpp" line="572"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="574"/>
-        <location filename="../src/gui/systray.cpp" line="584"/>
+        <location filename="../src/gui/systray.cpp" line="575"/>
+        <location filename="../src/gui/systray.cpp" line="585"/>
         <source>Pause sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="575"/>
-        <location filename="../src/gui/systray.cpp" line="590"/>
+        <location filename="../src/gui/systray.cpp" line="576"/>
+        <location filename="../src/gui/systray.cpp" line="591"/>
         <source>Resume sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="576"/>
+        <location filename="../src/gui/systray.cpp" line="577"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="909"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="577"/>
+        <location filename="../src/gui/systray.cpp" line="578"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="578"/>
+        <location filename="../src/gui/systray.cpp" line="579"/>
         <source>Exit %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="584"/>
+        <location filename="../src/gui/systray.cpp" line="585"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="590"/>
+        <location filename="../src/gui/systray.cpp" line="591"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"></translation>
@@ -6344,17 +6354,17 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="439"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="440"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="441"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="442"/>
         <source>Trigger the migration</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="538"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
         <source>%n notification(s)</source>
         <translation>
             <numerusform>%n notification</numerusform>
@@ -6362,65 +6372,65 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="781"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="820"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="782"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="821"/>
         <source>“%1” was not synchronized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="822"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="825"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="828"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="829"/>
         <source>Insufficient storage on the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="864"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="865"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="880"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1243"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="881"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1244"/>
         <source>Retry all uploads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1294"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1456"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1295"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1457"/>
         <source>Resolve conflict</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1446"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1447"/>
         <source>Rename file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1554"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1555"/>
         <source>Sync conflicts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1697"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
         <source>Public Share Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1914"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1915"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1934"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1935"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6428,32 +6438,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2296"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2297"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2297"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2298"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2302"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2302"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2303"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2386"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2387"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2386"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2387"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6915,32 +6925,33 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="359"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="360"/>
         <source>Answer</source>
+        <extracomment>Action for answering an incoming Talk call.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1375"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1376"/>
         <source>You renamed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1377"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1378"/>
         <source>You deleted %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1379"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
         <source>You created %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1381"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1382"/>
         <source>You changed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1405"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1406"/>
         <source>Synced %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7161,51 +7172,52 @@ Server replied with error: %2</source>
 <context>
     <name>SearchWindow</name>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="25"/>
-        <location filename="../src/gui/search/SearchWindow.qml" line="107"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="26"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="109"/>
         <location filename="../src/gui/accountsettings.cpp" line="186"/>
         <source>Search</source>
+        <extracomment>Name of the Search feature.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="123"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="125"/>
         <source>Search is available when this account is connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="124"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="126"/>
         <source>Search files, messages, events …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="169"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="171"/>
         <source>Remove %1 filter</source>
         <extracomment>%1 is an active search filter label, such as a provider name, date range, or person name.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="193"/>
-        <location filename="../src/gui/search/SearchWindow.qml" line="262"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="195"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="264"/>
         <source>Retry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="226"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="228"/>
         <source>Search results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="261"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="263"/>
         <source>Some sources unavailable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="269"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>Less from connected services</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="269"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>More from connected services</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7424,49 +7436,52 @@ Server replied with error: %2</source>
 <context>
     <name>ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="43"/>
         <source>Share &quot;%1&quot;</source>
+        <extracomment>%1 is the name of the item. &quot;Share&quot; is a verb.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="40"/>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="197"/>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="209"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="36"/>
         <source>File</source>
+        <extracomment>Generic fallback name for a shared item when its name is unavailable.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="61"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="65"/>
         <source>Share settings</source>
+        <extracomment>&quot;Share&quot; is a noun referring to the share whose settings are shown.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="79"/>
         <source>Share with %1</source>
+        <extracomment>%1 is a list of recipient names. &quot;Share&quot; is a verb.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="73"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="82"/>
         <source>New share</source>
+        <extracomment>&quot;Share&quot; is a noun referring to a newly created share.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to share details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="176"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="196"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="205"/>
         <source>Sharing settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareDialog.qml" line="228"/>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="237"/>
         <source>Advanced sharing settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7503,27 +7518,30 @@ Server replied with error: %2</source>
 <context>
     <name>ShareRow</name>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="49"/>
         <source>Share link</source>
+        <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="56"/>
         <source>Unfinished share</source>
+        <extracomment>&quot;Unfinished share&quot; is a noun phrase referring to a share entry that has not been sent yet.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="46"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="59"/>
         <source>Share</source>
+        <extracomment>&quot;Share&quot; is a noun referring to a share entry without a recipient name.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="55"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="69"/>
         <source>Not active — select to finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/sharing/ShareRow.qml" line="60"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="74"/>
         <source>%n recipient(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -7531,17 +7549,17 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="77"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="91"/>
         <source>Copy public link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="90"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="104"/>
         <source>Configure share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/ShareRow.qml" line="106"/>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="120"/>
         <source>Delete share</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7801,77 +7819,80 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchFilterBar</name>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="50"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="51"/>
         <source>Type</source>
+        <extracomment>Search filter for selecting a result provider type.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="57"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="58"/>
         <source>Filter by type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="103"/>
         <source>Date</source>
+        <extracomment>Search filter for restricting results by date.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="111"/>
         <source>Filter by date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="112"/>
         <source>No search source supports date filtering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="121"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="123"/>
         <source>Today</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="125"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="127"/>
         <source>Last 7 days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="129"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="131"/>
         <source>Last 30 days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="133"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="135"/>
         <source>This year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="137"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="139"/>
         <source>Last year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="142"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="144"/>
         <source>Custom range …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="146"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="148"/>
         <source>Clear date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="157"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="160"/>
         <source>People</source>
+        <extracomment>Search filter for restricting results to a person.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="165"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="168"/>
         <source>Filter by person</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="166"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="169"/>
         <source>No search source supports people filtering</source>
         <translation type="unfinished"></translation>
     </message>
