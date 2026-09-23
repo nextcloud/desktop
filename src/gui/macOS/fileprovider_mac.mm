@@ -95,26 +95,25 @@ void FileProvider::configureXPC()
     }
 }
 
-bool FileProvider::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier)
+std::optional<bool> FileProvider::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier)
 {
     if (QThread::currentThread() == thread()) {
         const auto xpc = _xpc.get();
-        return xpc && xpc->fileProviderDomainHasDirtyUserData(fileProviderDomainIdentifier);
+        return xpc ? xpc->fileProviderDomainHasDirtyUserData(fileProviderDomainIdentifier) : std::nullopt;
     }
 
-    auto hasDirtyUserData = false;
+    std::optional<bool> hasDirtyUserData;
     const auto invoked = QMetaObject::invokeMethod(
         this,
         [this, &hasDirtyUserData, fileProviderDomainIdentifier] {
             const auto xpc = _xpc.get();
-            hasDirtyUserData = xpc && xpc->fileProviderDomainHasDirtyUserData(fileProviderDomainIdentifier);
+            hasDirtyUserData = xpc ? xpc->fileProviderDomainHasDirtyUserData(fileProviderDomainIdentifier) : std::nullopt;
         },
         Qt::BlockingQueuedConnection);
 
     if (!invoked) {
-        qCWarning(lcMacFileProvider) << "Could not check file provider domain for dirty user data; treating it as dirty."
-                                      << fileProviderDomainIdentifier;
-        return true;
+        qCWarning(lcMacFileProvider) << "Could not check file provider domain for dirty user data." << fileProviderDomainIdentifier;
+        return std::nullopt;
     }
 
     return hasDirtyUserData;

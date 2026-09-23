@@ -249,7 +249,7 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
     return response;
 }
 
-bool FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const
+std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const
 {
     qCInfo(lcFileProviderXPC) << "Checking for dirty user data in file provider domain" << fileProviderDomainIdentifier;
 
@@ -257,7 +257,7 @@ bool FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProv
 
     if (service == nil) {
         qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
-        return false;
+        return std::nullopt;
     }
 
     __block auto hasDirtyUserData = false;
@@ -268,8 +268,13 @@ bool FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProv
         dispatch_semaphore_signal(semaphore);
     }];
 
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    qCInfo(lcFileProviderXPC) << "File provider domain" << fileProviderDomainIdentifier << (hasDirtyUserData ? "has" : "does not have") << "dirty user data";
+    const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    if (waitResult != 0) {
+        qCWarning(lcFileProviderXPC) << "Timed out while checking for dirty user data in file provider domain" << fileProviderDomainIdentifier;
+        return std::nullopt;
+    }
+
+    qCInfo(lcFileProviderXPC) << "File provider domain" << fileProviderDomainIdentifier << (*hasDirtyUserData ? "has" : "does not have") << "dirty user data";
 
     return hasDirtyUserData;
 }
