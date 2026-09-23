@@ -1253,9 +1253,14 @@ void AccountWizardController::finish()
     }
 
     if (_syncMode == SyncEverything) {
+        // Only write what the user changed, so the wizard does not store a server default as a user value.
         ConfigFile cfgFile;
-        cfgFile.setNewBigFolderSizeLimit(_askBeforeLargeFolders, _largeFolderThresholdMb);
-        cfgFile.setConfirmExternalStorage(_askBeforeExternalStorage);
+        if (cfgFile.newBigFolderSizeLimit() != qMakePair(_askBeforeLargeFolders, static_cast<qint64>(_largeFolderThresholdMb))) {
+            cfgFile.setNewBigFolderSizeLimit(_askBeforeLargeFolders, _largeFolderThresholdMb);
+        }
+        if (cfgFile.confirmExternalStorage() != _askBeforeExternalStorage) {
+            cfgFile.setConfirmExternalStorage(_askBeforeExternalStorage);
+        }
     }
 
     if (localSyncFolderRequired()) {

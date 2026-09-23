@@ -67,10 +67,21 @@ private Q_SLOTS:
         QStandardPaths::setTestModeEnabled(true);
     }
 
+    //! @brief Keeps tests off the device policy of the machine running them.
+    void init()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
+    }
+
     //! @brief Removes the test account from AccountManager after each test
     //! function, including every data-driven row.
     void cleanup()
     {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
         if (_accountState) {
             AccountManager::instance()->removeAccountState(_accountState);
             _accountState = nullptr;
@@ -244,9 +255,6 @@ private Q_SLOTS:
     void testAddAccountAppliesEnforcedDeviceProxy()
     {
         installEnforcedDeviceProxy();
-        const auto restorePlatformSources = qScopeGuard([] {
-            ConfigFile::setDeviceSourcesFactory({});
-        });
 
         const auto account = addTestAccount(u"https://cloud.example.com"_s, u"alice"_s)->account();
 
@@ -260,9 +268,6 @@ private Q_SLOTS:
     void testSaveAccountKeepsAccountProxyUnderEnforcedPolicy()
     {
         installEnforcedDeviceProxy();
-        const auto restorePlatformSources = qScopeGuard([] {
-            ConfigFile::setDeviceSourcesFactory({});
-        });
         const auto account = addTestAccount(u"https://cloud.example.com"_s, u"bob"_s)->account();
 
         AccountManager::instance()->saveAccount(account);
@@ -272,6 +277,24 @@ private Q_SLOTS:
         QCOMPARE(settings->value(u"networkProxyType"_s).toInt(), int(QNetworkProxy::NoProxy));
         QCOMPARE(settings->value(u"networkProxyHostName"_s).toString(), QString());
         QCOMPARE(settings->value(u"networkProxyPort"_s).toInt(), 0);
+    }
+
+    //! @brief An account without a subscription must not keep enforced values alive.
+    void testCachedEnforcedValuesAreDroppedWhenNoAccountIsSubscribed()
+    {
+        ConfigFile config;
+        ServerManagedSettings cached;
+        cached.enforced = QVariantMap{{u"virtualFilesMode"_s, u"wincfapi"_s}};
+        config.setServerManagedSettings(cached);
+        QCOMPARE(config.serverManagedSettings().enforced.value(u"virtualFilesMode"_s).toString(), u"wincfapi"_s);
+
+        const auto account = addTestAccount(u"https://cloud.example.com"_s, u"carol"_s)->account();
+
+        // Capabilities without a subscription marker: they load, but the account is not subscribed.
+        account->setCapabilities(QVariantMap{{u"core"_s, QVariantMap{}}});
+        QVERIFY(!account->serverHasValidSubscription());
+
+        QVERIFY(ConfigFile().serverManagedSettings().enforced.isEmpty());
     }
 };
 

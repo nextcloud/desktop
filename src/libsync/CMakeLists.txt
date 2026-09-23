@@ -167,6 +167,7 @@ set(libsync_SRCS
     settings/migration.h
     settings/migration.cpp
     settings/managedproxysettings.h
+    settings/settingpriorities.h
     settings/managedsettings.h
     settings/managedsettings.cpp
     settings/managedsettingsschema.h

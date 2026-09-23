@@ -63,7 +63,7 @@ class TestManagedSettings : public QObject
 
     static SettingDefinition skipSpec()
     {
-        return {QStringLiteral("skipUpdateCheck"), false, true, SettingScope::User};
+        return {QStringLiteral("skipUpdateCheck"), false, true};
     }
 
     static AccountPtr createAccountWithNetworkAccessManager()
@@ -79,6 +79,21 @@ private Q_SLOTS:
         QStandardPaths::setTestModeEnabled(true);
     }
 
+    // Never read the device policy of the machine running the tests.
+    void init()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
+    }
+
+    void cleanup()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
+    }
+
     void testBuiltinDefaultWhenNoSourceHasValue()
     {
         ManagedSettings resolver;
@@ -86,7 +101,6 @@ private Q_SLOTS:
         const auto result = resolver.resolve(skipSpec());
 
         QCOMPARE(result.value.toBool(), false);
-        QCOMPARE(result.present, false);
         QCOMPARE(result.source, SettingSourceType::BuiltinDefault);
         QCOMPARE(result.enforcement, EnforcementState::NotEnforced);
     }
@@ -108,7 +122,6 @@ private Q_SLOTS:
         QCOMPARE(r.value.toBool(), false);
         QCOMPARE(r.source, SettingSourceType::UserConfig);
         QCOMPARE(r.enforcement, EnforcementState::NotEnforced);
-        QCOMPARE(r.present, true);
     }
 
     void testEnforcedPolicyBeatsUser()
@@ -160,7 +173,7 @@ private Q_SLOTS:
                                                        30,
                                                        QVariantMap{{QStringLiteral("updateChannel"), QStringLiteral("stable")}}));
 
-        const auto r = resolver.resolve({QStringLiteral("updateChannel"), QStringLiteral("stable"), false, SettingScope::User});
+        const auto r = resolver.resolve({QStringLiteral("updateChannel"), QStringLiteral("stable"), false});
 
         QCOMPARE(r.value.toString(), QStringLiteral("stable")); // ServerDefault(30) beats PlatformDefault(20)
         QCOMPARE(r.source, SettingSourceType::ServerDefault);
@@ -178,7 +191,7 @@ private Q_SLOTS:
                                                        200,
                                                        QVariantMap{{QStringLiteral("updateChannel"), QStringLiteral("stable")}}));
 
-        const auto r = resolver.resolve({QStringLiteral("updateChannel"), QStringLiteral("stable"), false, SettingScope::User});
+        const auto r = resolver.resolve({QStringLiteral("updateChannel"), QStringLiteral("stable"), false});
 
         QCOMPARE(r.value.toString(), QStringLiteral("beta"));
         QCOMPARE(r.source, SettingSourceType::UserConfig);
@@ -195,7 +208,7 @@ private Q_SLOTS:
         resolver.addSource(
             std::make_unique<MapSource>(SettingSourceType::ServerDefault, EnforcementState::NotEnforced, 30, QVariantMap{{QStringLiteral("timeout"), 7}}));
 
-        const auto r = resolver.resolve({QStringLiteral("timeout"), 42, true, SettingScope::User});
+        const auto r = resolver.resolve({QStringLiteral("timeout"), 42, true});
 
         QCOMPARE(r.value.toInt(), 7);
         QCOMPARE(r.source, SettingSourceType::ServerDefault);
@@ -309,25 +322,6 @@ private Q_SLOTS:
         QCOMPARE(config.skipUpdateCheck(), true);
     }
 
-    void testResolveAllReturnsMetadataPerSpec()
-    {
-        ManagedSettings resolver;
-        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
-                                                       EnforcementState::Enforced,
-                                                       200,
-                                                       QVariantMap{{QStringLiteral("skipUpdateCheck"), true}}));
-
-        const auto all = resolver.resolveAll(ManagedSettingsSchema::all());
-        QCOMPARE(all.size(), ManagedSettingsSchema::all().size());
-
-        const auto skip = std::find_if(all.cbegin(), all.cend(), [](const ResolvedSetting &value) {
-            return value.key == QStringLiteral("skipUpdateCheck");
-        });
-        QVERIFY(skip != all.cend());
-        QVERIFY(skip->isEnforced());
-        QCOMPARE(skip->source, SettingSourceType::PlatformPolicy);
-    }
-
     void testParseServerManagedSettingsReadsSchemaAndMaps()
     {
         const QVariantMap cap{
@@ -405,7 +399,7 @@ private Q_SLOTS:
         raw.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}};
         const auto clean = sanitizeServerManagedSettings(raw);
 
-        const SettingDefinition spec{QStringLiteral("virtualFilesMode"), QStringLiteral(""), true, SettingScope::User};
+        const SettingDefinition spec{QStringLiteral("virtualFilesMode"), QStringLiteral(""), true};
 
         ManagedSettings resolver;
         resolver.addSource(std::make_unique<MapSource>(SettingSourceType::UserConfig,
@@ -440,30 +434,32 @@ private Q_SLOTS:
         ServerManagedSettings settings;
         settings.schemaVersion = 1;
         settings.defaults = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}};
-        settings.enforced = QVariantMap{{QStringLiteral("skipUpdateCheck"), true}};
+        settings.enforced = QVariantMap{{QStringLiteral("confirmExternalStorage"), false}, {QStringLiteral("skipUpdateCheck"), true}};
         config.setServerManagedSettings(settings);
 
         const auto read = config.serverManagedSettings();
         QCOMPARE(read.schemaVersion, 1);
         QCOMPARE(read.defaults.value(QStringLiteral("virtualFilesMode")).toString(), QStringLiteral("wincfapi"));
-        QCOMPARE(read.enforced.value(QStringLiteral("skipUpdateCheck")).toBool(), true);
+        QCOMPARE(read.enforced.value(QStringLiteral("confirmExternalStorage")).toBool(), false);
+        // The cache is sanitized, so a key the server may not enforce never reaches it.
+        QVERIFY(!read.enforced.contains(QStringLiteral("skipUpdateCheck")));
     }
 
-    void testSkipUpdateCheckHonorsServerEnforcedOverUser()
+    void testServerCannotEnforceSkipUpdateCheckOverUser()
     {
         QTemporaryDir dir;
         ConfigFile config;
         config.setConfDir(dir.path());
 
         config.setSkipUpdateCheck(false, QString());
-        QCOMPARE(config.skipUpdateCheck(), false);
 
         ServerManagedSettings settings;
         settings.enforced = QVariantMap{{QStringLiteral("skipUpdateCheck"), true}};
         config.setServerManagedSettings(settings);
 
-        // Server enforced overrides the user value.
-        QCOMPARE(config.skipUpdateCheck(), true);
+        // Only device policy may enforce an update key, so the user value stands.
+        QCOMPARE(config.skipUpdateCheck(), false);
+        QVERIFY(!config.isEnforced(QStringLiteral("skipUpdateCheck")));
     }
 
     void testResolverRefreshesOnServerSettingsChange()
@@ -535,14 +531,14 @@ private Q_SLOTS:
         config.setConfDir(dir.path());
 
         ServerManagedSettings serverSettings;
-        serverSettings.enforced = QVariantMap{{QStringLiteral("skipUpdateCheck"), true}};
+        serverSettings.enforced = QVariantMap{{QStringLiteral("confirmExternalStorage"), false}};
         config.setServerManagedSettings(serverSettings);
 
         // A user cannot override an enforced value.
-        QCOMPARE(config.setConfig(QStringLiteral("skipUpdateCheck"), false), false);
-        QCOMPARE(config.getConfig<bool>(QStringLiteral("skipUpdateCheck")), true);
-        QVERIFY(config.isEnforced(QStringLiteral("skipUpdateCheck")));
-        QCOMPARE(config.sourceOf(QStringLiteral("skipUpdateCheck")), SettingSourceType::ServerEnforced);
+        QCOMPARE(config.setConfig(QStringLiteral("confirmExternalStorage"), true), false);
+        QCOMPARE(config.getConfig<bool>(QStringLiteral("confirmExternalStorage")), false);
+        QVERIFY(config.isEnforced(QStringLiteral("confirmExternalStorage")));
+        QCOMPARE(config.sourceOf(QStringLiteral("confirmExternalStorage")), SettingSourceType::ServerEnforced);
     }
 
     void testOutOfRangeProxyPolicyValueFallsBackToUserValue_data()
@@ -618,9 +614,6 @@ private Q_SLOTS:
                                                           QVariantMap{{u"proxyHost"_s, u"proxy.example.com"_s}, {u"proxyPort"_s, 70000}}));
             return sources;
         });
-        const auto restorePlatformSources = qScopeGuard([] {
-            ConfigFile::setDeviceSourcesFactory({});
-        });
 
         const auto managedProxy = config.managedProxySettings();
 
@@ -632,6 +625,41 @@ private Q_SLOTS:
     }
 
     // A server default must not reach the application proxy, which every account shares.
+    // A value written by an earlier version at the top level must not outrank a later server default.
+    void testSetConfigClearsTheLegacyTopLevelValue()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        {
+            QSettings legacy(config.configFile(), QSettings::IniFormat);
+            legacy.setValue(u"confirmExternalStorage"_s, true);
+            legacy.sync();
+        }
+        QCOMPARE(config.sourceOf(u"confirmExternalStorage"_s), SettingSourceType::UserConfig);
+
+        QVERIFY(config.setConfig(u"confirmExternalStorage"_s, false));
+
+        QSettings written(config.configFile(), QSettings::IniFormat);
+        QVERIFY(!written.contains(u"confirmExternalStorage"_s));
+        QCOMPARE(config.getConfig<bool>(u"confirmExternalStorage"_s), false);
+
+        // Clearing the choice of the user leaves nothing behind to shadow a server default.
+        {
+            QSettings groupValue(config.configFile(), QSettings::IniFormat);
+            groupValue.beginGroup(config.defaultConnectionGroupName());
+            groupValue.remove(u"confirmExternalStorage"_s);
+            groupValue.sync();
+        }
+        ServerManagedSettings settings;
+        settings.defaults = QVariantMap{{u"confirmExternalStorage"_s, true}};
+        config.setServerManagedSettings(settings);
+
+        QCOMPARE(config.sourceOf(u"confirmExternalStorage"_s), SettingSourceType::ServerDefault);
+        QCOMPARE(config.getConfig<bool>(u"confirmExternalStorage"_s), true);
+    }
+
     void testServerProxyDefaultAppliesToItsAccountButNotTheApplicationProxy()
     {
         QTemporaryDir dir;
@@ -668,9 +696,6 @@ private Q_SLOTS:
                                                           QVariantMap{{u"virtualFilesMode"_s, u"off"_s}}));
             return sources;
         });
-        const auto restorePlatformSources = qScopeGuard([] {
-            ConfigFile::setDeviceSourcesFactory({});
-        });
 
         QVERIFY(!config.macFileProviderModeEnabled());
     }
@@ -689,9 +714,6 @@ private Q_SLOTS:
                                                           200,
                                                           QVariantMap{{u"virtualFilesMode"_s, u"wincfapi"_s}}));
             return sources;
-        });
-        const auto restorePlatformSources = qScopeGuard([] {
-            ConfigFile::setDeviceSourcesFactory({});
         });
 
         QVERIFY(config.macFileProviderModeEnabled());

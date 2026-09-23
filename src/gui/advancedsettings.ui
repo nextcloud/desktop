@@ -262,6 +262,13 @@
          </spacer>
         </item>
         <item>
+         <widget class="QLabel" name="externalStorageEnforcedLabel">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="OCC::SettingsSwitch" name="newExternalStorage"/>
         </item>
        </layout>

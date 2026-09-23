@@ -35,17 +35,17 @@ bool isValidProxyPort(const QVariant &value)
 const QList<SettingDefinition> &all()
 {
     static const QList<SettingDefinition> specs = {
-        {QStringLiteral("skipUpdateCheck"), false, true, SettingScope::User},
-        {QStringLiteral("autoUpdateCheck"), true, true, SettingScope::User},
-        {QStringLiteral("confirmExternalStorage"), true, true, SettingScope::User},
-        {QStringLiteral("useNewBigFolderSizeLimit"), true, true, SettingScope::User},
-        {QStringLiteral("notifyExistingFoldersOverLimit"), false, true, SettingScope::User},
-        {QStringLiteral("virtualFilesMode"), QStringLiteral("off"), true, SettingScope::User},
-        {QStringLiteral("newBigFolderSizeLimit"), 0, true, SettingScope::User},
-        {QStringLiteral("stopSyncingExistingFoldersOverLimit"), false, true, SettingScope::User},
-        {QStringLiteral("proxyType"), 0, true, SettingScope::User, isValidProxyType},
-        {QStringLiteral("proxyHost"), QString(), true, SettingScope::User},
-        {QStringLiteral("proxyPort"), 0, true, SettingScope::User, isValidProxyPort},
+        {QStringLiteral("skipUpdateCheck"), false, true},
+        {QStringLiteral("autoUpdateCheck"), true, true},
+        {QStringLiteral("confirmExternalStorage"), true, true},
+        {QStringLiteral("useNewBigFolderSizeLimit"), true, true},
+        {QStringLiteral("notifyExistingFoldersOverLimit"), false, true},
+        {QStringLiteral("virtualFilesMode"), QStringLiteral("off"), true},
+        {QStringLiteral("newBigFolderSizeLimit"), 0, true},
+        {QStringLiteral("stopSyncingExistingFoldersOverLimit"), false, true},
+        {QStringLiteral("proxyType"), 0, true, isValidProxyType},
+        {QStringLiteral("proxyHost"), QString(), true},
+        {QStringLiteral("proxyPort"), 0, true, isValidProxyPort},
     };
     return specs;
 }

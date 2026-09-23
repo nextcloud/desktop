@@ -7,6 +7,7 @@
 
 #include "common/vfs.h"
 #include "settings/managedsettingsschema.h"
+#include "settings/settingpriorities.h"
 
 #include <QHash>
 
@@ -118,10 +119,16 @@ std::vector<std::unique_ptr<SettingSource>> buildServerSources(const ServerManag
 {
     std::vector<std::unique_ptr<SettingSource>> sources;
     if (!sanitized.enforced.isEmpty()) {
-        sources.push_back(std::make_unique<ServerSettingsSource>(sanitized.enforced, SettingSourceType::ServerEnforced, EnforcementState::Enforced, 100));
+        sources.push_back(std::make_unique<ServerSettingsSource>(sanitized.enforced,
+                                                                 SettingSourceType::ServerEnforced,
+                                                                 EnforcementState::Enforced,
+                                                                 SettingPriority::serverEnforced));
     }
     if (!sanitized.defaults.isEmpty()) {
-        sources.push_back(std::make_unique<ServerSettingsSource>(sanitized.defaults, SettingSourceType::ServerDefault, EnforcementState::NotEnforced, 30));
+        sources.push_back(std::make_unique<ServerSettingsSource>(sanitized.defaults,
+                                                                 SettingSourceType::ServerDefault,
+                                                                 EnforcementState::NotEnforced,
+                                                                 SettingPriority::serverDefault));
     }
     return sources;
 }

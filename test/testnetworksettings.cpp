@@ -12,6 +12,7 @@
 #include <QWidget>
 
 #include "account.h"
+#include "configfile.h"
 #include "foldermantestutils.h"
 #include "logger.h"
 #include "managedsettingstestutils.h"
@@ -36,6 +37,21 @@ private Q_SLOTS:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    // Keeps tests off the device policy of the machine running them.
+    void init()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
+    }
+
+    void cleanup()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
     }
 
     void test_whenAccountIsLoggedOut_doesNotCrash()

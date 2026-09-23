@@ -259,39 +259,65 @@ bool AccountManager::restoreFromLegacySettings()
     }
 
     ConfigFile configFile;
+    // Only keys the legacy config actually holds are migrated. Writing the current value back
+    // would store a policy default as the choice of the user and outrank later server defaults.
+    const auto migrate = [&settings](const char *key, const auto &apply) {
+        if (settings->contains(QLatin1String(key))) {
+            apply(settings->value(QLatin1String(key)));
+        }
+    };
     // General settings
-    configFile.setVfsEnabled(settings->value(ConfigFile::isVfsEnabledC, configFile.isVfsEnabled()).toBool());
-    configFile.setLaunchOnSystemStartup(settings->value(ConfigFile::launchOnSystemStartupC,
-                                                        configFile.launchOnSystemStartup()).toBool());
-    const auto useMonoIcons = settings->value(ConfigFile::monoIconsC, configFile.monoIcons()).toBool();
-    Theme::instance()->setSystrayUseMonoIcons(useMonoIcons);
-    configFile.setMonoIcons(useMonoIcons);
-    configFile.setOptionalServerNotifications(settings->value(ConfigFile::optionalServerNotificationsC,
-                                                              configFile.optionalServerNotifications()).toBool());
-    configFile.setPromptDeleteFiles(settings->value(ConfigFile::promptDeleteC,
-                                                    configFile.promptDeleteFiles()).toBool());
-    configFile.setShowCallNotifications(settings->value(ConfigFile::showCallNotificationsC,
-                                                        configFile.showCallNotifications()).toBool());
-    configFile.setShowChatNotifications(settings->value(ConfigFile::showChatNotificationsC,
-                                                        configFile.showChatNotifications()).toBool());
-    configFile.setShowInExplorerNavigationPane(settings->value(ConfigFile::showInExplorerNavigationPaneC,
-                                                               configFile.showInExplorerNavigationPane()).toBool());
+    migrate(ConfigFile::isVfsEnabledC, [&configFile](const QVariant &value) {
+        configFile.setVfsEnabled(value.toBool());
+    });
+    migrate(ConfigFile::launchOnSystemStartupC, [&configFile](const QVariant &value) {
+        configFile.setLaunchOnSystemStartup(value.toBool());
+    });
+    migrate(ConfigFile::monoIconsC, [&configFile](const QVariant &value) {
+        Theme::instance()->setSystrayUseMonoIcons(value.toBool());
+        configFile.setMonoIcons(value.toBool());
+    });
+    migrate(ConfigFile::optionalServerNotificationsC, [&configFile](const QVariant &value) {
+        configFile.setOptionalServerNotifications(value.toBool());
+    });
+    migrate(ConfigFile::promptDeleteC, [&configFile](const QVariant &value) {
+        configFile.setPromptDeleteFiles(value.toBool());
+    });
+    migrate(ConfigFile::showCallNotificationsC, [&configFile](const QVariant &value) {
+        configFile.setShowCallNotifications(value.toBool());
+    });
+    migrate(ConfigFile::showChatNotificationsC, [&configFile](const QVariant &value) {
+        configFile.setShowChatNotifications(value.toBool());
+    });
+    migrate(ConfigFile::showInExplorerNavigationPaneC, [&configFile](const QVariant &value) {
+        configFile.setShowInExplorerNavigationPane(value.toBool());
+    });
     // Advanced
-    const auto newBigFolderSizeLimit = settings->value(ConfigFile::newBigFolderSizeLimitC, configFile.newBigFolderSizeLimit().second).toLongLong();
-    const auto useNewBigFolderSizeLimit = settings->value(ConfigFile::useNewBigFolderSizeLimitC, configFile.useNewBigFolderSizeLimit()).toBool();
-    configFile.setNewBigFolderSizeLimit(useNewBigFolderSizeLimit, newBigFolderSizeLimit);
-    configFile.setNotifyExistingFoldersOverLimit(settings->value(ConfigFile::notifyExistingFoldersOverLimitC,
-                                                                 configFile.notifyExistingFoldersOverLimit()).toBool());
-    configFile.setStopSyncingExistingFoldersOverLimit(settings->value(ConfigFile::stopSyncingExistingFoldersOverLimitC,
-                                                                      configFile.stopSyncingExistingFoldersOverLimit()).toBool());
-    configFile.setConfirmExternalStorage(settings->value(ConfigFile::confirmExternalStorageC, configFile.confirmExternalStorage()).toBool());
-    configFile.setMoveToTrash(settings->value(ConfigFile::moveToTrashC, configFile.moveToTrash()).toBool());
+    if (settings->contains(QLatin1String(ConfigFile::newBigFolderSizeLimitC)) || settings->contains(QLatin1String(ConfigFile::useNewBigFolderSizeLimitC))) {
+        const auto sizeLimit = settings->value(ConfigFile::newBigFolderSizeLimitC, configFile.newBigFolderSizeLimit().second).toLongLong();
+        const auto useSizeLimit = settings->value(ConfigFile::useNewBigFolderSizeLimitC, configFile.useNewBigFolderSizeLimit()).toBool();
+        configFile.setNewBigFolderSizeLimit(useSizeLimit, sizeLimit);
+    }
+    migrate(ConfigFile::notifyExistingFoldersOverLimitC, [&configFile](const QVariant &value) {
+        configFile.setNotifyExistingFoldersOverLimit(value.toBool());
+    });
+    migrate(ConfigFile::stopSyncingExistingFoldersOverLimitC, [&configFile](const QVariant &value) {
+        configFile.setStopSyncingExistingFoldersOverLimit(value.toBool());
+    });
+    migrate(ConfigFile::confirmExternalStorageC, [&configFile](const QVariant &value) {
+        configFile.setConfirmExternalStorage(value.toBool());
+    });
+    migrate(ConfigFile::moveToTrashC, [&configFile](const QVariant &value) {
+        configFile.setMoveToTrash(value.toBool());
+    });
     // Info
     configFile.setUpdateChannel(settings->value(ConfigFile::updateChannelC, configFile.currentUpdateChannel()).toString());
     auto previousAppName = settings->contains(ConfigFile::legacyAppName) ? ConfigFile::legacyAppName
                                                                          : ConfigFile::unbrandedAppName;
     const auto updaterGroupName = QString("%1/%2").arg(previousAppName, ConfigFile::autoUpdateCheckC);
-    configFile.setAutoUpdateCheck(settings->value(updaterGroupName, configFile.autoUpdateCheck()).toBool(), {});
+    if (settings->contains(updaterGroupName)) {
+        configFile.setAutoUpdateCheck(settings->value(updaterGroupName).toBool(), {});
+    }
 
     // Global Proxy and Network
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
@@ -824,11 +850,12 @@ void AccountManager::updateServerManagedSettings()
     // conflict.
     ServerManagedSettings merged;
     for (const auto &account : std::as_const(_accounts)) {
-        if (!account->account()->serverHasValidSubscription()) {
-            continue;
-        }
+        // Loaded capabilities count even without a subscription, so dropping the last subscribed account clears the cache.
         if (account->account()->capabilities().isValid()) {
             _serverCapabilitiesEverLoaded = true;
+        }
+        if (!account->account()->serverHasValidSubscription()) {
+            continue;
         }
         const auto accountSettings = account->account()->serverManagedSettings();
         merged.schemaVersion = qMax(merged.schemaVersion, accountSettings.schemaVersion);

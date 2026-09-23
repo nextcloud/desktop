@@ -9,7 +9,8 @@ enforced policy, user config, server defaults, device defaults and the builtin
 default.
 
 Auto update, proxy, folder limit and virtual files keys now resolve through
-`ConfigFile::getConfig`. It is the only public enforcement aware function.
+`ConfigFile::getConfig`. It is the enforcement aware read; `setConfig`, `isEnforced`
+and `sourceOf` are the other public functions that know about enforcement.
 
 ## Principle
 `ConfigFile::getConfig` walks the full hierarchy and returns the effective value and 
@@ -154,8 +155,58 @@ own value for the rest.
 account or the legacy `Proxy/type` storage, so the two never collide. The server can 
 only default the proxy, never enforce it, so an enforced proxy always comes from
 device policy.
-- A managed proxy applies at account load, so a *policy change takes effect on reconnect
-or restart* - there is no live reapply on capability refresh.
+- A managed proxy applies when the account is created, loaded and whenever its server
+settings change, so a *policy change takes effect on reconnect*.
+- Server values are resolved per account, so a server proxy default never reaches the
+shared application proxy or accounts on another server.
+
+## Device policy on macOS
+The domain is the application bundle id, upstream `com.nextcloud.desktopclient`. Only
+*forced* values count: the client reads them through `CFPreferencesAppValueIsForced`, which
+is what a configuration profile sets (`Forced` -> `mcx_preference_settings`). A plain
+`defaults write` to `/Library/Preferences/<domain>.plist` is a device default instead, so
+the user can still change it.
+
+Keys are top level in the payload, no group. Value types follow the schema: booleans are
+`<true/>` or `<false/>`, `newBigFolderSizeLimit` and `proxyPort` are integers, and
+`proxyType` is a `QNetworkProxy::ProxyType`: 0 system, 1 SOCKS5, 2 none, 3 HTTP.
+
+A configuration profile payload enforcing virtual files off and an HTTP proxy:
+
+    <key>PayloadType</key>
+    <string>com.apple.ManagedClient.preferences</string>
+    <key>PayloadContent</key>
+    <dict>
+      <key>com.nextcloud.desktopclient</key>
+      <dict>
+        <key>Forced</key>
+        <array>
+          <dict>
+            <key>mcx_preference_settings</key>
+            <dict>
+              <key>virtualFilesMode</key>
+              <string>off</string>
+              <key>autoUpdateCheck</key>
+              <false/>
+              <key>newBigFolderSizeLimit</key>
+              <integer>500</integer>
+              <key>proxyType</key>
+              <integer>3</integer>
+              <key>proxyHost</key>
+              <string>proxy.example.com</string>
+              <key>proxyPort</key>
+              <integer>8080</integer>
+            </dict>
+          </dict>
+        </array>
+      </dict>
+    </dict>
+
+On a File Provider build an enforced `virtualFilesMode` of `off` also turns off the app
+level File Provider mode, so no domain is created behind a classic sync setup.
+
+`autoUpdateCheck` only controls the automatic check; the user can still press Check Now.
+`skipUpdateCheck` is what disables the updater and hides its section.
 
 ## Nextcloud instances without an enterprise subscription
 Server managed settings are an enterprise feature. *The support app returns no
@@ -173,13 +224,19 @@ still enforces settings, since that is local OS policy and independent of the su
 If a user loses the subscription, the next refresh drops the cached server settings.
 
 ## Testing
-`test/testmanagedsettings.cpp` covers the resolver priority order, `ConfigFile::getConfig` and
-`ConfigFile::setConfig`, sanitize including the `virtualFilesMode` validation, the schema, 
-the proxy per field merge and the global proxy honoring a managed default, and 
-`virtualFilesMode` default versus enforced. 
+`test/testmanagedsettings.cpp` covers the resolver priority order, `ConfigFile::getConfig`
+and `ConfigFile::setConfig`, sanitize including the `virtualFilesMode` validation, the
+schema, the proxy per field merge, the `Account::setProxySettings` write guard, the proxy
+chosen before connecting, out of range device proxy values, and `virtualFilesMode` default
+versus enforced including its effect on the macOS File Provider.
 
-The `Account::setProxySettings` write guard is not covered there because `Account::create` 
-self references and trips the leak checker, it is owed in a non ASAN test.
+`test/testaccountmanager.cpp` covers applying the policy when an account is added, saving
+the proxy of the account rather than the policy value, and dropping cached enforced values
+once no account is subscribed. `test/testnetworksettings.cpp` covers disabling only the
+enforced proxy fields.
+
+Tests that need device policy install fake sources with `ConfigFile::setDeviceSourcesFactory`,
+so they never read the managed preferences of the machine they run on.
 
 ## Resolution
 How a managed setting is resolved - e.g. `virtualFilesMode`, which is server

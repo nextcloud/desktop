@@ -32,19 +32,11 @@ enum class EnforcementState {
     Enforced,
 };
 
-enum class SettingScope {
-    Device,
-    User,
-    Account,
-    Folder,
-};
-
 struct ResolvedSetting {
     QString key;
     QVariant value;
     SettingSourceType source = SettingSourceType::BuiltinDefault;
     EnforcementState enforcement = EnforcementState::NotEnforced;
-    bool present = false; // false when only the builtin default applied
 
     [[nodiscard]] bool isEnforced() const { return enforcement == EnforcementState::Enforced; }
 };
@@ -53,7 +45,6 @@ struct SettingDefinition {
     QString key;
     QVariant builtinDefault;
     bool enforceable = false;
-    SettingScope scope = SettingScope::User;
     // A source whose value fails this check is skipped.
     bool (*isValidValue)(const QVariant &value) = nullptr;
 };
@@ -85,7 +76,6 @@ public:
     [[nodiscard]] ResolvedSetting resolve(const SettingDefinition &spec, const QString &group = {}) const;
 
     // Resolves every spec, for a diagnostics export of effective values and sources.
-    [[nodiscard]] QList<ResolvedSetting> resolveAll(const QList<SettingDefinition> &specs, const QString &group = {}) const;
 
 private:
     std::vector<std::unique_ptr<SettingSource>> _sources;

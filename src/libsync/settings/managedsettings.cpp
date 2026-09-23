@@ -43,20 +43,10 @@ ResolvedSetting ManagedSettings::resolve(const SettingDefinition &definition, co
     }
 
     if (!settingSource) {
-        return {definition.key, definition.builtinDefault, SettingSourceType::BuiltinDefault, EnforcementState::NotEnforced, false};
+        return {definition.key, definition.builtinDefault, SettingSourceType::BuiltinDefault, EnforcementState::NotEnforced};
     }
 
-    return {definition.key, settingValue, settingSource->type(), settingSource->enforcement(), true};
-}
-
-QList<ResolvedSetting> ManagedSettings::resolveAll(const QList<SettingDefinition> &definitionsList, const QString &group) const
-{
-    QList<ResolvedSetting> results;
-    results.reserve(definitionsList.size());
-    for (const auto &definition : definitionsList) {
-        results.append(resolve(definition, group));
-    }
-    return results;
+    return {definition.key, settingValue, settingSource->type(), settingSource->enforcement()};
 }
 
 } // namespace OCC

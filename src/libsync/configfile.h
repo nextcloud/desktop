@@ -263,9 +263,7 @@ public:
     [[nodiscard]] ServerManagedSettings serverManagedSettings() const;
     void setServerManagedSettings(const ServerManagedSettings &settings);
 
-    // The single enforcement aware read path: resolves name across device enforced
-    // policy, server enforced policy, user config and defaults, returning the value
-    // plus its source and enforcement.
+    // Enforcement aware read: resolves across device, server, user and defaults, with source and enforcement.
     [[nodiscard]] ResolvedSetting getConfig(const QString &name, const QVariant &builtinDefault = {}, const QString &connectionGroupName = {}) const;
     // Typed read; the value is converted to the schema type, T is the caller's type.
     template<typename T>
@@ -277,7 +275,8 @@ public:
     bool setConfig(const QString &name, const QVariant &value, const QString &connectionGroupName = {});
     [[nodiscard]] bool isEnforced(const QString &name, const QString &connectionGroupName = {}) const;
     [[nodiscard]] SettingSourceType sourceOf(const QString &name, const QString &connectionGroupName = {}) const;
-    [[nodiscard]] QString sourceLabel(const QString &connectionGroupName) const;
+    // The label shown next to an enforced control, chosen by where the value came from.
+    [[nodiscard]] QString sourceLabel(const QString &name) const;
 
     using DeviceSourcesFactory = std::function<std::vector<std::unique_ptr<SettingSource>>()>;
     // For tests; an empty factory restores the platform sources.
@@ -349,7 +348,6 @@ public:
     static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
 
 protected:
-    [[nodiscard]] QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;
     void storeData(const QString &group, const QString &key, const QVariant &value);
     [[nodiscard]] QVariant retrieveData(const QString &group, const QString &key) const;
     void removeData(const QString &group, const QString &key);

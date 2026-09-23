@@ -18,8 +18,6 @@
 
 namespace OCC {
 
-// Server delivery flow: see README.md
-
 // Managed settings delivered by the server through the support.desktopClient
 // capability. defaults are suggestions; enforced values cannot be changed.
 struct ServerManagedSettings {

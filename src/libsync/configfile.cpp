@@ -17,6 +17,7 @@
 #include "settings/managedsettingsschema.h"
 #include "settings/migration.h"
 #include "settings/servermanagedsettings.h"
+#include "settings/settingpriorities.h"
 #include "settings/settingsources.h"
 #include "theme.h"
 #include "updatechannel.h"
@@ -358,26 +359,6 @@ void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 #endif
 }
 
-QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &defaultValue) const
-{
-    if (Utility::isWindows()) {
-        const auto appName = Migration::isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
-        // check for policies first and return immediately if a value is found.
-        QSettings userPolicy(QString::fromLatin1(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)").arg(APPLICATION_VENDOR, appName),
-            QSettings::NativeFormat);
-        if (userPolicy.contains(setting)) {
-            return userPolicy.value(setting);
-        }
-
-        QSettings machinePolicy(QString::fromLatin1(R"(HKEY_LOCAL_MACHINE\Software\Policies\%1\%2)").arg(APPLICATION_VENDOR, appName),
-            QSettings::NativeFormat);
-        if (machinePolicy.contains(setting)) {
-            return machinePolicy.value(setting);
-        }
-    }
-    return defaultValue;
-}
-
 QString ConfigFile::configPath() const
 {
     if (_confDir.isEmpty()) {
@@ -712,7 +693,7 @@ ResolvedSetting ConfigFile::resolveSetting(const QString &name,
                                            const ServerManagedSettings &serverSettings) const
 {
     const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
-    auto spec = ManagedSettingsSchema::find(name).value_or(SettingDefinition{name, builtinDefault, false, SettingScope::User});
+    auto spec = ManagedSettingsSchema::find(name).value_or(SettingDefinition{name, builtinDefault, false});
     if (builtinDefault.isValid()) {
         spec.builtinDefault = builtinDefault;
     }
@@ -721,7 +702,7 @@ ResolvedSetting ConfigFile::resolveSetting(const QString &name,
         resolver.addSource(std::move(deviceSource));
     }
     resolver.addSource(std::make_unique<UserConfigSource>(configFile(), groupName));
-    resolver.addSource(std::make_unique<UserConfigSource>(configFile(), QString(), 49));
+    resolver.addSource(std::make_unique<UserConfigSource>(configFile(), QString(), SettingPriority::legacyUserConfig));
     for (auto &serverSource : buildServerSources(serverSettings)) {
         resolver.addSource(std::move(serverSource));
     }
@@ -736,6 +717,8 @@ bool ConfigFile::setConfig(const QString &name, const QVariant &value, const QSt
     }
 
     QSettings settings(configFile(), QSettings::IniFormat);
+    // Drop the copy earlier versions kept at the top level, so it cannot shadow a server default.
+    settings.remove(name);
     if (!groupName.isEmpty()) {
         settings.beginGroup(groupName);
     }
@@ -756,15 +739,10 @@ SettingSourceType ConfigFile::sourceOf(const QString &name, const QString &conne
 
 QString ConfigFile::sourceLabel(const QString &name) const
 {
-    const auto source = sourceOf(name);
-    switch (source) {
-    case SettingSourceType::ServerEnforced:
+    if (sourceOf(name) == SettingSourceType::ServerEnforced) {
         return QCoreApplication::translate("ConfigFile", "Managed by your organization", "User label when setting is enforced and cannot be changed.");
-    default:
-        return QCoreApplication::translate("ConfigFile", "Managed by your system administrator", "User label when setting is enforced and cannot be changed.");
     }
-
-    return {};
+    return QCoreApplication::translate("ConfigFile", "Managed by your system administrator", "User label when setting is enforced and cannot be changed.");
 }
 
 void ConfigFile::setDeviceSourcesFactory(DeviceSourcesFactory factory)
@@ -1432,7 +1410,8 @@ ServerManagedSettings ConfigFile::serverManagedSettings() const
 
 void ConfigFile::setServerManagedSettings(const ServerManagedSettings &settings)
 {
-    ManagedConfig::instance().setServerSettings(configFile(), settings);
+    // Sanitize on the way in so the cache can never hold a key the server may not set.
+    ManagedConfig::instance().setServerSettings(configFile(), sanitizeServerManagedSettings(settings));
 }
 
 QString ConfigFile::language() const

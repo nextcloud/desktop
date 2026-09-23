@@ -4,6 +4,7 @@
  */
 
 #include "settings/settingsources.h"
+#include "settings/settingpriorities.h"
 
 #include "config.h"
 #include "configfile.h"
@@ -124,35 +125,34 @@ std::vector<std::unique_ptr<SettingSource>> buildDeviceSources()
         std::make_unique<NativeSettingsSource>(QStringLiteral(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)").arg(QString::fromLatin1(APPLICATION_VENDOR), app),
                                                SettingSourceType::PlatformPolicy,
                                                EnforcementState::Enforced,
-                                               210));
+                                               SettingPriority::userPolicy));
     sources.push_back(std::make_unique<NativeSettingsSource>(
         QStringLiteral(R"(HKEY_LOCAL_MACHINE\Software\Policies\%1\%2)").arg(QString::fromLatin1(APPLICATION_VENDOR), app),
         SettingSourceType::PlatformPolicy,
         EnforcementState::Enforced,
-        200));
+        SettingPriority::machinePolicy));
     sources.push_back(
         std::make_unique<NativeSettingsSource>(QStringLiteral(R"(HKEY_LOCAL_MACHINE\Software\%1\%2)").arg(QString::fromLatin1(APPLICATION_VENDOR), app),
                                                SettingSourceType::PlatformDefault,
                                                EnforcementState::NotEnforced,
-                                               20));
+                                               SettingPriority::deviceDefault));
 #elif defined(Q_OS_MACOS)
     // A key counts as enforced only when the MDM profile forces it, resolved through
     // CFPreferences so both host and per user managed preferences are honored.
-    sources.push_back(std::make_unique<MacForcedPreferenceSource>(
-        QStringLiteral(APPLICATION_REV_DOMAIN), 200));
+    sources.push_back(std::make_unique<MacForcedPreferenceSource>(QStringLiteral(APPLICATION_REV_DOMAIN), SettingPriority::machinePolicy));
     sources.push_back(std::make_unique<NativeSettingsSource>(QStringLiteral("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"),
                                                              SettingSourceType::PlatformDefault,
                                                              EnforcementState::NotEnforced,
-                                                             20));
+                                                             SettingPriority::deviceDefault));
 #else
     sources.push_back(std::make_unique<NativeSettingsSource>(QStringLiteral(SYSCONFDIR "/%1/policies.conf").arg(app),
                                                              SettingSourceType::PlatformPolicy,
                                                              EnforcementState::Enforced,
-                                                             200));
+                                                             SettingPriority::machinePolicy));
     sources.push_back(std::make_unique<NativeSettingsSource>(QStringLiteral(SYSCONFDIR "/%1/%1.conf").arg(app),
                                                              SettingSourceType::PlatformDefault,
                                                              EnforcementState::NotEnforced,
-                                                             20));
+                                                             SettingPriority::deviceDefault));
 #endif
     return sources;
 }
