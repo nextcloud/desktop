@@ -31,6 +31,17 @@ static os_log_t getFinderSyncLogger(void) {
 
 @implementation FinderSync
 
+- (NSString *)socketPath
+{
+    NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
+    NSString *groupIdentifier = [extBundle objectForInfoDictionaryKey:@"NCApplicationGroupIdentifier"];
+    if (!groupIdentifier.length) {
+        return nil;
+    }
+    NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupIdentifier];
+    return [container URLByAppendingPathComponent:@"s" isDirectory:NO].path;
+}
+
 - (instancetype)init
 {
 	self = [super init];
@@ -40,8 +51,6 @@ static os_log_t getFinderSyncLogger(void) {
         os_log_debug(_log, "Initializing...");
         FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
         NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
-        // This was added to the bundle's Info.plist to get it from the build system
-        NSString *groupIdentifier = [extBundle objectForInfoDictionaryKey:@"NCApplicationGroupIdentifier"];
 
         NSImage *ok = [extBundle imageForResource:@"ok.icns"];
         NSImage *ok_swm = [extBundle imageForResource:@"ok_swm.icns"];
@@ -60,31 +69,27 @@ static os_log_t getFinderSyncLogger(void) {
         [syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
         [syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
 
-        NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupIdentifier];
-        NSURL *socketPath = [container URLByAppendingPathComponent:@"s" isDirectory:NO];
-
-        os_log_debug(_log, "Socket path: %{public}@", socketPath.path);
-
-        if (socketPath.path && [[NSFileManager defaultManager] fileExistsAtPath:socketPath.path]) {
-            os_log_debug(_log, "Socket path determined and exists: %{public}@", socketPath.path);
-            self.lineProcessor = [[FinderSyncSocketLineProcessor alloc] initWithDelegate:self];
-            self.localSocketClient = [[LocalSocketClient alloc] initWithSocketPath:socketPath.path
-                                                                     lineProcessor:self.lineProcessor];
-            [self.localSocketClient start];
-            [self.localSocketClient askOnSocket:@"" query:@"GET_STRINGS"];
-        } else {
-            if (socketPath.path) {
-                os_log_error(_log, "Socket path determined but file does not exist: %{public}@", socketPath.path);
-            } else {
-                os_log_error(_log, "No socket path available. Not initiating local socket client.");
-            }
-
-            self.localSocketClient = nil;
-        }
-
         _registeredDirectories = NSMutableSet.set;
         _strings = NSMutableDictionary.dictionary;
         _menuIsComplete = [[NSCondition alloc] init];
+
+        NSString *socketPath = [self socketPath];
+
+        os_log_debug(_log, "Socket path: %{public}@", socketPath);
+
+        if (socketPath) {
+            self.lineProcessor = [[FinderSyncSocketLineProcessor alloc] initWithDelegate:self];
+            self.localSocketClient = [[LocalSocketClient alloc] initWithSocketPath:socketPath
+                                                                     lineProcessor:self.lineProcessor];
+            __weak typeof(self) weakSelf = self;
+            self.localSocketClient.connectionEstablishedHandler = ^{
+                __strong typeof(self) self = weakSelf;
+                [self.localSocketClient askOnSocket:@"" query:@"GET_STRINGS"];
+            };
+            [self.localSocketClient start];
+        } else {
+            os_log_error(_log, "No socket path available. Not initiating local socket client.");
+        }
         os_log_debug(_log, "Initialization completed.");
     }
 
@@ -287,5 +292,4 @@ static os_log_t getFinderSyncLogger(void) {
 }
 
 @end
-
 
