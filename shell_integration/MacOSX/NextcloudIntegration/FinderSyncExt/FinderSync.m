@@ -73,21 +73,14 @@ static os_log_t getFinderSyncLogger(void) {
 
         os_log_debug(_log, "Socket path: %{public}@", socketPath);
 
-        if (socketPath && [[NSFileManager defaultManager] fileExistsAtPath:socketPath]) {
-            os_log_debug(_log, "Socket path determined and exists: %{public}@", socketPath);
+        if (socketPath) {
             self.lineProcessor = [[FinderSyncSocketLineProcessor alloc] initWithDelegate:self];
             self.localSocketClient = [[LocalSocketClient alloc] initWithSocketPath:socketPath
                                                                      lineProcessor:self.lineProcessor];
             [self.localSocketClient start];
             [self.localSocketClient askOnSocket:@"" query:@"GET_STRINGS"];
         } else {
-            if (socketPath.path) {
-                os_log_error(_log, "Socket path determined but file does not exist: %{public}@", socketPath.path);
-            } else {
-                os_log_error(_log, "No socket path available. Not initiating local socket client.");
-            }
-
-            self.localSocketClient = nil;
+            os_log_error(_log, "No socket path available. Not initiating local socket client.");
         }
 
         _registeredDirectories = NSMutableSet.set;
