@@ -921,7 +921,6 @@ private Q_SLOTS:
         // A server cannot enforce updates or proxy; only device policy can.
         QVERIFY(!clean.enforced.contains(QStringLiteral("proxyHost")));
         QVERIFY(clean.enforced.contains(QStringLiteral("virtualFilesMode")));
-        // skipUpdateCheck has no user override, so the server may not set it at all.
         QVERIFY(!clean.enforced.contains(QStringLiteral("skipUpdateCheck")));
         QVERIFY(!clean.defaults.contains(QStringLiteral("skipUpdateCheck")));
     }

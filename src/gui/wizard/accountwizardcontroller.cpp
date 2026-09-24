@@ -1162,6 +1162,11 @@ void AccountWizardController::completeAuthentication()
 
 void AccountWizardController::chooseSyncModeAfterCapabilities()
 {
+    // Capabilities may now forbid virtual files.
+    if (_syncMode == VirtualFiles && !canUseVirtualFiles()) {
+        setSyncMode(SyncEverything);
+    }
+
 #ifdef BUILD_FILE_PROVIDER_MODULE
     setNeedsSyncOptions(!canUseVirtualFiles());
 #else
