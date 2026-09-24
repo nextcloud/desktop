@@ -1966,72 +1966,72 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="201"/>
+        <location filename="../src/gui/application.cpp" line="205"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <extracomment>%1 is either &quot;newer&quot; or &quot;older&quot;. %2 is either &quot;ignoring&quot; or &quot;deleting&quot;. %3 is a list of configuration backup file paths.</extracomment>
         <translation>설정의 일부가 %1 버전의 클라이언트에서 설정되었고 현재 버전에서 사용할 수 없는 기능을 사용합니다.&lt;br&gt;&lt;br&gt;계속하면 &lt;b&gt;이 설정들이 %2됩니다.&lt;/b&gt;&lt;br&gt;&lt;br&gt;현재 설정을 &lt;i&gt;%3&lt;/i&gt;에 백업했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="207"/>
+        <location filename="../src/gui/application.cpp" line="211"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>이후</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="207"/>
+        <location filename="../src/gui/application.cpp" line="211"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>이전</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="208"/>
+        <location filename="../src/gui/application.cpp" line="212"/>
         <source>ignoring</source>
         <translation>무시</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="208"/>
+        <location filename="../src/gui/application.cpp" line="212"/>
         <source>deleting</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="210"/>
+        <location filename="../src/gui/application.cpp" line="214"/>
         <source>Quit</source>
         <translation>끝내기</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="211"/>
+        <location filename="../src/gui/application.cpp" line="215"/>
         <source>Continue</source>
         <translation>계속</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="709"/>
+        <location filename="../src/gui/application.cpp" line="713"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1개 계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="710"/>
+        <location filename="../src/gui/application.cpp" line="714"/>
         <source>1 account</source>
         <translation>1개 계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="712"/>
+        <location filename="../src/gui/application.cpp" line="716"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1개 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="713"/>
+        <location filename="../src/gui/application.cpp" line="717"/>
         <source>1 folder</source>
         <translation>1개 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="715"/>
+        <location filename="../src/gui/application.cpp" line="719"/>
         <source>Legacy import</source>
         <translation>레거시 불러오기</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="716"/>
+        <location filename="../src/gui/application.cpp" line="720"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -2039,12 +2039,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="838"/>
+        <location filename="../src/gui/application.cpp" line="842"/>
         <source>Error accessing the configuration file</source>
         <translation>설정 파일 액세스 오류</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="839"/>
+        <location filename="../src/gui/application.cpp" line="843"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>%1의 구성 파일에 액세스하는 동안 오류가 발생했습니다. 시스템 계정으로 파일에 액세스할 수 있는지 확인하십시오.</translation>
     </message>

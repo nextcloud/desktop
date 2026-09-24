@@ -382,12 +382,12 @@
         <location filename="../src/gui/AssistantWindow.qml" line="125"/>
         <location filename="../src/gui/AssistantWindow.qml" line="245"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>Adiwenni amaynut</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="236"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Steqsi amalal ...</translation>
     </message>
 </context>
 <context>
@@ -395,12 +395,12 @@
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Connect public share</source>
-        <translation type="unfinished"/>
+        <translation>Qqen beṭṭu azayez</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Enter credentials</source>
-        <translation type="unfinished"/>
+        <translation>Sekcem talɣut n usesteb</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="37"/>
@@ -1962,72 +1962,72 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="201"/>
+        <location filename="../src/gui/application.cpp" line="205"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <extracomment>%1 is either &quot;newer&quot; or &quot;older&quot;. %2 is either &quot;ignoring&quot; or &quot;deleting&quot;. %3 is a list of configuration backup file paths.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="207"/>
+        <location filename="../src/gui/application.cpp" line="211"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>Amaynut n melmi kan</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="207"/>
+        <location filename="../src/gui/application.cpp" line="211"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>aqbur</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="208"/>
+        <location filename="../src/gui/application.cpp" line="212"/>
         <source>ignoring</source>
         <translation>Azgal</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="208"/>
+        <location filename="../src/gui/application.cpp" line="212"/>
         <source>deleting</source>
         <translation>Tukksa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="210"/>
+        <location filename="../src/gui/application.cpp" line="214"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="211"/>
+        <location filename="../src/gui/application.cpp" line="215"/>
         <source>Continue</source>
         <translation>Continuer</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="709"/>
+        <location filename="../src/gui/application.cpp" line="713"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 imiḍanen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="710"/>
+        <location filename="../src/gui/application.cpp" line="714"/>
         <source>1 account</source>
         <translation>1 umiḍan</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="712"/>
+        <location filename="../src/gui/application.cpp" line="716"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 ikaramen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="713"/>
+        <location filename="../src/gui/application.cpp" line="717"/>
         <source>1 folder</source>
         <translation>1 ukaram</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="715"/>
+        <location filename="../src/gui/application.cpp" line="719"/>
         <source>Legacy import</source>
         <translation>Aktar aqbuṛ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="716"/>
+        <location filename="../src/gui/application.cpp" line="720"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -2035,12 +2035,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="838"/>
+        <location filename="../src/gui/application.cpp" line="842"/>
         <source>Error accessing the configuration file</source>
         <translation>Tuccḍa deg unekcum ɣer ufaylu n twila</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="839"/>
+        <location filename="../src/gui/application.cpp" line="843"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Teḍra-d tuccḍa deg unekcum ɣer ufaylu n twila di %1. Ma ulac aɣilif, tḥeqqeq belli afaylu yezmer ad yeqqen ɣer umiḍan-inek·inem n unagraw.</translation>
     </message>
@@ -9071,7 +9071,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="324"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Mtawi akaram &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="329"/>
@@ -9083,28 +9083,28 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="667"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 tallunt tilellit</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="430"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Ifuyla uhlisen ur ttwasefraken ara deg wadig yettwafernen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="499"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Akaram n umtawi adigan</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="542"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="583"/>
         <source>(%1)</source>
-        <translation type="unfinished"/>
+        <translation>(%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="614"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Ulac ddeqs n tallunt tilellit deg ukaram adigan!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="665"/>
@@ -9127,17 +9127,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Fren tansa-nniḍen URL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Ales awennez war awgelhen ɣef HTTP (d araɣelsan)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Swel aselkin TLS n umsaɣ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="24"/>
@@ -9150,17 +9150,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="39"/>
         <source>&amp;Email</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Imayl</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Qqen ɣer %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="50"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Sekcem talɣut n usesteb</translation>
     </message>
 </context>
 <context>
@@ -9179,12 +9179,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Tansa n uqeddac ur tettban ara d tameɣtut</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="429"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi aɛebbi n uselkin. Ahat yexṣer wawal uffir?</translation>
     </message>
 </context>
 <context>
@@ -9197,12 +9197,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>URL d arameɣtu</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>Tecceḍ tuqqna ɣer %1 deg %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="349"/>
