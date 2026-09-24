@@ -77,15 +77,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     connect(_ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
-    connect(_ui.rVirtualFileSync, &QRadioButton::toggled, this, [this](const bool checked) {
-        if (checked) {
-            _ui.lSelectiveSyncSizeLabel->clear();
-            _selectiveSyncBlacklist.clear();
-        }
-#ifdef BUILD_FILE_PROVIDER_MODULE
-        updateMacOsFileProviderRelatedViews();
-#endif
-    });
     connect(_ui.bSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
 
     const auto theme = Theme::instance();
@@ -119,6 +110,19 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
         vfsExperimentalText = "";
     }
     _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(vfsExperimentalText));
+
+    connect(_ui.rVirtualFileSync, &QRadioButton::toggled, this, [this](const bool checked) {
+        if (checked) {
+            _ui.lSelectiveSyncSizeLabel->clear();
+            _selectiveSyncBlacklist.clear();
+        }
+#ifdef BUILD_FILE_PROVIDER_MODULE
+        updateMacOsFileProviderRelatedViews();
+#endif
+#ifdef Q_OS_MACOS
+        updateStatus();
+#endif
+    });
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -145,7 +149,11 @@ void OwncloudAdvancedSetupPage::setupCustomization()
 
 bool OwncloudAdvancedSetupPage::isComplete() const
 {
+#ifdef Q_OS_MACOS
+    return !_checking && (useVirtualFileSync() || _localFolderValid);
+#else
     return !_checking && _localFolderValid;
+#endif
 }
 
 void OwncloudAdvancedSetupPage::initializePage()
@@ -175,7 +183,14 @@ void OwncloudAdvancedSetupPage::initializePage()
     ConfigFile cfg;
     const auto overrideLocalDir = !cfg.overrideLocalDir().isEmpty();
 
+#ifdef Q_OS_MACOS
+    auto goodLocalFolder = localFolder();
+    if (!goodLocalFolder.isEmpty()) {
+        goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(goodLocalFolder, serverUrl(), FolderMan::GoodPathStrategy::AllowOnlyNewPath);
+    }
+#else
     auto goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder(), serverUrl(), FolderMan::GoodPathStrategy::AllowOnlyNewPath);
+#endif
     if (overrideLocalDir) {
         ConfigFile cfg;
         goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(cfg.overrideLocalDir(), serverUrl(), FolderMan::GoodPathStrategy::AllowOverrideExistingPath);
@@ -307,10 +322,21 @@ void OwncloudAdvancedSetupPage::updateStatus()
 {
     const QString locFolder = localFolder();
 
-    // check if the local folder exists. If so, and if its not empty, show a warning.
-    const auto pathValidityCheckResult = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
-    auto errorStr = pathValidityCheckResult.second;
-    _localFolderValid = errorStr.isEmpty() || pathValidityCheckResult.first == FolderMan::PathValidityResult::ErrorNonEmptyFolder;
+    QString errorStr;
+#ifdef Q_OS_MACOS
+    if (locFolder.isEmpty()) {
+        _localFolderValid = false;
+        if (!useVirtualFileSync()) {
+            errorStr = tr("Please choose a folder to sync your files.");
+        }
+    } else
+#endif
+    {
+        // Check if the local folder exists. If so, and if it is not empty, show a warning.
+        const auto pathValidityCheckResult = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
+        errorStr = pathValidityCheckResult.second;
+        _localFolderValid = errorStr.isEmpty() || pathValidityCheckResult.first == FolderMan::PathValidityResult::ErrorNonEmptyFolder;
+    }
 
     QString t;
 
@@ -324,7 +350,11 @@ void OwncloudAdvancedSetupPage::updateStatus()
             _ui.rSyncEverything->setText(tr("Sync the folder \"%1\"").arg(_remoteFolder));
         }
 
-        const bool dirNotEmpty(QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).count() > 0);
+        const bool dirNotEmpty =
+#ifdef Q_OS_MACOS
+            !locFolder.isEmpty() &&
+#endif
+            QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).count() > 0;
         if (dirNotEmpty) {
             t += tr("Warning: The local folder is not empty. Pick a resolution!");
         }
@@ -333,21 +363,35 @@ void OwncloudAdvancedSetupPage::updateStatus()
         setResolutionGuiVisible(false);
     }
 
+    auto filePathText = QDir::toNativeSeparators(locFolder);
+#ifdef Q_OS_MACOS
+    if (useVirtualFileSync()) {
+        filePathText = tr("In Finder's \"Locations\" sidebar section");
+    } else if (locFolder.isEmpty()) {
+        filePathText = tr("Choose where to sync your files");
+    }
+#endif
+    const auto hasLocalSyncFolder =
+#ifdef Q_OS_MACOS
+        !locFolder.isEmpty() && !useVirtualFileSync();
+#else
+        true;
+#endif
+    const auto freeSpaceText = hasLocalSyncFolder ? QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB"))
+                                                        .arg(Utility::octetsToString(availableLocalSpace()))
+                                                  : QString();
+    _filePathLabel->setText(filePathText);
+    _ui.lFreeSpace->setText(freeSpaceText);
+
 #ifdef BUILD_FILE_PROVIDER_MODULE
     updateMacOsFileProviderRelatedViews();
-#else
-    _filePathLabel->setText(QDir::toNativeSeparators(locFolder));
-
-    QString lfreeSpaceStr = Utility::octetsToString(availableLocalSpace());
-    _ui.lFreeSpace->setText(QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB")).arg(lfreeSpaceStr));
 #endif
-
     _ui.syncModeLabel->setText(t);
     _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
 
     qint64 rSpace = _ui.rSyncEverything->isChecked() ? _rSize : _rSelectedSize;
 
-    QString spaceError = checkLocalSpace(rSpace);
+    const auto spaceError = hasLocalSyncFolder ? checkLocalSpace(rSpace) : QString();
     if (!spaceError.isEmpty()) {
         errorStr = spaceError;
     }
@@ -422,6 +466,13 @@ bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
 
 bool OwncloudAdvancedSetupPage::validatePage()
 {
+#ifdef Q_OS_MACOS
+    if (!useVirtualFileSync() && localFolder().isEmpty()) {
+        setErrorString(tr("Please choose a folder to sync your files."));
+        return false;
+    }
+#endif
+
 #ifndef BUILD_FILE_PROVIDER_MODULE
     if (useVirtualFileSync()) {
         const auto availability = Vfs::checkAvailability(localFolder(), bestAvailableVfsMode());
@@ -502,12 +553,15 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
         refreshVirtualFilesAvailibility(dir);
 
         wizard()->setProperty("localFolder", dir);
-        updateStatus();
     }
 
+#ifdef Q_OS_MACOS
+    updateStatus();
+#else
     qint64 rSpace = _ui.rSyncEverything->isChecked() ? _rSize : _rSelectedSize;
     QString errorStr = checkLocalSpace(rSpace);
     setErrorString(errorStr);
+#endif
 }
 
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
@@ -573,8 +627,12 @@ void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
     setRadioChecked(_ui.rSyncEverything);
     _selectiveSyncBlacklist.clear();
 
-    QString errorStr = checkLocalSpace(_rSize);
+#ifdef Q_OS_MACOS
+    updateStatus();
+#else
+    const QString errorStr = checkLocalSpace(_rSize);
     setErrorString(errorStr);
+#endif
 }
 
 void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
@@ -659,18 +717,12 @@ void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
 #ifdef BUILD_FILE_PROVIDER_MODULE
 void OwncloudAdvancedSetupPage::updateMacOsFileProviderRelatedViews()
 {
-    const auto freeSpaceHidden = _ui.rVirtualFileSync->isChecked();
+    const auto freeSpaceHidden = _ui.rVirtualFileSync->isChecked() || localFolder().isEmpty();
     const auto folderSelectionButtonHidden = _ui.rVirtualFileSync->isChecked();
-    const auto filePathLabelText =
-        _ui.rVirtualFileSync->isChecked() ? tr("In Finder's \"Locations\" sidebar section") : QDir::toNativeSeparators(localFolder());
-    const auto freeSpaceString = freeSpaceHidden ? QString() : Utility::octetsToString(availableLocalSpace());
-    const auto freeSpaceText = freeSpaceHidden ? QString() : QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB")).arg(freeSpaceString);
 
     _ui.lFreeSpace->setHidden(freeSpaceHidden);
-    _ui.lFreeSpace->setText(freeSpaceText);
     _ui.pbSelectLocalFolder->setHidden(folderSelectionButtonHidden);
     _ui.pbSelectLocalFolder->setEnabled(!folderSelectionButtonHidden);
-    _filePathLabel->setText(filePathLabelText);
 }
 #endif
 
