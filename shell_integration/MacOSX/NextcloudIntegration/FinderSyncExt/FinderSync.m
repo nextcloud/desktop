@@ -69,6 +69,10 @@ static os_log_t getFinderSyncLogger(void) {
         [syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
         [syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
 
+        _registeredDirectories = NSMutableSet.set;
+        _strings = NSMutableDictionary.dictionary;
+        _menuIsComplete = [[NSCondition alloc] init];
+
         NSString *socketPath = [self socketPath];
 
         os_log_debug(_log, "Socket path: %{public}@", socketPath);
@@ -86,10 +90,6 @@ static os_log_t getFinderSyncLogger(void) {
         } else {
             os_log_error(_log, "No socket path available. Not initiating local socket client.");
         }
-
-        _registeredDirectories = NSMutableSet.set;
-        _strings = NSMutableDictionary.dictionary;
-        _menuIsComplete = [[NSCondition alloc] init];
         os_log_debug(_log, "Initialization completed.");
     }
 
