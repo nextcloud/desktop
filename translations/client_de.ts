@@ -1968,72 +1968,72 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="201"/>
+        <location filename="../src/gui/application.cpp" line="205"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <extracomment>%1 is either &quot;newer&quot; or &quot;older&quot;. %2 is either &quot;ignoring&quot; or &quot;deleting&quot;. %3 is a list of configuration backup file paths.</extracomment>
         <translation>Einige Einstellungen wurden in %1-Versionen dieses Clients konfiguriert und verwenden Funktionen, die in dieser Version nicht verfügbar sind.&lt;br&gt;&lt;br&gt;Fortfahren bedeutet &lt;b&gt;%2 dieser Einstellungen&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Die aktuelle Konfigurationsdatei wurde bereits auf &lt;i&gt;%3&lt;/i&gt; gesichert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="207"/>
+        <location filename="../src/gui/application.cpp" line="211"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>Neuer</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="207"/>
+        <location filename="../src/gui/application.cpp" line="211"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>Älter</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="208"/>
+        <location filename="../src/gui/application.cpp" line="212"/>
         <source>ignoring</source>
         <translation>Ignoriere</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="208"/>
+        <location filename="../src/gui/application.cpp" line="212"/>
         <source>deleting</source>
         <translation>Lösche</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="210"/>
+        <location filename="../src/gui/application.cpp" line="214"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="211"/>
+        <location filename="../src/gui/application.cpp" line="215"/>
         <source>Continue</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="709"/>
+        <location filename="../src/gui/application.cpp" line="713"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 Konten</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="710"/>
+        <location filename="../src/gui/application.cpp" line="714"/>
         <source>1 account</source>
         <translation>1 Konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="712"/>
+        <location filename="../src/gui/application.cpp" line="716"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 Ordner</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="713"/>
+        <location filename="../src/gui/application.cpp" line="717"/>
         <source>1 folder</source>
         <translation>1 Ordner</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="715"/>
+        <location filename="../src/gui/application.cpp" line="719"/>
         <source>Legacy import</source>
         <translation>Import früherer Konfiguration</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="716"/>
+        <location filename="../src/gui/application.cpp" line="720"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -2041,12 +2041,12 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="838"/>
+        <location filename="../src/gui/application.cpp" line="842"/>
         <source>Error accessing the configuration file</source>
         <translation>Fehler beim Zugriff auf die Konfigurationsdatei</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="839"/>
+        <location filename="../src/gui/application.cpp" line="843"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Beim Zugriff auf die Konfigurationsdatei unter %1 ist ein Fehler aufgetreten. Stellen Sie sicher, dass Ihr Systemkonto auf die Datei zugreifen kann.</translation>
     </message>
