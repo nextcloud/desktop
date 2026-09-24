@@ -635,7 +635,9 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
 #endif
     const auto deletedFileInfo = QFileInfo{windowsSafeFileName};
     if (!deletedFileInfo.exists()) {
-        qCWarning(lcFileSystem()) << windowsSafeFileName << "has been already deleted";
+        qCInfo(lcFileSystem()) << windowsSafeFileName << "has been already deleted";
+        Q_ASSERT(false);
+        return true;
     }
 
     QFile f(windowsSafeFileName);
