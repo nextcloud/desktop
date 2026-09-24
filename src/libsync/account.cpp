@@ -1214,6 +1214,52 @@ void Account::setAskUserForMnemonic(const bool ask)
     emit askUserForMnemonicChanged();
 }
 
+
+namespace {
+
+bool journalHasDirectChildren(SyncJournalDb *journal, const QByteArray &path)
+{
+    bool found = false;
+    journal->listFilesInPath(path, [&found](const SyncJournalFileRecord &) {
+        found = true;
+    });
+    return found;
+}
+
+bool shouldSkipExistingItemForOnDemandListing(
+    const SyncJournalFileRecord &record,
+    SyncJournalDb *journal,
+    const RemoteInfo &remoteInfo)
+{
+    if (!record.isDirectory()) {
+        if (record._inode == 0) {
+            return false;
+        }
+        if (!remoteInfo.etag.isEmpty() && record._etag != remoteInfo.etag) {
+            return false;
+        }
+        if (!remoteInfo.fileId.isEmpty() && record._fileId != remoteInfo.fileId) {
+            return false;
+        }
+        return true;
+    }
+
+    if (journalHasDirectChildren(journal, record._path)) {
+        return true;
+    }
+
+    if (remoteInfo.folderQuota.bytesUsed > 0) {
+        return false;
+    }
+    if (remoteInfo.sizeOfFolder > 0) {
+        return false;
+    }
+
+    return true;
+}
+
+} // namespace
+
 void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, const QString &remoteSyncRootPath, const QString &subPath, SyncJournalDb *journalForFolder)
 {
     qCInfo(lcAccount()) << "ls col job requested for" << subPath;
@@ -1273,12 +1319,6 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
         const auto itemFileName = completeDavPath.mid(slash + 1);
         const auto absoluteItemPathName = syncRootPath.isEmpty() ? itemFileName : Utility::noTrailingSlashPath(syncRootPath) + '/' + itemFileName;
 
-        auto currentItemDbRecord = SyncJournalFileRecord{};
-        if (journalForFolder->getFileRecord(absoluteItemPathName, &currentItemDbRecord) && currentItemDbRecord.isValid()) {
-            qCWarning(lcAccount()) << "skip existing item" << absoluteItemPathName;
-            return;
-        }
-
         auto newEntry = RemoteInfo{};
         newEntry.name = itemFileName;
         newEntry.size = -1;
@@ -1292,6 +1332,13 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
 
         if (!newEntry.remotePerm.isNull() && !newEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
             qCWarning(lcAccount()) << "skip non-readable item" << absoluteItemPathName;
+            return;
+        }
+
+        auto currentItemDbRecord = SyncJournalFileRecord{};
+        if (journalForFolder->getFileRecord(absoluteItemPathName, &currentItemDbRecord) && currentItemDbRecord.isValid()
+            && shouldSkipExistingItemForOnDemandListing(currentItemDbRecord, journalForFolder, newEntry)) {
+            qCWarning(lcAccount()) << "skip existing item" << absoluteItemPathName;
             return;
         }
 
