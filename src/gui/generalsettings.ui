@@ -146,6 +146,13 @@
          </spacer>
         </item>
         <item>
+         <widget class="QLabel" name="fileProviderEnforcedLabel">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="OCC::SettingsSwitch" name="fileProviderCheckBox"/>
         </item>
        </layout>

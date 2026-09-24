@@ -75,8 +75,6 @@ public:
 
     [[nodiscard]] ResolvedSetting resolve(const SettingDefinition &spec, const QString &group = {}) const;
 
-    // Resolves every spec, for a diagnostics export of effective values and sources.
-
 private:
     std::vector<std::unique_ptr<SettingSource>> _sources;
 };

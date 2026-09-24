@@ -52,6 +52,19 @@ private Q_SLOTS:
         QStandardPaths::setTestModeEnabled(true);
     }
 
+    // Keeps tests off the device policy of the machine running them.
+    void init()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
+    }
+
+    void cleanup()
+    {
+        ConfigFile::setDeviceSourcesFactory({});
+    }
+
     void normalizesCommonServerUrlSuffixes()
     {
         QCOMPARE(AccountWizardController::normalizeServerUrlInput(QStringLiteral(" https://cloud.example/index.php ")),

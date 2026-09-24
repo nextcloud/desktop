@@ -1134,6 +1134,34 @@ void AccountWizardController::completeAuthentication()
     initialiseLocalSyncFolder();
     fetchRootFolderSize();
 
+    // Load capabilities before choosing, so a server enforced mode is honored; fall back on failure.
+    _syncModeChosen = false;
+    auto *capabilitiesJob = new JsonApiJob(_account, QStringLiteral("ocs/v1.php/cloud/capabilities"), this);
+    capabilitiesJob->setTimeout(10 * 1000);
+    const auto choose = [this, capabilitiesJob] {
+        if (_syncModeChosen) {
+            return;
+        }
+        _syncModeChosen = true;
+        capabilitiesJob->deleteLater();
+        chooseSyncModeAfterCapabilities();
+    };
+    connect(capabilitiesJob, &JsonApiJob::jsonReceived, this, [this, choose](const QJsonDocument &json, int statusCode) {
+        if (statusCode == 100) {
+            const auto caps =
+                json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("capabilities")).toObject();
+            _account->setCapabilities(caps.toVariantMap());
+        }
+        choose();
+    });
+    connect(capabilitiesJob, &AbstractNetworkJob::networkError, this, [choose] {
+        choose();
+    });
+    capabilitiesJob->start();
+}
+
+void AccountWizardController::chooseSyncModeAfterCapabilities()
+{
 #ifdef BUILD_FILE_PROVIDER_MODULE
     setNeedsSyncOptions(!canUseVirtualFiles());
 #else

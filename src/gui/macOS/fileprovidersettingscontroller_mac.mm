@@ -226,6 +226,12 @@ public:
     {
         ConfigFile cfg;
 
+        // Stay off while enforced off, so lifting the policy does not re-enable File Provider.
+        if (const auto managedVfs = cfg.managedVirtualFilesMode(); managedVfs.isEnforced && !managedVfs.enabled) {
+            cfg.setMacFileProviderModeEnabled(false);
+            return;
+        }
+
         const auto brandingDisablesVfs = Theme::instance()->disableVirtualFilesSyncFolder();
         const auto accounts = AccountManager::instance()->accounts();
 
@@ -553,6 +559,14 @@ void FileProviderSettingsController::setFileProviderModeEnabled(const bool enabl
     if (enabled && !Mac::FileProvider::available()) {
         qCWarning(lcFileProviderSettingsController) << "Cannot enable file provider mode, it is unavailable on this system.";
         return;
+    }
+
+    if (enabled) {
+        if (const auto managedVfs = ConfigFile().managedVirtualFilesMode(); managedVfs.isEnforced && !managedVfs.enabled) {
+            qCWarning(lcFileProviderSettingsController) << "Cannot enable file provider mode, virtual files are enforced off by policy.";
+            Q_EMIT fileProviderModeEnabledChanged(false);
+            return;
+        }
     }
 
     // The flag records the user's intent up front. Should anything below fail or the

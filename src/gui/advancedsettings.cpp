@@ -359,6 +359,10 @@ void AdvancedSettings::loadMiscSettings()
     showEnforcedLabel(_ui->folderLimitEnforcedLabel, folderLimitEnforcedKey);
     showEnforcedLabel(_ui->externalStorageEnforcedLabel, externalStorageEnforcedKey);
 
+    // Grey the labels out with their controls on load, not only after a toggle.
+    _ui->existingFolderLimitLabel->setEnabled(_ui->existingFolderLimitCheckBox->isEnabled());
+    _ui->stopExistingFolderNowBigSyncLabel->setEnabled(_ui->stopExistingFolderNowBigSyncCheckBox->isEnabled());
+
     const auto interval = cfgFile.remotePollInterval();
     _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));
     updatePollIntervalVisibility();

@@ -55,7 +55,7 @@ struct SettingDefinition {
     QString key;              // the setting name
     QVariant builtinDefault;  // value when no source has one, and it fixes the type
     bool enforceable = false; // may a policy force it?
-    SettingScope scope = SettingScope::User; // Device, User, Account, Folder
+    bool (*isValidValue)(const QVariant &) = nullptr; // optional value check
 };
 ```
 
@@ -65,8 +65,7 @@ struct SettingDefinition {
 plist string is coerced to a real bool or int.
 - *A key that is not declared in the schema still resolves*, but it is treated as
 *not enforceable*. Declaring a key in the schema is how you allow it to be 
-enforced (enforceable = true), give it a fixed default and type, or have 
-it appear in the `ManagedSettings::resolveAll` diagnostics.
+enforced (enforceable = true), or give it a fixed default, type and value check.
 - *There are two separate enforceable flags*. The schema enforceable above decides
 whether any enforced source (device or server) is honored. A second flag,
 serverEnforceable in servermanagedsettings, decides whether the server specifically
@@ -146,10 +145,10 @@ managed proxy keys, so `ConfigFile::managedProxySettings` resolves type, host an
 tuple and `AccountManager` applies it at account load: an enforced value always wins, 
 a default only when the account follows the system proxy. 
 - `Account::proxySettingsAreManaged` is set when the proxy is enforced,
-`Account::setProxySettings` refuses a write while managed, and NetworkSettings
-disables the editor and shows the managed label. Any enforced field disables the
-whole editor, but only the managed fields replace values, so an account keeps its
-own value for the rest.
+`Account::setProxySettings` refuses a write to an enforced field while managed, and
+NetworkSettings disables only the enforced fields and shows the managed label. The
+credentials stay editable, and only the managed fields replace values, so an account
+keeps its own value for the rest.
 - `ConfigFile::managedProxySettings` is a policy overlay:  it reads the policy keys 
 `proxyType`, `proxyHost` and `proxyPort`, while the user's  own proxy stays in the 
 account or the legacy `Proxy/type` storage, so the two never collide. The server can 
