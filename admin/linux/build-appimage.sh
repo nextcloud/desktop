@@ -30,23 +30,6 @@ if [ -e "/opt/rh/gcc-toolset-14/enable" ]; then
     source /opt/rh/gcc-toolset-14/enable
 fi
 
-cd /home
-wget https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
-tar xf json.tar.xz
-mkdir json/build
-cd json/build
-cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/root/linux-gcc-x86_64 -DCMAKE_BUILD_TYPE=Release -DJSON_BuildTests=OFF
-ninja install
-
-cd /home
-git clone https://github.com/opencloud-eu/openvfs.git
-cd openvfs
-git switch --detach ${OPENVFS_COMMIT_SHA}
-mkdir build
-cd build
-cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/root/linux-gcc-x86_64 -DCMAKE_BUILD_TYPE=Release
-ninja && ninja && ninja install
-
 mkdir /app
 
 # Build client
@@ -132,7 +115,7 @@ export QML_SOURCES_PATHS=${DESKTOP_CLIENT_ROOT}/src/gui
 	--library=/root/linux-gcc-x86_64/lib/libharfbuzz.so.0 --library=/root/linux-gcc-x86_64/lib/libharfbuzz-subset.so.0 \
 	--library=/usr/lib64/libOpenGL.so.0 --library=/usr/lib64/libGLX.so.0 --library=/usr/lib64/libEGL.so.1 --library=/usr/lib64/libGLdispatch.so.0 --library=/usr/lib64/libdrm.so.2 --library=/usr/lib64/libgbm.so.1 \
 	--library=/root/linux-gcc-x86_64/lib/libuuid.so.1 --library=/root/linux-gcc-x86_64/lib/libgpg-error.so.0 --library=/root/linux-gcc-x86_64/lib/libz.so.1 --library=/root/linux-gcc-x86_64/lib/libpcre2-8.so.0 --library=/root/linux-gcc-x86_64/lib/libexpat.so.1 \
-	--library=/root/linux-gcc-x86_64/lib/libfreetype.so.6 --library=/root/linux-gcc-x86_64/lib/libglib-2.0.so.0 --library=/root/linux-gcc-x86_64/lib64/libopenvfs.so \
+	--library=/root/linux-gcc-x86_64/lib/libfreetype.so.6 --library=/root/linux-gcc-x86_64/lib/libglib-2.0.so.0 --library=/root/linux-gcc-x86_64/lib/libopenvfs.so \
 	--icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
 
 # Workaround issue #103 and #7231
