@@ -14,12 +14,13 @@
 #include "tray/trayimageutils.h"
 #include "tray/usermodel.h"
 
-#include <QAction>
 #include <QAbstractItemModel>
+#include <QAction>
 #include <QColor>
 #include <QCoreApplication>
 #include <QCursor>
 #include <QFontMetrics>
+#include <QFontMetricsF>
 #include <QGuiApplication>
 #include <QHash>
 #include <QIcon>
@@ -29,10 +30,10 @@
 #include <QMimeDatabase>
 #include <QMimeType>
 #include <QModelIndex>
-#include <QPalette>
 #include <QPainter>
-#include <QPointer>
+#include <QPalette>
 #include <QPixmap>
+#include <QPointer>
 #include <QScreen>
 #include <QSize>
 #include <QStyle>
@@ -826,6 +827,8 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
     setFixedMenuWidth(menu);
     clearDynamicMenu(menu);
 
+    const auto fontMetric = QFontMetricsF{qApp->font()};
+
     const auto userModel = UserModel::instance();
     const auto menuIconPalette = nativeMenuIconPalette(menu);
     const auto menuIconSize = nativeMenuIconSize(menu);
@@ -834,7 +837,8 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
             const auto userModelIndex = userModel->index(userId);
             const auto name = userModel->data(userModelIndex, UserModel::NameRole).toString();
             const auto server = userModel->data(userModelIndex, UserModel::ServerRole).toString();
-            const auto accountText = QStringLiteral("%1 (%2)").arg(name, server);
+            const auto accountText = QStringLiteral("%1 (%2)").arg(fontMetric.elidedText(name, Qt::ElideMiddle, menuTextWidth(true) * 0.6),
+                                                                   fontMetric.elidedText(server, Qt::ElideMiddle, menuTextWidth(true) * 0.35));
             auto accountIcon = iconFromImage(userModel->syncStatusIconForRow(userId));
             if (accountIcon.isNull()) {
                 accountIcon = Theme::instance()->applicationIcon();
