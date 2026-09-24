@@ -23,20 +23,8 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         log: FileProviderLogMock()
     )
 
-    /// Retains the in-memory Realm for the whole test. Without a live reference the
-    /// store is deallocated once a synchronous write returns, so data written before
-    /// an `await` vanishes when the enumerator reopens the Realm on another thread.
-    private var keepAliveRealm: Realm?
-
-    override func setUp() {
-        super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-        keepAliveRealm = Self.dbManager.ncDatabase()
-    }
-
-    override func tearDown() {
-        keepAliveRealm = nil
-        super.tearDown()
+    override var testDatabaseManager: FilesDatabaseManager? {
+        Self.dbManager
     }
 
     func testDeleteDirectorySkipsChildrenWithPendingUpload() throws {
@@ -210,6 +198,7 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
     /// enumeration pass. The deconfliction step must recognise the item as
     /// surviving (via allNewMetadatas) and NOT mark it deleted.
     func testDeconflictionPreventsDeleteWhenItemFoundAtNewLocation() async throws {
+        expectLoggedErrors()
         let rootItem = MockRemoteItem.rootItem(account: Self.account)
 
         // "doc.txt" exists locally at root — it is checked before the destination folder.
@@ -284,6 +273,7 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
     }
 
     func testParent404ReportsParentAsDeleted() async throws {
+        expectLoggedErrors()
         let rootItem = MockRemoteItem.rootItem(account: Self.account)
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 

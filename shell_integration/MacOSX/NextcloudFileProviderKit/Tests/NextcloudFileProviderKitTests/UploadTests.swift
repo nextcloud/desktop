@@ -13,9 +13,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
     static let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
-    override func setUp() {
-        super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+    override var testDatabaseManager: FilesDatabaseManager? {
+        Self.dbManager
     }
 
     func testStandardUpload() async throws {

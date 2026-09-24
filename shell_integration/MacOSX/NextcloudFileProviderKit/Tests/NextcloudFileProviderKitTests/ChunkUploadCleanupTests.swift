@@ -190,6 +190,7 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStartupCleanupRetainsBookkeepingWhenLocalRemovalFails() throws {
+        expectLoggedErrors()
         let seeded = try seedChunkUpload(
             itemIdentifier: "deleted-item",
             metadataStatus: .uploadError,
@@ -212,6 +213,7 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCompletedUploadCleanupIsRetriedFromDurableRecord() throws {
+        expectLoggedErrors()
         let uploadIdentifier = "completed-upload-with-failed-cleanup"
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent("pending-cleanup-\(UUID().uuidString)", isDirectory: true)

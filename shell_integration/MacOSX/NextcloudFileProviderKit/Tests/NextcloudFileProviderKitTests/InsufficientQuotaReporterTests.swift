@@ -69,7 +69,7 @@ private final class CapturingAppProxy: NSObject, AppProtocol {
     }
 }
 
-final class InsufficientQuotaReporterTests: XCTestCase {
+final class InsufficientQuotaReporterTests: NextcloudFileProviderKitTestCase {
     private let domainA = NSFileProviderDomainIdentifier("domain-a")
     private let domainB = NSFileProviderDomainIdentifier("domain-b")
 

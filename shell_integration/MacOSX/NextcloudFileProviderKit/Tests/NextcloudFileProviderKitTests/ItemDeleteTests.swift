@@ -18,14 +18,14 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     lazy var rootTrashItem = MockRemoteItem.rootTrashItem(account: Self.account)
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
-    override func setUp() {
-        super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+    override var testDatabaseManager: FilesDatabaseManager? {
+        Self.dbManager
     }
 
     override func tearDown() {
         rootItem.children = []
         rootTrashItem.children = []
+        super.tearDown()
     }
 
     private func makeLockFileDeletionScenario(
@@ -255,6 +255,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testTrashPurgeDoesNotTreatFallback404AsSuccessAfterListingFailure() async {
+        expectLoggedErrors()
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         remoteInterface.deleteError = NKError(statusCode: 404, fallbackDescription: "Not Found")
         remoteInterface.trashListingError = NKError(statusCode: 500, fallbackDescription: "Internal Server Error")
@@ -418,6 +419,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testFailedDeleteKeepsIncompleteChunkUpload() async throws {
+        expectLoggedErrors()
         let remoteInterface = MockRemoteInterface(
             account: Self.account,
             rootItem: rootItem,
@@ -764,6 +766,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeleteLockFileDoesNotIgnoreLockedResponse() async throws {
+        expectLoggedErrors()
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.lockUnlockError = NKError(errorCode: 423, errorDescription: "Locked")
         let scenario = makeLockFileDeletionScenario(
@@ -786,6 +789,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeleteLockFileWithoutCapabilitiesRemovesLocalMetadataButKeepsServerLock() async {
+        expectLoggedErrors()
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         XCTAssert(remoteInterface.capabilities.contains(##""locking": "1.0","##))
         remoteInterface.capabilities =

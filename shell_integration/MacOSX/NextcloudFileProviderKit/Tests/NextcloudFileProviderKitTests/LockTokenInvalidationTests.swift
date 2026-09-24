@@ -23,9 +23,8 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
         log: FileProviderLogMock()
     )
 
-    override func setUp() {
-        super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+    override var testDatabaseManager: FilesDatabaseManager? {
+        Self.dbManager
     }
 
     func testRenameItemMetadataClearsLockToken() throws {

@@ -61,14 +61,18 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     var rootItem: MockRemoteItem!
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
+    override var testDatabaseManager: FilesDatabaseManager? {
+        Self.dbManager
+    }
+
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
         rootItem = MockRemoteItem.rootItem(account: Self.account)
     }
 
     override func tearDown() {
         rootItem.children = []
+        super.tearDown()
     }
 
     func testCreateFolder() async throws {
@@ -295,6 +299,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     /// file size, refuse the upload up-front with `.insufficientQuota` and never call
     /// the remote upload endpoint. See nextcloud/desktop#9598.
     func testCreateFileBlockedByInsufficientQuota() async throws {
+        expectLoggedErrors()
         rootItem.quotaAvailableBytes = 4 // less than the file we're about to upload
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -334,6 +339,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     /// main app via XPC so it can surface a per-item activity entry plus a per-folder summary
     /// entry with a "Retry all uploads" button. See nextcloud/desktop#9598.
     func testCreateFileRefusedByQuotaReportsToMainApp() async throws {
+        expectLoggedErrors()
         rootItem.quotaAvailableBytes = 4
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -514,9 +520,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     /// `testCreateBundle` test, which validated the now-removed recursive-mirror code path.
     /// See https://github.com/nextcloud/desktop/issues/9827.
     func testCreateBundleIsExcluded() async {
-        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
-        debugPrint(db)
-
         let keynoteBundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -557,9 +560,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     /// Same expectation for `.app` (`com.apple.application-bundle`) — historically the most
     /// problematic bundle type for our recursive-mirror approach because of internal symlinks.
     func testCreateDotAppIsExcluded() async {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let appFilename = "Test.app"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -937,6 +937,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCreateLockFileUnactionableWithoutCapabilities() async throws {
+        expectLoggedErrors()
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         XCTAssert(remoteInterface.capabilities.contains(##""locking": "1.0","##))
         remoteInterface.capabilities =
@@ -1188,6 +1189,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     /// When the guarded document cannot be found (e.g. a stale lock file, or the document is not
     /// in the database), the Adobe lock file is excluded from sync, matching Office behaviour.
     func testCreateAdobeLockFileWithoutDocumentIsExcluded() async throws {
+        expectLoggedErrors()
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         let folderRemote = MockRemoteItem(

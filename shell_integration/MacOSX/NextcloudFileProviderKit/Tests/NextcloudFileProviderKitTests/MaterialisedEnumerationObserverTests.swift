@@ -15,12 +15,19 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
+    // This class builds its `FilesDatabaseManager` after `setUp` runs — inside a test, or from a
+    // per-test directory — and `FilesDatabaseManager.init` assigns
+    // `Realm.Configuration.defaultConfiguration` wholesale with a file-based configuration. These
+    // tests therefore run against `test.realm` on disk, not an in-memory store, and leaving
+    // `testDatabaseManager` at `nil` says so deliberately: setting the in-memory identifier here
+    // would be overwritten by that initialiser and achieve nothing.
+
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
     }
 
     func testMaterialisedObserverWithNoPreexistingState() async {
+        expectLoggedErrors()
         let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
         // The database is intentionally left empty.
 

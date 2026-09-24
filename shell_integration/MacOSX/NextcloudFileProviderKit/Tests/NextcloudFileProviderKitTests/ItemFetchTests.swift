@@ -18,13 +18,13 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
-    override func setUp() {
-        super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+    override var testDatabaseManager: FilesDatabaseManager? {
+        Self.dbManager
     }
 
     override func tearDown() {
         rootItem.children = []
+        super.tearDown()
     }
 
     func testFetchFileContents() async throws {

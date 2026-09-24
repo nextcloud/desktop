@@ -16,9 +16,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     )
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
-    override func setUp() {
-        super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+    override var testDatabaseManager: FilesDatabaseManager? {
+        Self.dbManager
     }
 
     func testMetadataContentType() {
@@ -808,9 +807,6 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStoredItemTrashabilityFalseAffectedByCapabilities() async {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let remoteInterface = MockRemoteInterface(account: Self.account)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         remoteInterface.capabilities =
@@ -829,9 +825,6 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStoredItemTrashabilityTrueAffectedByCapabilities() async {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let remoteInterface = MockRemoteInterface(account: Self.account)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         let metadata =
