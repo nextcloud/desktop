@@ -656,7 +656,10 @@ void PropagateDownloadFile::startDownload()
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
         if (progressInfo._etag != _item->_etag) {
-            FileSystem::remove(propagator()->fullLocalPath(progressInfo._tmpfile));
+            const auto fileName = propagator()->fullLocalPath(progressInfo._tmpfile);
+            if (QFileInfo::exists(fileName)) {
+                FileSystem::remove(fileName);
+            }
             propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
