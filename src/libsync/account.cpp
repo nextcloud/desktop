@@ -312,7 +312,9 @@ void Account::setCredentials(AbstractCredentials *cred)
         _networkAccessManager->setCookieJar(jar);
     }
     if (proxy.type() != QNetworkProxy::DefaultProxy) {
-        _networkAccessManager->setProxy(proxy);
+        _networkAccessManager->setProxy(proxy); // Remember proxy (issue #2108)
+    } else if (_managedProxy.isManaged) {
+        applyProxyToNetworkAccessManager();
     }
     connect(_networkAccessManager.data(), &QNetworkAccessManager::sslErrors,
         this, &Account::slotHandleSslErrors);
@@ -771,6 +773,7 @@ void Account::setCapabilities(const QVariantMap &caps)
     updateServerColors();
     updateServerSubcription();
     updateDesktopEnterpriseChannel();
+    updateServerManagedSettings();
     updateServerHasIntegration();
 
     Q_EMIT capabilitiesChanged();
@@ -1364,6 +1367,17 @@ void Account::updateDesktopEnterpriseChannel()
     }
 }
 
+void Account::updateServerManagedSettings()
+{
+    _serverManagedSettings = sanitizeServerManagedSettings(_capabilities.desktopClientManagedSettings());
+    applyManagedProxySettings(ConfigFile().managedProxySettings(_serverManagedSettings));
+}
+
+ServerManagedSettings Account::serverManagedSettings() const
+{
+    return _serverManagedSettings;
+}
+
 QNetworkProxy::ProxyType Account::proxyType() const
 {
     return _proxyType;
@@ -1371,21 +1385,8 @@ QNetworkProxy::ProxyType Account::proxyType() const
 
 void Account::setProxyType(QNetworkProxy::ProxyType proxyType)
 {
-    if (_proxyType == proxyType) {
-        return;
-    }
-
-    _proxyType = proxyType;
-
-    auto proxy = _networkAccessManager->proxy();
-    proxy.setType(proxyType);
-    proxy.setHostName(proxyHostName());
-    proxy.setPort(proxyPort());
-    proxy.setUser(proxyUser());
-    proxy.setPassword(proxyPassword());
-    _networkAccessManager->setProxy(proxy);
-
-    Q_EMIT proxyTypeChanged();
+    _accountProxyType = proxyType;
+    updateProxyInUse();
 }
 
 QString Account::proxyHostName() const
@@ -1395,17 +1396,8 @@ QString Account::proxyHostName() const
 
 void Account::setProxyHostName(const QString &hostName)
 {
-    if (_proxyHostName == hostName) {
-        return;
-    }
-
-    _proxyHostName = hostName;
-
-    auto proxy = _networkAccessManager->proxy();
-    proxy.setHostName(hostName);
-    _networkAccessManager->setProxy(proxy);
-
-    Q_EMIT proxyHostNameChanged();
+    _accountProxyHostName = hostName;
+    updateProxyInUse();
 }
 
 int Account::proxyPort() const
@@ -1415,17 +1407,44 @@ int Account::proxyPort() const
 
 void Account::setProxyPort(const int port)
 {
-    if (_proxyPort == port) {
+    _accountProxyPort = port;
+    updateProxyInUse();
+}
+
+void Account::updateProxyInUse()
+{
+    const auto followsSystemProxy = _accountProxyType == QNetworkProxy::DefaultProxy;
+    const auto managedValueApplies = [followsSystemProxy](const bool enforced, const bool managed) {
+        return enforced || (managed && followsSystemProxy);
+    };
+    const auto proxyType = managedValueApplies(_managedProxy.typeEnforced, _managedProxy.typeManaged)
+        ? static_cast<QNetworkProxy::ProxyType>(_managedProxy.proxyType)
+        : _accountProxyType;
+    const auto hostName = managedValueApplies(_managedProxy.hostEnforced, _managedProxy.hostManaged) ? _managedProxy.proxyHostName : _accountProxyHostName;
+    const auto port = managedValueApplies(_managedProxy.portEnforced, _managedProxy.portManaged) ? _managedProxy.proxyPort : _accountProxyPort;
+
+    const auto typeChanged = _proxyType != proxyType;
+    const auto hostNameChanged = _proxyHostName != hostName;
+    const auto portChanged = _proxyPort != port;
+    if (!typeChanged && !hostNameChanged && !portChanged) {
         return;
     }
 
+    _proxyType = proxyType;
+    _proxyHostName = hostName;
     _proxyPort = port;
 
-    auto proxy = _networkAccessManager->proxy();
-    proxy.setPort(port);
-    _networkAccessManager->setProxy(proxy);
+    applyProxyToNetworkAccessManager();
 
-    Q_EMIT proxyPortChanged();
+    if (typeChanged) {
+        Q_EMIT proxyTypeChanged();
+    }
+    if (hostNameChanged) {
+        Q_EMIT proxyHostNameChanged();
+    }
+    if (portChanged) {
+        Q_EMIT proxyPortChanged();
+    }
 }
 
 bool Account::proxyNeedsAuth() const
@@ -1490,12 +1509,65 @@ void Account::setProxySettings(const QNetworkProxy::ProxyType proxyType,
                                const QString &user,
                                const QString &password)
 {
-    setProxyType(proxyType);
-    setProxyHostName(hostName);
-    setProxyPort(port);
+    // Enforced fields keep the policy value, credentials are never managed.
+    if (!_managedProxy.typeEnforced) {
+        _accountProxyType = proxyType;
+    }
+    if (!_managedProxy.hostEnforced) {
+        _accountProxyHostName = hostName;
+    }
+    if (!_managedProxy.portEnforced) {
+        _accountProxyPort = port;
+    }
+    updateProxyInUse();
     setProxyNeedsAuth(needsAuth);
     setProxyUser(user);
     setProxyPassword(password);
+}
+
+bool Account::proxySettingsAreManaged() const
+{
+    return _managedProxy.isEnforced;
+}
+
+void Account::applyManagedProxySettings(const ManagedProxySettings &managedProxy)
+{
+    _managedProxy = managedProxy;
+    updateProxyInUse();
+}
+
+const ManagedProxySettings &Account::managedProxySettings() const
+{
+    return _managedProxy;
+}
+
+void Account::applyProxyToNetworkAccessManager()
+{
+    if (!_networkAccessManager) {
+        return;
+    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setType(_proxyType);
+    proxy.setHostName(_proxyHostName);
+    proxy.setPort(_proxyPort);
+    proxy.setUser(proxyUser());
+    proxy.setPassword(proxyPassword());
+    _networkAccessManager->setProxy(proxy);
+}
+
+QNetworkProxy::ProxyType Account::accountProxyType() const
+{
+    return _accountProxyType;
+}
+
+QString Account::accountProxyHostName() const
+{
+    return _accountProxyHostName;
+}
+
+int Account::accountProxyPort() const
+{
+    return _accountProxyPort;
 }
 
 Account::AccountNetworkTransferLimitSetting Account::uploadLimitSetting() const

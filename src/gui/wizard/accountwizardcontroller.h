@@ -18,6 +18,7 @@
 #include <memory>
 
 #include "accountfwd.h"
+#include "configfile.h"
 #include "creds/flow2auth.h"
 #include "networkjobs.h"
 
@@ -261,6 +262,8 @@ private:
 
     friend class AccountWizardControllerTestAccess;
 
+    // The wizard account is not registered yet, so its own server settings have to be used.
+    [[nodiscard]] ManagedVirtualFilesMode accountManagedVirtualFilesMode() const;
     void initialiseAccount();
     void ensureAccount();
     void initialiseOverrideServerChoices();
@@ -269,6 +272,7 @@ private:
     void connectToAuthenticatedAccount(const QString &url, const QString &user, const QString &appPassword);
     void testOwnCloudConnect();
     void completeAuthentication();
+    void chooseSyncModeAfterCapabilities();
     void fetchUserAvatar();
     void fetchRootFolderSize();
     AccountState *applyAccountChanges();
@@ -348,6 +352,7 @@ private:
     bool _localSyncFolderPickerOpen = false;
     SyncMode _syncMode = SyncEverything;
     bool _needsSyncOptions = false;
+    bool _syncModeChosen = false;
     bool _askBeforeLargeFolders = true;
     int _largeFolderThresholdMb = 500;
     bool _askBeforeExternalStorage = true;

@@ -104,7 +104,8 @@ AccountWizardController::AccountWizardController(QObject *parent)
     _askBeforeExternalStorage = cfg.confirmExternalStorage();
 
 #ifndef Q_OS_LINUX
-    if (canUseVirtualFiles()) {
+    const auto managedVfs = accountManagedVirtualFilesMode();
+    if (canUseVirtualFiles() && !(managedVfs.isManaged && !managedVfs.enabled)) {
         _syncMode = VirtualFiles;
     }
 #endif
@@ -336,9 +337,18 @@ bool AccountWizardController::canFinish() const
     return !localSyncFolderRequired() || _localSyncFolderValid;
 }
 
+ManagedVirtualFilesMode AccountWizardController::accountManagedVirtualFilesMode() const
+{
+    return _account ? ConfigFile().managedVirtualFilesMode(_account->serverManagedSettings()) : ConfigFile().managedVirtualFilesMode();
+}
+
 bool AccountWizardController::canUseVirtualFiles() const
 {
     if (Theme::instance()->disableVirtualFilesSyncFolder()) {
+        return false;
+    }
+
+    if (const auto managedVfs = accountManagedVirtualFilesMode(); managedVfs.isEnforced && !managedVfs.enabled) {
         return false;
     }
 
@@ -362,7 +372,9 @@ bool AccountWizardController::isUsingFileProvider() const
 
 bool AccountWizardController::canUseClassicSync() const
 {
-    return !Theme::instance()->enforceVirtualFilesSyncFolder() || !canUseVirtualFiles();
+    const auto managedVfs = accountManagedVirtualFilesMode();
+    const auto vfsEnforced = Theme::instance()->enforceVirtualFilesSyncFolder() || (managedVfs.isEnforced && managedVfs.enabled);
+    return !vfsEnforced || !canUseVirtualFiles();
 }
 
 bool AccountWizardController::needsSyncOptions() const
@@ -787,8 +799,12 @@ void AccountWizardController::startServerCheck(const QUrl &serverUrl)
     setBusy(true);
     setAuthStatusText(tr("Checking server address") + QStringLiteral("…"));
 
-    if (proxySettingsAvailable() && (ClientProxy::isUsingSystemDefault() || _account->proxyType() == QNetworkProxy::DefaultProxy)) {
+    const auto proxyMode = ClientProxy::accountProxyMode(*_account);
+    if (proxySettingsAvailable() && proxyMode == ClientProxy::AccountProxyMode::SystemProxy) {
         ClientProxy::lookupSystemProxyAsync(_account->url(), this, SLOT(slotSystemProxyLookupDone(QNetworkProxy)));
+    } else if (proxyMode == ClientProxy::AccountProxyMode::AccountProxy) {
+        _account->applyProxyToNetworkAccessManager();
+        QMetaObject::invokeMethod(this, "slotFindServer", Qt::QueuedConnection);
     } else {
         _account->networkAccessManager()->setProxy(QNetworkProxy(proxySettingsAvailable() ? QNetworkProxy::DefaultProxy : QNetworkProxy::NoProxy));
         QMetaObject::invokeMethod(this, "slotFindServer", Qt::QueuedConnection);
@@ -1118,6 +1134,39 @@ void AccountWizardController::completeAuthentication()
     initialiseLocalSyncFolder();
     fetchRootFolderSize();
 
+    // Load capabilities before choosing, so a server enforced mode is honored; fall back on failure.
+    _syncModeChosen = false;
+    auto *capabilitiesJob = new JsonApiJob(_account, QStringLiteral("ocs/v1.php/cloud/capabilities"), this);
+    capabilitiesJob->setTimeout(10 * 1000);
+    const auto choose = [this, capabilitiesJob] {
+        if (_syncModeChosen) {
+            return;
+        }
+        _syncModeChosen = true;
+        capabilitiesJob->deleteLater();
+        chooseSyncModeAfterCapabilities();
+    };
+    connect(capabilitiesJob, &JsonApiJob::jsonReceived, this, [this, choose](const QJsonDocument &json, int statusCode) {
+        if (statusCode == 100) {
+            const auto caps =
+                json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("capabilities")).toObject();
+            _account->setCapabilities(caps.toVariantMap());
+        }
+        choose();
+    });
+    connect(capabilitiesJob, &AbstractNetworkJob::networkError, this, [choose] {
+        choose();
+    });
+    capabilitiesJob->start();
+}
+
+void AccountWizardController::chooseSyncModeAfterCapabilities()
+{
+    // Capabilities may now forbid virtual files.
+    if (_syncMode == VirtualFiles && !canUseVirtualFiles()) {
+        setSyncMode(SyncEverything);
+    }
+
 #ifdef BUILD_FILE_PROVIDER_MODULE
     setNeedsSyncOptions(!canUseVirtualFiles());
 #else
@@ -1237,9 +1286,14 @@ void AccountWizardController::finish()
     }
 
     if (_syncMode == SyncEverything) {
+        // Only write what the user changed, so the wizard does not store a server default as a user value.
         ConfigFile cfgFile;
-        cfgFile.setNewBigFolderSizeLimit(_askBeforeLargeFolders, _largeFolderThresholdMb);
-        cfgFile.setConfirmExternalStorage(_askBeforeExternalStorage);
+        if (cfgFile.newBigFolderSizeLimit() != qMakePair(_askBeforeLargeFolders, static_cast<qint64>(_largeFolderThresholdMb))) {
+            cfgFile.setNewBigFolderSizeLimit(_askBeforeLargeFolders, _largeFolderThresholdMb);
+        }
+        if (cfgFile.confirmExternalStorage() != _askBeforeExternalStorage) {
+            cfgFile.setConfirmExternalStorage(_askBeforeExternalStorage);
+        }
     }
 
     if (localSyncFolderRequired()) {

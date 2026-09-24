@@ -53,15 +53,22 @@ void ConnectionValidator::checkServerAndAuth()
 
     _isCheckingServerAndAuth = true;
 
-    // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
-    if (ClientProxy::isUsingSystemDefault() || _account->proxyType() == QNetworkProxy::DefaultProxy) {
+    switch (ClientProxy::accountProxyMode(*_account)) {
+    case ClientProxy::AccountProxyMode::SystemProxy:
+        // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
         qCDebug(lcConnectionValidator) << "Trying to look up system proxy";
         ClientProxy::lookupSystemProxyAsync(_account->url(), this, SLOT(systemProxyLookupDone(QNetworkProxy)));
-    } else {
+        break;
+    case ClientProxy::AccountProxyMode::AccountProxy:
+        _account->applyProxyToNetworkAccessManager();
+        QMetaObject::invokeMethod(this, "slotCheckRedirectCostFreeUrl", Qt::QueuedConnection);
+        break;
+    case ClientProxy::AccountProxyMode::ApplicationProxy:
         // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
         _account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
         // use a queued invocation so we're as asynchronous as with the other code path
         QMetaObject::invokeMethod(this, "slotCheckRedirectCostFreeUrl", Qt::QueuedConnection);
+        break;
     }
 }
 

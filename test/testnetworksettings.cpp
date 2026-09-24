@@ -9,14 +9,20 @@
 
 #include <QtTest>
 
+#include <QWidget>
+
 #include "account.h"
-#include "testhelper.h"
+#include "configfile.h"
 #include "foldermantestutils.h"
 #include "logger.h"
+#include "managedsettingstestutils.h"
+#include "syncenginetestutils.h"
+#include "testhelper.h"
 
 #include "networksettings.h"
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 class TestNetworkSettings : public QObject
 {
@@ -31,6 +37,21 @@ private Q_SLOTS:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    // Keeps tests off the device policy of the machine running them.
+    void init()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
+    }
+
+    void cleanup()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
     }
 
     void test_whenAccountIsLoggedOut_doesNotCrash()
@@ -49,6 +70,47 @@ private Q_SLOTS:
         
         // The test passes if we reach here without crashing
         QVERIFY(true);
+    }
+
+    void testEnforcedProxyFieldsDisableOnlyTheirControls_data()
+    {
+        QTest::addColumn<bool>("typeEnforced");
+        QTest::addColumn<bool>("hostAndPortEnforced");
+
+        QTest::newRow("host and port enforced") << false << true;
+        QTest::newRow("only type enforced") << true << false;
+    }
+
+    void testEnforcedProxyFieldsDisableOnlyTheirControls()
+    {
+        QFETCH(bool, typeEnforced);
+        QFETCH(bool, hostAndPortEnforced);
+
+        auto account = Account::create();
+        account->setUrl(QUrl(u"https://example.com"_s));
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        account->setProxyType(QNetworkProxy::HttpProxy);
+        account->applyManagedProxySettings(managedProxyFields(true,
+                                                              typeEnforced ? std::optional<int>(QNetworkProxy::HttpProxy) : std::nullopt,
+                                                              hostAndPortEnforced ? std::optional<QString>(u"proxy.example.com"_s) : std::nullopt,
+                                                              hostAndPortEnforced ? std::optional<int>(8080) : std::nullopt));
+
+        NetworkSettings settings(account);
+
+        const auto typeComboBox = settings.findChild<QWidget *>(u"typeComboBox"_s);
+        const auto manualProxyRadioButton = settings.findChild<QWidget *>(u"manualProxyRadioButton"_s);
+        const auto hostLineEdit = settings.findChild<QWidget *>(u"hostLineEdit"_s);
+        const auto portSpinBox = settings.findChild<QWidget *>(u"portSpinBox"_s);
+        const auto authRequiredCheckBox = settings.findChild<QWidget *>(u"authRequiredcheckBox"_s);
+        const auto proxyEnforcedLabel = settings.findChild<QWidget *>(u"proxyEnforcedLabel"_s);
+        QVERIFY(typeComboBox && manualProxyRadioButton && hostLineEdit && portSpinBox && authRequiredCheckBox && proxyEnforcedLabel);
+
+        QCOMPARE(typeComboBox->isEnabled(), !typeEnforced);
+        QCOMPARE(manualProxyRadioButton->isEnabled(), !typeEnforced);
+        QCOMPARE(hostLineEdit->isEnabled(), !hostAndPortEnforced);
+        QCOMPARE(portSpinBox->isEnabled(), !hostAndPortEnforced);
+        QVERIFY(authRequiredCheckBox->isEnabled());
+        QVERIFY(!proxyEnforcedLabel->isHidden());
     }
 };
 

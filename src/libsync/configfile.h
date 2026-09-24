@@ -8,13 +8,17 @@
 #define CONFIGFILE_H
 
 #include "owncloudlib.h"
-#include <memory>
-#include <QSharedPointer>
+#include "settings/managedproxysettings.h"
+#include "settings/managedsettings.h"
 #include <QSettings>
+#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
-#include <chrono>
 #include <QVersionNumber>
+#include <chrono>
+#include <functional>
+#include <memory>
+#include <vector>
 
 class QWidget;
 class QHeaderView;
@@ -24,6 +28,15 @@ namespace OCC {
 
 class AbstractCredentials;
 class Migration;
+struct ServerManagedSettings;
+
+// Managed virtual files mode resolved from the settings hierarchy.
+// enabled is true when the resolved mode is a virtual files mode, false when it is off.
+struct ManagedVirtualFilesMode {
+    bool isManaged = false;
+    bool isEnforced = false;
+    bool enabled = false;
+};
 
 /**
  * @brief The ConfigFile class
@@ -123,6 +136,16 @@ public:
     [[nodiscard]] int proxyType() const;
     [[nodiscard]] QString proxyHostName() const;
     [[nodiscard]] int proxyPort() const;
+
+    // Proxy type, host and port resolved together from the settings hierarchy.
+    [[nodiscard]] ManagedProxySettings managedProxySettings() const;
+    // Server values apply only to the account that supplied them.
+    [[nodiscard]] ManagedProxySettings managedProxySettings(const ServerManagedSettings &accountServerSettings) const;
+
+    // Virtual files mode resolved from the settings hierarchy.
+    [[nodiscard]] ManagedVirtualFilesMode managedVirtualFilesMode() const;
+    // Server values apply only to the supplying account.
+    [[nodiscard]] ManagedVirtualFilesMode managedVirtualFilesMode(const ServerManagedSettings &accountServerSettings) const;
     [[nodiscard]] bool proxyNeedsAuth() const;
     [[nodiscard]] QString proxyUser() const;
     [[nodiscard]] QString proxyPassword() const;
@@ -237,6 +260,28 @@ public:
     [[nodiscard]] QString desktopEnterpriseChannel() const;
     void setDesktopEnterpriseChannel(const QString &channel);
 
+    [[nodiscard]] ServerManagedSettings serverManagedSettings() const;
+    void setServerManagedSettings(const ServerManagedSettings &settings);
+
+    // Enforcement aware read: resolves across device, server, user and defaults, with source and enforcement.
+    [[nodiscard]] ResolvedSetting getConfig(const QString &name, const QVariant &builtinDefault = {}, const QString &connectionGroupName = {}) const;
+    // Typed read; the value is converted to the schema type, T is the caller's type.
+    template<typename T>
+    [[nodiscard]] T getConfig(const QString &name, const QString &connectionGroupName = {}) const
+    {
+        return getConfig(name, QVariant{}, connectionGroupName).value.template value<T>();
+    }
+    // Writes the user config, unless the effective value is enforced; returns false then.
+    bool setConfig(const QString &name, const QVariant &value, const QString &connectionGroupName = {});
+    [[nodiscard]] bool isEnforced(const QString &name, const QString &connectionGroupName = {}) const;
+    [[nodiscard]] SettingSourceType sourceOf(const QString &name, const QString &connectionGroupName = {}) const;
+    // The label shown next to an enforced control, chosen by where the value came from.
+    [[nodiscard]] QString sourceLabel(const QString &name) const;
+
+    using DeviceSourcesFactory = std::function<std::vector<std::unique_ptr<SettingSource>>()>;
+    // For tests; an empty factory restores the platform sources.
+    static void setDeviceSourcesFactory(DeviceSourcesFactory factory);
+
     [[nodiscard]] bool hasDesktopEnterpriseChannel() const;
 
     /// Enforce a specific language used for the UI
@@ -303,13 +348,15 @@ public:
     static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
 
 protected:
-    [[nodiscard]] QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;
     void storeData(const QString &group, const QString &key, const QVariant &value);
     [[nodiscard]] QVariant retrieveData(const QString &group, const QString &key) const;
     void removeData(const QString &group, const QString &key);
     [[nodiscard]] bool dataExists(const QString &group, const QString &key) const;
 
 private:
+    [[nodiscard]] ResolvedSetting
+    resolveSetting(const QString &name, const QVariant &builtinDefault, const QString &connectionGroupName, const ServerManagedSettings &serverSettings) const;
+
     [[nodiscard]] QVariant getValue(const QString &param, const QString &group = QString(),
         const QVariant &defaultValue = QVariant()) const;
     void setValue(const QString &key, const QVariant &value);

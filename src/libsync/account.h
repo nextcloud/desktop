@@ -13,6 +13,8 @@
 #include "clientstatusreporting.h"
 #include "common/utility.h"
 #include "common/vfs.h"
+#include "settings/managedproxysettings.h"
+#include "settings/servermanagedsettings.h"
 #include "syncfileitem.h"
 #include "updatechannel.h"
 
@@ -374,6 +376,7 @@ public:
 
     void updateServerSubcription();
     void updateDesktopEnterpriseChannel();
+    void updateServerManagedSettings();
 
     // Network-related settings
     [[nodiscard]] QNetworkProxy::ProxyType proxyType() const;
@@ -401,6 +404,16 @@ public:
                           const QString &proxyUser,
                           const QString &proxyPassword);
 
+    [[nodiscard]] bool proxySettingsAreManaged() const;
+
+    void applyManagedProxySettings(const OCC::ManagedProxySettings &managedProxy);
+    void applyProxyToNetworkAccessManager();
+    [[nodiscard]] const OCC::ManagedProxySettings &managedProxySettings() const;
+
+    [[nodiscard]] QNetworkProxy::ProxyType accountProxyType() const;
+    [[nodiscard]] QString accountProxyHostName() const;
+    [[nodiscard]] int accountProxyPort() const;
+
     [[nodiscard]] AccountNetworkTransferLimitSetting uploadLimitSetting() const;
     void setUploadLimitSetting(AccountNetworkTransferLimitSetting setting);
 
@@ -419,6 +432,8 @@ public:
 
     [[nodiscard]] UpdateChannel enterpriseUpdateChannel() const;
     void setEnterpriseUpdateChannel(const UpdateChannel &channel);
+
+    [[nodiscard]] ServerManagedSettings serverManagedSettings() const;
 
     [[nodiscard]] bool enforceUseHardwareTokenEncryption() const;
 
@@ -527,6 +542,7 @@ private:
     Account(QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
     void updateServerColors();
+    void updateProxyInUse();
 
     [[nodiscard]] static QString davPathBase();
     [[nodiscard]] QColor serverColor() const;
@@ -593,18 +609,24 @@ private:
 
     QHash<QString, QVector<SyncFileItem::LockStatus>> _lockStatusChangeInprogress;
 
+    // The proxy used for requests: the account values with managed ones applied.
     QNetworkProxy::ProxyType _proxyType = QNetworkProxy::NoProxy;
     QString _proxyHostName;
     int _proxyPort = 0;
     bool _proxyNeedsAuth = false;
     QString _proxyUser;
     QString _proxyPassword;
+    QNetworkProxy::ProxyType _accountProxyType = QNetworkProxy::NoProxy;
+    QString _accountProxyHostName;
+    int _accountProxyPort = 0;
+    OCC::ManagedProxySettings _managedProxy;
     AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     unsigned int _uploadLimit = 0;
     unsigned int _downloadLimit = 0;
     bool _serverHasValidSubscription = false;
     UpdateChannel _enterpriseUpdateChannel = UpdateChannel::Invalid;
+    ServerManagedSettings _serverManagedSettings;
     QByteArray _encryptionCertificateFingerprint;
 
 #ifdef BUILD_FILE_PROVIDER_MODULE

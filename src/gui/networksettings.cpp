@@ -12,6 +12,7 @@
 #include "application.h"
 #include "configfile.h"
 #include "folderman.h"
+#include "settingspanelstyle.h"
 #include "theme.h"
 
 #include <QShowEvent>
@@ -20,6 +21,8 @@
 #include <QList>
 #include <QPalette>
 #include <type_traits>
+
+using namespace Qt::StringLiterals;
 
 namespace OCC {
 
@@ -56,6 +59,26 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
         connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, this, &NetworkSettings::checkAccountLocalhost);
 
         loadProxySettings();
+
+        // Only enforced fields are locked, so the credentials of an enforced proxy stay editable.
+        const auto managedProxy = _account ? _account->managedProxySettings() : ManagedProxySettings{};
+        if (managedProxy.typeEnforced) {
+            _ui->noProxyRadioButton->setEnabled(false);
+            _ui->systemProxyRadioButton->setEnabled(false);
+            _ui->manualProxyRadioButton->setEnabled(false);
+            _ui->typeComboBox->setEnabled(false);
+        }
+        if (managedProxy.hostEnforced) {
+            _ui->hostLineEdit->setEnabled(false);
+        }
+        if (managedProxy.portEnforced) {
+            _ui->portSpinBox->setEnabled(false);
+        }
+        if (managedProxy.isEnforced) {
+            SettingsPanelStyle::applyManagedLabelStyle(_ui->proxyEnforcedLabel);
+            _ui->proxyEnforcedLabel->setText(ConfigFile().sourceLabel(u"proxyType"_s));
+        }
+        _ui->proxyEnforcedLabel->setVisible(managedProxy.isEnforced);
 
         connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &NetworkSettings::saveProxySettings);
         connect(_ui->proxyButtonGroup, &QButtonGroup::buttonClicked, this, &NetworkSettings::saveProxySettings);

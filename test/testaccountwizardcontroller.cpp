@@ -7,6 +7,7 @@
 #include "configfile.h"
 #include "gui/localnetworkpermission.h"
 #include "gui/wizard/accountwizardcontroller.h"
+#include "managedsettingstestutils.h"
 #include "theme.h"
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
@@ -38,6 +39,16 @@ public:
         controller._account = Account::create();
         controller._account->setUrl(url);
     }
+
+    static void setSyncMode(AccountWizardController &controller, AccountWizardController::SyncMode mode)
+    {
+        controller._syncMode = mode;
+    }
+
+    static void chooseSyncModeAfterCapabilities(AccountWizardController &controller)
+    {
+        controller.chooseSyncModeAfterCapabilities();
+    }
 };
 
 }
@@ -50,6 +61,42 @@ private Q_SLOTS:
     void initTestCase()
     {
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    // Keeps tests off the device policy of the machine running them.
+    void init()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
+    }
+
+    void cleanup()
+    {
+        ConfigFile::setDeviceSourcesFactory({});
+    }
+
+    void switchesAwayFromVirtualFilesWhenEnforcedOff()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                          EnforcementState::Enforced,
+                                                          200,
+                                                          QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("off")}}));
+            return sources;
+        });
+
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setAccountUrl(controller, QUrl(QStringLiteral("https://cloud.example")));
+        AccountWizardControllerTestAccess::setSyncMode(controller, AccountWizardController::VirtualFiles);
+        QCOMPARE(controller.syncMode(), AccountWizardController::VirtualFiles);
+
+        AccountWizardControllerTestAccess::chooseSyncModeAfterCapabilities(controller);
+
+        QVERIFY(controller.syncMode() != AccountWizardController::VirtualFiles);
+        QVERIFY(controller.needsSyncOptions());
+        QVERIFY(controller.localSyncFolderRequired());
     }
 
     void normalizesCommonServerUrlSuffixes()

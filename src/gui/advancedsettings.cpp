@@ -320,12 +320,48 @@ void AdvancedSettings::loadMiscSettings()
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
+    _ui->newExternalStorage->setEnabled(true);
+    _ui->newFolderLimitCheckBox->setEnabled(true);
+    _ui->newFolderLimitSpinBox->setEnabled(true);
     _ui->existingFolderLimitCheckBox->setEnabled(_ui->newFolderLimitCheckBox->isChecked());
     _ui->existingFolderLimitLabel->setEnabled(_ui->newFolderLimitCheckBox->isChecked());
     _ui->existingFolderLimitCheckBox->setChecked(_ui->newFolderLimitCheckBox->isChecked() && cfgFile.notifyExistingFoldersOverLimit());
     _ui->stopExistingFolderNowBigSyncCheckBox->setEnabled(_ui->existingFolderLimitCheckBox->isChecked());
     _ui->stopExistingFolderNowBigSyncLabel->setEnabled(_ui->existingFolderLimitCheckBox->isChecked());
     _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
+
+    // One label per group, so it never describes a control in another section.
+    QString folderLimitEnforcedKey;
+    QString externalStorageEnforcedKey;
+    const auto disableIfEnforced = [&cfgFile](QWidget *widget, const QString &key, QString &groupEnforcedKey) {
+        if (!cfgFile.isEnforced(key)) {
+            return;
+        }
+        widget->setEnabled(false);
+        if (groupEnforcedKey.isEmpty()) {
+            groupEnforcedKey = key;
+        }
+    };
+    disableIfEnforced(_ui->newExternalStorage, QLatin1String(ConfigFile::confirmExternalStorageC), externalStorageEnforcedKey);
+    disableIfEnforced(_ui->newFolderLimitCheckBox, QLatin1String(ConfigFile::useNewBigFolderSizeLimitC), folderLimitEnforcedKey);
+    disableIfEnforced(_ui->newFolderLimitSpinBox, QLatin1String(ConfigFile::newBigFolderSizeLimitC), folderLimitEnforcedKey);
+    disableIfEnforced(_ui->existingFolderLimitCheckBox, QLatin1String(ConfigFile::notifyExistingFoldersOverLimitC), folderLimitEnforcedKey);
+    disableIfEnforced(_ui->stopExistingFolderNowBigSyncCheckBox, QLatin1String(ConfigFile::stopSyncingExistingFoldersOverLimitC), folderLimitEnforcedKey);
+
+    const auto showEnforcedLabel = [&cfgFile](QLabel *label, const QString &key) {
+        label->setVisible(!key.isEmpty());
+        if (key.isEmpty()) {
+            return;
+        }
+        SettingsPanelStyle::applyManagedLabelStyle(label);
+        label->setText(cfgFile.sourceLabel(key));
+    };
+    showEnforcedLabel(_ui->folderLimitEnforcedLabel, folderLimitEnforcedKey);
+    showEnforcedLabel(_ui->externalStorageEnforcedLabel, externalStorageEnforcedKey);
+
+    // Grey the labels out with their controls on load, not only after a toggle.
+    _ui->existingFolderLimitLabel->setEnabled(_ui->existingFolderLimitCheckBox->isEnabled());
+    _ui->stopExistingFolderNowBigSyncLabel->setEnabled(_ui->stopExistingFolderNowBigSyncCheckBox->isEnabled());
 
     const auto interval = cfgFile.remotePollInterval();
     _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));
@@ -344,16 +380,33 @@ void AdvancedSettings::saveMiscSettings()
     const auto existingFolderLimitEnabled = newFolderLimitEnabled && _ui->existingFolderLimitCheckBox->isChecked();
     const auto stopSyncingExistingFoldersOverLimit = existingFolderLimitEnabled && _ui->stopExistingFolderNowBigSyncCheckBox->isChecked();
 
-    cfgFile.setMoveToTrash(_ui->moveFilesToTrashCheckBox->isChecked());
-    cfgFile.setNewBigFolderSizeLimit(newFolderLimitEnabled, _ui->newFolderLimitSpinBox->value());
-    cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
-    cfgFile.setNotifyExistingFoldersOverLimit(existingFolderLimitEnabled);
-    cfgFile.setStopSyncingExistingFoldersOverLimit(stopSyncingExistingFoldersOverLimit);
+    // Only changed controls are written. Persisting every key would turn a server default
+    // into a user value as soon as any control on the page is toggled.
+    const auto moveToTrash = _ui->moveFilesToTrashCheckBox->isChecked();
+    if (cfgFile.moveToTrash() != moveToTrash) {
+        cfgFile.setMoveToTrash(moveToTrash);
+    }
+    const auto folderSizeLimit = static_cast<qint64>(_ui->newFolderLimitSpinBox->value());
+    if (cfgFile.newBigFolderSizeLimit() != qMakePair(newFolderLimitEnabled, folderSizeLimit)) {
+        cfgFile.setNewBigFolderSizeLimit(newFolderLimitEnabled, folderSizeLimit);
+    }
+    const auto confirmExternalStorage = _ui->newExternalStorage->isChecked();
+    if (cfgFile.confirmExternalStorage() != confirmExternalStorage) {
+        cfgFile.setConfirmExternalStorage(confirmExternalStorage);
+    }
+    if (cfgFile.notifyExistingFoldersOverLimit() != existingFolderLimitEnabled) {
+        cfgFile.setNotifyExistingFoldersOverLimit(existingFolderLimitEnabled);
+    }
+    if (cfgFile.stopSyncingExistingFoldersOverLimit() != stopSyncingExistingFoldersOverLimit) {
+        cfgFile.setStopSyncingExistingFoldersOverLimit(stopSyncingExistingFoldersOverLimit);
+    }
 
-    _ui->existingFolderLimitCheckBox->setEnabled(newFolderLimitEnabled);
-    _ui->existingFolderLimitLabel->setEnabled(newFolderLimitEnabled);
-    _ui->stopExistingFolderNowBigSyncCheckBox->setEnabled(existingFolderLimitEnabled);
-    _ui->stopExistingFolderNowBigSyncLabel->setEnabled(existingFolderLimitEnabled);
+    _ui->existingFolderLimitCheckBox->setEnabled(newFolderLimitEnabled && !cfgFile.isEnforced(QLatin1String(ConfigFile::notifyExistingFoldersOverLimitC)));
+    _ui->existingFolderLimitLabel->setEnabled(newFolderLimitEnabled && !cfgFile.isEnforced(QLatin1String(ConfigFile::notifyExistingFoldersOverLimitC)));
+    _ui->stopExistingFolderNowBigSyncCheckBox->setEnabled(existingFolderLimitEnabled
+                                                          && !cfgFile.isEnforced(QLatin1String(ConfigFile::stopSyncingExistingFoldersOverLimitC)));
+    _ui->stopExistingFolderNowBigSyncLabel->setEnabled(existingFolderLimitEnabled
+                                                       && !cfgFile.isEnforced(QLatin1String(ConfigFile::stopSyncingExistingFoldersOverLimitC)));
 }
 
 void AdvancedSettings::slotShowInExplorerNavigationPane(bool checked)

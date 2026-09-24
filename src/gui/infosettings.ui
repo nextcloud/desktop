@@ -231,6 +231,13 @@
             </widget>
            </item>
            <item>
+            <widget class="QLabel" name="adminEnforcedLabel">
+             <property name="text">
+              <string></string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="OCC::SettingsSwitch" name="autoCheckForUpdatesCheckBox">
              <property name="checked">
               <bool>true</bool>

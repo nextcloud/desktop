@@ -166,6 +166,20 @@ set(libsync_SRCS
     caseclashconflictsolver.cpp
     settings/migration.h
     settings/migration.cpp
+    settings/managedproxysettings.h
+    settings/settingpriorities.h
+    settings/managedsettings.h
+    settings/managedsettings.cpp
+    settings/managedsettingsschema.h
+    settings/managedsettingsschema.cpp
+    settings/devicesources.h
+    settings/devicesources.cpp
+    settings/settingsources.h
+    settings/settingsources.cpp
+    settings/servermanagedsettings.h
+    settings/servermanagedsettings.cpp
+    settings/managedconfig.h
+    settings/managedconfig.cpp
     chronoelapsedtimer.h
     chronoelapsedtimer.cpp
     hydrationjob.h
@@ -181,6 +195,7 @@ if(APPLE)
     list(APPEND libsync_SRCS
         theme_mac.h
         theme_mac.mm
+        settings/settingsources_mac.mm
     )
 endif()
 

@@ -132,9 +132,16 @@ void GeneralSettings::loadMiscSettings()
     if (Mac::FileProvider::available()) {
         const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
         const auto fpOperationInProgress = fpSettingsController->isOperationInProgress();
+        const auto managedVfs = cfgFile.managedVirtualFilesMode();
+        const auto enforcedOff = managedVfs.isEnforced && !managedVfs.enabled;
         _ui->fileProviderCheckBox->setChecked(fpSettingsController->fileProviderModeEnabled());
-        _ui->fileProviderCheckBox->setEnabled(!fpOperationInProgress);
-        _ui->fileProviderLabel->setEnabled(!fpOperationInProgress);
+        _ui->fileProviderCheckBox->setEnabled(!fpOperationInProgress && !enforcedOff);
+        _ui->fileProviderLabel->setEnabled(!fpOperationInProgress && !enforcedOff);
+        _ui->fileProviderEnforcedLabel->setVisible(enforcedOff);
+        if (enforcedOff) {
+            SettingsPanelStyle::applyManagedLabelStyle(_ui->fileProviderEnforcedLabel);
+            _ui->fileProviderEnforcedLabel->setText(cfgFile.sourceLabel(QStringLiteral("virtualFilesMode")));
+        }
     }
 #endif
 }
