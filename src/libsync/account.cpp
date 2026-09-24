@@ -312,7 +312,9 @@ void Account::setCredentials(AbstractCredentials *cred)
         _networkAccessManager->setCookieJar(jar);
     }
     if (proxy.type() != QNetworkProxy::DefaultProxy) {
-        _networkAccessManager->setProxy(proxy);
+        _networkAccessManager->setProxy(proxy); // Remember proxy (issue #2108)
+    } else if (_managedProxy.isManaged) {
+        applyProxyToNetworkAccessManager();
     }
     connect(_networkAccessManager.data(), &QNetworkAccessManager::sslErrors,
         this, &Account::slotHandleSslErrors);
@@ -1432,15 +1434,7 @@ void Account::updateProxyInUse()
     _proxyHostName = hostName;
     _proxyPort = port;
 
-    if (_networkAccessManager) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setType(_proxyType);
-        proxy.setHostName(_proxyHostName);
-        proxy.setPort(_proxyPort);
-        proxy.setUser(proxyUser());
-        proxy.setPassword(proxyPassword());
-        _networkAccessManager->setProxy(proxy);
-    }
+    applyProxyToNetworkAccessManager();
 
     if (typeChanged) {
         Q_EMIT proxyTypeChanged();
@@ -1545,6 +1539,20 @@ void Account::applyManagedProxySettings(const ManagedProxySettings &managedProxy
 const ManagedProxySettings &Account::managedProxySettings() const
 {
     return _managedProxy;
+}
+
+void Account::applyProxyToNetworkAccessManager()
+{
+    if (!_networkAccessManager) {
+        return;
+    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setType(_proxyType);
+    proxy.setHostName(_proxyHostName);
+    proxy.setPort(_proxyPort);
+    proxy.setUser(proxyUser());
+    proxy.setPassword(proxyPassword());
+    _networkAccessManager->setProxy(proxy);
 }
 
 QNetworkProxy::ProxyType Account::accountProxyType() const

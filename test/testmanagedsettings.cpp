@@ -808,6 +808,19 @@ private Q_SLOTS:
         QCOMPARE(account->accountProxyPort(), 1111);
     }
 
+    // createAccount applies the policy before the network access manager exists, so setCredentials must still put it there.
+    void testEnforcedProxyReachesNetworkAccessManagerAppliedBeforeCredentials()
+    {
+        const auto account = Account::create();
+        account->applyManagedProxySettings(managedProxyFields(true, int(QNetworkProxy::HttpProxy), u"proxy.example.com"_s, 8080));
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+
+        const auto proxy = account->networkAccessManager()->proxy();
+        QCOMPARE(proxy.type(), QNetworkProxy::HttpProxy);
+        QCOMPARE(proxy.hostName(), u"proxy.example.com"_s);
+        QCOMPARE(int(proxy.port()), 8080);
+    }
+
     void testAccountProxyModeKeepsEnforcedProxy_data()
     {
         QTest::addColumn<int>("enforcedProxyType");

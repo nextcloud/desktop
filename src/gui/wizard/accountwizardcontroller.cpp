@@ -803,7 +803,7 @@ void AccountWizardController::startServerCheck(const QUrl &serverUrl)
     if (proxySettingsAvailable() && proxyMode == ClientProxy::AccountProxyMode::SystemProxy) {
         ClientProxy::lookupSystemProxyAsync(_account->url(), this, SLOT(slotSystemProxyLookupDone(QNetworkProxy)));
     } else if (proxyMode == ClientProxy::AccountProxyMode::AccountProxy) {
-        // An enforced proxy is already on the QNAM.
+        _account->applyProxyToNetworkAccessManager();
         QMetaObject::invokeMethod(this, "slotFindServer", Qt::QueuedConnection);
     } else {
         _account->networkAccessManager()->setProxy(QNetworkProxy(proxySettingsAvailable() ? QNetworkProxy::DefaultProxy : QNetworkProxy::NoProxy));

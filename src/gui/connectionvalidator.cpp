@@ -60,7 +60,7 @@ void ConnectionValidator::checkServerAndAuth()
         ClientProxy::lookupSystemProxyAsync(_account->url(), this, SLOT(systemProxyLookupDone(QNetworkProxy)));
         break;
     case ClientProxy::AccountProxyMode::AccountProxy:
-        // An enforced proxy is already on the QNAM.
+        _account->applyProxyToNetworkAccessManager();
         QMetaObject::invokeMethod(this, "slotCheckRedirectCostFreeUrl", Qt::QueuedConnection);
         break;
     case ClientProxy::AccountProxyMode::ApplicationProxy:

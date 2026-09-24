@@ -407,6 +407,7 @@ public:
     [[nodiscard]] bool proxySettingsAreManaged() const;
 
     void applyManagedProxySettings(const OCC::ManagedProxySettings &managedProxy);
+    void applyProxyToNetworkAccessManager();
     [[nodiscard]] const OCC::ManagedProxySettings &managedProxySettings() const;
 
     [[nodiscard]] QNetworkProxy::ProxyType accountProxyType() const;
