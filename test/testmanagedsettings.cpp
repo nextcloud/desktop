@@ -341,13 +341,13 @@ private Q_SLOTS:
     void testSanitizeKeepsAcceptedKeysDropsUnknown()
     {
         ServerManagedSettings raw;
-        raw.defaults = QVariantMap{{QStringLiteral("skipUpdateCheck"), false}, {QStringLiteral("bogus"), 1}};
+        raw.defaults = QVariantMap{{QStringLiteral("autoUpdateCheck"), false}, {QStringLiteral("bogus"), 1}};
         raw.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")},
             {QStringLiteral("secretKey"), QStringLiteral("x")}};
 
         const auto clean = sanitizeServerManagedSettings(raw);
 
-        QVERIFY(clean.defaults.contains(QStringLiteral("skipUpdateCheck")));
+        QVERIFY(clean.defaults.contains(QStringLiteral("autoUpdateCheck")));
         QVERIFY(!clean.defaults.contains(QStringLiteral("bogus")));
         QVERIFY(clean.enforced.contains(QStringLiteral("virtualFilesMode")));
         QVERIFY(!clean.enforced.contains(QStringLiteral("secretKey")));
@@ -911,6 +911,7 @@ private Q_SLOTS:
     void testSanitizeDropsServerEnforcedUpdateAndProxyKeys()
     {
         ServerManagedSettings raw;
+        raw.defaults = QVariantMap{{QStringLiteral("skipUpdateCheck"), true}};
         raw.enforced = QVariantMap{{QStringLiteral("skipUpdateCheck"), true},
             {QStringLiteral("proxyHost"), QStringLiteral("evil.example.com")},
             {QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")}};
@@ -918,9 +919,11 @@ private Q_SLOTS:
         const auto clean = sanitizeServerManagedSettings(raw);
 
         // A server cannot enforce updates or proxy; only device policy can.
-        QVERIFY(!clean.enforced.contains(QStringLiteral("skipUpdateCheck")));
         QVERIFY(!clean.enforced.contains(QStringLiteral("proxyHost")));
         QVERIFY(clean.enforced.contains(QStringLiteral("virtualFilesMode")));
+        // skipUpdateCheck has no user override, so the server may not set it at all.
+        QVERIFY(!clean.enforced.contains(QStringLiteral("skipUpdateCheck")));
+        QVERIFY(!clean.defaults.contains(QStringLiteral("skipUpdateCheck")));
     }
 };
 

@@ -39,7 +39,6 @@ bool isServerKeyValueValid(const QString &key, const QVariant &value)
 const QHash<QString, ServerKeyPolicy> &validServerKeys()
 {
     static const QHash<QString, ServerKeyPolicy> keys = {
-        {QStringLiteral("skipUpdateCheck"), {false}},
         {QStringLiteral("autoUpdateCheck"), {false}},
         {QStringLiteral("virtualFilesMode"), {true}},
         {QStringLiteral("proxyHost"), {false}},

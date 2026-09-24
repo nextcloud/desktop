@@ -100,7 +100,6 @@ Every managed key, its type, whether the server may enforce it (not only default
 it), and whether it is declared in the schema:
 | Key | Type | Server may enforce | In schema |
 |---|---|---|---|
-| `skipUpdateCheck` | bool | no, default only | yes |
 | `autoUpdateCheck` | bool | no, default only | yes |
 | `confirmExternalStorage` | bool | yes | yes |
 | `useNewBigFolderSizeLimit` | bool | yes | yes |
@@ -205,7 +204,8 @@ On a File Provider build an enforced `virtualFilesMode` of `off` also turns off 
 level File Provider mode, so no domain is created behind a classic sync setup.
 
 `autoUpdateCheck` only controls the automatic check; the user can still press Check Now.
-`skipUpdateCheck` is what disables the updater and hides its section.
+`skipUpdateCheck` disables the updater and hides its section, and the server may not set
+it at all: it has no user override, so a server value would act as enforcement.
 
 ## Nextcloud instances without an enterprise subscription
 Server managed settings are an enterprise feature. *The support app returns no
