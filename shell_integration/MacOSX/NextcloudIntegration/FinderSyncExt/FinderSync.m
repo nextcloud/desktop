@@ -77,8 +77,12 @@ static os_log_t getFinderSyncLogger(void) {
             self.lineProcessor = [[FinderSyncSocketLineProcessor alloc] initWithDelegate:self];
             self.localSocketClient = [[LocalSocketClient alloc] initWithSocketPath:socketPath
                                                                      lineProcessor:self.lineProcessor];
+            __weak typeof(self) weakSelf = self;
+            self.localSocketClient.connectionEstablishedHandler = ^{
+                __strong typeof(self) self = weakSelf;
+                [self.localSocketClient askOnSocket:@"" query:@"GET_STRINGS"];
+            };
             [self.localSocketClient start];
-            [self.localSocketClient askOnSocket:@"" query:@"GET_STRINGS"];
         } else {
             os_log_error(_log, "No socket path available. Not initiating local socket client.");
         }

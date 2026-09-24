@@ -141,6 +141,9 @@ static os_log_t getLocalSocketClientLogger(void) {
     os_log_debug(_log, "Starting to read from socket");
 
     dispatch_resume(_readSource);
+    if (self.connectionEstablishedHandler) {
+        self.connectionEstablishedHandler();
+    }
 }
 
 - (void)restart

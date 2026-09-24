@@ -32,6 +32,8 @@
                      lineProcessor:(id<LineProcessor>)lineProcessor;
 
 @property (readonly) BOOL isConnected;
+/// Invoked after every successful connection, including reconnections, on the thread calling `start`.
+@property (nonatomic, copy) void (^connectionEstablishedHandler)(void);
 
 - (void)start;
 - (void)restart;
