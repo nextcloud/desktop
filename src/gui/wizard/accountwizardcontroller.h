@@ -23,11 +23,18 @@
 #include "networkjobs.h"
 
 class QNetworkReply;
+class QWindow;
 
 namespace OCC {
 
 class SelectiveSyncDialog;
 class AccountState;
+class FolderDefinition;
+
+namespace Utility
+{
+class MacSandboxPersistentAccess;
+}
 
 /**
  * Backend for the QML account wizard.
@@ -113,6 +120,9 @@ public:
 
     explicit AccountWizardController(QObject *parent = nullptr);
     ~AccountWizardController() override;
+
+    /** @brief Sets the wizard window that native panels are attached to. */
+    void setWindow(QWindow *window);
 
     [[nodiscard]] Step currentStep() const;
     [[nodiscard]] QString serverUrl() const;
@@ -259,8 +269,12 @@ private Q_SLOTS:
 
 private:
     using LocalNetworkPermissionCheck = std::function<void(const QUrl &, QObject *, std::function<void(bool)>)>;
+    // Reports the chosen folder, or an empty path when cancelled, and its security-scoped bookmark if any.
+    using LocalSyncFolderPicker = std::function<void(const QString &, const QString &, std::function<void(const QString &, const QByteArray &)>)>;
 
     friend class AccountWizardControllerTestAccess;
+
+    void pickLocalSyncFolder(const QString &caption, const QString &startFolder, std::function<void(const QString &, const QByteArray &)> completion);
 
     // The wizard account is not registered yet, so its own server settings have to be used.
     [[nodiscard]] ManagedVirtualFilesMode accountManagedVirtualFilesMode() const;
@@ -278,7 +292,7 @@ private:
     AccountState *applyAccountChanges();
     void clearOneShotOverrides();
     void initialiseLocalSyncFolder();
-    void setLocalSyncFolder(const QString &localSyncFolder, bool selectedByUser = false);
+    void setLocalSyncFolder(const QString &localSyncFolder, bool selectedByUser = false, const QByteArray &bookmarkData = {});
     void promptForInitialLocalSyncFolderIfNeeded();
     void validateLocalSyncFolder();
     [[nodiscard]] qint64 availableLocalSpace() const;
@@ -288,7 +302,8 @@ private:
     void createRemoteFolder();
     void completeRemoteFolderCheck();
     [[nodiscard]] bool createSyncFolder(AccountState *accountState);
-    [[nodiscard]] QString openLocalSyncFolderDialog(bool initialSelection) const;
+    [[nodiscard]] FolderDefinition syncFolderDefinition() const;
+    void openLocalSyncFolderDialog(bool initialSelection);
     [[nodiscard]] QUrl localFolderServerUrl() const;
     [[nodiscard]] QString sanitizedRemoteFolderEntityPath() const;
     void setCurrentStep(Step step);
@@ -312,6 +327,8 @@ private:
 
     AccountPtr _account;
     LocalNetworkPermissionCheck _localNetworkPermissionCheck;
+    LocalSyncFolderPicker _localSyncFolderPicker;
+    QPointer<QWindow> _window;
     std::unique_ptr<Flow2Auth> _flow2Auth;
     QPointer<SelectiveSyncDialog> _selectiveSyncDialog;
     enum class ProxyAuthentication {
@@ -343,6 +360,10 @@ private:
     QString _avatarUrl;
     QString _syncEverythingDescription;
     QString _localSyncFolder;
+    QByteArray _localSyncFolderBookmarkData;
+#ifdef Q_OS_MACOS
+    std::unique_ptr<Utility::MacSandboxPersistentAccess> _localSyncFolderAccess;
+#endif
     QString _localSyncFolderError;
     QString _localSyncFolderFreeSpace;
     bool _localSyncFolderValid = false;

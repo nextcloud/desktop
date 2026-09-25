@@ -18,7 +18,9 @@
 #include "theme.h"
 
 #ifdef Q_OS_MACOS
+#include "common/macsandboxpersistentaccess.h"
 #include "common/utility_mac_sandbox.h"
+#include "macOS/macsandboxfolderpicker.h"
 #endif
 
 #include <QCheckBox>
@@ -32,6 +34,7 @@
 #include <QLabel>
 #include <QLoggingCategory>
 #include <QMessageBox>
+#include <QPointer>
 #include <QStandardPaths>
 #include <QTreeWidget>
 #include <QUrl>
@@ -143,31 +146,54 @@ bool FolderWizardLocalPath::isComplete() const
 void FolderWizardLocalPath::slotChooseLocalFolder()
 {
     const bool isInitialSelection = _initialFolderSelection;
-    QString sf;
 
-    #ifdef Q_OS_MACOS
-        sf = Utility::getRealHomeDirectory();
-    #else
-        sf = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    #endif
+#ifdef Q_OS_MACOS
+    // QFileDialog gives up the sandbox access to the chosen folder before returning, so only the
+    // native panel can provide a bookmark for it.
+    const QPointer<FolderWizardLocalPath> page(this);
+    Mac::SandboxFolderPicker::select(window()->windowHandle(),
+                                     tr("Select the source folder"),
+                                     Utility::getRealHomeDirectory(),
+                                     [page, isInitialSelection](Mac::SandboxFolderPicker::FolderSelection selection) {
+                                         if (page) {
+                                             page->applyChosenLocalFolder(selection.path, selection.bookmarkData, isInitialSelection);
+                                         }
+                                     });
+#else
+    const auto localFolder = QFileDialog::getExistingDirectory(this,
+                                                               tr("Select the source folder"),
+                                                               QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+                                                               QFileDialog::ShowDirsOnly);
+    applyChosenLocalFolder(localFolder, {}, isInitialSelection);
+#endif
+}
 
-    QString dir = QFileDialog::getExistingDirectory(this,
-        tr("Select the source folder"),
-        sf,
-        QFileDialog::ShowDirsOnly);
-    if (!dir.isEmpty()) {
-        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
+void FolderWizardLocalPath::applyChosenLocalFolder(const QString &localFolder, const QByteArray &bookmarkData, bool initialSelection)
+{
+    if (!localFolder.isEmpty()) {
+        _chosenLocalFolder = localFolder;
+        _chosenLocalFolderBookmarkData = bookmarkData;
+#ifdef Q_OS_MACOS
+        // Keeps sandbox access to the chosen folder while the wizard validates and creates it.
+        _chosenLocalFolderAccess = Utility::MacSandboxPersistentAccess::createValidFromBookmarkData(bookmarkData);
+#endif
+        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(localFolder));
         _initialFolderSelection = false;
-    } else {
-        // If this was the initial folder selection and the user canceled,
-        // emit signal to close the wizard
-        if (isInitialSelection) {
-            Q_EMIT initialFolderSelectionCanceled();
-        }
+    } else if (initialSelection) {
+        // The user cancelled the automatic initial selection, so close the wizard.
+        Q_EMIT initialFolderSelectionCanceled();
     }
     Q_EMIT completeChanged();
 }
 
+QByteArray FolderWizardLocalPath::securityScopedBookmarkData() const
+{
+    const auto enteredFolder = FolderDefinition::prepareLocalPath(QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()));
+    if (_chosenLocalFolder.isEmpty() || enteredFolder != FolderDefinition::prepareLocalPath(_chosenLocalFolder)) {
+        return {};
+    }
+    return _chosenLocalFolderBookmarkData;
+}
 
 void FolderWizardLocalPath::changeEvent(QEvent *e)
 {
@@ -731,6 +757,11 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
 }
 
 FolderWizard::~FolderWizard() = default;
+
+QByteArray FolderWizard::securityScopedBookmarkData() const
+{
+    return _folderWizardSourcePage->securityScopedBookmarkData();
+}
 
 bool FolderWizard::eventFilter(QObject *watched, QEvent *event)
 {

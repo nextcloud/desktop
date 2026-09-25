@@ -171,6 +171,7 @@ bool OwncloudSetupWizard::startQmlWizard()
     }
 
     _qmlWizardWindow->setIcon(Theme::instance()->applicationIcon());
+    _qmlController->setWindow(_qmlWizardWindow);
 
 #ifdef Q_OS_MACOS
     auto *fgbg = new ForegroundBackground(this);
@@ -241,6 +242,7 @@ bool OwncloudSetupWizard::startQmlWizardForLoginFlow(const QUrl &serverUrl)
     }
 
     _qmlWizardWindow->setIcon(Theme::instance()->applicationIcon());
+    _qmlController->setWindow(_qmlWizardWindow);
 
 #ifdef Q_OS_MACOS
     auto *fgbg = new ForegroundBackground(this);
