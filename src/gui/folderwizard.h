@@ -11,6 +11,8 @@
 #include <QNetworkReply>
 #include <QTimer>
 
+#include <memory>
+
 #include "folder.h"
 #include "accountfwd.h"
 
@@ -23,6 +25,11 @@ class QLabel;
 namespace OCC {
 
 class SelectiveSyncWidget;
+
+namespace Utility
+{
+class MacSandboxPersistentAccess;
+}
 
 class ownCloudInfo;
 
@@ -54,6 +61,9 @@ public:
 
     void setFolderMap(const Folder::Map &fm) { _folderMap = fm; }
 
+    /** @brief Bookmark of the folder chosen in the picker, empty if the entered path differs from it. */
+    [[nodiscard]] QByteArray securityScopedBookmarkData() const;
+
 Q_SIGNALS:
     void initialFolderSelectionCanceled();
 
@@ -64,12 +74,20 @@ protected Q_SLOTS:
     void slotChooseLocalFolder();
 
 private:
+    friend class FolderWizardLocalPathTestAccess;
+
     void changeStyle();
+    void applyChosenLocalFolder(const QString &localFolder, const QByteArray &bookmarkData, bool initialSelection);
 
     Ui_FolderWizardSourcePage _ui{};
     Folder::Map _folderMap;
     AccountPtr _account;
     bool _initialFolderSelection = true;
+    QString _chosenLocalFolder;
+    QByteArray _chosenLocalFolderBookmarkData;
+#ifdef Q_OS_MACOS
+    std::unique_ptr<Utility::MacSandboxPersistentAccess> _chosenLocalFolderAccess;
+#endif
 };
 
 
@@ -167,6 +185,9 @@ public:
 
     bool eventFilter(QObject *watched, QEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
+
+    /** @brief Bookmark of the source folder chosen in the picker, see FolderWizardLocalPath. */
+    [[nodiscard]] QByteArray securityScopedBookmarkData() const;
 
 private:
     FolderWizardLocalPath *_folderWizardSourcePage;

@@ -29,7 +29,9 @@
 #endif
 
 #ifdef Q_OS_MACOS
+#include "common/macsandboxpersistentaccess.h"
 #include "common/utility_mac_sandbox.h"
+#include "macOS/macsandboxfolderpicker.h"
 #endif
 
 #include <QBuffer>
@@ -43,15 +45,16 @@
 #include <QJsonObject>
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
 #include <QNetworkProxy>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QPointer>
-#include <QSslConfiguration>
 #include <QSslCertificate>
+#include <QSslConfiguration>
 #include <QStorageInfo>
 #include <QTimer>
 #include <QUuid>
+#include <QWindow>
 
 using namespace Qt::StringLiterals;
 
@@ -94,6 +97,9 @@ bool localFolderContainsData(const QString &localSyncFolder)
 AccountWizardController::AccountWizardController(QObject *parent)
     : QObject(parent)
     , _localNetworkPermissionCheck(LocalNetworkPermission::checkDeniedForConnection)
+    , _localSyncFolderPicker([this](const QString &caption, const QString &startFolder, std::function<void(const QString &, const QByteArray &)> completion) {
+        pickLocalSyncFolder(caption, startFolder, std::move(completion));
+    })
 {
     initialiseAccount();
 
@@ -112,6 +118,11 @@ AccountWizardController::AccountWizardController(QObject *parent)
 }
 
 AccountWizardController::~AccountWizardController() = default;
+
+void AccountWizardController::setWindow(QWindow *window)
+{
+    _window = window;
+}
 
 void AccountWizardController::initialiseAccount()
 {
@@ -1363,8 +1374,14 @@ void AccountWizardController::initialiseLocalSyncFolder()
         overrideLocalDir);
 }
 
-void AccountWizardController::setLocalSyncFolder(const QString &localSyncFolder, bool selectedByUser)
+void AccountWizardController::setLocalSyncFolder(const QString &localSyncFolder, bool selectedByUser, const QByteArray &bookmarkData)
 {
+    _localSyncFolderBookmarkData = bookmarkData;
+#ifdef Q_OS_MACOS
+    // Keeps sandbox access to the chosen folder for the checks below and for creating the sync folder.
+    _localSyncFolderAccess = Utility::MacSandboxPersistentAccess::createValidFromBookmarkData(bookmarkData);
+#endif
+
     const auto normalizedLocalSyncFolder = QDir::fromNativeSeparators(localSyncFolder);
     const auto localSyncFolderSelected = _localSyncFolderSelected || selectedByUser;
     if (_localSyncFolder == normalizedLocalSyncFolder && _localSyncFolderSelected == localSyncFolderSelected) {
@@ -1394,15 +1411,7 @@ void AccountWizardController::promptForInitialLocalSyncFolderIfNeeded()
             return;
         }
 
-        _localSyncFolderPickerOpen = true;
-        validateLocalSyncFolder();
-        const auto selectedFolder = openLocalSyncFolderDialog(true);
-        _localSyncFolderPickerOpen = false;
-        if (!selectedFolder.isEmpty()) {
-            setLocalSyncFolder(selectedFolder, true);
-        } else {
-            validateLocalSyncFolder();
-        }
+        openLocalSyncFolderDialog(true);
     });
 #endif
 }
@@ -1631,17 +1640,13 @@ void AccountWizardController::completeRemoteFolderCheck()
     Q_EMIT finished(QDialog::Accepted);
 }
 
-bool AccountWizardController::createSyncFolder(AccountState *accountState)
+FolderDefinition AccountWizardController::syncFolderDefinition() const
 {
-    if (!accountState) {
-        setErrorText(tr("Account setup failed while creating the sync folder."));
-        return false;
-    }
-
     FolderDefinition folderDefinition;
     folderDefinition.localPath = FolderDefinition::prepareLocalPath(_localSyncFolder);
     folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
     folderDefinition.ignoreHiddenFiles = FolderMan::instance()->ignoreHiddenFiles();
+    folderDefinition.securityScopedBookmarkData = _localSyncFolderBookmarkData;
 
 #ifndef BUILD_FILE_PROVIDER_MODULE
     if (_syncMode == VirtualFiles) {
@@ -1654,6 +1659,18 @@ bool AccountWizardController::createSyncFolder(AccountState *accountState)
         folderDefinition.navigationPaneClsid = QUuid::createUuid();
     }
 #endif
+
+    return folderDefinition;
+}
+
+bool AccountWizardController::createSyncFolder(AccountState *accountState)
+{
+    if (!accountState) {
+        setErrorText(tr("Account setup failed while creating the sync folder."));
+        return false;
+    }
+
+    const auto folderDefinition = syncFolderDefinition();
 
     auto *folderMan = FolderMan::instance();
     folderMan->setSyncEnabled(false);
@@ -1724,17 +1741,30 @@ void AccountWizardController::setSyncMode(int syncMode)
 
 void AccountWizardController::chooseLocalSyncFolder()
 {
-    const auto selectedFolder = openLocalSyncFolderDialog(false);
-    if (selectedFolder.isEmpty()) {
+    openLocalSyncFolderDialog(false);
+}
+
+void AccountWizardController::pickLocalSyncFolder(const QString &caption,
+                                                  const QString &startFolder,
+                                                  std::function<void(const QString &, const QByteArray &)> completion)
+{
+#ifdef Q_OS_MACOS
+    // QFileDialog gives up the sandbox access to the chosen folder before returning, so only the
+    // native panel can provide a bookmark for it.
+    Mac::SandboxFolderPicker::select(_window, caption, startFolder, [completion = std::move(completion)](Mac::SandboxFolderPicker::FolderSelection selection) {
+        completion(selection.path, selection.bookmarkData);
+    });
+#else
+    completion(QFileDialog::getExistingDirectory(nullptr, caption, startFolder, QFileDialog::ShowDirsOnly), {});
+#endif
+}
+
+void AccountWizardController::openLocalSyncFolderDialog(bool initialSelection)
+{
+    if (_localSyncFolderPickerOpen) {
         return;
     }
 
-    _localSyncFolderOverride = false;
-    setLocalSyncFolder(selectedFolder, true);
-}
-
-QString AccountWizardController::openLocalSyncFolderDialog(bool initialSelection) const
-{
     QString startFolder = _localSyncFolder;
     if (initialSelection) {
 #ifdef Q_OS_MACOS
@@ -1750,10 +1780,26 @@ QString AccountWizardController::openLocalSyncFolderDialog(bool initialSelection
 #endif
     }
 
-    return QFileDialog::getExistingDirectory(nullptr,
-        tr("Local Sync Folder"),
-        startFolder,
-        QFileDialog::ShowDirsOnly);
+    _localSyncFolderPickerOpen = true;
+    validateLocalSyncFolder();
+
+    const QPointer<AccountWizardController> controller(this);
+    _localSyncFolderPicker(tr("Local Sync Folder"), startFolder, [controller, initialSelection](const QString &selectedFolder, const QByteArray &bookmarkData) {
+        if (!controller) {
+            return;
+        }
+
+        controller->_localSyncFolderPickerOpen = false;
+        if (selectedFolder.isEmpty()) {
+            controller->validateLocalSyncFolder();
+            return;
+        }
+
+        if (!initialSelection) {
+            controller->_localSyncFolderOverride = false;
+        }
+        controller->setLocalSyncFolder(selectedFolder, true, bookmarkData);
+    });
 }
 
 void AccountWizardController::openSelectiveSync()

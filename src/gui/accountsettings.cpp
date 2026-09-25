@@ -929,6 +929,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folderWizard->field(QLatin1String("sourceFolder")).toString());
     definition.targetPath = FolderDefinition::prepareTargetPath(
         folderWizard->property("targetPath").toString());
+    definition.securityScopedBookmarkData = folderWizard->securityScopedBookmarkData();
 
     if (folderWizard->property("useVirtualFiles").toBool()) {
         definition.virtualFilesMode = bestAvailableVfsMode();
@@ -1048,6 +1049,7 @@ void AccountSettings::slotFixSandboxBookmark(Folder *folder)
     const QPointer<AccountSettings> settings(this);
     const QPointer<Folder> pendingFolder(folder);
     Mac::SandboxFolderPicker::select(
+        window()->windowHandle(),
         tr("Grant access to sync folder"),
         expectedPath,
         [settings, pendingFolder, expectedPath](Mac::SandboxFolderPicker::FolderSelection selection) {
