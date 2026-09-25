@@ -9,12 +9,15 @@
 
 #include <QtTest>
 
+#include <QFile>
+#include <QNetworkProxy>
 #include <QStandardPaths>
 #include <QUrl>
 
 #include "account.h"
 #include "accountmanager.h"
 #include "accountstate.h"
+#include "clientproxy.h"
 #include "configfile.h"
 #include "logger.h"
 #include "managedsettingstestutils.h"
@@ -31,6 +34,10 @@ private:
     //! @brief The account state registered with AccountManager for the current
     //! test. Set by addTestAccount() and cleared by the cleanup() slot.
     AccountState *_accountState = nullptr;
+
+    //! @brief The account state created by AccountManager::restore() in the
+    //! restore test. Removed and its config file deleted by cleanup().
+    AccountState *_restoredAccountState = nullptr;
 
     //! @brief Creates an account with the given server URL and DAV user, registers
     //! it with AccountManager, and stores the resulting AccountState in
@@ -85,6 +92,12 @@ private Q_SLOTS:
         if (_accountState) {
             AccountManager::instance()->removeAccountState(_accountState);
             _accountState = nullptr;
+        }
+        if (_restoredAccountState) {
+            AccountManager::instance()->removeAccountState(_restoredAccountState);
+            _restoredAccountState = nullptr;
+            // Drop the config written by the restore test so later tests start clean.
+            QFile::remove(ConfigFile().configFile());
         }
     }
 
@@ -295,6 +308,50 @@ private Q_SLOTS:
         QVERIFY(!account->serverHasValidSubscription());
 
         QVERIFY(ConfigFile().serverManagedSettings().enforced.isEmpty());
+    }
+
+    // ---------------------------------------------------------------------------
+    // restore: stored account proxy settings
+    // ---------------------------------------------------------------------------
+
+    //! @brief Restoring an account must read back the proxy settings stored by
+    //! saveAccount. The ini file stores the proxy type as a number, but reading
+    //! it through the QNetworkProxy enum metatype silently yielded 0
+    //! (DefaultProxy) before (https://github.com/nextcloud/desktop/issues/8602).
+    void testRestoreReadsStoredAccountProxySettings()
+    {
+        {
+            const auto settings = ConfigFile::settingsWithGroup(u"Accounts"_s);
+            settings->setValue(u"proxy-restore-test/version"_s, 13);
+            settings->setValue(u"proxy-restore-test/url"_s, u"https://cloud.example.com"_s);
+            settings->setValue(u"proxy-restore-test/authType"_s, u"webflow"_s);
+            settings->setValue(u"proxy-restore-test/dav_user"_s, u"alice"_s);
+            settings->setValue(u"proxy-restore-test/networkProxyType"_s, int(QNetworkProxy::Socks5Proxy));
+            settings->setValue(u"proxy-restore-test/networkProxyHostName"_s, u"127.0.0.1"_s);
+            settings->setValue(u"proxy-restore-test/networkProxyPort"_s, 28080);
+            settings->sync();
+        }
+
+        const auto result = AccountManager::instance()->restore(false);
+        QVERIFY2(result == AccountManager::AccountsRestoreSuccess || result == AccountManager::AccountsRestoreSuccessWithSkipped,
+                 "The account written to the config must restore successfully");
+
+        AccountState *restoredState = nullptr;
+        const auto accounts = AccountManager::instance()->accounts();
+        for (const auto &accountState : accounts) {
+            if (accountState && accountState->account()->id() == u"proxy-restore-test"_s) {
+                restoredState = accountState.data();
+            }
+        }
+        QVERIFY2(restoredState, "The account must be present after restore()");
+        _restoredAccountState = restoredState;
+
+        const auto account = restoredState->account();
+        QCOMPARE(account->accountProxyType(), QNetworkProxy::Socks5Proxy);
+        QCOMPARE(account->accountProxyHostName(), u"127.0.0.1"_s);
+        QCOMPARE(account->accountProxyPort(), 28080);
+        // The account must now be routed to its own proxy, not to the system one.
+        QCOMPARE(ClientProxy::accountProxyMode(*account), ClientProxy::AccountProxyMode::AccountProxy);
     }
 };
 

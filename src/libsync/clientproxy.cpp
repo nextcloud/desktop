@@ -56,10 +56,13 @@ ClientProxy::AccountProxyMode ClientProxy::accountProxyMode(const Account &accou
     if (account.proxySettingsAreManaged()) {
         return followsSystemProxy ? AccountProxyMode::SystemProxy : AccountProxyMode::AccountProxy;
     }
-    if (isUsingSystemDefault() || followsSystemProxy) {
-        return AccountProxyMode::SystemProxy;
+    // An account that specifies its own proxy must use it, regardless of the
+    // global configuration. Only accounts that follow the system default may
+    // fall back to the system or the (legacy) global application proxy.
+    if (followsSystemProxy) {
+        return isUsingSystemDefault() ? AccountProxyMode::SystemProxy : AccountProxyMode::ApplicationProxy;
     }
-    return AccountProxyMode::ApplicationProxy;
+    return AccountProxyMode::AccountProxy;
 }
 
 const char *ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
