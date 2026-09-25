@@ -258,7 +258,7 @@ struct RemoteInterfaceExtensionTests {
             )
             #expect(result.file == nil)
             #expect(result.chunksDirectory == chunksDirectory)
-            return result.nkError.errorCode
+            return result.failure?.underlyingError.errorCode
         }
         #expect(await task.value == NSURLErrorCancelled)
     }

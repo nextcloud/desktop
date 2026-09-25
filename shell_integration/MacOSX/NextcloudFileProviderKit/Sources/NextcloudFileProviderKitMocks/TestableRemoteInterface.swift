@@ -72,9 +72,9 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         account: String,
         file: NKFile?,
         chunksDirectory: URL?,
-        nkError: NKError
+        failure: UploadFailure?
     ) {
-        ("", nil, nil, .invalidResponseError)
+        ("", nil, nil, .other(.invalidResponseError))
     }
 
     public func removeLocalChunks(remoteChunkStoreFolderName _: String) throws {}

@@ -67,7 +67,7 @@ func upload(
     etag: String?,
     date: Date?,
     size: Int64?,
-    remoteError: NKError
+    failure: UploadFailure?
 ) {
     await NetworkOperationCancellation(log: log).run(progress: progress) { cancellation in
         await performUpload(
@@ -82,6 +82,7 @@ func upload(
             creationDate: creationDate,
             modificationDate: modificationDate,
             options: options,
+            creatingNewFile: creatingNewFile,
             log: log,
             requestHandler: { request in
                 cancellation.register(request: request)
@@ -109,16 +110,17 @@ private func performUpload(
     creationDate: Date?,
     modificationDate: Date?,
     options: NKRequestOptions,
+    creatingNewFile: Bool,
     log: any FileProviderLogging,
     requestHandler: @Sendable @escaping (UploadRequest) -> Void,
     taskHandler: @Sendable @escaping (URLSessionTask) -> Void,
     progressHandler: @Sendable @escaping (Progress) -> Void,
     chunkUploadCompleteHandler: @Sendable @escaping (RemoteFileChunk) -> Void
-) async -> (ocId: String?, etag: String?, date: Date?, size: Int64?, remoteError: NKError) {
+) async -> (ocId: String?, etag: String?, date: Date?, size: Int64?, failure: UploadFailure?) {
     let uploadLogger = FileProviderLogger(category: "upload", log: log)
 
     guard !cancellation.isCancelled, !Task.isCancelled else {
-        return (nil, nil, nil, nil, NKError(error: URLError(.cancelled)))
+        return (nil, nil, nil, nil, .other(NKError(error: URLError(.cancelled))))
     }
 
     let fileSize =
@@ -136,13 +138,14 @@ private func performUpload(
             let (_, files, _, propfindError) = await remoteInterface.enumerate(remotePath: parentRemotePath, depth: .target, showHiddenFiles: true, includeHiddenFiles: [], requestBody: nil, account: account, options: options, taskHandler: taskHandler)
 
             guard !cancellation.isCancelled, !Task.isCancelled else {
-                return (nil, nil, nil, nil, NKError(error: URLError(.cancelled)))
+                return (nil, nil, nil, nil, .other(NKError(error: URLError(.cancelled))))
             }
 
             if propfindError == .success, let availableBytes = files.first?.quotaAvailableBytes, availableBytes >= 0, fileSize > availableBytes {
                 uploadLogger.info("Refusing upload: file size \(fileSize) bytes exceeds available server quota of \(availableBytes) bytes.", [.url: remotePath])
 
-                return (nil, nil, nil, nil, NKError(statusCode: 507, fallbackDescription: "Insufficient quota on the server."))
+                let error = NKError(statusCode: 507, fallbackDescription: "Insufficient quota on the server.")
+                return (nil, nil, nil, nil, .other(error))
             } else if propfindError != .success {
                 uploadLogger.info("Could not check available quota. Proceeding with upload anyway.", [.error: propfindError, .url: parentRemotePath])
             }
@@ -182,7 +185,7 @@ private func performUpload(
     }()
 
     guard !cancellation.isCancelled, !Task.isCancelled else {
-        return (nil, nil, nil, nil, NKError(error: URLError(.cancelled)))
+        return (nil, nil, nil, nil, .other(NKError(error: URLError(.cancelled))))
     }
 
     guard fileSize > chunkSize else {
@@ -206,7 +209,15 @@ private func performUpload(
             progressHandler: progressHandler
         )
 
-        return (ocId, etag, date as? Date, size, remoteError)
+        let failure: UploadFailure? = if remoteError == .success {
+            nil
+        } else if creatingNewFile, remoteError.isPreconditionFailedError {
+            .destinationCollision(remoteError)
+        } else {
+            .other(remoteError)
+        }
+
+        return (ocId, etag, date as? Date, size, failure)
     }
 
     let chunkUploadId = chunkUploadIdentifier(
@@ -258,10 +269,10 @@ private func performUpload(
     // An empty list would start the upload from scratch and overwrite the recorded chunks; the identifier stays bound, so the next attempt resumes.
     guard let remainingChunks = dbManager.remoteFileChunks(uploadId: chunkUploadId) else {
         uploadLogger.error("Could not read the recorded chunks of the upload. The upload is retried later.", [.name: chunkUploadId])
-        return (nil, nil, nil, nil, .metadataDatabaseUnreadable)
+        return (nil, nil, nil, nil, .other(.metadataDatabaseUnreadable))
     }
 
-    let (_, file, chunksDirectory, nkError) = await remoteInterface.chunkedUpload(
+    let (_, file, chunksDirectory, failure) = await remoteInterface.chunkedUpload(
         localPath: localFilePath,
         remotePath: remotePath,
         remoteChunkStoreFolderName: chunkUploadId,
@@ -307,19 +318,20 @@ private func performUpload(
     )
 
     completedChunksDirectory = chunksDirectory
-    let chunkUploadCompleted = nkError == .success && file != nil
+    let chunkUploadCompleted = failure == nil && file != nil
     let hasRemainingChunks = dbManager.hasRemoteFileChunks(uploadId: chunkUploadId)
     shouldRemoveLocalChunkUpload = chunkUploadCompleted || !hasRemainingChunks
 
-    if nkError.isCancelledError || nkError.isChunkingCancellationError,
+    if let error = failure?.underlyingError,
+       error.isCancelledError || error.isChunkingCancellationError,
        cancellation.isCancelled || Task.isCancelled
     {
-        return (nil, nil, nil, nil, .cancelled)
+        return (nil, nil, nil, nil, .other(.cancelled))
     }
 
-    if nkError == .success, file != nil {
+    if chunkUploadCompleted {
         uploadLogger.info("File successfully uploaded in chunks.", [.url: remotePath])
     }
 
-    return (file?.ocId, file?.etag, file?.date, file?.size, nkError)
+    return (file?.ocId, file?.etag, file?.date, file?.size, failure)
 }

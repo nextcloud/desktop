@@ -145,7 +145,7 @@ public extension Item {
         log: any FileProviderLogging
     ) async -> (Item?, Error?) {
         let logger = FileProviderLogger(category: "Item", log: log)
-        let (ocId, etag, date, size, error) = await upload(
+        let (ocId, etag, date, size, failure) = await upload(
             fileLocatedAt: localPath,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
@@ -156,6 +156,7 @@ public extension Item {
             progress: progress,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
+            creatingNewFile: true,
             log: log,
             taskHandler: { task in
                 if let domain {
@@ -169,7 +170,8 @@ public extension Item {
             progressHandler: { $0.copyCurrentStateToProgress(progress) }
         )
 
-        guard error == .success, let ocId, !ocId.isEmpty else {
+        guard failure == nil, let ocId, !ocId.isEmpty else {
+            let error = failure?.underlyingError ?? .success
             logger.error(
                 """
                 Could not upload item with filename: \(itemTemplate.filename),
@@ -190,6 +192,15 @@ public extension Item {
                 await InsufficientQuotaReporter.reportSummary(domainIdentifier: domain?.identifier, appProxy: appProxy, log: log)
             }
 
+            if case .destinationCollision = failure {
+                let collision = await NSFileProviderError(.filenameCollision).handlingCollisionAgainstItemInRemotePath(
+                    remotePath,
+                    dbManager: dbManager,
+                    remoteInterface: remoteInterface,
+                    log: log
+                )
+                return (nil, collision)
+            }
             return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: log) ?? NSFileProviderError(.cannotSynchronize))
         }
 

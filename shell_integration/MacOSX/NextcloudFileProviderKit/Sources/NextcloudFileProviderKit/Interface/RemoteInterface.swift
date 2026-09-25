@@ -66,7 +66,7 @@ public protocol RemoteInterface: Sendable {
         account: String,
         file: NKFile?,
         chunksDirectory: URL?,
-        nkError: NKError
+        failure: UploadFailure?
     )
 
     func removeLocalChunks(remoteChunkStoreFolderName: String) throws
