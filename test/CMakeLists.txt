@@ -248,6 +248,7 @@ nextcloud_add_benchmark(LargeSync)
 
 nextcloud_add_test(Account)
 nextcloud_add_test(AccountManager)
+nextcloud_add_test(AccountState)
 nextcloud_add_test(AccountWizardController)
 nextcloud_add_test(BrowserReAuthController)
 nextcloud_add_test(ConnectionValidator)
