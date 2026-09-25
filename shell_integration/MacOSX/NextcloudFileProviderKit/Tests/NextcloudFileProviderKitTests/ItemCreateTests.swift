@@ -71,6 +71,70 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         rootItem.children = []
     }
 
+    private func assertCreatingFilePreservesRemoteCollision(chunkSize: Int?) async throws {
+        let existingContents = Data("Remote version".utf8)
+        let existingItem = MockRemoteItem(
+            identifier: "existing-id",
+            name: "document.txt",
+            remotePath: Self.account.davFilesUrl + "/document.txt",
+            data: existingContents,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        existingItem.parent = rootItem
+        rootItem.children = [existingItem]
+        var existingMetadata = SendableItemMetadata(
+            ocId: existingItem.identifier, fileName: existingItem.name, account: Self.account
+        )
+        existingMetadata.classFile = NKTypeClassFile.document.rawValue
+        Self.dbManager.addItemMetadata(existingMetadata)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        var templateMetadata = SendableItemMetadata(
+            ocId: "new-local-id", fileName: existingItem.name, account: Self.account
+        )
+        templateMetadata.classFile = NKTypeClassFile.document.rawValue
+        let template = Item(
+            metadata: templateMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let localContents = Data("Different local version".utf8)
+        let localURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try localContents.write(to: localURL)
+        defer { try? FileManager.default.removeItem(at: localURL) }
+
+        let (createdItem, error) = await Item.create(
+            basedOn: template,
+            contents: localURL,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            forcedChunkSize: chunkSize,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(createdItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .filenameCollision)
+        XCTAssertEqual(
+            ((error as NSError?)?.userInfo[NSFileProviderErrorItemKey] as? NSFileProviderItem)?.itemIdentifier.rawValue,
+            existingItem.identifier
+        )
+        XCTAssertEqual(existingItem.data, existingContents)
+        XCTAssertEqual(rootItem.children.count, 1)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: "new-local-id"))
+        if chunkSize == nil {
+            XCTAssertEqual(remoteInterface.lastUploadIfNoneMatchHeader, "*")
+        } else {
+            XCTAssertEqual(remoteInterface.lastChunkedUploadOverwrite, false)
+        }
+    }
+
     func testCreateFolder() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         var folderItemMetadata = SendableItemMetadata(
@@ -164,6 +228,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertEqual(remoteItem.name, fileItemMetadata.fileName)
         XCTAssertEqual(remoteItem.directory, fileItemMetadata.directory)
+        XCTAssertEqual(remoteInterface.lastUploadIfNoneMatchHeader, "*")
 
         let dbItem = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)
@@ -177,6 +242,14 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(dbItem.uploaded)
         XCTAssertTrue(createdItem.isDownloaded)
         XCTAssertTrue(createdItem.isUploaded)
+    }
+
+    func testCreateFileDoesNotOverwriteExistingRemoteFile() async throws {
+        try await assertCreatingFilePreservesRemoteCollision(chunkSize: nil)
+    }
+
+    func testCreateChunkedFileDoesNotOverwriteExistingRemoteFile() async throws {
+        try await assertCreatingFilePreservesRemoteCollision(chunkSize: 2)
     }
 
     /// Regression test for the same root cause as
@@ -636,6 +709,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteItem.name, fileItemMetadata.fileName)
         XCTAssertEqual(remoteItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(remoteItem.data, tempData)
+        XCTAssertEqual(rootItem.children.count, 1)
+        XCTAssertEqual(remoteInterface.lastChunkedUploadOverwrite, false)
 
         let dbItem = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)
