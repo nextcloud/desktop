@@ -124,6 +124,9 @@ public:
     /** @brief Sets the wizard window that native panels are attached to. */
     void setWindow(QWindow *window);
 
+    /** @brief Result to report when the wizard window closes: accepted once setup has completed. */
+    [[nodiscard]] int resultOnClose() const;
+
     [[nodiscard]] Step currentStep() const;
     [[nodiscard]] QString serverUrl() const;
     void setServerUrl(const QString &serverUrl);
