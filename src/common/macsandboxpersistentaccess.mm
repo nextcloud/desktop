@@ -122,6 +122,15 @@ std::unique_ptr<MacSandboxPersistentAccess> MacSandboxPersistentAccess::createFr
     return std::unique_ptr<MacSandboxPersistentAccess>(new MacSandboxPersistentAccess(bookmarkData));
 }
 
+std::unique_ptr<MacSandboxPersistentAccess> MacSandboxPersistentAccess::createValidFromBookmarkData(const QByteArray &bookmarkData)
+{
+    auto access = createFromBookmarkData(bookmarkData);
+    if (access && !access->isValid()) {
+        return nullptr;
+    }
+    return access;
+}
+
 bool MacSandboxPersistentAccess::isValid() const
 {
     return _impl && _impl->hasAccess();

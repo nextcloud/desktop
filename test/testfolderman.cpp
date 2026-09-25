@@ -23,6 +23,10 @@
 #include "syncenginetestutils.h"
 #include "testhelper.h"
 
+#ifdef Q_OS_MACOS
+#include "common/utility_mac_sandbox.h"
+#endif
+
 using namespace Qt::StringLiterals;
 using namespace OCC;
 
@@ -659,6 +663,59 @@ private Q_SLOTS:
 
         FolderMan::instance()->unloadAndDeleteAllFolders();
         QCOMPARE(FolderMan::instance()->map().count(), 0);
+    }
+#endif
+
+#ifdef Q_OS_MACOS
+    void testAddFolderStartsAccessFromBookmark()
+    {
+        FolderMan::resetInstance();
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+        QVERIFY(dir.isValid());
+        QVERIFY(QDir(dir.path()).mkpath(u"folder1"_s));
+        const auto localPath = dir.path() + u"/folder1"_s;
+
+        auto account = Account::create();
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        account->setUrl(QUrl(u"http://example.de"_s));
+        auto accountState = new FakeAccountState(account);
+
+        auto definition = folderDefinition(localPath);
+        definition.securityScopedBookmarkData = Utility::createSecurityScopedBookmarkData(localPath);
+        QVERIFY(!definition.securityScopedBookmarkData.isEmpty());
+
+        const auto folder = FolderMan::instance()->addFolder(accountState, definition);
+        QVERIFY(folder);
+        QVERIFY(folder->hasSecurityScopedAccess());
+        QVERIFY(!folder->needsSandboxBookmark());
+
+        FolderMan::instance()->unloadAndDeleteAllFolders();
+    }
+
+    void testAddFolderWithUnusableBookmarkNeedsSandboxBookmark()
+    {
+        FolderMan::resetInstance();
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+        QVERIFY(dir.isValid());
+        QVERIFY(QDir(dir.path()).mkpath(u"folder1"_s));
+
+        auto account = Account::create();
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        account->setUrl(QUrl(u"http://example.de"_s));
+        auto accountState = new FakeAccountState(account);
+
+        auto definition = folderDefinition(dir.path() + u"/folder1"_s);
+        definition.securityScopedBookmarkData = "not a bookmark"_ba;
+
+        const auto folder = FolderMan::instance()->addFolder(accountState, definition);
+        QVERIFY(folder);
+        QVERIFY(!folder->hasSecurityScopedAccess());
+        QVERIFY(folder->needsSandboxBookmark());
+        QVERIFY(!folder->canSync());
+
+        FolderMan::instance()->unloadAndDeleteAllFolders();
     }
 #endif
 };
