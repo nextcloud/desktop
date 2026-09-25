@@ -57,6 +57,7 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         remainingChunks _: [RemoteFileChunk],
         creationDate _: Date?,
         modificationDate _: Date?,
+        overwrite _: Bool,
         account _: Account,
         options _: NKRequestOptions,
         currentNumChunksUpdateHandler _: @escaping (Int) -> Void,

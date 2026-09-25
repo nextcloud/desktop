@@ -51,6 +51,7 @@ public protocol RemoteInterface: Sendable {
         remainingChunks: [RemoteFileChunk],
         creationDate: Date?,
         modificationDate: Date?,
+        overwrite: Bool,
         account: Account,
         options: NKRequestOptions,
         currentNumChunksUpdateHandler: @escaping (_ num: Int) -> Void,
