@@ -314,6 +314,11 @@ public:
     void setSecurityScopedAccess(std::unique_ptr<Utility::MacSandboxPersistentAccess> access);
 
     /**
+     * Whether the folder holds security-scoped access to its local path.
+     */
+    [[nodiscard]] bool hasSecurityScopedAccess() const;
+
+    /**
      * Whether this folder needs the user to re-approve access for macOS sandbox.
      *
      * True when the folder was loaded from settings without valid security-scoped

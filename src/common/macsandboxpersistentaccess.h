@@ -50,6 +50,12 @@ public:
     [[nodiscard]] static std::unique_ptr<MacSandboxPersistentAccess> createFromBookmarkData(const QByteArray &bookmarkData);
 
     /**
+     * @brief Like createFromBookmarkData(), but only returns a wrapper that holds access
+     * @return A unique pointer to the access wrapper, or nullptr if access could not be acquired
+     */
+    [[nodiscard]] static std::unique_ptr<MacSandboxPersistentAccess> createValidFromBookmarkData(const QByteArray &bookmarkData);
+
+    /**
      * @brief Check if the security-scoped access was successfully acquired
      * @return true if access is valid and the path can be accessed
      */

@@ -182,6 +182,11 @@ void Folder::setSecurityScopedAccess(std::unique_ptr<Utility::MacSandboxPersiste
     _securityScopedAccess = std::move(access);
 }
 
+bool Folder::hasSecurityScopedAccess() const
+{
+    return _securityScopedAccess != nullptr;
+}
+
 bool Folder::needsSandboxBookmark() const
 {
     return _needsSandboxBookmark;
@@ -357,6 +362,11 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
+#ifdef Q_OS_MACOS
+    if (_needsSandboxBookmark) {
+        return false;
+    }
+#endif
     return !syncPaused() && accountState()->isConnected() && _syncResult.status() != SyncResult::SetupError;
 }
 
