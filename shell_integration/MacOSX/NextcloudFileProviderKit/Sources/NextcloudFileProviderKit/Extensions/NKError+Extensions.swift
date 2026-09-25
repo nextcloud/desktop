@@ -108,20 +108,11 @@ extension NKError {
         if isCancelledError {
             return CocoaError(.userCancelled)
         }
-        guard fileProviderError?.code == .filenameCollision else {
-            return fileProviderError as Error?
-        }
-        guard let collidingItemMetadata = dbManager.itemMetadata(
-            account: dbManager.account.ncKitAccount, locatedAtRemoteUrl: problemRemotePath
-        ), let collidingItem = await Item.storedItem(
-            identifier: .init(collidingItemMetadata.ocId),
-            account: dbManager.account,
-            remoteInterface: remoteInterface,
+        return await fileProviderError?.handlingCollisionAgainstItemInRemotePath(
+            problemRemotePath,
             dbManager: dbManager,
+            remoteInterface: remoteInterface,
             log: log
-        ) else {
-            return NSFileProviderError(.filenameCollision)
-        }
-        return NSError.fileProviderErrorForCollision(with: collidingItem)
+        )
     }
 }
