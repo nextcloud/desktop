@@ -3,11 +3,12 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include <QtTest>
-#include <QTemporaryDir>
-#include <QStandardPaths>
-#include <QSet>
 #include <QNetworkProxy>
+#include <QSet>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QTemporaryDir>
+#include <QtTest>
 #include <algorithm>
 #include <memory>
 #include <optional>
@@ -19,6 +20,7 @@
 #include "managedsettingstestutils.h"
 #include "settings/devicesources.h"
 #include "settings/managedconfig.h"
+#include "settings/managedproxysettings.h"
 #include "settings/managedsettings.h"
 #include "settings/managedsettingsschema.h"
 #include "settings/servermanagedsettings.h"
@@ -923,6 +925,115 @@ private Q_SLOTS:
         QVERIFY(clean.enforced.contains(QStringLiteral("virtualFilesMode")));
         QVERIFY(!clean.enforced.contains(QStringLiteral("skipUpdateCheck")));
         QVERIFY(!clean.defaults.contains(QStringLiteral("skipUpdateCheck")));
+    }
+
+    // ---------------------------------------------------------------------------
+    // accountProxyMode: an account's own proxy settings must be honored
+    // regardless of the global configuration (https://github.com/nextcloud/desktop/issues/8602)
+    // ---------------------------------------------------------------------------
+
+    //! @brief Writes a manual global proxy into an otherwise absent config file.
+    static void writeGlobalManualProxy(const ConfigFile &config)
+    {
+        QSettings settings(config.configFile(), QSettings::IniFormat);
+        settings.setValue(QStringLiteral("Proxy/type"), int(QNetworkProxy::HttpProxy));
+        settings.setValue(QStringLiteral("Proxy/host"), QStringLiteral("proxy.example.com"));
+        settings.setValue(QStringLiteral("Proxy/port"), 8080);
+        settings.sync();
+    }
+
+    //! @brief An account with explicit proxy settings must use them even when the
+    //! global configuration is absent and therefore system default. Regression
+    //! test for #8602: the account was reported as following the system proxy,
+    //! and ConnectionValidator then overwrote its proxy with the OS lookup.
+    void testAccountProxyModeExplicitProxyBeatsSystemDefaultGlobal()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        QVERIFY(!config.exists()); // system default global configuration
+
+        const auto account = Account::create();
+        account->setProxyType(QNetworkProxy::Socks5Proxy);
+        account->setProxyHostName(QStringLiteral("127.0.0.1"));
+        account->setProxyPort(1080);
+
+        QCOMPARE(ClientProxy::accountProxyMode(*account), ClientProxy::AccountProxyMode::AccountProxy);
+    }
+
+    //! @brief An account with explicit proxy settings must also win over a
+    //! manually configured global proxy: the account setting is more specific.
+    void testAccountProxyModeExplicitProxyBeatsGlobalApplicationProxy()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        writeGlobalManualProxy(config);
+
+        const auto account = Account::create();
+        account->setProxyType(QNetworkProxy::Socks5Proxy);
+        account->setProxyHostName(QStringLiteral("127.0.0.1"));
+        account->setProxyPort(1080);
+
+        QCOMPARE(ClientProxy::accountProxyMode(*account), ClientProxy::AccountProxyMode::AccountProxy);
+    }
+
+    //! @brief An account that follows the system default keeps using the system
+    //! proxy while the global configuration is also system default.
+    void testAccountProxyModeFollowsSystemProxyWhenAllDefault()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        const auto account = Account::create();
+        account->setProxyType(QNetworkProxy::DefaultProxy);
+
+        QCOMPARE(ClientProxy::accountProxyMode(*account), ClientProxy::AccountProxyMode::SystemProxy);
+    }
+
+    //! @brief An account that follows the system default uses the global
+    //! application proxy when the global configuration specifies one manually.
+    void testAccountProxyModeFollowsGlobalApplicationProxy()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        writeGlobalManualProxy(config);
+
+        const auto account = Account::create();
+        account->setProxyType(QNetworkProxy::DefaultProxy);
+
+        QCOMPARE(ClientProxy::accountProxyMode(*account), ClientProxy::AccountProxyMode::ApplicationProxy);
+    }
+
+    //! @brief Managed settings keep deciding between the system and the account
+    //! proxy, independent of the global configuration.
+    void testAccountProxyModeManagedSettingsUnchanged()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        ManagedProxySettings managed;
+        managed.isManaged = true;
+        managed.isEnforced = true;
+
+        const auto followingAccount = Account::create();
+        followingAccount->setProxyType(QNetworkProxy::DefaultProxy);
+        followingAccount->applyManagedProxySettings(managed);
+        QVERIFY(followingAccount->proxySettingsAreManaged());
+        QCOMPARE(ClientProxy::accountProxyMode(*followingAccount), ClientProxy::AccountProxyMode::SystemProxy);
+
+        const auto explicitAccount = Account::create();
+        explicitAccount->setProxyType(QNetworkProxy::Socks5Proxy);
+        explicitAccount->applyManagedProxySettings(managed);
+        QCOMPARE(ClientProxy::accountProxyMode(*explicitAccount), ClientProxy::AccountProxyMode::AccountProxy);
     }
 };
 

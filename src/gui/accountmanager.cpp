@@ -520,7 +520,10 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
 void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSettings &settings)
 {
     // QSettings from old ConfigFile to new ConfigFile to Account
-    auto accountProxyType = settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>();
+    // QNetworkProxy::ProxyType has no metatype registration, so
+    // QVariant::value<ProxyType>() silently yields 0 (NoProxy) instead of the
+    // stored value. Read it as int and cast, like the other network settings.
+    auto accountProxyType = static_cast<QNetworkProxy::ProxyType>(settings.value(networkProxyTypeC).toInt());
     auto accountProxyHost = settings.value(networkProxyHostNameC).toString();
     auto accountProxyPort = settings.value(networkProxyPortC).toInt();
     auto accountProxyNeedsAuth = settings.value(networkProxyNeedsAuthC).toBool();
