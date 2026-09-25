@@ -851,6 +851,25 @@ private Q_SLOTS:
         QCOMPARE(ClientProxy::accountProxyMode(*account), ClientProxy::AccountProxyMode::SystemProxy);
     }
 
+    void testAccountProxyModeKeepsExplicitAccountProxy_data()
+    {
+        QTest::addColumn<int>("proxyType");
+
+        QTest::newRow("no proxy") << int(QNetworkProxy::NoProxy);
+        QTest::newRow("http proxy") << int(QNetworkProxy::HttpProxy);
+        QTest::newRow("socks5 proxy") << int(QNetworkProxy::Socks5Proxy);
+    }
+
+    void testAccountProxyModeKeepsExplicitAccountProxy()
+    {
+        QFETCH(int, proxyType);
+
+        const auto account = createAccountWithNetworkAccessManager();
+        account->setProxyType(static_cast<QNetworkProxy::ProxyType>(proxyType));
+
+        QCOMPARE(ClientProxy::accountProxyMode(*account), ClientProxy::AccountProxyMode::AccountProxy);
+    }
+
     void testSourceLabelUsesRequestedSetting()
     {
         QTemporaryDir dir;
