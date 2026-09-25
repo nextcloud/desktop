@@ -624,6 +624,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Records the WebDAV `If` header the most recent upload call carried (nil if none).
     public var lastUploadIfHeader: String?
 
+    /// The destination policy supplied to the most recent chunked upload.
+    public private(set) var lastChunkedUploadOverwrite: Bool?
+
     /// Lock information returned by lock and unlock requests.
     public var lockUnlockResult: NKLock?
 
@@ -897,6 +900,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         remainingChunks: [RemoteFileChunk],
         creationDate: Date?,
         modificationDate: Date?,
+        overwrite: Bool = true,
         account: Account,
         options: NKRequestOptions,
         currentNumChunksUpdateHandler _: @escaping (Int) -> Void = { _ in },
@@ -913,6 +917,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         chunksDirectory: URL?,
         nkError: NKError
     ) {
+        lastChunkedUploadOverwrite = overwrite
         guard let remoteUrl = URL(string: remotePath) else {
             print("Invalid remote path!")
             return ("", nil, nil, .urlError)
