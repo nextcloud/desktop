@@ -14,9 +14,11 @@
 #import "trayaccountpopupviewutils.h"
 
 #include "systray.h"
+#include "tray/trayactivationpolicy.h"
 #include "tray/usermodel.h"
 
 #include <QCoreApplication>
+#include <QCursor>
 #include <QVariantMap>
 
 using namespace OCC::Mac::TrayPopupImageUtils;
@@ -26,6 +28,8 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     NSStackView *_stack;
     NCAccountActionsPopup *_accountActionsPopup;
     NCAccountRow *_activeAccountRow;
+    id _mouseDownMonitor;
+    OCC::TrayActivationPolicy _activationPolicy;
 }
 
 - (instancetype)init
@@ -36,7 +40,18 @@ using namespace OCC::Mac::TrayPopupViewUtils;
                                 defer:NO];
     if (!self) return nil;
 
+    // AppKit can deactivate the app before Qt reports a status-item click. Keep
+    // the panel visible so resignKeyWindow can leave that click for Qt to close.
+    self.hidesOnDeactivate = NO;
     _stack = configurePopupPanel(self);
+    __unsafe_unretained NCTrayPopup *popup = self;
+    // Capture visibility before AppKit changes the key window for this press.
+    _mouseDownMonitor =
+        [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskLeftMouseDown | NSEventMaskRightMouseDown
+                                              handler:^NSEvent *(NSEvent *event) {
+                                                  popup->_activationPolicy.recordMouseDown(static_cast<quint64>(event.eventNumber), popup.visible);
+                                                  return event;
+                                              }];
     return self;
 }
 
@@ -44,15 +59,26 @@ using namespace OCC::Mac::TrayPopupViewUtils;
 
 - (void)dealloc
 {
+    [NSEvent removeMonitor:_mouseDownMonitor];
     [_accountActionsPopup release];
     [super dealloc];
 }
 
+- (BOOL)wasVisibleAtMouseDownForEvent:(NSEvent *)event
+{
+    return event && _activationPolicy.popupWasVisibleAtMouseDown(static_cast<quint64>(event.eventNumber));
+}
+
 - (void)resignKeyWindow
 {
+    const auto wasVisible = self.visible;
     [super resignKeyWindow];
     [_accountActionsPopup orderOut:nil];
     [self clearActiveAccountRow];
+    // Let the tray activation close the popup when focus moves to the icon.
+    if (OCC::TrayActivationPolicy::keepPopupOpenOnFocusLoss(wasVisible, OCC::Systray::instance()->geometry(), QCursor::pos())) {
+        return;
+    }
     [self orderOut:nil];
     OCC::Systray::instance()->setIsOpen(false);
 }

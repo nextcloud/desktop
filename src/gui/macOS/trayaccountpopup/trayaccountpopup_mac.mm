@@ -98,4 +98,9 @@ void hideMacOSTrayPopup()
     [s_popup orderOut:nil];
 }
 
+bool macOSTrayPopupWasVisibleAtCurrentMouseDown()
+{
+    return s_popup && [s_popup wasVisibleAtMouseDownForEvent:NSApp.currentEvent];
+}
+
 } // namespace OCC
