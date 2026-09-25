@@ -13,7 +13,7 @@ import XCTest
 /// Coverage for `NSFileProviderItem.childItemCount`, where `nil` means nobody has looked and `0`
 /// means the directory has been read and is empty.
 ///
-final class ChildItemCountTests: XCTestCase {
+final class ChildItemCountTests: NextcloudFileProviderKitTestCase {
     private static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
@@ -21,9 +21,15 @@ final class ChildItemCountTests: XCTestCase {
     private var dbManager: FilesDatabaseManager!
     private var remoteInterface: MockRemoteInterface!
 
+    // This class builds its `FilesDatabaseManager` after `setUp` runs — inside a test, or from a
+    // per-test directory — and `FilesDatabaseManager.init` assigns
+    // `Realm.Configuration.defaultConfiguration` wholesale with a file-based configuration. These
+    // tests therefore run against `test.realm` on disk, not an in-memory store, and leaving
+    // `testDatabaseManager` at `nil` says so deliberately: setting the in-memory identifier here
+    // would be overwritten by that initialiser and achieve nothing.
+
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent("ChildItemCountTests-\(UUID().uuidString)", isDirectory: true)
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)

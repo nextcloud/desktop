@@ -170,8 +170,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// Materialized files are PROPFIND'd at `.target` depth and re-stamped every scan, so this is
     /// expected to PASS — it confirms the harness and the happy path.
     func testMaterializedFileChangeIsReported() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
         let file = makeFile(name: "itemA", parent: folder, etag: "itemA-v1")
 
@@ -201,8 +199,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// must survive and be reported updated (not deleted); the genuinely-gone ghost must still be
     /// reported deleted.
     func testAtomicSaveRecreateDoesNotDeleteLiveItemFromWorkingSet() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
         // The live, recreated file that currently exists on the server at this path.
         let liveFile = makeFile(name: "TEST 1.pdf", parent: folder, etag: "pdf-v1")
@@ -288,6 +284,12 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         }
         defer { releaseFinish.signal() }
 
+        // The one place that must drive enumeration directly rather than through
+        // `MockChangeObserver.enumerateChangesBatch(from:)`. That method waits for the batch to be
+        // acknowledged, and an acknowledged batch is precisely what this test must not have: it parks
+        // inside `finishEnumeratingChanges` to hold delivery open at the boundary and checks that a
+        // second enumerator replays the deletions from the original anchor. Everywhere else, use the
+        // observer.
         firstEnumerator.enumerateChanges(for: firstObserver, from: inputAnchor)
 
         await fulfillment(of: [finishEntered], timeout: 5)
@@ -351,8 +353,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// up to the parent's ETag). Expected to PASS — the parent's bumped `syncTime` lets the child
     /// scan in `pendingWorkingSetChanges` pick up the changed child.
     func testChangedChildSurfacesWhenParentEtagAlsoBumped() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
         let file = makeFile(name: "itemA", parent: folder, etag: "itemA-v1")
 
@@ -381,8 +381,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// materialized-and-changed set — so a non-materialized child whose parent did not change may be
     /// dropped. Asserts the desired behaviour (child reported); a FAILURE documents the dependency.
     func testChangedChildSurfacesWhenParentEtagUnchanged() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
         let file = makeFile(name: "itemA", parent: folder, etag: "itemA-v1")
 
@@ -415,8 +413,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// behind the depth-1 read. The companion test below proves the complementary bound: a changed
     /// subtree with NOTHING materialised inside is deliberately NOT crawled.
     func testDeepChangeUnderNonVisitedSubfolderWithMaterializedDescendantIsReported() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
         let childFolder = makeFolder(name: "childFolder", parent: folder, etag: "child-v1")
         let grandchild = makeFile(name: "itemX", parent: childFolder, etag: "itemX-v1")
@@ -455,8 +451,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// ~1700 PROPFINDs to depth 7 from one push). Verifies no enumerate call is ever issued into the
     /// sibling subtree and that its never-enumerated descendants are not reported.
     func testChangedUnmaterializedSiblingSubtreeIsNotCrawled() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
 
         // A `Talk`-like sibling: known in the DB (it was listed when `folder`'s parent was enumerated)
@@ -520,8 +514,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// it as unchanged and the update is skipped. Real servers bump the ETag on content change, so
     /// this documents the predicate's reliance on a correct ETag rather than a likely field bug.
     func testSameEtagContentChangeIsReported() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
         let file = makeFile(name: "itemA", parent: folder, etag: "itemA-v1", data: Data([1, 2, 3]))
 
@@ -554,7 +546,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// the web never appear" bug). The incomplete scan must also NOT advance the working-set sync point,
     /// so the next signal re-derives and can pick up the folder it could not read this pass.
     func testWorkingSetScanContinuesPastAFailedFolderRead() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+        expectLoggedErrors()
 
         // "a" sorts before "zzzzzzzzzz" by remote-path length, so the failing folder is scanned first.
         let failingFolder = makeFolder(name: "a", parent: rootItem, etag: "a-v1")
@@ -611,8 +603,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// enumerated. The gate therefore matches and the new item triggers a refresh; it only ignores a
     /// push whose ids are entirely outside the enumerated tree. See nextcloud/desktop#6430.
     func testPushGateMatchesParentFolderOfNewItem() {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
         // `MockRemoteItem.identifier` becomes both ocId and fileId; use a numeric id like the server.
         folder.identifier = "1234"
@@ -636,8 +626,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// then an item created inside it on the server, which stays invisible unless creation marks the
     /// folder visited.
     func testItemCreatedOnServerInLocallyCreatedFolderIsReported() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         // Create the folder the way Finder does, through the extension's create path.
@@ -694,8 +682,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// The eviction-shaped variant of the same hole: a folder Finder has enumerated whose contents are
     /// all dataless, where a new server-side child must still surface through the depth-1 read.
     func testItemCreatedOnServerInVisitedFolderWithNoMaterialisedContentIsReported() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
         let existingFile = makeFile(name: "itemA", parent: folder, etag: "itemA-v1")
 
@@ -721,8 +707,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// read as a deletion.
     ///
     func testTrashedFolderIsNotScannedThroughTheRegularDavPath() async throws {
-        let db = Self.dbManager.ncDatabase(); debugPrint(db)
-
         let liveFolder = makeFolder(name: "live", parent: rootItem, etag: "live-v1")
         seed(liveFolder, visitedDirectory: true)
 

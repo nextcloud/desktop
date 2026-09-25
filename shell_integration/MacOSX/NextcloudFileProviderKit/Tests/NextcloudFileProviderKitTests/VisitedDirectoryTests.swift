@@ -13,16 +13,22 @@ import XCTest
 /// `visitedDirectory` records that a directory has actually been read, which decides both its
 /// membership of the working set and whether an empty child count is knowledge or its absence.
 ///
-final class VisitedDirectoryTests: XCTestCase {
+final class VisitedDirectoryTests: NextcloudFileProviderKitTestCase {
     private static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
     private var dbManager: FilesDatabaseManager!
 
+    // This class builds its `FilesDatabaseManager` after `setUp` runs — inside a test, or from a
+    // per-test directory — and `FilesDatabaseManager.init` assigns
+    // `Realm.Configuration.defaultConfiguration` wholesale with a file-based configuration. These
+    // tests therefore run against `test.realm` on disk, not an in-memory store, and leaving
+    // `testDatabaseManager` at `nil` says so deliberately: setting the in-memory identifier here
+    // would be overwritten by that initialiser and achieve nothing.
+
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent("VisitedDirectoryTests-\(UUID().uuidString)", isDirectory: true)
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)

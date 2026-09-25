@@ -27,9 +27,12 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
+    override var testDatabaseManager: FilesDatabaseManager? {
+        Self.dbManager
+    }
+
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
 
         remoteItem = MockRemoteItem(
             identifier: "item",
@@ -230,6 +233,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     /// must surface a per-item + per-folder summary report to the main app over XPC when an
     /// already-uploaded file is rewritten with content the server can no longer accept.
     func testModifyFileRefusedByQuotaReportsToMainApp() async throws {
+        expectLoggedErrors()
         rootItem.quotaAvailableBytes = 4
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -287,6 +291,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     /// `.insufficientQuota` and leave the remote item untouched.
     /// See nextcloud/desktop#9598.
     func testModifyFileBlockedByInsufficientQuota() async throws {
+        expectLoggedErrors()
         rootItem.quotaAvailableBytes = 4 // less than the new content we're about to push
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -337,6 +342,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     ///
     /// Regression test for the race condition described in nextcloud/desktop#9987.
     func testModifyWith404ClearsLockTokenAndReturnsCannotSynchronize() async throws {
+        expectLoggedErrors()
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.uploadError = NKError(statusCode: 404, fallbackDescription: "Not Found")
 
@@ -385,6 +391,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testModifyWith412ClearsLockToken() async throws {
+        expectLoggedErrors()
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.uploadError = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
 
@@ -547,6 +554,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     /// return `.localVersionConflictingWithServer` so the system creates a conflict
     /// copy — and must not commit the rejected upload.
     func testModifyNativeConflictReturnsLocalVersionConflict() async throws {
+        expectLoggedErrors()
         guard #available(macOS 26.0, *) else {
             throw XCTSkip("Native fail-on-conflict requires macOS 26+")
         }
@@ -648,6 +656,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testModifyWith423ClearsLockToken() async throws {
+        expectLoggedErrors()
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.uploadError = NKError(statusCode: 423, fallbackDescription: "Locked")
 
@@ -774,9 +783,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     /// Verify the framework callback sequence caused by excluding a remotely synced bundle.
     func testModifyRemoteBundleExclusionDoesNotDeleteRemoteBundle() async throws {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let bundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteBundle = MockRemoteItem(
@@ -1476,6 +1482,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testSuccessfulChunkedModifyPreservesChunkUploadIdentifierWhenCleanupFails() async throws {
+        expectLoggedErrors()
         let chunkSize = 2
         let newContents = Data(repeating: 1, count: chunkSize * 3)
         let newContentsUrl = FileManager.default.temporaryDirectory
@@ -1536,6 +1543,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testFailedChunkedModifyPreservesChunkUploadIdentifier() async throws {
+        expectLoggedErrors()
         let chunkSize = 2
         let newContents = Data(repeating: 1, count: chunkSize * 3)
         let newContentsUrl = FileManager.default.temporaryDirectory
@@ -1885,6 +1893,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMoveToTrashFailsWhenNoTrashInCapabilities() async {
+        expectLoggedErrors()
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         remoteInterface.capabilities =

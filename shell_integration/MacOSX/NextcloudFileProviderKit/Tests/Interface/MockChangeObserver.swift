@@ -5,6 +5,11 @@
 import Foundation
 import NextcloudFileProviderKit
 
+public enum MockChangeObserverError: Error {
+    /// The enumerator signalled completion without reporting a finish, which should not be reachable.
+    case finishedWithoutReporting
+}
+
 public class MockChangeObserver: NSObject, NSFileProviderChangeObserver, @unchecked Sendable {
     public var changedItems: [any NSFileProviderItemProtocol] = []
     public var deletedItemIdentifiers: [NSFileProviderItemIdentifier] = []
@@ -16,6 +21,15 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver, @unchec
     /// derive per-batch sizes and assert no batch exceeds the cap. `didUpdate`/`didDeleteItems` for a
     /// batch are delivered before its `finishEnumeratingChanges`, so each entry includes that batch.
     public private(set) var reportedCountsAtFinish: [Int] = []
+    /// Whether each `finishEnumeratingChanges` arrived on the main thread, in order.
+    ///
+    /// Production acknowledges a batch immediately after reporting it finished, in the same job and
+    /// without suspending, so the acknowledgement — the soft-delete and hard-remove writes — is ordered
+    /// only for callers that can get behind that job. ``enumerateChangesBatch(from:)`` does that by
+    /// hopping to the MainActor, which works precisely because the batch job runs there. A batch
+    /// reported off the main thread is therefore a race the harness cannot close, not a stylistic
+    /// detail, and tests assert on this to keep it from coming back.
+    public private(set) var finishesDeliveredOnMainThread: [Bool] = []
     /// Optional synchronous hook invoked immediately before a change batch is finished.
     public var beforeFinishEnumeratingChanges: (() -> Void)?
     /// Mirrors the system-set `suggestedBatchSize`. `@objc` so the optional protocol requirement is seen
@@ -43,6 +57,7 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver, @unchec
         beforeFinishEnumeratingChanges?()
         finishes.append((anchor, moreComing))
         reportedCountsAtFinish.append(changedItems.count + deletedItemIdentifiers.count)
+        finishesDeliveredOnMainThread.append(Thread.isMainThread)
         // moreComing: the framework would re-invoke enumerateChanges from this anchor for the next batch.
         isComplete = !moreComing
         batchComplete = true
@@ -54,6 +69,45 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver, @unchec
         batchComplete = true
     }
 
+    ///
+    /// Drive exactly one batch of changes from `anchor` and return how it finished, once the batch has
+    /// been acknowledged.
+    ///
+    /// Always drive change enumeration through this method or ``enumerateChanges(from:)``, never by
+    /// calling `enumerator.enumerateChanges(for:from:)` and polling for a result: production code
+    /// acknowledges a batch *after* it reports the batch finished, and the acknowledgement is what
+    /// writes the soft-deletes and hard-removes. A hand-rolled poll loop resumes in between and races
+    /// those writes.
+    ///
+    @discardableResult
+    public func enumerateChangesBatch(from anchor: NSFileProviderSyncAnchor) async throws
+        -> (anchor: NSFileProviderSyncAnchor, moreComing: Bool)
+    {
+        batchComplete = false
+        enumerator.enumerateChanges?(for: self, from: anchor)
+
+        while !batchComplete {
+            try await Task.sleep(nanoseconds: 1_000_000)
+        }
+
+        // `batchComplete` is set inside `finishEnumeratingChanges`, but the production batch job goes
+        // on to call `changeBuffer.acknowledgeBatch(...)` — the soft-delete and hard-remove writes — in
+        // the same MainActor job, without suspending in between. Hopping to the MainActor here
+        // therefore waits for that job to finish, so the caller's assertions and the next batch both
+        // see an acknowledged database rather than racing it.
+        await MainActor.run {}
+
+        if let error {
+            throw error
+        }
+
+        guard let finish = finishes.last else {
+            throw MockChangeObserverError.finishedWithoutReporting
+        }
+
+        return finish
+    }
+
     public func enumerateChanges(from anchor: NSFileProviderSyncAnchor =
         Enumerator.syncAnchor(at: Date(timeIntervalSince1970: 1))) async throws
     {
@@ -62,17 +116,8 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver, @unchec
         // Drive the batches the way the framework does: re-invoke enumerateChanges from the anchor the
         // previous batch returned until one finishes with moreComing == false.
         repeat {
-            batchComplete = false
-            enumerator.enumerateChanges?(for: self, from: currentAnchor)
-            while !batchComplete {
-                try await Task.sleep(nanoseconds: 1_000_000)
-            }
-            if let error {
-                throw error
-            }
-            if let latestAnchor = finishes.last?.anchor {
-                currentAnchor = latestAnchor
-            }
+            let finish = try await enumerateChangesBatch(from: currentAnchor)
+            currentAnchor = finish.anchor
         } while !isComplete
     }
 
@@ -81,6 +126,7 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver, @unchec
         deletedItemIdentifiers = []
         finishes = []
         reportedCountsAtFinish = []
+        finishesDeliveredOnMainThread = []
         error = nil
         isComplete = false
         batchComplete = false

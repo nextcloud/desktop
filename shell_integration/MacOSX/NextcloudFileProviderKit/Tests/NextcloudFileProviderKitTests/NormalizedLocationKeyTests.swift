@@ -12,16 +12,22 @@ import XCTest
 /// Guards for the assumption that lets logical-address lookups be answered from an index: every row
 /// carries normalized keys, so `hasLocation` never falls back to the unindexed raw columns.
 ///
-final class NormalizedLocationKeyTests: XCTestCase {
+final class NormalizedLocationKeyTests: NextcloudFileProviderKitTestCase {
     private static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
     private var databaseDirectory: URL!
 
+    // This class builds its `FilesDatabaseManager` after `setUp` runs — inside a test, or from a
+    // per-test directory — and `FilesDatabaseManager.init` assigns
+    // `Realm.Configuration.defaultConfiguration` wholesale with a file-based configuration. These
+    // tests therefore run against `test.realm` on disk, not an in-memory store, and leaving
+    // `testDatabaseManager` at `nil` says so deliberately: setting the in-memory identifier here
+    // would be overwritten by that initialiser and achieve nothing.
+
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
         databaseDirectory = FileManager.default.temporaryDirectory
             .appendingPathComponent("NormalizedLocationKeyTests-\(UUID().uuidString)", isDirectory: true)
         try? FileManager.default.createDirectory(at: databaseDirectory, withIntermediateDirectories: true)
@@ -66,6 +72,7 @@ final class NormalizedLocationKeyTests: XCTestCase {
     /// The safety net for a row that lacks its keys anyway, repaired the next time the database
     /// is opened.
     func testOpeningTheDatabaseRepairsARowWithMissingNormalizedKeys() throws {
+        expectLoggedErrors()
         let manager = makeManager()
         let serverUrl = Self.account.davFilesUrl + "/folder"
         let database = manager.ncDatabase()
@@ -96,6 +103,7 @@ final class NormalizedLocationKeyTests: XCTestCase {
     /// The repair has to be a fixed point, or a row it cannot actually change is rewritten on every
     /// open.
     func testTheRepairDoesNotRewriteARowItCannotChange() throws {
+        expectLoggedErrors()
         let manager = makeManager()
         let database = manager.ncDatabase()
 
@@ -131,6 +139,7 @@ final class NormalizedLocationKeyTests: XCTestCase {
     /// A drifted row has to be deduplicated by the pass that repairs it, which holds only while
     /// the walk buckets on the keys it computes rather than the ones already stored.
     func testADriftedDuplicateIsRepairedAndEvictedInOnePass() throws {
+        expectLoggedErrors()
         let manager = makeManager()
         let serverUrl = Self.account.davFilesUrl + "/folder"
 
@@ -169,6 +178,7 @@ final class NormalizedLocationKeyTests: XCTestCase {
     /// The repair covers the rows deduplication excludes, because a tombstone or a lock file is
     /// still resolved by path.
     func testARowExcludedFromDeduplicationIsStillRepaired() throws {
+        expectLoggedErrors()
         let manager = makeManager()
 
         try manager.ncDatabase().write {

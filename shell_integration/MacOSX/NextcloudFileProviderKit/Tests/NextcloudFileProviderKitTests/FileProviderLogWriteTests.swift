@@ -10,7 +10,7 @@ import XCTest
 /// Guards for the two substitutions that made log writing cheap enough for a bulk pass: the byte
 /// counter that replaced a per-line `stat`, and the removal of the per-line `fsync`.
 ///
-final class FileProviderLogWriteTests: XCTestCase {
+final class FileProviderLogWriteTests: NextcloudFileProviderKitTestCase {
     private var logsDirectory: URL!
 
     override func setUpWithError() throws {

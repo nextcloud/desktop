@@ -78,7 +78,7 @@ private final class CapturingAppProxy: NSObject, AppProtocol {
     func reportInsufficientQuotaSummary(forDomainIdentifier _: String) {}
 }
 
-final class BundleExclusionReporterTests: XCTestCase {
+final class BundleExclusionReporterTests: NextcloudFileProviderKitTestCase {
     func testReportSendsExpectedArgumentsToProxy() {
         let proxy = CapturingAppProxy()
 

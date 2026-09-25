@@ -34,10 +34,16 @@ extension Enumerator {
             anchor
         }
 
-        observer.finishEnumeratingChanges(upTo: reportedAnchor, moreComing: batch.moreComing)
-        changeBuffer.acknowledgeBatch(deletedOcIds: batch.deleted.map(\.ocId))
+        // Report and acknowledge on the main actor, as the working set does in
+        // `reportBatchUpdates`. Both halves must land in one job that does not suspend between
+        // them, so that whoever is handed the finished batch cannot observe the database before
+        // the acknowledgement has written the soft-deletes.
+        Task { @MainActor in
+            observer.finishEnumeratingChanges(upTo: reportedAnchor, moreComing: batch.moreComing)
+            changeBuffer.acknowledgeBatch(deletedOcIds: batch.deleted.map(\.ocId))
 
-        logger.debug("Reported trash deletion batch. deleted: \(batch.deleted.count), moreComing: \(batch.moreComing)")
+            logger.debug("Reported trash deletion batch. deleted: \(batch.deleted.count), moreComing: \(batch.moreComing)")
+        }
     }
 
     ///
