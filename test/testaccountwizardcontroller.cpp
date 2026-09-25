@@ -15,6 +15,7 @@
 #include "gui/macOS/fileprovider.h"
 #endif
 
+#include <QDialog>
 #include <QScopeGuard>
 #include <QSignalSpy>
 #include <QStandardPaths>
@@ -75,6 +76,11 @@ public:
     static bool localSyncFolderOverride(const AccountWizardController &controller)
     {
         return controller._localSyncFolderOverride;
+    }
+
+    static void setCurrentStep(AccountWizardController &controller, AccountWizardController::Step step)
+    {
+        controller.setCurrentStep(step);
     }
 };
 
@@ -160,6 +166,18 @@ private Q_SLOTS:
 
         QCOMPARE(controller.localSyncFolder(), QDir::fromNativeSeparators(secondDir.path()));
         QVERIFY(AccountWizardControllerTestAccess::syncFolderDefinition(controller).securityScopedBookmarkData.isEmpty());
+    }
+
+    void closingReportsAcceptedOnlyAfterSetupCompleted()
+    {
+        AccountWizardController controller;
+        QCOMPARE(controller.resultOnClose(), static_cast<int>(QDialog::Rejected));
+
+        AccountWizardControllerTestAccess::setCurrentStep(controller, AccountWizardController::SyncOptionsStep);
+        QCOMPARE(controller.resultOnClose(), static_cast<int>(QDialog::Rejected));
+
+        AccountWizardControllerTestAccess::setCurrentStep(controller, AccountWizardController::CompletedStep);
+        QCOMPARE(controller.resultOnClose(), static_cast<int>(QDialog::Accepted));
     }
 
     void localSyncFolderPickerOpensOnceWhilePending()

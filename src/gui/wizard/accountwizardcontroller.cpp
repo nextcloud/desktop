@@ -124,6 +124,11 @@ void AccountWizardController::setWindow(QWindow *window)
     _window = window;
 }
 
+int AccountWizardController::resultOnClose() const
+{
+    return _currentStep == CompletedStep ? QDialog::Accepted : QDialog::Rejected;
+}
+
 void AccountWizardController::initialiseAccount()
 {
     ConfigFile cfg;
