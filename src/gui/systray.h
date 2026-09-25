@@ -52,6 +52,7 @@ void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
 bool showMacOSTrayPopup(const QRect &iconRect);
 void hideMacOSTrayPopup();
+bool macOSTrayPopupWasVisibleAtCurrentMouseDown();
 #endif
 
 /**

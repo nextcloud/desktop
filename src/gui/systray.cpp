@@ -214,16 +214,20 @@ void Systray::showTrayPopup(WindowPosition position)
 
 void Systray::hideWindow()
 {
+#ifndef Q_OS_MACOS
     if (!isOpen()) {
         return;
     }
+#endif
 
 #ifdef Q_OS_MACOS
     hideMacOSTrayPopup();
 #else
     hideQtTrayPopup();
 #endif
-    setIsOpen(false);
+    if (isOpen()) {
+        setIsOpen(false);
+    }
 }
 
 void Systray::showActivitiesWindow(int userIndex)
