@@ -1472,6 +1472,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(modifiedItem.documentSize?.intValue, newContents.count)
 
         XCTAssertEqual(remoteItem.data, newContents)
+        XCTAssertEqual(remoteInterface.lastChunkedUploadOverwrite, true)
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.chunkUploadId)
     }
 
