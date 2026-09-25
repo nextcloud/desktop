@@ -38,6 +38,30 @@ private Q_SLOTS:
         QVERIFY(!TrayActivationPolicy::opensPrimaryPopup(QSystemTrayIcon::DoubleClick));
         QVERIFY(!TrayActivationPolicy::opensPrimaryPopup(QSystemTrayIcon::MiddleClick));
     }
+
+    void testPopupVisibilityIsCapturedForTheCurrentMouseDown()
+    {
+        auto policy = TrayActivationPolicy();
+        QVERIFY(!policy.popupWasVisibleAtMouseDown(12));
+        policy.recordMouseDown(12, true);
+        QVERIFY(policy.popupWasVisibleAtMouseDown(12));
+        QVERIFY(!policy.popupWasVisibleAtMouseDown(13));
+
+        policy.recordMouseDown(13, false);
+        QVERIFY(!policy.popupWasVisibleAtMouseDown(12));
+        QVERIFY(!policy.popupWasVisibleAtMouseDown(13));
+    }
+
+#ifdef Q_OS_MACOS
+    void testFocusLossAtTrayIconKeepsPopupOpenForActivation()
+    {
+        const auto trayIconRect = QRect(10, 0, 24, 24);
+        QVERIFY(TrayActivationPolicy::keepPopupOpenOnFocusLoss(true, trayIconRect, QPoint(20, 12)));
+        QVERIFY(!TrayActivationPolicy::keepPopupOpenOnFocusLoss(false, trayIconRect, QPoint(20, 12)));
+        QVERIFY(!TrayActivationPolicy::keepPopupOpenOnFocusLoss(true, trayIconRect, QPoint(40, 12)));
+        QVERIFY(!TrayActivationPolicy::keepPopupOpenOnFocusLoss(true, QRect(), QPoint(20, 12)));
+    }
+#endif
 };
 
 QTEST_APPLESS_MAIN(TestTrayActivationPolicy)
