@@ -264,7 +264,9 @@ public:
 
     /** Access the server capabilities */
     [[nodiscard]] const Capabilities &capabilities() const;
-    void setCapabilities(const QVariantMap &caps);
+    void setCapabilities(const QVariantMap &caps, const QByteArray &etag = {});
+    [[nodiscard]] QByteArray capabilitiesEtag() const;
+    void setCapabilitiesEtag(const QByteArray &etag);
 
     /** Access the server version
      *

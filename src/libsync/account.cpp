@@ -584,6 +584,10 @@ void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 
 void Account::setUrl(const QUrl &url)
 {
+    if (_url != url) {
+        _capabilities.setEtag({});
+    }
+
     const QRegularExpression discoverPublicLinks(R"(((https|http)://[^/]*).*/s/([^/]*)$)");
     const auto isPublicLink = discoverPublicLinks.match(url.toString());
     if (isPublicLink.hasMatch()) {
@@ -755,6 +759,16 @@ const Capabilities &Account::capabilities() const
     return _capabilities;
 }
 
+QByteArray Account::capabilitiesEtag() const
+{
+    return _capabilities.etag();
+}
+
+void Account::setCapabilitiesEtag(const QByteArray &etag)
+{
+    _capabilities.setEtag(etag);
+}
+
 void Account::updateServerColors()
 {
     if (const auto capServerColor = _capabilities.serverColor(); capServerColor.isValid()) {
@@ -766,9 +780,9 @@ void Account::updateServerColors()
     }
 }
 
-void Account::setCapabilities(const QVariantMap &caps)
+void Account::setCapabilities(const QVariantMap &caps, const QByteArray &etag)
 {
-    _capabilities = Capabilities(caps);
+    _capabilities = Capabilities(caps, !etag.isEmpty() ? etag : _capabilities.etag());
 
     updateServerColors();
     updateServerSubcription();
