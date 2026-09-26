@@ -41,11 +41,9 @@ extension Enumerator {
         // database, leaving the OS view (`isKeepDownloaded`, `contentPolicy`)
         // out of sync with the local truth.
         //
-        // Conversion and persistence are timed separately (convAccum / dbAccum) so the JSONL PERF
-        // line splits CPU spent building metadata from CPU spent in Realm. Today each item opens its
-        // own write transaction inside `addItemMetadataPreservingLocalState`; `db_items_per_s` is the
-        // throughput number to watch, and the enclosing `ConvertAndPersistPage` signpost bounds the
-        // whole page for Instruments. (Phase 2 batches these into one transaction per page.)
+        // Conversion is timed separately from persistence so the JSONL PERF line splits CPU spent
+        // building metadata from CPU spent in Realm. Persistence now uses a single batched write
+        // transaction per page instead of one transaction per item.
         let signposter = EnumerationSignposter.signposter
         let convAndPersistState = signposter.beginInterval(
             "ConvertAndPersistPage",
@@ -54,31 +52,24 @@ extension Enumerator {
         )
 
         let clock = ContinuousClock()
-        var convAccum: Duration = .zero
-        var dbAccum: Duration = .zero
-        var metadatas: [SendableItemMetadata] = []
-        metadatas.reserveCapacity(max(0, files.count - startIndex))
+        let convStart = clock.now
+        let childMetadatas = files[startIndex...].map { $0.toItemMetadata() }
+        let convElapsed = clock.now - convStart
 
-        for file in files[startIndex...] {
-            let convStart = clock.now
-            let itemMetadata = file.toItemMetadata()
-            convAccum += clock.now - convStart
+        let dbStart = clock.now
+        let persistedMetadatas = dbManager.addItemMetadatasPreservingLocalState(childMetadatas)
+        let dbElapsed = clock.now - dbStart
 
-            let dbStart = clock.now
-            metadatas.append(dbManager.addItemMetadataPreservingLocalState(itemMetadata))
-            dbAccum += clock.now - dbStart
-        }
+        signposter.endInterval("ConvertAndPersistPage", convAndPersistState, "items=\(persistedMetadatas.count)")
 
-        signposter.endInterval("ConvertAndPersistPage", convAndPersistState, "items=\(metadatas.count)")
-
-        let itemCount = metadatas.count
-        let dbSeconds = dbAccum.fpSeconds
+        let itemCount = persistedMetadatas.count
+        let dbSeconds = dbElapsed.fpSeconds
         let dbRate = dbSeconds > 0 ? Double(itemCount) / dbSeconds : 0
         FileProviderLogger(category: "Enumerator", log: log).performance(
-            "PERF ConvertAndPersistPage pageIndex=\(pageIndex) items=\(itemCount) conv_s=\(convAccum.fpSeconds) db_s=\(dbSeconds) db_items_per_s=\(dbRate)"
+            "PERF ConvertAndPersistPage pageIndex=\(pageIndex) items=\(itemCount) conv_s=\(convElapsed.fpSeconds) db_s=\(dbSeconds) db_items_per_s=\(dbRate)"
         )
 
-        return (metadatas, nil)
+        return (persistedMetadatas, nil)
     }
 
     /// With paginated requests, you do not have a way to know what has changed remotely when

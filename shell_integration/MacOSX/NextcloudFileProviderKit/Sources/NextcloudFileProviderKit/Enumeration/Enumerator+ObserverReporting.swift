@@ -21,7 +21,9 @@ extension Enumerator {
         _ observer: NSFileProviderEnumerationObserver,
         nextPage: NSFileProviderPage?,
         itemMetadatas: [SendableItemMetadata],
-        handleInvalidParent: Bool = true
+        handleInvalidParent: Bool = true,
+        firstPaintStart: ContinuousClock.Instant? = nil,
+        parentItemIdentifierOverride: NSFileProviderItemIdentifier? = nil
     ) {
         Task {
             let signposter = EnumerationSignposter.signposter
@@ -32,7 +34,11 @@ extension Enumerator {
             )
             do {
                 let items = try await itemMetadatas.toFileProviderItems(
-                    account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log
+                    account: account,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    parentItemIdentifierOverride: parentItemIdentifierOverride,
+                    log: self.logger.log
                 )
                 signposter.endInterval("ToFileProviderItems", toItemsState)
 
@@ -43,6 +49,18 @@ extension Enumerator {
                     )
                     observer.didEnumerate(items)
                     logger.info("Did enumerate \(items.count) items. Next page is nil: \(nextPage == nil)")
+
+                    // First-paint metric: wall-clock from enumerateItems(for:startingAt:) to the
+                    // first didEnumerate(items) callback. Logged only when the caller supplied a
+                    // start instant (regular container enumeration, not working set/trash).
+                    if let firstPaintStart {
+                        let firstPaintElapsed = ContinuousClock().now - firstPaintStart
+                        logger.performance(
+                            "PERF FirstPaint items=\(items.count) ms=\(firstPaintElapsed.fpSeconds * 1000)",
+                            [.item: self.enumeratedItemIdentifier]
+                        )
+                    }
+
                     observer.finishEnumerating(upTo: nextPage)
                     signposter.endInterval("ObserverReport", reportState)
                 }
@@ -66,7 +84,8 @@ extension Enumerator {
                         observer,
                         nextPage: nextPage,
                         itemMetadatas: [metadata] + itemMetadatas,
-                        handleInvalidParent: false
+                        handleInvalidParent: false,
+                        parentItemIdentifierOverride: parentItemIdentifierOverride
                     )
                 } catch {
                     observer.finishEnumeratingWithError(error)
