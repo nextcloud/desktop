@@ -1,6 +1,14 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "ExcludedDestination.Reason" : {
+      "comment" : "Activity-view explanation when an item is moved into a folder excluded from synchronization.",
+      "extractionState" : "manual"
+    },
+    "ExcludedDestination.RemoteDeletionFailedReason" : {
+      "comment" : "Activity-view explanation when the remote copy of an item moved into an excluded folder could not be removed.",
+      "extractionState" : "manual"
+    },
     "Allow automatic freeing up space" : {
       "comment" : "Context menu item label.",
       "extractionState" : "manual",
