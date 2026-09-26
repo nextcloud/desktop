@@ -72,6 +72,13 @@ import OSLog
     private var pendingAccount: Account?
     private var setupChain: Task<Void, Never> = Task {}
 
+    // The state-directory URL is security scoped. Keep one access alive for as long as
+    // Realm can use the external-volume database, and release it when the extension is
+    // invalidated or setup replaces the database location.
+    private let stateDirectoryAccessLock = NSLock()
+    private var stateDirectorySecurityScopedURL: URL?
+    private var isInvalidated = false
+
     // Waiters parked in `awaitAccount(…)` until `ncAccount` is published.
     private let accountReadyLock = NSLock()
     private var accountReadyWaiters = [UUID: CheckedContinuation<Void, Never>]()
@@ -121,6 +128,13 @@ import OSLog
         logger.debug("File provider extension process is being invalidated.")
         blockSyncObservation?.invalidate()
         blockSyncObservation = nil
+
+        stateDirectoryAccessLock.lock()
+        isInvalidated = true
+        let stateDirectoryURL = stateDirectorySecurityScopedURL
+        stateDirectorySecurityScopedURL = nil
+        stateDirectoryAccessLock.unlock()
+        stateDirectoryURL?.stopAccessingSecurityScopedResource()
     }
 
     func insertSyncAction(_ actionId: UUID) {
@@ -787,6 +801,27 @@ import OSLog
         setupLock.unlock()
     }
 
+    /// Keep the security scope acquired for the current external state directory alive.
+    ///
+    /// The caller must already have started access to `url`. If invalidation won the race,
+    /// this method balances that access immediately and reports that setup must stop.
+    private func replaceStateDirectorySecurityScope(with url: URL?) -> Bool {
+        stateDirectoryAccessLock.lock()
+
+        if isInvalidated {
+            stateDirectoryAccessLock.unlock()
+            url?.stopAccessingSecurityScopedResource()
+            return false
+        }
+
+        let previousURL = stateDirectorySecurityScopedURL
+        stateDirectorySecurityScopedURL = url
+        stateDirectoryAccessLock.unlock()
+
+        previousURL?.stopAccessingSecurityScopedResource()
+        return true
+    }
+
     ///
     /// Runs the actual account setup work for one ``Account``.
     ///
@@ -846,10 +881,50 @@ import OSLog
                 logger.info("Successfully authenticated.")
         }
 
+        let databaseDirectory: URL?
+        do {
+            if #available(macOS 15.0, *) {
+                databaseDirectory = try FileProviderDomainStorage.databaseDirectory(
+                    volumeUUID: domain.volumeUUID,
+                    stateDirectory: {
+                        guard let manager else {
+                            throw NSError(
+                                domain: NSFileProviderErrorDomain,
+                                code: NSFileProviderError.Code.providerDomainNotFound.rawValue,
+                                userInfo: [NSLocalizedDescriptionKey: "Could not get a File Provider manager for the external-volume domain."]
+                            )
+                        }
+                        return try manager.stateDirectoryURL()
+                    },
+                    accessStateDirectory: { directory in
+                        guard directory.startAccessingSecurityScopedResource() else {
+                            throw NSError(
+                                domain: NSCocoaErrorDomain,
+                                code: NSFileReadNoPermissionError,
+                                userInfo: [NSLocalizedDescriptionKey: "Could not access the external File Provider state directory."]
+                            )
+                        }
+                    }
+                )
+            } else {
+                databaseDirectory = nil
+            }
+        } catch {
+            logger.error("Could not obtain or access external-volume File Provider state directory.", [.error: error])
+            completionHandler?(error as NSError)
+            return
+        }
+
+        guard replaceStateDirectorySecurityScope(with: databaseDirectory) else {
+            completionHandler?(NSFileProviderError(.notAuthenticated) as NSError)
+            return
+        }
+
         await MainActor.run {
             ncAccount = account
             let databaseManager = FilesDatabaseManager(
                 account: account,
+                databaseDirectory: databaseDirectory,
                 fileProviderDomainIdentifier: domain.identifier,
                 log: log
             )

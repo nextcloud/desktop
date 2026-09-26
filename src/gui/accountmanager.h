@@ -106,6 +106,13 @@ public Q_SLOTS:
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     void setFileProviderDomainIdentifier(const QString &accountUserIdAtHost, const QString &identifier);
+
+    /** @brief Persist the external File Provider volume UUID for an account. An empty UUID selects internal storage. */
+    void setFileProviderDomainVolumeUuid(const QString &accountUserIdAtHost, const QString &uuid);
+
+    /** @brief Persist the security-scoped bookmark used to reopen an account's external File Provider volume. */
+    void setFileProviderDomainVolumeBookmark(const QString &accountUserIdAtHost, const QByteArray &bookmark);
+
     [[nodiscard]] AccountStatePtr accountFromFileProviderDomainIdentifier(const QString &identifier) const;
 #endif
 
