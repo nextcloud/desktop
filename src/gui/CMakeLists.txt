@@ -377,6 +377,7 @@ IF( APPLE )
             macOS/fileproviderutils.h
             macOS/fileproviderutils_mac.mm
             macOS/fileproviderxpc.h
+            macOS/fileproviderxpcconnection.h
             macOS/fileproviderxpc_mac.mm
             macOS/fileproviderxpc_mac_utils.h
             macOS/fileproviderxpc_mac_utils.mm

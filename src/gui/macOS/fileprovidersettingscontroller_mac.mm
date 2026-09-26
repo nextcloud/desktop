@@ -137,11 +137,15 @@ public:
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, identifier);
         } else {
             // Check if the extension has dirty user data before removing the domain.
-            const auto xpc = Mac::FileProvider::instance()->xpc();
-
-            if (xpc && xpc->fileProviderDomainHasDirtyUserData(existingDomainId)) {
+            const auto dirtyUserData = Mac::FileProvider::instance()->fileProviderDomainHasDirtyUserData(existingDomainId);
+            if (!dirtyUserData.has_value()) {
+                qCWarning(lcFileProviderSettingsController)
+                    << "Could not determine whether file provider domain has dirty user data; preserving it." << existingDomainId;
+            } else if (*dirtyUserData) {
                 qCWarning(lcFileProviderSettingsController) << "File provider domain" << existingDomainId << "has dirty user data.";
+            }
 
+            if (!dirtyUserData.has_value() || *dirtyUserData) {
                 // Remove the domain and get the URL where preserved user data is located
                 const auto preservedDataUrl = Mac::FileProvider::instance()->domainManager()->removeDomainByAccount(accountState.data());
 
