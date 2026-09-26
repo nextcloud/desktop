@@ -121,6 +121,8 @@ import OSLog
         logger.debug("File provider extension process is being invalidated.")
         blockSyncObservation?.invalidate()
         blockSyncObservation = nil
+        // The accumulated batch belongs to this instance's manager and database, so it goes too.
+        AncestorRefreshCoalescer.shared.cancel()
     }
 
     func insertSyncAction(_ actionId: UUID) {
