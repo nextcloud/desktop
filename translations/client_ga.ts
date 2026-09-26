@@ -1000,7 +1000,7 @@ Ar cheart an cuntas a allmhairiú?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="443"/>
         <location filename="../src/gui/accountsettings.cpp" line="198"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1366"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1368"/>
         <source>Connection settings</source>
         <translation>Socruithe ceangail</translation>
     </message>
@@ -1011,25 +1011,25 @@ Ar cheart an cuntas a allmhairiú?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="591"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2119"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2121"/>
         <source>Reset File Provider Domain</source>
         <translation>Athshocraigh Fearann ​​Soláthraí Comhad</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="640"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1580"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1582"/>
         <source>Log out, log back in, or remove this account from the client.</source>
         <translation>Logáil amach, logáil isteach arís, nó bain an cuntas seo ón gcliant.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="656"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1576"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
         <source>Log out</source>
         <translation>Logáil amach</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="669"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Remove account</source>
         <translation>Bain cuntas</translation>
     </message>
@@ -1040,9 +1040,9 @@ Ar cheart an cuntas a allmhairiú?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="325"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1017"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1188"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2120"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1190"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2122"/>
         <source>Cancel</source>
         <translation>Cealaigh</translation>
     </message>
@@ -1214,64 +1214,64 @@ Fan leis an sioncronú nua, ansin é a chriptiú.</translation>
         <translation>(turgnamhach)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="942"/>
-        <location filename="../src/gui/accountsettings.cpp" line="985"/>
+        <location filename="../src/gui/accountsettings.cpp" line="943"/>
+        <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>Folder creation failed</source>
         <translation>Theip ar chruthú fillteán</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="986"/>
+        <location filename="../src/gui/accountsettings.cpp" line="987"/>
         <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Níorbh fhéidir an nasc sioncrónaithe fillteáin a chur leis do &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Deimhnigh Baint Ceangal Sioncronaithe Fillteán</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1017"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Bain Ceangal Sioncronaithe Fillteán</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1053"/>
         <source>Grant access to sync folder</source>
         <translation>Deonaigh rochtain ar fhillteán sioncrónaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1062"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1064"/>
         <source>Wrong Folder</source>
         <translation>Fillteán Mícheart</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1063"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1065"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Roghnaigh an fillteán sioncrónaithe bunaidh le do thoil: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1069"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1077"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1071"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1079"/>
         <source>Bookmark Error</source>
         <translation>Earráid Leabharmharcanna</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1072"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Níorbh fhéidir leabharmharc slándála a chruthú don fhillteán. Déan iarracht arís.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1077"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1079"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Níorbh fhéidir an leabharmharc slándála a réiteach. Déan iarracht arís.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1179"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1181"/>
         <source>Disable virtual file support?</source>
         <translation>An bhfuil fonn ort tacaíocht comhaid fhíorúla a dhíchumasú?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1180"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1182"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1284,150 +1284,150 @@ Is é an t-aon bhuntáiste a bhaineann le tacaíocht comhaid fhíorúla a dhích
 Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1187"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1189"/>
         <source>Disable support</source>
         <translation>Díchumasaigh tacaíocht</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1274"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Cuimhneachán criptithe ceann go deireadh</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1278"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>Chun d’Aitheantas Cripteagrafach a chosaint, criptímid í le mnemonic de 12 fhocal foclóra. Scríobh síos é agus coinnigh slán é. Beidh sé de dhíth ort chun sioncrónú fillteán criptithe a shocrú ar do ghléasanna eile.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1305"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation>Déan dearmad ar an gcriptiú ó cheann ceann ar an ngléas seo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1306"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1308"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>Ar mhaith leat dearmad a dhéanamh ar shocruithe criptithe foirceann go foirceann do %1 ar an ngléas seo?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>Má dhéanann tú dearmad ar chriptiú ó cheann ceann go ceann, bainfear na sonraí íogaire agus na comhaid chriptithe go léir den ghléas seo.&lt;br&gt;Mar sin féin, fanfaidh na comhaid chriptithe ar an bhfreastalaí agus ar do ghléasanna eile go léir, má tá siad cumraithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1412"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1414"/>
         <source>Sync Running</source>
         <translation>Sioncronú Rith</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1413"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1415"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Tá an oibríocht sioncronaithe ar siúl.1 Ar mhaith leat deireadh a chur leis?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
         <source>%1 in use</source>
         <extracomment>%1 is the used storage size.</extracomment>
         <translation>% 1 in úsáid</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1529"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
         <source>Connected to %1 (%2).</source>
         <extracomment>%1 is the server and user description. %2 is the storage usage description.</extracomment>
         <translation>Ceangailte le %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1576"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="746"/>
         <source>Log in</source>
         <translation>Logáil isteach</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Leave share</source>
         <translation>Fág an comhroinnt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1581"/>
         <source>Remove this public share connection from the client.</source>
         <translation>Bain an nasc comhroinnte poiblí seo ón gcliant.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1767"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1769"/>
         <source>Migrate certificate to a new one</source>
         <translation>Íosluchtaigh teastas chuig ceann nua</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1874"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1876"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Tá fillteáin ann a d&apos;fhás i méid thar % 1MB: % 2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1949"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1951"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>Tá criptiú ó cheann ceann tosaithe ar an gcuntas seo le gléas eile.&lt;br&gt;Cuir isteach an cuimhneolaíoch uathúil chun na fillteáin chriptithe a shioncrónú ar an ngléas seo chomh maith.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2022"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2024"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Tacaíonn an cuntas seo le criptiú ó cheann ceann, ach ní mór é a shocrú ar dtús.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2105"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2107"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
         <translation>Athshocraíonn sé seo an Soláthraí Comhad do %1 go dtí a staid tosaigh. Bain úsáid as nuair a bhíonn cuma ar chomhaid an chuntais seo go bhfuil siad sáinnithe, ar iarraidh, nó as sioncrónú in Finder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2109"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2111"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
         <translation>Imeoidh an suíomh as Finder ar feadh tamaill bhig agus feicfear arís é. Coinneofar aon athruithe áitiúla nár uaslódáileadh fós agus nochtfar iad i bhfillteán in Finder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2114"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2116"/>
         <source>Reset File Provider Domain for this account?</source>
         <translation>Athshocraigh Fearann ​​an tSoláthraí Comhad don chuntas seo?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2017"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2019"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
         <translation>Ní thacaíonn síneadh an Soláthraí Comhad le criptiú ó cheann ceann go ceann go fóill.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2024"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2026"/>
         <source>Set up encryption</source>
         <translation>Socraigh criptiú</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Connected to %1.</source>
         <translation>Ceangailte le % 1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1535"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Níl freastalaí % 1 ar fáil faoi láthair.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1540"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Tá freastalaí % 1 i mód cothabhála faoi láthair.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1544"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1546"/>
         <source>Signed out from %1.</source>
         <translation>Sínithe amach as % 1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1861"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1863"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Tá fillteáin ann nár sioncronaíodh toisc go bhfuil siad rómhór:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1862"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1864"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Tá fillteáin ann nár sioncronaíodh toisc gur stórais sheachtracha iad:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1863"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1865"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Tá fillteáin ann nár sioncronaíodh toisc go bhfuil siad rómhór nó mar stórais sheachtracha:</translation>
     </message>
@@ -1448,59 +1448,59 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Cuir an sioncronú ar sos</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="943"/>
+        <location filename="../src/gui/accountsettings.cpp" line="944"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Níorbh fhéidir fillteán logánta &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;a chruthú</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1011"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ar mhaith leat i ndáiríre chun stop a syncing an fillteán&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nóta:&lt;/b&gt; Ní scriosfaidh sé&lt;b&gt;seo&lt;/b&gt; aon chomhad.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1479"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1481"/>
         <source>%1 of %2 in use</source>
         <extracomment>%1 is the used storage size. %2 is the total storage size.</extracomment>
         <translation>% 1 as % 2 in úsáid</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1519"/>
         <source>%1 as %2</source>
         <extracomment>%1 is a link to the server. %2 is the user display name or username.</extracomment>
         <translation>% 1 mar % 2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1524"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Ní thacaítear le leagan freastalaí % 1! Lean ar aghaidh ar do phriacal féin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1541"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1543"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Tá freastalaí % 1 á atreorú faoi láthair, nó tá do cheangal taobh thiar de thairseach faoi chuing.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1547"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1549"/>
         <source>Connecting to %1 …</source>
         <translation>Ag ceangal le % 1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1553"/>
         <source>Unable to connect to %1.</source>
         <translation>Ní féidir ceangal le % 1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1556"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1558"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Earráid chumraíocht an fhreastalaí: % 1 ag % 2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1565"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1567"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>Ní mór duit glacadh leis na téarmaí seirbhíse ag %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1570"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1572"/>
         <source>No %1 connection configured.</source>
         <translation>Níl ceangal % 1 cumraithe.</translation>
     </message>
@@ -1584,199 +1584,199 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="297"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="313"/>
         <source>Will require local storage</source>
         <translation>Beidh stóráil áitiúil ag teastáil</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="688"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="704"/>
         <source>Proxy settings are incomplete.</source>
         <translation>Tá socruithe seachfhreastalaí neamhiomlán.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="695"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="711"/>
         <source>Server address does not seem to be valid</source>
         <translation>Ní cosúil go bhfuil seoladh an fhreastalaí bailí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="716"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="732"/>
         <source>Username must not be empty.</source>
         <translation>Ní féidir ainm úsáideora a bheith folamh.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="722"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1044"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="738"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1060"/>
         <source>Checking account access</source>
         <translation>Rochtain ar chuntas seiceála</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="800"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="816"/>
         <source>Checking server address</source>
         <translation>Ag seiceáil seoladh an fhreastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="869"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="885"/>
         <source>Preparing browser login</source>
         <translation>Logáil isteach brabhsálaí á ullmhú</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="890"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="906"/>
         <source>Invalid URL</source>
         <translation>URL neamhbhailí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="892"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="908"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>Theip ar cheangal le %1 ag %2:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="908"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="924"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Teorainn ama ag teacht isteach agus iarracht á déanamh ceangal le %1 ag %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="995"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1011"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Ní féidir an Brabhsálaí a oscailt, cóipeáil an nasc chuig do Bhrabhsálaí le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1020"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1025"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1036"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1041"/>
         <source>Waiting for authorization</source>
         <translation>Ag fanacht le húdarú</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1030"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1046"/>
         <source>Starting authorization</source>
         <translation>Údarú tosaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1035"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1051"/>
         <source>Link copied to clipboard.</source>
         <translation>Nasc cóipeáilte chuig an ghearrthaisce.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1090"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1120"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1106"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1136"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Bhí freagra neamhbhailí ann ar iarratas fíordheimhnithe WebDAV</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1107"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1123"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Atreoraíodh an iarratas fíordheimhnithe chuig an bhfreastalaí chuig &quot;%1&quot;. Tá an URL lochtach, tá an freastalaí míchumraithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1115"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1131"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Rochtain toirmiscthe ag an bhfreastalaí. Chun a fhíorú go bhfuil rochtain cheart agat, oscail an tseirbhís i do bhrabhsálaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1133"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1149"/>
         <source>Account connected.</source>
         <translation>Cuntas ceangailte.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1241"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1257"/>
         <source>Will require %1 of storage</source>
         <translation>Beidh %1 stórais ag teastáil</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1419"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1433"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 spás saor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1429"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1443"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Níl dóthain spáis shaor sa bhfillteán áitiúil!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1446"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1460"/>
         <source>Please choose a local sync folder.</source>
         <translation>Roghnaigh fillteán sioncrónaithe áitiúil le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1451"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1465"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Roghnaigh fillteán sioncrónaithe áitiúil folamh le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1516"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1530"/>
         <source>Could not create local folder %1</source>
         <translation>Níorbh fhéidir fillteán áitiúil %1 a chruthú</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1530"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1544"/>
         <source>Checking remote folder</source>
         <translation>Ag seiceáil fillteán cianda</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1576"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1590"/>
         <source>No remote folder specified!</source>
         <translation>Níor sonraíodh aon fhillteán cianda!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1585"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1599"/>
         <source>Error: %1</source>
         <translation>Earráid: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1590"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1604"/>
         <source>Creating remote folder</source>
         <translation>Ag cruthú fillteáin iargúlta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1609"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1623"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Mar thoradh ar chruthú fillteáin, tháinig cód earráide HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1611"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1625"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>Theip ar chruthú fillteáin iargúlta mar gheall ar na dintiúir a cuireadh ar fáil mícheart. Téigh ar ais agus seiceáil do dhintiúir le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1613"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Theip ar chruthú fillteáin iargúlta %1 le hearráid &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1637"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1674"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Theip ar shocrú cuntais agus an fillteán sioncrónaithe á chruthú.heip ar shocrú cuntais agus an fillteán sioncrónaithe á chruthú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1664"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1686"/>
         <source>Could not create the sync folder.</source>
         <translation>Níorbh fhéidir an fillteán sioncrónaithe a chruthú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1754"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1792"/>
         <source>Local Sync Folder</source>
         <translation>Fillteán Sioncrónaithe Áitiúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2016"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2067"/>
         <source>Select a certificate</source>
         <translation>Roghnaigh teastas</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2018"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2069"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Comhaid teastais (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2026"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2046"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2077"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2097"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Níorbh fhéidir rochtain a fháil ar an gcomhad teastais roghnaithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2062"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2113"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Níorbh fhéidir an teastas a luchtú. B’fhéidir go bhfuil an focal faire mícheart?</translation>
     </message>
@@ -2895,172 +2895,172 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="508"/>
+        <location filename="../src/gui/folder.cpp" line="518"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>Baineadh % 1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="522"/>
+        <location filename="../src/gui/folder.cpp" line="532"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>Nuashonraíodh % 1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="529"/>
+        <location filename="../src/gui/folder.cpp" line="539"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>Athainmníodh % 1 go % 2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="536"/>
+        <location filename="../src/gui/folder.cpp" line="546"/>
         <source>%1 has been moved to %2.</source>
         <translation>Bogadh % 1 go % 2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="506"/>
+        <location filename="../src/gui/folder.cpp" line="516"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="239"/>
+        <location filename="../src/gui/folder.cpp" line="244"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
         <translation>Roghnaigh suíomh eile le do thoil. Níl fillteán %1 ann.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="241"/>
+        <location filename="../src/gui/folder.cpp" line="246"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
         <translation>Roghnaigh suíomh eile le do thoil. Ní fillteán bailí é %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="243"/>
+        <location filename="../src/gui/folder.cpp" line="248"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
         <translation>Roghnaigh suíomh eile le do thoil. Ní fillteán inléite é %1.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="513"/>
+        <location filename="../src/gui/folder.cpp" line="523"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>% 1 agus %n comhad(í) eile curtha leis.</numerusform><numerusform>% 1 agus %n comhad(í) eile curtha leis.</numerusform><numerusform>% 1 agus %n comhad(í) eile curtha leis.</numerusform><numerusform>% 1 agus %n comhad(í) eile curtha leis.</numerusform><numerusform>% 1 agus %n comhad(í) eile curtha leis.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="515"/>
+        <location filename="../src/gui/folder.cpp" line="525"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>% 1 curtha leis.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="520"/>
+        <location filename="../src/gui/folder.cpp" line="530"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>Nuashonraíodh % 1 agus %n comhad(í) eile.</numerusform><numerusform>Nuashonraíodh % 1 agus %n comhad(í) eile.</numerusform><numerusform>Nuashonraíodh % 1 agus %n comhad(í) eile.</numerusform><numerusform>Nuashonraíodh % 1 agus %n comhad(í) eile.</numerusform><numerusform>Nuashonraíodh % 1 agus %n comhad(í) eile.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="527"/>
+        <location filename="../src/gui/folder.cpp" line="537"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>Athainmníodh % 1 go % 2 agus %n comhad(í) eile athainmnithe.</numerusform><numerusform>Athainmníodh % 1 go % 2 agus %n comhad(í) eile athainmnithe.</numerusform><numerusform>Athainmníodh % 1 go % 2 agus %n comhad(í) eile athainmnithe.</numerusform><numerusform>Athainmníodh % 1 go % 2 agus %n comhad(í) eile athainmnithe.</numerusform><numerusform>Athainmníodh % 1 go % 2 agus %n comhad(í) eile athainmnithe.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="534"/>
+        <location filename="../src/gui/folder.cpp" line="544"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>Bogadh % 1 go % 2 agus bogadh %n comhad eile.</numerusform><numerusform>Bogadh % 1 go % 2 agus bogadh %n comhad eile.</numerusform><numerusform>Bogadh % 1 go % 2 agus bogadh %n comhad eile.</numerusform><numerusform>Bogadh % 1 go % 2 agus bogadh %n comhad eile.</numerusform><numerusform>Bogadh % 1 go % 2 agus bogadh %n comhad eile.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="541"/>
+        <location filename="../src/gui/folder.cpp" line="551"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>Tá coinbhleachtaí sioncronaithe ag % 1 agus ag %n comhad eile.</numerusform><numerusform>Tá coinbhleachtaí sioncronaithe ag % 1 agus ag %n comhad eile.</numerusform><numerusform>Tá coinbhleachtaí sioncronaithe ag % 1 agus ag %n comhad eile.</numerusform><numerusform>Tá coinbhleachtaí sioncronaithe ag % 1 agus ag %n comhad eile.</numerusform><numerusform>Tá coinbhleachtaí sioncronaithe ag % 1 agus ag %n comhad eile.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="543"/>
+        <location filename="../src/gui/folder.cpp" line="553"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>Tá coinbhleacht sioncronaithe ag % 1. Seiceáil an comhad coinbhleachta le do thoil!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="548"/>
+        <location filename="../src/gui/folder.cpp" line="558"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>Níorbh fhéidir % 1 agus %n comhad eile a shioncronú de bharr earráidí. Féach ar an loga le haghaidh sonraí.</numerusform><numerusform>Níorbh fhéidir % 1 agus %n comhad eile a shioncronú de bharr earráidí. Féach ar an loga le haghaidh sonraí.</numerusform><numerusform>Níorbh fhéidir % 1 agus %n comhad eile a shioncronú de bharr earráidí. Féach ar an loga le haghaidh sonraí.</numerusform><numerusform>Níorbh fhéidir % 1 agus %n comhad eile a shioncronú de bharr earráidí. Féach ar an loga le haghaidh sonraí.</numerusform><numerusform>Níorbh fhéidir % 1 agus %n comhad eile a shioncronú de bharr earráidí. Féach ar an loga le haghaidh sonraí.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="550"/>
+        <location filename="../src/gui/folder.cpp" line="560"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>Níorbh fhéidir % 1 a shioncronú de bharr earráide. Féach ar an loga le haghaidh sonraí.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="555"/>
+        <location filename="../src/gui/folder.cpp" line="565"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>Tá % 1 agus %n comhad(í) eile glasáilte faoi láthair.</numerusform><numerusform>Tá % 1 agus %n comhad(í) eile glasáilte faoi láthair.</numerusform><numerusform>Tá % 1 agus %n comhad(í) eile glasáilte faoi láthair.</numerusform><numerusform>Tá % 1 agus %n comhad(í) eile glasáilte faoi láthair.</numerusform><numerusform>Tá % 1 agus %n comhad(í) eile glasáilte faoi láthair.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="557"/>
+        <location filename="../src/gui/folder.cpp" line="567"/>
         <source>%1 is currently locked.</source>
         <translation>Tá % 1 faoi ghlas faoi láthair.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="565"/>
+        <location filename="../src/gui/folder.cpp" line="575"/>
         <source>Sync Activity</source>
         <translation>Gníomhaíocht Sioncronaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1194"/>
+        <location filename="../src/gui/folder.cpp" line="1204"/>
         <source>Could not read system exclude file</source>
         <translation>Níorbh fhéidir an córas a léamh agus an comhad a eisiamh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1484"/>
+        <location filename="../src/gui/folder.cpp" line="1494"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Cuireadh fillteán nua níos mó ná % 1 MB leis: % 2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1487"/>
+        <location filename="../src/gui/folder.cpp" line="1497"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Tá fillteán ó stóras seachtrach curtha leis.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1488"/>
+        <location filename="../src/gui/folder.cpp" line="1498"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Téigh isteach sna socruithe chun é a roghnú más mian leat é a íoslódáil le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1545"/>
+        <location filename="../src/gui/folder.cpp" line="1555"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Sháraigh fillteán an teorainn mhéid fillteáin de % 1MB: % 2.
 % 3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1556"/>
+        <location filename="../src/gui/folder.cpp" line="1566"/>
         <source>Keep syncing</source>
         <translation>Coinnigh sioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1564"/>
+        <location filename="../src/gui/folder.cpp" line="1574"/>
         <source>Stop syncing</source>
         <translation>Stop sioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1575"/>
+        <location filename="../src/gui/folder.cpp" line="1585"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Sháraigh fillteán % 1 an teorainn méide fillteáin de % 2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1576"/>
+        <location filename="../src/gui/folder.cpp" line="1586"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Ar mhaith leat stop a chur le sioncronú an fhillteáin seo?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1653"/>
+        <location filename="../src/gui/folder.cpp" line="1663"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Cruthaíodh fillteán % 1 ach fágadh as an áireamh é ón sioncronú roimhe seo. Ní dhéanfar sonraí taobh istigh de a shioncronú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1656"/>
+        <location filename="../src/gui/folder.cpp" line="1666"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Cruthaíodh comhad % 1 ach fágadh as an áireamh é ón sioncronú roimhe seo. Ní dhéanfar é a shioncronú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1667"/>
+        <location filename="../src/gui/folder.cpp" line="1677"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -3073,12 +3073,12 @@ Ciallaíonn sé seo go bhféadfadh sé nach ndéanfaidh an cliant sioncrónaithe
 % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1705"/>
+        <location filename="../src/gui/folder.cpp" line="1715"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Theip ar íosluchtú an chomhaid fhíorúil le cód &quot;% 1&quot;, stádas &quot;% 2&quot; agus teachtaireacht earráide &quot;% 3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1801"/>
+        <location filename="../src/gui/folder.cpp" line="1811"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -3087,7 +3087,7 @@ Deimhnigh le do thoil ar mhaith leat leanúint ar aghaidh leis na scriosanna seo
 Nó, is féidir leat gach comhad scriosta a chur ar ais trí uaslódáil ó fhillteán &apos;%1&apos; go dtí an freastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1802"/>
+        <location filename="../src/gui/folder.cpp" line="1812"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -3096,22 +3096,22 @@ Deimhnigh le do thoil ar mhaith leat leanúint ar aghaidh leis na scriosanna seo
 De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n-íoslódáil ón bhfreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1803"/>
+        <location filename="../src/gui/folder.cpp" line="1813"/>
         <source>Remove all files?</source>
         <translation>Bain gach comhad?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1807"/>
+        <location filename="../src/gui/folder.cpp" line="1817"/>
         <source>Proceed with Deletion</source>
         <translation>Lean ar aghaidh leis an Scriosadh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1808"/>
+        <location filename="../src/gui/folder.cpp" line="1818"/>
         <source>Restore Files to Server</source>
         <translation>Athchóirigh Comhaid go Freastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1808"/>
+        <location filename="../src/gui/folder.cpp" line="1818"/>
         <source>Restore Files from Server</source>
         <translation>Athchóirigh Comhaid ón bhfreastalaí</translation>
     </message>
@@ -3157,116 +3157,116 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <translation>Fuarthas sean dialann sioncronaithe &quot;% 1&quot;, ach níorbh fhéidir é a bhaint. Cinntigh le do thoil nach bhfuil aon fheidhmchlár á úsáid faoi láthair.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <location filename="../src/gui/folderman.cpp" line="1907"/>
         <source>Undefined state.</source>
         <translation>Staid neamhshainithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1904"/>
+        <location filename="../src/gui/folderman.cpp" line="1910"/>
         <source>Waiting to start syncing.</source>
         <translation>Ag fanacht le sioncronú a thosú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1913"/>
         <source>Preparing for sync.</source>
         <translation>Ag ullmhú le haghaidh sioncronaithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1917"/>
+        <location filename="../src/gui/folderman.cpp" line="1923"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>%1 de %2 á shioncronú (cúpla soicind fágtha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1920"/>
+        <location filename="../src/gui/folderman.cpp" line="1926"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>%1 de %2 á shioncronú (%3 fágtha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1923"/>
+        <location filename="../src/gui/folderman.cpp" line="1929"/>
         <source>Syncing %1 of %2</source>
         <translation>%1 de %2 á shioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1929"/>
+        <location filename="../src/gui/folderman.cpp" line="1935"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>%1 á shioncronú (cúpla soicind fágtha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1931"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 á shioncronú (%2 fágtha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1934"/>
+        <location filename="../src/gui/folderman.cpp" line="1940"/>
         <source>Syncing %1</source>
         <translation>%1 á shioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1939"/>
+        <location filename="../src/gui/folderman.cpp" line="1945"/>
         <source>Sync is running.</source>
         <translation>Tá Sync ar siúl.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1944"/>
+        <location filename="../src/gui/folderman.cpp" line="1950"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Chríochnaigh Sync le coinbhleachtaí gan réiteach.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1946"/>
+        <location filename="../src/gui/folderman.cpp" line="1952"/>
         <source>Last sync was successful.</source>
         <translation>D&apos;éirigh leis an sioncronú deireanach.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1952"/>
+        <location filename="../src/gui/folderman.cpp" line="1958"/>
         <source>Setup error.</source>
         <translation>Earráid socraithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1955"/>
+        <location filename="../src/gui/folderman.cpp" line="1961"/>
         <source>Sync request was cancelled.</source>
         <translation>Cuireadh an t-iarratas sioncronaithe ar ceal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1973"/>
+        <location filename="../src/gui/folderman.cpp" line="1979"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Roghnaigh suíomh eile le do thoil. Níl an fillteán roghnaithe bailí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1981"/>
-        <location filename="../src/gui/folderman.cpp" line="2060"/>
+        <location filename="../src/gui/folderman.cpp" line="1987"/>
+        <location filename="../src/gui/folderman.cpp" line="2066"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Roghnaigh suíomh eile le do thoil. Tá %1 á úsáid mar fhillteán sioncronaithe cheana.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1990"/>
+        <location filename="../src/gui/folderman.cpp" line="1996"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Roghnaigh suíomh eile le do thoil. Níl conair %1 ann.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1994"/>
+        <location filename="../src/gui/folderman.cpp" line="2000"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Roghnaigh suíomh eile le do thoil. Ní fillteán é conair %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2002"/>
-        <location filename="../src/gui/folderman.cpp" line="2007"/>
+        <location filename="../src/gui/folderman.cpp" line="2008"/>
+        <location filename="../src/gui/folderman.cpp" line="2013"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Roghnaigh suíomh eile le do thoil. Níl go leor ceadanna agat chun scríobh chuig %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2067"/>
+        <location filename="../src/gui/folderman.cpp" line="2073"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Roghnaigh suíomh eile le do thoil. Tá %1 i bhfillteán a úsáidtear mar fhillteán sioncronaithe cheana.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2082"/>
+        <location filename="../src/gui/folderman.cpp" line="2088"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Roghnaigh suíomh eile le do thoil. Tá %1 in úsáid cheana mar fhillteán sioncronaithe le haghaidh %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2240"/>
+        <location filename="../src/gui/folderman.cpp" line="2246"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3277,7 +3277,7 @@ Chun an fhadhb seo a réiteach: bain %1 de cheann de na cuntais agus cruthaigh f
 D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bainteach le comhaid bunachar sonraí sioncronaithe iolracha a aimsíodh i bhfillteán amháin. Seiceáil %1 le haghaidh comhaid .sync_*.db atá as dáta agus nach bhfuil in úsáid agus bain amach iad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1958"/>
+        <location filename="../src/gui/folderman.cpp" line="1964"/>
         <source>Sync is paused.</source>
         <translation>Tá an sioncronú ar sos.</translation>
     </message>
@@ -3287,7 +3287,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <translation>Oscail socruithe an aip le rochtain a dheonú ar na fillteáin sioncrónaithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1965"/>
+        <location filename="../src/gui/folderman.cpp" line="1971"/>
         <source>%1 (Sync is paused)</source>
         <extracomment>%1 is the current sync status message, for example &quot;Setup error&quot;.</extracomment>
         <translation>% 1 (Tá an sioncronú curtha ar sos)</translation>
@@ -3497,12 +3497,12 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="724"/>
+        <location filename="../src/gui/folderwizard.cpp" line="750"/>
         <source>Add Folder Sync Connection</source>
         <translation>Cuir Fillteán Sync Ceangal leis</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="726"/>
+        <location filename="../src/gui/folderwizard.cpp" line="752"/>
         <source>Add Sync Connection</source>
         <translation>Cuir Ceangal Sync leis</translation>
     </message>
@@ -3510,17 +3510,18 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="86"/>
+        <location filename="../src/gui/folderwizard.cpp" line="89"/>
         <source>Click to select a local folder to sync.</source>
         <translation>Cliceáil chun fillteán áitiúil a roghnú le sioncronú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="90"/>
+        <location filename="../src/gui/folderwizard.cpp" line="93"/>
         <source>Enter the path to the local folder.</source>
         <translation>Cuir isteach an cosán go dtí an fillteán áitiúil.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="155"/>
+        <location filename="../src/gui/folderwizard.cpp" line="164"/>
         <source>Select the source folder</source>
         <translation>Roghnaigh an fillteán foinse</translation>
     </message>
@@ -3528,48 +3529,48 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="233"/>
+        <location filename="../src/gui/folderwizard.cpp" line="259"/>
         <source>Create Remote Folder</source>
         <translation>Cruthaigh Fillteán Cianda</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="260"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Cuir isteach ainm an fhillteáin nua atá le cruthú thíos &quot;% 1&quot;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="264"/>
+        <location filename="../src/gui/folderwizard.cpp" line="290"/>
         <source>Folder was successfully created on %1.</source>
         <translation>D&apos;éirigh le cruthú fillteán ar % 1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="274"/>
+        <location filename="../src/gui/folderwizard.cpp" line="300"/>
         <source>Authentication failed accessing %1</source>
         <translation>Theip ar fhíordheimhniú % 1 a rochtain</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="276"/>
+        <location filename="../src/gui/folderwizard.cpp" line="302"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Theip ar chruthú an fhillteáin ar % 1. Seiceáil le do thoil de láimh.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="294"/>
+        <location filename="../src/gui/folderwizard.cpp" line="320"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Theip ar liosta fillteán. Earráid: % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="376"/>
+        <location filename="../src/gui/folderwizard.cpp" line="402"/>
         <source>Choose this to sync the entire account</source>
         <translation>Roghnaigh é seo chun an cuntas iomlán a shioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="518"/>
-        <location filename="../src/gui/folderwizard.cpp" line="530"/>
+        <location filename="../src/gui/folderwizard.cpp" line="544"/>
+        <location filename="../src/gui/folderwizard.cpp" line="556"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Roghnaigh suíomh eile le do thoil. Tá %1 á shioncronú go %2 cheana féin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="525"/>
+        <location filename="../src/gui/folderwizard.cpp" line="551"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>Tá tú ag sioncrónú an fho-fhillteáin %1 ag %2 cheana féin.</translation>
     </message>
@@ -3577,24 +3578,24 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="592"/>
-        <location filename="../src/gui/folderwizard.cpp" line="635"/>
+        <location filename="../src/gui/folderwizard.cpp" line="618"/>
+        <location filename="../src/gui/folderwizard.cpp" line="661"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Úsáid comhaid fhíorúla in ionad ábhar a íosluchtú láithreach % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="592"/>
-        <location filename="../src/gui/folderwizard.cpp" line="635"/>
+        <location filename="../src/gui/folderwizard.cpp" line="618"/>
+        <location filename="../src/gui/folderwizard.cpp" line="661"/>
         <source>(experimental)</source>
         <translation>(turgnamhach)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="631"/>
+        <location filename="../src/gui/folderwizard.cpp" line="657"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Ní thacaítear le comhaid fhíorúla le haghaidh fréamhacha deighilte Windows mar fhillteán áitiúil. Roghnaigh fofhillteán bailí faoin litir tiomántán le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="663"/>
+        <location filename="../src/gui/folderwizard.cpp" line="689"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation>Ní thacaítear le comhaid fhíorúla ag an suíomh roghnaithe</translation>
     </message>

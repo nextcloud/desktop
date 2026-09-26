@@ -658,7 +658,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="795"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="796"/>
         <source>Assistant</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1141,7 +1141,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1574"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="745"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="746"/>
         <source>Log in</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3795,92 +3795,92 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="94"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="98"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="107"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="109"/>
         <source>The following characters are not allowed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="110"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="112"/>
         <source>The following basenames are not allowed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="113"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="115"/>
         <source>The following filenames are not allowed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="116"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="118"/>
         <source>The following file extensions are not allowed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="127"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="128"/>
         <source>Checking rename permissions …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="161"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="159"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="166"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="163"/>
         <source>Failed to fetch permissions with error %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="183"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="180"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="186"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="182"/>
         <source>Filename contains leading spaces.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="188"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="184"/>
         <source>Filename contains trailing spaces.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="193"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="189"/>
         <source>Use invalid name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="249"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="245"/>
         <source>Filename contains illegal characters: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="262"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="257"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="273"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="309"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="304"/>
         <source>Could not rename local file. %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5581,7 +5581,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="211"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="479"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="221"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="222"/>
         <source>Offline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5684,7 +5684,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
         <location filename="../src/gui/systray.cpp" line="589"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="871"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="875"/>
         <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5708,7 +5708,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="596"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="909"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="913"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5724,18 +5724,18 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="604"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="610"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="916"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="920"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6924,47 +6924,47 @@ Server replied with error: %2</source>
 <context>
     <name>TrayAccountPopup</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="594"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="595"/>
         <source>No apps available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="634"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="635"/>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="658"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="659"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="671"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="672"/>
         <source>Recent activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="679"/>
         <source>No recent activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="696"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="697"/>
         <source>More activity…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="763"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="764"/>
         <source>Resolve: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="770"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="771"/>
         <source>User status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="803"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="804"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6972,8 +6972,8 @@ Server replied with error: %2</source>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="733"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="786"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="734"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="787"/>
         <source>Local folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6981,7 +6981,7 @@ Server replied with error: %2</source>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="810"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="811"/>
         <source>Apps</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7065,26 +7065,26 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="211"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="223"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="212"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="224"/>
         <source>Online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="214"/>
         <source>Away</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="216"/>
         <source>Busy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="218"/>
         <source>Do not disturb</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7095,7 +7095,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="220"/>
         <source>Invisible</source>
         <translation type="unfinished"></translation>
     </message>
