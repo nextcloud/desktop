@@ -60,6 +60,6 @@ if (LINUX)
     )
 
     if (WIN32)
-        install(FILES $<TARGET_PDB_FILE:nextcloudsync_vfs_xattr> DESTINATION bin OPTIONAL)
+        install(FILES $<TARGET_PDB_FILE:nextcloudsync_vfs_xattr> DESTINATION bin CONFIGURATIONS Debug OPTIONAL)
     endif()
 endif()

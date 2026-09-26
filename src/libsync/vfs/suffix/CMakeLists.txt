@@ -51,5 +51,5 @@ install(TARGETS nextcloudsync_vfs_suffix
 )
 
 if (WIN32)
-    install(FILES $<TARGET_PDB_FILE:nextcloudsync_vfs_suffix> DESTINATION bin OPTIONAL)
+    install(FILES $<TARGET_PDB_FILE:nextcloudsync_vfs_suffix> DESTINATION bin CONFIGURATIONS Debug OPTIONAL)
 endif()

@@ -789,7 +789,7 @@ install(TARGETS nextcloud
  )
 
 if (WIN32)
-    install(FILES $<TARGET_PDB_FILE:nextcloud> DESTINATION bin OPTIONAL)
+    install(FILES $<TARGET_PDB_FILE:nextcloud> DESTINATION bin CONFIGURATIONS Debug OPTIONAL)
 endif()
 
 # FIXME: The following lines are dup in src/gui and src/cmd because it needs to be done after both are installed

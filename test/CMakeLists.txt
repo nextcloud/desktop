@@ -6,6 +6,15 @@ include(DefinePlatformDefaults)
 
 include(nextcloud_add_test.cmake)
 
+if(WIN32)
+    add_test(NAME WindowsNonDebugInstallPdbTest
+        COMMAND ${CMAKE_COMMAND}
+            "-DPDB_INSTALL_TEST_BUILD_DIR=${CMAKE_BINARY_DIR}"
+            "-DPDB_INSTALL_TEST_CONFIG=$<CONFIG>"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/windows/test_nondebug_install_pdb.cmake"
+        CONFIGURATIONS Release RelWithDebInfo MinSizeRel)
+endif()
+
 set(CMAKE_AUTOMOC TRUE)
 
 find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIET)
