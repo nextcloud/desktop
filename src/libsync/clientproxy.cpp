@@ -56,7 +56,10 @@ ClientProxy::AccountProxyMode ClientProxy::accountProxyMode(const Account &accou
     if (account.proxySettingsAreManaged()) {
         return followsSystemProxy ? AccountProxyMode::SystemProxy : AccountProxyMode::AccountProxy;
     }
-    if (isUsingSystemDefault() || followsSystemProxy) {
+    if (!followsSystemProxy) {
+        return AccountProxyMode::AccountProxy;
+    }
+    if (isUsingSystemDefault()) {
         return AccountProxyMode::SystemProxy;
     }
     return AccountProxyMode::ApplicationProxy;
