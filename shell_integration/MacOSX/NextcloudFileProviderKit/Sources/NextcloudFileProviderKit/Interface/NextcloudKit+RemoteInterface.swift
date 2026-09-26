@@ -114,6 +114,7 @@ extension NextcloudKit: RemoteInterface {
         remainingChunks: [RemoteFileChunk],
         creationDate: Date? = nil,
         modificationDate: Date? = nil,
+        overwrite: Bool = true,
         account: Account,
         options: NKRequestOptions = .init(),
         currentNumChunksUpdateHandler _: @escaping (_ num: Int) -> Void = { _ in },
@@ -186,6 +187,7 @@ extension NextcloudKit: RemoteInterface {
                 chunkSize: chunkSize,
                 account: account.ncKitAccount,
                 options: options,
+                overwrite: overwrite,
                 uploadStart: { processedChunks in
                     let chunks = RemoteFileChunk.fromNcKitChunks(processedChunks, remoteChunkStoreFolderName: remoteChunkStoreFolderName)
                     chunkUploadStartHandler(chunks)

@@ -621,8 +621,14 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// which etag. Captured before any injected `uploadError` short-circuit.
     public var lastUploadIfMatchHeader: String?
 
+    /// Records the create-only precondition on the most recent upload.
+    public var lastUploadIfNoneMatchHeader: String?
+
     /// Records the WebDAV `If` header the most recent upload call carried (nil if none).
     public var lastUploadIfHeader: String?
+
+    /// The destination policy supplied to the most recent chunked upload.
+    public private(set) var lastChunkedUploadOverwrite: Bool?
 
     /// Lock information returned by lock and unlock requests.
     public var lockUnlockResult: NKLock?
@@ -813,6 +819,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         remoteError: NKError
     ) {
         lastUploadIfMatchHeader = options.customHeader?["If-Match"]
+        lastUploadIfNoneMatchHeader = options.customHeader?["If-None-Match"]
         lastUploadIfHeader = options.customHeader?["If"]
 
         if let uploadError {
@@ -840,6 +847,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             return (account.ncKitAccount, nil, nil, nil, 0, nil, .urlError)
         }
         debugPrint("Parent is:", parent.remotePath)
+
+        if options.customHeader?["If-None-Match"] == "*",
+           parent.children.contains(where: { $0.remotePath == remotePath }) {
+            return (account.ncKitAccount, nil, nil, nil, 0, nil, NKError(statusCode: 412, fallbackDescription: "Precondition Failed"))
+        }
 
         var item: MockRemoteItem
         if let existingItem = parent.children.first(where: { $0.remotePath == remotePath }) {
@@ -897,6 +909,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         remainingChunks: [RemoteFileChunk],
         creationDate: Date?,
         modificationDate: Date?,
+        overwrite: Bool = true,
         account: Account,
         options: NKRequestOptions,
         currentNumChunksUpdateHandler _: @escaping (Int) -> Void = { _ in },
@@ -913,6 +926,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         chunksDirectory: URL?,
         nkError: NKError
     ) {
+        lastChunkedUploadOverwrite = overwrite
         guard let remoteUrl = URL(string: remotePath) else {
             print("Invalid remote path!")
             return ("", nil, nil, .urlError)
@@ -957,6 +971,16 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         }
 
         chunkUploadStartHandler(newChunks)
+
+        if !overwrite, item(remotePath: remotePath, account: account.ncKitAccount) != nil {
+            newChunks.forEach { chunkUploadCompleteHandler($0) }
+            return (
+                account.ncKitAccount,
+                nil,
+                returnsChunkUploadDirectory ? tempDirectoryUrl : nil,
+                NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
+            )
+        }
 
         let (_, ocId, etag, date, size, _, remoteError) = await upload(
             remotePath: remotePath,

@@ -56,6 +56,7 @@ func upload(
     creationDate: Date? = nil,
     modificationDate: Date? = nil,
     options: NKRequestOptions = .init(queue: .global(qos: .utility)),
+    creatingNewFile: Bool = false,
     log: any FileProviderLogging,
     requestHandler: @escaping (UploadRequest) -> Void = { _ in },
     taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
@@ -127,13 +128,21 @@ func upload(
     }()
 
     guard fileSize > chunkSize else {
+        let uploadOptions: NKRequestOptions
+        if creatingNewFile {
+            var headers = options.customHeader ?? [:]
+            headers["If-None-Match"] = "*"
+            uploadOptions = NKRequestOptions(customHeader: headers, queue: options.queue)
+        } else {
+            uploadOptions = options
+        }
         let (_, ocId, etag, date, size, _, remoteError) = await remoteInterface.upload(
             remotePath: remotePath,
             localPath: localFilePath,
             creationDate: creationDate,
             modificationDate: modificationDate,
             account: account,
-            options: options,
+            options: uploadOptions,
             requestHandler: requestHandler,
             taskHandler: taskHandler,
             progressHandler: progressHandler
@@ -202,6 +211,7 @@ func upload(
         remainingChunks: remainingChunks,
         creationDate: creationDate,
         modificationDate: modificationDate,
+        overwrite: !creatingNewFile,
         account: account,
         options: options,
         currentNumChunksUpdateHandler: { _ in },
