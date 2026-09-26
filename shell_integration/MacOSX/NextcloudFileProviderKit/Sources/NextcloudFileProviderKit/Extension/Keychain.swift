@@ -14,6 +14,12 @@ struct Keychain {
         logger = FileProviderLogger(category: "Keychain", log: log)
     }
 
+    /// Scopes an item to this application and server, so a lookup cannot match an item
+    /// belonging to another application.
+    private func service(for server: String) -> String {
+        "com.nextcloud.desktopclient:\(server)"
+    }
+
     ///
     /// Lookup a generic password for the given account on the given server.
     ///
@@ -25,7 +31,7 @@ struct Keychain {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
-            kSecAttrServer as String: server,
+            kSecAttrService as String: service(for: server),
             kSecMatchLimit as String: kSecMatchLimitOne,
             kSecReturnAttributes as String: true,
             kSecReturnData as String: true
@@ -65,7 +71,7 @@ struct Keychain {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
-            kSecAttrServer as String: server
+            kSecAttrService as String: service(for: server)
         ]
 
         // First, check if an item already exists
@@ -89,7 +95,7 @@ struct Keychain {
             let addQuery: [String: Any] = [
                 kSecClass as String: kSecClassGenericPassword,
                 kSecAttrAccount as String: account,
-                kSecAttrServer as String: server,
+                kSecAttrService as String: service(for: server),
                 kSecValueData as String: password.data(using: .utf8)!
             ]
 
