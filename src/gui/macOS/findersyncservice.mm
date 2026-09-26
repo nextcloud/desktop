@@ -152,7 +152,7 @@ public:
     // Convert NSArray to QStringList
     QStringList qPaths;
     for (NSString *path in paths) {
-        qPaths << QString::fromNSString(path);
+        qPaths << QString::fromNSString(path).normalized(QString::NormalizationForm_C);
     }
 
     // Under MRC, block arguments may be stack blocks. Copy to heap before capturing
@@ -191,7 +191,7 @@ public:
 
     QStringList qPaths;
     for (NSString *path in paths) {
-        qPaths << QString::fromNSString(path);
+        qPaths << QString::fromNSString(path).normalized(QString::NormalizationForm_C);
     }
 
     qCDebug(OCC::lcMacFinderSyncService) << "FinderSync executing command:" << qCommand
@@ -357,8 +357,9 @@ std::pair<bool, QString> FinderSyncService::getFileStatus(const QString &path) c
         return {false, QStringLiteral("NOP")};
     }
 
-    // Access private SocketApi::FileData (allowed via friend declaration)
-    auto fileData = SocketApi::FileData::get(path);
+    // FinderSync sends NFD paths, while sync roots are stored in NFC. XPC bypasses
+    // the socket input normalization, so compose the path before folder lookup.
+    auto fileData = SocketApi::FileData::get(path.normalized(QString::NormalizationForm_C));
 
     if (!fileData.folder) {
         return {false, QStringLiteral("NOP")};
@@ -418,7 +419,7 @@ QList<QMap<QString, QString>> FinderSyncService::getMenuItems(const QStringList 
     ResponseCapturingListener listener;
 
     // Join paths with record separator (same as socket protocol)
-    const QString argument = paths.join(QChar(0x1e));
+    const QString argument = paths.join(QChar(0x1e)).normalized(QString::NormalizationForm_C);
 
     // Call SocketApi command (synchronous)
     _socketApi->command_GET_MENU_ITEMS(argument, &listener);
