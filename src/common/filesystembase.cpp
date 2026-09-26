@@ -635,7 +635,9 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
 #endif
     const auto deletedFileInfo = QFileInfo{windowsSafeFileName};
     if (!deletedFileInfo.exists()) {
-        qCWarning(lcFileSystem()) << windowsSafeFileName << "has been already deleted";
+        qCInfo(lcFileSystem()) << windowsSafeFileName << "has been already deleted";
+        Q_ASSERT(false);
+        return true;
     }
 
     QFile f(windowsSafeFileName);
@@ -652,15 +654,11 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
                     return (static_cast<bool>(currentPermissions & testedPermission) ? permissionChar : '-');
                 };
 
-                qCInfo(lcFileSystem()) << unitaryHelper(std::filesystem::perms::owner_read, 'r')
-                                       << unitaryHelper(std::filesystem::perms::owner_write, 'w')
-                                       << unitaryHelper(std::filesystem::perms::owner_exec, 'x')
-                                       << unitaryHelper(std::filesystem::perms::group_read, 'r')
-                                       << unitaryHelper(std::filesystem::perms::group_write, 'w')
-                                       << unitaryHelper(std::filesystem::perms::group_exec, 'x')
-                                       << unitaryHelper(std::filesystem::perms::others_read, 'r')
-                                       << unitaryHelper(std::filesystem::perms::others_write, 'w')
-                                       << unitaryHelper(std::filesystem::perms::others_exec, 'x');
+                qCDebug(lcFileSystem()) << unitaryHelper(std::filesystem::perms::owner_read, 'r') << unitaryHelper(std::filesystem::perms::owner_write, 'w')
+                                        << unitaryHelper(std::filesystem::perms::owner_exec, 'x') << unitaryHelper(std::filesystem::perms::group_read, 'r')
+                                        << unitaryHelper(std::filesystem::perms::group_write, 'w') << unitaryHelper(std::filesystem::perms::group_exec, 'x')
+                                        << unitaryHelper(std::filesystem::perms::others_read, 'r') << unitaryHelper(std::filesystem::perms::others_write, 'w')
+                                        << unitaryHelper(std::filesystem::perms::others_exec, 'x');
             };
 
             const auto unsafeFilePermissions = filePermissionsWin(windowsSafeFileName);

@@ -219,8 +219,10 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
     const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
         _journal->getAndDeleteStaleDownloadInfos(download_file_paths);
     for (const SyncJournalDb::DownloadInfo &deleted_info : deleted_infos) {
-        const QString tmppath = _propagator->fullLocalPath(deleted_info._tmpfile);
-        FileSystem::remove(tmppath);
+        const auto tmppath = _propagator->fullLocalPath(deleted_info._tmpfile);
+        if (QFileInfo::exists(tmppath)) {
+            FileSystem::remove(tmppath);
+        }
     }
 }
 
