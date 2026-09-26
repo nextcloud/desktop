@@ -229,6 +229,14 @@ private:
       */
     void startAsyncLocalQuery();
 
+    /** State the previous sync recorded for the files of this directory
+      *
+      * Empty unless the server reports the directory unchanged. Only then is a file that is
+      * still in its recorded state certain to resolve to CSYNC_INSTRUCTION_NONE, which is what
+      * lets local discovery skip reading its lock state.
+      */
+    [[nodiscard]] QHash<QString, RecordedFileState> recordedFileStates() const;
+
 
     /** Sets _pinState, the directory's pin state
      *
