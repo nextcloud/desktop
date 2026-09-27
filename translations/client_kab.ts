@@ -8271,12 +8271,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="25"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu uhlis  yenulfa-d</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Yettwasemselsi s ufaylu uhlis</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
@@ -8286,7 +8286,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Yuli</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
@@ -8306,7 +8306,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Yettwasenkez ɣer %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
@@ -8316,7 +8316,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa n unekcum ɣer unagraw n yifuyla</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
@@ -8327,12 +8327,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Yettwalqem yiɣefisefk idiganen</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Yettwalqem yiɣefisfka n yifuyla idiganen uhlisen</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
@@ -8348,42 +8348,42 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
         <source>Downloading</source>
-        <translation type="unfinished"/>
+        <translation>asider</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>Uploading</source>
-        <translation type="unfinished"/>
+        <translation>Asali</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
         <source>Deleting</source>
-        <translation type="unfinished"/>
+        <translation>Tukksa</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>Moving</source>
-        <translation type="unfinished"/>
+        <translation>Asmutti</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Ignoring</source>
-        <translation type="unfinished"/>
+        <translation>Azgal</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Aleqqem n yiɣefisefka idiganen</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
         <source>Updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Aleqqem n yiɣefisefka n yifuyla idiganen uhlisen</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
         <source>Updating end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Aleqqem n yiɣefisefka n uwgelhen seg yixef ɣer yixef</translation>
     </message>
 </context>
 <context>
@@ -8391,12 +8391,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync status is unknown</source>
-        <translation type="unfinished"/>
+        <translation>Addad n umtawi d arussin</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Waiting to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Yettraǧu ad yebdu amtawi</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="120"/>
@@ -8406,22 +8406,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="123"/>
         <source>Sync was successful</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi yedda akken iwata</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi yedda akken iwata maca kra n yifuyla ttwazeggelen</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="129"/>
         <source>Error occurred during sync</source>
-        <translation type="unfinished"/>
+        <translation>Teḍra-d tuccḍa deg umtawi</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="132"/>
         <source>Error occurred during setup</source>
-        <translation type="unfinished"/>
+        <translation>Tella-d tuccḍa deg usebded</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="138"/>
