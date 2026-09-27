@@ -1030,7 +1030,7 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.ui" line="669"/>
         <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Noņemt kontu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="338"/>
@@ -6543,7 +6543,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2387"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Noņemt kontu</translation>
     </message>
 </context>
 <context>
@@ -7234,22 +7234,22 @@ Server replied with error: %2</source>
         <location filename="../src/gui/accountsettings.cpp" line="186"/>
         <source>Search</source>
         <extracomment>Name of the Search feature.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Meklēt</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="125"/>
         <source>Search is available when this account is connected</source>
-        <translation type="unfinished"/>
+        <translation>Meklēšana ir pieejama, kad šis konts ir savienots</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="126"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Meklēt datnes, ziņojumus, notikumus…</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
-        <translation type="unfinished"/>
+        <translation>Meklēšanas iznākuma saraksts</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="171"/>
@@ -7266,7 +7266,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="228"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>Meklēšanas iznākums</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="263"/>
@@ -7803,7 +7803,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="804"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Meklēt</translation>
     </message>
 </context>
 <context>
@@ -7872,7 +7872,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
         <source>Back to all search results</source>
-        <translation type="unfinished"/>
+        <translation>Atgriezties pie meklēšanas iznākuma</translation>
     </message>
 </context>
 <context>
@@ -7902,7 +7902,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="112"/>
         <source>No search source supports date filtering</source>
-        <translation type="unfinished"/>
+        <translation>Neviens meklēšanas avots neatbalsta atsijāšanu pēc datuma</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="123"/>
@@ -7953,7 +7953,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="169"/>
         <source>No search source supports people filtering</source>
-        <translation type="unfinished"/>
+        <translation>Neviens meklēšanas avots neatbalsta atsijāšanu pēc cilvēka</translation>
     </message>
 </context>
 <context>
@@ -7966,7 +7966,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
         <source>Clear search</source>
-        <translation type="unfinished"/>
+        <translation>Notīrīt meklēšanu</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
@@ -7979,7 +7979,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation type="unfinished"/>
+        <translation>Meklēt cilvēkus</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
@@ -7992,7 +7992,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPlaceholderView.qml" line="31"/>
         <source>Start typing to search</source>
-        <translation type="unfinished"/>
+        <translation>Sākt rakstīt, lai meklētu</translation>
     </message>
 </context>
 <context>
@@ -8084,7 +8084,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
         <location filename="../src/gui/accountsettings.cpp" line="184"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Tiešsaistes stāvoklis</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>

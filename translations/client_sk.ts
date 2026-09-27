@@ -4633,7 +4633,7 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="201"/>
         <source>Unable to claim the sync root for files on demand, the folder is already claimed by %1</source>
         <extracomment>%1: system user name who is the owner of the sync root directory</extracomment>
-        <translation>Nie je možné prevziať koreň synchronizácie pre súbory na požiadanie, priečinok už prevzal %1</translation>
+        <translation>Synchronizačný koreň pre súbory na požiadanie sa nepodarilo nárokovať, priečinok už je nárokovaný zo strany %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="204"/>
@@ -7486,7 +7486,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Regenerate recipient link</source>
-        <translation>Vygenerovať nový odkaz príjemcu</translation>
+        <translation>Obnoviť odkaz príjemcu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
