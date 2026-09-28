@@ -45,6 +45,7 @@
 #include "macOS/findersyncbrokerregistrar.h"
 #include "macOS/findersyncxpc.h"
 #include "macOS/findersyncservice.h"
+#include "macOS/lowpowergpu_mac.h"
 #endif
 
 #include <QLocale>
@@ -258,6 +259,9 @@ Application::Application(int &argc, char **argv)
         qputenv("SVGA_ALLOW_LLVMPIPE", 0);
         qCInfo(lcApplication) << "Disabling graphics acceleration, application might be running in a virtual or in a remote desktop.";
     }
+#elif defined(Q_OS_MACOS)
+    // Must run before the tray creates any Qt Quick window.
+    Mac::preferLowPowerGpu(this);
 #endif
 
     // TODO: Can't set this without breaking current config paths
