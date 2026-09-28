@@ -3,15 +3,20 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include <QObject>
-#include <QHash>
-#include <QDateTime>
-
-#include "accountstate.h"
-
 #pragma once
 
+#include <QDateTime>
+#include <QHash>
+#include <QObject>
+
+#include <optional>
+
+#include "accountstate.h"
+#include "fileproviderxpcconnection.h"
+
 namespace OCC::Mac {
+
+class FileProvider;
 
 /*
  * Establishes communication between the app and the file provider extension processes.
@@ -25,9 +30,9 @@ class FileProviderXPC : public QObject
 
 public:
     explicit FileProviderXPC(QObject *parent = nullptr);
+    ~FileProviderXPC() override;
 
     [[nodiscard]] bool fileProviderDomainReachable(const QString &fileProviderDomainIdentifier, bool retry = true, bool reconfigureOnFail = true);
-    [[nodiscard]] bool fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const;
     [[nodiscard]] bool processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const;
 
 public Q_SLOTS:
@@ -42,8 +47,15 @@ private Q_SLOTS:
     void slotAccountStateChanged(AccountState::State state) const;
 
 private:
+    friend class FileProvider;
+
+    [[nodiscard]] std::optional<bool> fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const;
+
+    void disconnectFromFileProviderDomains();
+    void disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier);
+
     //! keys are File Provider domain identifiers
-    QHash<QString, void*> _clientCommServices;
+    FileProviderXPCUtils::ClientCommunicationConnections _clientCommConnections;
     //! keys are File Provider domain identifiers
     QHash<QString, QDateTime> _unreachableFileProviderDomains;
 };
