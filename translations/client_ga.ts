@@ -576,13 +576,13 @@
         <location filename="../src/libsync/configfile.cpp" line="744"/>
         <source>Managed by your organization</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
-        <translation type="unfinished"/>
+        <translation>Bainistithe ag d’eagraíocht</translation>
     </message>
     <message>
         <location filename="../src/libsync/configfile.cpp" line="746"/>
         <source>Managed by your system administrator</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
-        <translation type="unfinished"/>
+        <translation>Bainistithe ag riarthóir do chórais</translation>
     </message>
 </context>
 <context>
@@ -2661,7 +2661,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="538"/>
         <source>Lock has no expiry. You can unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>Níl aon dáta éaga ag an nglasáil. Is féidir leat an comhad seo a dhíghlasáil de láimh nuair a bheidh an t-eagarthóireacht críochnaithe agat.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="527"/>
