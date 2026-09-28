@@ -8105,49 +8105,49 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Sgugem akk tilɣa</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="220"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Aruban</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Ban-d s wudem n war tuqqna</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Izen n waddad</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
         <source>Choose emoji</source>
-        <translation type="unfinished"/>
+        <translation>Fren imujit</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>D acu-t waddad-ik·im?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
         <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
         <source>Clear status after</source>
-        <translation type="unfinished"/>
+        <translation>Sfeḍ addad deffir</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Sfeḍ izen n waddad</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Sbadu izen n waddad</translation>
     </message>
 </context>
 <context>
@@ -8156,7 +8156,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
         <source>%1, resets after %2</source>
         <extracomment>%1 is the status text and %2 is a time string.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1, ales awennez mbaɛd %2</translation>
     </message>
 </context>
 <context>
@@ -8164,17 +8164,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/utility.cpp" line="108"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GAṬ</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="112"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MAṬ</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="116"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KAṬ</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="97"/>
@@ -8184,37 +8184,37 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/utility.cpp" line="104"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TAṬ</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n useggas</numerusform><numerusform>%n iseggasen</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n waggur</numerusform><numerusform>%n wagguren</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n wass</numerusform><numerusform>%n wussan</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="292"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n usrag</numerusform><numerusform>%n n yisragen</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="293"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n n tesdat</numerusform><numerusform>%n n tesdatin</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="294"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n tasint</numerusform><numerusform>%n n tsinin</numerusform></translation>
     </message>
 </context>
 <context>
