@@ -576,13 +576,13 @@
         <location filename="../src/libsync/configfile.cpp" line="744"/>
         <source>Managed by your organization</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
-        <translation type="unfinished"/>
+        <translation>Managed by your organization</translation>
     </message>
     <message>
         <location filename="../src/libsync/configfile.cpp" line="746"/>
         <source>Managed by your system administrator</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
-        <translation type="unfinished"/>
+        <translation>Managed by your system administrator</translation>
     </message>
 </context>
 <context>
