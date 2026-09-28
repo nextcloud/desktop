@@ -98,6 +98,8 @@ export LD_LIBRARY_PATH=${QT_BASE_DIR}/lib:${QT_BASE_DIR}/lib64:/app/usr/lib64:/a
 
 mv AppDir/usr/lib/*sync_vfs_openvfs.so AppDir/usr/plugins
 mv /root/linux-gcc-x86_64/bin/openvfs  /root/linux-gcc-x86_64/bin/openvfs_stat AppDir/usr/bin
+mkdir -p AppDir/usr/etc/xdg/openvfs
+cp /root/linux-gcc-x86_64/etc/xdg/openvfs/config.json AppDir/usr/etc/xdg/openvfs/.
 
 # Use linuxdeploy-plugin-qt to deploy qt dependencies
 export APPIMAGE_NAME=linuxdeploy-plugin-qt-x86_64.AppImage
