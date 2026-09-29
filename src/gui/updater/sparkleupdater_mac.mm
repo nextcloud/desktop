@@ -63,19 +63,16 @@ private:
     return self;
 }
 
-- (BOOL)backgroundUpdateChecksAllowed
-{
-    const OCC::ConfigFile config;
-    const BOOL allowUpdateCheck = (!config.skipUpdateCheck() && config.autoUpdateCheck()) ? YES : NO;
-    qCInfo(OCC::lcUpdater) << "Updater may check for updates:" << (allowUpdateCheck ? "YES" : "NO");
-    return allowUpdateCheck;
-}
-
 - (BOOL)updater:(nonnull SPUUpdater *)updater mayPerformUpdateCheck:(SPUUpdateCheck)updateCheck error:(NSError **)error
 {
     Q_UNUSED(updater)
-    Q_UNUSED(updateCheck)
-    return [self backgroundUpdateChecksAllowed];
+
+    const OCC::ConfigFile config;
+    // A user initiated check stays allowed even when automatic checks are off.
+    const auto userInitiated = updateCheck == SPUUpdateCheckUpdates;
+    const BOOL allowed = OCC::Updater::updateCheckAllowed(userInitiated, config.skipUpdateCheck(), config.autoUpdateCheck()) ? YES : NO;
+    qCInfo(OCC::lcUpdater) << "Updater may check for updates:" << (allowed ? "YES" : "NO");
+    return allowed;
 }
 
 - (void)notifyStateChange:(const OCC::SparkleUpdater::State)state displayStatus:(const QString&)statusString
