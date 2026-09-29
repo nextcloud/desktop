@@ -323,6 +323,7 @@ private:
     void setPublicShareSetup(bool publicShareSetup);
     void setServerUrlEditable(bool editable);
     void emitProxySettingsChangedIfNeeded(bool previousValidity, bool previousLocalhostWarning);
+    void seedProxySettingsFromManagedDefault();
     void discardFlow2Auth();
     [[nodiscard]] bool checkDowngradeAdvised(QNetworkReply *reply) const;
     void handleFailedServerConnection(const QUrl &url, bool retryHttpOnly);
