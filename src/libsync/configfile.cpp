@@ -52,7 +52,6 @@ static constexpr char forceSyncIntervalC[] = "forceSyncInterval";
 static constexpr char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
 static constexpr char notificationRefreshIntervalC[] = "notificationRefreshInterval";
 static constexpr char deleteFilesThresholdC[] = "deleteFilesThreshold";
-static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
 static constexpr char updateCheckIntervalC[] = "updateCheckInterval";
 static constexpr char updateSegmentC[] = "updateSegment";
 static constexpr char overrideServerUrlC[] = "overrideServerUrl";
