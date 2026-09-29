@@ -1413,15 +1413,10 @@ void Account::setProxyPort(const int port)
 
 void Account::updateProxyInUse()
 {
-    const auto followsSystemProxy = _accountProxyType == QNetworkProxy::DefaultProxy;
-    const auto managedValueApplies = [followsSystemProxy](const bool enforced, const bool managed) {
-        return enforced || (managed && followsSystemProxy);
-    };
-    const auto proxyType = managedValueApplies(_managedProxy.typeEnforced, _managedProxy.typeManaged)
-        ? static_cast<QNetworkProxy::ProxyType>(_managedProxy.proxyType)
-        : _accountProxyType;
-    const auto hostName = managedValueApplies(_managedProxy.hostEnforced, _managedProxy.hostManaged) ? _managedProxy.proxyHostName : _accountProxyHostName;
-    const auto port = managedValueApplies(_managedProxy.portEnforced, _managedProxy.portManaged) ? _managedProxy.proxyPort : _accountProxyPort;
+    // Only enforced policy overrides the account's own proxy; a default seeds a new account.
+    const auto proxyType = _managedProxy.typeEnforced ? static_cast<QNetworkProxy::ProxyType>(_managedProxy.proxyType) : _accountProxyType;
+    const auto hostName = _managedProxy.hostEnforced ? _managedProxy.proxyHostName : _accountProxyHostName;
+    const auto port = _managedProxy.portEnforced ? _managedProxy.proxyPort : _accountProxyPort;
 
     const auto typeChanged = _proxyType != proxyType;
     const auto hostNameChanged = _proxyHostName != hostName;
