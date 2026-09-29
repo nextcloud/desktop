@@ -103,6 +103,7 @@ QByteArray FakeShareDefinition::toRequestReply() const
 // Below is ShareTestHelper
 ShareTestHelper::ShareTestHelper(QObject *parent)
     : QObject(parent)
+    , fm{FolderMan::instance()}
 {
 }
 
@@ -133,7 +134,7 @@ void ShareTestHelper::setup()
     fakeFolder.localModifier().insert(testFileName);
 
     const auto folderMan = FolderMan::instance();
-    QCOMPARE(folderMan, &fm);
+    QCOMPARE(folderMan, fm);
     auto folderDef = folderDefinition(fakeFolder.localPath());
     folderDef.targetPath = QString();
     QVERIFY(folderMan->addFolder(accountState.data(), folderDef));

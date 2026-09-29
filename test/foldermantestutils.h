@@ -21,5 +21,5 @@ public:
     explicit FolderManTestHelper(QObject *parent = nullptr);
     ~FolderManTestHelper() override;
 
-    FolderMan fm;
+    FolderMan *fm = nullptr;
 };

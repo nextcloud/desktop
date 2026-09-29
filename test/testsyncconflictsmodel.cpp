@@ -55,8 +55,6 @@ private slots:
         auto dir = QTemporaryDir {};
         ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
 
-        FolderMan fm;
-
         auto account = Account::create();
         auto url = QUrl{"http://example.com"};
         auto cred = new HttpCredentialsTest("testuser", "secret");
@@ -66,7 +64,7 @@ private slots:
 
         auto newAccountState{AccountStatePtr{ new FakeAccountState{account}}};
         auto folderman = FolderMan::instance();
-        QCOMPARE(folderman, &fm);
+        QVERIFY(folderman);
 
         auto fakeFolder = FakeFolder{FileInfo::A12_B12_C12_S12()};
 
