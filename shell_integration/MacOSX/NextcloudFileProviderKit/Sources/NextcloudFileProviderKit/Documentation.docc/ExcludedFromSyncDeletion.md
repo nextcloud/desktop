@@ -33,11 +33,21 @@ caused [desktop issue #10521](https://github.com/nextcloud/desktop/issues/10521)
 The extension must establish the reason for the future deletion before it
 returns `.excludedFromSync`.
 
-When a bundle or package modification is rejected, `Item.modify` stores a
-`RealmExcludedFromSyncItem` record keyed by the item's `ocId`. Only after that
-write succeeds does it return `.excludedFromSync`. If the record cannot be
-written, the modification fails with `.cannotSynchronize` instead of starting
-a deletion sequence that cannot be recognized safely.
+When a bundle or package modification is rejected, or an item that already has
+a remote counterpart is moved into an excluded destination, `Item.modify`
+stores a `RealmExcludedFromSyncItem` record keyed by the item's `ocId`. Only
+after that write succeeds does it return `.excludedFromSync`. If the record
+cannot be written, the modification fails with `.cannotSynchronize` instead of
+starting a deletion sequence that cannot be recognized safely.
+
+For an item moved into an excluded destination, the remote counterpart is
+deleted only after the exclusion record has been stored. Connectivity and
+authentication failures roll the record back and return a retryable provider
+error. Other server rejections, such as a permission failure, retain the
+record and return `.excludedFromSync`; the follow-up provider deletion then
+removes only local state and cannot retry the forbidden remote deletion. The
+remote counterpart remains available for reconciliation, and the failure is
+reported in the activity view.
 
 The exclusion record is stored separately from `RealmItemMetadata`. Fetching,
 materializing, and enumerating an item can replace its item metadata with a
@@ -109,9 +119,8 @@ exist on the server must follow the same contract:
 4. Remove the intent only after local cleanup succeeds.
 5. Preserve ordinary remote deletion for items without exclusion intent.
 
-Regression coverage is provided by
-`ItemModifyTests.testModifyRemoteBundleExclusionDoesNotDeleteRemoteBundle`,
-which exercises the complete modification, metadata replacement, and deletion
-sequence. `ItemDeleteTests.testDeleteExcludedBundleDoesNotPropagateToServer`
+Regression coverage is provided by the bundle, ignored-destination file and
+directory, marker-write failure, trash-destination, and unuploaded-item cases
+in `ItemModifyTests`. `ItemDeleteTests.testDeleteExcludedBundleDoesNotPropagateToServer`
 and `testDeleteUnexcludedBundlePropagatesToServer` directly cover both branches
 of the deletion contract.
