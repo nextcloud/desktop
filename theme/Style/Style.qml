@@ -271,6 +271,8 @@ QtObject {
     readonly property int fontPixelSizeResolveConflictsDialog: 15
     readonly property int minimumWidthResolveConflictsDialog: 600
     readonly property int minimumHeightResolveConflictsDialog: 300
+    
+    readonly property int resolveConflictsLabelMargin: 28
 
     readonly property int defaultWidthGovernanceLabelsDialog: 400
     readonly property int defaultHeightGovernanceLabelsDialog: 300

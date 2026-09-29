@@ -9,6 +9,10 @@
 
 #include <QLoggingCategory>
 
+#include <QDesktopServices>
+
+#include <QDirIterator>
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSyncConflictsModel, "nextcloud.syncconflictsmodel", QtInfoMsg)
@@ -37,7 +41,7 @@ QVariant SyncConflictsModel::data(const QModelIndex &index, int role) const
         return result;
     }
 
-    if (role >= static_cast<int>(SyncConflictRoles::ExistingFileName) && role <= static_cast<int>(SyncConflictRoles::ConflictFilePath)) {
+    if (role >= static_cast<int>(SyncConflictRoles::ExistingFileName) && role <= static_cast<int>(SyncConflictRoles::ConflictPreviewUrl)) {
         const auto convertedRole = static_cast<SyncConflictRoles>(role);
 
         switch (convertedRole) {
@@ -67,12 +71,6 @@ QVariant SyncConflictsModel::data(const QModelIndex &index, int role) const
             break;
         case SyncConflictRoles::ConflictPreviewUrl:
             result = _conflictData[index.row()].mConflictPreviewUrl;
-            break;
-        case SyncConflictRoles::ExistingFilePath:
-            result = _conflictData[index.row()].mExistingFilePath;
-            break;
-        case SyncConflictRoles::ConflictFilePath:
-            result = _conflictData[index.row()].mConflictingFilePath;
             break;
         }
     }
@@ -137,8 +135,6 @@ QHash<int, QByteArray> SyncConflictsModel::roleNames() const
     result[static_cast<int>(SyncConflictRoles::ConflictSelected)] = "conflictSelected";
     result[static_cast<int>(SyncConflictRoles::ExistingPreviewUrl)] = "existingPreviewUrl";
     result[static_cast<int>(SyncConflictRoles::ConflictPreviewUrl)] = "conflictPreviewUrl";
-    result[static_cast<int>(SyncConflictRoles::ExistingFilePath)] = "existingFilePath";
-    result[static_cast<int>(SyncConflictRoles::ConflictFilePath)] = "conflictFilePath";
 
     return result;
 }
@@ -345,4 +341,46 @@ bool SyncConflictsModel::ConflictInfo::isValid() const
     return mConflictSelected == ConflictInfo::ConflictSolution::SolutionSelected || mExistingSelected == ConflictInfo::ConflictSolution::SolutionSelected;
 }
 
+bool SyncConflictsModel::openConflictFolder(int row)
+{
+    if (row < 0 || row >= _conflictData.size()) {
+        qCWarning(lcSyncConflictsModel) << "Invalid row index for opening conflict folder";
+        return false;
+    }
+
+    auto filePath = _conflictData[row].mConflictingFilePath;
+    QFileInfo fileInfo(filePath);
+
+    if (!filePath.isEmpty() && !fileInfo.exists()) {
+        const auto fileName = fileInfo.fileName();
+
+        if (const auto folder = FolderMan::instance()->folder(_data[row]._folder)) {
+            QDirIterator it(folder->path(), {fileName}, QDir::Files, QDirIterator::Subdirectories);
+
+            if (it.hasNext()) {
+                filePath = it.next();
+                _conflictData[row].mConflictingFilePath = filePath;
+                fileInfo.setFile(filePath);
+            }
+        }
+    }
+
+    if (filePath.isEmpty() || !fileInfo.exists()) {
+        qCWarning(lcSyncConflictsModel) << "Conflict file does not exist at path:" << filePath;
+        return false;
+    }
+
+    return QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absolutePath()));
+}
+
+QString SyncConflictsModel::fileManagerText() const
+{
+    if (Utility::isMac()) {
+        return tr("Open in Finder");
+    }
+    if (Utility::isWindows()) {
+        return tr("Open in File Explorer");
+    }
+    return tr("Open in file manager");
+}
 }

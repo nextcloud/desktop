@@ -24,8 +24,7 @@ Item {
     required property url existingPreviewUrl
     required property url conflictPreviewUrl
     required property var model
-    required property string existingFilePath
-    required property string conflictFilePath
+    required property int index
 
     EnforcedPlainTextLabel {
         id: existingFileNameLabel
@@ -82,16 +81,14 @@ Item {
         }
         
         EnforcedPlainTextLabel {
-            text: qsTr("Open in File Manager")
+            id: openFolderLabel
             Layout.fillWidth: true
             Layout.columnSpan: 2
             Layout.preferredWidth: 1
             elide: Text.ElideRight
-            
-            Layout.leftMargin: 28
-                        
+            text: root.ListView.view.model.model.fileManagerText()
+            Layout.leftMargin: Style.resolveConflictsLabelMargin
             color: Style.ncBlue
-            
             font.underline: true
 
             MouseArea {
@@ -101,24 +98,15 @@ Item {
                 cursorShape: Qt.PointingHandCursor
                 
                 onClicked: {
-                    try {
-                        var path = root.conflictFilePath;
+                    let success = root.ListView.view.model.model.openConflictFolder(index);
+                    
+                    if (!success) {
+                        parent.text = qsTr("Folder not found");
+                        parent.color = Style.wizardErrorText;
                         
-                        if (!path) {
-                            console.warn("openContainingFolder: Path is empty or not available");
-                            return;
-                        }
-
-                        path = path.replace(/\\/g, "/");
-                        
-                        var lastSlash = path.lastIndexOf("/");
-                        var dir = lastSlash > 0 ? path.substring(0, lastSlash) : path;
-
-                        var url = "file://" + dir;
-                        Qt.openUrlExternally(url);
-                        
-                    } catch (e) {
-                        console.warn("openContainingFolder Exception:", e);
+                        openFolderLabel.font.underline = false;
+                        linkMouseArea.cursorShape = Qt.ArrowCursor;
+                        linkMouseArea.enabled = false;
                     }
                 }
             }
