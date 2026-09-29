@@ -306,10 +306,11 @@ ColumnLayout {
                         }
 
                         EnforcedPlainTextLabel {
+                            id: openFolderLabel
                             Layout.column: 1
-                            text: qsTr("Open in File Manager")
                             Layout.fillWidth: true
                             elide: Text.ElideRight
+                            text: root.fileDetails.fileManagerText()
                         }
 
                         Button {
@@ -324,26 +325,14 @@ ColumnLayout {
                             icon.height: Style.activityListButtonIconSize
                             display: AbstractButton.IconOnly
                             
-                            function openContainingFolder() {
-                                try {
-                                    if (!root.fileDetails || !root.fileDetails.localPath) {
-                                        console.warn("openContainingFolder (ShareView): fileDetails.localPath is not available");
-                                        return;
-                                    }
-                                    var path = root.fileDetails.localPath;
-                                    path = path.replace(/\\/g, "/");
-                                    var lastSlash = path.lastIndexOf("/");
-                                    var dir = lastSlash > 0 ? path.substring(0, lastSlash) : path;
-
-                                    var url = "file://" + dir;
-                                    Qt.openUrlExternally(url);
-                                } catch (e) {
-                                    console.warn("openContainingFolder (ShareView): exception:", e);
-                                }
-                            }
-                            
                             onClicked: {
-                                openContainingFolder()
+                                let success = root.fileDetails.openContainingFolder();
+                                        
+                                if (!success) {
+                                    openFolderLabel.text = qsTr("Folder not found");
+                                    openFolderLabel.color = Style.wizardErrorText;
+                                    enabled = false;
+                                }
                             }
                         }
                     }

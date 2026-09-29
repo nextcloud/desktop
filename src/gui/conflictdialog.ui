@@ -110,17 +110,17 @@
                 <string>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</string>
                </property>
                <property name="openExternalLinks">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="openInFileManagerLink">
                <property name="text">
-                <string>&lt;a href=&quot;%1&quot;&gt;Open in file manager&lt;/a&gt;</string>
+                <string/>
                </property>
                <property name="openExternalLinks">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>
