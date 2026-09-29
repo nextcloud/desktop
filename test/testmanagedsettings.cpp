@@ -627,38 +627,46 @@ private Q_SLOTS:
 
     // A server default must not reach the application proxy, which every account shares.
     // A value written by an earlier version at the top level must not outrank a later server default.
-    void testSetConfigClearsTheLegacyTopLevelValue()
+    void testUserValueOutranksServerDefaultUntilCleared()
     {
         QTemporaryDir dir;
         ConfigFile config;
         config.setConfDir(dir.path());
 
-        {
-            QSettings legacy(config.configFile(), QSettings::IniFormat);
-            legacy.setValue(u"confirmExternalStorage"_s, true);
-            legacy.sync();
-        }
-        QCOMPARE(config.sourceOf(u"confirmExternalStorage"_s), SettingSourceType::UserConfig);
-
         QVERIFY(config.setConfig(u"confirmExternalStorage"_s, false));
 
-        QSettings written(config.configFile(), QSettings::IniFormat);
-        QVERIFY(!written.contains(u"confirmExternalStorage"_s));
-        QCOMPARE(config.getConfig<bool>(u"confirmExternalStorage"_s), false);
-
-        // Clearing the choice of the user leaves nothing behind to shadow a server default.
-        {
-            QSettings groupValue(config.configFile(), QSettings::IniFormat);
-            groupValue.beginGroup(config.defaultConnectionGroupName());
-            groupValue.remove(u"confirmExternalStorage"_s);
-            groupValue.sync();
-        }
         ServerManagedSettings settings;
         settings.defaults = QVariantMap{{u"confirmExternalStorage"_s, true}};
         config.setServerManagedSettings(settings);
 
+        QCOMPARE(config.sourceOf(u"confirmExternalStorage"_s), SettingSourceType::UserConfig);
+        QCOMPARE(config.getConfig<bool>(u"confirmExternalStorage"_s), false);
+
+        {
+            QSettings raw(config.configFile(), QSettings::IniFormat);
+            raw.remove(u"confirmExternalStorage"_s);
+            raw.beginGroup(config.defaultConnectionGroupName());
+            raw.remove(u"confirmExternalStorage"_s);
+            raw.sync();
+        }
+
         QCOMPARE(config.sourceOf(u"confirmExternalStorage"_s), SettingSourceType::ServerDefault);
         QCOMPARE(config.getConfig<bool>(u"confirmExternalStorage"_s), true);
+    }
+
+    // Older clients read the [General] section after a downgrade.
+    void testSetConfigCopiesValueToGeneralForDowngrade()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        QVERIFY(config.setConfig(u"autoUpdateCheck"_s, false));
+
+        QSettings raw(config.configFile(), QSettings::IniFormat);
+        QVERIFY(raw.contains(u"autoUpdateCheck"_s));
+        QCOMPARE(raw.value(u"autoUpdateCheck"_s).toBool(), false);
+        QCOMPARE(config.getConfig<bool>(u"autoUpdateCheck"_s), false);
     }
 
     void testServerProxyDefaultAppliesToItsAccountButNotTheApplicationProxy()
