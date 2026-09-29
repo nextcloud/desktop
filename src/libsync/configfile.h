@@ -346,6 +346,7 @@ public:
     static constexpr char moveToTrashC[] = "moveToTrash";
     static constexpr char updateChannelC[] = "updateChannel";
     static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
+    static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
     static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
     static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
     static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";
