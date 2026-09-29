@@ -3,7 +3,12 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#pragma once
+
+#include <QHash>
 #include <QLoggingCategory>
+
+#include "fileproviderxpcconnection.h"
 
 #import <Foundation/Foundation.h>
 #import <FileProvider/FileProvider.h>
@@ -24,6 +29,14 @@ NSObject *getRemoteServiceObject(NSXPCConnection *connection, Protocol *protocol
  */
 NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> *clientCommService);
 
-QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections, OCC::Mac::FileProviderService *service);
-
+/**
+ * @brief Configures client communication connections and indexes them by domain identifier.
+ * @param connections XPC connections obtained from the File Provider services.
+ * @param service The app-side service exported through each connection.
+ * @return A map containing the retained remote proxy and XPC connection for each domain identifier.
+ *
+ * The caller owns both retained objects in the returned values and must invalidate and release them
+ * when they are no longer needed.
+ */
+ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections, OCC::Mac::FileProviderService *service);
 }

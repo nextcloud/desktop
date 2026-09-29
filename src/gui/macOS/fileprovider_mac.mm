@@ -6,7 +6,9 @@
 #include "fileprovider.h"
 
 #include <QLoggingCategory>
+#include <QMetaObject>
 #include <QOperatingSystemVersion>
+#include <QThread>
 
 #include "libsync/configfile.h"
 #include "gui/macOS/fileproviderxpc.h"
@@ -61,12 +63,22 @@ FileProvider::~FileProvider()
 
 void FileProvider::configureXPC()
 {
+    if (QThread::currentThread() != thread()) {
+        QMetaObject::invokeMethod(
+            this,
+            [this] {
+                configureXPC();
+            },
+            Qt::BlockingQueuedConnection);
+        return;
+    }
+
     if (!available()) {
         qCInfo(lcMacFileProvider) << "Skipping file provider XPC configuration on unsupported macOS version.";
         return;
     }
 
-    _xpc = std::make_unique<FileProviderXPC>(new FileProviderXPC(this));
+    _xpc = std::make_unique<FileProviderXPC>();
 
     if (_xpc) {
         qCInfo(lcMacFileProvider) << "Initialised file provider XPC.";
@@ -81,6 +93,30 @@ void FileProvider::configureXPC()
     } else {
         qCWarning(lcMacFileProvider) << "Could not initialise file provider XPC.";
     }
+}
+
+std::optional<bool> FileProvider::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier)
+{
+    if (QThread::currentThread() == thread()) {
+        const auto xpc = _xpc.get();
+        return xpc ? xpc->fileProviderDomainHasDirtyUserData(fileProviderDomainIdentifier) : std::nullopt;
+    }
+
+    std::optional<bool> hasDirtyUserData;
+    const auto invoked = QMetaObject::invokeMethod(
+        this,
+        [this, &hasDirtyUserData, fileProviderDomainIdentifier] {
+            const auto xpc = _xpc.get();
+            hasDirtyUserData = xpc ? xpc->fileProviderDomainHasDirtyUserData(fileProviderDomainIdentifier) : std::nullopt;
+        },
+        Qt::BlockingQueuedConnection);
+
+    if (!invoked) {
+        qCWarning(lcMacFileProvider) << "Could not check file provider domain for dirty user data." << fileProviderDomainIdentifier;
+        return std::nullopt;
+    }
+
+    return hasDirtyUserData;
 }
 
 FileProviderXPC *FileProvider::xpc() const
