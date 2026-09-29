@@ -411,6 +411,26 @@ private Q_SLOTS:
         QCOMPARE(controller.proxyPort(), 3128);
     }
 
+    void seedsProxySettingsFromManagedDefault()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(
+                SettingSourceType::PlatformDefault,
+                EnforcementState::NotEnforced,
+                20,
+                QVariantMap{{u"proxyType"_s, int(QNetworkProxy::HttpProxy)}, {u"proxyHost"_s, u"proxy.example.com"_s}, {u"proxyPort"_s, 8080}}));
+            return sources;
+        });
+
+        AccountWizardController controller;
+
+        QCOMPARE(controller.proxyMode(), 2);
+        QCOMPARE(controller.manualProxyType(), 0);
+        QCOMPARE(controller.proxyHost(), u"proxy.example.com"_s);
+        QCOMPARE(controller.proxyPort(), 8080);
+    }
+
     void warnsWhenManualProxyTargetsLocalhost_data()
     {
         QTest::addColumn<QString>("serverUrl");

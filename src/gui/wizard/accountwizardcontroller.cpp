@@ -109,6 +109,8 @@ AccountWizardController::AccountWizardController(QObject *parent)
     _largeFolderThresholdMb = static_cast<int>(largeFolderLimit.second);
     _askBeforeExternalStorage = cfg.confirmExternalStorage();
 
+    seedProxySettingsFromManagedDefault();
+
 #ifndef Q_OS_LINUX
     const auto managedVfs = accountManagedVirtualFilesMode();
     if (canUseVirtualFiles() && !(managedVfs.isManaged && !managedVfs.enabled)) {
@@ -431,6 +433,25 @@ bool AccountWizardController::showExternalStorageConfirmation() const
 bool AccountWizardController::askBeforeExternalStorage() const
 {
     return _askBeforeExternalStorage;
+}
+
+void AccountWizardController::seedProxySettingsFromManagedDefault()
+{
+    // A managed default is only a suggestion for a new account; enforced policy applies separately.
+    if (!proxySettingsAvailable()) {
+        return;
+    }
+
+    const auto managedProxy = ConfigFile().managedProxySettings();
+    if (managedProxy.typeManaged && !managedProxy.typeEnforced) {
+        _proxySettings._proxyType = static_cast<QNetworkProxy::ProxyType>(managedProxy.proxyType);
+    }
+    if (managedProxy.hostManaged && !managedProxy.hostEnforced) {
+        _proxySettings._host = managedProxy.proxyHostName;
+    }
+    if (managedProxy.portManaged && !managedProxy.portEnforced && managedProxy.proxyPort > 0) {
+        _proxySettings._port = static_cast<quint16>(managedProxy.proxyPort);
+    }
 }
 
 bool AccountWizardController::proxySettingsAvailable() const
