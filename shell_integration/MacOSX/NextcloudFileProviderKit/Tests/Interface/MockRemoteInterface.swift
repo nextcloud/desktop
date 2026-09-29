@@ -615,8 +615,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     /// When set, trash listings return this error without reading the mock trash tree.
     public var trashListingError: NKError?
-   
-	/// Optional hook invoked after a delete path is captured and before the mock applies it.
+
+    /// Optional hook invoked after a delete path is captured and before the mock applies it.
     public var deleteCallHandler: (() -> Void)?
 
     /// Records the `If-Match` header the most recent upload call carried (nil if none).
