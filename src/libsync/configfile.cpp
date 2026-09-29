@@ -72,6 +72,7 @@ static constexpr char showExperimentalOptionsC[] = "showExperimentalOptions";
 static constexpr char clientPreviousVersionC[] = "clientPreviousVersion";
 static constexpr char fileProviderDomainsAppSandboxMigrationCompletedC[] = "fileProviderDomainsAppSandboxMigrationCompleted";
 static constexpr char macFileProviderModeEnabledC[] = "macFileProviderModeEnabled";
+static constexpr char fileProviderVfsEnforcedOffNotifiedC[] = "fileProviderVfsEnforcedOffNotified";
 static constexpr char fileProviderDomainUuidsGroupC[] = "FileProviderDomainUuids";
 static constexpr char fileProviderAccountIdsGroupC[] = "FileProviderAccountIds";
 
@@ -1525,6 +1526,19 @@ void ConfigFile::setMacFileProviderModeEnabled(const bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(macFileProviderModeEnabledC, enabled);
+    settings.sync();
+}
+
+bool ConfigFile::fileProviderVfsEnforcedOffNotified() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(fileProviderVfsEnforcedOffNotifiedC, false).toBool();
+}
+
+void ConfigFile::setFileProviderVfsEnforcedOffNotified(const bool notified)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(fileProviderVfsEnforcedOffNotifiedC, notified);
     settings.sync();
 }
 

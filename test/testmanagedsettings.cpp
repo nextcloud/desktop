@@ -728,6 +728,19 @@ private Q_SLOTS:
         QVERIFY(config.macFileProviderModeEnabled());
     }
 
+    void testFileProviderVfsEnforcedOffNotifiedRoundTrips()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        QVERIFY(!config.fileProviderVfsEnforcedOffNotified());
+        config.setFileProviderVfsEnforcedOffNotified(true);
+        QVERIFY(config.fileProviderVfsEnforcedOffNotified());
+        config.setFileProviderVfsEnforcedOffNotified(false);
+        QVERIFY(!config.fileProviderVfsEnforcedOffNotified());
+    }
+
     void testEnforcedProxyFieldReplacesOnlyThatField()
     {
         const auto account = createAccountWithNetworkAccessManager();

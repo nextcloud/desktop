@@ -320,6 +320,10 @@ public:
     [[nodiscard]] bool macFileProviderModeEnabledIsSet() const;
     void setMacFileProviderModeEnabled(bool enabled);
 
+    /// Whether the user was already told that a policy turned virtual files off.
+    [[nodiscard]] bool fileProviderVfsEnforcedOffNotified() const;
+    void setFileProviderVfsEnforcedOffNotified(bool notified);
+
     static constexpr char unbrandedAppName[] = "Nextcloud";
     static constexpr char legacyAppName[] = "Owncloud";
 
