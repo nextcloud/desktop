@@ -1895,72 +1895,72 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <extracomment>%1 is either &quot;newer&quot; or &quot;older&quot;. %2 is either &quot;ignoring&quot; or &quot;deleting&quot;. %3 is a list of configuration backup file paths.</extracomment>
         <translation>Ορισμένες ρυθμίσεις διαμορφώθηκαν σε %1 εκδόσεις αυτού του προγράμματος-πελάτη και χρησιμοποιούν λειτουργίες που δεν είναι διαθέσιμες σε αυτήν την έκδοση.&lt;br&gt;&lt;br&gt;Η συνέχιση θα σημαίνει &lt;b&gt;%2 αυτές τις ρυθμίσεις&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Το τρέχον αρχείο διαμόρφωσης έχει ήδη δημιουργήσει αντίγραφο ασφαλείας στο &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="190"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>νεότερες</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="190"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>παλαιότερες</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="191"/>
         <source>ignoring</source>
         <translation>παράβλεψη</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="191"/>
         <source>deleting</source>
         <translation>διαγραφή</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="192"/>
+        <location filename="../src/gui/application.cpp" line="193"/>
         <source>Quit</source>
         <translation>Έξοδος</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="193"/>
+        <location filename="../src/gui/application.cpp" line="194"/>
         <source>Continue</source>
         <translation>Συνέχεια</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="694"/>
+        <location filename="../src/gui/application.cpp" line="698"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 λογαριασμοί</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="695"/>
+        <location filename="../src/gui/application.cpp" line="699"/>
         <source>1 account</source>
         <translation>1 λογαριασμός</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="697"/>
+        <location filename="../src/gui/application.cpp" line="701"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 φάκελοι</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="698"/>
+        <location filename="../src/gui/application.cpp" line="702"/>
         <source>1 folder</source>
         <translation>1 φάκελος</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="700"/>
+        <location filename="../src/gui/application.cpp" line="704"/>
         <source>Legacy import</source>
         <translation>Εισαγωγή από παλαιότερη έκδοση</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="701"/>
+        <location filename="../src/gui/application.cpp" line="705"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1968,12 +1968,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="823"/>
+        <location filename="../src/gui/application.cpp" line="827"/>
         <source>Error accessing the configuration file</source>
         <translation>Σφάλμα πρόσβασης στο αρχείο ρυθμίσεων</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="824"/>
+        <location filename="../src/gui/application.cpp" line="828"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Προέκυψε σφάλμα κατά την πρόσβαση στο αρχείο διαμόρφωσης στο %1. Βεβαιωθείτε ότι το αρχείο μπορεί να προσπελαστεί από τον λογαριασμό συστήματός σας.</translation>
     </message>

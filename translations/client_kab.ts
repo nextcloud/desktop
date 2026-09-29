@@ -1889,72 +1889,72 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <extracomment>%1 is either &quot;newer&quot; or &quot;older&quot;. %2 is either &quot;ignoring&quot; or &quot;deleting&quot;. %3 is a list of configuration backup file paths.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="190"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>Amaynut n melmi kan</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="190"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>aqbur</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="191"/>
         <source>ignoring</source>
         <translation>Azgal</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="191"/>
         <source>deleting</source>
         <translation>Tukksa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="192"/>
+        <location filename="../src/gui/application.cpp" line="193"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="193"/>
+        <location filename="../src/gui/application.cpp" line="194"/>
         <source>Continue</source>
         <translation>Continuer</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="694"/>
+        <location filename="../src/gui/application.cpp" line="698"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 imiḍanen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="695"/>
+        <location filename="../src/gui/application.cpp" line="699"/>
         <source>1 account</source>
         <translation>1 umiḍan</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="697"/>
+        <location filename="../src/gui/application.cpp" line="701"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 ikaramen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="698"/>
+        <location filename="../src/gui/application.cpp" line="702"/>
         <source>1 folder</source>
         <translation>1 ukaram</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="700"/>
+        <location filename="../src/gui/application.cpp" line="704"/>
         <source>Legacy import</source>
         <translation>Aktar aqbuṛ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="701"/>
+        <location filename="../src/gui/application.cpp" line="705"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1962,12 +1962,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="823"/>
+        <location filename="../src/gui/application.cpp" line="827"/>
         <source>Error accessing the configuration file</source>
         <translation>Tuccḍa deg unekcum ɣer ufaylu n twila</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="824"/>
+        <location filename="../src/gui/application.cpp" line="828"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Teḍra-d tuccḍa deg unekcum ɣer ufaylu n twila di %1. Ma ulac aɣilif, tḥeqqeq belli afaylu yezmer ad yeqqen ɣer umiḍan-inek·inem n unagraw.</translation>
     </message>
@@ -7957,12 +7957,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
         <source>Clear search</source>
-        <translation type="unfinished"/>
+        <translation>Sfeḍ anadi</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
         <source>Keeps the active filters</source>
-        <translation type="unfinished"/>
+        <translation>Eǧǧ tistayin iremden</translation>
     </message>
 </context>
 <context>
@@ -7970,12 +7970,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation type="unfinished"/>
+        <translation>Nadi imdanen</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Ɛreḍ tikkelt-nniḍen</translation>
     </message>
 </context>
 <context>
@@ -7983,7 +7983,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPlaceholderView.qml" line="31"/>
         <source>Start typing to search</source>
-        <translation type="unfinished"/>
+        <translation>Bdu tira akken ad tnadiḍ</translation>
     </message>
 </context>
 <context>
@@ -7992,7 +7992,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="84"/>
         <source>More from %1  →</source>
         <extracomment>%1 is the name of a search provider, for example &quot;Files&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ugar seg %1  →</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="131"/>
@@ -8002,17 +8002,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="194"/>
         <source>Loading more results …</source>
-        <translation type="unfinished"/>
+        <translation>Asali n ugar n yigmaḍ ...</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Retry loading more results</source>
-        <translation type="unfinished"/>
+        <translation>Ales asali n ugar n yigmaḍ</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Sali-d ugar n yigmaḍ</translation>
     </message>
 </context>
 <context>
@@ -8020,7 +8020,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultFetchMoreTrigger.qml" line="37"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Sali-d ugar n yigmaḍ</translation>
     </message>
 </context>
 <context>
@@ -8036,7 +8036,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultListItem.qml" line="35"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Sali-d ugar n yigmaḍ</translation>
     </message>
 </context>
 <context>
@@ -8044,7 +8044,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultNothingFound.qml" line="42"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>Ulac igmaḍ i</translation>
     </message>
 </context>
 <context>
@@ -8053,7 +8053,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/UnifiedSearchResultSectionItem.qml" line="26"/>
         <source>Search results section %1</source>
         <extracomment>%1 is the search results section heading, for example &quot;Partial matches&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Tigezmi n igmaḍ n unadi %1</translation>
     </message>
 </context>
 <context>
@@ -8061,12 +8061,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="123"/>
         <source>Could not handle link</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi asefrek n useɣwen</translation>
     </message>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="191"/>
         <source>Adding another account is not allowed in this client.</source>
-        <translation type="unfinished"/>
+        <translation>Timerna n umiḍan nniḍen ur tettwasireg ara deg umsaɣ-agi.</translation>
     </message>
 </context>
 <context>
@@ -8075,32 +8075,32 @@ Server replied with error: %2</source>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
         <location filename="../src/gui/accountsettings.cpp" line="184"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Addad n tuqqna</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="212"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="224"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>D uqqin</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="214"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Akin i uselkim</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="216"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Ur yestuf ara</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="218"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Ur ttcewwil ara</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
