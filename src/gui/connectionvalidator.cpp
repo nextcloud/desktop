@@ -197,6 +197,11 @@ void ConnectionValidator::checkAuthentication()
 {
     AbstractCredentials *creds = _account->credentials();
 
+    if (_account->isPublicShareLink()) {
+        slotAuthSuccess();
+        return;
+    }
+
     if (!creds->ready()) {
         reportResult(CredentialsNotReady);
         return;
