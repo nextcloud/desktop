@@ -251,6 +251,13 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
     if (reason == QSystemTrayIcon::DoubleClick && currentUser && currentUser->hasLocalFolder()) {
         currentUser->openLocalFolder();
     } else if (TrayActivationPolicy::opensPrimaryPopup(reason)) {
+#ifdef Q_OS_MACOS
+        // Focus loss can hide the popup before Qt emits the icon activation.
+        if (macOSTrayPopupWasVisibleAtCurrentMouseDown()) {
+            _tray->hideWindow();
+            return;
+        }
+#endif
         if (AccountManager::instance()->accounts().isEmpty()) {
             // Without a configured account the tray icon drives the setup wizard
             // directly: open it, or bring the existing one back to front instead
