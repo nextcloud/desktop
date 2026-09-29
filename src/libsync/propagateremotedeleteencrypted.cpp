@@ -56,15 +56,7 @@ void PropagateRemoteDeleteEncrypted::slotFetchMetadataJobFinished(int statusCode
     const QString fileName = info.fileName();
 
     // Find existing metadata for this file
-    bool found = false;
-    const QVector<FolderMetadata::EncryptedFile> files = metadata->files();
-    for (const FolderMetadata::EncryptedFile &file : files) {
-        if (file.originalFilename == fileName) {
-            metadata->removeEncryptedFile(file);
-            found = true;
-            break;
-        }
-    }
+    bool found = metadata->removeEncryptedFile(fileName);
 
     if (!found) {
         // file is not found in the metadata, but we still need to remove it
