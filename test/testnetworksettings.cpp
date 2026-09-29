@@ -9,6 +9,8 @@
 
 #include <QtTest>
 
+#include <QLineEdit>
+#include <QRadioButton>
 #include <QWidget>
 
 #include "account.h"
@@ -111,6 +113,50 @@ private Q_SLOTS:
         QCOMPARE(portSpinBox->isEnabled(), !hostAndPortEnforced);
         QVERIFY(authRequiredCheckBox->isEnabled());
         QVERIFY(!proxyEnforcedLabel->isHidden());
+    }
+
+    // Enforcing only the proxy type must still let the user provide the host and port.
+    void testTypeOnlyEnforcementKeepsHostAndPortEditable()
+    {
+        auto account = Account::create();
+        account->setUrl(QUrl(u"https://example.com"_s));
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        account->setProxyType(QNetworkProxy::DefaultProxy);
+        account->applyManagedProxySettings(managedProxyFields(true, QNetworkProxy::HttpProxy, std::nullopt, std::nullopt));
+
+        NetworkSettings settings(account);
+
+        const auto manualProxyRadioButton = settings.findChild<QRadioButton *>(u"manualProxyRadioButton"_s);
+        const auto hostLineEdit = settings.findChild<QLineEdit *>(u"hostLineEdit"_s);
+        const auto portSpinBox = settings.findChild<QWidget *>(u"portSpinBox"_s);
+        QVERIFY(manualProxyRadioButton && hostLineEdit && portSpinBox);
+
+        QVERIFY(manualProxyRadioButton->isChecked());
+        QVERIFY(hostLineEdit->isVisibleTo(&settings));
+        QVERIFY(portSpinBox->isVisibleTo(&settings));
+        QVERIFY(hostLineEdit->isEnabled());
+        QVERIFY(portSpinBox->isEnabled());
+    }
+
+    // A managed default must not surface as the account's own value in the editor.
+    void testExistingAccountShowsItsOwnProxyNotManagedDefault()
+    {
+        auto account = Account::create();
+        account->setUrl(QUrl(u"https://example.com"_s));
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        account->setProxyType(QNetworkProxy::DefaultProxy);
+        account->applyManagedProxySettings(managedProxyFields(false, QNetworkProxy::HttpProxy, u"proxy.example.com"_s, 8080));
+
+        NetworkSettings settings(account);
+
+        const auto systemProxyRadioButton = settings.findChild<QRadioButton *>(u"systemProxyRadioButton"_s);
+        const auto manualProxyRadioButton = settings.findChild<QRadioButton *>(u"manualProxyRadioButton"_s);
+        const auto hostLineEdit = settings.findChild<QLineEdit *>(u"hostLineEdit"_s);
+        QVERIFY(systemProxyRadioButton && manualProxyRadioButton && hostLineEdit);
+
+        QVERIFY(systemProxyRadioButton->isChecked());
+        QVERIFY(!manualProxyRadioButton->isChecked());
+        QVERIFY(hostLineEdit->text().isEmpty());
     }
 };
 
