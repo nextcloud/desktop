@@ -718,11 +718,9 @@ bool ConfigFile::setConfig(const QString &name, const QVariant &value, const QSt
     }
 
     QSettings settings(configFile(), QSettings::IniFormat);
-    // Drop the copy earlier versions kept at the top level, so it cannot shadow a server default.
-    settings.remove(name);
-    if (!groupName.isEmpty()) {
-        settings.beginGroup(groupName);
-    }
+    // Copy into the [General] section for older clients after a downgrade.
+    settings.setValue(name, value);
+    settings.beginGroup(groupName);
     settings.setValue(name, value);
     settings.sync();
     return true;
