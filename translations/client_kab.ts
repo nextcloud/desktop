@@ -2509,7 +2509,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Tuccḍa n usesteb: Isem n useqdac neɣ awal uffir d armeɣtu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="228"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
         <source>The provided credentials are not correct</source>
         <translation>Talɣut n usesteb i d-ittunefken mačči d tameɣtut</translation>
     </message>
@@ -6124,53 +6124,53 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
-        <location filename="../src/gui/systray.cpp" line="570"/>
+        <location filename="../src/gui/systray.cpp" line="574"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="875"/>
         <source>Add account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="572"/>
+        <location filename="../src/gui/systray.cpp" line="576"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="575"/>
-        <location filename="../src/gui/systray.cpp" line="585"/>
+        <location filename="../src/gui/systray.cpp" line="579"/>
+        <location filename="../src/gui/systray.cpp" line="589"/>
         <source>Pause sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="576"/>
-        <location filename="../src/gui/systray.cpp" line="591"/>
+        <location filename="../src/gui/systray.cpp" line="580"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
         <source>Resume sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="577"/>
+        <location filename="../src/gui/systray.cpp" line="581"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="913"/>
         <source>Settings</source>
         <translation>Iɣewwaṛen</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="578"/>
+        <location filename="../src/gui/systray.cpp" line="582"/>
         <source>Help</source>
         <translation>Tallalt</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="579"/>
+        <location filename="../src/gui/systray.cpp" line="583"/>
         <source>Exit %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="585"/>
+        <location filename="../src/gui/systray.cpp" line="589"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="591"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"/>
@@ -6708,109 +6708,109 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
         <source>Please sign in</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="532"/>
         <source>There are no sync folders configured.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="300"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>Unsupported Server Version</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="320"/>
         <source>Terms of service</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="509"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="515"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="522"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="584"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="591"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="587"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="594"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="838"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="845"/>
         <source>Select new location …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="926"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="933"/>
         <source>Internal link copied</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="927"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="934"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="417"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Disconnected from accounts:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="420"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="427"/>
         <source>Account %1: %2</source>
         <extracomment>%1 is the account display name. %2 is the account connection status.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>Account synchronization is disabled</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="605"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="612"/>
         <source>%1 (%2, %3)</source>
         <extracomment>%1 is the file name. %2 is the sync result. %3 is the current time.</extracomment>
         <translation type="unfinished"/>
@@ -7811,7 +7811,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="811"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Isnasen</translation>
     </message>
 </context>
 <context>
@@ -7819,17 +7819,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="22"/>
         <source>Custom date range</source>
-        <translation type="unfinished"/>
+        <translation>Azilal yugnen n uzemz</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Semmet</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="40"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Snes</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="52"/>
@@ -7858,12 +7858,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="28"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Uɣal</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
         <source>Back to all search results</source>
-        <translation type="unfinished"/>
+        <translation>Uɣal ɣer igmaḍ meṛṛa n unadi</translation>
     </message>
 </context>
 <context>
@@ -7872,23 +7872,23 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="51"/>
         <source>Type</source>
         <extracomment>Search filter for selecting a result provider type.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Anaw</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="58"/>
         <source>Filter by type</source>
-        <translation type="unfinished"/>
+        <translation>Sti s wanaw</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="103"/>
         <source>Date</source>
         <extracomment>Search filter for restricting results by date.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Azemz</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="111"/>
         <source>Filter by date</source>
-        <translation type="unfinished"/>
+        <translation>Sti s uzemz</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="112"/>
@@ -7898,48 +7898,48 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="123"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Ass-a</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="127"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>7 n wussan yezrin</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="131"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>30 n wussan aya yezrin</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="135"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>Aseggas-a</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="139"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>Ilindi</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="144"/>
         <source>Custom range …</source>
-        <translation type="unfinished"/>
+        <translation>Azilal yugnen ...</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="148"/>
         <source>Clear date</source>
-        <translation type="unfinished"/>
+        <translation>Sfeḍ azemz</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="160"/>
         <source>People</source>
         <extracomment>Search filter for restricting results to a person.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Imdanen</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="168"/>
         <source>Filter by person</source>
-        <translation type="unfinished"/>
+        <translation>Sti s umdan</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="169"/>
@@ -7952,7 +7952,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="30"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Nadi ifuyla, iznan, ineḍruyen ...</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>

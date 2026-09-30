@@ -2515,7 +2515,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Earráid fhíordheimhnithe: Tá ainm úsáideora nó pasfhocal mícheart.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="228"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
         <source>The provided credentials are not correct</source>
         <translation>Níl na dintiúir a thugtar ceart</translation>
     </message>
@@ -6156,53 +6156,53 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
-        <location filename="../src/gui/systray.cpp" line="570"/>
+        <location filename="../src/gui/systray.cpp" line="574"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="875"/>
         <source>Add account</source>
         <translation>Cuir cuntas leis</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="572"/>
+        <location filename="../src/gui/systray.cpp" line="576"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>Oscail Deasc %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="575"/>
-        <location filename="../src/gui/systray.cpp" line="585"/>
+        <location filename="../src/gui/systray.cpp" line="579"/>
+        <location filename="../src/gui/systray.cpp" line="589"/>
         <source>Pause sync</source>
         <translation>Cuir an sioncronú ar sos</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="576"/>
-        <location filename="../src/gui/systray.cpp" line="591"/>
+        <location filename="../src/gui/systray.cpp" line="580"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
         <source>Resume sync</source>
         <translation>Lean an sioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="577"/>
+        <location filename="../src/gui/systray.cpp" line="581"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="913"/>
         <source>Settings</source>
         <translation>Socruithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="578"/>
+        <location filename="../src/gui/systray.cpp" line="582"/>
         <source>Help</source>
         <translation>Cabhrú</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="579"/>
+        <location filename="../src/gui/systray.cpp" line="583"/>
         <source>Exit %1</source>
         <translation>Scoir % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="585"/>
+        <location filename="../src/gui/systray.cpp" line="589"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
         <source>Pause sync for all</source>
         <translation>Cuir an sioncronú ar sos do chách</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="591"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
         <source>Resume sync for all</source>
         <translation>Lean an sioncronú do chách</translation>
@@ -6740,109 +6740,109 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
         <source>Please sign in</source>
         <translation>Sínigh isteach le do thoil</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="532"/>
         <source>There are no sync folders configured.</source>
         <translation>Níl aon fillteáin sioncronaithe cumraithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
         <source>Disconnected from %1</source>
         <translation>Dícheangailte ó % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="300"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>Unsupported Server Version</source>
         <translation>Leagan Freastalaí gan tacaíocht</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Ritheann an freastalaí ar chuntas % 1 leagan % 2 nach dtacaítear leis. Tá úsáid an chliaint seo le leaganacha freastalaí nach dtacaítear leo gan tástáil agus d&apos;fhéadfadh sé a bheith contúirteach. Lean ar aghaidh ar do phriacal féin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="320"/>
         <source>Terms of service</source>
         <translation>Téarmaí seirbhíse</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>Éilíonn do chuntas %1 go nglacann tú le téarmaí seirbhíse do fhreastalaí. Déanfar tú a atreorú chuig %2 chun a admháil gur léigh tú é agus go n-aontaíonn tú leis.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="509"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS le haghaidh % 1: Tá Sync ag rith.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS le haghaidh % 1: D&apos;éirigh leis an sioncronú deireanach.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="515"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="522"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS le haghaidh % 1: Thángthas ar fhadhb.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>macOS VFS do %1: Tharla earráid.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="584"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="591"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Ag seiceáil le haghaidh athruithe i gcian&quot;% 1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="587"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="594"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Ag seiceáil le haghaidh athruithe i logánta &quot;% 1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="838"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="845"/>
         <source>Select new location …</source>
         <translation>Roghnaigh suíomh nua …</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="926"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="933"/>
         <source>Internal link copied</source>
         <translation>Nasc inmheánach cóipeáilte</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="927"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="934"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>Tá an nasc inmheánach cóipeáilte chuig an ghearrthaisce.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="417"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Disconnected from accounts:</source>
         <translation>Dícheangailte ó chuntais:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="420"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="427"/>
         <source>Account %1: %2</source>
         <extracomment>%1 is the account display name. %2 is the account connection status.</extracomment>
         <translation>Cuntas % 1: % 2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>Account synchronization is disabled</source>
         <translation>Tá sioncronú cuntais díchumasaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="605"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="612"/>
         <source>%1 (%2, %3)</source>
         <extracomment>%1 is the file name. %2 is the sync result. %3 is the current time.</extracomment>
         <translation>%1 (%2, %3)</translation>
