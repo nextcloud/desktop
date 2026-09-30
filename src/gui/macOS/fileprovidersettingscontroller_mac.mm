@@ -693,11 +693,35 @@ void FileProviderSettingsController::removeAllClassicSyncFolders()
     }
 }
 
+static void notifyVfsEnforcedChanged()
+{
+    ConfigFile config;
+    const auto managedVfs = config.managedVirtualFilesMode();
+    const auto enforcedOff = managedVfs.isEnforced && !managedVfs.enabled;
+    if (config.fileProviderVfsEnforcedOffNotified() == enforcedOff) {
+        return;
+    }
+
+    config.setFileProviderVfsEnforcedOffNotified(enforcedOff);
+
+    const auto headline =
+        enforcedOff ? QObject::tr("Virtual files is disabled by an organization policy") : QObject::tr("Virtual files is enabled by an organization policy");
+    const auto details = enforcedOff ? QObject::tr("You can set up classic sync folders instead.")
+                                     : QObject::tr("You can use it by clicking the File Provider checkbox in the general settings.");
+
+    // macOS does not show the window title, so the headline is the bold message text.
+    QMessageBox messageBox(QMessageBox::Information, headline, headline, QMessageBox::Ok, nullptr);
+    messageBox.setInformativeText(details);
+    messageBox.exec();
+}
+
 void FileProviderSettingsController::performStartupReconciliation()
 {
     if (!Mac::FileProvider::available()) {
         return;
     }
+
+    notifyVfsEnforcedChanged();
 
     if (_isOperationInProgress) {
         qCWarning(lcFileProviderSettingsController) << "Operation already in progress, skipping reconciliation";
