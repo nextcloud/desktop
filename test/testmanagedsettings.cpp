@@ -737,27 +737,25 @@ private Q_SLOTS:
         QCOMPARE(account->accountProxyPort(), 1111);
     }
 
-    void testManagedProxyDefaultAppliesOnlyWhileFollowingSystemProxy_data()
+    void testManagedProxyDefaultDoesNotOverrideExistingAccount_data()
     {
         QTest::addColumn<int>("accountProxyType");
-        QTest::addColumn<int>("expectedProxyType");
 
-        QTest::newRow("follows system proxy") << int(QNetworkProxy::DefaultProxy) << int(QNetworkProxy::HttpProxy);
-        QTest::newRow("manual proxy") << int(QNetworkProxy::Socks5Proxy) << int(QNetworkProxy::Socks5Proxy);
-        QTest::newRow("no proxy") << int(QNetworkProxy::NoProxy) << int(QNetworkProxy::NoProxy);
+        QTest::newRow("follows system proxy") << int(QNetworkProxy::DefaultProxy);
+        QTest::newRow("manual proxy") << int(QNetworkProxy::Socks5Proxy);
+        QTest::newRow("no proxy") << int(QNetworkProxy::NoProxy);
     }
 
-    void testManagedProxyDefaultAppliesOnlyWhileFollowingSystemProxy()
+    void testManagedProxyDefaultDoesNotOverrideExistingAccount()
     {
         QFETCH(int, accountProxyType);
-        QFETCH(int, expectedProxyType);
 
         const auto account = createAccountWithNetworkAccessManager();
         account->setProxyType(static_cast<QNetworkProxy::ProxyType>(accountProxyType));
 
         account->applyManagedProxySettings(managedProxyFields(false, int(QNetworkProxy::HttpProxy), u"proxy.example.com"_s, 8080));
 
-        QCOMPARE(int(account->proxyType()), expectedProxyType);
+        QCOMPARE(int(account->proxyType()), accountProxyType);
         QCOMPARE(int(account->accountProxyType()), accountProxyType);
         QVERIFY(!account->proxySettingsAreManaged());
     }
@@ -849,6 +847,25 @@ private Q_SLOTS:
         account->setProxyType(QNetworkProxy::DefaultProxy);
 
         QCOMPARE(ClientProxy::accountProxyMode(*account), ClientProxy::AccountProxyMode::SystemProxy);
+    }
+
+    void testAccountProxyModeUsesAccountProxyForItsOwnProxy_data()
+    {
+        QTest::addColumn<int>("accountProxyType");
+
+        QTest::newRow("http proxy") << int(QNetworkProxy::HttpProxy);
+        QTest::newRow("socks5 proxy") << int(QNetworkProxy::Socks5Proxy);
+        QTest::newRow("no proxy") << int(QNetworkProxy::NoProxy);
+    }
+
+    void testAccountProxyModeUsesAccountProxyForItsOwnProxy()
+    {
+        QFETCH(int, accountProxyType);
+
+        const auto account = createAccountWithNetworkAccessManager();
+        account->setProxyType(static_cast<QNetworkProxy::ProxyType>(accountProxyType));
+
+        QCOMPARE(ClientProxy::accountProxyMode(*account), ClientProxy::AccountProxyMode::AccountProxy);
     }
 
     void testSourceLabelUsesRequestedSetting()

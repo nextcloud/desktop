@@ -52,11 +52,11 @@ bool ClientProxy::isUsingSystemDefault()
 
 ClientProxy::AccountProxyMode ClientProxy::accountProxyMode(const Account &account)
 {
-    const auto followsSystemProxy = account.proxyType() == QNetworkProxy::DefaultProxy;
-    if (account.proxySettingsAreManaged()) {
-        return followsSystemProxy ? AccountProxyMode::SystemProxy : AccountProxyMode::AccountProxy;
+    if (account.proxyType() != QNetworkProxy::DefaultProxy) {
+        // The account has its own proxy; do not overwrite it with a system lookup.
+        return AccountProxyMode::AccountProxy;
     }
-    if (isUsingSystemDefault() || followsSystemProxy) {
+    if (account.proxySettingsAreManaged() || isUsingSystemDefault()) {
         return AccountProxyMode::SystemProxy;
     }
     return AccountProxyMode::ApplicationProxy;
