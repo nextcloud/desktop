@@ -40,7 +40,6 @@ BasicControls.Button {
         spacing: Style.wizardButtonContentSpacing
 
         Item {
-            objectName: "wizardButtonLeadingIcon"
             visible: root.iconSource !== "" && root.iconBeforeText
             Layout.preferredWidth: visible ? Style.smallIconSize : 0
             Layout.preferredHeight: Style.smallIconSize
@@ -48,6 +47,7 @@ BasicControls.Button {
 
             Image {
                 id: leadingIconImage
+                objectName: "wizardButtonLeadingIcon"
 
                 anchors.centerIn: parent
                 width: Style.smallIconSize
@@ -92,6 +92,7 @@ BasicControls.Button {
         }
 
         Image {
+            objectName: "wizardButtonFollowingIcon"
             visible: root.iconSource !== "" && !root.iconBeforeText
             source: root.iconSource !== "" && !root.iconBeforeText ? root.iconSource : ""
             sourceSize.width: Style.smallIconSize
