@@ -320,6 +320,10 @@ public:
     [[nodiscard]] bool macFileProviderModeEnabledIsSet() const;
     void setMacFileProviderModeEnabled(bool enabled);
 
+    /// Whether the user was already told that a policy turned virtual files off.
+    [[nodiscard]] bool fileProviderVfsEnforcedOffNotified() const;
+    void setFileProviderVfsEnforcedOffNotified(bool notified);
+
     static constexpr char unbrandedAppName[] = "Nextcloud";
     static constexpr char legacyAppName[] = "Owncloud";
 
@@ -342,6 +346,7 @@ public:
     static constexpr char moveToTrashC[] = "moveToTrash";
     static constexpr char updateChannelC[] = "updateChannel";
     static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
+    static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
     static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
     static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
     static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";

@@ -117,7 +117,7 @@ void InfoSettings::slotUpdateInfo()
 {
     ConfigFile config;
     const auto updater = Updater::instance();
-    if (config.skipUpdateCheck() || !updater) {
+    if (!updater) {
         _ui->updatesContainer->setVisible(false);
         _ui->updatesGroupBox->setVisible(false);
         return;
@@ -126,19 +126,19 @@ void InfoSettings::slotUpdateInfo()
     _ui->updatesGroupBox->setVisible(true);
     _ui->updatesContainer->setVisible(true);
 
-    if (updater) {
-        connect(_ui->updateButton, &QAbstractButton::clicked, this, &InfoSettings::slotUpdateCheckNow, Qt::UniqueConnection);
+    connect(_ui->updateButton, &QAbstractButton::clicked, this, &InfoSettings::slotUpdateCheckNow, Qt::UniqueConnection);
 
-        const auto enforced = config.isEnforced(QLatin1String(ConfigFile::autoUpdateCheckC));
-        _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck());
-        _ui->autoCheckForUpdatesCheckBox->setEnabled(!enforced);
-        _ui->adminEnforcedLabel->setVisible(enforced);
-        if (!enforced) {
-            // clicked fires only on user interaction, so repopulating the control never writes a user value.
-            connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::clicked, this, &InfoSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
-        } else {
-            _ui->adminEnforcedLabel->setText(config.sourceLabel(ConfigFile::autoUpdateCheckC));
-        }
+    // Keep the section visible with a managed label when a policy disables updates, like the other settings.
+    const auto updatesSkipped = config.skipUpdateCheck();
+    const auto autoCheckManaged = updatesSkipped || config.isEnforced(QLatin1String(ConfigFile::autoUpdateCheckC));
+    _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck() && !updatesSkipped);
+    _ui->autoCheckForUpdatesCheckBox->setEnabled(!autoCheckManaged);
+    _ui->adminEnforcedLabel->setVisible(autoCheckManaged);
+    if (autoCheckManaged) {
+        _ui->adminEnforcedLabel->setText(config.sourceLabel(updatesSkipped ? ConfigFile::skipUpdateCheckC : ConfigFile::autoUpdateCheckC));
+    } else {
+        // clicked fires only on user interaction, so repopulating the control never writes a user value.
+        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::clicked, this, &InfoSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
     }
 
     const auto ocupdater = qobject_cast<OCUpdater *>(updater);
@@ -191,6 +191,10 @@ void InfoSettings::slotUpdateInfo()
         _ui->updateButton->setEnabled(enableUpdateButton);
     }
 #endif
+
+    if (updatesSkipped) {
+        _ui->updateButton->setEnabled(false);
+    }
 }
 
 void InfoSettings::setAndCheckNewUpdateChannel(const QString &newChannel) {
