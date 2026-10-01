@@ -39,6 +39,7 @@ jobs:
   Tests:
     if: ${{ github.event_name != 'pull_request' || (github.event.action != 'closed' && !github.event.pull_request.draft) }}
     runs-on: macos-26
+    timeout-minutes: 60
 
     defaults:
       run:
@@ -52,4 +53,8 @@ jobs:
         xcode-version: latest-stable
 
     - name: Run Tests
+      env:
+        # xcodebuild passes TEST_RUNNER_ variables to the tests without the prefix.
+        # Fail instead of skipping the default keychain tests when the keychain is not usable.
+        TEST_RUNNER_NEXTCLOUD_REQUIRE_LOGIN_KEYCHAIN_TESTS: '1'
       run: xcodebuild clean build test -scheme NextcloudFileProviderKit-Package -destination "platform=macOS,name=My Mac"
