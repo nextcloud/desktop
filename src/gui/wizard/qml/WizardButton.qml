@@ -43,11 +43,15 @@ BasicControls.Button {
             visible: root.iconSource !== "" && root.iconBeforeText
             Layout.preferredWidth: visible ? Style.smallIconSize : 0
             Layout.preferredHeight: Style.smallIconSize
+            Layout.fillWidth: root.text === "" && root.textSuffix === ""
 
             Image {
                 id: leadingIconImage
+                objectName: "wizardButtonLeadingIcon"
 
-                anchors.fill: parent
+                anchors.centerIn: parent
+                width: Style.smallIconSize
+                height: Style.smallIconSize
                 visible: !root.tintIcon
                 source: root.iconSource !== "" && root.iconBeforeText ? root.iconSource : ""
                 sourceSize.width: Style.smallIconSize
@@ -88,6 +92,7 @@ BasicControls.Button {
         }
 
         Image {
+            objectName: "wizardButtonFollowingIcon"
             visible: root.iconSource !== "" && !root.iconBeforeText
             source: root.iconSource !== "" && !root.iconBeforeText ? root.iconSource : ""
             sourceSize.width: Style.smallIconSize
