@@ -119,6 +119,35 @@ std::optional<bool> FileProvider::fileProviderDomainHasDirtyUserData(const QStri
     return hasDirtyUserData;
 }
 
+std::optional<bool> FileProvider::deleteFileProviderDomainPassword(const QString &fileProviderDomainIdentifier)
+{
+    if (QThread::currentThread() == thread()) {
+        const auto xpc = _xpc.get();
+
+        if (!xpc) {
+            qCInfo(lcMacFileProvider) << "Not deleting password because XPC is not configured." << fileProviderDomainIdentifier;
+            return std::nullopt;
+        }
+
+        return xpc->deleteFileProviderDomainPassword(fileProviderDomainIdentifier);
+    }
+
+    std::optional<bool> deleted;
+    const auto invoked = QMetaObject::invokeMethod(
+        this,
+        [this, &deleted, fileProviderDomainIdentifier] {
+            deleted = deleteFileProviderDomainPassword(fileProviderDomainIdentifier);
+        },
+        Qt::BlockingQueuedConnection);
+
+    if (!invoked) {
+        qCWarning(lcMacFileProvider) << "Could not request password deletion of file provider domain." << fileProviderDomainIdentifier;
+        return std::nullopt;
+    }
+
+    return deleted;
+}
+
 FileProviderXPC *FileProvider::xpc() const
 {
     return _xpc.get();
