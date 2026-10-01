@@ -10,6 +10,7 @@
 #include <QtTest>
 
 #include <atomic>
+#include <chrono>
 #include <optional>
 #include <thread>
 
@@ -24,6 +25,9 @@ namespace
 {
 
 constexpr auto backgroundThreadTimeoutMs = 5000;
+constexpr auto passwordDeletionReplyTimeout = std::chrono::seconds{1};
+constexpr auto passwordDeletionShortTimeout = std::chrono::milliseconds{50};
+constexpr auto latePasswordDeletionReplyDelay = std::chrono::milliseconds{200};
 
 bool waitForBackgroundThread(std::atomic_bool &completed)
 {
@@ -69,6 +73,11 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 @property (nonatomic, retain) NSError *error;
 @property (nonatomic, assign) BOOL *deallocatedFlag;
 @property (nonatomic, assign) BOOL suppressDomainIdentifierReply;
+@property (nonatomic, assign) BOOL passwordDeletionReply;
+@property (nonatomic, assign) BOOL suppressPasswordDeletionReply;
+@property (nonatomic, assign) NSTimeInterval passwordDeletionReplyDelay;
+@property (atomic, assign) NSUInteger passwordDeletionRequestCount;
+@property (atomic, assign) BOOL passwordDeletionReplied;
 @end
 
 @implementation TestClientCommunicationService
@@ -97,6 +106,31 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 
 - (void)removeAccountConfig
 {
+}
+
+- (void)deletePasswordWithCompletionHandler:(void (^)(BOOL))completionHandler
+{
+    self.passwordDeletionRequestCount += 1;
+
+    if (self.suppressPasswordDeletionReply) {
+        return;
+    }
+
+    const auto reply = self.passwordDeletionReply;
+
+    if (self.passwordDeletionReplyDelay > 0) {
+        // The copied block retains self and the completion handler until it has run.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, static_cast<int64_t>(self.passwordDeletionReplyDelay * NSEC_PER_SEC)),
+                       dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0),
+                       ^{
+                           completionHandler(reply);
+                           self.passwordDeletionReplied = YES;
+                       });
+        return;
+    }
+
+    completionHandler(reply);
+    self.passwordDeletionReplied = YES;
 }
 
 - (void)setIgnoreList:(NSArray<NSString *> *)ignoreList
@@ -391,6 +425,89 @@ private Q_SLOTS:
 
         QVERIFY(completedInTime);
         QVERIFY(!hasDirtyUserData.has_value());
+    }
+
+    void passwordDeletionReturnsConfirmedReply()
+    {
+        const auto service = [TestClientCommunicationService new];
+        service.passwordDeletionReply = YES;
+
+        const auto deleted = OCC::Mac::FileProviderXPCUtils::deletePassword((NSObject<ClientCommunicationProtocol> *)service, passwordDeletionReplyTimeout);
+
+        QVERIFY(deleted.has_value());
+        QVERIFY(*deleted);
+        QCOMPARE(service.passwordDeletionRequestCount, NSUInteger{1});
+        [service release];
+    }
+
+    void passwordDeletionReturnsFailedReply()
+    {
+        const auto service = [TestClientCommunicationService new];
+        service.passwordDeletionReply = NO;
+
+        const auto deleted = OCC::Mac::FileProviderXPCUtils::deletePassword((NSObject<ClientCommunicationProtocol> *)service, passwordDeletionReplyTimeout);
+
+        QVERIFY(deleted.has_value());
+        QVERIFY(!*deleted);
+        QCOMPARE(service.passwordDeletionRequestCount, NSUInteger{1});
+        [service release];
+    }
+
+    void passwordDeletionWithoutServiceReturnsUnknown()
+    {
+        const auto deleted = OCC::Mac::FileProviderXPCUtils::deletePassword(nil, passwordDeletionReplyTimeout);
+
+        QVERIFY(!deleted.has_value());
+    }
+
+    void passwordDeletionWithoutReplyTimesOut()
+    {
+        const auto service = [TestClientCommunicationService new];
+        service.suppressPasswordDeletionReply = YES;
+
+        const auto deleted = OCC::Mac::FileProviderXPCUtils::deletePassword((NSObject<ClientCommunicationProtocol> *)service, passwordDeletionShortTimeout);
+
+        QVERIFY(!deleted.has_value());
+        QCOMPARE(service.passwordDeletionRequestCount, NSUInteger{1});
+        [service release];
+    }
+
+    void latePasswordDeletionReplyAfterTimeoutIsIgnored()
+    {
+        BOOL serviceDeallocated = NO;
+        const auto service = [TestClientCommunicationService new];
+        service.passwordDeletionReply = YES;
+        service.passwordDeletionReplyDelay = std::chrono::duration<double>(latePasswordDeletionReplyDelay).count();
+        service.deallocatedFlag = &serviceDeallocated;
+
+        const auto deleted = OCC::Mac::FileProviderXPCUtils::deletePassword((NSObject<ClientCommunicationProtocol> *)service, passwordDeletionShortTimeout);
+
+        QVERIFY(!deleted.has_value());
+        QTRY_VERIFY_WITH_TIMEOUT(service.passwordDeletionReplied, backgroundThreadTimeoutMs);
+        [service release];
+        QTRY_VERIFY_WITH_TIMEOUT(serviceDeallocated, backgroundThreadTimeoutMs);
+    }
+
+    void passwordDeletionFromBackgroundThreadReturnsUnknownWhenDomainIsMissing()
+    {
+        if (!OCC::Mac::FileProvider::available()) {
+            QSKIP("File Provider is unavailable on this macOS version.");
+        }
+
+        auto *const fileProvider = OCC::Mac::FileProvider::instance();
+        std::optional<bool> deleted;
+        std::atomic_bool completed = false;
+
+        std::thread backgroundThread([fileProvider, &deleted, &completed] {
+            deleted = fileProvider->deleteFileProviderDomainPassword("missing-domain"_L1);
+            completed.store(true, std::memory_order_release);
+        });
+
+        const auto completedInTime = waitForBackgroundThread(completed);
+        backgroundThread.join();
+
+        QVERIFY(completedInTime);
+        QVERIFY(!deleted.has_value());
     }
 };
 
