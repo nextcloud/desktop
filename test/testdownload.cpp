@@ -103,6 +103,16 @@ private Q_SLOTS:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    void testDownloadInfoRemovedAfterSuccessfulDownload()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.remoteModifier().insert("a0");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!fakeFolder.syncJournal().getDownloadInfo("a0")._valid);
+    }
+
     void testErrorMessage () {
         // This test's main goal is to test that the error string from the server is shown in the UI
 
