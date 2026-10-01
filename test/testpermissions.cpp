@@ -1068,6 +1068,48 @@ private Q_SLOTS:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QVERIFY(!QFileInfo(localPath + "readOnlyFile.txt").isWritable());
     }
+
+    // Clients affected by the bug above left a fully downloaded, read-only
+    // temporary file behind after failing to rename it into place. The next
+    // sync reuses that temporary file instead of downloading the file again,
+    // and must be able to rename it.
+    void testDownloadRecoversReadOnlyTemporaryFileWithoutDeleteChildPermission()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        const auto localPath = fakeFolder.localPath();
+        constexpr auto modifyPermissions = DWORD{FILE_GENERIC_READ | FILE_GENERIC_WRITE | FILE_GENERIC_EXECUTE | DELETE};
+        QVERIFY(setCurrentUserOnlyDacl(localPath, modifyPermissions));
+        const auto restoreFullControl = qScopeGuard([&localPath] {
+            setCurrentUserOnlyDacl(localPath, FILE_ALL_ACCESS);
+        });
+
+        auto &remote = fakeFolder.remoteModifier();
+        remote.insert("readOnlyFile.txt", 100, 'A');
+        const auto remoteFile = remote.find("readOnlyFile.txt");
+        remoteFile->permissions = RemotePermissions::fromServerString("mG");
+
+        // Recreate the state left behind by an affected client.
+        const auto tmpFileName = QStringLiteral(".readOnlyFile.txt.~1234abcd");
+        const auto tmpFilePath = localPath + tmpFileName;
+        {
+            auto tmpFile = QFile{tmpFilePath};
+            QVERIFY(tmpFile.open(QIODevice::WriteOnly));
+            QCOMPARE(tmpFile.write(QByteArray(remoteFile->size, remoteFile->contentChar)), remoteFile->size);
+        }
+        FileSystem::setFileHidden(tmpFilePath, true);
+        FileSystem::setFileReadOnly(tmpFilePath, true);
+
+        auto downloadInfo = SyncJournalDb::DownloadInfo{};
+        downloadInfo._tmpfile = tmpFileName;
+        downloadInfo._etag = remoteFile->etag;
+        downloadInfo._valid = true;
+        fakeFolder.syncJournal().setDownloadInfo("readOnlyFile.txt", downloadInfo);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!QFileInfo::exists(tmpFilePath));
+        QVERIFY(!QFileInfo(localPath + "readOnlyFile.txt").isWritable());
+    }
 #endif
 
     // A file that becomes writable again on the server must lose its local
