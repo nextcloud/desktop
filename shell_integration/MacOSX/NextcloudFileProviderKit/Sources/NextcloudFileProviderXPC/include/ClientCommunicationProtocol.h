@@ -25,7 +25,14 @@
                        serverUrl:(NSString *)serverUrl
                         password:(NSString *)password
                        userAgent:(NSString *)userAgent;
+
+/**
+ * @brief Clear the in-memory account and delete the stored password.
+ *
+ * The main app sends this when the account is signed out, needs credentials again, is redirected or must accept the terms of service.
+ */
 - (void)removeAccountConfig;
+
 - (void)setIgnoreList:(NSArray<NSString *> *)ignoreList;
 
 /**
