@@ -573,13 +573,13 @@
 <context>
     <name>ConfigFile</name>
     <message>
-        <location filename="../src/libsync/configfile.cpp" line="744"/>
+        <location filename="../src/libsync/configfile.cpp" line="742"/>
         <source>Managed by your organization</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
         <translation>Hanteras av din organisation</translation>
     </message>
     <message>
-        <location filename="../src/libsync/configfile.cpp" line="746"/>
+        <location filename="../src/libsync/configfile.cpp" line="744"/>
         <source>Managed by your system administrator</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
         <translation>Hanteras av systemadministratören</translation>
@@ -1584,199 +1584,199 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="313"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="315"/>
         <source>Will require local storage</source>
         <translation>Kräver lokal lagring</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="704"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="725"/>
         <source>Proxy settings are incomplete.</source>
         <translation>Proxyinställningarna är ofullständiga.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="711"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="732"/>
         <source>Server address does not seem to be valid</source>
         <translation>Serveradressen verkar vara ogiltig</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="732"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="753"/>
         <source>Username must not be empty.</source>
         <translation>Användarnamnet får inte vara tomt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="738"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1060"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="759"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1081"/>
         <source>Checking account access</source>
         <translation>Kontrollerar kontoåtkomst</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="816"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="837"/>
         <source>Checking server address</source>
         <translation>Kontrollerar serveradressen</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="885"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="906"/>
         <source>Preparing browser login</source>
         <translation>Förbereder inloggning i webbläsaren</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="906"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="927"/>
         <source>Invalid URL</source>
         <translation>Ogiltig URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="908"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="929"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>Det gick inte att ansluta till %1 på %2:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="924"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="945"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Försök att ansluta till %1 på %2 tog för lång tid.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1011"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1032"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Det går inte att öppna webbläsaren, kopiera länken till din webbläsare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1036"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1041"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1057"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1062"/>
         <source>Waiting for authorization</source>
         <translation>Väntar på auktorisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1046"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1067"/>
         <source>Starting authorization</source>
         <translation>Startar auktorisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1051"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
         <source>Link copied to clipboard.</source>
         <translation>Länken kopierad till urklipp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1106"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1136"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1127"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1157"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Det kom ett felaktigt svar på en autentiserad WebDAV-begäran</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1123"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1144"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Den autentiserade begäran till servern omdirigerades till &quot;%1&quot;. URL:en är felaktig, servern är felkonfigurerad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1131"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1152"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Servern nekade åtkomst. Öppna tjänsten i webbläsaren för att kontrollera att du har rätt behörighet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1149"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1170"/>
         <source>Account connected.</source>
         <translation>Kontot anslöts.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1257"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1278"/>
         <source>Will require %1 of storage</source>
         <translation>Kräver %1 lagringsutrymme</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1433"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1454"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 ledigt utrymme</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1443"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1464"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Det finns inte tillräckligt med ledigt utrymme i den lokala mappen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1460"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
         <source>Please choose a local sync folder.</source>
         <translation>Välj en lokal synkroniseringsmapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1465"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1486"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Välj en tom lokal synkroniseringsmapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1530"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1551"/>
         <source>Could not create local folder %1</source>
         <translation>Kunde inte skapa lokal mapp %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1544"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1565"/>
         <source>Checking remote folder</source>
         <translation>Kontrollerar fjärrmappen</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1590"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1611"/>
         <source>No remote folder specified!</source>
         <translation>Ingen fjärrmapp har angetts!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1599"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1620"/>
         <source>Error: %1</source>
         <translation>Fel: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1604"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1625"/>
         <source>Creating remote folder</source>
         <translation>Skapar fjärrmapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1623"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1644"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Skapande av mapp resulterade i HTTP felkod %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1625"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1646"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>Fjärrmappen kunde inte skapas eftersom de angivna inloggningsuppgifterna är felaktiga. Gå tillbaka och kontrollera uppgifterna.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1648"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Misslyckades skapa fjärrmapp %1 med fel &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1674"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1695"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Kontokonfigurationen misslyckades när synkroniseringsmappen skapades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1686"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1707"/>
         <source>Could not create the sync folder.</source>
         <translation>Det gick inte att skapa synkroniseringsmappen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1792"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1813"/>
         <source>Local Sync Folder</source>
         <translation>Lokal mapp för synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2067"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2088"/>
         <source>Select a certificate</source>
         <translation>Välj ett certifikat</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2069"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2090"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Certifikatfiler (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2077"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2097"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2098"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2118"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Det gick inte att öppna den valda certifikatfilen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2113"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Kunde inte läsa in certifikatet. Felaktigt lösenord?</translation>
     </message>
@@ -4102,31 +4102,31 @@ Objekt där radering är tillåtet raderas om de förhindrar att en mapp tas bor
         <translation>Ansluten till ett företagssystem. Uppdateringskanalen (%1) kan inte ändras.</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="214"/>
+        <location filename="../src/gui/infosettings.cpp" line="218"/>
         <source>stable</source>
         <extracomment>Name of the stable update channel.</extracomment>
         <translation>stabil</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="219"/>
+        <location filename="../src/gui/infosettings.cpp" line="223"/>
         <source>beta</source>
         <extracomment>Name of the beta update channel.</extracomment>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="224"/>
+        <location filename="../src/gui/infosettings.cpp" line="228"/>
         <source>daily</source>
         <extracomment>Name of the daily update channel.</extracomment>
         <translation>dagligen</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="229"/>
+        <location filename="../src/gui/infosettings.cpp" line="233"/>
         <source>enterprise</source>
         <extracomment>Name of the enterprise update channel.</extracomment>
         <translation>enterprise</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="264"/>
+        <location filename="../src/gui/infosettings.cpp" line="268"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -4138,7 +4138,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Nedgradering av versioner är inte möjligt omedelbart: att byta från beta till stabil innebär att vänta på den nya stabila versionen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="269"/>
+        <location filename="../src/gui/infosettings.cpp" line="273"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -4148,12 +4148,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil till enterprise innebär att man väntar på den nya enterprise-versionen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="276"/>
+        <location filename="../src/gui/infosettings.cpp" line="280"/>
         <source>Changing update channel?</source>
         <translation>Ändra uppdateringskanal?</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="277"/>
+        <location filename="../src/gui/infosettings.cpp" line="281"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -4163,12 +4163,12 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="283"/>
+        <location filename="../src/gui/infosettings.cpp" line="287"/>
         <source>Change update channel</source>
         <translation>Ändra uppdateringskanal</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="284"/>
+        <location filename="../src/gui/infosettings.cpp" line="288"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
