@@ -11,6 +11,11 @@ import Security
 /// Generic passwords ignore internet password attributes like `kSecAttrServer`, so never use them to scope these items.
 ///
 struct Keychain {
+    ///
+    /// The most calls one ``deletePassword()`` makes, so a keychain which keeps reporting success cannot stall the caller.
+    ///
+    static let maximumDeletionCount = 32
+
     let logger: FileProviderLogger
 
     ///
@@ -74,6 +79,22 @@ struct Keychain {
         [
             kSecAttrLabel as String: label,
             kSecValueData as String: password
+        ]
+    }
+
+    ///
+    /// Matches every item of the given domain, regardless of the account.
+    ///
+    /// - Returns: `nil` if the service is empty, because the query would then match items of other applications.
+    ///
+    static func deleteQuery(service: String) -> [String: Any]? {
+        guard service.isEmpty == false else {
+            return nil
+        }
+
+        return [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service
         ]
     }
 
@@ -154,5 +175,37 @@ struct Keychain {
         logger.debug("Updated password in keychain.", [.account: account, .domain: service])
 
         return true
+    }
+
+    ///
+    /// Deletes every item of this domain, including those stored for an earlier user name.
+    ///
+    /// - Returns: `true` if no item of this domain is left.
+    ///
+    @discardableResult
+    func deletePassword() -> Bool {
+        guard let query = Self.deleteQuery(service: service) else {
+            logger.error("Cannot delete passwords without domain identifier.", [.domain: service])
+            return false
+        }
+
+        for _ in 0 ..< Self.maximumDeletionCount {
+            let status = SecItemDelete(query as CFDictionary)
+
+            switch status {
+                case errSecSuccess:
+                    continue
+                case errSecItemNotFound:
+                    logger.debug("No password of the domain left in keychain.", [.domain: service])
+                    return true
+                default:
+                    logger.error("Failed to delete password from keychain.", [.domain: service, .error: Self.statusError(status)])
+                    return false
+            }
+        }
+
+        logger.error("Gave up deleting passwords from keychain.", [.domain: service])
+
+        return false
     }
 }

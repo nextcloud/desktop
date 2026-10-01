@@ -41,7 +41,8 @@ struct KeychainQueryTests {
             #require(Keychain.itemQuery(service: Self.service, account: Self.account)),
             #require(Keychain.lookupQuery(service: Self.service, account: Self.account)),
             #require(Keychain.addAttributes(service: Self.service, account: Self.account, label: "Label", password: Self.password)),
-            Keychain.updateAttributes(label: "Label", password: Self.password)
+            Keychain.updateAttributes(label: "Label", password: Self.password),
+            #require(Keychain.deleteQuery(service: Self.service))
         ]
 
         for dictionary in dictionaries {
@@ -73,6 +74,18 @@ struct KeychainQueryTests {
         let attributes = Keychain.updateAttributes(label: "Label", password: Self.password)
 
         #expect(Set(attributes.keys) == [kSecAttrLabel as String, kSecValueData as String])
+    }
+
+    @Test func deleteQueryCoversEveryAccountOfTheDomain() throws {
+        let query = try #require(Keychain.deleteQuery(service: Self.service))
+
+        #expect(Set(query.keys) == [kSecClass as String, kSecAttrService as String])
+        #expect(query[kSecClass as String] as? String == kSecClassGenericPassword as String)
+        #expect(query[kSecAttrService as String] as? String == Self.service)
+    }
+
+    @Test func emptyServiceProducesNoDeleteQuery() {
+        #expect(Keychain.deleteQuery(service: "") == nil)
     }
 
     @Test(arguments: [("", "alice"), ("B7A1F7E4-2C51-4F58-9A0B-3C6C2E2F1D10", ""), ("", "")])
