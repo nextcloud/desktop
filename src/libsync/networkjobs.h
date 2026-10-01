@@ -547,9 +547,7 @@ private:
 
     AccountPtr _account;
     AuthType _resultGet = NoAuthType;
-    AuthType _resultPropfind = NoAuthType;
     bool _getDone = false;
-    bool _propfindDone = false;
 };
 
 /**
