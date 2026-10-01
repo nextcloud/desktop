@@ -42,6 +42,12 @@ extension FileProviderExtension: ClientCommunicationProtocol {
         keychain.deletePassword()
     }
 
+    public func deletePassword(completionHandler: ((Bool) -> Void)?) {
+        logger.info("Received request to delete the stored password.")
+        let deleted = keychain.deletePassword()
+        completionHandler?(deleted)
+    }
+
     public func setIgnoreList(_ ignoreList: [String]) {
         ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList, log: log)
         logger.info("Ignore list updated.")
