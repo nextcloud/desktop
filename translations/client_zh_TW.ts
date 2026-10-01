@@ -573,13 +573,13 @@
 <context>
     <name>ConfigFile</name>
     <message>
-        <location filename="../src/libsync/configfile.cpp" line="744"/>
+        <location filename="../src/libsync/configfile.cpp" line="742"/>
         <source>Managed by your organization</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
         <translation>由您的組織管理</translation>
     </message>
     <message>
-        <location filename="../src/libsync/configfile.cpp" line="746"/>
+        <location filename="../src/libsync/configfile.cpp" line="744"/>
         <source>Managed by your system administrator</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
         <translation>由您的系統管理員管理</translation>
@@ -1585,199 +1585,199 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="313"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="315"/>
         <source>Will require local storage</source>
         <translation>將需要本機儲存空間</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="704"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="725"/>
         <source>Proxy settings are incomplete.</source>
         <translation>代理伺服器設定不完整。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="711"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="732"/>
         <source>Server address does not seem to be valid</source>
         <translation>似乎是無效的伺服器位址</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="732"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="753"/>
         <source>Username must not be empty.</source>
         <translation>使用者名稱不能為空。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="738"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1060"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="759"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1081"/>
         <source>Checking account access</source>
         <translation>正在檢查帳號存取權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="816"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="837"/>
         <source>Checking server address</source>
         <translation>正在檢查伺服器位址</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="885"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="906"/>
         <source>Preparing browser login</source>
         <translation>正在準備瀏覽器登入</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="906"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="927"/>
         <source>Invalid URL</source>
         <translation>無效的 URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="908"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="929"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>無法連線至在 %2 的 %1：
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="924"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="945"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>嘗試連線至在 %2 的 %1 逾時。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1011"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1032"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>無法開啟瀏覽器，請複製連結到您的瀏覽器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1036"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1041"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1057"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1062"/>
         <source>Waiting for authorization</source>
         <translation>等待授權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1046"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1067"/>
         <source>Starting authorization</source>
         <translation>開始授權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1051"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
         <source>Link copied to clipboard.</source>
         <translation>連結已複製到剪貼簿。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1106"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1136"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1127"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1157"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>伺服器回應 WebDAV 認證請求無效</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1123"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1144"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>對伺服器的已認證請求會被重新導向至「%1」。URL 不良，伺服器組態有誤。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1131"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1152"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>伺服器禁止存取。若要確認您是否具備適當的存取權限，請在瀏覽器中開啟該服務。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1149"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1170"/>
         <source>Account connected.</source>
         <translation>已連結帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1257"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1278"/>
         <source>Will require %1 of storage</source>
         <translation>將會佔用 %1 的儲存空間</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1433"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1454"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 剩餘空間</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1443"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1464"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>本機資料夾沒有足夠的剩餘空間！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1460"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
         <source>Please choose a local sync folder.</source>
         <translation>請選擇本機同步資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1465"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1486"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>請選擇一個空的本地同步資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1530"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1551"/>
         <source>Could not create local folder %1</source>
         <translation>無法建立本機資料夾 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1544"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1565"/>
         <source>Checking remote folder</source>
         <translation>正在檢查遠端資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1590"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1611"/>
         <source>No remote folder specified!</source>
         <translation>未指定遠端資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1599"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1620"/>
         <source>Error: %1</source>
         <translation>錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1604"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1625"/>
         <source>Creating remote folder</source>
         <translation>正在建立遠端資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1623"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1644"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>資料夾建立結果為 HTTP 錯誤碼 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1625"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1646"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>遠端資料夾建立失敗，原因是提供的憑證不正確。請返回並檢查您的憑證。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1648"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>遠端資料夾 %1 建立失敗，錯誤為 &lt;tt&gt;%2&lt;/tt&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1674"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1695"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>建立同步資料夾時，帳號設定失敗。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1686"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1707"/>
         <source>Could not create the sync folder.</source>
         <translation>無法建立同步資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1792"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1813"/>
         <source>Local Sync Folder</source>
         <translation>本機同步資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2067"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2088"/>
         <source>Select a certificate</source>
         <translation>選取憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2069"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2090"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>憑證檔案 (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2077"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2097"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2098"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2118"/>
         <source>Could not access the selected certificate file.</source>
         <translation>無法存取選定的憑證檔。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2113"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>無法載入憑證。可能是密碼錯了？</translation>
     </message>
@@ -4103,31 +4103,31 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>已連結至企業系統。無法變更更新頻道 (%1)。</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="214"/>
+        <location filename="../src/gui/infosettings.cpp" line="218"/>
         <source>stable</source>
         <extracomment>Name of the stable update channel.</extracomment>
         <translation>穩定版</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="219"/>
+        <location filename="../src/gui/infosettings.cpp" line="223"/>
         <source>beta</source>
         <extracomment>Name of the beta update channel.</extracomment>
         <translation>測試版</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="224"/>
+        <location filename="../src/gui/infosettings.cpp" line="228"/>
         <source>daily</source>
         <extracomment>Name of the daily update channel.</extracomment>
         <translation>每日</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="229"/>
+        <location filename="../src/gui/infosettings.cpp" line="233"/>
         <source>enterprise</source>
         <extracomment>Name of the enterprise update channel.</extracomment>
         <translation>企業版</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="264"/>
+        <location filename="../src/gui/infosettings.cpp" line="268"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -4139,7 +4139,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 無法立即降級版本：從測試版變更為穩定版必須等待新的穩定版本才能更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="269"/>
+        <location filename="../src/gui/infosettings.cpp" line="273"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -4149,12 +4149,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 無法立即降級版本：從穩定版變更為企業版必須等待新的企業版本才能更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="276"/>
+        <location filename="../src/gui/infosettings.cpp" line="280"/>
         <source>Changing update channel?</source>
         <translation>變更更新頻道？</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="277"/>
+        <location filename="../src/gui/infosettings.cpp" line="281"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -4164,12 +4164,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="283"/>
+        <location filename="../src/gui/infosettings.cpp" line="287"/>
         <source>Change update channel</source>
         <translation>變更更新頻道</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="284"/>
+        <location filename="../src/gui/infosettings.cpp" line="288"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>

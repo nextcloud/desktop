@@ -573,13 +573,13 @@
 <context>
     <name>ConfigFile</name>
     <message>
-        <location filename="../src/libsync/configfile.cpp" line="744"/>
+        <location filename="../src/libsync/configfile.cpp" line="742"/>
         <source>Managed by your organization</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/configfile.cpp" line="746"/>
+        <location filename="../src/libsync/configfile.cpp" line="744"/>
         <source>Managed by your system administrator</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
         <translation type="unfinished"/>
@@ -1583,201 +1583,201 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="313"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="315"/>
         <source>Will require local storage</source>
         <translation>Потребуется локальное хранилище</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="704"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="725"/>
         <source>Proxy settings are incomplete.</source>
         <translation>Настройки прокси неполные.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="711"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="732"/>
         <source>Server address does not seem to be valid</source>
         <translation>Адрес сервера кажется недействительным</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="732"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="753"/>
         <source>Username must not be empty.</source>
         <translation>Имя пользователя не должно быть пустым.
 
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="738"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1060"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="759"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1081"/>
         <source>Checking account access</source>
         <translation>Проверка доступа к аккаунту</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="816"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="837"/>
         <source>Checking server address</source>
         <translation>Проверка адреса сервера</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="885"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="906"/>
         <source>Preparing browser login</source>
         <translation>Подготовка браузерного входа</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="906"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="927"/>
         <source>Invalid URL</source>
         <translation>Недопустимый URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="908"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="929"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>Не удалось подключиться %1 по адресу %2: 
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="924"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="945"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Тайм-аут при попытке подключения к %1 по адресу %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1011"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1032"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Невозможно открыть браузер. Скопируйте ссылку в свой браузер.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1036"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1041"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1057"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1062"/>
         <source>Waiting for authorization</source>
         <translation>Ожидание авторизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1046"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1067"/>
         <source>Starting authorization</source>
         <translation>Запуск авторизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1051"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
         <source>Link copied to clipboard.</source>
         <translation>Ссылка скопирована в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1106"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1136"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1127"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1157"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>На аутентифицированный запрос WebDAV получен недопустимый ответ</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1123"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1144"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Аутентифицированный запрос к серверу был перенаправлен на &quot;%1&quot;. URL-адрес неверный, сервер неправильно настроен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1131"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1152"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Доступ запрещён сервером. Чтобы убедиться, что у вас есть правильный доступ, откройте сервис в своем браузере.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1149"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1170"/>
         <source>Account connected.</source>
         <translation>Аккаунт подключён.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1257"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1278"/>
         <source>Will require %1 of storage</source>
         <translation>Потребуется %1 хранилища</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1433"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1454"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 свободного места</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1443"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1464"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>В локальной папке недостаточно свободного места!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1460"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
         <source>Please choose a local sync folder.</source>
         <translation>Пожалуйста, выберите локальную папку синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1465"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1486"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Пожалуйста, выберите пустую папку локальной синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1530"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1551"/>
         <source>Could not create local folder %1</source>
         <translation>Не удалось создать локальную папку %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1544"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1565"/>
         <source>Checking remote folder</source>
         <translation>Проверка удалённой папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1590"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1611"/>
         <source>No remote folder specified!</source>
         <translation>Удалённая папка не указана!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1599"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1620"/>
         <source>Error: %1</source>
         <translation>Ошибка: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1604"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1625"/>
         <source>Creating remote folder</source>
         <translation>Создание удалённой папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1623"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1644"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Создание папки привело к появлению кода ошибки HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1625"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1646"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>Не удалось создать удалённую папку, поскольку предоставленные учётные данные неверны. Пожалуйста, вернитесь и проверьте свои учётные данные.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1648"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Создание удалённой папки %1 завершилось с ошибкой &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1674"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1695"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Не удалось настроить учётную запись при создании папки синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1686"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1707"/>
         <source>Could not create the sync folder.</source>
         <translation>Не удалось создать папку синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1792"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1813"/>
         <source>Local Sync Folder</source>
         <translation>Локальная папка синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2067"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2088"/>
         <source>Select a certificate</source>
         <translation>Выберите сертификат</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2069"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2090"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Файлы сертификатов (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2077"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2097"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2098"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2118"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Не удалось получить доступ к выбранному файлу сертификата.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2113"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Не удалось загрузить сертификат. Может быть, неправильный пароль?</translation>
     </message>
@@ -4101,31 +4101,31 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Подключен к корпоративной системе. Канал обновления (%1) изменить нельзя.</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="214"/>
+        <location filename="../src/gui/infosettings.cpp" line="218"/>
         <source>stable</source>
         <extracomment>Name of the stable update channel.</extracomment>
         <translation>стабильный</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="219"/>
+        <location filename="../src/gui/infosettings.cpp" line="223"/>
         <source>beta</source>
         <extracomment>Name of the beta update channel.</extracomment>
         <translation>бета</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="224"/>
+        <location filename="../src/gui/infosettings.cpp" line="228"/>
         <source>daily</source>
         <extracomment>Name of the daily update channel.</extracomment>
         <translation>ежедневный</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="229"/>
+        <location filename="../src/gui/infosettings.cpp" line="233"/>
         <source>enterprise</source>
         <extracomment>Name of the enterprise update channel.</extracomment>
         <translation>энтерпрайз</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="264"/>
+        <location filename="../src/gui/infosettings.cpp" line="268"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -4137,7 +4137,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Понизить версию сразу невозможно: переход с бета-версии на стабильную означает ожидание новой стабильной версии.</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="269"/>
+        <location filename="../src/gui/infosettings.cpp" line="273"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -4147,12 +4147,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Понизить версию сразу невозможно: переход со стабильной версии на корпоративную означает ожидание новой корпоративной версии.</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="276"/>
+        <location filename="../src/gui/infosettings.cpp" line="280"/>
         <source>Changing update channel?</source>
         <translation>Изменить канал обновления?</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="277"/>
+        <location filename="../src/gui/infosettings.cpp" line="281"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -4161,12 +4161,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - стабильный: содержит проверенные версии, считающиеся надежными</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="283"/>
+        <location filename="../src/gui/infosettings.cpp" line="287"/>
         <source>Change update channel</source>
         <translation>Изменить канал обновления</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="284"/>
+        <location filename="../src/gui/infosettings.cpp" line="288"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
