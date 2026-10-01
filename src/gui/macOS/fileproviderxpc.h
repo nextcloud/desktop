@@ -51,6 +51,12 @@ private:
 
     [[nodiscard]] std::optional<bool> fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const;
 
+    /**
+     * @brief Ask the extension of a domain to delete its stored password, waiting at most one second.
+     * @return The reply, or std::nullopt when the domain has no connection or did not reply in time.
+     */
+    [[nodiscard]] std::optional<bool> deleteFileProviderDomainPassword(const QString &fileProviderDomainIdentifier) const;
+
     void disconnectFromFileProviderDomains();
     void disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier);
 

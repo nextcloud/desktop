@@ -139,6 +139,20 @@ final class KeychainLoginKeychainTests: Sendable {
         #expect(LoginKeychainFixture.password(service: decoyService, account: account) == "decoy-secret")
     }
 
+    @Test func deletePasswordRequestRepliesAfterDeletion() throws {
+        try plantDecoy()
+        let domain = NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier(service), displayName: LoginKeychainFixture.label)
+        let ext = FileProviderExtension(domain: domain)
+        #expect(ext.keychain.savePassword("x", for: account))
+        var reply: Bool?
+
+        ext.deletePassword { reply = $0 }
+
+        #expect(reply == true)
+        #expect(LoginKeychainFixture.count(service: service) == 0)
+        #expect(LoginKeychainFixture.password(service: decoyService, account: account) == "decoy-secret")
+    }
+
     @Test func emptyPasswordIsNotSaved() {
         let keychain = makeKeychain(service: service)
 

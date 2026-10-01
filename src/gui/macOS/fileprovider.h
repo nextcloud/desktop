@@ -47,6 +47,15 @@ public:
 
     [[nodiscard]] std::optional<bool> fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier);
 
+    /**
+     * @brief Ask the extension of a domain to delete the password it stored in the keychain.
+     *
+     * From another thread, this blocks until the thread of this object has run the request.
+     *
+     * @return The reply, or std::nullopt when XPC is not configured, the domain has no connection or no reply arrived in time.
+     */
+    [[nodiscard]] std::optional<bool> deleteFileProviderDomainPassword(const QString &fileProviderDomainIdentifier);
+
 private:
     std::unique_ptr<FileProviderDomainManager> _domainManager;
     std::unique_ptr<FileProviderXPC> _xpc;
