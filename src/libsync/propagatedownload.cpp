@@ -673,17 +673,19 @@ void PropagateDownloadFile::startDownload()
     _tmpFile.setFileName(propagator()->fullLocalPath(tmpFileName));
     makeParentFolderModifiable(_tmpFile.fileName());
 
+    // Can't open(Append) read-only files, make sure to make
+    // file writable if it exists.
+    // Older clients also made the temporary file read-only before renaming it, which
+    // fails on Windows: clear that before reusing a complete temporary file too.
+    if (_tmpFile.exists()) {
+        FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
+    }
+
     _resumeStart = _tmpFile.size();
     if (_resumeStart > 0 && _resumeStart == _item->_size) {
         qCInfo(lcPropagateDownload) << "File is already complete, no need to download";
         downloadFinished();
         return;
-    }
-
-    // Can't open(Append) read-only files, make sure to make
-    // file writable if it exists.
-    if (_tmpFile.exists()) {
-        FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
     }
 
     if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
