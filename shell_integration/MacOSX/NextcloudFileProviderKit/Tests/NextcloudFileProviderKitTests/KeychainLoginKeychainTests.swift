@@ -22,6 +22,7 @@ import Testing
 )
 final class KeychainLoginKeychainTests: Sendable {
     let account = "nextcloud-test-\(UUID().uuidString)"
+    let renamedAccount = "nextcloud-test-\(UUID().uuidString)"
     let service = UUID().uuidString
     let otherService = UUID().uuidString
     let decoyService = "nextcloud-test-decoy-\(UUID().uuidString)"
@@ -36,7 +37,9 @@ final class KeychainLoginKeychainTests: Sendable {
         }
 
         // Also catches items stored without a service, as the code before the fix did.
-        LoginKeychainFixture.removeAll(account: account)
+        for account in [account, renamedAccount] {
+            LoginKeychainFixture.removeAll(account: account)
+        }
     }
 
     private func makeKeychain(service: String, label: String = LoginKeychainFixture.label) -> Keychain {
@@ -94,6 +97,46 @@ final class KeychainLoginKeychainTests: Sendable {
         #expect(makeKeychain(service: service, label: "New").savePassword("two", for: account))
         #expect(LoginKeychainFixture.label(service: service, account: account) == "New")
         #expect(LoginKeychainFixture.count(service: service) == 1)
+    }
+
+    @Test func deletingRemovesOnlyItemsOfTheOwnDomain() throws {
+        try plantDecoy()
+        let keychain = makeKeychain(service: service)
+        let otherKeychain = makeKeychain(service: otherService)
+        #expect(keychain.savePassword("a", for: account))
+        #expect(otherKeychain.savePassword("b", for: account))
+
+        #expect(keychain.deletePassword())
+        #expect(LoginKeychainFixture.count(service: service) == 0)
+        #expect(otherKeychain.getPassword(for: account) == "b")
+        #expect(LoginKeychainFixture.password(service: decoyService, account: account) == "decoy-secret")
+    }
+
+    @Test func deletingRemovesItemsOfAnEarlierUserName() {
+        let keychain = makeKeychain(service: service)
+        #expect(keychain.savePassword("old", for: renamedAccount))
+        #expect(keychain.savePassword("new", for: account))
+
+        #expect(keychain.deletePassword())
+        #expect(LoginKeychainFixture.count(service: service) == 0)
+    }
+
+    @Test func deletingWithNothingStoredSucceeds() {
+        #expect(makeKeychain(service: service).deletePassword())
+    }
+
+    @Test func removingAccountConfigDeletesTheDomainPassword() throws {
+        try plantDecoy()
+        let domain = NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier(service), displayName: LoginKeychainFixture.label)
+        let ext = FileProviderExtension(domain: domain)
+        ext.ncAccount = Account(user: account, id: account, serverUrl: "https://mock.nc.com", password: "x")
+        #expect(ext.keychain.savePassword("x", for: account))
+
+        ext.removeAccountConfig()
+
+        #expect(LoginKeychainFixture.count(service: service) == 0)
+        #expect(ext.ncAccount == nil)
+        #expect(LoginKeychainFixture.password(service: decoyService, account: account) == "decoy-secret")
     }
 
     @Test func emptyPasswordIsNotSaved() {
