@@ -717,8 +717,10 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
         userModel->data(userModelIndex, UserModel::IsConnectedRole).toBool(),
         userModel->data(userModelIndex, UserModel::CanLogoutRole).toBool(),
     };
-    if (fetchActivityPreview && policy.fetchActivityPreview()) {
-        userModel->fetchActivityPreview(userId);
+    if (fetchActivityPreview) {
+        if (policy.fetchActivityPreview()) {
+            userModel->fetchActivityPreview(userId);
+        }
         return;
     }
 
