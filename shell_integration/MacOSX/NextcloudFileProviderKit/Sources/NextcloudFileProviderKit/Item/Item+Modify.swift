@@ -52,12 +52,18 @@ public extension Item {
         }
 
         logger.info("Deleted the remote item for an excluded destination.", [.item: itemIdentifier, .url: remotePath])
-        discardChunkUploads(
-            forItemIdentifiers: chunkUploadOwnerIdentifiersToDiscard,
-            usingRemoteInterface: remoteInterface,
-            dbManager: dbManager,
-            logger: logger
-        )
+        do {
+            let chunksBaseDirectory = try FileProviderDomainStorage.temporaryDirectory(for: domain)
+            discardChunkUploads(
+                forItemIdentifiers: chunkUploadOwnerIdentifiersToDiscard,
+                chunksBaseDirectory: chunksBaseDirectory,
+                usingRemoteInterface: remoteInterface,
+                dbManager: dbManager,
+                logger: logger
+            )
+        } catch {
+            logger.error("Could not acquire File Provider temporary directory for chunk cleanup.", [.error: error, .item: itemIdentifier])
+        }
         return .success
     }
 
@@ -353,6 +359,7 @@ public extension Item {
             forItemWithIdentifier: ocId,
             dbManager: dbManager,
             progress: progress,
+            domain: domain,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
             options: uploadOptions,

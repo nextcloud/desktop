@@ -198,10 +198,11 @@ public extension Item {
     func fetchContents(
         domain: NSFileProviderDomain? = nil,
         progress: Progress = .init(),
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        domainTemporaryDirectoryProvider: (@Sendable (NSFileProviderDomain) throws -> URL)? = nil
     ) async -> (URL?, Item?, Error?) {
         await NetworkOperationCancellation(log: logger.log).run(progress: progress) { @Sendable cancellation in
-            await self.performFetchContents(domain: domain, progress: progress, dbManager: dbManager, cancellation: cancellation)
+            await self.performFetchContents(domain: domain, progress: progress, dbManager: dbManager, cancellation: cancellation, domainTemporaryDirectoryProvider: domainTemporaryDirectoryProvider)
         }
     }
 
@@ -209,7 +210,8 @@ public extension Item {
         domain: NSFileProviderDomain?,
         progress: Progress,
         dbManager: FilesDatabaseManager,
-        cancellation: NetworkOperationCancellation
+        cancellation: NetworkOperationCancellation,
+        domainTemporaryDirectoryProvider: (@Sendable (NSFileProviderDomain) throws -> URL)? = nil
     ) async -> (URL?, Item?, Error?) {
         guard !progress.isCancelled, !Task.isCancelled else {
             return (nil, nil, CocoaError(.userCancelled))
@@ -218,7 +220,10 @@ public extension Item {
         guard metadata.classFile != "lock", !isLockFileName(filename) else {
             logger.info("System requested fetch of lock file, will just provide local contents URL if possible.", [.name: filename])
 
-            if let domain, let localUrl = await localUrlForContents(domain: domain) {
+            if let domain, let localUrl = await localUrlForContents(
+                domain: domain,
+                domainTemporaryDirectoryProvider: domainTemporaryDirectoryProvider
+            ) {
                 return (localUrl, self, nil)
             } else {
                 logger.error("Could not get local content URL for lock file.")
@@ -226,8 +231,38 @@ public extension Item {
             }
         }
 
+        let domainTemporaryDirectory: (() throws -> URL)? = if let domain {
+            if let domainTemporaryDirectoryProvider {
+                { try domainTemporaryDirectoryProvider(domain) }
+            } else if let manager = NSFileProviderManager(for: domain) {
+                { try manager.temporaryDirectoryURL() }
+            } else {
+                nil
+            }
+        } else {
+            nil
+        }
+
+        let localDirectory: URL
+        do {
+            let isExternalDomain: Bool = if #available(macOS 15.0, *), let domain {
+                domain.volumeUUID != nil
+            } else {
+                false
+            }
+
+            localDirectory = try FileProviderDomainStorage.temporaryDirectory(
+                isExternalDomain: isExternalDomain,
+                domainTemporaryDirectory: domainTemporaryDirectory,
+                fallbackDirectory: { FileManager.default.temporaryDirectory }
+            )
+        } catch {
+            logger.error("Could not acquire File Provider temporary directory for item.", [.item: itemIdentifier, .error: error])
+            return (nil, nil, error)
+        }
+
         // Give each fetch its own destination so cleanup cannot remove another fetch's contents.
-        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let localPath = localDirectory.appendingPathComponent(UUID().uuidString)
         let operation = DownloadOperation(ocId: ocId, cancellation: cancellation, log: logger.log)
         guard var updatedMetadata = dbManager.beginDownload(operation) else {
             logger.error("Could not acquire updated metadata, unable to update item status to downloading.", [.item: itemIdentifier])

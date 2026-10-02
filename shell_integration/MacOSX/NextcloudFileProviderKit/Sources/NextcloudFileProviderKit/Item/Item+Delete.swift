@@ -28,12 +28,18 @@ public extension Item {
         var deletionCompleted = false
         defer {
             if deletionCompleted {
-                discardChunkUploads(
-                    forItemIdentifiers: chunkUploadOwnerIdentifiersToDiscard,
-                    usingRemoteInterface: remoteInterface,
-                    dbManager: dbManager,
-                    logger: logger
-                )
+                do {
+                    let chunksBaseDirectory = try FileProviderDomainStorage.temporaryDirectory(for: domain)
+                    discardChunkUploads(
+                        forItemIdentifiers: chunkUploadOwnerIdentifiersToDiscard,
+                        chunksBaseDirectory: chunksBaseDirectory,
+                        usingRemoteInterface: remoteInterface,
+                        dbManager: dbManager,
+                        logger: logger
+                    )
+                } catch {
+                    logger.error("Could not acquire File Provider temporary directory for chunk cleanup.", [.error: error, .item: itemIdentifier])
+                }
             }
         }
 

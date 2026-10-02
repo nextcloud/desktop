@@ -2,6 +2,7 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 import Alamofire
+@preconcurrency import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
@@ -53,6 +54,7 @@ func upload(
     forItemWithIdentifier itemIdentifier: String,
     dbManager: FilesDatabaseManager,
     progress: Progress = Progress(),
+    domain: NSFileProviderDomain? = nil,
     creationDate: Date? = nil,
     modificationDate: Date? = nil,
     options: NKRequestOptions = .init(queue: .global(qos: .utility)),
@@ -78,6 +80,7 @@ func upload(
             forItemWithIdentifier: itemIdentifier,
             dbManager: dbManager,
             cancellation: cancellation,
+            domain: domain,
             creationDate: creationDate,
             modificationDate: modificationDate,
             options: options,
@@ -105,6 +108,7 @@ private func performUpload(
     forItemWithIdentifier itemIdentifier: String,
     dbManager: FilesDatabaseManager,
     cancellation: NetworkOperationCancellation,
+    domain: NSFileProviderDomain?,
     creationDate: Date?,
     modificationDate: Date?,
     options: NKRequestOptions,
@@ -200,6 +204,14 @@ private func performUpload(
         return (ocId, etag, date as? Date, size, remoteError)
     }
 
+    let chunksBaseDirectory: URL
+    do {
+        chunksBaseDirectory = try FileProviderDomainStorage.temporaryDirectory(for: domain)
+    } catch {
+        uploadLogger.error("Could not acquire File Provider temporary directory for chunked upload.", [.error: error, .item: itemIdentifier])
+        return (nil, nil, nil, nil, .urlError)
+    }
+
     let chunkUploadId = chunkUploadIdentifier(
         forItemWithIdentifier: itemIdentifier, fileSize: fileSize, modificationDate: modificationDate
     )
@@ -220,6 +232,7 @@ private func performUpload(
             removeLocalChunkUpload(
                 uploadIdentifier: chunkUploadId,
                 chunksDirectory: completedChunksDirectory,
+                chunksBaseDirectory: chunksBaseDirectory,
                 usingRemoteInterface: remoteInterface,
                 dbManager: dbManager,
                 logger: uploadLogger
@@ -234,6 +247,7 @@ private func performUpload(
     discardChunkUploads(
         forItemIdentifiers: [itemIdentifier],
         excluding: chunkUploadId,
+        chunksBaseDirectory: chunksBaseDirectory,
         usingRemoteInterface: remoteInterface,
         dbManager: dbManager,
         logger: uploadLogger
@@ -258,6 +272,7 @@ private func performUpload(
         remoteChunkStoreFolderName: chunkUploadId,
         chunkSize: chunkSize,
         remainingChunks: remainingChunks,
+        chunksBaseDirectory: chunksBaseDirectory,
         creationDate: creationDate,
         modificationDate: modificationDate,
         account: account,
