@@ -581,6 +581,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var downloadTask: URLSessionTask?
     public var downloadError: NKError?
     public private(set) var downloadOperationCount = 0
+    public var thumbnailHandler: (@Sendable (URL, @Sendable @escaping (URLSessionTask) -> Void) async -> Void)?
+    public var thumbnailCompletionHandler: (@Sendable () -> Void)?
+    public var thumbnailData: Data?
+    public var thumbnailError: NKError?
+
     /// Overrides the directory where chunked uploads create their local chunk files.
     public var chunkUploadDirectory: URL?
 
@@ -1427,13 +1432,19 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     }
 
     public func downloadThumbnail(
-        url _: URL,
+        url: URL,
         account: Account,
         options _: NKRequestOptions,
-        taskHandler _: @escaping (URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError) {
-        // TODO: Implement downloadThumbnail
-        (account.ncKitAccount, nil, .success)
+        if let thumbnailHandler {
+            await thumbnailHandler(url, taskHandler)
+        }
+        if Task.isCancelled {
+            return (account.ncKitAccount, nil, NKError(errorCode: NSURLErrorCancelled, errorDescription: "Thumbnail cancelled"))
+        }
+        thumbnailCompletionHandler?()
+        return (account.ncKitAccount, thumbnailData, thumbnailError ?? .success)
     }
 
     public func fetchCapabilities(
