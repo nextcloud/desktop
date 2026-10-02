@@ -24,6 +24,8 @@ Item {
     required property url existingPreviewUrl
     required property url conflictPreviewUrl
     required property var model
+    required property string existingFilePath
+    required property string conflictFilePath
 
     EnforcedPlainTextLabel {
         id: existingFileNameLabel
@@ -37,16 +39,20 @@ Item {
         font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
     }
 
-    RowLayout {
+    GridLayout {
         anchors.top: existingFileNameLabel.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottomMargin: 8
+        
+        columns: 2
+        columnSpacing: Style.standardSpacing
 
         ConflictItemFileInfo {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.preferredWidth: 1
 
             itemSelected: root.conflictSelected
             itemPreviewUrl: root.conflictPreviewUrl
@@ -62,6 +68,7 @@ Item {
         ConflictItemFileInfo {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.preferredWidth: 1
 
             itemSelected: root.existingSelected
             itemPreviewUrl: root.existingPreviewUrl
@@ -71,6 +78,49 @@ Item {
 
             onSelectedChanged: function() {
                 model.existingSelected = itemSelected
+            }
+        }
+        
+        EnforcedPlainTextLabel {
+            text: qsTr("Open in File Manager")
+            Layout.fillWidth: true
+            Layout.columnSpan: 2
+            Layout.preferredWidth: 1
+            elide: Text.ElideRight
+            
+            Layout.leftMargin: 28
+                        
+            color: Style.ncBlue
+            
+            font.underline: true
+
+            MouseArea {
+                id: linkMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                
+                onClicked: {
+                    try {
+                        var path = root.conflictFilePath;
+                        
+                        if (!path) {
+                            console.warn("openContainingFolder: Path is empty or not available");
+                            return;
+                        }
+
+                        path = path.replace(/\\/g, "/");
+                        
+                        var lastSlash = path.lastIndexOf("/");
+                        var dir = lastSlash > 0 ? path.substring(0, lastSlash) : path;
+
+                        var url = "file://" + dir;
+                        Qt.openUrlExternally(url);
+                        
+                    } catch (e) {
+                        console.warn("openContainingFolder Exception:", e);
+                    }
+                }
             }
         }
     }
