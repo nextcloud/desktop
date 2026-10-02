@@ -648,6 +648,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// When set, every lock or unlock call throws this error without changing the mock item.
     public var lockUnlockError: NKError?
 
+    public var enumerateHandler: (@Sendable () async -> Void)?
+
     /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
@@ -1247,6 +1249,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
         // Call the enumerate call handler if it exists
         enumerateCallHandler?(remotePath, depth, showHiddenFiles, includeHiddenFiles, requestBody, account, options, taskHandler)
+        if let enumerateHandler {
+            await enumerateHandler()
+        }
 
         // Test hook: inject a read failure for a targeted path (see `enumerateErrorBySuffix`).
         if let injected = enumerateErrorBySuffix.first(where: { remotePath.hasSuffix($0.key) })?.value {
