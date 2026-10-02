@@ -572,6 +572,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Limits completion callbacks to simulate an interrupted chunk upload.
     public var chunkUploadCompletedChunkCount: Int?
 
+    public var chunkPreparationHandler: (@Sendable () async -> Void)?
+    public var uploadHandler: (@Sendable () async -> Void)?
+
     /// Overrides the directory where chunked uploads create their local chunk files.
     public var chunkUploadDirectory: URL?
 
@@ -818,6 +821,13 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         lastUploadIfMatchHeader = options.customHeader?["If-Match"]
         lastUploadIfHeader = options.customHeader?["If"]
 
+        if let uploadHandler {
+            await uploadHandler()
+            if Task.isCancelled {
+                return (account.ncKitAccount, nil, nil, nil, 0, nil, NKError(error: URLError(.cancelled)))
+            }
+        }
+
         if let uploadError {
             return (account.ncKitAccount, nil, nil, nil, 0, nil, uploadError)
         }
@@ -919,6 +929,13 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         guard let remoteUrl = URL(string: remotePath) else {
             print("Invalid remote path!")
             return ("", nil, nil, .urlError)
+        }
+
+        if let chunkPreparationHandler {
+            await chunkPreparationHandler()
+            if Task.isCancelled {
+                return (account.ncKitAccount, nil, nil, NKError(error: URLError(.cancelled)))
+            }
         }
 
         // Create the local chunk directory used by the production adapter and populate it below.
