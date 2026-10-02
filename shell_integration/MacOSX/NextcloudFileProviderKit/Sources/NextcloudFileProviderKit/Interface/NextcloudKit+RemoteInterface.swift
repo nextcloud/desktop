@@ -112,6 +112,7 @@ extension NextcloudKit: RemoteInterface {
         remoteChunkStoreFolderName: String = UUID().uuidString,
         chunkSize: Int,
         remainingChunks: [RemoteFileChunk],
+        chunksBaseDirectory: URL? = nil,
         creationDate: Date? = nil,
         modificationDate: Date? = nil,
         account: Account,
@@ -133,8 +134,8 @@ extension NextcloudKit: RemoteInterface {
         let localUrl = URL(fileURLWithPath: localPath)
 
         let fm = FileManager.default
-        let chunksOutputDirectoryUrl =
-            fm.temporaryDirectory.appendingPathComponent(remoteChunkStoreFolderName)
+        let chunksOutputDirectoryUrl = (chunksBaseDirectory ?? fm.temporaryDirectory)
+            .appendingPathComponent(remoteChunkStoreFolderName, isDirectory: true)
         do {
             try fm.createDirectory(at: chunksOutputDirectoryUrl, withIntermediateDirectories: true)
         } catch {
@@ -210,8 +211,8 @@ extension NextcloudKit: RemoteInterface {
         }
     }
 
-    public func removeLocalChunks(remoteChunkStoreFolderName: String) throws {
-        let chunksDirectory = FileManager.default.temporaryDirectory
+    public func removeLocalChunks(remoteChunkStoreFolderName: String, chunksBaseDirectory: URL? = nil) throws {
+        let chunksDirectory = (chunksBaseDirectory ?? FileManager.default.temporaryDirectory)
             .appendingPathComponent(remoteChunkStoreFolderName, isDirectory: true)
 
         do {

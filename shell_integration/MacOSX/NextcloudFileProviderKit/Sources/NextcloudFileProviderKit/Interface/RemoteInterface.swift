@@ -49,6 +49,7 @@ public protocol RemoteInterface: Sendable {
         remoteChunkStoreFolderName: String,
         chunkSize: Int,
         remainingChunks: [RemoteFileChunk],
+        chunksBaseDirectory: URL?,
         creationDate: Date?,
         modificationDate: Date?,
         account: Account,
@@ -68,7 +69,7 @@ public protocol RemoteInterface: Sendable {
         nkError: NKError
     )
 
-    func removeLocalChunks(remoteChunkStoreFolderName: String) throws
+    func removeLocalChunks(remoteChunkStoreFolderName: String, chunksBaseDirectory: URL?) throws
 
     func move(
         remotePathSource: String,

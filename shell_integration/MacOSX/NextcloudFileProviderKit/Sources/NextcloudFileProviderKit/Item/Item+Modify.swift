@@ -239,6 +239,7 @@ public extension Item {
             inChunksSized: forcedChunkSize,
             forItemWithIdentifier: ocId,
             dbManager: dbManager,
+            domain: domain,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
             options: uploadOptions,
