@@ -265,7 +265,14 @@ import OSLog
             return (nil, nil, NSFileProviderError(.cannotSynchronize))
         }
 
-        let item = await Item.storedItem(identifier: itemIdentifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log)
+        let item = await Item.storedItem(
+            identifier: itemIdentifier,
+            account: ncAccount,
+            remoteInterface: ncKit,
+            dbManager: dbManager,
+            taskHandler: { cancellation.register(task: $0) },
+            log: log
+        )
         guard !progress.isCancelled, !Task.isCancelled else {
             removeSyncAction(actionId)
             return (nil, nil, CocoaError(.userCancelled))

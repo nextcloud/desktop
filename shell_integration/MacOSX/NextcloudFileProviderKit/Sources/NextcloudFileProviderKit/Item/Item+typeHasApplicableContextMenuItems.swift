@@ -1,19 +1,27 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+import Foundation
+
 extension Item {
     ///
-    /// Convenience wrapper for ``getContextMenuItemTypeFilters(account:remoteInterface:)`` and ``typeHasApplicableContextMenuItems(filters:candidate:)``.
+    /// Convenience wrapper for ``getContextMenuItemTypeFilters(account:remoteInterface:taskHandler:)`` and ``typeHasApplicableContextMenuItems(filters:candidate:)``.
     ///
     /// Depending on the call site, it might be more efficient to call both methods individually to avoid redundant capability checks or circumvent boundaries of synchronous and asynchronous contexts.
     ///
     /// - Parameters:
     ///     - candidate: The MIME type of the file provider item to check.
+    ///     - taskHandler: Receives the network task when capabilities must be fetched.
     ///
     /// - Returns: `true`, if the candidate MIME type is covered by the list of filters provided, otherwise `false`.
     ///
-    static func typeHasApplicableContextMenuItems(account: Account, remoteInterface: RemoteInterface, candidate: String) async -> Bool {
-        let filters = await getContextMenuItemTypeFilters(account: account, remoteInterface: remoteInterface)
+    static func typeHasApplicableContextMenuItems(
+        account: Account,
+        remoteInterface: RemoteInterface,
+        candidate: String,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
+    ) async -> Bool {
+        let filters = await getContextMenuItemTypeFilters(account: account, remoteInterface: remoteInterface, taskHandler: taskHandler)
         return typeHasApplicableContextMenuItems(filters: filters, candidate: candidate)
     }
 
