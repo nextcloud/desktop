@@ -342,7 +342,7 @@ public extension Item {
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             displayFileActions: displayFileActions,
-            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: account, taskHandler: { cancellation.register(task: $0) }),
             log: logger.log
         )
 
