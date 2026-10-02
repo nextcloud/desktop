@@ -37,6 +37,30 @@ public:
      */
     QString addDomainForAccount(const OCC::AccountState * const accountState);
 
+    /** @brief Whether this macOS version provides the File Provider API for storing domains on external volumes. */
+    [[nodiscard]] bool externalVolumeStorageAvailable() const;
+
+    /**
+     * @brief Validate a mounted volume for File Provider storage and return its UUID.
+     * @param path Path to the root of the mounted volume.
+     * @param errorMessage Optional destination for a user-visible validation error.
+     * @param displayName Optional destination for the mounted volume's display name.
+     * @return The volume UUID, or an empty string when the volume cannot be used.
+     */
+    [[nodiscard]] QString externalVolumeUuidForPath(const QString &path, QString *errorMessage = nullptr, QString *displayName = nullptr) const;
+
+    /** @brief Return the display name of a currently mounted volume identified by UUID, or an empty string when it is unavailable. */
+    [[nodiscard]] QString externalVolumeDisplayNameForUuid(const QString &volumeUuid) const;
+
+    /** @brief Publish the external-volume accounts this Mac is configured to service. */
+    void updateExternalDomainConnectionEligibility();
+
+    /**
+     * @brief Restore account-to-domain identifiers for registered external-volume domains whose identifiers changed.
+     * @return true when a mapping was restored or a disconnected owned domain was reconnected.
+     */
+    [[nodiscard]] bool reconcileExternalDomainMappings();
+
     /**
      * @brief Remove all file provider domains managed by this application.
      * @return Whether discovery and every removal completed successfully.
@@ -107,6 +131,9 @@ public:
      * @param domainIdentifier The identifier of the affected file provider domain.
      */
     void clearInsufficientQuotaErrorAndEnumerate(const QString &domainIdentifier) const;
+
+Q_SIGNALS:
+    void domainsChanged();
 
 public Q_SLOTS:
     /**
