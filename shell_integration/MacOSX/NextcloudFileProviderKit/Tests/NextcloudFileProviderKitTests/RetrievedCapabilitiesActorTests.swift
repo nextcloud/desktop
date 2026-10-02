@@ -12,6 +12,83 @@ struct RetrievedCapabilitiesActorTests {
     let account1 = "acc1"
     let account2 = "acc2"
 
+    @Test func alreadyCancelledWaiterDoesNotEnqueue() async {
+        let actor = RetrievedCapabilitiesActor()
+        await actor.setOngoingFetch(forAccount: account1, ongoing: true)
+        let finished = XCTestExpectation(description: "Already cancelled waiter finishes")
+        let task = Task {
+            withUnsafeCurrentTask { $0?.cancel() }
+            await actor.awaitFetchCompletion(forAccount: account1, onWaiting: {
+                Issue.record("Already cancelled waiter must not enqueue")
+            })
+            finished.fulfill()
+        }
+
+        let result = await XCTWaiter.fulfillment(of: [finished], timeout: 5)
+        #expect(result == .completed)
+        #expect(await actor.ongoingFetches.contains(account1))
+        await actor.setOngoingFetch(forAccount: account1, ongoing: false)
+        await task.value
+    }
+
+    @Test(arguments: [false, true])
+    func cancellationAndFetchCompletionResumeTheWaiterOnce(completeFirst: Bool) async {
+        let actor = RetrievedCapabilitiesActor()
+        await actor.setOngoingFetch(forAccount: account1, ongoing: true)
+        let (waiting, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
+        let finished = XCTestExpectation(description: "Waiter finishes once")
+        finished.assertForOverFulfill = true
+        let task = Task {
+            await actor.awaitFetchCompletion(forAccount: account1, onWaiting: { continuation.yield(()) })
+            finished.fulfill()
+        }
+        var iterator = waiting.makeAsyncIterator()
+        _ = await iterator.next()
+        if completeFirst {
+            await actor.setOngoingFetch(forAccount: account1, ongoing: false)
+            task.cancel()
+        } else {
+            task.cancel()
+            await actor.setOngoingFetch(forAccount: account1, ongoing: false)
+        }
+        let result = await XCTWaiter.fulfillment(of: [finished], timeout: 5)
+        #expect(result == .completed)
+        await task.value
+        #expect(await actor.ongoingFetches.isEmpty)
+    }
+
+    @Test func cancellingOneWaiterLeavesTheFetchAndOtherWaitersRunning() async {
+        let actor = RetrievedCapabilitiesActor()
+        await actor.setOngoingFetch(forAccount: account1, ongoing: true)
+        let (waiting, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
+        let cancelledWaiterFinished = XCTestExpectation(description: "Cancelled waiter finishes")
+        let otherWaiterFinished = Expectation("Other waiter finishes")
+        let first = Task {
+            await actor.awaitFetchCompletion(forAccount: account1, onWaiting: { continuation.yield(()) })
+            cancelledWaiterFinished.fulfill()
+        }
+        let second = Task {
+            await actor.awaitFetchCompletion(forAccount: account1, onWaiting: { continuation.yield(()) })
+            await otherWaiterFinished.fulfill()
+        }
+        var iterator = waiting.makeAsyncIterator()
+        _ = await iterator.next()
+        _ = await iterator.next()
+        first.cancel()
+
+        let result = await XCTWaiter.fulfillment(of: [cancelledWaiterFinished], timeout: 5)
+        #expect(result == .completed)
+        #expect(await actor.ongoingFetches.contains(account1))
+        #expect(await otherWaiterFinished.isFulfilled == false)
+
+        await actor.setOngoingFetch(forAccount: account1, ongoing: false)
+        await first.value
+        await second.value
+        #expect(await otherWaiterFinished.isFulfilled)
+    }
+
     @Test func setCapabilitiesCompletes() async {
         let actor = RetrievedCapabilitiesActor() // New instance for the test
         let capsData = mockCapabilities.data(using: .utf8)!
