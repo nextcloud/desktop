@@ -55,6 +55,7 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         remoteChunkStoreFolderName _: String,
         chunkSize _: Int,
         remainingChunks _: [RemoteFileChunk],
+        chunksBaseDirectory _: URL? = nil,
         creationDate _: Date?,
         modificationDate _: Date?,
         account _: Account,
@@ -76,7 +77,7 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         ("", nil, nil, .invalidResponseError)
     }
 
-    public func removeLocalChunks(remoteChunkStoreFolderName _: String) throws {}
+    public func removeLocalChunks(remoteChunkStoreFolderName _: String, chunksBaseDirectory _: URL?) throws {}
 
     public func move(
         remotePathSource _: String,

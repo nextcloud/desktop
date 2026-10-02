@@ -255,6 +255,42 @@ final class MockRemoteInterfaceTests: XCTestCase {
         )
     }
 
+    func testChunkedUploadUsesProvidedBaseDirectory() async throws {
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+
+        let baseDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("chunk-base-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: baseDirectory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: baseDirectory) }
+
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account,
+            rootItem: MockRemoteItem.rootItem(account: Self.account)
+        )
+        let uploadId = UUID().uuidString
+        let result = await remoteInterface.chunkedUpload(
+            localPath: fileUrl.path,
+            remotePath: Self.account.davFilesUrl + "/file.txt",
+            remoteChunkStoreFolderName: uploadId,
+            chunkSize: 3,
+            remainingChunks: [],
+            chunksBaseDirectory: baseDirectory,
+            creationDate: .init(),
+            modificationDate: .init(),
+            account: Self.account,
+            options: .init(),
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.nkError, .success)
+        XCTAssertEqual(
+            result.chunksDirectory,
+            baseDirectory.appendingPathComponent(uploadId, isDirectory: true)
+        )
+    }
+
     func testResumedChunkedUpload() async throws {
         let fileUrl =
             FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
