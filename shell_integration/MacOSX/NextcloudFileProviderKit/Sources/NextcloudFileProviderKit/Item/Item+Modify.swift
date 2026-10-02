@@ -240,11 +240,11 @@ public extension Item {
             inChunksSized: forcedChunkSize,
             forItemWithIdentifier: ocId,
             dbManager: dbManager,
+            progress: progress,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
             options: uploadOptions,
             log: logger.log,
-            requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
                 if let domain {
                     NSFileProviderManager(for: domain)?.register(
