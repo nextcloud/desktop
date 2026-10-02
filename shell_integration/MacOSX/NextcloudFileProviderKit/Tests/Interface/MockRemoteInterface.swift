@@ -898,6 +898,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         remoteChunkStoreFolderName: String,
         chunkSize: Int,
         remainingChunks: [RemoteFileChunk],
+        chunksBaseDirectory: URL? = nil,
         creationDate: Date?,
         modificationDate: Date?,
         account: Account,
@@ -923,7 +924,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
         // Create the local chunk directory used by the production adapter and populate it below.
         let fm = FileManager.default
-        let tempDirectoryUrl = chunkUploadDirectory ?? fm.temporaryDirectory
+        let tempDirectoryUrl = chunkUploadDirectory ?? (chunksBaseDirectory ?? fm.temporaryDirectory)
             .appendingPathComponent(remoteChunkStoreFolderName, isDirectory: true)
         chunkUploadDirectories[remoteChunkStoreFolderName] = tempDirectoryUrl
         try! fm.createDirectory(atPath: tempDirectoryUrl.path, withIntermediateDirectories: true)
@@ -1002,14 +1003,14 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         )
     }
 
-    public func removeLocalChunks(remoteChunkStoreFolderName: String) throws {
+    public func removeLocalChunks(remoteChunkStoreFolderName: String, chunksBaseDirectory: URL? = nil) throws {
         if let removeLocalChunksError {
             throw removeLocalChunksError
         }
 
         let chunksDirectory = chunkUploadDirectories.removeValue(
             forKey: remoteChunkStoreFolderName
-        ) ?? FileManager.default.temporaryDirectory.appendingPathComponent(
+        ) ?? (chunksBaseDirectory ?? FileManager.default.temporaryDirectory).appendingPathComponent(
             remoteChunkStoreFolderName,
             isDirectory: true
         )

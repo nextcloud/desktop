@@ -98,6 +98,8 @@
 		<false/>
 		<key>NSExtensionFileProviderAllowsUserControlledEviction</key>
 		<false/>
+		<key>NSExtensionFileProviderAllowsExternalVolumes</key>
+		<true/>
 		<key>NSExtensionFileProviderDocumentGroup</key>
 		<string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
 		<key>NSExtensionFileProviderSupportsEnumeration</key>

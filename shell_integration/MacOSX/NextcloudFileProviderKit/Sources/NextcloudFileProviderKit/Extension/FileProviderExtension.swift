@@ -72,6 +72,9 @@ import OSLog
     private var pendingAccount: Account?
     private var setupChain: Task<Void, Never> = Task {}
 
+    /// Keep the external state directory security scope alive for the lifetime of the Realm.
+    private let stateDirectoryAccess = SecurityScopedResourceAccess()
+
     // Waiters parked in `awaitAccount(…)` until `ncAccount` is published.
     private let accountReadyLock = NSLock()
     private var accountReadyWaiters = [UUID: CheckedContinuation<Void, Never>]()
@@ -121,6 +124,8 @@ import OSLog
         logger.debug("File provider extension process is being invalidated.")
         blockSyncObservation?.invalidate()
         blockSyncObservation = nil
+
+        stateDirectoryAccess.invalidate()
     }
 
     func insertSyncAction(_ actionId: UUID) {
@@ -846,17 +851,79 @@ import OSLog
                 logger.info("Successfully authenticated.")
         }
 
+        let databaseDirectory: URL?
+        do {
+            if #available(macOS 15.0, *) {
+                databaseDirectory = try await FileProviderDomainStorage.databaseDirectory(
+                    volumeUUID: domain.volumeUUID,
+                    stateDirectory: {
+                        guard let manager else {
+                            throw NSError(
+                                domain: NSFileProviderErrorDomain,
+                                code: NSFileProviderError.Code.providerDomainNotFound.rawValue,
+                                userInfo: [NSLocalizedDescriptionKey: "Could not get a File Provider manager for the external-volume domain."]
+                            )
+                        }
+                        return try manager.stateDirectoryURL()
+                    }
+                )
+            } else {
+                databaseDirectory = nil
+            }
+        } catch {
+            logger.error("Could not obtain external-volume File Provider state directory.", [.error: error])
+            completionHandler?(error as NSError)
+            return
+        }
+
+        let chunksBaseDirectory: URL?
+        do {
+            let isExternalDomain: Bool = if #available(macOS 15.0, *) {
+                domain.volumeUUID != nil
+            } else {
+                false
+            }
+            let domainTemporaryDirectory: (() throws -> URL)? = manager.map { manager in
+                { try manager.temporaryDirectoryURL() }
+            }
+            chunksBaseDirectory = try FileProviderDomainStorage.temporaryDirectory(
+                isExternalDomain: isExternalDomain,
+                domainTemporaryDirectory: domainTemporaryDirectory,
+                fallbackDirectory: { FileManager.default.temporaryDirectory }
+            )
+        } catch {
+            logger.error("Could not obtain File Provider temporary directory.", [.error: error])
+            completionHandler?(error as NSError)
+            return
+        }
+
+        let databaseManager: FilesDatabaseManager
+        do {
+            guard let manager = try stateDirectoryAccess.replacingAccess(with: databaseDirectory, perform: {
+                FilesDatabaseManager(
+                    account: account,
+                    databaseDirectory: databaseDirectory,
+                    fileProviderDomainIdentifier: domain.identifier,
+                    log: log
+                )
+            }) else {
+                completionHandler?(NSFileProviderError(.cannotSynchronize) as NSError)
+                return
+            }
+            databaseManager = manager
+        } catch {
+            logger.error("Could not access external-volume File Provider state directory.", [.error: error])
+            completionHandler?(error as NSError)
+            return
+        }
+
         await MainActor.run {
             ncAccount = account
-            let databaseManager = FilesDatabaseManager(
-                account: account,
-                fileProviderDomainIdentifier: domain.identifier,
-                log: log
-            )
             // TODO: Initial file creation does not persist item metadata until the upload succeeds.
             // If the extension restarts while that upload is still in progress, startup cleanup
             // cannot distinguish its chunks from an abandoned upload and may remove them.
             cleanupAbandonedChunkUploads(
+                chunksBaseDirectory: chunksBaseDirectory,
                 usingRemoteInterface: ncKit,
                 dbManager: databaseManager,
                 logger: logger
