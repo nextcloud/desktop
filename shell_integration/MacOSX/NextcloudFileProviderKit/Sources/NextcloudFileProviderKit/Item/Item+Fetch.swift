@@ -330,7 +330,7 @@ public extension Item {
             return (nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
 
-        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: updatedMetadata.contentType)
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: updatedMetadata.contentType, taskHandler: { cancellation.register(task: $0) })
         guard !progress.isCancelled, !Task.isCancelled else {
             return (nil, nil, CocoaError(.userCancelled))
         }

@@ -534,7 +534,9 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
 
         // Display File Actions
 
-        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: metadata.contentType)
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: metadata.contentType, taskHandler: taskHandler)
+
+        guard !Task.isCancelled else { return nil }
 
         return Item(
             metadata: metadata,
