@@ -84,6 +84,9 @@ extension NKError {
         remoteInterface: RemoteInterface,
         log: any FileProviderLogging
     ) async -> Error? {
+        if errorCode == NSURLErrorCancelled {
+            return CocoaError(.userCancelled)
+        }
         guard fileProviderError?.code == .filenameCollision else {
             return fileProviderError as Error?
         }
