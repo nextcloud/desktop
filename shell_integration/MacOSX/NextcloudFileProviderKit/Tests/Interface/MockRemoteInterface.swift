@@ -575,6 +575,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var chunkPreparationHandler: (@Sendable () async -> Void)?
     public var uploadHandler: (@Sendable () async -> Void)?
 
+    public var downloadHandler: (@Sendable () async -> Void)?
+    public var downloadCompletionHandler: (@Sendable () -> Void)?
+    public var downloadRequest: DownloadRequest?
+    public var downloadTask: URLSessionTask?
+    public var downloadError: NKError?
+    public private(set) var downloadOperationCount = 0
     /// Overrides the directory where chunked uploads create their local chunk files.
     public var chunkUploadDirectory: URL?
 
@@ -1151,14 +1157,31 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         fileNameLocalPath: String,
         account: String,
         options _: NKRequestOptions,
-        requestHandler _: @escaping (_ request: DownloadRequest) -> Void = { _ in },
-        taskHandler _: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in },
+        requestHandler: @escaping (_ request: DownloadRequest) -> Void = { _ in },
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in },
         progressHandler _: @escaping (_ progress: Progress) -> Void = { _ in }
     ) async -> (
         account: String,
         response: AFDownloadResponse<URL?>?,
         nkError: NKError
     ) {
+        downloadOperationCount += 1
+        if let downloadRequest {
+            requestHandler(downloadRequest)
+        }
+        if let downloadTask {
+            taskHandler(downloadTask)
+        }
+        if let downloadHandler {
+            await downloadHandler()
+        }
+        if Task.isCancelled {
+            return (account, nil, NKError(errorCode: NSURLErrorCancelled, errorDescription: "Download cancelled"))
+        }
+        if let downloadError {
+            return (account, nil, downloadError)
+        }
+
         guard let serverUrlFileName = serverUrlFileName as? String ?? (serverUrlFileName as? URL)?.absoluteString else {
             return (account, nil, .urlError)
         }
@@ -1187,6 +1210,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             return (account.ncKitAccount, nil, .urlError)
         }
 
+        downloadCompletionHandler?()
         return (account.ncKitAccount, nil, .success)
     }
 

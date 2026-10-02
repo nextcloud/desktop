@@ -1,6 +1,7 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+import Alamofire
 @preconcurrency import FileProvider
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
@@ -11,20 +12,410 @@ import UniformTypeIdentifiers
 import XCTest
 
 final class ItemFetchTests: NextcloudFileProviderKitTestCase {
+    private static func waitForCancellation() async {
+        let (stream, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
+        var iterator = stream.makeAsyncIterator()
+        _ = await iterator.next()
+    }
+
+    private func makeFetchItem(directory: Bool = false, preview: Bool = false) -> (Item, MockRemoteInterface, MockRemoteItem) {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.injectMock(Self.account)
+        let remoteItem = MockRemoteItem(
+            identifier: UUID().uuidString,
+            versionIdentifier: "0",
+            name: directory ? "directory" : "file.txt",
+            remotePath: Self.account.davFilesUrl + (directory ? "/directory" : "/file.txt"),
+            directory: directory,
+            data: directory ? nil : Data("Downloaded contents".utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteItem]
+        remoteItem.parent = rootItem
+        if directory {
+            for name in ["first.txt", "second.txt", "third.txt"] {
+                let child = MockRemoteItem(
+                    identifier: UUID().uuidString,
+                    name: name,
+                    remotePath: remoteItem.remotePath + "/" + name,
+                    data: Data(name.utf8),
+                    account: Self.account.ncKitAccount,
+                    username: Self.account.username,
+                    userId: Self.account.id,
+                    serverUrl: Self.account.serverUrl
+                )
+                child.parent = remoteItem
+                remoteItem.children.append(child)
+            }
+        }
+        var metadata = remoteItem.toItemMetadata(account: Self.account)
+        metadata.downloaded = false
+        metadata.hasPreview = preview
+        Self.dbManager.addItemMetadata(metadata)
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        return (item, remoteInterface, remoteItem)
+    }
+
+    private func makeThumbnailBatch(
+        identifiers: [NSFileProviderItemIdentifier],
+        remoteInterface: MockRemoteInterface
+    ) -> (
+        progress: Progress,
+        thumbnails: AsyncStream<(identifier: NSFileProviderItemIdentifier, data: Data?, error: Error?)>,
+        completion: AsyncStream<Error?>
+    ) {
+        let (thumbnails, thumbnailContinuation) = AsyncStream<(identifier: NSFileProviderItemIdentifier, data: Data?, error: Error?)>.makeStream()
+        let (completion, completionContinuation) = AsyncStream<Error?>.makeStream()
+        let progress = NextcloudFileProviderKit.fetchThumbnails(
+            for: identifiers,
+            requestedSize: CGSize(width: 32, height: 32),
+            account: Self.account,
+            usingRemoteInterface: remoteInterface,
+            andDatabase: Self.dbManager,
+            perThumbnailCompletionHandler: { identifier, data, error in
+                thumbnailContinuation.yield((identifier, data, error))
+            },
+            log: FileProviderLogMock(),
+            completionHandler: { error in
+                completionContinuation.yield(error)
+                completionContinuation.finish()
+                thumbnailContinuation.finish()
+            }
+        )
+        return (progress, thumbnails, completion)
+    }
+
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
     lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    private var retainedDatabase: Realm?
 
     override func setUp() {
         super.setUp()
+        _ = Self.dbManager
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        retainedDatabase = Self.dbManager.ncDatabase()
     }
 
     override func tearDown() {
         rootItem.children = []
+        retainedDatabase = nil
+        super.tearDown()
+    }
+
+    func testCancelledProgressDoesNotStartDownload() async throws {
+        let (item, remoteInterface, _) = makeFetchItem()
+        let progress = Progress()
+        progress.cancel()
+
+        let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual(remoteInterface.downloadOperationCount, 0)
+        XCTAssertFalse(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)).downloaded)
+    }
+
+    func testCancellingDownloadCancelsNetworkHandlesAndAllowsRetry() async throws {
+        let (item, remoteInterface, remoteItem) = makeFetchItem()
+        let progress = Progress()
+        let session = Session(startRequestsImmediately: false)
+        let request = session.download("https://example.invalid/resource")
+        let urlSession = URLSession(configuration: .ephemeral)
+        defer { urlSession.invalidateAndCancel() }
+        let networkTask = try urlSession.dataTask(with: XCTUnwrap(URL(string: "https://example.invalid/resource")))
+        remoteInterface.downloadRequest = request
+        remoteInterface.downloadTask = networkTask
+        remoteInterface.downloadHandler = {
+            progress.cancel()
+            await Self.waitForCancellation()
+        }
+
+        let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertTrue(request.isCancelled)
+        XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
+        let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
+        XCTAssertFalse(metadata.downloaded)
+        XCTAssertEqual(metadata.status, Status.downloadError.rawValue)
+        XCTAssertNil(progress.cancellationHandler)
+        XCTAssertNil(progress.pausingHandler)
+        XCTAssertNil(progress.resumingHandler)
+
+        remoteInterface.downloadRequest = nil
+        remoteInterface.downloadTask = nil
+        remoteInterface.downloadHandler = nil
+        let (retryUrl, retryItem, retryError) = await item.fetchContents(dbManager: Self.dbManager)
+        XCTAssertNil(retryError)
+        let downloadedUrl = try XCTUnwrap(retryUrl)
+        defer { try? FileManager.default.removeItem(at: downloadedUrl) }
+        XCTAssertEqual(try Data(contentsOf: downloadedUrl), remoteItem.data)
+        XCTAssertTrue(try XCTUnwrap(retryItem).isDownloaded)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.normal.rawValue)
+    }
+
+    func testParentCancellationReachesDownload() async {
+        let (item, remoteInterface, _) = makeFetchItem()
+        let (started, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
+        remoteInterface.downloadHandler = {
+            continuation.yield(())
+            await Self.waitForCancellation()
+        }
+        let task = Task { await item.fetchContents(dbManager: Self.dbManager) }
+        var iterator = started.makeAsyncIterator()
+        _ = await iterator.next()
+        task.cancel()
+
+        let (url, fetchedItem, error) = await task.value
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.downloadError.rawValue)
+    }
+
+    func testCancelledSuccessfulResponseDoesNotMarkContentsDownloaded() async throws {
+        let (item, remoteInterface, _) = makeFetchItem()
+        let progress = Progress()
+        remoteInterface.downloadCompletionHandler = { progress.cancel() }
+        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(item.itemIdentifier.rawValue)
+        defer { try? FileManager.default.removeItem(at: localPath) }
+
+        let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
+        XCTAssertFalse(metadata.downloaded)
+        XCTAssertEqual(metadata.status, Status.downloadError.rawValue)
+    }
+
+    func testCancelledDirectoryEnumerationDoesNotStartChildDownloads() async throws {
+        let (item, remoteInterface, _) = makeFetchItem(directory: true)
+        let progress = Progress()
+        let session = URLSession(configuration: .ephemeral)
+        defer { session.invalidateAndCancel() }
+        let networkTask = try session.dataTask(with: XCTUnwrap(URL(string: "https://example.invalid/resource")))
+        remoteInterface.enumerateCallHandler = { _, _, _, _, _, _, _, taskHandler in
+            taskHandler(networkTask)
+            progress.cancel()
+        }
+
+        let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
+        XCTAssertEqual(remoteInterface.readOperationCount, 1)
+        XCTAssertEqual(remoteInterface.downloadOperationCount, 0)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.downloadError.rawValue)
+    }
+
+    func testCancelledFolderDownloadPreservesCompletedChildrenAndStopsTraversal() async {
+        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+        let progress = Progress()
+        remoteInterface.downloadHandler = {
+            if remoteInterface.downloadOperationCount == 2 {
+                progress.cancel()
+                await Self.waitForCancellation()
+            }
+        }
+
+        let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
+        let localDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(directory.identifier)
+        defer { try? FileManager.default.removeItem(at: localDirectory) }
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual(remoteInterface.downloadOperationCount, 2)
+        XCTAssertEqual(remoteInterface.readOperationCount, 1)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.identifier)?.downloaded, false)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.identifier)?.status, Status.downloadError.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[0].identifier)?.downloaded, true)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[1].identifier)?.downloaded, false)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[2].identifier)?.downloaded, false)
+        XCTAssertEqual(try Data(contentsOf: localDirectory.appendingPathComponent("first.txt")), directory.children[0].data)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.appendingPathComponent("second.txt").path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.appendingPathComponent("third.txt").path))
+    }
+
+    func testDownloadErrorsPreserveCancellationAndServerErrors() async throws {
+        for errorCode in [NSURLErrorCancelled, 404, 503] {
+            let (item, remoteInterface, _) = makeFetchItem()
+            remoteInterface.downloadError = NKError(errorCode: errorCode, errorDescription: "Download failed")
+            let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+            XCTAssertNil(url)
+            XCTAssertNil(fetchedItem)
+            if errorCode == NSURLErrorCancelled {
+                XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+            } else {
+                XCTAssertEqual((error as? NSFileProviderError)?.code, errorCode == 404 ? .noSuchItem : .serverUnreachable)
+            }
+            let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
+            XCTAssertFalse(metadata.downloaded)
+            XCTAssertEqual(metadata.status, Status.downloadError.rawValue)
+        }
+    }
+
+    func testCancellingThumbnailCancelsNetworkTask() async throws {
+        let (item, remoteInterface, _) = makeFetchItem(preview: true)
+        let progress = Progress()
+        let session = URLSession(configuration: .ephemeral)
+        defer { session.invalidateAndCancel() }
+        let networkTask = try session.dataTask(with: XCTUnwrap(URL(string: "https://example.invalid/preview")))
+        remoteInterface.thumbnailHandler = { _, taskHandler in
+            taskHandler(networkTask)
+            progress.cancel()
+            await Self.waitForCancellation()
+        }
+
+        let (data, error) = await item.fetchThumbnail(size: CGSize(width: 32, height: 32), progress: progress)
+
+        XCTAssertNil(data)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
+        XCTAssertNil(progress.cancellationHandler)
+    }
+
+    func testCancelledProgressDoesNotStartThumbnailDownload() async {
+        let (item, remoteInterface, _) = makeFetchItem(preview: true)
+        let progress = Progress()
+        progress.cancel()
+        remoteInterface.thumbnailHandler = { _, _ in XCTFail("Cancelled thumbnail must not start a transfer") }
+
+        let (data, error) = await item.fetchThumbnail(size: CGSize(width: 32, height: 32), progress: progress)
+
+        XCTAssertNil(data)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+    }
+
+    func testCancelledThumbnailDoesNotReturnSuccessfulResponseData() async {
+        let (item, remoteInterface, _) = makeFetchItem(preview: true)
+        let progress = Progress()
+        remoteInterface.thumbnailData = Data("Late thumbnail response".utf8)
+        remoteInterface.thumbnailCompletionHandler = { progress.cancel() }
+
+        let (data, error) = await item.fetchThumbnail(size: CGSize(width: 32, height: 32), progress: progress)
+
+        XCTAssertNil(data)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+    }
+
+    func testCancelledThumbnailBatchCancelsEveryTransfer() async throws {
+        let (first, remoteInterface, _) = makeFetchItem(preview: true)
+        let (second, _, _) = makeFetchItem(preview: true)
+        let identifiers = [first.itemIdentifier, second.itemIdentifier]
+        let session = URLSession(configuration: .ephemeral)
+        defer { session.invalidateAndCancel() }
+        let (started, continuation) = AsyncStream<URLSessionTask>.makeStream()
+        defer { continuation.finish() }
+        remoteInterface.thumbnailHandler = { url, taskHandler in
+            let networkTask = session.dataTask(with: url)
+            taskHandler(networkTask)
+            continuation.yield(networkTask)
+            await Self.waitForCancellation()
+        }
+        let batch = makeThumbnailBatch(identifiers: identifiers, remoteInterface: remoteInterface)
+        var iterator = started.makeAsyncIterator()
+        var networkTasks: [URLSessionTask] = []
+        for _ in identifiers {
+            let startedTask = await iterator.next()
+            try networkTasks.append(XCTUnwrap(startedTask))
+        }
+        batch.progress.cancel()
+
+        var reportedIdentifiers: [NSFileProviderItemIdentifier] = []
+        for await result in batch.thumbnails {
+            reportedIdentifiers.append(result.identifier)
+            XCTAssertNil(result.data)
+            XCTAssertEqual((result.error as? CocoaError)?.code, .userCancelled)
+        }
+        var completionIterator = batch.completion.makeAsyncIterator()
+        let completion = await completionIterator.next()
+        XCTAssertEqual((completion.flatMap(\.self) as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual(reportedIdentifiers.count, identifiers.count)
+        XCTAssertEqual(Set(reportedIdentifiers), Set(identifiers))
+        XCTAssertTrue(networkTasks.allSatisfy { $0.state == .canceling || $0.state == .completed })
+        XCTAssertNil(batch.progress.cancellationHandler)
+    }
+
+    func testThumbnailBatchReportsSuccessfulContents() async throws {
+        let (first, remoteInterface, _) = makeFetchItem(preview: true)
+        let (second, _, _) = makeFetchItem(preview: true)
+        let identifiers = [first.itemIdentifier, second.itemIdentifier]
+        let thumbnailData = Data("Thumbnail contents".utf8)
+        remoteInterface.thumbnailData = thumbnailData
+        let batch = makeThumbnailBatch(identifiers: identifiers, remoteInterface: remoteInterface)
+        var reportedIdentifiers: [NSFileProviderItemIdentifier] = []
+        for await result in batch.thumbnails {
+            reportedIdentifiers.append(result.identifier)
+            XCTAssertEqual(result.data, thumbnailData)
+            XCTAssertNil(result.error)
+        }
+        var completionIterator = batch.completion.makeAsyncIterator()
+        let completion = await completionIterator.next()
+        let error: Error? = try XCTUnwrap(completion)
+        XCTAssertNil(error)
+        XCTAssertEqual(reportedIdentifiers.count, identifiers.count)
+        XCTAssertEqual(Set(reportedIdentifiers), Set(identifiers))
+        XCTAssertEqual(batch.progress.completedUnitCount, Int64(identifiers.count))
+    }
+
+    func testThumbnailBatchReportsPerItemFailures() async throws {
+        let (item, remoteInterface, _) = makeFetchItem(preview: true)
+        remoteInterface.thumbnailError = NKError(errorCode: 503, errorDescription: "Server unavailable")
+        let missingIdentifier = NSFileProviderItemIdentifier("missing-item")
+        let batch = makeThumbnailBatch(identifiers: [item.itemIdentifier, missingIdentifier], remoteInterface: remoteInterface)
+        var reportedIdentifiers: [NSFileProviderItemIdentifier] = []
+        for await result in batch.thumbnails {
+            reportedIdentifiers.append(result.identifier)
+            XCTAssertNil(result.data)
+            XCTAssertEqual((result.error as? NSFileProviderError)?.code, result.identifier == missingIdentifier ? .noSuchItem : .serverUnreachable)
+        }
+        var completionIterator = batch.completion.makeAsyncIterator()
+        let completion = await completionIterator.next()
+        let error: Error? = try XCTUnwrap(completion)
+        XCTAssertNil(error)
+        XCTAssertEqual(Set(reportedIdentifiers), [item.itemIdentifier, missingIdentifier])
+    }
+
+    func testEmptyThumbnailBatchFinishesImmediately() async {
+        let (_, remoteInterface, _) = makeFetchItem()
+        let completed = expectation(description: "Empty thumbnail batch finishes")
+        let progress = NextcloudFileProviderKit.fetchThumbnails(
+            for: [],
+            requestedSize: CGSize(width: 32, height: 32),
+            account: Self.account,
+            usingRemoteInterface: remoteInterface,
+            andDatabase: Self.dbManager,
+            perThumbnailCompletionHandler: { _, _, _ in XCTFail("No thumbnail was requested") },
+            log: FileProviderLogMock(),
+            completionHandler: { error in
+                XCTAssertNil(error)
+                completed.fulfill()
+            }
+        )
+        await fulfillment(of: [completed], timeout: 5)
+        XCTAssertEqual(progress.totalUnitCount, 0)
     }
 
     func testFetchFileContents() async throws {

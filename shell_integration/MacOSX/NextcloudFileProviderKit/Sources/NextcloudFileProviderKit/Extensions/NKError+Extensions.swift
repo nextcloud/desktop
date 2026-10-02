@@ -72,6 +72,9 @@ extension NKError {
     func fileProviderError(
         handlingNoSuchItemErrorUsingItemIdentifier identifier: NSFileProviderItemIdentifier
     ) -> Error? {
+        if errorCode == NSURLErrorCancelled {
+            return CocoaError(.userCancelled)
+        }
         guard fileProviderError?.code == .noSuchItem else {
             return fileProviderError as Error?
         }

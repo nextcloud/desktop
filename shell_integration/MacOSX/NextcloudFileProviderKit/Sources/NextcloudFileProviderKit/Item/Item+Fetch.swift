@@ -7,13 +7,51 @@ import NextcloudKit
 import UniformTypeIdentifiers
 
 public extension Item {
+    private func downloadFileContents(
+        remotePath: String,
+        localPath: String,
+        itemIdentifier: NSFileProviderItemIdentifier,
+        domain: NSFileProviderDomain?,
+        progress: Progress,
+        cancellation: NetworkOperationCancellation
+    ) async -> NKError {
+        guard !progress.isCancelled, !Task.isCancelled else {
+            return NKError(errorCode: NSURLErrorCancelled, errorDescription: CocoaError(.userCancelled).localizedDescription)
+        }
+        let (_, _, error) = await remoteInterface.downloadAsync(
+            serverUrlFileName: remotePath,
+            fileNameLocalPath: localPath,
+            account: account.ncKitAccount,
+            options: .init(),
+            requestHandler: { cancellation.register(request: $0) },
+            taskHandler: { task in
+                cancellation.register(task: task)
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(task, forItemWithIdentifier: itemIdentifier, completionHandler: { _ in })
+                }
+            },
+            progressHandler: { _ in }
+        )
+        guard !progress.isCancelled, !Task.isCancelled else {
+            return NKError(errorCode: NSURLErrorCancelled, errorDescription: CocoaError(.userCancelled).localizedDescription)
+        }
+        return error
+    }
+
     private func fetchDirectoryContents(
         itemIdentifier: NSFileProviderItemIdentifier,
         directoryLocalPath: String,
         directoryRemotePath: String,
         domain: NSFileProviderDomain?,
-        progress: Progress
+        progress: Progress,
+        cancellation: NetworkOperationCancellation
     ) async throws {
+        func checkFetchCancellation() throws {
+            if progress.isCancelled || Task.isCancelled {
+                throw CocoaError(.userCancelled)
+            }
+        }
+
         progress.totalUnitCount = 1 // Add 1 for final procedures
 
         // Download *everything* within this directory. What we do:
@@ -24,14 +62,19 @@ public extension Item {
         var remoteDirectoryPaths = [directoryRemotePath]
         var downloadedFileOcIds: [String] = []
         while !remoteDirectoryPaths.isEmpty {
+            try checkFetchCancellation()
             let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
             let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
+                domain: domain,
+                enumeratedItemIdentifier: itemIdentifier,
+                taskHandler: { cancellation.register(task: $0) },
                 log: logger.log
             )
+            try checkFetchCancellation()
 
             if let readError = readResult.error, readError != .success {
                 logger.error("Could not enumerate directory contents.", [.name: metadata.fileName, .url: remoteDirectoryPath, .error: readError])
@@ -52,6 +95,7 @@ public extension Item {
             progress.totalUnitCount += Int64(metadatas.count)
 
             for var metadata in metadatas {
+                try checkFetchCancellation()
                 let remotePath = metadata.remotePath()
                 let relativePath =
                     remotePath.replacingOccurrences(of: directoryRemotePath, with: "")
@@ -67,18 +111,17 @@ public extension Item {
                 } else {
                     let identifier = NSFileProviderItemIdentifier(metadata.ocId)
 
-                    let (_, _, error) = await remoteInterface.downloadAsync(
-                        serverUrlFileName: remotePath,
-                        fileNameLocalPath: childLocalPath,
-                        account: account.ncKitAccount,
-                        options: .init(),
-                        requestHandler: { progress.setHandlersFromAfRequest($0) },
-                        taskHandler: { task in
-                            if let domain {
-                                NSFileProviderManager(for: domain)?.register(task, forItemWithIdentifier: identifier, completionHandler: { _ in })
-                            }
-                        },
-                        progressHandler: { _ in }
+                    guard let downloadingMetadata = dbManager.setStatusForItemMetadata(metadata, status: .downloading) else {
+                        throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+                    }
+                    metadata = downloadingMetadata
+                    let error = await downloadFileContents(
+                        remotePath: remotePath,
+                        localPath: childLocalPath,
+                        itemIdentifier: identifier,
+                        domain: domain,
+                        progress: progress,
+                        cancellation: cancellation
                     )
 
                     guard error == .success else {
@@ -127,6 +170,20 @@ public extension Item {
         progress: Progress = .init(),
         dbManager: FilesDatabaseManager
     ) async -> (URL?, Item?, Error?) {
+        await NetworkOperationCancellation(log: logger.log).run(progress: progress) { @Sendable cancellation in
+            await self.performFetchContents(domain: domain, progress: progress, dbManager: dbManager, cancellation: cancellation)
+        }
+    }
+
+    internal func performFetchContents(
+        domain: NSFileProviderDomain?,
+        progress: Progress,
+        dbManager: FilesDatabaseManager,
+        cancellation: NetworkOperationCancellation
+    ) async -> (URL?, Item?, Error?) {
+        guard !progress.isCancelled, !Task.isCancelled else {
+            return (nil, nil, CocoaError(.userCancelled))
+        }
         let ocId = itemIdentifier.rawValue
         guard metadata.classFile != "lock", !isLockFileName(filename) else {
             logger.info("System requested fetch of lock file, will just provide local contents URL if possible.", [.name: filename])
@@ -154,6 +211,15 @@ public extension Item {
             )
         }
 
+        defer {
+            if progress.isCancelled || Task.isCancelled {
+                updatedMetadata.status = Status.downloadError.rawValue
+                updatedMetadata.downloaded = false
+                updatedMetadata.sessionError = CocoaError(.userCancelled).localizedDescription
+                dbManager.addItemMetadata(updatedMetadata)
+            }
+        }
+
         let isDirectory = contentType.conforms(to: .directory)
         if isDirectory {
             logger.debug("is a directory, creating directory locally and fetching its contents.", [.item: ocId, .name: updatedMetadata.fileName])
@@ -179,7 +245,8 @@ public extension Item {
                     directoryLocalPath: localPath.path,
                     directoryRemotePath: serverUrlFileName,
                     domain: domain,
-                    progress: progress
+                    progress: progress,
+                    cancellation: cancellation
                 )
             } catch {
                 logger.error("Could not fetch directory contents.", [.item: ocId, .error: error])
@@ -191,14 +258,13 @@ public extension Item {
             }
 
         } else {
-            let (_, _, error) = await remoteInterface.downloadAsync(
-                serverUrlFileName: serverUrlFileName,
-                fileNameLocalPath: localPath.path,
-                account: account.ncKitAccount,
-                options: .init(),
-                requestHandler: { _ in },
-                taskHandler: { _ in },
-                progressHandler: { _ in }
+            let error = await downloadFileContents(
+                remotePath: serverUrlFileName,
+                localPath: localPath.path,
+                itemIdentifier: itemIdentifier,
+                domain: domain,
+                progress: progress,
+                cancellation: cancellation
             )
 
             if error != .success {
@@ -213,6 +279,9 @@ public extension Item {
             }
         }
 
+        guard !progress.isCancelled, !Task.isCancelled else {
+            return (nil, nil, CocoaError(.userCancelled))
+        }
         logger.debug("Acquired contents of item.", [.item: ocId, .name: updatedMetadata.fileName])
 
         if !isDirectory, updatedMetadata.contentType != UTType.aliasFile.identifier {
@@ -246,17 +315,24 @@ public extension Item {
             refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: [ocId], manager: manager, dbManager: dbManager, logger: logger)
         }
 
-        guard let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
+        let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
             fromMetadata: metadata,
             remoteInterface: remoteInterface,
             account: account
-        ) else {
+        )
+        guard !progress.isCancelled, !Task.isCancelled else {
+            return (nil, nil, CocoaError(.userCancelled))
+        }
+        guard let parentItemIdentifier else {
             logger.error("Could not find parent item id for file.", [.name: metadata.fileName])
 
             return (nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: updatedMetadata.contentType)
+        guard !progress.isCancelled, !Task.isCancelled else {
+            return (nil, nil, CocoaError(.userCancelled))
+        }
 
         let fpItem = await Item(
             metadata: updatedMetadata,
@@ -269,6 +345,9 @@ public extension Item {
             log: logger.log
         )
 
+        guard !progress.isCancelled, !Task.isCancelled else {
+            return (nil, nil, CocoaError(.userCancelled))
+        }
         return (localPath, fpItem, nil)
     }
 

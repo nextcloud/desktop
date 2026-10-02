@@ -220,40 +220,65 @@ import OSLog
         let progress = Progress()
 
         Task {
-            // Wait for the account rather than failing outright: the system starts this process and
-            // begins requesting content before the main app has handed the account over, and a
-            // rejected fetch is a download the framework may never ask for again.
-            let ncAccount: Account
-
-            do {
-                ncAccount = try await awaitAccount()
-            } catch {
-                logger.error("Not fetching contents for item because account was never set up.", [.item: itemIdentifier])
-                insertErrorAction(actionId)
-                completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
-                return
+            let (localUrl, updatedItem, error) = await NetworkOperationCancellation(log: log).run(progress: progress) { cancellation in
+                await self.performFetchContents(for: itemIdentifier, progress: progress, cancellation: cancellation, actionId: actionId)
             }
-
-            guard let dbManager else {
-                logger.debug("Not fetching contents for item because database is unavailable.", [.item: itemIdentifier])
-                insertErrorAction(actionId)
-                completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
-                return
-            }
-
-            guard let item = await Item.storedItem(identifier: itemIdentifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log) else {
-                logger.error("Not fetching contents for item because item was not found.", [.item: itemIdentifier])
-                completionHandler(nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
-                insertErrorAction(actionId)
-                return
-            }
-
-            let (localUrl, updatedItem, error) = await item.fetchContents(domain: self.domain, progress: progress, dbManager: dbManager)
-            removeSyncAction(actionId)
             completionHandler(localUrl, updatedItem, error)
         }
 
         return progress
+    }
+
+    private func performFetchContents(
+        for itemIdentifier: NSFileProviderItemIdentifier,
+        progress: Progress,
+        cancellation: NetworkOperationCancellation,
+        actionId: UUID
+    ) async -> (URL?, Item?, Error?) {
+        guard !progress.isCancelled, !Task.isCancelled else {
+            removeSyncAction(actionId)
+            return (nil, nil, CocoaError(.userCancelled))
+        }
+        // Wait for the account rather than failing outright: the system starts this process and
+        // begins requesting content before the main app has handed the account over, and a
+        // rejected fetch is a download the framework may never ask for again.
+        let ncAccount: Account
+        do {
+            ncAccount = try await awaitAccount()
+        } catch {
+            if error is CancellationError || progress.isCancelled {
+                removeSyncAction(actionId)
+                return (nil, nil, CocoaError(.userCancelled))
+            }
+            logger.error("Not fetching contents for item because account was never set up.", [.item: itemIdentifier])
+            insertErrorAction(actionId)
+            return (nil, nil, NSFileProviderError(.notAuthenticated))
+        }
+
+        guard !progress.isCancelled, !Task.isCancelled else {
+            removeSyncAction(actionId)
+            return (nil, nil, CocoaError(.userCancelled))
+        }
+        guard let dbManager else {
+            logger.debug("Not fetching contents for item because database is unavailable.", [.item: itemIdentifier])
+            insertErrorAction(actionId)
+            return (nil, nil, NSFileProviderError(.cannotSynchronize))
+        }
+
+        let item = await Item.storedItem(identifier: itemIdentifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log)
+        guard !progress.isCancelled, !Task.isCancelled else {
+            removeSyncAction(actionId)
+            return (nil, nil, CocoaError(.userCancelled))
+        }
+        guard let item else {
+            logger.error("Not fetching contents for item because item was not found.", [.item: itemIdentifier])
+            insertErrorAction(actionId)
+            return (nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
+        }
+
+        let result = await item.performFetchContents(domain: domain, progress: progress, dbManager: dbManager, cancellation: cancellation)
+        removeSyncAction(actionId)
+        return result
     }
 
     public func createItem(
