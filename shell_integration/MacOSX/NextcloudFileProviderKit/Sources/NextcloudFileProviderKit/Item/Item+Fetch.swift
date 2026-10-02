@@ -351,7 +351,21 @@ public extension Item {
         return (localPath, fpItem, nil)
     }
 
-    func fetchThumbnail(size: CGSize, domain: NSFileProviderDomain? = nil) async -> (Data?, Error?) {
+    func fetchThumbnail(size: CGSize, domain: NSFileProviderDomain? = nil, progress: Progress = .init()) async -> (Data?, Error?) {
+        await NetworkOperationCancellation(log: logger.log).run(progress: progress) { @Sendable cancellation in
+            await self.performFetchThumbnail(size: size, domain: domain, progress: progress, cancellation: cancellation)
+        }
+    }
+
+    private func performFetchThumbnail(
+        size: CGSize,
+        domain: NSFileProviderDomain?,
+        progress: Progress,
+        cancellation: NetworkOperationCancellation
+    ) async -> (Data?, Error?) {
+        guard !progress.isCancelled, !Task.isCancelled else {
+            return (nil, CocoaError(.userCancelled))
+        }
         guard let thumbnailUrl = metadata.thumbnailUrl(size: size) else {
             logger.debug("Unknown thumbnail URL.", [.item: itemIdentifier, .name: filename])
             return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
@@ -361,6 +375,7 @@ public extension Item {
 
         let (_, data, error) = await remoteInterface.downloadThumbnail(
             url: thumbnailUrl, account: account, options: .init(), taskHandler: { task in
+                cancellation.register(task: task)
                 if let domain {
                     NSFileProviderManager(for: domain)?.register(
                         task,
@@ -371,6 +386,9 @@ public extension Item {
             }
         )
 
+        guard !progress.isCancelled, !Task.isCancelled else {
+            return (nil, CocoaError(.userCancelled))
+        }
         if error != .success {
             logger.error("Could not acquire thumbnail.", [.item: itemIdentifier, .name: filename, .url: thumbnailUrl, .error: error])
         }
