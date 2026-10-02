@@ -203,6 +203,8 @@ extension NextcloudKit: RemoteInterface {
             )
 
             return (account, file, chunksOutputDirectoryUrl, .success)
+        } catch is CancellationError {
+            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, NKError(error: URLError(.cancelled)))
         } catch let nkError as NKError {
             return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, nkError)
         } catch {
