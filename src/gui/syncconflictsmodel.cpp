@@ -37,7 +37,7 @@ QVariant SyncConflictsModel::data(const QModelIndex &index, int role) const
         return result;
     }
 
-    if (role >= static_cast<int>(SyncConflictRoles::ExistingFileName) && role <= static_cast<int>(SyncConflictRoles::ConflictPreviewUrl)) {
+    if (role >= static_cast<int>(SyncConflictRoles::ExistingFileName) && role <= static_cast<int>(SyncConflictRoles::ConflictFilePath)) {
         const auto convertedRole = static_cast<SyncConflictRoles>(role);
 
         switch (convertedRole) {
@@ -67,6 +67,12 @@ QVariant SyncConflictsModel::data(const QModelIndex &index, int role) const
             break;
         case SyncConflictRoles::ConflictPreviewUrl:
             result = _conflictData[index.row()].mConflictPreviewUrl;
+            break;
+        case SyncConflictRoles::ExistingFilePath:
+            result = _conflictData[index.row()].mExistingFilePath;
+            break;
+        case SyncConflictRoles::ConflictFilePath:
+            result = _conflictData[index.row()].mConflictingFilePath;
             break;
         }
     }
@@ -131,6 +137,8 @@ QHash<int, QByteArray> SyncConflictsModel::roleNames() const
     result[static_cast<int>(SyncConflictRoles::ConflictSelected)] = "conflictSelected";
     result[static_cast<int>(SyncConflictRoles::ExistingPreviewUrl)] = "existingPreviewUrl";
     result[static_cast<int>(SyncConflictRoles::ConflictPreviewUrl)] = "conflictPreviewUrl";
+    result[static_cast<int>(SyncConflictRoles::ExistingFilePath)] = "existingFilePath";
+    result[static_cast<int>(SyncConflictRoles::ConflictFilePath)] = "conflictFilePath";
 
     return result;
 }
