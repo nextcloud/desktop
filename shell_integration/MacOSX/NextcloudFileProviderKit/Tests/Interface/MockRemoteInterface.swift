@@ -585,6 +585,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var thumbnailCompletionHandler: (@Sendable () -> Void)?
     public var thumbnailData: Data?
     public var thumbnailError: NKError?
+    public var capabilitiesHandler: (@Sendable (Account, @Sendable @escaping (URLSessionTask) -> Void) async -> Void)?
 
     /// Overrides the directory where chunked uploads create their local chunk files.
     public var chunkUploadDirectory: URL?
