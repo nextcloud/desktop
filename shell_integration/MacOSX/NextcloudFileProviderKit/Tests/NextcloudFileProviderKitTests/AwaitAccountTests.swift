@@ -10,6 +10,7 @@ import Testing
 /// Coverage for `awaitAccount`, which waits for account setup instead of failing the requests the
 /// framework makes before the main app has handed the account over.
 ///
+@Suite(.timeLimit(.minutes(1)))
 struct AwaitAccountTests {
     private static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
@@ -21,6 +22,36 @@ struct AwaitAccountTests {
             displayName: "Test"
         )
         return FileProviderExtension(domain: domain)
+    }
+
+    @Test func cancelledWaiterDoesNotWaitForAccountTimeout() async {
+        let ext = makeExtension()
+        let (waiting, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
+        let task = Task {
+            try await ext.awaitAccount(timeoutNanoseconds: UInt64.max) {
+                continuation.yield(())
+            }
+        }
+        var iterator = waiting.makeAsyncIterator()
+        _ = await iterator.next()
+        task.cancel()
+        await #expect(throws: CancellationError.self) { try await task.value }
+    }
+
+    @Test func cancelledContentFetchFinishesBeforeAccountSetup() async {
+        let ext = makeExtension()
+        let (completion, continuation) = AsyncStream<Error?>.makeStream()
+        defer { continuation.finish() }
+        let progress = ext.fetchContents(for: .rootContainer, version: nil, request: NSFileProviderRequest()) { _, _, error in
+            continuation.yield(error)
+            continuation.finish()
+        }
+        progress.cancel()
+        var iterator = completion.makeAsyncIterator()
+        let error = await iterator.next()
+        #expect((error.flatMap(\.self) as? CocoaError)?.code == .userCancelled)
+        #expect(progress.cancellationHandler == nil)
     }
 
     ///

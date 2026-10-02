@@ -875,31 +875,47 @@ import OSLog
     /// The domain account, waiting up to `timeoutNanoseconds` for setup to publish it.
     ///
     /// - Throws: `NSFileProviderError(.notAuthenticated)` when no account arrives within
-    ///   `timeoutNanoseconds`.
+    ///   `timeoutNanoseconds`, or `CancellationError` when the waiting task is cancelled.
     ///
-    func awaitAccount(timeoutNanoseconds: UInt64 = 10_000_000_000) async throws -> Account {
+    func awaitAccount(
+        timeoutNanoseconds: UInt64 = 10_000_000_000,
+        onWaiting: @Sendable () -> Void = {}
+    ) async throws -> Account {
+        try Task.checkCancellation()
         if let ncAccount {
             return ncAccount
         }
 
         let token = UUID()
+        var timeoutTask: Task<Void, Never>?
+        defer { timeoutTask?.cancel() }
 
-        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-            accountReadyLock.lock()
-            accountReadyWaiters[token] = continuation
-            accountReadyLock.unlock()
+        await withTaskCancellationHandler {
+            await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                accountReadyLock.lock()
+                accountReadyWaiters[token] = continuation
+                accountReadyLock.unlock()
 
-            // The account may have been published between the check above and the enqueue.
-            if ncAccount != nil {
-                resumeAccountWaiter(token)
-                return
+                // The account may have been published between the check above and the enqueue.
+                if ncAccount != nil || Task.isCancelled {
+                    resumeAccountWaiter(token)
+                    return
+                }
+
+                timeoutTask = Task { [weak self] in
+                    do {
+                        try await Task.sleep(nanoseconds: timeoutNanoseconds)
+                    } catch {
+                        return
+                    }
+                    self?.resumeAccountWaiter(token)
+                }
+                onWaiting()
             }
-
-            Task { [weak self] in
-                try? await Task.sleep(nanoseconds: timeoutNanoseconds)
-                self?.resumeAccountWaiter(token)
-            }
+        } onCancel: {
+            self.resumeAccountWaiter(token)
         }
+        try Task.checkCancellation()
 
         // Read after the resume, not at the resume site: a timeout that races an account landing a
         // moment later should still hand back the account rather than fail the request.
