@@ -489,10 +489,19 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         super.init()
     }
 
-    public static func storedItem(identifier: NSFileProviderItemIdentifier, account: Account, remoteInterface: RemoteInterface, dbManager: FilesDatabaseManager, log: any FileProviderLogging) async -> Item? {
+    public static func storedItem(
+        identifier: NSFileProviderItemIdentifier,
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
+        log: any FileProviderLogging
+    ) async -> Item? {
         // resolve the given identifier to a record in the model
 
-        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
+        guard !Task.isCancelled else { return nil }
+        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account, taskHandler: taskHandler)
+        guard !Task.isCancelled else { return nil }
 
         guard identifier != .rootContainer else {
             return Item.rootContainer(
@@ -528,7 +537,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             )
         }
 
-        guard let parentItemIdentifier else {
+        guard !Task.isCancelled, let parentItemIdentifier else {
             return nil
         }
 
