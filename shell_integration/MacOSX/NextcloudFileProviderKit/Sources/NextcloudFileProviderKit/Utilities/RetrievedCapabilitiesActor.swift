@@ -12,7 +12,7 @@ actor RetrievedCapabilitiesActor: Sendable {
     var ongoingFetches: Set<String> = []
     private var data: [String: (capabilities: Capabilities, retrievedAt: Date)] = [:]
 
-    private var ongoingFetchContinuations: [String: [CheckedContinuation<Void, Never>]] = [:]
+    private var ongoingFetchContinuations: [String: [UUID: CheckedContinuation<Void, Never>]] = [:]
 
     func getCapabilities(for account: String) -> (capabilities: Capabilities, retrievedAt: Date)? {
         data[account]
@@ -29,20 +29,34 @@ actor RetrievedCapabilitiesActor: Sendable {
             ongoingFetches.remove(account)
             // If there are any continuations waiting for this account, resume them.
             if let continuations = ongoingFetchContinuations.removeValue(forKey: account) {
-                continuations.forEach { $0.resume() }
+                continuations.values.forEach { $0.resume() }
             }
         }
     }
 
-    func awaitFetchCompletion(forAccount account: String) async {
-        guard ongoingFetches.contains(account) else { return }
-
-        // If a fetch is ongoing, create a continuation and store it.
-        await withCheckedContinuation { continuation in
-            var existingContinuations = ongoingFetchContinuations[account, default: []]
-            existingContinuations.append(continuation)
-            ongoingFetchContinuations[account] = existingContinuations
+    func awaitFetchCompletion(forAccount account: String, onWaiting: @Sendable () -> Void = {}) async {
+        guard !Task.isCancelled, ongoingFetches.contains(account) else { return }
+        let token = UUID()
+        await withTaskCancellationHandler {
+            await withCheckedContinuation { continuation in
+                guard !Task.isCancelled, ongoingFetches.contains(account) else {
+                    continuation.resume()
+                    return
+                }
+                ongoingFetchContinuations[account, default: [:]][token] = continuation
+                onWaiting()
+            }
+        } onCancel: {
+            Task { await self.cancelWaiter(forAccount: account, token: token) }
         }
+    }
+
+    private func cancelWaiter(forAccount account: String, token: UUID) {
+        let continuation = ongoingFetchContinuations[account]?.removeValue(forKey: token)
+        if ongoingFetchContinuations[account]?.isEmpty == true {
+            ongoingFetchContinuations.removeValue(forKey: account)
+        }
+        continuation?.resume()
     }
 
     func reset() {
