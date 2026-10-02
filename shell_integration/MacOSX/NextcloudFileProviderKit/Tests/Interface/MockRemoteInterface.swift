@@ -1450,8 +1450,14 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public func fetchCapabilities(
         account: Account,
         options _: NKRequestOptions,
-        taskHandler _: @escaping (URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        if let capabilitiesHandler {
+            await capabilitiesHandler(account, taskHandler)
+        }
+        if Task.isCancelled {
+            return (account.ncKitAccount, nil, nil, NKError(error: URLError(.cancelled)))
+        }
         let capsData = capabilities.data(using: .utf8)
         return (account.ncKitAccount, directMockCapabilities(), capsData, .success)
     }
