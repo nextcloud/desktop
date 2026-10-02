@@ -131,6 +131,29 @@ QString groupContainerPath()
     return QString::fromNSString([NSFileManager.defaultManager containerURLForSecurityApplicationGroupIdentifier:groupId].path);
 }
 
+void setExternalVolumeAccountIdentifiers(const QStringList &accountIdentifiers)
+{
+    NSString *const groupId = (NSString *)[NSBundle.mainBundle objectForInfoDictionaryKey:@"NCFPKAppGroupIdentifier"];
+    if (groupId == nil) {
+        qCWarning(lcMacFileProviderUtils) << "No app group identifier found in Info.plist, cannot publish external-volume account identifiers.";
+        return;
+    }
+
+    NSUserDefaults *const defaults = [[NSUserDefaults alloc] initWithSuiteName:groupId];
+    if (defaults == nil) {
+        qCWarning(lcMacFileProviderUtils) << "Could not open File Provider app-group defaults.";
+        return;
+    }
+
+    NSMutableArray<NSString *> *const values = [NSMutableArray arrayWithCapacity:accountIdentifiers.size()];
+    for (const auto &accountIdentifier : accountIdentifiers) {
+        [values addObject:accountIdentifier.toNSString()];
+    }
+
+    [defaults setObject:values forKey:@"NCExternalVolumeAccountIdentifiers"];
+    [defaults release];
+}
+
 } // namespace FileProviderUtils
 
 } // namespace Mac

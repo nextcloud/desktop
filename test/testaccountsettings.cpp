@@ -29,6 +29,7 @@
 #include "accountsettings.h"
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 class TestAccountSettings : public QObject
 {
@@ -112,6 +113,7 @@ private Q_SLOTS:
         const auto shortcutsPanel = settings.findChild<QWidget *>(QStringLiteral("accountShortcutsPanel"));
         const auto syncFoldersPanel = settings.findChild<QWidget *>(QStringLiteral("syncFoldersPanel"));
         const auto fileProviderPanel = settings.findChild<QWidget *>(QStringLiteral("fileProviderMaintenancePanel"));
+        const auto fileProviderStoragePanel = settings.findChild<QWidget *>(u"fileProviderStoragePanel"_s);
         const auto encryptionPanel = settings.findChild<QWidget *>(QStringLiteral("encryptionPanel"));
         const auto connectionPanel = settings.findChild<QWidget *>(QStringLiteral("accountStatusPanel"));
         const auto accountActionsPanel = settings.findChild<QWidget *>(QStringLiteral("accountActionsPanel"));
@@ -119,7 +121,9 @@ private Q_SLOTS:
         QVERIFY(shortcutsPanel);
         QVERIFY(syncFoldersPanel);
         QVERIFY(fileProviderPanel);
+        QVERIFY(fileProviderStoragePanel);
         QVERIFY(qobject_cast<QFrame *>(fileProviderPanel));
+        QVERIFY(fileProviderPanel->isAncestorOf(fileProviderStoragePanel));
         QVERIFY(encryptionPanel);
         QVERIFY(connectionPanel);
         QVERIFY(accountActionsPanel);
