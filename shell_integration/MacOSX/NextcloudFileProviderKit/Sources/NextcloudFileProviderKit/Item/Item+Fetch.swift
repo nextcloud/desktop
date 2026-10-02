@@ -356,7 +356,7 @@ public extension Item {
         }
     }
 
-    private func performFetchThumbnail(
+    internal func performFetchThumbnail(
         size: CGSize,
         domain: NSFileProviderDomain?,
         progress: Progress,
