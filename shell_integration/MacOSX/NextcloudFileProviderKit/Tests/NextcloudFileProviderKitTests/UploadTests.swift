@@ -12,10 +12,18 @@ import XCTest
 final class UploadTests: NextcloudFileProviderKitTestCase {
     static let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    private var retainedDatabase: Realm?
 
     override func setUp() {
         super.setUp()
+        _ = Self.dbManager
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        retainedDatabase = Self.dbManager.ncDatabase()
+    }
+
+    override func tearDown() {
+        retainedDatabase = nil
+        super.tearDown()
     }
 
     func testStandardUpload() async throws {
