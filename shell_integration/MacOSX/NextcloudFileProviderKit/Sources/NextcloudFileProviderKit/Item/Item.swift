@@ -523,7 +523,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             await dbManager.parentItemIdentifierWithRemoteFallback(
                 fromMetadata: metadata,
                 remoteInterface: remoteInterface,
-                account: account
+                account: account,
+                taskHandler: taskHandler
             )
         }
 

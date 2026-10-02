@@ -318,7 +318,8 @@ public extension Item {
         let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
             fromMetadata: metadata,
             remoteInterface: remoteInterface,
-            account: account
+            account: account,
+            taskHandler: { cancellation.register(task: $0) }
         )
         guard !progress.isCancelled, !Task.isCancelled else {
             return (nil, nil, CocoaError(.userCancelled))

@@ -812,8 +812,10 @@ public final class FilesDatabaseManager: Sendable {
     public func parentItemIdentifierWithRemoteFallback(
         fromMetadata metadata: SendableItemMetadata,
         remoteInterface: RemoteInterface,
-        account: Account
+        account: Account,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> NSFileProviderItemIdentifier? {
+        guard !Task.isCancelled else { return nil }
         if let parentItemIdentifier = parentItemIdentifierFromMetadata(metadata) {
             return parentItemIdentifier
         }
@@ -824,8 +826,11 @@ public final class FilesDatabaseManager: Sendable {
             remoteInterface: remoteInterface,
             dbManager: self,
             depth: .target,
+            taskHandler: taskHandler,
             log: logger.log
         )
+
+        guard !Task.isCancelled else { return nil }
 
         guard readResult.error == nil, let parentMetadata = readResult.metadatas?.first else {
             logger.error("Could not retrieve parent item identifier remotely.", [
