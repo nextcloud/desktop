@@ -12,8 +12,53 @@ import Testing
 
 @Suite(.serialized)
 struct RemoteInterfaceExtensionTests {
+    private func capabilitiesFromMockJSON(jsonString: String = mockCapabilities) -> (Capabilities, Data) {
+        let data = jsonString.data(using: .utf8)!
+        let caps = Capabilities(data: data)!
+        return (caps, data)
+    }
+
+    private func makeNetworkTask() throws -> (URLSession, URLSessionTask) {
+        let session = URLSession(configuration: .ephemeral)
+        let task = try session.dataTask(with: #require(URL(string: "https://example.invalid/capabilities")))
+        return (session, task)
+    }
+
     let testAccount = Account(user: "a1", id: "1", serverUrl: "example.com", password: "pass")
     let otherAccount = Account(user: "a2", id: "2", serverUrl: "example.com", password: "word")
+
+    @Test func supportsTrashForwardsNetworkTask() async throws {
+        await RetrievedCapabilitiesActor.shared.reset()
+        let (session, networkTask) = try makeNetworkTask()
+        defer { session.invalidateAndCancel() }
+        let (capabilities, data) = capabilitiesFromMockJSON()
+        let remote = TestableRemoteInterface { account, _, taskHandler in
+            taskHandler(networkTask)
+            return (account.ncKitAccount, capabilities, data, .success)
+        }
+        await confirmation("Capability request task is forwarded") { forwarded in
+            let supported = await remote.supportsTrash(account: testAccount, taskHandler: { task in
+                #expect(task === networkTask)
+                forwarded()
+            })
+            #expect(supported)
+        }
+    }
+
+    @Test func cancelledCapabilitiesDoNotStartAnotherFetch() async {
+        await RetrievedCapabilitiesActor.shared.reset()
+        let remote = TestableRemoteInterface { account, _, _ in
+            Issue.record("Cancelled capability lookup must not start a request")
+            return (account.ncKitAccount, nil, nil, .invalidResponseError)
+        }
+        let task = Task {
+            withUnsafeCurrentTask { $0?.cancel() }
+            return await remote.currentCapabilities(account: testAccount)
+        }
+        let result = await task.value
+        #expect(result.error.errorCode == NSURLErrorCancelled)
+        #expect(result.capabilities == nil)
+    }
 
     @Test func chunkedUploadRemotePathComponentsPreserveFilenameCharacters() throws {
         let serverUrl = "https://cloud.example.com/remote.php/dav/files/user/comics"
@@ -74,12 +119,6 @@ struct RemoteInterfaceExtensionTests {
             return result.nkError.errorCode
         }
         #expect(await task.value == NSURLErrorCancelled)
-    }
-
-    func capabilitiesFromMockJSON(jsonString: String = mockCapabilities) -> (Capabilities, Data) {
-        let data = jsonString.data(using: .utf8)!
-        let caps = Capabilities(data: data)!
-        return (caps, data)
     }
 
     @Test func currentCapabilitiesReturnsFreshCache() async {
