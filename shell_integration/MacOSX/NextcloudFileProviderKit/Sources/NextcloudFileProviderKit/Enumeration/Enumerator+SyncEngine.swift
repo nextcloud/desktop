@@ -201,6 +201,7 @@ extension Enumerator {
         domain: NSFileProviderDomain? = nil,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
         depth: EnumerateDepth = .targetAndDirectChildren,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
@@ -241,6 +242,7 @@ extension Enumerator {
             account: account,
             options: options,
             taskHandler: { task in
+                taskHandler(task)
                 if let domain, let enumeratedItemIdentifier {
                     NSFileProviderManager(for: domain)?.register(
                         task,
