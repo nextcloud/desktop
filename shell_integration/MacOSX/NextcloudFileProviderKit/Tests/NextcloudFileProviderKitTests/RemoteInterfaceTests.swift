@@ -6,7 +6,7 @@ import Foundation
 import NextcloudCapabilitiesKit
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import NextcloudKit
+@testable import NextcloudKit
 import Testing
 @testable import TestInterface
 
@@ -34,6 +34,46 @@ struct RemoteInterfaceExtensionTests {
     @Test func chunkedUploadRemotePathComponentsRejectInvalidPaths() {
         #expect(chunkedUploadRemotePathComponents(from: "filename.txt") == nil)
         #expect(chunkedUploadRemotePathComponents(from: "https://cloud.example.com/") == nil)
+    }
+
+    @Test func cancelledChunkedUploadPreservesCancellationError() async throws {
+        let account = Account(user: UUID().uuidString, id: "user", serverUrl: "https://example.invalid", password: "password")
+        let remote = NextcloudKit()
+        remote.appendSession(
+            account: account.ncKitAccount,
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id,
+            password: account.password,
+            userAgent: "cancellation-test",
+            groupIdentifier: ""
+        )
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let uploadIdentifier = UUID().uuidString
+        let chunksDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(uploadIdentifier)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer {
+            try? FileManager.default.removeItem(at: directory)
+            try? FileManager.default.removeItem(at: chunksDirectory)
+        }
+        let contents = directory.appendingPathComponent("video.bin")
+        try Data(repeating: 1, count: 8).write(to: contents)
+        let task = Task {
+            withUnsafeCurrentTask { $0?.cancel() }
+            let result = await remote.chunkedUpload(
+                localPath: contents.path,
+                remotePath: account.davFilesUrl + "/video.bin",
+                remoteChunkStoreFolderName: uploadIdentifier,
+                chunkSize: 3,
+                remainingChunks: [],
+                account: account,
+                log: FileProviderLogMock()
+            )
+            #expect(result.file == nil)
+            #expect(result.chunksDirectory == chunksDirectory)
+            return result.nkError.errorCode
+        }
+        #expect(await task.value == NSURLErrorCancelled)
     }
 
     func capabilitiesFromMockJSON(jsonString: String = mockCapabilities) -> (Capabilities, Data) {
