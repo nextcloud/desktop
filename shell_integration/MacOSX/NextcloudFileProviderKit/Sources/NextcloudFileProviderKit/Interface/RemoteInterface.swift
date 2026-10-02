@@ -171,9 +171,19 @@ public extension RemoteInterface {
         taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
         let ncKitAccount = account.ncKitAccount
+        guard !Task.isCancelled else {
+            return (ncKitAccount, nil, nil, NKError(error: URLError(.cancelled)))
+        }
         await RetrievedCapabilitiesActor.shared.awaitFetchCompletion(forAccount: ncKitAccount)
+        guard !Task.isCancelled else {
+            return (ncKitAccount, nil, nil, NKError(error: URLError(.cancelled)))
+        }
 
-        guard let lastRetrieval = await RetrievedCapabilitiesActor.shared.getCapabilities(for: ncKitAccount), lastRetrieval.retrievedAt.timeIntervalSince(Date()) > -CapabilitiesFetchInterval
+        let lastRetrieval = await RetrievedCapabilitiesActor.shared.getCapabilities(for: ncKitAccount)
+        guard !Task.isCancelled else {
+            return (ncKitAccount, nil, nil, NKError(error: URLError(.cancelled)))
+        }
+        guard let lastRetrieval, lastRetrieval.retrievedAt.timeIntervalSince(Date()) > -CapabilitiesFetchInterval
         else {
             return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
         }
@@ -184,12 +194,12 @@ public extension RemoteInterface {
     func supportsTrash(
         account: Account,
         options _: NKRequestOptions = .init(),
-        taskHandler _: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in }
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> Bool {
         var remoteSupportsTrash = false
 
         let (_, capabilities, _, _) = await currentCapabilities(
-            account: account, options: .init(), taskHandler: { _ in }
+            account: account, options: .init(), taskHandler: taskHandler
         )
 
         if let filesCapabilities = capabilities?.files {
