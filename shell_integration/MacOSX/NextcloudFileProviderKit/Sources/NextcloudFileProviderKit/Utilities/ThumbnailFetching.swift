@@ -16,6 +16,7 @@ public func fetchThumbnails(
     account: Account,
     usingRemoteInterface remoteInterface: RemoteInterface,
     andDatabase dbManager: FilesDatabaseManager,
+    domain: NSFileProviderDomain? = nil,
     perThumbnailCompletionHandler: @Sendable @escaping (
         NSFileProviderItemIdentifier,
         Data?,
@@ -36,7 +37,7 @@ public func fetchThumbnails(
     }
 
     for itemIdentifier in itemIdentifiers {
-        Task {
+        Task { @Sendable in
             guard let item = await Item.storedItem(
                 identifier: itemIdentifier,
                 account: account,
@@ -55,7 +56,7 @@ public func fetchThumbnails(
                 return
             }
 
-            let (data, error) = await item.fetchThumbnail(size: size)
+            let (data, error) = await item.fetchThumbnail(size: size, domain: domain)
             perThumbnailCompletionHandler(itemIdentifier, data, error)
             finishCurrent()
         }

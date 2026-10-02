@@ -57,6 +57,7 @@ import OSLog
     /// NextcloudKit instance used by this file provider extension object.
     ///
     let ncKit: NextcloudKit
+    var thumbnailFetcher = NextcloudFileProviderKit.fetchThumbnails
 
     var ncAccount: Account?
     var dbManager: FilesDatabaseManager?
