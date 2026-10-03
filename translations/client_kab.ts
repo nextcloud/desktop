@@ -7565,7 +7565,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="164"/>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="167"/>
         <source>Create public link</source>
-        <translation type="unfinished"/>
+        <translation>Snulfu-d aseɣwen azayez</translation>
     </message>
 </context>
 <context>
@@ -7574,19 +7574,19 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sharing/ShareRow.qml" line="49"/>
         <source>Share link</source>
         <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Bḍu aseɣwen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="56"/>
         <source>Unfinished share</source>
         <extracomment>&quot;Unfinished share&quot; is a noun phrase referring to a share entry that has not been sent yet.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ur ifukk ara beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="59"/>
         <source>Share</source>
         <extracomment>&quot;Share&quot; is a noun referring to a share entry without a recipient name.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Bḍu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="69"/>
@@ -7601,17 +7601,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="91"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Nɣel aseɣwen azayez</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="104"/>
         <source>Configure share</source>
-        <translation type="unfinished"/>
+        <translation>Swel beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="120"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Kkes beṭṭu</translation>
     </message>
 </context>
 <context>
@@ -7619,37 +7619,37 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="84"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>Awal uffir yesra i beṭṭu amaynut</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="112"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>Bḍu awal uffir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="148"/>
         <source>Shared with you by %1</source>
-        <translation type="unfinished"/>
+        <translation>yettwabḍan yid-k·m sɣur %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="154"/>
         <source>Expires in %1</source>
-        <translation type="unfinished"/>
+        <translation>Ad yemmet deg %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="304"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Beṭṭu yexsi.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="311"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>Aferdis-agi ur yezmir ara ad yettwabḍu.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="319"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>Beṭṭu yexsi.</translation>
     </message>
 </context>
 <context>
@@ -7657,12 +7657,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>Nadi iseqdacen neɣ igrawen...</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Beṭṭu ur yewjid ara i ukaram-agi</translation>
     </message>
 </context>
 <context>
@@ -7670,17 +7670,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Ifuyla uhlisen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Asaǧǧaw n ufaylu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files (beta)</source>
-        <translation type="unfinished"/>
+        <translation>Ifuyla uhlisen (biṭa)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="92"/>
@@ -7690,7 +7690,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="93"/>
         <source>Download files on-demand</source>
-        <translation type="unfinished"/>
+        <translation>Sider ifuyla deg usuter</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="101"/>
