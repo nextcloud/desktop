@@ -14,7 +14,7 @@ jobs:
     if: "${{ github.event.action != 'closed' && !github.event.pull_request.draft && contains(github.event.pull_request.labels.*.name, 'os: :penguin: Linux') }}"
     name: Linux Appimage Package
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.10.2-4
+    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.10.2-7
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
