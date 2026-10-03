@@ -361,7 +361,7 @@ else()
 endif()
 
 if (WIN32)
-    install(FILES $<TARGET_PDB_FILE:nextcloudsync> DESTINATION bin OPTIONAL)
+    install(FILES $<TARGET_PDB_FILE:nextcloudsync> DESTINATION bin CONFIGURATIONS Debug OPTIONAL)
 endif()
 
 add_subdirectory(vfs)

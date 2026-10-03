@@ -155,7 +155,7 @@ else()
 endif()
 
 if (WIN32)
-    install(FILES $<TARGET_PDB_FILE:nextcloud_csync> DESTINATION bin OPTIONAL)
+    install(FILES $<TARGET_PDB_FILE:nextcloud_csync> DESTINATION bin CONFIGURATIONS Debug OPTIONAL)
 endif()
 
 configure_file(config_csync.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config_csync.h)
