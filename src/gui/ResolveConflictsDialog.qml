@@ -30,6 +30,11 @@ ApplicationWindow {
     minimumHeight: Style.minimumHeightResolveConflictsDialog
     title: qsTr('Solve sync conflicts')
 
+    Shortcut {
+        sequences: [StandardKey.Close]
+        onActivated: conflictsDialog.close()
+    }
+
     onClosing: function(close) {
         Systray.destroyDialog(self);
         close.accepted = true
