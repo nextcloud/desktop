@@ -667,6 +667,17 @@ public final class FilesDatabaseManager: Sendable {
             if toWrite.etag == existing.etag {
                 toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
             }
+
+            // The same guard `depth1ReadUpdateItemMetadatas` applies, with `visitedDirectory`
+            // compared explicitly because it is local-only and so absent from
+            // `isInSameDatabaseStoreableRemoteState`.
+            if existing.status == Status.normal.rawValue,
+               existing.isInSameDatabaseStoreableRemoteState(toWrite),
+               existing.visitedDirectory == toWrite.visitedDirectory
+            {
+                logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
+                return toWrite
+            }
         } else {
             // The ocId lookup missed. Before falling back to defaults from the
             // server payload, look for a single non-deleted, non-local-lock row
