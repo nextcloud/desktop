@@ -9,6 +9,10 @@
 
 #include <QLoggingCategory>
 
+#include <QDesktopServices>
+
+#include <QDirIterator>
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSyncConflictsModel, "nextcloud.syncconflictsmodel", QtInfoMsg)
@@ -337,4 +341,46 @@ bool SyncConflictsModel::ConflictInfo::isValid() const
     return mConflictSelected == ConflictInfo::ConflictSolution::SolutionSelected || mExistingSelected == ConflictInfo::ConflictSolution::SolutionSelected;
 }
 
+bool SyncConflictsModel::openConflictFolder(int row)
+{
+    if (row < 0 || row >= _conflictData.size()) {
+        qCWarning(lcSyncConflictsModel) << "Invalid row index for opening conflict folder";
+        return false;
+    }
+
+    auto filePath = _conflictData[row].mConflictingFilePath;
+    QFileInfo fileInfo(filePath);
+
+    if (!filePath.isEmpty() && !fileInfo.exists()) {
+        const auto fileName = fileInfo.fileName();
+
+        if (const auto folder = FolderMan::instance()->folder(_data[row]._folder)) {
+            QDirIterator it(folder->path(), {fileName}, QDir::Files, QDirIterator::Subdirectories);
+
+            if (it.hasNext()) {
+                filePath = it.next();
+                _conflictData[row].mConflictingFilePath = filePath;
+                fileInfo.setFile(filePath);
+            }
+        }
+    }
+
+    if (filePath.isEmpty() || !fileInfo.exists()) {
+        qCWarning(lcSyncConflictsModel) << "Conflict file does not exist at path:" << filePath;
+        return false;
+    }
+
+    return QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absolutePath()));
+}
+
+QString SyncConflictsModel::fileManagerText() const
+{
+    if (Utility::isMac()) {
+        return tr("Open in Finder");
+    }
+    if (Utility::isWindows()) {
+        return tr("Open in File Explorer");
+    }
+    return tr("Open in file manager");
+}
 }
