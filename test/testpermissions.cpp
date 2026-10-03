@@ -17,6 +17,10 @@
 #include <filesystem>
 #include <iostream>
 
+#if defined(Q_OS_WIN)
+#include <aclapi.h>
+#endif
+
 using namespace OCC;
 using namespace Qt::StringLiterals;
 
@@ -54,6 +58,46 @@ static bool isReadOnlyFolder(const std::wstring &path)
 {
     return FileSystem::isFolderReadOnly(std::filesystem::path{path});
 }
+
+#if defined(Q_OS_WIN)
+// Replace the DACL of `path` with a protected one that only grants `accessPermissions`
+// to the current user. The ACE is inherited by all files and folders below `path`.
+static bool setCurrentUserOnlyDacl(const QString &path, DWORD accessPermissions)
+{
+    HANDLE tokenUnmanaged = nullptr;
+    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &tokenUnmanaged)) {
+        return false;
+    }
+    const auto token = Utility::UniqueHandle{tokenUnmanaged};
+
+    auto tokenUserSize = DWORD{0};
+    GetTokenInformation(token.get(), TokenUser, nullptr, 0, &tokenUserSize);
+    auto tokenUserBuffer = std::vector<char>(tokenUserSize);
+    if (!GetTokenInformation(token.get(), TokenUser, tokenUserBuffer.data(), tokenUserSize, &tokenUserSize)) {
+        return false;
+    }
+    const auto tokenUser = reinterpret_cast<const TOKEN_USER *>(tokenUserBuffer.data());
+
+    auto explicitAccess = EXPLICIT_ACCESS_W{};
+    explicitAccess.grfAccessPermissions = accessPermissions;
+    explicitAccess.grfAccessMode = SET_ACCESS;
+    explicitAccess.grfInheritance = SUB_CONTAINERS_AND_OBJECTS_INHERIT;
+    explicitAccess.Trustee.TrusteeForm = TRUSTEE_IS_SID;
+    explicitAccess.Trustee.TrusteeType = TRUSTEE_IS_USER;
+    explicitAccess.Trustee.ptstrName = reinterpret_cast<LPWSTR>(tokenUser->User.Sid);
+
+    PACL daclUnmanaged = nullptr;
+    if (SetEntriesInAclW(1, &explicitAccess, nullptr, &daclUnmanaged) != ERROR_SUCCESS) {
+        return false;
+    }
+    const auto dacl = Utility::UniqueLocalFree<PACL>{daclUnmanaged};
+
+    auto windowsPath = FileSystem::longWinPath(QDir::cleanPath(path));
+    const auto rawWindowsPath = reinterpret_cast<wchar_t *>(windowsPath.data());
+    constexpr SECURITY_INFORMATION securityInfo = DACL_SECURITY_INFORMATION | PROTECTED_DACL_SECURITY_INFORMATION;
+    return SetNamedSecurityInfoW(rawWindowsPath, SE_FILE_OBJECT, securityInfo, nullptr, nullptr, dacl.get(), nullptr) == ERROR_SUCCESS;
+}
+#endif
 
 SyncFileItemPtr findDiscoveryItem(const SyncFileItemVector &spy, const QString &path)
 {
@@ -942,6 +986,153 @@ private Q_SLOTS:
         QVERIFY(ensureReadOnlyItem("readOnlyFolder/readOnlyFile.txt"));
         QVERIFY(ensureReadOnlyItem("readOnlyFolder/test/newFile.txt"));
         QVERIFY(ensureReadOnlyItem("readOnlyFolder/newFolder"));
+    }
+
+    // Regression test for https://github.com/nextcloud/desktop/issues/9885
+    //
+    // A read-only shared file (for example a Talk attachment) must download
+    // successfully and end up read-only locally. The read-only permission is
+    // applied to the final file only after it has been renamed into place.
+    // Applying it to the temporary download file before the rename used to add
+    // a deny-DELETE ACE on Windows that blocked the rename, turning the download
+    // into a persistent Error 5 (Access Denied) retry loop.
+    void testDownloadReadOnlyFileMakesItReadOnly()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.insert("readOnlyFile.txt", 100, 'A');
+        // "mG" excludes the W (CanWrite) permission, so the file is read-only.
+        remote.find("readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("mG");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!QFileInfo(fakeFolder.localPath() + "readOnlyFile.txt").isWritable());
+    }
+
+    // Companion to the test above: a remote change to a file that is already
+    // read-only locally must re-download and overwrite it. This exercises the
+    // temp-file -> rename-over-read-only-destination path that regressed in
+    // #9885, and confirms the file stays read-only afterwards.
+    void testUpdateExistingReadOnlyFileMakesItReadOnly()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.insert("readOnlyFile.txt", 100, 'A');
+        remote.find("readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("mG");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!QFileInfo(fakeFolder.localPath() + "readOnlyFile.txt").isWritable());
+
+        // Remote update while the file is read-only locally: the client must
+        // download to a temp file and rename it over the read-only destination.
+        remote.setContents("readOnlyFile.txt", 'B');
+        remote.appendByte("readOnlyFile.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!QFileInfo(fakeFolder.localPath() + "readOnlyFile.txt").isWritable());
+    }
+
+#if defined(Q_OS_WIN)
+    // Same scenario as the two tests above, but in a sync folder where the user
+    // has "Modify" instead of "Full control" permissions.
+    //
+    // Renaming the temporary download file into place needs DELETE access on it.
+    // Windows also grants that through FILE_DELETE_CHILD on the parent folder,
+    // which is part of "Full control" but not of "Modify". Without it, a
+    // read-only ACL applied to the temporary file blocks the rename.
+    void testDownloadReadOnlyFileWithoutDeleteChildPermission()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        const auto localPath = fakeFolder.localPath();
+        constexpr auto modifyPermissions = DWORD{FILE_GENERIC_READ | FILE_GENERIC_WRITE | FILE_GENERIC_EXECUTE | DELETE};
+        QVERIFY(setCurrentUserOnlyDacl(localPath, modifyPermissions));
+        const auto restoreFullControl = qScopeGuard([&localPath] {
+            setCurrentUserOnlyDacl(localPath, FILE_ALL_ACCESS);
+        });
+
+        auto &remote = fakeFolder.remoteModifier();
+        remote.insert("readOnlyFile.txt", 100, 'A');
+        remote.find("readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("mG");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!QFileInfo(localPath + "readOnlyFile.txt").isWritable());
+
+        remote.setContents("readOnlyFile.txt", 'B');
+        remote.appendByte("readOnlyFile.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!QFileInfo(localPath + "readOnlyFile.txt").isWritable());
+    }
+
+    // Clients affected by the bug above left a fully downloaded, read-only
+    // temporary file behind after failing to rename it into place. The next
+    // sync reuses that temporary file instead of downloading the file again,
+    // and must be able to rename it.
+    void testDownloadRecoversReadOnlyTemporaryFileWithoutDeleteChildPermission()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        const auto localPath = fakeFolder.localPath();
+        constexpr auto modifyPermissions = DWORD{FILE_GENERIC_READ | FILE_GENERIC_WRITE | FILE_GENERIC_EXECUTE | DELETE};
+        QVERIFY(setCurrentUserOnlyDacl(localPath, modifyPermissions));
+        const auto restoreFullControl = qScopeGuard([&localPath] {
+            setCurrentUserOnlyDacl(localPath, FILE_ALL_ACCESS);
+        });
+
+        auto &remote = fakeFolder.remoteModifier();
+        remote.insert("readOnlyFile.txt", 100, 'A');
+        const auto remoteFile = remote.find("readOnlyFile.txt");
+        remoteFile->permissions = RemotePermissions::fromServerString("mG");
+
+        // Recreate the state left behind by an affected client.
+        const auto tmpFileName = QStringLiteral(".readOnlyFile.txt.~1234abcd");
+        const auto tmpFilePath = localPath + tmpFileName;
+        {
+            auto tmpFile = QFile{tmpFilePath};
+            QVERIFY(tmpFile.open(QIODevice::WriteOnly));
+            QCOMPARE(tmpFile.write(QByteArray(remoteFile->size, remoteFile->contentChar)), remoteFile->size);
+        }
+        FileSystem::setFileHidden(tmpFilePath, true);
+        FileSystem::setFileReadOnly(tmpFilePath, true);
+
+        auto downloadInfo = SyncJournalDb::DownloadInfo{};
+        downloadInfo._tmpfile = tmpFileName;
+        downloadInfo._etag = remoteFile->etag;
+        downloadInfo._valid = true;
+        fakeFolder.syncJournal().setDownloadInfo("readOnlyFile.txt", downloadInfo);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!QFileInfo::exists(tmpFilePath));
+        QVERIFY(!QFileInfo(localPath + "readOnlyFile.txt").isWritable());
+    }
+#endif
+
+    // A file that becomes writable again on the server must lose its local
+    // read-only state on the next sync. Validates the read-write branch of the
+    // permission block that the fix moved after the rename.
+    void testDownloadReadWriteFileMakesItWritable()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.insert("file.txt", 100, 'A');
+        remote.find("file.txt")->permissions = RemotePermissions::fromServerString("mG");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!QFileInfo(fakeFolder.localPath() + "file.txt").isWritable());
+
+        // Grant write permission and change the content so the file re-downloads.
+        remote.find("file.txt")->permissions = RemotePermissions::fromServerString("WmG");
+        remote.appendByte("file.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(QFileInfo(fakeFolder.localPath() + "file.txt").isWritable());
     }
 
     void testForbiddenDownload()
