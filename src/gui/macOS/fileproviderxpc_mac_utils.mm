@@ -271,4 +271,31 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
     return clientCommConnections;
 }
 
+std::optional<bool> deletePassword(NSObject<ClientCommunicationProtocol> *const clientCommService, const std::chrono::nanoseconds timeout)
+{
+    if (clientCommService == nil) {
+        qCWarning(lcFileProviderXPCUtils) << "Cannot delete password without client communication service.";
+        return std::nullopt;
+    }
+
+    __block auto deleted = false;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    // The copied reply block retains the semaphore, so a reply after the timeout is safe.
+    [clientCommService deletePasswordWithCompletionHandler:^(const BOOL didDelete) {
+        deleted = didDelete;
+        dispatch_semaphore_signal(semaphore);
+    }];
+
+    const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, timeout.count()));
+    dispatch_release(semaphore);
+
+    if (waitResult != 0) {
+        qCWarning(lcFileProviderXPCUtils) << "Timed out while waiting for password deletion.";
+        return std::nullopt;
+    }
+
+    return deleted;
+}
+
 } // namespace OCC::Mac::FileProviderXPCUtils

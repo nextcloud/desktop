@@ -19,8 +19,11 @@
 
 #import <Foundation/Foundation.h>
 
+#include <chrono>
+
 namespace {
     constexpr int64_t semaphoreWaitDelta = 1000000000; // 1 seconds
+    constexpr auto passwordDeletionTimeout = std::chrono::nanoseconds{semaphoreWaitDelta};
     constexpr auto reachableRetryTimeout = 300; // seconds
 }
 
@@ -269,6 +272,23 @@ std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QS
     qCInfo(lcFileProviderXPC) << "File provider domain" << fileProviderDomainIdentifier << (hasDirtyUserData ? "has" : "does not have") << "dirty user data";
 
     return hasDirtyUserData;
+}
+
+std::optional<bool> FileProviderXPC::deleteFileProviderDomainPassword(const QString &fileProviderDomainIdentifier) const
+{
+    qCInfo(lcFileProviderXPC) << "Deleting password of file provider domain" << fileProviderDomainIdentifier;
+
+    const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
+    const auto service = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
+    const auto deleted = FileProviderXPCUtils::deletePassword(service, ::passwordDeletionTimeout);
+
+    if (!deleted.has_value()) {
+        qCWarning(lcFileProviderXPC) << "Could not confirm password deletion of file provider domain" << fileProviderDomainIdentifier;
+    } else if (!*deleted) {
+        qCWarning(lcFileProviderXPC) << "File provider domain failed to delete its password" << fileProviderDomainIdentifier;
+    }
+
+    return deleted;
 }
 
 bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const

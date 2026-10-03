@@ -8,6 +8,9 @@
 #include <QHash>
 #include <QLoggingCategory>
 
+#include <chrono>
+#include <optional>
+
 #include "fileproviderxpcconnection.h"
 
 #import <Foundation/Foundation.h>
@@ -39,4 +42,11 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
  * when they are no longer needed.
  */
 ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections, OCC::Mac::FileProviderService *service);
+
+/**
+ * @brief Ask a client communication service to delete the password of its domain and wait for the reply.
+ * @param clientCommService The remote service of one domain. With nil, no request is sent.
+ * @return The reply, or std::nullopt when there is no service or no reply arrived within the timeout.
+ */
+std::optional<bool> deletePassword(NSObject<ClientCommunicationProtocol> *clientCommService, std::chrono::nanoseconds timeout);
 }
