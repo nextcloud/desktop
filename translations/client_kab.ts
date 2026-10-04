@@ -7438,22 +7438,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="119"/>
         <source>Added by %1</source>
-        <translation type="unfinished"/>
+        <translation>Yettwarna sɣur %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
         <source>Configure recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>Swel tisirag n uɣerwaḍ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="159"/>
         <source>Copy recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Nɣel aseɣwen n uɣerwaḍ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Regenerate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Ales asirew n useɣwen n uɣerwaḍ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
@@ -7468,22 +7468,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
         <source>Can view</source>
-        <translation type="unfinished"/>
+        <translation>Izmer ad iwali</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="227"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Yezmer ad iẓreg</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="231"/>
         <source>Custom permissions</source>
-        <translation type="unfinished"/>
+        <translation>Tisirag yugnen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Iɣewwaṛen n beṭṭu</translation>
     </message>
 </context>
 <context>
@@ -7492,51 +7492,51 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="43"/>
         <source>Share &quot;%1&quot;</source>
         <extracomment>%1 is the name of the item. &quot;Share&quot; is a verb.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Bḍu &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="36"/>
         <source>File</source>
         <extracomment>Generic fallback name for a shared item when its name is unavailable.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Afaylu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="65"/>
         <source>Share settings</source>
         <extracomment>&quot;Share&quot; is a noun referring to the share whose settings are shown.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Iɣewwaṛen n beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="79"/>
         <source>Share with %1</source>
         <extracomment>%1 is a list of recipient names. &quot;Share&quot; is a verb.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Bḍu akked %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="82"/>
         <source>New share</source>
         <extracomment>&quot;Share&quot; is a noun referring to a newly created share.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Beṭṭu amaynut</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to share details</source>
-        <translation type="unfinished"/>
+        <translation>Uɣal ɣer ifatusen n beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to shares</source>
-        <translation type="unfinished"/>
+        <translation>Uɣal ɣer beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="205"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Iɣewwaṛen n beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="237"/>
         <source>Advanced sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>Iɣewwaṛen leqqayen n beṭṭu</translation>
     </message>
 </context>
 <context>
@@ -7544,22 +7544,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="78"/>
         <source>Creating share…</source>
-        <translation type="unfinished"/>
+        <translation>Snulfu-d beṭṭu...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="150"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Aseɣwen adigan</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="151"/>
         <source>For people who already have access</source>
-        <translation type="unfinished"/>
+        <translation>I yemdanen yesɛan yakan adduf</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="153"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Nɣel aseɣwen adigan</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="164"/>
