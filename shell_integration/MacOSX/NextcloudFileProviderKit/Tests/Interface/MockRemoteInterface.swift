@@ -581,6 +581,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var downloadTask: URLSessionTask?
     public var downloadError: NKError?
     public private(set) var downloadOperationCount = 0
+    public private(set) var downloadDestinationURL: URL?
     public var thumbnailHandler: (@Sendable (URL, @Sendable @escaping (URLSessionTask) -> Void) async -> Void)?
     public var thumbnailCompletionHandler: (@Sendable () -> Void)?
     public var thumbnailData: Data?
@@ -1174,6 +1175,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         nkError: NKError
     ) {
         downloadOperationCount += 1
+        downloadDestinationURL = URL(fileURLWithPath: fileNameLocalPath)
         if let downloadRequest {
             requestHandler(downloadRequest)
         }
