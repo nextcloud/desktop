@@ -50,7 +50,7 @@ extension FilesDatabaseManager {
             // Ensure token-dependent capabilities are published even if the etag is unchanged.
             target.syncTime = Date()
 
-            try target.update(db)
+            try target.upsertRow(db)
             return true
         }
     }
@@ -75,7 +75,7 @@ extension FilesDatabaseManager {
             target.lockTimeOut = nil
             target.lockToken = nil
 
-            try target.update(db)
+            try target.upsertRow(db)
             return true
         }
     }

@@ -28,7 +28,7 @@ extension FilesDatabaseManager {
         }
 
         try writer.write { db in
-            try record.upsert(db)
+            try record.upsertRow(db)
         }
     }
 

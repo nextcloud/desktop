@@ -19,7 +19,7 @@ public extension FilesDatabaseManager {
             }
 
             record.keepDownloaded = keepDownloaded
-            try record.update(db)
+            try record.upsertRow(db)
 
             logger.debug("Updated keepDownloaded status for item metadata.", [.item: metadata.ocId, .name: metadata.fileName])
 

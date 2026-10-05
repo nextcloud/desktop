@@ -59,18 +59,19 @@ extension FilesDatabaseManager {
             return []
         }
 
-        let candidates = try ItemMetadataRecord
-            .filter(
-                ItemMetadataRecord.hasLocation(serverUrl: incoming.serverUrl, fileName: incoming.fileName)
-                    && ItemMetadataRecord.Columns.ocId != incoming.ocId
-                    && ItemMetadataRecord.Columns.deleted == false
-                    && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false
-            )
-            .fetchAll(db)
+        // Prepared once per connection: this runs for every row of a large directory write.
+        let candidates = try ItemLogicalAddressRow.fetchAll(
+            db.cachedStatement(sql: Self.logicalDuplicateCandidatesSQL),
+            arguments: [
+                incoming.fileName.precomposedStringWithCanonicalMapping,
+                incoming.serverUrl.precomposedStringWithCanonicalMapping,
+                incoming.ocId
+            ]
+        )
 
         var evicted: [String] = []
 
-        for var candidate in candidates {
+        for candidate in candidates {
             if candidate.status != Status.normal.rawValue {
                 logger.error("Skipping eviction of in-flight logical duplicate.", [
                     .item: candidate.ocId,
@@ -82,21 +83,28 @@ extension FilesDatabaseManager {
                 continue
             }
 
-            candidate.deleted = true
-            candidate.syncTime = now
-            try candidate.update(db)
+            try db.cachedStatement(sql: Self.softDeleteSQL).execute(arguments: [now.timeIntervalSinceReferenceDate, candidate.ocId])
             evicted.append(candidate.ocId)
 
             logger.info("Evicted logical duplicate.", [
                 .item: candidate.ocId,
                 .name: candidate.fileName,
                 .url: candidate.serverUrl,
-                .syncTime: candidate.syncTime
+                .syncTime: now
             ])
         }
 
         return evicted
     }
+
+    /// Live, non-lock-file rows at a normalized location other than the given identifier, in the columns of ``ItemLogicalAddressRow``.
+    private static let logicalDuplicateCandidatesSQL = """
+    SELECT ocId, serverUrl, fileName, normalizedServerUrl, normalizedFileName, deleted, isLockFileOfLocalOrigin, status, syncTime
+    FROM itemMetadata
+    WHERE normalizedFileName = ? AND normalizedServerUrl = ? AND ocId <> ? AND deleted = 0 AND isLockFileOfLocalOrigin = 0
+    """
+
+    private static let softDeleteSQL = "UPDATE itemMetadata SET deleted = 1, syncTime = ? WHERE ocId = ?"
 
     ///
     /// One-shot startup pass that rewrites drifted normalized location keys and soft-deletes rows
@@ -203,13 +211,7 @@ extension FilesDatabaseManager {
                     continue
                 }
 
-                try ItemMetadataRecord
-                    .filter(key: candidate.ocId)
-                    .updateAll(
-                        db,
-                        ItemMetadataRecord.Columns.deleted.set(to: true),
-                        ItemMetadataRecord.Columns.syncTime.set(to: now.timeIntervalSinceReferenceDate)
-                    )
+                try db.cachedStatement(sql: Self.softDeleteSQL).execute(arguments: [now.timeIntervalSinceReferenceDate, candidate.ocId])
                 evicted += 1
 
                 logger.info("Startup deduplication: evicted duplicate.", [

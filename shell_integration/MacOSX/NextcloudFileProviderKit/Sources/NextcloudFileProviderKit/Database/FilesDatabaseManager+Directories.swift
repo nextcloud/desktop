@@ -196,7 +196,7 @@ public extension FilesDatabaseManager {
             logger.debug("Deleting root directory metadata in recursive delete.", [.eTag: directoryEtag, .item: directoryMetadata.ocId, .url: directoryUrlPath])
 
             directoryMetadata.deleted = true
-            try directoryMetadata.update(db)
+            try directoryMetadata.upsertRow(db)
 
             var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
 
@@ -222,7 +222,7 @@ public extension FilesDatabaseManager {
                 }
                 let inactiveItemMetadata = result.metadata
                 result.deleted = true
-                try result.update(db)
+                try result.upsertRow(db)
                 deletedMetadatas.append(inactiveItemMetadata)
             }
 
@@ -278,7 +278,7 @@ extension FilesDatabaseManager {
             )
             childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
             childItem.lockToken = nil
-            try childItem.update(db)
+            try childItem.upsertRow(db)
             logger.debug(
                 """
                 Moved childItem at: \(oldServerUrl)

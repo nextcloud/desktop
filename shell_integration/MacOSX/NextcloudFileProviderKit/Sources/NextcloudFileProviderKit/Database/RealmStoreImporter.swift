@@ -169,7 +169,7 @@ enum RealmStoreImporter {
                     // The keys are copied as stored so the startup repair treats them exactly as it treated the Realm rows.
                     record.normalizedServerUrl = row.normalizedServerUrl
                     record.normalizedFileName = row.normalizedFileName
-                    try record.insert(db)
+                    try record.upsertRow(db)
                 }
                 rows += 1
             }
