@@ -24,7 +24,14 @@ extension Enumerator {
         // Sort by a stable key (ocId) so the offset cursor stays consistent across the paginated
         // re-invocations the framework drives; the read itself is non-destructive, so re-reading and
         // slicing on each page needs no cross-call buffer.
-        let materialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
+        guard let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount) else {
+            // Reporting nothing would tell the framework the working set is empty; the framework asks again later.
+            logger.error("Could not read the materialized items. Finishing the enumeration with an error.", [.account: account.ncKitAccount])
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return
+        }
+
+        let materialisedItems = storedMaterialisedItems
             .filter { !$0.deleted }
             .sorted { $0.ocId < $1.ocId }
 
