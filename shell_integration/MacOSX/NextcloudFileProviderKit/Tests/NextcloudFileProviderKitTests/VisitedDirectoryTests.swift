@@ -5,7 +5,6 @@
 import Foundation
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import RealmSwift
 @testable import TestInterface
 import XCTest
 
@@ -22,7 +21,6 @@ final class VisitedDirectoryTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent("VisitedDirectoryTests-\(UUID().uuidString)", isDirectory: true)
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
