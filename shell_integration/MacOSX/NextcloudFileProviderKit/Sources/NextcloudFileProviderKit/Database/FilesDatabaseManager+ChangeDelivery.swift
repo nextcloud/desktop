@@ -45,7 +45,8 @@ extension FilesDatabaseManager {
             return false
         }
 
-        return write("Could not persist a change-delivery session.") { db in
+        // Delivery sessions are replayable; losing one costs a repeated scan, not state.
+        return write("Could not persist a change-delivery session.", durability: .relaxed) { db in
             try ChangeDeliverySessionRecord(
                 sessionId: sessionId,
                 containerKey: containerKey,
@@ -153,7 +154,7 @@ extension FilesDatabaseManager {
         nextAnchorKey: String?,
         moreComing: Bool
     ) -> Bool {
-        write("Could not prepare a change-delivery batch.") { db in
+        write("Could not prepare a change-delivery batch.", durability: .relaxed) { db in
             guard var session = try activeChangeDeliverySession(sessionId: sessionId, in: db) else {
                 return false
             }
@@ -175,7 +176,7 @@ extension FilesDatabaseManager {
 
     /// Acknowledge the prepared batch after the observer accepted it.
     func acknowledgeChangeDeliveryBatch(sessionId: String, deletedOcIds: [String]) -> Bool {
-        write("Could not acknowledge a change-delivery batch.") { db in
+        write("Could not acknowledge a change-delivery batch.", durability: .relaxed) { db in
             guard var session = try activeChangeDeliverySession(sessionId: sessionId, in: db) else {
                 return true
             }
@@ -230,7 +231,7 @@ extension FilesDatabaseManager {
 
     /// Remove all active delivery sessions for one enumerated container.
     func removeChangeDeliverySessions(containerKey: String) {
-        write("Could not remove the change-delivery sessions of a container.") { db in
+        write("Could not remove the change-delivery sessions of a container.", durability: .relaxed) { db in
             try db.execute(
                 sql: """
                 DELETE FROM changeDeliveryItem WHERE sessionId IN (

@@ -114,7 +114,7 @@ extension FilesDatabaseManager {
     ///
     @discardableResult
     func repairPersistedLogicalAddresses() -> (repaired: Int, evicted: Int) {
-        write("Startup repair: write transaction failed.") { db in
+        write("Startup repair: write transaction failed.", durability: .relaxed) { db in
             try repairPersistedLogicalAddresses(in: db)
         } ?? (0, 0)
     }

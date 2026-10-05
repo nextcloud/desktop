@@ -81,6 +81,38 @@ extension DatabaseTestSuites {
             #expect(FileManager.default.fileExists(atPath: directory.appendingPathComponent("readonly.sqlite").path) == false)
         }
 
+        @Test func fileIdLookupsUseTheFileIdIndex() throws {
+            let plan = try manager.writer.read { db in
+                let statement = try ItemMetadataRecord
+                    .filter(["1", "2", "3"].contains(ItemMetadataRecord.Columns.fileId))
+                    .makePreparedRequest(db).statement
+                return try Row
+                    .fetchAll(db, sql: "EXPLAIN QUERY PLAN " + statement.sql, arguments: statement.arguments)
+                    .map { $0["detail"] as String }
+                    .joined(separator: " | ")
+            }
+
+            #expect(plan.contains("itemMetadata_on_fileId"), "Plan: \(plan)")
+            #expect(!plan.contains("SCAN itemMetadata"), "Plan: \(plan)")
+        }
+
+        @Test func writesSetTheRequestedDurabilityOnTheWriter() throws {
+            func synchronousLevel() throws -> Int? {
+                try manager.writer.writeWithoutTransaction { db in try Int.fetchOne(db, sql: "PRAGMA synchronous") }
+            }
+            let row = DatabaseTestSuites.makeFile(ocId: "pinned", fileName: "pinned.txt")
+
+            manager.addItemMetadata(row)
+            #expect(try synchronousLevel() == 2, "Local writes commit with FULL.")
+
+            manager.addItemMetadataPreservingLocalState(row)
+            #expect(try synchronousLevel() == 1, "Server-derived bulk writes commit with NORMAL.")
+
+            _ = try manager.set(keepDownloaded: true, for: row)
+            #expect(try synchronousLevel() == 2)
+            #expect(manager.itemMetadata(ocId: "pinned")?.keepDownloaded == true)
+        }
+
         @Test func locationQueriesUseTheLocationIndex() throws {
             let plans = try manager.writer.read { db in
                 try [

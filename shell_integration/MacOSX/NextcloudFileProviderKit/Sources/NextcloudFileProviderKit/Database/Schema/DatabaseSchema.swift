@@ -80,6 +80,13 @@ enum DatabaseSchema {
                 columns: ["normalizedServerUrl", "normalizedFileName"]
             )
 
+            // Serves the push-notification lookup by server file identifier, which arrives in batches of thousands.
+            try db.create(
+                index: "itemMetadata_on_fileId",
+                on: ItemMetadataRecord.databaseTableName,
+                columns: ["fileId"]
+            )
+
             try db.create(table: ExcludedFromSyncItemRecord.databaseTableName) { table in
                 table.primaryKey("ocId", .text)
             }
