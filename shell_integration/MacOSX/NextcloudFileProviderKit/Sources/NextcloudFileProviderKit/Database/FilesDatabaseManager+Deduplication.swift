@@ -132,8 +132,17 @@ extension FilesDatabaseManager {
 
         // Bucketing on the keys computed here rather than on the stored ones is what lets a
         // drifted row be repaired and deduplicated in the same walk.
-        let rows = try ItemLogicalAddressRow.fetchCursor(db)
-        while let row = try rows.next() {
+        let rows = try Row.fetchCursor(db, ItemLogicalAddressRow.all())
+        while let rawRow = try rows.next() {
+            let row: ItemLogicalAddressRow
+            do {
+                row = try ItemLogicalAddressRow(row: rawRow)
+            } catch {
+                // A row which cannot be decoded is skipped here as everywhere; the next write of the item replaces it.
+                logger.fault("Skipping a stored item which cannot be decoded during the startup repair.", [.item: try? rawRow.decode(String?.self, forColumn: "ocId"), .error: error])
+                continue
+            }
+
             let serverUrl = row.serverUrl.precomposedStringWithCanonicalMapping
             let fileName = row.fileName.precomposedStringWithCanonicalMapping
 
