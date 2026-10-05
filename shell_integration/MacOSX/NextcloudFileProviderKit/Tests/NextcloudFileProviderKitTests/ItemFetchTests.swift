@@ -19,6 +19,11 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         _ = await iterator.next()
     }
 
+    private func removeDownloadedContents(remoteInterface: MockRemoteInterface) {
+        guard let localPath = remoteInterface.downloadDestinationURL else { return }
+        try? FileManager.default.removeItem(at: localPath)
+    }
+
     private func makeFetchItem(directory: Bool = false, preview: Bool = false) -> (Item, MockRemoteInterface, MockRemoteItem) {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.injectMock(Self.account)
@@ -211,9 +216,11 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     func testCancelledSuccessfulResponseDoesNotMarkContentsDownloaded() async throws {
         let (item, remoteInterface, _) = makeFetchItem()
         let progress = Progress()
-        remoteInterface.downloadCompletionHandler = { progress.cancel() }
-        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(item.itemIdentifier.rawValue)
-        defer { try? FileManager.default.removeItem(at: localPath) }
+        defer { removeDownloadedContents(remoteInterface: remoteInterface) }
+        remoteInterface.downloadCompletionHandler = {
+            XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, true)
+            progress.cancel()
+        }
 
         let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
 
@@ -223,6 +230,69 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
         XCTAssertFalse(metadata.downloaded)
         XCTAssertEqual(metadata.status, Status.downloadError.rawValue)
+        XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
+    }
+
+    func testCancellationAfterSuccessfulFetchPreservesReturnedContents() async throws {
+        let (item, _, remoteItem) = makeFetchItem()
+        let progress = Progress()
+
+        let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
+        let localPath = try XCTUnwrap(url)
+        defer { try? FileManager.default.removeItem(at: localPath) }
+        progress.cancel()
+
+        XCTAssertNil(error)
+        XCTAssertTrue(try XCTUnwrap(fetchedItem).isDownloaded)
+        XCTAssertEqual(try Data(contentsOf: localPath), remoteItem.data)
+        let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
+        XCTAssertTrue(metadata.downloaded)
+        XCTAssertEqual(metadata.status, Status.normal.rawValue)
+    }
+
+    func testCancellingOverlappingFetchPreservesReturnedContents() async throws {
+        await RetrievedCapabilitiesActor.shared.reset()
+        let (firstItem, firstRemoteInterface, remoteItem) = makeFetchItem()
+        let secondRemoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        secondRemoteInterface.injectMock(Self.account)
+        let secondItem = Item(
+            metadata: remoteItem.toItemMetadata(account: Self.account),
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: secondRemoteInterface,
+            dbManager: Self.dbManager
+        )
+        defer {
+            removeDownloadedContents(remoteInterface: firstRemoteInterface)
+            removeDownloadedContents(remoteInterface: secondRemoteInterface)
+        }
+        let firstProgress = Progress()
+        defer { firstProgress.cancel() }
+        let (started, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
+        firstRemoteInterface.capabilitiesHandler = { _, _ in
+            XCTAssertEqual(firstRemoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, true)
+            continuation.yield(())
+            await Self.waitForCancellation()
+        }
+        let firstTask = Task { await firstItem.fetchContents(progress: firstProgress, dbManager: Self.dbManager) }
+        var iterator = started.makeAsyncIterator()
+        _ = await iterator.next()
+
+        let (secondURL, secondFetchedItem, secondError) = await secondItem.fetchContents(dbManager: Self.dbManager)
+        XCTAssertNil(secondError)
+        XCTAssertTrue(try XCTUnwrap(secondFetchedItem).isDownloaded)
+        let returnedURL = try XCTUnwrap(secondURL)
+        XCTAssertEqual(try Data(contentsOf: returnedURL), remoteItem.data)
+        firstProgress.cancel()
+        let (firstURL, firstFetchedItem, firstError) = await firstTask.value
+
+        XCTAssertNil(firstURL)
+        XCTAssertNil(firstFetchedItem)
+        XCTAssertEqual((firstError as? CocoaError)?.code, .userCancelled)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: returnedURL.path))
+        XCTAssertEqual(try Data(contentsOf: returnedURL), remoteItem.data)
+        XCTAssertEqual(firstRemoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
     }
 
     func testCancelledDirectoryEnumerationDoesNotStartChildDownloads() async throws {
@@ -300,13 +370,13 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let session = URLSession(configuration: .ephemeral)
         defer { session.invalidateAndCancel() }
         let networkTask = try session.dataTask(with: XCTUnwrap(URL(string: "https://example.invalid/capabilities")))
+        defer { removeDownloadedContents(remoteInterface: remoteInterface) }
         remoteInterface.capabilitiesHandler = { _, taskHandler in
+            XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, true)
             taskHandler(networkTask)
             progress.cancel()
             await Self.waitForCancellation()
         }
-        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(item.itemIdentifier.rawValue)
-        defer { try? FileManager.default.removeItem(at: localPath) }
 
         let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
 
@@ -317,6 +387,33 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.downloaded, false)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.downloadError.rawValue)
         XCTAssertNil(progress.cancellationHandler)
+        XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
+    }
+
+    func testParentCancellationAfterDownloadRemovesTemporaryContents() async {
+        await RetrievedCapabilitiesActor.shared.reset()
+        let (item, remoteInterface, _) = makeFetchItem()
+        defer { removeDownloadedContents(remoteInterface: remoteInterface) }
+        let (started, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
+        remoteInterface.capabilitiesHandler = { _, _ in
+            XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, true)
+            continuation.yield(())
+            await Self.waitForCancellation()
+        }
+        let task = Task { await item.fetchContents(dbManager: Self.dbManager) }
+        var iterator = started.makeAsyncIterator()
+        _ = await iterator.next()
+        task.cancel()
+
+        let (url, fetchedItem, error) = await task.value
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.downloaded, false)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.downloadError.rawValue)
+        XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
     }
 
     func testMissingParentLookupSucceedsForContentsAndThumbnails() async throws {
@@ -360,14 +457,14 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let session = URLSession(configuration: .ephemeral)
         defer { session.invalidateAndCancel() }
         let networkTask = try session.dataTask(with: XCTUnwrap(URL(string: "https://example.invalid/parent")))
+        defer { removeDownloadedContents(remoteInterface: remoteInterface) }
         remoteInterface.enumerateCallHandler = { path, depth, _, _, _, _, _, taskHandler in
             XCTAssertEqual(path, directory.remotePath)
             XCTAssertEqual(depth, .target)
+            XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, true)
             taskHandler(networkTask)
             progress.cancel()
         }
-        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(item.itemIdentifier.rawValue)
-        defer { try? FileManager.default.removeItem(at: localPath) }
 
         let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
 
@@ -379,6 +476,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.downloaded, false)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.downloadError.rawValue)
         XCTAssertNil(progress.cancellationHandler)
+        XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
     }
 
     func testCancellingThumbnailPreparationCancelsParentTask() async throws {

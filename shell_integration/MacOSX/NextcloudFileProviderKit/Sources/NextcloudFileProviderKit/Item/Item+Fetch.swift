@@ -200,7 +200,9 @@ public extension Item {
 
         logger.debug("Fetching item.", [.name: metadata.fileName, .url: serverUrlFileName])
 
-        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(metadata.ocId)
+        let isDirectory = contentType.conforms(to: .directory)
+        // Each file fetch owns its destination so cancellation cannot remove another fetch's result.
+        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(isDirectory ? metadata.ocId : UUID().uuidString)
         guard var updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .downloading) else {
             logger.error("Could not acquire updated metadata, unable to update item status to downloading.", [.item: itemIdentifier])
 
@@ -211,16 +213,25 @@ public extension Item {
             )
         }
 
+        var contentsReturned = false
         defer {
-            if progress.isCancelled || Task.isCancelled {
+            if !contentsReturned, progress.isCancelled || Task.isCancelled {
                 updatedMetadata.status = Status.downloadError.rawValue
                 updatedMetadata.downloaded = false
                 updatedMetadata.sessionError = CocoaError(.userCancelled).localizedDescription
                 dbManager.addItemMetadata(updatedMetadata)
+                if !isDirectory {
+                    do {
+                        try FileManager.default.removeItem(at: localPath)
+                    } catch CocoaError.fileNoSuchFile {
+                        // Cancellation may precede creation of the temporary file.
+                    } catch {
+                        logger.error("Could not remove cancelled download contents.", [.item: ocId, .url: localPath, .error: error])
+                    }
+                }
             }
         }
 
-        let isDirectory = contentType.conforms(to: .directory)
         if isDirectory {
             logger.debug("is a directory, creating directory locally and fetching its contents.", [.item: ocId, .name: updatedMetadata.fileName])
 
@@ -349,6 +360,8 @@ public extension Item {
         guard !progress.isCancelled, !Task.isCancelled else {
             return (nil, nil, CocoaError(.userCancelled))
         }
+        // The caller owns the contents once we return them, even if cancellation arrives now.
+        contentsReturned = true
         return (localPath, fpItem, nil)
     }
 
