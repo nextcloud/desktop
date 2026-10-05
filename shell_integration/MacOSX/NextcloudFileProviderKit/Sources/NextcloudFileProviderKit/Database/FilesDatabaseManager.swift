@@ -103,7 +103,7 @@ public final class FilesDatabaseManager: Sendable {
             objectTypes: [
                 RealmItemMetadata.self,
                 RealmExcludedFromSyncItem.self,
-                RemoteFileChunk.self,
+                LegacyRealmRemoteFileChunk.self,
                 RealmPendingChunkUploadCleanup.self,
                 RealmChangeDeliverySession.self,
                 RealmChangeDeliveryItem.self

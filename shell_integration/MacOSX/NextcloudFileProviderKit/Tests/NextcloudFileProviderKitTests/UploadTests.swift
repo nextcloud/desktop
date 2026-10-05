@@ -98,12 +98,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(chunkDirectoryExistedDuringUpload)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path))
         XCTAssertEqual(
-            Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
-                .where {
-                    $0.remoteChunkStoreFolderName.starts(
-                        with: chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
-                    )
-                }
+            Self.dbManager.remoteChunkStoreFolderNames()
+                .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)) }
                 .count,
             0
         )
@@ -143,12 +139,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         let storedChunks = try FileManager.default.contentsOfDirectory(atPath: chunkDirectory.path)
         XCTAssertEqual(storedChunks.count, Int(ceil(Double(data.count) / Double(chunkSize))))
         XCTAssertEqual(
-            Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
-                .where {
-                    $0.remoteChunkStoreFolderName.starts(
-                        with: chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
-                    )
-                }
+            Self.dbManager.remoteChunkStoreFolderNames()
+                .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)) }
                 .count,
             2
         )
@@ -186,12 +178,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(result.remoteError.errorCode, 500)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path))
         XCTAssertEqual(
-            Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
-                .where {
-                    $0.remoteChunkStoreFolderName.starts(
-                        with: chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
-                    )
-                }
+            Self.dbManager.remoteChunkStoreFolderNames()
+                .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)) }
                 .count,
             0
         )
@@ -225,21 +213,18 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         )
         remoteInterface.currentChunks = [uploadId: [previousUploadedChunk]]
 
-        let db = Self.dbManager.ncDatabase()
-        try db.write {
-            db.add([
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 1),
-                    size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: uploadId
-                ),
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 2),
-                    size: Int64(data.count - (chunkSize * (previousUploadedChunkNum + 1))),
-                    remoteChunkStoreFolderName: uploadId
-                )
-            ])
-        }
+        Self.dbManager.addRemoteFileChunks([
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 1),
+                size: Int64(chunkSize),
+                remoteChunkStoreFolderName: uploadId
+            ),
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 2),
+                size: Int64(data.count - (chunkSize * (previousUploadedChunkNum + 1))),
+                remoteChunkStoreFolderName: uploadId
+            )
+        ])
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
         var uploadedChunks = [RemoteFileChunk]()

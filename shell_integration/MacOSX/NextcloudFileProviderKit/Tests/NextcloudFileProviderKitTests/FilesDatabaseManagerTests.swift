@@ -92,7 +92,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             let oldConfiguration = Realm.Configuration(
                 fileURL: databaseURL,
                 schemaVersion: SchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata.rawValue,
-                objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
+                objectTypes: [RealmItemMetadata.self, LegacyRealmRemoteFileChunk.self]
             )
             let oldRealm = try! Realm(configuration: oldConfiguration)
             try! oldRealm.write {

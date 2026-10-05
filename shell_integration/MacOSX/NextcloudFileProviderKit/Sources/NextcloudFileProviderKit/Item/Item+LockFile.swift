@@ -134,28 +134,7 @@ extension Item {
             if let lock {
                 logger.info("Locked file and received lock, will update target item.", [.name: targetFileName, .lock: lock])
 
-                if let targetMetadata = dbManager.itemMetadatas.where({ $0.fileName.equals(targetFileName) }).where({ $0.serverUrl.equals(parentItemRemotePath) }).first {
-                    try dbManager.ncDatabase().write {
-                        targetMetadata.lock = true
-                        targetMetadata.lockOwner = lock.owner
-                        targetMetadata.lockOwnerDisplayName = lock.ownerDisplayName
-                        targetMetadata.lockOwnerEditor = lock.ownerEditor
-                        targetMetadata.lockOwnerType = lock.ownerType.rawValue
-                        targetMetadata.lockTime = lock.time
-                        targetMetadata.lockTimeOut = lock.timeOut
-                        if let etag = lock.etag {
-                            // LOCK changes server metadata, not file bytes. Keep the content version
-                            // File Provider already knows while adopting the lock response's etag.
-                            if targetMetadata.fileProviderContentVersion == nil {
-                                targetMetadata.fileProviderContentVersion = targetMetadata.etag
-                            }
-                            targetMetadata.etag = etag
-                        }
-                        targetMetadata.lockToken = lock.token
-                        // Ensure token-dependent capabilities are published even if the etag is unchanged.
-                        targetMetadata.syncTime = Date()
-                    }
-
+                if try dbManager.applyLock(lock, rawServerUrl: parentItemRemotePath, rawFileName: targetFileName) {
                     if let domain {
                         FileProviderChangeNotificationInterface(domain: domain, log: log).notifyChange()
                     }
@@ -315,23 +294,12 @@ extension Item {
 
         logger.info("Removing lock from locally stored target item.", [.name: originalFileName])
 
-        if let targetMetadata = dbManager.itemMetadatas.where({ $0.fileName.equals(originalFileName) }).where({ $0.serverUrl.equals(metadata.serverUrl) }).first {
-            do {
-                try dbManager.ncDatabase().write {
-                    targetMetadata.lock = false
-                    targetMetadata.lockOwner = nil
-                    targetMetadata.lockOwnerDisplayName = nil
-                    targetMetadata.lockOwnerEditor = nil
-                    targetMetadata.lockOwnerType = nil
-                    targetMetadata.lockTime = nil
-                    targetMetadata.lockTimeOut = nil
-                    targetMetadata.lockToken = nil
-                }
-            } catch {
-                logger.error("Could not remove lock from locally stored target item.", [.name: originalFileName, .error: error])
+        do {
+            if try dbManager.clearLock(rawServerUrl: metadata.serverUrl, rawFileName: originalFileName) == false {
+                logger.error("Failed to find target item for released lock.", [.name: originalFileName])
             }
-        } else {
-            logger.error("Failed to find target item for released lock.", [.name: originalFileName])
+        } catch {
+            logger.error("Could not remove lock from locally stored target item.", [.name: originalFileName, .error: error])
         }
 
         return nil
