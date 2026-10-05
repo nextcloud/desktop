@@ -5,12 +5,12 @@ import Foundation
 import RealmSwift
 
 ///
-/// Realm data model for a file provider item as stored in the extension's own database for metadata.
+/// Realm row of a file provider item, read only while importing a database written before the switch to SQLite.
 ///
-/// > Warning: **Do not pass instances across the boundaries of different concurrency domains because they are not sendable!**
-/// Use ``SendableItemMetadata`` as a representation instead.
+/// The Objective-C name keeps the on-disk object name. Instances are not sendable; convert them with ``ItemMetadataRecord/init(_:)`` or ``SendableItemMetadata/init(value:)``.
 ///
-class RealmItemMetadata: Object, ItemMetadata {
+@objc(RealmItemMetadata)
+final class LegacyRealmItemMetadata: Object, ItemMetadata {
     @Persisted(primaryKey: true) var ocId: String
     @Persisted var account = ""
     @Persisted var checksums = ""
@@ -114,7 +114,7 @@ class RealmItemMetadata: Object, ItemMetadata {
     // (relevant for alt. backends like LDAP)
 
     override func isEqual(_ object: Any?) -> Bool {
-        if let object = object as? RealmItemMetadata {
+        if let object = object as? LegacyRealmItemMetadata {
             return fileId == object.fileId && account == object.account && path == object.path
                 && hasSameLocation(as: object)
         }

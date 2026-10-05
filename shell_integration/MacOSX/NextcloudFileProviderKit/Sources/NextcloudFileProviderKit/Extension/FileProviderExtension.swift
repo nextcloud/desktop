@@ -122,6 +122,7 @@ import OSLog
         logger.debug("File provider extension process is being invalidated.")
         blockSyncObservation?.invalidate()
         blockSyncObservation = nil
+        dbManager?.checkpointForShutdown()
     }
 
     func insertSyncAction(_ actionId: UUID) {
@@ -847,13 +848,15 @@ import OSLog
                 logger.info("Successfully authenticated.")
         }
 
+        // Opening the database may import or migrate it, so it happens off the main actor.
+        let databaseManager = FilesDatabaseManager(
+            account: account,
+            fileProviderDomainIdentifier: domain.identifier,
+            log: log
+        )
+
         await MainActor.run {
             ncAccount = account
-            let databaseManager = FilesDatabaseManager(
-                account: account,
-                fileProviderDomainIdentifier: domain.identifier,
-                log: log
-            )
             // TODO: Initial file creation does not persist item metadata until the upload succeeds.
             // If the extension restarts while that upload is still in progress, startup cleanup
             // cannot distinguish its chunks from an abandoned upload and may remove them.

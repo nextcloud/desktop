@@ -8,15 +8,22 @@ import NextcloudFileProviderKitMocks
 import Testing
 
 ///
-/// Umbrella for the Swift Testing suites which exercise ``FilesDatabaseManager`` directly.
+/// Umbrella for the Swift Testing suites which exercise ``FilesDatabaseManager`` directly, with the fixtures they share.
 ///
-/// Nested suites inherit the serialization. Every test still gets its own database in its own directory; the serialization only keeps tests from configuring the shared engine defaults at the same time.
+/// Every test gets its own database in its own directory.
 ///
-@Suite("Database", .serialized)
+@Suite("Database")
 enum DatabaseTestSuites {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
+
+    ///
+    /// The defaults suite the managers made here record their store version in, kept out of the standard defaults of the test host.
+    ///
+    static var defaults: UserDefaults {
+        UserDefaults(suiteName: "com.nextcloud.NextcloudFileProviderKitTests.DatabaseTestSuites")!
+    }
 
     ///
     /// A database manager on a fresh temporary directory, so one test cannot see another's rows.
@@ -30,7 +37,8 @@ enum DatabaseTestSuites {
             account: account,
             databaseDirectory: directory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test-\(UUID().uuidString)"),
-            log: FileProviderLogMock()
+            log: FileProviderLogMock(),
+            defaults: defaults
         )
     }
 

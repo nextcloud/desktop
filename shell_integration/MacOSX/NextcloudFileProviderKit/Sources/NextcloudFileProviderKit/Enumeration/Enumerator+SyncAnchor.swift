@@ -22,7 +22,7 @@ extension Enumerator {
     /// See nextcloud/desktop#10065.
     ///
     public static func syncAnchor(at date: Date) -> NSFileProviderSyncAnchor {
-        let raw = "\(currentExtensionVersion())|\(ISO8601DateFormatter().string(from: date))"
+        let raw = "\(anchorVersionTag())|\(ISO8601DateFormatter().string(from: date))"
         // Force-unwrap is safe: an ASCII version string and an ISO8601 date both encode cleanly to UTF-8.
         return NSFileProviderSyncAnchor(raw.data(using: .utf8)!)
     }
@@ -60,6 +60,15 @@ extension Enumerator {
     }
 
     ///
+    /// The version segment of an anchor: the extension version plus the store version of the metadata database.
+    ///
+    /// Including the store version expires every anchor when the database format changes, even between builds with the same marketing version, so a database set up from scratch after a downgrade is repopulated by a full enumeration.
+    ///
+    static func anchorVersionTag() -> String {
+        "\(currentExtensionVersion())+store\(StoreVersion.current)"
+    }
+
+    ///
     /// Validate the sync anchor the framework replayed before enumerating changes.
     ///
     /// Returns the embedded timestamp when the anchor is well-formed and its embedded extension
@@ -76,7 +85,7 @@ extension Enumerator {
             return nil
         }
 
-        let runningVersion = Self.currentExtensionVersion()
+        let runningVersion = Self.anchorVersionTag()
 
         guard parsed.version == runningVersion else {
             logger.info("Sync anchor's embedded extension version \"\(parsed.version)\" does not match the running extension version \"\(runningVersion)\". Returning syncAnchorExpired so the framework re-enumerates this container and refreshes cached NSFileProviderItem snapshots. See nextcloud/desktop#10065.", [.item: enumeratedItemIdentifier])

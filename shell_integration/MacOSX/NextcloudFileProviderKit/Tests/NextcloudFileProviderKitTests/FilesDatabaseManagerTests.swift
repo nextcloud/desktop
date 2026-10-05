@@ -76,10 +76,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testSchema203MigrationBackfillsCanonicalPathKeys() throws {
-        // The fixture's manager re-points the default Realm configuration; restore it for the tests that follow.
-        let previousConfiguration = Realm.Configuration.defaultConfiguration
-        defer { Realm.Configuration.defaultConfiguration = previousConfiguration }
-
         let databaseDirectory = makeDatabaseDirectory()
         let domainIdentifier = NSFileProviderDomainIdentifier("migration-test")
         let databaseURL = databaseDirectory
@@ -91,12 +87,12 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         autoreleasepool {
             let oldConfiguration = Realm.Configuration(
                 fileURL: databaseURL,
-                schemaVersion: SchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata.rawValue,
-                objectTypes: [RealmItemMetadata.self, LegacyRealmRemoteFileChunk.self]
+                schemaVersion: LegacyRealmSchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata.rawValue,
+                objectTypes: [LegacyRealmItemMetadata.self, LegacyRealmRemoteFileChunk.self]
             )
             let oldRealm = try! Realm(configuration: oldConfiguration)
             try! oldRealm.write {
-                let metadata = RealmItemMetadata()
+                let metadata = LegacyRealmItemMetadata()
                 metadata.ocId = "migration-item"
                 metadata.account = Self.account.ncKitAccount
                 metadata.serverUrl = nfdServerUrl

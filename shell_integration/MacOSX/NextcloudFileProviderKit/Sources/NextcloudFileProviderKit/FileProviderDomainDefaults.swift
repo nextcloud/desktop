@@ -23,6 +23,7 @@ public struct FileProviderDomainDefaults {
         case lastSeenExtensionVersion
         case debugLoggingEnabled
         case blockSync
+        case latestSeenDatabaseVersion
     }
 
     ///
@@ -32,9 +33,15 @@ public struct FileProviderDomainDefaults {
 
     let logger: FileProviderLogger
 
-    public init(identifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging) {
+    ///
+    /// The store of the per-domain settings. The process-global settings always live in `UserDefaults.standard`.
+    ///
+    let defaults: UserDefaults
+
+    public init(identifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging, defaults: UserDefaults = .standard) {
         self.identifier = identifier
         logger = FileProviderLogger(category: "FileProviderDomainDefaults", log: log)
+        self.defaults = defaults
     }
 
     ///
@@ -42,8 +49,6 @@ public struct FileProviderDomainDefaults {
     ///
     private var internalConfig: [String: Any] {
         get {
-            let defaults = UserDefaults.standard
-
             if let settings = defaults.dictionary(forKey: identifier.rawValue) {
                 return settings
             }
@@ -55,7 +60,26 @@ public struct FileProviderDomainDefaults {
         }
 
         set {
-            UserDefaults.standard.setValue(newValue, forKey: identifier.rawValue)
+            defaults.setValue(newValue, forKey: identifier.rawValue)
+        }
+    }
+
+    ///
+    /// The highest ``StoreVersion`` which has opened this domain's metadata database.
+    ///
+    /// The value only grows while builds move forward. A build which finds a value above its own ``StoreVersion/current`` is a downgrade and sets the database up from scratch instead of misreading a newer format (nextcloud/desktop#9046).
+    ///
+    public var latestSeenDatabaseVersion: Int? {
+        get {
+            internalConfig[ConfigKey.latestSeenDatabaseVersion.rawValue] as? Int
+        }
+
+        set {
+            if let newValue {
+                internalConfig[ConfigKey.latestSeenDatabaseVersion.rawValue] = newValue
+            } else {
+                internalConfig.removeValue(forKey: ConfigKey.latestSeenDatabaseVersion.rawValue)
+            }
         }
     }
 
