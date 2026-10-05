@@ -111,7 +111,10 @@ public extension FilesDatabaseManager {
     /// One-shot startup pass that rewrites drifted normalized location keys and soft-deletes rows
     /// that share a logical address, in a single walk of the table.
     ///
-    func repairPersistedLogicalAddresses() {
+    /// - Returns: How many rows had their keys rewritten and how many duplicates were soft-deleted.
+    ///
+    @discardableResult
+    func repairPersistedLogicalAddresses() -> (repaired: Int, evicted: Int) {
         let database = ncDatabase()
         let rootContainerOcId = NSFileProviderItemIdentifier.rootContainer.rawValue
 
@@ -144,7 +147,7 @@ public extension FilesDatabaseManager {
         let collisions = buckets.values.filter { $0.count > 1 }
 
         guard !drifted.isEmpty || !collisions.isEmpty else {
-            return
+            return (0, 0)
         }
 
         if !drifted.isEmpty {
@@ -154,6 +157,7 @@ public extension FilesDatabaseManager {
         }
 
         let now = Date()
+        var evicted = 0
 
         do {
             try database.write {
@@ -200,6 +204,7 @@ public extension FilesDatabaseManager {
 
                         candidate.deleted = true
                         candidate.syncTime = now
+                        evicted += 1
 
                         logger.info("Startup deduplication: evicted duplicate.", [
                             .item: candidate.ocId,
@@ -213,5 +218,7 @@ public extension FilesDatabaseManager {
         } catch {
             logger.error("Startup repair: write transaction failed.", [.error: error])
         }
+
+        return (drifted.count, evicted)
     }
 }
