@@ -84,7 +84,7 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                 }
 
                 logger.info("Updating state for item to materialized.", [.item: enumeratedIdentifier, .name: metadata.fileName])
-                dbManager.addItemMetadata(metadata)
+                dbManager.addItemMetadata(metadata, durability: .relaxed)
             }
         }
 
@@ -119,7 +119,7 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
 
             logger.info("Updating item state to dataless.", [.name: metadata.fileName, .item: candidateIdentifier])
 
-            dbManager.addItemMetadata(metadata)
+            dbManager.addItemMetadata(metadata, durability: .relaxed)
             evictedItems.insert(candidateIdentifier)
         }
 
