@@ -4,6 +4,7 @@
 @preconcurrency import FileProvider
 import Foundation
 import GRDB
+import os
 
 ///
 /// The file provider domain's metadata database.
@@ -67,6 +68,8 @@ public final class FilesDatabaseManager: Sendable {
 
     let logger: FileProviderLogger
     let account: Account
+    /// Share download ownership across FilesDatabaseManager instances accessing the same database.
+    static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: UUID]]())
 
     /// The open database: a pool on the domain's file, or an in-memory queue when no directory is available.
     let writer: any DatabaseWriter
