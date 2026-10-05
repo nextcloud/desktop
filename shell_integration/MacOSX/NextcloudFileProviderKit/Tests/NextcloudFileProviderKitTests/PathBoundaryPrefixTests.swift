@@ -5,7 +5,6 @@
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 @testable import TestInterface
 import XCTest
 
@@ -25,42 +24,37 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
     }
 
     func testChildItemsMatchesDirectChildButNotSiblingWithSharedPrefix() throws {
-        let directoryMetadata = RealmItemMetadata()
-        directoryMetadata.ocId = "dir-A"
+        var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-A")
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "photos")
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "photos"
         directoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "child-1"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "child-1")
         childMetadata.account = "TestAccount"
-        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/photos", fileName: "pic.jpg")
+        childMetadata.serverUrl = "https://cloud.example.com/files/photos"
+        childMetadata.fileName = "pic.jpg"
 
-        let nestedChild = RealmItemMetadata()
-        nestedChild.ocId = "nested-1"
+        var nestedChild = SendableItemMetadata.rawRow(ocId: "nested-1")
         nestedChild.account = "TestAccount"
-        nestedChild.updateLocation(serverUrl: "https://cloud.example.com/files/photos/vacation", fileName: "beach.jpg")
+        nestedChild.serverUrl = "https://cloud.example.com/files/photos/vacation"
+        nestedChild.fileName = "beach.jpg"
 
-        let siblingMetadata = RealmItemMetadata()
-        siblingMetadata.ocId = "sibling-1"
+        var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-1")
         siblingMetadata.account = "TestAccount"
-        siblingMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/photos-backup", fileName: "old.jpg")
+        siblingMetadata.serverUrl = "https://cloud.example.com/files/photos-backup"
+        siblingMetadata.fileName = "old.jpg"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directoryMetadata)
-            realm.add(childMetadata)
-            realm.add(nestedChild)
-            realm.add(siblingMetadata)
-        }
+        try Self.dbManager.insertForTesting(directoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
+        try Self.dbManager.insertForTesting(nestedChild)
+        try Self.dbManager.insertForTesting(siblingMetadata)
 
-        let children = Self.dbManager.childItems(
-            directoryMetadata: SendableItemMetadata(value: directoryMetadata)
-        )
+        let children = Self.dbManager.childItems(directoryMetadata: directoryMetadata)
         let childOcIds = Set(children.map(\.ocId))
         XCTAssertTrue(childOcIds.contains("child-1"), "Direct child should be matched")
         XCTAssertTrue(childOcIds.contains("nested-1"), "Nested descendant should be matched")
@@ -69,58 +63,50 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
     }
 
     func testChildItemCountExcludesSiblingWithSharedPrefix() throws {
-        let directoryMetadata = RealmItemMetadata()
-        directoryMetadata.ocId = "dir-B"
+        var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-B")
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "docs")
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "docs"
         directoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "child-2"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "child-2")
         childMetadata.account = "TestAccount"
-        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/docs", fileName: "report.pdf")
+        childMetadata.serverUrl = "https://cloud.example.com/files/docs"
+        childMetadata.fileName = "report.pdf"
 
-        let siblingMetadata = RealmItemMetadata()
-        siblingMetadata.ocId = "sibling-2"
+        var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-2")
         siblingMetadata.account = "TestAccount"
-        siblingMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/docs-archive", fileName: "old-report.pdf")
+        siblingMetadata.serverUrl = "https://cloud.example.com/files/docs-archive"
+        siblingMetadata.fileName = "old-report.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directoryMetadata)
-            realm.add(childMetadata)
-            realm.add(siblingMetadata)
-        }
+        try Self.dbManager.insertForTesting(directoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
+        try Self.dbManager.insertForTesting(siblingMetadata)
 
-        let count = Self.dbManager.childItemCount(
-            directoryMetadata: SendableItemMetadata(value: directoryMetadata)
-        )
+        let count = Self.dbManager.childItemCount(directoryMetadata: directoryMetadata)
         XCTAssertEqual(count, 1)
     }
 
     func testDeleteDirectoryDoesNotDeleteSiblingWithSharedPrefix() throws {
-        let directoryMetadata = RealmItemMetadata()
-        directoryMetadata.ocId = "dir-C"
+        var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-C")
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "work")
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "work"
         directoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "child-3"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "child-3")
         childMetadata.account = "TestAccount"
-        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/work", fileName: "task.txt")
+        childMetadata.serverUrl = "https://cloud.example.com/files/work"
+        childMetadata.fileName = "task.txt"
 
-        let siblingMetadata = RealmItemMetadata()
-        siblingMetadata.ocId = "sibling-3"
+        var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-3")
         siblingMetadata.account = "TestAccount"
-        siblingMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/work-old", fileName: "task-old.txt")
+        siblingMetadata.serverUrl = "https://cloud.example.com/files/work-old"
+        siblingMetadata.fileName = "task-old.txt"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directoryMetadata)
-            realm.add(childMetadata)
-            realm.add(siblingMetadata)
-        }
+        try Self.dbManager.insertForTesting(directoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
+        try Self.dbManager.insertForTesting(siblingMetadata)
 
         let deleted = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: "dir-C")
         XCTAssertNotNil(deleted)
@@ -132,28 +118,25 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
     }
 
     func testRenameDirectoryDoesNotRenameSiblingWithSharedPrefix() throws {
-        let directoryMetadata = RealmItemMetadata()
-        directoryMetadata.ocId = "dir-D"
+        var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-D")
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "alpha")
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "alpha"
         directoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "child-4"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "child-4")
         childMetadata.account = "TestAccount"
-        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/alpha", fileName: "file.txt")
+        childMetadata.serverUrl = "https://cloud.example.com/files/alpha"
+        childMetadata.fileName = "file.txt"
 
-        let siblingMetadata = RealmItemMetadata()
-        siblingMetadata.ocId = "sibling-4"
+        var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-4")
         siblingMetadata.account = "TestAccount"
-        siblingMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/alphabet", fileName: "a.txt")
+        siblingMetadata.serverUrl = "https://cloud.example.com/files/alphabet"
+        siblingMetadata.fileName = "a.txt"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directoryMetadata)
-            realm.add(childMetadata)
-            realm.add(siblingMetadata)
-        }
+        try Self.dbManager.insertForTesting(directoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
+        try Self.dbManager.insertForTesting(siblingMetadata)
 
         let updated = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: "dir-D",
@@ -183,27 +166,24 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
     }
 
     func testItemMetadatasUnderServerUrlExcludesSiblingPrefix() throws {
-        let directChild = RealmItemMetadata()
-        directChild.ocId = "under-1"
+        var directChild = SendableItemMetadata.rawRow(ocId: "under-1")
         directChild.account = "TestAccount"
-        directChild.updateLocation(serverUrl: "https://cloud.example.com/files/project", fileName: "readme.md")
+        directChild.serverUrl = "https://cloud.example.com/files/project"
+        directChild.fileName = "readme.md"
 
-        let nestedChild = RealmItemMetadata()
-        nestedChild.ocId = "under-2"
+        var nestedChild = SendableItemMetadata.rawRow(ocId: "under-2")
         nestedChild.account = "TestAccount"
-        nestedChild.updateLocation(serverUrl: "https://cloud.example.com/files/project/src", fileName: "main.swift")
+        nestedChild.serverUrl = "https://cloud.example.com/files/project/src"
+        nestedChild.fileName = "main.swift"
 
-        let siblingMetadata = RealmItemMetadata()
-        siblingMetadata.ocId = "under-3"
+        var siblingMetadata = SendableItemMetadata.rawRow(ocId: "under-3")
         siblingMetadata.account = "TestAccount"
-        siblingMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/project-v2", fileName: "readme.md")
+        siblingMetadata.serverUrl = "https://cloud.example.com/files/project-v2"
+        siblingMetadata.fileName = "readme.md"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directChild)
-            realm.add(nestedChild)
-            realm.add(siblingMetadata)
-        }
+        try Self.dbManager.insertForTesting(directChild)
+        try Self.dbManager.insertForTesting(nestedChild)
+        try Self.dbManager.insertForTesting(siblingMetadata)
 
         let results = Self.dbManager.itemMetadatas(
             account: "TestAccount",
