@@ -4,7 +4,6 @@
 @preconcurrency import FileProvider
 import Foundation
 import NextcloudKit
-import RealmSwift
 
 public extension Item {
     /// > Note: The trashing parameter does not affect whether the server will trash this or not.
@@ -155,22 +154,13 @@ public extension Item {
             return [metadata.ocId]
         }
 
-        let directoryRemotePath = metadata.remotePath()
-        let itemAccount = metadata.account
-        return dbManager.itemMetadatas
-            .where {
-                $0.directory == false &&
-                    $0.account == itemAccount &&
-                    // Keep chunks for in-progress or failed uploads that recursive metadata deletion
-                    // deliberately preserves.
-                    $0.status < Status.inUpload.rawValue &&
-                    RealmItemMetadata.hasServerUrl(
-                        $0,
-                        equalTo: directoryRemotePath,
-                        includingDescendants: true
-                    )
-            }
-            .map(\.ocId)
+        // Keep chunks for in-progress or failed uploads that recursive metadata deletion
+        // deliberately preserves.
+        return dbManager.descendantFileOcIds(
+            underRemotePath: metadata.remotePath(),
+            account: metadata.account,
+            statusBelow: .inUpload
+        )
     }
 
     @discardableResult
