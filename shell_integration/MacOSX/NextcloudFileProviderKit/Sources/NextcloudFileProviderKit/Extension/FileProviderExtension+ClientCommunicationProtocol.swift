@@ -39,6 +39,13 @@ extension FileProviderExtension: ClientCommunicationProtocol {
         logger.info("Received request to remove account data.")
         dbManager = nil
         ncAccount = nil
+        keychain.deletePassword()
+    }
+
+    public func deletePassword(completionHandler: ((Bool) -> Void)?) {
+        logger.info("Received request to delete the stored password.")
+        let deleted = keychain.deletePassword()
+        completionHandler?(deleted)
     }
 
     public func setIgnoreList(_ ignoreList: [String]) {

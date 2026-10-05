@@ -18,6 +18,9 @@ import OSLog
     ///
     let domain: NSFileProviderDomain
 
+    ///
+    /// The password of the account, cached for when the main app cannot hand it over.
+    ///
     let keychain: Keychain
     let log: any FileProviderLogging
     let logger: FileProviderLogger
@@ -112,7 +115,7 @@ import OSLog
         #endif
 
         logger.info("NextcloudKit logging configured.", [.url: NKLogFileManager.shared.currentLogFileURL()])
-        keychain = Keychain(log: log)
+        keychain = Keychain(domain: domain, log: log)
         super.init()
         observeBlockSync()
     }
@@ -802,7 +805,7 @@ import OSLog
         config.serverUrl = account.serverUrl
         config.user = account.username
         config.userId = account.id
-        keychain.savePassword(account.password, for: account.username, on: account.serverUrl)
+        keychain.savePassword(account.password, for: account.username)
         NextcloudKit.clearAccountErrorState(for: account.ncKitAccount)
 
         ncKit.appendSession(
