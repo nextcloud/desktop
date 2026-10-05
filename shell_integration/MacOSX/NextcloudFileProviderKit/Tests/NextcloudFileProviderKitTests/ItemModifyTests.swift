@@ -29,6 +29,62 @@ private final class ExclusionMarkerRecorder: @unchecked Sendable {
 }
 
 final class ItemModifyTests: NextcloudFileProviderKitTestCase {
+    private func assertFailedContentModificationRemainsUnuploaded(
+        errorCode: Int,
+        chunkSize: Int?
+    ) async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let uploadError = NKError(errorCode: errorCode, errorDescription: "Upload did not complete")
+        remoteInterface.uploadError = uploadError
+        let originalRemoteData = remoteItem.data
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContents = Data("Updated content".utf8)
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+        try newContents.write(to: newContentsUrl)
+        defer { try? FileManager.default.removeItem(at: newContentsUrl) }
+
+        var targetMetadata = itemMetadata
+        targetMetadata.size = Int64(newContents.count)
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents],
+            contents: newContentsUrl,
+            forcedChunkSize: chunkSize,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertNotNil(error)
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        XCTAssertFalse(storedMetadata.uploaded)
+        XCTAssertTrue(storedMetadata.downloaded)
+        XCTAssertEqual(storedMetadata.status, Status.uploadError.rawValue)
+        XCTAssertEqual(storedMetadata.sessionError, uploadError.errorDescription)
+        XCTAssertEqual(storedMetadata.etag, itemMetadata.etag)
+        XCTAssertEqual(remoteItem.data, originalRemoteData)
+    }
+
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
@@ -112,6 +168,16 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         remoteFolder.parent = rootItem
         remoteTrashFolder.children = [remoteTrashFolderChildItem]
         remoteTrashFolderChildItem.parent = remoteTrashFolder
+    }
+
+    func testFailedContentModificationRemainsUnuploaded() async throws {
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: 500, chunkSize: nil)
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: 500, chunkSize: 2)
+    }
+
+    func testCancelledContentModificationRemainsUnuploaded() async throws {
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: nil)
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2)
     }
 
     func testModifyFile() async throws {
