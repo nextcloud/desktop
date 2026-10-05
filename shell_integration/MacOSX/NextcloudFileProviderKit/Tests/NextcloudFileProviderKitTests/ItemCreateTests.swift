@@ -6,7 +6,6 @@
 import NextcloudFileProviderKitMocks
 import NextcloudFileProviderXPC
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -60,21 +59,15 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     var rootItem: MockRemoteItem!
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
-    /// An in-memory Realm loses its contents when its last instance is released.
-    private var keepAliveRealm: Realm?
 
     override func setUp() {
         super.setUp()
-        // The manager's initializer replaces Realm's default configuration.
-        _ = Self.dbManager
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-        keepAliveRealm = Self.dbManager.ncDatabase()
+        try! Self.dbManager.removeAllRowsForTesting()
         rootItem = MockRemoteItem.rootItem(account: Self.account)
     }
 
     override func tearDown() {
         rootItem.children = []
-        keepAliveRealm = nil
         super.tearDown()
     }
 
@@ -521,9 +514,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     /// `testCreateBundle` test, which validated the now-removed recursive-mirror code path.
     /// See https://github.com/nextcloud/desktop/issues/9827.
     func testCreateBundleIsExcluded() async {
-        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
-        debugPrint(db)
-
         let keynoteBundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -564,9 +554,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     /// Same expectation for `.app` (`com.apple.application-bundle`) — historically the most
     /// problematic bundle type for our recursive-mirror approach because of internal symlinks.
     func testCreateDotAppIsExcluded() async {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let appFilename = "Test.app"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 

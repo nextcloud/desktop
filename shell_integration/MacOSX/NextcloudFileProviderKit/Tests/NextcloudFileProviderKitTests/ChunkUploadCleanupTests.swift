@@ -4,7 +4,6 @@
 @preconcurrency import FileProvider
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import RealmSwift
 import TestInterface
 import XCTest
 
