@@ -147,6 +147,20 @@ public extension FilesDatabaseManager {
         return ancestors
     }
 
+    ///
+    /// Identifiers of the files below a directory whose status is below `status`, for example everything which is not part of an upload in progress.
+    ///
+    func descendantFileOcIds(underRemotePath remotePath: String, account: String, statusBelow status: Status) -> [String] {
+        itemMetadatas
+            .where { item in
+                item.directory == false &&
+                    item.account == account &&
+                    item.status < status.rawValue &&
+                    RealmItemMetadata.hasServerUrl(item, equalTo: remotePath, includingDescendants: true)
+            }
+            .map(\.ocId)
+    }
+
     func parentDirectoryMetadataForItem(_ itemMetadata: SendableItemMetadata) -> SendableItemMetadata? {
         self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl)
     }

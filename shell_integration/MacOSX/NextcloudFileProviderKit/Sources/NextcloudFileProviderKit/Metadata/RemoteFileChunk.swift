@@ -3,24 +3,24 @@
 
 import Foundation
 import NextcloudKit
-import RealmSwift
 
-public class RemoteFileChunk: Object {
-    @Persisted public var fileName: String
-    @Persisted public var size: Int64
-    @Persisted public var remoteChunkStoreFolderName: String
+///
+/// One chunk of a chunked upload as recorded in the file provider domain's database.
+///
+/// `fileName` is the chunk's number on the server, `size` its length in bytes and `remoteChunkStoreFolderName` the identifier of the upload it belongs to.
+///
+public struct RemoteFileChunk: Sendable, Hashable, Codable {
+    public var fileName: String
+    public var size: Int64
+    public var remoteChunkStoreFolderName: String
 
-    public static func fromNcKitChunks(
-        _ chunks: [(fileName: String, size: Int64)], remoteChunkStoreFolderName: String
-    ) -> [RemoteFileChunk] {
-        chunks.map {
-            RemoteFileChunk(ncKitChunk: $0, remoteChunkStoreFolderName: remoteChunkStoreFolderName)
-        }
+    public init(fileName: String, size: Int64, remoteChunkStoreFolderName: String) {
+        self.fileName = fileName
+        self.size = size
+        self.remoteChunkStoreFolderName = remoteChunkStoreFolderName
     }
 
-    public convenience init(
-        ncKitChunk: (fileName: String, size: Int64), remoteChunkStoreFolderName: String
-    ) {
+    public init(ncKitChunk: (fileName: String, size: Int64), remoteChunkStoreFolderName: String) {
         self.init(
             fileName: ncKitChunk.fileName,
             size: ncKitChunk.size,
@@ -28,11 +28,12 @@ public class RemoteFileChunk: Object {
         )
     }
 
-    public convenience init(fileName: String, size: Int64, remoteChunkStoreFolderName: String) {
-        self.init()
-        self.fileName = fileName
-        self.size = size
-        self.remoteChunkStoreFolderName = remoteChunkStoreFolderName
+    public static func fromNcKitChunks(
+        _ chunks: [(fileName: String, size: Int64)], remoteChunkStoreFolderName: String
+    ) -> [RemoteFileChunk] {
+        chunks.map {
+            RemoteFileChunk(ncKitChunk: $0, remoteChunkStoreFolderName: remoteChunkStoreFolderName)
+        }
     }
 
     func toNcKitChunk() -> (fileName: String, size: Int64) {
