@@ -14,11 +14,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let databaseDirectory = makeDatabaseDirectory()
+
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: databaseDirectory, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
     }
 
     func testFilesDatabaseManagerInitialization() {
@@ -46,12 +48,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             )
         )
 
-        let database = Self.dbManager.ncDatabase()
-        XCTAssertNotNil(database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId))
+        XCTAssertNotNil(Self.dbManager.changeDeliverySession(sessionId: sessionId))
         XCTAssertEqual(
-            database.objects(RealmChangeDeliveryItem.self)
-                .where { $0.sessionId == sessionId }
-                .count,
+            Self.dbManager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: Int.max).count,
             1
         )
 
@@ -70,16 +69,17 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             )
         )
 
-        let cleanedDatabase = Self.dbManager.ncDatabase()
-        XCTAssertNil(cleanedDatabase.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId))
+        XCTAssertNil(Self.dbManager.changeDeliverySession(sessionId: sessionId))
         XCTAssertTrue(
-            cleanedDatabase.objects(RealmChangeDeliveryItem.self)
-                .where { $0.sessionId == sessionId }
-                .isEmpty
+            Self.dbManager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: Int.max).isEmpty
         )
     }
 
     func testSchema203MigrationBackfillsCanonicalPathKeys() throws {
+        // The fixture's manager re-points the default Realm configuration; restore it for the tests that follow.
+        let previousConfiguration = Realm.Configuration.defaultConfiguration
+        defer { Realm.Configuration.defaultConfiguration = previousConfiguration }
+
         let databaseDirectory = makeDatabaseDirectory()
         let domainIdentifier = NSFileProviderDomainIdentifier("migration-test")
         let databaseURL = databaseDirectory
@@ -116,22 +116,16 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(migrated.serverUrl, nfdServerUrl)
         XCTAssertEqual(migrated.fileName, nfdFileName)
 
-        let migratedObject = try XCTUnwrap(
-            manager.ncDatabase().objects(RealmItemMetadata.self).where { $0.ocId == "migration-item" }.first
-        )
-        XCTAssertEqual(migratedObject.normalizedServerUrl, nfdServerUrl.precomposedStringWithCanonicalMapping)
-        XCTAssertEqual(migratedObject.normalizedFileName, nfdFileName.precomposedStringWithCanonicalMapping)
+        let migratedLocation = try XCTUnwrap(manager.normalizedLocationForTesting(ocId: "migration-item"))
+        XCTAssertEqual(migratedLocation.serverUrl, nfdServerUrl.precomposedStringWithCanonicalMapping)
+        XCTAssertEqual(migratedLocation.fileName, nfdFileName.precomposedStringWithCanonicalMapping)
     }
 
     func testContainsAnyItemMetadataFileIds() throws {
-        let metadata = RealmItemMetadata()
-        metadata.ocId = UUID().uuidString
+        var metadata = SendableItemMetadata.rawRow(ocId: UUID().uuidString)
         metadata.fileId = "11915767"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(metadata)
-        }
+        try Self.dbManager.insertForTesting(metadata)
 
         XCTAssertTrue(Self.dbManager.containsAnyItemMetadata(fileIds: ["11915767", "13347012"]))
         XCTAssertFalse(Self.dbManager.containsAnyItemMetadata(fileIds: ["13347012"]))
@@ -141,29 +135,26 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     /// the root (root excluded) — the set of folders whose "Remove download"
     /// visibility must be refreshed when that file materializes (#10085).
     func testAncestorContainerIdentifiersForMaterializedFile() throws {
-        let folder = RealmItemMetadata()
-        folder.ocId = "folder-1"
+        var folder = SendableItemMetadata.rawRow(ocId: "folder-1")
         folder.account = Self.account.ncKitAccount
-        folder.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "documents")
+        folder.serverUrl = "https://cloud.example.com/files"
+        folder.fileName = "documents"
         folder.directory = true
 
-        let subfolder = RealmItemMetadata()
-        subfolder.ocId = "subfolder-1"
+        var subfolder = SendableItemMetadata.rawRow(ocId: "subfolder-1")
         subfolder.account = Self.account.ncKitAccount
-        subfolder.updateLocation(serverUrl: "https://cloud.example.com/files/documents", fileName: "nested")
+        subfolder.serverUrl = "https://cloud.example.com/files/documents"
+        subfolder.fileName = "nested"
         subfolder.directory = true
 
-        let deepFile = RealmItemMetadata()
-        deepFile.ocId = "deep-file"
+        var deepFile = SendableItemMetadata.rawRow(ocId: "deep-file")
         deepFile.account = Self.account.ncKitAccount
-        deepFile.updateLocation(serverUrl: "https://cloud.example.com/files/documents/nested", fileName: "note.txt")
+        deepFile.serverUrl = "https://cloud.example.com/files/documents/nested"
+        deepFile.fileName = "note.txt"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(folder)
-            realm.add(subfolder)
-            realm.add(deepFile)
-        }
+        try Self.dbManager.insertForTesting(folder)
+        try Self.dbManager.insertForTesting(subfolder)
+        try Self.dbManager.insertForTesting(deepFile)
 
         // Every directory on the deep file's path, root excluded.
         XCTAssertEqual(
@@ -187,18 +178,14 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     /// container, which must be included so "Remove download" is offered on the
     /// whole file provider — symmetric with pinning it all offline (#10085).
     func testAncestorContainerIdentifiersIncludeRootContainer() throws {
-        let topFile = RealmItemMetadata()
-        topFile.ocId = "top-file"
+        var topFile = SendableItemMetadata.rawRow(ocId: "top-file")
         topFile.account = Self.account.ncKitAccount
         topFile.serverUrl = Self.account.davFilesUrl
         topFile.urlBase = Self.account.serverUrl
         topFile.userId = Self.account.id
         topFile.fileName = "top.txt"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(topFile)
-        }
+        try Self.dbManager.insertForTesting(topFile)
 
         XCTAssertEqual(
             Self.dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ["top-file"]),
@@ -214,11 +201,11 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let base = "https://cloud.example.com/files"
         let dir = base + "/documents"
 
-        func seed(_ ocId: String, _ name: String, url: String, directory: Bool = false, downloaded: Bool = false, deleted: Bool = false, keepDownloaded: Bool = false) -> RealmItemMetadata {
-            let m = RealmItemMetadata()
-            m.ocId = ocId
+        func seed(_ ocId: String, _ name: String, url: String, directory: Bool = false, downloaded: Bool = false, deleted: Bool = false, keepDownloaded: Bool = false) -> SendableItemMetadata {
+            var m = SendableItemMetadata.rawRow(ocId: ocId)
             m.account = Self.account.ncKitAccount
-            m.updateLocation(serverUrl: url, fileName: name)
+            m.serverUrl = url
+            m.fileName = name
             m.directory = directory
             m.downloaded = downloaded
             m.deleted = deleted
@@ -236,8 +223,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             seed("deep-file", "deep.txt", url: dir + "/nested", downloaded: true) // evictable (deep)
         ]
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write { rows.forEach { realm.add($0) } }
+        for row in rows {
+            try Self.dbManager.insertForTesting(row)
+        }
 
         let folderMeta = try XCTUnwrap(Self.dbManager.directoryMetadata(ocId: "folder-1"))
         let ids = Set(Self.dbManager.evictableDescendantFileIdentifiers(directoryMetadata: folderMeta).map(\.rawValue))
@@ -248,13 +236,10 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // Insert test data
         let expected = true
         let testAccount = "TestAccount"
-        let metadata = RealmItemMetadata()
+        var metadata = SendableItemMetadata.rawRow(ocId: "")
         metadata.account = testAccount
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(metadata)
-        }
+        try Self.dbManager.insertForTesting(metadata)
 
         // Perform test
         let result = Self.dbManager.anyItemMetadatasForAccount(testAccount)
@@ -267,13 +252,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testItemMetadataFromOcId() throws {
         let ocId = "unique-id-123"
-        let metadata = RealmItemMetadata()
-        metadata.ocId = ocId
+        let metadata = SendableItemMetadata.rawRow(ocId: ocId)
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(metadata)
-        }
+        try Self.dbManager.insertForTesting(metadata)
 
         let fetchedMetadata = Self.dbManager.itemMetadata(ocId: ocId)
         XCTAssertNotNil(fetchedMetadata, "Should fetch metadata with the specified ocId")
@@ -439,18 +420,14 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testSetStatusForItemMetadata() throws {
         // Create and add a test metadata to the database
-        let metadata = RealmItemMetadata()
-        metadata.ocId = "unique-id-123"
+        var metadata = SendableItemMetadata.rawRow(ocId: "unique-id-123")
         metadata.status = Status.normal.rawValue
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(metadata)
-        }
+        try Self.dbManager.insertForTesting(metadata)
 
         let expectedStatus = Status.uploadError
         let updatedMetadata = Self.dbManager.setStatusForItemMetadata(
-            SendableItemMetadata(value: metadata), status: expectedStatus
+            metadata, status: expectedStatus
         )
         XCTAssertEqual(
             updatedMetadata?.status,
@@ -473,13 +450,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testDeleteItemMetadata() throws {
         let ocId = "unique-id-123"
-        let metadata = RealmItemMetadata()
-        metadata.ocId = ocId
+        let metadata = SendableItemMetadata.rawRow(ocId: ocId)
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(metadata)
-        }
+        try Self.dbManager.insertForTesting(metadata)
 
         let result = Self.dbManager.deleteItemMetadata(ocId: ocId)
         XCTAssertTrue(result, "deleteItemMetadata should return true on successful deletion")
@@ -494,14 +467,11 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let ocId = "unique-id-123"
         let newFileName = "newFileName.pdf"
         let newServerUrl = "https://new.example.com"
-        let metadata = RealmItemMetadata()
-        metadata.ocId = ocId
-        metadata.updateLocation(serverUrl: "https://old.example.com", fileName: "oldFileName.pdf")
+        var metadata = SendableItemMetadata.rawRow(ocId: ocId)
+        metadata.serverUrl = "https://old.example.com"
+        metadata.fileName = "oldFileName.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(metadata)
-        }
+        try Self.dbManager.insertForTesting(metadata)
 
         Self.dbManager.renameItemMetadata(
             ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName
@@ -514,34 +484,31 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testDeleteItemMetadatasBasedOnUpdate() throws {
         // Existing metadata in the database
-        let existingMetadata1 = RealmItemMetadata()
-        existingMetadata1.ocId = "id-1"
-        existingMetadata1.updateLocation(serverUrl: "https://example.com", fileName: "Existing.pdf")
+        var existingMetadata1 = SendableItemMetadata.rawRow(ocId: "id-1")
+        existingMetadata1.serverUrl = "https://example.com"
+        existingMetadata1.fileName = "Existing.pdf"
         existingMetadata1.account = "TestAccount"
         existingMetadata1.downloaded = true
         existingMetadata1.uploaded = true
 
-        let existingMetadata2 = RealmItemMetadata()
-        existingMetadata2.ocId = "id-2"
-        existingMetadata2.updateLocation(serverUrl: "https://example.com", fileName: "Existing2.pdf")
+        var existingMetadata2 = SendableItemMetadata.rawRow(ocId: "id-2")
+        existingMetadata2.serverUrl = "https://example.com"
+        existingMetadata2.fileName = "Existing2.pdf"
         existingMetadata2.account = "TestAccount"
         existingMetadata2.downloaded = true
         existingMetadata2.uploaded = true
 
-        let existingMetadata3 = RealmItemMetadata()
-        existingMetadata3.ocId = "id-3"
+        var existingMetadata3 = SendableItemMetadata.rawRow(ocId: "id-3")
         // Different child path.
-        existingMetadata3.updateLocation(serverUrl: "https://example.com/folder", fileName: "Existing3.pdf")
+        existingMetadata3.serverUrl = "https://example.com/folder"
+        existingMetadata3.fileName = "Existing3.pdf"
         existingMetadata3.account = "TestAccount"
         existingMetadata3.downloaded = true
         existingMetadata3.uploaded = true
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(existingMetadata1)
-            realm.add(existingMetadata2)
-            realm.add(existingMetadata3)
-        }
+        try Self.dbManager.insertForTesting(existingMetadata1)
+        try Self.dbManager.insertForTesting(existingMetadata2)
+        try Self.dbManager.insertForTesting(existingMetadata3)
 
         // Simulate updated metadata that leads to a deletion
         let updatedMetadatas = [existingMetadata1, existingMetadata3] // Only include 2 of the 3
@@ -549,7 +516,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: "TestAccount",
             serverUrl: "https://example.com",
-            updatedMetadatas: updatedMetadatas.map { SendableItemMetadata(value: $0) },
+            updatedMetadatas: updatedMetadatas,
             keepExistingDownloadState: true
         )
 
@@ -568,18 +535,18 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             user: "TestAccount", id: "taid", serverUrl: "https://example.com", password: "pass"
         )
 
-        let parent = RealmItemMetadata()
-        parent.ocId = "parent"
-        parent.updateLocation(serverUrl: "https://example.com", fileName: "Parent")
+        var parent = SendableItemMetadata.rawRow(ocId: "parent")
+        parent.serverUrl = "https://example.com"
+        parent.fileName = "Parent"
         parent.account = "TestAccount"
         parent.directory = true
         parent.downloaded = true
         parent.uploaded = true
 
         // Simulate existing metadata in the database
-        let existingMetadata = RealmItemMetadata()
-        existingMetadata.ocId = "id-1"
-        existingMetadata.updateLocation(serverUrl: "https://example.com/Parent", fileName: "File.pdf")
+        var existingMetadata = SendableItemMetadata.rawRow(ocId: "id-1")
+        existingMetadata.serverUrl = "https://example.com/Parent"
+        existingMetadata.fileName = "File.pdf"
         existingMetadata.account = "TestAccount"
         existingMetadata.downloaded = true
         existingMetadata.uploaded = true
@@ -596,11 +563,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             SendableItemMetadata(ocId: "id-2", fileName: "NewFile.pdf", account: account)
         newMetadata.serverUrl = "https://example.com/Parent"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(parent)
-            realm.add(existingMetadata)
-        }
+        try Self.dbManager.insertForTesting(parent)
+        try Self.dbManager.insertForTesting(existingMetadata)
 
         let results = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: "TestAccount",
@@ -625,17 +589,17 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let testAccount = Self.account.ncKitAccount
         let testServerUrl = Self.account.davFilesUrl
         // 1. Item that exists locally and is marked as uploaded
-        let uploadedItem = RealmItemMetadata()
-        uploadedItem.ocId = "ocid-uploaded-123"
-        uploadedItem.updateLocation(serverUrl: testServerUrl, fileName: "SyncedFile.txt")
+        var uploadedItem = SendableItemMetadata.rawRow(ocId: "ocid-uploaded-123")
+        uploadedItem.serverUrl = testServerUrl
+        uploadedItem.fileName = "SyncedFile.txt"
         uploadedItem.account = testAccount
         uploadedItem.downloaded = true
         uploadedItem.uploaded = true // IMPORTANT: Marked as uploaded
 
         // 2. Item that exists locally but is NOT marked as uploaded (e.g., new local file)
-        let unuploadedItem = RealmItemMetadata()
-        unuploadedItem.ocId = "ocid-local-456" // May or may not have ocId yet
-        unuploadedItem.updateLocation(serverUrl: testServerUrl, fileName: "NewLocalFile.txt")
+        var unuploadedItem = SendableItemMetadata.rawRow(ocId: "ocid-local-456") // May or may not have ocId yet
+        unuploadedItem.serverUrl = testServerUrl
+        unuploadedItem.fileName = "NewLocalFile.txt"
         unuploadedItem.account = testAccount
         unuploadedItem.downloaded = true
         unuploadedItem.uploaded = false // IMPORTANT: Not marked as uploaded
@@ -646,13 +610,10 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         Self.dbManager.addItemMetadata(rootMetadata)
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(uploadedItem)
-            realm.add(unuploadedItem)
-        }
+        try Self.dbManager.insertForTesting(uploadedItem)
+        try Self.dbManager.insertForTesting(unuploadedItem)
 
-        XCTAssertEqual(realm.objects(RealmItemMetadata.self).where {
+        XCTAssertEqual(Self.dbManager.allItemMetadatasForTesting().filter {
             $0.account == testAccount && $0.serverUrl == testServerUrl
         }.count, 3)
 
@@ -669,8 +630,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         )
 
         // --- Assertion ---
-        let remainingMetadatas = realm.objects(RealmItemMetadata.self)
-            .where { $0.account == testAccount && $0.serverUrl == testServerUrl }
+        let remainingMetadatas = Self.dbManager.allItemMetadatasForTesting()
+            .filter { $0.account == testAccount && $0.serverUrl == testServerUrl }
 
         // Check the returned delete list (based on the copy made before deletion)
         XCTAssertEqual(results?.deleted.count, 1, "Should identify the uploaded item as deleted.")
@@ -681,7 +642,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remainingMetadatas.filter(\.deleted).count, 1)
         XCTAssertEqual(remainingMetadatas.count(where: { !$0.deleted }), 2)
 
-        let survivingItem = remainingMetadatas.last
+        let survivingItem = remainingMetadatas.last { !$0.deleted && !$0.directory }
         XCTAssertNotNil(survivingItem, "An item should survive.")
         XCTAssertEqual(survivingItem?.ocId, "ocid-local-456", "The surviving item should be the unuploaded one.")
         XCTAssertEqual(survivingItem?.fileName, "NewLocalFile.txt", "Filename should match the unuploaded item.")
@@ -696,16 +657,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let account = "TestAccount"
         let serverUrl = "https://cloud.example.com/files/documents"
         let directoryFileName = "documents"
-        let metadata = RealmItemMetadata()
-        metadata.ocId = "dir-1"
+        var metadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         metadata.account = account
-        metadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: directoryFileName)
+        metadata.serverUrl = "https://cloud.example.com/files"
+        metadata.fileName = directoryFileName
         metadata.directory = true
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(metadata)
-        }
+        try Self.dbManager.insertForTesting(metadata)
 
         let retrievedMetadata = Self.dbManager.itemMetadata(
             account: account, locatedAtRemoteUrl: serverUrl
@@ -717,25 +675,22 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testChildItemsForDirectory() throws {
-        let directoryMetadata = RealmItemMetadata()
-        directoryMetadata.ocId = "dir-1"
+        var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "documents")
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "item-1"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = "TestAccount"
-        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/documents", fileName: "report.pdf")
+        childMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        childMetadata.fileName = "report.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directoryMetadata)
-            realm.add(childMetadata)
-        }
+        try Self.dbManager.insertForTesting(directoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
 
         let children = Self.dbManager.childItems(
-            directoryMetadata: SendableItemMetadata(value: directoryMetadata)
+            directoryMetadata: directoryMetadata
         )
         XCTAssertEqual(children.count, 1, "Should return one child item")
         XCTAssertEqual(
@@ -744,67 +699,52 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testChildItemsForDirectoryMatchesCanonicalEquivalentPath() throws {
-        let directoryMetadata = RealmItemMetadata()
-        directoryMetadata.ocId = "canonical-dir"
+        var directoryMetadata = SendableItemMetadata.rawRow(ocId: "canonical-dir")
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.updateLocation(serverUrl: Self.account.davFilesUrl, fileName: "pr\u{00EA}t")
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
+        directoryMetadata.fileName = "pr\u{00EA}t"
         directoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "canonical-child"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "canonical-child")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.updateLocation(
-            serverUrl: "\(Self.account.davFilesUrl)/pre\u{0302}t",
-            fileName: "report.pdf"
-        )
+        childMetadata.serverUrl = "\(Self.account.davFilesUrl)/pre\u{0302}t"
+        childMetadata.fileName = "report.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directoryMetadata)
-            realm.add(childMetadata)
-        }
+        try Self.dbManager.insertForTesting(directoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
 
         let children = Self.dbManager.childItems(
-            directoryMetadata: SendableItemMetadata(value: directoryMetadata)
+            directoryMetadata: directoryMetadata
         )
         XCTAssertEqual(children.map(\.ocId), ["canonical-child"])
     }
 
     func testTrashedItemMetadatasMatchesCanonicalEquivalentDescendantPath() throws {
-        let metadata = RealmItemMetadata()
-        metadata.ocId = "canonical-trash-item"
+        var metadata = SendableItemMetadata.rawRow(ocId: "canonical-trash-item")
         metadata.account = Self.account.ncKitAccount
-        metadata.updateLocation(
-            serverUrl: "\(Self.account.trashUrl)/pre\u{0302}t",
-            fileName: "report.pdf"
-        )
+        metadata.serverUrl = "\(Self.account.trashUrl)/pre\u{0302}t"
+        metadata.fileName = "report.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(metadata)
-        }
+        try Self.dbManager.insertForTesting(metadata)
 
         let trashedItems = Self.dbManager.trashedItemMetadatas(account: Self.account)
         XCTAssertEqual(trashedItems.map(\.ocId), ["canonical-trash-item"])
     }
 
     func testDeleteDirectoryAndSubdirectoriesMetadata() throws {
-        let directoryMetadata = RealmItemMetadata()
-        directoryMetadata.ocId = "dir-1"
+        var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "documents")
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "item-1"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = "TestAccount"
-        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/documents", fileName: "report.pdf")
+        childMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        childMetadata.fileName = "report.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directoryMetadata)
-            realm.add(childMetadata)
-        }
+        try Self.dbManager.insertForTesting(directoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
 
         let deletedMetadatas = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(
             ocId: "dir-1"
@@ -814,22 +754,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testRenameDirectoryAndPropagateToChildren() throws {
-        let directoryMetadata = RealmItemMetadata()
-        directoryMetadata.ocId = "dir-1"
+        var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "documents")
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "item-1"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = "TestAccount"
-        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/documents", fileName: "report.pdf")
+        childMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        childMetadata.fileName = "report.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directoryMetadata)
-            realm.add(childMetadata)
-        }
+        try Self.dbManager.insertForTesting(directoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
 
         let updatedChildren = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: "dir-1",
@@ -847,25 +784,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testRenameDirectoryAndPropagateToChildrenMatchesCanonicalEquivalentPath() throws {
-        let directoryMetadata = RealmItemMetadata()
-        directoryMetadata.ocId = "canonical-rename-dir"
+        var directoryMetadata = SendableItemMetadata.rawRow(ocId: "canonical-rename-dir")
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.updateLocation(serverUrl: Self.account.davFilesUrl, fileName: "pr\u{00EA}t")
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
+        directoryMetadata.fileName = "pr\u{00EA}t"
         directoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "canonical-rename-child"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "canonical-rename-child")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.updateLocation(
-            serverUrl: "\(Self.account.davFilesUrl)/pre\u{0302}t",
-            fileName: "report.pdf"
-        )
+        childMetadata.serverUrl = "\(Self.account.davFilesUrl)/pre\u{0302}t"
+        childMetadata.fileName = "report.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directoryMetadata)
-            realm.add(childMetadata)
-        }
+        try Self.dbManager.insertForTesting(directoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
 
         let updatedChildren = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: directoryMetadata.ocId,
@@ -900,15 +831,12 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             )
         ) // Do not write, we do not track root container
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "item-1"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = "TestAccount"
-        childMetadata.updateLocation(serverUrl: rootMetadata.serverUrl, fileName: "report.pdf")
+        childMetadata.serverUrl = rootMetadata.serverUrl
+        childMetadata.fileName = "report.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(childMetadata)
-        }
+        try Self.dbManager.insertForTesting(childMetadata)
 
         let children = Self.dbManager.childItems(directoryMetadata: rootMetadata)
         XCTAssertEqual(children.count, 1, "Should return one child item for the root directory")
@@ -921,29 +849,26 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testDeleteNestedDirectoriesAndSubdirectoriesMetadata() throws {
         // Create nested directories and their child items
-        let rootDirectoryMetadata = RealmItemMetadata()
-        rootDirectoryMetadata.ocId = "dir-1"
+        var rootDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         rootDirectoryMetadata.account = "TestAccount"
-        rootDirectoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "documents")
+        rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
+        rootDirectoryMetadata.fileName = "documents"
         rootDirectoryMetadata.directory = true
 
-        let nestedDirectoryMetadata = RealmItemMetadata()
-        nestedDirectoryMetadata.ocId = "dir-2"
+        var nestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-2")
         nestedDirectoryMetadata.account = "TestAccount"
-        nestedDirectoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/documents", fileName: "projects")
+        nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        nestedDirectoryMetadata.fileName = "projects"
         nestedDirectoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "item-1"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = "TestAccount"
-        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/documents/projects", fileName: "report.pdf")
+        childMetadata.serverUrl = "https://cloud.example.com/files/documents/projects"
+        childMetadata.fileName = "report.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(rootDirectoryMetadata)
-            realm.add(nestedDirectoryMetadata)
-            realm.add(childMetadata)
-        }
+        try Self.dbManager.insertForTesting(rootDirectoryMetadata)
+        try Self.dbManager.insertForTesting(nestedDirectoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
 
         let deletedMetadatas = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(
             ocId: "dir-1"
@@ -958,29 +883,26 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testRecursiveRenameOfDirectoriesAndChildItems() throws {
         // Setup a complex directory structure
-        let rootDirectoryMetadata = RealmItemMetadata()
-        rootDirectoryMetadata.ocId = "dir-1"
+        var rootDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         rootDirectoryMetadata.account = "TestAccount"
-        rootDirectoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "documents")
+        rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
+        rootDirectoryMetadata.fileName = "documents"
         rootDirectoryMetadata.directory = true
 
-        let nestedDirectoryMetadata = RealmItemMetadata()
-        nestedDirectoryMetadata.ocId = "dir-2"
+        var nestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-2")
         nestedDirectoryMetadata.account = "TestAccount"
-        nestedDirectoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/documents", fileName: "projects")
+        nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        nestedDirectoryMetadata.fileName = "projects"
         nestedDirectoryMetadata.directory = true
 
-        let childMetadata = RealmItemMetadata()
-        childMetadata.ocId = "item-1"
+        var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = "TestAccount"
-        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/documents/projects", fileName: "report.pdf")
+        childMetadata.serverUrl = "https://cloud.example.com/files/documents/projects"
+        childMetadata.fileName = "report.pdf"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(rootDirectoryMetadata)
-            realm.add(nestedDirectoryMetadata)
-            realm.add(childMetadata)
-        }
+        try Self.dbManager.insertForTesting(rootDirectoryMetadata)
+        try Self.dbManager.insertForTesting(nestedDirectoryMetadata)
+        try Self.dbManager.insertForTesting(childMetadata)
 
         let updatedChildren = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: "dir-1",
@@ -997,16 +919,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeletingDirectoryWithNoChildren() throws {
-        let directoryMetadata = RealmItemMetadata()
-        directoryMetadata.ocId = "dir-1"
+        var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "empty")
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "empty"
         directoryMetadata.directory = true
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(directoryMetadata)
-        }
+        try Self.dbManager.insertForTesting(directoryMetadata)
 
         let deletedMetadatas = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(
             ocId: "dir-1"
@@ -1024,30 +943,27 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testRenamingDirectoryWithComplexNestedStructure() throws {
         // Create a complex nested directory structure
-        let rootDirectoryMetadata = RealmItemMetadata()
-        rootDirectoryMetadata.ocId = "dir-1"
+        var rootDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         rootDirectoryMetadata.account = "TestAccount"
-        rootDirectoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "dir-1")
+        rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
+        rootDirectoryMetadata.fileName = "dir-1"
         rootDirectoryMetadata.directory = true
 
-        let nestedDirectoryMetadata = RealmItemMetadata()
-        nestedDirectoryMetadata.ocId = "dir-2"
+        var nestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-2")
         nestedDirectoryMetadata.account = "TestAccount"
-        nestedDirectoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/dir-1", fileName: "dir-2")
+        nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/dir-1"
+        nestedDirectoryMetadata.fileName = "dir-2"
         nestedDirectoryMetadata.directory = true
 
-        let deepNestedDirectoryMetadata = RealmItemMetadata()
-        deepNestedDirectoryMetadata.ocId = "dir-3"
+        var deepNestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-3")
         deepNestedDirectoryMetadata.account = "TestAccount"
-        deepNestedDirectoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/dir-1/dir-2", fileName: "dir-3")
+        deepNestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/dir-1/dir-2"
+        deepNestedDirectoryMetadata.fileName = "dir-3"
         deepNestedDirectoryMetadata.directory = true
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(rootDirectoryMetadata)
-            realm.add(nestedDirectoryMetadata)
-            realm.add(deepNestedDirectoryMetadata)
-        }
+        try Self.dbManager.insertForTesting(rootDirectoryMetadata)
+        try Self.dbManager.insertForTesting(nestedDirectoryMetadata)
+        try Self.dbManager.insertForTesting(deepNestedDirectoryMetadata)
 
         let updatedChildren = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: "dir-1",
@@ -1069,14 +985,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let parentUrl = "https://cloud.example.com/files/my great and incredible dir/dir-2"
         let fullUrl = parentUrl + "/" + filename
 
-        let deepNestedDirectoryMetadata = RealmItemMetadata()
-        deepNestedDirectoryMetadata.ocId = filename
+        var deepNestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: filename)
         deepNestedDirectoryMetadata.account = account
-        deepNestedDirectoryMetadata.updateLocation(serverUrl: parentUrl, fileName: filename)
+        deepNestedDirectoryMetadata.serverUrl = parentUrl
+        deepNestedDirectoryMetadata.fileName = filename
         deepNestedDirectoryMetadata.directory = true
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write { realm.add(deepNestedDirectoryMetadata) }
+        try Self.dbManager.insertForTesting(deepNestedDirectoryMetadata)
 
         XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
     }
@@ -1087,14 +1002,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let parentUrl = "https://cloud.example.com/files/my great and # dir/dir-2"
         let fullUrl = parentUrl + "/" + filename
 
-        let deepNestedDirectoryMetadata = RealmItemMetadata()
-        deepNestedDirectoryMetadata.ocId = filename
+        var deepNestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: filename)
         deepNestedDirectoryMetadata.account = account
-        deepNestedDirectoryMetadata.updateLocation(serverUrl: parentUrl, fileName: filename)
+        deepNestedDirectoryMetadata.serverUrl = parentUrl
+        deepNestedDirectoryMetadata.fileName = filename
         deepNestedDirectoryMetadata.directory = true
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write { realm.add(deepNestedDirectoryMetadata) }
+        try Self.dbManager.insertForTesting(deepNestedDirectoryMetadata)
 
         XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
     }
@@ -1105,14 +1019,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let parentUrl = "https://cloud.example.com/files/my great and incredible dir ?/dir-2"
         let fullUrl = parentUrl + "/" + filename
 
-        let deepNestedDirectoryMetadata = RealmItemMetadata()
-        deepNestedDirectoryMetadata.ocId = filename
+        var deepNestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: filename)
         deepNestedDirectoryMetadata.account = account
-        deepNestedDirectoryMetadata.updateLocation(serverUrl: parentUrl, fileName: filename)
+        deepNestedDirectoryMetadata.serverUrl = parentUrl
+        deepNestedDirectoryMetadata.fileName = filename
         deepNestedDirectoryMetadata.directory = true
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write { realm.add(deepNestedDirectoryMetadata) }
+        try Self.dbManager.insertForTesting(deepNestedDirectoryMetadata)
 
         XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
     }
@@ -1161,19 +1074,15 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testKeepDownloadedSetting() throws {
-        let existingMetadata = RealmItemMetadata()
-        existingMetadata.ocId = "id-1"
+        var existingMetadata = SendableItemMetadata.rawRow(ocId: "id-1")
         existingMetadata.fileName = "File.pdf"
         existingMetadata.account = "TestAccount"
         existingMetadata.serverUrl = "https://example.com"
         XCTAssertFalse(existingMetadata.keepDownloaded)
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(existingMetadata)
-        }
+        try Self.dbManager.insertForTesting(existingMetadata)
 
-        let sendable = SendableItemMetadata(value: existingMetadata)
+        let sendable = existingMetadata
         var updatedMetadata =
             try XCTUnwrap(Self.dbManager.set(keepDownloaded: true, for: sendable))
         XCTAssertTrue(updatedMetadata.keepDownloaded)
@@ -1522,20 +1431,14 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMaterialisedFiles() throws {
-        let itemA = RealmItemMetadata()
-        let itemB = RealmItemMetadata()
-        let folderA = RealmItemMetadata()
-        let folderB = RealmItemMetadata()
-        let notFolderA = RealmItemMetadata()
+        var itemA = SendableItemMetadata.rawRow(ocId: "itemA")
+        var itemB = SendableItemMetadata.rawRow(ocId: "itemB")
+        var folderA = SendableItemMetadata.rawRow(ocId: "folderA")
+        var folderB = SendableItemMetadata.rawRow(ocId: "folderB")
+        var notFolderA = SendableItemMetadata.rawRow(ocId: "notFolderA")
 
         folderA.directory = true
         folderB.directory = true
-
-        itemA.ocId = "itemA"
-        itemB.ocId = "itemB"
-        folderA.ocId = "folderA"
-        folderB.ocId = "folderB"
-        notFolderA.ocId = "notFolderA"
 
         itemA.account = Self.account.ncKitAccount
         itemB.account = Self.account.ncKitAccount
@@ -1549,13 +1452,10 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         folderB.visitedDirectory = false
         notFolderA.visitedDirectory = true
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(itemA)
-            realm.add(itemB)
-            realm.add(folderA)
-            realm.add(folderB)
-        }
+        try Self.dbManager.insertForTesting(itemA)
+        try Self.dbManager.insertForTesting(itemB)
+        try Self.dbManager.insertForTesting(folderA)
+        try Self.dbManager.insertForTesting(folderB)
 
         // Test with addItemMetadata too
         var sItemA = SendableItemMetadata(ocId: "sItemA", fileName: "sItemA", account: Self.account)
@@ -1863,15 +1763,14 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // Seed an existing row at the target logical path with `uploaded == false`
         // so the depth-1-read delete-on-update path will not consider it; only
         // the new eviction code can remove it.
-        let realm = Self.dbManager.ncDatabase()
-        let oldRow = RealmItemMetadata()
-        oldRow.ocId = "oldOcId"
+        var oldRow = SendableItemMetadata.rawRow(ocId: "oldOcId")
         oldRow.account = account.ncKitAccount
-        oldRow.updateLocation(serverUrl: account.davFilesUrl, fileName: "TOOLS and WORKFLOWS")
+        oldRow.serverUrl = account.davFilesUrl
+        oldRow.fileName = "TOOLS and WORKFLOWS"
         oldRow.directory = true
         oldRow.uploaded = false
         oldRow.syncTime = Date(timeIntervalSince1970: 1000)
-        try realm.write { realm.add(oldRow) }
+        try Self.dbManager.insertForTesting(oldRow)
 
         var freshDir = SendableItemMetadata(ocId: "freshOcId", fileName: "TOOLS and WORKFLOWS", account: account)
         freshDir.directory = true
@@ -1899,14 +1798,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         rootMetadata.uploaded = true
         Self.dbManager.addItemMetadata(rootMetadata)
 
-        let realm = Self.dbManager.ncDatabase()
-        let inFlightRow = RealmItemMetadata()
-        inFlightRow.ocId = "uploading"
+        var inFlightRow = SendableItemMetadata.rawRow(ocId: "uploading")
         inFlightRow.account = account.ncKitAccount
-        inFlightRow.updateLocation(serverUrl: account.davFilesUrl, fileName: "upload-in-progress.bin")
+        inFlightRow.serverUrl = account.davFilesUrl
+        inFlightRow.fileName = "upload-in-progress.bin"
         inFlightRow.uploaded = false
         inFlightRow.status = Status.uploading.rawValue
-        try realm.write { realm.add(inFlightRow) }
+        try Self.dbManager.insertForTesting(inFlightRow)
 
         var fresh = SendableItemMetadata(ocId: "freshOcId", fileName: "upload-in-progress.bin", account: account)
         fresh.uploaded = true
@@ -1930,32 +1828,31 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let testServerUrl = "https://example.com"
         let fileName = "dup.txt"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            let older = RealmItemMetadata()
-            older.ocId = "older"
-            older.account = testAccount
-            older.updateLocation(serverUrl: testServerUrl, fileName: fileName)
-            older.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
-            older.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
-            older.syncTime = Date(timeIntervalSince1970: 1000)
-            realm.add(older)
+        var older = SendableItemMetadata.rawRow(ocId: "older")
+        older.account = testAccount
+        older.serverUrl = testServerUrl
+        older.fileName = fileName
+        older.syncTime = Date(timeIntervalSince1970: 1000)
+        try Self.dbManager.insertForTesting(
+            older,
+            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedFileName: fileName.precomposedStringWithCanonicalMapping
+        )
 
-            let newer = RealmItemMetadata()
-            newer.ocId = "newer"
-            newer.account = testAccount
-            newer.updateLocation(serverUrl: testServerUrl, fileName: fileName)
-            newer.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
-            newer.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
-            newer.syncTime = Date(timeIntervalSince1970: 2000)
-            realm.add(newer)
-        }
+        var newer = SendableItemMetadata.rawRow(ocId: "newer")
+        newer.account = testAccount
+        newer.serverUrl = testServerUrl
+        newer.fileName = fileName
+        newer.syncTime = Date(timeIntervalSince1970: 2000)
+        try Self.dbManager.insertForTesting(
+            newer,
+            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedFileName: fileName.precomposedStringWithCanonicalMapping
+        )
 
-        let configuration = Realm.Configuration.defaultConfiguration
         let manager = FilesDatabaseManager(
-            realmConfiguration: configuration,
             account: Self.account,
-            databaseDirectory: makeDatabaseDirectory(),
+            databaseDirectory: Self.databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
             log: FileProviderLogMock()
         )
@@ -1972,28 +1869,24 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let nfcName = "pr\u{00EA}t.pdf"
         let nfdName = "pre\u{0302}t.pdf"
         let serverUrl = "https://example.com"
-        let realm = Self.dbManager.ncDatabase()
 
-        try realm.write {
-            let older = RealmItemMetadata()
-            older.ocId = "older-canonical"
-            older.account = testAccount
-            older.updateLocation(serverUrl: serverUrl, fileName: nfdName)
-            older.syncTime = Date(timeIntervalSince1970: 1000)
-            realm.add(older)
+        var older = SendableItemMetadata.rawRow(ocId: "older-canonical")
+        older.account = testAccount
+        older.serverUrl = serverUrl
+        older.fileName = nfdName
+        older.syncTime = Date(timeIntervalSince1970: 1000)
+        try Self.dbManager.insertForTesting(older)
 
-            let newer = RealmItemMetadata()
-            newer.ocId = "newer-canonical"
-            newer.account = testAccount
-            newer.updateLocation(serverUrl: serverUrl, fileName: nfcName)
-            newer.syncTime = Date(timeIntervalSince1970: 2000)
-            realm.add(newer)
-        }
+        var newer = SendableItemMetadata.rawRow(ocId: "newer-canonical")
+        newer.account = testAccount
+        newer.serverUrl = serverUrl
+        newer.fileName = nfcName
+        newer.syncTime = Date(timeIntervalSince1970: 2000)
+        try Self.dbManager.insertForTesting(newer)
 
         let manager = FilesDatabaseManager(
-            realmConfiguration: Realm.Configuration.defaultConfiguration,
             account: Self.account,
-            databaseDirectory: makeDatabaseDirectory(),
+            databaseDirectory: Self.databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
             log: FileProviderLogMock()
         )
@@ -2008,32 +1901,31 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let fileName = "tie.txt"
         let sameTime = Date(timeIntervalSince1970: 5000)
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            let a = RealmItemMetadata()
-            a.ocId = "aa"
-            a.account = testAccount
-            a.updateLocation(serverUrl: testServerUrl, fileName: fileName)
-            a.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
-            a.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
-            a.syncTime = sameTime
-            realm.add(a)
+        var a = SendableItemMetadata.rawRow(ocId: "aa")
+        a.account = testAccount
+        a.serverUrl = testServerUrl
+        a.fileName = fileName
+        a.syncTime = sameTime
+        try Self.dbManager.insertForTesting(
+            a,
+            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedFileName: fileName.precomposedStringWithCanonicalMapping
+        )
 
-            let b = RealmItemMetadata()
-            b.ocId = "bb"
-            b.account = testAccount
-            b.updateLocation(serverUrl: testServerUrl, fileName: fileName)
-            b.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
-            b.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
-            b.syncTime = sameTime
-            realm.add(b)
-        }
+        var b = SendableItemMetadata.rawRow(ocId: "bb")
+        b.account = testAccount
+        b.serverUrl = testServerUrl
+        b.fileName = fileName
+        b.syncTime = sameTime
+        try Self.dbManager.insertForTesting(
+            b,
+            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedFileName: fileName.precomposedStringWithCanonicalMapping
+        )
 
-        let configuration = Realm.Configuration.defaultConfiguration
         let manager = FilesDatabaseManager(
-            realmConfiguration: configuration,
             account: Self.account,
-            databaseDirectory: makeDatabaseDirectory(),
+            databaseDirectory: Self.databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
             log: FileProviderLogMock()
         )
@@ -2048,39 +1940,40 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testStartupCleanupNoOpWhenNoDuplicates() throws {
         let testAccount = "TestAccount"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            let a = RealmItemMetadata()
-            a.ocId = "one"
-            a.account = testAccount
-            a.updateLocation(serverUrl: "https://example.com", fileName: "one.txt")
-            a.normalizedServerUrl = a.serverUrl.precomposedStringWithCanonicalMapping
-            a.normalizedFileName = a.fileName.precomposedStringWithCanonicalMapping
-            realm.add(a)
+        var a = SendableItemMetadata.rawRow(ocId: "one")
+        a.account = testAccount
+        a.serverUrl = "https://example.com"
+        a.fileName = "one.txt"
+        try Self.dbManager.insertForTesting(
+            a,
+            normalizedServerUrl: a.serverUrl.precomposedStringWithCanonicalMapping,
+            normalizedFileName: a.fileName.precomposedStringWithCanonicalMapping
+        )
 
-            let b = RealmItemMetadata()
-            b.ocId = "two"
-            b.account = testAccount
-            b.updateLocation(serverUrl: "https://example.com", fileName: "two.txt")
-            b.normalizedServerUrl = b.serverUrl.precomposedStringWithCanonicalMapping
-            b.normalizedFileName = b.fileName.precomposedStringWithCanonicalMapping
-            realm.add(b)
+        var b = SendableItemMetadata.rawRow(ocId: "two")
+        b.account = testAccount
+        b.serverUrl = "https://example.com"
+        b.fileName = "two.txt"
+        try Self.dbManager.insertForTesting(
+            b,
+            normalizedServerUrl: b.serverUrl.precomposedStringWithCanonicalMapping,
+            normalizedFileName: b.fileName.precomposedStringWithCanonicalMapping
+        )
 
-            // Same fileName but different serverUrl — not a logical duplicate.
-            let c = RealmItemMetadata()
-            c.ocId = "three"
-            c.account = testAccount
-            c.updateLocation(serverUrl: "https://example.com/folder", fileName: "one.txt")
-            c.normalizedServerUrl = c.serverUrl.precomposedStringWithCanonicalMapping
-            c.normalizedFileName = c.fileName.precomposedStringWithCanonicalMapping
-            realm.add(c)
-        }
+        // Same fileName but different serverUrl — not a logical duplicate.
+        var c = SendableItemMetadata.rawRow(ocId: "three")
+        c.account = testAccount
+        c.serverUrl = "https://example.com/folder"
+        c.fileName = "one.txt"
+        try Self.dbManager.insertForTesting(
+            c,
+            normalizedServerUrl: c.serverUrl.precomposedStringWithCanonicalMapping,
+            normalizedFileName: c.fileName.precomposedStringWithCanonicalMapping
+        )
 
-        let configuration = Realm.Configuration.defaultConfiguration
         let manager = FilesDatabaseManager(
-            realmConfiguration: configuration,
             account: Self.account,
-            databaseDirectory: makeDatabaseDirectory(),
+            databaseDirectory: Self.databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
             log: FileProviderLogMock()
         )
@@ -2095,34 +1988,33 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let testServerUrl = "https://example.com"
         let fileName = "in-flight.bin"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            let uploading = RealmItemMetadata()
-            uploading.ocId = "uploading"
-            uploading.account = testAccount
-            uploading.updateLocation(serverUrl: testServerUrl, fileName: fileName)
-            uploading.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
-            uploading.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
-            uploading.status = Status.uploading.rawValue
-            uploading.syncTime = Date(timeIntervalSince1970: 5000)
-            realm.add(uploading)
+        var uploading = SendableItemMetadata.rawRow(ocId: "uploading")
+        uploading.account = testAccount
+        uploading.serverUrl = testServerUrl
+        uploading.fileName = fileName
+        uploading.status = Status.uploading.rawValue
+        uploading.syncTime = Date(timeIntervalSince1970: 5000)
+        try Self.dbManager.insertForTesting(
+            uploading,
+            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedFileName: fileName.precomposedStringWithCanonicalMapping
+        )
 
-            let settled = RealmItemMetadata()
-            settled.ocId = "settled"
-            settled.account = testAccount
-            settled.updateLocation(serverUrl: testServerUrl, fileName: fileName)
-            settled.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
-            settled.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
-            settled.status = Status.normal.rawValue
-            settled.syncTime = Date(timeIntervalSince1970: 1000)
-            realm.add(settled)
-        }
+        var settled = SendableItemMetadata.rawRow(ocId: "settled")
+        settled.account = testAccount
+        settled.serverUrl = testServerUrl
+        settled.fileName = fileName
+        settled.status = Status.normal.rawValue
+        settled.syncTime = Date(timeIntervalSince1970: 1000)
+        try Self.dbManager.insertForTesting(
+            settled,
+            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedFileName: fileName.precomposedStringWithCanonicalMapping
+        )
 
-        let configuration = Realm.Configuration.defaultConfiguration
         let manager = FilesDatabaseManager(
-            realmConfiguration: configuration,
             account: Self.account,
-            databaseDirectory: makeDatabaseDirectory(),
+            databaseDirectory: Self.databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
             log: FileProviderLogMock()
         )
@@ -2138,15 +2030,12 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
         let fileName = "~$doc.docx"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            let localLock = RealmItemMetadata()
-            localLock.ocId = "local-lock"
-            localLock.account = account.ncKitAccount
-            localLock.updateLocation(serverUrl: account.davFilesUrl, fileName: fileName)
-            localLock.isLockFileOfLocalOrigin = true
-            realm.add(localLock)
-        }
+        var localLock = SendableItemMetadata.rawRow(ocId: "local-lock")
+        localLock.account = account.ncKitAccount
+        localLock.serverUrl = account.davFilesUrl
+        localLock.fileName = fileName
+        localLock.isLockFileOfLocalOrigin = true
+        try Self.dbManager.insertForTesting(localLock)
 
         let serverRow = SendableItemMetadata(ocId: "server-row", fileName: fileName, account: account)
         Self.dbManager.addItemMetadata(serverRow)
@@ -2162,16 +2051,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
         let anchor = Date()
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            let preExisting = RealmItemMetadata()
-            preExisting.ocId = "preExisting"
-            preExisting.account = account.ncKitAccount
-            preExisting.updateLocation(serverUrl: account.davFilesUrl, fileName: "materialized.txt")
-            preExisting.downloaded = true // materialised
-            preExisting.syncTime = anchor.addingTimeInterval(-3600)
-            realm.add(preExisting)
-        }
+        var preExisting = SendableItemMetadata.rawRow(ocId: "preExisting")
+        preExisting.account = account.ncKitAccount
+        preExisting.serverUrl = account.davFilesUrl
+        preExisting.fileName = "materialized.txt"
+        preExisting.downloaded = true // materialised
+        preExisting.syncTime = anchor.addingTimeInterval(-3600)
+        try Self.dbManager.insertForTesting(preExisting)
 
         var fresh = SendableItemMetadata(ocId: "fresh", fileName: "materialized.txt", account: account)
         fresh.downloaded = true
@@ -2235,26 +2121,23 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
         let fileName = "duped.txt"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            let a1 = RealmItemMetadata()
-            a1.ocId = "A1"
-            a1.account = account.ncKitAccount
-            a1.updateLocation(serverUrl: account.davFilesUrl, fileName: fileName)
-            a1.keepDownloaded = true
-            a1.downloaded = true
-            a1.syncTime = Date(timeIntervalSince1970: 1000)
-            realm.add(a1)
+        var a1 = SendableItemMetadata.rawRow(ocId: "A1")
+        a1.account = account.ncKitAccount
+        a1.serverUrl = account.davFilesUrl
+        a1.fileName = fileName
+        a1.keepDownloaded = true
+        a1.downloaded = true
+        a1.syncTime = Date(timeIntervalSince1970: 1000)
+        try Self.dbManager.insertForTesting(a1)
 
-            let a2 = RealmItemMetadata()
-            a2.ocId = "A2"
-            a2.account = account.ncKitAccount
-            a2.updateLocation(serverUrl: account.davFilesUrl, fileName: fileName)
-            a2.keepDownloaded = true
-            a2.downloaded = true
-            a2.syncTime = Date(timeIntervalSince1970: 2000)
-            realm.add(a2)
-        }
+        var a2 = SendableItemMetadata.rawRow(ocId: "A2")
+        a2.account = account.ncKitAccount
+        a2.serverUrl = account.davFilesUrl
+        a2.fileName = fileName
+        a2.keepDownloaded = true
+        a2.downloaded = true
+        a2.syncTime = Date(timeIntervalSince1970: 2000)
+        try Self.dbManager.insertForTesting(a2)
 
         var fresh = SendableItemMetadata(ocId: "B", fileName: fileName, account: account)
         fresh.keepDownloaded = false
