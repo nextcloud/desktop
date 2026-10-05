@@ -5,7 +5,6 @@
 import Foundation
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import RealmSwift
 import XCTest
 
 ///
@@ -21,7 +20,6 @@ final class NormalizedLocationKeyTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
         databaseDirectory = FileManager.default.temporaryDirectory
             .appendingPathComponent("NormalizedLocationKeyTests-\(UUID().uuidString)", isDirectory: true)
         try? FileManager.default.createDirectory(at: databaseDirectory, withIntermediateDirectories: true)
@@ -53,8 +51,16 @@ final class NormalizedLocationKeyTests: XCTestCase {
             manager.addItemMetadata(metadata(fileName: name, serverUrl: serverUrl, ocId: ocId))
         }
 
-        let unnormalized = manager.itemMetadatas.filter {
-            !$0.fileName.isEmpty && ($0.normalizedFileName.isEmpty || $0.normalizedServerUrl.isEmpty)
+        let unnormalized = manager.allItemMetadatasForTesting().filter { row in
+            guard !row.fileName.isEmpty else {
+                return false
+            }
+
+            guard let keys = manager.normalizedLocationForTesting(ocId: row.ocId) else {
+                return true
+            }
+
+            return keys.fileName.isEmpty || keys.serverUrl.isEmpty
         }
 
         XCTAssertTrue(
@@ -68,18 +74,14 @@ final class NormalizedLocationKeyTests: XCTestCase {
     func testOpeningTheDatabaseRepairsARowWithMissingNormalizedKeys() throws {
         let manager = makeManager()
         let serverUrl = Self.account.davFilesUrl + "/folder"
-        let database = manager.ncDatabase()
 
-        // Bypass `updateLocation` deliberately: this is the row shape the fallback used to carry.
-        try database.write {
-            let stranded = RealmItemMetadata()
-            stranded.ocId = "stranded"
-            stranded.account = Self.account.ncKitAccount
-            stranded.fileName = "stranded.txt"
-            stranded.serverUrl = serverUrl
-            stranded.uploaded = true
-            database.add(stranded, update: .all)
-        }
+        // Store empty normalized keys deliberately: this is the row shape the fallback used to carry.
+        var stranded = SendableItemMetadata.rawRow(ocId: "stranded")
+        stranded.account = Self.account.ncKitAccount
+        stranded.fileName = "stranded.txt"
+        stranded.serverUrl = serverUrl
+        stranded.uploaded = true
+        try manager.insertForTesting(stranded, normalizedServerUrl: "", normalizedFileName: "")
 
         XCTAssertNil(
             manager.itemMetadata(account: Self.account.ncKitAccount, locatedAtRemoteUrl: serverUrl + "/" + "stranded.txt"),
@@ -97,35 +99,23 @@ final class NormalizedLocationKeyTests: XCTestCase {
     /// open.
     func testTheRepairDoesNotRewriteARowItCannotChange() throws {
         let manager = makeManager()
-        let database = manager.ncDatabase()
 
         // An empty raw file name normalizes to itself, so an emptiness test selects this row forever.
-        try database.write {
-            let row = RealmItemMetadata()
-            row.ocId = "emptyName"
-            row.account = Self.account.ncKitAccount
-            row.serverUrl = Self.account.davFilesUrl + "/folder"
-            row.uploaded = true
-            database.add(row, update: .all)
-        }
+        var row = SendableItemMetadata.rawRow(ocId: "emptyName")
+        row.account = Self.account.ncKitAccount
+        row.serverUrl = Self.account.davFilesUrl + "/folder"
+        row.uploaded = true
+        try manager.insertForTesting(row, normalizedServerUrl: "", normalizedFileName: "")
 
         // The first pass legitimately fills in the key the empty name left behind.
         manager.repairPersistedLogicalAddresses()
 
-        let rewritten = expectation(description: "A later repair pass modified a row.")
-        rewritten.isInverted = true
-        let token = database.objects(RealmItemMetadata.self).observe { change in
-            if case let .update(_, _, _, modifications) = change, !modifications.isEmpty {
-                rewritten.fulfill()
-            }
-        }
-        defer { token.invalidate() }
+        // Every row the pass rewrites or evicts is counted in its result, so a later pass
+        // reporting none left the row alone.
+        let laterPass = manager.repairPersistedLogicalAddresses()
 
-        manager.repairPersistedLogicalAddresses()
-
-        // A rewrite of the row would be notified on the first run-loop turn after the pass
-        // returns, so waiting longer buys nothing but suite time.
-        wait(for: [rewritten], timeout: 0.2)
+        XCTAssertEqual(laterPass.repaired, 0, "A later repair pass modified a row.")
+        XCTAssertEqual(laterPass.evicted, 0, "A later repair pass modified a row.")
     }
 
     /// A drifted row has to be deduplicated by the pass that repairs it, which holds only while
@@ -134,36 +124,32 @@ final class NormalizedLocationKeyTests: XCTestCase {
         let manager = makeManager()
         let serverUrl = Self.account.davFilesUrl + "/folder"
 
-        try manager.ncDatabase().write {
-            let older = RealmItemMetadata()
-            older.ocId = "older"
-            older.account = Self.account.ncKitAccount
-            older.updateLocation(serverUrl: serverUrl, fileName: "dup.txt")
-            older.syncTime = Date(timeIntervalSince1970: 1000)
-            older.uploaded = true
-            // The row a client older than the migration left behind, raw columns only.
-            older.normalizedServerUrl = ""
-            older.normalizedFileName = ""
-            manager.ncDatabase().add(older, update: .all)
+        var older = SendableItemMetadata.rawRow(ocId: "older")
+        older.account = Self.account.ncKitAccount
+        older.serverUrl = serverUrl
+        older.fileName = "dup.txt"
+        older.syncTime = Date(timeIntervalSince1970: 1000)
+        older.uploaded = true
+        // The row a client older than the migration left behind, raw columns only.
+        try manager.insertForTesting(older, normalizedServerUrl: "", normalizedFileName: "")
 
-            let newer = RealmItemMetadata()
-            newer.ocId = "newer"
-            newer.account = Self.account.ncKitAccount
-            newer.updateLocation(serverUrl: serverUrl, fileName: "dup.txt")
-            newer.syncTime = Date(timeIntervalSince1970: 2000)
-            newer.uploaded = true
-            manager.ncDatabase().add(newer, update: .all)
-        }
+        var newer = SendableItemMetadata.rawRow(ocId: "newer")
+        newer.account = Self.account.ncKitAccount
+        newer.serverUrl = serverUrl
+        newer.fileName = "dup.txt"
+        newer.syncTime = Date(timeIntervalSince1970: 2000)
+        newer.uploaded = true
+        try manager.insertForTesting(newer)
 
         manager.repairPersistedLogicalAddresses()
 
-        let database = manager.ncDatabase()
-        let older = try XCTUnwrap(database.object(ofType: RealmItemMetadata.self, forPrimaryKey: "older"))
-        let newer = try XCTUnwrap(database.object(ofType: RealmItemMetadata.self, forPrimaryKey: "newer"))
+        let olderRow = try XCTUnwrap(manager.itemMetadata(ocId: "older"))
+        let newerRow = try XCTUnwrap(manager.itemMetadata(ocId: "newer"))
+        let olderKeys = try XCTUnwrap(manager.normalizedLocationForTesting(ocId: "older"))
 
-        XCTAssertEqual(older.normalizedFileName, "dup.txt", "The drifted row should have been repaired.")
-        XCTAssertTrue(older.deleted, "The older row at the address should have been evicted.")
-        XCTAssertFalse(newer.deleted, "The newest settled row at the address should survive.")
+        XCTAssertEqual(olderKeys.fileName, "dup.txt", "The drifted row should have been repaired.")
+        XCTAssertTrue(olderRow.deleted, "The older row at the address should have been evicted.")
+        XCTAssertFalse(newerRow.deleted, "The newest settled row at the address should survive.")
     }
 
     /// The repair covers the rows deduplication excludes, because a tombstone or a lock file is
@@ -171,25 +157,19 @@ final class NormalizedLocationKeyTests: XCTestCase {
     func testARowExcludedFromDeduplicationIsStillRepaired() throws {
         let manager = makeManager()
 
-        try manager.ncDatabase().write {
-            let tombstone = RealmItemMetadata()
-            tombstone.ocId = "tombstone"
-            tombstone.account = Self.account.ncKitAccount
-            tombstone.updateLocation(serverUrl: Self.account.davFilesUrl + "/folder", fileName: "gone.txt")
-            tombstone.deleted = true
-            tombstone.normalizedServerUrl = ""
-            tombstone.normalizedFileName = ""
-            manager.ncDatabase().add(tombstone, update: .all)
-        }
+        var tombstone = SendableItemMetadata.rawRow(ocId: "tombstone")
+        tombstone.account = Self.account.ncKitAccount
+        tombstone.serverUrl = Self.account.davFilesUrl + "/folder"
+        tombstone.fileName = "gone.txt"
+        tombstone.deleted = true
+        try manager.insertForTesting(tombstone, normalizedServerUrl: "", normalizedFileName: "")
 
         manager.repairPersistedLogicalAddresses()
 
-        let repaired = try XCTUnwrap(
-            manager.ncDatabase().object(ofType: RealmItemMetadata.self, forPrimaryKey: "tombstone")
-        )
+        let repaired = try XCTUnwrap(manager.normalizedLocationForTesting(ocId: "tombstone"))
 
-        XCTAssertEqual(repaired.normalizedFileName, "gone.txt")
-        XCTAssertEqual(repaired.normalizedServerUrl, Self.account.davFilesUrl + "/folder")
+        XCTAssertEqual(repaired.fileName, "gone.txt")
+        XCTAssertEqual(repaired.serverUrl, Self.account.davFilesUrl + "/folder")
     }
 
     /// Normalization is why the comparison can be an equality at all, since a decomposed name
