@@ -84,6 +84,6 @@ extension FilesDatabaseManager {
         try ItemMetadataRecord
             .filter(ItemMetadataRecord.Columns.serverUrl == serverUrl && ItemMetadataRecord.Columns.fileName == fileName)
             .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
-            .fetchOne(db)
+            .fetchRecord(db, logger: logger)
     }
 }

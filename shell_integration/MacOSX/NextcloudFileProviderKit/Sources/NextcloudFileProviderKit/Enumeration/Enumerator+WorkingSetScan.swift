@@ -106,8 +106,9 @@ extension Enumerator {
         // wait to see which items are truly deleted and which have just been moved elsewhere.
         // Visited folders and downloaded files. Sort in terms of their remote URLs.
         // This way we ensure we visit parent folders before their children.
-        let materialisedItems = dbManager
-            .materialisedItemMetadatas(account: account.ncKitAccount)
+        // A failed read counts as a read failure of the whole scan, so the sync point does not advance past changes this pass could not see.
+        let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
+        let materialisedItems = (storedMaterialisedItems ?? [])
             .filter { !$0.deleted && !$0.isTrashed }
             .sorted { $0.remotePath().count < $1.remotePath().count }
 
@@ -118,7 +119,7 @@ extension Enumerator {
         // Track read failures so one unreadable folder no longer aborts the whole scan (see the
         // read-error branch below). `hadReadFailure` is returned to the caller so it can avoid
         // advancing the working-set sync point past changes this pass could not discover.
-        var hadReadFailure = false
+        var hadReadFailure = storedMaterialisedItems == nil
         var failedItemIds = Set<String>()
 
         // Work queue seeded with the materialised items. A changed child directory discovered while
