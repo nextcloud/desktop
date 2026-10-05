@@ -88,6 +88,9 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
     /// NFC form of `fileName`, maintained by this type.
     var normalizedFileName: String
 
+    /// Columns whose stored value could not be decoded and were replaced by their empty value. Not stored; filled when a row is read.
+    var unreadableColumns: [String] = []
+
     enum CodingKeys: String, CodingKey, ColumnExpression, CaseIterable {
         case ocId, account, checksums, chunkUploadId, classFile, commentsUnread
         case contentType, creationDate, dataFingerprint, date, syncTime, deleted

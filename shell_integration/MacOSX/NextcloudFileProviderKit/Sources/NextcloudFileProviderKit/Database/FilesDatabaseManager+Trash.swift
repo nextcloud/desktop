@@ -11,7 +11,7 @@ extension FilesDatabaseManager {
                     ItemMetadataRecord.Columns.account == account.ncKitAccount
                         && ItemMetadataRecord.hasServerUrl(equalTo: account.trashUrl, includingDescendants: true)
                 )
-                .fetchAll(db)
+                .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
     }

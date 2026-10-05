@@ -20,7 +20,7 @@ public extension FilesDatabaseManager {
         return read("Could not fetch the items below a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
                 .filter(ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true))
-                .fetchAll(db)
+                .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
     }
@@ -36,7 +36,7 @@ public extension FilesDatabaseManager {
         return read("Could not fetch the immediate children of a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
                 .filter(ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: false))
-                .fetchAll(db)
+                .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
     }
@@ -205,7 +205,7 @@ public extension FilesDatabaseManager {
                     ItemMetadataRecord.Columns.account == directoryAccount
                         && ItemMetadataRecord.hasServerUrl(equalTo: directoryUrlPath, includingDescendants: true)
                 )
-                .fetchAll(db)
+                .fetchRecords(db, logger: logger)
 
             // TODO: Parent is deleted even when a child upload is pending. The child will
             // orphan after upload. Follow-up: defer parent deletion or re-parent after upload.
@@ -246,7 +246,7 @@ extension FilesDatabaseManager {
         try ItemMetadataRecord
             .filter(key: ocId)
             .filter(ItemMetadataRecord.Columns.directory == true)
-            .fetchOne(db)
+            .fetchRecord(db, logger: logger)
     }
 
     func renameDirectoryAndPropagateToChildren(
@@ -266,7 +266,7 @@ extension FilesDatabaseManager {
                 ItemMetadataRecord.Columns.account == directoryMetadata.account
                     && ItemMetadataRecord.hasServerUrl(equalTo: oldDirectoryServerUrl, includingDescendants: true)
             )
-            .fetchAll(db)
+            .fetchRecords(db, logger: logger)
 
         try renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName, in: db)
         logger.debug("Renamed root renaming directory from \"\(oldDirectoryServerUrl)\" to \"\(newDirectoryServerUrl)\".", [.item: ocId])
@@ -292,7 +292,7 @@ extension FilesDatabaseManager {
                 ItemMetadataRecord.Columns.account == directoryMetadata.account
                     && ItemMetadataRecord.hasServerUrl(equalTo: newDirectoryServerUrl, includingDescendants: true)
             )
-            .fetchAll(db)
+            .fetchRecords(db, logger: logger)
             .map(\.metadata)
     }
 }

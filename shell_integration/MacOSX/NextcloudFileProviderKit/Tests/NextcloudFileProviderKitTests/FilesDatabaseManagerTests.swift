@@ -1473,7 +1473,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(sDirD)
 
         let materialized =
-            Self.dbManager.materialisedItemMetadatas(account: Self.account.ncKitAccount)
+            try XCTUnwrap(Self.dbManager.materialisedItemMetadatas(account: Self.account.ncKitAccount))
         XCTAssertEqual(materialized.count, 5)
 
         let materialisedOcIds = materialized.map(\.ocId)

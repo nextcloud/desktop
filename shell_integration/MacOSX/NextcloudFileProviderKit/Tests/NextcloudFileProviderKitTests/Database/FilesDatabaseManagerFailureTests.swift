@@ -61,6 +61,55 @@ extension DatabaseTestSuites {
             #expect(manager.abandonedChunkUploadIdentifiers() == nil, "Chunk rows alone must not turn every upload into an abandoned one.")
         }
 
+        @Test func aDamagedListColumnDecodesAsEmptyAndKeepsTheRow() throws {
+            var row = DatabaseTestSuites.makeFile(ocId: "tagged", fileName: "tagged.txt")
+            row.tags = ["keep"]
+            row.shareType = [3]
+            row.downloaded = true
+            manager.addItemMetadata(row)
+            try manager.writer.write { db in
+                try db.execute(sql: "UPDATE itemMetadata SET tags = '[1]', shareType = 'not json' WHERE ocId = 'tagged'")
+            }
+
+            let stored = try #require(manager.itemMetadata(ocId: "tagged"))
+            #expect(stored.tags == [])
+            #expect(stored.shareType == [])
+            #expect(stored.sharePermissionsCloudMesh == [])
+            #expect(stored.fileName == "tagged.txt")
+            #expect(manager.materialisedItemMetadatas(account: "")?.map(\.ocId) == ["tagged"])
+        }
+
+        @Test func aMistypedScalarReadsAsItsZeroValueAndKeepsTheResult() throws {
+            var healthy = DatabaseTestSuites.makeFile(ocId: "healthy", fileName: "healthy.txt")
+            healthy.downloaded = true
+            var damaged = DatabaseTestSuites.makeFile(ocId: "damaged", fileName: "damaged.txt")
+            damaged.downloaded = true
+            manager.addItemMetadata(healthy)
+            manager.addItemMetadata(damaged)
+            try manager.writer.write { db in
+                try db.execute(sql: "UPDATE itemMetadata SET creationDate = 'yesterday', size = 'big' WHERE ocId = 'damaged'")
+            }
+
+            // SQLite coerces a mistyped value to the column's zero value, so the row stays readable and the result complete.
+            #expect(manager.materialisedItemMetadatas(account: "")?.map(\.ocId) == ["healthy", "damaged"])
+            let stored = try #require(manager.itemMetadata(ocId: "damaged"))
+            #expect(stored.creationDate == Date(timeIntervalSinceReferenceDate: 0))
+            #expect(stored.size == 0)
+            #expect(stored.fileName == "damaged.txt")
+            #expect(manager.repairPersistedLogicalAddresses() == (0, 0))
+
+            manager.addItemMetadata(damaged)
+            #expect(manager.itemMetadata(ocId: "damaged")?.creationDate == damaged.creationDate)
+        }
+
+        @Test func materialisedItemsReportFailureAsNil() throws {
+            #expect(manager.materialisedItemMetadatas(account: "") == [])
+
+            try manager.breakTableForTesting(ItemMetadataRecord.databaseTableName)
+
+            #expect(manager.materialisedItemMetadatas(account: "") == nil)
+        }
+
         @Test func pendingWorkingSetChangesReportFailureAsNil() throws {
             var row = DatabaseTestSuites.makeFile(ocId: "changed", fileName: "changed.txt")
             row.downloaded = true

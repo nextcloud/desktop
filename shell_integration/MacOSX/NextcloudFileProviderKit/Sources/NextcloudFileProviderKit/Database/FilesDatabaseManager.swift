@@ -318,7 +318,7 @@ public final class FilesDatabaseManager: Sendable {
                         && ItemMetadataRecord.Columns.path == Account.webDavFilesUrlSuffix
                 )
                 .order(ItemMetadataRecord.Columns.ocId)
-                .fetchOne(db)?
+                .fetchRecord(db, logger: logger)?
                 .metadata
         } ?? nil
     }
@@ -327,7 +327,7 @@ public final class FilesDatabaseManager: Sendable {
         read("Could not fetch the account's item metadata.", [.account: account]) { db in
             try ItemMetadataRecord
                 .filter(ItemMetadataRecord.Columns.account == account)
-                .fetchAll(db)
+                .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
     }
@@ -341,7 +341,7 @@ public final class FilesDatabaseManager: Sendable {
                     ItemMetadataRecord.Columns.account == account
                         && ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: true)
                 )
-                .fetchAll(db)
+                .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
     }
@@ -349,7 +349,7 @@ public final class FilesDatabaseManager: Sendable {
     // MARK: - Lookup workers
 
     func itemMetadata(ocId: String, in db: Database) throws -> ItemMetadataRecord? {
-        try ItemMetadataRecord.fetchOne(db, key: ocId)
+        try ItemMetadataRecord.filter(key: ocId).fetchRecord(db, logger: logger)
     }
 
     /// The row at a logical address derived from a full remote URL. A live row wins over a deleted one at the same address.
@@ -394,7 +394,7 @@ public final class FilesDatabaseManager: Sendable {
         return try ItemMetadataRecord
             .filter(ItemMetadataRecord.hasLocation(serverUrl: rawParentURL, fileName: fileName))
             .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
-            .fetchOne(db)
+            .fetchRecord(db, logger: logger)
     }
 
     func parentDirectoryMetadataForItem(_ itemMetadata: any ItemMetadata, in db: Database) throws -> ItemMetadataRecord? {
@@ -565,7 +565,7 @@ public final class FilesDatabaseManager: Sendable {
                         && ItemMetadataRecord.Columns.account == account
                         && ItemMetadataRecord.Columns.uploaded == true
                 )
-                .fetchAll(db)
+                .fetchRecords(db, logger: logger)
 
             var updatedChildMetadatas = updatedMetadatas
 
@@ -821,7 +821,7 @@ public final class FilesDatabaseManager: Sendable {
                             && ItemMetadataRecord.Columns.deleted == false
                             && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false
                     )
-                    .fetchAll(db)
+                    .fetchRecords(db, logger: logger)
 
                 if logicalCandidates.count == 1, let existing = logicalCandidates.first {
                     toWrite.downloaded = existing.downloaded
@@ -965,15 +965,15 @@ public final class FilesDatabaseManager: Sendable {
     /// - Parameters:
     ///     - account: The account identifier to filter by.
     ///
-    /// - Returns: An array of sendable metadata objects.
+    /// - Returns: An array of sendable metadata objects, or `nil` when the database could not be read. An empty array means nothing is materialized; `nil` must not be taken for that.
     ///
-    public func materialisedItemMetadatas(account _: String) -> [SendableItemMetadata] {
+    public func materialisedItemMetadatas(account _: String) -> [SendableItemMetadata]? {
         read("Could not fetch the materialized item metadata.") { db in
             try ItemMetadataRecord
                 .filter(ItemMetadataRecord.isMaterialised)
-                .fetchAll(db)
+                .fetchRecords(db, logger: logger)
                 .map(\.metadata)
-        } ?? []
+        }
     }
 
     ///
@@ -990,7 +990,7 @@ public final class FilesDatabaseManager: Sendable {
         return read("Could not gather pending working set changes.") { db in
             let pendingChanges = try ItemMetadataRecord
                 .filter(ItemMetadataRecord.isMaterialised && ItemMetadataRecord.syncedAfter(date))
-                .fetchAll(db)
+                .fetchRecords(db, logger: logger)
             var updatedItems = pendingChanges.filter { !$0.deleted }.map(\.metadata)
             var deletedItems = pendingChanges.filter(\.deleted).map(\.metadata)
 
@@ -1012,7 +1012,7 @@ public final class FilesDatabaseManager: Sendable {
                         ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: false)
                             && ItemMetadataRecord.syncedAfter(date)
                     )
-                    .fetchAll(db)
+                    .fetchRecords(db, logger: logger)
 
                 for child in children {
                     let sendableMetadata = child.metadata
@@ -1044,7 +1044,7 @@ public final class FilesDatabaseManager: Sendable {
                         ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: true)
                             && ItemMetadataRecord.syncedAfter(date)
                     )
-                    .fetchAll(db)
+                    .fetchRecords(db, logger: logger)
 
                 for child in children {
                     guard child.isLockFileOfLocalOrigin == false else {
@@ -1077,7 +1077,7 @@ public final class FilesDatabaseManager: Sendable {
                 request = request.filter(literal: ItemMetadataRecord.fileNameEnds(with: suffix))
             }
 
-            return try request.order(ItemMetadataRecord.Columns.ocId).fetchAll(db).map(\.metadata)
+            return try request.order(ItemMetadataRecord.Columns.ocId).fetchRecords(db, logger: logger).map(\.metadata)
         } ?? []
 
         guard !filesMetadata.isEmpty else {
