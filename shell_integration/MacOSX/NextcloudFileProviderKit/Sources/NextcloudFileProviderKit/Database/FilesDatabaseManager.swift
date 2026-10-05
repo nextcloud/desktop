@@ -46,6 +46,25 @@ public final class FilesDatabaseManager: Sendable {
     /// Longest list bound into one `IN (...)` clause, well below SQLite's variable limit.
     static let inClauseChunkSize = 500
 
+    ///
+    /// How far a write is synchronized to disk before it counts as done.
+    ///
+    /// Local-only state such as pins, exclusion markers and upload bookkeeping cannot be rebuilt from the server, so writes default to ``full``. Bulk writes of server-derived rows opt into ``relaxed``, which only risks the last commits before a power loss, never corruption.
+    ///
+    public enum WriteDurability: Sendable {
+        /// `PRAGMA synchronous = FULL`: the commit is on disk when the write returns.
+        case full
+        /// `PRAGMA synchronous = NORMAL`: the commit survives a crash of the process, not necessarily a power loss.
+        case relaxed
+
+        var pragma: String {
+            switch self {
+                case .full: "PRAGMA synchronous = FULL"
+                case .relaxed: "PRAGMA synchronous = NORMAL"
+            }
+        }
+    }
+
     let logger: FileProviderLogger
     let account: Account
 
@@ -121,10 +140,6 @@ public final class FilesDatabaseManager: Sendable {
         configuration.label = "FilesDatabaseManager.\(label)"
         configuration.busyMode = .timeout(5)
         configuration.maximumReaderCount = 8
-        configuration.prepareDatabase { db in
-            // Durable against crashes in WAL mode; only a power loss can lose the last commits, and this store is rebuilt from the server plus local flags.
-            try db.execute(sql: "PRAGMA synchronous = NORMAL")
-        }
         return configuration
     }
 
@@ -198,15 +213,33 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
-    /// Run a write in one transaction; a failure is logged with `failure` and yields `nil`.
-    func write<T>(_ failure: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], _ body: (Database) throws -> T) -> T? {
+    /// Run a write in one transaction with the given durability; a failure is logged with `failure` and yields `nil`.
+    func write<T>(_ failure: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], durability: WriteDurability = .full, _ body: (Database) throws -> T) -> T? {
         do {
-            return try writer.write(body)
+            return try write(durability: durability, body)
         } catch {
             var details = details
             details[.error] = error
             logger.error(failure, details)
             return nil
+        }
+    }
+
+    /// Run a write in one transaction with the given durability, rethrowing a failure.
+    ///
+    /// The synchronization level is a property of the connection and cannot change inside a transaction, so it is set on the writer right before the transaction opens.
+    ///
+    func write<T>(durability: WriteDurability, _ body: (Database) throws -> T) throws -> T {
+        try writer.writeWithoutTransaction { db in
+            try db.execute(sql: durability.pragma)
+
+            var result: T?
+            try db.inTransaction {
+                result = try body(db)
+                return .commit
+            }
+
+            return result!
         }
     }
 
@@ -506,14 +539,14 @@ public final class FilesDatabaseManager: Sendable {
     /// ONLY HANDLES UPDATES FOR IMMEDIATE CHILDREN
     /// (in case of directory renames/moves, the changes are recursed down)
     ///
-    /// Everything, including the renames of moved directories, happens in one transaction.
+    /// Everything, including the renames of moved directories, happens in one transaction. The rows are server-derived, so the write is relaxed.
     public func depth1ReadUpdateItemMetadatas(
         account: String,
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
         keepExistingDownloadState: Bool
     ) -> ChangeSet? {
-        write("Could not update any item metadatas.", [.account: account, .url: serverUrl]) { db in
+        write("Could not update any item metadatas.", [.account: account, .url: serverUrl], durability: .relaxed) { db in
             // Find the metadatas that we previously knew to be on the server for this account
             // (we need to check if they were uploaded to prevent deleting ignored/lock files)
             //
@@ -673,8 +706,12 @@ public final class FilesDatabaseManager: Sendable {
         } ?? nil
     }
 
-    public func addItemMetadata(_ metadata: SendableItemMetadata) {
-        write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl]) { db in
+    /// Persist `metadata`, evicting any other live row at its logical address first.
+    ///
+    /// - Parameter durability: ``WriteDurability/full`` unless the row only mirrors the server.
+    ///
+    public func addItemMetadata(_ metadata: SendableItemMetadata, durability: WriteDurability = .full) {
+        write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl], durability: durability) { db in
             try insertItemMetadata(metadata, in: db)
         }
     }
@@ -751,7 +788,8 @@ public final class FilesDatabaseManager: Sendable {
     public func addItemMetadataPreservingLocalState(_ metadata: SendableItemMetadata, preserveVisitedDirectory: Bool = true) -> SendableItemMetadata {
         var toWrite = metadata
 
-        write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl]) { db in
+        // Server-derived rows written once per item during enumeration; the local flags they carry over were committed durably when they were set.
+        write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl], durability: .relaxed) { db in
             if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
                 toWrite.downloaded = existing.downloaded
                 toWrite.keepDownloaded = existing.keepDownloaded
