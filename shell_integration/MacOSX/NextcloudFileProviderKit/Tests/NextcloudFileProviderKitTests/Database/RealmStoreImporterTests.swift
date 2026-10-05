@@ -28,8 +28,8 @@ struct RealmStoreImporterTests {
             directory.appendingPathComponent(domain.rawValue).appendingPathExtension(DatabaseSchema.fileExtension)
         }
 
-        func openManager() -> FilesDatabaseManager {
-            FilesDatabaseManager(account: account, databaseDirectory: directory, fileProviderDomainIdentifier: domain, log: FileProviderLogMock())
+        func openManager() throws -> FilesDatabaseManager {
+            try FilesDatabaseManager(account: account, databaseDirectory: directory, fileProviderDomainIdentifier: domain, log: FileProviderLogMock())
         }
 
         func exists(_ suffix: String = "") -> Bool {
@@ -97,7 +97,7 @@ struct RealmStoreImporterTests {
         try Self.writeLegacyStore(at: fixture)
         #expect(fixture.exists(".lock"))
 
-        let manager = fixture.openManager()
+        let manager = try fixture.openManager()
 
         let live = try #require(manager.itemMetadata(ocId: "live"))
         #expect(live.fileName == "re\u{0301}sume\u{0301}.pdf")
@@ -115,8 +115,8 @@ struct RealmStoreImporterTests {
         #expect(session.incomplete)
         #expect(session.hardRemoveDeleted)
         #expect(session.finalAnchorRawValue == Data([7]))
-        #expect(manager.changeDeliveryItems(sessionId: "session", fromSequence: 0, limit: 10).map(\.sequence) == [0, 1, 2])
-        #expect(manager.changeDeliveryItems(sessionId: "session", fromSequence: 2, limit: 10).first?.deleted == true)
+        #expect(manager.changeDeliveryItems(sessionId: "session", fromSequence: 0, limit: 10)?.map(\.sequence) == [0, 1, 2])
+        #expect(manager.changeDeliveryItems(sessionId: "session", fromSequence: 2, limit: 10)?.first?.deleted == true)
 
         #expect(FileManager.default.fileExists(atPath: fixture.sqliteURL.path))
         #expect(fixture.exists() == false)
@@ -149,7 +149,7 @@ struct RealmStoreImporterTests {
             }
         }
 
-        let manager = fixture.openManager()
+        let manager = try fixture.openManager()
 
         let migrated = try #require(manager.itemMetadata(ocId: "migration-item"))
         #expect(migrated.serverUrl == nfdServerUrl)
@@ -160,13 +160,13 @@ struct RealmStoreImporterTests {
 
     @Test func aRealmFileReplacesAnExistingDatabase() throws {
         let fixture = Self.makeFixture()
-        let earlier = fixture.openManager()
+        let earlier = try fixture.openManager()
         earlier.addItemMetadata(DatabaseTestSuites.makeFile(ocId: "stale", fileName: "stale.txt"))
         #expect(earlier.itemMetadata(ocId: "stale") != nil)
 
         // An older build ran afterwards and left a Realm database behind: its content is the newer truth.
         try Self.writeLegacyStore(at: fixture)
-        let manager = fixture.openManager()
+        let manager = try fixture.openManager()
 
         #expect(manager.itemMetadata(ocId: "stale") == nil)
         #expect(manager.itemMetadata(ocId: "live") != nil)
@@ -177,7 +177,7 @@ struct RealmStoreImporterTests {
         let fixture = Self.makeFixture()
         try Data((0 ..< 4096).map { _ in UInt8.random(in: 0 ... 255) }).write(to: fixture.realmURL)
 
-        let manager = fixture.openManager()
+        let manager = try fixture.openManager()
 
         #expect(fixture.exists() == false)
         #expect(fixture.exists(RealmStoreImporter.failedSuffix))
@@ -187,25 +187,44 @@ struct RealmStoreImporterTests {
         #expect(manager.itemMetadata(ocId: "fresh") != nil)
     }
 
-    @Test func withoutARealmFileNothingIsImported() {
+    @Test func withoutARealmFileNothingIsImported() throws {
         let fixture = Self.makeFixture()
 
         #expect(RealmStoreImporter.importIfNeeded(realmURL: fixture.realmURL, sqliteURL: fixture.sqliteURL, logger: FileProviderLogger(category: "test", log: FileProviderLogMock())) == .notNeeded)
 
-        let manager = fixture.openManager()
+        let manager = try fixture.openManager()
         #expect(manager.allItemMetadatasForTesting().isEmpty)
         #expect(FileManager.default.fileExists(atPath: fixture.sqliteURL.path))
+    }
+
+    @Test func aRecoverableFailureKeepsTheRealmFileAndFailsTheOpen() throws {
+        let fixture = Self.makeFixture()
+        try Self.writeLegacyStore(at: fixture)
+        // A directory nothing can be created in: whichever step fails first, the file must survive for the next start.
+        try FileManager.default.setAttributes([.posixPermissions: 0o555], ofItemAtPath: fixture.directory.path)
+        defer { try? FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: fixture.directory.path) }
+
+        #expect(throws: FilesDatabaseManager.OpenError.self) {
+            try fixture.openManager()
+        }
+
+        #expect(fixture.exists())
+        #expect(fixture.exists(RealmStoreImporter.failedSuffix) == false)
+        #expect(FileManager.default.fileExists(atPath: fixture.sqliteURL.path) == false)
+
+        try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: fixture.directory.path)
+        #expect(try fixture.openManager().itemMetadata(ocId: "live") != nil, "The next start imports the untouched file.")
     }
 
     @Test func aSecondOpenDoesNotImportAgain() throws {
         let fixture = Self.makeFixture()
         try Self.writeLegacyStore(at: fixture)
-        _ = fixture.openManager()
+        _ = try fixture.openManager()
 
-        let manager = fixture.openManager()
+        let manager = try fixture.openManager()
         manager.addItemMetadata(DatabaseTestSuites.makeFile(ocId: "added-later", fileName: "later.txt"))
 
-        #expect(fixture.openManager().itemMetadata(ocId: "added-later") != nil)
-        #expect(fixture.openManager().itemMetadata(ocId: "live") != nil)
+        #expect(try fixture.openManager().itemMetadata(ocId: "added-later") != nil)
+        #expect(try fixture.openManager().itemMetadata(ocId: "live") != nil)
     }
 }

@@ -18,9 +18,9 @@ enum RealmStoreImporter {
         case notNeeded
         /// The Realm file was imported and removed.
         case imported(rows: Int)
-        /// The Realm file could not be read. It was set aside under ``failedSuffix`` and the database starts empty.
+        /// The Realm file is unusable: corrupt or in a format this build cannot read. It was set aside under ``failedSuffix`` and the database starts empty.
         case unreadable
-        /// The import could not be written. The Realm file is untouched and the import is retried on the next start.
+        /// The import could not be done this time, because the Realm file could not be opened for a recoverable reason or the import could not be written. The Realm file is untouched and the import is retried on the next start.
         case failed
     }
 
@@ -108,7 +108,12 @@ enum RealmStoreImporter {
             do {
                 realm = try Realm(configuration: configuration)
             } catch {
-                logger.fault("Could not open the Realm database for import. Setting it aside; the metadata database starts empty.", [.url: realmURL.path, .error: error])
+                guard !isRecoverable(error) else {
+                    logger.fault("Could not open the Realm database for import. The import is retried on the next start.", [.url: realmURL.path, .error: error])
+                    return .failed
+                }
+
+                logger.fault("The Realm database cannot be read. Setting it aside; the metadata database starts empty.", [.url: realmURL.path, .error: error])
                 return .unreadable
             }
 
@@ -223,6 +228,20 @@ enum RealmStoreImporter {
             try db.execute(sql: "PRAGMA user_version = \(StoreVersion.current)")
 
             return rows
+        }
+    }
+
+    /// Whether a Realm open error names a condition which can pass, such as file access, permissions or a held lock, rather than an unusable file.
+    private static func isRecoverable(_ error: Error) -> Bool {
+        guard let code = (error as? Realm.Error)?.code else {
+            return false
+        }
+
+        switch code {
+            case .fileAccess, .filePermissionDenied, .fileExists, .fileNotFound, .incompatibleLockFile, .addressSpaceExhausted, .alreadyOpen:
+                return true
+            default:
+                return false
         }
     }
 

@@ -1,7 +1,7 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import Foundation
+import Foundation // `@objc(...)` below needs it in scope.
 import RealmSwift
 
 /** @brief Durable record of a chunk upload whose local cleanup must be retried. */

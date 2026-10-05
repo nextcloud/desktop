@@ -22,7 +22,9 @@ Rows leave the database as ``SendableItemMetadata`` and the other value types; t
 
 Lookups return the empty value when a read fails, and the failure is logged. Two lookups guard an action which must not happen on a guess: `excludedFromSyncMarkerExists(ocId:)` throws, and `Item.delete` then refuses the deletion with `cannotSynchronize` instead of deleting on the server; `hasRemoteFileChunks(uploadId:)` answers `true`, so local chunks are kept. `pendingWorkingSetChanges(since:)` returns `nil`, which the working-set enumeration treats like a failed server scan: it keeps the incoming anchor so the changes are retried on the next signal.
 
-On open, a file SQLite reports as corrupt is set aside with the suffix `.unreadable-<timestamp>` and replaced. Any other open failure, and a failed import, keep the files untouched and serve the process from memory until the next start.
+The change-delivery buffer treats a failed read of its stored items the same way: it finishes the enumeration with an error and keeps the session, instead of taking an empty read for the last batch and acknowledging changes which were never delivered. The startup cleanup of chunk uploads decides in one read and skips the cleanup when that read fails.
+
+On open, a file SQLite reports as corrupt is set aside with the suffix `.unreadable-<timestamp>` and replaced. Any other open failure, and a failed import, keep the files untouched and make the open throw; the extension then reports the setup as failed and the domain stays unavailable until a later setup succeeds. Nothing is served from a substitute database, because nothing written to one would survive.
 
 ## Store version
 
@@ -41,7 +43,7 @@ The store version is part of every sync anchor, so after such a reset the framew
 
 Builds before the switch kept the same tables in a Realm database, `<domain identifier>.realm`. When that file exists, it is imported before the SQLite database is opened: the Realm file is opened with the last Realm schema so Realm applies its own upgrades first, every table is copied into a staging file, and the staging file is moved into place in one step. The Realm files are removed only after the move succeeded, so a crash leaves either the untouched Realm file or a complete database behind. A Realm file which cannot be read is renamed with the suffix `.import-failed` and the database starts empty.
 
-A Realm file next to an existing SQLite database means an older, Realm-based build ran last, so its content replaces the SQLite database.
+A Realm file next to an existing SQLite database means an older, Realm-based build ran last, so its content replaces the SQLite database. Only a Realm file which cannot be read at all is set aside; a file Realm cannot open for a passing reason, such as a permission or lock problem, is left in place and the open fails until the import succeeds.
 
 The Realm dependency and the `LegacyRealm` models exist only for this import and are removed one release after the switch.
 

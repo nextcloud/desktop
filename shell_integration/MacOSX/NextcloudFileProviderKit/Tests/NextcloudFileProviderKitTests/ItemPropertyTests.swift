@@ -13,7 +13,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()

@@ -25,7 +25,7 @@ final class ChildItemCountTests: XCTestCase {
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent("ChildItemCountTests-\(UUID().uuidString)", isDirectory: true)
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        dbManager = FilesDatabaseManager(
+        dbManager = try! FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: directory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),

@@ -45,7 +45,7 @@ extension DatabaseTestSuites {
 
         @Test func twoManagersOnOneFileSeeEachOthersWrites() throws {
             let url = try #require(manager.databaseURL)
-            let second = FilesDatabaseManager(
+            let second = try FilesDatabaseManager(
                 account: DatabaseTestSuites.account,
                 databaseDirectory: url.deletingLastPathComponent(),
                 fileProviderDomainIdentifier: NSFileProviderDomainIdentifier(url.deletingPathExtension().lastPathComponent),

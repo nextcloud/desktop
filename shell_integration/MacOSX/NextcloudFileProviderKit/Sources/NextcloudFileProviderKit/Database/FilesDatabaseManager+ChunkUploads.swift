@@ -86,6 +86,30 @@ extension FilesDatabaseManager {
         } ?? []
     }
 
+    /// Every known upload identifier which no live, unfinished item can resume, decided in one read so a partial failure cannot classify a resumable upload as abandoned. `nil` when the database could not be read.
+    func abandonedChunkUploadIdentifiers() -> Set<String>? {
+        read("Could not decide which chunk uploads are abandoned.") { db in
+            let recorded = try RemoteFileChunkRecord
+                .select(RemoteFileChunkRecord.Columns.remoteChunkStoreFolderName, as: String.self)
+                .fetchAll(db)
+            let bound = try ItemMetadataRecord
+                .filter(ItemMetadataRecord.Columns.chunkUploadId != nil)
+                .select(ItemMetadataRecord.Columns.chunkUploadId, as: String.self)
+                .fetchAll(db)
+            let pending = try PendingChunkUploadCleanupRecord.fetchAll(db).map(\.uploadIdentifier)
+            let resumable = try ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.Columns.chunkUploadId != nil
+                        && ItemMetadataRecord.Columns.deleted == false
+                        && [Status.inUpload.rawValue, Status.uploading.rawValue, Status.uploadError.rawValue].contains(ItemMetadataRecord.Columns.status)
+                )
+                .select(ItemMetadataRecord.Columns.chunkUploadId, as: String.self)
+                .fetchAll(db)
+
+            return Set(recorded).union(bound).union(pending).subtracting(resumable)
+        }
+    }
+
     /// Upload identifiers whose local cleanup failed and has to be retried.
     func pendingChunkUploadCleanupIdentifiers() -> [String] {
         read("Could not fetch the pending chunk upload cleanups.") { db in
