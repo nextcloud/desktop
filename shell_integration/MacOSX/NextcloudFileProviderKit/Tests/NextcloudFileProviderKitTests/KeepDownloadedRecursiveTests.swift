@@ -5,7 +5,6 @@
 import Foundation
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import RealmSwift
 import TestInterface
 import XCTest
 
@@ -30,7 +29,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
     }
 
     ///
@@ -38,37 +37,34 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
     /// the database and return the top-level folder's metadata.
     ///
     private func seedTree() throws -> SendableItemMetadata {
-        let folder = RealmItemMetadata()
-        folder.ocId = "folder-1"
+        var folder = SendableItemMetadata.rawRow(ocId: "folder-1")
         folder.account = "TestAccount"
-        folder.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "documents")
+        folder.serverUrl = "https://cloud.example.com/files"
+        folder.fileName = "documents"
         folder.directory = true
 
-        let directChildFile = RealmItemMetadata()
-        directChildFile.ocId = "direct-child-file"
+        var directChildFile = SendableItemMetadata.rawRow(ocId: "direct-child-file")
         directChildFile.account = "TestAccount"
-        directChildFile.updateLocation(serverUrl: "https://cloud.example.com/files/documents", fileName: "report.pdf")
+        directChildFile.serverUrl = "https://cloud.example.com/files/documents"
+        directChildFile.fileName = "report.pdf"
 
-        let subfolder = RealmItemMetadata()
-        subfolder.ocId = "subfolder-1"
+        var subfolder = SendableItemMetadata.rawRow(ocId: "subfolder-1")
         subfolder.account = "TestAccount"
-        subfolder.updateLocation(serverUrl: "https://cloud.example.com/files/documents", fileName: "nested")
+        subfolder.serverUrl = "https://cloud.example.com/files/documents"
+        subfolder.fileName = "nested"
         subfolder.directory = true
 
-        let deepFile = RealmItemMetadata()
-        deepFile.ocId = "deep-file"
+        var deepFile = SendableItemMetadata.rawRow(ocId: "deep-file")
         deepFile.account = "TestAccount"
-        deepFile.updateLocation(serverUrl: "https://cloud.example.com/files/documents/nested", fileName: "note.txt")
+        deepFile.serverUrl = "https://cloud.example.com/files/documents/nested"
+        deepFile.fileName = "note.txt"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(folder)
-            realm.add(directChildFile)
-            realm.add(subfolder)
-            realm.add(deepFile)
-        }
+        try Self.dbManager.insertForTesting(folder)
+        try Self.dbManager.insertForTesting(directChildFile)
+        try Self.dbManager.insertForTesting(subfolder)
+        try Self.dbManager.insertForTesting(deepFile)
 
-        return SendableItemMetadata(value: folder)
+        return folder
     }
 
     ///
@@ -209,13 +205,12 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
     func testFragmentDeepUnpinUnderRecursivePin() throws {
         _ = try seedTree()
 
-        let levelOneSibling = RealmItemMetadata()
-        levelOneSibling.ocId = "level-1-sibling"
+        var levelOneSibling = SendableItemMetadata.rawRow(ocId: "level-1-sibling")
         levelOneSibling.account = "TestAccount"
-        levelOneSibling.updateLocation(serverUrl: "https://cloud.example.com/files/documents/nested", fileName: "level-1-sibling.txt")
+        levelOneSibling.serverUrl = "https://cloud.example.com/files/documents/nested"
+        levelOneSibling.fileName = "level-1-sibling.txt"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write { realm.add(levelOneSibling) }
+        try Self.dbManager.insertForTesting(levelOneSibling)
 
         // Seed: pin the whole subtree (mirrors the recursive enable path).
         let folderMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "folder-1"))
@@ -288,14 +283,13 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
 
         // An off-path sibling at the deepest level that was added to the DB
         // *after* the original recursive pin and so missed it.
-        let lateCousin = RealmItemMetadata()
-        lateCousin.ocId = "late-cousin"
+        var lateCousin = SendableItemMetadata.rawRow(ocId: "late-cousin")
         lateCousin.account = "TestAccount"
-        lateCousin.updateLocation(serverUrl: "https://cloud.example.com/files/documents/nested", fileName: "late-cousin.txt")
+        lateCousin.serverUrl = "https://cloud.example.com/files/documents/nested"
+        lateCousin.fileName = "late-cousin.txt"
         // No keepDownloaded set — defaults to false.
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write { realm.add(lateCousin) }
+        try Self.dbManager.insertForTesting(lateCousin)
 
         // Original recursive enable: every then-known descendant gets flagged.
         let folderMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "folder-1"))
@@ -425,17 +419,16 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
     func testRecursivePropagationDoesNotLeakToSiblingsWithSimilarNames() throws {
         let folderMetadata = try seedTree()
 
-        let sibling = RealmItemMetadata()
-        sibling.ocId = "sibling-file"
+        var sibling = SendableItemMetadata.rawRow(ocId: "sibling-file")
         sibling.account = "TestAccount"
-        sibling.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "documents-archive.zip")
+        sibling.serverUrl = "https://cloud.example.com/files"
+        sibling.fileName = "documents-archive.zip"
         // Same parent ("/files") as the target folder, but NOT inside the
         // target folder. A naive prefix match against "/files/documents"
         // would still reject this — but if anyone ever changed the match to
         // use just the parent path, this guards against that regression.
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write { realm.add(sibling) }
+        try Self.dbManager.insertForTesting(sibling)
 
         _ = try Self.dbManager.set(keepDownloaded: true, for: folderMetadata)
         for child in Self.dbManager.childItems(directoryMetadata: folderMetadata) {
