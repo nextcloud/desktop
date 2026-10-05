@@ -106,19 +106,22 @@ extension FilesDatabaseManager {
         } ?? nil
     }
 
-    /// Return the next ordered range of an active change-delivery session.
+    /// Return the next ordered range of an active change-delivery session, or `nil` when the database could not be read.
+    ///
+    /// An empty array means the session has no further items; `nil` must not be taken for that, because finishing on it would acknowledge and discard changes which were never delivered.
+    ///
     func changeDeliveryItems(
         sessionId: String,
         fromSequence sequence: Int,
         limit: Int
-    ) -> [(sequence: Int, metadataData: Data, deleted: Bool)] {
+    ) -> [(sequence: Int, metadataData: Data, deleted: Bool)]? {
         read("Could not fetch change-delivery items.") { db in
             try changeDeliveryItems(sessionId: sessionId, fromSequence: sequence, limit: limit, in: db)
-        } ?? []
+        }
     }
 
-    /// Return the deleted item identifiers in the currently prepared batch.
-    func pendingChangeDeliveryDeletedOcIds(sessionId: String) -> [String] {
+    /// Return the deleted item identifiers in the currently prepared batch, or `nil` when the database could not be read.
+    func pendingChangeDeliveryDeletedOcIds(sessionId: String) -> [String]? {
         read("Could not fetch the pending deletions of a change-delivery session.") { db in
             guard let session = try activeChangeDeliverySession(sessionId: sessionId, in: db),
                   session.pendingReported,
@@ -141,7 +144,7 @@ extension FilesDatabaseManager {
                 }
                 return metadata.ocId
             }
-        } ?? []
+        }
     }
 
     func prepareChangeDeliveryBatch(

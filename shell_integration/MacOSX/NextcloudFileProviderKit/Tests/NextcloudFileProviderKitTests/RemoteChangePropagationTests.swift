@@ -65,7 +65,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
-    static let dbManager = FilesDatabaseManager(
+    static let dbManager = try! FilesDatabaseManager(
         account: account,
         databaseDirectory: makeDatabaseDirectory(),
         fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),

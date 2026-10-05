@@ -26,7 +26,7 @@ final class NormalizedLocationKeyTests: XCTestCase {
     }
 
     private func makeManager() -> FilesDatabaseManager {
-        FilesDatabaseManager(
+        try! FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),

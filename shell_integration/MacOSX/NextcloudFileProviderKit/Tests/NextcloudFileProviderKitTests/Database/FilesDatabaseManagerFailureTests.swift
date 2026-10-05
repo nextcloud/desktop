@@ -34,6 +34,33 @@ extension DatabaseTestSuites {
             #expect(manager.hasRemoteFileChunks(uploadId: "other"), "A failed lookup must not discard local chunks.")
         }
 
+        @Test func changeDeliveryReadsReportFailureAsNil() throws {
+            let rows = [DatabaseTestSuites.makeFile(ocId: "a", fileName: "a.txt"), DatabaseTestSuites.makeFile(ocId: "b", fileName: "b.txt")]
+            #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: rows, deleted: [], incomplete: false, hardRemoveDeleted: false))
+            #expect(manager.prepareChangeDeliveryBatch(sessionId: "s", endSequence: 1, nextAnchorKey: "a1", moreComing: true))
+            #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10)?.count == 2)
+            #expect(manager.pendingChangeDeliveryDeletedOcIds(sessionId: "s") == [])
+
+            try manager.breakTableForTesting(ChangeDeliveryItemRecord.databaseTableName)
+
+            #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10) == nil, "An empty array would be taken for the last batch.")
+            #expect(manager.pendingChangeDeliveryDeletedOcIds(sessionId: "s") == nil)
+            #expect(manager.changeDeliverySession(sessionId: "s") != nil, "The session itself is still there.")
+        }
+
+        @Test func theAbandonedUploadDecisionIsNilWhenAnyOfItsQueriesFails() throws {
+            var resumable = DatabaseTestSuites.makeFile(ocId: "resumable", fileName: "r.bin")
+            resumable.chunkUploadId = "u-resumable"
+            resumable.status = Status.uploading.rawValue
+            manager.addItemMetadata(resumable)
+            manager.addRemoteFileChunks([RemoteFileChunk(fileName: "1", size: 1, remoteChunkStoreFolderName: "u-resumable"), RemoteFileChunk(fileName: "1", size: 1, remoteChunkStoreFolderName: "u-orphan")])
+            #expect(manager.abandonedChunkUploadIdentifiers() == ["u-orphan"])
+
+            try manager.breakTableForTesting(ItemMetadataRecord.databaseTableName)
+
+            #expect(manager.abandonedChunkUploadIdentifiers() == nil, "Chunk rows alone must not turn every upload into an abandoned one.")
+        }
+
         @Test func pendingWorkingSetChangesReportFailureAsNil() throws {
             var row = DatabaseTestSuites.makeFile(ocId: "changed", fileName: "changed.txt")
             row.downloaded = true

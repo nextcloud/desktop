@@ -62,8 +62,9 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
                 return false
             }
 
-            let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: sessionId)
-            guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, deletedOcIds: deletedOcIds) else {
+            guard let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: sessionId),
+                  dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, deletedOcIds: deletedOcIds)
+            else {
                 logger.error("Could not acknowledge the previously reported change delivery batch.")
                 return false
             }
@@ -80,8 +81,9 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
             return false
         }
 
-        let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: session.sessionId)
-        guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: session.sessionId, deletedOcIds: deletedOcIds) else {
+        guard let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: session.sessionId),
+              dbManager.acknowledgeChangeDeliveryBatch(sessionId: session.sessionId, deletedOcIds: deletedOcIds)
+        else {
             logger.error("Could not acknowledge the previously reported change delivery batch.")
             return false
         }
@@ -148,6 +150,9 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
 
     /// Prepare the next update/delete batch without advancing the committed cursor.
     /// Returns a continuation anchor for intermediate batches and the session's final anchor for the last.
+    ///
+    /// Returns `nil` when the stored items could not be read. The session is left as it is, so the batch can be prepared again; finishing on an empty batch instead would acknowledge changes which were never delivered.
+    ///
     func prepareChangeDeliveryBatch(
         maxItems: Int
     ) -> (
@@ -156,7 +161,7 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         moreComing: Bool,
         continuationAnchorRawValue: Data?,
         finalAnchorRawValue: Data?
-    ) {
+    )? {
         lock.lock()
         defer { lock.unlock() }
 
@@ -167,11 +172,14 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
             return ([], [], false, nil, nil)
         }
 
-        let storedItems = dbManager.changeDeliveryItems(
+        guard let storedItems = dbManager.changeDeliveryItems(
             sessionId: sessionId,
             fromSequence: session.nextSequence,
             limit: budget + 1
-        )
+        ) else {
+            logger.error("Could not read the next change delivery batch; the session is kept for a retry.")
+            return nil
+        }
         let batchItems = Array(storedItems.prefix(budget))
         let moreComing = storedItems.count > budget
         let decoder = JSONDecoder()

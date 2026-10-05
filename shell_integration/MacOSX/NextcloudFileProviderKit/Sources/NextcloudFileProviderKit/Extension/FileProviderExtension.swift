@@ -849,11 +849,20 @@ import OSLog
         }
 
         // Opening the database may import or migrate it, so it happens off the main actor.
-        let databaseManager = FilesDatabaseManager(
-            account: account,
-            fileProviderDomainIdentifier: domain.identifier,
-            log: log
-        )
+        let databaseManager: FilesDatabaseManager
+
+        do {
+            databaseManager = try FilesDatabaseManager(
+                account: account,
+                fileProviderDomainIdentifier: domain.identifier,
+                log: log
+            )
+        } catch {
+            // Without its database the domain stays unavailable; every request keeps failing until a later setup succeeds.
+            logger.fault("Could not open the metadata database. The domain is not set up.", [.error: error])
+            completionHandler?(NSError(.databaseUnavailable))
+            return
+        }
 
         await MainActor.run {
             ncAccount = account

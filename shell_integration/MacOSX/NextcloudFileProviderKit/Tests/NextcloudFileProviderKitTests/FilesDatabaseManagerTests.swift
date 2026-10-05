@@ -16,7 +16,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     static let databaseDirectory = makeDatabaseDirectory()
 
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: databaseDirectory, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: databaseDirectory, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
@@ -27,7 +27,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager, "FilesDatabaseManager should be initialized")
     }
 
-    func testCompletedChangeDeliverySessionRemovesPersistedState() {
+    func testCompletedChangeDeliverySessionRemovesPersistedState() throws {
         let sessionId = "completed-change-delivery-\(name)"
         let metadata = SendableItemMetadata(
             ocId: "change-delivery-item-\(name)",
@@ -50,7 +50,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNotNil(Self.dbManager.changeDeliverySession(sessionId: sessionId))
         XCTAssertEqual(
-            Self.dbManager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: Int.max).count,
+            Self.dbManager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: Int.max)?.count,
             1
         )
 
@@ -71,7 +71,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNil(Self.dbManager.changeDeliverySession(sessionId: sessionId))
         XCTAssertTrue(
-            Self.dbManager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: Int.max).isEmpty
+            try XCTUnwrap(Self.dbManager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: Int.max)?.isEmpty)
         )
     }
 
@@ -101,7 +101,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             }
         }
 
-        let manager = FilesDatabaseManager(
+        let manager = try FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: databaseDirectory,
             fileProviderDomainIdentifier: domainIdentifier,
@@ -1846,7 +1846,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             normalizedFileName: fileName.precomposedStringWithCanonicalMapping
         )
 
-        let manager = FilesDatabaseManager(
+        let manager = try FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: Self.databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
@@ -1880,7 +1880,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         newer.syncTime = Date(timeIntervalSince1970: 2000)
         try Self.dbManager.insertForTesting(newer)
 
-        let manager = FilesDatabaseManager(
+        let manager = try FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: Self.databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
@@ -1919,7 +1919,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             normalizedFileName: fileName.precomposedStringWithCanonicalMapping
         )
 
-        let manager = FilesDatabaseManager(
+        let manager = try FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: Self.databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
@@ -1967,7 +1967,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             normalizedFileName: c.fileName.precomposedStringWithCanonicalMapping
         )
 
-        let manager = FilesDatabaseManager(
+        let manager = try FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: Self.databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
@@ -2008,7 +2008,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             normalizedFileName: fileName.precomposedStringWithCanonicalMapping
         )
 
-        let manager = FilesDatabaseManager(
+        let manager = try FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: Self.databaseDirectory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),

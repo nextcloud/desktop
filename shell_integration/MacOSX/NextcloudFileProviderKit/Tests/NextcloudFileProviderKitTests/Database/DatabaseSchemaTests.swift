@@ -29,7 +29,7 @@ extension DatabaseTestSuites {
             let domain = try #require(manager.databaseURL).deletingPathExtension().lastPathComponent
             manager.addItemMetadata(DatabaseTestSuites.makeFile(ocId: "kept", fileName: "kept.txt"))
 
-            let reopened = FilesDatabaseManager(
+            let reopened = try FilesDatabaseManager(
                 account: DatabaseTestSuites.account,
                 databaseDirectory: directory,
                 fileProviderDomainIdentifier: .init(domain),
@@ -48,7 +48,7 @@ extension DatabaseTestSuites {
             manager.checkpointForShutdown()
             try Data((0 ..< 8192).map { _ in UInt8.random(in: 0 ... 255) }).write(to: url)
 
-            let reopened = FilesDatabaseManager(
+            let reopened = try FilesDatabaseManager(
                 account: DatabaseTestSuites.account,
                 databaseDirectory: directory,
                 fileProviderDomainIdentifier: .init(domain),
@@ -60,6 +60,25 @@ extension DatabaseTestSuites {
             #expect(reopened.writer is DatabasePool, "The replacement is a file on disk, not an in-memory fallback.")
             let setAside = try FileManager.default.contentsOfDirectory(atPath: directory.path).filter { $0.contains(".unreadable-") }
             #expect(!setAside.isEmpty)
+        }
+
+        @Test func openingInADirectoryNothingCanBeWrittenToThrows() throws {
+            let directory = FileManager.default.temporaryDirectory
+                .appendingPathComponent("DatabaseSchemaTests-readonly-\(UUID().uuidString)", isDirectory: true)
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            try FileManager.default.setAttributes([.posixPermissions: 0o555], ofItemAtPath: directory.path)
+            defer { try? FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: directory.path) }
+
+            #expect(throws: FilesDatabaseManager.OpenError.self) {
+                try FilesDatabaseManager(
+                    account: DatabaseTestSuites.account,
+                    databaseDirectory: directory,
+                    fileProviderDomainIdentifier: .init("readonly"),
+                    log: FileProviderLogMock(),
+                    defaults: DatabaseTestSuites.defaults
+                )
+            }
+            #expect(FileManager.default.fileExists(atPath: directory.appendingPathComponent("readonly.sqlite").path) == false)
         }
 
         @Test func locationQueriesUseTheLocationIndex() throws {
