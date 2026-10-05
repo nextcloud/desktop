@@ -1527,7 +1527,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(dbMetadata.keepDownloaded, "keepDownloaded should be retained in database")
     }
 
-    func testPendingWorkingSetChanges() {
+    func testPendingWorkingSetChanges() throws {
         // 1. Arrange
         let anchorDate = Date().addingTimeInterval(-300) // 5 minutes ago
         let oldSyncDate = Date().addingTimeInterval(-600) // 10 minutes ago (before anchor)
@@ -1641,7 +1641,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(nonMatChildRecent)
 
         // 2. Act
-        let result = Self.dbManager.pendingWorkingSetChanges(since: anchorDate)
+        let result = try XCTUnwrap(Self.dbManager.pendingWorkingSetChanges(since: anchorDate))
 
         // 3. Assert - Updated items
         let updatedIds = Set(result.updated.map(\.ocId))
@@ -2060,7 +2060,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         fresh.syncTime = anchor.addingTimeInterval(60)
         Self.dbManager.addItemMetadata(fresh)
 
-        let changes = Self.dbManager.pendingWorkingSetChanges(since: anchor)
+        let changes = try XCTUnwrap(Self.dbManager.pendingWorkingSetChanges(since: anchor))
         XCTAssertTrue(
             changes.deleted.contains { $0.ocId == "preExisting" },
             "Evicted materialized row should surface in working-set deletions"

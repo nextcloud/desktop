@@ -458,6 +458,41 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: metadata.ocId))
     }
 
+    func testDeleteIsRefusedWhenTheExclusionLookupFails() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteFile = MockRemoteItem(
+            identifier: "lookup-failure-id",
+            name: "Keep.txt",
+            remotePath: Self.account.davFilesUrl + "/Keep.txt",
+            data: Data("keep".utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteFile.parent = rootItem
+        rootItem.children = [remoteFile]
+        let metadata = remoteFile.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(metadata)
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        // The deletion cannot tell whether it must stay local, so it must not reach the server.
+        try Self.dbManager.breakTableForTesting(ExcludedFromSyncItemRecord.databaseTableName)
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertEqual((error as? NSError)?.code, NSFileProviderError.cannotSynchronize.rawValue)
+        XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteFile.identifier }, "The server copy survives a refused deletion.")
+
+        // The table is gone for good in this store; give the following tests a fresh one.
+        Self.dbManager.recreateTablesForTesting()
+    }
+
     func testFailedDeleteKeepsIncompleteChunkUpload() async throws {
         let remoteInterface = MockRemoteInterface(
             account: Self.account,

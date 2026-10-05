@@ -38,7 +38,10 @@ extension Enumerator {
                 logger.debug("Working-set change buffer not primed for anchor \(anchorKey); deriving changes.", [.account: account])
 
                 let serverChanges = await scanMaterialisedItemsForRemoteChanges()
-                let pendingLocalChanges = dbManager.pendingWorkingSetChanges(since: date)
+                // A failed local read is treated like a failed server scan: the incoming anchor is kept so the changes are retried on the next signal.
+                let localChanges = dbManager.pendingWorkingSetChanges(since: date)
+                let pendingLocalChanges = localChanges ?? ([], [])
+                let hadFailure = serverChanges.hadFailure || localChanges == nil
 
                 let changes = ChangeSet(
                     mergingUpdated: [serverChanges.updated, pendingLocalChanges.updated],
@@ -53,13 +56,13 @@ extension Enumerator {
                 let sortedUpdated = changes.createdAndUpdated
                     .sorted { $0.remotePath().count < $1.remotePath().count }
 
-                let finalAnchor = serverChanges.hadFailure ? anchor : currentAnchor
+                let finalAnchor = hadFailure ? anchor : currentAnchor
                 changeBuffer.prime(
                     key: anchorKey,
                     finalAnchorRawValue: finalAnchor.rawValue,
                     updated: sortedUpdated,
                     deleted: changes.deleted,
-                    incomplete: serverChanges.hadFailure
+                    incomplete: hadFailure
                 )
             }
 

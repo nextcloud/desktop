@@ -44,13 +44,13 @@ extension FilesDatabaseManager {
         } ?? false
     }
 
-    /// Whether any chunk is still recorded for the upload.
+    /// Whether any chunk is still recorded for the upload. Assumes chunks remain when the database cannot be read, so local chunks are never discarded on a lookup failure.
     func hasRemoteFileChunks(uploadId: String) -> Bool {
         read("Could not look up the recorded upload chunks.", [.name: uploadId]) { db in
             try !RemoteFileChunkRecord
                 .filter(RemoteFileChunkRecord.Columns.remoteChunkStoreFolderName == uploadId)
                 .isEmpty(db)
-        } ?? false
+        } ?? true
     }
 
     /// The upload identifier of every recorded chunk, one entry per chunk.

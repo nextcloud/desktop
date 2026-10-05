@@ -45,7 +45,17 @@ public extension Item {
             return await deleteLockFile(domain: domain, dbManager: dbManager)
         }
 
-        if dbManager.isItemExcludedFromSync(ocId: ocId) {
+        let isExcludedFromSync: Bool
+
+        do {
+            isExcludedFromSync = try dbManager.excludedFromSyncMarkerExists(ocId: ocId)
+        } catch {
+            // Without the marker it is unknown whether this deletion must stay local, so it is not forwarded to the server.
+            logger.error("Could not look up whether the item is excluded from sync. Not deleting.", [.item: itemIdentifier, .name: filename, .error: error])
+            return NSFileProviderError(.cannotSynchronize)
+        }
+
+        if isExcludedFromSync {
             logger.info("Item deletion follows an exclusion from sync. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: filename])
 
             guard handleMetadataDeletion() else {
