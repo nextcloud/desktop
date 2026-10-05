@@ -4,6 +4,7 @@
 import Foundation
 import GRDB
 @testable import NextcloudFileProviderKit
+import Testing
 
 ///
 /// Direct access to stored rows for tests.
@@ -56,6 +57,30 @@ extension FilesDatabaseManager {
         }
 
         return (rows ?? []).map(\.metadata)
+    }
+
+    ///
+    /// Drop a table through a second connection so that every later statement touching it fails, which is how tests provoke a read or write failure on an open manager.
+    ///
+    func breakTableForTesting(_ tableName: String) throws {
+        let path = try #require(databaseURL).path
+        let queue = try DatabaseQueue(path: path)
+        try queue.write { db in
+            try db.execute(sql: "DROP TABLE \(tableName)")
+        }
+    }
+
+    ///
+    /// Recreate the schema after ``breakTableForTesting(_:)`` on a manager shared by several tests.
+    ///
+    func recreateTablesForTesting() {
+        try? writer.write { db in
+            for table in DatabaseSchema.tableNames where try db.tableExists(table) {
+                try db.execute(sql: "DROP TABLE \(table)")
+            }
+            try db.execute(sql: "DELETE FROM grdb_migrations")
+        }
+        try? DatabaseSchema.migrator.migrate(writer)
     }
 
     ///

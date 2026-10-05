@@ -781,7 +781,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(rootItem.children.isEmpty)
     }
 
-    func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async {
+    func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.lockUnlockResult = NKLock(
             owner: Self.account.id,
@@ -882,8 +882,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             "A lock-only etag transition must preserve File Provider's content version."
         )
         XCTAssertTrue(
-            Self.dbManager.pendingWorkingSetChanges(since: Date(timeIntervalSince1970: 2)).updated
-                .contains(where: { $0.ocId == targetRemote.identifier }),
+            try XCTUnwrap(Self.dbManager.pendingWorkingSetChanges(since: Date(timeIntervalSince1970: 2))?.updated
+                .contains(where: { $0.ocId == targetRemote.identifier })),
             "Recovering the lock token must queue the target item for a File Provider metadata refresh."
         )
 

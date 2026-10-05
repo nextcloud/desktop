@@ -91,7 +91,13 @@ public final class FilesDatabaseManager: Sendable {
         let realmLocation = databaseDirectory
             .appendingPathComponent(fileProviderDomainIdentifier.rawValue)
             .appendingPathExtension("realm")
-        RealmStoreImporter.importIfNeeded(realmURL: realmLocation, sqliteURL: databaseLocation, logger: logger)
+
+        if RealmStoreImporter.importIfNeeded(realmURL: realmLocation, sqliteURL: databaseLocation, logger: logger) == .failed {
+            // Nothing is persisted until the import succeeds on a later start, so no state can accumulate which that import would then replace.
+            logger.fault("The Realm database could not be imported. Metadata is kept in memory until the next start.", [.url: realmLocation.path])
+            writer = Self.openInMemoryDatabase(logger: logger)
+            return
+        }
 
         writer = Self.openDatabase(at: databaseLocation, label: fileProviderDomainIdentifier.rawValue, logger: logger)
         logger.info("Opened metadata database.", [.url: databaseLocation.path])
@@ -117,12 +123,20 @@ public final class FilesDatabaseManager: Sendable {
         return configuration
     }
 
-    /// Open the file, migrating its schema. A file which cannot be opened is set aside and replaced; if that fails too, the database lives in memory.
+    /// Open the file, migrating its schema.
+    ///
+    /// A file SQLite reports as corrupt is set aside and replaced. Any other failure, such as a busy or full disk, keeps the file untouched and serves this process from memory, so the next start can try again.
+    ///
     private static func openDatabase(at url: URL, label: String, logger: FileProviderLogger) -> any DatabaseWriter {
         do {
             return try openPool(at: url, label: label)
         } catch {
-            logger.fault("Could not open the metadata database. Setting the file aside and starting with an empty one.", [.url: url.path, .error: error])
+            guard isCorruptionError(error) else {
+                logger.fault("Could not open the metadata database. Metadata is kept in memory until the next start.", [.url: url.path, .error: error])
+                return openInMemoryDatabase(logger: logger)
+            }
+
+            logger.fault("The metadata database is corrupt. Setting the file aside and starting with an empty one.", [.url: url.path, .error: error])
         }
 
         setAsideUnreadableDatabase(at: url, logger: logger)
@@ -130,9 +144,17 @@ public final class FilesDatabaseManager: Sendable {
         do {
             return try openPool(at: url, label: label)
         } catch {
-            logger.fault("Could not open a fresh metadata database. Metadata will not be persisted.", [.url: url.path, .error: error])
+            logger.fault("Could not open a fresh metadata database. Metadata is kept in memory until the next start.", [.url: url.path, .error: error])
             return openInMemoryDatabase(logger: logger)
         }
+    }
+
+    private static func isCorruptionError(_ error: Error) -> Bool {
+        guard let databaseError = error as? DatabaseError else {
+            return false
+        }
+
+        return [ResultCode.SQLITE_CORRUPT, .SQLITE_NOTADB].contains(databaseError.resultCode.primaryResultCode)
     }
 
     private static func openPool(at url: URL, label: String) throws -> any DatabaseWriter {
@@ -677,12 +699,20 @@ public final class FilesDatabaseManager: Sendable {
         } ?? false
     }
 
-    /// Returns whether an item is awaiting the deletion callback caused by `.excludedFromSync`.
+    /// Returns whether an item is awaiting the deletion callback caused by `.excludedFromSync`, or `false` when the database cannot be read.
     /// - Parameter ocId: The file provider item identifier to look up.
     func isItemExcludedFromSync(ocId: String) -> Bool {
-        read("Could not look up the excluded-from-sync marker.", [.item: ocId]) { db in
+        (try? excludedFromSyncMarkerExists(ocId: ocId)) ?? false
+    }
+
+    /// Returns whether an item is awaiting the deletion callback caused by `.excludedFromSync`.
+    ///
+    /// Throws when the database cannot be read, so a caller about to delete on the server can refuse instead of treating an excluded item as an ordinary deletion.
+    ///
+    func excludedFromSyncMarkerExists(ocId: String) throws -> Bool {
+        try writer.read { db in
             try ExcludedFromSyncItemRecord.exists(db, key: ocId)
-        } ?? false
+        }
     }
 
     /// Removes the durable exclusion marker after local metadata deletion succeeds.
@@ -919,9 +949,9 @@ public final class FilesDatabaseManager: Sendable {
     /// - Parameters:
     ///     - date: All items with a synchronization time later than this are considered.
     ///
-    /// - Returns: Locally changed items in the working set grouped by "updated" and "deleted".
+    /// - Returns: Locally changed items in the working set grouped by "updated" and "deleted", or `nil` when the database could not be read.
     ///
-    public func pendingWorkingSetChanges(since date: Date) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata]) {
+    public func pendingWorkingSetChanges(since date: Date) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata])? {
         logger.debug("Gathering pending working set changes...")
 
         return read("Could not gather pending working set changes.") { db in
@@ -1000,7 +1030,7 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             return (updatedItems, deletedItems)
-        } ?? ([], [])
+        }
     }
 
     public func itemsMetadataByFileNameSuffix(suffix: String) -> [SendableItemMetadata] {
