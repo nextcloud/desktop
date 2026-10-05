@@ -704,7 +704,7 @@ import OSLog
     /// setup is already in flight (tracked via ``pendingAccount``) or already completed (tracked
     /// via ``ncAccount``) are dropped silently. This prevents concurrent XPC callers from each
     /// opening their own NextcloudKit session and spinning up their own `FilesDatabaseManager`
-    /// (and hence their own Realm) for the same credentials.
+    /// (and hence their own database) for the same credentials.
     ///
     /// - Parameters:
     ///     - completionHandler: An optional completion handler which will be provided an error, if any occurred. Omitting this completion handler is fine, but you won't get notified of errors.

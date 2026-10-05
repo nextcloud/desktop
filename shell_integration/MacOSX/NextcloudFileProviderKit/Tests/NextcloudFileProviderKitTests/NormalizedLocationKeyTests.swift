@@ -182,10 +182,10 @@ final class NormalizedLocationKeyTests: XCTestCase {
         let decomposed = "Gru\u{0308}\u{00DF}e.txt"
 
         // Swift's own `==` normalizes and reports these as equal, which is why the normalized
-        // keys have to exist for Realm's byte comparison.
+        // keys have to exist for the database's byte comparison.
         XCTAssertNotEqual(
             Array(precomposed.utf8), Array(decomposed.utf8),
-            "Precondition: the two forms differ in the bytes Realm would compare."
+            "Precondition: the two forms differ in the bytes the database compares."
         )
 
         manager.addItemMetadata(metadata(fileName: precomposed, serverUrl: serverUrl, ocId: "umlaut"))

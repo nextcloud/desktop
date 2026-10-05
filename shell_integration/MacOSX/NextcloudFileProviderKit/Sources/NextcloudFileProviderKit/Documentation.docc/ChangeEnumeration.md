@@ -71,9 +71,9 @@ Each scan first creates one ordered change list:
 2. Deleted items follow the updates.
 3. The complete list is stored in the change-delivery buffer.
 
-The buffer stores the list in the File Provider domain's Realm database. A
-`RealmChangeDeliverySession` records the current anchor, cursor, final anchor,
-and incomplete-scan state. Each `RealmChangeDeliveryItem` stores one metadata
+The buffer stores the list in the File Provider domain's metadata database. A
+`ChangeDeliverySessionRecord` records the current anchor, cursor, final anchor,
+and incomplete-scan state. Each `ChangeDeliveryItemRecord` stores one metadata
 value, its sequence number, and whether it is a deletion.
 
 This state is separate from the live item metadata. It preserves the exact
@@ -132,7 +132,7 @@ The framework may invalidate the current `Enumerator` after an intermediate
 batch and create another one for the next request. The extension process may
 also be restarted. Pending changes must therefore be stored outside the
 enumerator instance or be exactly reconstructible from the anchor. This
-implementation uses the Realm-backed list for both cases.
+implementation uses the database-backed list for both cases.
 
 Do not assume that a process restart causes File Provider to provide the
 original anchor again. The last anchor returned for a batch may be the anchor
