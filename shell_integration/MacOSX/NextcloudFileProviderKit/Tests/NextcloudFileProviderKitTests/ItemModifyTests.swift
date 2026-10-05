@@ -6,7 +6,6 @@
 import NextcloudFileProviderKitMocks
 import NextcloudFileProviderXPC
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -102,7 +101,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
 
         remoteItem = MockRemoteItem(
             identifier: "item",
@@ -857,9 +856,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     /// Verify the framework callback sequence caused by excluding a remotely synced bundle.
     func testModifyRemoteBundleExclusionDoesNotDeleteRemoteBundle() async throws {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let bundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteBundle = MockRemoteItem(
