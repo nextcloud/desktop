@@ -30,6 +30,9 @@ enum RealmStoreImporter {
     /// Appended to a Realm file which could not be read.
     static let failedSuffix = ".import-failed"
 
+    /// Appended to an imported Realm file which could not be removed.
+    static let importedSuffix = ".imported"
+
     /// The configuration the last Realm-based build used, so Realm upgrades older files on open before anything is read.
     static func legacyConfiguration(fileURL: URL) -> Realm.Configuration {
         Realm.Configuration(
@@ -246,6 +249,15 @@ enum RealmStoreImporter {
         // Realm leaves the lock file in place because another process could hold it; nothing else opens this domain's database.
         if let lockPath = configuration.fileURL.map({ $0.path + ".lock" }) {
             removeIfPresent(lockPath)
+        }
+
+        // A Realm file which survives here would be imported again on the next start and replace everything written until then.
+        if let realmPath = configuration.fileURL?.path, FileManager.default.fileExists(atPath: realmPath) {
+            do {
+                try FileManager.default.moveItem(atPath: realmPath, toPath: realmPath + importedSuffix)
+            } catch {
+                logger.fault("Could not rename the imported Realm database. It will be imported again on the next start.", [.url: realmPath, .error: error])
+            }
         }
     }
 

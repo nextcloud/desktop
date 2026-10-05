@@ -124,10 +124,10 @@ extension DatabaseTestSuites {
             #expect(manager.itemMetadata(ocId: "after")?.syncTime == after.syncTime)
             #expect(manager.itemMetadata(ocId: "before")?.syncTime == before.syncTime)
 
-            let changes = manager.pendingWorkingSetChanges(since: anchor)
+            let changes = try #require(manager.pendingWorkingSetChanges(since: anchor))
             #expect(Set(changes.updated.map(\.ocId)) == ["after", "first-ms"])
 
-            let laterChanges = manager.pendingWorkingSetChanges(since: Date(timeIntervalSinceReferenceDate: 800_000_001))
+            let laterChanges = try #require(manager.pendingWorkingSetChanges(since: Date(timeIntervalSinceReferenceDate: 800_000_001)))
             #expect(laterChanges.updated.map(\.ocId) == ["first-ms"])
         }
 
