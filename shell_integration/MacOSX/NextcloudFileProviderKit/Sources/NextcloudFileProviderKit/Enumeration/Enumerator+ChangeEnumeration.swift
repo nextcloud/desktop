@@ -83,7 +83,6 @@ extension Enumerator {
                         deleted: [itemMetadata],
                         anchor: anchor,
                         moreComing: false,
-                        acknowledgement: nil,
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager

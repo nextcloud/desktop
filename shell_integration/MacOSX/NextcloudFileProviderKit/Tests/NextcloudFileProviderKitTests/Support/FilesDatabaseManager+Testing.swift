@@ -2,8 +2,8 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
+import GRDB
 @testable import NextcloudFileProviderKit
-import RealmSwift
 
 ///
 /// Direct access to stored rows for tests.
@@ -17,19 +17,18 @@ extension FilesDatabaseManager {
     /// The normalized location keys are derived from the raw location unless overridden, which builds rows whose keys drifted.
     ///
     func insertForTesting(_ metadata: SendableItemMetadata, normalizedServerUrl: String? = nil, normalizedFileName: String? = nil) throws {
-        let database = ncDatabase()
-        let row = RealmItemMetadata(value: metadata)
+        var record = ItemMetadataRecord(metadata)
 
         if let normalizedServerUrl {
-            row.normalizedServerUrl = normalizedServerUrl
+            record.normalizedServerUrl = normalizedServerUrl
         }
 
         if let normalizedFileName {
-            row.normalizedFileName = normalizedFileName
+            record.normalizedFileName = normalizedFileName
         }
 
-        try database.write {
-            database.add(row, update: .all)
+        try writer.write { db in
+            try record.upsert(db)
         }
     }
 
@@ -37,28 +36,36 @@ extension FilesDatabaseManager {
     /// The stored normalized location keys of a row.
     ///
     func normalizedLocationForTesting(ocId: String) -> (serverUrl: String, fileName: String)? {
-        guard let row = ncDatabase().object(ofType: RealmItemMetadata.self, forPrimaryKey: ocId) else {
+        let record = try? writer.read { db in
+            try ItemMetadataRecord.fetchOne(db, key: ocId)
+        }
+
+        guard let record = record ?? nil else {
             return nil
         }
 
-        return (row.normalizedServerUrl, row.normalizedFileName)
+        return (record.normalizedServerUrl, record.normalizedFileName)
     }
 
     ///
     /// Every stored item row, ordered by identifier.
     ///
     func allItemMetadatasForTesting() -> [SendableItemMetadata] {
-        itemMetadatas.sorted(byKeyPath: "ocId").toUnmanagedResults()
+        let rows = try? writer.read { db in
+            try ItemMetadataRecord.order(ItemMetadataRecord.Columns.ocId).fetchAll(db)
+        }
+
+        return (rows ?? []).map(\.metadata)
     }
 
     ///
     /// Remove every row of every table.
     ///
     func removeAllRowsForTesting() throws {
-        let database = ncDatabase()
-
-        try database.write {
-            database.deleteAll()
+        try writer.write { db in
+            for table in DatabaseSchema.tableNames {
+                try db.execute(sql: "DELETE FROM \(table)")
+            }
         }
     }
 }

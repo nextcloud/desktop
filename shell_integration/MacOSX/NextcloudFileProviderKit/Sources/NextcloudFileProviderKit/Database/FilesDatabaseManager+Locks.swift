@@ -2,8 +2,8 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
+import GRDB
 import NextcloudKit
-import RealmSwift
 
 ///
 /// Lock state of items addressed by the raw location an application's lock file names.
@@ -11,13 +11,11 @@ import RealmSwift
 /// These lookups compare the stored `serverUrl` and `fileName` columns as they are, without Unicode normalization and without excluding deleted items, because lock file handling matches the name an application wrote byte for byte.
 ///
 extension FilesDatabaseManager {
-    /// The first item stored at exactly this raw location, deleted or not.
+    /// The item stored at exactly this raw location, deleted or not. A live row wins over a deleted one.
     func itemMetadata(rawServerUrl: String, rawFileName: String) -> SendableItemMetadata? {
-        guard let metadata = rawLocationMatches(serverUrl: rawServerUrl, fileName: rawFileName).first else {
-            return nil
-        }
-
-        return SendableItemMetadata(value: metadata)
+        read("Could not look up an item by its raw location.", [.url: rawServerUrl, .name: rawFileName]) { db in
+            try rawLocationMatch(serverUrl: rawServerUrl, fileName: rawFileName, in: db)?.metadata
+        } ?? nil
     }
 
     /// Store a lock acquired from the server on the item at the raw location.
@@ -26,11 +24,11 @@ extension FilesDatabaseManager {
     ///
     @discardableResult
     func applyLock(_ lock: NKLock, rawServerUrl: String, rawFileName: String) throws -> Bool {
-        guard let target = rawLocationMatches(serverUrl: rawServerUrl, fileName: rawFileName).first else {
-            return false
-        }
+        try writer.write { db in
+            guard var target = try rawLocationMatch(serverUrl: rawServerUrl, fileName: rawFileName, in: db) else {
+                return false
+            }
 
-        try ncDatabase().write {
             target.lock = true
             target.lockOwner = lock.owner
             target.lockOwnerDisplayName = lock.ownerDisplayName
@@ -51,9 +49,10 @@ extension FilesDatabaseManager {
             target.lockToken = lock.token
             // Ensure token-dependent capabilities are published even if the etag is unchanged.
             target.syncTime = Date()
-        }
 
-        return true
+            try target.update(db)
+            return true
+        }
     }
 
     /// Remove every lock property from the item at the raw location.
@@ -62,11 +61,11 @@ extension FilesDatabaseManager {
     ///
     @discardableResult
     func clearLock(rawServerUrl: String, rawFileName: String) throws -> Bool {
-        guard let target = rawLocationMatches(serverUrl: rawServerUrl, fileName: rawFileName).first else {
-            return false
-        }
+        try writer.write { db in
+            guard var target = try rawLocationMatch(serverUrl: rawServerUrl, fileName: rawFileName, in: db) else {
+                return false
+            }
 
-        try ncDatabase().write {
             target.lock = false
             target.lockOwner = nil
             target.lockOwnerDisplayName = nil
@@ -75,12 +74,16 @@ extension FilesDatabaseManager {
             target.lockTime = nil
             target.lockTimeOut = nil
             target.lockToken = nil
-        }
 
-        return true
+            try target.update(db)
+            return true
+        }
     }
 
-    private func rawLocationMatches(serverUrl: String, fileName: String) -> Results<RealmItemMetadata> {
-        itemMetadatas.where { $0.serverUrl == serverUrl && $0.fileName == fileName }
+    private func rawLocationMatch(serverUrl: String, fileName: String, in db: Database) throws -> ItemMetadataRecord? {
+        try ItemMetadataRecord
+            .filter(ItemMetadataRecord.Columns.serverUrl == serverUrl && ItemMetadataRecord.Columns.fileName == fileName)
+            .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
+            .fetchOne(db)
     }
 }

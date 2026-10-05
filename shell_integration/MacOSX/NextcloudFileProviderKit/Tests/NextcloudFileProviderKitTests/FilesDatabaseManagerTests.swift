@@ -55,10 +55,20 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             1
         )
 
-        let batch = Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" }
-        XCTAssertEqual(batch?.endSequence, 1)
-        XCTAssertEqual(batch?.moreComing, false)
-        XCTAssertTrue(Self.dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, endSequence: 1))
+        XCTAssertTrue(
+            Self.dbManager.prepareChangeDeliveryBatch(
+                sessionId: sessionId,
+                endSequence: 1,
+                nextAnchorKey: nil,
+                moreComing: false
+            )
+        )
+        XCTAssertTrue(
+            Self.dbManager.acknowledgeChangeDeliveryBatch(
+                sessionId: sessionId,
+                deletedOcIds: []
+            )
+        )
 
         XCTAssertNil(Self.dbManager.changeDeliverySession(sessionId: sessionId))
         XCTAssertTrue(
@@ -111,61 +121,11 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         Self.dbManager.removeChangeDeliverySessions(containerKey: Self.changeDeliveryContainerKey)
 
-        let database = Self.dbManager.ncDatabase()
-        XCTAssertNil(database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId))
-        XCTAssertTrue(database.objects(RealmChangeDeliveryItem.self).where { $0.sessionId == sessionId }.isEmpty)
-    }
-
-    func testChangeDeliveryContinuationKeyMatchesReportedAndAcknowledgedBatch() throws {
-        let sessionId = "continuation-\(name)"
-        createChangeDeliverySession(sessionId, updatedCount: 3, deletedOcIds: [])
-        let batch = try XCTUnwrap(Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" })
-        let anchorKey = try XCTUnwrap(batch.nextAnchorKey)
-
-        let reported = try XCTUnwrap(Self.dbManager.changeDeliverySession(forContinuationKey: anchorKey, containerKey: Self.changeDeliveryContainerKey))
-        XCTAssertEqual(reported.pendingAnchorKey, anchorKey)
-        XCTAssertNotEqual(reported.currentAnchorKey, anchorKey)
-
-        XCTAssertTrue(Self.dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, endSequence: batch.endSequence))
-
-        let acknowledged = try XCTUnwrap(Self.dbManager.changeDeliverySession(forContinuationKey: anchorKey, containerKey: Self.changeDeliveryContainerKey))
-        XCTAssertEqual(acknowledged.currentAnchorKey, anchorKey)
-        XCTAssertFalse(acknowledged.pendingReported)
-    }
-
-    func testStaleChangeDeliveryAcknowledgementLeavesNewerBatchReported() throws {
-        let sessionId = "stale-acknowledgement-\(name)"
-        createChangeDeliverySession(sessionId, updatedCount: 1, deletedOcIds: ["\(name)-d0", "\(name)-d1"])
-        let first = try XCTUnwrap(Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" })
-        XCTAssertTrue(Self.dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, endSequence: first.endSequence))
-        let second = try XCTUnwrap(Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" })
-
-        XCTAssertTrue(Self.dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, endSequence: first.endSequence))
-
-        let session = try XCTUnwrap(Self.dbManager.changeDeliverySession(sessionId: sessionId))
-        XCTAssertTrue(session.pendingReported)
-        XCTAssertEqual(session.pendingEndSequence, second.endSequence)
-        XCTAssertEqual(session.currentAnchorKey, first.nextAnchorKey)
-        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: "\(name)-d0"), "The deletion of the unacknowledged batch is kept.")
-    }
-
-    func testRepeatedChangeDeliveryPreparationReplaysReportedBatch() throws {
-        let sessionId = "replay-\(name)"
-        createChangeDeliverySession(sessionId, updatedCount: 3, deletedOcIds: [])
-        let first = try XCTUnwrap(Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 2) { "continuation|\($0)" })
-
-        let replayed = try XCTUnwrap(Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" })
-
-        XCTAssertEqual(replayed.endSequence, first.endSequence)
-        XCTAssertEqual(replayed.nextAnchorKey, first.nextAnchorKey)
-        XCTAssertEqual(replayed.items.map(\.metadataData), first.items.map(\.metadataData))
+        XCTAssertNil(Self.dbManager.changeDeliverySession(sessionId: sessionId))
+        XCTAssertTrue(Self.dbManager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: Int.max).isEmpty)
     }
 
     func testSchema203MigrationBackfillsCanonicalPathKeys() throws {
-        // The fixture's manager re-points the default Realm configuration; restore it for the tests that follow.
-        let previousConfiguration = Realm.Configuration.defaultConfiguration
-        defer { Realm.Configuration.defaultConfiguration = previousConfiguration }
-
         let databaseDirectory = makeDatabaseDirectory()
         let domainIdentifier = NSFileProviderDomainIdentifier("migration-test")
         let databaseURL = databaseDirectory
@@ -177,12 +137,12 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         autoreleasepool {
             let oldConfiguration = Realm.Configuration(
                 fileURL: databaseURL,
-                schemaVersion: SchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata.rawValue,
-                objectTypes: [RealmItemMetadata.self, LegacyRealmRemoteFileChunk.self]
+                schemaVersion: LegacyRealmSchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata.rawValue,
+                objectTypes: [LegacyRealmItemMetadata.self, LegacyRealmRemoteFileChunk.self]
             )
             let oldRealm = try! Realm(configuration: oldConfiguration)
             try! oldRealm.write {
-                let metadata = RealmItemMetadata()
+                let metadata = LegacyRealmItemMetadata()
                 metadata.ocId = "migration-item"
                 metadata.account = Self.account.ncKitAccount
                 metadata.serverUrl = nfdServerUrl
