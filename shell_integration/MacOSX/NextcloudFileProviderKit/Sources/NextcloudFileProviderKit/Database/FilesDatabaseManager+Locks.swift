@@ -24,7 +24,7 @@ extension FilesDatabaseManager {
     ///
     @discardableResult
     func applyLock(_ lock: NKLock, rawServerUrl: String, rawFileName: String) throws -> Bool {
-        try writer.write { db in
+        try write(durability: .full) { db in
             guard var target = try rawLocationMatch(serverUrl: rawServerUrl, fileName: rawFileName, in: db) else {
                 return false
             }
@@ -61,7 +61,7 @@ extension FilesDatabaseManager {
     ///
     @discardableResult
     func clearLock(rawServerUrl: String, rawFileName: String) throws -> Bool {
-        try writer.write { db in
+        try write(durability: .full) { db in
             guard var target = try rawLocationMatch(serverUrl: rawServerUrl, fileName: rawFileName, in: db) else {
                 return false
             }

@@ -143,6 +143,62 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
     }
 
     ///
+    /// The push-notification lookup: many file identifiers, none of which belong to this domain, against a large table.
+    ///
+    func testBenchmarkContainsAnyItemMetadata() {
+        let folderUrl = Self.account.davFilesUrl + "/Bench"
+        let absentIds = Set((1_000_000 ..< 1_005_000).map(String.init))
+        var durations: [Duration] = []
+
+        measure(metrics: [XCTClockMetric()], options: measureOptions) {
+            let manager = makeManager()
+            for index in 0 ..< Self.workingSetRowCount {
+                manager.addItemMetadata(makeFile(index: index, parentUrl: folderUrl, etag: "v1"))
+            }
+
+            let clock = ContinuousClock()
+            startMeasuring()
+            let start = clock.now
+            let found = manager.containsAnyItemMetadata(fileIds: absentIds)
+            durations.append(clock.now - start)
+            stopMeasuring()
+
+            XCTAssertFalse(found)
+        }
+
+        report("ContainsAnyItemMetadata", items: absentIds.count, durations: durations)
+    }
+
+    ///
+    /// Writes which carry local-only state and are therefore committed with full synchronization.
+    ///
+    func testBenchmarkDurableLocalStateWrites() {
+        var durations: [Duration] = []
+
+        measure(metrics: [XCTClockMetric()], options: measureOptions) {
+            let manager = makeManager()
+            let rows = (0 ..< 500).map { makeFile(index: $0, parentUrl: Self.account.davFilesUrl, etag: "v1") }
+            for row in rows {
+                manager.addItemMetadata(row)
+            }
+
+            let clock = ContinuousClock()
+            startMeasuring()
+            let start = clock.now
+            for row in rows {
+                _ = try? manager.set(keepDownloaded: true, for: row)
+                manager.deleteItemMetadata(ocId: row.ocId)
+            }
+            durations.append(clock.now - start)
+            stopMeasuring()
+
+            XCTAssertEqual(manager.itemMetadata(ocId: "file-0")?.keepDownloaded, true)
+        }
+
+        report("DurableLocalStateWrites", items: 1000, durations: durations)
+    }
+
+    ///
     /// The working-set scan over a large materialized set where only a few rows changed after the anchor.
     ///
     func testBenchmarkPendingWorkingSetChanges() {

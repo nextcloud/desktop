@@ -17,6 +17,11 @@ Rows leave the database as ``SendableItemMetadata`` and the other value types; t
 - Items below a directory are matched with a byte-wise range over the location index rather than a pattern, so names with pattern characters or different case never match by accident.
 - Array fields are stored as JSON text. Booleans are integers.
 - Recorded upload chunks are keyed by upload identifier and chunk number and returned in chunk order.
+- The `fileId` column is indexed for the push-notification lookup, which asks for thousands of identifiers at once.
+
+## Durability
+
+Writes run with `PRAGMA synchronous = FULL` by default: when a write returns, its commit is on disk. This covers everything the server cannot give back, such as pins, exclusion markers, lock tokens and upload bookkeeping. Bulk writes of server-derived rows, that is the depth-1 and paginated enumeration writes, the startup repair, the materialized-item mirror and the replayable change-delivery sessions, run with `synchronous = NORMAL`; in write-ahead-log mode that survives a crash of the process and risks only the last commits before a power loss. The level is a property of the writer connection and cannot change inside a transaction, so `FilesDatabaseManager.write(durability:)` sets it right before each transaction.
 
 ## When the database cannot be read
 
