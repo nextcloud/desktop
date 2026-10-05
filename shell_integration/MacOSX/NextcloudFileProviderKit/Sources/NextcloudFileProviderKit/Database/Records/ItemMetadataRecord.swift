@@ -9,19 +9,10 @@ import GRDB
 ///
 /// Carries the fields of ``SendableItemMetadata`` plus the two normalized location keys the location queries run on. The keys follow `serverUrl` and `fileName` whenever those change through this type.
 ///
-/// Dates are stored as seconds since the reference date, which round-trips a `Date` exactly. Array fields are stored as JSON text.
+/// Rows are read and written by the explicit conversion in `ItemMetadataRecord+Row.swift`: dates as seconds since the reference date, arrays as JSON text.
 ///
-struct ItemMetadataRecord: ItemMetadata, Codable, Equatable, Sendable, FetchableRecord, PersistableRecord {
+struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, PersistableRecord {
     static let databaseTableName = "itemMetadata"
-
-    /// Dates are stored as `REAL` seconds since the reference date, the same number a `Date` holds, so they round-trip exactly.
-    static func databaseDateEncodingStrategy(for _: String) -> DatabaseDateEncodingStrategy {
-        .timeIntervalSinceReferenceDate
-    }
-
-    static func databaseDateDecodingStrategy(for _: String) -> DatabaseDateDecodingStrategy {
-        .timeIntervalSinceReferenceDate
-    }
 
     var ocId: String
     var account: String
@@ -97,7 +88,7 @@ struct ItemMetadataRecord: ItemMetadata, Codable, Equatable, Sendable, Fetchable
     /// NFC form of `fileName`, maintained by this type.
     var normalizedFileName: String
 
-    enum CodingKeys: String, CodingKey, ColumnExpression {
+    enum CodingKeys: String, CodingKey, ColumnExpression, CaseIterable {
         case ocId, account, checksums, chunkUploadId, classFile, commentsUnread
         case contentType, creationDate, dataFingerprint, date, syncTime, deleted
         case directory, downloadURL, e2eEncrypted, etag, fileProviderContentVersion, favorite

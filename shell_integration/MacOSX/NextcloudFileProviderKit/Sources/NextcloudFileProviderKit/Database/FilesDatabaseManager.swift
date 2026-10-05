@@ -392,7 +392,7 @@ public final class FilesDatabaseManager: Sendable {
     /// Persist `metadata`, evicting any other live row at its logical address first.
     func insertItemMetadata(_ metadata: SendableItemMetadata, in db: Database) throws {
         try evictLogicalDuplicates(of: metadata, in: db)
-        try ItemMetadataRecord(metadata).upsert(db)
+        try ItemMetadataRecord(metadata).upsertRow(db)
         logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
     }
 
@@ -610,7 +610,7 @@ public final class FilesDatabaseManager: Sendable {
 
             // Do not delete the metadatas that have been deleted
             for metadata in metadatasToDelete + metadatasToUpdate + metadatasToCreate {
-                try ItemMetadataRecord(metadata).upsert(db)
+                try ItemMetadataRecord(metadata).upsertRow(db)
             }
 
             if let visitToRecord {
@@ -643,7 +643,7 @@ public final class FilesDatabaseManager: Sendable {
                 record.uploaded = false
             }
 
-            try record.update(db)
+            try record.upsertRow(db)
 
             logger.debug("Updated status for item metadata.", [
                 .item: metadata.ocId,
@@ -840,7 +840,7 @@ public final class FilesDatabaseManager: Sendable {
         itemMetadata.fileNameView = newFileName
         itemMetadata.lockToken = nil
 
-        try itemMetadata.update(db)
+        try itemMetadata.upsertRow(db)
 
         logger.debug("Renamed item \(oldFileName) to \(newFileName), moved from serverUrl: \(oldServerUrl) to serverUrl: \(newServerUrl)")
     }
