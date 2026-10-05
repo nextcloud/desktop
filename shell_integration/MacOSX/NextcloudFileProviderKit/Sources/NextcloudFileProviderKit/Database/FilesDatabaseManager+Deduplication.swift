@@ -3,24 +3,22 @@
 
 @preconcurrency import FileProvider
 import Foundation
-import RealmSwift
+import GRDB
 
-public extension FilesDatabaseManager {
+extension FilesDatabaseManager {
     ///
     /// Soft-delete any other non-deleted rows at the same logical address as
     /// `incoming` whose `ocId` differs.
     ///
-    /// Realm uses `ocId` as the primary key of ``RealmItemMetadata``. An
-    /// `update: .all` or `update: .modified` upsert therefore dedupes by
-    /// `ocId` only. When the server returns the same logical path with a
-    /// fresh `ocId` (restore-from-trash, another client recreating the item
-    /// during reconnect, an upload finalizer assigning a server-issued
-    /// `ocId`), the upsert inserts a second row beside the first. macOS can
-    /// only represent one sibling per logical name and renames the second
-    /// with a `" 2"` suffix when this surfaces in Finder.
+    /// `ocId` is the primary key, so an upsert dedupes by `ocId` only. When
+    /// the server returns the same logical path with a fresh `ocId`
+    /// (restore-from-trash, another client recreating the item during
+    /// reconnect, an upload finalizer assigning a server-issued `ocId`), the
+    /// upsert inserts a second row beside the first. macOS can only represent
+    /// one sibling per logical name and renames the second with a `" 2"`
+    /// suffix when this surfaces in Finder.
     ///
-    /// Call this from inside an active write transaction. The function
-    /// mutates the supplied Realm and assumes the caller will commit.
+    /// Call this inside the caller's transaction.
     ///
     /// In-flight rows (whose ``ItemMetadata/status`` is not ``Status/normal``)
     /// and lock files of local origin are skipped: soft-deleting an
@@ -35,14 +33,14 @@ public extension FilesDatabaseManager {
     ///     serverUrl, fileName)` defines the logical address used for the
     ///     collision query, while its `ocId` is excluded from candidates so
     ///     that the normal same-`ocId` upsert is unaffected.
-    ///   - database: The Realm holding the open write transaction.
+    ///   - db: The open database.
     ///   - now: Timestamp stamped on every evicted row so the change
     ///     surfaces through ``pendingWorkingSetChanges(since:)``.
     ///
     /// - Returns: The `ocId` values of rows that were soft-deleted.
     ///
     @discardableResult
-    func evictLogicalDuplicates(of incoming: any ItemMetadata, in database: Realm, now: Date = Date()) -> [String] {
+    func evictLogicalDuplicates(of incoming: any ItemMetadata, in db: Database, now: Date = Date()) throws -> [String] {
         // A lock file created by the local OS should never trigger eviction:
         // it is not authoritative about the server-side state at its logical
         // address and could otherwise soft-delete a legitimate server row.
@@ -61,26 +59,18 @@ public extension FilesDatabaseManager {
             return []
         }
 
-        let incomingOcId = incoming.ocId
-        let incomingServerUrl = incoming.serverUrl
-        let incomingFileName = incoming.fileName
-
-        let candidates = database
-            .objects(RealmItemMetadata.self)
-            .where { item in
-                RealmItemMetadata.hasLocation(
-                    item,
-                    serverUrl: incomingServerUrl,
-                    fileName: incomingFileName
-                )
-                    && item.ocId != incomingOcId
-                    && !item.deleted
-                    && !item.isLockFileOfLocalOrigin
-            }
+        let candidates = try ItemMetadataRecord
+            .filter(
+                ItemMetadataRecord.hasLocation(serverUrl: incoming.serverUrl, fileName: incoming.fileName)
+                    && ItemMetadataRecord.Columns.ocId != incoming.ocId
+                    && ItemMetadataRecord.Columns.deleted == false
+                    && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false
+            )
+            .fetchAll(db)
 
         var evicted: [String] = []
 
-        for candidate in candidates {
+        for var candidate in candidates {
             if candidate.status != Status.normal.rawValue {
                 logger.error("Skipping eviction of in-flight logical duplicate.", [
                     .item: candidate.ocId,
@@ -94,6 +84,7 @@ public extension FilesDatabaseManager {
 
             candidate.deleted = true
             candidate.syncTime = now
+            try candidate.update(db)
             evicted.append(candidate.ocId)
 
             logger.info("Evicted logical duplicate.", [
@@ -115,7 +106,12 @@ public extension FilesDatabaseManager {
     ///
     @discardableResult
     func repairPersistedLogicalAddresses() -> (repaired: Int, evicted: Int) {
-        let database = ncDatabase()
+        write("Startup repair: write transaction failed.") { db in
+            try repairPersistedLogicalAddresses(in: db)
+        } ?? (0, 0)
+    }
+
+    private func repairPersistedLogicalAddresses(in db: Database) throws -> (repaired: Int, evicted: Int) {
         let rootContainerOcId = NSFileProviderItemIdentifier.rootContainer.rawValue
 
         struct LogicalKey: Hashable {
@@ -123,12 +119,13 @@ public extension FilesDatabaseManager {
             let fileName: String
         }
 
-        var drifted: [RealmItemMetadata] = []
-        var buckets: [LogicalKey: [RealmItemMetadata]] = [:]
+        var drifted: [ItemLogicalAddressRow] = []
+        var buckets: [LogicalKey: [ItemLogicalAddressRow]] = [:]
 
         // Bucketing on the keys computed here rather than on the stored ones is what lets a
         // drifted row be repaired and deduplicated in the same walk.
-        for row in database.objects(RealmItemMetadata.self) {
+        let rows = try ItemLogicalAddressRow.fetchCursor(db)
+        while let row = try rows.next() {
             let serverUrl = row.serverUrl.precomposedStringWithCanonicalMapping
             let fileName = row.fileName.precomposedStringWithCanonicalMapping
 
@@ -159,64 +156,69 @@ public extension FilesDatabaseManager {
         let now = Date()
         var evicted = 0
 
-        do {
-            try database.write {
-                for row in drifted {
-                    row.updateLocation(serverUrl: row.serverUrl, fileName: row.fileName)
+        for row in drifted {
+            try ItemMetadataRecord
+                .filter(key: row.ocId)
+                .updateAll(
+                    db,
+                    ItemMetadataRecord.Columns.normalizedServerUrl.set(to: row.serverUrl.precomposedStringWithCanonicalMapping),
+                    ItemMetadataRecord.Columns.normalizedFileName.set(to: row.fileName.precomposedStringWithCanonicalMapping)
+                )
+        }
+
+        for group in collisions {
+            let settled = group.filter { $0.status == Status.normal.rawValue }
+
+            guard let winner = settled.max(by: { lhs, rhs in
+                if lhs.syncTime != rhs.syncTime {
+                    return lhs.syncTime < rhs.syncTime
                 }
 
-                for group in collisions {
-                    let settled = group.filter { $0.status == Status.normal.rawValue }
+                return lhs.ocId < rhs.ocId
+            }) else {
+                logger.info("Startup deduplication: all candidates are in-flight, leaving bucket intact.", [
+                    .name: group.first?.fileName,
+                    .url: group.first?.serverUrl
+                ])
 
-                    guard let winner = settled.max(by: { lhs, rhs in
-                        if lhs.syncTime != rhs.syncTime {
-                            return lhs.syncTime < rhs.syncTime
-                        }
+                continue
+            }
 
-                        return lhs.ocId < rhs.ocId
-                    }) else {
-                        logger.info("Startup deduplication: all candidates are in-flight, leaving bucket intact.", [
-                            .name: group.first?.fileName,
-                            .url: group.first?.serverUrl
-                        ])
+            logger.info("Startup deduplication: kept canonical row.", [
+                .item: winner.ocId,
+                .name: winner.fileName,
+                .url: winner.serverUrl,
+                .syncTime: winner.syncTime
+            ])
 
-                        continue
-                    }
-
-                    logger.info("Startup deduplication: kept canonical row.", [
-                        .item: winner.ocId,
-                        .name: winner.fileName,
-                        .url: winner.serverUrl,
-                        .syncTime: winner.syncTime
+            for candidate in group where candidate.ocId != winner.ocId {
+                if candidate.status != Status.normal.rawValue {
+                    logger.error("Startup deduplication: skipped in-flight logical duplicate.", [
+                        .item: candidate.ocId,
+                        .name: candidate.fileName,
+                        .url: candidate.serverUrl,
+                        .syncTime: candidate.syncTime
                     ])
 
-                    for candidate in group where candidate.ocId != winner.ocId {
-                        if candidate.status != Status.normal.rawValue {
-                            logger.error("Startup deduplication: skipped in-flight logical duplicate.", [
-                                .item: candidate.ocId,
-                                .name: candidate.fileName,
-                                .url: candidate.serverUrl,
-                                .syncTime: candidate.syncTime
-                            ])
-
-                            continue
-                        }
-
-                        candidate.deleted = true
-                        candidate.syncTime = now
-                        evicted += 1
-
-                        logger.info("Startup deduplication: evicted duplicate.", [
-                            .item: candidate.ocId,
-                            .name: candidate.fileName,
-                            .url: candidate.serverUrl,
-                            .syncTime: candidate.syncTime
-                        ])
-                    }
+                    continue
                 }
+
+                try ItemMetadataRecord
+                    .filter(key: candidate.ocId)
+                    .updateAll(
+                        db,
+                        ItemMetadataRecord.Columns.deleted.set(to: true),
+                        ItemMetadataRecord.Columns.syncTime.set(to: now.timeIntervalSinceReferenceDate)
+                    )
+                evicted += 1
+
+                logger.info("Startup deduplication: evicted duplicate.", [
+                    .item: candidate.ocId,
+                    .name: candidate.fileName,
+                    .url: candidate.serverUrl,
+                    .syncTime: now
+                ])
             }
-        } catch {
-            logger.error("Startup repair: write transaction failed.", [.error: error])
         }
 
         return (drifted.count, evicted)

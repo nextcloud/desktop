@@ -23,7 +23,8 @@ let package = Package(
         .package(url: "https://github.com/nextcloud/NextcloudCapabilitiesKit.git", from: "2.6.0"),
         .package(url: "https://github.com/nextcloud/NextcloudKit", from: "7.6.1"),
         .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.55.0"),
-        .package(url: "https://github.com/realm/realm-swift.git", from: "20.0.5")
+        .package(url: "https://github.com/realm/realm-swift.git", from: "20.0.5"),
+        .package(url: "https://github.com/groue/GRDB.swift.git", from: "7.11.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -39,7 +40,8 @@ let package = Package(
                 "NextcloudFileProviderXPC",
                 .product(name: "NextcloudCapabilitiesKit", package: "NextcloudCapabilitiesKit"),
                 .product(name: "NextcloudKit", package: "NextcloudKit"),
-                .product(name: "RealmSwift", package: "realm-swift")
+                .product(name: "RealmSwift", package: "realm-swift"),
+                .product(name: "GRDB", package: "GRDB.swift")
             ],
             resources: [
                 .process("Resources")

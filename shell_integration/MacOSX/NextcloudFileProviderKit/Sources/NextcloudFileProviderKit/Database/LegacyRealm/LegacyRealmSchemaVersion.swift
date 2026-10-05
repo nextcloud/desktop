@@ -2,9 +2,9 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 ///
-/// Different schema versions shipped with this project.
+/// Schema versions of the Realm database written before the switch to SQLite, kept for importing such a database.
 ///
-enum SchemaVersion: UInt64 {
+enum LegacyRealmSchemaVersion: UInt64 {
     case initial = 100
     case deletedLocalFileMetadata = 200
     case addedLockTokenPropertyToRealmItemMetadata = 201

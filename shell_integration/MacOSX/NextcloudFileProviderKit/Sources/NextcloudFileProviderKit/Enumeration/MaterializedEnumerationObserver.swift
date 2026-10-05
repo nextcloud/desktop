@@ -3,7 +3,6 @@
 
 import FileProvider
 import Foundation
-import RealmSwift
 
 ///
 /// The custom `NSFileProviderEnumerationObserver` implementation to process materialized items enumerated by the system.
