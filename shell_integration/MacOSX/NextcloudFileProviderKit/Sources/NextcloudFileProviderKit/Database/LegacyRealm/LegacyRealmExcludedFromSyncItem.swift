@@ -1,7 +1,7 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import Foundation
+import Foundation // `@objc(...)` below needs it in scope.
 import RealmSwift
 
 /** @brief Durable record of an item awaiting the deletion callback triggered by `.excludedFromSync`. */

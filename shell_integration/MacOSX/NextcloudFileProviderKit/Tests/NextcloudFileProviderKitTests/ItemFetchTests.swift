@@ -15,7 +15,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     )
 
     lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()

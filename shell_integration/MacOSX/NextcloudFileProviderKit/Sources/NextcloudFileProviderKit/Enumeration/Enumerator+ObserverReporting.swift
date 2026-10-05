@@ -87,7 +87,13 @@ extension Enumerator {
         finalAnchor: NSFileProviderSyncAnchor,
         suggested: Int?
     ) {
-        let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested))
+        guard let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested)) else {
+            // The stored changes stay put; the framework asks again later with the same anchor.
+            logger.error("Could not prepare the next change batch. Finishing the enumeration with an error.", [.item: enumeratedItemIdentifier])
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return
+        }
+
         let reportedAnchor = if let continuationAnchorRawValue = batch.continuationAnchorRawValue {
             NSFileProviderSyncAnchor(rawValue: continuationAnchorRawValue)
         } else if let finalAnchorRawValue = batch.finalAnchorRawValue {

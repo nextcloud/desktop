@@ -19,7 +19,13 @@ extension Enumerator {
     private func drainTrashDeletions(
         for observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor, suggested: Int?
     ) {
-        let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested))
+        guard let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested)) else {
+            // The stored deletions stay put; the framework asks again later with the same anchor.
+            logger.error("Could not prepare the next trash deletion batch. Finishing the enumeration with an error.")
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return
+        }
+
         let orphanedIdentifiers = batch.deleted.map { NSFileProviderItemIdentifier($0.ocId) }
 
         if orphanedIdentifiers.isEmpty == false {

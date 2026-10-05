@@ -38,7 +38,7 @@ struct StoreVersionGuardTests {
     }
 
     func openManager() -> FilesDatabaseManager {
-        FilesDatabaseManager(account: DatabaseTestSuites.account, databaseDirectory: directory, fileProviderDomainIdentifier: domain, log: FileProviderLogMock(), defaults: defaults)
+        try! FilesDatabaseManager(account: DatabaseTestSuites.account, databaseDirectory: directory, fileProviderDomainIdentifier: domain, log: FileProviderLogMock(), defaults: defaults)
     }
 
     @Test(arguments: [

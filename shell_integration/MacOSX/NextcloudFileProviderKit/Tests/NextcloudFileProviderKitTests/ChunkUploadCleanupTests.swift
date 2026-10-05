@@ -35,7 +35,7 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        dbManager = FilesDatabaseManager(
+        dbManager = try! FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: makeDatabaseDirectory(),
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier(name),
@@ -88,6 +88,23 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
             dbManager.itemMetadata(ocId: seeded.itemIdentifier)?.chunkUploadId,
             seeded.uploadIdentifier
         )
+        assertChunkCount(for: seeded.uploadIdentifier, equals: 1)
+    }
+
+    func testStartupCleanupIsSkippedWhenTheDecisionCannotBeRead() throws {
+        let seeded = try seedChunkUpload(
+            itemIdentifier: "undecidable-item",
+            metadataStatus: .normal
+        )
+        try dbManager.breakTableForTesting(ItemMetadataRecord.databaseTableName)
+
+        cleanupAbandonedChunkUploads(
+            usingRemoteInterface: remoteInterface,
+            dbManager: dbManager,
+            logger: makeLogger()
+        )
+
+        XCTAssertTrue(FileManager.default.fileExists(atPath: seeded.directory.path), "Without a complete decision nothing is discarded.")
         assertChunkCount(for: seeded.uploadIdentifier, equals: 1)
     }
 

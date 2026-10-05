@@ -22,6 +22,16 @@ public final class FilesDatabaseManager: Sendable {
 
     static let errorDomain = "FilesDatabaseManager"
 
+    /// Why the database could not be opened. The domain must not be set up until a later attempt succeeds.
+    public enum OpenError: Error {
+        /// Neither a custom nor the default support directory is available.
+        case noDatabaseDirectory
+        /// A Realm database exists but could not be imported; it is left in place for the next attempt.
+        case importFailed(URL)
+        /// The database file could not be opened or migrated.
+        case openFailed(URL, underlying: any Error)
+    }
+
     static func error(code: ErrorCode, userInfo: [String: String]) -> NSError {
         NSError(domain: errorDomain, code: code.rawValue, userInfo: userInfo)
     }
@@ -57,17 +67,17 @@ public final class FilesDatabaseManager: Sendable {
     ///     - log: The log to write to.
     ///     - defaults: Where the domain's settings, including the last seen store version, are kept.
     ///
-    public init(account: Account, databaseDirectory customDatabaseDirectory: URL? = nil, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging, defaults: UserDefaults = .standard) {
+    /// - Throws: ``OpenError`` when no usable database can be opened. The caller must not set the domain up with a substitute, because nothing written to one would survive, and the next attempt may well succeed.
+    ///
+    public init(account: Account, databaseDirectory customDatabaseDirectory: URL? = nil, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging, defaults: UserDefaults = .standard) throws {
         self.account = account
         logger = FileProviderLogger(category: "FilesDatabaseManager", log: log)
 
         let defaultDatabaseDirectory = FileManager.default.fileProviderDomainSupportDirectory(for: fileProviderDomainIdentifier)
 
         guard let databaseDirectory = customDatabaseDirectory ?? defaultDatabaseDirectory else {
-            logger.fault("Neither custom nor default database directory defined! Metadata will not be persisted.")
-            databaseURL = nil
-            writer = Self.openInMemoryDatabase(logger: logger)
-            return
+            logger.fault("Neither custom nor default database directory defined!")
+            throw OpenError.noDatabaseDirectory
         }
 
         let databaseLocation = databaseDirectory
@@ -93,18 +103,13 @@ public final class FilesDatabaseManager: Sendable {
             .appendingPathExtension("realm")
 
         if RealmStoreImporter.importIfNeeded(realmURL: realmLocation, sqliteURL: databaseLocation, logger: logger) == .failed {
-            // Nothing is persisted until the import succeeds on a later start, so no state can accumulate which that import would then replace.
-            logger.fault("The Realm database could not be imported. Metadata is kept in memory until the next start.", [.url: realmLocation.path])
-            writer = Self.openInMemoryDatabase(logger: logger)
-            return
+            // The next start retries the import; until then nothing may be written which that import would replace.
+            throw OpenError.importFailed(realmLocation)
         }
 
-        writer = Self.openDatabase(at: databaseLocation, label: fileProviderDomainIdentifier.rawValue, logger: logger)
+        writer = try Self.openDatabase(at: databaseLocation, label: fileProviderDomainIdentifier.rawValue, logger: logger)
         logger.info("Opened metadata database.", [.url: databaseLocation.path])
-
-        if writer is DatabasePool {
-            domainDefaults.latestSeenDatabaseVersion = StoreVersion.current
-        }
+        domainDefaults.latestSeenDatabaseVersion = StoreVersion.current
 
         repairPersistedLogicalAddresses()
     }
@@ -125,15 +130,15 @@ public final class FilesDatabaseManager: Sendable {
 
     /// Open the file, migrating its schema.
     ///
-    /// A file SQLite reports as corrupt is set aside and replaced. Any other failure, such as a busy or full disk, keeps the file untouched and serves this process from memory, so the next start can try again.
+    /// A file SQLite reports as corrupt is set aside and replaced. Any other failure, such as a busy or full disk, keeps the file untouched and is thrown, so the next start can try again.
     ///
-    private static func openDatabase(at url: URL, label: String, logger: FileProviderLogger) -> any DatabaseWriter {
+    private static func openDatabase(at url: URL, label: String, logger: FileProviderLogger) throws -> any DatabaseWriter {
         do {
             return try openPool(at: url, label: label)
         } catch {
             guard isCorruptionError(error) else {
-                logger.fault("Could not open the metadata database. Metadata is kept in memory until the next start.", [.url: url.path, .error: error])
-                return openInMemoryDatabase(logger: logger)
+                logger.fault("Could not open the metadata database.", [.url: url.path, .error: error])
+                throw OpenError.openFailed(url, underlying: error)
             }
 
             logger.fault("The metadata database is corrupt. Setting the file aside and starting with an empty one.", [.url: url.path, .error: error])
@@ -144,8 +149,8 @@ public final class FilesDatabaseManager: Sendable {
         do {
             return try openPool(at: url, label: label)
         } catch {
-            logger.fault("Could not open a fresh metadata database. Metadata is kept in memory until the next start.", [.url: url.path, .error: error])
-            return openInMemoryDatabase(logger: logger)
+            logger.fault("Could not open a fresh metadata database.", [.url: url.path, .error: error])
+            throw OpenError.openFailed(url, underlying: error)
         }
     }
 
@@ -164,16 +169,6 @@ public final class FilesDatabaseManager: Sendable {
             try db.execute(sql: "PRAGMA user_version = \(StoreVersion.current)")
         }
         return pool
-    }
-
-    private static func openInMemoryDatabase(logger _: FileProviderLogger) -> any DatabaseWriter {
-        do {
-            let queue = try DatabaseQueue(configuration: configuration(label: "memory"))
-            try DatabaseSchema.migrator.migrate(queue)
-            return queue
-        } catch {
-            fatalError("Could not open an in-memory metadata database: \(error)")
-        }
     }
 
     /// Rename the database file and its journal files so the next open starts from scratch and the broken file stays available for support.
