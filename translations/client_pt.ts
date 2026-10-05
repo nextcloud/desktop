@@ -845,7 +845,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="796"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="798"/>
         <source>Assistant</source>
         <translation type="unfinished"/>
     </message>
@@ -1336,7 +1336,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1578"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="746"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="748"/>
         <source>Log in</source>
         <translation>Iniciar Sessão</translation>
     </message>
@@ -6156,7 +6156,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
         <location filename="../src/gui/systray.cpp" line="574"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="875"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="877"/>
         <source>Add account</source>
         <translation>Adicionar conta</translation>
     </message>
@@ -6180,7 +6180,7 @@ Servidor respondeu com erro: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="581"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="913"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="915"/>
         <source>Settings</source>
         <translation>Configurações</translation>
     </message>
@@ -6196,18 +6196,18 @@ Servidor respondeu com erro: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="589"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="889"/>
         <source>Pause sync for all</source>
         <translation>Pausar a sincronização para todos</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="595"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="889"/>
         <source>Resume sync for all</source>
         <translation>Continuar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="920"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="922"/>
         <source>Quit</source>
         <translation type="unfinished"/>
     </message>
@@ -7813,17 +7813,17 @@ Servidor respondeu com erro: %2</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="764"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="766"/>
         <source>Resolve: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="771"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="773"/>
         <source>User status</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="804"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="806"/>
         <source>Search</source>
         <translation type="unfinished"/>
     </message>
@@ -7831,8 +7831,8 @@ Servidor respondeu com erro: %2</translation>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="734"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="787"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="736"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="789"/>
         <source>Local folder</source>
         <translation type="unfinished"/>
     </message>
@@ -7840,7 +7840,7 @@ Servidor respondeu com erro: %2</translation>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="811"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="813"/>
         <source>Apps</source>
         <translation type="unfinished"/>
     </message>

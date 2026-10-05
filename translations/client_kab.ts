@@ -845,7 +845,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="796"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="798"/>
         <source>Assistant</source>
         <translation>Amalal</translation>
     </message>
@@ -1331,7 +1331,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1578"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="746"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="748"/>
         <source>Log in</source>
         <translation>Qqen</translation>
     </message>
@@ -6125,7 +6125,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
         <location filename="../src/gui/systray.cpp" line="574"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="875"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="877"/>
         <source>Add account</source>
         <translation type="unfinished"/>
     </message>
@@ -6149,7 +6149,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="581"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="913"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="915"/>
         <source>Settings</source>
         <translation>Iɣewwaṛen</translation>
     </message>
@@ -6165,18 +6165,18 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="589"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="889"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="595"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="889"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="920"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="922"/>
         <source>Quit</source>
         <translation type="unfinished"/>
     </message>
@@ -7329,12 +7329,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Mdel</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancelling…</source>
-        <translation type="unfinished"/>
+        <translation>Asefsex...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
@@ -7362,78 +7362,78 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="208"/>
         <source>Edit share</source>
-        <translation type="unfinished"/>
+        <translation>Ẓreg beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="282"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>Bḍu tabzimt</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="314"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="360"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>Sireg asali akked usiẓreg</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="347"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Askan kan</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>File drop (upload only)</source>
-        <translation type="unfinished"/>
+        <translation>Asersi n ufaylu (asali kan)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="393"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Sireg allus n beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="432"/>
         <source>Hide download</source>
-        <translation type="unfinished"/>
+        <translation>Ffer asader</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="459"/>
         <source>Password protection</source>
-        <translation type="unfinished"/>
+        <translation>Ammesten n wawal uffir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="569"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Sbadu azemz n tagara</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="654"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Tazmilt i weɣerwaḍ</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="700"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Sekcem tazmilt i weɣerwaḍ</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Kkes beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="729"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Rnu aseɣwen-nniḍen</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
         <source>Share link copied!</source>
-        <translation type="unfinished"/>
+        <translation>Aseɣwen n beṭṭu yettwanɣel!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Nɣel aseɣwen n beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="119"/>
@@ -7458,12 +7458,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Generate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>Sirew aseɣwen n uɣerwaḍ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
         <source>Remove recipient</source>
-        <translation type="unfinished"/>
+        <translation>Kkes aɣerwaḍ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
@@ -7782,17 +7782,17 @@ Server replied with error: %2</source>
         <translation>Ugar n warmud ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="764"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="766"/>
         <source>Resolve: %1</source>
         <translation>Fru: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="771"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="773"/>
         <source>User status</source>
         <translation>Addad n useqdac</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="804"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="806"/>
         <source>Search</source>
         <translation>Nadi</translation>
     </message>
@@ -7800,8 +7800,8 @@ Server replied with error: %2</source>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="734"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="787"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="736"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="789"/>
         <source>Local folder</source>
         <translation>Akaram adigan</translation>
     </message>
@@ -7809,7 +7809,7 @@ Server replied with error: %2</source>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="811"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="813"/>
         <source>Apps</source>
         <translation>Isnasen</translation>
     </message>

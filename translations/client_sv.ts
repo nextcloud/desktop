@@ -845,7 +845,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="796"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="798"/>
         <source>Assistant</source>
         <translation>Assistent</translation>
     </message>
@@ -1337,7 +1337,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1578"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="746"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="748"/>
         <source>Log in</source>
         <translation>Logga in</translation>
     </message>
@@ -6158,7 +6158,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
         <location filename="../src/gui/systray.cpp" line="574"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="875"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="877"/>
         <source>Add account</source>
         <translation>Lägg till konto</translation>
     </message>
@@ -6182,7 +6182,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="581"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="913"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="915"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
@@ -6198,18 +6198,18 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="589"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="889"/>
         <source>Pause sync for all</source>
         <translation>Pausa synkronisering för alla</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="595"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="887"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="889"/>
         <source>Resume sync for all</source>
         <translation>Återuppta synkronisering för alla</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="920"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="922"/>
         <source>Quit</source>
         <translation>Avsluta</translation>
     </message>
@@ -7815,17 +7815,17 @@ Servern svarade med fel: %2</translation>
         <translation>Mer aktivitet …</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="764"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="766"/>
         <source>Resolve: %1</source>
         <translation>Åtgärda: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="771"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="773"/>
         <source>User status</source>
         <translation>Användarstatus</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="804"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="806"/>
         <source>Search</source>
         <translation>Sök</translation>
     </message>
@@ -7833,8 +7833,8 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="734"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="787"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="736"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="789"/>
         <source>Local folder</source>
         <translation>Lokal mapp</translation>
     </message>
@@ -7842,7 +7842,7 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="811"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="813"/>
         <source>Apps</source>
         <translation>Appar</translation>
     </message>
