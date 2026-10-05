@@ -7,7 +7,7 @@ import Foundation
 /// Durable FIFO state for a multi-batch File Provider change enumeration.
 ///
 /// The framework can invalidate an enumerator after an intermediate batch and invoke the next batch on a
-/// new enumerator. The pending changes and their position are therefore stored in Realm. An intermediate
+/// new enumerator. The pending changes and their position are therefore stored in the database. An intermediate
 /// anchor identifies those pending changes and must be handled before ordinary sync-anchor validation.
 ///
 /// Updates are stored before deletions and are already sorted parents-before-children by the caller. Each

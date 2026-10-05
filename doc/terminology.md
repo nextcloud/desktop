@@ -16,14 +16,14 @@ Do not automatically carry a term from one engine into the other. The framework'
 
 | Term | Use it for | Do not use it for |
 | --- | --- | --- |
-| **persisted** | Data saved in Realm, settings, a journal, or a file. | Data held only in memory. |
+| **persisted** | Data saved in the metadata database, settings, a journal, or a file. | Data held only in memory. |
 | **cached** | A copy that can be stale, discarded, or rebuilt. | The authoritative record. |
 | **runtime-only** | State that is not saved across the relevant boundary. | State saved for recovery. |
 | **retained** | An object, reference, or resource kept alive. | A field copied through a merge; use **preserved**. |
 | **preserved** | A value copied into an updated record without being overwritten. | Object ownership or lifetime. |
 | **survives** | A value or object that remains after a named event. | An unqualified claim about persistence. |
 
-When the lifecycle guarantee matters, describe it separately from storage: “persisted in Realm and survives an extension restart” states both facts clearly.
+When the lifecycle guarantee matters, describe it separately from storage: “persisted in the metadata database and survives an extension restart” states both facts clearly.
 
 ## State, results, and configuration
 
@@ -117,7 +117,7 @@ The terms do not map one-to-one between engines:
 
 | Term | Use it for | Do not use it for |
 | --- | --- | --- |
-| **record** | A stored database object, such as a sync-journal or Realm record. | An arbitrary in-memory object. |
+| **record** | A stored database object, such as a sync-journal or metadata database record. | An arbitrary in-memory object. |
 | **row** | A specific SQL or table row. | Every database record. |
 | **metadata** | Stored descriptive data about an item or operation. Qualify it when the source matters. | The item or file itself. |
 | **properties** | Values exposed by a platform or API object, such as a File Provider item. | Stored database data unless the API calls it properties. |
