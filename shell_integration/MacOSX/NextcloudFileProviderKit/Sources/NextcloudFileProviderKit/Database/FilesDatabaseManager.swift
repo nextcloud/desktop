@@ -3,6 +3,7 @@
 
 @preconcurrency import FileProvider
 import Foundation
+import os
 import RealmSwift
 
 ///
@@ -34,6 +35,8 @@ public final class FilesDatabaseManager: Sendable {
     private static let schemaVersion = SchemaVersion.addedChangeDeliveryAcknowledgementState
     let logger: FileProviderLogger
     let account: Account
+    /// Share download ownership across FilesDatabaseManager instances accessing the same database.
+    static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: UUID]]())
 
     var itemMetadatas: Results<RealmItemMetadata> {
         ncDatabase().objects(RealmItemMetadata.self)
