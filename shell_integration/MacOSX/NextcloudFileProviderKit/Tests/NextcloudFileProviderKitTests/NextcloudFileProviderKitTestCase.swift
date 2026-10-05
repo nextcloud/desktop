@@ -8,7 +8,7 @@ import XCTest
 ///
 class NextcloudFileProviderKitTestCase: XCTestCase {
     ///
-    /// Create a unique and temporary directory for Realm database testing purposes.
+    /// Create a unique and temporary directory for database testing purposes.
     ///
     /// - Returns: A URL pointing to a temporary directory which also contains a UUID to distinguish it clearly from any other calls.
     ///

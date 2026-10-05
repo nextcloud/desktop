@@ -35,7 +35,7 @@ returns `.excludedFromSync`.
 
 When a bundle or package modification is rejected, or an item that already has
 a remote counterpart is moved into an excluded destination, `Item.modify`
-stores a `RealmExcludedFromSyncItem` record keyed by the item's `ocId`. Only
+stores an `ExcludedFromSyncItemRecord` keyed by the item's `ocId`. Only
 after that write succeeds does it return `.excludedFromSync`. If the record
 cannot be written, the modification fails with `.cannotSynchronize` instead of
 starting a deletion sequence that cannot be recognized safely.
@@ -49,12 +49,12 @@ removes only local state and cannot retry the forbidden remote deletion. The
 remote counterpart remains available for reconciliation, and the failure is
 reported in the activity view.
 
-The exclusion record is stored separately from `RealmItemMetadata`. Fetching,
+The exclusion record is stored separately from the item metadata. Fetching,
 materializing, and enumerating an item can replace its item metadata with a
 fresh server-derived value before the deletion callback arrives. A field on
 that replaceable value could therefore be lost at exactly the point where it
-is needed. The separate Realm object survives those writes and extension
-process restarts. It was introduced with Realm schema version 205.
+is needed. The separate row survives those writes and extension process
+restarts.
 
 When `Item.delete` receives the subsequent callback, it checks for this record
 before invoking the remote interface:
