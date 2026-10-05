@@ -447,7 +447,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
     /// already-pinned descendants must not silently clear their flag. Before
     /// the fix, the bulk write at the end of
     /// ``Enumerator.handlePagedReadResults`` used ``addItemMetadata`` which
-    /// replaces rows wholesale via Realm's `update: .all`, dropping every
+    /// replaces rows wholesale via a full-row upsert, dropping every
     /// local-only field — including ``keepDownloaded``. The user's pin walk
     /// runs without pagination, but the OS-driven `enumerateItems` that
     /// follows uses pagination, so a recently-pinned subtree was reliably

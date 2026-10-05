@@ -51,7 +51,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let remoteInterface: RemoteInterface
     let serverUrl: String
 
-    /// Stores pending changes between File Provider requests. The changes are stored in Realm so a new
+    /// Stores pending changes between File Provider requests. The changes are stored in the database so a new
     /// enumerator can resume the next batch.
     let changeBuffer: ChangeDeliveryBuffer
 
