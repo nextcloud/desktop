@@ -127,7 +127,7 @@ public extension Item {
 
                     guard error == .success else {
                         logger.error("Could not acquire contents of item.", [.name: metadata.fileName, .url: remotePath, .error: error])
-                        dbManager.finishDownload(ocId: metadata.ocId, identifier: downloadIdentifier, status: .downloadError, error: error.errorDescription)
+                        try? dbManager.finishDownload(ocId: metadata.ocId, identifier: downloadIdentifier, status: .downloadError, error: error.errorDescription)
                         throw error.fileProviderError(
                             handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
                         ) ?? NSFileProviderError(.cannotSynchronize)
@@ -144,7 +144,7 @@ public extension Item {
                 if metadata.directory {
                     dbManager.addItemMetadata(metadata)
                 } else {
-                    dbManager.finishDownload(ocId: metadata.ocId, identifier: downloadIdentifier, status: .normal)
+                    try dbManager.finishDownload(ocId: metadata.ocId, identifier: downloadIdentifier, status: .normal)
                 }
 
                 if !metadata.directory {
@@ -222,19 +222,19 @@ public extension Item {
         defer {
             if !contentsReturned {
                 let cancelled = progress.isCancelled || Task.isCancelled
-                dbManager.finishDownload(
+                try? dbManager.finishDownload(
                     ocId: ocId,
                     identifier: downloadIdentifier,
                     status: .downloadError,
                     error: cancelled ? CocoaError(.userCancelled).localizedDescription : fetchErrorDescription
                 )
-                if cancelled, !isDirectory {
+                if !isDirectory {
                     do {
                         try FileManager.default.removeItem(at: localPath)
                     } catch CocoaError.fileNoSuchFile {
-                        // Cancellation may precede creation of the temporary file.
+                        // Failure may precede creation of the temporary file.
                     } catch {
-                        logger.error("Could not remove cancelled download contents.", [.item: ocId, .url: localPath, .error: error])
+                        logger.error("Could not remove unreturned download contents.", [.item: ocId, .url: localPath, .error: error])
                     }
                 }
             }
@@ -345,7 +345,11 @@ public extension Item {
         guard !progress.isCancelled, !Task.isCancelled else {
             return (nil, nil, CocoaError(.userCancelled))
         }
-        dbManager.finishDownload(ocId: ocId, identifier: downloadIdentifier, status: .normal, contentType: detectedContentType)
+        do {
+            try dbManager.finishDownload(ocId: ocId, identifier: downloadIdentifier, status: .normal, contentType: detectedContentType)
+        } catch {
+            return (nil, nil, error)
+        }
 
         // Refresh ancestor actions after the successful download state has been saved (#10085).
         if !isDirectory, let domain, let manager = NSFileProviderManager(for: domain) {

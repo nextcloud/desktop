@@ -112,6 +112,25 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         return (task, progress)
     }
 
+    private func startSuspendedFetch(
+        item: Item,
+        remoteInterface: MockRemoteInterface
+    ) async -> (Task<(URL?, Item?, Error?), Never>, AsyncStream<Void>.Continuation) {
+        let (started, startedContinuation) = AsyncStream<Void>.makeStream()
+        let (release, releaseContinuation) = AsyncStream<Void>.makeStream()
+        defer { startedContinuation.finish() }
+        remoteInterface.downloadHandler = {
+            startedContinuation.yield(())
+            var iterator = release.makeAsyncIterator()
+            _ = await iterator.next()
+        }
+        let dbManager = item.dbManager
+        let task = Task { await item.fetchContents(dbManager: dbManager) }
+        var iterator = started.makeAsyncIterator()
+        _ = await iterator.next()
+        return (task, releaseContinuation)
+    }
+
     private func makeNestedFetchItem() -> (Item, MockRemoteInterface, MockRemoteItem) {
         let (_, remoteInterface, directory) = makeFetchItem(directory: true)
         let child = directory.children[0]
@@ -427,6 +446,210 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
         XCTAssertNil(dbManager.itemMetadata(ocId: remoteItem.identifier))
         XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
+    }
+
+    func testSupersededSuccessfulFetchPreservesNewerCompletedFetch() async throws {
+        let errorCodes: [Int?] = [nil, 503, NSURLErrorCancelled]
+        for errorCode in errorCodes {
+            let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = makeOverlappingFetchItems()
+            let dbManager = Self.dbManager
+            let (firstTask, releaseFirst) = await startSuspendedFetch(item: firstItem, remoteInterface: firstRemoteInterface)
+            defer {
+                firstTask.cancel()
+                releaseFirst.finish()
+                removeDownloadedContents(remoteInterface: firstRemoteInterface)
+                removeDownloadedContents(remoteInterface: secondRemoteInterface)
+            }
+            let secondProgress = Progress()
+            if errorCode == NSURLErrorCancelled {
+                secondRemoteInterface.downloadHandler = {
+                    secondProgress.cancel()
+                    await Self.waitForCancellation()
+                }
+            } else if let errorCode {
+                secondRemoteInterface.downloadError = NKError(errorCode: errorCode, errorDescription: "Newer download failed")
+            }
+            let (secondURL, secondFetchedItem, secondError) = await secondItem.fetchContents(progress: secondProgress, dbManager: secondItem.dbManager)
+            if let errorCode {
+                XCTAssertNil(secondURL)
+                XCTAssertNil(secondFetchedItem)
+                if errorCode == NSURLErrorCancelled {
+                    XCTAssertEqual((secondError as? CocoaError)?.code, .userCancelled)
+                } else {
+                    XCTAssertEqual((secondError as? NSFileProviderError)?.code, .serverUnreachable)
+                }
+            } else {
+                XCTAssertNil(secondError)
+                XCTAssertTrue(try XCTUnwrap(secondFetchedItem).isDownloaded)
+                XCTAssertEqual(try Data(contentsOf: XCTUnwrap(secondURL)), remoteItem.data)
+            }
+            var newerMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+            newerMetadata.favorite = true
+            dbManager.addItemMetadata(newerMetadata)
+
+            releaseFirst.finish()
+            let (firstURL, firstFetchedItem, firstError) = await firstTask.value
+
+            XCTAssertNil(firstURL)
+            XCTAssertNil(firstFetchedItem)
+            XCTAssertEqual((firstError as? CocoaError)?.code, .userCancelled)
+            XCTAssertEqual(firstRemoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
+            let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+            XCTAssertEqual(remainingMetadata.downloaded, newerMetadata.downloaded)
+            XCTAssertEqual(remainingMetadata.status, newerMetadata.status)
+            XCTAssertEqual(remainingMetadata.sessionError, newerMetadata.sessionError)
+            XCTAssertTrue(remainingMetadata.favorite)
+            if let secondURL {
+                XCTAssertEqual(try Data(contentsOf: secondURL), remoteItem.data)
+            }
+        }
+    }
+
+    func testSupersededSuccessfulFetchPreservesNewerDownloadInProgress() async throws {
+        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = makeOverlappingFetchItems()
+        let dbManager = Self.dbManager
+        let (firstTask, releaseFirst) = await startSuspendedFetch(item: firstItem, remoteInterface: firstRemoteInterface)
+        let (secondTask, releaseSecond) = await startSuspendedFetch(item: secondItem, remoteInterface: secondRemoteInterface)
+        defer {
+            firstTask.cancel()
+            secondTask.cancel()
+            releaseFirst.finish()
+            releaseSecond.finish()
+            removeDownloadedContents(remoteInterface: firstRemoteInterface)
+            removeDownloadedContents(remoteInterface: secondRemoteInterface)
+        }
+        let newerMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertFalse(newerMetadata.downloaded)
+        XCTAssertEqual(newerMetadata.status, Status.downloading.rawValue)
+
+        releaseFirst.finish()
+        let (firstURL, firstFetchedItem, firstError) = await firstTask.value
+
+        XCTAssertNil(firstURL)
+        XCTAssertNil(firstFetchedItem)
+        XCTAssertEqual((firstError as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual(firstRemoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
+        let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertFalse(remainingMetadata.downloaded)
+        XCTAssertEqual(remainingMetadata.status, Status.downloading.rawValue)
+        XCTAssertEqual(remainingMetadata.sessionError, newerMetadata.sessionError)
+        releaseSecond.finish()
+        let (secondURL, secondFetchedItem, secondError) = await secondTask.value
+        XCTAssertNil(secondError)
+        XCTAssertTrue(try XCTUnwrap(secondFetchedItem).isDownloaded)
+        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(secondURL)), remoteItem.data)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.status, Status.normal.rawValue)
+    }
+
+    func testSupersededDirectoryChildStopsFetchingContents() async throws {
+        let (directoryItem, directoryRemoteInterface, directory) = makeFetchItem(directory: true)
+        let dbManager = Self.dbManager
+        let (directoryTask, releaseDirectory) = await startSuspendedFetch(item: directoryItem, remoteInterface: directoryRemoteInterface)
+        let child = directory.children[0]
+        let childRemoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        childRemoteInterface.injectMock(Self.account)
+        let localDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(directory.identifier)
+        defer {
+            directoryTask.cancel()
+            releaseDirectory.finish()
+            try? FileManager.default.removeItem(at: localDirectory)
+            removeDownloadedContents(remoteInterface: childRemoteInterface)
+        }
+        let childItem = try Item(
+            metadata: XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier)),
+            parentItemIdentifier: NSFileProviderItemIdentifier(directory.identifier),
+            account: Self.account,
+            remoteInterface: childRemoteInterface,
+            dbManager: dbManager
+        )
+        XCTAssertEqual(directoryRemoteInterface.downloadDestinationURL?.lastPathComponent, child.name)
+        let (childURL, fetchedChild, childError) = await childItem.fetchContents(dbManager: dbManager)
+        XCTAssertNil(childError)
+        XCTAssertTrue(try XCTUnwrap(fetchedChild).isDownloaded)
+        var childMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        childMetadata.favorite = true
+        dbManager.addItemMetadata(childMetadata)
+
+        releaseDirectory.finish()
+        let (directoryURL, fetchedDirectory, directoryError) = await directoryTask.value
+
+        XCTAssertNil(directoryURL)
+        XCTAssertNil(fetchedDirectory)
+        XCTAssertEqual((directoryError as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual(directoryRemoteInterface.downloadOperationCount, 1)
+        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(childURL)), child.data)
+        let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        XCTAssertTrue(remainingMetadata.downloaded)
+        XCTAssertEqual(remainingMetadata.status, Status.normal.rawValue)
+        XCTAssertEqual(remainingMetadata.sessionError, "")
+        XCTAssertTrue(remainingMetadata.favorite)
+        for unrequestedChild in directory.children.dropFirst() {
+            XCTAssertEqual(dbManager.itemMetadata(ocId: unrequestedChild.identifier)?.downloaded, false)
+            XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.appendingPathComponent(unrequestedChild.name).path))
+        }
+    }
+
+    func testSuccessfulFetchRejectsRemovedOrDeletedMetadata() async throws {
+        for removeRow in [true, false] {
+            let (item, remoteInterface, remoteItem) = makeFetchItem()
+            let dbManager = Self.dbManager
+            let (task, release) = await startSuspendedFetch(item: item, remoteInterface: remoteInterface)
+            defer {
+                task.cancel()
+                release.finish()
+                removeDownloadedContents(remoteInterface: remoteInterface)
+            }
+            if removeRow {
+                dbManager.removeItemMetadata(ocId: remoteItem.identifier)
+            } else {
+                var metadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+                metadata.deleted = true
+                dbManager.addItemMetadata(metadata)
+            }
+
+            release.finish()
+            let (url, fetchedItem, error) = await task.value
+
+            XCTAssertNil(url)
+            XCTAssertNil(fetchedItem)
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .noSuchItem)
+            XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
+            if removeRow {
+                XCTAssertNil(dbManager.itemMetadata(ocId: remoteItem.identifier))
+            } else {
+                XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.deleted, true)
+                XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.downloaded, false)
+            }
+        }
+    }
+
+    func testSuccessfulFetchPreservesConcurrentMetadataChanges() async throws {
+        let (item, remoteInterface, remoteItem) = makeFetchItem()
+        let dbManager = Self.dbManager
+        let (task, release) = await startSuspendedFetch(item: item, remoteInterface: remoteInterface)
+        defer {
+            task.cancel()
+            release.finish()
+            removeDownloadedContents(remoteInterface: remoteInterface)
+        }
+        var metadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        metadata.favorite = true
+        metadata.keepDownloaded = true
+        dbManager.addItemMetadata(metadata)
+
+        release.finish()
+        let (url, fetchedItem, error) = await task.value
+
+        XCTAssertNil(error)
+        XCTAssertTrue(try XCTUnwrap(fetchedItem).isDownloaded)
+        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(url)), remoteItem.data)
+        let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertTrue(remainingMetadata.downloaded)
+        XCTAssertTrue(remainingMetadata.uploaded)
+        XCTAssertEqual(remainingMetadata.status, Status.normal.rawValue)
+        XCTAssertEqual(remainingMetadata.sessionError, "")
+        XCTAssertTrue(remainingMetadata.favorite)
+        XCTAssertTrue(remainingMetadata.keepDownloaded)
     }
 
     func testCancelledDirectoryEnumerationDoesNotStartChildDownloads() async throws {

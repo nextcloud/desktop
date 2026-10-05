@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
+@preconcurrency import FileProvider
 import Foundation
 import RealmSwift
 
@@ -29,20 +30,24 @@ extension FilesDatabaseManager {
         }
     }
 
-    /// Update only the current download's state, preserving metadata changed while it was running.
+    /// Update the current download's state, throwing cancellation if it was superseded.
     func finishDownload(
         ocId: String,
         identifier: UUID,
         status: Status,
         error: String? = nil,
         contentType: String? = nil
-    ) {
+    ) throws {
         let statusValue = status.rawValue
         let downloaded = status == .normal
-        Self.downloadOperations.withLock { operations in
+        try Self.downloadOperations.withLock { operations in
             let database = ncDatabase()
-            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString else { return }
-            guard operations[databaseIdentifier]?[ocId] == identifier else { return }
+            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+            guard operations[databaseIdentifier]?[ocId] == identifier else {
+                throw CocoaError(.userCancelled)
+            }
             defer {
                 operations[databaseIdentifier]?.removeValue(forKey: ocId)
                 if operations[databaseIdentifier]?.isEmpty == true {
@@ -51,7 +56,9 @@ extension FilesDatabaseManager {
             }
             do {
                 try database.write {
-                    guard let item = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: ocId), !item.deleted else { return }
+                    guard let item = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: ocId), !item.deleted else {
+                        throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: NSFileProviderItemIdentifier(ocId))
+                    }
                     item.status = statusValue
                     item.downloaded = downloaded
                     item.sessionError = error ?? ""
@@ -64,6 +71,7 @@ extension FilesDatabaseManager {
                 }
             } catch {
                 logger.error("Could not finish download in database.", [.item: ocId, .error: error])
+                throw error
             }
         }
     }
