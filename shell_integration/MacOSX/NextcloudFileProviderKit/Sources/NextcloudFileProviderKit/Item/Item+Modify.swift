@@ -180,6 +180,7 @@ public extension Item {
             logger.info("Could not acquire updated metadata of item. Unable to update item status to uploading.", [.item: itemIdentifier])
             return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
+        metadata = updatedMetadata
 
         var headers = [String: String]()
         if let token = metadata.lockToken {
