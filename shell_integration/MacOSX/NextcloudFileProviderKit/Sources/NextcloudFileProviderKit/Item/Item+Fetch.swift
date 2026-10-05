@@ -100,6 +100,7 @@ public extension Item {
                 let relativePath =
                     remotePath.replacingOccurrences(of: directoryRemotePath, with: "")
                 let childLocalPath = directoryLocalPath + relativePath
+                let downloadIdentifier = UUID()
 
                 if metadata.directory {
                     remoteDirectoryPaths.append(remotePath)
@@ -111,7 +112,7 @@ public extension Item {
                 } else {
                     let identifier = NSFileProviderItemIdentifier(metadata.ocId)
 
-                    guard let downloadingMetadata = dbManager.setStatusForItemMetadata(metadata, status: .downloading) else {
+                    guard let downloadingMetadata = dbManager.beginDownload(ocId: metadata.ocId, identifier: downloadIdentifier) else {
                         throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
                     }
                     metadata = downloadingMetadata
@@ -126,9 +127,7 @@ public extension Item {
 
                     guard error == .success else {
                         logger.error("Could not acquire contents of item.", [.name: metadata.fileName, .url: remotePath, .error: error])
-                        metadata.status = Status.downloadError.rawValue
-                        metadata.sessionError = error.errorDescription
-                        dbManager.addItemMetadata(metadata)
+                        dbManager.finishDownload(ocId: metadata.ocId, identifier: downloadIdentifier, status: .downloadError, error: error.errorDescription)
                         throw error.fileProviderError(
                             handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
                         ) ?? NSFileProviderError(.cannotSynchronize)
@@ -142,7 +141,11 @@ public extension Item {
                 // having downloaded incorrectly enumerated files
                 metadata.uploaded = true
                 metadata.sessionError = ""
-                dbManager.addItemMetadata(metadata)
+                if metadata.directory {
+                    dbManager.addItemMetadata(metadata)
+                } else {
+                    dbManager.finishDownload(ocId: metadata.ocId, identifier: downloadIdentifier, status: .normal)
+                }
 
                 if !metadata.directory {
                     downloadedFileOcIds.append(metadata.ocId)
@@ -203,7 +206,8 @@ public extension Item {
         let isDirectory = contentType.conforms(to: .directory)
         // Each file fetch owns its destination so cancellation cannot remove another fetch's result.
         let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(isDirectory ? metadata.ocId : UUID().uuidString)
-        guard var updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .downloading) else {
+        let downloadIdentifier = UUID()
+        guard var updatedMetadata = dbManager.beginDownload(ocId: ocId, identifier: downloadIdentifier) else {
             logger.error("Could not acquire updated metadata, unable to update item status to downloading.", [.item: itemIdentifier])
 
             return (
@@ -214,13 +218,17 @@ public extension Item {
         }
 
         var contentsReturned = false
+        var fetchErrorDescription: String?
         defer {
-            if !contentsReturned, progress.isCancelled || Task.isCancelled {
-                updatedMetadata.status = Status.downloadError.rawValue
-                updatedMetadata.downloaded = false
-                updatedMetadata.sessionError = CocoaError(.userCancelled).localizedDescription
-                dbManager.addItemMetadata(updatedMetadata)
-                if !isDirectory {
+            if !contentsReturned {
+                let cancelled = progress.isCancelled || Task.isCancelled
+                dbManager.finishDownload(
+                    ocId: ocId,
+                    identifier: downloadIdentifier,
+                    status: .downloadError,
+                    error: cancelled ? CocoaError(.userCancelled).localizedDescription : fetchErrorDescription
+                )
+                if cancelled, !isDirectory {
                     do {
                         try FileManager.default.removeItem(at: localPath)
                     } catch CocoaError.fileNoSuchFile {
@@ -244,9 +252,7 @@ public extension Item {
             } catch {
                 logger.error("Could not create directory for item.", [.name: updatedMetadata.fileName, .error: error, .url: localPath])
 
-                updatedMetadata.status = Status.downloadError.rawValue
-                updatedMetadata.sessionError = error.localizedDescription
-                dbManager.addItemMetadata(updatedMetadata)
+                fetchErrorDescription = error.localizedDescription
                 return (nil, nil, error)
             }
 
@@ -262,9 +268,7 @@ public extension Item {
             } catch {
                 logger.error("Could not fetch directory contents.", [.item: ocId, .error: error])
 
-                updatedMetadata.status = Status.downloadError.rawValue
-                updatedMetadata.sessionError = error.localizedDescription
-                dbManager.addItemMetadata(updatedMetadata)
+                fetchErrorDescription = error.localizedDescription
                 return (nil, nil, error)
             }
 
@@ -281,9 +285,7 @@ public extension Item {
             if error != .success {
                 logger.error("Could not acquire contents of item.", [.item: ocId, .name: updatedMetadata.fileName, .error: error])
 
-                updatedMetadata.status = Status.downloadError.rawValue
-                updatedMetadata.sessionError = error.errorDescription
-                dbManager.addItemMetadata(updatedMetadata)
+                fetchErrorDescription = error.errorDescription
                 return (nil, nil, error.fileProviderError(
                     handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
                 ))
@@ -295,6 +297,7 @@ public extension Item {
         }
         logger.debug("Acquired contents of item.", [.item: ocId, .name: updatedMetadata.fileName])
 
+        var detectedContentType: String?
         if !isDirectory, updatedMetadata.contentType != UTType.aliasFile.identifier {
             if let fileHandle = try? FileHandle(forReadingFrom: localPath) {
                 let magic = fileHandle.readData(ofLength: 4)
@@ -303,6 +306,7 @@ public extension Item {
                 if magic == Data([0x62, 0x6F, 0x6F, 0x6B]) {
                     logger.debug("Detected macOS alias file by magic number.", [.name: updatedMetadata.fileName])
                     updatedMetadata.contentType = UTType.aliasFile.identifier
+                    detectedContentType = UTType.aliasFile.identifier
                 }
             }
         }
@@ -314,17 +318,6 @@ public extension Item {
         // having downloaded incorrectly enumerated files
         updatedMetadata.uploaded = true
         updatedMetadata.sessionError = ""
-
-        dbManager.addItemMetadata(updatedMetadata)
-
-        // A newly downloaded file changes the "Remove download" visibility of every
-        // ancestor folder and the root. This must happen here, not via the
-        // materialized-set observer: `downloaded` is already persisted above,
-        // before the system re-enumerates its materialized set, so the observer's
-        // reconciliation would see no change (#10085).
-        if !isDirectory, let domain, let manager = NSFileProviderManager(for: domain) {
-            refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: [ocId], manager: manager, dbManager: dbManager, logger: logger)
-        }
 
         let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
             fromMetadata: metadata,
@@ -338,7 +331,9 @@ public extension Item {
         guard let parentItemIdentifier else {
             logger.error("Could not find parent item id for file.", [.name: metadata.fileName])
 
-            return (nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
+            let error = NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
+            fetchErrorDescription = error.localizedDescription
+            return (nil, nil, error)
         }
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: updatedMetadata.contentType, taskHandler: { cancellation.register(task: $0) })
@@ -346,20 +341,27 @@ public extension Item {
             return (nil, nil, CocoaError(.userCancelled))
         }
 
-        let fpItem = await Item(
+        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account, taskHandler: { cancellation.register(task: $0) })
+        guard !progress.isCancelled, !Task.isCancelled else {
+            return (nil, nil, CocoaError(.userCancelled))
+        }
+        dbManager.finishDownload(ocId: ocId, identifier: downloadIdentifier, status: .normal, contentType: detectedContentType)
+
+        // Refresh ancestor actions after the successful download state has been saved (#10085).
+        if !isDirectory, let domain, let manager = NSFileProviderManager(for: domain) {
+            refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: [ocId], manager: manager, dbManager: dbManager, logger: logger)
+        }
+        let fpItem = Item(
             metadata: updatedMetadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             displayFileActions: displayFileActions,
-            remoteSupportsTrash: remoteInterface.supportsTrash(account: account, taskHandler: { cancellation.register(task: $0) }),
+            remoteSupportsTrash: remoteSupportsTrash,
             log: logger.log
         )
 
-        guard !progress.isCancelled, !Task.isCancelled else {
-            return (nil, nil, CocoaError(.userCancelled))
-        }
         // The caller owns the contents once we return them, even if cancellation arrives now.
         contentsReturned = true
         return (localPath, fpItem, nil)

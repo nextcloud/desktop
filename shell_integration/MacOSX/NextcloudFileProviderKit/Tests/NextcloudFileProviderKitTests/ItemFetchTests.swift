@@ -71,6 +71,47 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         return (item, remoteInterface, remoteItem)
     }
 
+    private func makeOverlappingFetchItems() -> (Item, MockRemoteInterface, Item, MockRemoteInterface, MockRemoteItem) {
+        let (firstItem, firstRemoteInterface, remoteItem) = makeFetchItem()
+        let secondRemoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        secondRemoteInterface.injectMock(Self.account)
+        let secondDBManager = FilesDatabaseManager(
+            realmConfiguration: Self.dbManager.ncDatabase().configuration,
+            account: Self.account,
+            databaseDirectory: Self.makeDatabaseDirectory(),
+            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
+            log: FileProviderLogMock()
+        )
+        let secondItem = Item(
+            metadata: remoteItem.toItemMetadata(account: Self.account),
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: secondRemoteInterface,
+            dbManager: secondDBManager
+        )
+        return (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem)
+    }
+
+    private func startFetchWaitingForCancellation(
+        item: Item,
+        remoteInterface: MockRemoteInterface
+    ) async -> (Task<(URL?, Item?, Error?), Never>, Progress) {
+        await RetrievedCapabilitiesActor.shared.reset()
+        let progress = Progress()
+        let (started, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
+        remoteInterface.capabilitiesHandler = { _, _ in
+            XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, true)
+            continuation.yield(())
+            await Self.waitForCancellation()
+        }
+        let dbManager = Self.dbManager
+        let task = Task { await item.fetchContents(progress: progress, dbManager: dbManager) }
+        var iterator = started.makeAsyncIterator()
+        _ = await iterator.next()
+        return (task, progress)
+    }
+
     private func makeNestedFetchItem() -> (Item, MockRemoteInterface, MockRemoteItem) {
         let (_, remoteInterface, directory) = makeFetchItem(directory: true)
         let child = directory.children[0]
@@ -251,39 +292,28 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCancellingOverlappingFetchPreservesReturnedContents() async throws {
-        await RetrievedCapabilitiesActor.shared.reset()
-        let (firstItem, firstRemoteInterface, remoteItem) = makeFetchItem()
-        let secondRemoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        secondRemoteInterface.injectMock(Self.account)
-        let secondItem = Item(
-            metadata: remoteItem.toItemMetadata(account: Self.account),
-            parentItemIdentifier: .rootContainer,
-            account: Self.account,
-            remoteInterface: secondRemoteInterface,
-            dbManager: Self.dbManager
-        )
+        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = makeOverlappingFetchItems()
+        let dbManager = Self.dbManager
+        let secondDBManager = secondItem.dbManager
         defer {
             removeDownloadedContents(remoteInterface: firstRemoteInterface)
             removeDownloadedContents(remoteInterface: secondRemoteInterface)
         }
-        let firstProgress = Progress()
+        let (firstTask, firstProgress) = await startFetchWaitingForCancellation(item: firstItem, remoteInterface: firstRemoteInterface)
         defer { firstProgress.cancel() }
-        let (started, continuation) = AsyncStream<Void>.makeStream()
-        defer { continuation.finish() }
-        firstRemoteInterface.capabilitiesHandler = { _, _ in
-            XCTAssertEqual(firstRemoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, true)
-            continuation.yield(())
-            await Self.waitForCancellation()
-        }
-        let firstTask = Task { await firstItem.fetchContents(progress: firstProgress, dbManager: Self.dbManager) }
-        var iterator = started.makeAsyncIterator()
-        _ = await iterator.next()
 
-        let (secondURL, secondFetchedItem, secondError) = await secondItem.fetchContents(dbManager: Self.dbManager)
+        let (secondURL, secondFetchedItem, secondError) = await secondItem.fetchContents(dbManager: secondDBManager)
         XCTAssertNil(secondError)
         XCTAssertTrue(try XCTUnwrap(secondFetchedItem).isDownloaded)
         let returnedURL = try XCTUnwrap(secondURL)
         XCTAssertEqual(try Data(contentsOf: returnedURL), remoteItem.data)
+        var metadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertTrue(metadata.downloaded)
+        XCTAssertEqual(metadata.status, Status.normal.rawValue)
+        XCTAssertEqual(metadata.sessionError, "")
+        metadata.favorite = true
+        dbManager.addItemMetadata(metadata)
+
         firstProgress.cancel()
         let (firstURL, firstFetchedItem, firstError) = await firstTask.value
 
@@ -293,6 +323,109 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: returnedURL.path))
         XCTAssertEqual(try Data(contentsOf: returnedURL), remoteItem.data)
         XCTAssertEqual(firstRemoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
+        let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertTrue(remainingMetadata.downloaded)
+        XCTAssertEqual(remainingMetadata.status, Status.normal.rawValue)
+        XCTAssertEqual(remainingMetadata.sessionError, "")
+        XCTAssertTrue(remainingMetadata.favorite)
+    }
+
+    func testCancellingOlderFetchPreservesNewerDownloadInProgress() async throws {
+        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = makeOverlappingFetchItems()
+        let dbManager = Self.dbManager
+        let secondDBManager = secondItem.dbManager
+        defer {
+            removeDownloadedContents(remoteInterface: firstRemoteInterface)
+            removeDownloadedContents(remoteInterface: secondRemoteInterface)
+        }
+        let (firstTask, firstProgress) = await startFetchWaitingForCancellation(item: firstItem, remoteInterface: firstRemoteInterface)
+        defer { firstProgress.cancel() }
+        let (started, startedContinuation) = AsyncStream<Void>.makeStream()
+        let (release, releaseContinuation) = AsyncStream<Void>.makeStream()
+        defer {
+            startedContinuation.finish()
+            releaseContinuation.finish()
+        }
+        secondRemoteInterface.downloadHandler = {
+            startedContinuation.yield(())
+            var iterator = release.makeAsyncIterator()
+            _ = await iterator.next()
+        }
+        let secondTask = Task { await secondItem.fetchContents(dbManager: secondDBManager) }
+        var iterator = started.makeAsyncIterator()
+        _ = await iterator.next()
+        let downloadingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertFalse(downloadingMetadata.downloaded)
+        XCTAssertEqual(downloadingMetadata.status, Status.downloading.rawValue)
+
+        firstProgress.cancel()
+        let (firstURL, firstFetchedItem, firstError) = await firstTask.value
+
+        XCTAssertNil(firstURL)
+        XCTAssertNil(firstFetchedItem)
+        XCTAssertEqual((firstError as? CocoaError)?.code, .userCancelled)
+        let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertFalse(remainingMetadata.downloaded)
+        XCTAssertEqual(remainingMetadata.status, Status.downloading.rawValue)
+        XCTAssertEqual(remainingMetadata.sessionError, downloadingMetadata.sessionError)
+        releaseContinuation.yield(())
+        let (secondURL, secondFetchedItem, secondError) = await secondTask.value
+        XCTAssertNil(secondError)
+        XCTAssertTrue(try XCTUnwrap(secondFetchedItem).isDownloaded)
+        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(secondURL)), remoteItem.data)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.status, Status.normal.rawValue)
+    }
+
+    func testCancellingOlderFetchPreservesNewerDownloadError() async throws {
+        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = makeOverlappingFetchItems()
+        let dbManager = Self.dbManager
+        let secondDBManager = secondItem.dbManager
+        defer {
+            removeDownloadedContents(remoteInterface: firstRemoteInterface)
+            removeDownloadedContents(remoteInterface: secondRemoteInterface)
+        }
+        let (firstTask, firstProgress) = await startFetchWaitingForCancellation(item: firstItem, remoteInterface: firstRemoteInterface)
+        defer { firstProgress.cancel() }
+        let downloadError = NKError(errorCode: 503, errorDescription: "Newer download failed")
+        secondRemoteInterface.downloadError = downloadError
+        let (secondURL, secondFetchedItem, secondError) = await secondItem.fetchContents(dbManager: secondDBManager)
+        XCTAssertNil(secondURL)
+        XCTAssertNil(secondFetchedItem)
+        XCTAssertEqual((secondError as? NSFileProviderError)?.code, .serverUnreachable)
+        let failedMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertFalse(failedMetadata.downloaded)
+        XCTAssertEqual(failedMetadata.status, Status.downloadError.rawValue)
+        XCTAssertEqual(failedMetadata.sessionError, downloadError.errorDescription)
+
+        firstProgress.cancel()
+        let (firstURL, firstFetchedItem, firstError) = await firstTask.value
+
+        XCTAssertNil(firstURL)
+        XCTAssertNil(firstFetchedItem)
+        XCTAssertEqual((firstError as? CocoaError)?.code, .userCancelled)
+        let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertFalse(remainingMetadata.downloaded)
+        XCTAssertEqual(remainingMetadata.status, Status.downloadError.rawValue)
+        XCTAssertEqual(remainingMetadata.sessionError, downloadError.errorDescription)
+    }
+
+    func testCancellingFetchDoesNotRestoreRemovedMetadata() async {
+        let (item, remoteInterface, remoteItem) = makeFetchItem()
+        let dbManager = Self.dbManager
+        defer { removeDownloadedContents(remoteInterface: remoteInterface) }
+        let (task, progress) = await startFetchWaitingForCancellation(item: item, remoteInterface: remoteInterface)
+        defer { progress.cancel() }
+        dbManager.removeItemMetadata(ocId: remoteItem.identifier)
+        XCTAssertNil(dbManager.itemMetadata(ocId: remoteItem.identifier))
+
+        progress.cancel()
+        let (url, fetchedItem, error) = await task.value
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertNil(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
     }
 
     func testCancelledDirectoryEnumerationDoesNotStartChildDownloads() async throws {
