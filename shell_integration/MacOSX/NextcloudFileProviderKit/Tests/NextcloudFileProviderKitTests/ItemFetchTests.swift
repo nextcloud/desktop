@@ -236,13 +236,14 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
     func testParentCancellationReachesDownload() async {
         let (item, remoteInterface, _) = makeFetchItem()
+        let dbManager = Self.dbManager
         let (started, continuation) = AsyncStream<Void>.makeStream()
         defer { continuation.finish() }
         remoteInterface.downloadHandler = {
             continuation.yield(())
             await Self.waitForCancellation()
         }
-        let task = Task { await item.fetchContents(dbManager: Self.dbManager) }
+        let task = Task { await item.fetchContents(dbManager: dbManager) }
         var iterator = started.makeAsyncIterator()
         _ = await iterator.next()
         task.cancel()
@@ -526,6 +527,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     func testParentCancellationAfterDownloadRemovesTemporaryContents() async {
         await RetrievedCapabilitiesActor.shared.reset()
         let (item, remoteInterface, _) = makeFetchItem()
+        let dbManager = Self.dbManager
         defer { removeDownloadedContents(remoteInterface: remoteInterface) }
         let (started, continuation) = AsyncStream<Void>.makeStream()
         defer { continuation.finish() }
@@ -534,7 +536,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             continuation.yield(())
             await Self.waitForCancellation()
         }
-        let task = Task { await item.fetchContents(dbManager: Self.dbManager) }
+        let task = Task { await item.fetchContents(dbManager: dbManager) }
         var iterator = started.makeAsyncIterator()
         _ = await iterator.next()
         task.cancel()
