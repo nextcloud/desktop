@@ -22,11 +22,11 @@ extension DatabaseTestSuites {
             let deleted = [DatabaseTestSuites.makeFile(ocId: "gone", fileName: "gone.txt")]
             #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data([1]), updated: updated, deleted: deleted, incomplete: false, hardRemoveDeleted: true))
 
-            let page = manager.changeDeliveryItems(sessionId: "s", fromSequence: 1, limit: 3)
+            let page = try #require(manager.changeDeliveryItems(sessionId: "s", fromSequence: 1, limit: 3))
             #expect(page.map(\.sequence) == [1, 2, 3])
             #expect(page.map(\.deleted) == [false, false, false])
 
-            let tail = manager.changeDeliveryItems(sessionId: "s", fromSequence: 4, limit: 10)
+            let tail = try #require(manager.changeDeliveryItems(sessionId: "s", fromSequence: 4, limit: 10))
             #expect(tail.map(\.sequence) == [4])
             #expect(tail.first?.deleted == true)
             #expect(try JSONDecoder().decode(SendableItemMetadata.self, from: #require(tail.first?.metadataData)).ocId == "gone")
@@ -47,7 +47,7 @@ extension DatabaseTestSuites {
 
             #expect(manager.itemMetadata(ocId: "untouched")?.deleted == false)
             #expect(manager.changeDeliverySession(sessionId: "s") == nil)
-            #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10).isEmpty)
+            #expect(try #require(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10)?.isEmpty))
         }
 
         @Test func acknowledgingAnIntermediateBatchAdvancesTheSessionAndDropsDeliveredItems() throws {
@@ -63,7 +63,7 @@ extension DatabaseTestSuites {
             let session = try #require(manager.changeDeliverySession(forAnchorKey: "a1", containerKey: "c"))
             #expect(session.nextSequence == 2)
             #expect(session.pendingReported == false)
-            #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10).map(\.sequence) == [2, 3, 4])
+            #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10)?.map(\.sequence) == [2, 3, 4])
             #expect(manager.itemMetadata(ocId: "soft")?.deleted == true, "Soft removal keeps the tombstone.")
         }
 
@@ -78,16 +78,16 @@ extension DatabaseTestSuites {
             #expect(manager.itemMetadata(ocId: "hard") == nil)
         }
 
-        @Test func removingTheSessionsOfAContainerRemovesTheirItems() {
+        @Test func removingTheSessionsOfAContainerRemovesTheirItems() throws {
             #expect(manager.createChangeDeliverySession(sessionId: "s1", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: makeRows(count: 2), deleted: [], incomplete: false, hardRemoveDeleted: false))
             #expect(manager.createChangeDeliverySession(sessionId: "s2", containerKey: "other", anchorKey: "b0", finalAnchorRawValue: Data(), updated: makeRows(count: 1), deleted: [], incomplete: false, hardRemoveDeleted: false))
 
             manager.removeChangeDeliverySessions(containerKey: "c")
 
             #expect(manager.changeDeliverySession(sessionId: "s1") == nil)
-            #expect(manager.changeDeliveryItems(sessionId: "s1", fromSequence: 0, limit: 10).isEmpty)
+            #expect(try #require(manager.changeDeliveryItems(sessionId: "s1", fromSequence: 0, limit: 10)?.isEmpty))
             #expect(manager.changeDeliverySession(sessionId: "s2") != nil)
-            #expect(manager.changeDeliveryItems(sessionId: "s2", fromSequence: 0, limit: 10).count == 1)
+            #expect(manager.changeDeliveryItems(sessionId: "s2", fromSequence: 0, limit: 10)?.count == 1)
         }
     }
 }

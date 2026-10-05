@@ -36,7 +36,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
     }
 
     private func makeManager() -> FilesDatabaseManager {
-        FilesDatabaseManager(
+        try! FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: makeDatabaseDirectory(),
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("benchmark"),

@@ -82,13 +82,13 @@ func cleanupAbandonedChunkUploads(
     dbManager: FilesDatabaseManager,
     logger: FileProviderLogger
 ) {
-    let knownIdentifiers = Set(dbManager.remoteChunkStoreFolderNames())
-        .union(dbManager.chunkUploadIdentifiers())
-        .union(dbManager.pendingChunkUploadCleanupIdentifiers())
-    let resumableIdentifiers = Set(dbManager.resumableChunkUploadIdentifiers())
+    guard let abandonedIdentifiers = dbManager.abandonedChunkUploadIdentifiers() else {
+        logger.error("Skipping the cleanup of abandoned chunk uploads because the database could not be read.")
+        return
+    }
 
     discardChunkUploads(
-        withIdentifiers: knownIdentifiers.subtracting(resumableIdentifiers),
+        withIdentifiers: abandonedIdentifiers,
         usingRemoteInterface: remoteInterface,
         dbManager: dbManager,
         logger: logger

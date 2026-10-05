@@ -33,7 +33,7 @@ enum DatabaseTestSuites {
             .appendingPathComponent("DatabaseTestSuites-\(UUID().uuidString)", isDirectory: true)
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
-        return FilesDatabaseManager(
+        return try! FilesDatabaseManager(
             account: account,
             databaseDirectory: directory,
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test-\(UUID().uuidString)"),
