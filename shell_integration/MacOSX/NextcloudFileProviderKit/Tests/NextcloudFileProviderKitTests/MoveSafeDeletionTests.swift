@@ -326,7 +326,7 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         fileMeta.syncTime = recentSync
         Self.dbManager.addItemMetadata(fileMeta)
 
-        let pending = Self.dbManager.pendingWorkingSetChanges(since: anchorDate)
+        let pending = try XCTUnwrap(Self.dbManager.pendingWorkingSetChanges(since: anchorDate))
 
         // Both items must be in the pending list.
         XCTAssertTrue(pending.updated.contains(where: { $0.ocId == "sort-dir" }))

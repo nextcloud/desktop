@@ -164,7 +164,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             let clock = ContinuousClock()
             startMeasuring()
             let start = clock.now
-            let changes = manager.pendingWorkingSetChanges(since: anchor)
+            let changes = manager.pendingWorkingSetChanges(since: anchor)!
             durations.append(clock.now - start)
             stopMeasuring()
 

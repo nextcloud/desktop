@@ -18,6 +18,12 @@ Rows leave the database as ``SendableItemMetadata`` and the other value types; t
 - Array fields are stored as JSON text. Booleans are integers.
 - Recorded upload chunks are keyed by upload identifier and chunk number and returned in chunk order.
 
+## When the database cannot be read
+
+Lookups return the empty value when a read fails, and the failure is logged. Two lookups guard an action which must not happen on a guess: `excludedFromSyncMarkerExists(ocId:)` throws, and `Item.delete` then refuses the deletion with `cannotSynchronize` instead of deleting on the server; `hasRemoteFileChunks(uploadId:)` answers `true`, so local chunks are kept. `pendingWorkingSetChanges(since:)` returns `nil`, which the working-set enumeration treats like a failed server scan: it keeps the incoming anchor so the changes are retried on the next signal.
+
+On open, a file SQLite reports as corrupt is set aside with the suffix `.unreadable-<timestamp>` and replaced. Any other open failure, and a failed import, keep the files untouched and serve the process from memory until the next start.
+
 ## Store version
 
 `StoreVersion.current` names the generation of the on-disk format. It is bumped with every migration registered in `DatabaseSchema` and recorded twice after a successful open: in the file as `PRAGMA user_version`, and in the domain's defaults as `latestSeenDatabaseVersion`.

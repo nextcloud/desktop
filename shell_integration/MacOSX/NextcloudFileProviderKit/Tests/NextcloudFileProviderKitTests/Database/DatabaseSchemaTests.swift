@@ -41,6 +41,27 @@ extension DatabaseTestSuites {
             #expect(version == StoreVersion.current)
         }
 
+        @Test func aCorruptDatabaseFileIsSetAsideAndReplaced() throws {
+            let url = try #require(manager.databaseURL)
+            let directory = url.deletingLastPathComponent()
+            let domain = url.deletingPathExtension().lastPathComponent
+            manager.checkpointForShutdown()
+            try Data((0 ..< 8192).map { _ in UInt8.random(in: 0 ... 255) }).write(to: url)
+
+            let reopened = FilesDatabaseManager(
+                account: DatabaseTestSuites.account,
+                databaseDirectory: directory,
+                fileProviderDomainIdentifier: .init(domain),
+                log: FileProviderLogMock()
+            )
+
+            reopened.addItemMetadata(DatabaseTestSuites.makeFile(ocId: "fresh", fileName: "fresh.txt"))
+            #expect(reopened.itemMetadata(ocId: "fresh") != nil)
+            #expect(reopened.writer is DatabasePool, "The replacement is a file on disk, not an in-memory fallback.")
+            let setAside = try FileManager.default.contentsOfDirectory(atPath: directory.path).filter { $0.contains(".unreadable-") }
+            #expect(!setAside.isEmpty)
+        }
+
         @Test func locationQueriesUseTheLocationIndex() throws {
             let plans = try manager.writer.read { db in
                 try [
