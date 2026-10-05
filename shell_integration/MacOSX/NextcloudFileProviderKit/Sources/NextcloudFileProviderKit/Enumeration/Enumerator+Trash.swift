@@ -35,7 +35,7 @@ extension Enumerator {
         }
 
         observer.finishEnumeratingChanges(upTo: reportedAnchor, moreComing: batch.moreComing)
-        changeBuffer.acknowledgeBatch(batch.acknowledgement)
+        changeBuffer.acknowledgeBatch(deletedOcIds: batch.deleted.map(\.ocId))
 
         logger.debug("Reported trash deletion batch. deleted: \(batch.deleted.count), moreComing: \(batch.moreComing)")
     }

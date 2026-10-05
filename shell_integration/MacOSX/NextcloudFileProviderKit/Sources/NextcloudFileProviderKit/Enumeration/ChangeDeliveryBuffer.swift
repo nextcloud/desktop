@@ -41,26 +41,49 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         logger = FileProviderLogger(category: "ChangeDeliveryBuffer", log: log)
     }
 
-    ///
     /// Whether an active durable session is positioned at the given anchor.
-    ///
-    /// The framework asks for a continuation anchor only after it accepted the batch which ended there, so a batch
-    /// which was reported up to `key` but not acknowledged yet is acknowledged here.
-    ///
     func isPrimed(forKey key: String) -> Bool {
         lock.lock()
         defer { lock.unlock() }
 
-        guard let session = dbManager.changeDeliverySession(forContinuationKey: key, containerKey: containerKey) else {
-            sessionId = nil
-            return false
-        }
+        if let sessionId {
+            guard let session = dbManager.changeDeliverySession(sessionId: sessionId) else {
+                self.sessionId = nil
+                return false
+            }
 
-        if session.currentAnchorKey != key {
-            guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: session.sessionId, endSequence: session.pendingEndSequence) else {
+            if session.currentAnchorKey == key {
+                return true
+            }
+
+            guard session.pendingReported,
+                  session.pendingAnchorKey == key
+            else {
+                return false
+            }
+
+            let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: sessionId)
+            guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, deletedOcIds: deletedOcIds) else {
                 logger.error("Could not acknowledge the previously reported change delivery batch.")
                 return false
             }
+
+            return true
+        }
+
+        if let session = dbManager.changeDeliverySession(forAnchorKey: key, containerKey: containerKey) {
+            sessionId = session.sessionId
+            return true
+        }
+
+        guard let session = dbManager.changeDeliverySession(forPendingAnchorKey: key, containerKey: containerKey) else {
+            return false
+        }
+
+        let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: session.sessionId)
+        guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: session.sessionId, deletedOcIds: deletedOcIds) else {
+            logger.error("Could not acknowledge the previously reported change delivery batch.")
+            return false
         }
 
         sessionId = session.sessionId
@@ -123,11 +146,8 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         logger.debug("Persisted change delivery session.")
     }
 
-    ///
     /// Prepare the next update/delete batch without advancing the committed cursor.
-    /// Returns a continuation anchor for intermediate batches and the session's final anchor for the last, and
-    /// the identity of the batch to pass to ``acknowledgeBatch(_:)``.
-    ///
+    /// Returns a continuation anchor for intermediate batches and the session's final anchor for the last.
     func prepareChangeDeliveryBatch(
         maxItems: Int
     ) -> (
@@ -135,38 +155,33 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         deleted: [SendableItemMetadata],
         moreComing: Bool,
         continuationAnchorRawValue: Data?,
-        finalAnchorRawValue: Data?,
-        acknowledgement: (sessionId: String, endSequence: Int)?
+        finalAnchorRawValue: Data?
     ) {
         lock.lock()
         defer { lock.unlock() }
 
+        let budget = max(1, maxItems)
         guard let sessionId,
               let session = dbManager.changeDeliverySession(sessionId: sessionId)
         else {
-            return ([], [], false, nil, nil, nil)
+            return ([], [], false, nil, nil)
         }
 
-        guard let batch = dbManager.prepareChangeDeliveryBatch(
+        let storedItems = dbManager.changeDeliveryItems(
             sessionId: sessionId,
-            maxItems: max(1, maxItems),
-            continuationAnchorKey: { "\(Self.continuationPrefix)\(sessionId)|\($0)" }
-        ) else {
-            logger.error("Could not prepare change delivery batch.")
-            return ([], [], false, nil, nil, nil)
-        }
-
+            fromSequence: session.nextSequence,
+            limit: budget + 1
+        )
+        let batchItems = Array(storedItems.prefix(budget))
+        let moreComing = storedItems.count > budget
         let decoder = JSONDecoder()
         var updated = [SendableItemMetadata]()
         var deleted = [SendableItemMetadata]()
 
-        for item in batch.items {
+        for item in batchItems {
             guard let metadata = try? decoder.decode(SendableItemMetadata.self, from: item.metadataData) else {
-                // The batch is not delivered, so do not leave it reported.
                 logger.error("Could not decode change delivery item.")
-                dbManager.removeChangeDeliverySessions(containerKey: containerKey)
-                self.sessionId = nil
-                return ([], [], false, nil, session.finalAnchorRawValue, nil)
+                return ([], [], false, nil, session.finalAnchorRawValue)
             }
 
             if item.deleted {
@@ -176,36 +191,54 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
             }
         }
 
+        let nextSequence = batchItems.last.map { $0.sequence + 1 } ?? session.nextSequence
+        let continuationAnchor: Data?
+        let nextAnchorKey: String?
+        if moreComing {
+            let key = "\(Self.continuationPrefix)\(sessionId)|\(nextSequence)"
+            continuationAnchor = Data(key.utf8)
+            nextAnchorKey = key
+        } else {
+            continuationAnchor = nil
+            nextAnchorKey = nil
+        }
+
+        guard dbManager.prepareChangeDeliveryBatch(
+            sessionId: sessionId,
+            endSequence: nextSequence,
+            nextAnchorKey: nextAnchorKey,
+            moreComing: moreComing
+        ) else {
+            logger.error("Could not prepare change delivery batch.")
+            return ([], [], false, nil, nil)
+        }
+
         logger.debug("Prepared change delivery batch.")
         return (
             updated,
             deleted,
-            batch.moreComing,
-            batch.nextAnchorKey.map { Data($0.utf8) },
-            session.finalAnchorRawValue,
-            (sessionId, batch.endSequence)
+            moreComing,
+            continuationAnchor,
+            session.finalAnchorRawValue
         )
     }
 
-    ///
-    /// Commit a batch prepared by ``prepareChangeDeliveryBatch(maxItems:)`` after `finishEnumeratingChanges`
-    /// returns. Does nothing for `nil`, which stands for a batch that was not prepared.
-    ///
-    func acknowledgeBatch(_ batch: (sessionId: String, endSequence: Int)?) {
-        guard let batch else {
-            return
-        }
-
+    /// Commit the prepared batch after `finishEnumeratingChanges` returns.
+    func acknowledgeBatch(deletedOcIds: [String]) {
         lock.lock()
         defer { lock.unlock() }
 
-        guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: batch.sessionId, endSequence: batch.endSequence) else {
+        guard let sessionId else {
+            return
+        }
+
+        guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, deletedOcIds: deletedOcIds) else {
             logger.error("Could not acknowledge change delivery batch.")
             return
         }
 
-        if sessionId == batch.sessionId, dbManager.changeDeliverySession(sessionId: batch.sessionId) == nil {
-            sessionId = nil
+        if dbManager.changeDeliverySession(sessionId: sessionId) == nil {
+            self.sessionId = nil
         }
     }
 

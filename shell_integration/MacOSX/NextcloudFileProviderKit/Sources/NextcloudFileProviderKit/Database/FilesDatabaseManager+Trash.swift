@@ -1,16 +1,18 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import RealmSwift
+import GRDB
 
 extension FilesDatabaseManager {
     func trashedItemMetadatas(account: Account) -> [SendableItemMetadata] {
-        ncDatabase()
-            .objects(RealmItemMetadata.self)
-            .where { item in
-                item.account == account.ncKitAccount &&
-                    RealmItemMetadata.hasServerUrl(item, equalTo: account.trashUrl, includingDescendants: true)
-            }
-            .toUnmanagedResults()
+        read("Could not fetch the trashed item metadata.", [.account: account.ncKitAccount]) { db in
+            try ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.Columns.account == account.ncKitAccount
+                        && ItemMetadataRecord.hasServerUrl(equalTo: account.trashUrl, includingDescendants: true)
+                )
+                .fetchAll(db)
+                .map(\.metadata)
+        } ?? []
     }
 }

@@ -93,13 +93,9 @@ limits it to 4,000.
 3. Uses the extra item to determine `moreComing`.
 4. Stores a pending acknowledgement boundary without advancing the committed cursor.
 
-These steps run in one database transaction. If a batch is already pending, the same batch is returned again instead.
-
 After `finishEnumeratingChanges(upTo:moreComing:)` returns, the enumerator acknowledges the batch and
 advances the committed cursor. If delivery is interrupted before that acknowledgement, the same batch is
 replayed from its original anchor.
-
-File Provider may request the next batch before that acknowledgement runs, also on a new enumerator. A request with the continuation anchor of a batch means that File Provider accepted that batch, so such a request acknowledges it first. Each acknowledgement names its batch by session and end position and is ignored when that batch is no longer pending, so a late acknowledgement never commits a later batch.
 
 Updates and deletions share the same limit. For a limit of three, two updates
 and one deletion consume the whole batch.
@@ -131,8 +127,6 @@ The next request must check for this continuation before normal sync-anchor
 validation. When the saved list is found, the enumerator reads the next batch
 without contacting the server again. The final batch returns the container's
 final sync anchor instead of a continuation anchor.
-
-The saved list is found by its committed anchor or by the anchor of its pending batch, read in one query so a concurrent acknowledgement cannot hide it.
 
 The framework may invalidate the current `Enumerator` after an intermediate
 batch and create another one for the next request. The extension process may
@@ -196,8 +190,6 @@ The change-enumeration tests are in
   update/deletion budget.
 - `testContainerChangesDeliveredInBatches` checks regular-directory changes.
 - `testTrashChangesDeliveredInBatches` checks batched trash deletions.
-
-`Tests/NextcloudFileProviderKitTests/ChangeDeliveryBufferTests.swift` checks that a late acknowledgement from another enumerator or an earlier session never commits a later batch. The change-delivery cases in `FilesDatabaseManagerTests.swift` cover preparation, replay, acknowledgement by session and end position, and removal of sessions.
 
 These tests exercise the delivery logic in the package. A signed macOS build
 is still required to verify the interaction with the real `fileproviderd`.

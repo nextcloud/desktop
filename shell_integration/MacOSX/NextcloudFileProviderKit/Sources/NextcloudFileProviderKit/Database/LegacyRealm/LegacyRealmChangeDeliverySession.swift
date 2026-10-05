@@ -5,7 +5,8 @@ import Foundation
 import RealmSwift
 
 /// Durable state for one multi-batch File Provider change enumeration.
-final class RealmChangeDeliverySession: Object {
+@objc(RealmChangeDeliverySession)
+final class LegacyRealmChangeDeliverySession: Object {
     @Persisted(primaryKey: true) var sessionId = ""
     @Persisted var containerKey = ""
     @Persisted var currentAnchorKey = ""
