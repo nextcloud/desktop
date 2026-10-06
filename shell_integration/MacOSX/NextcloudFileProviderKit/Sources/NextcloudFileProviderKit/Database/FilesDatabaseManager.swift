@@ -461,6 +461,11 @@ public final class FilesDatabaseManager: Sendable {
                         visitToRecord = readTargetMetadata.ocId
                     }
 
+                    // The parent's listing says what may be done to the folder itself, and a mount point reads back with its storage's own permissions, so keeping the listed ones stops the two reads from overwriting each other.
+                    if readTargetMetadata.directory, readTargetMetadata.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue {
+                        readTargetMetadata.permissions = existing.permissions
+                    }
+
                     if existing.status == Status.normal.rawValue,
                        !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
