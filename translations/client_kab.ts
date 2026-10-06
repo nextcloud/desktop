@@ -7214,7 +7214,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Semmet</translation>
     </message>
 </context>
 <context>
@@ -7225,54 +7225,54 @@ Server replied with error: %2</source>
         <location filename="../src/gui/accountsettings.cpp" line="186"/>
         <source>Search</source>
         <extracomment>Name of the Search feature.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nadi</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="125"/>
         <source>Search is available when this account is connected</source>
-        <translation type="unfinished"/>
+        <translation>Anadi yella ticki teqqneḍ amiḍan-agi</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="126"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Nadi ifuyla, iznan, ineḍruyen ...</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
-        <translation type="unfinished"/>
+        <translation>Tabdart n igmaḍ n unadi </translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="171"/>
         <source>Remove %1 filter</source>
         <extracomment>%1 is an active search filter label, such as a provider name, date range, or person name.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Kkes tastayt n %1</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="195"/>
         <location filename="../src/gui/search/SearchWindow.qml" line="264"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Ɛreḍ tikkelt-nniḍen</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="228"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>Igmaḍ n unadi</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="263"/>
         <source>Some sources unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Kra n yiɣbula ulac-iten</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>Less from connected services</source>
-        <translation type="unfinished"/>
+        <translation>Drus sɣur imeẓla yeqqnen</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>More from connected services</source>
-        <translation type="unfinished"/>
+        <translation>Ugar seg yimeẓla yeqqnen</translation>
     </message>
 </context>
 <context>
@@ -7280,7 +7280,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
         <source>Log in to %1</source>
-        <translation type="unfinished"/>
+        <translation>Qqen ɣer %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
@@ -7290,12 +7290,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="181"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Qqen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="196"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Tansa n uqeddac</translation>
     </message>
 </context>
 <context>
@@ -7311,7 +7311,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="182"/>
         <source>Copied!</source>
-        <translation type="unfinished"/>
+        <translation>Yettwanɣel!</translation>
     </message>
 </context>
 <context>
@@ -7324,7 +7324,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>Kkes beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
@@ -7339,17 +7339,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Semmet</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Saving…</source>
-        <translation type="unfinished"/>
+        <translation>Asekles…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Sekles</translation>
     </message>
 </context>
 <context>
@@ -7357,7 +7357,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="90"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>Teḍra-d tuccḍa deg usbadu n wawal uffir n beṭṭu.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="208"/>
