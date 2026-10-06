@@ -385,7 +385,7 @@ public:
     int size = 0;
     bool aborted = false;
 
-    FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
+    FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent, bool autoRespond = true);
 
     Q_INVOKABLE void respond();
 
