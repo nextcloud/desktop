@@ -4117,7 +4117,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
         <location filename="../src/gui/infosettings.cpp" line="228"/>
         <source>daily</source>
         <extracomment>Name of the daily update channel.</extracomment>
-        <translation>dagligt</translation>
+        <translation>daglig</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="233"/>
@@ -5005,7 +5005,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="949"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation>Den downloadede fil er tom, men serveren sagde at den skulle have været %1.</translation>
+        <translation>Den hentede fil er tom, men serveren angav, at den skulle have været %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1153"/>
@@ -5522,12 +5522,12 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="568"/>
         <source>%1 days</source>
-        <translation> %1 dage</translation>
+        <translation>%1 dage</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="570"/>
         <source>%1 day</source>
-        <translation> %1 dag</translation>
+        <translation>%1 dag</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
@@ -6666,7 +6666,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="74"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation>Vælg et andet sted. %1 er ikke et NTFS filsystem. Det understøtter ikke virtuelle filer.</translation>
+        <translation>Vælg et andet sted. %1 er ikke et NTFS-filsystem. Det understøtter ikke virtuelle filer.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="78"/>
@@ -7047,7 +7047,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
-        <translation>Stier, der begynder med &apos;#&apos; tegn, understøttes ikke i VFS-tilstand.</translation>
+        <translation>Stier, der begynder med tegnet &apos;#&apos;, understøttes ikke i VFS-tilstand.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
@@ -7406,7 +7406,7 @@ Serveren svarede med fejl: %2</translation>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="314"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="360"/>
         <source>Allow upload and editing</source>
-        <translation>Tillad upload og redigering</translation>
+        <translation>Tillad overførsel og redigering</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="347"/>
@@ -7456,7 +7456,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="729"/>
         <source>Add another link</source>
-        <translation>Tilføj et andet link</translation>
+        <translation>Tilføj endnu et link</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
@@ -8061,7 +8061,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultItemSkeleton.qml" line="20"/>
         <source>Search result skeleton.</source>
-        <translation>Søgeresultat skelet.</translation>
+        <translation>Pladsholder for søgeresultat.</translation>
     </message>
 </context>
 <context>
@@ -8121,7 +8121,7 @@ Serveren svarede med fejl: %2</translation>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="214"/>
         <source>Away</source>
-        <translation>Væk</translation>
+        <translation>Ikke tilstede</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
@@ -8133,7 +8133,7 @@ Serveren svarede med fejl: %2</translation>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="218"/>
         <source>Do not disturb</source>
-        <translation>Må ikke forstyrres</translation>
+        <translation>Forstyr ikke</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
