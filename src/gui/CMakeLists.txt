@@ -356,6 +356,12 @@ IF( APPLE )
         macOS/trayaccountpopup/ncsectionheaderrow.mm
         systray_mac_common.mm
         systray_mac_usernotifications.mm
+        macOS/fileprovider_mac.mm
+        macOS/fileproviderdomainmanager.mm
+        macOS/fileprovidereditlocallyjob_mac.mm
+        macOS/fileprovideritemmetadata_mac.mm
+        macOS/fileprovidersettingscontroller_mac.mm
+        macOS/fileproviderutils_mac.mm
         foregroundbackground_mac.mm
         foregroundbackground_cocoa.mm
         APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc
