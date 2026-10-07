@@ -356,6 +356,7 @@ IF( APPLE )
         macOS/trayaccountpopup/ncsectionheaderrow.mm
         systray_mac_common.mm
         systray_mac_usernotifications.mm
+        macOS/findersyncbrokerregistrar_mac.mm
         macOS/fileprovider_mac.mm
         macOS/fileproviderdomainmanager.mm
         macOS/fileprovidereditlocallyjob_mac.mm
