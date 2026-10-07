@@ -1312,7 +1312,15 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         try await observer.enumerateChanges()
         XCTAssertEqual(observer.changedItems.count, 0)
         XCTAssertEqual(observer.deletedItemIdentifiers.count, 1)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier)?.deleted, true)
+
+        // The row is marked deleted when the batch is acknowledged, which happens right after the observer
+        // finished, so the write may still be in flight here.
+        var deleted = Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier)?.deleted
+        for _ in 0 ..< 200 where deleted != true {
+            try await Task.sleep(nanoseconds: 5_000_000)
+            deleted = Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier)?.deleted
+        }
+        XCTAssertEqual(deleted, true)
     }
 
     func testTrashItemEnumerationFailWhenNoTrashInCapabilities() async throws {
