@@ -347,6 +347,7 @@ IF( APPLE )
         macOS/trayaccountpopup/ncsectionheaderrow.mm
         systray_mac_common.mm
         notificationsoundplayer_mac.mm
+        macOS/lowpowergpu_mac.mm
         macOS/macsandboxfolderpicker.mm
         macOS/trayaccountpopup/ncactionrow.mm
         macOS/trayaccountpopup/ncpointinghandbutton.mm
