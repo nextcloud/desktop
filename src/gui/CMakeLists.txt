@@ -366,6 +366,7 @@ IF( APPLE )
         macOS/progressobserver.m
         foregroundbackground_mac.mm
         foregroundbackground_cocoa.mm
+        nativetitlebar_mac.mm
         APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc
     )
     list(APPEND client_SRCS macOS/singleinstancemanager_mac.mm)
