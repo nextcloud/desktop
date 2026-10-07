@@ -363,6 +363,7 @@ IF( APPLE )
         macOS/fileprovideritemmetadata_mac.mm
         macOS/fileprovidersettingscontroller_mac.mm
         macOS/fileproviderutils_mac.mm
+        macOS/progressobserver.m
         foregroundbackground_mac.mm
         foregroundbackground_cocoa.mm
         APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc
