@@ -369,6 +369,7 @@ IF( APPLE )
         foregroundbackground_mac.mm
         foregroundbackground_cocoa.mm
         nativetitlebar_mac.mm
+        socketapi/socketapi_mac.mm
         APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc
     )
     list(APPEND client_SRCS macOS/singleinstancemanager_mac.mm)
