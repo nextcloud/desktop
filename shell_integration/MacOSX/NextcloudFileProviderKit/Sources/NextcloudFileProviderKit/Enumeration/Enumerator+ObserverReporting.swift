@@ -17,11 +17,16 @@ extension Enumerator {
     /// already-encoded `nextPage` to continue from (`nil` ends the enumeration). Keeping each page under
     /// the framework's per-page limit is the caller's responsibility — see ``effectiveBatchSize(suggested:)``.
     ///
+    /// Once the observer has taken the page, every item of it is marked as reported, including the rows
+    /// the conversion leaves out on purpose, which are never handed over at all. A parent recovered for
+    /// the page is not marked: it is not a child of the enumerated container.
+    ///
     func completeEnumerationObserver(
         _ observer: NSFileProviderEnumerationObserver,
         nextPage: NSFileProviderPage?,
         itemMetadatas: [SendableItemMetadata],
-        handleInvalidParent: Bool = true
+        handleInvalidParent: Bool = true,
+        recoveredParentOcId: String? = nil
     ) {
         Task {
             let signposter = EnumerationSignposter.signposter
@@ -36,7 +41,7 @@ extension Enumerator {
                 )
                 signposter.endInterval("ToFileProviderItems", toItemsState)
 
-                Task { @MainActor in
+                await MainActor.run {
                     // Begin/end stay in this MainActor scope; both observer calls are synchronous.
                     let reportState = signposter.beginInterval(
                         "ObserverReport", id: signposter.makeSignpostID(), "items=\(items.count)"
@@ -46,6 +51,13 @@ extension Enumerator {
                     observer.finishEnumerating(upTo: nextPage)
                     signposter.endInterval("ObserverReport", reportState)
                 }
+
+                guard !invalidation.isSet else {
+                    logger.debug("Not marking the page as reported because the enumerator was invalidated.", [.item: enumeratedItemIdentifier])
+                    return
+                }
+
+                dbManager.markReported(itemMetadatas.filter { $0.ocId != recoveredParentOcId })
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 signposter.endInterval("ToFileProviderItems", toItemsState)
                 guard handleInvalidParent else {
@@ -66,7 +78,8 @@ extension Enumerator {
                         observer,
                         nextPage: nextPage,
                         itemMetadatas: [metadata] + itemMetadatas,
-                        handleInvalidParent: false
+                        handleInvalidParent: false,
+                        recoveredParentOcId: metadata.ocId
                     )
                 } catch {
                     observer.finishEnumeratingWithError(error)
@@ -181,6 +194,12 @@ extension Enumerator {
     /// Convert and report updated items, finish the batch, then acknowledge it.
     /// If an update has a missing parent, recover the parent and retry once. Deletions are reported
     /// separately by ``completeChangesBatch``.
+    ///
+    /// A buffered snapshot older than state the system received since is left out, so the newer state
+    /// is not overwritten. Batches are not marked as reported: the framework may ask again from the
+    /// anchor this batch started at, and the advancing anchor already keeps delivered rows out of the
+    /// next derivation.
+    ///
     private func reportBatchUpdates(
         _ observer: NSFileProviderChangeObserver,
         updated: [SendableItemMetadata],
@@ -194,7 +213,12 @@ extension Enumerator {
     ) {
         Task { [updated] in
             do {
-                let updatedItems = try await updated.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log)
+                let pending = dbManager.notYetReported(updated)
+                if pending.count < updated.count {
+                    logger.debug("Leaving \(updated.count - pending.count) buffered update(s) out of the batch because the system received newer state since.", [.item: enumeratedItemIdentifier])
+                }
+
+                let updatedItems = try await pending.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log)
 
                 Task { @MainActor in
                     if !updatedItems.isEmpty {
