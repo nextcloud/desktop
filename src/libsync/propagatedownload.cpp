@@ -1147,6 +1147,8 @@ void PropagateDownloadFile::downloadFinished()
 {
     ASSERT(!_tmpFile.isOpen());
     const auto filename = propagator()->fullLocalPath(_item->_file);
+    // A sibling download may have restored read-only permissions during checksum calculation.
+    makeParentFolderModifiable(filename);
 
     if (_item->_modtime <= 0) {
         FileSystem::remove(_tmpFile.fileName());
