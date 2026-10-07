@@ -622,7 +622,8 @@ public final class FilesDatabaseManager: Sendable {
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
         keepExistingDownloadState: Bool,
-        preserveDeletedTarget: Bool = false
+        preserveDeletedTarget: Bool = false,
+        recordVisit: Bool = true
     ) -> ChangeSet? {
         write("Could not update any item metadatas.", [.account: account, .url: serverUrl], durability: .relaxed) { db in
             // Find the metadatas that we previously knew to be on the server for this account
@@ -718,7 +719,7 @@ public final class FilesDatabaseManager: Sendable {
             var visitToRecord: String?
 
             if var readTargetMetadata {
-                if readTargetMetadata.directory {
+                if readTargetMetadata.directory, recordVisit {
                     readTargetMetadata.visitedDirectory = true
                 }
 
@@ -729,10 +730,14 @@ public final class FilesDatabaseManager: Sendable {
                         readTargetMetadata.fileProviderContentVersion = existing.fileProviderContentVersion
                     }
 
+                    if readTargetMetadata.directory, !recordVisit {
+                        readTargetMetadata.visitedDirectory = existing.visitedDirectory
+                    }
+
                     // `visitedDirectory` is local-only, so it takes no part in the remote-state
                     // comparison and is recorded separately from `metadatasToUpdate`, which is also
                     // the change set handed to the framework.
-                    if canUpdateTarget, readTargetMetadata.directory, !existing.visitedDirectory {
+                    if canUpdateTarget, readTargetMetadata.directory, recordVisit, !existing.visitedDirectory {
                         visitToRecord = readTargetMetadata.ocId
                     }
 
@@ -1298,8 +1303,20 @@ public final class FilesDatabaseManager: Sendable {
                 }
             }
 
-            // Look for deleted children recursively
-            for serverUrl in deletedItems.filter(\.directory).map({ $0.remotePath() }) {
+            // Look for deleted children recursively. A deleted directory whose name a live directory took was recreated: what is below the name now belongs to the new directory.
+            for deletedDirectory in deletedItems.filter(\.directory) {
+                let recreated = try ItemMetadataRecord
+                    .filter(
+                        ItemMetadataRecord.hasLocation(serverUrl: deletedDirectory.serverUrl, fileName: deletedDirectory.fileName)
+                            && ItemMetadataRecord.Columns.deleted == false
+                            && ItemMetadataRecord.Columns.ocId != deletedDirectory.ocId
+                    )
+                    .fetchCount(db) > 0
+                guard !recreated else {
+                    continue
+                }
+
+                let serverUrl = deletedDirectory.remotePath()
                 let children = try ItemMetadataRecord
                     .filter(
                         ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: true)

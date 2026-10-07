@@ -64,6 +64,17 @@ extension FilesDatabaseManager {
     }
 
     ///
+    /// The remote state at which the working-set scan last reconciled the directory, or `nil`.
+    ///
+    func scannedRemoteStateForTesting(ocId: String) -> String? {
+        let state = try? writer.read { db in
+            try String.fetchOne(db, sql: "SELECT scannedRemoteState FROM itemMetadata WHERE ocId = ?", arguments: [ocId])
+        }
+
+        return state ?? nil
+    }
+
+    ///
     /// Every stored item row, ordered by identifier.
     ///
     func allItemMetadatasForTesting() -> [SendableItemMetadata] {

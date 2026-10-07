@@ -93,6 +93,16 @@ extension DatabaseTestSuites {
             #expect(!ItemMetadataRecord.Columns.allCases.map(\.rawValue).contains("reportedSyncTime"), "The record's upsert must not reset the mark.")
         }
 
+        @Test func theScannedRemoteStateColumnIsNullableTextOutsideTheRecord() throws {
+            let column = try manager.writer.read { db in
+                try db.columns(in: ItemMetadataRecord.databaseTableName).first { $0.name == "scannedRemoteState" }
+            }
+
+            #expect(try #require(column).type == "TEXT")
+            #expect(try #require(column).isNotNull == false)
+            #expect(!ItemMetadataRecord.Columns.allCases.map(\.rawValue).contains("scannedRemoteState"), "The record's upsert must not reset the scan's state.")
+        }
+
         @Test func markingUsesThePrimaryKey() throws {
             let plan = try manager.writer.read { db in
                 try Row
