@@ -724,8 +724,9 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// production, since the scan queue is sorted parent-first). The change in the OTHER folder must
     /// still be discovered and reported. Before the fix `scanMaterialisedItemsForRemoteChanges` `break`ed
     /// on the first failure and silently dropped every later folder's changes (the "files uploaded on
-    /// the web never appear" bug). The incomplete scan must also NOT advance the working-set sync point,
-    /// so the next signal re-derives and can pick up the folder it could not read this pass.
+    /// the web never appear" bug). The scan still advances the working-set sync point: the failed folder
+    /// is read again on the next pass regardless, because every materialised item is, while a kept
+    /// anchor made the next pass re-derive and re-deliver everything since the old date.
     func testWorkingSetScanContinuesPastAFailedFolderRead() async throws {
         // Both folders are read in the same wave; the name "a" also matches no path below it in the mock's suffix-based error injection.
         let failingFolder = makeFolder(name: "a", parent: rootItem, etag: "a-v1")
@@ -779,13 +780,69 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
             enumeratedPaths.contains { $0.hasSuffix("/zzzzzzzzzz/itemZ") },
             "The healthy folder's result must still be merged, and its read covers its file. Got: \(enumeratedPaths)"
         )
-        // The incomplete scan must keep the incoming sync anchor rather than advancing to a fresh "now",
-        // so the framework does not treat the domain as fully synced past the folder it could not read.
+        // The anchor advances although one folder could not be read: remote changes are found by comparing
+        // the server with the stored rows, not by date, so nothing is lost by moving on.
         let finalAnchor = try XCTUnwrap(observer.finishes.last?.anchor)
         XCTAssertEqual(
-            finalAnchor.rawValue, inputAnchor.rawValue,
-            "An incomplete working-set scan must not advance the working-set sync anchor."
+            finalAnchor.rawValue, enumerator.currentAnchor.rawValue,
+            "A failed remote read must not hold the working-set sync anchor back."
         )
+    }
+
+    /// The folder which could not be read is read again on the next pass, from the advanced anchor, and
+    /// what was created inside it surfaces then. Before, the next pass started from the old anchor and
+    /// re-derived and re-delivered everything since it, on every pass for as long as any folder kept failing.
+    func testAFailedFolderReadIsRetriedOnTheNextPassFromTheAdvancedAnchor() async throws {
+        let failingFolder = makeFolder(name: "a", parent: rootItem, etag: "a-v1")
+        let healthyFolder = makeFolder(name: "zzzzzzzzzz", parent: rootItem, etag: "z-v1")
+        let fileInHealthy = makeFile(name: "itemZ", parent: healthyFolder, etag: "itemZ-v1")
+
+        seed(failingFolder, visitedDirectory: true)
+        seed(healthyFolder, visitedDirectory: true)
+        seed(fileInHealthy, downloaded: true)
+
+        // A file created on the server inside the failing folder is known only through that folder's listing.
+        let createdInFailing = makeFile(name: "created", parent: failingFolder, etag: "created-v1")
+        failingFolder.versionIdentifier = "a-v2"
+        fileInHealthy.versionIdentifier = "itemZ-v2"; fileInHealthy.modificationDate = Date()
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.enumerateErrorBySuffix = [
+            "/a": NKError(statusCode: 502, fallbackDescription: "Bad Gateway")
+        ]
+
+        let firstPass = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let firstObserver = MockChangeObserver(enumerator: firstPass)
+        try await firstObserver.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity))
+        XCTAssertNil(firstObserver.error)
+        XCTAssertTrue(reportedIds(firstObserver).contains(fileInHealthy.identifier))
+        XCTAssertFalse(reportedIds(firstObserver).contains(createdInFailing.identifier), "The folder could not be read, so the new file is unknown yet.")
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: createdInFailing.identifier))
+        let advancedAnchor = try XCTUnwrap(firstObserver.finishes.last?.anchor)
+        XCTAssertEqual(advancedAnchor.rawValue, firstPass.currentAnchor.rawValue)
+
+        // The server recovers; the framework asks from the anchor it was given.
+        remoteInterface.enumerateErrorBySuffix = [:]
+        let secondPass = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let secondObserver = MockChangeObserver(enumerator: secondPass)
+        try await secondObserver.enumerateChanges(from: advancedAnchor)
+
+        XCTAssertNil(secondObserver.error)
+        XCTAssertTrue(reportedIds(secondObserver).contains(createdInFailing.identifier), "The retried folder's new file surfaces on the next pass.")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: createdInFailing.identifier)?.etag, "created-v1")
+        XCTAssertEqual(secondObserver.finishes.last?.anchor.rawValue, secondPass.currentAnchor.rawValue)
     }
 
     /// S3 (push gate): on notify_push servers `processFileIdsChanged` signals the working set when at
@@ -1079,7 +1136,8 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         archive.versionIdentifier = "archive-v2"
 
         let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock()).scanMaterialisedItemsForRemoteChanges()
-        XCTAssertFalse(scan.hadFailure)
+        XCTAssertFalse(scan.storeUnreadable)
+        XCTAssertEqual(scan.unreadableItemCount, 0)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, true, "Nothing in the scan lists the file at its new path.")
         _ = await Enumerator.readServerUrl(archive.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
         let inFolder = await Enumerator.readServerUrl(ontwerp.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
