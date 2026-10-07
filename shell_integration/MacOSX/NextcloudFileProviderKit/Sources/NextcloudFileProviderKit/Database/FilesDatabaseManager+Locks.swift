@@ -74,6 +74,8 @@ extension FilesDatabaseManager {
             target.lockTime = nil
             target.lockTimeOut = nil
             target.lockToken = nil
+            // The unlock reaches the system through the working-set derivation, which only reports state newer than what it handed over.
+            target.syncTime = Date()
 
             try target.upsertRow(db)
             return true

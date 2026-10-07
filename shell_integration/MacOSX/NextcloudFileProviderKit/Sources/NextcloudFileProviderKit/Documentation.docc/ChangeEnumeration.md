@@ -30,7 +30,7 @@ The enumerator has a different change source for each container type.
 
 | Container | Change source | Final anchor |
 | --- | --- | --- |
-| Working set | Scans materialised items on the server and combines those results with pending local changes. | A new current anchor when the scan completes. If a remote read fails, the incoming anchor is retained. |
+| Working set | Scans materialised items on the server and combines those results with the pending local changes the system has not received yet. | A new current anchor when the scan completes. If a remote read fails, the incoming anchor is retained. |
 | Regular directory | Reads the directory from WebDAV and compares it with local metadata. | The incoming anchor. |
 | Trash | Lists the server trash and finds local trash rows that no longer exist there. | The incoming anchor. |
 
@@ -80,6 +80,32 @@ value, its sequence number, and whether it is a deletion.
 This state is separate from the live item metadata. It preserves the exact
 value that was derived, including metadata for an item that may be removed from
 the live database before the next batch is requested.
+
+### Reported state
+
+Every item row keeps the `syncTime` of the state last handed to the framework,
+`reportedSyncTime`. An item enumeration page marks every row of the page once
+the observer took it, and a successful `createItem` or `modifyItem` reply marks
+the returned item. Change batches do not mark anything: the framework may ask
+again from the anchor a batch started at, and the advancing anchor already
+keeps delivered rows out of the next derivation.
+
+The working-set derivation reports a materialised row changed after the anchor
+only while its `syncTime` is newer than its mark, and the direct children of
+every such directory under the same rule. Without this, every item a folder
+listing just handed to the framework came back as a working-set change, and
+the framework ingests change batches far more slowly than item pages.
+Deletions are reported whether the row was marked or not, because a soft
+delete does not stamp a new `syncTime`. A listing which changed nothing the
+framework sees carries the mark along with the rewritten `syncTime`. The root
+container row is never reported, the framework synthesises that item.
+
+Right before a batch is handed over, a buffered snapshot older than state the
+framework received since is left out, so the newer state is not overwritten.
+
+A write which changes state the framework must learn about through
+enumeration therefore either stamps a fresh `syncTime`, as the lock state does,
+or is followed by a hand-over which marks the row.
 
 ## Batches
 
@@ -208,8 +234,17 @@ The change-enumeration tests are in
   and `testWorkingSetChangesFinishWithAnErrorWhenTheStoredSessionCannotBeRead`
   check that an unreadable item or session table ends the enumeration with an
   error instead of an empty batch.
+- `testFolderEnumerationHandOverIsNotReportedAsWorkingSetChange` and
+  `testRelistingAnUnchangedPaginatedFolderReportsNoWorkingSetChange` check
+  that a folder page handed to the framework does not come back as a
+  working-set change, while a later remote change does.
+- `testWorkingSetChangeDeliverySkipsSnapshotsOlderThanTheReportedState` checks
+  the delivery-time filter.
 
 `Tests/NextcloudFileProviderKitTests/Database/ChangeDeliveryBufferTests.swift` checks that a late acknowledgement from another enumerator or an earlier session never commits a later batch. `ChangeDeliveryStoreTests.swift` next to it covers preparation, replay, acknowledgement by session and end position, and removal of sessions.
+
+The derivation rule itself is covered by the `Reported state` suite in
+`Tests/NextcloudFileProviderKitTests/Database/ReportedStateTests.swift`.
 
 These tests exercise the delivery logic in the package. A signed macOS build
 is still required to verify the interaction with the real `fileproviderd`.

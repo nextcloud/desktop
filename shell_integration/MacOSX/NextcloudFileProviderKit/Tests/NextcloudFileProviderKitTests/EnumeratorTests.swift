@@ -1070,7 +1070,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
     /// batch, so the newer state is not overwritten. Equal stamps are still delivered.
     ///
     func testWorkingSetChangeDeliverySkipsSnapshotsOlderThanTheReportedState() async throws {
-        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300))
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
         let anchorKey = try XCTUnwrap(String(data: anchor.rawValue, encoding: .utf8))
         Self.dbManager.addItemMetadata(rootItem.toItemMetadata(account: Self.account))
         Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
@@ -1105,6 +1105,110 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(observer.changedItems.map(\.itemIdentifier.rawValue), [remoteItemB.identifier])
         XCTAssertEqual(observer.finishes.count, 1)
         XCTAssertEqual(Self.dbManager.reportedSyncTimeForTesting(ocId: remoteItemA.identifier), current.syncTime, "Delivery does not move the mark.")
+    }
+
+    ///
+    /// Items the system received through a folder page are not reported again as working-set changes; a
+    /// remote change after the hand-over is.
+    ///
+    func testFolderEnumerationHandOverIsNotReportedAsWorkingSetChange() async throws {
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        Self.dbManager.addItemMetadata(rootItem.toItemMetadata(account: Self.account))
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        let folderEnumerator = try Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let pageObserver = MockEnumerationObserver(enumerator: folderEnumerator)
+        try await pageObserver.enumerateItems()
+        XCTAssertEqual(pageObserver.items.count, 3)
+        for ocId in [remoteFolder.identifier, remoteItemA.identifier, remoteItemB.identifier] {
+            let mark = await awaitReportedSyncTime(ocId: ocId)
+            XCTAssertNotNil(mark, "\(ocId) was handed over.")
+        }
+
+        let workingSet = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let quiet = MockChangeObserver(enumerator: workingSet)
+        try await quiet.enumerateChanges(from: anchor)
+        XCTAssertNil(quiet.error)
+        XCTAssertEqual(quiet.changedItems.map(\.itemIdentifier.rawValue), [], "The system already has the whole page.")
+        XCTAssertEqual(quiet.deletedItemIdentifiers, [])
+
+        remoteItemA.versionIdentifier = "CHANGED"
+        let afterChange = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let changed = MockChangeObserver(enumerator: afterChange)
+        try await changed.enumerateChanges(from: anchor)
+        XCTAssertNil(changed.error)
+        XCTAssertEqual(changed.changedItems.map(\.itemIdentifier.rawValue), [remoteItemA.identifier])
+    }
+
+    ///
+    /// On a paginated server the container row is rewritten on every listing without being handed over.
+    /// Listing an unchanged folder twice must not report the folder as a working-set change.
+    ///
+    func testRelistingAnUnchangedPaginatedFolderReportsNoWorkingSetChange() async throws {
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, pagination: true)
+        remoteInterface.capabilities = remoteInterface.capabilities.replacingOccurrences(of: ##""major": 28"##, with: ##""major": 31"##)
+        Self.dbManager.addItemMetadata(rootItem.toItemMetadata(account: Self.account))
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        // The system learns the folder itself from the root listing.
+        let rootEnumerator = try Enumerator(
+            enumeratedItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        try await MockEnumerationObserver(enumerator: rootEnumerator).enumerateItems()
+        let folderMark = await awaitReportedSyncTime(ocId: remoteFolder.identifier)
+        XCTAssertNotNil(folderMark)
+
+        for _ in 0 ..< 2 {
+            let folderEnumerator = try Enumerator(
+                enumeratedItemIdentifier: .init(remoteFolder.identifier),
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager,
+                log: FileProviderLogMock()
+            )
+            let observer = MockEnumerationObserver(enumerator: folderEnumerator)
+            try await observer.enumerateItems()
+            XCTAssertEqual(observer.items.count, 2, "The paginated listing hands over the children only.")
+        }
+        let childMark = await awaitReportedSyncTime(ocId: remoteItemB.identifier)
+        XCTAssertNotNil(childMark)
+
+        let workingSet = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let observer = MockChangeObserver(enumerator: workingSet)
+        try await observer.enumerateChanges(from: anchor)
+
+        XCTAssertNil(observer.error)
+        XCTAssertEqual(observer.changedItems.map(\.itemIdentifier.rawValue), [])
     }
 
     func testEnumerateFile() async throws {

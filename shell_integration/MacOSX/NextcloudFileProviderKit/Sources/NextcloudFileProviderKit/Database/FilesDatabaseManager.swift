@@ -968,6 +968,8 @@ public final class FilesDatabaseManager: Sendable {
 
         // Server-derived rows written once per item during enumeration; the local flags they carry over were committed durably when they were set.
         write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl], durability: .relaxed) { db in
+            var unchangedSince: Date?
+
             if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
                 let hasFailedUpload = !existing.uploaded && existing.status == Status.uploadError.rawValue
                 // A listing describes the server copy while the local edit is still pending.
@@ -992,17 +994,24 @@ public final class FilesDatabaseManager: Sendable {
                     toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
                 }
 
-                // An ocId lookup can find a moved or deleted row, so check location and deletion state.
-                // Compare visitedDirectory separately because it is local-only.
-                // Writing other non-normal rows resets their state.
-                if !existing.deleted,
-                   existing.status == Status.normal.rawValue,
-                   existing.hasSameLocation(as: toWrite),
-                   existing.isInSameDatabaseStoreableRemoteState(toWrite),
-                   existing.visitedDirectory == toWrite.visitedDirectory
-                {
-                    logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
-                    return
+                // The remote state the system already received is unchanged. A write which
+                // happens anyway, to record a visit, must carry the reported mark past its
+                // new stamp, or the row comes back as a working-set change.
+                let remoteStateUnchanged = !existing.deleted
+                    && existing.status == Status.normal.rawValue
+                    && existing.hasSameLocation(as: toWrite)
+                    && existing.isInSameDatabaseStoreableRemoteState(toWrite)
+
+                if remoteStateUnchanged {
+                    unchangedSince = existing.syncTime
+
+                    // An ocId lookup can find a moved or deleted row, so check location and deletion state.
+                    // Compare visitedDirectory separately because it is local-only.
+                    // Writing other non-normal rows resets their state.
+                    if existing.visitedDirectory == toWrite.visitedDirectory {
+                        logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
+                        return
+                    }
                 }
             } else {
                 // The ocId lookup missed. Before falling back to defaults from the
@@ -1049,6 +1058,11 @@ public final class FilesDatabaseManager: Sendable {
 
             _ = try placeDirectory(toWrite, in: db)
             try insertItemMetadata(toWrite, in: db)
+
+            // The rewrite stamps a new `syncTime` although nothing the system sees changed: the remote state is the same and the local flags were carried over. A row the system already had therefore stays reported. The container of a paginated listing depends on this, it is rewritten on every visit but never handed over.
+            if let unchangedSince {
+                try carryReportedMark(of: toWrite, unchangedSince: unchangedSince, in: db)
+            }
         }
 
         return toWrite
@@ -1189,6 +1203,8 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// Look up the not yet synchronized changes and deletions in the materialized items since the last given synchronization time.
     ///
+    /// A materialized row changed after `date` is reported as updated only while the system has not received its current state, that is while its `syncTime` is newer than the mark `markReported(_:)` keeps; the direct children of every such directory are reported under the same rule. Deletions are reported regardless of the mark, because a soft delete does not stamp a new `syncTime`. A write which changes state the system must learn about through enumeration therefore either stamps a fresh `syncTime` or is followed by a hand-over which marks the row.
+    ///
     /// - Parameters:
     ///     - date: All items with a synchronization time later than this are considered.
     ///
@@ -1198,33 +1214,60 @@ public final class FilesDatabaseManager: Sendable {
         logger.debug("Gathering pending working set changes...")
 
         return read("Could not gather pending working set changes.") { db in
-            let pendingChanges = try ItemMetadataRecord
-                .filter(ItemMetadataRecord.isMaterialised && ItemMetadataRecord.syncedAfter(date))
-                .fetchRecords(db, logger: logger)
-            var updatedItems = pendingChanges.filter { !$0.deleted }.map(\.metadata)
-            var deletedItems = pendingChanges.filter(\.deleted).map(\.metadata)
+            // Every materialized row changed after the anchor: the directories among them are expanded whether the system has their own state or not, because a child may be pending while its directory is not.
+            let unreportedKey = "unreported"
+            let pendingRows = try Row.fetchCursor(
+                db,
+                ItemMetadataRecord
+                    .filter(ItemMetadataRecord.isMaterialised && ItemMetadataRecord.syncedAfter(date))
+                    .select(AllColumns(), ItemMetadataRecord.hasUnreportedState.forKey(unreportedKey))
+            )
+            var updatedItems: [SendableItemMetadata] = []
+            var deletedItems: [SendableItemMetadata] = []
+            var directoriesToExpand: [SendableItemMetadata] = []
 
-            for item in updatedItems {
-                logger.debug("Found updated item.", [.item: item.ocId, .name: item.fileName])
-            }
+            while let row = try pendingRows.next() {
+                guard let record = ItemMetadataRecord.decode(row, logger: logger) else {
+                    continue
+                }
 
-            for item in deletedItems {
-                logger.debug("Found deleted item.", [.item: item.ocId, .name: item.fileName])
+                let metadata = record.metadata
+
+                if record.deleted {
+                    deletedItems.append(metadata)
+                    logger.debug("Found deleted item.", [.item: metadata.ocId, .name: metadata.fileName])
+                    continue
+                }
+
+                if record.directory {
+                    directoriesToExpand.append(metadata)
+                }
+
+                // The system synthesises the root container and never receives its row, so the row is expanded but not reported.
+                guard record.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue else {
+                    continue
+                }
+
+                if row[unreportedKey] as Bool {
+                    updatedItems.append(metadata)
+                    logger.debug("Found updated item.", [.item: metadata.ocId, .name: metadata.fileName])
+                }
             }
 
             var updatedItemIdentifiers = Set(updatedItems.map(\.ocId))
             var deletedItemIdentifiers = Set(deletedItems.map(\.ocId))
 
             // Look for changed children
-            for serverUrl in updatedItems.filter(\.directory).map({ $0.remotePath() }) {
+            for serverUrl in directoriesToExpand.map({ $0.remotePath() }) {
                 let children = try ItemMetadataRecord
                     .filter(
                         ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: false)
                             && ItemMetadataRecord.syncedAfter(date)
+                            && (ItemMetadataRecord.Columns.deleted == true || ItemMetadataRecord.hasUnreportedState)
                     )
                     .fetchRecords(db, logger: logger)
 
-                for child in children {
+                for child in children where child.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue {
                     let sendableMetadata = child.metadata
 
                     if child.deleted {
