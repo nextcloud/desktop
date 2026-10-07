@@ -23,7 +23,7 @@ Rows leave the database as ``SendableItemMetadata`` and the other value types; t
 - Array fields are stored as JSON text. Booleans are integers.
 - Recorded upload chunks are keyed by upload identifier and chunk number and returned in chunk order.
 - The `fileId` column is indexed for the push-notification lookup, which asks for thousands of identifiers at once.
-- `itemMetadata.reportedSyncTime`, the `syncTime` of the row state last handed to the framework, is the one column outside its record type. The record's upsert assigns every record column on conflict, and the mark has to survive every rewrite of a row, so only `markReported(_:)` writes it. See <doc:ChangeEnumeration> for what it is for.
+- Two `itemMetadata` columns are outside the record type, because the record's upsert assigns every record column on conflict and both have to survive every rewrite of a row: `reportedSyncTime`, the `syncTime` of the row state last handed to the framework, written only by `markReported(_:)`, and `scannedRemoteState`, the etag and permissions at which the working-set scan last reconciled everything below a directory, written only by `recordScannedRemoteStates(_:forgetting:)`. See <doc:ChangeEnumeration> for what they are for.
 
 ## Durability
 

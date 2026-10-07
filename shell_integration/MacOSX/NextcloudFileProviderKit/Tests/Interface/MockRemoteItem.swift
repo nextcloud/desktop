@@ -160,6 +160,26 @@ public class MockRemoteItem: Equatable {
         bumpVersion()
     }
 
+    ///
+    /// Move the item below another directory, rewriting the paths of everything below it. The item keeps its own version, as the server does; both parents are bumped.
+    ///
+    public func move(to newParent: MockRemoteItem, renamingTo newName: String? = nil) {
+        parent?.children.removeAll { $0 === self }
+        parent?.bumpVersion()
+        name = newName ?? name
+        parent = newParent
+        newParent.children.append(self)
+        rewritePaths(below: newParent.remotePath)
+        newParent.bumpVersion()
+    }
+
+    private func rewritePaths(below parentPath: String) {
+        remotePath = parentPath + "/" + name
+        for child in children {
+            child.rewritePaths(below: remotePath)
+        }
+    }
+
     public func toNKFile() -> NKFile {
         let isRoot = identifier == NSFileProviderItemIdentifier.rootContainer.rawValue
         var file = NKFile()

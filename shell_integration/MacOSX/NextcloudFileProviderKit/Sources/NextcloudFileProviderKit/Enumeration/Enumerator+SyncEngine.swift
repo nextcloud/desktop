@@ -91,6 +91,7 @@ extension Enumerator {
         files: [NKFile],
         pageIndex: Int?,
         preserveDeletedTarget: Bool,
+        recordVisit: Bool = true,
         log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
@@ -137,9 +138,13 @@ extension Enumerator {
         if let existingMetadata = await dbManager.perform({ $0.itemMetadata(ocId: directoryOcId) }) {
             directory.downloaded = existingMetadata.downloaded
             directory.keepDownloaded = existingMetadata.keepDownloaded
+            directory.visitedDirectory = existingMetadata.visitedDirectory
         }
 
-        directory.visitedDirectory = true
+        // The system visited the directory when it asked for this listing; a scan of our own did not.
+        if recordVisit {
+            directory.visitedDirectory = true
+        }
 
         files.insert(directory, at: 0)
 
@@ -157,7 +162,8 @@ extension Enumerator {
                 serverUrl: serverUrl,
                 updatedMetadatas: files,
                 keepExistingDownloadState: true,
-                preserveDeletedTarget: preserveDeletedTarget
+                preserveDeletedTarget: preserveDeletedTarget,
+                recordVisit: recordVisit
             )
             signposter.endInterval("Depth1BatchWrite", batchWriteState)
 
@@ -189,7 +195,7 @@ extension Enumerator {
     ///
     /// The listing itself keeps the server's conversions, because a folder download compares the version it transferred against them.
     ///
-    /// - Parameter files: The listing, the directory read first, as ``handleDepth1ReadFileOrFolder(serverUrl:account:dbManager:files:pageIndex:preserveDeletedTarget:log:)`` returns it.
+    /// - Parameter files: The listing, the directory read first, as ``handleDepth1ReadFileOrFolder(serverUrl:account:dbManager:files:pageIndex:preserveDeletedTarget:recordVisit:log:)`` returns it.
     ///
     static func storedRows(for files: [SendableItemMetadata], dbManager: FilesDatabaseManager) -> [SendableItemMetadata] {
         guard let directory = files.first, directory.directory else {
@@ -242,6 +248,7 @@ extension Enumerator {
         depth: EnumerateDepth = .targetAndDirectChildren,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
+        recordVisit: Bool = true,
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
         guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
@@ -449,6 +456,7 @@ extension Enumerator {
                 files: files,
                 pageIndex: pageSettings?.index,
                 preserveDeletedTarget: expectedDirectoryOcId != nil,
+                recordVisit: recordVisit,
                 log: logger.log
             )
 

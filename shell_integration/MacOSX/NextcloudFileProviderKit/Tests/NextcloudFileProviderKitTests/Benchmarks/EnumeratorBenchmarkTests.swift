@@ -158,6 +158,8 @@ final class EnumeratorBenchmarkTests: NextcloudFileProviderKitTestCase {
     ///
     /// Three passes over the same fixture: the first after the database was filled, an idle pass, and a pass after one file in one leaf changed.
     ///
+    /// The request counts are asserted, not only reported: an idle pass costs the root listing alone, and one changed leaf file costs the listings on its path from the root.
+    ///
     /// Timed with `ContinuousClock` and reported through ``BenchmarkReport`` rather than `measure(metrics:)`, because the passes are asynchronous.
     ///
     func testBenchmarkWorkingSetScanPasses() async throws {
@@ -207,6 +209,9 @@ final class EnumeratorBenchmarkTests: NextcloudFileProviderKitTestCase {
                 "The changed leaf file must be reported."
             )
         }
+
+        XCTAssertEqual(idleRequests, 1, "An idle domain costs one request, the root listing.")
+        XCTAssertEqual(changedRequests, 4, "One changed leaf file costs the listings of the root and the three directories on its path.")
 
         BenchmarkReport.print("WorkingSetScanColdPass", items: itemCount, durations: coldDurations, requests: coldRequests)
         BenchmarkReport.print("WorkingSetScanIdlePass", items: itemCount, durations: idleDurations, requests: idleRequests)

@@ -7,7 +7,7 @@ import GRDB
 ///
 /// Tables and indexes of the metadata database, applied through a `DatabaseMigrator`.
 ///
-/// Every table mirrors one record type under `Database/Records`, with one exception: `itemMetadata.reportedSyncTime` is written only by `FilesDatabaseManager.markReported(_:)` and stays outside ``ItemMetadataRecord``, so the record's upsert never touches it. Dates are `REAL` seconds since the reference date, booleans `INTEGER`, arrays JSON `TEXT`.
+/// Every table mirrors one record type under `Database/Records`, with two exceptions on `itemMetadata`: `reportedSyncTime`, written only by `FilesDatabaseManager.markReported(_:)`, and `scannedRemoteState`, written only by the working-set scan. Both stay outside ``ItemMetadataRecord``, so the record's upsert never touches them. Dates are `REAL` seconds since the reference date, booleans `INTEGER`, arrays JSON `TEXT`.
 ///
 enum DatabaseSchema {
     /// File extension of the database next to the domain's logs.
@@ -133,6 +133,9 @@ enum DatabaseSchema {
 
                 // Outside ``ItemMetadataRecord``: the `syncTime` of the row state last handed to the system; `NULL` means never.
                 table.column("reportedSyncTime", .real)
+
+                // Outside ``ItemMetadataRecord``: the remote state (etag and permissions) at which the working-set scan last reconciled everything materialized below a directory; `NULL` means never.
+                table.column("scannedRemoteState", .text)
             }
 
             // Serves the location lookup (both columns) and the directory lookups (leading column, equality and range).

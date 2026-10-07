@@ -11,7 +11,7 @@ import GRDB
 ///
 /// Rows are read and written by the explicit conversion in `ItemMetadataRecord+Row.swift`: dates as seconds since the reference date, arrays as JSON text.
 ///
-/// The table's `reportedSyncTime` column is deliberately absent here. The upsert assigns every column of this type on conflict, and the mark must survive every rewrite of a row, so only `FilesDatabaseManager.markReported(_:)` writes it.
+/// The table's `reportedSyncTime` and `scannedRemoteState` columns are deliberately absent here. The upsert assigns every column of this type on conflict, and those marks must survive every rewrite of a row, so only `FilesDatabaseManager.markReported(_:)` and the working-set scan write them.
 ///
 struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, PersistableRecord {
     static let databaseTableName = "itemMetadata"
