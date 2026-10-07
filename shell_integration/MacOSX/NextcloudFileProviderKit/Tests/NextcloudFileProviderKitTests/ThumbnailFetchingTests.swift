@@ -5,7 +5,6 @@
 import Foundation
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import RealmSwift
 import Testing
 
 @Suite(.serialized)
@@ -23,12 +22,10 @@ struct ThumbnailFetchingTests {
     func forwardsDomainAndCallbacks(serverError: Bool) async throws {
         let ext = makeExtension()
         defer { ext.invalidate() }
-        let previousConfiguration = Realm.Configuration.defaultConfiguration
-        defer { Realm.Configuration.defaultConfiguration = previousConfiguration }
         let databaseDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: databaseDirectory, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: databaseDirectory) }
-        let database = FilesDatabaseManager(
+        let database = try FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: databaseDirectory,
             fileProviderDomainIdentifier: ext.domain.identifier,
