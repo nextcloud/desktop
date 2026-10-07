@@ -77,7 +77,7 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         return try isPrimed(forKey: key)
     }
 
-    /// Whether the currently active derivation was incomplete and must retain its incoming sync anchor; throws like ``isPrimed(forKey:)``.
+    /// Whether the currently active derivation could not read its local inputs and must retain its incoming sync anchor; throws like ``isPrimed(forKey:)``.
     func isPrimedIncomplete() throws -> Bool {
         lock.lock()
         defer { lock.unlock() }

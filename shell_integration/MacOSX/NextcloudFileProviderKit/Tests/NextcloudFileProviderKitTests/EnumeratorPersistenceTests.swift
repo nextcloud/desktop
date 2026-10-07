@@ -64,7 +64,14 @@ struct EnumeratorPersistenceTests {
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
     }
 
-    @Test func workingSetKeepsItsAnchorAndReportsTheChangeAfterRetry() async throws {
+    ///
+    /// A listing whose write fails is a listing the pass could not complete, like one the server refused.
+    ///
+    /// The pass reports nothing for that folder and moves its anchor on. Nothing is lost by that: the
+    /// folder is read again on the next pass, where the comparison with the stored rows still finds the
+    /// change, whatever date the anchor carries.
+    ///
+    @Test func workingSetAdvancesItsAnchorAndReportsTheChangeAfterRetry() async throws {
         folder.versionIdentifier = "folder-v2"
         file.versionIdentifier = "file-v2"
         try manager.setItemMetadataWriteFailureForTesting(true)
@@ -76,12 +83,13 @@ struct EnumeratorPersistenceTests {
         #expect(failed.error == nil)
         #expect(failed.changedItems.isEmpty)
         #expect(failed.deletedItemIdentifiers.isEmpty)
-        #expect(failed.finishes.last?.anchor.rawValue == anchor.rawValue)
+        let advanced = try #require(failed.finishes.last?.anchor)
+        #expect(advanced.rawValue != anchor.rawValue)
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
 
         try manager.setItemMetadataWriteFailureForTesting(false)
         let recovered = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
-        try await recovered.enumerateChanges(from: anchor)
+        try await recovered.enumerateChanges(from: advanced)
 
         #expect(recovered.error == nil)
         #expect(recovered.changedItems.contains { $0.itemIdentifier.rawValue == file.identifier })

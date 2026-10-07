@@ -30,7 +30,7 @@ The enumerator has a different change source for each container type.
 
 | Container | Change source | Final anchor |
 | --- | --- | --- |
-| Working set | Scans materialised items on the server and combines those results with the pending local changes the system has not received yet. | A new current anchor when the scan completes. If a remote read fails, the incoming anchor is retained. |
+| Working set | Scans materialised items on the server and combines those results with the pending local changes the system has not received yet. | A new current anchor. Only when the pending local changes cannot be read is the incoming anchor retained. |
 | Regular directory | Reads the directory from WebDAV and compares it with local metadata. | The incoming anchor. |
 | Trash | Lists the server trash and finds local trash rows that no longer exist there. | The incoming anchor. |
 
@@ -55,9 +55,10 @@ reported as `NSFileProviderError(.syncAnchorExpired)`. File Provider can then
 discard its cached state and request a fresh item enumeration.
 
 The final anchor is not necessarily the anchor passed to the request. A
-successful working-set scan advances to the enumerator's current anchor. A
-scan with skipped remote reads keeps the incoming anchor so the next working-set
-signal retries the missed work.
+working-set scan advances to the enumerator's current anchor, also when some
+remote reads failed. Only a scan which could not read the pending local
+changes keeps the incoming anchor, so they are derived again on the next
+signal.
 
 ## Deriving and storing changes
 
@@ -180,16 +181,28 @@ used for the next request. See Apple's documentation for
 [`finishEnumeratingChanges(upTo:moreComing:)`](https://developer.apple.com/documentation/fileprovider/nsfileproviderchangeobserver/finishenumeratingchanges%28upto%3Amorecoming%3A%29),
 and [`NSFileProviderSyncAnchor`](https://developer.apple.com/documentation/fileprovider/nsfileprovidersyncanchor).
 
-## Incomplete working-set scans
+## Failed reads during a working-set scan
 
 The working-set scan continues after an individual remote read fails. It
-records that the scan was incomplete and skips that item for the current pass.
-The changes found from other items are still delivered.
+skips that item for the current pass and logs how many it skipped. The changes
+found from other items are still delivered, and the anchor advances as after a
+clean pass.
 
-When the stored list is exhausted, an incomplete scan returns the incoming
-anchor. The next working-set notification can then retry the unreadable item.
-This prevents the extension from claiming that it has synchronised past a
-change it did not inspect.
+Nothing is lost by advancing. Remote changes are found by comparing the server
+with the stored rows, not by date, and every materialised item is read again
+on the next pass, so the unreadable item is retried either way. Keeping the
+incoming anchor instead, as earlier versions did, made the next pass derive
+and deliver every change since the old date again, and on a server which
+fails one read in thousands the anchor never moved.
+
+A listing the store could not persist counts the same way: the read reports
+`metadataDatabaseWriteFailed`, the item is skipped for the pass and read
+again on the next one. Only the store itself being unreadable keeps the
+incoming anchor, because the pending local changes are derived from its date.
+
+Only a scan which could not read the pending local changes from the database
+keeps the incoming anchor. Those changes are derived from the anchor date, so
+advancing past a failed read would lose them.
 
 Regular-directory and trash enumeration use their own remote-read error paths.
 A missing regular directory is reported as a deletion, a no-change response
@@ -211,8 +224,9 @@ expected. The important check is that the returned anchor is recognised and
 the next batch is delivered without re-running the remote change scan.
 
 If a remote read fails, look for the corresponding
-`Read of materialised item failed during working-set scan` message. An
-incomplete scan should also log that it retained the incoming sync anchor.
+`Read of materialised item failed during working-set scan` message and, at
+the end of the pass, for the count of skipped items in
+`Working-set remote-change scan skipped`.
 
 ## Tests
 
@@ -240,6 +254,9 @@ The change-enumeration tests are in
   working-set change, while a later remote change does.
 - `testWorkingSetChangeDeliverySkipsSnapshotsOlderThanTheReportedState` checks
   the delivery-time filter.
+- `RemoteChangePropagationTests.testAFailedFolderReadIsRetriedOnTheNextPassFromTheAdvancedAnchor`
+  checks that a failed remote read advances the anchor and is retried on the
+  next pass.
 
 `Tests/NextcloudFileProviderKitTests/Database/ChangeDeliveryBufferTests.swift` checks that a late acknowledgement from another enumerator or an earlier session never commits a later batch. `ChangeDeliveryStoreTests.swift` next to it covers preparation, replay, acknowledgement by session and end position, and removal of sessions.
 
