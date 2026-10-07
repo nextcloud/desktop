@@ -83,6 +83,28 @@ extension DatabaseTestSuites {
             #expect(FileManager.default.fileExists(atPath: directory.appendingPathComponent("readonly.sqlite").path) == false)
         }
 
+        @Test func theReportedSyncTimeColumnIsNullableAndOutsideTheRecord() throws {
+            let column = try manager.writer.read { db in
+                try db.columns(in: ItemMetadataRecord.databaseTableName).first { $0.name == "reportedSyncTime" }
+            }
+
+            #expect(try #require(column).type == "REAL")
+            #expect(try #require(column).isNotNull == false)
+            #expect(!ItemMetadataRecord.Columns.allCases.map(\.rawValue).contains("reportedSyncTime"), "The record's upsert must not reset the mark.")
+        }
+
+        @Test func markingUsesThePrimaryKey() throws {
+            let plan = try manager.writer.read { db in
+                try Row
+                    .fetchAll(db, sql: "EXPLAIN QUERY PLAN " + FilesDatabaseManager.markReportedSQL, arguments: [1.0, "x", 1.0])
+                    .map { $0["detail"] as String }
+                    .joined(separator: " | ")
+            }
+
+            #expect(plan.contains("sqlite_autoindex_itemMetadata_1"), "Plan: \(plan)")
+            #expect(!plan.contains("SCAN itemMetadata"), "Plan: \(plan)")
+        }
+
         @Test func fileIdLookupsUseTheFileIdIndex() throws {
             let plan = try manager.writer.read { db in
                 let statement = try ItemMetadataRecord
