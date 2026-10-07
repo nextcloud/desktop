@@ -339,6 +339,14 @@ IF( APPLE )
         macOS/trayaccountpopup/nctraypopup.mm
         macOS/trayaccountpopup/trayaccountpopup_mac.mm)
     set_property(SOURCE
+        macOS/trayaccountpopup/trayaccountpopupimageutils.mm
+        macOS/trayaccountpopup/trayaccountpopupviewutils.mm
+        macOS/trayaccountpopup/nchoverview.mm
+        macOS/trayaccountpopup/ncaccountrow.mm
+        macOS/trayaccountpopup/ncstaticinforow.mm
+        macOS/trayaccountpopup/ncsectionheaderrow.mm
+        systray_mac_common.mm
+        notificationsoundplayer_mac.mm
         macOS/trayaccountpopup/ncactionrow.mm
         macOS/trayaccountpopup/ncpointinghandbutton.mm
         macOS/trayaccountpopup/ncalertboxrow.mm
@@ -348,13 +356,6 @@ IF( APPLE )
         macOS/trayaccountpopup/ncaccountactionspopup.mm
         macOS/trayaccountpopup/nctraypopup.mm
         macOS/trayaccountpopup/trayaccountpopup_mac.mm
-        macOS/trayaccountpopup/trayaccountpopupimageutils.mm
-        macOS/trayaccountpopup/trayaccountpopupviewutils.mm
-        macOS/trayaccountpopup/nchoverview.mm
-        macOS/trayaccountpopup/ncaccountrow.mm
-        macOS/trayaccountpopup/ncstaticinforow.mm
-        macOS/trayaccountpopup/ncsectionheaderrow.mm
-        systray_mac_common.mm
         systray_mac_usernotifications.mm
         macOS/findersyncbrokerregistrar_mac.mm
         macOS/fileprovider_mac.mm
