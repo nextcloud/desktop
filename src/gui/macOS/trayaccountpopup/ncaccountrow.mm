@@ -8,6 +8,8 @@
 #import "trayaccountpopupmetrics.h"
 #import "trayaccountpopupviewutils.h"
 
+static_assert(__has_feature(objc_arc), "The native tray account row requires ARC.");
+
 using namespace OCC::Mac::TrayPopupViewUtils;
 
 @implementation NCAccountRow {
@@ -22,7 +24,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     if (!self) return nil;
     self.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
 
-    _hoverView = [[[NSView alloc] init] autorelease];
+    _hoverView = [[NSView alloc] init];
     _hoverView.wantsLayer = YES;
     _hoverView.layer.backgroundColor = hoverColor().CGColor;
     _hoverView.layer.cornerRadius = kHoverRadius;

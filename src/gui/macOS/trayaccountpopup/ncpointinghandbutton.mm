@@ -5,6 +5,8 @@
 
 #import "ncpointinghandbutton.h"
 
+static_assert(__has_feature(objc_arc), "ncpointinghandbutton requires ARC.");
+
 @implementation NCPointingHandButton
 
 - (void)resetCursorRects

@@ -338,6 +338,24 @@ IF( APPLE )
         macOS/trayaccountpopup/nctraypopup.h
         macOS/trayaccountpopup/nctraypopup.mm
         macOS/trayaccountpopup/trayaccountpopup_mac.mm)
+    set_property(SOURCE
+        macOS/trayaccountpopup/ncactionrow.mm
+        macOS/trayaccountpopup/ncpointinghandbutton.mm
+        macOS/trayaccountpopup/ncalertboxrow.mm
+        macOS/trayaccountpopup/ncspacerview.mm
+        macOS/trayaccountpopup/ncappspopup.mm
+        macOS/trayaccountpopup/ncnotificationactionspopup.mm
+        macOS/trayaccountpopup/ncaccountactionspopup.mm
+        macOS/trayaccountpopup/nctraypopup.mm
+        macOS/trayaccountpopup/trayaccountpopup_mac.mm
+        macOS/trayaccountpopup/trayaccountpopupimageutils.mm
+        macOS/trayaccountpopup/trayaccountpopupviewutils.mm
+        macOS/trayaccountpopup/nchoverview.mm
+        macOS/trayaccountpopup/ncaccountrow.mm
+        macOS/trayaccountpopup/ncstaticinforow.mm
+        macOS/trayaccountpopup/ncsectionheaderrow.mm
+        APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc
+    )
     list(APPEND client_SRCS macOS/singleinstancemanager_mac.mm)
 
     list(APPEND client_SRCS systray_mac_usernotifications.mm)
