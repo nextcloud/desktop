@@ -26,6 +26,8 @@
 #import <AppKit/AppKit.h>
 // End of Objective-C imports
 
+static_assert(__has_feature(objc_arc), "fileprovidersettingscontroller_mac requires ARC.");
+
 namespace {
 // NSUserDefaults entries
 constexpr auto enabledAccountsSettingsKey = "enabledAccounts";

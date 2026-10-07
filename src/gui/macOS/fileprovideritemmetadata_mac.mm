@@ -14,6 +14,8 @@
 
 #include "fileproviderutils.h"
 
+static_assert(__has_feature(objc_arc), "fileprovideritemmetadata_mac requires ARC.");
+
 namespace {
 
 QString nsNameComponentsToLocalisedQString(NSPersonNameComponents *const nameComponents)
@@ -123,7 +125,6 @@ QString FileProviderItemMetadata::getUserVisiblePath() const
 
     // getUserVisibleUrl is async, so wait here
 
-    [manager retain];
     [manager getUserVisibleURLForItemIdentifier:nsItemIdentifier
                               completionHandler:^(NSURL *const userVisibleFile, NSError *const error) {
 
@@ -133,12 +134,10 @@ QString FileProviderItemMetadata::getUserVisiblePath() const
             returnPath = QString::fromNSString(userVisibleFile.path);
         }
 
-        [manager release];
         dispatch_semaphore_signal(semaphore);
     }];
 
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    dispatch_release(semaphore);
 
     return returnPath;
 }

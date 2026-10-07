@@ -15,6 +15,8 @@
 
 #import <Foundation/Foundation.h>
 
+static_assert(__has_feature(objc_arc), "fileprovider_mac requires ARC.");
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcMacFileProvider, "nextcloud.gui.macfileprovider", QtInfoMsg)

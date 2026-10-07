@@ -18,6 +18,8 @@
 #import <Cocoa/Cocoa.h>
 #import <FileProvider/FileProvider.h>
 
+static_assert(__has_feature(objc_arc), "fileprovidereditlocallyjob_mac requires ARC.");
+
 namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderEditLocallyMacJob, 
@@ -51,7 +53,6 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
         return;
     }
 
-    [manager retain];
     [manager getUserVisibleURLForItemIdentifier:nsOcId
                               completionHandler:^(NSURL *const url, NSError *const error) {
 
@@ -79,7 +80,6 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
                 Q_EMIT notAvailable();
             });
         }
-        [manager release];
     }];
 }
 
