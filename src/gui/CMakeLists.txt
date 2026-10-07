@@ -354,6 +354,8 @@ IF( APPLE )
         macOS/trayaccountpopup/ncaccountrow.mm
         macOS/trayaccountpopup/ncstaticinforow.mm
         macOS/trayaccountpopup/ncsectionheaderrow.mm
+        systray_mac_common.mm
+        systray_mac_usernotifications.mm
         APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc
     )
     list(APPEND client_SRCS macOS/singleinstancemanager_mac.mm)
