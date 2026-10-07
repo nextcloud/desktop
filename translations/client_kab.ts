@@ -154,7 +154,7 @@
     <name>ActivityItemContent</name>
     <message>
         <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="203"/>
-        <location filename="../src/gui/activity/activitydata.cpp" line="314"/>
+        <location filename="../src/gui/activity/activitydata.cpp" line="315"/>
         <source>Dismiss</source>
         <translation>Agi</translation>
     </message>
@@ -6953,63 +6953,63 @@ Server replied with error: %2</source>
         <location filename="../src/gui/advancedsettings.cpp" line="203"/>
         <location filename="../src/gui/advancedsettings.cpp" line="215"/>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Timerna n uɣbaṛ n useɣti ur teddi ara</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="143"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi asnulfu n uɣbaṛ n useɣti deg wadig yettwafernen!</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="192"/>
         <source>Could not create debug archive in temporary location!</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi asnulfu n uɣbaṛ n useɣti deg wadig askudan!</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="204"/>
         <source>Could not remove existing file at destination!</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi tukksa n ufaylu yellan di tɣerwaḍt!</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="216"/>
         <source>Could not move debug archive to selected location!</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi asmutti n uɣbaṛ n useɣti ɣer wadig yettwafernen!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="360"/>
         <source>Answer</source>
         <extracomment>Action for answering an incoming Talk call.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Err-as</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1376"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Tesnifeleḍ isem n %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1378"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Tekkseḍ %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Tesnulfaḍ-d %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1382"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Tesnifeleḍ %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1406"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Yettwamtawi %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="576"/>
         <source>Error deleting the file</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg tukksa n ufaylu</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
@@ -7162,7 +7162,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Mdel</translation>
     </message>
 </context>
 <context>
@@ -7170,12 +7170,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Search for recipients</source>
-        <translation type="unfinished"/>
+        <translation>Nadi ɣef iɣerwaḍen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Beṭṭu ur yewjid ara i ukaram-agi</translation>
     </message>
 </context>
 <context>
@@ -7183,13 +7183,13 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="31"/>
         <source>Solve sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Fru ccwalat n umtawa</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 n ufaylu di ccwal</numerusform><numerusform>%1 n ifuyla di ccwal</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
@@ -7199,17 +7199,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
         <source>All local versions</source>
-        <translation type="unfinished"/>
+        <translation>Akk ileqman idiganen</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="89"/>
         <source>All server versions</source>
-        <translation type="unfinished"/>
+        <translation>Akk ileqman n uqeddac</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="144"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Fru ccwalat</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
