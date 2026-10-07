@@ -72,19 +72,6 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
         return options
     }
 
-    private func report(_ name: String, items: Int, durations: [Duration]) {
-        let seconds = durations.map { Double($0.components.seconds) + Double($0.components.attoseconds) / 1e18 }.sorted()
-        guard !seconds.isEmpty else {
-            return
-        }
-
-        let median = seconds[seconds.count / 2]
-        let mean = seconds.reduce(0, +) / Double(seconds.count)
-        let variance = seconds.reduce(0) { $0 + ($1 - mean) * ($1 - mean) } / Double(seconds.count)
-        let itemsPerSecond = median > 0 ? Double(items) / median : 0
-        print(String(format: "PERF-BENCH %@ items=%d iterations=%d median_s=%.3f stddev_s=%.3f items_per_s=%.0f", name, items, seconds.count, median, variance.squareRoot(), itemsPerSecond))
-    }
-
     ///
     /// The flat-folder shape that made depth-1 writes quadratic before: one cold pass creating every child, then one warm pass where every etag changed.
     ///
@@ -112,7 +99,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             XCTAssertEqual(warmChangeSet?.updated.count, Self.flatFolderChildCount + 1)
         }
 
-        report("Depth1BatchWriteFlatFolder", items: 2 * (Self.flatFolderChildCount + 1), durations: durations)
+        BenchmarkReport.print("Depth1BatchWriteFlatFolder", items: 2 * (Self.flatFolderChildCount + 1), durations: durations)
     }
 
     ///
@@ -141,7 +128,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             XCTAssertEqual(manager.itemMetadatas(account: Self.account.ncKitAccount).count, Self.preservingLocalStateRowCount)
         }
 
-        report("AddItemMetadataPreservingLocalState", items: 2 * Self.preservingLocalStateRowCount, durations: durations)
+        BenchmarkReport.print("AddItemMetadataPreservingLocalState", items: 2 * Self.preservingLocalStateRowCount, durations: durations)
     }
 
     ///
@@ -168,7 +155,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             XCTAssertFalse(found)
         }
 
-        report("ContainsAnyItemMetadata", items: absentIds.count, durations: durations)
+        BenchmarkReport.print("ContainsAnyItemMetadata", items: absentIds.count, durations: durations)
     }
 
     ///
@@ -197,7 +184,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             XCTAssertEqual(manager.itemMetadata(ocId: "file-0")?.keepDownloaded, true)
         }
 
-        report("DurableLocalStateWrites", items: 1000, durations: durations)
+        BenchmarkReport.print("DurableLocalStateWrites", items: 1000, durations: durations)
     }
 
     ///
@@ -230,7 +217,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             XCTAssertEqual(changes.deleted.count, 0)
         }
 
-        report("PendingWorkingSetChanges", items: Self.workingSetRowCount, durations: durations)
+        BenchmarkReport.print("PendingWorkingSetChanges", items: Self.workingSetRowCount, durations: durations)
     }
 
     ///
@@ -280,8 +267,8 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
         }
 
         let itemCount = Self.treeDirectoryCount * (Self.treeChildCount + 1)
-        report("PendingWorkingSetChangesAfterFolderWalkUnreported", items: itemCount, durations: unreportedDurations)
-        report("PendingWorkingSetChangesAfterFolderWalkReported", items: itemCount, durations: reportedDurations)
-        report("MarkReportedPage", items: Self.treeChildCount + 1, durations: markDurations)
+        BenchmarkReport.print("PendingWorkingSetChangesAfterFolderWalkUnreported", items: itemCount, durations: unreportedDurations)
+        BenchmarkReport.print("PendingWorkingSetChangesAfterFolderWalkReported", items: itemCount, durations: reportedDurations)
+        BenchmarkReport.print("MarkReportedPage", items: Self.treeChildCount + 1, durations: markDurations)
     }
 }
