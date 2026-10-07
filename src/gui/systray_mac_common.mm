@@ -9,6 +9,8 @@
 
 #include "systray.h"
 
+static_assert(__has_feature(objc_arc), "systray_mac_common requires ARC.");
+
 Q_LOGGING_CATEGORY(lcMacSystrayCommon, "nextcloud.gui.macsystraycommon")
 
 namespace OCC {
@@ -30,7 +32,7 @@ double menuBarThickness()
 
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *const window)
 {
-    NSView * const nativeView = (NSView *)window->winId();
+    NSView * const nativeView = (__bridge NSView *)reinterpret_cast<void *>(window->winId());
     NSWindow * const nativeWindow = (NSWindow *)(nativeView.window);
     [nativeWindow setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorIgnoresCycle |
                   NSWindowCollectionBehaviorTransient];
