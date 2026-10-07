@@ -43,6 +43,26 @@ extension FilesDatabaseManager {
         }
     }
 
+    /// Moves a mark which covered the row's previous state up to the rewritten state. Only rows marked at or after `unchangedSince` qualify.
+    private static let carryReportedMarkSQL = """
+    UPDATE \(ItemMetadataRecord.databaseTableName)
+    SET reportedSyncTime = MIN(?, syncTime)
+    WHERE ocId = ? AND reportedSyncTime >= ?
+    """
+
+    ///
+    /// Keep a row reported across a rewrite which changed nothing the system sees.
+    ///
+    /// `unchangedSince` is the `syncTime` of the previous row state. When the system had that state, it has the rewritten one too, so the mark follows the new `syncTime`. A row the system never had, or had only in an older state, stays pending.
+    ///
+    func carryReportedMark(of metadata: SendableItemMetadata, unchangedSince: Date, in db: Database) throws {
+        try db.cachedStatement(sql: Self.carryReportedMarkSQL).execute(arguments: [
+            metadata.syncTime.timeIntervalSinceReferenceDate,
+            metadata.ocId,
+            unchangedSince.timeIntervalSinceReferenceDate
+        ])
+    }
+
     ///
     /// The subset of `metadatas` whose row does not carry a mark newer than the item's own `syncTime`.
     ///

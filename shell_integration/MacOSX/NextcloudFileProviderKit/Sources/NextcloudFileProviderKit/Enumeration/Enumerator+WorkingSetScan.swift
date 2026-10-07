@@ -20,7 +20,8 @@ extension Enumerator {
     ///
     /// Combines the changes discovered by scanning the materialised items directly against the
     /// server (``scanMaterialisedItemsForRemoteChanges()``) with the pending local changes
-    /// re-derived from the database (``FilesDatabaseManager/pendingWorkingSetChanges(since:)``). The
+    /// re-derived from the database (``FilesDatabaseManager/pendingWorkingSetChanges(since:)``), which
+    /// leaves out state the system already received through an item page or an action reply. The
     /// server scan is what surfaces remote changes the database-only reconstruction misses:
     /// non-materialised items, and items whose own parent directory did not itself change.
     ///
