@@ -46,7 +46,7 @@ enum StoreVersionGuard {
     ///
     /// The store version recorded in an existing database file, or `nil` when there is no file or it cannot be read.
     ///
-    /// A file carrying migrations this build does not know is reported as newer than any version this build has.
+    /// A file carrying migrations this build does not know is reported as newer than any version this build has. That includes a store from an earlier development build which ran a migration since folded into `v1_initial`, so it is set up from scratch as well.
     ///
     static func recordedVersion(at url: URL) -> Int? {
         guard FileManager.default.fileExists(atPath: url.path) else {

@@ -99,6 +99,37 @@ struct StoreVersionGuardTests {
         #expect(StoreVersionGuard.recordedVersion(at: databaseURL) == StoreVersion.current)
     }
 
+    @Test func aFileOlderThanTheOldestMigratableVersionIsSetUpFromScratch() throws {
+        let obsoleteVersion = StoreVersion.oldestMigratable - 1
+        let identity: String = try autoreleasepool {
+            let queue = try DatabaseQueue(path: databaseURL.path)
+            try DatabaseSchema.migrator.migrate(queue)
+            return try queue.write { db in
+                try ItemMetadataRecord(DatabaseTestSuites.makeFile(ocId: "dropped", fileName: "dropped.txt")).upsertRow(db)
+                try db.execute(sql: "PRAGMA user_version = \(obsoleteVersion)")
+                return try StoreIdentityRecord.ensure(in: db)
+            }
+        }
+        var marker = domainDefaults
+        marker.latestSeenDatabaseVersion = obsoleteVersion
+        #expect(StoreVersionGuard.recordedVersion(at: databaseURL) == obsoleteVersion)
+        #expect(StoreVersionGuard.decide(seen: obsoleteVersion) == .obsolete(from: obsoleteVersion))
+
+        let manager = openManager()
+
+        let reopened = try manager.writer.read { db in
+            try (
+                migrations: String.fetchAll(db, sql: "SELECT identifier FROM grdb_migrations ORDER BY identifier"),
+                version: Int.fetchOne(db, sql: "PRAGMA user_version")
+            )
+        }
+        #expect(manager.itemMetadata(ocId: "dropped") == nil, "No migration brings the file up to date, so nothing in it is kept.")
+        #expect(manager.storeIdentity != identity, "Anchors the system holds for the old file must expire.")
+        #expect(reopened.migrations == ["v1_initial"])
+        #expect(reopened.version == StoreVersion.current)
+        #expect(domainDefaults.latestSeenDatabaseVersion == StoreVersion.current)
+    }
+
     @Test func unknownMigrationsInTheFileCountAsNewer() throws {
         let earlier = openManager()
         earlier.addItemMetadata(DatabaseTestSuites.makeFile(ocId: "dropped", fileName: "dropped.txt"))
