@@ -974,6 +974,139 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(handedItemB.metadata, try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier)))
     }
 
+    ///
+    /// Poll the mark of a row, which is written right after the observer took the page.
+    ///
+    private func awaitReportedSyncTime(ocId: String) async -> Date? {
+        for _ in 0 ..< 200 {
+            if let mark = Self.dbManager.reportedSyncTimeForTesting(ocId: ocId) {
+                return mark
+            }
+            try? await Task.sleep(nanoseconds: 5_000_000)
+        }
+        return nil
+    }
+
+    ///
+    /// A folder page handed to the observer marks every item of it with the handed `syncTime`, so the
+    /// working-set derivation can skip state the system already has.
+    ///
+    func testFolderEnumerationMarksTheHandedOverItems() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+        XCTAssertEqual(observer.items.count, 3)
+
+        for ocId in [remoteFolder.identifier, remoteItemA.identifier, remoteItemB.identifier] {
+            let stored = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: ocId))
+            let mark = await awaitReportedSyncTime(ocId: ocId)
+            XCTAssertEqual(mark, stored.syncTime, "\(ocId) was handed over as stored, so its mark is its stored syncTime.")
+        }
+    }
+
+    ///
+    /// Working-set item pages are hand-overs too.
+    ///
+    func testWorkingSetItemEnumerationMarksItsPages() async throws {
+        var downloaded = remoteItemA.toItemMetadata(account: Self.account)
+        downloaded.downloaded = true
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+        Self.dbManager.addItemMetadata(downloaded)
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+        XCTAssertEqual(observer.items.map(\.itemIdentifier.rawValue), [remoteItemA.identifier])
+
+        let mark = await awaitReportedSyncTime(ocId: remoteItemA.identifier)
+        XCTAssertEqual(mark, downloaded.syncTime)
+        XCTAssertNil(Self.dbManager.reportedSyncTimeForTesting(ocId: remoteFolder.identifier), "The folder was not materialised and not handed over.")
+    }
+
+    ///
+    /// A page taken by an observer whose enumerator the framework invalidated meanwhile may never be
+    /// ingested, so it is not marked.
+    ///
+    func testAnInvalidatedEnumerationMarksNothing() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        observer.onFinishEnumerating = { enumerator.invalidate() }
+        try await observer.enumerateItems()
+        XCTAssertEqual(observer.items.count, 3)
+
+        // Give a mark every chance to appear before asserting its absence.
+        try await Task.sleep(nanoseconds: 100_000_000)
+        for ocId in [remoteFolder.identifier, remoteItemA.identifier, remoteItemB.identifier] {
+            XCTAssertNil(Self.dbManager.reportedSyncTimeForTesting(ocId: ocId), "\(ocId) must stay pending.")
+        }
+    }
+
+    ///
+    /// A buffered working-set snapshot older than state the system received since is left out of the
+    /// batch, so the newer state is not overwritten. Equal stamps are still delivered.
+    ///
+    func testWorkingSetChangeDeliverySkipsSnapshotsOlderThanTheReportedState() async throws {
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300))
+        let anchorKey = try XCTUnwrap(String(data: anchor.rawValue, encoding: .utf8))
+        Self.dbManager.addItemMetadata(rootItem.toItemMetadata(account: Self.account))
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        var current = remoteItemA.toItemMetadata(account: Self.account)
+        current.downloaded = true
+        current.syncTime = Date()
+        Self.dbManager.addItemMetadata(current)
+        Self.dbManager.markReported([current])
+        var staleSnapshot = current
+        staleSnapshot.syncTime = current.syncTime.addingTimeInterval(-60)
+
+        var equal = remoteItemB.toItemMetadata(account: Self.account)
+        equal.downloaded = true
+        equal.syncTime = Date()
+        Self.dbManager.addItemMetadata(equal)
+        Self.dbManager.markReported([equal])
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        enumerator.changeBuffer.prime(key: anchorKey, finalAnchorRawValue: anchor.rawValue, updated: [staleSnapshot, equal], deleted: [])
+
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges(from: anchor)
+
+        XCTAssertNil(observer.error)
+        XCTAssertEqual(observer.changedItems.map(\.itemIdentifier.rawValue), [remoteItemB.identifier])
+        XCTAssertEqual(observer.finishes.count, 1)
+        XCTAssertEqual(Self.dbManager.reportedSyncTimeForTesting(ocId: remoteItemA.identifier), current.syncTime, "Delivery does not move the mark.")
+    }
+
     func testEnumerateFile() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 

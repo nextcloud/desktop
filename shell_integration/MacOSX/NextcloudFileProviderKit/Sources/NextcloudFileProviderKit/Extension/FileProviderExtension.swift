@@ -385,6 +385,7 @@ import OSLog
                 false,
                 error
             )
+            Self.markReported(item, error: error, dbManager: dbManager)
         }
         return progress
     }
@@ -475,6 +476,7 @@ import OSLog
 
             logger.debug("Calling item modification completion handler.", [.item: item.itemIdentifier, .name: item.filename, .error: error])
             completionHandler(modifiedItem ?? item, [], false, error)
+            Self.markReported(modifiedItem, error: error, dbManager: dbManager)
         }
 
         return progress

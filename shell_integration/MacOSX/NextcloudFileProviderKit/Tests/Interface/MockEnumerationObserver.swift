@@ -24,7 +24,11 @@ public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserve
         self.items.append(contentsOf: items)
     }
 
+    /// Optional synchronous hook invoked inside `finishEnumerating(upTo:)`, before the page is recorded, so a test can act while the enumerator still waits for the observer to return.
+    public var onFinishEnumerating: (() -> Void)?
+
     public func finishEnumerating(upTo nextPage: NSFileProviderPage?) {
+        onFinishEnumerating?()
         page = nextPage
         isComplete = page == nil
         currentPageComplete = true
