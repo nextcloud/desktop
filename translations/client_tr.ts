@@ -154,7 +154,7 @@
     <name>ActivityItemContent</name>
     <message>
         <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="203"/>
-        <location filename="../src/gui/activity/activitydata.cpp" line="314"/>
+        <location filename="../src/gui/activity/activitydata.cpp" line="315"/>
         <source>Dismiss</source>
         <translation>Yok say</translation>
     </message>
@@ -5812,7 +5812,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="99"/>
         <source>Expires on:</source>
-        <translation>Geçerlilik süresi sonu:</translation>
+        <translation>Geçerlilik sonu:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="102"/>
