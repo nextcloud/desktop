@@ -920,6 +920,60 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(retrievedItemA.isUploaded, true)
     }
 
+    ///
+    /// On servers without pagination the folder listing is written in one depth-1 pass. The items handed to the
+    /// observer must carry the stored local flags, not the server defaults of the fresh conversion.
+    ///
+    func testFolderEnumerationHandsOverTheStoredLocalState() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        XCTAssertFalse(remoteInterface.capabilities.contains(##""major": 31"##), "The non-paginated path is under test.")
+
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        folderMetadata.keepDownloaded = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        // Unchanged on the server, so the depth-1 write leaves the row alone.
+        var pinnedItemA = remoteItemA.toItemMetadata(account: Self.account)
+        pinnedItemA.keepDownloaded = true
+        pinnedItemA.downloaded = true
+        pinnedItemA.lockToken = "token-a"
+        Self.dbManager.addItemMetadata(pinnedItemA)
+
+        // Changed on the server, so the depth-1 write rewrites the row and merges the flags.
+        var pinnedItemB = remoteItemB.toItemMetadata(account: Self.account)
+        pinnedItemB.etag = "STALE"
+        pinnedItemB.keepDownloaded = true
+        pinnedItemB.downloaded = true
+        Self.dbManager.addItemMetadata(pinnedItemB)
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+        XCTAssertNil(observer.error)
+
+        let handedFolder = try XCTUnwrap(observer.items.first(where: { $0.itemIdentifier.rawValue == remoteFolder.identifier }) as? Item)
+        XCTAssertTrue(handedFolder.metadata.keepDownloaded)
+        XCTAssertTrue(handedFolder.metadata.visitedDirectory)
+
+        let handedItemA = try XCTUnwrap(observer.items.first(where: { $0.itemIdentifier.rawValue == remoteItemA.identifier }) as? Item)
+        XCTAssertTrue(handedItemA.metadata.keepDownloaded)
+        XCTAssertTrue(handedItemA.isDownloaded)
+        XCTAssertEqual(handedItemA.metadata.lockToken, "token-a")
+        XCTAssertEqual(handedItemA.metadata, try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)))
+
+        let handedItemB = try XCTUnwrap(observer.items.first(where: { $0.itemIdentifier.rawValue == remoteItemB.identifier }) as? Item)
+        XCTAssertEqual(handedItemB.metadata.etag, remoteItemB.versionIdentifier)
+        XCTAssertTrue(handedItemB.metadata.keepDownloaded)
+        XCTAssertTrue(handedItemB.isDownloaded)
+        XCTAssertEqual(handedItemB.metadata, try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier)))
+    }
+
     func testEnumerateFile() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
