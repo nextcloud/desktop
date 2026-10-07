@@ -210,7 +210,12 @@ extension Enumerator {
                                         && ($0.hasSameRemotePath(as: childPath)
                                             || $0.isDescendant(of: childPath))
                                 }
-                                if childHasMaterialisedDescendant,
+                                // A pinned child asks for its whole subtree, and the pin is read from the stored row because the read applies the parent's pin to its own copy.
+                                let childIsPinned = dbManager
+                                    .itemMetadata(ocId: childDirectory.ocId)?
+                                    .keepDownloaded == true
+
+                                if childHasMaterialisedDescendant || childIsPinned,
                                    enqueuedDirectoryIds.insert(childDirectory.ocId).inserted
                                 {
                                     scanQueue.append(childDirectory)

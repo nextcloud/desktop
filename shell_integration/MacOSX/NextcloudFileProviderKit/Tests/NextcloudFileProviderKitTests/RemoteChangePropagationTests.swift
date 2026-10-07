@@ -99,11 +99,13 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         _ item: MockRemoteItem,
         downloaded: Bool = false,
         visitedDirectory: Bool = false,
+        keepDownloaded: Bool = false,
         syncTime: Date? = nil
     ) -> SendableItemMetadata {
         var metadata = item.toItemMetadata(account: Self.account)
         metadata.downloaded = downloaded
         metadata.visitedDirectory = visitedDirectory
+        metadata.keepDownloaded = keepDownloaded
         metadata.syncTime = syncTime ?? oldSyncTime
         Self.dbManager.addItemMetadata(metadata)
         return metadata
@@ -512,6 +514,39 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(
             reportedIds(observer).contains(siblingFolder.identifier),
             "The changed (known) sibling directory's own update should still be reported."
+        )
+    }
+
+    /// A folder created on the server inside a pinned folder must be read, so the files already in it appear.
+    func testNewFolderUnderAPinnedFolderIsCrawled() async throws {
+        let pinnedFolder = makeFolder(name: "pinnedFolder", parent: rootItem, etag: "pinned-v1")
+
+        // Brand new on the server, so nothing inside it is materialised to justify descending.
+        let newFolder = makeFolder(name: "NewFolder", parent: pinnedFolder, etag: "newfolder-v1")
+        let newLeaf = makeFile(name: "newLeaf", parent: newFolder, etag: "newleaf-v1")
+
+        seed(pinnedFolder, visitedDirectory: true, keepDownloaded: true)
+
+        pinnedFolder.versionIdentifier = "pinned-v2"
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+        let enumeratedPaths = recorder.paths
+
+        XCTAssertNil(observer.error)
+        XCTAssertTrue(
+            enumeratedPaths.contains { $0.hasSuffix("/NewFolder") },
+            "A new directory inside a pinned folder should be read, not deferred to navigation."
+        )
+        XCTAssertTrue(
+            reportedIds(observer).contains(newLeaf.identifier),
+            "A file created on the server inside a new folder under a pinned folder should surface."
         )
     }
 
