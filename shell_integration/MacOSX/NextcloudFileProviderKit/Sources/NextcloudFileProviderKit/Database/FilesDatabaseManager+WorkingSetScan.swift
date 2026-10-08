@@ -7,7 +7,7 @@ import GRDB
 ///
 /// What the working-set scan remembers between passes and asks while it walks.
 ///
-/// `scannedRemoteState` is the etag and permissions of a directory, as its parent's listing reports them, at the moment the scan had reconciled everything materialized below it. The parent's listing is the view the walk decides by, and it is not the directory's own: the server rewrites a mount point's permissions in the parent's listing (`View::getDirectoryContent()` adds or removes update and delete for mount points), so a state taken from the directory's own listing never matches for shares, group folders and app mounts. The state is written by the scan alone: every other writer of a directory's etag (item pages, action replies, the materialized-item mirror) stores the etag without looking below the directory, so the stored etag cannot stand in for "subtree reconciled". A listing which fails forgets the state of the directory and its ancestors, so the next pass descends there again.
+/// `scannedRemoteState` is the etag and permissions of a directory, as its parent's listing reports them, at the moment the scan had reconciled everything materialized below it. The parent's listing is the view the walk decides by, and it is not the directory's own: the server rewrites a mount point's permissions in the parent's listing (`View::getDirectoryContent()` adds or removes update and delete for mount points), so a state taken from the directory's own listing never matches for shares, group folders and app mounts. The state is written by the scan, and by the item enumeration of a directory below which nothing is left for the scan to descend into; every other writer of a directory's etag (item pages of its parent, action replies, the materialized-item mirror) stores the etag without looking below the directory, so the stored etag cannot stand in for "subtree reconciled". A listing which fails forgets the state of the directory and its ancestors, so the next pass descends there again.
 ///
 extension FilesDatabaseManager {
     /// The mount type the server reports for every item on an external storage.
@@ -16,6 +16,25 @@ extension FilesDatabaseManager {
     /// The remote state the working-set scan compares a directory against, built from what its parent's listing reports.
     static func scanRemoteState(of metadata: SendableItemMetadata) -> String {
         "\(metadata.etag)|\(metadata.permissions)"
+    }
+
+    /// The remembered states of the given directories, keyed by identifier and leaving out the ones never reconciled, or `nil` when the read fails.
+    func scannedRemoteStates(ocIds: [String]) -> [String: String]? {
+        read("Could not read which of the directories the working-set scan reconciled.") { db in
+            var states: [String: String] = [:]
+            for chunk in ocIds.chunked(into: Self.inClauseChunkSize) {
+                let rows = try Row.fetchCursor(
+                    db,
+                    ItemMetadataRecord
+                        .select(ItemMetadataRecord.Columns.ocId, ItemMetadataRecord.scannedRemoteStateColumn)
+                        .filter(chunk.contains(ItemMetadataRecord.Columns.ocId) && ItemMetadataRecord.scannedRemoteStateColumn != nil)
+                )
+                while let row = try rows.next() {
+                    states[row[0]] = row[1]
+                }
+            }
+            return states
+        }
     }
 
     /// The remembered states of every directory the scan reconciled, keyed by identifier, or `nil` when the read fails.
