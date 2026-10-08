@@ -58,6 +58,15 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     /// Set by ``invalidate()``. A page handed over after that may never be ingested, so it is not marked as reported.
     let invalidation = InvalidationFlag()
 
+    /// See ``WorkingSetScanLimits``.
+    let scanLimits: WorkingSetScanLimits
+
+    /// Signals the working set when a pass stopped at its budget; `nil` without a domain, as in tests which do not pass one.
+    let changeNotificationInterface: ChangeNotificationInterface?
+
+    /// Set by a working-set pass which stopped at its budget, consumed when its last batch is acknowledged.
+    let resumeRequest = ResumeRequest()
+
     /// Default number of items reported per page/batch when the system does not suggest one. Mirrors the
     /// per-page item budget used for paginated item enumeration (``pageItemCount``).
     static let defaultBatchSize = 1000
@@ -80,6 +89,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         pageSize: Int = 1000,
+        scanLimits: WorkingSetScanLimits = .default,
+        changeNotificationInterface: ChangeNotificationInterface? = nil,
         log: any FileProviderLogging
     ) throws {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
@@ -88,6 +99,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         self.dbManager = dbManager
         currentAnchor = Self.syncAnchor(at: Date(), storeIdentity: dbManager.storeIdentity)
         self.domain = domain
+        self.scanLimits = scanLimits
+        self.changeNotificationInterface = changeNotificationInterface ?? domain.map { FileProviderChangeNotificationInterface(domain: $0, log: log) }
         pageItemCount = pageSize
         logger = FileProviderLogger(category: "Enumerator", log: log)
         changeBuffer = ChangeDeliveryBuffer(

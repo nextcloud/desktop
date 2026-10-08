@@ -227,6 +227,11 @@ extension Enumerator {
 
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: moreComing)
                     changeBuffer.acknowledgeBatch(acknowledgement)
+
+                    // The enumeration is no longer outstanding from here on; a pass which stopped early asks for the next one now.
+                    if !moreComing, resumeRequest.consume() {
+                        resumeAfterDelay()
+                    }
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {
