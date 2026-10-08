@@ -9,20 +9,13 @@ import Testing
 
 @Suite(.timeLimit(.minutes(1)))
 struct NetworkOperationCancellationTests {
-    private func waitForCancellation() async {
-        // Cancellation wakes the iterator even though this stream never produces values.
-        let (stream, continuation) = AsyncStream<Void>.makeStream()
-        defer { continuation.finish() }
-        var iterator = stream.makeAsyncIterator()
-        _ = await iterator.next()
-    }
-
     @Test
     func progressCancellationCancelsRunningTask() async {
         let progress = Progress()
         let cancelled = await NetworkOperationCancellation(log: FileProviderLogMock()).run(progress: progress) { _ in
             progress.cancel()
-            await waitForCancellation()
+            let cancelled = await waitForCancellation()
+            #expect(cancelled)
             return Task.isCancelled
         }
         #expect(cancelled)
@@ -30,16 +23,22 @@ struct NetworkOperationCancellationTests {
     }
 
     @Test
-    func parentCancellationReachesOperationTask() async {
+    func parentCancellationReachesOperationTask() async throws {
         let progress = Progress()
+        let (started, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
         let task = Task {
             await NetworkOperationCancellation(log: FileProviderLogMock()).run(progress: progress) { _ in
-                await waitForCancellation()
+                continuation.yield(())
+                let cancelled = await waitForCancellation()
+                #expect(cancelled)
                 return Task.isCancelled
             }
         }
+        defer { task.cancel() }
+        try #require(try await nextTestValue(from: started) != nil)
         task.cancel()
-        #expect(await task.value)
+        #expect(try await testTaskValue(of: task))
         #expect(progress.cancellationHandler == nil)
     }
 
@@ -61,10 +60,7 @@ struct NetworkOperationCancellationTests {
         if !cancelBeforeRegistration {
             cancellation.cancel()
         }
-        try #require(task.state == .canceling || task.state == .completed)
-        var iterator = completion.makeAsyncIterator()
-        #expect(await iterator.next() == NSURLErrorCancelled)
-        #expect(task.state == .canceling || task.state == .completed)
+        #expect(try await nextTestValue(from: completion) == NSURLErrorCancelled)
     }
 
     @Test
@@ -86,18 +82,12 @@ struct NetworkOperationCancellationTests {
                 #expect(progress.pausingHandler != nil)
                 #expect(progress.resumingHandler != nil)
                 progress.cancel()
-                await waitForCancellation()
+                let cancelled = await waitForCancellation()
+                #expect(cancelled)
                 // The worker must outlive cancellation of the registered request.
-                let event = Task.detached {
-                    var iterator = cancelledRequests.makeAsyncIterator()
-                    return await iterator.next()
-                }
-                let timeout = Task.detached {
-                    try await Task.sleep(for: .seconds(5))
-                    event.cancel()
-                }
-                let cancelledRequest = await event.value
-                timeout.cancel()
+                let cancelledRequest = await Task.detached {
+                    try? await nextTestValue(from: cancelledRequests)
+                }.value
                 #expect(cancelledRequest == ObjectIdentifier(request))
                 #expect(request.isCancelled)
                 return Task.isCancelled
@@ -116,7 +106,6 @@ struct NetworkOperationCancellationTests {
         let monitor = ClosureEventMonitor()
         monitor.requestDidCancel = { continuation.yield(ObjectIdentifier($0)) }
         let session = Session(startRequestsImmediately: false, eventMonitors: [monitor])
-        var iterator = cancelledRequests.makeAsyncIterator()
         let requests: [Request] = [
             session.upload(Data(), to: "https://example.invalid/resource"),
             session.download("https://example.invalid/resource"),
@@ -127,7 +116,7 @@ struct NetworkOperationCancellationTests {
             cancellation.cancel()
             cancellation.register(request: request)
             try #require(request.isCancelled)
-            #expect(await iterator.next() == ObjectIdentifier(request))
+            #expect(try await nextTestValue(from: cancelledRequests) == ObjectIdentifier(request))
         }
     }
 
@@ -144,9 +133,7 @@ struct NetworkOperationCancellationTests {
             continuation.finish()
         }
         cancellation.register(task: task)
-        var iterator = completion.makeAsyncIterator()
-        #expect(await iterator.next() == NSURLErrorCancelled)
-        #expect(task.state == .canceling || task.state == .completed)
+        #expect(try await nextTestValue(from: completion) == NSURLErrorCancelled)
     }
 
     @Test
