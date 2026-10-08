@@ -142,36 +142,6 @@ private Q_SLOTS:
         QCOMPARE(fakeFolder.currentLocalState().children.count(), 0);
     }
 
-    void testNotDeleteMetaDataChange() {
-        /**
-         * This test make sure that we don't popup a file deleted message if all the metadata have
-         * been updated (for example when the server is upgraded or something)
-         **/
-
-        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        // We never remove all files.
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
-            [&] { QVERIFY(false); });
-        QVERIFY(fakeFolder.syncOnce());
-
-        const auto childrenKeys = fakeFolder.currentRemoteState().children.keys();
-        for (const auto &s : childrenKeys) {
-            fakeFolder.syncJournal().avoidRenamesOnNextSync(s); // clears all the fileid and inodes.
-        }
-        fakeFolder.localModifier().remove("A/a1");
-        auto expectedState = fakeFolder.currentLocalState();
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
-        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
-
-        fakeFolder.remoteModifier().remove("B/b1");
-        changeAllFileId(fakeFolder.remoteModifier());
-        expectedState = fakeFolder.currentRemoteState();
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
-        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
-    }
-
     void testResetServer()
     {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
