@@ -12,6 +12,8 @@
 
 #import <AppKit/AppKit.h>
 
+static_assert(__has_feature(objc_arc), "macsandboxfolderpicker requires ARC.");
+
 Q_LOGGING_CATEGORY(lcMacSandboxFolderPicker, "nextcloud.gui.mac.sandbox.folderpicker", QtInfoMsg)
 
 namespace OCC::Mac::SandboxFolderPicker {
@@ -38,7 +40,7 @@ void select(QWindow *parentWindow, const QString &caption, const QString &initia
     NSWindow *sheetParent = nil;
     if (parentWindow) {
         parentWindow->requestActivate();
-        sheetParent = reinterpret_cast<NSView *>(parentWindow->winId()).window;
+        sheetParent = ((__bridge NSView *)reinterpret_cast<void *>(parentWindow->winId())).window;
     }
     if (!sheetParent) {
         sheetParent = NSApp.keyWindow ?: NSApp.mainWindow;

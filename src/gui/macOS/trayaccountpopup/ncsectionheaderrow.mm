@@ -7,6 +7,8 @@
 
 #import "trayaccountpopupmetrics.h"
 
+static_assert(__has_feature(objc_arc), "NCSectionHeaderRow requires ARC.");
+
 @implementation NCSectionHeaderRow
 
 - (instancetype)initWithTitle:(NSString *)title width:(CGFloat)width

@@ -23,6 +23,8 @@
 #include "gui/accountmanager.h"
 #include "libsync/account.h"
 
+static_assert(__has_feature(objc_arc), "fileproviderdomainmanager requires ARC.");
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcMacFileProviderDomainManager, "nextcloud.gui.macfileproviderdomainmanager", QtInfoMsg)

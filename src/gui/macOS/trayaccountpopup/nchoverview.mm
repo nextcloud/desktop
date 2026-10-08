@@ -5,6 +5,8 @@
 
 #import "nchoverview.h"
 
+static_assert(__has_feature(objc_arc), "The native tray hover view requires ARC.");
+
 @implementation NCHoverView
 
 - (instancetype)init
@@ -34,7 +36,6 @@
     for (NSTrackingArea *ta in trackingAreas) {
         [self removeTrackingArea:ta];
     }
-    [trackingAreas release];
 
     auto trackingArea = [[NSTrackingArea alloc]
         initWithRect:self.bounds
@@ -42,7 +43,6 @@
                owner:self
             userInfo:nil];
     [self addTrackingArea:trackingArea];
-    [trackingArea release];
 }
 
 @end

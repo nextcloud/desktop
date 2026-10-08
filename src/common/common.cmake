@@ -41,6 +41,13 @@ elseif(APPLE)
         ${CMAKE_CURRENT_LIST_DIR}/macsandboxsecurityscopedaccess.h
         ${CMAKE_CURRENT_LIST_DIR}/macsandboxsecurityscopedaccess.mm
     )
+    set_property(SOURCE
+        ${CMAKE_CURRENT_LIST_DIR}/utility_mac.mm
+        ${CMAKE_CURRENT_LIST_DIR}/utility_mac_sandbox.mm
+        ${CMAKE_CURRENT_LIST_DIR}/macsandboxsecurityscopedaccess.mm
+        ${CMAKE_CURRENT_LIST_DIR}/macsandboxpersistentaccess.mm
+        APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc
+    )
 elseif(UNIX AND NOT APPLE)
     list(APPEND common_SOURCES
         ${CMAKE_CURRENT_LIST_DIR}/utility_unix.cpp

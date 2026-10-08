@@ -16,6 +16,8 @@
 #include <QRect>
 #include <QScreen>
 
+static_assert(__has_feature(objc_arc), "trayaccountpopup_mac requires ARC.");
+
 using namespace OCC::Mac::TrayPopupViewUtils;
 
 static NSScreen *nsScreenForQtScreen(QScreen *qtScreen)

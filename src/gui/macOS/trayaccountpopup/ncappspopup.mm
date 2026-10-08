@@ -24,6 +24,8 @@
 #include <QString>
 #include <QUrl>
 
+static_assert(__has_feature(objc_arc), "ncappspopup requires ARC.");
+
 using namespace OCC::Mac::TrayPopupImageUtils;
 using namespace OCC::Mac::TrayPopupViewUtils;
 
@@ -86,7 +88,7 @@ static QHash<QString, QImage> s_remoteAppIconCache;
         [_stack addArrangedSubview:actionRow];
 
         if (!appIcon && !appIconCacheKey.isEmpty()) {
-            auto retainedRow = [actionRow retain];
+            auto retainedRow = actionRow;
             auto iconJob = new OCC::IconJob(accountState->account(), appIconUrl);
             QObject::connect(iconJob, &OCC::IconJob::jobFinished, iconJob, [retainedRow, appIconCacheKey, appIconRequestedSize, appIconDevicePixelRatio](const QByteArray &iconData) {
                 auto image = qImageFromImageData(iconData, appIconRequestedSize);
@@ -95,13 +97,8 @@ static QHash<QString, QImage> s_remoteAppIconCache;
                     s_remoteAppIconCache.insert(appIconCacheKey, image);
                     [retainedRow setIcon:nsImageFromQImage(image)];
                 }
-                [retainedRow release];
-            });
-            QObject::connect(iconJob, &OCC::IconJob::error, iconJob, [retainedRow](auto) {
-                [retainedRow release];
             });
         }
-        [actionRow release];
     }
     addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAppsPopupWidth]);
 

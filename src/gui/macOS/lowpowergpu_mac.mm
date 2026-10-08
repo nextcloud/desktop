@@ -13,6 +13,8 @@
 
 #import <Metal/Metal.h>
 
+static_assert(__has_feature(objc_arc), "lowpowergpu_mac requires ARC.");
+
 Q_LOGGING_CATEGORY(lcLowPowerGpu, "nextcloud.gui.lowpowergpu", QtInfoMsg)
 
 namespace {
@@ -26,13 +28,12 @@ id<MTLDevice> copyLowPowerDevice()
     if (devices.count > 1) {
         for (id<MTLDevice> device in devices) {
             if (device.isLowPower && !device.isHeadless && !device.isRemovable) {
-                lowPowerDevice = [device retain];
+                lowPowerDevice = device;
                 break;
             }
         }
     }
 
-    [devices release];
     return lowPowerDevice;
 }
 
@@ -45,13 +46,8 @@ class LowPowerGpuFilter : public QObject
 public:
     LowPowerGpuFilter(id<MTLDevice> device, QObject *parent)
         : QObject(parent)
-        , _device([device retain])
+        , _device(device)
     {
-    }
-
-    ~LowPowerGpuFilter() override
-    {
-        [_device release];
     }
 
     bool eventFilter(QObject *watched, QEvent *event) override
@@ -84,7 +80,6 @@ void preferLowPowerGpu(QCoreApplication *app)
 
     qCInfo(lcLowPowerGpu) << "Rendering Qt Quick windows on the low-power GPU:" << QString::fromNSString(device.name);
     app->installEventFilter(new LowPowerGpuFilter(device, app));
-    [device release];
 }
 
 } // namespace Mac

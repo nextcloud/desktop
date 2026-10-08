@@ -16,7 +16,7 @@ NSStackView *configurePopupPanel(NSPanel *panel);
 // Remove and release every arranged subview from a stack.
 void clearStack(NSStackView *stack);
 
-// Add a freshly-allocated view to the stack and release the caller's +1 reference.
+// Add a view to the stack, which retains it.
 void addOwnedArrangedSubview(NSStackView *stack, NSView *view);
 
 // The subtle row highlight colour for the current (light/dark) appearance.

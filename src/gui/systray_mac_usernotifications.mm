@@ -17,6 +17,8 @@
 #include "systray.h"
 #include "activity/talkreply.h"
 
+static_assert(__has_feature(objc_arc), "systray_mac_usernotifications requires ARC.");
+
 Q_LOGGING_CATEGORY(lcMacSystrayUserNotifications, "nextcloud.gui.macsystrayusernotifications")
 
 /************************* Private utility functions *************************/
@@ -192,7 +194,7 @@ void setUserNotificationCenterDelegate()
 
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-        id delegate = [[NotificationCenterDelegate alloc] init];
+        static id delegate = [[NotificationCenterDelegate alloc] init];
         [center setDelegate:delegate];
     });
 }
