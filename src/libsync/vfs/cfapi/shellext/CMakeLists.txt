@@ -12,13 +12,15 @@ set(CUSTOM_STATE_ICON_SHARED_PATH "${custom_state_icons_path}/1-shared.svg")
 
 foreach(size IN ITEMS 24;32;40;48;64;128;256;512;1024)
   get_filename_component(output_icon_name_custom_state_locked ${CUSTOM_STATE_ICON_LOCKED_PATH} NAME_WLE)
-  generate_sized_png_from_svg(${CUSTOM_STATE_ICON_LOCKED_PATH} ${size} OUTPUT_ICON_NAME ${output_icon_name_custom_state_locked} OUTPUT_ICON_PATH "${custom_state_icons_path}/")
+  queue_generate_sized_png_from_svg(${CUSTOM_STATE_ICON_LOCKED_PATH} ${size} OUTPUT_ICON_NAME ${output_icon_name_custom_state_locked} OUTPUT_ICON_PATH "${custom_state_icons_path}/")
 endforeach()
 
 foreach(size IN ITEMS 24;32;40;48;64;128;256;512;1024)
   get_filename_component(output_icon_name_custom_state_shared ${CUSTOM_STATE_ICON_SHARED_PATH} NAME_WLE)
-  generate_sized_png_from_svg(${CUSTOM_STATE_ICON_SHARED_PATH} ${size} OUTPUT_ICON_NAME ${output_icon_name_custom_state_shared} OUTPUT_ICON_PATH "${custom_state_icons_path}/")
+  queue_generate_sized_png_from_svg(${CUSTOM_STATE_ICON_SHARED_PATH} ${size} OUTPUT_ICON_NAME ${output_icon_name_custom_state_shared} OUTPUT_ICON_PATH "${custom_state_icons_path}/")
 endforeach()
+
+run_generate_queued_pngs_from_svg()
 
 # offset is used for referencing icon within the binary's resources (indexing start with 0, while IDI_ICON{i} 'i' starts with 1)
 if(NOT DEFINED CUSTOM_STATE_ICON_INDEX_OFFSET)
