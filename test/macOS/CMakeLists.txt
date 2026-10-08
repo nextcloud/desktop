@@ -11,10 +11,13 @@ nextcloud_add_test(MacSandboxUtility)
 
 set(native_tests
     MacUtility
+    MacSandboxSecurityScopedAccess
+    MacSandboxPersistentAccess
 )
 
 set(native_test_sources
     macutilitymock.mm
+    securityscopedaccessmock.mm
 )
 foreach(native_test IN LISTS native_tests)
     nextcloud_add_test(${native_test})
@@ -26,6 +29,9 @@ endforeach()
 set_property(SOURCE ${native_test_sources} APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc)
 
 target_sources(MacUtilityTest PRIVATE macutilitymock.h macutilitymock.mm)
+foreach(native_test IN ITEMS MacSandboxSecurityScopedAccess MacSandboxPersistentAccess)
+    target_sources(${native_test}Test PRIVATE securityscopedaccessmock.h securityscopedaccessmock.mm)
+endforeach()
 
 if(BUILD_FILE_PROVIDER_MODULE)
     nextcloud_add_test(FileProviderXPCUtils)
