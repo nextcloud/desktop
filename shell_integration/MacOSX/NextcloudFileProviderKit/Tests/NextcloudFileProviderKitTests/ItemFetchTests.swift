@@ -6,7 +6,6 @@ import Alamofire
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -194,18 +193,14 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
     lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
-    private var retainedDatabase: Realm?
 
     override func setUp() {
         super.setUp()
-        _ = Self.dbManager
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-        retainedDatabase = Self.dbManager.ncDatabase()
+        setUpDatabase(Self.dbManager)
     }
 
     override func tearDown() {
         rootItem.children = []
-        retainedDatabase = nil
         super.tearDown()
     }
 

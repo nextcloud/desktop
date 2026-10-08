@@ -99,13 +99,10 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     var remoteTrashFolderChildItem: MockRemoteItem!
 
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
-    private var retainedDatabase: Realm?
 
     override func setUp() {
         super.setUp()
-        _ = Self.dbManager
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-        retainedDatabase = Self.dbManager.ncDatabase()
+        setUpDatabase(Self.dbManager)
 
         remoteItem = MockRemoteItem(
             identifier: "item",
@@ -171,11 +168,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         remoteFolder.parent = rootItem
         remoteTrashFolder.children = [remoteTrashFolderChildItem]
         remoteTrashFolderChildItem.parent = remoteTrashFolder
-    }
-
-    override func tearDown() {
-        retainedDatabase = nil
-        super.tearDown()
     }
 
     func testFailedContentModificationRemainsUnuploaded() async throws {
