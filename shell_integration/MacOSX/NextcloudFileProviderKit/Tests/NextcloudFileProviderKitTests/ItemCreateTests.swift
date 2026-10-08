@@ -61,6 +61,143 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     var rootItem: MockRemoteItem!
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
+    /// Model a chunked upload that creates the complete server file ("commits") but loses its success
+    /// response, leaving the original local create unresolved. Enumeration and replay must recover
+    /// that file's server identity and contents without uploading again. Successful uploads and
+    /// errors that create no server file are controls.
+    private func assertCreateAndReplay(responseErrorCode: Int, serverCommits: Bool) async throws {
+        let previousConfiguration = Realm.Configuration.defaultConfiguration
+        defer { Realm.Configuration.defaultConfiguration = previousConfiguration }
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let log = FileProviderLogMock()
+        let database = FilesDatabaseManager(
+            account: Self.account,
+            databaseDirectory: directory,
+            fileProviderDomainIdentifier: .init(UUID().uuidString),
+            log: log
+        )
+        let root = MockRemoteItem.rootItem(account: Self.account)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+        remoteInterface.chunkUploadDirectory = directory.appendingPathComponent("chunks", isDirectory: true)
+        let data = Data([0, 1, 2, 3, 4, 5, 6])
+        let filename = "Nextcloud.mov"
+        let contents = directory.appendingPathComponent(filename)
+        try data.write(to: contents)
+        let metadata = SendableItemMetadata(
+            ocId: "__fp/fs/docID(1)", fileName: filename, account: Self.account
+        )
+        let template = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: database
+        )
+        if responseErrorCode != 0 {
+            let error = NKError(errorCode: responseErrorCode, errorDescription: "Upload response unavailable")
+            if serverCommits {
+                remoteInterface.chunkedUploadErrorAfterCommit = error
+            } else {
+                remoteInterface.uploadError = error
+            }
+        }
+
+        func create() async -> (Item?, Error?) {
+            await Item.create(
+                basedOn: template,
+                contents: contents,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                forcedChunkSize: 3,
+                progress: Progress(),
+                dbManager: database,
+                log: log
+            )
+        }
+
+        let (initialItem, initialError) = await create()
+        let destination = Self.account.davFilesUrl + "/" + filename
+        XCTAssertEqual(remoteInterface.uploadRemotePaths, [destination])
+        if responseErrorCode == 0 || initialItem != nil {
+            XCTAssertNotNil(initialItem)
+            XCTAssertNil(initialError)
+        } else {
+            let responseError = NKError(errorCode: responseErrorCode, errorDescription: "Upload response unavailable")
+            XCTAssertEqual((initialError as? NSFileProviderError)?.code, responseError.fileProviderError?.code)
+        }
+        if !serverCommits {
+            // These controls only check the failure; retrying an upload that created no server
+            // file is a separate scenario.
+            XCTAssertNil(initialItem)
+            XCTAssertTrue(root.children.isEmpty)
+            XCTAssertNil(database.itemMetadata(template.itemIdentifier))
+            return
+        }
+
+        let committedItem = try XCTUnwrap(root.children.first)
+        let committedIdentifier = NSFileProviderItemIdentifier(committedItem.identifier)
+        let committedETag = committedItem.versionIdentifier
+        XCTAssertEqual(root.children.count, 1)
+        XCTAssertEqual(committedItem.data, data)
+        XCTAssertNotEqual(committedIdentifier, template.itemIdentifier)
+        XCTAssertNil(remoteInterface.chunkedUploadErrorAfterCommit)
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: database,
+            log: log
+        )
+        defer { enumerator.invalidate() }
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+        let enumeratedIdentifiers = observer.items.filter { $0.filename == filename }.map(\.itemIdentifier)
+        XCTAssertTrue(enumeratedIdentifiers.allSatisfy { $0 == committedIdentifier })
+        XCTAssertLessThanOrEqual(enumeratedIdentifiers.count, 1)
+        if initialItem != nil, initialError == nil {
+            XCTAssertEqual(enumeratedIdentifiers, [committedIdentifier])
+        }
+
+        // "Replay" retries Item.create with the same template identifier and contents when the
+        // first call returned no item or an error. The server already has the complete file in
+        // these recovery cases, so replay should return its existing identity without uploading
+        // again. If the first call returned an item with no error, use that result without retrying.
+        let (resolvedItem, resolvedError) = if initialItem == nil || initialError != nil {
+            await create()
+        } else {
+            (initialItem, initialError)
+        }
+        let resolved = try XCTUnwrap(resolvedItem)
+        XCTAssertNil(resolvedError)
+        XCTAssertEqual(resolved.itemIdentifier, committedIdentifier)
+        XCTAssertEqual(resolved.metadata.etag, committedETag)
+        XCTAssertEqual(root.children.count, 1)
+        XCTAssertEqual(committedItem.data, data)
+        let storedMetadata = try XCTUnwrap(database.itemMetadata(committedIdentifier))
+        XCTAssertEqual(storedMetadata.ocId, committedIdentifier.rawValue)
+        XCTAssertEqual(storedMetadata.etag, committedETag)
+        XCTAssertEqual(storedMetadata.fileName, filename)
+        XCTAssertEqual(storedMetadata.serverUrl, Self.account.davFilesUrl)
+        XCTAssertEqual(storedMetadata.size, Int64(data.count))
+        XCTAssertTrue(storedMetadata.downloaded)
+        XCTAssertTrue(storedMetadata.uploaded)
+        XCTAssertNil(database.itemMetadata(template.itemIdentifier))
+        let resolvedObserver = MockEnumerationObserver(enumerator: enumerator)
+        try await resolvedObserver.enumerateItems()
+        XCTAssertEqual(resolvedObserver.items.filter { $0.filename == filename }.map(\.itemIdentifier), [committedIdentifier])
+        XCTAssertTrue(remoteInterface.uploadRemotePaths.allSatisfy { $0 == destination })
+        if responseErrorCode == 0 {
+            XCTAssertEqual(remoteInterface.uploadRemotePaths.count, 1)
+        } else {
+            XCTExpectFailure("An uncertain chunked create retransmits the committed file on replay.") {
+                XCTAssertEqual(remoteInterface.uploadRemotePaths.count, 1)
+            }
+        }
+    }
+
     override func setUp() {
         super.setUp()
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
@@ -754,6 +891,26 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(dbItem.chunkUploadId)
         XCTAssertTrue(dbItem.downloaded)
         XCTAssertTrue(dbItem.uploaded)
+    }
+
+    func testSuccessfulChunkedCreate() async throws {
+        try await assertCreateAndReplay(responseErrorCode: 0, serverCommits: true)
+    }
+
+    func testTimeoutWithoutServerCommit() async throws {
+        try await assertCreateAndReplay(responseErrorCode: -1001, serverCommits: false)
+    }
+
+    func testProxyTimeoutWithoutServerCommit() async throws {
+        try await assertCreateAndReplay(responseErrorCode: 524, serverCommits: false)
+    }
+
+    func testCommittedCreateReplayedAfterTimeout() async throws {
+        try await assertCreateAndReplay(responseErrorCode: -1001, serverCommits: true)
+    }
+
+    func testCommittedCreateReplayedAfterProxyTimeout() async throws {
+        try await assertCreateAndReplay(responseErrorCode: 524, serverCommits: true)
     }
 
     func testCreateDoesNotPropagateIgnoredFile() async {

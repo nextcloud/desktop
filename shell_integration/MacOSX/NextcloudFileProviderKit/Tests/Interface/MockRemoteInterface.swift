@@ -606,6 +606,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Use this to simulate server-side upload rejections (e.g. 404 path gone, 507 quota).
     public var uploadError: NKError?
 
+    /// Fails the next successful chunked upload response after committing the remote file.
+    public var chunkedUploadErrorAfterCommit: NKError?
+
+    /// The remote paths supplied to upload calls, including calls that return an injected error.
+    public private(set) var uploadRemotePaths: [String] = []
+
     /// When set, every delete call returns this error immediately without touching the mock tree.
     /// Use this to simulate an already-missing remote item.
     public var deleteError: NKError?
@@ -815,6 +821,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         response: HTTPURLResponse?,
         remoteError: NKError
     ) {
+        uploadRemotePaths.append(remotePath)
         lastUploadIfMatchHeader = options.customHeader?["If-Match"]
         lastUploadIfHeader = options.customHeader?["If"]
 
@@ -979,6 +986,16 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         print(remainingChunks)
         completedChunkTransferSize[remoteChunkStoreFolderName] =
             remainingChunks.reduce(0) { $0 + $1.size }
+
+        if remoteError == .success, let chunkedUploadErrorAfterCommit {
+            self.chunkedUploadErrorAfterCommit = nil
+            return (
+                account.ncKitAccount,
+                nil,
+                returnsChunkUploadDirectory ? tempDirectoryUrl : nil,
+                chunkedUploadErrorAfterCommit
+            )
+        }
 
         var file = NKFile()
         file.fileName = remoteUrl.lastPathComponent
