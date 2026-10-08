@@ -175,6 +175,9 @@ extension FilesDatabaseManager {
     }
 
     /// Acknowledge the prepared batch after the observer accepted it.
+    ///
+    /// Idempotent: a batch nobody prepared, or one another enumerator instance acknowledged meanwhile, leaves the session as it is and counts as acknowledged. The framework can ask for the continuation right after the observer's finish, through a fresh instance, while the reporting instance is still acknowledging; both then acknowledge the same batch, and the second must not take the continuation for an unknown anchor.
+    ///
     func acknowledgeChangeDeliveryBatch(sessionId: String, deletedOcIds: [String]) -> Bool {
         write("Could not acknowledge a change-delivery batch.", durability: .relaxed) { db in
             guard var session = try activeChangeDeliverySession(sessionId: sessionId, in: db) else {
@@ -182,7 +185,7 @@ extension FilesDatabaseManager {
             }
 
             guard session.pendingReported else {
-                return false
+                return true
             }
 
             if session.pendingMoreComing, session.pendingAnchorKey == nil {

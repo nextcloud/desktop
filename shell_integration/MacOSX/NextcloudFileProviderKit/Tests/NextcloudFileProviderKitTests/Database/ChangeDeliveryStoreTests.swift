@@ -67,6 +67,21 @@ extension DatabaseTestSuites {
             #expect(manager.itemMetadata(ocId: "soft")?.deleted == true, "Soft removal keeps the tombstone.")
         }
 
+        @Test func acknowledgingAnAcknowledgedBatchAgainChangesNothing() throws {
+            try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "soft", fileName: "soft.txt"))
+            #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: makeRows(count: 5), deleted: [], incomplete: false, hardRemoveDeleted: false))
+            #expect(manager.prepareChangeDeliveryBatch(sessionId: "s", endSequence: 2, nextAnchorKey: "a1", moreComing: true))
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", deletedOcIds: ["soft"]))
+
+            // The reporting instance and a fresh one asked for the continuation both acknowledge the same batch.
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", deletedOcIds: ["soft"]))
+
+            let session = try #require(manager.changeDeliverySession(forAnchorKey: "a1", containerKey: "c"))
+            #expect(session.nextSequence == 2)
+            #expect(session.pendingReported == false)
+            #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10)?.map(\.sequence) == [2, 3, 4], "The cursor moved once.")
+        }
+
         @Test func acknowledgingWithHardRemovalDeletesTheRows() throws {
             try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "hard", fileName: "hard.txt"))
             #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: [], deleted: [DatabaseTestSuites.makeFile(ocId: "hard", fileName: "hard.txt")], incomplete: false, hardRemoveDeleted: true))

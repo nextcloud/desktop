@@ -78,7 +78,13 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         }
 
         guard let session = dbManager.changeDeliverySession(forPendingAnchorKey: key, containerKey: containerKey) else {
-            return false
+            // The instance which reported the batch acknowledges it right after the observer's finish, and the framework can ask for the continuation through this fresh instance meanwhile. If that acknowledgement landed between the two lookups, the session sits at the key now.
+            guard let session = dbManager.changeDeliverySession(forAnchorKey: key, containerKey: containerKey) else {
+                return false
+            }
+
+            sessionId = session.sessionId
+            return true
         }
 
         guard let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: session.sessionId),
