@@ -152,6 +152,16 @@ void PropagateLocalRemove::start()
     const QString filename = propagator()->fullLocalPath(_item->_file);
     qCInfo(lcPropagateLocalRemove) << "Going to delete:" << filename;
 
+    if (propagator()->localPathContainsSymlink(_item->_file)) {
+        qCWarning(lcPropagateLocalRemove) << "Not deleting through a symlink, dropping the stale record" << _item->_file;
+        if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
+            qCWarning(lcPropagateLocalRemove) << "could not delete file record from local DB" << _item->_originalFile;
+        }
+        propagator()->_journal->commit("Local remove symlink");
+        done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(), ErrorCategory::NoError);
+        return;
+    }
+
     if (propagator()->localFileNameClash(_item->_file)) {
         done(SyncFileItem::FileNameClash, tr("Could not remove %1 because of a local file name clash").arg(QDir::toNativeSeparators(filename)), ErrorCategory::GenericError);
         return;
@@ -244,6 +254,12 @@ void PropagateLocalMkdir::setDeleteExistingFile(bool enabled)
 
 void PropagateLocalMkdir::startLocalMkdir()
 {
+    if (propagator()->localPathContainsSymlink(_item->_file)) {
+        qCWarning(lcPropagateLocalMkdir) << "Not creating a folder through a symlink" << _item->_file;
+        done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(), ErrorCategory::NoError);
+        return;
+    }
+
     QDir newDir(propagator()->fullLocalPath(_item->_file));
     QString newDirStr = QDir::toNativeSeparators(newDir.path());
 
@@ -386,6 +402,16 @@ void PropagateLocalRename::start()
 
     auto &vfs = propagator()->syncOptions()._vfs;
     const auto previousNameInDb = propagator()->adjustRenamedPath(_item->_file);
+
+    for (const auto &path : {previousNameInDb, _item->_renameTarget}) {
+        if (!propagator()->localPathContainsSymlink(path)) {
+            continue;
+        }
+        qCWarning(lcPropagateLocalRename) << "Not renaming through a symlink" << path;
+        done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(), ErrorCategory::NoError);
+        return;
+    }
+
     const auto existingFile = propagator()->fullLocalPath(previousNameInDb);
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
     const auto originalFile = propagator()->fullLocalPath(_item->_originalFile);
