@@ -17,11 +17,14 @@ set(native_tests
     MacTrayPopupImageUtils
     MacTrayPopupViewUtils
     MacTrayHoverView
+    MacTrayAccountRow
+    MacTrayRows
 )
 
 set(native_test_sources
     macutilitymock.mm
     securityscopedaccessmock.mm
+    ncaccountrowdelegatemock.mm
     traypopupviewtestutils.mm
 )
 foreach(native_test IN LISTS native_tests)
@@ -37,9 +40,10 @@ target_sources(MacUtilityTest PRIVATE macutilitymock.h macutilitymock.mm)
 foreach(native_test IN ITEMS MacSandboxSecurityScopedAccess MacSandboxPersistentAccess)
     target_sources(${native_test}Test PRIVATE securityscopedaccessmock.h securityscopedaccessmock.mm)
 endforeach()
-foreach(native_test IN ITEMS MacTrayPopupViewUtils)
+foreach(native_test IN ITEMS MacTrayPopupViewUtils MacTrayAccountRow MacTrayRows)
     target_sources(${native_test}Test PRIVATE traypopupviewtestutils.h traypopupviewtestutils.mm)
 endforeach()
+target_sources(MacTrayAccountRowTest PRIVATE ncaccountrowdelegatemock.h ncaccountrowdelegatemock.mm)
 
 if(BUILD_FILE_PROVIDER_MODULE)
     nextcloud_add_test(FileProviderXPCUtils)
