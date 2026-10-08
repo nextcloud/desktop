@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
         <source>Log in</source>
-        <translation>Log på</translation>
+        <translation>Log ind</translation>
     </message>
 </context>
 <context>
@@ -1019,7 +1019,7 @@ Skal kontoen importeres?</translation>
         <location filename="../src/gui/accountsettings.ui" line="640"/>
         <location filename="../src/gui/accountsettings.cpp" line="1582"/>
         <source>Log out, log back in, or remove this account from the client.</source>
-        <translation>Log ud, log på igen, eller fjern kontoen fra klienten.</translation>
+        <translation>Log ud, log ind igen, eller fjern kontoen fra klienten.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="656"/>
@@ -4978,7 +4978,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1320"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1322"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Kunne ikke slette filposten %1 fra den lokale database</translation>
     </message>
@@ -5008,29 +5008,29 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
         <translation>Den hentede fil er tom, men serveren angav, at den skulle have været %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1153"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1167"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1155"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1169"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>Filen %1 har et ugyldigt ændringstidspunkt fra serveren. Gem den ikke.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1240"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1242"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Filen %1 er hentet, men gav en navnekonflikt med en lokal fil!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1353"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1355"/>
         <source>Error updating metadata: %1</source>
         <translation>Fejl under opdatering af metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1356"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1358"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 er i brug</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1269"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1271"/>
         <source>File has changed since discovery</source>
         <translation>Fil er ændret siden opdagelse</translation>
     </message>
@@ -6735,7 +6735,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="152"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation>Du er blevet logget ud af din konto %1 på %2. Log på igen.</translation>
+        <translation>Du er blevet logget ud af din konto %1 på %2. Log ind igen.</translation>
     </message>
 </context>
 <context>
@@ -7057,7 +7057,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
-        <translation>Du skal logge på for at fortsætte. Kontakt din serveradministrator, hvis du har problemer med dine loginoplysninger.</translation>
+        <translation>Du skal logge ind for at fortsætte. Kontakt din serveradministrator, hvis du har problemer med dine loginoplysninger.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
@@ -7313,7 +7313,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
         <source>Log in to %1</source>
-        <translation>Log på %1</translation>
+        <translation>Log ind på %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
@@ -7323,7 +7323,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="181"/>
         <source>Log in</source>
-        <translation>Log på</translation>
+        <translation>Log ind</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="196"/>
