@@ -14,7 +14,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        try! Self.dbManager.removeAllRowsForTesting()
+        setUpDatabase(Self.dbManager)
     }
 
     func testStandardUpload() async throws {

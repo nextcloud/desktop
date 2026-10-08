@@ -198,7 +198,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        try! Self.dbManager.removeAllRowsForTesting()
+        setUpDatabase(Self.dbManager)
     }
 
     override func tearDown() {
