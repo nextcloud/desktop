@@ -32,6 +32,22 @@ extension DatabaseTestSuites {
             #expect(batch.continuationAnchorRawValue != nil)
         }
 
+        @Test func aFreshBufferContinuesABatchTheReportingBufferAcknowledgedMeanwhile() throws {
+            let reporting = makeBuffer()
+            reporting.prime(key: "anchor", finalAnchorRawValue: Data([9]), updated: rows, deleted: [])
+            let batch = try #require(reporting.prepareChangeDeliveryBatch(maxItems: 2))
+            let continuation = try #require(batch.continuationAnchorRawValue.flatMap { String(data: $0, encoding: .utf8) })
+
+            // The observer finished; the framework asks for the continuation through a fresh instance while the reporting one acknowledges.
+            reporting.acknowledgeBatch(deletedOcIds: [])
+            let fresh = makeBuffer()
+
+            #expect(fresh.isContinuation(forKey: continuation))
+            let next = try #require(fresh.prepareChangeDeliveryBatch(maxItems: 2))
+            #expect(next.updated.map(\.ocId) == ["row-2"], "The drain continues where the acknowledged batch ended.")
+            #expect(next.moreComing == false)
+        }
+
         @Test func anUnreadableItemTableYieldsNoBatchAndKeepsTheSession() throws {
             let buffer = makeBuffer()
             buffer.prime(key: "anchor", finalAnchorRawValue: Data([9]), updated: rows, deleted: [])
