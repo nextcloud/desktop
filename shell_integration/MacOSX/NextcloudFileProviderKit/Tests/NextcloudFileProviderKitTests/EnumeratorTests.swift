@@ -2571,9 +2571,13 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         }
         XCTAssertEqual(observer.finishes.last?.moreComing, false)
 
-        // Delivered orphans are soft-deleted by the time their batch finishes.
-        for ocId in expectedOcIds {
-            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.deleted, true, "Delivered trash orphans must be soft-deleted.")
+        // The rows are marked deleted when the last batch is acknowledged, which happens right after the
+        // observer finished, so the write may still be in flight here.
+        var pending = expectedOcIds.filter { Self.dbManager.itemMetadata(ocId: $0)?.deleted != true }
+        for _ in 0 ..< 200 where !pending.isEmpty {
+            try await Task.sleep(nanoseconds: 5_000_000)
+            pending = pending.filter { Self.dbManager.itemMetadata(ocId: $0)?.deleted != true }
         }
+        XCTAssertTrue(pending.isEmpty, "Delivered trash orphans must be soft-deleted: \(pending)")
     }
 }
