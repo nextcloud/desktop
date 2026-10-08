@@ -2216,21 +2216,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let remoteInterface = MockRemoteInterface(
             account: Self.account, rootItem: rootItem, pagination: true
         )
-        // Override capabilities to simulate NC31+
-        remoteInterface.capabilities = ##"""
-        {
-          "ocs": {
-            "data": {
-              "version": {
-                "major": 31,
-                "minor": 0,
-                "micro": 0,
-                "string": "31.0.0"
-              }
-            }
-          }
-        }
-        """##
+        remoteInterface.capabilities = remoteInterface.capabilities.replacingOccurrences(of: ##""major": 28"##, with: ##""major": 31"##)
 
         Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
 
@@ -2248,9 +2234,12 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // With pagination enabled, all items should be enumerated
         XCTAssertEqual(
             observer.items.count,
-            26, // folder + 25 children
-            "Pagination should enumerate all items for NC31+"
+            25,
+            "Pagination should enumerate every child for NC31+"
         )
+        // The folder itself heads the first page, so 26 entries at five per page are six requests, each carrying the token the previous page issued.
+        XCTAssertEqual(remoteInterface.readOperationCount, 6, "Every page is one request with the server's token; the mock refuses any other token.")
+        XCTAssertEqual(observer.observedPages.count, 6)
 
         // Verify all items are in database
         for i in 0 ..< 25 {
