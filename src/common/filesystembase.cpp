@@ -14,6 +14,8 @@
 #include <QFile>
 #include <QCoreApplication>
 
+#include <optional>
+
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -31,6 +33,15 @@
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileSystem, "nextcloud.sync.filesystem", QtInfoMsg)
+
+std::filesystem::path FileSystem::toFilesystemPath(const QString &path)
+{
+#ifdef Q_OS_WIN
+    return QtPrivate::toFilesystemPath(FileSystem::longWinPath(path));
+#else
+    return QtPrivate::toFilesystemPath(path);
+#endif
+}
 
 QString FileSystem::longWinPath(const QString &inpath)
 {
@@ -557,24 +568,6 @@ bool FileSystem::isReadable(const QString &filename, const QFileInfo &fileInfo)
     return re;
 }
 
-bool FileSystem::isSymLink(const QString &filename, const QFileInfo &fileInfo)
-{
-#ifdef Q_OS_WIN
-    if (isLnkFile(filename)) {
-        return isJunction(filename);
-    }
-#endif
-    bool re = fileInfo.isSymLink();
-    // if the filename is different from the filename in fileInfo, the fileInfo is
-    // not valid. There needs to be one initialised here. Otherwise the incoming
-    // fileInfo is re-used.
-    if (fileInfo.filePath() != filename) {
-        QFileInfo myFI(filename);
-        re = myFI.isSymLink();
-    }
-    return re;
-}
-
 #ifdef Q_OS_WIN
 QString FileSystem::fileSystemForPath(const QString &path)
 {
@@ -779,22 +772,56 @@ bool FileSystem::isExcludeFile(const QString &filename)
         || filename.endsWith(QStringLiteral("/exclude.lst"), Qt::CaseInsensitive);
 }
 
-bool FileSystem::isJunction(const QString &filename)
+#ifdef Q_OS_WIN
+static std::optional<DWORD> reparseTagForPath(const QString &absolutePath)
+{
+    WIN32_FIND_DATA findData;
+    const auto handle = FindFirstFileEx(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(absolutePath).utf16()),
+                                        FindExInfoBasic,
+                                        &findData,
+                                        FindExSearchNameMatch,
+                                        nullptr,
+                                        0);
+    if (handle == INVALID_HANDLE_VALUE) {
+        return std::nullopt;
+    }
+    FindClose(handle);
+    if (!(findData.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT)) {
+        return std::nullopt;
+    }
+    return findData.dwReserved0;
+}
+
+bool FileSystem::hasCloudReparseTag(const QString &absolutePath)
+{
+    const auto reparseTag = reparseTagForPath(absolutePath);
+    return reparseTag && (*reparseTag & ~IO_REPARSE_TAG_CLOUD_MASK) == (IO_REPARSE_TAG_CLOUD & ~IO_REPARSE_TAG_CLOUD_MASK);
+}
+#endif
+
+bool FileSystem::isSymLink(const QString &absolutePath)
 {
 #ifdef Q_OS_WIN
-    WIN32_FIND_DATA findData;
-    HANDLE hFind = FindFirstFileEx(reinterpret_cast<const wchar_t *>(longWinPath(filename).utf16()), FindExInfoBasic, &findData, FindExSearchNameMatch, nullptr, 0);
-    if (hFind != INVALID_HANDLE_VALUE) {
-        FindClose(hFind);
-        return false;
-    }
-    return findData.dwFileAttributes != INVALID_FILE_ATTRIBUTES
-        && findData.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT
-        && findData.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT;
+    // Windows VFS placeholders carry cloud reparse tags, so they never match.
+    const auto reparseTag = reparseTagForPath(absolutePath);
+    return reparseTag == IO_REPARSE_TAG_SYMLINK || reparseTag == IO_REPARSE_TAG_MOUNT_POINT;
 #else
-    Q_UNUSED(filename);
-    return false;
+    struct stat statBuffer;
+    return lstat(QFile::encodeName(absolutePath).constData(), &statBuffer) == 0 && S_ISLNK(statBuffer.st_mode);
 #endif
+}
+
+bool FileSystem::pathContainsSymlink(const QString &syncRootPath, const QString &relativePath)
+{
+    auto currentPath = syncRootPath;
+    const auto pathParts = QDir::fromNativeSeparators(relativePath).split(u'/', Qt::SkipEmptyParts);
+    for (const auto &pathPart : pathParts) {
+        currentPath = joinPath(currentPath, pathPart);
+        if (isSymLink(currentPath)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 #ifdef Q_OS_WIN

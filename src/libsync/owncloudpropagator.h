@@ -528,6 +528,8 @@ public:
 
     [[nodiscard]] QString fullLocalPath(const QString &tmp_file_name) const;
     [[nodiscard]] QString localPath() const;
+    [[nodiscard]] bool localPathContainsSymlink(const QString &relativePath) const;
+    [[nodiscard]] static QString symlinkNotSupportedMessage();
 
     /**
      * Returns the full remote path including the folder root of a
