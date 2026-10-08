@@ -15,18 +15,6 @@
 
 using namespace OCC;
 
-
-static void changeAllFileId(FileInfo &info) {
-    info.fileId = generateFileId();
-    if (!info.isDir) {
-        return;
-    }
-    info.etag = generateEtag();
-    for (auto &child : info.children) {
-        changeAllFileId(child);
-    }
-}
-
 /*
  * This test ensure that the SyncEngine::aboutToRemoveAllFiles is correctly called and that when
  * we the user choose to remove all files SyncJournalDb::clearFileTable makes works as expected

@@ -1563,8 +1563,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return false;
         }
 
-        if (base.isDirectory() != item->isDirectory()) {
-            qCInfo(lcDisco) << "Not a move, types don't match" << base._type << item->_type << localEntry.type;
+        if (base.isDirectory() != item->isDirectory()) [[__unlikely__]] {
+            qCCritical(lcDisco) << "Not a move, types don't match" << base._type << item->_type << localEntry.type;
+            Q_ASSERT(false);
             return false;
         }
         // Directories and virtual files don't need size/mtime equality
