@@ -12,9 +12,6 @@ struct WorkingSetScanState {
     /// The remote state at which each directory was reconciled by an earlier pass, keyed by identifier.
     var scannedRemoteStates: [String: String]
 
-    /// Canonical paths of directories which are listed on every pass whatever their state, with everything below them.
-    var alwaysListedPrefixes: [String]
-
     /// Directories listed in this pass, so a directory reached twice is listed once.
     var listedOcIds: Set<String> = []
 

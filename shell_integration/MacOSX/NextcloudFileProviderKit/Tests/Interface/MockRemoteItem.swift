@@ -24,6 +24,12 @@ public class MockRemoteItem: Equatable {
     public var locked: Bool
     public var lockOwner: String
     public var lockTimeOut: Date?
+    /// The permissions the item's own listing reports.
+    public var permissions = "RGDNVW"
+    /// The permissions the parent's listing reports for the item, when they differ, as the server does for a mount point.
+    public var permissionsAsListedByParent: String?
+    /// The mount type the server reports, `""` for the user's own storage.
+    public var mountType = ""
     public var size: Int64 {
         Int64(data?.count ?? 0)
     }
@@ -180,7 +186,7 @@ public class MockRemoteItem: Equatable {
         }
     }
 
-    public func toNKFile() -> NKFile {
+    public func toNKFile(asListedByParent: Bool = false) -> NKFile {
         let isRoot = identifier == NSFileProviderItemIdentifier.rootContainer.rawValue
         var file = NKFile()
         file.fileName = isRoot
@@ -190,7 +196,8 @@ public class MockRemoteItem: Equatable {
         file.creationDate = creationDate
         file.date = modificationDate
         file.directory = isRoot ? false : directory
-        file.permissions = "RGDNVW"
+        file.permissions = asListedByParent ? permissionsAsListedByParent ?? permissions : permissions
+        file.mountType = mountType
         file.etag = versionIdentifier
         file.ocId = identifier
         file.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
@@ -251,7 +258,7 @@ public class MockRemoteItem: Equatable {
             fileNameView: name,
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
-            mountType: "", // Placeholder as not set in original code
+            mountType: mountType,
             name: name,
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
