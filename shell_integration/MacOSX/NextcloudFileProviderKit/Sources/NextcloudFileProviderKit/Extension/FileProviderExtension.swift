@@ -90,6 +90,15 @@ import OSLog
     /// enumeration if they want for safety.
     lazy var config = FileProviderDomainDefaults(identifier: domain.identifier, log: log)
 
+    /// NextcloudKit's logger is configured once per process. Its configuration is not thread-safe, and a process hosts one extension per domain, so instances created concurrently, as the tests do, must not configure it again. The static initialiser runs once, before the first instance logs through it.
+    private static let nextcloudKitLoggingConfiguration: Void = {
+        #if DEBUG
+            NKLogFileManager.configure(logLevel: .verbose)
+        #else
+            NKLogFileManager.configure(logLevel: .normal)
+        #endif
+    }()
+
     public required init(domain: NSFileProviderDomain) {
         // The containing application must create a domain using
         // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
@@ -105,13 +114,7 @@ import OSLog
 
         // Set up NextcloudKit.
         ncKit = NextcloudKit.shared
-
-        #if DEBUG
-            NKLogFileManager.configure(logLevel: .verbose)
-        #else
-            NKLogFileManager.configure(logLevel: .normal)
-        #endif
-
+        _ = Self.nextcloudKitLoggingConfiguration
         logger.info("NextcloudKit logging configured.", [.url: NKLogFileManager.shared.currentLogFileURL()])
         keychain = Keychain(log: log)
         super.init()
