@@ -732,26 +732,8 @@ Utility::Handle lockFile(const QString &fileName, FileSystem::LockMode mode)
             return {};
         }
 
-        auto out = Utility::Handle{createFileResult};
-
-        if (out) {
-            if (attr & FILE_ATTRIBUTE_DIRECTORY) {
-                // LockFile() is unsupported for directory handles and always fails there,
-                // and opening the directory already ruled out a sharing violation.
-                return out;
-            }
-
-            LARGE_INTEGER start;
-            start.QuadPart = 0;
-            LARGE_INTEGER end;
-            end.QuadPart = -1;
-            if (LockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart)) {
-                return out;
-            } else {
-                return {};
-            }
-        }
-        return out;
+        // A byte range lock here would break Office saves.
+        return Utility::Handle{createFileResult};
     }
     return {};
 }
@@ -763,20 +745,7 @@ bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
 {
 #ifdef Q_OS_WIN
     const auto handle = lockFile(fileName, mode);
-    if (handle) {
-        // Lock acquired -> release it immediately
-        // just closing a file handle does not immediately release the lock leading to system instability
-
-        LARGE_INTEGER start;
-        start.QuadPart = 0;
-        LARGE_INTEGER end;
-        end.QuadPart = -1;
-        if (!UnlockFile(handle, start.LowPart, start.HighPart, end.LowPart, end.HighPart)) {
-            const auto error = GetLastError();
-            qCWarning(lcFileSystem()) << "unlock file" << fileName << mode;
-            qCWarning(lcFileSystem()) << Q_FUNC_INFO << Utility::formatWinError(error) << fileName;
-        }
-    } else {
+    if (!handle) {
         const auto error = GetLastError();
 
         if (error == ERROR_SHARING_VIOLATION || error == ERROR_LOCK_VIOLATION) {
