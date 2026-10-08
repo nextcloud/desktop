@@ -233,6 +233,58 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)).downloaded)
     }
 
+    func testCancelledDownloadAllowsLaterServerChanges() async throws {
+        for directory in [false, true] {
+            for cancelProgress in [false, true] {
+                let (item, remoteInterface, remoteItem) = makeFetchItem(directory: directory)
+                let progress = Progress()
+                defer {
+                    removeDownloadedContents(remoteInterface: remoteInterface)
+                    if directory {
+                        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectory.appendingPathComponent(remoteItem.identifier))
+                    }
+                }
+                if cancelProgress {
+                    remoteInterface.downloadHandler = { progress.cancel() }
+                } else {
+                    remoteInterface.downloadError = NKError(errorCode: NSURLErrorCancelled, errorDescription: "Download cancelled")
+                }
+                let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
+                XCTAssertNil(url)
+                XCTAssertNil(fetchedItem)
+                XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+                let cancelledMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
+
+                let oldPath = remoteItem.remotePath
+                remoteItem.name = "renamed-" + remoteItem.name
+                remoteItem.remotePath = Self.account.davFilesUrl + "/" + remoteItem.name
+                for child in remoteItem.children {
+                    child.remotePath = child.remotePath.replacingOccurrences(of: oldPath, with: remoteItem.remotePath)
+                }
+                let rename = await Enumerator.readServerUrl(Self.account.davFilesUrl, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+                XCTAssertNil(rename.error)
+                XCTAssertTrue(try XCTUnwrap(rename.changes).updated.contains { $0.ocId == remoteItem.identifier })
+                XCTAssertEqual(Self.dbManager.itemMetadata(ocId: remoteItem.identifier)?.fileName, remoteItem.name)
+
+                remoteItem.versionIdentifier = "updated-content"
+                remoteItem.data = directory ? nil : Data("New server contents".utf8)
+                let contents = await Enumerator.readServerUrl(directory ? remoteItem.remotePath : Self.account.davFilesUrl, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+                XCTAssertNil(contents.error)
+                XCTAssertTrue(try XCTUnwrap(contents.changes).updated.contains { $0.ocId == remoteItem.identifier })
+                let updatedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
+                XCTAssertEqual(updatedMetadata.etag, remoteItem.versionIdentifier)
+                XCTAssertFalse(updatedMetadata.downloaded)
+                XCTAssertEqual(updatedMetadata.status, Status.normal.rawValue)
+
+                XCTAssertEqual(cancelledMetadata.status, Status.normal.rawValue)
+                XCTAssertFalse(cancelledMetadata.downloaded)
+                XCTAssertEqual(cancelledMetadata.sessionError, "")
+                let cancelledItem = Item(metadata: cancelledMetadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager)
+                XCTAssertNil(cancelledItem.downloadingError)
+            }
+        }
+    }
+
     func testCancellingDownloadCancelsNetworkHandlesAndAllowsRetry() async throws {
         let (item, remoteInterface, remoteItem) = makeFetchItem()
         let progress = Progress()
