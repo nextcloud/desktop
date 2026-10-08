@@ -55,11 +55,10 @@ struct WorkingSetScanTests {
 
     /// Store the item as the server has it, with the given local flags and a `syncTime` before the anchor.
     @discardableResult
-    private func seed(_ item: MockRemoteItem, downloaded: Bool = false, visited: Bool = false, mountType: String = "") -> SendableItemMetadata {
+    private func seed(_ item: MockRemoteItem, downloaded: Bool = false, visited: Bool = false) -> SendableItemMetadata {
         var metadata = item.toItemMetadata(account: account)
         metadata.downloaded = downloaded
         metadata.visitedDirectory = visited
-        metadata.mountType = mountType
         metadata.syncTime = oldSyncTime
         manager.addItemMetadata(metadata)
         return metadata
@@ -108,6 +107,14 @@ struct WorkingSetScanTests {
         let warm = try await pass()
         #expect(warm.observer.error == nil)
         return try #require(warm.anchor)
+    }
+
+    /// A delivered batch is acknowledged right after the observer's finish, on the main actor, so its effect on the store can trail the pass by a moment.
+    private func waitUntil(_ comment: Comment, _ condition: @escaping () -> Bool) async throws {
+        for _ in 0 ..< 200 where !condition() {
+            try await Task.sleep(for: .milliseconds(5))
+        }
+        #expect(condition(), comment)
     }
 
     /// Anchors carry whole seconds, so a pass which starts within the second of the given anchor could end on an equal one.
@@ -235,8 +242,8 @@ struct WorkingSetScanTests {
 
         #expect(afterDelete.paths == [""], "The deletion is known from the root listing alone.")
         #expect(afterDelete.deleted == ["a", "b", "c", "f"])
-        for ocId in ["a", "b", "c", "f"] {
-            #expect(manager.itemMetadata(ocId: ocId) == nil, "The acknowledged working-set deletion removed the row.")
+        try await waitUntil("The acknowledged working-set deletion removes the rows.") {
+            ["a", "b", "c", "f"].allSatisfy { manager.itemMetadata(ocId: $0) == nil }
         }
     }
 
@@ -401,8 +408,10 @@ struct WorkingSetScanTests {
         let mount = makeFolder("mount", in: rootItem)
         let inside = makeFolder("inside", in: mount)
         let other = makeFolder("other", in: rootItem)
+        mount.mountType = FilesDatabaseManager.externalMountType
+        inside.mountType = FilesDatabaseManager.externalMountType
         seed(rootItem, visited: true)
-        seed(mount, visited: true, mountType: Enumerator.externalMountType)
+        seed(mount, visited: true)
         seed(inside, visited: true)
         seed(other, visited: true)
         let warmAnchor = try await warmUp()
@@ -410,6 +419,41 @@ struct WorkingSetScanTests {
         let idle = try await pass(from: warmAnchor)
 
         #expect(idle.paths == ["", "/mount", "/mount/inside"], "The server notices changes made behind its back only when the directory is read.")
+    }
+
+    @Test func anExternalStorageBelowAnUnchangedDirectoryIsListedOnEveryPass() async throws {
+        let parent = makeFolder("parent", in: rootItem)
+        let mount = makeFolder("mount", in: parent)
+        let inside = makeFolder("inside", in: mount)
+        let other = makeFolder("other", in: rootItem)
+        mount.mountType = FilesDatabaseManager.externalMountType
+        inside.mountType = FilesDatabaseManager.externalMountType
+        seed(rootItem, visited: true)
+        seed(parent, visited: true)
+        seed(mount, visited: true)
+        seed(inside, visited: true)
+        seed(other, visited: true)
+        let warmAnchor = try await warmUp()
+
+        let idle = try await pass(from: warmAnchor)
+
+        #expect(idle.paths == ["", "/parent", "/parent/mount", "/parent/mount/inside"], "The walk has to pass through the unchanged parent to reach the mount.")
+    }
+
+    @Test func aMountPointIsReconciledByTheStateItsParentLists() async throws {
+        let mount = makeFolder("mount", in: rootItem)
+        mount.permissions = "SRGDNVCK"
+        mount.permissionsAsListedByParent = "SRGNV"
+        let f = makeFile("f", in: mount)
+        seed(rootItem, visited: true)
+        seed(mount, visited: true)
+        seed(f, downloaded: true)
+        let warmAnchor = try await warmUp()
+
+        let idle = try await pass(from: warmAnchor)
+
+        #expect(idle.paths == [""], "The server rewrites a mount point's permissions in its parent's listing; the walk compares against that view.")
+        #expect(manager.scannedRemoteStateForTesting(ocId: "mount") == "mount-v1|SRGNV")
     }
 
     @Test func aLockChangeIsReportedWhenTheServerPropagatesIt() async throws {

@@ -85,7 +85,7 @@ File Provider uses its own vocabulary. Prefer these terms in the Swift package a
 | **evict** | Removing an item's local File Provider representation without treating it as a server deletion. |
 | **keepDownloaded** | The stored intent behind “Always keep downloaded”; it is not the current downloaded or materialized state. |
 | **reported** | Item state an enumeration observer or a request's completion handler has handed to the framework. The metadata database keeps the `syncTime` of the last reported state as `reportedSyncTime`. |
-| **reconciled** | A directory whose listing the working-set scan compared with the stored rows, together with every materialized item below it. The metadata database keeps the etag and permissions at that moment as `scannedRemoteState`. |
+| **reconciled** | A directory whose listing the working-set scan compared with the stored rows, together with every materialized item below it. The metadata database keeps the etag and permissions at that moment, as the parent's listing reports them, as `scannedRemoteState`. |
 | **anchor** | The framework value passed between enumeration requests to identify where enumeration should continue. |
 | **store identity** | The random value a metadata database file receives when it is first opened. It is part of every anchor, so the anchors of a replaced file expire. |
 | **cursor** | The position within a stored change list or delivery session. |
