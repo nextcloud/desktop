@@ -15,11 +15,14 @@ set(native_tests
     MacSandboxSecurityScopedAccess
     MacSandboxPersistentAccess
     MacTrayPopupImageUtils
+    MacTrayPopupViewUtils
+    MacTrayHoverView
 )
 
 set(native_test_sources
     macutilitymock.mm
     securityscopedaccessmock.mm
+    traypopupviewtestutils.mm
 )
 foreach(native_test IN LISTS native_tests)
     nextcloud_add_test(${native_test})
@@ -33,6 +36,9 @@ set_property(SOURCE ${native_test_sources} APPEND PROPERTY COMPILE_OPTIONS -fobj
 target_sources(MacUtilityTest PRIVATE macutilitymock.h macutilitymock.mm)
 foreach(native_test IN ITEMS MacSandboxSecurityScopedAccess MacSandboxPersistentAccess)
     target_sources(${native_test}Test PRIVATE securityscopedaccessmock.h securityscopedaccessmock.mm)
+endforeach()
+foreach(native_test IN ITEMS MacTrayPopupViewUtils)
+    target_sources(${native_test}Test PRIVATE traypopupviewtestutils.h traypopupviewtestutils.mm)
 endforeach()
 
 if(BUILD_FILE_PROVIDER_MODULE)
