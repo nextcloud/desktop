@@ -62,7 +62,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        try! Self.dbManager.removeAllRowsForTesting()
+        setUpDatabase(Self.dbManager)
         rootItem = MockRemoteItem.rootItem(account: Self.account)
     }
 

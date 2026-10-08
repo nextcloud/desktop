@@ -101,7 +101,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        try! Self.dbManager.removeAllRowsForTesting()
+        setUpDatabase(Self.dbManager)
 
         remoteItem = MockRemoteItem(
             identifier: "item",
