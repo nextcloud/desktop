@@ -4973,7 +4973,7 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1320"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1322"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Αδυναμία διαγραφής εγγραφής αρχείου %1 από την τοπική ΒΔ</translation>
     </message>
@@ -5003,29 +5003,29 @@ Note that using any logging command line options will override this setting.</so
         <translation>Το αρχείο που λήφθηκε είναι κενό, αλλά ο διακομιστής είπε ότι θα έπρεπε να ήταν %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1153"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1167"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1155"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1169"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>Το αρχείο %1 έχει μη έγκυρο χρόνο τροποποίησης όπως αναφέρει ο διακομιστής. Μην το αποθηκεύσετε.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1240"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1242"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Το αρχείο %1 λήφθηκε αλλά προκλήθηκε διένεξη με το όνομα ενός τοπικού αρχείου!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1353"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1355"/>
         <source>Error updating metadata: %1</source>
         <translation>Σφάλμα ενημέρωσης μεταδεδομένων: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1356"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1358"/>
         <source>The file %1 is currently in use</source>
         <translation>Το αρχείο %1 χρησιμοποιείται αυτήν τη στιγμή</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1269"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1271"/>
         <source>File has changed since discovery</source>
         <translation>Το αρχείο έχει αλλάξει από όταν ανακαλύφθηκε</translation>
     </message>

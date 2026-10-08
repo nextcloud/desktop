@@ -4961,7 +4961,7 @@ Merk op dat het gebruik van logging-opdrachtregel opties deze instelling zal ove
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1320"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1322"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Kon bestandsrecord %1 niet verwijderen uit de lokale DB</translation>
     </message>
@@ -4991,29 +4991,29 @@ Merk op dat het gebruik van logging-opdrachtregel opties deze instelling zal ove
         <translation>Het gedownloade bestand is leeg, maar de server meldde dat het %1 zou moeten zijn.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1153"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1167"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1155"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1169"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>Bestand %1 heeft een ongeldige wijzigingstijd gerapporteerd door de server. Bewaar het niet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1240"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1242"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Bestand %1 gedownload maar het resulteerde in een lokaal bestandsnaam conflict!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1353"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1355"/>
         <source>Error updating metadata: %1</source>
         <translation>Fout bij bijwerken metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1356"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1358"/>
         <source>The file %1 is currently in use</source>
         <translation>Bestand %1 is al in gebruik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1269"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1271"/>
         <source>File has changed since discovery</source>
         <translation>Het bestand is gewijzigd sinds het is gevonden</translation>
     </message>

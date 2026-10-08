@@ -4949,7 +4949,7 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1320"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1322"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
@@ -4979,29 +4979,29 @@ Note that using any logging command line options will override this setting.</so
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1153"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1167"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1155"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1169"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1240"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1242"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1353"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1355"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1356"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1358"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1269"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1271"/>
         <source>File has changed since discovery</source>
         <translation type="unfinished"/>
     </message>
@@ -6813,7 +6813,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/owncloudgui.cpp" line="612"/>
         <source>%1 (%2, %3)</source>
         <extracomment>%1 is the file name. %2 is the sync result. %3 is the current time.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
 </context>
 <context>
@@ -6822,77 +6822,77 @@ Server replied with error: %2</source>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="77"/>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="80"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Iɣewwaṛen n upṛuksi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="88"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Ulac apṛuksi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="98"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Seqdec apṛuksi n unagraw</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="108"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Mmel-d s ufus apṛuksi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>Apṛuksi HTTP(S)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>Apṛuksi SOCKS5</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="127"/>
         <source>Proxy type</source>
-        <translation type="unfinished"/>
+        <translation>Anaw n upṛuksi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="138"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Isem n usneftaɣ n uqeddac apṛuksi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="150"/>
         <source>Proxy port</source>
-        <translation type="unfinished"/>
+        <translation>Tawwurt n upṛuksi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="159"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Aqeddac n upṛuksi yesra asesteb</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="175"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Isem n useqdac i uqeddac apṛuksi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="182"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Awal uffir i uqeddac apṛuksi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="191"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Tamawt: Iɣewwaren n upṛuksi ur sεin ara isemda i imiḍanen idiganen ɣef usneftaɣ adigan</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="208"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Semmet</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="215"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Ifuk</translation>
     </message>
 </context>
 <context>
@@ -6901,18 +6901,18 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="401"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n wass</numerusform><numerusform>%n wussan</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="405"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>deg yimal</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="410"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nsrg</numerusform><numerusform>%nsrg</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="416"/>
@@ -6923,18 +6923,18 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="418"/>
         <source>1min</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1tsd</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="421"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n tsd</numerusform><numerusform>%n tsd</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="425"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Kra n wakud aya</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="132"/>

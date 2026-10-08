@@ -4979,7 +4979,7 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1320"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1322"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>無法從本機資料庫刪除檔案紀錄 %1</translation>
     </message>
@@ -5009,29 +5009,29 @@ Note that using any logging command line options will override this setting.</so
         <translation>已下載的檔案空白，但伺服器表示它應為 %1。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1153"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1167"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1155"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1169"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>伺服器回報檔案 %1 的修改時間無效。不要儲存。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1240"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1242"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>已下載檔案 %1，但它導致本機檔案名稱衝突！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1353"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1355"/>
         <source>Error updating metadata: %1</source>
         <translation>更新中介資料時發生錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1356"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1358"/>
         <source>The file %1 is currently in use</source>
         <translation>檔案 %1 目前正在使用中</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1269"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1271"/>
         <source>File has changed since discovery</source>
         <translation>探查的過程中檔案已經更改</translation>
     </message>
