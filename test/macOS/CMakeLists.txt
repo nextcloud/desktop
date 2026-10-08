@@ -20,6 +20,9 @@ set(native_tests
     MacTrayAccountRow
     MacTrayRows
 )
+if(BUILD_FILE_PROVIDER_MODULE)
+    list(APPEND native_tests MacProgressObserver)
+endif()
 
 set(native_test_sources
     macutilitymock.mm
