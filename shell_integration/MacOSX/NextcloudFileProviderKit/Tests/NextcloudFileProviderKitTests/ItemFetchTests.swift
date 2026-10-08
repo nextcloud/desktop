@@ -258,7 +258,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
         let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
         XCTAssertFalse(metadata.downloaded)
-        XCTAssertEqual(metadata.status, Status.downloadError.rawValue)
+        XCTAssertEqual(metadata.status, Status.normal.rawValue)
+        XCTAssertEqual(metadata.sessionError, "")
         XCTAssertNil(progress.cancellationHandler)
         XCTAssertNil(progress.pausingHandler)
         XCTAssertNil(progress.resumingHandler)
@@ -273,6 +274,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(try Data(contentsOf: downloadedUrl), remoteItem.data)
         XCTAssertTrue(try XCTUnwrap(retryItem).isDownloaded)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.normal.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
     }
 
     func testParentCancellationReachesDownload() async throws {
@@ -296,7 +298,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(url)
         XCTAssertNil(fetchedItem)
         XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.downloadError.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.normal.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
     }
 
     func testCancelledSuccessfulResponseDoesNotMarkContentsDownloaded() async throws {
@@ -315,7 +318,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
         let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
         XCTAssertFalse(metadata.downloaded)
-        XCTAssertEqual(metadata.status, Status.downloadError.rawValue)
+        XCTAssertEqual(metadata.status, Status.normal.rawValue)
+        XCTAssertEqual(metadata.sessionError, "")
         XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
     }
 
@@ -702,7 +706,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
         XCTAssertEqual(remoteInterface.readOperationCount, 1)
         XCTAssertEqual(remoteInterface.downloadOperationCount, 0)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.downloadError.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.normal.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
     }
 
     func testCancelledFolderDownloadPreservesCompletedChildrenAndStopsTraversal() async throws {
@@ -725,9 +730,13 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteInterface.downloadOperationCount, 2)
         XCTAssertEqual(remoteInterface.readOperationCount, 1)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.identifier)?.downloaded, false)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.identifier)?.status, Status.downloadError.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.identifier)?.status, Status.normal.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.identifier)?.sessionError, "")
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[0].identifier)?.downloaded, true)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[1].identifier)?.downloaded, false)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[1].identifier)?.status, Status.normal.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[1].identifier)?.sessionError, "")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[0].identifier)?.status, Status.normal.rawValue)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[2].identifier)?.downloaded, false)
         XCTAssertEqual(try Data(contentsOf: localDirectory.appendingPathComponent("first.txt")), directory.children[0].data)
         XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.appendingPathComponent("second.txt").path))
@@ -735,20 +744,39 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDownloadErrorsPreserveCancellationAndServerErrors() async throws {
-        for errorCode in [NSURLErrorCancelled, 404, 503] {
-            let (item, remoteInterface, _) = makeFetchItem()
-            remoteInterface.downloadError = NKError(errorCode: errorCode, errorDescription: "Download failed")
-            let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
-            XCTAssertNil(url)
-            XCTAssertNil(fetchedItem)
-            if errorCode == NSURLErrorCancelled {
-                XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
-            } else {
-                XCTAssertEqual((error as? NSFileProviderError)?.code, errorCode == 404 ? .noSuchItem : .serverUnreachable)
+        for directory in [false, true] {
+            for errorCode in [NSURLErrorCancelled, 404, 503] {
+                let (item, remoteInterface, remoteItem) = makeFetchItem(directory: directory)
+                defer {
+                    if directory {
+                        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectory.appendingPathComponent(remoteItem.identifier))
+                    }
+                }
+                remoteInterface.downloadError = NKError(errorCode: errorCode, errorDescription: "Download failed")
+                let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+                XCTAssertNil(url)
+                XCTAssertNil(fetchedItem)
+                let cancelled = errorCode == NSURLErrorCancelled
+                if cancelled {
+                    XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+                } else {
+                    XCTAssertEqual((error as? NSFileProviderError)?.code, errorCode == 404 ? .noSuchItem : .serverUnreachable)
+                }
+                let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
+                XCTAssertFalse(metadata.downloaded)
+                XCTAssertEqual(metadata.status, cancelled ? Status.normal.rawValue : Status.downloadError.rawValue)
+                if cancelled {
+                    XCTAssertEqual(metadata.sessionError, "")
+                } else {
+                    XCTAssertFalse(try XCTUnwrap(metadata.sessionError).isEmpty)
+                }
+                if directory {
+                    let child = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteItem.children[0].identifier))
+                    XCTAssertFalse(child.downloaded)
+                    XCTAssertEqual(child.status, cancelled ? Status.normal.rawValue : Status.downloadError.rawValue)
+                    XCTAssertEqual(child.sessionError, cancelled ? "" : "Download failed")
+                }
             }
-            let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
-            XCTAssertFalse(metadata.downloaded)
-            XCTAssertEqual(metadata.status, Status.downloadError.rawValue)
         }
     }
 
@@ -775,7 +803,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
         XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.downloaded, false)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.downloadError.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.normal.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
         XCTAssertNil(progress.cancellationHandler)
         XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
     }
@@ -806,7 +835,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(fetchedItem)
         XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.downloaded, false)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.downloadError.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.normal.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
         XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
     }
 
@@ -867,7 +897,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
         XCTAssertEqual(remoteInterface.readOperationCount, 1)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.downloaded, false)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.downloadError.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.normal.rawValue)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
         XCTAssertNil(progress.cancellationHandler)
         XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
     }

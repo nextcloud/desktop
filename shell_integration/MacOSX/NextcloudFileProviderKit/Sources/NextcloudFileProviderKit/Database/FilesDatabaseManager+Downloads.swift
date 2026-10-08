@@ -35,11 +35,11 @@ extension FilesDatabaseManager {
         ocId: String,
         identifier: UUID,
         status: Status,
+        downloaded: Bool,
         error: String? = nil,
         contentType: String? = nil
     ) throws {
         let statusValue = status.rawValue
-        let downloaded = status == .normal
         try Self.downloadOperations.withLock { operations in
             let database = ncDatabase()
             guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString else {

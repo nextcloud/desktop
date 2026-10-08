@@ -127,7 +127,14 @@ public extension Item {
 
                     guard error == .success else {
                         logger.error("Could not acquire contents of item.", [.name: metadata.fileName, .url: remotePath, .error: error])
-                        try? dbManager.finishDownload(ocId: metadata.ocId, identifier: downloadIdentifier, status: .downloadError, error: error.errorDescription)
+                        let cancelled = error.errorCode == NSURLErrorCancelled
+                        try? dbManager.finishDownload(
+                            ocId: metadata.ocId,
+                            identifier: downloadIdentifier,
+                            status: cancelled ? .normal : .downloadError,
+                            downloaded: false,
+                            error: cancelled ? nil : error.errorDescription
+                        )
                         throw error.fileProviderError(
                             handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
                         ) ?? NSFileProviderError(.cannotSynchronize)
@@ -144,7 +151,7 @@ public extension Item {
                 if metadata.directory {
                     dbManager.addItemMetadata(metadata)
                 } else {
-                    try dbManager.finishDownload(ocId: metadata.ocId, identifier: downloadIdentifier, status: .normal)
+                    try dbManager.finishDownload(ocId: metadata.ocId, identifier: downloadIdentifier, status: .normal, downloaded: true)
                 }
 
                 if !metadata.directory {
@@ -219,14 +226,16 @@ public extension Item {
 
         var contentsReturned = false
         var fetchErrorDescription: String?
+        var fetchWasCancelled = false
         defer {
             if !contentsReturned {
-                let cancelled = progress.isCancelled || Task.isCancelled
+                let cancelled = fetchWasCancelled || progress.isCancelled || Task.isCancelled
                 try? dbManager.finishDownload(
                     ocId: ocId,
                     identifier: downloadIdentifier,
-                    status: .downloadError,
-                    error: cancelled ? CocoaError(.userCancelled).localizedDescription : fetchErrorDescription
+                    status: cancelled ? .normal : .downloadError,
+                    downloaded: false,
+                    error: cancelled ? nil : fetchErrorDescription
                 )
                 if !isDirectory {
                     do {
@@ -268,6 +277,7 @@ public extension Item {
             } catch {
                 logger.error("Could not fetch directory contents.", [.item: ocId, .error: error])
 
+                fetchWasCancelled = error is CancellationError || (error as? CocoaError)?.code == .userCancelled
                 fetchErrorDescription = error.localizedDescription
                 return (nil, nil, error)
             }
@@ -285,6 +295,7 @@ public extension Item {
             if error != .success {
                 logger.error("Could not acquire contents of item.", [.item: ocId, .name: updatedMetadata.fileName, .error: error])
 
+                fetchWasCancelled = error.errorCode == NSURLErrorCancelled
                 fetchErrorDescription = error.errorDescription
                 return (nil, nil, error.fileProviderError(
                     handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
@@ -346,7 +357,7 @@ public extension Item {
             return (nil, nil, CocoaError(.userCancelled))
         }
         do {
-            try dbManager.finishDownload(ocId: ocId, identifier: downloadIdentifier, status: .normal, contentType: detectedContentType)
+            try dbManager.finishDownload(ocId: ocId, identifier: downloadIdentifier, status: .normal, downloaded: true, contentType: detectedContentType)
         } catch {
             return (nil, nil, error)
         }
