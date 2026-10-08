@@ -50,6 +50,9 @@ extension Enumerator {
                 logger.debug("Working-set change buffer not primed for anchor \(anchorKey); deriving changes.", [.account: account])
 
                 let serverChanges = await scanMaterialisedItemsForRemoteChanges()
+                if serverChanges.stoppedAtDeadline {
+                    resumeRequest.request()
+                }
                 let localChanges = dbManager.pendingWorkingSetChanges(since: date)
                 let pendingLocalChanges = localChanges ?? ([], [])
                 // Only a failed local read keeps the incoming anchor: the pending local changes are derived from the anchor date, so advancing past a read which failed would lose them. A failed remote read does not hold the anchor back. Remote changes are found by comparing the server with the stored rows, not by date, and a directory whose listing failed is forgotten by the scan, so it is listed again on the next pass either way. Keeping the anchor made the next pass re-derive and re-deliver everything since the old date.
@@ -117,6 +120,15 @@ extension Enumerator {
     /// everything above and below them, because the server notices changes made behind its back only
     /// when the directory is read. See ``ScanDescentDecision``.
     ///
+    /// A pass starts no further sibling after its budget is spent (``WorkingSetScanLimits``): the
+    /// system issues no folder enumeration while a change enumeration is outstanding, so a long pass
+    /// freezes Finder. The first descent below every directory just listed is still taken, so each
+    /// pass completes at least one chain and the set of unreconciled directories shrinks. The
+    /// unfinished chains are not recorded, so the next pass, asked for once this one's batches are
+    /// acknowledged, resumes there. Such a pass reports no deletions: it cannot tell a deletion from
+    /// a move into a part it did not reach, so it revives the tombstones it wrote and forgets the
+    /// directories which wrote them, and the next pass decides.
+    ///
     /// The returned changes are reported to the working-set change observer directly. Relying on
     /// ``FilesDatabaseManager/pendingWorkingSetChanges(since:)`` alone to re-derive the report from
     /// the database loses changes to non-materialised items and to items in subtrees whose own parent
@@ -128,7 +140,7 @@ extension Enumerator {
     ///   and how many directories could not be listed and are left for the next pass.
     ///
     func scanMaterialisedItemsForRemoteChanges() async -> (
-        updated: [SendableItemMetadata], deleted: [SendableItemMetadata], storeUnreadable: Bool, failedListingCount: Int
+        updated: [SendableItemMetadata], deleted: [SendableItemMetadata], storeUnreadable: Bool, failedListingCount: Int, stoppedAtDeadline: Bool
     ) {
         logger.debug("Checking materialised items for changes on the server...")
 
@@ -138,15 +150,18 @@ extension Enumerator {
 
         // Trashed rows are not below the account root: trashing moves `serverUrl` to the trashbin.
         guard let somethingIsMaterialised = dbManager.hasMaterialisedItem(below: account.davFilesUrl) else {
-            return (updated: [], deleted: [], storeUnreadable: true, failedListingCount: 0)
+            return (updated: [], deleted: [], storeUnreadable: true, failedListingCount: 0, stoppedAtDeadline: false)
         }
 
         guard somethingIsMaterialised else {
             logger.info("Nothing is materialised, so there is nothing to check on the server.")
-            return (updated: [], deleted: [], storeUnreadable: false, failedListingCount: 0)
+            return (updated: [], deleted: [], storeUnreadable: false, failedListingCount: 0, stoppedAtDeadline: false)
         }
 
-        var state = WorkingSetScanState(scannedRemoteStates: dbManager.scannedRemoteStates() ?? [:])
+        var state = WorkingSetScanState(
+            scannedRemoteStates: dbManager.scannedRemoteStates() ?? [:],
+            deadline: ContinuousClock.now + scanLimits.listingBudget
+        )
 
         let rootMetadata = dbManager.itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue)
         _ = await listDirectory(
@@ -158,7 +173,15 @@ extension Enumerator {
             state: &state
         )
 
-        var deletions = expandMissingDirectories(state: &state)
+        var deletions: [SendableItemMetadata]
+        if state.stoppedAtDeadline, !state.missing.isEmpty {
+            logger.info("Reviving the tombstones of a pass which stopped early; the next pass decides what was deleted.", [.name: "\(state.missing.count)"])
+            dbManager.reviveTombstones(ocIds: state.missing.map(\.ocId))
+            state.forgotten.formUnion(state.tombstoningChains)
+            deletions = []
+        } else {
+            deletions = expandMissingDirectories(state: &state)
+        }
         dbManager.recordScannedRemoteStates(state.reconciled, forgetting: state.forgotten)
 
         // Deduplicate the discovered new/updated metadata by ocId, preserving order; the root row is the system's, not ours to report.
@@ -197,10 +220,26 @@ extension Enumerator {
 
         logger.info(
             "Working-set scan finished.",
-            [.name: "\(state.listedCount) listed, \(state.skippedCount) skipped, \(state.failedCount) failed"]
+            [.name: "\(state.listedCount) listed, \(state.skippedCount) skipped, \(state.failedCount) failed\(state.stoppedAtDeadline ? ", stopped at the listing budget" : "")"]
         )
 
-        return (updated: discoveredUpdates, deleted: deletions, storeUnreadable: storeUnreadable, failedListingCount: state.failedCount)
+        return (updated: discoveredUpdates, deleted: deletions, storeUnreadable: storeUnreadable, failedListingCount: state.failedCount, stoppedAtDeadline: state.stoppedAtDeadline)
+    }
+
+    ///
+    /// Ask for the next pass, once this one's last batch is acknowledged and after the folder enumerations the system queued meanwhile had their turn.
+    ///
+    func resumeAfterDelay() {
+        guard let changeNotificationInterface else {
+            logger.info("The pass stopped at its listing budget; without a domain the rest waits for the next signal.")
+            return
+        }
+
+        logger.info("The pass stopped at its listing budget; the working set is signalled again for the rest.", [.name: "\(scanLimits.resumeDelay)"])
+        Task { [resumeDelay = scanLimits.resumeDelay] in
+            try? await Task.sleep(for: resumeDelay)
+            changeNotificationInterface.notifyChange()
+        }
     }
 
     ///
@@ -243,6 +282,7 @@ extension Enumerator {
                 gone.syncTime = Date()
                 state.missing.append(gone)
                 state.notFoundOcIds.insert(ocId)
+                state.tombstoningChains.formUnion(ancestorOcIds)
             }
             return true
         }
@@ -266,6 +306,9 @@ extension Enumerator {
         state.survivingOcIds.formUnion(changes.created.map(\.ocId))
         state.survivingOcIds.formUnion(changes.updated.map(\.ocId))
         state.missing.append(contentsOf: changes.deleted)
+        if !changes.deleted.isEmpty {
+            state.tombstoningChains.formUnion(ancestorOcIds + [ocId])
+        }
 
         // The listing carries the server's state; the walk decides by the stored one, where a visit,
         // a pin and a download are recorded, and reports the rows as the store holds them after the write.
@@ -281,6 +324,7 @@ extension Enumerator {
         state.survivingOcIds.formUnion(listedRows.map(\.ocId))
 
         var allDescentsSucceeded = true
+        var descendedBelowThisDirectory = false
 
         for child in listedRows.dropFirst() where child.directory {
             guard !isLockFileName(child.fileName), state.listedOcIds.insert(child.ocId).inserted else {
@@ -307,6 +351,15 @@ extension Enumerator {
                     break
             }
 
+            // Past the deadline the first descent below each directory just listed is still taken, so every pass completes a chain; further siblings wait. The chain up to here keeps no reconciled state, so the next pass descends to this point again and skips what this one completed.
+            guard !descendedBelowThisDirectory || ContinuousClock.now < state.deadline else {
+                logger.debug("Not starting another listing in this pass; the listing budget is spent.", [.url: childPath])
+                state.stoppedAtDeadline = true
+                allDescentsSucceeded = false
+                break
+            }
+
+            descendedBelowThisDirectory = true
             let descended = await listDirectory(
                 at: childPath,
                 ocId: child.ocId,

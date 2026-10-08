@@ -78,6 +78,29 @@ extension FilesDatabaseManager {
         }
     }
 
+    ///
+    /// Undo the tombstones a pass wrote for the given items, so a pass which stopped early does not report as deleted what may have moved into a part it did not reach.
+    ///
+    /// A row the system already has back at its reported stamp is not reported again by the derivation.
+    ///
+    func reviveTombstones(ocIds: [String]) {
+        guard !ocIds.isEmpty else {
+            return
+        }
+
+        write("Could not revive the tombstones of a pass which stopped early.", durability: .relaxed) { db in
+            for chunk in ocIds.chunked(into: Self.inClauseChunkSize) {
+                try ItemMetadataRecord
+                    .filter(chunk.contains(ItemMetadataRecord.Columns.ocId) && ItemMetadataRecord.Columns.deleted == true)
+                    .updateAll(
+                        db,
+                        ItemMetadataRecord.Columns.deleted.set(to: false),
+                        ItemMetadataRecord.Columns.syncTime.set(to: ItemMetadataRecord.reportedSyncTimeColumn ?? ItemMetadataRecord.Columns.syncTime)
+                    )
+            }
+        }
+    }
+
     /// Whether a live materialized item is stored anywhere below the directory at `remotePath`, or `nil` when the read fails.
     func hasMaterialisedItem(below remotePath: String) -> Bool? {
         read("Could not look for materialized items below a directory.", [.url: remotePath]) { db in
