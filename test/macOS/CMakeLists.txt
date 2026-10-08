@@ -11,8 +11,10 @@ nextcloud_add_test(MacSandboxUtility)
 
 set(native_tests
     MacUtility
+    MacAppIcon
     MacSandboxSecurityScopedAccess
     MacSandboxPersistentAccess
+    MacTrayPopupImageUtils
 )
 
 set(native_test_sources
