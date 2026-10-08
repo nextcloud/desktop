@@ -123,23 +123,28 @@ the scan lists the account root and descends only where that is needed:
   parent's view. The server rewrites a mount point's permissions in the
   parent's listing (`View::getDirectoryContent()` adds or removes update and
   delete), so the directory's own listing is not comparable for shares,
-  group folders and app mounts. The state is written by the scan alone, in
-  one write after the pass, and only for directories whose descents all
-  succeeded. Every other writer of a directory's etag stores it without
-  looking below the directory, so the stored etag cannot stand in for
-  "subtree reconciled". A directory the scan never reconciled is therefore
-  listed once, whatever its etag.
+  group folders and app mounts. The scan writes the state in one write after
+  the pass, only for directories whose descents all succeeded; an item
+  enumeration writes it for the one directory it listed, see below. Every
+  other writer of a directory's etag stores it without looking below the
+  directory, so the stored etag cannot stand in for "subtree reconciled". A
+  directory the scan never reconciled is therefore listed once, whatever its
+  etag.
 - A directory on an external storage is listed on every pass, with every
   directory above it on the way down and everything below it: the server
   notices changes made behind its back only when the directory is read.
 - A scan listing does not mark a directory as visited. Only an item
   enumeration the framework asked for does.
 - An item enumeration the framework asked for reconciles the directory it
-  listed, when no child directory is left for the scan to descend into and
-  the directory is not a mount point. A tree walk through Finder therefore
-  leaves nothing unreconciled behind; without this, every visited directory
-  waited for the first change under its parent, and that pass then listed
-  all of them at once.
+  listed, when its pages compared the children with the stored rows, no
+  child directory is left for the scan to descend into, the directory is not
+  a mount point, and its stored state did not move on while the pages were
+  read. Never an ancestor: an ancestor's stored etag may have been refreshed
+  by a listing of its own parent without its children having been compared.
+  A tree walk through Finder therefore leaves only the ancestors of
+  already-materialised items for the scan; without this, every visited
+  directory waited for the first change under its parent, and that pass then
+  listed all of them at once.
 
 The listings write the rows they return like a folder enumeration does, so a
 file which changed is persisted and reported by its parent's listing. A
@@ -155,6 +160,24 @@ An idle domain costs one request per pass, and nothing when nothing is
 materialised. A change deep in the tree costs the listings on its path from
 the root. Unchanged downloaded files are not re-reported, their rows are not
 rewritten.
+
+The framework issues no folder enumeration for the domain while a
+working-set change enumeration is outstanding, so a long pass freezes Finder
+for its duration. A pass therefore starts no further sibling after its
+budget (`WorkingSetScanLimits`, 20 seconds) is spent; the listing in flight
+finishes on its own, and the first descent below each directory just listed
+is still taken, so every pass completes at least one chain. The changes
+found so far are delivered and the anchor advances. Such a pass reports no
+deletions, because it cannot tell a deletion from a move into a part it did
+not reach: it revives the tombstones it wrote and forgets the directories
+which wrote them, and the next pass decides. The directories on the
+unfinished chains keep no reconciled state, so the next pass resumes there
+and skips what the previous one completed. Once the last batch of the pass
+is acknowledged, the extension signals the working set itself after a delay
+(5 seconds), so the folder enumerations the framework queued meanwhile get
+their turn first. An enumerator replaced while its batches are still being
+drained forgets the request; the rest then waits for the next signal from
+the app.
 
 ## Batches
 

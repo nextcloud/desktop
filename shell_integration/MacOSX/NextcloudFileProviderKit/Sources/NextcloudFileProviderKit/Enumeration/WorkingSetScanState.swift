@@ -12,6 +12,15 @@ struct WorkingSetScanState {
     /// The remote state at which each directory was reconciled by an earlier pass, keyed by identifier.
     var scannedRemoteStates: [String: String]
 
+    /// After this moment no listing is started any more; see ``WorkingSetScanLimits``.
+    let deadline: ContinuousClock.Instant
+
+    /// Whether the pass stopped starting listings at its deadline, with directories left to list.
+    var stoppedAtDeadline = false
+
+    /// The directories whose listings tombstoned something, and their ancestors. A pass which stopped early cannot tell a deletion from a move into a part it did not reach, so it revives the tombstones and forgets these, and the next pass decides.
+    var tombstoningChains: Set<String> = []
+
     /// Directories listed in this pass, so a directory reached twice is listed once.
     var listedOcIds: Set<String> = []
 

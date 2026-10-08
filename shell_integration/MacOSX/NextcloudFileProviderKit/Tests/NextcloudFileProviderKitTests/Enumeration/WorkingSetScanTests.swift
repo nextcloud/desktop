@@ -91,11 +91,33 @@ struct WorkingSetScanTests {
         }
     }
 
+    /// Counts the working-set signals a pass asks for.
+    private final class SignalCount: @unchecked Sendable {
+        private let lock = NSLock()
+        private var count = 0
+
+        func increment() {
+            lock.withLock { count += 1 }
+        }
+
+        func add(_ amount: Int) {
+            lock.withLock { count += amount }
+        }
+
+        var value: Int {
+            lock.withLock { count }
+        }
+    }
+
     /// One working-set change pass, recording the directories it lists.
-    private func pass(from anchor: NSFileProviderSyncAnchor? = nil) async throws -> Pass {
+    private func pass(
+        from anchor: NSFileProviderSyncAnchor? = nil, limits: WorkingSetScanLimits = .default, signalling signals: SignalCount? = nil
+    ) async throws -> Pass {
         recorder.reset()
         let enumerator = try Enumerator(
-            enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager, log: FileProviderLogMock()
+            enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager,
+            scanLimits: limits, changeNotificationInterface: signals.map { signals in MockChangeNotificationInterface { signals.increment() } },
+            log: FileProviderLogMock()
         )
         let observer = MockChangeObserver(enumerator: enumerator)
         try await observer.enumerateChanges(from: anchor ?? self.anchor)
@@ -454,6 +476,159 @@ struct WorkingSetScanTests {
 
         #expect(idle.paths == [""], "The server rewrites a mount point's permissions in its parent's listing; the walk compares against that view.")
         #expect(manager.scannedRemoteStateForTesting(ocId: "mount") == "mount-v1|SRGNV")
+    }
+
+    // MARK: - Listing budget
+
+    @Test func aPassStopsStartingSiblingsAtItsBudgetAndAsksForTheNextOne() async throws {
+        let a = makeFolder("a", in: rootItem)
+        let b = makeFolder("b", in: a)
+        makeFile("f", in: b)
+        let c = makeFolder("c", in: rootItem)
+        makeFile("g", in: c)
+        seedTree()
+        // Only on the server: h is found by a's listing, the one in flight at the deadline; i waits in c, which is not started.
+        makeFile("h", in: a)
+        makeFile("i", in: c)
+        // The listing of a outlasts the budget: the chain below it still completes, c is not started.
+        remoteInterface.enumerateLatencyBySuffix = ["/a": .seconds(2)]
+        let signals = SignalCount()
+
+        let cut = try await pass(limits: WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero), signalling: signals)
+
+        #expect(cut.observer.error == nil)
+        #expect(cut.paths == ["", "/a", "/a/b"])
+        #expect(cut.reported.contains("h"), "What the listing in flight found is delivered.")
+        #expect(!cut.reported.contains("i"), "c was not started.")
+        #expect(manager.scannedRemoteStateForTesting(ocId: "a") != nil, "The chain below a was completed.")
+        #expect(manager.scannedRemoteStateForTesting(ocId: "c") == nil)
+        #expect(try #require(cut.anchor).rawValue != anchor.rawValue, "The anchor advances.")
+        try await waitUntil("The working set is signalled again for the rest.") { signals.value == 1 }
+
+        remoteInterface.enumerateLatencyBySuffix = [:]
+        let resumed = try await pass(from: cut.anchor)
+
+        #expect(resumed.paths == ["", "/c"], "The next pass resumes where this one stopped.")
+        #expect(resumed.reported.contains("i"))
+        let idle = try await pass(from: resumed.anchor)
+        #expect(idle.paths == [""])
+    }
+
+    @Test func aChainLongerThanTheBudgetStillCompletes() async throws {
+        let a = makeFolder("a", in: rootItem)
+        let b = makeFolder("b", in: a)
+        makeFile("f", in: b)
+        seedTree()
+        // Every pass: a's listing alone outlasts the budget.
+        remoteInterface.enumerateLatencyBySuffix = ["/a": .seconds(2)]
+        let limits = WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero)
+
+        let first = try await pass(limits: limits)
+        #expect(first.paths == ["", "/a", "/a/b"], "The first descent below a listed directory is taken past the budget.")
+        let second = try await pass(from: first.anchor, limits: limits)
+        #expect(second.paths == [""], "The chain is reconciled; without the exemption every pass would stop at a.")
+    }
+
+    @Test func aPassWhichStoppedEarlyReportsNoDeletionsAndTheNextOneTellsAMoveFromOne() async throws {
+        let p = makeFolder("p", in: rootItem)
+        let d = makeFolder("d", in: p)
+        makeFile("f", in: d)
+        let q = makeFolder("q", in: rootItem)
+        seedTree()
+        let warmAnchor = try await warmUp()
+        // d moves from p to q on the server; p's listing outlasts the budget, so q is never reached in this pass.
+        d.move(to: q)
+        remoteInterface.enumerateLatencyBySuffix = ["/p": .seconds(2)]
+
+        let cut = try await pass(from: warmAnchor, limits: WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero))
+
+        #expect(cut.paths == ["", "/p"])
+        #expect(cut.deleted.isEmpty, "A pass which did not reach q cannot tell the move from a deletion.")
+        #expect(manager.itemMetadata(ocId: "d")?.deleted == false, "The tombstone is revived.")
+        #expect(manager.scannedRemoteStateForTesting(ocId: "p") == nil, "p is forgotten, so the next pass lists it again.")
+
+        remoteInterface.enumerateLatencyBySuffix = [:]
+        let resumed = try await pass(from: cut.anchor)
+
+        #expect(resumed.paths == ["", "/p", "/q"])
+        #expect(resumed.deleted.isEmpty, "d was met alive under q.")
+        #expect(manager.itemMetadata(ocId: "d")?.serverUrl == q.remotePath)
+    }
+
+    @Test func thePassAsksForTheNextOneOnlyAfterItsLastBatch() async throws {
+        let a = makeFolder("a", in: rootItem)
+        let c = makeFolder("c", in: rootItem)
+        makeFile("g", in: c)
+        seedTree()
+        // Two changes in a, the one chain a zero budget still lists; c is the sibling it refuses.
+        makeFile("h", in: a)
+        makeFile("i", in: a)
+        let signals = SignalCount()
+        recorder.reset()
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager,
+            scanLimits: WorkingSetScanLimits(listingBudget: .zero, resumeDelay: .zero),
+            changeNotificationInterface: MockChangeNotificationInterface { signals.increment() }, log: FileProviderLogMock()
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        observer.suggestedBatchSize = 1
+        let signalsSeenAtFinishes = SignalCount()
+        observer.beforeFinishEnumeratingChanges = { signalsSeenAtFinishes.add(signals.value) }
+
+        try await observer.enumerateChanges(from: anchor)
+
+        #expect(observer.finishes.count >= 2, "Two changes at one per batch.")
+        #expect(signalsSeenAtFinishes.value == 0, "No signal while a batch of this pass is still being finished.")
+        try await waitUntil("Signalled once the last batch is acknowledged.") { signals.value == 1 }
+    }
+
+    @Test func aCutPassKeepsTheStateOfTheSubtreesItCompleted() async throws {
+        let a = makeFolder("a", in: rootItem)
+        let b = makeFolder("b", in: a)
+        makeFile("f", in: b)
+        let c = makeFolder("c", in: rootItem)
+        makeFile("g", in: c)
+        seedTree()
+        // The listing of b, the last below a, outlasts the budget: a is complete, c is not started.
+        remoteInterface.enumerateLatencyBySuffix = ["/b": .seconds(2)]
+
+        let cut = try await pass(limits: WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero))
+
+        #expect(cut.paths == ["", "/a", "/a/b"])
+        #expect(manager.scannedRemoteStateForTesting(ocId: "a") != nil, "Everything below a was listed.")
+        #expect(manager.scannedRemoteStateForTesting(ocId: "c") == nil)
+
+        remoteInterface.enumerateLatencyBySuffix = [:]
+        let resumed = try await pass(from: cut.anchor)
+
+        #expect(resumed.paths == ["", "/c"], "The completed subtree is skipped.")
+    }
+
+    @Test func aZeroBudgetStillCompletesOneChain() async throws {
+        let a = makeFolder("a", in: rootItem)
+        makeFile("f", in: a)
+        let c = makeFolder("c", in: rootItem)
+        makeFile("g", in: c)
+        seedTree()
+        let signals = SignalCount()
+
+        let cut = try await pass(limits: WorkingSetScanLimits(listingBudget: .zero, resumeDelay: .zero), signalling: signals)
+
+        #expect(cut.paths == ["", "/a"])
+        #expect(cut.observer.error == nil)
+        try await waitUntil("The rest is asked for.") { signals.value == 1 }
+    }
+
+    @Test func aPassWithinItsBudgetAsksForNothing() async throws {
+        let a = makeFolder("a", in: rootItem)
+        makeFile("f", in: a)
+        seedTree()
+        let signals = SignalCount()
+
+        _ = try await pass(signalling: signals)
+        try await Task.sleep(for: .milliseconds(50))
+
+        #expect(signals.value == 0)
     }
 
     @Test func aLockChangeIsReportedWhenTheServerPropagatesIt() async throws {
