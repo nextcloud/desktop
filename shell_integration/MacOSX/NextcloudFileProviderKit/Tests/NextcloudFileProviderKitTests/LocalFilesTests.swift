@@ -82,4 +82,32 @@ struct LocalFilesTests {
         #expect(autoCADLockFileTargetName("Test.idlk") == nil)
         #expect(autoCADLockFileTargetName("Test.dwg") == nil) // The document is not a lock file.
     }
+
+    @Test func recognisesAffinityLockFileNames() {
+        #expect(isAffinityLockFileName("Screenshot.afphoto~lock~"))
+        #expect(isAffinityLockFileName("Icon.afdesign~lock~"))
+        #expect(isAffinityLockFileName("Layout.afpub~lock~"))
+        #expect(isAffinityLockFileName("Screenshot.af~lock~"))
+        #expect(isAffinityLockFileName("MY DOCUMENT.afdesign~lock~")) // Case-insensitive.
+
+        #expect(!isAffinityLockFileName("~$Test.docx")) // Microsoft Office is not Affinity.
+        #expect(!isAffinityLockFileName(".~lock.Test.odt#")) // LibreOffice is not Affinity.
+        #expect(!isAffinityLockFileName("Test.idlk")) // Adobe is not Affinity.
+        #expect(!isAffinityLockFileName("Test.prlock")) // Adobe is not Affinity.
+        #expect(!isAffinityLockFileName("Drawing.dwl")) // AutoCAD is not Affinity.
+        #expect(!isAffinityLockFileName("Screenshot.afphoto")) // The document itself is not a lock file.
+    }
+
+    @Test func resolvesAffinityLockFileTargetName() {
+        #expect(affinityLockFileTargetName("Screenshot.afphoto~lock~") == "Screenshot.afphoto")
+        #expect(affinityLockFileTargetName("Icon.afdesign~lock~") == "Icon.afdesign")
+        #expect(affinityLockFileTargetName("Layout.afpub~lock~") == "Layout.afpub")
+        #expect(affinityLockFileTargetName("Screenshot.af~lock~") == "Screenshot.af")
+
+        // Non-Affinity names yield no target name.
+        #expect(affinityLockFileTargetName("Test.docx") == nil)
+        #expect(affinityLockFileTargetName("Test.idlk") == nil)
+        #expect(affinityLockFileTargetName("Screenshot.afphoto") == nil) // No ~lock~ suffix.
+        #expect(affinityLockFileTargetName("~lock~") == nil) // Bare suffix with no base name.
+    }
 }
