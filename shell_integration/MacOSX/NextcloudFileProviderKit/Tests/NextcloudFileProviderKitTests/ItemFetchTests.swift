@@ -19,11 +19,13 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     private func makeFetchItem(directory: Bool = false, preview: Bool = false) -> (Item, MockRemoteInterface, MockRemoteItem) {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.injectMock(Self.account)
+        let identifier = UUID().uuidString
+        let name = directory ? identifier : identifier + ".txt"
         let remoteItem = MockRemoteItem(
-            identifier: UUID().uuidString,
+            identifier: identifier,
             versionIdentifier: "0",
-            name: directory ? "directory" : "file.txt",
-            remotePath: Self.account.davFilesUrl + (directory ? "/directory" : "/file.txt"),
+            name: name,
+            remotePath: Self.account.davFilesUrl + "/" + name,
             directory: directory,
             data: directory ? nil : Data("Downloaded contents".utf8),
             account: Self.account.ncKitAccount,
@@ -31,7 +33,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
-        rootItem.children = [remoteItem]
+        rootItem.children.append(remoteItem)
         remoteItem.parent = rootItem
         if directory {
             for name in ["first.txt", "second.txt", "third.txt"] {
@@ -202,6 +204,19 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     override func tearDown() {
         rootItem.children = []
         super.tearDown()
+    }
+
+    func testFetchFixturesRemainLiveAtDistinctRemoteLocations() throws {
+        for directory in [false, true] {
+            let (first, _, firstRemoteItem) = makeFetchItem(directory: directory)
+            let (second, _, secondRemoteItem) = makeFetchItem(directory: directory)
+
+            XCTAssertNotEqual(firstRemoteItem.remotePath, secondRemoteItem.remotePath)
+            XCTAssertFalse(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: first.itemIdentifier.rawValue)).deleted)
+            XCTAssertFalse(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: second.itemIdentifier.rawValue)).deleted)
+            XCTAssertTrue(rootItem.children.contains { $0.identifier == firstRemoteItem.identifier })
+            XCTAssertTrue(rootItem.children.contains { $0.identifier == secondRemoteItem.identifier })
+        }
     }
 
     func testCancelledProgressDoesNotStartDownload() async throws {
