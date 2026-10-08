@@ -35,8 +35,10 @@ set_property(SOURCE
 
 set(native_tests
     MacUtility
+    MacAppIcon
     MacSandboxSecurityScopedAccess
     MacSandboxPersistentAccess
+    MacTrayPopupImageUtils
 )
 
 set(native_test_sources
