@@ -19,6 +19,7 @@ set(native_tests
     MacTrayHoverView
     MacTrayAccountRow
     MacTrayRows
+    MacNotificationCenter
 )
 if(BUILD_FILE_PROVIDER_MODULE)
     list(APPEND native_tests MacProgressObserver)
