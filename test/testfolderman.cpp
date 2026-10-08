@@ -513,8 +513,10 @@ private Q_SLOTS:
 
             auto journal = folder->journalDb();
             for (const auto &fileId : fileIds) {
+                static int lastInode = 0;
                 SyncJournalFileRecord record;
                 record._fileId = u"%1oc123xyz987e"_s.arg(fileId, 8, 10, '0'_L1).toLocal8Bit();
+                record._inode = ++lastInode;
                 record._modtime = QDateTime::currentSecsSinceEpoch();
                 record._path = u"item%1"_s.arg(fileId).toLocal8Bit();
                 record._type = ItemTypeFile;
