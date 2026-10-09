@@ -90,6 +90,34 @@ class TestAccountWizardController : public QObject
 {
     Q_OBJECT
 
+private:
+    [[nodiscard]] static auto restoreOverrideServerUrlState()
+    {
+        ConfigFile().clearOverrideServerUrl();
+        auto theme = Theme::instance();
+        const auto previousOverrideServerUrl = theme->overrideServerUrl();
+        const auto previousForceOverrideServerUrl = theme->forceOverrideServerUrl();
+        const auto previousStartLoginFlowAutomatically = theme->startLoginFlowAutomatically();
+        theme->setOverrideServerUrl({});
+        theme->setForceOverrideServerUrl(false);
+        theme->setStartLoginFlowAutomatically(false);
+        return qScopeGuard([theme, previousOverrideServerUrl, previousForceOverrideServerUrl, previousStartLoginFlowAutomatically] {
+            ConfigFile().clearOverrideServerUrl();
+            theme->setOverrideServerUrl(previousOverrideServerUrl);
+            theme->setForceOverrideServerUrl(previousForceOverrideServerUrl);
+            theme->setStartLoginFlowAutomatically(previousStartLoginFlowAutomatically);
+        });
+    }
+
+    static void setManagedOverrideServerUrl(SettingSourceType type, EnforcementState enforcement, int priority)
+    {
+        ConfigFile::setDeviceSourcesFactory([type, enforcement, priority] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(type, enforcement, priority, QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example"_s}}));
+            return sources;
+        });
+    }
+
 private Q_SLOTS:
     void initTestCase()
     {
@@ -576,6 +604,30 @@ private Q_SLOTS:
         AccountWizardController controller;
 
         QCOMPARE(controller.serverUrl(), QStringLiteral("https://cloud.example"));
+        QVERIFY(!controller.serverUrlEditable());
+        QVERIFY(controller.startLoginFlowAutomatically());
+    }
+
+    void prefillsEditableServerUrlFromManagedDefault()
+    {
+        const auto restoreConfiguration = restoreOverrideServerUrlState();
+        setManagedOverrideServerUrl(SettingSourceType::PlatformDefault, EnforcementState::NotEnforced, 20);
+
+        AccountWizardController controller;
+
+        QCOMPARE(controller.serverUrl(), u"https://cloud.example"_s);
+        QVERIFY(controller.serverUrlEditable());
+        QVERIFY(!controller.startLoginFlowAutomatically());
+    }
+
+    void locksServerUrlFromManagedPolicy()
+    {
+        const auto restoreConfiguration = restoreOverrideServerUrlState();
+        setManagedOverrideServerUrl(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200);
+
+        AccountWizardController controller;
+
+        QCOMPARE(controller.serverUrl(), u"https://cloud.example"_s);
         QVERIFY(!controller.serverUrlEditable());
         QVERIFY(controller.startLoginFlowAutomatically());
     }

@@ -5,9 +5,17 @@
 
 #include "settings/managedsettingsschema.h"
 
+#include <QDir>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkProxy>
+#include <QUrl>
 
+#include <algorithm>
 #include <limits>
+
+using namespace Qt::StringLiterals;
 
 namespace OCC::ManagedSettingsSchema {
 
@@ -30,6 +38,30 @@ bool isValidProxyPort(const QVariant &value)
     return isNumber && proxyPort >= minimumProxyPort && proxyPort <= std::numeric_limits<quint16>::max();
 }
 
+bool isValidServerUrl(const QString &url)
+{
+    return (url.startsWith("http://"_L1) || url.startsWith("https://"_L1)) && QUrl::fromUserInput(url).isValid();
+}
+
+bool isValidOverrideServerUrl(const QVariant &value)
+{
+    const auto text = value.toString();
+    if (isValidServerUrl(text)) {
+        return true;
+    }
+
+    const auto servers = QJsonDocument::fromJson(text.toUtf8()).array();
+    return !servers.isEmpty() && std::ranges::all_of(servers, [](const QJsonValue &server) {
+        const auto serverObject = server.toObject();
+        return !serverObject.value("name"_L1).toString().isEmpty() && isValidServerUrl(serverObject.value("url"_L1).toString());
+    });
+}
+
+bool isValidOverrideLocalDir(const QVariant &value)
+{
+    const auto localDir = value.toString();
+    return !localDir.isEmpty() && QDir::isAbsolutePath(localDir);
+}
 }
 
 const QList<SettingDefinition> &all()
@@ -46,6 +78,8 @@ const QList<SettingDefinition> &all()
         {QStringLiteral("proxyType"), 0, true, isValidProxyType},
         {QStringLiteral("proxyHost"), QString(), true},
         {QStringLiteral("proxyPort"), 0, true, isValidProxyPort},
+        {QStringLiteral("overrideServerUrl"), QString(), true, isValidOverrideServerUrl},
+        {QStringLiteral("overrideLocalDir"), QString(), true, isValidOverrideLocalDir},
     };
     return specs;
 }

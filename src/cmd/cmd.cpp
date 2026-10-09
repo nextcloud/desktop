@@ -374,7 +374,7 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
     auto result = false;
 
     ConfigFile cfg;
-    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
+    const auto tryMigrate = !cfg.hasUserOverrideServerUrl();
     auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
     if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
         accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
