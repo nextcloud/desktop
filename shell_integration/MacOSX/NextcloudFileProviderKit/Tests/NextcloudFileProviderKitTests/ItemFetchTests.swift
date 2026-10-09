@@ -579,7 +579,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
             XCTAssertNil(firstURL)
             XCTAssertNil(firstFetchedItem)
-            XCTAssertEqual((firstError as? CocoaError)?.code, .userCancelled)
+            XCTAssertEqual((firstError as? NSFileProviderError)?.code, .cannotSynchronize)
             XCTAssertEqual(firstRemoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
             let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
             XCTAssertEqual(remainingMetadata.downloaded, newerMetadata.downloaded)
@@ -614,7 +614,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNil(firstURL)
         XCTAssertNil(firstFetchedItem)
-        XCTAssertEqual((firstError as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual((firstError as? NSFileProviderError)?.code, .cannotSynchronize)
         XCTAssertEqual(firstRemoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
         let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
         XCTAssertFalse(remainingMetadata.downloaded)
@@ -744,7 +744,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNil(directoryURL)
         XCTAssertNil(fetchedDirectory)
-        XCTAssertEqual((directoryError as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual((directoryError as? NSFileProviderError)?.code, .cannotSynchronize)
         XCTAssertEqual(directoryRemoteInterface.downloadOperationCount, 1)
         XCTAssertEqual(try Data(contentsOf: XCTUnwrap(childURL)), child.data)
         let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
