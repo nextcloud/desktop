@@ -36,7 +36,7 @@ public final class FilesDatabaseManager: Sendable {
     let logger: FileProviderLogger
     let account: Account
     /// Share download ownership across FilesDatabaseManager instances accessing the same database.
-    static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: UUID]]())
+    static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: DownloadOperation]]())
 
     var itemMetadatas: Results<RealmItemMetadata> {
         ncDatabase().objects(RealmItemMetadata.self)
