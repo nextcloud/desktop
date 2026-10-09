@@ -125,6 +125,40 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(createdItem.isUploaded)
     }
 
+    func testCancellationDuringChunkPreparationDoesNotCreateFile() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let progress = Progress()
+        remoteInterface.chunkPreparationHandler = {
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Chunk preparation must receive cancellation")
+        }
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".txt")
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+        var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: fileUrl.lastPathComponent, account: Self.account)
+        metadata.classFile = NKTypeClassFile.document.rawValue
+        let template = Item(metadata: metadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager)
+
+        let (createdItem, error) = await Item.create(
+            basedOn: template,
+            contents: fileUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            forcedChunkSize: 3,
+            progress: progress,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(createdItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertTrue(progress.isCancelled)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+        XCTAssertTrue(rootItem.children.isEmpty)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+    }
+
     func testCreateFile() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         var fileItemMetadata = SendableItemMetadata(
