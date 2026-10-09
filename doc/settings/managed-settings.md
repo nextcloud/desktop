@@ -110,6 +110,8 @@ it), and whether it is declared in the schema:
 | `proxyType` | int | no, default only | yes |
 | `proxyHost` | string | no, default only | yes |
 | `proxyPort` | int | no, default only | yes |
+| `overrideServerUrl` | string, URL or JSON list | no, not accepted from the server | yes |
+| `overrideLocalDir` | string, absolute path | no, not accepted from the server | yes |
 
 - **Out of scope**: Secrets (`proxyPass`) and pure runtime state (`geometry`, `lastSelectedAccount`) are
 not managed and kept only in the config file.
@@ -119,6 +121,22 @@ theme default. They are still declared in the schema so they can be enforced, an
 the caller supplies the default value.
 - **Enforcement is opt in**: a key can only be enforced if it is declared in the
 schema, so a policy can not enforce a setting the client did not declare.
+- **`overrideServerUrl` and `overrideLocalDir` preset the account setup wizard**: a
+device default prefills every new account setup and stays editable, while a device
+policy or `--overrideserverurl` locks the server URL and starts the login flow. The
+wizard removes the user value after an account is added, so a command line override
+applies once and a device default applies again. Legacy account migration is skipped
+only for an override from the user config. The server cannot set these keys, because
+they are needed before an account exists.
+- **`overrideServerUrl` is a URL or a JSON list of servers**: a single value starts
+with `http://` or `https://`. A list is a JSON array of `{"name": "...", "url": "..."}`
+objects, which the wizard offers as a choice of servers only when the server URL is
+locked, so a list set as a device default leaves the server field empty.
+`--overrideserverurl` accepts a single URL only.
+- **`overrideLocalDir` is an absolute path**: environment variables such as
+`%USERPROFILE%` are not expanded, so such a value is not absolute.
+- **An empty or invalid override value is skipped**, from any source, so the next
+source applies. This includes an empty user value written by older clients.
 - **Proxy resolves through getConfig as well**, wrapped in
 `ConfigFile::managedProxySettings`, which reads proxyType, proxyHost and proxyPort
 together so the type, host and port are always managed as one tuple.
