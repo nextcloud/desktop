@@ -8,6 +8,8 @@
 #import "trayaccountpopupmetrics.h"
 #import "trayaccountpopupviewutils.h"
 
+static_assert(__has_feature(objc_arc), "NCStaticInfoRow requires ARC.");
+
 using namespace OCC::Mac::TrayPopupViewUtils;
 
 @implementation NCStaticInfoRow
@@ -33,7 +35,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     ]];
 
     if (icon) {
-        auto iconView = [[[NSImageView alloc] init] autorelease];
+        auto iconView = [[NSImageView alloc] init];
         iconView.image = icon;
         iconView.contentTintColor = NSColor.secondaryLabelColor;
         iconView.imageScaling = NSImageScaleProportionallyUpOrDown;

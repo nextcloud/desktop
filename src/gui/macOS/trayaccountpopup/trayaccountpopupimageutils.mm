@@ -14,6 +14,8 @@
 #include <QRectF>
 #include <QSvgRenderer>
 
+static_assert(__has_feature(objc_arc), "The native tray image utilities require ARC.");
+
 namespace OCC::Mac::TrayPopupImageUtils {
 
 NSImage *nsImageFromQImage(const QImage &qimg)
@@ -33,7 +35,6 @@ NSImage *nsImageFromQImage(const QImage &qimg)
                      bytesPerRow:rgba.bytesPerLine()
                     bitsPerPixel:32];
     if (!rep || !rep.bitmapData) {
-        [rep release];
         return nil;
     }
     memcpy(rep.bitmapData, rgba.constBits(), (size_t)rgba.bytesPerLine() * rgba.height());
@@ -41,8 +42,7 @@ NSImage *nsImageFromQImage(const QImage &qimg)
     rep.size = imageSize;
     NSImage *img = [[NSImage alloc] initWithSize:imageSize];
     [img addRepresentation:rep];
-    [rep release];
-    return [img autorelease];
+    return img;
 }
 
 QImage qImageFromImageData(const QByteArray &imageData, const QSize &requestedSize)

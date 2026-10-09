@@ -21,6 +21,8 @@
 #include <QCursor>
 #include <QVariantMap>
 
+static_assert(__has_feature(objc_arc), "nctraypopup requires ARC.");
+
 using namespace OCC::Mac::TrayPopupImageUtils;
 using namespace OCC::Mac::TrayPopupViewUtils;
 
@@ -60,8 +62,6 @@ using namespace OCC::Mac::TrayPopupViewUtils;
 - (void)dealloc
 {
     [NSEvent removeMonitor:_mouseDownMonitor];
-    [_accountActionsPopup release];
-    [super dealloc];
 }
 
 - (BOOL)wasVisibleAtMouseDownForEvent:(NSEvent *)event
@@ -127,7 +127,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
                            avatar:(NSImage *)avatar
                   syncStatusImage:(NSImage *)syncStatusImage
 {
-    NSImageView *avatarView = [[[NSImageView alloc] init] autorelease];
+    NSImageView *avatarView = [[NSImageView alloc] init];
     avatarView.image = avatar != nil ? avatar : [NSImage imageWithSystemSymbolName:@"person.circle.fill"
                                                             accessibilityDescription:nil];
     avatarView.wantsLayer = YES;
@@ -148,15 +148,15 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     serverLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     serverLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NCAccountRow *row = [[[NCAccountRow alloc] init] autorelease];
+    NCAccountRow *row = [[NCAccountRow alloc] init];
     row.userIndex = index;
     row.popupDelegate = self;
 
-    NSImageView *statusView = [[[NSImageView alloc] init] autorelease];
+    NSImageView *statusView = [[NSImageView alloc] init];
     statusView.image = syncStatusImage;
     statusView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NSImageView *chevron = [[[NSImageView alloc] init] autorelease];
+    NSImageView *chevron = [[NSImageView alloc] init];
     chevron.image = [[NSImage imageWithSystemSymbolName:@"chevron.right" accessibilityDescription:nil]
         imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:11 weight:NSFontWeightMedium]];
     chevron.contentTintColor = NSColor.tertiaryLabelColor;
@@ -242,7 +242,6 @@ using namespace OCC::Mac::TrayPopupViewUtils;
         sep.translatesAutoresizingMaskIntoConstraints = NO;
         [_stack addArrangedSubview:sep];
         [sep.widthAnchor constraintEqualToConstant:kPopupWidth].active = YES;
-        [sep release];
     }
     addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]);
 

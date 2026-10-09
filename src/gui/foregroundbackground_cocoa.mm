@@ -6,6 +6,8 @@
 #include "foregroundbackground_cocoa.h"
 #include "common/utility.h"
 
+static_assert(__has_feature(objc_arc), "foregroundbackground_cocoa requires ARC.");
+
 @implementation CocoaProcessType
 
 + (void)ToForeground

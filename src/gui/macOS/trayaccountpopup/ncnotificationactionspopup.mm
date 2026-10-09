@@ -15,6 +15,8 @@
 
 #include <QVariantMap>
 
+static_assert(__has_feature(objc_arc), "ncnotificationactionspopup requires ARC.");
+
 using namespace OCC::Mac::TrayPopupViewUtils;
 
 @implementation NCNotificationActionsPopup {
