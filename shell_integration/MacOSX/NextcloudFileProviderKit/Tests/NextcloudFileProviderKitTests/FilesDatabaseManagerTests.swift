@@ -381,6 +381,127 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(updatedChild?.serverUrl, account.davFilesUrl + "/newContainerFolder/newDir")
     }
 
+    func testDepth1ReadRestoresUnchangedDeletedChild() throws {
+        let account = Self.account
+        var parent = SendableItemMetadata(ocId: "restored-child-parent", fileName: "folder", account: account)
+        parent.directory = true
+        parent.uploaded = true
+        parent.visitedDirectory = true
+        Self.dbManager.addItemMetadata(parent)
+
+        var child = SendableItemMetadata(ocId: "restored-child", fileName: "file.txt", account: account)
+        child.serverUrl = parent.remotePath()
+        child.uploaded = true
+        child.downloaded = true
+        child.keepDownloaded = true
+        child.visitedDirectory = true
+        child.lockToken = "local-lock-token"
+        child.fileProviderContentVersion = "local-content-version"
+        Self.dbManager.addItemMetadata(child)
+
+        let deletion = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: parent.remotePath(),
+            updatedMetadatas: [parent],
+            keepExistingDownloadState: true
+        ))
+        XCTAssertEqual(deletion.deleted.map(\.ocId), [child.ocId])
+        XCTAssertTrue(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.ocId)).deleted)
+
+        var received = child
+        received.downloaded = false
+        received.keepDownloaded = false
+        received.visitedDirectory = false
+        received.lockToken = nil
+        received.fileProviderContentVersion = ""
+        let restoration = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: parent.remotePath(),
+            updatedMetadatas: [parent, received],
+            keepExistingDownloadState: true
+        ))
+        XCTAssertEqual(restoration.updated.map(\.ocId), [child.ocId])
+        XCTAssertTrue(restoration.created.isEmpty)
+        XCTAssertTrue(restoration.deleted.isEmpty)
+        let restored = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.ocId))
+        XCTAssertFalse(restored.deleted)
+        XCTAssertTrue(restored.downloaded)
+        XCTAssertTrue(restored.keepDownloaded)
+        XCTAssertTrue(restored.visitedDirectory)
+        XCTAssertEqual(restored.lockToken, child.lockToken)
+        XCTAssertEqual(restored.fileProviderContentVersion, child.fileProviderContentVersion)
+
+        let repeated = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: parent.remotePath(),
+            updatedMetadatas: [parent, received],
+            keepExistingDownloadState: true
+        ))
+        XCTAssertTrue(repeated.updated.isEmpty)
+    }
+
+    func testDepth1ReadRestoresUnchangedDeletedReadTarget() throws {
+        var directory = SendableItemMetadata(ocId: "restored-read-target", fileName: "folder", account: Self.account)
+        directory.directory = true
+        directory.uploaded = true
+        directory.downloaded = true
+        directory.keepDownloaded = true
+        directory.visitedDirectory = true
+        directory.fileProviderContentVersion = "local-content-version"
+        Self.dbManager.addItemMetadata(directory)
+        XCTAssertTrue(Self.dbManager.deleteItemMetadata(ocId: directory.ocId))
+
+        var received = directory
+        received.downloaded = false
+        received.keepDownloaded = false
+        received.fileProviderContentVersion = ""
+        let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: Self.account.ncKitAccount,
+            serverUrl: directory.remotePath(),
+            updatedMetadatas: [received],
+            keepExistingDownloadState: true
+        ))
+        XCTAssertEqual(changes.updated.map(\.ocId), [directory.ocId])
+        XCTAssertTrue(changes.created.isEmpty)
+        XCTAssertTrue(changes.deleted.isEmpty)
+        let restored = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: directory.ocId))
+        XCTAssertFalse(restored.deleted)
+        XCTAssertTrue(restored.downloaded)
+        XCTAssertTrue(restored.keepDownloaded)
+        XCTAssertTrue(restored.visitedDirectory)
+        XCTAssertEqual(restored.fileProviderContentVersion, directory.fileProviderContentVersion)
+    }
+
+    func testDepth1ReadDoesNotRestoreDeletedItemsInTransit() throws {
+        for directory in [false, true] {
+            for status in [Status.downloading, .uploading] {
+                var metadata = SendableItemMetadata(ocId: "deleted-transit", fileName: "item", account: Self.account)
+                metadata.directory = directory
+                metadata.uploaded = true
+                metadata.deleted = true
+                metadata.status = status.rawValue
+                metadata.sessionError = "existing-error"
+                Self.dbManager.addItemMetadata(metadata)
+
+                var received = metadata
+                received.deleted = false
+                received.status = Status.normal.rawValue
+                received.sessionError = ""
+                let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+                    account: Self.account.ncKitAccount,
+                    serverUrl: metadata.serverUrl,
+                    updatedMetadatas: [received],
+                    keepExistingDownloadState: true
+                ))
+                XCTAssertTrue(changes.updated.isEmpty)
+                let stored = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+                XCTAssertTrue(stored.deleted)
+                XCTAssertEqual(stored.status, status.rawValue)
+                XCTAssertEqual(stored.sessionError, metadata.sessionError)
+            }
+        }
+    }
+
     func testTransitItemIsNotUpdated() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 

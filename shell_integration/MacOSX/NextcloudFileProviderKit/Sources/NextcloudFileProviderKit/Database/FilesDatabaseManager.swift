@@ -323,7 +323,10 @@ public final class FilesDatabaseManager: Sendable {
                     updatedMetadata.fileProviderContentVersion = existingMetadata.fileProviderContentVersion
                 }
 
-                if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
+                // Clear a stale deleted flag even when the server returns unchanged metadata.
+                if existingMetadata.status == Status.normal.rawValue,
+                   existingMetadata.deleted || !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
+                {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
@@ -464,8 +467,9 @@ public final class FilesDatabaseManager: Sendable {
                         visitToRecord = readTargetMetadata.ocId
                     }
 
+                    // Clear a stale deleted flag even when the server returns unchanged metadata.
                     if existing.status == Status.normal.rawValue,
-                       !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
+                       existing.deleted || !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
                         logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")
                         if keepExistingDownloadState {
