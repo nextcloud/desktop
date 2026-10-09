@@ -301,6 +301,12 @@ private func performUpload(
     let hasRemainingChunks = dbManager.hasRemoteFileChunks(uploadId: chunkUploadId)
     shouldRemoveLocalChunkUpload = chunkUploadCompleted || !hasRemainingChunks
 
+    if nkError.isCancelledError,
+       cancellation.isCancelled || Task.isCancelled
+    {
+        return (nil, nil, nil, nil, .cancelled)
+    }
+
     if nkError == .success, file != nil {
         uploadLogger.info("File successfully uploaded in chunks.", [.url: remotePath])
     }
