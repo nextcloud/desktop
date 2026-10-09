@@ -1110,23 +1110,34 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
     func testCancellingThumbnailCancelsNetworkTask() async throws {
         let (item, remoteInterface, _) = makeFetchItem(preview: true)
-        let progress = Progress()
         let session = URLSession(configuration: .ephemeral)
         defer { session.invalidateAndCancel() }
         let networkTask = try session.dataTask(with: XCTUnwrap(URL(string: "https://example.invalid/preview")))
+        let (started, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
         remoteInterface.thumbnailHandler = { _, taskHandler in
             taskHandler(networkTask)
-            progress.cancel()
+            continuation.yield(())
             let cancelled = await waitForCancellation()
             XCTAssertTrue(cancelled, "Cancellation did not reach the operation.")
         }
+        let batch = makeThumbnailBatch(identifiers: [item.itemIdentifier], remoteInterface: remoteInterface)
+        defer { batch.progress.cancel() }
+        let startedValue = try await nextTestValue(from: started)
+        _ = try XCTUnwrap(startedValue)
+        batch.progress.cancel()
 
-        let (data, error) = await item.fetchThumbnail(size: CGSize(width: 32, height: 32), progress: progress)
-
-        XCTAssertNil(data)
-        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        let thumbnailValue = try await nextTestValue(from: batch.thumbnails)
+        let thumbnail = try XCTUnwrap(thumbnailValue)
+        XCTAssertEqual(thumbnail.identifier, item.itemIdentifier)
+        XCTAssertNil(thumbnail.data)
+        XCTAssertEqual((thumbnail.error as? CocoaError)?.code, .userCancelled)
+        let nextThumbnail = try await nextTestValue(from: batch.thumbnails)
+        XCTAssertNil(nextThumbnail)
+        let completion = try await nextTestValue(from: batch.completion)
+        XCTAssertEqual((completion.flatMap(\.self) as? CocoaError)?.code, .userCancelled)
         XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
-        XCTAssertNil(progress.cancellationHandler)
+        XCTAssertNil(batch.progress.cancellationHandler)
     }
 
     func testCancelledProgressDoesNotStartThumbnailDownload() async {
@@ -1135,7 +1146,10 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         progress.cancel()
         remoteInterface.thumbnailHandler = { _, _ in XCTFail("Cancelled thumbnail must not start a transfer") }
 
-        let (data, error) = await item.fetchThumbnail(size: CGSize(width: 32, height: 32), progress: progress)
+        let (data, error) = await item.performFetchThumbnail(
+            size: CGSize(width: 32, height: 32), domain: nil, progress: progress,
+            cancellation: NetworkOperationCancellation(log: FileProviderLogMock())
+        )
 
         XCTAssertNil(data)
         XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
@@ -1147,7 +1161,10 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         remoteInterface.thumbnailData = Data("Late thumbnail response".utf8)
         remoteInterface.thumbnailCompletionHandler = { progress.cancel() }
 
-        let (data, error) = await item.fetchThumbnail(size: CGSize(width: 32, height: 32), progress: progress)
+        let (data, error) = await item.performFetchThumbnail(
+            size: CGSize(width: 32, height: 32), domain: nil, progress: progress,
+            cancellation: NetworkOperationCancellation(log: FileProviderLogMock())
+        )
 
         XCTAssertNil(data)
         XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
