@@ -6,6 +6,7 @@ import Alamofire
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 @testable import NextcloudKit
+import RealmSwift
 import TestInterface
 import XCTest
 
@@ -191,6 +192,182 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(result.etag, headers["OC-ETag"])
         XCTAssertEqual(result.size, expectedError == .success ? Int64(data.count) : nil)
         XCTAssertTrue(try XCTUnwrap(Self.dbManager.remoteFileChunks(uploadId: uploadId)).isEmpty)
+    }
+
+    func testCancellationDuringUploadCancelsNetworkHandlesAndAllowsRetry() async throws {
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let data = Data(repeating: 1, count: 8)
+        try data.write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+        let root = MockRemoteItem.rootItem(account: Self.account)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+        let progress = Progress()
+        let session = Session(startRequestsImmediately: false)
+        let request = session.upload(Data(), to: "https://example.invalid/resource")
+        let urlSession = URLSession(configuration: .ephemeral)
+        defer { urlSession.invalidateAndCancel() }
+        let (networkTask, networkCompletion) = try observedNetworkTask(
+            in: urlSession,
+            url: XCTUnwrap(URL(string: "https://example.invalid/resource"))
+        )
+        remoteInterface.uploadRequest = request
+        remoteInterface.uploadTask = networkTask
+        remoteInterface.uploadHandler = {
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Cancellation must reach the upload operation")
+        }
+        let itemIdentifier = UUID().uuidString
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: data.count,
+            forItemWithIdentifier: itemIdentifier,
+            dbManager: Self.dbManager,
+            progress: progress,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
+        XCTAssertNil(result.ocId)
+        let cancellationCode = try await nextTestValue(from: networkCompletion)
+        XCTAssertEqual(cancellationCode, NSURLErrorCancelled)
+        XCTAssertTrue(request.isCancelled)
+        XCTAssertNil(progress.cancellationHandler)
+        XCTAssertNil(progress.pausingHandler)
+        XCTAssertNil(progress.resumingHandler)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
+        XCTAssertTrue(root.children.isEmpty)
+
+        remoteInterface.uploadHandler = nil
+        remoteInterface.uploadRequest = nil
+        remoteInterface.uploadTask = nil
+        let retry = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: data.count,
+            forItemWithIdentifier: itemIdentifier,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(retry.remoteError, .success)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 2)
+        XCTAssertEqual(root.children.count, 1)
+        XCTAssertEqual(root.children.first?.data, data)
+    }
+
+    func testCancellingChunkUploadStopsInFlightPUTAndResumesRemainingChunks() async throws {
+        let (account, kit, requests, stoppedRequests, cleanup) = try makeChunkUploadHTTP(observeStoppingChunk: "2")
+        defer { cleanup() }
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let data = Data(repeating: 1, count: 8)
+        try data.write(to: fileURL)
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let itemIdentifier = UUID().uuidString
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let uploadId = chunkUploadIdentifier(forItemWithIdentifier: itemIdentifier, fileSize: Int64(data.count), modificationDate: modificationDate)
+        let chunksDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(uploadId, isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+        let progress = Progress()
+        let (putTasks, taskEvents) = AsyncStream<URLSessionTask>.makeStream()
+        defer { taskEvents.finish() }
+        let destination = try XCTUnwrap(URL(string: account.davFilesUrl + "/file.txt"))
+        let upload = startChunkUpload(
+            fileURL: fileURL,
+            destination: destination,
+            kit: kit,
+            account: account,
+            itemIdentifier: itemIdentifier,
+            modificationDate: modificationDate,
+            progress: progress,
+            taskHandler: { task in
+                if task.originalRequest?.httpMethod == "PUT", task.originalRequest?.url?.lastPathComponent == "2" {
+                    taskEvents.yield(task)
+                }
+            }
+        )
+        defer { upload.cancel() }
+
+        let first = try await nextUploadRequest(from: requests, method: "PUT", name: "1")
+        first.respond(status: 201)
+        let interrupted = try await nextUploadRequest(from: requests, method: "PUT", name: "2")
+        let reportedTask = try await nextTestValue(from: putTasks)
+        XCTAssertEqual(try XCTUnwrap(reportedTask).originalRequest?.url, interrupted.request.url)
+        progress.cancel()
+
+        let stopped = try await nextTestValue(from: stoppedRequests)
+        XCTAssertEqual(try XCTUnwrap(stopped).url, interrupted.request.url)
+        let result = try await testTaskValue(of: upload)
+        XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
+        XCTAssertNil(result.ocId)
+        XCTAssertNil(progress.cancellationHandler)
+        let remainingChunks = try XCTUnwrap(Self.dbManager.remoteFileChunks(uploadId: uploadId))
+        XCTAssertEqual(remainingChunks.map(\.fileName).sorted(), ["2", "3"])
+        for chunk in remainingChunks {
+            XCTAssertTrue(FileManager.default.fileExists(atPath: chunksDirectory.appendingPathComponent(chunk.fileName).path))
+        }
+
+        let retry = startChunkUpload(
+            fileURL: fileURL,
+            destination: destination,
+            kit: kit,
+            account: account,
+            itemIdentifier: itemIdentifier,
+            modificationDate: modificationDate
+        )
+        defer { retry.cancel() }
+
+        for name in ["2", "3"] {
+            let chunk = try await nextUploadRequest(from: requests, method: "PUT", name: name)
+            chunk.respond(status: 201)
+        }
+        let move = try await nextUploadRequest(from: requests, method: "MOVE", name: ".file")
+        assertDestination(move.request.value(forHTTPHeaderField: "Destination").flatMap { URL(string: $0) }, matches: destination)
+        move.respond(status: 201, headers: ["OC-FileID": "assembled-id", "OC-ETag": "assembled-etag"])
+
+        let retried = try await testTaskValue(of: retry)
+        XCTAssertEqual(retried.remoteError, .success)
+        XCTAssertEqual(retried.ocId, "assembled-id")
+        XCTAssertEqual(retried.etag, "assembled-etag")
+        XCTAssertEqual(retried.size, Int64(data.count))
+        XCTAssertTrue(try XCTUnwrap(Self.dbManager.remoteFileChunks(uploadId: uploadId)).isEmpty)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+    }
+
+    func testCancellationDuringPreflightDoesNotStartUpload() async throws {
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+        let root = MockRemoteItem.rootItem(account: Self.account)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+        let progress = Progress()
+        remoteInterface.enumerateHandler = {
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Cancellation must reach the quota lookup")
+        }
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: 8,
+            forItemWithIdentifier: UUID().uuidString,
+            dbManager: Self.dbManager,
+            progress: progress,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+        XCTAssertTrue(root.children.isEmpty)
     }
 
     func testCancellationErrorMappingForCollisions() async {

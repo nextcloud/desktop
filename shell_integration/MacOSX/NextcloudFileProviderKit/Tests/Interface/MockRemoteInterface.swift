@@ -576,6 +576,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var chunkPreparationError: NKError?
     public var chunkAssemblyHandler: (@Sendable () async -> Void)?
     public var uploadHandler: (@Sendable () async -> Void)?
+    public var uploadRequest: UploadRequest?
+    public var uploadTask: URLSessionTask?
     public private(set) var uploadOperationCount = 0
 
     public var downloadHandler: (@Sendable () async -> Void)?
@@ -829,8 +831,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         modificationDate: Date? = .init(),
         account: Account,
         options: NKRequestOptions = .init(),
-        requestHandler _: @escaping (Alamofire.UploadRequest) -> Void = { _ in },
-        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in },
+        requestHandler: @escaping (Alamofire.UploadRequest) -> Void = { _ in },
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
         progressHandler _: @escaping (Progress) -> Void = { _ in }
     ) async -> (
         account: String,
@@ -845,6 +847,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         lastUploadIfMatchHeader = options.customHeader?["If-Match"]
         lastUploadIfHeader = options.customHeader?["If"]
 
+        if let uploadRequest {
+            requestHandler(uploadRequest)
+        }
+        if let uploadTask {
+            taskHandler(uploadTask)
+        }
         if let uploadHandler {
             await uploadHandler()
             if Task.isCancelled {
@@ -940,7 +948,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         chunkCounter _: @escaping (Int) -> Void = { _ in },
         log _: any FileProviderLogging,
         chunkUploadStartHandler: @escaping ([RemoteFileChunk]) -> Void = { _ in },
-        requestHandler: @escaping (UploadRequest) -> Void = { _ in },
+        requestHandler _: @escaping (UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
         progressHandler: @escaping (Progress) -> Void = { _ in },
         chunkUploadCompleteHandler: @escaping (RemoteFileChunk) -> Void = { _ in }
@@ -1013,7 +1021,6 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             modificationDate: modificationDate,
             account: account,
             options: options,
-            requestHandler: requestHandler,
             taskHandler: taskHandler,
             progressHandler: progressHandler
         )
