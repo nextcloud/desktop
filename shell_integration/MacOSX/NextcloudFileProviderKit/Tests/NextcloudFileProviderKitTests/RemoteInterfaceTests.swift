@@ -18,35 +18,177 @@ struct RemoteInterfaceExtensionTests {
         return (caps, data)
     }
 
-    private func makeNetworkTask() throws -> (URLSession, URLSessionTask) {
+    private func makeNetworkTask() throws -> (URLSession, URLSessionTask, AsyncStream<Int>) {
+        let url = try #require(URL(string: "https://example.invalid/capabilities"))
         let session = URLSession(configuration: .ephemeral)
-        let task = try session.dataTask(with: #require(URL(string: "https://example.invalid/capabilities")))
-        return (session, task)
+        let (task, completion) = observedNetworkTask(in: session, url: url)
+        return (session, task, completion)
     }
 
-    let testAccount = Account(user: "a1", id: "1", serverUrl: "example.com", password: "pass")
+    /// Each test instance uses its own key in the shared capabilities cache.
+    let testAccount = Account(
+        user: "a1",
+        id: "1",
+        serverUrl: "https://\(UUID().uuidString.lowercased()).example.invalid",
+        password: "pass"
+    )
     let otherAccount = Account(user: "a2", id: "2", serverUrl: "example.com", password: "word")
 
-    @Test func supportsTrashForwardsNetworkTask() async throws {
-        await RetrievedCapabilitiesActor.shared.reset()
-        let (session, networkTask) = try makeNetworkTask()
+    @Test(arguments: [false, true])
+    func cancellingCapabilitiesCallersPreservesRequestUntilLastCaller(cancelRemainingCaller: Bool) async throws {
+        let actor = RetrievedCapabilitiesActor.shared
+        let (session, networkTask, completion) = try makeNetworkTask()
         defer { session.invalidateAndCancel() }
         let (capabilities, data) = capabilitiesFromMockJSON()
-        let remote = TestableRemoteInterface { account, _, taskHandler in
-            taskHandler(networkTask)
-            return (account.ncKitAccount, capabilities, data, .success)
+        let (started, startedContinuation) = AsyncStream<Void>.makeStream()
+        let (finish, finishContinuation) = AsyncStream<Void>.makeStream()
+        defer {
+            startedContinuation.finish()
+            finishContinuation.finish()
         }
-        await confirmation("Capability request task is forwarded") { forwarded in
-            let supported = await remote.supportsTrash(account: testAccount, taskHandler: { task in
-                #expect(task === networkTask)
-                forwarded()
-            })
-            #expect(supported)
+        try await confirmation("One shared capabilities request", expectedCount: 1) { fetched in
+            let remote = TestableRemoteInterface { account, options, taskHandler in
+                fetched()
+                #expect(account.ncKitAccount == testAccount.ncKitAccount)
+                #expect(options.customHeader == nil)
+                taskHandler(networkTask)
+                startedContinuation.yield(())
+                do {
+                    guard try await nextTestValue(from: finish) != nil else {
+                        return (account.ncKitAccount, nil, nil, .invalidResponseError)
+                    }
+                } catch {
+                    return (account.ncKitAccount, nil, nil, .cancelled)
+                }
+                #expect(!Task.isCancelled)
+                return (account.ncKitAccount, capabilities, data, .success)
+            }
+            let progress = Progress()
+            let first = Task {
+                await NetworkOperationCancellation(log: FileProviderLogMock()).run(progress: progress) { _ in
+                    await remote.currentCapabilities(account: testAccount)
+                }
+            }
+            defer { first.cancel() }
+            try #require(try await nextTestValue(from: started) != nil)
+            let secondRemote = TestableRemoteInterface { account, _, _ in
+                Issue.record("The remaining caller must share the first request")
+                return (account.ncKitAccount, nil, nil, .invalidResponseError)
+            }
+            let second = Task { await secondRemote.currentCapabilities(account: testAccount) }
+            defer { second.cancel() }
+            let deadline = ContinuousClock.now + asyncTestTimeout
+            while await actor.waitingCallerCount(forAccount: testAccount.ncKitAccount) < 2 {
+                guard ContinuousClock.now < deadline else { throw URLError(.timedOut) }
+                try await Task.sleep(for: .milliseconds(1))
+            }
+            progress.cancel()
+
+            let cancelled = try await testTaskValue(of: first)
+            #expect(cancelled.error.errorCode == NSURLErrorCancelled)
+            #expect(cancelled.capabilities == nil)
+            #expect(networkTask.state == .suspended)
+            if cancelRemainingCaller {
+                second.cancel()
+                #expect(try await testTaskValue(of: second).error == .cancelled)
+                #expect(try await nextTestValue(from: completion) == NSURLErrorCancelled)
+                #expect(await actor.getCapabilities(for: testAccount.ncKitAccount) == nil)
+                return
+            }
+            finishContinuation.yield(())
+            let result = try await testTaskValue(of: second)
+            #expect(result.error == .success)
+            #expect(result.capabilities == capabilities)
+            #expect(result.data == data)
+            let cached = await remote.currentCapabilities(account: testAccount)
+            #expect(cached.error == .success)
+            #expect(cached.capabilities == capabilities)
+            #expect(cached.data == nil)
         }
+    }
+
+    @Test(arguments: [false, true], [false, true])
+    func lastCapabilitiesCallerCancellationAllowsReplacement(
+        registerAfterCancellation: Bool, finishReplacementFirst: Bool
+    ) async throws {
+        let actor = RetrievedCapabilitiesActor.shared
+        let (session, networkTask, completion) = try makeNetworkTask()
+        defer { session.invalidateAndCancel() }
+        let (oldCapabilities, oldData) = capabilitiesFromMockJSON()
+        let (newCapabilities, newData) = capabilitiesFromMockJSON(
+            jsonString: mockCapabilities.replacingOccurrences(of: "\"undelete\": true", with: "\"undelete\": false")
+        )
+        #expect(oldCapabilities != newCapabilities)
+        let (started, startedContinuation) = AsyncStream<Void>.makeStream()
+        let (releaseOld, releaseOldContinuation) = AsyncStream<Void>.makeStream()
+        let (releaseNew, releaseNewContinuation) = AsyncStream<Void>.makeStream()
+        // Separate gates let the backend deliver a late response despite its caller's cancellation.
+        let oldGate = Task.detached { try? await nextTestValue(from: releaseOld) }
+        let newGate = Task.detached { try? await nextTestValue(from: releaseNew) }
+        defer {
+            startedContinuation.finish()
+            releaseOldContinuation.finish()
+            releaseNewContinuation.finish()
+            oldGate.cancel()
+            newGate.cancel()
+        }
+        let oldRemote = TestableRemoteInterface { account, _, taskHandler in
+            if !registerAfterCancellation {
+                taskHandler(networkTask)
+            }
+            startedContinuation.yield(())
+            _ = await oldGate.value
+            if registerAfterCancellation {
+                taskHandler(networkTask)
+            }
+            return (account.ncKitAccount, oldCapabilities, oldData, .success)
+        }
+        let first = Task { await oldRemote.currentCapabilities(account: testAccount) }
+        defer { first.cancel() }
+        try #require(try await nextTestValue(from: started) != nil)
+        let oldWorker = try #require(await actor.sharedFetches[testAccount.ncKitAccount]?.task)
+        first.cancel()
+        #expect(try await testTaskValue(of: first).error == .cancelled)
+        #expect(oldWorker.isCancelled)
+        #expect(await actor.sharedFetches[testAccount.ncKitAccount] == nil)
+        if !registerAfterCancellation {
+            #expect(try await nextTestValue(from: completion) == NSURLErrorCancelled)
+        }
+        let replacementRemote = TestableRemoteInterface { account, _, _ in
+            startedContinuation.yield(())
+            _ = await newGate.value
+            #expect(!Task.isCancelled)
+            return (account.ncKitAccount, newCapabilities, newData, .success)
+        }
+        let replacement = Task { await replacementRemote.currentCapabilities(account: testAccount) }
+        defer { replacement.cancel() }
+        try #require(try await nextTestValue(from: started) != nil)
+        if finishReplacementFirst {
+            releaseNewContinuation.yield(())
+            #expect(try await testTaskValue(of: replacement).capabilities == newCapabilities)
+        }
+        releaseOldContinuation.yield(())
+        try await testTaskValue(of: oldWorker)
+        if registerAfterCancellation {
+            #expect(try await nextTestValue(from: completion) == NSURLErrorCancelled)
+        }
+        if finishReplacementFirst {
+            #expect(await actor.getCapabilities(for: testAccount.ncKitAccount)?.capabilities == newCapabilities)
+        } else {
+            #expect(await actor.getCapabilities(for: testAccount.ncKitAccount) == nil)
+            #expect(await actor.ongoingFetches.contains(testAccount.ncKitAccount))
+            releaseNewContinuation.yield(())
+            #expect(try await testTaskValue(of: replacement).capabilities == newCapabilities)
+        }
+        #expect(await actor.sharedFetches[testAccount.ncKitAccount] == nil)
+        let cacheOnlyRemote = TestableRemoteInterface { account, _, _ in
+            Issue.record("The replacement's successful capabilities must remain cached")
+            return (account.ncKitAccount, nil, nil, .invalidResponseError)
+        }
+        #expect(await cacheOnlyRemote.currentCapabilities(account: testAccount).capabilities == newCapabilities)
     }
 
     @Test func cancelledCapabilitiesDoNotStartAnotherFetch() async {
-        await RetrievedCapabilitiesActor.shared.reset()
         let remote = TestableRemoteInterface { account, _, _ in
             Issue.record("Cancelled capability lookup must not start a request")
             return (account.ncKitAccount, nil, nil, .invalidResponseError)
@@ -122,7 +264,6 @@ struct RemoteInterfaceExtensionTests {
     }
 
     @Test func currentCapabilitiesReturnsFreshCache() async {
-        await RetrievedCapabilitiesActor.shared.reset()
         let remoteInterface = TestableRemoteInterface { _, _, _ in
             Issue.record("fetchCapabilities should NOT be called when cache is fresh.")
             return (testAccount.ncKitAccount, nil, nil, .invalidResponseError)
@@ -147,8 +288,6 @@ struct RemoteInterfaceExtensionTests {
     }
 
     @Test func currentCapabilitiesFetchesOnNoCache() async {
-        await RetrievedCapabilitiesActor.shared.reset()
-
         let (fetchedCaps, fetchedData) = capabilitiesFromMockJSON()
 
         await confirmation("fetcherCalled") { fetcherCalled in
@@ -170,8 +309,6 @@ struct RemoteInterfaceExtensionTests {
     }
 
     @Test func currentCapabilitiesFetchesOnStaleCache() async {
-        await RetrievedCapabilitiesActor.shared.reset()
-
         let (staleCaps, _) = capabilitiesFromMockJSON(jsonString: """
         {
             "ocs": {
@@ -228,8 +365,6 @@ struct RemoteInterfaceExtensionTests {
     }
 
     @Test func currentCapabilitiesAwaitsAndUsesCache() async {
-        await RetrievedCapabilitiesActor.shared.reset()
-
         let (cachedCaps, cachedData) = capabilitiesFromMockJSON()
 
         let remoteInterface = TestableRemoteInterface { acc, _, _ in
@@ -264,8 +399,6 @@ struct RemoteInterfaceExtensionTests {
     }
 
     @Test func supportsTrashTrue() async {
-        await RetrievedCapabilitiesActor.shared.reset() // Reset shared actor
-
         // JSON where files.undelete is true (default mockCapabilitiesJSON)
         let (capsWithTrash, dataWithTrash) = capabilitiesFromMockJSON()
         #expect(capsWithTrash.files?.undelete == true)
@@ -285,7 +418,6 @@ struct RemoteInterfaceExtensionTests {
     }
 
     @Test func supportsTrashFalse() async {
-        await RetrievedCapabilitiesActor.shared.reset()
         let jsonNoUndelete = """
         {
             "ocs": {
@@ -332,7 +464,6 @@ struct RemoteInterfaceExtensionTests {
     }
 
     @Test func supportsTrashNilCapabilities() async {
-        await RetrievedCapabilitiesActor.shared.reset()
         let remoteInterface = TestableRemoteInterface { acc, _, _ in
             (acc.ncKitAccount, nil, nil, .invalidResponseError)
         }
@@ -348,7 +479,6 @@ struct RemoteInterfaceExtensionTests {
     }
 
     @Test func supportsTrashNilFilesSection() async {
-        await RetrievedCapabilitiesActor.shared.reset()
         let jsonNoFilesSection = """
         {
             "ocs": {
@@ -394,8 +524,6 @@ struct RemoteInterfaceExtensionTests {
     }
 
     @Test func supportsTrashHandlesErrorFromCurrentCapabilities() async {
-        await RetrievedCapabilitiesActor.shared.reset()
-
         let remoteInterface = TestableRemoteInterface { acc, _, _ in
             (acc.ncKitAccount, nil, nil, .invalidResponseError)
         }

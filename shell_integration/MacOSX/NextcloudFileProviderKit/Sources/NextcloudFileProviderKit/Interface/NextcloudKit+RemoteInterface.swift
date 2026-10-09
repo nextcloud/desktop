@@ -331,28 +331,12 @@ extension NextcloudKit: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        let ncKitAccount = account.ncKitAccount
-        await RetrievedCapabilitiesActor.shared.setOngoingFetch(
-            forAccount: ncKitAccount, ongoing: true
-        )
-        let result = await withCheckedContinuation { continuation in
-            getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, capabilities, responseData, error in
-                let capabilities: Capabilities? = {
-                    guard let realData = responseData?.data else { return nil }
-                    return Capabilities(data: realData)
-                }()
+        await withCheckedContinuation { continuation in
+            getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, _, responseData, error in
+                let capabilities = responseData?.data.flatMap { Capabilities(data: $0) }
                 continuation.resume(returning: (account, capabilities, responseData?.data, error))
             }
         }
-        await RetrievedCapabilitiesActor.shared.setOngoingFetch(
-            forAccount: ncKitAccount, ongoing: false
-        )
-        if let capabilities = result.1 {
-            await RetrievedCapabilitiesActor.shared.setCapabilities(
-                forAccount: account.ncKitAccount, capabilities: capabilities
-            )
-        }
-        return result
     }
 
     public func tryAuthenticationAttempt(

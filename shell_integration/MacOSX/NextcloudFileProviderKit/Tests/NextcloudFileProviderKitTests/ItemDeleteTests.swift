@@ -19,12 +19,13 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        try! Self.dbManager.removeAllRowsForTesting()
+        setUpDatabase(Self.dbManager)
     }
 
     override func tearDown() {
         rootItem.children = []
         rootTrashItem.children = []
+        super.tearDown()
     }
 
     private func makeLockFileDeletionScenario(
