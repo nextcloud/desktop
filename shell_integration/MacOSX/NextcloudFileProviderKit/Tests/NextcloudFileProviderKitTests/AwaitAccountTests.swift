@@ -24,6 +24,16 @@ struct AwaitAccountTests {
         return FileProviderExtension(domain: domain)
     }
 
+    private func waitForAccountWaiter(in ext: FileProviderExtension) async throws {
+        let clock = ContinuousClock()
+        let deadline = clock.now + asyncTestTimeout
+        while ext.accountReadyLock.withLock({ ext.accountReadyWaiters.isEmpty }) {
+            try Task.checkCancellation()
+            guard clock.now < deadline else { throw URLError(.timedOut) }
+            await Task.yield()
+        }
+    }
+
     @Test func cancelledWaiterDoesNotWaitForAccountTimeout() async {
         let ext = makeExtension()
         let (waiting, continuation) = AsyncStream<Void>.makeStream()
@@ -39,19 +49,37 @@ struct AwaitAccountTests {
         await #expect(throws: CancellationError.self) { try await task.value }
     }
 
-    @Test func cancelledContentFetchFinishesBeforeAccountSetup() async {
+    @Test func cancelledContentFetchFinishesBeforeAccountSetup() async throws {
         let ext = makeExtension()
-        let (completion, continuation) = AsyncStream<Error?>.makeStream()
-        defer { continuation.finish() }
-        let progress = ext.fetchContents(for: .rootContainer, version: nil, request: NSFileProviderRequest()) { _, _, error in
-            continuation.yield(error)
-            continuation.finish()
+        defer {
+            // Release a stranded waiter if the cancellation bridge regresses.
+            ext.signalAccountReady()
+            ext.invalidate()
         }
-        progress.cancel()
-        var iterator = completion.makeAsyncIterator()
-        let error = await iterator.next()
-        #expect((error.flatMap(\.self) as? CocoaError)?.code == .userCancelled)
-        #expect(progress.cancellationHandler == nil)
+        let (completion, completionContinuation) = AsyncStream<Error?>.makeStream()
+        defer { completionContinuation.finish() }
+
+        try await confirmation("Content fetch completes once", expectedCount: 1) { completed in
+            let progress = ext.fetchContents(for: .rootContainer, version: nil, request: NSFileProviderRequest()) { url, item, error in
+                #expect(url == nil)
+                #expect(item == nil)
+                completed()
+                completionContinuation.yield(error)
+                completionContinuation.finish()
+            }
+            defer { progress.cancel() }
+            try await waitForAccountWaiter(in: ext)
+            #expect(ext.ncAccount == nil)
+            progress.cancel()
+
+            // The five-second test bound expires before awaitAccount's ten-second timeout.
+            let error = try #require(try await nextTestValue(from: completion))
+            #expect((error as? CocoaError)?.code == .userCancelled)
+            #expect(ext.ncAccount == nil)
+            #expect(progress.cancellationHandler == nil)
+            #expect(ext.accountReadyLock.withLock { ext.accountReadyWaiters.isEmpty })
+            #expect(ext.actionsLock.withLock { ext.syncActions.isEmpty && ext.errorActions.isEmpty })
+        }
     }
 
     ///
