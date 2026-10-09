@@ -4,6 +4,9 @@
  */
 
 #include <QDateTime>
+#include <QDesktopServices>
+#include <QDirIterator>
+#include <QUrl>
 
 #include "accountstate.h"
 #include "filedetails.h"
@@ -192,6 +195,45 @@ void FileDetails::updateFileTagModel()
 bool FileDetails::sharingAvailable() const
 {
     return _sharingAvailable;
+}
+
+bool FileDetails::openContainingFolder()
+{
+    if (_localPath.isEmpty()) {
+        return false;
+    }
+
+    QFileInfo currentFileInfo(_localPath);
+
+    if (!currentFileInfo.exists() && _folder) {
+        const auto itemName = currentFileInfo.fileName();
+        QDirIterator it(_folder->path(), {itemName}, QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+
+        if (it.hasNext()) {
+            const auto newPath = it.next();
+            setLocalPath(newPath);
+            currentFileInfo.setFile(newPath);
+        }
+    }
+
+    if (!currentFileInfo.exists()) {
+        qWarning() << "Conflict file does not exist at path:" << _localPath;
+        return false;
+    }
+
+    const auto folderUrl = QUrl::fromLocalFile(currentFileInfo.absolutePath());
+    return QDesktopServices::openUrl(folderUrl);
+}
+
+QString FileDetails::fileManagerText() const
+{
+    if (Utility::isMac()) {
+        return tr("Open in Finder");
+    }
+    if (Utility::isWindows()) {
+        return tr("Open in File Explorer");
+    }
+    return tr("Open in file manager");
 }
 
 } // namespace OCC
