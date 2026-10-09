@@ -20,12 +20,13 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        setUpDatabase(Self.dbManager)
     }
 
     override func tearDown() {
         rootItem.children = []
         rootTrashItem.children = []
+        super.tearDown()
     }
 
     private func makeLockFileDeletionScenario(

@@ -4,6 +4,7 @@
 import Foundation
 import NextcloudCapabilitiesKit
 @testable import NextcloudFileProviderKit
+import NextcloudKit
 import Testing
 @testable import TestInterface
 
@@ -31,6 +32,146 @@ struct RetrievedCapabilitiesActorTests {
             await actor.setOngoingFetch(forAccount: account2, ongoing: false)
             throw error
         }
+    }
+
+    @Test func cancellingSharedFetchWaiterPreservesOtherWaitersAndCache() async throws {
+        let actor = RetrievedCapabilitiesActor()
+        let capabilitiesData = try #require(mockCapabilities.data(using: .utf8))
+        let capabilities = try #require(Capabilities(data: capabilitiesData))
+        let (waiting, waitingContinuation) = AsyncStream<Void>.makeStream()
+        let (release, releaseContinuation) = AsyncStream<Void>.makeStream()
+        defer {
+            waitingContinuation.finish()
+            releaseContinuation.finish()
+        }
+        let first = Task {
+            await actor.currentCapabilities(forAccount: account1, onWaiting: { waitingContinuation.yield(()) }) { _ in
+                do {
+                    _ = try await nextTestValue(from: release)
+                } catch {
+                    Issue.record("Shared fetch was not released: \(error)")
+                }
+                #expect(!Task.isCancelled)
+                return (account1, capabilities, nil, .success)
+            }
+        }
+        defer { first.cancel() }
+        try await awaitRegistration(in: waiting, actor: actor)
+        let second = Task {
+            let result = await actor.currentCapabilities(forAccount: account1, onWaiting: { waitingContinuation.yield(()) }) { _ in
+                Issue.record("A second waiter must reuse the shared fetch")
+                return (account1, nil, nil, .invalidResponseError)
+            }
+            #expect(await actor.getCapabilities(for: account1)?.capabilities == capabilities)
+            return result
+        }
+        defer { second.cancel() }
+        try await awaitRegistration(in: waiting, actor: actor)
+        first.cancel()
+
+        #expect(try await testTaskValue(of: first).error == .cancelled)
+        #expect(await actor.ongoingFetches.contains(account1))
+        releaseContinuation.yield(())
+        let result = try await testTaskValue(of: second)
+        #expect(result.error == .success)
+        #expect(result.capabilities == capabilities)
+        #expect(await actor.ongoingFetches.isEmpty)
+        let cached = await actor.currentCapabilities(forAccount: account1) { _ in
+            Issue.record("A completed fetch must populate the cache before releasing waiters")
+            return (account1, nil, nil, .invalidResponseError)
+        }
+        #expect(cached.capabilities == capabilities)
+    }
+
+    @Test(arguments: [NKError.invalidResponseError, NKError(errorCode: 503, errorDescription: "Unavailable")])
+    func sharedFetchFailureReachesAllWaitersAndAllowsRetry(error: NKError) async throws {
+        let actor = RetrievedCapabilitiesActor()
+        let (waiting, waitingContinuation) = AsyncStream<Void>.makeStream()
+        let (release, releaseContinuation) = AsyncStream<Void>.makeStream()
+        defer {
+            waitingContinuation.finish()
+            releaseContinuation.finish()
+        }
+        let first = Task {
+            await actor.currentCapabilities(forAccount: account1, onWaiting: { waitingContinuation.yield(()) }) { _ in
+                do {
+                    _ = try await nextTestValue(from: release)
+                } catch {
+                    Issue.record("Shared fetch was not released: \(error)")
+                }
+                return (account1, nil, nil, error)
+            }
+        }
+        defer { first.cancel() }
+        try await awaitRegistration(in: waiting, actor: actor)
+        let second = Task {
+            await actor.currentCapabilities(forAccount: account1, onWaiting: { waitingContinuation.yield(()) }) { _ in
+                Issue.record("An overlapping caller must share the failed request")
+                return (account1, nil, nil, .success)
+            }
+        }
+        defer { second.cancel() }
+        try await awaitRegistration(in: waiting, actor: actor)
+        releaseContinuation.yield(())
+        #expect(try await testTaskValue(of: first).error == error)
+        #expect(try await testTaskValue(of: second).error == error)
+        #expect(await actor.getCapabilities(for: account1) == nil)
+        #expect(await actor.ongoingFetches.isEmpty)
+
+        let capabilitiesData = try #require(mockCapabilities.data(using: .utf8))
+        let capabilities = try #require(Capabilities(data: capabilitiesData))
+        let retry = await actor.currentCapabilities(forAccount: account1) { _ in (account1, capabilities, nil, .success) }
+        #expect(retry.error == .success)
+        #expect(retry.capabilities == capabilities)
+    }
+
+    @Test func cancelledLookupWaitingForDirectFetchDoesNotStartAnotherFetch() async throws {
+        let actor = RetrievedCapabilitiesActor()
+        await actor.setOngoingFetch(forAccount: account1, ongoing: true)
+        let (waiting, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
+        let task = Task {
+            await actor.currentCapabilities(forAccount: account1, onWaiting: { continuation.yield(()) }) { _ in
+                Issue.record("A cancelled waiter must not start a fetch after the direct fetch ends")
+                return (account1, nil, nil, .invalidResponseError)
+            }
+        }
+        defer { task.cancel() }
+        try await awaitRegistration(in: waiting, actor: actor)
+        task.cancel()
+        #expect(try await testTaskValue(of: task).error == .cancelled)
+        #expect(await actor.ongoingFetches.contains(account1))
+        await actor.setOngoingFetch(forAccount: account1, ongoing: false)
+    }
+
+    @Test func resetReleasesSharedFetchWaiters() async throws {
+        let actor = RetrievedCapabilitiesActor()
+        let session = URLSession(configuration: .ephemeral)
+        defer { session.invalidateAndCancel() }
+        let networkTask = try session.dataTask(with: #require(URL(string: "https://example.invalid/capabilities")))
+        let (waiting, continuation) = AsyncStream<Void>.makeStream()
+        let (release, releaseContinuation) = AsyncStream<Void>.makeStream()
+        defer {
+            continuation.finish()
+            releaseContinuation.finish()
+        }
+        let task = Task {
+            await actor.currentCapabilities(forAccount: account1) { taskHandler in
+                taskHandler(networkTask)
+                continuation.yield(())
+                _ = try? await nextTestValue(from: release)
+                return (account1, nil, nil, .invalidResponseError)
+            }
+        }
+        defer { task.cancel() }
+        try await awaitRegistration(in: waiting, actor: actor)
+        let worker = try #require(await actor.sharedFetches[account1]?.task)
+        await actor.reset()
+        #expect(try await testTaskValue(of: task).error == .cancelled)
+        #expect(await actor.ongoingFetches.isEmpty)
+        #expect(worker.isCancelled)
+        #expect(networkTask.state == .canceling || networkTask.state == .completed)
+        #expect(await actor.getCapabilities(for: account1) == nil)
     }
 
     @Test func alreadyCancelledWaiterDoesNotEnqueue() async throws {
