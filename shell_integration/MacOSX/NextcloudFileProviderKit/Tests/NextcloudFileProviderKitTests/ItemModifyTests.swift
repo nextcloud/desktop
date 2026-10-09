@@ -1,6 +1,7 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+import Alamofire
 @preconcurrency import FileProvider
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
@@ -32,16 +33,41 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     private func assertFailedContentModificationRemainsUnuploaded(
         errorCode: Int,
         chunkSize: Int?,
-        cancelDuringChunkPreparation: Bool = false
+        cancelDuringChunkPreparation: Bool = false,
+        cancelDuringUpload: Bool = false
     ) async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        let uploadError = cancelDuringChunkPreparation ? NKError.cancelled : NKError(errorCode: errorCode, errorDescription: "Upload did not complete")
+        let expectCancellation = cancelDuringChunkPreparation || cancelDuringUpload
+        let uploadError: NKError = if cancelDuringUpload, chunkSize == nil {
+            NKError(error: URLError(.cancelled))
+        } else if expectCancellation {
+            .cancelled
+        } else {
+            NKError(errorCode: errorCode, errorDescription: "Upload did not complete")
+        }
         let progress = Progress()
+        let session = cancelDuringUpload ? Session(startRequestsImmediately: false) : nil
+        let request = session?.upload(Data(), to: "https://example.invalid/resource")
+        let urlSession = cancelDuringUpload ? URLSession(configuration: .ephemeral) : nil
+        defer { urlSession?.invalidateAndCancel() }
+        let networkTask = try urlSession?.dataTask(with: XCTUnwrap(URL(string: "https://example.invalid/resource")))
+        let chunkDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: chunkDirectory) }
         if cancelDuringChunkPreparation {
             remoteInterface.chunkPreparationHandler = {
                 progress.cancel()
                 let cancelled = await waitForCancellation()
                 XCTAssertTrue(cancelled, "Chunk preparation must receive cancellation")
+            }
+        } else if cancelDuringUpload {
+            remoteInterface.uploadRequest = request
+            remoteInterface.uploadTask = networkTask
+            remoteInterface.chunkUploadDirectory = chunkDirectory
+            remoteInterface.chunkUploadCompletedChunkCount = 1
+            remoteInterface.uploadHandler = {
+                progress.cancel()
+                let cancelled = await waitForCancellation()
+                XCTAssertTrue(cancelled, "Cancellation must reach the modify operation")
             }
         } else {
             remoteInterface.uploadError = uploadError
@@ -87,10 +113,23 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNil(modifiedItem)
         XCTAssertNotNil(error)
-        if cancelDuringChunkPreparation {
+        if expectCancellation {
             XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
             XCTAssertTrue(progress.isCancelled)
-            XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+            XCTAssertEqual(remoteInterface.uploadOperationCount, cancelDuringUpload ? 1 : 0)
+        }
+        if cancelDuringUpload {
+            XCTAssertTrue(try XCTUnwrap(request).isCancelled)
+            let task = try XCTUnwrap(networkTask)
+            XCTAssertTrue(task.state == .canceling || task.state == .completed)
+            let remainingChunks = Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName.starts(with: chunkUploadIdentifierPrefix(forItemWithIdentifier: itemMetadata.ocId)) }
+                .toUnmanagedResults()
+            let expectedRemainingCount = chunkSize.map { max(0, Int(ceil(Double(newContents.count) / Double($0))) - 1) } ?? 0
+            XCTAssertEqual(remainingChunks.count, expectedRemainingCount)
+            for chunk in remainingChunks {
+                XCTAssertTrue(FileManager.default.fileExists(atPath: chunkDirectory.appendingPathComponent(chunk.fileName).path))
+            }
         }
         let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
         XCTAssertFalse(storedMetadata.uploaded)
@@ -198,6 +237,11 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     func testCancellationDuringChunkPreparationRemainsUnuploaded() async throws {
         try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2, cancelDuringChunkPreparation: true)
+    }
+
+    func testCancellationDuringUploadRemainsUnuploaded() async throws {
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: nil, cancelDuringUpload: true)
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2, cancelDuringUpload: true)
     }
 
     func testModifyFile() async throws {
