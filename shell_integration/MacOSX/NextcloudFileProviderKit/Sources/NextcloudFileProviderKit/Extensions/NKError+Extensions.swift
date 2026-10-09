@@ -10,6 +10,11 @@ extension NKError {
         -200
     }
 
+    var isCancelledError: Bool {
+        // NKCommon.chunkedFile uses -5 for cancellation during local chunk preparation.
+        errorCode == NSURLErrorCancelled || errorCode == -5
+    }
+
     var isCouldntConnectError: Bool {
         errorCode == -9999 || errorCode == -1001 || errorCode == -1004 || errorCode == -1005
             || errorCode == -1009 || errorCode == -1012 || errorCode == -1200 || errorCode == -1202
@@ -72,6 +77,9 @@ extension NKError {
     func fileProviderError(
         handlingNoSuchItemErrorUsingItemIdentifier identifier: NSFileProviderItemIdentifier
     ) -> Error? {
+        if isCancelledError {
+            return CocoaError(.userCancelled)
+        }
         guard fileProviderError?.code == .noSuchItem else {
             return fileProviderError as Error?
         }
@@ -84,6 +92,9 @@ extension NKError {
         remoteInterface: RemoteInterface,
         log: any FileProviderLogging
     ) async -> Error? {
+        if isCancelledError {
+            return CocoaError(.userCancelled)
+        }
         guard fileProviderError?.code == .filenameCollision else {
             return fileProviderError as Error?
         }

@@ -28,38 +28,51 @@ public func fetchThumbnails(
     let logger = FileProviderLogger(category: "fetchThumbnails", log: log)
     let progress = Progress(totalUnitCount: Int64(itemIdentifiers.count))
 
-    @Sendable func finishCurrent() {
-        progress.completedUnitCount += 1
-
-        if progress.completedUnitCount == progress.totalUnitCount {
-            completionHandler(nil)
-        }
+    guard !itemIdentifiers.isEmpty else {
+        completionHandler(nil)
+        return progress
     }
 
-    for itemIdentifier in itemIdentifiers {
-        Task { @Sendable in
-            guard let item = await Item.storedItem(
-                identifier: itemIdentifier,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                log: logger.log
-            ) else {
-                logger.error("Could not find item, unable to download thumbnail!", [.item: itemIdentifier.rawValue])
-
-                perThumbnailCompletionHandler(
-                    itemIdentifier,
-                    nil,
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
-                )
-                finishCurrent()
-                return
+    Task { @Sendable in
+        let error: Error? = await NetworkOperationCancellation(log: log).run(progress: progress) { @Sendable _ in
+            await withTaskGroup(of: Void.self) { group in
+                for itemIdentifier in itemIdentifiers {
+                    let childProgress = Progress(totalUnitCount: 1)
+                    progress.addChild(childProgress, withPendingUnitCount: 1)
+                    group.addTask { @Sendable in
+                        defer { childProgress.completedUnitCount = 1 }
+                        let (data, error): (Data?, Error?) = await NetworkOperationCancellation(log: log).run(progress: childProgress) { @Sendable cancellation in
+                            guard !progress.isCancelled, !Task.isCancelled else {
+                                return (nil, CocoaError(.userCancelled))
+                            }
+                            let item = await Item.storedItem(
+                                identifier: itemIdentifier,
+                                account: account,
+                                remoteInterface: remoteInterface,
+                                dbManager: dbManager,
+                                taskHandler: { cancellation.register(task: $0) },
+                                log: logger.log
+                            )
+                            guard !progress.isCancelled, !Task.isCancelled else {
+                                return (nil, CocoaError(.userCancelled))
+                            }
+                            guard let item else {
+                                logger.error("Could not find item, unable to download thumbnail.", [.item: itemIdentifier.rawValue])
+                                return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
+                            }
+                            return await item.performFetchThumbnail(size: size, domain: domain, progress: childProgress, cancellation: cancellation)
+                        }
+                        if progress.isCancelled || Task.isCancelled {
+                            perThumbnailCompletionHandler(itemIdentifier, nil, CocoaError(.userCancelled))
+                        } else {
+                            perThumbnailCompletionHandler(itemIdentifier, data, error)
+                        }
+                    }
+                }
             }
-
-            let (data, error) = await item.fetchThumbnail(size: size, domain: domain)
-            perThumbnailCompletionHandler(itemIdentifier, data, error)
-            finishCurrent()
+            return progress.isCancelled || Task.isCancelled ? CocoaError(.userCancelled) : nil
         }
+        completionHandler(error)
     }
 
     return progress

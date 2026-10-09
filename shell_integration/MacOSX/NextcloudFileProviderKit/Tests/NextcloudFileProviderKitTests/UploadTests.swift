@@ -1,6 +1,7 @@
 //  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+import Alamofire
 @preconcurrency import FileProvider
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
@@ -15,7 +16,248 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        setUpDatabase(Self.dbManager)
+    }
+
+    func testCancellationDuringUploadCancelsNetworkHandlesAndAllowsRetry() async throws {
+        for chunkSize in [8, 3] {
+            let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+            let data = Data(repeating: 1, count: 8)
+            try data.write(to: fileUrl)
+            defer { try? FileManager.default.removeItem(at: fileUrl) }
+            let root = MockRemoteItem.rootItem(account: Self.account)
+            let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+            let chunkDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+            remoteInterface.chunkUploadDirectory = chunkDirectory
+            defer { try? FileManager.default.removeItem(at: chunkDirectory) }
+            remoteInterface.chunkUploadCompletedChunkCount = 1
+            let progress = Progress()
+            let session = Session(startRequestsImmediately: false)
+            let request = session.upload(Data(), to: "https://example.invalid/resource")
+            let urlSession = URLSession(configuration: .ephemeral)
+            defer { urlSession.invalidateAndCancel() }
+            let networkTask = try urlSession.dataTask(with: XCTUnwrap(URL(string: "https://example.invalid/resource")))
+            remoteInterface.uploadRequest = request
+            remoteInterface.uploadTask = networkTask
+            remoteInterface.uploadHandler = {
+                progress.cancel()
+                let cancelled = await waitForCancellation()
+                XCTAssertTrue(cancelled, "Cancellation must reach the upload operation")
+            }
+            let itemIdentifier = UUID().uuidString
+            let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+            let uploadId = chunkUploadIdentifier(forItemWithIdentifier: itemIdentifier, fileSize: Int64(data.count), modificationDate: modificationDate)
+
+            let result = await NextcloudFileProviderKit.upload(
+                fileLocatedAt: fileUrl.path,
+                toRemotePath: Self.account.davFilesUrl + "/file.txt",
+                usingRemoteInterface: remoteInterface,
+                withAccount: Self.account,
+                inChunksSized: chunkSize,
+                forItemWithIdentifier: itemIdentifier,
+                dbManager: Self.dbManager,
+                progress: progress,
+                modificationDate: modificationDate,
+                log: FileProviderLogMock()
+            )
+
+            XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
+            XCTAssertNil(result.ocId)
+            XCTAssertTrue(request.isCancelled)
+            XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
+            XCTAssertNil(progress.cancellationHandler)
+            XCTAssertNil(progress.pausingHandler)
+            XCTAssertNil(progress.resumingHandler)
+            XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
+            XCTAssertTrue(root.children.isEmpty)
+            let remainingChunks = Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == uploadId }
+                .toUnmanagedResults()
+            if chunkSize < data.count {
+                XCTAssertEqual(remainingChunks.map(\.fileName).sorted(), ["2", "3"])
+                for chunk in remainingChunks {
+                    XCTAssertTrue(FileManager.default.fileExists(atPath: chunkDirectory.appendingPathComponent(chunk.fileName).path))
+                }
+            } else {
+                XCTAssertTrue(remainingChunks.isEmpty)
+            }
+
+            remoteInterface.uploadHandler = nil
+            remoteInterface.uploadRequest = nil
+            remoteInterface.uploadTask = nil
+            remoteInterface.chunkUploadCompletedChunkCount = nil
+            let completedChunks = UploadChunkRecorder()
+            let retry = await NextcloudFileProviderKit.upload(
+                fileLocatedAt: fileUrl.path,
+                toRemotePath: Self.account.davFilesUrl + "/file.txt",
+                usingRemoteInterface: remoteInterface,
+                withAccount: Self.account,
+                inChunksSized: chunkSize,
+                forItemWithIdentifier: itemIdentifier,
+                dbManager: Self.dbManager,
+                modificationDate: modificationDate,
+                log: FileProviderLogMock(),
+                chunkUploadCompleteHandler: { completedChunks.record($0) }
+            )
+
+            XCTAssertEqual(retry.remoteError, .success)
+            XCTAssertEqual(remoteInterface.uploadOperationCount, 2)
+            XCTAssertEqual(root.children.count, 1)
+            XCTAssertEqual(root.children.first?.data, data)
+            XCTAssertTrue(Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName == uploadId }.isEmpty)
+            if chunkSize < data.count {
+                XCTAssertEqual(completedChunks.chunks.map(\.fileName).sorted(), ["2", "3"])
+                XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path))
+            }
+        }
+    }
+
+    func testCancellationDuringPreflightDoesNotStartUpload() async throws {
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+        let root = MockRemoteItem.rootItem(account: Self.account)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+        let progress = Progress()
+        remoteInterface.enumerateHandler = {
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Cancellation must reach the quota lookup")
+        }
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: 8,
+            forItemWithIdentifier: UUID().uuidString,
+            dbManager: Self.dbManager,
+            progress: progress,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+        XCTAssertTrue(root.children.isEmpty)
+    }
+
+    func testCancellationErrorMappingForCollisions() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
+        for code in [NSURLErrorCancelled, -5] {
+            let error = NKError(errorCode: code, errorDescription: "Cancelled")
+            let mappedError = await error.fileProviderError(
+                handlingCollisionAgainstItemInRemotePath: Self.account.davFilesUrl + "/file.txt",
+                dbManager: Self.dbManager,
+                remoteInterface: remoteInterface,
+                log: FileProviderLogMock()
+            )
+            XCTAssertEqual((mappedError as? CocoaError)?.code, .userCancelled)
+        }
+    }
+
+    func testCancellationDuringChunkPreparationReturnsCancellation() async throws {
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+        let root = MockRemoteItem.rootItem(account: Self.account)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+        let progress = Progress()
+        remoteInterface.chunkPreparationHandler = {
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Chunk preparation must receive cancellation")
+        }
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: 3,
+            forItemWithIdentifier: UUID().uuidString,
+            dbManager: Self.dbManager,
+            progress: progress,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
+        XCTAssertEqual((result.remoteError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file")) as? CocoaError)?.code, .userCancelled)
+        XCTAssertNil(result.ocId)
+        XCTAssertTrue(progress.isCancelled)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+        XCTAssertTrue(root.children.isEmpty)
+        XCTAssertTrue(remoteInterface.chunkUploadDirectories.isEmpty)
+    }
+
+    func testChunkPreparationErrorWithoutCancellationIsPreserved() async throws {
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
+        let preparationError = NKError(errorCode: -4, errorDescription: "Could not write chunks.")
+        remoteInterface.chunkPreparationError = preparationError
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: 3,
+            forItemWithIdentifier: UUID().uuidString,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.remoteError.errorCode, preparationError.errorCode)
+        XCTAssertEqual(result.remoteError.errorDescription, preparationError.errorDescription)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+    }
+
+    func testCancellationAfterChunkAssemblyPreservesResult() async throws {
+        for remoteError in [NKError.success, .errorChunkMoveFile, NKError(errorCode: 507, errorDescription: "Insufficient quota.")] {
+            let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+            let data = Data(repeating: 1, count: 8)
+            try data.write(to: fileUrl)
+            defer { try? FileManager.default.removeItem(at: fileUrl) }
+            let root = MockRemoteItem.rootItem(account: Self.account)
+            let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+            let progress = Progress()
+            remoteInterface.chunkAssemblyHandler = {
+                progress.cancel()
+                let cancelled = await waitForCancellation()
+                XCTAssertTrue(cancelled, "Assembly must receive cancellation")
+            }
+            if remoteError != .success {
+                remoteInterface.uploadError = remoteError
+            }
+
+            let result = await NextcloudFileProviderKit.upload(
+                fileLocatedAt: fileUrl.path,
+                toRemotePath: Self.account.davFilesUrl + "/file.txt",
+                usingRemoteInterface: remoteInterface,
+                withAccount: Self.account,
+                inChunksSized: 3,
+                forItemWithIdentifier: UUID().uuidString,
+                dbManager: Self.dbManager,
+                progress: progress,
+                log: FileProviderLogMock()
+            )
+
+            XCTAssertTrue(progress.isCancelled)
+            XCTAssertEqual(result.remoteError.errorCode, remoteError.errorCode)
+            XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
+            if remoteError == .success {
+                let uploaded = try XCTUnwrap(root.children.first)
+                XCTAssertEqual(uploaded.data, data)
+                XCTAssertEqual(result.ocId, uploaded.identifier)
+                XCTAssertEqual(result.etag, uploaded.versionIdentifier)
+                XCTAssertEqual(result.size, Int64(data.count))
+            } else {
+                XCTAssertTrue(root.children.isEmpty)
+            }
+        }
     }
 
     func testStandardUpload() async throws {
@@ -60,8 +302,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         remoteInterface.chunkUploadDirectory = chunkDirectory
         defer { try? FileManager.default.removeItem(at: chunkDirectory) }
 
-        var uploadedChunks = [RemoteFileChunk]()
-        var chunkDirectoryExistedDuringUpload = false
+        let uploadedChunks = UploadChunkRecorder()
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
@@ -72,10 +313,9 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager,
             log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { chunk in
-                uploadedChunks.append(chunk)
-                chunkDirectoryExistedDuringUpload = FileManager.default.fileExists(
+                uploadedChunks.record(chunk, fileExists: FileManager.default.fileExists(
                     atPath: chunkDirectory.appendingPathComponent(chunk.fileName).path
-                )
+                ))
             }
         )
         let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
@@ -85,9 +325,9 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
 
-        let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
+        let firstUploadedChunk = try XCTUnwrap(uploadedChunks.chunks.first)
         let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))
-        let lastUploadedChunk = try XCTUnwrap(uploadedChunks.last)
+        let lastUploadedChunk = try XCTUnwrap(uploadedChunks.chunks.last)
         let lastUploadedChunkNameInt = try XCTUnwrap(Int(lastUploadedChunk.fileName))
         XCTAssertEqual(firstUploadedChunkNameInt, 1)
         XCTAssertEqual(lastUploadedChunkNameInt, expectedChunkCount)
@@ -95,7 +335,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(
             Int(lastUploadedChunk.size), data.count - ((lastUploadedChunkNameInt - 1) * chunkSize)
         )
-        XCTAssertTrue(chunkDirectoryExistedDuringUpload)
+        XCTAssertTrue(uploadedChunks.chunksExisted)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path))
         XCTAssertEqual(
             Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
@@ -242,7 +482,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         }
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
-        var uploadedChunks = [RemoteFileChunk]()
+        let uploadedChunks = UploadChunkRecorder()
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
@@ -253,7 +493,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager,
             modificationDate: modificationDate,
             log: FileProviderLogMock(),
-            chunkUploadCompleteHandler: { uploadedChunks.append($0) }
+            chunkUploadCompleteHandler: { uploadedChunks.record($0) }
         )
 
         XCTAssertEqual(result.remoteError, .success)
@@ -262,9 +502,9 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(result.etag)
 
         // Only the not-yet-uploaded chunks (2 and 3) are re-sent; chunk 1 is resumed from the server.
-        let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
+        let firstUploadedChunk = try XCTUnwrap(uploadedChunks.chunks.first)
         let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))
-        let lastUploadedChunk = try XCTUnwrap(uploadedChunks.last)
+        let lastUploadedChunk = try XCTUnwrap(uploadedChunks.chunks.last)
         let lastUploadedChunkNameInt = try XCTUnwrap(Int(lastUploadedChunk.fileName))
         XCTAssertEqual(firstUploadedChunkNameInt, previousUploadedChunkNum + 1)
         XCTAssertEqual(lastUploadedChunkNameInt, previousUploadedChunkNum + 2)
@@ -340,7 +580,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         remoteInterface.capabilities = capabilities
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
-        var uploadedChunks = [RemoteFileChunk]()
+        let uploadedChunks = UploadChunkRecorder()
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
@@ -349,7 +589,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             forItemWithIdentifier: "caps-chunk-size-item",
             dbManager: Self.dbManager,
             log: FileProviderLogMock(),
-            chunkUploadCompleteHandler: { uploadedChunks.append($0) }
+            chunkUploadCompleteHandler: { uploadedChunks.record($0) }
         )
 
         XCTAssertEqual(result.remoteError, .success)
@@ -357,8 +597,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
 
-        XCTAssertEqual(uploadedChunks.first?.size, 4)
-        XCTAssertEqual(uploadedChunks.last?.size, 4)
+        XCTAssertEqual(uploadedChunks.chunks.first?.size, 4)
+        XCTAssertEqual(uploadedChunks.chunks.last?.size, 4)
     }
 
     func testUsingServerCapabilitiesWithoutChunkSize() async throws {
@@ -418,7 +658,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         remoteInterface.capabilities = capabilities
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
-        var uploadedChunks = [RemoteFileChunk]()
+        let uploadedChunks = UploadChunkRecorder()
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
@@ -427,7 +667,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             forItemWithIdentifier: "caps-no-chunk-size-item",
             dbManager: Self.dbManager,
             log: FileProviderLogMock(),
-            chunkUploadCompleteHandler: { uploadedChunks.append($0) }
+            chunkUploadCompleteHandler: { uploadedChunks.record($0) }
         )
 
         XCTAssertEqual(result.remoteError, .success)
@@ -435,8 +675,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
 
-        XCTAssertEqual(uploadedChunks.first?.size, Int64(defaultFileChunkSize))
-        XCTAssertEqual(uploadedChunks.last?.size, 1)
+        XCTAssertEqual(uploadedChunks.chunks.first?.size, Int64(defaultFileChunkSize))
+        XCTAssertEqual(uploadedChunks.chunks.last?.size, 1)
     }
 
     /// F3 content-safety: a prior interrupted chunked upload of a *different* version of the same item
@@ -490,7 +730,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotEqual(staleUploadId, newUploadId)
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
-        var uploadedChunks = [RemoteFileChunk]()
+        let uploadedChunks = UploadChunkRecorder()
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
@@ -501,7 +741,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager,
             modificationDate: newModificationDate,
             log: FileProviderLogMock(),
-            chunkUploadCompleteHandler: { uploadedChunks.append($0) }
+            chunkUploadCompleteHandler: { uploadedChunks.record($0) }
         )
 
         XCTAssertEqual(result.remoteError, .success)
@@ -511,7 +751,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(FileManager.default.fileExists(atPath: staleChunksDirectory.path))
 
         // The upload started fresh (chunk 1 was re-sent, not resumed from chunk 2).
-        let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
+        let firstUploadedChunk = try XCTUnwrap(uploadedChunks.chunks.first)
         XCTAssertEqual(Int(firstUploadedChunk.fileName), 1)
     }
 }

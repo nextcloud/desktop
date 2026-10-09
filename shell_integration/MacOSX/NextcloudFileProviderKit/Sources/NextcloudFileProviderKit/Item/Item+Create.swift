@@ -148,10 +148,10 @@ public extension Item {
             inChunksSized: forcedChunkSize,
             forItemWithIdentifier: itemTemplate.itemIdentifier.rawValue,
             dbManager: dbManager,
+            progress: progress,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
             log: log,
-            requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
                 if let domain {
                     NSFileProviderManager(for: domain)?.register(
