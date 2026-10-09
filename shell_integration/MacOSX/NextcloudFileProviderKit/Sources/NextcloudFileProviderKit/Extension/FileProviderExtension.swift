@@ -168,6 +168,15 @@ import OSLog
         updatedSyncStateReporting(oldActions: oldActions)
     }
 
+    func completeSyncAction(_ actionId: UUID, error: Error?) {
+        if error == nil || (error as? CocoaError)?.code == .userCancelled {
+            removeSyncAction(actionId)
+        } else {
+            insertErrorAction(actionId)
+            signalEnumerator(completionHandler: { _ in })
+        }
+    }
+
     // MARK: - NSFileProviderReplicatedExtension protocol methods
 
     public func item(for identifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest, completionHandler: @Sendable @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
@@ -359,15 +368,10 @@ import OSLog
                 log: log
             )
 
-            if error == nil {
+            if let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
                 removeSyncAction(actionId)
             } else {
-                if let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
-                    removeSyncAction(actionId)
-                } else {
-                    insertErrorAction(actionId)
-                    signalEnumerator(completionHandler: { _ in })
-                }
+                completeSyncAction(actionId, error: error)
             }
 
             logger.debug("Calling item creation completion handler.", [.item: item?.itemIdentifier, .name: item?.filename, .error: error])
@@ -464,12 +468,7 @@ import OSLog
                 appProxy: app
             )
 
-            if error != nil {
-                insertErrorAction(actionId)
-                signalEnumerator(completionHandler: { _ in })
-            } else {
-                removeSyncAction(actionId)
-            }
+            completeSyncAction(actionId, error: error)
 
             logger.debug("Calling item modification completion handler.", [.item: item.itemIdentifier, .name: item.filename, .error: error])
             completionHandler(modifiedItem ?? item, [], false, error)
