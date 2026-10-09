@@ -6,10 +6,11 @@ import Foundation
 import RealmSwift
 
 extension FilesDatabaseManager {
-    func beginDownload(ocId: String, identifier: UUID) -> SendableItemMetadata? {
-        Self.downloadOperations.withLock { operations in
+    func beginDownload(_ operation: DownloadOperation) -> SendableItemMetadata? {
+        let ocId = operation.ocId
+        let (metadata, supersededOperation): (SendableItemMetadata?, DownloadOperation?) = Self.downloadOperations.withLock { operations in
             let database = ncDatabase()
-            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString else { return nil }
+            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString else { return (nil, nil) }
             var metadata: SendableItemMetadata?
             do {
                 try database.write {
@@ -19,33 +20,38 @@ extension FilesDatabaseManager {
                     item.sessionError = ""
                     metadata = SendableItemMetadata(value: item)
                 }
-                if metadata != nil {
-                    operations[databaseIdentifier, default: [:]][ocId] = identifier
-                }
             } catch {
                 logger.error("Could not start download in database.", [.item: ocId, .error: error])
-                return nil
+                return (nil, nil)
             }
-            return metadata
+            guard let metadata else { return (nil, nil) }
+            let supersededOperation = operations[databaseIdentifier]?[ocId]
+            operations[databaseIdentifier, default: [:]][ocId] = operation
+            return (metadata, supersededOperation)
         }
+        // Cancellation resumes the old fetch, which may need the ownership lock for cleanup.
+        if let supersededOperation, supersededOperation.identifier != operation.identifier {
+            supersededOperation.supersede()
+        }
+        return metadata
     }
 
     /// Save the download state only while this operation owns the item.
     func finishDownload(
-        ocId: String,
-        identifier: UUID,
+        _ operation: DownloadOperation,
         status: Status,
         downloaded: Bool,
         error: String? = nil,
         contentType: String? = nil
     ) throws {
+        let ocId = operation.ocId
         let statusValue = status.rawValue
         try Self.downloadOperations.withLock { operations in
             let database = ncDatabase()
             guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
-            guard operations[databaseIdentifier]?[ocId] == identifier else {
+            guard operations[databaseIdentifier]?[ocId]?.identifier == operation.identifier else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             defer {
