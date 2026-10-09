@@ -1,6 +1,7 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+import Alamofire
 @preconcurrency import FileProvider
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
@@ -157,6 +158,61 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
         XCTAssertTrue(rootItem.children.isEmpty)
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+    }
+
+    func testCancellationDuringUploadDoesNotCreateFile() async throws {
+        for chunkSize in [8, 3] {
+            let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+            let progress = Progress()
+            let session = Session(startRequestsImmediately: false)
+            let request = session.upload(Data(), to: "https://example.invalid/resource")
+            let urlSession = URLSession(configuration: .ephemeral)
+            defer { urlSession.invalidateAndCancel() }
+            let networkTask = try urlSession.dataTask(with: XCTUnwrap(URL(string: "https://example.invalid/resource")))
+            remoteInterface.uploadRequest = request
+            remoteInterface.uploadTask = networkTask
+            remoteInterface.uploadHandler = {
+                progress.cancel()
+                let cancelled = await waitForCancellation()
+                XCTAssertTrue(cancelled, "Cancellation must reach the create operation")
+            }
+            remoteInterface.chunkUploadCompletedChunkCount = 1
+            let chunkDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+            remoteInterface.chunkUploadDirectory = chunkDirectory
+            defer { try? FileManager.default.removeItem(at: chunkDirectory) }
+            let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".txt")
+            try Data(repeating: 1, count: 8).write(to: fileUrl)
+            defer { try? FileManager.default.removeItem(at: fileUrl) }
+            var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: fileUrl.lastPathComponent, account: Self.account)
+            metadata.classFile = NKTypeClassFile.document.rawValue
+            let template = Item(metadata: metadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager)
+
+            let (createdItem, error) = await Item.create(
+                basedOn: template,
+                contents: fileUrl,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                forcedChunkSize: chunkSize,
+                progress: progress,
+                dbManager: Self.dbManager,
+                log: FileProviderLogMock()
+            )
+
+            XCTAssertNil(createdItem)
+            XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+            XCTAssertTrue(request.isCancelled)
+            XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
+            XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
+            XCTAssertTrue(rootItem.children.isEmpty)
+            XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+            let remainingChunks = Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
+                .where { $0.remoteChunkStoreFolderName.starts(with: chunkUploadIdentifierPrefix(forItemWithIdentifier: metadata.ocId)) }
+                .toUnmanagedResults()
+            XCTAssertEqual(remainingChunks.map(\.fileName).sorted(), chunkSize < 8 ? ["2", "3"] : [])
+            for chunk in remainingChunks {
+                XCTAssertTrue(FileManager.default.fileExists(atPath: chunkDirectory.appendingPathComponent(chunk.fileName).path))
+            }
+        }
     }
 
     func testCreateFile() async throws {
