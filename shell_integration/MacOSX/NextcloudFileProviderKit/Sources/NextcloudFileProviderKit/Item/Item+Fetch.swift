@@ -113,7 +113,7 @@ public extension Item {
                     let identifier = NSFileProviderItemIdentifier(metadata.ocId)
 
                     guard let downloadingMetadata = dbManager.beginDownload(ocId: metadata.ocId, identifier: downloadIdentifier) else {
-                        throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+                        throw NSFileProviderError(.cannotSynchronize)
                     }
                     metadata = downloadingMetadata
                     let error = await downloadFileContents(
