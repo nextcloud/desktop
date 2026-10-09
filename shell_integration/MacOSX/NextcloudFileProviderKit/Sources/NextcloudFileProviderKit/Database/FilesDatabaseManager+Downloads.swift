@@ -30,7 +30,7 @@ extension FilesDatabaseManager {
         }
     }
 
-    /// Update the current download's state, throwing cancellation if it was superseded.
+    /// Save the download state only while this operation owns the item.
     func finishDownload(
         ocId: String,
         identifier: UUID,
@@ -46,7 +46,7 @@ extension FilesDatabaseManager {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             guard operations[databaseIdentifier]?[ocId] == identifier else {
-                throw CocoaError(.userCancelled)
+                throw NSFileProviderError(.cannotSynchronize)
             }
             defer {
                 operations[databaseIdentifier]?.removeValue(forKey: ocId)
