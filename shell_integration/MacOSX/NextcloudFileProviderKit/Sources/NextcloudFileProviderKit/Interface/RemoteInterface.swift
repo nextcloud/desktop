@@ -165,42 +165,20 @@ public protocol RemoteInterface: Sendable {
 }
 
 public extension RemoteInterface {
+    /// Cancelling a caller stops its wait; the request continues only while other callers still need it.
     func currentCapabilities(
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in }
+        options: NKRequestOptions = .init()
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        let ncKitAccount = account.ncKitAccount
-        guard !Task.isCancelled else {
-            return (ncKitAccount, nil, nil, NKError(error: URLError(.cancelled)))
+        await RetrievedCapabilitiesActor.shared.currentCapabilities(forAccount: account.ncKitAccount) { sharedTaskHandler in
+            await fetchCapabilities(account: account, options: options, taskHandler: sharedTaskHandler)
         }
-        await RetrievedCapabilitiesActor.shared.awaitFetchCompletion(forAccount: ncKitAccount)
-        guard !Task.isCancelled else {
-            return (ncKitAccount, nil, nil, NKError(error: URLError(.cancelled)))
-        }
-
-        let lastRetrieval = await RetrievedCapabilitiesActor.shared.getCapabilities(for: ncKitAccount)
-        guard !Task.isCancelled else {
-            return (ncKitAccount, nil, nil, NKError(error: URLError(.cancelled)))
-        }
-        guard let lastRetrieval, lastRetrieval.retrievedAt.timeIntervalSince(Date()) > -CapabilitiesFetchInterval
-        else {
-            return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
-        }
-
-        return (account.ncKitAccount, lastRetrieval.capabilities, nil, .success)
     }
 
-    func supportsTrash(
-        account: Account,
-        options _: NKRequestOptions = .init(),
-        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in }
-    ) async -> Bool {
+    func supportsTrash(account: Account) async -> Bool {
         var remoteSupportsTrash = false
 
-        let (_, capabilities, _, _) = await currentCapabilities(
-            account: account, options: .init(), taskHandler: taskHandler
-        )
+        let (_, capabilities, _, _) = await currentCapabilities(account: account)
 
         if let filesCapabilities = capabilities?.files {
             remoteSupportsTrash = filesCapabilities.undelete
