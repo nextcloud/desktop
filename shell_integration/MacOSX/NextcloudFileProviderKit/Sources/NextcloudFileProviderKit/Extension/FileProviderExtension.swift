@@ -82,8 +82,8 @@ import OSLog
     private(set) var setupGeneration = 0
 
     // Waiters parked in `awaitAccount(…)` until `ncAccount` is published.
-    private let accountReadyLock = NSLock()
-    private var accountReadyWaiters = [UUID: CheckedContinuation<Void, Never>]()
+    let accountReadyLock = NSLock()
+    private(set) var accountReadyWaiters = [UUID: CheckedContinuation<Void, Never>]()
 
     /// Whether or not we are going to recursively scan new folders when they are discovered.
     /// Apple's recommendation is that we should always scan the file hierarchy fully.
