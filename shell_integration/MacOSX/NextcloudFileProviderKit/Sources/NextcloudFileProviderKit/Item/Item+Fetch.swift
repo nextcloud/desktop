@@ -382,12 +382,6 @@ public extension Item {
         return (localPath, fpItem, nil)
     }
 
-    func fetchThumbnail(size: CGSize, domain: NSFileProviderDomain? = nil, progress: Progress = .init()) async -> (Data?, Error?) {
-        await NetworkOperationCancellation(log: logger.log).run(progress: progress) { @Sendable cancellation in
-            await self.performFetchThumbnail(size: size, domain: domain, progress: progress, cancellation: cancellation)
-        }
-    }
-
     internal func performFetchThumbnail(
         size: CGSize,
         domain: NSFileProviderDomain?,
