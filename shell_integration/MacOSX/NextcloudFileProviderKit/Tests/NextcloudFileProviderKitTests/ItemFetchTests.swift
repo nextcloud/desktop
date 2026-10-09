@@ -94,7 +94,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let progress = Progress()
         let (started, continuation) = AsyncStream<Void>.makeStream()
         defer { continuation.finish() }
-        remoteInterface.capabilitiesHandler = { _, _ in
+        remoteInterface.downloadCompletionHandler = {
             XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, true)
             continuation.yield(())
             let cancelled = await waitForCancellation()
@@ -914,7 +914,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
     }
 
-    func testCancellingCapabilityLookupCancelsNetworkTask() async throws {
+    func testCancellingCapabilityLookupCancelsUnsharedNetworkTask() async throws {
         await RetrievedCapabilitiesActor.shared.reset()
         let (item, remoteInterface, _) = makeFetchItem()
         let progress = Progress()
@@ -927,7 +927,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             taskHandler(networkTask)
             progress.cancel()
             let cancelled = await waitForCancellation()
-            XCTAssertTrue(cancelled, "Cancellation did not reach the operation.")
+            XCTAssertTrue(cancelled, "Cancellation must reach the unshared capabilities fetch")
         }
 
         let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
@@ -950,7 +950,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         defer { removeDownloadedContents(remoteInterface: remoteInterface) }
         let (started, continuation) = AsyncStream<Void>.makeStream()
         defer { continuation.finish() }
-        remoteInterface.capabilitiesHandler = { _, _ in
+        remoteInterface.downloadCompletionHandler = {
             XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, true)
             continuation.yield(())
             let cancelled = await waitForCancellation()
@@ -1072,7 +1072,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteInterface.downloadOperationCount, 0)
     }
 
-    func testCancellingThumbnailPreparationCancelsCapabilityTask() async throws {
+    func testCancellingThumbnailPreparationCancelsUnsharedCapabilityTask() async throws {
         await RetrievedCapabilitiesActor.shared.reset()
         let (item, remoteInterface, _) = makeFetchItem(preview: true)
         let session = URLSession(configuration: .ephemeral)
@@ -1084,7 +1084,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             taskHandler(networkTask)
             continuation.yield(())
             let cancelled = await waitForCancellation()
-            XCTAssertTrue(cancelled, "Cancellation did not reach the operation.")
+            XCTAssertTrue(cancelled, "Cancellation must reach the unshared capabilities fetch")
         }
         remoteInterface.thumbnailHandler = { _, _ in XCTFail("Cancelled preparation must not start a thumbnail transfer") }
         let batch = makeThumbnailBatch(identifiers: [item.itemIdentifier], remoteInterface: remoteInterface)
@@ -1103,6 +1103,9 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(networkTask.state == .canceling || networkTask.state == .completed)
         XCTAssertEqual(remoteInterface.readOperationCount, 0)
         XCTAssertNil(batch.progress.cancellationHandler)
+        await RetrievedCapabilitiesActor.shared.awaitFetchCompletion(forAccount: Self.account.ncKitAccount)
+        let cached = await RetrievedCapabilitiesActor.shared.getCapabilities(for: Self.account.ncKitAccount)
+        XCTAssertNil(cached)
     }
 
     func testCancellingThumbnailCancelsNetworkTask() async throws {

@@ -347,12 +347,12 @@ public extension Item {
             return (nil, nil, error)
         }
 
-        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: updatedMetadata.contentType, taskHandler: { cancellation.register(task: $0) })
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: updatedMetadata.contentType)
         guard !progress.isCancelled, !Task.isCancelled else {
             return (nil, nil, CocoaError(.userCancelled))
         }
 
-        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account, taskHandler: { cancellation.register(task: $0) })
+        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
         guard !progress.isCancelled, !Task.isCancelled else {
             return (nil, nil, CocoaError(.userCancelled))
         }

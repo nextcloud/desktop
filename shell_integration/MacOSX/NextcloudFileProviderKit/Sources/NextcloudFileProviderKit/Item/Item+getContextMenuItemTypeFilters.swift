@@ -10,16 +10,14 @@ extension Item {
     /// - Parameters:
     ///     - account: The account identifier for the server to check.
     ///     - remoteInterface: The server proxy object to use.
-    ///     - taskHandler: Receives the network task when capabilities must be fetched.
     ///
     /// - Returns: An array of strings as provided by NextcloudCapabilitiesKit or an empty array in case of error.
     ///
     static func getContextMenuItemTypeFilters(
         account: Account,
-        remoteInterface: RemoteInterface,
-        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
+        remoteInterface: RemoteInterface
     ) async -> [String] {
-        let (_, capabilities, _, capabilitiesError) = await remoteInterface.currentCapabilities(account: account, options: .init(), taskHandler: taskHandler)
+        let (_, capabilities, _, capabilitiesError) = await remoteInterface.currentCapabilities(account: account)
 
         if capabilitiesError == .success {
             if let capabilities {

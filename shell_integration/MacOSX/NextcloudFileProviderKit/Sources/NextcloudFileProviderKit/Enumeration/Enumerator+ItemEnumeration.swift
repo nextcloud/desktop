@@ -90,9 +90,7 @@ extension Enumerator {
             // Note: currentCapabilities uses RetrievedCapabilitiesActor which caches capabilities
             // for 30 minutes, so this call is efficient and doesn't make a network request on every enumeration.
             let (_, capabilities, _, _) = await remoteInterface.currentCapabilities(
-                account: account,
-                options: .init(),
-                taskHandler: { _ in }
+                account: account
             )
 
             let serverMajorVersion = capabilities?.major ?? 0

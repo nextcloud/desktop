@@ -500,7 +500,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         // resolve the given identifier to a record in the model
 
         guard !Task.isCancelled else { return nil }
-        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account, taskHandler: taskHandler)
+        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
         guard !Task.isCancelled else { return nil }
 
         guard identifier != .rootContainer else {
@@ -543,7 +543,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
 
         // Display File Actions
 
-        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: metadata.contentType, taskHandler: taskHandler)
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: metadata.contentType)
 
         guard !Task.isCancelled else { return nil }
 

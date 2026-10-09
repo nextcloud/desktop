@@ -652,7 +652,7 @@ public extension Item {
 
             return (modifiedItem, nil)
         } else if changedFields.contains(.parentItemIdentifier) && newParentItemIdentifier == .trashContainer {
-            let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account, options: .init(), taskHandler: { _ in })
+            let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account)
 
             guard let capabilities, error == .success else {
                 logger.error("Could not acquire capabilities during item move to trash, won't proceed.", [.item: modifiedItem, .error: error])

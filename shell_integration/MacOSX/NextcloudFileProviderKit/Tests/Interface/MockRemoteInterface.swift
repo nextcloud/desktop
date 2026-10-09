@@ -581,7 +581,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public private(set) var uploadOperationCount = 0
 
     public var downloadHandler: (@Sendable () async -> Void)?
-    public var downloadCompletionHandler: (@Sendable () -> Void)?
+    public var downloadCompletionHandler: (@Sendable () async -> Void)?
     public var downloadRequest: DownloadRequest?
     public var downloadTask: URLSessionTask?
     public var downloadError: NKError?
@@ -1239,7 +1239,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             return (account.ncKitAccount, nil, .urlError)
         }
 
-        downloadCompletionHandler?()
+        await downloadCompletionHandler?()
         return (account.ncKitAccount, nil, .success)
     }
 
