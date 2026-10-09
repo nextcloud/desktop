@@ -31,11 +31,21 @@ private final class ExclusionMarkerRecorder: @unchecked Sendable {
 final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     private func assertFailedContentModificationRemainsUnuploaded(
         errorCode: Int,
-        chunkSize: Int?
+        chunkSize: Int?,
+        cancelDuringChunkPreparation: Bool = false
     ) async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        let uploadError = NKError(errorCode: errorCode, errorDescription: "Upload did not complete")
-        remoteInterface.uploadError = uploadError
+        let uploadError = cancelDuringChunkPreparation ? NKError.cancelled : NKError(errorCode: errorCode, errorDescription: "Upload did not complete")
+        let progress = Progress()
+        if cancelDuringChunkPreparation {
+            remoteInterface.chunkPreparationHandler = {
+                progress.cancel()
+                let cancelled = await waitForCancellation()
+                XCTAssertTrue(cancelled, "Chunk preparation must receive cancellation")
+            }
+        } else {
+            remoteInterface.uploadError = uploadError
+        }
         let originalRemoteData = remoteItem.data
 
         var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
@@ -71,11 +81,17 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             changedFields: [.contents],
             contents: newContentsUrl,
             forcedChunkSize: chunkSize,
+            progress: progress,
             dbManager: Self.dbManager
         )
 
         XCTAssertNil(modifiedItem)
         XCTAssertNotNil(error)
+        if cancelDuringChunkPreparation {
+            XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+            XCTAssertTrue(progress.isCancelled)
+            XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+        }
         let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
         XCTAssertFalse(storedMetadata.uploaded)
         XCTAssertTrue(storedMetadata.downloaded)
@@ -178,6 +194,10 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     func testCancelledContentModificationRemainsUnuploaded() async throws {
         try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: nil)
         try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2)
+    }
+
+    func testCancellationDuringChunkPreparationRemainsUnuploaded() async throws {
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2, cancelDuringChunkPreparation: true)
     }
 
     func testModifyFile() async throws {

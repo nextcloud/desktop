@@ -183,6 +183,21 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
 // MARK: - NKError extensions (Fix 3)
 
 final class NKErrorExtensionsTests: XCTestCase {
+    func testCancellationErrorMapping() {
+        for code in [NSURLErrorCancelled, -5] {
+            let error = NKError(errorCode: code, errorDescription: "Cancelled")
+            XCTAssertTrue(error.isCancelledError)
+            let mappedError = error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file"))
+            XCTAssertEqual((mappedError as? CocoaError)?.code, .userCancelled)
+        }
+        for error in [NKError.success, NKError(errorCode: -4, errorDescription: "Write failed"), .errorChunkMoveFile, NKError(errorCode: 507, errorDescription: "Insufficient quota")] {
+            XCTAssertFalse(error.isCancelledError)
+            let mappedError = error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file"))
+            XCTAssertNotEqual((mappedError as? CocoaError)?.code, .userCancelled)
+            XCTAssertEqual((mappedError as? NSFileProviderError)?.code, error.fileProviderError?.code)
+        }
+    }
+
     func testPreconditionFailedError() {
         let error = NKError(errorCode: 412, errorDescription: "Precondition Failed")
         XCTAssertTrue(error.isPreconditionFailedError)

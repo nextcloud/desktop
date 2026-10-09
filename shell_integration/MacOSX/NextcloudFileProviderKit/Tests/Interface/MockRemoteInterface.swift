@@ -573,7 +573,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var chunkUploadCompletedChunkCount: Int?
 
     public var chunkPreparationHandler: (@Sendable () async -> Void)?
+    public var chunkPreparationError: NKError?
+    public var chunkAssemblyHandler: (@Sendable () async -> Void)?
     public var uploadHandler: (@Sendable () async -> Void)?
+    public private(set) var uploadOperationCount = 0
 
     public var downloadHandler: (@Sendable () async -> Void)?
     public var downloadCompletionHandler: (@Sendable () -> Void)?
@@ -833,6 +836,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         response: HTTPURLResponse?,
         remoteError: NKError
     ) {
+        uploadOperationCount += 1
         lastUploadIfMatchHeader = options.customHeader?["If-Match"]
         lastUploadIfHeader = options.customHeader?["If"]
 
@@ -949,8 +953,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         if let chunkPreparationHandler {
             await chunkPreparationHandler()
             if Task.isCancelled {
-                return (account.ncKitAccount, nil, nil, NKError(error: URLError(.cancelled)))
+                // Match NKCommon.chunkedFile's cancellation error.
+                return (account.ncKitAccount, nil, nil, NKError(errorCode: -5, errorDescription: "Chunking was cancelled."))
             }
+        }
+        if let chunkPreparationError {
+            return (account.ncKitAccount, nil, nil, chunkPreparationError)
         }
 
         // Create the local chunk directory used by the production adapter and populate it below.
@@ -1008,6 +1016,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             newChunks.prefix($0)
         } ?? newChunks[...]
         completedChunks.forEach { chunkUploadCompleteHandler($0) }
+        if let chunkAssemblyHandler {
+            await chunkAssemblyHandler()
+        }
         print(remainingChunks)
         completedChunkTransferSize[remoteChunkStoreFolderName] =
             remainingChunks.reduce(0) { $0 + $1.size }

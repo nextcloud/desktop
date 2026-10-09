@@ -17,6 +17,123 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         setUpDatabase(Self.dbManager)
     }
 
+    func testCancellationErrorMappingForCollisions() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
+        for code in [NSURLErrorCancelled, -5] {
+            let error = NKError(errorCode: code, errorDescription: "Cancelled")
+            let mappedError = await error.fileProviderError(
+                handlingCollisionAgainstItemInRemotePath: Self.account.davFilesUrl + "/file.txt",
+                dbManager: Self.dbManager,
+                remoteInterface: remoteInterface,
+                log: FileProviderLogMock()
+            )
+            XCTAssertEqual((mappedError as? CocoaError)?.code, .userCancelled)
+        }
+    }
+
+    func testCancellationDuringChunkPreparationReturnsCancellation() async throws {
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+        let root = MockRemoteItem.rootItem(account: Self.account)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+        let progress = Progress()
+        remoteInterface.chunkPreparationHandler = {
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Chunk preparation must receive cancellation")
+        }
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: 3,
+            forItemWithIdentifier: UUID().uuidString,
+            dbManager: Self.dbManager,
+            progress: progress,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
+        XCTAssertEqual((result.remoteError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file")) as? CocoaError)?.code, .userCancelled)
+        XCTAssertNil(result.ocId)
+        XCTAssertTrue(progress.isCancelled)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+        XCTAssertTrue(root.children.isEmpty)
+        XCTAssertTrue(remoteInterface.chunkUploadDirectories.isEmpty)
+    }
+
+    func testChunkPreparationErrorWithoutCancellationIsPreserved() async throws {
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
+        let preparationError = NKError(errorCode: -4, errorDescription: "Could not write chunks.")
+        remoteInterface.chunkPreparationError = preparationError
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: 3,
+            forItemWithIdentifier: UUID().uuidString,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.remoteError.errorCode, preparationError.errorCode)
+        XCTAssertEqual(result.remoteError.errorDescription, preparationError.errorDescription)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+    }
+
+    func testCancellationAfterChunkAssemblyPreservesResult() async throws {
+        for remoteError in [NKError.success, .errorChunkMoveFile, NKError(errorCode: 507, errorDescription: "Insufficient quota.")] {
+            let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+            let data = Data(repeating: 1, count: 8)
+            try data.write(to: fileUrl)
+            defer { try? FileManager.default.removeItem(at: fileUrl) }
+            let root = MockRemoteItem.rootItem(account: Self.account)
+            let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+            let progress = Progress()
+            remoteInterface.chunkAssemblyHandler = {
+                progress.cancel()
+                let cancelled = await waitForCancellation()
+                XCTAssertTrue(cancelled, "Assembly must receive cancellation")
+            }
+            if remoteError != .success {
+                remoteInterface.uploadError = remoteError
+            }
+
+            let result = await NextcloudFileProviderKit.upload(
+                fileLocatedAt: fileUrl.path,
+                toRemotePath: Self.account.davFilesUrl + "/file.txt",
+                usingRemoteInterface: remoteInterface,
+                withAccount: Self.account,
+                inChunksSized: 3,
+                forItemWithIdentifier: UUID().uuidString,
+                dbManager: Self.dbManager,
+                progress: progress,
+                log: FileProviderLogMock()
+            )
+
+            XCTAssertTrue(progress.isCancelled)
+            XCTAssertEqual(result.remoteError.errorCode, remoteError.errorCode)
+            XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
+            if remoteError == .success {
+                let uploaded = try XCTUnwrap(root.children.first)
+                XCTAssertEqual(uploaded.data, data)
+                XCTAssertEqual(result.ocId, uploaded.identifier)
+                XCTAssertEqual(result.etag, uploaded.versionIdentifier)
+                XCTAssertEqual(result.size, Int64(data.count))
+            } else {
+                XCTAssertTrue(root.children.isEmpty)
+            }
+        }
+    }
+
     func testStandardUpload() async throws {
         let fileUrl =
             FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
