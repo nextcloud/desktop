@@ -3359,7 +3359,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1011"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Aszlken n ibeddilen s wudem adigan &quot;%1&quot;</translation>
+        <translation>Aselken n ibeddilen s wudem adigan &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1018"/>
@@ -6710,7 +6710,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="441"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m qqen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="532"/>
@@ -6725,89 +6725,89 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Lqem n uqeddac ur yettwasefrak ara</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Aqeddac n umiḍan %1 iseqdac lqem %2 ur nettwadhel ara. Aseqdec n umsaɣ-a akked yileqman n uqeddac ur nettwadhel ara ur yettwajṛeb ara, yerna yezmer ad yili d amihi. Kemmel s tmasit-ik·im.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="320"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Tiwtilin n useqdec</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation type="unfinished"/>
+        <translation>Amiḍan-ik·im %1 yesra ad tqebleḍ tiwtilin n useqdec n uqeddac-ik·im. Ad tettwawelehḍ ɣer %2 iwakken ad tesnetmeḍ belli teɣriḍ tiwtilin-a, teqbleḍ-tent.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="516"/>
         <source>macOS VFS for %1: Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS i %1: Amtawi itteddu.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="519"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS i %1: Amtawi aneggaru yedda akken iwata.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="522"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS i %1: yemlal-d ugur.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="525"/>
         <source>macOS VFS for %1: An error was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS i %1: Tella-d tuccḍa.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="591"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Aselken n ibeddilen s wudem anmeggag &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="594"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Aselken n ibeddilen s wudem adigan &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="845"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Fren adig amaynut ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="933"/>
         <source>Internal link copied</source>
-        <translation type="unfinished"/>
+        <translation>Aseɣwen adigan yettwanɣel</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="934"/>
         <source>The internal link has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Aseɣwen agensan yettwanɣel ɣer tecfawit.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Ittwasenser seg imiḍanen:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="427"/>
         <source>Account %1: %2</source>
         <extracomment>%1 is the account display name. %2 is the account connection status.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Amiḍan %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi n umiḍan yensa</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="612"/>
