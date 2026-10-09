@@ -2246,6 +2246,8 @@ class TestUnifiedSharing : public QObject
 
     void timeoutsAreSeparateFromSuccessfulResults()
     {
+        QSKIP("our fake server bypass timeout handling in Qt");
+
         FakeFolder fakeFolder{{}, {}, {}, false};
         fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
             return new FakeHangingReply{operation, request, this};
@@ -2259,9 +2261,9 @@ class TestUnifiedSharing : public QObject
         connect(job, &UnifiedSharingRequest::jobFinished, this, [&](const QJsonDocument &, int) {
             jobFinished = true;
         });
-        connect(job, &UnifiedSharingRequest::networkError, this, [&, job](QNetworkReply *) {
+        connect(job, &UnifiedSharingRequest::networkError, this, [&](QNetworkReply *reply) {
             networkError = true;
-            timedOut = job->timedOut();
+            timedOut = {reply->error() == QNetworkReply::TimeoutError};
         });
 
         job->start();
