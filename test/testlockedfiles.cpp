@@ -267,14 +267,37 @@ private Q_SLOTS:
         }
         CloseHandle(fileHandle);
 
-        // The failing LockFile() call used to log one warning per directory per run.
-        QVERIFY2(warningCount == 12, qPrintable(warningMessages.join(QStringLiteral(" || "))));
+        QVERIFY2(warningCount == 0, qPrintable(warningMessages.join(QStringLiteral(" || "))));
         for (const auto isLocked : sharedReadResults) {
             QVERIFY(!isLocked);
         }
         QVERIFY(lockedFileDetected);
         QVERIFY(sharedDirectoryDetected);
         QVERIFY(!FileSystem::isFileLocked(fileInDirectory, FileSystem::LockMode::SharedRead));
+    }
+
+    void testProbeIgnoresByteRangeLockOfOtherHandle()
+    {
+        QTemporaryDir temporaryDirectory;
+        QVERIFY(temporaryDirectory.isValid());
+
+        const auto filePath = temporaryDirectory.filePath(QStringLiteral("workbook.xlsx"));
+        {
+            QFile file(filePath);
+            QVERIFY(file.open(QIODevice::WriteOnly));
+            QVERIFY(file.write("0123456789") == 10);
+        }
+
+        const auto ownerHandle = makeHandle(filePath, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE);
+        QVERIFY(ownerHandle != INVALID_HANDLE_VALUE);
+        QVERIFY(LockFile(ownerHandle, 0, 0, 10, 0));
+
+        const auto lockedByProbe = FileSystem::isFileLocked(filePath, FileSystem::LockMode::SharedRead);
+
+        UnlockFile(ownerHandle, 0, 0, 10, 0);
+        CloseHandle(ownerHandle);
+
+        QVERIFY(!lockedByProbe);
     }
 
     void testLockedFilePropagation()
