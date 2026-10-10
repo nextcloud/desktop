@@ -150,6 +150,7 @@ public extension Item {
             dbManager: dbManager,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
+            creatingNewFile: true,
             log: log,
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
@@ -185,7 +186,16 @@ public extension Item {
                 await InsufficientQuotaReporter.reportSummary(domainIdentifier: domain?.identifier, appProxy: appProxy, log: log)
             }
 
-            return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: log))
+            // A failed create-only precondition means this name is taken
+            let createError = error.isPreconditionFailedError
+                ? NSFileProviderError(.filenameCollision)
+                : error.fileProviderError
+            return await (nil, createError?.handlingCollisionAgainstItemInRemotePath(
+                remotePath,
+                dbManager: dbManager,
+                remoteInterface: remoteInterface,
+                log: log
+            ))
         }
 
         // Re-arm the per-domain dedup so a future quota event can surface a fresh summary.
