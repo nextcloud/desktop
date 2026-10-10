@@ -149,8 +149,6 @@ public:
     /// Delete flags table entries that have no metadata correspondent
     void deleteStaleFlagsEntries();
 
-    void avoidRenamesOnNextSync(const QString &path) { avoidRenamesOnNextSync(path.toUtf8()); }
-    void avoidRenamesOnNextSync(const QByteArray &path);
     void setPollInfo(const PollInfo &);
 
     QVector<PollInfo> getPollInfos();

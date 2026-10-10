@@ -263,9 +263,11 @@ private Q_SLOTS:
         auto invalidEtag = QByteArray("_invalid_");
         auto initialEtag = QByteArray("etag");
         auto makeEntry = [&](const QByteArray &path, ItemType type) {
+            static int lastInode = 0;
             SyncJournalFileRecord record;
             record._modtime = QDateTime::currentSecsSinceEpoch();
             record._path = path;
+            record._inode = ++lastInode;
             record._type = type;
             record._etag = initialEtag;
             record._remotePerm = RemotePermissions::fromDbValue("RW");
@@ -328,8 +330,10 @@ private Q_SLOTS:
     void testRecursiveDelete()
     {
         auto makeEntry = [&](const QByteArray &path) {
+            static int lastInode = 0;
             SyncJournalFileRecord record;
             record._path = path;
+            record._inode = ++lastInode;
             record._remotePerm = RemotePermissions::fromDbValue("RW");
             record._modtime = QDateTime::currentSecsSinceEpoch();
             QVERIFY(_db.setFileRecord(record));
@@ -514,8 +518,10 @@ private Q_SLOTS:
     {
         QList<qint64> allFileIds = {};
         const auto makeEntry = [this, &allFileIds](const qint64 &fileId) -> void {
+            static int lastInode = 0;
             SyncJournalFileRecord record;
             record._fileId = u"%1oc123xyz987e"_s.arg(fileId, 8, 10, '0'_L1).toLocal8Bit();
+            record._inode = ++lastInode;
             record._modtime = QDateTime::currentSecsSinceEpoch();
             record._path = u"item%1"_s.arg(fileId).toLocal8Bit();
             record._type = ItemTypeFile;
