@@ -6588,7 +6588,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="450"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>Ukkuẓ n yesragen</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
@@ -6605,22 +6605,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="503"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Ddaw n tesdat</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="506"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n n tesdat</numerusform><numerusform>%n n tesdatin</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="509"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n n usrag</numerusform><numerusform>%n n yisragen</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="512"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n wass</numerusform><numerusform>%n wussan</numerusform></translation>
     </message>
 </context>
 <context>
@@ -6628,17 +6628,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="70"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig nniḍen. %1 d ameɣri. Ur yessefrak ara ifuyla uhlisen.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="74"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig nniḍen. %1 mačči d anagraw n ifuyla NTFS. Ur yessefrak ara ifuyla uhlisen.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="78"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig nniḍen. %1 d ameɣri n uẓeṭṭa. Ur yessefrak ara ifuyla uhlisen.</translation>
     </message>
 </context>
 <context>
@@ -6646,37 +6646,37 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
         <source>Download error</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa n usider</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
         <source>Error downloading</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg usider</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>Could not be downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Ur yezmir ara ad d-yettwasider</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
         <source>&gt; More details</source>
-        <translation type="unfinished"/>
+        <translation>&gt; Ugar n ifatusen</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="68"/>
         <source>More details</source>
-        <translation type="unfinished"/>
+        <translation>Ugar n ifatusen</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="17"/>
         <source>Error downloading %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg usider %1</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="18"/>
         <source>%1 could not be downloaded.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ur yezmir ara ad d-yettwasider.</translation>
     </message>
 </context>
 <context>
@@ -6685,7 +6685,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="75"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="86"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg uleqqem n yiɣefisefka ɣef lǧal n wakud n usnifel armeɣtu</translation>
     </message>
 </context>
 <context>
@@ -6694,7 +6694,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="68"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="79"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg uleqqem n yiɣefisefka ɣef lǧal n wakud n usnifel armeɣtu</translation>
     </message>
 </context>
 <context>
@@ -6702,7 +6702,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="152"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Teffɣeḍ seg umiḍan-ik·im %1 ɣef %2. Ttxil-k·m qqen tikkelt-nniḍen.</translation>
     </message>
 </context>
 <context>
@@ -6715,12 +6715,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="532"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac ikaramen yemtawin yettusewlen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="421"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>Ittwasenser seg %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
