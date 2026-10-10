@@ -136,9 +136,11 @@ void AccountWizardController::initialiseAccount()
     ConfigFile cfg;
     if (!cfg.overrideServerUrl().isEmpty()) {
         Theme::instance()->setOverrideServerUrl(cfg.overrideServerUrl());
-        Theme::instance()->setForceOverrideServerUrl(true);
         Theme::instance()->setVfsEnabled(cfg.isVfsEnabled());
-        Theme::instance()->setStartLoginFlowAutomatically(true);
+        if (cfg.isEnforced(QLatin1String(ConfigFile::overrideServerUrlC)) || cfg.hasUserOverrideServerUrl()) {
+            Theme::instance()->setForceOverrideServerUrl(true);
+            Theme::instance()->setStartLoginFlowAutomatically(true);
+        }
     }
 
     initialiseOverrideServerChoices();
@@ -1370,8 +1372,8 @@ AccountState *AccountWizardController::applyAccountChanges()
 void AccountWizardController::clearOneShotOverrides()
 {
     ConfigFile cfg;
-    cfg.setOverrideServerUrl({});
-    cfg.setOverrideLocalDir({});
+    cfg.clearOverrideServerUrl();
+    cfg.clearOverrideLocalDir();
 }
 
 void AccountWizardController::initialiseLocalSyncFolder()

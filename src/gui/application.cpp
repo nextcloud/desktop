@@ -361,11 +361,17 @@ Application::Application(int &argc, char **argv)
 
         // these config values will always be empty after the first client run
         if (!_overrideServerUrl.isEmpty()) {
+            if (cfg.isEnforced(QLatin1String(ConfigFile::overrideServerUrlC))) {
+                qCWarning(lcApplication) << "Ignoring --overrideserverurl because overrideServerUrl is enforced by a policy.";
+            }
             cfg.setOverrideServerUrl(_overrideServerUrl);
             shouldExit = true;
         }
 
         if (!_overrideLocalDir.isEmpty()) {
+            if (cfg.isEnforced(QLatin1String(ConfigFile::overrideLocalDirC))) {
+                qCWarning(lcApplication) << "Ignoring --overridelocaldir because overrideLocalDir is enforced by a policy.";
+            }
             cfg.setOverrideLocalDir(_overrideLocalDir);
             shouldExit = true;
         }
@@ -811,7 +817,7 @@ void Application::setupConfigFile()
 AccountManager::AccountsRestoreResult Application::restoreLegacyAccount()
 {
     ConfigFile cfg;
-    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
+    const auto tryMigrate = !cfg.hasUserOverrideServerUrl();
     auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
     if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
         accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
