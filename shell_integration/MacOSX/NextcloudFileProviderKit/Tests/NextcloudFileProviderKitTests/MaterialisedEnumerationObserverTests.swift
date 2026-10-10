@@ -6,7 +6,6 @@ import Foundation
 import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import XCTest
 
@@ -15,13 +14,8 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
-    override func setUp() {
-        super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-    }
-
-    func testMaterialisedObserverWithNoPreexistingState() async {
-        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    func testMaterialisedObserverWithNoPreexistingState() async throws {
+        let dbManager = try FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
         // The database is intentionally left empty.
 
         let remoteInterface = MockRemoteInterface(account: Self.account)
@@ -76,7 +70,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         await fulfillment(of: [expect], timeout: 1)
     }
 
-    func testMaterialisedObserverWithMixedState() async {
+    func testMaterialisedObserverWithMixedState() async throws {
         // Setup a DB with a mix of materialized and non-materialised items.
         var itemA = SendableItemMetadata(ocId: "itemA", fileName: "itemA", account: Self.account)
         itemA.downloaded = true // Was materialised
@@ -91,7 +85,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         dirD.directory = true
         dirD.visitedDirectory = true // Was materialised
 
-        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+        let dbManager = try FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
         dbManager.addItemMetadata(itemA)
         dbManager.addItemMetadata(itemB)
         dbManager.addItemMetadata(itemC)
@@ -158,7 +152,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
     /// report actual state transitions — otherwise it re-marks the same directories as dataless
     /// on every pass and reconciliation never reaches a quiescent state.
     ///
-    func testMaterialisedObserverConvergesForDatalessVisitedDirectories() async {
+    func testMaterialisedObserverConvergesForDatalessVisitedDirectories() async throws {
         // A directory which was browsed before but holds no materialized content any more.
         var visitedDir = SendableItemMetadata(ocId: "visitedDir", fileName: "visitedDir", account: Self.account)
         visitedDir.directory = true
@@ -175,7 +169,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         var file = SendableItemMetadata(ocId: "file", fileName: "file.txt", account: Self.account)
         file.downloaded = true
 
-        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+        let dbManager = try FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
         dbManager.addItemMetadata(visitedDir)
         dbManager.addItemMetadata(staleDir)
         dbManager.addItemMetadata(file)

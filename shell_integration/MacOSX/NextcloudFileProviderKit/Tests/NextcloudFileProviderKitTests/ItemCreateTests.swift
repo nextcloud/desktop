@@ -6,7 +6,6 @@
 import NextcloudFileProviderKitMocks
 import NextcloudFileProviderXPC
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -59,11 +58,11 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     )
 
     var rootItem: MockRemoteItem!
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
         rootItem = MockRemoteItem.rootItem(account: Self.account)
     }
 
@@ -514,9 +513,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     /// `testCreateBundle` test, which validated the now-removed recursive-mirror code path.
     /// See https://github.com/nextcloud/desktop/issues/9827.
     func testCreateBundleIsExcluded() async {
-        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
-        debugPrint(db)
-
         let keynoteBundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -557,9 +553,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     /// Same expectation for `.app` (`com.apple.application-bundle`) — historically the most
     /// problematic bundle type for our recursive-mirror approach because of internal symlinks.
     func testCreateDotAppIsExcluded() async {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let appFilename = "Test.app"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -682,21 +675,18 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             remoteChunkStoreFolderName: chunkUploadId
         )
 
-        let db = Self.dbManager.ncDatabase()
-        try db.write {
-            db.add([
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 1),
-                    size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: chunkUploadId
-                ),
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 2),
-                    size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: chunkUploadId
-                )
-            ])
-        }
+        Self.dbManager.addRemoteFileChunks([
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 1),
+                size: Int64(chunkSize),
+                remoteChunkStoreFolderName: chunkUploadId
+            ),
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 2),
+                size: Int64(chunkSize),
+                remoteChunkStoreFolderName: chunkUploadId
+            )
+        ])
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
@@ -791,7 +781,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(rootItem.children.isEmpty)
     }
 
-    func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async {
+    func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.lockUnlockResult = NKLock(
             owner: Self.account.id,
@@ -892,8 +882,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             "A lock-only etag transition must preserve File Provider's content version."
         )
         XCTAssertTrue(
-            Self.dbManager.pendingWorkingSetChanges(since: Date(timeIntervalSince1970: 2)).updated
-                .contains(where: { $0.ocId == targetRemote.identifier }),
+            try XCTUnwrap(Self.dbManager.pendingWorkingSetChanges(since: Date(timeIntervalSince1970: 2))?.updated
+                .contains(where: { $0.ocId == targetRemote.identifier })),
             "Recovering the lock token must queue the target item for a File Provider metadata refresh."
         )
 

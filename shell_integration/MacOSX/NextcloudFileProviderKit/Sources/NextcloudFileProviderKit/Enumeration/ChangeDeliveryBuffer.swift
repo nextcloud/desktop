@@ -7,7 +7,7 @@ import Foundation
 /// Durable FIFO state for a multi-batch File Provider change enumeration.
 ///
 /// The framework can invalidate an enumerator after an intermediate batch and invoke the next batch on a
-/// new enumerator. The pending changes and their position are therefore stored in Realm. An intermediate
+/// new enumerator. The pending changes and their position are therefore stored in the database. An intermediate
 /// anchor identifies those pending changes and must be handled before ordinary sync-anchor validation.
 ///
 /// Updates are stored before deletions and are already sorted parents-before-children by the caller. Each
@@ -62,8 +62,9 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
                 return false
             }
 
-            let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: sessionId)
-            guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, deletedOcIds: deletedOcIds) else {
+            guard let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: sessionId),
+                  dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, deletedOcIds: deletedOcIds)
+            else {
                 logger.error("Could not acknowledge the previously reported change delivery batch.")
                 return false
             }
@@ -77,11 +78,18 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         }
 
         guard let session = dbManager.changeDeliverySession(forPendingAnchorKey: key, containerKey: containerKey) else {
-            return false
+            // The instance which reported the batch acknowledges it right after the observer's finish, and the framework can ask for the continuation through this fresh instance meanwhile. If that acknowledgement landed between the two lookups, the session sits at the key now.
+            guard let session = dbManager.changeDeliverySession(forAnchorKey: key, containerKey: containerKey) else {
+                return false
+            }
+
+            sessionId = session.sessionId
+            return true
         }
 
-        let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: session.sessionId)
-        guard dbManager.acknowledgeChangeDeliveryBatch(sessionId: session.sessionId, deletedOcIds: deletedOcIds) else {
+        guard let deletedOcIds = dbManager.pendingChangeDeliveryDeletedOcIds(sessionId: session.sessionId),
+              dbManager.acknowledgeChangeDeliveryBatch(sessionId: session.sessionId, deletedOcIds: deletedOcIds)
+        else {
             logger.error("Could not acknowledge the previously reported change delivery batch.")
             return false
         }
@@ -148,6 +156,9 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
 
     /// Prepare the next update/delete batch without advancing the committed cursor.
     /// Returns a continuation anchor for intermediate batches and the session's final anchor for the last.
+    ///
+    /// Returns `nil` when the stored items could not be read. The session is left as it is, so the batch can be prepared again; finishing on an empty batch instead would acknowledge changes which were never delivered.
+    ///
     func prepareChangeDeliveryBatch(
         maxItems: Int
     ) -> (
@@ -156,7 +167,7 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         moreComing: Bool,
         continuationAnchorRawValue: Data?,
         finalAnchorRawValue: Data?
-    ) {
+    )? {
         lock.lock()
         defer { lock.unlock() }
 
@@ -167,11 +178,14 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
             return ([], [], false, nil, nil)
         }
 
-        let storedItems = dbManager.changeDeliveryItems(
+        guard let storedItems = dbManager.changeDeliveryItems(
             sessionId: sessionId,
             fromSequence: session.nextSequence,
             limit: budget + 1
-        )
+        ) else {
+            logger.error("Could not read the next change delivery batch; the session is kept for a retry.")
+            return nil
+        }
         let batchItems = Array(storedItems.prefix(budget))
         let moreComing = storedItems.count > budget
         let decoder = JSONDecoder()

@@ -6,7 +6,6 @@
 import NextcloudFileProviderKitMocks
 import NextcloudFileProviderXPC
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -98,11 +97,11 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     var remoteTrashFolder: MockRemoteItem!
     var remoteTrashFolderChildItem: MockRemoteItem!
 
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
 
         remoteItem = MockRemoteItem(
             identifier: "item",
@@ -857,9 +856,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     /// Verify the framework callback sequence caused by excluding a remotely synced bundle.
     func testModifyRemoteBundleExclusionDoesNotDeleteRemoteBundle() async throws {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let bundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteBundle = MockRemoteItem(
@@ -1113,14 +1109,13 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
         defer { try? FileManager.default.removeItem(at: chunksDirectory) }
 
-        let db = Self.dbManager.ncDatabase()
-        try db.write {
-            db.add(RemoteFileChunk(
+        Self.dbManager.addRemoteFileChunks([
+            RemoteFileChunk(
                 fileName: "2",
                 size: 3,
                 remoteChunkStoreFolderName: chunkUploadId
-            ))
-        }
+            )
+        ])
 
         var targetMetadata = SendableItemMetadata(value: folderMetadata)
         targetMetadata.apply(fileName: "renamed-folder")
@@ -1156,9 +1151,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(rootTrashItem.children.contains { $0.identifier == folderMetadata.ocId + trashedItemIdSuffix })
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
         XCTAssertEqual(
-            db.objects(RemoteFileChunk.self)
-                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
-                .count,
+            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId).count,
             0
         )
     }
@@ -2192,21 +2185,18 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
         remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
 
-        let db = Self.dbManager.ncDatabase()
-        try db.write {
-            db.add([
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 1),
-                    size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: chunkUploadId
-                ),
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 2),
-                    size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: chunkUploadId
-                )
-            ])
-        }
+        Self.dbManager.addRemoteFileChunks([
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 1),
+                size: Int64(chunkSize),
+                remoteChunkStoreFolderName: chunkUploadId
+            ),
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 2),
+                size: Int64(chunkSize),
+                remoteChunkStoreFolderName: chunkUploadId
+            )
+        ])
 
         var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
         targetItemMetadata.date = modificationDate

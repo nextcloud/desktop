@@ -4,7 +4,6 @@
 @preconcurrency import FileProvider
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import RealmSwift
 import TestInterface
 import XCTest
 
@@ -26,9 +25,7 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        let count = dbManager.ncDatabase().objects(RemoteFileChunk.self)
-            .where { $0.remoteChunkStoreFolderName == uploadIdentifier }
-            .count
+        let count = dbManager.remoteFileChunks(uploadId: uploadIdentifier).count
         XCTAssertEqual(count, expectedCount, file: file, line: line)
     }
 
@@ -38,7 +35,7 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        dbManager = FilesDatabaseManager(
+        dbManager = try! FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: makeDatabaseDirectory(),
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier(name),
@@ -91,6 +88,23 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
             dbManager.itemMetadata(ocId: seeded.itemIdentifier)?.chunkUploadId,
             seeded.uploadIdentifier
         )
+        assertChunkCount(for: seeded.uploadIdentifier, equals: 1)
+    }
+
+    func testStartupCleanupIsSkippedWhenTheDecisionCannotBeRead() throws {
+        let seeded = try seedChunkUpload(
+            itemIdentifier: "undecidable-item",
+            metadataStatus: .normal
+        )
+        try dbManager.breakTableForTesting(ItemMetadataRecord.databaseTableName)
+
+        cleanupAbandonedChunkUploads(
+            usingRemoteInterface: remoteInterface,
+            dbManager: dbManager,
+            logger: makeLogger()
+        )
+
+        XCTAssertTrue(FileManager.default.fileExists(atPath: seeded.directory.path), "Without a complete decision nothing is discarded.")
         assertChunkCount(for: seeded.uploadIdentifier, equals: 1)
     }
 
@@ -231,9 +245,7 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertTrue(FileManager.default.fileExists(atPath: directory.path))
         XCTAssertEqual(
-            dbManager.ncDatabase().objects(RealmPendingChunkUploadCleanup.self)
-                .where { $0.uploadIdentifier == uploadIdentifier }
-                .count,
+            dbManager.pendingChunkUploadCleanupIdentifiers().filter { $0 == uploadIdentifier }.count,
             1
         )
 
@@ -246,9 +258,7 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertFalse(FileManager.default.fileExists(atPath: directory.path))
         XCTAssertEqual(
-            dbManager.ncDatabase().objects(RealmPendingChunkUploadCleanup.self)
-                .where { $0.uploadIdentifier == uploadIdentifier }
-                .count,
+            dbManager.pendingChunkUploadCleanupIdentifiers().filter { $0 == uploadIdentifier }.count,
             0
         )
     }
@@ -320,14 +330,13 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
         remoteInterface.chunkUploadDirectories[uploadIdentifier] = directory
 
         if includeChunkRow {
-            let db = dbManager.ncDatabase()
-            try db.write {
-                db.add(RemoteFileChunk(
+            dbManager.addRemoteFileChunks([
+                RemoteFileChunk(
                     fileName: "1",
                     size: 1,
                     remoteChunkStoreFolderName: uploadIdentifier
-                ))
-            }
+                )
+            ])
         }
 
         return (uploadIdentifier, itemIdentifier, directory)

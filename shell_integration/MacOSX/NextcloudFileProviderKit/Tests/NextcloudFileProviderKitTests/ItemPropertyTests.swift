@@ -5,7 +5,6 @@
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -14,11 +13,11 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
     }
 
     func testMetadataContentType() {
@@ -317,14 +316,14 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
 
     // Unlike the file cases above (which read `displayEvict` straight off the
     // metadata), directory eviction visibility depends on descendant *file* rows
-    // in the database, so these tests seed the per-test Realm first.
+    // in the database, so these tests seed the per-test database first.
 
     /// Full server path of the folder produced by `makeFolderItem()`.
     private var folderServerPath: String {
         Self.account.davFilesUrl + "/folder"
     }
 
-    /// Seed one metadata row into the per-test Realm.
+    /// Seed one metadata row into the per-test database.
     private func seedMetadataRow(
         ocId: String,
         fileName: String,
@@ -335,18 +334,17 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         deleted: Bool = false,
         keepDownloaded: Bool = false
     ) throws {
-        let row = RealmItemMetadata()
-        row.ocId = ocId
+        var row = SendableItemMetadata.rawRow(ocId: ocId)
         row.account = Self.account.ncKitAccount
-        row.updateLocation(serverUrl: serverUrl, fileName: fileName)
+        row.serverUrl = serverUrl
+        row.fileName = fileName
         row.directory = directory
         row.downloaded = downloaded
         row.visitedDirectory = visitedDirectory
         row.deleted = deleted
         row.keepDownloaded = keepDownloaded
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write { realm.add(row) }
+        try Self.dbManager.insertForTesting(row)
     }
 
     /// A directory `Item` at `folderServerPath`; its descendants are whatever
@@ -808,9 +806,6 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStoredItemTrashabilityFalseAffectedByCapabilities() async {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let remoteInterface = MockRemoteInterface(account: Self.account)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         remoteInterface.capabilities =
@@ -829,9 +824,6 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStoredItemTrashabilityTrueAffectedByCapabilities() async {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let remoteInterface = MockRemoteInterface(account: Self.account)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         let metadata =

@@ -3,7 +3,7 @@
 
 @preconcurrency import FileProvider
 import Foundation
-import RealmSwift
+import GRDB
 
 public extension FilesDatabaseManager {
     private func fullServerPathUrl(for metadata: any ItemMetadata) -> String {
@@ -16,11 +16,13 @@ public extension FilesDatabaseManager {
 
     func childItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
-        return itemMetadatas
-            .where { item in
-                RealmItemMetadata.hasServerUrl(item, equalTo: directoryServerUrl, includingDescendants: true)
-            }
-            .toUnmanagedResults()
+
+        return read("Could not fetch the items below a directory.", [.url: directoryServerUrl]) { db in
+            try ItemMetadataRecord
+                .filter(ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true))
+                .fetchRecords(db, logger: logger)
+                .map(\.metadata)
+        } ?? []
     }
 
     ///
@@ -31,20 +33,22 @@ public extension FilesDatabaseManager {
     func immediateChildItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
 
-        return itemMetadatas
-            .where { item in
-                RealmItemMetadata.hasServerUrl(item, equalTo: directoryServerUrl, includingDescendants: false)
-            }
-            .toUnmanagedResults()
+        return read("Could not fetch the immediate children of a directory.", [.url: directoryServerUrl]) { db in
+            try ItemMetadataRecord
+                .filter(ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: false))
+                .fetchRecords(db, logger: logger)
+                .map(\.metadata)
+        } ?? []
     }
 
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
-        return itemMetadatas
-            .where { item in
-                RealmItemMetadata.hasServerUrl(item, equalTo: directoryServerUrl, includingDescendants: true)
-            }
-            .count
+
+        return read("Could not count the items below a directory.", [.url: directoryServerUrl]) { db in
+            try ItemMetadataRecord
+                .filter(ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true))
+                .fetchCount(db)
+        } ?? 0
     }
 
     ///
@@ -65,20 +69,17 @@ public extension FilesDatabaseManager {
     /// The `+ "/"` on the prefix branch keeps a sibling like `.../folderX` from
     /// matching the directory `.../folder`.
     ///
-    /// Uses `.first` for a bounded, early-out existence check — Realm evaluates
-    /// the query lazily and does not build the full descendant result set.
-    ///
     func hasEvictableDescendantFile(directoryMetadata: SendableItemMetadata) -> Bool {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
-        return itemMetadatas
-            .where {
-                $0.directory == false &&
-                    $0.downloaded == true &&
-                    $0.deleted == false &&
-                    $0.keepDownloaded == false &&
-                    RealmItemMetadata.hasServerUrl($0, equalTo: directoryServerUrl, includingDescendants: true)
-            }
-            .first != nil
+
+        return read("Could not look up evictable descendants of a directory.", [.url: directoryServerUrl]) { db in
+            try !ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.isEvictableFile
+                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true)
+                )
+                .isEmpty(db)
+        } ?? false
     }
 
     ///
@@ -93,15 +94,34 @@ public extension FilesDatabaseManager {
     ///
     func evictableDescendantFileIdentifiers(directoryMetadata: SendableItemMetadata) -> [NSFileProviderItemIdentifier] {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
-        return itemMetadatas
-            .where {
-                $0.directory == false &&
-                    $0.downloaded == true &&
-                    $0.deleted == false &&
-                    $0.keepDownloaded == false &&
-                    RealmItemMetadata.hasServerUrl($0, equalTo: directoryServerUrl, includingDescendants: true)
-            }
-            .map { NSFileProviderItemIdentifier($0.ocId) }
+
+        return read("Could not fetch evictable descendants of a directory.", [.url: directoryServerUrl]) { db in
+            try ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.isEvictableFile
+                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true)
+                )
+                .select(ItemMetadataRecord.Columns.ocId, as: String.self)
+                .fetchAll(db)
+                .map { NSFileProviderItemIdentifier($0) }
+        } ?? []
+    }
+
+    ///
+    /// Identifiers of the files below a directory whose status is below `status`, for example everything which is not part of an upload in progress.
+    ///
+    func descendantFileOcIds(underRemotePath remotePath: String, account: String, statusBelow status: Status) -> [String] {
+        read("Could not fetch the files below a directory.", [.url: remotePath]) { db in
+            try ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.Columns.directory == false
+                        && ItemMetadataRecord.Columns.account == account
+                        && ItemMetadataRecord.Columns.status < status.rawValue
+                        && ItemMetadataRecord.hasServerUrl(equalTo: remotePath, includingDescendants: true)
+                )
+                .select(ItemMetadataRecord.Columns.ocId, as: String.self)
+                .fetchAll(db)
+        } ?? []
     }
 
     ///
@@ -152,82 +172,87 @@ public extension FilesDatabaseManager {
     }
 
     func directoryMetadata(ocId: String) -> SendableItemMetadata? {
-        if let metadata = itemMetadatas.where({ $0.ocId == ocId && $0.directory }).first {
-            return SendableItemMetadata(value: metadata)
-        }
-
-        return nil
+        read("Could not look up directory metadata.", [.item: ocId]) { db in
+            try directoryMetadata(ocId: ocId, in: db)?.metadata
+        } ?? nil
     }
 
     /// Deletes all metadatas related to the info of the directory provided
     func deleteDirectoryAndSubdirectoriesMetadata(
         ocId: String
     ) -> [SendableItemMetadata]? {
-        guard let directoryMetadata = itemMetadatas
-            .where({ $0.ocId == ocId && $0.directory })
-            .first
-        else {
-            logger.error("Could not find directory metadata for ocId. Not proceeding with deletion.", [.item: ocId])
-            return nil
-        }
-
-        let directoryMetadataCopy = SendableItemMetadata(value: directoryMetadata)
-        let directoryOcId = directoryMetadata.ocId
-        let directoryUrlPath = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        let directoryAccount = directoryMetadata.account
-        let directoryEtag = directoryMetadata.etag
-
-        logger.debug("Deleting root directory metadata in recursive delete.", [.eTag: directoryEtag, .item: directoryMetadata.ocId, .url: directoryUrlPath])
-
-        let database = ncDatabase()
-        do {
-            try database.write { directoryMetadata.deleted = true }
-        } catch {
-            logger.error("Failure to delete root directory metadata in recursive delete.", [.error: error, .eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
-            return nil
-        }
-
-        var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
-
-        let results = itemMetadatas.where { item in
-            item.account == directoryAccount &&
-                RealmItemMetadata.hasServerUrl(item, equalTo: directoryUrlPath, includingDescendants: true)
-        }
-
-        // TODO: Parent is deleted even when a child upload is pending. The child will
-        // orphan after upload. Follow-up: defer parent deletion or re-parent after upload.
-        for result in results {
-            if result.status >= Status.inUpload.rawValue {
-                // Preserve the child metadata and its resumable chunks. Item deletion applies
-                // the same status boundary when deciding which descendant chunks to clean up.
-                logger.info("Skipping deletion of child with pending upload.", [.item: result.ocId])
-                continue
+        write("Failure to delete directory metadata in recursive delete.", [.item: ocId]) { db in
+            guard var directoryMetadata = try directoryMetadata(ocId: ocId, in: db) else {
+                logger.error("Could not find directory metadata for ocId. Not proceeding with deletion.", [.item: ocId])
+                return nil
             }
-            if result.isLockFileOfLocalOrigin {
-                logger.info("Skipping deletion of local-origin lock file during directory delete.", [.item: result.ocId, .name: result.fileName])
-                continue
-            }
-            let inactiveItemMetadata = SendableItemMetadata(value: result)
-            do {
-                try database.write { result.deleted = true }
+
+            let directoryMetadataCopy = directoryMetadata.metadata
+            let directoryOcId = directoryMetadata.ocId
+            let directoryUrlPath = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+            let directoryAccount = directoryMetadata.account
+            let directoryEtag = directoryMetadata.etag
+
+            logger.debug("Deleting root directory metadata in recursive delete.", [.eTag: directoryEtag, .item: directoryMetadata.ocId, .url: directoryUrlPath])
+
+            directoryMetadata.deleted = true
+            try directoryMetadata.upsertRow(db)
+
+            var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
+
+            let results = try ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.Columns.account == directoryAccount
+                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryUrlPath, includingDescendants: true)
+                )
+                .fetchRecords(db, logger: logger)
+
+            // TODO: Parent is deleted even when a child upload is pending. The child will
+            // orphan after upload. Follow-up: defer parent deletion or re-parent after upload.
+            for var result in results {
+                if result.status >= Status.inUpload.rawValue {
+                    // Preserve the child metadata and its resumable chunks. Item deletion applies
+                    // the same status boundary when deciding which descendant chunks to clean up.
+                    logger.info("Skipping deletion of child with pending upload.", [.item: result.ocId])
+                    continue
+                }
+                if result.isLockFileOfLocalOrigin {
+                    logger.info("Skipping deletion of local-origin lock file during directory delete.", [.item: result.ocId, .name: result.fileName])
+                    continue
+                }
+                let inactiveItemMetadata = result.metadata
+                result.deleted = true
+                try result.upsertRow(db)
                 deletedMetadatas.append(inactiveItemMetadata)
-            } catch {
-                logger.error("Failure to delete directory metadata child in recursive delete", [.error: error, .eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
             }
-        }
 
-        logger.debug("Completed deletions in directory recursive delete.", [.eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
+            logger.debug("Completed deletions in directory recursive delete.", [.eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
 
-        return deletedMetadatas
+            return deletedMetadatas
+        } ?? nil
     }
 
     func renameDirectoryAndPropagateToChildren(
         ocId: String, newServerUrl: String, newFileName: String
     ) -> [SendableItemMetadata]? {
-        guard let directoryMetadata = itemMetadatas
-            .where({ $0.ocId == ocId && $0.directory })
-            .first
-        else {
+        write("Could not rename directory metadata.", [.item: ocId, .url: newServerUrl]) { db in
+            try renameDirectoryAndPropagateToChildren(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName, in: db)
+        } ?? nil
+    }
+}
+
+extension FilesDatabaseManager {
+    func directoryMetadata(ocId: String, in db: Database) throws -> ItemMetadataRecord? {
+        try ItemMetadataRecord
+            .filter(key: ocId)
+            .filter(ItemMetadataRecord.Columns.directory == true)
+            .fetchRecord(db, logger: logger)
+    }
+
+    func renameDirectoryAndPropagateToChildren(
+        ocId: String, newServerUrl: String, newFileName: String, in db: Database
+    ) throws -> [SendableItemMetadata]? {
+        guard let directoryMetadata = try directoryMetadata(ocId: ocId, in: db) else {
             logger.error("Could not find a directory with ocID \(ocId), cannot proceed with recursive renaming.", [.item: ocId])
             return nil
         }
@@ -236,43 +261,38 @@ public extension FilesDatabaseManager {
         let oldItemFilename = directoryMetadata.fileName
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + oldItemFilename
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
-        let childItemResults = itemMetadatas.where { item in
-            item.account == directoryMetadata.account &&
-                RealmItemMetadata.hasServerUrl(item, equalTo: oldDirectoryServerUrl, includingDescendants: true)
-        }
+        let childItemResults = try ItemMetadataRecord
+            .filter(
+                ItemMetadataRecord.Columns.account == directoryMetadata.account
+                    && ItemMetadataRecord.hasServerUrl(equalTo: oldDirectoryServerUrl, includingDescendants: true)
+            )
+            .fetchRecords(db, logger: logger)
 
-        renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
+        try renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName, in: db)
         logger.debug("Renamed root renaming directory from \"\(oldDirectoryServerUrl)\" to \"\(newDirectoryServerUrl)\".", [.item: ocId])
 
-        do {
-            let database = ncDatabase()
-            try database.write {
-                for childItem in childItemResults {
-                    let oldServerUrl = childItem.serverUrl
-                    let movedServerUrl = oldServerUrl.replacingOccurrences(
-                        of: oldDirectoryServerUrl, with: newDirectoryServerUrl
-                    )
-                    childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
-                    childItem.lockToken = nil
-                    database.add(childItem, update: .all)
-                    logger.debug(
-                        """
-                        Moved childItem at: \(oldServerUrl)
-                                        to: \(movedServerUrl)
-                        """
-                    )
-                }
-            }
-        } catch {
-            logger.error("Could not rename directory metadata.", [.error: error, .item: ocId, .url: newServerUrl])
-            return nil
+        for var childItem in childItemResults {
+            let oldServerUrl = childItem.serverUrl
+            let movedServerUrl = oldServerUrl.replacingOccurrences(
+                of: oldDirectoryServerUrl, with: newDirectoryServerUrl
+            )
+            childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
+            childItem.lockToken = nil
+            try childItem.upsertRow(db)
+            logger.debug(
+                """
+                Moved childItem at: \(oldServerUrl)
+                                to: \(movedServerUrl)
+                """
+            )
         }
 
-        return itemMetadatas
-            .where { item in
-                item.account == directoryMetadata.account &&
-                    RealmItemMetadata.hasServerUrl(item, equalTo: newDirectoryServerUrl, includingDescendants: true)
-            }
-            .toUnmanagedResults()
+        return try ItemMetadataRecord
+            .filter(
+                ItemMetadataRecord.Columns.account == directoryMetadata.account
+                    && ItemMetadataRecord.hasServerUrl(equalTo: newDirectoryServerUrl, includingDescendants: true)
+            )
+            .fetchRecords(db, logger: logger)
+            .map(\.metadata)
     }
 }
