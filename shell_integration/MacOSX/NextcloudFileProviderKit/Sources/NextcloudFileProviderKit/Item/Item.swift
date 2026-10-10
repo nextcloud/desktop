@@ -547,7 +547,10 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         )
     }
 
-    public func localUrlForContents(domain: NSFileProviderDomain) async -> URL? {
+    public func localUrlForContents(
+        domain: NSFileProviderDomain,
+        domainTemporaryDirectoryProvider: ((NSFileProviderDomain) throws -> URL)? = nil
+    ) async -> URL? {
         guard isDownloaded else {
             logger.error("Unable to get local URL for item contents. Item is not materialised.", [.name: filename])
 
@@ -561,7 +564,30 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         }
 
         let fm = FileManager.default
-        let tempLocation = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let domainTemporaryDirectory: (() throws -> URL) = if let domainTemporaryDirectoryProvider {
+            { try domainTemporaryDirectoryProvider(domain) }
+        } else {
+            { try manager.temporaryDirectoryURL() }
+        }
+
+        let temporaryDirectory: URL
+        do {
+            let isExternalDomain: Bool = if #available(macOS 15.0, *) {
+                domain.volumeUUID != nil
+            } else {
+                false
+            }
+            temporaryDirectory = try FileProviderDomainStorage.temporaryDirectory(
+                isExternalDomain: isExternalDomain,
+                domainTemporaryDirectory: domainTemporaryDirectory,
+                fallbackDirectory: { fm.temporaryDirectory }
+            )
+        } catch {
+            logger.error("Unable to get File Provider temporary directory for item contents.", [.name: filename, .error: error])
+            return nil
+        }
+
+        let tempLocation = temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let coordinator = NSFileCoordinator()
         var readData: Data?
 
