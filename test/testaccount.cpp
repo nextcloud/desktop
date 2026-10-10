@@ -178,6 +178,26 @@ private Q_SLOTS:
         expectedPaths.sort();
         QCOMPARE_EQ(receivedPaths, expectedPaths);
     }
+
+    void testAccount_capabilitiesEtag()
+    {
+        const auto account = Account::create();
+        QCOMPARE(account->capabilitiesEtag(), QByteArray());
+
+        const auto testEtag = QByteArrayLiteral("\"abcdef123456\"");
+        account->setCapabilitiesEtag(testEtag);
+        QCOMPARE(account->capabilitiesEtag(), testEtag);
+        QCOMPARE(account->capabilities().etag(), testEtag);
+
+        // Applying new capabilities must keep the ETag received with them
+        account->setCapabilities(QVariantMap{{u"core"_s, QVariantMap{{u"status"_s, QVariantMap{{u"version"_s, u"28.0.0"_s}}}}}});
+        QVERIFY(account->capabilities().isValid());
+        QCOMPARE(account->capabilitiesEtag(), testEtag);
+
+        // Setting a new URL should reset the capabilities ETag
+        account->setUrl(QUrl(QStringLiteral("https://new.example.com")));
+        QCOMPARE(account->capabilitiesEtag(), QByteArray());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestAccount)
