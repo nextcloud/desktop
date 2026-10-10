@@ -174,7 +174,7 @@ struct ScenarioRunner {
             guard !pending.isEmpty else { break }
 
             for directory in pending {
-                try await enumerateContainer(remotePath: directory.remotePath())
+                try await enumerateContainer(identifier: NSFileProviderItemIdentifier(directory.ocId))
                 enumerated.insert(directory.remotePath())
             }
         }
@@ -288,8 +288,12 @@ struct ScenarioRunner {
 
     @discardableResult
     private func enumerateContainer(remotePath: String) async throws -> BenchmarkEnumerationObserver {
-        let identifier = try await resolveContainer(remotePath: remotePath)
+        try await enumerateContainer(identifier: resolveContainer(remotePath: remotePath))
+    }
 
+    /// Resolving a path searches every row, so a caller that already holds the identifier passes it to keep a large fixture linear.
+    @discardableResult
+    private func enumerateContainer(identifier: NSFileProviderItemIdentifier) async throws -> BenchmarkEnumerationObserver {
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: identifier,
             account: account,
