@@ -106,6 +106,7 @@ it), and whether it is declared in the schema:
 | `notifyExistingFoldersOverLimit` | bool | yes | yes |
 | `newBigFolderSizeLimit` | int, MB | yes | yes |
 | `stopSyncingExistingFoldersOverLimit` | bool | yes | yes |
+| `wizardSelectiveSyncDefaultNothing` | bool | no | yes |
 | `virtualFilesMode` | string | yes | yes |
 | `proxyType` | int | no, default only | yes |
 | `proxyHost` | string | no, default only | yes |
@@ -128,6 +129,9 @@ the add folder wizard preselects and, when enforced, disables the virtual files
 checkbox, and the account setup wizard forces or hides the virtual files sync mode
 the same way. The server may enforce it, so an enforced value can come from the
 server or from device policy.
+- **`wizardSelectiveSyncDefaultNothing` applies to new classic sync folders**. When true,
+the selective sync dialog starts with no remote folders selected. It can be set in
+the user config or by device policy, but is not accepted from the server.
 - **Legacy keys are stored in the general group in the config file** while managed writes use the
 account group, so getConfig reads both: the account group at priority 50 and the
 general group at 49, the group value winning when both exist.

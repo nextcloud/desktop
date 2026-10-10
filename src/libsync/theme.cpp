@@ -867,7 +867,7 @@ QPixmap Theme::wizardHeaderBanner() const
 
 bool Theme::wizardSelectiveSyncDefaultNothing() const
 {
-    return false;
+    return ConfigFile().wizardSelectiveSyncDefaultNothing();
 }
 
 bool Theme::linkSharing() const
