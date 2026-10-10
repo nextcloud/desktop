@@ -2433,10 +2433,43 @@ void ProcessDirectoryJob::setFolderQuota(const FolderQuota &folderQuota)
     }
 }
 
+QHash<QString, RecordedFileState> ProcessDirectoryJob::recordedFileStates() const
+{
+    // Where the server reports a change, any entry can turn out to be a sync candidate, and a
+    // candidate that is locked gets skipped silently, so every entry needs its lock state.
+    if (_queryServer != ParentNotChanged) {
+        return {};
+    }
+
+    QHash<QString, RecordedFileState> states;
+    const auto pathU8 = _currentFolder._original.toUtf8();
+    const auto collectState = [&](const SyncJournalFileRecord &record) {
+        // A dehydration or a virtual file has an action pending on it whatever its state on disk.
+        if (record._type != ItemTypeFile) {
+            return;
+        }
+
+        const auto name = pathU8.isEmpty() ? record._path : record._path.mid(pathU8.size() + 1);
+        states.insert(QString::fromUtf8(name), {record._modtime, record._fileSize, record._inode});
+    };
+
+    if (!_discoveryData->_statedb->listFilesInPath(pathU8, collectState)) {
+        // process() reads the same records and reports the failure. Until then, discovery
+        // carries on with the lock state of every entry, as it does without any record.
+        return {};
+    }
+
+    return states;
+}
+
 void ProcessDirectoryJob::startAsyncLocalQuery()
 {
     QString localPath = _discoveryData->_localDir + _currentFolder._local;
-    auto localJob = new DiscoverySingleLocalDirectoryJob(_discoveryData->_account, localPath, _discoveryData->_syncOptions._vfs.data(), _discoveryData->_fileSystemReliablePermissions);
+    auto localJob = new DiscoverySingleLocalDirectoryJob(_discoveryData->_account,
+                                                         localPath,
+                                                         _discoveryData->_syncOptions._vfs.data(),
+                                                         _discoveryData->_fileSystemReliablePermissions,
+                                                         recordedFileStates());
 
     _discoveryData->_currentlyActiveJobs++;
     _pendingAsyncJobs++;

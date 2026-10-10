@@ -69,6 +69,18 @@ struct LocalInfo
 };
 
 /**
+ * @brief State a file was in at the end of the previous sync
+ *
+ * @ingroup libsync
+ */
+struct RecordedFileState
+{
+    qint64 modtime = 0;
+    qint64 size = 0;
+    quint64 inode = 0;
+};
+
+/**
  * @brief Run list on a local directory and process the results for Discovery
  *
  * @ingroup libsync
@@ -81,6 +93,7 @@ public:
                                               const QString &localPath,
                                               OCC::Vfs *vfs,
                                               bool fileSystemReliablePermissions,
+                                              QHash<QString, RecordedFileState> recordedFileStates = {},
                                               QObject *parent = nullptr);
 
     void run() override;
@@ -93,10 +106,21 @@ Q_SIGNALS:
     void childIgnored(bool b);
 private Q_SLOTS:
 private:
+    /** Whether an entry is in exactly the state the previous sync recorded for it */
+    [[nodiscard]] bool matchesRecordedState(const LocalInfo &entry) const;
+
     QString _localPath;
     AccountPtr _account;
     OCC::Vfs* _vfs;
     bool _fileSystemReliablePermissions = false;
+
+    /** State the previous sync recorded for the files of this directory
+     *
+     * Filled only for a directory where an entry still in its recorded state cannot become
+     * a sync candidate, and left empty otherwise. Reading lock state costs one file open per
+     * file, so such an entry is left alone.
+     */
+    QHash<QString, RecordedFileState> _recordedFileStates;
 public:
 };
 
