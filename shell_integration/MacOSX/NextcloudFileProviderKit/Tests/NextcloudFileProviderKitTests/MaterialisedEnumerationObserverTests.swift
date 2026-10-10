@@ -20,6 +20,61 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
     }
 
+    func testFailedMaterializedEnumerationDoesNotEvictUnseenItems() {
+        var existing = SendableItemMetadata(ocId: "existing", fileName: "existing.txt", account: Self.account)
+        existing.downloaded = true
+        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+        dbManager.addItemMetadata(existing)
+
+        let completion = expectation(description: "Failure completes without state changes")
+        completion.assertForOverFulfill = true
+        var completionCount = 0
+        let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { materialized, evicted in
+            completionCount += 1
+            XCTAssertTrue(materialized.isEmpty)
+            XCTAssertTrue(evicted.isEmpty)
+            completion.fulfill()
+        }
+        observer.finishEnumeratingWithError(NSError(domain: "EnumerationTest", code: 1))
+        XCTAssertEqual(dbManager.itemMetadata(ocId: "existing")?.downloaded, true)
+        wait(for: [completion], timeout: 1)
+        XCTAssertEqual(completionCount, 1)
+    }
+
+    func testPartialMaterializedEnumerationFailurePreservesMetadata() {
+        var unseen = SendableItemMetadata(ocId: "unseen", fileName: "unseen.txt", account: Self.account)
+        unseen.downloaded = true
+        var seen = SendableItemMetadata(ocId: "seen", fileName: "seen.txt", account: Self.account)
+        seen.downloaded = true
+        let newlyMaterialized = SendableItemMetadata(ocId: "new", fileName: "new.txt", account: Self.account)
+        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+        for metadata in [unseen, seen, newlyMaterialized] {
+            dbManager.addItemMetadata(metadata)
+        }
+
+        let completion = expectation(description: "Partial failure completes without state changes")
+        completion.assertForOverFulfill = true
+        var completionCount = 0
+        let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { materialized, evicted in
+            completionCount += 1
+            XCTAssertTrue(materialized.isEmpty)
+            XCTAssertTrue(evicted.isEmpty)
+            completion.fulfill()
+        }
+        let remoteInterface = MockRemoteInterface(account: Self.account)
+        let items = [seen, newlyMaterialized].map {
+            Item(metadata: $0, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: dbManager, displayFileActions: false, remoteSupportsTrash: false, log: FileProviderLogMock())
+        }
+        observer.didEnumerate(items)
+        observer.finishEnumeratingWithError(NSError(domain: "EnumerationTest", code: 1))
+
+        wait(for: [completion], timeout: 1)
+        XCTAssertEqual(completionCount, 1)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: "unseen")?.downloaded, true)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: "seen")?.downloaded, true)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: "new")?.downloaded, false)
+    }
+
     func testMaterialisedObserverWithNoPreexistingState() async {
         let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
         // The database is intentionally left empty.
