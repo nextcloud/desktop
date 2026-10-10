@@ -333,6 +333,13 @@ elseif(BUILD_TESTING)
     message(STATUS "Skipping tests: BUILD_TESTING requires BUILD_GUI to be enabled.")
 endif()
 
+if(APPLE AND TARGET nextcloudCore)
+    add_subdirectory(test/docassets EXCLUDE_FROM_ALL)
+    if(BUILD_DOC_ASSETS_TESTS)
+        enable_testing()
+    endif()
+endif()
+
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
