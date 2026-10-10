@@ -975,7 +975,7 @@ Ska kontot importeras?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="216"/>
         <source>Resolve…</source>
-        <translation>Åtgärda …</translation>
+        <translation>Åtgärda…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
