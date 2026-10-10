@@ -32,6 +32,11 @@ ApplicationWindow {
 
     title: qsTr("File actions for %1").arg(root.shortLocalPath)
 
+    Shortcut {
+        sequences: [StandardKey.Close]
+        onActivated: root.close()
+    }
+
     FileActionsModel {
         id: fileActionModel
         accountState: root.accountState
