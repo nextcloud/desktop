@@ -403,6 +403,11 @@ IF( APPLE )
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h
             macOS/fileproviderdomainmanager.mm
+            macOS/fileproviderdomainmapping.h
+            macOS/fileproviderdomainmapping.cpp
+            macOS/fileproviderexternalaccountregistry.h
+            macOS/fileproviderstoragemove.h
+            macOS/fileproviderstoragemove.cpp
             macOS/fileprovidereditlocallyjob.h
             macOS/fileprovidereditlocallyjob.cpp
             macOS/fileprovidereditlocallyjob_mac.mm
