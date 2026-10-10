@@ -95,11 +95,11 @@ echo "Building current checkout ($HEAD_REVISION)..."
 
 echo "Running baseline..."
 (cd "$BASE_PACKAGE" && NFPK_BENCH_REVISION="$BASE_REVISION" \
-    .build/release/NextcloudFileProviderKitBenchmarks "${SCENARIOS[@]}" --output "$BASE_JSON" >/dev/null)
+    .build/release/NextcloudFileProviderKitBenchmarks ${SCENARIOS[@]+"${SCENARIOS[@]}"} --output "$BASE_JSON" >/dev/null)
 
 echo "Running current checkout..."
 (cd "$PACKAGE_DIR" && NFPK_BENCH_REVISION="$HEAD_REVISION" \
-    .build/release/NextcloudFileProviderKitBenchmarks "${SCENARIOS[@]}" --output "$HEAD_JSON" >/dev/null)
+    .build/release/NextcloudFileProviderKitBenchmarks ${SCENARIOS[@]+"${SCENARIOS[@]}"} --output "$HEAD_JSON" >/dev/null)
 
 python3 - "$BASE_JSON" "$HEAD_JSON" "$BASE_REVISION" "$HEAD_REVISION" <<'PY'
 import json
