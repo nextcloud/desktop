@@ -7606,7 +7606,7 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/sharing/ShareRow.qml" line="49"/>
         <source>Share link</source>
         <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
-        <translation>Compartilhar link</translation>
+        <translation>Link de compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="56"/>
@@ -7618,7 +7618,7 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/sharing/ShareRow.qml" line="59"/>
         <source>Share</source>
         <extracomment>&quot;Share&quot; is a noun referring to a share entry without a recipient name.</extracomment>
-        <translation>Compartilhar</translation>
+        <translation>Compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="69"/>
