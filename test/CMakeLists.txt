@@ -94,6 +94,7 @@ nextcloud_add_test(LockedFiles)
 if (NOT WIN32)
     nextcloud_add_test(FolderWatcher)
 endif()
+nextcloud_add_test(FolderWatcherChangeDetection)
 
 nextcloud_add_test(InvalidFilenameDialog)
 nextcloud_add_test(Capabilities)

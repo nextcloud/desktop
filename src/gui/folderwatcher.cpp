@@ -34,6 +34,13 @@
 namespace
 {
 constexpr auto lockChangeDebouncingTimerIntervalMs = 500;
+
+// True for a directory whose content may be enumerated. False for symlinks and junctions:
+// their target can lie outside the sync folder or lead back to one of its parents.
+bool isTraversableDir(const QString &path, const QFileInfo &fileInfo)
+{
+    return OCC::FileSystem::isDir(path, fileInfo) && !OCC::FileSystem::isSymLink(path, fileInfo) && !fileInfo.isJunction();
+}
 }
 
 namespace OCC {
@@ -82,7 +89,7 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList &subPaths)
         QString path = dir.path() + "/" + newSubPath;
         QFileInfo fileInfo(path);
         subPaths.append(path);
-        if (FileSystem::isDir(path)) {
+        if (isTraversableDir(path, fileInfo)) {
             QDir dir(path);
             appendSubPaths(dir, subPaths);
         }
@@ -217,7 +224,7 @@ int FolderWatcher::lockChangeDebouncingTimout() const
 void FolderWatcher::changeDetected(const QString &path)
 {
     QStringList paths(path);
-    if (FileSystem::isDir(path)) {
+    if (isTraversableDir(path, QFileInfo{path})) {
         QDir dir(path);
         appendSubPaths(dir, paths);
     }
