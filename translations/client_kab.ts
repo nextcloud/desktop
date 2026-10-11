@@ -6385,7 +6385,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="231"/>
         <source>Failed to unlock a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek tukksa n usekkeṛ i ukaram.</translation>
     </message>
 </context>
 <context>
@@ -6403,13 +6403,13 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n n wulɣu</numerusform><numerusform>%n n ilɣa</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="782"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="821"/>
         <source>“%1” was not synchronized</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; ur yemtawi ara</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
@@ -6419,44 +6419,44 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
-        <translation type="unfinished"/>
+        <translation>Txuṣṣ tkatut n usekles deg uqeddac. Afaylu yesra %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="829"/>
         <source>Insufficient storage on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Txuṣṣ tkatut n usekles deg uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="865"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac ddeqs n tallunt iwejden ɣef uqeddac i kra n usali.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="881"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="1244"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Ales meṛṛa isaliyen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1295"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="1457"/>
         <source>Resolve conflict</source>
-        <translation type="unfinished"/>
+        <translation>Fru cwal</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1447"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Snifel isem n ufaylu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1555"/>
         <source>Sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Ccwalat n umtawi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Aseɣwen n beṭṭu azayez</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1915"/>
@@ -6471,37 +6471,37 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1967"/>
         <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"/>
+        <translation>Amalal ur yewjid ara i umiḍan-a.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
         <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"/>
+        <translation>Amalal yessesfer yakan asuter.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
         <source>Sending your request …</source>
-        <translation type="unfinished"/>
+        <translation>Tuzzna n tuttra-inek·inem   ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2083"/>
         <source>No response yet. Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac tiririt akka tura. Ma ulac aɣilif, ɛreḍ tikelt nniḍen ticki.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2102"/>
         <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac anaw n twuriwin n umalal ittusefraken i d-yuɣalen.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2184"/>
         <source>Waiting for the assistant response…</source>
-        <translation type="unfinished"/>
+        <translation>Yettraǧu tiririt n umalal...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2206"/>
         <source>Assistant request failed (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Asuter ɣef umalal ur yeddi ara (%1).</translation>
     </message>
 </context>
 <context>
@@ -6509,7 +6509,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2297"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Sentem tukksa n umiḍan</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2298"/>
@@ -6519,7 +6519,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2302"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Tukksa n tuqqna</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2303"/>
