@@ -2278,7 +2278,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="107"/>
         <source>Open clashing file</source>
-        <translation>Åben konfliktende fil</translation>
+        <translation>Åbn filen i konflikt</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
@@ -2439,12 +2439,12 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="142"/>
         <source>Open local version</source>
-        <translation>Åben lokal version</translation>
+        <translation>Åbn den lokale version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="150"/>
         <source>Open server version</source>
-        <translation>Åben server version</translation>
+        <translation>Åbn serverversionen</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="168"/>
@@ -3967,7 +3967,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Redaktør af ignorerede filer</translation>
+        <translation>Ignorerede filer</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="40"/>
@@ -5422,7 +5422,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="504"/>
         <source>Choose What to Sync</source>
-        <translation>Vælg Hvad der skal Synkroniseres</translation>
+        <translation>Vælg, hvad der skal synkroniseres</translation>
     </message>
 </context>
 <context>
@@ -5537,7 +5537,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="746"/>
         <source>Secure file drop link</source>
-        <translation>Link til sikkert fildrop</translation>
+        <translation>Link til sikker fil-aflevering</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="749"/>
@@ -5558,7 +5558,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="762"/>
         <source>Secure file drop</source>
-        <translation>Sikkert fildrop</translation>
+        <translation>Sikker fil-aflevering</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
@@ -5607,7 +5607,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1285"/>
         <source>Share options</source>
-        <translation>Dele muligheder</translation>
+        <translation>Delingsmuligheder</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
@@ -5997,7 +5997,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="459"/>
         <source>Unresolved conflict.</source>
-        <translation>Uafgjort konflikt.</translation>
+        <translation>Uløst konflikt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="381"/>
@@ -7416,7 +7416,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>File drop (upload only)</source>
-        <translation>Fildrop (kun overførsel)</translation>
+        <translation>Fil-aflevering (kun overførsel)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="393"/>
@@ -8121,7 +8121,7 @@ Serveren svarede med fejl: %2</translation>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="214"/>
         <source>Away</source>
-        <translation>Ikke tilstede</translation>
+        <translation>Ikke til stede</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
