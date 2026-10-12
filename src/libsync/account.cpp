@@ -633,7 +633,6 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
 
 void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
 {
-    NetworkJobTimeoutPauser pauser(reply);
     QString out;
     QDebug(&out) << "SSL-Errors happened for url " << reply->url().toString();
     for (const auto &error : errors) {
