@@ -1449,7 +1449,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1011"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Tebɣiḍ ad tḥebseḍ amtawi n ukaram &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tazmilt:&lt;/b&gt; Ayagi &lt;b&gt;ur&lt;/b&gt; itekkes ara ifuyla. &lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Tebɣiḍ ad tḥebseḍ amtawi n ukaram &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tamawt:&lt;/b&gt; Ayagi &lt;b&gt;ur&lt;/b&gt; itekkes ara ifuyla. &lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1481"/>
@@ -6305,33 +6305,33 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1507"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Ass-a</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1510"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>7 n wussan aya yezrin</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1513"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>30 n wussan aya yezrin</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1517"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>Aseggas-a</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1521"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>Ilindi</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1542"/>
         <source>%1 – %2</source>
         <extracomment>%1 is the start date and %2 is the end date of a custom search date range. Both use the locale's short date format.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 – %2</translation>
     </message>
 </context>
 <context>
@@ -6339,17 +6339,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="123"/>
         <source>Failed to update folder metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Yecceḍ uleqqem n yiɣefisefka n ukaram.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="146"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek tukksa n usekkeṛ i ukaram awgelhen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="156"/>
         <source>Failed to finalize item.</source>
-        <translation type="unfinished"/>
+        <translation>Ur izmir ara ad ifakk aferdis.</translation>
     </message>
 </context>
 <context>
@@ -6365,12 +6365,12 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="194"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="253"/>
         <source>Error updating metadata for a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg uleqqem n yiɣefisefka i ukaram %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="83"/>
         <source>Could not fetch public key for user %1</source>
-        <translation type="unfinished"/>
+        <translation>Ur yezmer ara ad d-yawi tasarut tazayezt i useqdac %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="90"/>
@@ -6514,7 +6514,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2298"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt; Tebɣiḍ ad tekkseḍ tuqqna ɣer umiḍan &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Tamawt:&lt;/b&gt;Ayagi ur &lt;b&gt;itekkes ara&lt;/b&gt; ifuyla.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2302"/>
@@ -6534,7 +6534,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2387"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Kkes amiḍan</translation>
     </message>
 </context>
 <context>
@@ -6542,38 +6542,38 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ur izmir ara ad d-yawi addaden izwaranen. Tḥeqqeq belli teqqneḍ ɣer uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ur izmir ara ad d-yawi addaden. Tḥeqqeq belli teqqneḍ ɣer uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="183"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Tawuri n waddad ur tettusefrak ara. Ur tezmireḍ ara ad tesbaduḍ addad-ik·im.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="187"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Imujiten ur ttusefraken ara. Kra n tmahilin n waddad yezmer ur teddunt ara.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="194"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi asbadu n waddad. Tḥeqqeq belli teqqneḍ ɣer uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="198"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ur yezmir ara ad isfeḍ izen n waddad. Wali ma teqqneḍ ɣer uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="441"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="548"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Ur seffeḍ ara</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="444"/>
