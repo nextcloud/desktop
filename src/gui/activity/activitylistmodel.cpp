@@ -727,7 +727,12 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
     }
     endInsertRows();
     setHasSyncConflicts(!_conflictsList.isEmpty());
-    refreshPreviewData();
+    // Appended rows do not move the previewed ones, so only a new preview candidate can change the previews
+    if (std::ranges::any_of(filteredList, [](const auto &activity) {
+            return activity.isRecentActivityPreviewCandidate() || activity.isNotificationPreviewCandidate();
+        })) {
+        refreshPreviewData();
+    }
     Q_EMIT activityListChanged();
 }
 
@@ -766,7 +771,12 @@ void ActivityListModel::addErrorToActivityList(const Activity &activity, const E
         break;
     }
 
-    if (shouldAddError) {
+    // Each sync reports its errors again, e.g. every ignored file
+    const auto isAlreadyListed = std::ranges::any_of(_notificationErrorsLists, [&activity](const auto &listedError) {
+        return listedError == activity && listedError._folder == activity._folder;
+    });
+
+    if (shouldAddError && !isAlreadyListed) {
         qCWarning(lcActivity) << "Error successfully added to the notification list: " << type << activity._message << activity._subject << activity._syncResultStatus << activity._syncFileItemStatus;
         auto modifiedActivity = activity;
         if (type == ErrorType::NetworkError) {
@@ -804,35 +814,60 @@ void ActivityListModel::removeActivityFromActivityList(int row)
 
 void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
 {
-    const auto index = _finalList.indexOf(activity);
-    const auto activityWasRemoved = index != -1;
-    if (index != -1) {
-        beginRemoveRows({}, index, index);
-        _finalList.removeAt(index);
-        endRemoveRows();
-    }
+    removeActivitiesFromActivityList({activity});
+}
 
-    if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
-        _conflictsList.removeOne(activity);
-    }
+void ActivityListModel::removeActivitiesFromActivityList(const ActivityList &activities)
+{
+    auto rows = QList<qsizetype>{};
+    auto errorRows = QList<qsizetype>{};
+    for (const auto &activity : activities) {
+        if (const auto row = _finalList.indexOf(activity); row != -1) {
+            rows.append(row);
+        }
 
-    if (activity._type == Activity::NotificationType) {
-        _activeNotificationIds.remove(activity._id);
-    }
+        if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
+            _conflictsList.removeOne(activity);
+        }
 
-    if (activity._type != Activity::ActivityType &&
-        activity._type != Activity::DummyFetchingActivityType &&
-        activity._type != Activity::DummyMoreActivitiesAvailableType &&
-        activity._type != Activity::NotificationType &&
-        activity._type != Activity::OpenSettingsNotificationType) {
+        if (activity._type == Activity::NotificationType) {
+            _activeNotificationIds.remove(activity._id);
+        }
 
-        const auto notificationErrorsListIndex = _notificationErrorsLists.indexOf(activity);
-        if (notificationErrorsListIndex != -1) {
-            _notificationErrorsLists.removeAt(notificationErrorsListIndex);
+        if (activity._type != Activity::ActivityType && activity._type != Activity::DummyFetchingActivityType
+            && activity._type != Activity::DummyMoreActivitiesAvailableType && activity._type != Activity::NotificationType
+            && activity._type != Activity::OpenSettingsNotificationType) {
+            if (const auto errorRow = _notificationErrorsLists.indexOf(activity); errorRow != -1) {
+                errorRows.append(errorRow);
+            }
         }
     }
 
-    if (activityWasRemoved) {
+    // Removing an entry moves all entries behind it, so remove from the end and adjacent rows at once
+    const auto sortDescendingWithoutDuplicates = [](QList<qsizetype> &list) {
+        std::ranges::sort(list, std::greater{});
+        list.erase(std::unique(list.begin(), list.end()), list.end());
+    };
+    sortDescendingWithoutDuplicates(rows);
+    sortDescendingWithoutDuplicates(errorRows);
+
+    for (auto i = qsizetype{0}; i < rows.size();) {
+        const auto lastRow = rows.at(i);
+        auto firstRow = lastRow;
+        while (++i < rows.size() && rows.at(i) == firstRow - 1) {
+            --firstRow;
+        }
+        beginRemoveRows({}, static_cast<int>(firstRow), static_cast<int>(lastRow));
+        _finalList.remove(firstRow, lastRow - firstRow + 1);
+        endRemoveRows();
+    }
+
+    for (const auto errorRow : std::as_const(errorRows)) {
+        _notificationErrorsLists.removeAt(errorRow);
+    }
+
+    // Rebuilding the previews scans the whole list, so it is done once for all removed activities
+    if (!rows.isEmpty()) {
         setHasSyncConflicts(!_conflictsList.isEmpty());
         refreshPreviewData();
         Q_EMIT activityListChanged();
