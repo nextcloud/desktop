@@ -9,7 +9,6 @@
  */
 #pragma once
 
-#include "abstractnetworkjob.h"
 #include "account.h"
 #include "common/result.h"
 #include "common/syncjournaldb.h"
@@ -494,6 +493,7 @@ public:
 };
 
 // A reply that never responds
+// If the request has a transfer timeout, it times out as soon as possible, like Qt (>= 6.10.1) does once the timeout expires
 class FakeHangingReply : public FakeReply
 {
     Q_OBJECT
@@ -502,6 +502,9 @@ public:
 
     void abort() override;
     qint64 readData(char *, qint64) override { return 0; }
+
+private:
+    void abortWithError(QNetworkReply::NetworkError error);
 };
 
 class FakeFileLockReply : public FakePropfindReply
@@ -515,6 +518,7 @@ public:
 };
 
 // A delayed reply
+// If the delay is longer than the transfer timeout of the request, it times out as soon as possible
 template <class OriginalReply>
 class DelayedReply : public OriginalReply
 {
@@ -524,12 +528,12 @@ public:
         : OriginalReply(std::forward<Args>(args)...)
         , _delayMs(delayMS)
     {
-        if (OCC::AbstractNetworkJob::httpTimeout && OCC::AbstractNetworkJob::httpTimeout < delayMS) {
+        const auto transferTimeout = this->request().transferTimeoutAsDuration();
+        if (transferTimeout > std::chrono::milliseconds::zero() && transferTimeout < std::chrono::milliseconds{delayMS}) {
             QMetaObject::invokeMethod(
                 this,
                 [this]() {
-                    OriginalReply::setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 0);
-                    Q_EMIT OriginalReply::errorOccurred(QNetworkReply::NetworkError::TimeoutError);
+                    timeOut();
                 },
                 Qt::QueuedConnection);
         }
@@ -539,10 +543,37 @@ public:
     void respond() override
     {
         QTimer::singleShot(_delayMs, static_cast<OriginalReply *>(this), [this] {
+            if (_aborted) {
+                return;
+            }
             // Explicit call to bases's respond();
             this->OriginalReply::respond();
         });
     }
+
+    void abort() override
+    {
+        if (_aborted) {
+            return;
+        }
+        _aborted = true;
+        OriginalReply::abort();
+    }
+
+private:
+    // Follow more or less the implementation of QNetworkReplyHttpImpl::abortImpl(QNetworkReply::TimeoutError)
+    void timeOut()
+    {
+        if (_aborted) {
+            return;
+        }
+        _aborted = true;
+        this->setError(QNetworkReply::TimeoutError, QStringLiteral("Operation timed out"));
+        Q_EMIT this->errorOccurred(QNetworkReply::TimeoutError);
+        Q_EMIT this->finished();
+    }
+
+    bool _aborted = false;
 };
 
 class FakeQNAM : public QNetworkAccessManager

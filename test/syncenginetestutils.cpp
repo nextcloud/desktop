@@ -1132,23 +1132,37 @@ FakeHangingReply::FakeHangingReply(QNetworkAccessManager::Operation op, const QN
     setUrl(request.url());
     setOperation(op);
     open(QIODevice::ReadOnly);
-    QMetaObject::invokeMethod(
-        this,
-        [this]() {
-            setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 0);
-            Q_EMIT errorOccurred(QNetworkReply::NetworkError::TimeoutError);
-        },
-        Qt::QueuedConnection);
+    if (request.transferTimeoutAsDuration() > std::chrono::milliseconds::zero()) {
+        QMetaObject::invokeMethod(
+            this,
+            [this]() {
+                abortWithError(TimeoutError);
+            },
+            Qt::QueuedConnection);
+    }
 }
 
 void FakeHangingReply::abort()
 {
-    // Follow more or less the implementation of QNetworkReplyImpl::abort
+    abortWithError(OperationCanceledError);
+}
+
+void FakeHangingReply::abortWithError(QNetworkReply::NetworkError error)
+{
+    // Follow more or less the implementation of QNetworkReplyHttpImpl::abortImpl
+    // the first error is kept, so aborting a reply that timed out still reports TimeoutError
+    if (isFinished()) {
+        return;
+    }
     close();
-    setError(OperationCanceledError, tr("Operation canceled"));
-    Q_EMIT errorOccurred(OperationCanceledError);
-    setFinished(true);
-    Q_EMIT finished();
+    if (this->error() == NoError) {
+        setError(error, error == TimeoutError ? tr("Operation timed out") : tr("Operation canceled"));
+        Q_EMIT errorOccurred(error);
+    }
+    if (!isFinished()) {
+        setFinished(true);
+        Q_EMIT finished();
+    }
 }
 
 FakeQNAM::FakeQNAM(FileInfo initialRoot)
