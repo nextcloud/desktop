@@ -18,6 +18,11 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     /// All materialized items enumerated by the system.
     ///
     private var enumeratedItems = Set<NSFileProviderItemIdentifier>()
+    private let enumerationLock = NSLock()
+    private var enumerator: (any NSFileProviderEnumerator)?
+    private var pendingPage: NSFileProviderPage?
+    private var requestingPage = false
+    private var finished = false
 
     public required init(account: Account, dbManager: FilesDatabaseManager, log: any FileProviderLogging, completionHandler: @escaping (_ materialized: Set<NSFileProviderItemIdentifier>, _ evicted: Set<NSFileProviderItemIdentifier>) -> Void) {
         self.account = account
@@ -27,20 +32,76 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         super.init()
     }
 
-    public func didEnumerate(_ updatedItems: [NSFileProviderItemProtocol]) {
-        updatedItems
-            .map(\.itemIdentifier)
-            .forEach { enumeratedItems.insert($0) }
+    /// Lists every page from the system's materialized-item enumerator, then completes once.
+    public func enumerateItems(using enumerator: any NSFileProviderEnumerator) {
+        let canStart = enumerationLock.withLock {
+            guard !finished, self.enumerator == nil else { return false }
+            self.enumerator = enumerator
+            return true
+        }
+        guard canStart else { return }
+        requestPage(NSFileProviderPage(Data()))
     }
 
-    public func finishEnumerating(upTo _: NSFileProviderPage?) {
+    private func requestPage(_ page: NSFileProviderPage) {
+        let shouldRequest = enumerationLock.withLock {
+            guard !finished else { return false }
+            pendingPage = page
+            guard !requestingPage else { return false }
+            requestingPage = true
+            return true
+        }
+        guard shouldRequest else { return }
+
+        // A synchronous page callback queues its continuation for this loop instead of recursing.
+        while let request = enumerationLock.withLock({ () -> (any NSFileProviderEnumerator, NSFileProviderPage)? in
+            guard !finished, let enumerator, let pendingPage else {
+                requestingPage = false
+                return nil
+            }
+            self.pendingPage = nil
+            return (enumerator, pendingPage)
+        }) {
+            request.0.enumerateItems(for: self, startingAt: request.1)
+        }
+    }
+
+    public func didEnumerate(_ updatedItems: [NSFileProviderItemProtocol]) {
+        let identifiers = updatedItems.map(\.itemIdentifier)
+        enumerationLock.withLock {
+            guard !finished else { return }
+            enumeratedItems.formUnion(identifiers)
+        }
+    }
+
+    public func finishEnumerating(upTo nextPage: NSFileProviderPage?) {
+        if let nextPage {
+            requestPage(nextPage)
+            return
+        }
+        guard let identifiers = completeEnumeration() else { return }
         logger.debug("Handling enumerated materialized items.")
-        handleEnumeratedItems(enumeratedItems, account: account, dbManager: dbManager, completionHandler: completionHandler)
+        handleEnumeratedItems(identifiers, account: account, dbManager: dbManager, completionHandler: completionHandler)
     }
 
     public func finishEnumeratingWithError(_ error: Error) {
+        guard completeEnumeration() != nil else { return }
         logger.error("Finishing enumeration with error.", [.error: error])
-        handleEnumeratedItems(enumeratedItems, account: account, dbManager: dbManager, completionHandler: completionHandler)
+        completionHandler([], [])
+    }
+
+    private func completeEnumeration() -> Set<NSFileProviderItemIdentifier>? {
+        let result = enumerationLock.withLock { () -> (Set<NSFileProviderItemIdentifier>, (any NSFileProviderEnumerator)?)? in
+            guard !finished else { return nil }
+            finished = true
+            let result = (enumeratedItems, enumerator)
+            enumeratedItems.removeAll()
+            enumerator = nil
+            pendingPage = nil
+            return result
+        }
+        result?.1?.invalidate()
+        return result?.0
     }
 
     func handleEnumeratedItems(_ identifiers: Set<NSFileProviderItemIdentifier>, account: Account, dbManager: FilesDatabaseManager, completionHandler: @escaping (_ materialized: Set<NSFileProviderItemIdentifier>, _ evicted: Set<NSFileProviderItemIdentifier>) -> Void) {

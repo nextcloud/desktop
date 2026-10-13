@@ -58,19 +58,15 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         observer.didEnumerate([materializedItem(firstFile)])
         observer.finishEnumerating(upTo: NSFileProviderPage(Data("second-page".utf8)))
 
-        XCTExpectFailure("Continuation pages are currently reconciled as complete materialized listings.") {
-            XCTAssertEqual(completionCount, 0)
-            XCTAssertTrue(dbManager.itemMetadata(ocId: secondFile.ocId)?.downloaded == true)
-            XCTAssertTrue(dbManager.itemMetadata(ocId: evictedFile.ocId)?.downloaded == true)
-        }
+        XCTAssertEqual(completionCount, 0)
+        XCTAssertTrue(dbManager.itemMetadata(ocId: secondFile.ocId)?.downloaded == true)
+        XCTAssertTrue(dbManager.itemMetadata(ocId: evictedFile.ocId)?.downloaded == true)
 
         observer.didEnumerate([materializedItem(secondFile)])
         observer.finishEnumerating(upTo: nil)
 
-        XCTExpectFailure("Premature reconciliation reports completion twice and loses the terminal eviction result.") {
-            XCTAssertEqual(completionCount, 1)
-            XCTAssertEqual(evictedIds, [NSFileProviderItemIdentifier(evictedFile.ocId)])
-        }
+        XCTAssertEqual(completionCount, 1)
+        XCTAssertEqual(evictedIds, [NSFileProviderItemIdentifier(evictedFile.ocId)])
         XCTAssertTrue(dbManager.itemMetadata(ocId: firstFile.ocId)?.downloaded == true)
         XCTAssertTrue(dbManager.itemMetadata(ocId: secondFile.ocId)?.downloaded == true)
         let storedEvictedFile = try XCTUnwrap(dbManager.itemMetadata(ocId: evictedFile.ocId))
@@ -79,47 +75,203 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         XCTAssertTrue(storedEvictedFile.uploaded)
     }
 
-    /// Records `first.txt` and `unreported.txt` as downloaded, then fails the simulated listing
-    /// either before returning any items or after returning only `first.txt`.
-    /// Both records must keep their `downloaded` flags because a failed listing cannot establish
-    /// that local contents were removed; no eviction is reported and completion still runs once.
+    /// Fails the listing before any results or after reporting downloaded `first.txt` and
+    /// dataless `dataless.txt`; downloaded `unreported.txt` is absent in both cases.
+    /// All three records must retain their flags, with no reported changes and one completion.
     func testMaterialisedObserverPreservesDownloadedStateAfterEnumerationError() throws {
         for reportsPartialListing in [false, true] {
             let dbManager = makeDatabaseManager()
             let firstFile = downloadedFile(ocId: "first")
             let unreportedFile = downloadedFile(ocId: "unreported")
+            var datalessFile = downloadedFile(ocId: "dataless")
+            datalessFile.downloaded = false
             dbManager.addItemMetadata(firstFile)
             dbManager.addItemMetadata(unreportedFile)
+            dbManager.addItemMetadata(datalessFile)
             var completionCount = 0
+            var materializedIds = Set<NSFileProviderItemIdentifier>()
             var evictedIds = Set<NSFileProviderItemIdentifier>()
-            let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { _, evicted in
+            let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { materialized, evicted in
                 completionCount += 1
+                materializedIds = materialized
                 evictedIds = evicted
             }
 
             if reportsPartialListing {
-                observer.didEnumerate([materializedItem(firstFile)])
+                observer.didEnumerate([materializedItem(firstFile), materializedItem(datalessFile)])
             }
             observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
 
             XCTAssertEqual(completionCount, 1)
             let storedFirstFile = try XCTUnwrap(dbManager.itemMetadata(ocId: firstFile.ocId))
             let storedUnreportedFile = try XCTUnwrap(dbManager.itemMetadata(ocId: unreportedFile.ocId))
-            if reportsPartialListing {
-                XCTAssertTrue(storedFirstFile.downloaded)
-            } else {
-                XCTExpectFailure("An empty failed enumeration currently clears every downloaded flag.") {
-                    XCTAssertTrue(storedFirstFile.downloaded)
-                }
-            }
-            XCTExpectFailure("Failed enumeration currently treats unreported items as evicted.") {
-                XCTAssertTrue(evictedIds.isEmpty)
-                XCTAssertTrue(storedUnreportedFile.downloaded)
-            }
+            XCTAssertTrue(storedFirstFile.downloaded)
+            XCTAssertTrue(storedUnreportedFile.downloaded)
+            XCTAssertTrue(dbManager.itemMetadata(ocId: datalessFile.ocId)?.downloaded == false)
+            XCTAssertTrue(materializedIds.isEmpty)
+            XCTAssertTrue(evictedIds.isEmpty)
             XCTAssertFalse(storedFirstFile.deleted)
             XCTAssertFalse(storedUnreportedFile.deleted)
             XCTAssertTrue(storedFirstFile.uploaded)
             XCTAssertTrue(storedUnreportedFile.uploaded)
+        }
+    }
+
+    /// Lists `first-page.txt` and `second-page.txt` around an empty intermediate page.
+    /// Every returned page token must be requested, with database updates deferred until the
+    /// final page; only the absent downloaded file `evicted.txt` may become dataless.
+    func testMaterialisedObserverRequestsEveryContinuationPage() {
+        let dbManager = makeDatabaseManager()
+        let firstFile = downloadedFile(ocId: "first-page")
+        let secondFile = downloadedFile(ocId: "second-page")
+        let evictedFile = downloadedFile(ocId: "evicted")
+        [firstFile, secondFile, evictedFile].forEach { dbManager.addItemMetadata($0) }
+        let enumerator = MockEnumerator(account: Self.account, dbManager: dbManager, remoteInterface: MockRemoteInterface(account: Self.account))
+        let initialPage = NSFileProviderPage(Data())
+        let emptyPage = NSFileProviderPage(Data("empty-page".utf8))
+        let finalPage = NSFileProviderPage(Data("final-page".utf8))
+        var completionCount = 0
+        var evictedIds = Set<NSFileProviderItemIdentifier>()
+        let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { _, evicted in
+            completionCount += 1
+            evictedIds = evicted
+        }
+        enumerator.enumerateItemsHandler = { pageObserver, page in
+            XCTAssertEqual(completionCount, 0)
+            XCTAssertTrue(dbManager.itemMetadata(ocId: secondFile.ocId)?.downloaded == true)
+            XCTAssertTrue(dbManager.itemMetadata(ocId: evictedFile.ocId)?.downloaded == true)
+            switch page {
+                case initialPage:
+                    pageObserver.didEnumerate([self.materializedItem(firstFile)])
+                    pageObserver.finishEnumerating(upTo: emptyPage)
+                case emptyPage:
+                    pageObserver.didEnumerate([])
+                    pageObserver.finishEnumerating(upTo: finalPage)
+                case finalPage:
+                    pageObserver.didEnumerate([self.materializedItem(secondFile)])
+                    pageObserver.finishEnumerating(upTo: nil)
+                default:
+                    XCTFail("Unexpected materialized enumeration page")
+                    pageObserver.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            }
+        }
+
+        observer.enumerateItems(using: enumerator)
+
+        XCTAssertEqual(enumerator.enumeratedPages, [initialPage, emptyPage, finalPage])
+        XCTAssertEqual(enumerator.invalidationCount, 1)
+        XCTAssertEqual(completionCount, 1)
+        XCTAssertEqual(evictedIds, [NSFileProviderItemIdentifier(evictedFile.ocId)])
+        XCTAssertTrue(dbManager.itemMetadata(ocId: firstFile.ocId)?.downloaded == true)
+        XCTAssertTrue(dbManager.itemMetadata(ocId: secondFile.ocId)?.downloaded == true)
+        XCTAssertTrue(dbManager.itemMetadata(ocId: evictedFile.ocId)?.downloaded == false)
+    }
+
+    /// Delays both page callbacks after the caller releases its enumerator reference.
+    /// The observer must keep the enumerator alive to request the next page, then release it
+    /// after the final page while preserving the listed file's downloaded state.
+    func testMaterialisedObserverRetainsEnumeratorUntilLastPageFinishes() throws {
+        let dbManager = makeDatabaseManager()
+        let file = downloadedFile(ocId: "downloaded")
+        dbManager.addItemMetadata(file)
+        var enumerator: MockEnumerator? = MockEnumerator(account: Self.account, dbManager: dbManager, remoteInterface: MockRemoteInterface(account: Self.account))
+        weak var retainedEnumerator = enumerator
+        var pageObserver: (any NSFileProviderEnumerationObserver)?
+        var requestedPages: [NSFileProviderPage] = []
+        enumerator?.enumerateItemsHandler = { observer, page in
+            pageObserver = observer
+            requestedPages.append(page)
+        }
+        var completionCount = 0
+        let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { materialized, evicted in
+            completionCount += 1
+            XCTAssertTrue(materialized.isEmpty)
+            XCTAssertTrue(evicted.isEmpty)
+        }
+        try observer.enumerateItems(using: XCTUnwrap(enumerator))
+        enumerator = nil
+
+        XCTAssertNotNil(retainedEnumerator)
+        XCTAssertEqual(completionCount, 0)
+        pageObserver?.didEnumerate([materializedItem(file)])
+        let finalPage = NSFileProviderPage(Data("final-page".utf8))
+        pageObserver?.finishEnumerating(upTo: finalPage)
+        XCTAssertEqual(requestedPages, [NSFileProviderPage(Data()), finalPage])
+        XCTAssertNotNil(retainedEnumerator)
+        XCTAssertEqual(completionCount, 0)
+
+        pageObserver?.finishEnumerating(upTo: nil)
+
+        XCTAssertNil(retainedEnumerator)
+        XCTAssertEqual(completionCount, 1)
+        XCTAssertTrue(dbManager.itemMetadata(ocId: file.ocId)?.downloaded == true)
+    }
+
+    /// Reports dataless `dataless.txt` on the first page, then fails the next page.
+    /// Neither that file nor absent downloaded `downloaded.txt` may change state, and the
+    /// enumerator must be invalidated with one completion and no reported changes.
+    func testMaterialisedObserverPreservesStateWhenContinuationPageFails() {
+        let dbManager = makeDatabaseManager()
+        let downloaded = downloadedFile(ocId: "downloaded")
+        var dataless = downloadedFile(ocId: "dataless")
+        dataless.downloaded = false
+        [downloaded, dataless].forEach { dbManager.addItemMetadata($0) }
+        let enumerator = MockEnumerator(account: Self.account, dbManager: dbManager, remoteInterface: MockRemoteInterface(account: Self.account))
+        let initialPage = NSFileProviderPage(Data())
+        let failingPage = NSFileProviderPage(Data("failing-page".utf8))
+        var completionCount = 0
+        let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { materialized, evicted in
+            completionCount += 1
+            XCTAssertTrue(materialized.isEmpty)
+            XCTAssertTrue(evicted.isEmpty)
+        }
+        enumerator.enumerateItemsHandler = { pageObserver, page in
+            if page == initialPage {
+                pageObserver.didEnumerate([self.materializedItem(dataless)])
+                pageObserver.finishEnumerating(upTo: failingPage)
+            } else {
+                XCTAssertEqual(page, failingPage)
+                XCTAssertEqual(completionCount, 0)
+                pageObserver.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
+            }
+        }
+
+        observer.enumerateItems(using: enumerator)
+
+        XCTAssertEqual(enumerator.enumeratedPages, [initialPage, failingPage])
+        XCTAssertEqual(enumerator.invalidationCount, 1)
+        XCTAssertEqual(completionCount, 1)
+        XCTAssertTrue(dbManager.itemMetadata(ocId: downloaded.ocId)?.downloaded == true)
+        XCTAssertTrue(dbManager.itemMetadata(ocId: dataless.ocId)?.downloaded == false)
+    }
+
+    /// Sends more items and completion callbacks after a listing has succeeded or failed.
+    /// These late callbacks must not change either file's state or complete the listing again.
+    func testMaterialisedObserverIgnoresCallbacksAfterCompletion() {
+        for fails in [false, true] {
+            let dbManager = makeDatabaseManager()
+            let downloaded = downloadedFile(ocId: "downloaded")
+            var dataless = downloadedFile(ocId: "dataless")
+            dataless.downloaded = false
+            [downloaded, dataless].forEach { dbManager.addItemMetadata($0) }
+            var completionCount = 0
+            let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { _, _ in
+                completionCount += 1
+            }
+            if fails {
+                observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
+            } else {
+                observer.finishEnumerating(upTo: nil)
+            }
+
+            observer.didEnumerate([materializedItem(downloaded), materializedItem(dataless)])
+            observer.finishEnumerating(upTo: NSFileProviderPage(Data("late-page".utf8)))
+            observer.finishEnumerating(upTo: nil)
+            observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
+
+            XCTAssertEqual(completionCount, 1)
+            XCTAssertEqual(dbManager.itemMetadata(ocId: downloaded.ocId)?.downloaded, fails)
+            XCTAssertTrue(dbManager.itemMetadata(ocId: dataless.ocId)?.downloaded == false)
         }
     }
 
