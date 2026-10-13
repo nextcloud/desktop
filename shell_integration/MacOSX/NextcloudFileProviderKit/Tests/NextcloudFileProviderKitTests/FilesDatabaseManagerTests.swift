@@ -15,6 +15,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     )
 
     static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let changeDeliveryContainerKey = "working-set"
 
     override func setUp() {
         super.setUp()
@@ -77,6 +78,28 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
                 .where { $0.sessionId == sessionId }
                 .isEmpty
         )
+    }
+
+    func testRemovingChangeDeliverySessionsRemovesTheirItems() {
+        let sessionId = "removed-\(name)"
+        XCTAssertTrue(
+            Self.dbManager.createChangeDeliverySession(
+                sessionId: sessionId,
+                containerKey: Self.changeDeliveryContainerKey,
+                anchorKey: "initial-anchor-\(name)",
+                finalAnchorRawValue: Data("final-anchor".utf8),
+                updated: [SendableItemMetadata(ocId: "removed-item-\(name)", fileName: "item.txt", account: Self.account)],
+                deleted: [],
+                incomplete: false,
+                hardRemoveDeleted: true
+            )
+        )
+
+        Self.dbManager.removeChangeDeliverySessions(containerKey: Self.changeDeliveryContainerKey)
+
+        let database = Self.dbManager.ncDatabase()
+        XCTAssertNil(database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId))
+        XCTAssertTrue(database.objects(RealmChangeDeliveryItem.self).where { $0.sessionId == sessionId }.isEmpty)
     }
 
     func testSchema203MigrationBackfillsCanonicalPathKeys() throws {
