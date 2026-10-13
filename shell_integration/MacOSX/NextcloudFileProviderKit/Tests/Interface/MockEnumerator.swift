@@ -11,6 +11,9 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
     let dbManager: FilesDatabaseManager
     let remoteInterface: MockRemoteInterface
     public var enumeratorItems: [SendableItemMetadata] = []
+    public var enumerateItemsHandler: ((any NSFileProviderEnumerationObserver, NSFileProviderPage) -> Void)?
+    public private(set) var enumeratedPages: [NSFileProviderPage] = []
+    public private(set) var invalidationCount = 0
 
     public init(
         account: Account, dbManager: FilesDatabaseManager, remoteInterface: MockRemoteInterface
@@ -20,7 +23,12 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
         self.remoteInterface = remoteInterface
     }
 
-    public func enumerateItems(for observer: any NSFileProviderEnumerationObserver, startingAt _: NSFileProviderPage) {
+    public func enumerateItems(for observer: any NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
+        enumeratedPages.append(page)
+        if let enumerateItemsHandler {
+            enumerateItemsHandler(observer, page)
+            return
+        }
         let remoteSupportsTrash = remoteInterface.directMockCapabilities()?.files?.undelete ?? false
         var items: [Item] = []
         for item in enumeratorItems {
@@ -45,6 +53,7 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
     }
 
     public func invalidate() {
+        invalidationCount += 1
         print("MockEnumerator invalidated")
     }
 }
