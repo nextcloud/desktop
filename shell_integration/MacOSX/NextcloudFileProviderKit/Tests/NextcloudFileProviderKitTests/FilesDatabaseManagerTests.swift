@@ -37,7 +37,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(
             Self.dbManager.createChangeDeliverySession(
                 sessionId: sessionId,
-                containerKey: "working-set",
+                containerKey: Self.changeDeliveryContainerKey,
                 anchorKey: "initial-anchor-\(name)",
                 finalAnchorRawValue: Data("final-anchor".utf8),
                 updated: [metadata],
@@ -56,20 +56,10 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             1
         )
 
-        XCTAssertTrue(
-            Self.dbManager.prepareChangeDeliveryBatch(
-                sessionId: sessionId,
-                endSequence: 1,
-                nextAnchorKey: nil,
-                moreComing: false
-            )
-        )
-        XCTAssertTrue(
-            Self.dbManager.acknowledgeChangeDeliveryBatch(
-                sessionId: sessionId,
-                deletedOcIds: []
-            )
-        )
+        let batch = Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" }
+        XCTAssertEqual(batch?.endSequence, 1)
+        XCTAssertEqual(batch?.moreComing, false)
+        XCTAssertTrue(Self.dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, endSequence: 1))
 
         let cleanedDatabase = Self.dbManager.ncDatabase()
         XCTAssertNil(cleanedDatabase.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId))
@@ -77,6 +67,34 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             cleanedDatabase.objects(RealmChangeDeliveryItem.self)
                 .where { $0.sessionId == sessionId }
                 .isEmpty
+        )
+    }
+
+    ///
+    /// Store a change-delivery session with the given updates followed by deletions of stored items.
+    ///
+    private func createChangeDeliverySession(_ sessionId: String, updatedCount: Int, deletedOcIds: [String]) {
+        let updated = (0 ..< updatedCount).map {
+            SendableItemMetadata(ocId: "\(sessionId)-updated-\($0)", fileName: "updated.txt", account: Self.account)
+        }
+        let deleted = deletedOcIds.map { ocId in
+            var metadata = SendableItemMetadata(ocId: ocId, fileName: "\(ocId).txt", account: Self.account)
+            metadata.deleted = true
+            Self.dbManager.addItemMetadata(metadata)
+            return metadata
+        }
+
+        XCTAssertTrue(
+            Self.dbManager.createChangeDeliverySession(
+                sessionId: sessionId,
+                containerKey: Self.changeDeliveryContainerKey,
+                anchorKey: "initial-anchor-\(sessionId)",
+                finalAnchorRawValue: Data("final-anchor-\(sessionId)".utf8),
+                updated: updated,
+                deleted: deleted,
+                incomplete: false,
+                hardRemoveDeleted: true
+            )
         )
     }
 
@@ -100,6 +118,51 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let database = Self.dbManager.ncDatabase()
         XCTAssertNil(database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId))
         XCTAssertTrue(database.objects(RealmChangeDeliveryItem.self).where { $0.sessionId == sessionId }.isEmpty)
+    }
+
+    func testChangeDeliveryContinuationKeyMatchesReportedAndAcknowledgedBatch() throws {
+        let sessionId = "continuation-\(name)"
+        createChangeDeliverySession(sessionId, updatedCount: 3, deletedOcIds: [])
+        let batch = try XCTUnwrap(Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" })
+        let anchorKey = try XCTUnwrap(batch.nextAnchorKey)
+
+        let reported = try XCTUnwrap(Self.dbManager.changeDeliverySession(forContinuationKey: anchorKey, containerKey: Self.changeDeliveryContainerKey))
+        XCTAssertEqual(reported.pendingAnchorKey, anchorKey)
+        XCTAssertNotEqual(reported.currentAnchorKey, anchorKey)
+
+        XCTAssertTrue(Self.dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, endSequence: batch.endSequence))
+
+        let acknowledged = try XCTUnwrap(Self.dbManager.changeDeliverySession(forContinuationKey: anchorKey, containerKey: Self.changeDeliveryContainerKey))
+        XCTAssertEqual(acknowledged.currentAnchorKey, anchorKey)
+        XCTAssertFalse(acknowledged.pendingReported)
+    }
+
+    func testStaleChangeDeliveryAcknowledgementLeavesNewerBatchReported() throws {
+        let sessionId = "stale-acknowledgement-\(name)"
+        createChangeDeliverySession(sessionId, updatedCount: 1, deletedOcIds: ["\(name)-d0", "\(name)-d1"])
+        let first = try XCTUnwrap(Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" })
+        XCTAssertTrue(Self.dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, endSequence: first.endSequence))
+        let second = try XCTUnwrap(Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" })
+
+        XCTAssertTrue(Self.dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, endSequence: first.endSequence))
+
+        let session = try XCTUnwrap(Self.dbManager.changeDeliverySession(sessionId: sessionId))
+        XCTAssertTrue(session.pendingReported)
+        XCTAssertEqual(session.pendingEndSequence, second.endSequence)
+        XCTAssertEqual(session.currentAnchorKey, first.nextAnchorKey)
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: "\(name)-d0"), "The deletion of the unacknowledged batch is kept.")
+    }
+
+    func testRepeatedChangeDeliveryPreparationReplaysReportedBatch() throws {
+        let sessionId = "replay-\(name)"
+        createChangeDeliverySession(sessionId, updatedCount: 3, deletedOcIds: [])
+        let first = try XCTUnwrap(Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 2) { "continuation|\($0)" })
+
+        let replayed = try XCTUnwrap(Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" })
+
+        XCTAssertEqual(replayed.endSequence, first.endSequence)
+        XCTAssertEqual(replayed.nextAnchorKey, first.nextAnchorKey)
+        XCTAssertEqual(replayed.items.map(\.metadataData), first.items.map(\.metadataData))
     }
 
     func testSchema203MigrationBackfillsCanonicalPathKeys() throws {

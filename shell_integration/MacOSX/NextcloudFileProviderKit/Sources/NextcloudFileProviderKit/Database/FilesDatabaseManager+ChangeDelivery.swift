@@ -2,6 +2,22 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
+import RealmSwift
+
+/// The stored state of one change-delivery session.
+typealias ChangeDeliverySessionState = (
+    sessionId: String,
+    containerKey: String,
+    currentAnchorKey: String,
+    nextSequence: Int,
+    finalAnchorRawValue: Data,
+    incomplete: Bool,
+    pendingEndSequence: Int,
+    pendingAnchorKey: String?,
+    pendingMoreComing: Bool,
+    pendingReported: Bool,
+    hardRemoveDeleted: Bool
+)
 
 extension FilesDatabaseManager {
     /// Create a durable change-delivery session and store the complete ordered change snapshot.
@@ -60,76 +76,176 @@ extension FilesDatabaseManager {
         }
     }
 
-    /// Return the active delivery session whose committed anchor matches `anchorKey`.
-    func changeDeliverySession(forAnchorKey anchorKey: String, containerKey: String) -> (
-        sessionId: String,
-        containerKey: String,
-        currentAnchorKey: String,
-        nextSequence: Int,
-        finalAnchorRawValue: Data,
-        incomplete: Bool,
-        pendingEndSequence: Int,
-        pendingAnchorKey: String?,
-        pendingMoreComing: Bool,
-        pendingReported: Bool,
-        hardRemoveDeleted: Bool
-    )? {
-        let sessions = ncDatabase()
+    ///
+    /// Return the active delivery session which `anchorKey` continues, either as its committed anchor or as the
+    /// anchor of its reported but not yet acknowledged batch.
+    ///
+    /// Both are matched in one query and read from the same snapshot, because a concurrent acknowledgement moves
+    /// the anchor from one to the other and two separate queries could miss it in both.
+    ///
+    func changeDeliverySession(forContinuationKey anchorKey: String, containerKey: String) -> ChangeDeliverySessionState? {
+        let session = ncDatabase()
             .objects(RealmChangeDeliverySession.self)
-            .filter("currentAnchorKey == %@ AND containerKey == %@ AND completed == false", anchorKey, containerKey)
-        guard let session = sessions.first
-        else {
-            return nil
-        }
+            .filter(
+                "containerKey == %@ AND completed == false AND (currentAnchorKey == %@ OR (pendingAnchorKey == %@ AND pendingReported == true))",
+                containerKey,
+                anchorKey,
+                anchorKey
+            )
+            .first
 
-        return changeDeliverySession(sessionId: session.sessionId)
-    }
-
-    /// Return an active delivery session whose pending continuation anchor matches `anchorKey`.
-    func changeDeliverySession(forPendingAnchorKey anchorKey: String, containerKey: String) -> (
-        sessionId: String,
-        containerKey: String,
-        currentAnchorKey: String,
-        nextSequence: Int,
-        finalAnchorRawValue: Data,
-        incomplete: Bool,
-        pendingEndSequence: Int,
-        pendingAnchorKey: String?,
-        pendingMoreComing: Bool,
-        pendingReported: Bool,
-        hardRemoveDeleted: Bool
-    )? {
-        let sessions = ncDatabase()
-            .objects(RealmChangeDeliverySession.self)
-            .filter("pendingAnchorKey == %@ AND containerKey == %@ AND pendingReported == true AND completed == false", anchorKey, containerKey)
-        guard let session = sessions.first else {
-            return nil
-        }
-
-        return changeDeliverySession(sessionId: session.sessionId)
+        return session.map(state(of:))
     }
 
     /// Return an active delivery session by its durable identifier.
-    func changeDeliverySession(sessionId: String) -> (
-        sessionId: String,
-        containerKey: String,
-        currentAnchorKey: String,
-        nextSequence: Int,
-        finalAnchorRawValue: Data,
-        incomplete: Bool,
-        pendingEndSequence: Int,
-        pendingAnchorKey: String?,
-        pendingMoreComing: Bool,
-        pendingReported: Bool,
-        hardRemoveDeleted: Bool
-    )? {
+    func changeDeliverySession(sessionId: String) -> ChangeDeliverySessionState? {
         guard let session = ncDatabase().object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId),
               !session.completed
         else {
             return nil
         }
 
-        return (
+        return state(of: session)
+    }
+
+    ///
+    /// Mark the next batch of at most `maxItems` items as reported and return it. If a batch is already reported
+    /// but not acknowledged, return that batch again so a repeated request replays it.
+    ///
+    /// The session is read and changed in one write transaction, so a concurrent acknowledgement cannot leave the
+    /// batch starting at a stale position.
+    ///
+    /// - Parameter continuationAnchorKey: The anchor key for a batch which ends before the given sequence and is
+    ///   followed by more.
+    /// - Returns: `nil` if the session no longer exists or the write fails.
+    ///
+    func prepareChangeDeliveryBatch(
+        sessionId: String,
+        maxItems: Int,
+        continuationAnchorKey: (Int) -> String
+    ) -> (items: [(metadataData: Data, deleted: Bool)], endSequence: Int, nextAnchorKey: String?, moreComing: Bool)? {
+        let database = ncDatabase()
+        var batch: (items: [(metadataData: Data, deleted: Bool)], endSequence: Int, nextAnchorKey: String?, moreComing: Bool)?
+
+        do {
+            try database.write {
+                guard let session = database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId),
+                      !session.completed
+                else {
+                    return
+                }
+
+                if !session.pendingReported {
+                    let candidates = database.objects(RealmChangeDeliveryItem.self)
+                        .filter("sessionId == %@ AND sequence >= %@", sessionId, session.nextSequence)
+                        .sorted(byKeyPath: "sequence")
+                        .prefix(maxItems + 1)
+                    let moreComing = candidates.count > maxItems
+                    let endSequence = candidates.prefix(maxItems).last.map { $0.sequence + 1 } ?? session.nextSequence
+
+                    session.pendingEndSequence = endSequence
+                    session.pendingAnchorKey = moreComing ? continuationAnchorKey(endSequence) : nil
+                    session.pendingMoreComing = moreComing
+                    session.pendingReported = true
+                }
+
+                let items = database.objects(RealmChangeDeliveryItem.self)
+                    .filter("sessionId == %@ AND sequence >= %@ AND sequence < %@", sessionId, session.nextSequence, session.pendingEndSequence)
+                    .sorted(byKeyPath: "sequence")
+                    .map { (metadataData: $0.metadataData, deleted: $0.deleted) }
+
+                batch = (Array(items), session.pendingEndSequence, session.pendingAnchorKey, session.pendingMoreComing)
+            }
+        } catch {
+            return nil
+        }
+
+        return batch
+    }
+
+    ///
+    /// Acknowledge the reported batch which ends before `endSequence` after the observer accepted it.
+    ///
+    /// The batch is identified explicitly because the next request can acknowledge it first and prepare the
+    /// following batch before the enumerator which reported it gets here. The session is read inside the write
+    /// transaction so such a concurrent change is seen.
+    ///
+    /// - Returns: `false` if the batch cannot be acknowledged or the write fails. A batch which is no longer
+    ///   reported, for example because it was acknowledged already, is ignored and `true` is returned.
+    ///
+    func acknowledgeChangeDeliveryBatch(sessionId: String, endSequence: Int) -> Bool {
+        let database = ncDatabase()
+        var acknowledged = true
+
+        do {
+            try database.write {
+                guard let session = database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId),
+                      !session.completed,
+                      session.pendingReported,
+                      session.pendingEndSequence == endSequence
+                else {
+                    return
+                }
+
+                acknowledged = acknowledgeReportedBatch(of: session, in: database)
+            }
+        } catch {
+            return false
+        }
+
+        return acknowledged
+    }
+
+    ///
+    /// Apply the deletions of the reported batch of `session`, then advance the session past it or remove the
+    /// session after its final batch. Must be called inside a write transaction.
+    ///
+    /// - Returns: `false` if the session state is inconsistent.
+    ///
+    private func acknowledgeReportedBatch(of session: RealmChangeDeliverySession, in database: Realm) -> Bool {
+        if session.pendingMoreComing, session.pendingAnchorKey == nil {
+            return false
+        }
+
+        let sessionId = session.sessionId
+        let endSequence = session.pendingEndSequence
+        let decoder = JSONDecoder()
+        // An explicit array type selects the eager `compactMap`, Realm needs an array for IN below.
+        let deletedOcIds: [String] = database.objects(RealmChangeDeliveryItem.self)
+            .filter("sessionId == %@ AND sequence >= %@ AND sequence < %@ AND deleted == true", sessionId, session.nextSequence, endSequence)
+            .compactMap { try? decoder.decode(SendableItemMetadata.self, from: $0.metadataData).ocId }
+
+        if deletedOcIds.isEmpty == false {
+            let deletedItems = database.objects(RealmItemMetadata.self).filter("ocId IN %@", deletedOcIds)
+
+            if session.hardRemoveDeleted {
+                database.delete(deletedItems)
+            } else {
+                deletedItems.forEach { $0.deleted = true }
+            }
+        }
+
+        if session.pendingMoreComing, let pendingAnchorKey = session.pendingAnchorKey {
+            database.delete(
+                database.objects(RealmChangeDeliveryItem.self)
+                    .filter("sessionId == %@ AND sequence < %@", sessionId, endSequence)
+            )
+            session.nextSequence = endSequence
+            session.currentAnchorKey = pendingAnchorKey
+            session.pendingEndSequence = 0
+            session.pendingAnchorKey = nil
+            session.pendingMoreComing = false
+            session.pendingReported = false
+        } else {
+            database.delete(database.objects(RealmChangeDeliveryItem.self).filter("sessionId == %@", sessionId))
+            database.delete(session)
+        }
+
+        return true
+    }
+
+    private func state(of session: RealmChangeDeliverySession) -> ChangeDeliverySessionState {
+        (
             session.sessionId,
             session.containerKey,
             session.currentAnchorKey,
@@ -142,134 +258,6 @@ extension FilesDatabaseManager {
             session.pendingReported,
             session.hardRemoveDeleted
         )
-    }
-
-    /// Return the next ordered range of an active change-delivery session.
-    func changeDeliveryItems(
-        sessionId: String,
-        fromSequence sequence: Int,
-        limit: Int
-    ) -> [(sequence: Int, metadataData: Data, deleted: Bool)] {
-        ncDatabase()
-            .objects(RealmChangeDeliveryItem.self)
-            .filter("sessionId == %@ AND sequence >= %@", sessionId, sequence)
-            .sorted(byKeyPath: "sequence")
-            .prefix(limit)
-            .map { ($0.sequence, $0.metadataData, $0.deleted) }
-    }
-
-    /// Return the deleted item identifiers in the currently prepared batch.
-    func pendingChangeDeliveryDeletedOcIds(sessionId: String) -> [String] {
-        guard let session = changeDeliverySession(sessionId: sessionId),
-              session.pendingReported,
-              session.pendingEndSequence > session.nextSequence
-        else {
-            return []
-        }
-
-        let decoder = JSONDecoder()
-        return changeDeliveryItems(
-            sessionId: sessionId,
-            fromSequence: session.nextSequence,
-            limit: session.pendingEndSequence - session.nextSequence
-        ).compactMap { item in
-            guard item.deleted,
-                  let metadata = try? decoder.decode(SendableItemMetadata.self, from: item.metadataData)
-            else {
-                return nil
-            }
-            return metadata.ocId
-        }
-    }
-
-    func prepareChangeDeliveryBatch(
-        sessionId: String,
-        endSequence: Int,
-        nextAnchorKey: String?,
-        moreComing: Bool
-    ) -> Bool {
-        let database = ncDatabase()
-        guard let session = database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId),
-              !session.completed
-        else {
-            return false
-        }
-
-        if session.pendingReported {
-            return session.pendingEndSequence == endSequence
-                && session.pendingAnchorKey == nextAnchorKey
-                && session.pendingMoreComing == moreComing
-        }
-
-        do {
-            try database.write {
-                session.pendingEndSequence = endSequence
-                session.pendingAnchorKey = nextAnchorKey
-                session.pendingMoreComing = moreComing
-                session.pendingReported = true
-            }
-            return true
-        } catch {
-            return false
-        }
-    }
-
-    /// Acknowledge the prepared batch after the observer accepted it.
-    func acknowledgeChangeDeliveryBatch(sessionId: String, deletedOcIds: [String]) -> Bool {
-        let database = ncDatabase()
-        guard let session = database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId),
-              !session.completed
-        else {
-            return true
-        }
-
-        guard session.pendingReported else {
-            return false
-        }
-
-        if session.pendingMoreComing, session.pendingAnchorKey == nil {
-            return false
-        }
-
-        let pendingEndSequence = session.pendingEndSequence
-        let pendingAnchorKey = session.pendingAnchorKey
-        let pendingMoreComing = session.pendingMoreComing
-
-        do {
-            try database.write {
-                let deletedItems = deletedOcIds.isEmpty
-                    ? database.objects(RealmItemMetadata.self).filter("ocId == %@", "")
-                    : database.objects(RealmItemMetadata.self).filter("ocId IN %@", deletedOcIds)
-                if session.hardRemoveDeleted {
-                    database.delete(deletedItems)
-                } else {
-                    deletedItems.forEach { $0.deleted = true }
-                }
-
-                if pendingMoreComing, let pendingAnchorKey {
-                    session.nextSequence = pendingEndSequence
-                    session.currentAnchorKey = pendingAnchorKey
-                    database.objects(RealmChangeDeliveryItem.self)
-                        .filter("sessionId == %@ AND sequence < %@", sessionId, pendingEndSequence)
-                        .forEach { database.delete($0) }
-                } else {
-                    database.objects(RealmChangeDeliveryItem.self)
-                        .filter("sessionId == %@", sessionId)
-                        .forEach { database.delete($0) }
-                    database.delete(session)
-                }
-
-                if database.object(ofType: RealmChangeDeliverySession.self, forPrimaryKey: sessionId) != nil {
-                    session.pendingEndSequence = 0
-                    session.pendingAnchorKey = nil
-                    session.pendingMoreComing = false
-                    session.pendingReported = false
-                }
-            }
-            return true
-        } catch {
-            return false
-        }
     }
 
     /// Remove all active delivery sessions for one enumerated container.
