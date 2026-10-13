@@ -38,11 +38,21 @@ public extension FilesDatabaseManager {
             .toUnmanagedResults()
     }
 
+    ///
+    /// The number of **direct** children of a directory, as vended by `Item.childItemCount`,
+    /// excluding tombstones, other accounts' rows and the container's own row, which for the root
+    /// carries the same `serverUrl` its children do.
+    ///
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let account = directoryMetadata.account
+        let ocId = directoryMetadata.ocId
         return itemMetadatas
             .where { item in
-                RealmItemMetadata.hasServerUrl(item, equalTo: directoryServerUrl, includingDescendants: true)
+                item.account == account &&
+                    item.deleted == false &&
+                    item.ocId != ocId &&
+                    RealmItemMetadata.hasServerUrl(item, equalTo: directoryServerUrl, includingDescendants: false)
             }
             .count
     }
