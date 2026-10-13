@@ -19,7 +19,6 @@
 
 #include <QCoreApplication>
 #include <QKeySequence>
-#include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QQuickWindow>
@@ -70,7 +69,7 @@ public Q_SLOTS:
         qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", OCC::UserModel::instance());
         qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", OCC::Theme::instance());
         qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Systray", OCC::Systray::instance());
-        OCC::Systray::instance()->setTrayEngine(new QQmlApplicationEngine(QCoreApplication::instance()));
+        OCC::Systray::instance()->createTrayEngine();
 
         engine->addImportPath(QCoreApplication::applicationDirPath());
         engine->addImportPath(QCoreApplication::applicationDirPath() + QStringLiteral("/qml"));
