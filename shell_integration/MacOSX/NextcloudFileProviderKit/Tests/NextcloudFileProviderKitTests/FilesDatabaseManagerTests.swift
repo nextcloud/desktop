@@ -1789,6 +1789,56 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(deletedIds.count, expectedDeletedCount, "Should have \(expectedDeletedCount) deleted items, got \(deletedIds.count): \(deletedIds)")
     }
 
+    /// Stores `uploaded.txt` with `downloaded == false` in the visited folder `Uploads`, whose
+    /// metadata predates `anchorDate`, then compares a server listing containing only `Uploads`.
+    /// Folder comparison must return `uploaded.txt`'s deletion, but the separate database lookup
+    /// `pendingWorkingSetChanges(since:)` must omit it: the file is not downloaded and its parent
+    /// is unchanged, even though the deleted file's own timestamp is newer than `anchorDate`.
+    func testDepth1DeletionIsReturnedWhenWorkingSetLookupOmitsDatalessFile() throws {
+        setUpDatabase(Self.dbManager)
+        let oldSyncDate = Date(timeIntervalSince1970: 1000)
+        let anchorDate = Date(timeIntervalSince1970: 2000)
+        let recentSyncDate = Date(timeIntervalSince1970: 3000)
+
+        var parent = SendableItemMetadata(ocId: "visited-parent", fileName: "Uploads", account: Self.account)
+        parent.serverUrl = Self.account.davFilesUrl
+        parent.directory = true
+        parent.visitedDirectory = true
+        parent.uploaded = true
+        parent.etag = "unchanged-parent-etag"
+        parent.syncTime = oldSyncDate
+        Self.dbManager.addItemMetadata(parent)
+
+        var file = SendableItemMetadata(ocId: "uploaded-file", fileName: "uploaded.txt", account: Self.account)
+        file.serverUrl = parent.remotePath()
+        file.downloaded = false
+        file.uploaded = true
+        file.syncTime = recentSyncDate
+        Self.dbManager.addItemMetadata(file)
+
+        let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: Self.account.ncKitAccount,
+            serverUrl: parent.remotePath(),
+            updatedMetadatas: [parent],
+            keepExistingDownloadState: true
+        ))
+        XCTAssertEqual(changes.deleted.map(\.ocId), [file.ocId])
+        XCTAssertTrue(changes.updated.isEmpty)
+        XCTAssertTrue(changes.created.isEmpty)
+
+        let storedFile = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: file.ocId))
+        XCTAssertTrue(storedFile.deleted)
+        XCTAssertFalse(storedFile.downloaded)
+        XCTAssertGreaterThan(storedFile.syncTime, anchorDate)
+        let storedParent = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: parent.ocId))
+        XCTAssertTrue(storedParent.visitedDirectory)
+        XCTAssertEqual(storedParent.syncTime, oldSyncDate)
+
+        let pending = Self.dbManager.pendingWorkingSetChanges(since: anchorDate)
+        XCTAssertTrue(pending.deleted.isEmpty)
+        XCTAssertTrue(pending.updated.isEmpty)
+    }
+
     // MARK: - Logical-address deduplication
 
     func testAddItemMetadataEvictsLogicalDuplicateWithDifferentOcId() throws {

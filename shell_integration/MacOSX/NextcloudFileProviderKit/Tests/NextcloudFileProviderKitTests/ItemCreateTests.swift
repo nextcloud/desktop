@@ -179,6 +179,82 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(createdItem.isUploaded)
     }
 
+    /// `MaterializedEnumerationObserver` receives macOS's list of items with local contents
+    /// and uses their identifiers to update the database's `downloaded` flags.
+    /// This test supplies the temporary `template.itemIdentifier` before upload, then finishes
+    /// the simulated list after `Item.create` returns a new server identifier.
+    /// The record for `createdItem.itemIdentifier` must keep `downloaded == true`, and the
+    /// callback must not report that identifier as having lost its local contents.
+    func testCreateFilePreservesDownloadedStateAcrossTemporaryIdentifierEnumeration() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let sourceContents = Data("Newly copied file".utf8)
+        let sourceUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".txt")
+        try sourceContents.write(to: sourceUrl)
+        defer { try? FileManager.default.removeItem(at: sourceUrl) }
+
+        var templateMetadata = SendableItemMetadata(
+            ocId: UUID().uuidString, fileName: sourceUrl.lastPathComponent, account: Self.account
+        )
+        templateMetadata.classFile = NKTypeClassFile.document.rawValue
+        templateMetadata.serverUrl = Self.account.davFilesUrl
+        let template = Item(
+            metadata: templateMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        var evictedIdentifiers = Set<NSFileProviderItemIdentifier>()
+        var observerCompletionCount = 0
+        let observer = MaterializedEnumerationObserver(
+            account: Self.account, dbManager: Self.dbManager, log: FileProviderLogMock()
+        ) { _, evicted in
+            evictedIdentifiers = evicted
+            observerCompletionCount += 1
+        }
+        // Simulate a list received before upload completion, containing the temporary identifier.
+        observer.didEnumerate([template])
+
+        let (createdItemMaybe, error) = await Item.create(
+            basedOn: template,
+            contents: sourceUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(error)
+        let createdItem = try XCTUnwrap(createdItemMaybe)
+        let remoteItem = try XCTUnwrap(rootItem.children.first { $0.name == template.filename })
+        XCTAssertNotEqual(createdItem.itemIdentifier, template.itemIdentifier)
+        XCTAssertEqual(createdItem.itemIdentifier.rawValue, remoteItem.identifier)
+        XCTAssertEqual(createdItem.parentItemIdentifier, template.parentItemIdentifier)
+        XCTAssertEqual(remoteItem.data, sourceContents)
+        let uploadedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(createdItem.itemIdentifier))
+        XCTAssertTrue(uploadedMetadata.downloaded)
+
+        observer.finishEnumerating(upTo: nil)
+        XCTExpectFailure("A materialized snapshot containing the temporary identifier must not evict the newly uploaded server identifier.") {
+            XCTAssertTrue(
+                Self.dbManager.itemMetadata(createdItem.itemIdentifier)?.downloaded == true,
+                "Completing the older snapshot must preserve the uploaded item's materialized state."
+            )
+            XCTAssertFalse(
+                evictedIdentifiers.contains(createdItem.itemIdentifier),
+                "The server identifier was introduced after this snapshot and must not be reported as evicted."
+            )
+        }
+
+        XCTAssertEqual(observerCompletionCount, 1)
+        let persistedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(createdItem.itemIdentifier))
+        XCTAssertEqual(persistedMetadata.ocId, remoteItem.identifier)
+        XCTAssertTrue(persistedMetadata.uploaded)
+        XCTAssertFalse(persistedMetadata.deleted)
+        XCTAssertEqual(try Data(contentsOf: sourceUrl), sourceContents)
+    }
+
     /// Regression test for the same root cause as
     /// `testModifyFilePreservesLocalContentModificationDateWhenServerTruncates`,
     /// but on the create path: when the server truncates the upload-response
