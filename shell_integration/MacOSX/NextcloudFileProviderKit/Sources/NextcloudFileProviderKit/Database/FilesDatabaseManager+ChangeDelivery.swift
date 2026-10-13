@@ -279,7 +279,8 @@ extension FilesDatabaseManager {
             .filter("containerKey == %@ AND completed == false", containerKey)
 
         try? database.write {
-            let sessionIds = sessions.map(\.sessionId)
+            // Realm requires an array for IN, not the lazy sequence `map` returns on its results.
+            let sessionIds = Array(sessions.map(\.sessionId))
             if sessionIds.isEmpty == false {
                 database.objects(RealmChangeDeliveryItem.self)
                     .filter("sessionId IN %@", sessionIds)
