@@ -17,7 +17,7 @@
 #include "theme.h"
 #include "wheelhandler.h"
 
-#include <QCoreApplication>
+#include <QApplication>
 #include <QKeySequence>
 #include <QQmlContext>
 #include <QQmlEngine>
@@ -31,6 +31,12 @@ class WindowCloseTestHelper final : public QObject
     Q_OBJECT
 
 public:
+    /** @brief Reports whether the runner supports QWidget-based tray menus. */
+    Q_INVOKABLE [[nodiscard]] bool usesWidgetApplication() const
+    {
+        return qobject_cast<QApplication *>(QCoreApplication::instance()) != nullptr;
+    }
+
     Q_INVOKABLE bool closeShortcut(QQuickWindow *window)
     {
         const auto closeShortcuts = QKeySequence::keyBindings(QKeySequence::Close);
@@ -81,6 +87,13 @@ private:
     WindowCloseTestHelper _helper;
 };
 
-QUICK_TEST_MAIN_WITH_SETUP(windowclose, WindowCloseQmlTestSetup)
+int main(int argc, char **argv)
+{
+    QTEST_SET_MAIN_SOURCE_PATH
+    // The tray singleton creates QWidget-based menus on Linux and Windows.
+    auto app = QApplication(argc, argv);
+    auto setup = WindowCloseQmlTestSetup();
+    return quick_test_main_with_setup(argc, argv, "windowclose", nullptr, &setup);
+}
 
 #include "windowcloseqmltestrunner.moc"

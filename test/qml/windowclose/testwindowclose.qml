@@ -60,6 +60,10 @@ Item {
             closeWindow(wizardWindowComponent)
         }
 
+        function test_usesWidgetApplication() {
+            verify(windowCloseTestHelper.usesWidgetApplication())
+        }
+
         function test_fileDetailsWindowClosesWithCloseShortcut() {
             closeWindow(fileDetailsWindowComponent)
         }
