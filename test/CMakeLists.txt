@@ -185,6 +185,7 @@ if (WIN32)
     )
 
     nextcloud_add_test(SyncCfApi)
+    target_link_libraries(SyncCfApiTest PRIVATE cldapi)
 	nextcloud_add_test(CfApiShellExtensionsIPC)
     target_sources(CfApiShellExtensionsIPCTest PRIVATE "${CMAKE_SOURCE_DIR}/src/libsync/vfs/cfapi/shellext/thumbnailprovideripc.cpp" "${CMAKE_SOURCE_DIR}/src/libsync/vfs/cfapi/shellext/customstateprovideripc.cpp" "${CMAKE_SOURCE_DIR}/src/libsync/vfs/cfapi/shellext/ipccommon.cpp")
 elseif(LINUX) # elseif(LINUX OR APPLE)
