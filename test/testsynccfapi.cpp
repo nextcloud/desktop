@@ -76,6 +76,17 @@ SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
     return record;
 }
 
+CF_PLACEHOLDER_STATE placeholderState(const QString &path)
+{
+    WIN32_FIND_DATAW findData = {};
+    const auto handle = FindFirstFileW(reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16()), &findData);
+    if (handle == INVALID_HANDLE_VALUE) {
+        return CF_PLACEHOLDER_STATE_INVALID;
+    }
+    FindClose(handle);
+    return CfGetPlaceholderStateFromAttributeTag(findData.dwFileAttributes, findData.dwReserved0);
+}
+
 void triggerDownload(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
@@ -1430,6 +1441,68 @@ private Q_SLOTS:
         ItemCompletedSpy completeSpy(fakeFolder);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A", CSYNC_INSTRUCTION_NONE));
+    }
+
+    void testFolderPopulationFlags_data()
+    {
+        QTest::addColumn<bool>("isRemoteFolder");
+        QTest::addColumn<bool>("visitFolder");
+        QTest::addColumn<bool>("expectFullySynced");
+
+        QTest::newRow("local new folder") << false << false << true;
+        QTest::newRow("locally visited folder") << true << true << true;
+        QTest::newRow("server new folder") << true << false << false;
+    }
+
+    void testFolderPopulationFlags()
+    {
+        QFETCH(bool, isRemoteFolder);
+        QFETCH(bool, visitFolder);
+        QFETCH(bool, expectFullySynced);
+
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+
+        if (isRemoteFolder) {
+            fakeFolder.remoteModifier().mkdir("A");
+            fakeFolder.remoteModifier().insert("A/a1");
+        } else {
+            fakeFolder.localModifier().mkdir("A");
+        }
+        QVERIFY(fakeFolder.syncOnce());
+
+        if (visitFolder) {
+            OCC::showInFileManager(fakeFolder.localPath() + "A");
+            QTest::qWait(5000);
+            QVERIFY(fakeFolder.syncOnce());
+
+            OCC::showInFileManager(fakeFolder.localPath() + "A");
+            QTest::qWait(5000);
+            QVERIFY(fakeFolder.syncOnce());
+        }
+
+        if (isRemoteFolder) {
+            QCOMPARE(QFileInfo::exists(fakeFolder.localPath() + "A/a1"), expectFullySynced);
+        }
+
+        const auto expectedType = expectFullySynced ? ItemTypeDirectory : ItemTypeVirtualDirectory;
+        const auto verifyFolderState = [&] {
+            const auto state = placeholderState(fakeFolder.localPath() + "A");
+            QVERIFY(state & CF_PLACEHOLDER_STATE_PLACEHOLDER);
+            QVERIFY(state & CF_PLACEHOLDER_STATE_IN_SYNC);
+            QCOMPARE(static_cast<bool>(state & CF_PLACEHOLDER_STATE_PARTIALLY_ON_DISK), !expectFullySynced);
+            QCOMPARE(dbRecord(fakeFolder, "A")._type, expectedType);
+        };
+
+        verifyFolderState();
+
+        // local discovery must find the same folder type again and leave the folder untouched
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.findItem("A")->_instruction, CSYNC_INSTRUCTION_NONE);
+
+        verifyFolderState();
     }
 
     void testRemoteTypeChangeExistingLocalMustGetRemoved()
