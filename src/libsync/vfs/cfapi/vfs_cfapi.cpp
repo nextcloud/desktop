@@ -302,8 +302,25 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     // it is a file... let's prevent it
     if (isDirectory) {
         if (hasCloudTag) {
+            auto placeholderState = CfGetPlaceholderStateFromAttributeTag(ffd->dwFileAttributes, ffd->dwReserved0);
+
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcCfApi()) << stat->path << (CF_PLACEHOLDER_STATE_PLACEHOLDER & placeholderState ? "CF_PLACEHOLDER_STATE_PLACEHOLDER" : "NONE")
+                               << (CF_PLACEHOLDER_STATE_SYNC_ROOT & placeholderState ? "CF_PLACEHOLDER_STATE_SYNC_ROOT" : "NONE")
+                               << (CF_PLACEHOLDER_STATE_ESSENTIAL_PROP_PRESENT & placeholderState ? "CF_PLACEHOLDER_STATE_ESSENTIAL_PROP_PRESENT" : "NONE")
+                               << (CF_PLACEHOLDER_STATE_IN_SYNC & placeholderState ? "CF_PLACEHOLDER_STATE_IN_SYNC" : "NONE")
+                               << (CF_PLACEHOLDER_STATE_PARTIAL & placeholderState ? "CF_PLACEHOLDER_STATE_PARTIAL" : "NONE")
+                               << (CF_PLACEHOLDER_STATE_PARTIALLY_ON_DISK & placeholderState ? "CF_PLACEHOLDER_STATE_PARTIALLY_ON_DISK" : "NONE")
+                               << (CF_PLACEHOLDER_STATE_INVALID & placeholderState ? "CF_PLACEHOLDER_STATE_INVALID" : "NONE");
+#endif
+
             ffd->dwFileAttributes &= ~FILE_ATTRIBUTE_REPARSE_POINT;
-            stat->type = CSyncEnums::ItemTypeVirtualDirectory;
+            if (CF_PLACEHOLDER_STATE_PARTIALLY_ON_DISK & placeholderState) {
+                stat->type = CSyncEnums::ItemTypeVirtualDirectory;
+            } else {
+                stat->type = CSyncEnums::ItemTypeDirectory;
+            }
+
             return true;
         }
         return false;
