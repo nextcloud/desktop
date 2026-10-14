@@ -261,7 +261,7 @@ extension Enumerator {
         let placeholderDeletions = accumulatedDeletions.filter(\.directory).flatMap { directory in
             dbManager.deletableDescendants(of: directory).filter { child in
                 let isMaterialised = child.directory ? child.visitedDirectory : child.downloaded
-                return !isMaterialised && 
+                return !isMaterialised &&
                     !survivingOcIds.contains(child.ocId) &&
                     !failedItemIds.contains(child.ocId) &&
                     !failedDirectoryPaths.contains { child.isDescendant(of: $0) }
