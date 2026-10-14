@@ -152,6 +152,18 @@ extension Enumerator {
             let changes = readResult.changes ?? ChangeSet()
 
             if readResult.error?.errorCode == 404 {
+                // A rename committed while this read was in flight makes the 404 about the old path rather than the item, so only a row still at that path counts as deleted.
+                let currentRemotePath = dbManager.itemMetadata(ocId: itemToScan.ocId)?.remotePath()
+
+                if let currentRemotePath, currentRemotePath != itemRemoteUrl {
+                    logger.debug(
+                        "Ignoring 404 for a path the item has since moved away from.",
+                        [.item: itemToScan.ocId, .url: itemRemoteUrl]
+                    )
+                    scannedItemIds.insert(itemToScan.ocId)
+                    continue
+                }
+
                 accumulatedDeletions.append(itemToScan)
                 scannedItemIds.insert(itemToScan.ocId)
                 // Children are not marked deleted here — they may have moved with their parent.
