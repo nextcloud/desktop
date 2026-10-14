@@ -117,6 +117,8 @@ extension Enumerator {
         // advancing the working-set sync point past changes this pass could not discover.
         var hadReadFailure = false
         var failedItemIds = Set<String>()
+        var failedDirectoryPaths = [String]()
+        var survivingOcIds = Set<String>()
 
         // Work queue seeded with the materialised items. A changed child directory discovered while
         // scanning is appended ONLY when its subtree actually contains a materialised item, so its
@@ -170,6 +172,9 @@ extension Enumerator {
                 )
                 hadReadFailure = true
                 failedItemIds.insert(itemToScan.ocId)
+                if itemToScan.directory {
+                    failedDirectoryPaths.append(itemRemoteUrl)
+                }
                 scannedItemIds.insert(itemToScan.ocId)
                 continue
             } else {
@@ -182,6 +187,7 @@ extension Enumerator {
                 var childrenCoveredByThisRead = Set<String>()
 
                 if let readItems = readResult.metadatas, let readTarget = readItems.first {
+                    survivingOcIds.formUnion(readItems.map(\.ocId))
                     scannedItemIds.insert(readTarget.ocId)
 
                     if readItems.count > 1 {
@@ -246,13 +252,27 @@ extension Enumerator {
 
         // Catches moves across directories: items found at a new location (updated or new)
         // should not be marked deleted at the old location.
-        let survivingOcIds = Set(accumulatedUpdates.map(\.ocId))
-            .union(accumulatedCreations.map(\.ocId))
-
+        survivingOcIds.formUnion(accumulatedUpdates.map(\.ocId))
+        survivingOcIds.formUnion(accumulatedCreations.map(\.ocId))
         accumulatedDeletions.removeAll { survivingOcIds.contains($0.ocId) }
 
+        // Placeholder descendants have no individual scan. Reconcile them only after all reads
+        // have had a chance to discover moves, using their current database locations.
+        let placeholderDeletions = accumulatedDeletions.filter(\.directory).flatMap { directory in
+            dbManager.deletableDescendants(of: directory).filter { child in
+                let isMaterialised = child.directory ? child.visitedDirectory : child.downloaded
+                return !isMaterialised && 
+                    !survivingOcIds.contains(child.ocId) &&
+                    !failedItemIds.contains(child.ocId) &&
+                    !failedDirectoryPaths.contains { child.isDescendant(of: $0) }
+            }
+        }
+        accumulatedDeletions += placeholderDeletions
+
         var reportedDeletions = [SendableItemMetadata]()
+        var reportedDeletionIds = Set<String>()
         for deletedMetadata in accumulatedDeletions {
+            guard reportedDeletionIds.insert(deletedMetadata.ocId).inserted else { continue }
             if deletedMetadata.status >= Status.inUpload.rawValue {
                 logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
                 continue
