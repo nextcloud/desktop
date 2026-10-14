@@ -40,7 +40,9 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
 
     public func finishEnumeratingWithError(_ error: Error) {
         logger.error("Finishing enumeration with error.", [.error: error])
-        handleEnumeratedItems(enumeratedItems, account: account, dbManager: dbManager, completionHandler: completionHandler)
+        // An incomplete enumeration is not evidence that missing items were evicted.
+        // Do not reconcile against a partial snapshot on failure.
+        completionHandler([], [])
     }
 
     func handleEnumeratedItems(_ identifiers: Set<NSFileProviderItemIdentifier>, account: Account, dbManager: FilesDatabaseManager, completionHandler: @escaping (_ materialized: Set<NSFileProviderItemIdentifier>, _ evicted: Set<NSFileProviderItemIdentifier>) -> Void) {
