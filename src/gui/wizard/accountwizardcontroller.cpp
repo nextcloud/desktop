@@ -137,9 +137,11 @@ void AccountWizardController::initialiseAccount()
     if (!cfg.overrideServerUrl().isEmpty()) {
         Theme::instance()->setOverrideServerUrl(cfg.overrideServerUrl());
         Theme::instance()->setVfsEnabled(cfg.isVfsEnabled());
-        if (cfg.isEnforced(QLatin1String(ConfigFile::overrideServerUrlC)) || cfg.hasUserOverrideServerUrl()) {
+        if (cfg.isOverrideServerUrlLocked()) {
             Theme::instance()->setForceOverrideServerUrl(true);
             Theme::instance()->setStartLoginFlowAutomatically(true);
+        } else {
+            Theme::instance()->setForceOverrideServerUrl(false);
         }
     }
 
@@ -1214,7 +1216,8 @@ void AccountWizardController::chooseSyncModeAfterCapabilities()
 
     if (needsSyncOptions()) {
         ConfigFile cfg;
-        if (Theme::instance()->forceOverrideServerUrl() && !cfg.overrideLocalDir().isEmpty()) {
+        const auto localDirLocked = cfg.isEnforced(QLatin1String(ConfigFile::overrideLocalDirC)) || cfg.hasUserOverrideLocalDir();
+        if (Theme::instance()->forceOverrideServerUrl() && localDirLocked && !applicableOverrideLocalDir().isEmpty()) {
             QTimer::singleShot(0, this, &AccountWizardController::finish);
             return;
         }
@@ -1376,14 +1379,18 @@ void AccountWizardController::clearOneShotOverrides()
     cfg.clearOverrideLocalDir();
 }
 
+QString AccountWizardController::applicableOverrideLocalDir() const
+{
+    return ConfigFile().overrideLocalDirForNewAccount(AccountManager::instance()->accounts().isEmpty());
+}
+
 void AccountWizardController::initialiseLocalSyncFolder()
 {
-    ConfigFile cfg;
-    const auto overrideLocalDir = !cfg.overrideLocalDir().isEmpty();
+    const auto overrideLocalDir = !applicableOverrideLocalDir().isEmpty();
     _localSyncFolderOverride = overrideLocalDir;
     QString localFolder;
     if (overrideLocalDir) {
-        localFolder = cfg.overrideLocalDir();
+        localFolder = applicableOverrideLocalDir();
     } else {
 #ifndef Q_OS_MACOS
         localFolder = Theme::instance()->defaultClientFolder();

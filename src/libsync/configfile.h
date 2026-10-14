@@ -226,11 +226,14 @@ public:
 
     [[nodiscard]] QString overrideServerUrl() const;
     [[nodiscard]] bool hasUserOverrideServerUrl() const;
-    void setOverrideServerUrl(const QString &url);
+    [[nodiscard]] bool isOverrideServerUrlLocked() const;
+    bool setOverrideServerUrl(const QString &url);
     void clearOverrideServerUrl();
 
     [[nodiscard]] QString overrideLocalDir() const;
-    void setOverrideLocalDir(const QString &localDir);
+    [[nodiscard]] bool hasUserOverrideLocalDir() const;
+    [[nodiscard]] QString overrideLocalDirForNewAccount(bool firstAccount) const;
+    bool setOverrideLocalDir(const QString &localDir);
     void clearOverrideLocalDir();
 
     [[nodiscard]] bool isVfsEnabled() const;
