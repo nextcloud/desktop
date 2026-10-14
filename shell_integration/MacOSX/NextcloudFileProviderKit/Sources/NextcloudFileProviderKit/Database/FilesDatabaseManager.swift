@@ -925,26 +925,15 @@ public final class FilesDatabaseManager: Sendable {
             .filter {
                 $0.directory // files do not have any children to look for
             }
-            .map {
-                $0.remotePath()
-            }
-            .forEach { serverUrl in
-                itemMetadatas.where { item in
-                    RealmItemMetadata.hasServerUrl(item, equalTo: serverUrl, includingDescendants: true) &&
-                        item.syncTime > date
-                }.forEach { child in
-                    guard child.isLockFileOfLocalOrigin == false else {
-                        logger.info("Excluding item from deletion because it is a lock file from local origin.", [.item: child.ocId, .name: child.fileName])
-                        return
-                    }
-
+            .forEach { directory in
+                for child in deletableDescendants(of: directory).filter(\.deleted) {
                     guard !deletedItemIdentifiers.contains(child.ocId) else {
-                        return
+                        continue
                     }
 
                     deletedItemIdentifiers.insert(child.ocId)
-                    deletedItems.append(SendableItemMetadata(value: child))
-                    logger.debug("Appended deleted item to working set changes.", [.item: child.ocId, .url: serverUrl])
+                    deletedItems.append(child)
+                    logger.debug("Appended deleted item to working set changes.", [.item: child.ocId, .url: directory.remotePath()])
                 }
             }
 
