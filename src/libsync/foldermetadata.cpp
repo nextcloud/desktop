@@ -3,15 +3,16 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "account.h"
-#include "encryptedfoldermetadatahandler.h"
 #include "foldermetadata.h"
+#include "account.h"
 #include "clientsideencryption.h"
-#include <common/checksums.h>
+#include "encryptedfoldermetadatahandler.h"
 #include <QDir>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QScopeGuard>
 #include <QSslCertificate>
+#include <common/checksums.h>
 
 using namespace Qt::StringLiterals;
 
@@ -1081,11 +1082,14 @@ bool FolderMetadata::moveFromFileDropToFiles()
         return false;
     }
 
+    auto restoreFilesOnFailure = qScopeGuard([this, originalFiles = _files] {
+        _files = originalFiles;
+    });
+
     for (const auto &fileDropEntry : std::as_const(_fileDropEntries)) {
-        const auto cipherTextDecrypted = EncryptionHelper::decryptThenUnGzipData(
-            fileDropEntry.currentUser.decryptedFiledropKey,
-            QByteArray::fromBase64(fileDropEntry.cipherText),
-            fileDropEntry.nonce);
+        const auto cipherTextDecrypted = EncryptionHelper::decryptThenUnGzipData(fileDropEntry.currentUser.decryptedFiledropKey,
+                                                                                 QByteArray::fromBase64(fileDropEntry.cipherText),
+                                                                                 fileDropEntry.nonce);
 
         if (cipherTextDecrypted.isEmpty()) {
             qCWarning(lcCseMetadata()) << "Could not decrypt filedrop metadata.";
@@ -1094,7 +1098,7 @@ bool FolderMetadata::moveFromFileDropToFiles()
         }
 
         const auto cipherTextDocument = QJsonDocument::fromJson(cipherTextDecrypted);
-        const auto parsedEncryptedFile = parseEncryptedFileFromJson(fileDropEntry.encryptedFilename, cipherTextDocument.object());
+        auto parsedEncryptedFile = parseEncryptedFileFromJson(fileDropEntry.encryptedFilename, cipherTextDocument.object());
         if (parsedEncryptedFile.originalFilename.isEmpty()) {
             qCWarning(lcCseMetadata()) << "Could parse filedrop metadata. Encrypted file" << parsedEncryptedFile.encryptedFilename << "metadata is invalid";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
@@ -1105,6 +1109,20 @@ bool FolderMetadata::moveFromFileDropToFiles()
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return false;
         }
+
+        const auto originalFilename = parsedEncryptedFile.originalFilename;
+        const auto lastDot = originalFilename.lastIndexOf(u'.');
+        const auto extensionPosition = lastDot > 0 ? lastDot : originalFilename.size();
+        const auto baseName = originalFilename.left(extensionPosition);
+        const auto extension = originalFilename.mid(extensionPosition);
+        constexpr auto firstDuplicateNumber = 2;
+        auto duplicateNumber = firstDuplicateNumber;
+        while (std::any_of(_files.cbegin(), _files.cend(), [&parsedEncryptedFile](const auto &file) {
+            return file.originalFilename == parsedEncryptedFile.originalFilename;
+        })) {
+            parsedEncryptedFile.originalFilename = baseName + u" (%1)"_s.arg(duplicateNumber++) + extension;
+        }
+
         if (!addEncryptedFile(parsedEncryptedFile)) {
             return false;
         }
@@ -1112,6 +1130,7 @@ bool FolderMetadata::moveFromFileDropToFiles()
 
     _fileDropEntries.clear();
     setFileDrop({});
+    restoreFilesOnFailure.dismiss();
 
     return true;
 }
