@@ -25,6 +25,7 @@
 #include <QHash>
 #include <QIcon>
 #include <QImage>
+#include <QJsonDocument>
 #include <QList>
 #include <QMenu>
 #include <QMimeDatabase>
@@ -926,6 +927,44 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
     });
 }
 
+// Everything the tray menu shows, as one string: while it is unchanged, the
+// menu built last time is still correct. This includes the account submenus:
+// on GNOME they only get new content from this rebuild, not from their own
+// aboutToShow (see #10646), so all of an account's data counts.
+QString trayMenuStateKey(const QMenu *menu, const Systray *systray)
+{
+    QVariantList state;
+    if (const auto userModel = UserModel::instance()) {
+        // roleNames() is protected in UserModel, public in its base.
+        const auto roles = static_cast<const QAbstractItemModel *>(userModel)->roleNames();
+        const auto accounts = AccountManager::instance()->accounts();
+        for (auto userId = 0; userId < userModel->rowCount(); ++userId) {
+            const auto userModelIndex = userModel->index(userId);
+            QVariantMap user;
+            for (auto role = roles.cbegin(); role != roles.cend(); ++role) {
+                user.insert(QString::fromUtf8(role.value()), userModel->data(userModelIndex, role.key()));
+            }
+            QVariantList apps;
+            if (userId < accounts.size() && accounts.at(userId)) {
+                for (const auto app : accounts.at(userId)->appList()) {
+                    apps.append(QVariant(QVariantList{app->name(), app->url(), app->iconUrl()}));
+                }
+            }
+            user.insert(QStringLiteral("apps"), apps);
+            state.append(user);
+        }
+    }
+    const auto iconSize = nativeMenuIconSize(menu);
+    state.append(QVariant(QVariantList{
+        static_cast<int>(systray->syncControlState()),
+        systray->enableAddAccount(),
+        nativeMenuIconPalette(menu).color(QPalette::Text).name(QColor::HexArgb),
+        iconSize.width(),
+        iconSize.height(),
+    }));
+    return QString::fromUtf8(QJsonDocument::fromVariant(state).toJson(QJsonDocument::Compact));
+}
+
 QPoint trayPopupPosition(const QMenu *menu, const QRect &iconRect, const Systray::WindowPosition position)
 {
     const auto cursorScreen = QGuiApplication::screenAt(QCursor::pos());
@@ -967,11 +1006,22 @@ void setupQtTrayContextMenu(QMenu *menu, Systray *systray)
     }
 
     populateTrayMenu(menu, systray);
+    menu->setProperty("trayMenuStateKey", trayMenuStateKey(menu, systray));
     QObject::connect(menu, &QMenu::aboutToShow, systray, [systray] {
         systray->setTrayContextMenuVisible(true);
     });
     QObject::connect(menu, &QMenu::aboutToShow, menu, [menu, systray] {
+        // Rebuilding replaces every QAction. With the D-Bus tray menu on Linux,
+        // each removal and insertion is its own com.canonical.dbusmenu
+        // LayoutUpdated with new item ids, and tray hosts (e.g. GNOME's
+        // AppIndicator extension) tear the open menu down and build it up
+        // again entry by entry. Only rebuild when something it shows changed.
+        const auto stateKey = trayMenuStateKey(menu, systray);
+        if (menu->property("trayMenuStateKey").toString() == stateKey) {
+            return;
+        }
         populateTrayMenu(menu, systray);
+        menu->setProperty("trayMenuStateKey", stateKey);
     });
     QObject::connect(menu, &QMenu::aboutToHide, systray, [systray] {
         systray->setTrayContextMenuVisible(false);

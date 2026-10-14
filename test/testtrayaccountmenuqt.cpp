@@ -182,6 +182,47 @@ private Q_SLOTS:
         }
         QVERIFY(hasSearch);
     }
+
+    void openingUnchangedMenuKeepsActions()
+    {
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        const auto initialActions = menu.actions();
+        QVERIFY(!initialActions.isEmpty());
+        const auto firstAction = QPointer<QAction>(initialActions.first());
+
+        constexpr auto openingCount = 3;
+        for (auto opening = 0; opening < openingCount; ++opening) {
+            QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+            QVERIFY(firstAction);
+            QCOMPARE(menu.actions(), initialActions);
+        }
+    }
+
+    void openingAfterAccountChangeRebuildsMenu()
+    {
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        const auto firstAction = QPointer<QAction>(menu.actions().first());
+
+        // A hidden account submenu is not refreshed on the change itself (see above),
+        // only by rebuilding the menu when it opens.
+        QVERIFY(setConnectionStatus(ConnectionValidator::Connected));
+        QVERIFY(firstAction);
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        QVERIFY(!firstAction);
+
+        const auto submenu = accountMenu(menu);
+        QVERIFY(submenu);
+        const auto searchText = QCoreApplication::translate("TrayAccountPopup", "Search");
+        auto hasSearch = false;
+        for (const auto action : submenu->actions()) {
+            hasSearch |= action->text() == searchText;
+        }
+        QVERIFY(hasSearch);
+    }
 };
 
 QTEST_MAIN(TestTrayAccountMenuQt)
