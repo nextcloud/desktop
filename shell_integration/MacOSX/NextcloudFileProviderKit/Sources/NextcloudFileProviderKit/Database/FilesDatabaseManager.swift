@@ -3,10 +3,12 @@
 
 @preconcurrency import FileProvider
 import Foundation
-import RealmSwift
+import GRDB
 
 ///
-/// Realm database abstraction and management.
+/// The file provider domain's metadata database.
+///
+/// Every method enters the database exactly once, through ``read(_:_:)`` or ``write(_:_:)``, and does its work in a worker which takes the open `Database`. Workers call only other workers, because the database access methods are not reentrant. Results leave the database as value types.
 ///
 public final class FilesDatabaseManager: Sendable {
     public enum ErrorCode: Int {
@@ -20,6 +22,16 @@ public final class FilesDatabaseManager: Sendable {
 
     static let errorDomain = "FilesDatabaseManager"
 
+    /// Why the database could not be opened. The domain must not be set up until a later attempt succeeds.
+    public enum OpenError: Error {
+        /// Neither a custom nor the default support directory is available.
+        case noDatabaseDirectory
+        /// A Realm database exists but could not be imported; it is left in place for the next attempt.
+        case importFailed(URL)
+        /// The database file could not be opened or migrated.
+        case openFailed(URL, underlying: any Error)
+    }
+
     static func error(code: ErrorCode, userInfo: [String: String]) -> NSError {
         NSError(domain: errorDomain, code: code.rawValue, userInfo: userInfo)
     }
@@ -31,23 +43,52 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedChangeDeliveryAcknowledgementState
+    /// Longest list bound into one `IN (...)` clause, well below SQLite's variable limit.
+    static let inClauseChunkSize = 500
+
+    ///
+    /// How far a write is synchronized to disk before it counts as done.
+    ///
+    /// Local-only state such as pins, exclusion markers and upload bookkeeping cannot be rebuilt from the server, so writes default to ``full``. Bulk writes of server-derived rows opt into ``relaxed``, which only risks the last commits before a power loss, never corruption.
+    ///
+    public enum WriteDurability: Sendable {
+        /// `PRAGMA synchronous = FULL`: the commit is on disk when the write returns.
+        case full
+        /// `PRAGMA synchronous = NORMAL`: the commit survives a crash of the process, not necessarily a power loss.
+        case relaxed
+
+        var pragma: String {
+            switch self {
+                case .full: "PRAGMA synchronous = FULL"
+                case .relaxed: "PRAGMA synchronous = NORMAL"
+            }
+        }
+    }
+
     let logger: FileProviderLogger
     let account: Account
 
-    var itemMetadatas: Results<RealmItemMetadata> {
-        ncDatabase().objects(RealmItemMetadata.self)
-    }
+    /// The open database: a pool on the domain's file, or an in-memory queue when no directory is available.
+    let writer: any DatabaseWriter
+
+    /// Location of the database file, `nil` when the database lives in memory.
+    let databaseURL: URL?
 
     ///
-    /// Convenience initializer which defines a default configuration for Realm.
+    /// Open the domain's database, creating, importing or migrating it as needed.
+    ///
+    /// A database left behind by a newer build is set up from scratch (see ``StoreVersionGuard``); a Realm database left behind by an older build is imported (see ``RealmStoreImporter``).
     ///
     /// - Parameters:
-    ///     - customConfiguration: Optional custom Realm configuration to use instead of the default one.
     ///     - account: The Nextcloud account for which the database is being created.
     ///     - customDatabaseDirectory: Optional custom directory where the database files should be stored. If not provided, the default directory will be used.
+    ///     - fileProviderDomainIdentifier: The domain whose data this database holds; also names the file.
+    ///     - log: The log to write to.
+    ///     - defaults: Where the domain's settings, including the last seen store version, are kept.
     ///
-    public init(realmConfiguration customConfiguration: Realm.Configuration? = nil, account: Account, databaseDirectory customDatabaseDirectory: URL? = nil, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging) {
+    /// - Throws: ``OpenError`` when no usable database can be opened. The caller must not set the domain up with a substitute, because nothing written to one would survive, and the next attempt may well succeed.
+    ///
+    public init(account: Account, databaseDirectory customDatabaseDirectory: URL? = nil, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging, defaults: UserDefaults = .standard) throws {
         self.account = account
         logger = FileProviderLogger(category: "FilesDatabaseManager", log: log)
 
@@ -55,92 +96,176 @@ public final class FilesDatabaseManager: Sendable {
 
         guard let databaseDirectory = customDatabaseDirectory ?? defaultDatabaseDirectory else {
             logger.fault("Neither custom nor default database directory defined!")
-            return
+            throw OpenError.noDatabaseDirectory
         }
 
         let databaseLocation = databaseDirectory
             .appendingPathComponent(fileProviderDomainIdentifier.rawValue)
+            .appendingPathExtension(DatabaseSchema.fileExtension)
+        databaseURL = databaseLocation
+
+        var domainDefaults = FileProviderDomainDefaults(identifier: fileProviderDomainIdentifier, log: log, defaults: defaults)
+        let seenVersion = max(domainDefaults.latestSeenDatabaseVersion ?? 0, StoreVersionGuard.recordedVersion(at: databaseLocation) ?? 0)
+
+        switch StoreVersionGuard.decide(seen: seenVersion) {
+            case let .downgrade(from):
+                logger.fault("The metadata database was written by a newer build. Setting it up from scratch.", [.url: databaseLocation.path, .name: "store version \(from), supported \(StoreVersion.current)"])
+                StoreVersionGuard.resetStore(at: databaseLocation, logger: logger)
+            case let .upgrade(from):
+                logger.info("Migrating the metadata database.", [.url: databaseLocation.path, .name: "store version \(from) to \(StoreVersion.current)"])
+            case .fresh, .current:
+                break
+        }
+
+        let realmLocation = databaseDirectory
+            .appendingPathComponent(fileProviderDomainIdentifier.rawValue)
             .appendingPathExtension("realm")
 
-        let configuration = customConfiguration ?? Realm.Configuration(
-            fileURL: databaseLocation,
-            schemaVersion: Self.schemaVersion.rawValue,
-            migrationBlock: { migration, oldSchemaVersion in
-                if oldSchemaVersion == SchemaVersion.initial.rawValue {
-                    var localFileMetadataOcIds = Set<String>()
+        if RealmStoreImporter.importIfNeeded(realmURL: realmLocation, sqliteURL: databaseLocation, logger: logger) == .failed {
+            // The next start retries the import; until then nothing may be written which that import would replace.
+            throw OpenError.importFailed(realmLocation)
+        }
 
-                    migration.enumerateObjects(ofType: "LocalFileMetadata") { oldObject, _ in
-                        guard let oldObject, let lfmOcId = oldObject["ocId"] as? String else {
-                            return
-                        }
+        writer = try Self.openDatabase(at: databaseLocation, label: fileProviderDomainIdentifier.rawValue, logger: logger)
+        logger.info("Opened metadata database.", [.url: databaseLocation.path])
+        domainDefaults.latestSeenDatabaseVersion = StoreVersion.current
 
-                        localFileMetadataOcIds.insert(lfmOcId)
-                    }
+        repairPersistedLogicalAddresses()
+    }
 
-                    migration.enumerateObjects(ofType: RealmItemMetadata.className()) { _, newObject in
-                        guard let newObject,
-                              let imOcId = newObject["ocId"] as? String,
-                              localFileMetadataOcIds.contains(imOcId)
-                        else { return }
+    // MARK: - Opening
 
-                        newObject["downloaded"] = true
-                        newObject["uploaded"] = true
-                    }
-                }
+    static func configuration(label: String) -> Configuration {
+        var configuration = Configuration()
+        configuration.label = "FilesDatabaseManager.\(label)"
+        configuration.busyMode = .timeout(5)
+        configuration.maximumReaderCount = 8
+        return configuration
+    }
 
-                if oldSchemaVersion < SchemaVersion.addedCanonicalPathKeysToRealmItemMetadata.rawValue {
-                    migration.enumerateObjects(ofType: RealmItemMetadata.className()) { _, newObject in
-                        guard let newObject,
-                              let serverUrl = newObject["serverUrl"] as? String,
-                              let fileName = newObject["fileName"] as? String
-                        else { return }
+    /// Open the file, migrating its schema.
+    ///
+    /// A file SQLite reports as corrupt is set aside and replaced. Any other failure, such as a busy or full disk, keeps the file untouched and is thrown, so the next start can try again.
+    ///
+    private static func openDatabase(at url: URL, label: String, logger: FileProviderLogger) throws -> any DatabaseWriter {
+        do {
+            return try openPool(at: url, label: label)
+        } catch {
+            guard isCorruptionError(error) else {
+                logger.fault("Could not open the metadata database.", [.url: url.path, .error: error])
+                throw OpenError.openFailed(url, underlying: error)
+            }
 
-                        newObject["normalizedServerUrl"] = serverUrl.precomposedStringWithCanonicalMapping
-                        newObject["normalizedFileName"] = fileName.precomposedStringWithCanonicalMapping
-                    }
-                }
-            },
-            objectTypes: [
-                RealmItemMetadata.self,
-                RealmExcludedFromSyncItem.self,
-                RemoteFileChunk.self,
-                RealmPendingChunkUploadCleanup.self,
-                RealmChangeDeliverySession.self,
-                RealmChangeDeliveryItem.self
-            ]
-        )
+            logger.fault("The metadata database is corrupt. Setting the file aside and starting with an empty one.", [.url: url.path, .error: error])
+        }
 
-        Realm.Configuration.defaultConfiguration = configuration
+        setAsideUnreadableDatabase(at: url, logger: logger)
 
         do {
-            _ = try Realm()
-            logger.info("Successfully created Realm.")
-            repairPersistedLogicalAddresses()
+            return try openPool(at: url, label: label)
         } catch {
-            logger.fault("Error creating Realm: \(error)")
+            logger.fault("Could not open a fresh metadata database.", [.url: url.path, .error: error])
+            throw OpenError.openFailed(url, underlying: error)
         }
     }
 
-    func ncDatabase() -> Realm {
-        let realm = try! Realm()
-        realm.refresh()
-        return realm
+    private static func isCorruptionError(_ error: Error) -> Bool {
+        guard let databaseError = error as? DatabaseError else {
+            return false
+        }
+
+        return [ResultCode.SQLITE_CORRUPT, .SQLITE_NOTADB].contains(databaseError.resultCode.primaryResultCode)
     }
 
+    private static func openPool(at url: URL, label: String) throws -> any DatabaseWriter {
+        let pool = try DatabasePool(path: url.path, configuration: configuration(label: label))
+        try DatabaseSchema.migrator.migrate(pool)
+        try pool.write { db in
+            try db.execute(sql: "PRAGMA user_version = \(StoreVersion.current)")
+        }
+        return pool
+    }
+
+    /// Rename the database file and its journal files so the next open starts from scratch and the broken file stays available for support.
+    private static func setAsideUnreadableDatabase(at url: URL, logger: FileProviderLogger) {
+        let suffix = ".unreadable-" + ISO8601DateFormatter().string(from: Date())
+
+        for path in [url.path, url.path + "-wal", url.path + "-shm"] where FileManager.default.fileExists(atPath: path) {
+            do {
+                try FileManager.default.moveItem(atPath: path, toPath: path + suffix)
+            } catch {
+                logger.error("Could not set aside an unreadable database file.", [.url: path, .error: error])
+            }
+        }
+    }
+
+    // MARK: - Access
+
+    /// Run a read; a failure is logged with `failure` and yields `nil`.
+    func read<T>(_ failure: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], _ body: (Database) throws -> T) -> T? {
+        do {
+            return try writer.read(body)
+        } catch {
+            var details = details
+            details[.error] = error
+            logger.error(failure, details)
+            return nil
+        }
+    }
+
+    /// Run a write in one transaction with the given durability; a failure is logged with `failure` and yields `nil`.
+    func write<T>(_ failure: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], durability: WriteDurability = .full, _ body: (Database) throws -> T) -> T? {
+        do {
+            return try write(durability: durability, body)
+        } catch {
+            var details = details
+            details[.error] = error
+            logger.error(failure, details)
+            return nil
+        }
+    }
+
+    /// Run a write in one transaction with the given durability, rethrowing a failure.
+    ///
+    /// The synchronization level is a property of the connection and cannot change inside a transaction, so it is set on the writer right before the transaction opens.
+    ///
+    func write<T>(durability: WriteDurability, _ body: (Database) throws -> T) throws -> T {
+        try writer.writeWithoutTransaction { db in
+            try db.execute(sql: durability.pragma)
+
+            var result: T?
+            try db.inTransaction {
+                result = try body(db)
+                return .commit
+            }
+
+            return result!
+        }
+    }
+
+    /// Checkpoint the write-ahead log so the file is complete on disk before the process goes away.
+    public func checkpointForShutdown() {
+        do {
+            try writer.writeWithoutTransaction { db in
+                try db.checkpoint(.passive)
+            }
+        } catch {
+            logger.error("Could not checkpoint the metadata database.", [.error: error])
+        }
+    }
+
+    // MARK: - Lookups
+
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
-        !itemMetadatas.where { $0.account == account }.isEmpty
+        read("Could not look up whether the account has any item metadata.", [.account: account]) { db in
+            try !ItemMetadataRecord.filter(ItemMetadataRecord.Columns.account == account).isEmpty(db)
+        } ?? false
     }
 
     public func itemMetadata(ocId: String) -> SendableItemMetadata? {
-        // Realm objects are live-fire, i.e. they will be changed and invalidated according to
-        // changes in the db.
-        //
-        // Let's therefore create a copy
-        if let itemMetadata = itemMetadatas.where({ $0.ocId == ocId }).first {
-            return SendableItemMetadata(value: itemMetadata)
-        }
-
-        return nil
+        read("Could not look up item metadata.", [.item: ocId]) { db in
+            try self.itemMetadata(ocId: ocId, in: db)?.metadata
+        } ?? nil
     }
 
     public func itemMetadata(_ identifier: NSFileProviderItemIdentifier) -> SendableItemMetadata? {
@@ -149,7 +274,19 @@ public final class FilesDatabaseManager: Sendable {
 
     /// Return whether metadata exists for any numeric WebDAV file ID received from notify-push.
     public func containsAnyItemMetadata(fileIds: Set<String>) -> Bool {
-        itemMetadatas.contains { fileIds.contains($0.fileId) }
+        guard !fileIds.isEmpty else {
+            return false
+        }
+
+        return read("Could not look up item metadata by file identifiers.") { db in
+            for chunk in Array(fileIds).chunked(into: Self.inClauseChunkSize) {
+                if try !ItemMetadataRecord.filter(chunk.contains(ItemMetadataRecord.Columns.fileId)).isEmpty(db) {
+                    return true
+                }
+            }
+
+            return false
+        } ?? false
     }
 
     ///
@@ -162,6 +299,61 @@ public final class FilesDatabaseManager: Sendable {
     /// - Returns: Metadata related to the item found by the parameters.
     ///
     public func itemMetadata(account: String, locatedAtRemoteUrl rawRemoteURL: String) -> SendableItemMetadata? {
+        read("Could not look up item metadata by remote URL.", [.account: account, .url: rawRemoteURL]) { db in
+            try self.itemMetadata(account: account, locatedAtRemoteUrl: rawRemoteURL, in: db)?.metadata
+        } ?? nil
+    }
+
+    ///
+    /// Fetch the metadata object for the root container of the given account.
+    ///
+    /// This is useful for when you have only the `NSFileProviderItemIdentifier.rootContainer` but no `ocId` to look up metadata by.
+    ///
+    public func rootItemMetadata(account: Account) -> SendableItemMetadata? {
+        read("Could not look up the root item metadata.", [.account: account.ncKitAccount]) { db in
+            try ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.Columns.account == account.ncKitAccount
+                        && ItemMetadataRecord.Columns.directory == true
+                        && ItemMetadataRecord.Columns.path == Account.webDavFilesUrlSuffix
+                )
+                .order(ItemMetadataRecord.Columns.ocId)
+                .fetchRecord(db, logger: logger)?
+                .metadata
+        } ?? nil
+    }
+
+    public func itemMetadatas(account: String) -> [SendableItemMetadata] {
+        read("Could not fetch the account's item metadata.", [.account: account]) { db in
+            try ItemMetadataRecord
+                .filter(ItemMetadataRecord.Columns.account == account)
+                .fetchRecords(db, logger: logger)
+                .map(\.metadata)
+        } ?? []
+    }
+
+    public func itemMetadatas(
+        account: String, underServerUrl serverUrl: String
+    ) -> [SendableItemMetadata] {
+        read("Could not fetch the item metadata under a server URL.", [.account: account, .url: serverUrl]) { db in
+            try ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.Columns.account == account
+                        && ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: true)
+                )
+                .fetchRecords(db, logger: logger)
+                .map(\.metadata)
+        } ?? []
+    }
+
+    // MARK: - Lookup workers
+
+    func itemMetadata(ocId: String, in db: Database) throws -> ItemMetadataRecord? {
+        try ItemMetadataRecord.filter(key: ocId).fetchRecord(db, logger: logger)
+    }
+
+    /// The row at a logical address derived from a full remote URL. A live row wins over a deleted one at the same address.
+    func itemMetadata(account: String, locatedAtRemoteUrl rawRemoteURL: String, in db: Database) throws -> ItemMetadataRecord? {
         guard var urlComponents = URLComponents(string: rawRemoteURL) else {
             logger.error("Failed to create URL components from raw remote URL.", [.account: account, .url: rawRemoteURL])
             return nil
@@ -199,47 +391,14 @@ public final class FilesDatabaseManager: Sendable {
         let parentPath = "/\(parentPathComponents.joined(separator: "/"))"
         let rawParentURL = baseURL.absoluteString + parentPath
 
-        if let metadata = itemMetadatas.where({ item in
-            RealmItemMetadata.hasLocation(
-                item,
-                serverUrl: rawParentURL,
-                fileName: fileName
-            )
-        }).first {
-            return SendableItemMetadata(value: metadata)
-        }
-
-        return nil
+        return try ItemMetadataRecord
+            .filter(ItemMetadataRecord.hasLocation(serverUrl: rawParentURL, fileName: fileName))
+            .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
+            .fetchRecord(db, logger: logger)
     }
 
-    ///
-    /// Fetch the metadata object for the root container of the given account.
-    ///
-    /// This is useful for when you have only the `NSFileProviderItemIdentifier.rootContainer` but no `ocId` to look up metadata by.
-    ///
-    public func rootItemMetadata(account: Account) -> SendableItemMetadata? {
-        guard let object = itemMetadatas.where({ $0.account == account.ncKitAccount && $0.directory && $0.path == Account.webDavFilesUrlSuffix }).first else {
-            return nil
-        }
-
-        return SendableItemMetadata(value: object)
-    }
-
-    public func itemMetadatas(account: String) -> [SendableItemMetadata] {
-        itemMetadatas
-            .where { $0.account == account }
-            .toUnmanagedResults()
-    }
-
-    public func itemMetadatas(
-        account: String, underServerUrl serverUrl: String
-    ) -> [SendableItemMetadata] {
-        itemMetadatas
-            .where { item in
-                item.account == account &&
-                    RealmItemMetadata.hasServerUrl(item, equalTo: serverUrl, includingDescendants: true)
-            }
-            .toUnmanagedResults()
+    func parentDirectoryMetadataForItem(_ itemMetadata: any ItemMetadata, in db: Database) throws -> ItemMetadataRecord? {
+        try self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl, in: db)
     }
 
     ///
@@ -261,30 +420,38 @@ public final class FilesDatabaseManager: Sendable {
     /// against a synthesised root keyed by ocId, not by serverUrl/fileName.
     ///
     func inheritedKeepDownloaded(for metadata: SendableItemMetadata) -> Bool {
-        if let parent = parentDirectoryMetadataForItem(metadata) {
+        read("Could not look up the inherited keep-downloaded flag.", [.item: metadata.ocId]) { db in
+            try inheritedKeepDownloaded(for: metadata, in: db)
+        } ?? false
+    }
+
+    func inheritedKeepDownloaded(for metadata: SendableItemMetadata, in db: Database) throws -> Bool {
+        if let parent = try parentDirectoryMetadataForItem(metadata, in: db) {
             return parent.keepDownloaded
         }
 
-        if let root = itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue) {
+        if let root = try itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue, in: db) {
             return root.keepDownloaded
         }
 
         return false
     }
 
+    // MARK: - Writing
+
+    /// Persist `metadata`, evicting any other live row at its logical address first.
+    func insertItemMetadata(_ metadata: SendableItemMetadata, in db: Database) throws {
+        try evictLogicalDuplicates(of: metadata, in: db)
+        try ItemMetadataRecord(metadata).upsertRow(db)
+        logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
+    }
+
     private func processItemMetadatasToDelete(
-        existingMetadatas: Results<RealmItemMetadata>,
+        existingMetadatas: [ItemMetadataRecord],
         updatedMetadatas: [SendableItemMetadata]
-    ) -> [RealmItemMetadata] {
-        // O(1) membership test instead of a per-existing linear scan of `updatedMetadatas`. The previous
-        // `updatedMetadatas.contains(where:)` made this loop O(existing × updated) — with the linear scan
-        // in `processItemMetadatasToUpdate` it was the dominant cost of a large non-paginated depth-1
-        // write (measured ≈19 min, never completing, for a 6982-item flat folder; no index can fix an
-        // in-memory scan). `existingMetadata` is already the managed row from the caller's `database`
-        // handle and is value-copied before the write, so it is used directly — this also removes the
-        // per-item `itemMetadatas` (`ncDatabase()`) re-open the old `.where{}.first` fetch incurred.
+    ) -> [ItemMetadataRecord] {
         let updatedOcIds = Set(updatedMetadatas.map(\.ocId))
-        var deletedMetadatas: [RealmItemMetadata] = []
+        var deletedMetadatas: [ItemMetadataRecord] = []
 
         for existingMetadata in existingMetadatas where !updatedOcIds.contains(existingMetadata.ocId) {
             deletedMetadatas.append(existingMetadata)
@@ -295,15 +462,13 @@ public final class FilesDatabaseManager: Sendable {
         return deletedMetadatas
     }
 
-    private func processItemMetadatasToUpdate(existingMetadatas: Results<RealmItemMetadata>, updatedMetadatas: [SendableItemMetadata], keepExistingDownloadState: Bool) -> (newMetadatas: [SendableItemMetadata], updatedMetadatas: [SendableItemMetadata], directoriesNeedingRename: [SendableItemMetadata]) {
+    private func processItemMetadatasToUpdate(existingMetadatas: [ItemMetadataRecord], updatedMetadatas: [SendableItemMetadata], keepExistingDownloadState: Bool, in db: Database) throws -> (newMetadatas: [SendableItemMetadata], updatedMetadatas: [SendableItemMetadata], directoriesNeedingRename: [SendableItemMetadata]) {
         var returningNewMetadatas: [SendableItemMetadata] = []
         var returningUpdatedMetadatas: [SendableItemMetadata] = []
         var directoriesNeedingRename: [SendableItemMetadata] = []
 
-        // O(1) ocId lookup instead of `existingMetadatas.first(where:)` — the old per-item linear scan of
-        // a Realm `Results` was O(updated × existing), the other half of the measured O(N²) large-folder
-        // write. Keyed once up front (first occurrence wins, matching `.first(where:)`).
-        var existingByOcId: [String: RealmItemMetadata] = [:]
+        // Keyed once up front; the first occurrence of an identifier wins.
+        var existingByOcId: [String: ItemMetadataRecord] = [:]
         existingByOcId.reserveCapacity(existingMetadatas.count)
         for existingMetadata in existingMetadatas where existingByOcId[existingMetadata.ocId] == nil {
             existingByOcId[existingMetadata.ocId] = existingMetadata
@@ -357,7 +522,7 @@ public final class FilesDatabaseManager: Sendable {
                 if let cached = inheritedKeepDownloadedByServerUrl[updatedMetadata.serverUrl] {
                     updatedMetadata.keepDownloaded = cached
                 } else {
-                    let inherited = inheritedKeepDownloaded(for: updatedMetadata)
+                    let inherited = try inheritedKeepDownloaded(for: updatedMetadata, in: db)
                     inheritedKeepDownloadedByServerUrl[updatedMetadata.serverUrl] = inherited
                     updatedMetadata.keepDownloaded = inherited
                 }
@@ -373,15 +538,15 @@ public final class FilesDatabaseManager: Sendable {
 
     /// ONLY HANDLES UPDATES FOR IMMEDIATE CHILDREN
     /// (in case of directory renames/moves, the changes are recursed down)
+    ///
+    /// Everything, including the renames of moved directories, happens in one transaction. The rows are server-derived, so the write is relaxed.
     public func depth1ReadUpdateItemMetadatas(
         account: String,
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
         keepExistingDownloadState: Bool
     ) -> ChangeSet? {
-        let database = ncDatabase()
-
-        do {
+        write("Could not update any item metadatas.", [.account: account, .url: serverUrl], durability: .relaxed) { db in
             // Find the metadatas that we previously knew to be on the server for this account
             // (we need to check if they were uploaded to prevent deleting ignored/lock files)
             //
@@ -391,15 +556,16 @@ public final class FilesDatabaseManager: Sendable {
             if cleanServerUrl.last == "/" {
                 cleanServerUrl.removeLast()
             }
-            let existingMetadatas = database
-                .objects(RealmItemMetadata.self)
-                .where { item in
+
+            let existingMetadatas = try ItemMetadataRecord
+                .filter(
                     // Don't worry — root will be updated at the end of this method if is the target
-                    item.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue &&
-                        RealmItemMetadata.hasServerUrl(item, equalTo: cleanServerUrl, includingDescendants: false) &&
-                        item.account == account &&
-                        item.uploaded
-                }
+                    ItemMetadataRecord.Columns.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
+                        && ItemMetadataRecord.hasServerUrl(equalTo: cleanServerUrl, includingDescendants: false)
+                        && ItemMetadataRecord.Columns.account == account
+                        && ItemMetadataRecord.Columns.uploaded == true
+                )
+                .fetchRecords(db, logger: logger)
 
             var updatedChildMetadatas = updatedMetadatas
 
@@ -417,15 +583,16 @@ public final class FilesDatabaseManager: Sendable {
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedChildMetadatas
             ).map {
-                var metadata = SendableItemMetadata(value: $0)
+                var metadata = $0.metadata
                 metadata.deleted = true
                 return metadata
             }
 
-            let metadatasToChange = processItemMetadatasToUpdate(
+            let metadatasToChange = try processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedChildMetadatas,
-                keepExistingDownloadState: keepExistingDownloadState
+                keepExistingDownloadState: keepExistingDownloadState,
+                in: db
             )
 
             var metadatasToUpdate = metadatasToChange.updatedMetadatas
@@ -433,10 +600,11 @@ public final class FilesDatabaseManager: Sendable {
             let directoriesNeedingRename = metadatasToChange.directoriesNeedingRename
 
             for metadata in directoriesNeedingRename {
-                if let updatedDirectoryChildren = renameDirectoryAndPropagateToChildren(
+                if let updatedDirectoryChildren = try renameDirectoryAndPropagateToChildren(
                     ocId: metadata.ocId,
                     newServerUrl: metadata.serverUrl,
-                    newFileName: metadata.fileName
+                    newFileName: metadata.fileName,
+                    in: db
                 ) {
                     metadatasToUpdate += updatedDirectoryChildren
                 }
@@ -449,7 +617,7 @@ public final class FilesDatabaseManager: Sendable {
                     readTargetMetadata.visitedDirectory = true
                 }
 
-                if let existing = itemMetadata(ocId: readTargetMetadata.ocId) {
+                if let existing = try itemMetadata(ocId: readTargetMetadata.ocId, in: db) {
                     if readTargetMetadata.etag == existing.etag {
                         readTargetMetadata.fileProviderContentVersion = existing.fileProviderContentVersion
                     }
@@ -474,41 +642,36 @@ public final class FilesDatabaseManager: Sendable {
                 } else {
                     logger.info("Depth 1 read target is new: \(readTargetMetadata.ocId)")
                     // Inherit from the parent so a directory appearing here via remote enumeration (e.g. created on the server while the user already pinned its parent) picks up the same pin as siblings (#10054).
-                    readTargetMetadata.keepDownloaded = inheritedKeepDownloaded(for: readTargetMetadata)
+                    readTargetMetadata.keepDownloaded = try inheritedKeepDownloaded(for: readTargetMetadata, in: db)
                     metadatasToCreate.insert(readTargetMetadata, at: 0)
                 }
             }
 
-            try database.write {
-                // Evict any logical-address duplicates before persisting fresh
-                // payloads, so an ocId rotation (or rename whose target collides
-                // with a third row) does not leave two non-deleted siblings at
-                // the same `(account, serverUrl, fileName)`.
-                for metadata in metadatasToCreate {
-                    evictLogicalDuplicates(of: metadata, in: database)
-                }
-                for metadata in metadatasToUpdate {
-                    evictLogicalDuplicates(of: metadata, in: database)
-                }
+            // Evict any logical-address duplicates before persisting fresh
+            // payloads, so an ocId rotation (or rename whose target collides
+            // with a third row) does not leave two non-deleted siblings at
+            // the same `(account, serverUrl, fileName)`.
+            for metadata in metadatasToCreate {
+                try evictLogicalDuplicates(of: metadata, in: db)
+            }
+            for metadata in metadatasToUpdate {
+                try evictLogicalDuplicates(of: metadata, in: db)
+            }
 
-                // Do not delete the metadatas that have been deleted
-                database.add(metadatasToDelete.map { RealmItemMetadata(value: $0) }, update: .modified)
-                database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
-                database.add(metadatasToCreate.map { RealmItemMetadata(value: $0) }, update: .all)
+            // Do not delete the metadatas that have been deleted
+            for metadata in metadatasToDelete + metadatasToUpdate + metadatasToCreate {
+                try ItemMetadataRecord(metadata).upsertRow(db)
+            }
 
-                if let visitToRecord,
-                   let row = database.objects(RealmItemMetadata.self).where({ $0.ocId == visitToRecord }).first
-                {
-                    row.visitedDirectory = true
-                }
+            if let visitToRecord {
+                try ItemMetadataRecord
+                    .filter(key: visitToRecord)
+                    .updateAll(db, ItemMetadataRecord.Columns.visitedDirectory.set(to: true))
             }
 
             return ChangeSet(
                 created: metadatasToCreate, updated: metadatasToUpdate, deleted: metadatasToDelete
             )
-        } catch {
-            logger.error("Could not update any item metadatas.", [.error: error])
-            return nil
         }
     }
 
@@ -517,109 +680,82 @@ public final class FilesDatabaseManager: Sendable {
     public func setStatusForItemMetadata(
         _ metadata: SendableItemMetadata, status: Status
     ) -> SendableItemMetadata? {
-        guard let result = itemMetadatas.where({ $0.ocId == metadata.ocId }).first else {
-            logger.debug("Did not update status for item metadata as it was not found. ocID: \(metadata.ocId)")
-            return nil
-        }
-
-        do {
-            let database = ncDatabase()
-            try database.write {
-                result.status = status.rawValue
-                if result.isDownload {
-                    result.downloaded = false
-                } else if result.isUpload {
-                    result.uploaded = false
-                }
-
-                logger.debug("Updated status for item metadata.", [
-                    .item: metadata.ocId,
-                    .eTag: metadata.etag,
-                    .name: metadata.fileName,
-                    .syncTime: metadata.syncTime
-                ])
+        write("Could not update status for item metadata.", [.item: metadata.ocId, .eTag: metadata.etag, .name: metadata.fileName]) { db in
+            guard var record = try itemMetadata(ocId: metadata.ocId, in: db) else {
+                logger.debug("Did not update status for item metadata as it was not found. ocID: \(metadata.ocId)")
+                return nil
             }
-            return SendableItemMetadata(value: result)
-        } catch {
-            logger.error("Could not update status for item metadata.", [
+
+            record.status = status.rawValue
+            if record.isDownload {
+                record.downloaded = false
+            } else if record.isUpload {
+                record.uploaded = false
+            }
+
+            try record.upsertRow(db)
+
+            logger.debug("Updated status for item metadata.", [
                 .item: metadata.ocId,
                 .eTag: metadata.etag,
-                .error: error,
-                .name: metadata.fileName
+                .name: metadata.fileName,
+                .syncTime: metadata.syncTime
             ])
-        }
 
-        return nil
+            return record.metadata
+        } ?? nil
     }
 
-    public func addItemMetadata(_ metadata: SendableItemMetadata) {
-        let database = ncDatabase()
-
-        do {
-            try database.write {
-                evictLogicalDuplicates(of: metadata, in: database)
-                database.add(RealmItemMetadata(value: metadata), update: .all)
-                logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
-            }
-        } catch {
-            logger.error("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl, .error: error])
+    /// Persist `metadata`, evicting any other live row at its logical address first.
+    ///
+    /// - Parameter durability: ``WriteDurability/full`` unless the row only mirrors the server.
+    ///
+    public func addItemMetadata(_ metadata: SendableItemMetadata, durability: WriteDurability = .full) {
+        write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl], durability: durability) { db in
+            try insertItemMetadata(metadata, in: db)
         }
     }
 
-    /**
-     * @brief Records that the provider returned `.excludedFromSync` for an item.
-     *
-     * The marker is stored separately from item metadata so remote enumeration and
-     * materialization updates cannot overwrite it before the system calls `deleteItem`.
-     *
-     * @param ocId The file provider item identifier to mark.
-     * @return `true` when the marker was stored successfully.
-     */
+    /// Records that the provider returned `.excludedFromSync` for an item.
+    ///
+    /// The marker is stored separately from item metadata so remote enumeration and
+    /// materialization updates cannot overwrite it before the system calls `deleteItem`.
+    ///
+    /// - Parameter ocId: The file provider item identifier to mark.
+    /// - Returns: `true` when the marker was stored successfully.
     @discardableResult
     func markItemAsExcludedFromSync(ocId: String) -> Bool {
-        let database = ncDatabase()
-
-        do {
-            try database.write {
-                database.add(RealmExcludedFromSyncItem(ocId: ocId), update: .all)
-            }
+        write("Could not mark item as excluded from sync.", [.item: ocId]) { db in
+            try ExcludedFromSyncItemRecord(ocId: ocId).upsert(db)
             return true
-        } catch {
-            logger.error("Could not mark item as excluded from sync.", [.item: ocId, .error: error])
-            return false
+        } ?? false
+    }
+
+    /// Returns whether an item is awaiting the deletion callback caused by `.excludedFromSync`, or `false` when the database cannot be read.
+    /// - Parameter ocId: The file provider item identifier to look up.
+    func isItemExcludedFromSync(ocId: String) -> Bool {
+        (try? excludedFromSyncMarkerExists(ocId: ocId)) ?? false
+    }
+
+    /// Returns whether an item is awaiting the deletion callback caused by `.excludedFromSync`.
+    ///
+    /// Throws when the database cannot be read, so a caller about to delete on the server can refuse instead of treating an excluded item as an ordinary deletion.
+    ///
+    func excludedFromSyncMarkerExists(ocId: String) throws -> Bool {
+        try writer.read { db in
+            try ExcludedFromSyncItemRecord.exists(db, key: ocId)
         }
     }
 
-    /**
-     * @brief Returns whether an item is awaiting the deletion callback caused by `.excludedFromSync`.
-     * @param ocId The file provider item identifier to look up.
-     */
-    func isItemExcludedFromSync(ocId: String) -> Bool {
-        ncDatabase().object(ofType: RealmExcludedFromSyncItem.self, forPrimaryKey: ocId) != nil
-    }
-
-    /**
-     * @brief Removes the durable exclusion marker after local metadata deletion succeeds.
-     * @param ocId The file provider item identifier whose marker should be removed.
-     * @return `true` when the marker was removed successfully or was already absent.
-     */
+    /// Removes the durable exclusion marker after local metadata deletion succeeds.
+    /// - Parameter ocId: The file provider item identifier whose marker should be removed.
+    /// - Returns: `true` when the marker was removed successfully or was already absent.
     @discardableResult
     func removeExcludedFromSyncMarker(ocId: String) -> Bool {
-        let database = ncDatabase()
-
-        guard let marker = database.object(ofType: RealmExcludedFromSyncItem.self, forPrimaryKey: ocId) else {
+        write("Could not remove excluded-from-sync marker.", [.item: ocId]) { db in
+            _ = try ExcludedFromSyncItemRecord.deleteOne(db, key: ocId)
             return true
-        }
-
-        do {
-            try database.write {
-                database.delete(marker)
-            }
-            return true
-        } catch {
-            logger.error("Could not remove excluded-from-sync marker.", [.item: ocId, .error: error])
-            return false
-        }
+        } ?? false
     }
 
     ///
@@ -631,9 +767,8 @@ public final class FilesDatabaseManager: Sendable {
     /// ``processItemMetadatasToUpdate`` for non-paginated reads. Use this from
     /// any code path that ingests fresh PROPFIND results (e.g. paginated
     /// enumeration); plain ``addItemMetadata(_:)`` would otherwise overwrite
-    /// these fields back to their defaults via Realm's `update: .all`,
-    /// silently undoing user-visible state such as "Always keep downloaded"
-    /// (#9923).
+    /// these fields back to their defaults, silently undoing user-visible
+    /// state such as "Always keep downloaded" (#9923).
     ///
     /// Returns the merged metadata that was persisted. Callers that report
     /// items back to the file-provider framework MUST forward the returned
@@ -653,44 +788,9 @@ public final class FilesDatabaseManager: Sendable {
     public func addItemMetadataPreservingLocalState(_ metadata: SendableItemMetadata, preserveVisitedDirectory: Bool = true) -> SendableItemMetadata {
         var toWrite = metadata
 
-        let metadatas = ncDatabase().objects(RealmItemMetadata.self)
-
-        if let existing = metadatas.where({ $0.ocId == metadata.ocId }).first {
-            toWrite.downloaded = existing.downloaded
-            toWrite.keepDownloaded = existing.keepDownloaded
-
-            if preserveVisitedDirectory {
-                toWrite.visitedDirectory = existing.visitedDirectory
-            }
-
-            toWrite.lockToken = existing.lockToken
-            if toWrite.etag == existing.etag {
-                toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
-            }
-        } else {
-            // The ocId lookup missed. Before falling back to defaults from the
-            // server payload, look for a single non-deleted, non-local-lock row
-            // at the same logical address — an ocId rotation (restore-from-
-            // trash, recreate during reconnect, upload finalizer assigning a
-            // new server-side ocId) leaves the local-only state on the previous
-            // row, and #9923's preservation contract would otherwise silently
-            // drop `keepDownloaded`, `downloaded`, `visitedDirectory`, and
-            // `lockToken`. Only carry over when exactly one candidate exists:
-            // multiple candidates mean the DB is already in the duplicated
-            // state and choosing one would risk merging from the row about to
-            // be evicted. Eviction in `addItemMetadata` will then prune the
-            // prior row in the same write that persists the fresh one.
-            let logicalCandidates = metadatas.where { item in
-                RealmItemMetadata.hasLocation(
-                    item,
-                    serverUrl: metadata.serverUrl,
-                    fileName: metadata.fileName
-                )
-                    && !item.deleted
-                    && !item.isLockFileOfLocalOrigin
-            }
-
-            if logicalCandidates.count == 1, let existing = logicalCandidates.first {
+        // Server-derived rows written once per item during enumeration; the local flags they carry over were committed durably when they were set.
+        write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl], durability: .relaxed) { db in
+            if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
                 toWrite.downloaded = existing.downloaded
                 toWrite.keepDownloaded = existing.keepDownloaded
 
@@ -703,16 +803,51 @@ public final class FilesDatabaseManager: Sendable {
                     toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
                 }
             } else {
-                // No prior row at this ocId or logical address: this is a
-                // genuinely new item. Inherit the parent's "Always keep
-                // downloaded" flag so a file surfacing here via remote
-                // enumeration acquires the same pin as its already-pinned
-                // siblings (#10054).
-                toWrite.keepDownloaded = inheritedKeepDownloaded(for: metadata)
+                // The ocId lookup missed. Before falling back to defaults from the
+                // server payload, look for a single non-deleted, non-local-lock row
+                // at the same logical address — an ocId rotation (restore-from-
+                // trash, recreate during reconnect, upload finalizer assigning a
+                // new server-side ocId) leaves the local-only state on the previous
+                // row, and #9923's preservation contract would otherwise silently
+                // drop `keepDownloaded`, `downloaded`, `visitedDirectory`, and
+                // `lockToken`. Only carry over when exactly one candidate exists:
+                // multiple candidates mean the DB is already in the duplicated
+                // state and choosing one would risk merging from the row about to
+                // be evicted. Eviction in `insertItemMetadata` will then prune the
+                // prior row in the same write that persists the fresh one.
+                let logicalCandidates = try ItemMetadataRecord
+                    .filter(
+                        ItemMetadataRecord.hasLocation(serverUrl: metadata.serverUrl, fileName: metadata.fileName)
+                            && ItemMetadataRecord.Columns.deleted == false
+                            && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false
+                    )
+                    .fetchRecords(db, logger: logger)
+
+                if logicalCandidates.count == 1, let existing = logicalCandidates.first {
+                    toWrite.downloaded = existing.downloaded
+                    toWrite.keepDownloaded = existing.keepDownloaded
+
+                    if preserveVisitedDirectory {
+                        toWrite.visitedDirectory = existing.visitedDirectory
+                    }
+
+                    toWrite.lockToken = existing.lockToken
+                    if toWrite.etag == existing.etag {
+                        toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
+                    }
+                } else {
+                    // No prior row at this ocId or logical address: this is a
+                    // genuinely new item. Inherit the parent's "Always keep
+                    // downloaded" flag so a file surfacing here via remote
+                    // enumeration acquires the same pin as its already-pinned
+                    // siblings (#10054).
+                    toWrite.keepDownloaded = try inheritedKeepDownloaded(for: metadata, in: db)
+                }
             }
+
+            try insertItemMetadata(toWrite, in: db)
         }
 
-        addItemMetadata(toWrite)
         return toWrite
     }
 
@@ -725,20 +860,13 @@ public final class FilesDatabaseManager: Sendable {
     ///     - ocId: The unique identifier of the item.
     ///
     @discardableResult public func deleteItemMetadata(ocId: String) -> Bool {
-        do {
-            let results = itemMetadatas.where { $0.ocId == ocId }
-            let database = ncDatabase()
-
-            try database.write {
-                results.forEach { $0.deleted = true }
-                logger.debug("Marked item as deleted.", [.item: ocId])
-            }
-
+        write("Could not mark item as deleted.", [.item: ocId]) { db in
+            try ItemMetadataRecord
+                .filter(key: ocId)
+                .updateAll(db, ItemMetadataRecord.Columns.deleted.set(to: true))
+            logger.debug("Marked item as deleted.", [.item: ocId])
             return true
-        } catch {
-            logger.error("Could not mark item as deleted.", [.item: ocId, .error: error])
-            return false
-        }
+        } ?? false
     }
 
     ///
@@ -750,42 +878,34 @@ public final class FilesDatabaseManager: Sendable {
     ///     - ocId: The unique identifier of the item.
     ///
     public func removeItemMetadata(ocId: String) {
-        do {
-            let database = ncDatabase()
-            let results = itemMetadatas.where { $0.ocId == ocId }
-
-            try database.write {
-                database.delete(results)
-                logger.debug("Removed item metadata from database.", [.item: ocId])
-            }
-        } catch {
-            logger.error("Could not remove item metadata.", [.item: ocId, .error: error])
+        write("Could not remove item metadata.", [.item: ocId]) { db in
+            _ = try ItemMetadataRecord.deleteOne(db, key: ocId)
+            logger.debug("Removed item metadata from database.", [.item: ocId])
         }
     }
 
     public func renameItemMetadata(ocId: String, newServerUrl: String, newFileName: String) {
-        guard let itemMetadata = itemMetadatas.where({ $0.ocId == ocId }).first else {
+        write("Could not rename filename of item metadata with ocID: \(ocId) to proposed name \(newFileName) at proposed serverUrl \(newServerUrl).") { db in
+            try renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName, in: db)
+        }
+    }
+
+    func renameItemMetadata(ocId: String, newServerUrl: String, newFileName: String, in db: Database) throws {
+        guard var itemMetadata = try itemMetadata(ocId: ocId, in: db) else {
             logger.error("Could not find an item with ocID \(ocId) to rename to \(newFileName)")
             return
         }
 
-        do {
-            let database = ncDatabase()
-            try database.write {
-                let oldFileName = itemMetadata.fileName
-                let oldServerUrl = itemMetadata.serverUrl
+        let oldFileName = itemMetadata.fileName
+        let oldServerUrl = itemMetadata.serverUrl
 
-                itemMetadata.updateLocation(serverUrl: newServerUrl, fileName: newFileName)
-                itemMetadata.fileNameView = newFileName
-                itemMetadata.lockToken = nil
+        itemMetadata.updateLocation(serverUrl: newServerUrl, fileName: newFileName)
+        itemMetadata.fileNameView = newFileName
+        itemMetadata.lockToken = nil
 
-                database.add(itemMetadata, update: .all)
+        try itemMetadata.upsertRow(db)
 
-                logger.debug("Renamed item \(oldFileName) to \(newFileName), moved from serverUrl: \(oldServerUrl) to serverUrl: \(newServerUrl)")
-            }
-        } catch {
-            logger.error("Could not rename filename of item metadata with ocID: \(ocId) to proposed name \(newFileName) at proposed serverUrl \(newServerUrl).", [.error: error])
-        }
+        logger.debug("Renamed item \(oldFileName) to \(newFileName), moved from serverUrl: \(oldServerUrl) to serverUrl: \(newServerUrl)")
     }
 
     public func parentItemIdentifierFromMetadata(
@@ -839,25 +959,21 @@ public final class FilesDatabaseManager: Sendable {
         return NSFileProviderItemIdentifier(parentMetadata.ocId)
     }
 
-    private func managedMaterialisedItemMetadatas() -> Results<RealmItemMetadata> {
-        itemMetadatas.where { candidate in
-            let isVisitedDirectory = candidate.directory && candidate.visitedDirectory
-            let isDownloadedFile = candidate.directory == false && candidate.downloaded
-
-            return isVisitedDirectory || isDownloadedFile
-        }
-    }
-
     ///
     /// Return metadata for materialized file provider items.
     ///
     /// - Parameters:
     ///     - account: The account identifier to filter by.
     ///
-    /// - Returns: An array of sendable metadata objects.
+    /// - Returns: An array of sendable metadata objects, or `nil` when the database could not be read. An empty array means nothing is materialized; `nil` must not be taken for that.
     ///
-    public func materialisedItemMetadatas(account _: String) -> [SendableItemMetadata] {
-        managedMaterialisedItemMetadatas().toUnmanagedResults()
+    public func materialisedItemMetadatas(account _: String) -> [SendableItemMetadata]? {
+        read("Could not fetch the materialized item metadata.") { db in
+            try ItemMetadataRecord
+                .filter(ItemMetadataRecord.isMaterialised)
+                .fetchRecords(db, logger: logger)
+                .map(\.metadata)
+        }
     }
 
     ///
@@ -866,104 +982,109 @@ public final class FilesDatabaseManager: Sendable {
     /// - Parameters:
     ///     - date: All items with a synchronization time later than this are considered.
     ///
-    /// - Returns: Locally changed items in the working set grouped by "updated" and "deleted".
+    /// - Returns: Locally changed items in the working set grouped by "updated" and "deleted", or `nil` when the database could not be read.
     ///
-    public func pendingWorkingSetChanges(since date: Date) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata]) {
+    public func pendingWorkingSetChanges(since date: Date) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata])? {
         logger.debug("Gathering pending working set changes...")
-        let pendingChanges = managedMaterialisedItemMetadatas().where { $0.syncTime > date }
-        var updatedItems = pendingChanges.where { !$0.deleted }.toUnmanagedResults()
-        var deletedItems = pendingChanges.where { $0.deleted }.toUnmanagedResults()
 
-        for item in updatedItems {
-            logger.debug("Found updated item.", [.item: item.ocId, .name: item.fileName])
-        }
+        return read("Could not gather pending working set changes.") { db in
+            let pendingChanges = try ItemMetadataRecord
+                .filter(ItemMetadataRecord.isMaterialised && ItemMetadataRecord.syncedAfter(date))
+                .fetchRecords(db, logger: logger)
+            var updatedItems = pendingChanges.filter { !$0.deleted }.map(\.metadata)
+            var deletedItems = pendingChanges.filter(\.deleted).map(\.metadata)
 
-        for item in deletedItems {
-            logger.debug("Found deleted item.", [.item: item.ocId, .name: item.fileName])
-        }
-
-        var updatedItemIdentifiers = Set(updatedItems.map(\.ocId))
-        var deletedItemIdentifiers = Set(deletedItems.map(\.ocId))
-
-        updatedItems // Look for changed children
-            .filter {
-                $0.directory // files do not have any children to look for
+            for item in updatedItems {
+                logger.debug("Found updated item.", [.item: item.ocId, .name: item.fileName])
             }
-            .map {
-                $0.remotePath()
+
+            for item in deletedItems {
+                logger.debug("Found deleted item.", [.item: item.ocId, .name: item.fileName])
             }
-            .forEach { serverUrl in
-                itemMetadatas
-                    .where { item in
-                        RealmItemMetadata.hasServerUrl(item, equalTo: serverUrl, includingDescendants: false) &&
-                            item.syncTime > date
-                    }
-                    .forEach { child in
-                        let sendableMetadata = SendableItemMetadata(value: child)
 
-                        if child.deleted {
-                            guard deletedItemIdentifiers.contains(child.ocId) == false else {
-                                return
-                            }
+            var updatedItemIdentifiers = Set(updatedItems.map(\.ocId))
+            var deletedItemIdentifiers = Set(deletedItems.map(\.ocId))
 
-                            deletedItemIdentifiers.insert(child.ocId)
-                            deletedItems.append(sendableMetadata)
-                            logger.debug("Appended deleted item to working set changes.", [.item: child.ocId, .url: serverUrl])
-                        } else {
-                            guard updatedItemIdentifiers.contains(child.ocId) == false else {
-                                return
-                            }
+            // Look for changed children
+            for serverUrl in updatedItems.filter(\.directory).map({ $0.remotePath() }) {
+                let children = try ItemMetadataRecord
+                    .filter(
+                        ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: false)
+                            && ItemMetadataRecord.syncedAfter(date)
+                    )
+                    .fetchRecords(db, logger: logger)
 
-                            updatedItemIdentifiers.insert(child.ocId)
-                            updatedItems.append(sendableMetadata)
-                            logger.debug("Appended updated item to working set changes.", [.item: child.ocId, .url: serverUrl])
+                for child in children {
+                    let sendableMetadata = child.metadata
+
+                    if child.deleted {
+                        guard deletedItemIdentifiers.contains(child.ocId) == false else {
+                            continue
                         }
+
+                        deletedItemIdentifiers.insert(child.ocId)
+                        deletedItems.append(sendableMetadata)
+                        logger.debug("Appended deleted item to working set changes.", [.item: child.ocId, .url: serverUrl])
+                    } else {
+                        guard updatedItemIdentifiers.contains(child.ocId) == false else {
+                            continue
+                        }
+
+                        updatedItemIdentifiers.insert(child.ocId)
+                        updatedItems.append(sendableMetadata)
+                        logger.debug("Appended updated item to working set changes.", [.item: child.ocId, .url: serverUrl])
                     }
+                }
             }
 
-        deletedItems // Look for deleted children recursively
-            .filter {
-                $0.directory // files do not have any children to look for
-            }
-            .map {
-                $0.remotePath()
-            }
-            .forEach { serverUrl in
-                itemMetadatas.where { item in
-                    RealmItemMetadata.hasServerUrl(item, equalTo: serverUrl, includingDescendants: true) &&
-                        item.syncTime > date
-                }.forEach { child in
+            // Look for deleted children recursively
+            for serverUrl in deletedItems.filter(\.directory).map({ $0.remotePath() }) {
+                let children = try ItemMetadataRecord
+                    .filter(
+                        ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: true)
+                            && ItemMetadataRecord.syncedAfter(date)
+                    )
+                    .fetchRecords(db, logger: logger)
+
+                for child in children {
                     guard child.isLockFileOfLocalOrigin == false else {
                         logger.info("Excluding item from deletion because it is a lock file from local origin.", [.item: child.ocId, .name: child.fileName])
-                        return
+                        continue
                     }
 
                     guard !deletedItemIdentifiers.contains(child.ocId) else {
-                        return
+                        continue
                     }
 
                     deletedItemIdentifiers.insert(child.ocId)
-                    deletedItems.append(SendableItemMetadata(value: child))
+                    deletedItems.append(child.metadata)
                     logger.debug("Appended deleted item to working set changes.", [.item: child.ocId, .url: serverUrl])
                 }
             }
 
-        return (updatedItems, deletedItems)
+            return (updatedItems, deletedItems)
+        }
     }
 
     public func itemsMetadataByFileNameSuffix(suffix: String) -> [SendableItemMetadata] {
         logger.debug("Trying to find files matching pattern \"\(suffix)\".")
 
-        let results = itemMetadatas.where {
-            $0.fileName.ends(with: suffix) && !$0.directory
-        }
+        let filesMetadata: [SendableItemMetadata] = read("Could not look up files by name suffix.", [.name: suffix]) { db -> [SendableItemMetadata] in
+            var request = ItemMetadataRecord.filter(ItemMetadataRecord.Columns.directory == false)
 
-        guard !results.isEmpty else {
+            // An empty suffix matches every file name.
+            if !suffix.isEmpty {
+                request = request.filter(literal: ItemMetadataRecord.fileNameEnds(with: suffix))
+            }
+
+            return try request.order(ItemMetadataRecord.Columns.ocId).fetchRecords(db, logger: logger).map(\.metadata)
+        } ?? []
+
+        guard !filesMetadata.isEmpty else {
             logger.debug("Could not find files matching pattern \"\(suffix)\".")
             return []
         }
 
-        let filesMetadata = results.toUnmanagedResults()
         logger.debug("Found \(filesMetadata.count) file(s) that match \"\(suffix)\" metadata: \(filesMetadata)")
 
         return filesMetadata

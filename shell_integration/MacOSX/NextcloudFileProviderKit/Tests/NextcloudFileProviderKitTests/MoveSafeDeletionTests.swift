@@ -5,7 +5,6 @@
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 @testable import TestInterface
 import XCTest
 
@@ -16,61 +15,47 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
-    static let dbManager = FilesDatabaseManager(
+    static let dbManager = try! FilesDatabaseManager(
         account: account,
         databaseDirectory: makeDatabaseDirectory(),
         fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
         log: FileProviderLogMock()
     )
 
-    /// Retains the in-memory Realm for the whole test. Without a live reference the
-    /// store is deallocated once a synchronous write returns, so data written before
-    /// an `await` vanishes when the enumerator reopens the Realm on another thread.
-    private var keepAliveRealm: Realm?
-
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-        keepAliveRealm = Self.dbManager.ncDatabase()
-    }
-
-    override func tearDown() {
-        keepAliveRealm = nil
-        super.tearDown()
+        try! Self.dbManager.removeAllRowsForTesting()
     }
 
     func testDeleteDirectorySkipsChildrenWithPendingUpload() throws {
-        let dir = RealmItemMetadata()
-        dir.ocId = "upload-dir"
+        var dir = SendableItemMetadata.rawRow(ocId: "upload-dir")
         dir.account = "TestAccount"
-        dir.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "uploads")
+        dir.serverUrl = "https://cloud.example.com/files"
+        dir.fileName = "uploads"
         dir.directory = true
 
-        let normalChild = RealmItemMetadata()
-        normalChild.ocId = "normal-child"
+        var normalChild = SendableItemMetadata.rawRow(ocId: "normal-child")
         normalChild.account = "TestAccount"
-        normalChild.updateLocation(serverUrl: "https://cloud.example.com/files/uploads", fileName: "synced.txt")
+        normalChild.serverUrl = "https://cloud.example.com/files/uploads"
+        normalChild.fileName = "synced.txt"
         normalChild.status = Status.normal.rawValue
 
-        let uploadingChild = RealmItemMetadata()
-        uploadingChild.ocId = "uploading-child"
+        var uploadingChild = SendableItemMetadata.rawRow(ocId: "uploading-child")
         uploadingChild.account = "TestAccount"
-        uploadingChild.updateLocation(serverUrl: "https://cloud.example.com/files/uploads", fileName: "uploading.txt")
+        uploadingChild.serverUrl = "https://cloud.example.com/files/uploads"
+        uploadingChild.fileName = "uploading.txt"
         uploadingChild.status = Status.uploading.rawValue
 
-        let inUploadChild = RealmItemMetadata()
-        inUploadChild.ocId = "inupload-child"
+        var inUploadChild = SendableItemMetadata.rawRow(ocId: "inupload-child")
         inUploadChild.account = "TestAccount"
-        inUploadChild.updateLocation(serverUrl: "https://cloud.example.com/files/uploads", fileName: "queued.txt")
+        inUploadChild.serverUrl = "https://cloud.example.com/files/uploads"
+        inUploadChild.fileName = "queued.txt"
         inUploadChild.status = Status.inUpload.rawValue
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(dir)
-            realm.add(normalChild)
-            realm.add(uploadingChild)
-            realm.add(inUploadChild)
-        }
+        try Self.dbManager.insertForTesting(dir)
+        try Self.dbManager.insertForTesting(normalChild)
+        try Self.dbManager.insertForTesting(uploadingChild)
+        try Self.dbManager.insertForTesting(inUploadChild)
 
         let deleted = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(
             ocId: "upload-dir"
@@ -101,23 +86,20 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
     /// to upload are preserved just like items that are actively uploading.
     /// This keeps the upload-error state visible to the user rather than losing it silently.
     func testDeleteDirectorySkipsChildrenWithUploadError() throws {
-        let dir = RealmItemMetadata()
-        dir.ocId = "uperr-dir"
+        var dir = SendableItemMetadata.rawRow(ocId: "uperr-dir")
         dir.account = "TestAccount"
-        dir.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "work")
+        dir.serverUrl = "https://cloud.example.com/files"
+        dir.fileName = "work"
         dir.directory = true
 
-        let uploadErrorChild = RealmItemMetadata()
-        uploadErrorChild.ocId = "uperr-child"
+        var uploadErrorChild = SendableItemMetadata.rawRow(ocId: "uperr-child")
         uploadErrorChild.account = "TestAccount"
-        uploadErrorChild.updateLocation(serverUrl: "https://cloud.example.com/files/work", fileName: "failed.txt")
+        uploadErrorChild.serverUrl = "https://cloud.example.com/files/work"
+        uploadErrorChild.fileName = "failed.txt"
         uploadErrorChild.status = Status.uploadError.rawValue
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(dir)
-            realm.add(uploadErrorChild)
-        }
+        try Self.dbManager.insertForTesting(dir)
+        try Self.dbManager.insertForTesting(uploadErrorChild)
 
         let deleted = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: "uperr-dir")
 
@@ -134,23 +116,20 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeleteDirectoryDeletesChildrenWithDownloadError() throws {
-        let dir = RealmItemMetadata()
-        dir.ocId = "dl-err-dir"
+        var dir = SendableItemMetadata.rawRow(ocId: "dl-err-dir")
         dir.account = "TestAccount"
-        dir.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "errors")
+        dir.serverUrl = "https://cloud.example.com/files"
+        dir.fileName = "errors"
         dir.directory = true
 
-        let dlErrorChild = RealmItemMetadata()
-        dlErrorChild.ocId = "dl-err-child"
+        var dlErrorChild = SendableItemMetadata.rawRow(ocId: "dl-err-child")
         dlErrorChild.account = "TestAccount"
-        dlErrorChild.updateLocation(serverUrl: "https://cloud.example.com/files/errors", fileName: "broken.pdf")
+        dlErrorChild.serverUrl = "https://cloud.example.com/files/errors"
+        dlErrorChild.fileName = "broken.pdf"
         dlErrorChild.status = Status.downloadError.rawValue
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(dir)
-            realm.add(dlErrorChild)
-        }
+        try Self.dbManager.insertForTesting(dir)
+        try Self.dbManager.insertForTesting(dlErrorChild)
 
         let deleted = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(
             ocId: "dl-err-dir"
@@ -165,30 +144,27 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeleteDirectorySkipsLocalOriginLockFile() throws {
-        let dir = RealmItemMetadata()
-        dir.ocId = "lock-del-dir"
+        var dir = SendableItemMetadata.rawRow(ocId: "lock-del-dir")
         dir.account = "TestAccount"
-        dir.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "work")
+        dir.serverUrl = "https://cloud.example.com/files"
+        dir.fileName = "work"
         dir.directory = true
 
-        let normalChild = RealmItemMetadata()
-        normalChild.ocId = "lock-del-normal"
+        var normalChild = SendableItemMetadata.rawRow(ocId: "lock-del-normal")
         normalChild.account = "TestAccount"
-        normalChild.updateLocation(serverUrl: "https://cloud.example.com/files/work", fileName: "report.docx")
+        normalChild.serverUrl = "https://cloud.example.com/files/work"
+        normalChild.fileName = "report.docx"
         normalChild.status = Status.normal.rawValue
 
-        let lockFile = RealmItemMetadata()
-        lockFile.ocId = "lock-del-lockfile"
+        var lockFile = SendableItemMetadata.rawRow(ocId: "lock-del-lockfile")
         lockFile.account = "TestAccount"
-        lockFile.updateLocation(serverUrl: "https://cloud.example.com/files/work", fileName: ".~lock.report.docx#")
+        lockFile.serverUrl = "https://cloud.example.com/files/work"
+        lockFile.fileName = ".~lock.report.docx#"
         lockFile.isLockFileOfLocalOrigin = true
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(dir)
-            realm.add(normalChild)
-            realm.add(lockFile)
-        }
+        try Self.dbManager.insertForTesting(dir)
+        try Self.dbManager.insertForTesting(normalChild)
+        try Self.dbManager.insertForTesting(lockFile)
 
         let deleted = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: "lock-del-dir")
 
@@ -350,7 +326,7 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         fileMeta.syncTime = recentSync
         Self.dbManager.addItemMetadata(fileMeta)
 
-        let pending = Self.dbManager.pendingWorkingSetChanges(since: anchorDate)
+        let pending = try XCTUnwrap(Self.dbManager.pendingWorkingSetChanges(since: anchorDate))
 
         // Both items must be in the pending list.
         XCTAssertTrue(pending.updated.contains(where: { $0.ocId == "sort-dir" }))

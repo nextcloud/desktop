@@ -2,25 +2,15 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 import Foundation
-import RealmSwift
 
 /// Associates an in-progress chunk upload with existing item metadata.
 func setChunkUploadIdentifier(
     uploadIdentifier: String,
     itemIdentifier: String,
     dbManager: FilesDatabaseManager,
-    logger: FileProviderLogger
+    logger _: FileProviderLogger
 ) {
-    let db = dbManager.ncDatabase()
-    guard let metadata = db.object(ofType: RealmItemMetadata.self, forPrimaryKey: itemIdentifier) else {
-        return
-    }
-
-    do {
-        try db.write { metadata.chunkUploadId = uploadIdentifier }
-    } catch {
-        logger.error("Could not associate chunk upload with item metadata.", [.error: error, .item: itemIdentifier])
-    }
+    dbManager.setChunkUploadIdentifier(uploadIdentifier, ocId: itemIdentifier)
 }
 
 /// Removes tracked chunk uploads owned by the supplied items, optionally retaining one upload.
@@ -31,22 +21,16 @@ func discardChunkUploads(
     dbManager: FilesDatabaseManager,
     logger: FileProviderLogger
 ) {
-    let db = dbManager.ncDatabase()
+    let recordedUploadIdentifiers = dbManager.remoteChunkStoreFolderNames()
     var uploadIdentifiers = Set<String>()
 
     for itemIdentifier in itemIdentifiers {
-        if let uploadIdentifier = db.object(
-            ofType: RealmItemMetadata.self,
-            forPrimaryKey: itemIdentifier
-        )?.chunkUploadId {
+        if let uploadIdentifier = dbManager.itemMetadata(ocId: itemIdentifier)?.chunkUploadId {
             uploadIdentifiers.insert(uploadIdentifier)
         }
 
         let itemPrefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
-        let chunkIdentifiers = db.objects(RemoteFileChunk.self)
-            .where { $0.remoteChunkStoreFolderName.starts(with: itemPrefix) }
-            .map(\.remoteChunkStoreFolderName)
-        uploadIdentifiers.formUnion(chunkIdentifiers)
+        uploadIdentifiers.formUnion(recordedUploadIdentifiers.filter { $0.hasPrefix(itemPrefix) })
     }
 
     if let retainedChunkUploadIdentifier {
@@ -69,11 +53,7 @@ func removeLocalChunkUpload(
     dbManager: FilesDatabaseManager,
     logger: FileProviderLogger
 ) {
-    recordPendingChunkUploadCleanup(
-        uploadIdentifier: uploadIdentifier,
-        dbManager: dbManager,
-        logger: logger
-    )
+    dbManager.recordPendingChunkUploadCleanup(uploadId: uploadIdentifier)
 
     do {
         if let chunksDirectory {
@@ -93,11 +73,7 @@ func removeLocalChunkUpload(
         return
     }
 
-    removeChunkUploadBookkeeping(
-        uploadIdentifier: uploadIdentifier,
-        dbManager: dbManager,
-        logger: logger
-    )
+    dbManager.removeChunkUploadBookkeeping(uploadId: uploadIdentifier)
 }
 
 /// Removes tracked uploads that cannot be resumed after extension startup.
@@ -106,32 +82,13 @@ func cleanupAbandonedChunkUploads(
     dbManager: FilesDatabaseManager,
     logger: FileProviderLogger
 ) {
-    let db = dbManager.ncDatabase()
-    let chunkIdentifiers = db.objects(RemoteFileChunk.self)
-        .map(\.remoteChunkStoreFolderName)
-    let metadata = db.objects(RealmItemMetadata.self)
-    let metadataUploadIdentifiers = metadata
-        .where { $0.chunkUploadId != nil }
-        .compactMap(\.chunkUploadId)
-    let pendingCleanupIdentifiers = db.objects(RealmPendingChunkUploadCleanup.self)
-        .map(\.uploadIdentifier)
-    let knownIdentifiers = Set(chunkIdentifiers)
-        .union(metadataUploadIdentifiers)
-        .union(pendingCleanupIdentifiers)
-    let resumableIdentifiers = Set(
-        metadata
-            .where {
-                $0.chunkUploadId != nil &&
-                    $0.deleted == false &&
-                    ($0.status == Status.inUpload.rawValue ||
-                        $0.status == Status.uploading.rawValue ||
-                        $0.status == Status.uploadError.rawValue)
-            }
-            .compactMap(\.chunkUploadId)
-    )
+    guard let abandonedIdentifiers = dbManager.abandonedChunkUploadIdentifiers() else {
+        logger.error("Skipping the cleanup of abandoned chunk uploads because the database could not be read.")
+        return
+    }
 
     discardChunkUploads(
-        withIdentifiers: knownIdentifiers.subtracting(resumableIdentifiers),
+        withIdentifiers: abandonedIdentifiers,
         usingRemoteInterface: remoteInterface,
         dbManager: dbManager,
         logger: logger
@@ -155,59 +112,6 @@ private func discardChunkUploads(
             continue
         }
 
-        removeChunkUploadBookkeeping(
-            uploadIdentifier: uploadIdentifier,
-            dbManager: dbManager,
-            logger: logger
-        )
-    }
-}
-
-private func removeChunkUploadBookkeeping(
-    uploadIdentifier: String,
-    dbManager: FilesDatabaseManager,
-    logger: FileProviderLogger
-) {
-    let db = dbManager.ncDatabase()
-
-    do {
-        let chunks = db.objects(RemoteFileChunk.self)
-            .where { $0.remoteChunkStoreFolderName == uploadIdentifier }
-        let owners = db.objects(RealmItemMetadata.self)
-            .where { $0.chunkUploadId == uploadIdentifier }
-        let pendingCleanup = db.objects(RealmPendingChunkUploadCleanup.self)
-            .where { $0.uploadIdentifier == uploadIdentifier }
-        try db.write {
-            db.delete(chunks)
-            db.delete(pendingCleanup)
-            owners.forEach { $0.chunkUploadId = nil }
-        }
-    } catch {
-        logger.error(
-            "Could not clear chunk upload bookkeeping.",
-            [.error: error, .name: uploadIdentifier]
-        )
-    }
-}
-
-private func recordPendingChunkUploadCleanup(
-    uploadIdentifier: String,
-    dbManager: FilesDatabaseManager,
-    logger: FileProviderLogger
-) {
-    let db = dbManager.ncDatabase()
-
-    do {
-        try db.write {
-            db.add(
-                RealmPendingChunkUploadCleanup(uploadIdentifier: uploadIdentifier),
-                update: .modified
-            )
-        }
-    } catch {
-        logger.error(
-            "Could not record pending chunk upload cleanup.",
-            [.error: error, .name: uploadIdentifier]
-        )
+        dbManager.removeChunkUploadBookkeeping(uploadId: uploadIdentifier)
     }
 }

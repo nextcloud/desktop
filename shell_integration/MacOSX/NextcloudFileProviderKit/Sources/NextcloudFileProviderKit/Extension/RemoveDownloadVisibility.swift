@@ -33,7 +33,7 @@ func refreshRemoveDownloadVisibility(
 ) {
     guard !ocIds.isEmpty else { return }
 
-    // Everything — the ancestor walk (a synchronous Realm read) and the nudges —
+    // Everything — the ancestor walk (a synchronous database read) and the nudges —
     // runs inside the Task so callers on latency-sensitive paths (the
     // materialized-set completion handler, `fetchContents`) are never blocked.
     Task {
