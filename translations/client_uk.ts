@@ -321,7 +321,7 @@
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="24"/>
         <location filename="../src/gui/accountsettings.cpp" line="185"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Асистент</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="65"/>
@@ -420,22 +420,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="170"/>
         <source>Talk notification caller avatar</source>
         <translation>Аватарка абонента у сповіщенні застосунку Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="229"/>
         <source>Answer Talk call notification</source>
         <translation>Сповіщення щодо відповіді на виклик у Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="236"/>
         <source>Decline</source>
         <translation>Відхилити</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline Talk call notification</source>
         <translation>Сповіщення про відхилення виклику Talk</translation>
     </message>
@@ -613,18 +613,18 @@
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Вилучити</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Скасувати</translation>
     </message>
 </context>
 <context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
-        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="83"/>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="85"/>
         <source>Opening file for local editing</source>
         <translation>Відкривається файл для редагування на пристрої</translation>
     </message>
@@ -650,7 +650,7 @@
 <context>
     <name>EncryptionTokenDiscoveryDialog</name>
     <message>
-        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
+        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="90"/>
         <source>Discovering the certificates stored on your USB token</source>
         <translation>Виявлення сертифікатів, збережених на вашому USB-токені</translation>
     </message>
@@ -668,7 +668,7 @@
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="25"/>
         <source>%1 (required)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (обов&apos;язково)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="103"/>
@@ -789,47 +789,47 @@
         <translation>Застосувати ярлики</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="201"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
         <translation>Призначити ярлики файлу, щоб керувати політикою конфіденційності, зберігання та юридичного захисту.</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="219"/>
         <source>Sensitivity labels</source>
         <translation>Ярлики конфіденційності</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="246"/>
         <source>Retention labels</source>
         <translation>Ярлики зберігання</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="273"/>
         <source>Legal hold labels</source>
         <translation>Ярлики юридичного захисту</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Reset</source>
         <translation>Скинути</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="326"/>
         <source>Apply</source>
         <translation>Застосувати</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="229"/>
         <source>Select sensitivity label</source>
         <translation>Виберіть ярлик конфіденційності</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="256"/>
         <source>Select retention label</source>
         <translation>Виберіть ярлик зберігання</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="282"/>
         <source>Select legal hold label</source>
         <translation>Виберіть ярлик юридичного захисту</translation>
     </message>
@@ -3798,12 +3798,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="80"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Тільки перегляд</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="83"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Можна редагувати</translation>
     </message>
 </context>
 <context>
@@ -7192,7 +7192,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Закрити</translation>
     </message>
 </context>
 <context>
@@ -7216,33 +7216,33 @@ Server replied with error: %2</source>
         <translation>Розв&apos;язати конфлікти синхронізації</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="53"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
         <translation><numerusform>%1 файл у конфлікті</numerusform><numerusform>%1 файли у конфлікті</numerusform><numerusform>%1 файлів у конфлікті</numerusform><numerusform>%1 файлів у конфлікті</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="60"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
         <translation>Виберіть, яку з версій ви бажаєте зберегти: версію на пристрої, віддалену версію або обидві. Якщо ви виберете &quot;обидві&quot;, то до назви файлу на пристрої буде додано порядковий номер.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="76"/>
         <source>All local versions</source>
         <translation>Всі версії на пристрої</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="89"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="94"/>
         <source>All server versions</source>
         <translation>Всі віддалені версії</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="144"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="149"/>
         <source>Resolve conflicts</source>
         <translation>Розв&apos;язати конфлікти</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
         <source>Cancel</source>
         <translation>Скасувати</translation>
     </message>
@@ -7359,7 +7359,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Закрити</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
@@ -7369,7 +7369,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Скасувати</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
@@ -7379,7 +7379,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Зберегти</translation>
     </message>
 </context>
 <context>
@@ -7528,7 +7528,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="36"/>
         <source>File</source>
         <extracomment>Generic fallback name for a shared item when its name is unavailable.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Файл</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="65"/>
@@ -7631,7 +7631,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="91"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Копіювати публічне посилання</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="104"/>
@@ -7710,7 +7710,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files (beta)</source>
-        <translation type="unfinished"/>
+        <translation>Віртуальні файли (бета)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="92"/>
