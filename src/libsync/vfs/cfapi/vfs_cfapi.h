@@ -10,6 +10,8 @@
 #include "common/vfs.h"
 #include "common/plugin.h"
 
+#include <ntstatus.h>
+
 namespace OCC {
 class HydrationJob;
 class VfsCfApiPrivate;
