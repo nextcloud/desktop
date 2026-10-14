@@ -23,6 +23,34 @@ public extension FilesDatabaseManager {
             .toUnmanagedResults()
     }
 
+    internal func deletableDescendants(of directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
+        guard directoryMetadata.uploaded,
+              directoryMetadata.status < Status.inUpload.rawValue,
+              !directoryMetadata.isLockFileOfLocalOrigin,
+              !directoryMetadata.isTrashed
+        else { return [] }
+
+        let replacementDirectories = itemMetadatas.where { item in
+            item.account == directoryMetadata.account && 
+                item.directory &&
+                !item.deleted &&
+                item.ocId != directoryMetadata.ocId &&
+                RealmItemMetadata.hasLocation(
+                    item, serverUrl: directoryMetadata.serverUrl, fileName: directoryMetadata.fileName
+                )
+        }
+        // A replacement at the same path owns its current children.
+        guard replacementDirectories.isEmpty else { return [] }
+
+        return itemMetadatas(
+            account: directoryMetadata.account, underServerUrl: fullServerPathUrl(for: directoryMetadata)
+        ).filter {
+            $0.uploaded &&
+                $0.status < Status.inUpload.rawValue &&
+                !$0.isLockFileOfLocalOrigin && !$0.isTrashed
+        }
+    }
+
     ///
     /// Immediate children of a directory — i.e. items whose parent ``serverUrl``
     /// equals the directory's full path. Unlike ``childItems(directoryMetadata:)``
