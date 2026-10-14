@@ -34,6 +34,7 @@
 #include "version.h"
 
 #include "config.h"
+#include "settings/managedsettingsschema.h"
 #include "settings/migration.h"
 
 #if defined(Q_OS_WIN)
@@ -361,18 +362,18 @@ Application::Application(int &argc, char **argv)
 
         // these config values will always be empty after the first client run
         if (!_overrideServerUrl.isEmpty()) {
-            if (cfg.isEnforced(QLatin1String(ConfigFile::overrideServerUrlC))) {
+            if (!cfg.setOverrideServerUrl(_overrideServerUrl)) {
                 qCWarning(lcApplication) << "Ignoring --overrideserverurl because overrideServerUrl is enforced by a policy.";
+                showHint("--overrideserverurl cannot be used because overrideServerUrl is enforced by a policy");
             }
-            cfg.setOverrideServerUrl(_overrideServerUrl);
             shouldExit = true;
         }
 
         if (!_overrideLocalDir.isEmpty()) {
-            if (cfg.isEnforced(QLatin1String(ConfigFile::overrideLocalDirC))) {
+            if (!cfg.setOverrideLocalDir(_overrideLocalDir)) {
                 qCWarning(lcApplication) << "Ignoring --overridelocaldir because overrideLocalDir is enforced by a policy.";
+                showHint("--overridelocaldir cannot be used because overrideLocalDir is enforced by a policy");
             }
-            cfg.setOverrideLocalDir(_overrideLocalDir);
             shouldExit = true;
         }
 
@@ -1097,7 +1098,12 @@ void Application::parseOptions(const QStringList &options)
             }
         } else if (option == QStringLiteral("--overridelocaldir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _overrideLocalDir = it.next();
+                const auto overrideLocalDir = it.next();
+                if (!ManagedSettingsSchema::isValidOverrideLocalDir(overrideLocalDir)) {
+                    showHint("Invalid path passed to --overridelocaldir, the path must be absolute");
+                } else {
+                    _overrideLocalDir = overrideLocalDir;
+                }
             } else {
                 showHint("Invalid URL passed to --overridelocaldir");
             }

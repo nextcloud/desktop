@@ -897,9 +897,14 @@ void ConfigFile::setUpdateChannel(const QString &channel)
     return resolved.source == SettingSourceType::UserConfig && !resolved.value.toString().isEmpty();
 }
 
-void ConfigFile::setOverrideServerUrl(const QString &url)
+[[nodiscard]] bool ConfigFile::isOverrideServerUrlLocked() const
 {
-    setConfig(QLatin1String(overrideServerUrlC), url);
+    return isEnforced(QLatin1String(overrideServerUrlC)) || hasUserOverrideServerUrl();
+}
+
+bool ConfigFile::setOverrideServerUrl(const QString &url)
+{
+    return setConfig(QLatin1String(overrideServerUrlC), url);
 }
 
 void ConfigFile::clearOverrideServerUrl()
@@ -912,9 +917,23 @@ void ConfigFile::clearOverrideServerUrl()
     return getConfig<QString>(QLatin1String(overrideLocalDirC));
 }
 
-void ConfigFile::setOverrideLocalDir(const QString &localDir)
+[[nodiscard]] bool ConfigFile::hasUserOverrideLocalDir() const
 {
-    setConfig(QLatin1String(overrideLocalDirC), localDir);
+    const auto resolved = getConfig(QLatin1String(overrideLocalDirC));
+    return resolved.source == SettingSourceType::UserConfig && !resolved.value.toString().isEmpty();
+}
+
+[[nodiscard]] QString ConfigFile::overrideLocalDirForNewAccount(bool firstAccount) const
+{
+    if (!firstAccount && !hasUserOverrideLocalDir()) {
+        return {};
+    }
+    return overrideLocalDir();
+}
+
+bool ConfigFile::setOverrideLocalDir(const QString &localDir)
+{
+    return setConfig(QLatin1String(overrideLocalDirC), localDir);
 }
 
 void ConfigFile::clearOverrideLocalDir()
