@@ -834,6 +834,14 @@ public final class FilesDatabaseManager: Sendable {
                 .name: metadata.fileName
             ])
 
+            // Nothing can exist below a folder the server no longer has, and only a row nobody holds locally is safe to drop on that evidence, because the scan covers materialised items and would otherwise race a rename still in flight.
+            let isMaterialised = metadata.directory ? metadata.visitedDirectory : metadata.downloaded
+
+            if readResult.error?.isNotFoundError == true, !isMaterialised {
+                logger.info("Marking item deleted because its folder no longer exists on the server.", [.item: metadata.ocId, .name: metadata.fileName])
+                deleteItemMetadata(ocId: metadata.ocId)
+            }
+
             return nil
         }
         return NSFileProviderItemIdentifier(parentMetadata.ocId)
