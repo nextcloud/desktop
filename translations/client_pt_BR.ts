@@ -420,22 +420,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="170"/>
         <source>Talk notification caller avatar</source>
         <translation>Avatar do chamador de notificação do Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="229"/>
         <source>Answer Talk call notification</source>
         <translation>Atender à notificação de chamada do Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="236"/>
         <source>Decline</source>
         <translation>Recusar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline Talk call notification</source>
         <translation>Recusar notificação de chamada do Talk</translation>
     </message>
@@ -624,7 +624,7 @@
 <context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
-        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="83"/>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="85"/>
         <source>Opening file for local editing</source>
         <translation>Abrir arquivo para edição local</translation>
     </message>
@@ -650,7 +650,7 @@
 <context>
     <name>EncryptionTokenDiscoveryDialog</name>
     <message>
-        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
+        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="90"/>
         <source>Discovering the certificates stored on your USB token</source>
         <translation>Descobrindo os certificados armazenados em seu token USB</translation>
     </message>
@@ -789,47 +789,47 @@
         <translation>Aplicar rótulos</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="201"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
         <translation>Atribua rótulos ao arquivo para gerenciar suas políticas de confidencialidade, retenção e retenção legal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="219"/>
         <source>Sensitivity labels</source>
         <translation>Rótulos de confidencialidade</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="246"/>
         <source>Retention labels</source>
         <translation>Rótulos de retenção</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="273"/>
         <source>Legal hold labels</source>
         <translation>Rótulos de retenção legal</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Reset</source>
         <translation>Redefinir</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="326"/>
         <source>Apply</source>
         <translation>Aplicar</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="229"/>
         <source>Select sensitivity label</source>
         <translation>Selecione o rótulo de confidencialidade</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="256"/>
         <source>Select retention label</source>
         <translation>Selecione o rótulo de retenção</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="282"/>
         <source>Select legal hold label</source>
         <translation>Selecione o rótulo de retenção legal</translation>
     </message>
@@ -7218,33 +7218,33 @@ Servidor respondeu com erro: %2</translation>
         <translation>Resolver conflitos de sincronização</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="53"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
         <translation><numerusform>%1 arquivo em conflito</numerusform><numerusform>%1 de arquivos em conflito</numerusform><numerusform>%1 arquivos em conflito</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="60"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
         <translation>Escolha se você deseja manter a versão local, a versão do servidor ou ambas. Se você escolher ambas, o arquivo local terá um número adicionado ao seu nome.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="76"/>
         <source>All local versions</source>
         <translation>Todas as versões locais</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="89"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="94"/>
         <source>All server versions</source>
         <translation>Todas as versões do servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="144"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="149"/>
         <source>Resolve conflicts</source>
         <translation>Resolver conflitos</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>

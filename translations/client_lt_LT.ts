@@ -420,22 +420,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="170"/>
         <source>Talk notification caller avatar</source>
         <translation>„Pokalbiai‟ pranešimas, skambinančiojo avataras</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="229"/>
         <source>Answer Talk call notification</source>
         <translation>Atsakyti į „Pokalbiai“ skambučio pranešimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="236"/>
         <source>Decline</source>
         <translation>Atmesti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline Talk call notification</source>
         <translation>Atsisakyti „Pokalbiai“ skambučio pranešimo</translation>
     </message>
@@ -624,7 +624,7 @@
 <context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
-        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="83"/>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="85"/>
         <source>Opening file for local editing</source>
         <translation>Failo atidarymas vietiniam redagavimui</translation>
     </message>
@@ -650,7 +650,7 @@
 <context>
     <name>EncryptionTokenDiscoveryDialog</name>
     <message>
-        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
+        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="90"/>
         <source>Discovering the certificates stored on your USB token</source>
         <translation>Ieškomi sertifikatai, esantys jūsų USB žymenyje</translation>
     </message>
@@ -789,47 +789,47 @@
         <translation>Taikyti etiketes</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="201"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
         <translation>Priskirkite failui žymas, kad galėtumėte valdyti jo konfidencialumo, saugojimo ir teisinės informacijos išsaugojimo taisykles.</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="219"/>
         <source>Sensitivity labels</source>
         <translation>Jautrumo žymos</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="246"/>
         <source>Retention labels</source>
         <translation>Išaugojimo žymos</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="273"/>
         <source>Legal hold labels</source>
         <translation>Teisinio išsaugojimo etiketės</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Reset</source>
         <translation>Atstatyti</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="326"/>
         <source>Apply</source>
         <translation>Taikyti</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="229"/>
         <source>Select sensitivity label</source>
         <translation>Pasirinkite jautrumo etiketę</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="256"/>
         <source>Select retention label</source>
         <translation>Pasirinkite išlaikymo etiketę</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="282"/>
         <source>Select legal hold label</source>
         <translation>Pasirinkti teisinio išsaugojimo etiketę</translation>
     </message>
@@ -7219,33 +7219,33 @@ Serveris atsakė su klaida: %2</translation>
         <translation>Išspręsti sinchronizavimo konfliktus</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="53"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
         <translation><numerusform>%1 failo konfliktas</numerusform><numerusform>%1 failų konfliktas</numerusform><numerusform>%1 failų konfliktas</numerusform><numerusform>%1 failų konfliktas</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="60"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
         <translation>Pasirinkite, ar norite išsaugoti vietinę versiją, serverio versiją, ar abi. Jei pasirinksite abi, prie vietinio failo pavadinimo bus pridėtas numeris.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="76"/>
         <source>All local versions</source>
         <translation>Visos vietinės versijos</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="89"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="94"/>
         <source>All server versions</source>
         <translation>Visos serverio versijos</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="144"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="149"/>
         <source>Resolve conflicts</source>
         <translation>Išspręsti konfliktus</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
         <source>Cancel</source>
         <translation>Atsisakyti</translation>
     </message>

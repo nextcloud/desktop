@@ -420,22 +420,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="170"/>
         <source>Talk notification caller avatar</source>
         <translation>通话应用通知呼叫者头像</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="229"/>
         <source>Answer Talk call notification</source>
         <translation>接听 Talk 通话通知</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="236"/>
         <source>Decline</source>
         <translation>拒绝</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline Talk call notification</source>
         <translation>拒绝通话通知</translation>
     </message>
@@ -624,7 +624,7 @@
 <context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
-        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="83"/>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="85"/>
         <source>Opening file for local editing</source>
         <translation>打开文件用于本地编辑</translation>
     </message>
@@ -650,7 +650,7 @@
 <context>
     <name>EncryptionTokenDiscoveryDialog</name>
     <message>
-        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
+        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="90"/>
         <source>Discovering the certificates stored on your USB token</source>
         <translation>发现存储在 USB 令牌上的证书</translation>
     </message>
@@ -789,47 +789,47 @@
         <translation>应用标签</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="201"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
         <translation>为文件分配标签，以管理其敏感性、保留期限和法律保留策略。</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="219"/>
         <source>Sensitivity labels</source>
         <translation>敏感性标签</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="246"/>
         <source>Retention labels</source>
         <translation>保留期限标签</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="273"/>
         <source>Legal hold labels</source>
         <translation>法律保留标签</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="326"/>
         <source>Apply</source>
         <translation>应用</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="229"/>
         <source>Select sensitivity label</source>
         <translation>选择敏感性标签</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="256"/>
         <source>Select retention label</source>
         <translation>选择保留期限标签</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="282"/>
         <source>Select legal hold label</source>
         <translation>选择法律保留标签</translation>
     </message>
@@ -7214,33 +7214,33 @@ Server replied with error: %2</source>
         <translation>解决同步冲突</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="53"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
         <translation><numerusform>%1 个文件冲突</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="60"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
         <translation>选择是否保留本地版本、服务器版本或两者。如果您选择两者，本地文件将在其名称中新增一个数字。</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="76"/>
         <source>All local versions</source>
         <translation>所有本地版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="89"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="94"/>
         <source>All server versions</source>
         <translation>所有服务器版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="144"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="149"/>
         <source>Resolve conflicts</source>
         <translation>解决冲突</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>

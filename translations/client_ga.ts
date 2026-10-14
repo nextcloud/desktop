@@ -420,22 +420,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="170"/>
         <source>Talk notification caller avatar</source>
         <translation>Labhair fógra glaoiteoir avatar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="229"/>
         <source>Answer Talk call notification</source>
         <translation>Fógra glao Freagair Plé</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="236"/>
         <source>Decline</source>
         <translation>Meath</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline Talk call notification</source>
         <translation>Fógra glaonna Decline Talk</translation>
     </message>
@@ -624,7 +624,7 @@
 <context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
-        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="83"/>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="85"/>
         <source>Opening file for local editing</source>
         <translation>Comhad a oscailt le haghaidh eagarthóireacht áitiúil</translation>
     </message>
@@ -650,7 +650,7 @@
 <context>
     <name>EncryptionTokenDiscoveryDialog</name>
     <message>
-        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
+        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="90"/>
         <source>Discovering the certificates stored on your USB token</source>
         <translation>Ag fáil amach na teastais atá stóráilte ar do chomhartha USB</translation>
     </message>
@@ -789,47 +789,47 @@
         <translation>Cuir lipéid i bhfeidhm</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="201"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
         <translation>Sannadh lipéid don chomhad chun a bheartais íogaireachta, coinneála agus coinneála dlíthiúla a bhainistiú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="219"/>
         <source>Sensitivity labels</source>
         <translation>Lipéid íogaireachta</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="246"/>
         <source>Retention labels</source>
         <translation>Lipéid choinneála</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="273"/>
         <source>Legal hold labels</source>
         <translation>Lipéid choinneála dlíthiúla</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Reset</source>
         <translation>Athshocraigh</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="326"/>
         <source>Apply</source>
         <translation>Cuir isteach</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="229"/>
         <source>Select sensitivity label</source>
         <translation>Roghnaigh lipéad íogaireachta</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="256"/>
         <source>Select retention label</source>
         <translation>Roghnaigh lipéad coinneála</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="282"/>
         <source>Select legal hold label</source>
         <translation>Roghnaigh lipéad coimeádta dlíthiúil</translation>
     </message>
@@ -7218,33 +7218,33 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Réitigh coinbhleachtaí sioncronaithe</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="53"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
         <translation><numerusform>%1 comhad i gcoimhlint</numerusform><numerusform>%1 comhad i gcoimhlint</numerusform><numerusform>%1 comhad i gcoimhlint</numerusform><numerusform>%1 comhad i gcoimhlint</numerusform><numerusform>%1 comhad i gcoimhlint</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="60"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
         <translation>Roghnaigh más mian leat an leagan áitiúil, an leagan freastalaí, nó an dá cheann a choinneáil. Má roghnaíonn tú an dá cheann, cuirfear uimhir leis an gcomhad áitiúil lena ainm.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="76"/>
         <source>All local versions</source>
         <translation>Gach leagan áitiúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="89"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="94"/>
         <source>All server versions</source>
         <translation>Gach leagan freastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="144"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="149"/>
         <source>Resolve conflicts</source>
         <translation>Réitigh coinbhleachtaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
         <source>Cancel</source>
         <translation>Cealaigh</translation>
     </message>
