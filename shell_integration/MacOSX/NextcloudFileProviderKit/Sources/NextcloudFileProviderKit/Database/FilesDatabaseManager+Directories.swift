@@ -31,7 +31,7 @@ public extension FilesDatabaseManager {
         else { return [] }
 
         let replacementDirectories = itemMetadatas.where { item in
-            item.account == directoryMetadata.account && 
+            item.account == directoryMetadata.account &&
                 item.directory &&
                 !item.deleted &&
                 item.ocId != directoryMetadata.ocId &&
