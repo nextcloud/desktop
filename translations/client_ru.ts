@@ -420,22 +420,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="170"/>
         <source>Talk notification caller avatar</source>
         <translation>Аватар звонящего</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="229"/>
         <source>Answer Talk call notification</source>
         <translation>Ответить на уведомление о вызове</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="236"/>
         <source>Decline</source>
         <translation>Отклонить</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline Talk call notification</source>
         <translation>Отклонить уведомление о вызове</translation>
     </message>
@@ -624,7 +624,7 @@
 <context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
-        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="83"/>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="85"/>
         <source>Opening file for local editing</source>
         <translation>Открытие файла для локального редактирования</translation>
     </message>
@@ -650,7 +650,7 @@
 <context>
     <name>EncryptionTokenDiscoveryDialog</name>
     <message>
-        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
+        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="90"/>
         <source>Discovering the certificates stored on your USB token</source>
         <translation>Поиск сертификатов на USB-токене</translation>
     </message>
@@ -789,47 +789,47 @@
         <translation>Применить метки</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="201"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
         <translation>Присвойте файлу ярлыки, чтобы управлять его конфиденциальностью, временем хранения и юридическими правилами.</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="219"/>
         <source>Sensitivity labels</source>
         <translation>Метки чувствительности</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="246"/>
         <source>Retention labels</source>
         <translation>Метки времени хранения</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="273"/>
         <source>Legal hold labels</source>
         <translation>Метки юридических обязательств</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="326"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="229"/>
         <source>Select sensitivity label</source>
         <translation>Выбрать метку чувствительности</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="256"/>
         <source>Select retention label</source>
         <translation>Выбрать метку времени хранения</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="282"/>
         <source>Select legal hold label</source>
         <translation>Выбрать метку юридических обязательств</translation>
     </message>
@@ -1276,7 +1276,7 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>Это действие приведёт к отключению поддержки виртуальных файлов, что приведёт к загрузке с сервера папок, отмеченных как «доступные только по сети».
+        <translation>Это действие приведёт к отключению поддержки виртуальных файлов, что приведёт к скачиванию с сервера содержимого папок, отмеченных как «доступные только по сети».
 
 Единственным преимуществом отключения поддержки виртуальных файлов является возможность использовать выборочную синхронизацию.
 
@@ -3075,7 +3075,7 @@ This means that the synchronization client might not upload local changes immedi
     <message>
         <location filename="../src/gui/folder.cpp" line="1715"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
-        <translation>Ошибка загрузки виртуального файла. Сведения об ошибке: код: «%1», состояние: «%2», сообщение: «%3».</translation>
+        <translation>Ошибка скачивания виртуального файла. Сведения об ошибке: код: «%1», состояние: «%2», сообщение: «%3».</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1811"/>
@@ -3093,7 +3093,7 @@ Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation>Из папки «%1» на этом устройстве было удалено большое количество файлов.
 Подтвердите, хотите ли вы выполнить их удаление на сервере.
-Если необходимо восстановить удалённые на устройстве файлы, снова загрузите их с сервера.</translation>
+Если необходимо восстановить удалённые на устройстве файлы, снова скачайте их с сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1813"/>
@@ -3581,7 +3581,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderwizard.cpp" line="618"/>
         <location filename="../src/gui/folderwizard.cpp" line="661"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation>Использовать виртуальные файлы вместо загрузки %1</translation>
+        <translation>Использовать виртуальные файлы вместо немедленного скачивания содержимого %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="618"/>
@@ -4422,7 +4422,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="415"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Доступна новая версия приложения %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; доступна для загрузки. Установленная версия: %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Доступна новая версия приложения %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; доступна для скачивания. Установленная версия: %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
@@ -4486,7 +4486,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="317"/>
         <source>Download Bandwidth</source>
-        <translation>Скорость загрузки с сервера</translation>
+        <translation>Скорость скачивания с сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="335"/>
@@ -4577,7 +4577,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Downloading %1 …</source>
-        <translation>Загрузка %1 ...</translation>
+        <translation>Скачивание %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
@@ -4587,22 +4587,22 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation>Не удалось загрузить обновление. Откройте &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;, чтобы загрузить обновление вручную.</translation>
+        <translation>Не удалось скачать обновление. Откройте &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;, чтобы скачать обновление вручную.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation>Не удалось загрузить обновление. Откройте %1, чтобы загрузить обновление вручную.</translation>
+        <translation>Не удалось скачать обновление. Откройте %1, чтобы скачать обновление вручную.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation>Доступен новый %1. Откройте &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;, чтобы загрузить обновление.</translation>
+        <translation>Доступен новый %1. Откройте &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;, чтобы скачать обновление.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="162"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation>Доступен новый %1. Откройте %2, чтобы загрузить обновление.</translation>
+        <translation>Доступен новый %1. Откройте %2, чтобы скачать обновление.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
@@ -4983,7 +4983,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="705"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation>Загрузка файлов с сервера уменьшит доступное пространство на локальном диске ниже допустимого предела</translation>
+        <translation>Скачивание файлов с сервера уменьшит свободное место на локальном диске ниже допустимого предела</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
@@ -4998,7 +4998,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="942"/>
         <source>The file could not be downloaded completely.</source>
-        <translation>Невозможно полностью загрузить файл.</translation>
+        <translation>Не удалось полностью скачать файл.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="949"/>
@@ -6677,17 +6677,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
         <source>Download error</source>
-        <translation>Ошибка загрузки</translation>
+        <translation>Ошибка скачивания</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
         <source>Error downloading</source>
-        <translation>Ошибка загрузки с сервера</translation>
+        <translation>Ошибка скачивания с сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>Could not be downloaded</source>
-        <translation>Не удалось выполнить загрузку</translation>
+        <translation>Не удалось скачать</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
@@ -6702,7 +6702,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="17"/>
         <source>Error downloading %1</source>
-        <translation>Ошибка загрузки «%1» с сервера</translation>
+        <translation>Ошибка скачивания «%1» с сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="18"/>
@@ -7217,33 +7217,33 @@ Server replied with error: %2</source>
         <translation>Решить конфликты синхронизации</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="53"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
         <translation><numerusform>%1 файл конфликтует</numerusform><numerusform>%1 файла конфликтуют</numerusform><numerusform>%1 файлов конфликтуют</numerusform><numerusform>%1 файлов конфликтуют</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="60"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
         <translation>Выберите, хотите ли вы сохранить локальную версию, версию с сервера или и то, и другое. Если вы выберете оба варианта, к имени локального файла будет добавлен номер.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="76"/>
         <source>All local versions</source>
         <translation>Все локальные версии</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="89"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="94"/>
         <source>All server versions</source>
         <translation>Все версии сервера</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="144"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="149"/>
         <source>Resolve conflicts</source>
         <translation>Разрешить конфликты</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -8379,7 +8379,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
         <source>Downloading</source>
-        <translation>Загрузка</translation>
+        <translation>Скачивание</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
@@ -8536,11 +8536,11 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Если включен режим «виртуальных файлов», файлы изначально не загружаются. Вместо этого для каждого файла, существующего на сервере, будет создан крошечный &quot;%1&quot; файл. Содержимое можно загрузить, запустив эти файлы или воспользовавшись их контекстным меню.
+        <translation>Если включён режим «виртуальных файлов», файлы изначально не скачиваются на устройство. Вместо этого для каждого файла, существующего на сервере, будет создан крошечный файл «%1». Содержимое можно скачать, запустив эти файлы или воспользовавшись их контекстным меню.
 
-Режим виртуальных файлов является взаимоисключающим с выборочной синхронизацией. Не выбранные в данный момент папки будут переведены в папки, доступные только в Интернете, а настройки выборочной синхронизации будут сброшены.
+Режим виртуальных файлов является взаимоисключающим с выборочной синхронизацией. Не выбранные в данный момент папки будут переведены в папки, доступные только в Интернете, а параметры выборочной синхронизации будут сброшены.
 
-Переключение в этот режим приведет к отмене любой текущей синхронизации.
+Переключение в этот режим приведёт к отмене любой текущей синхронизации.
 
 Это новый, экспериментальный режим. Если вы решите использовать его, сообщайте о любых возникающих проблемах.</translation>
     </message>
