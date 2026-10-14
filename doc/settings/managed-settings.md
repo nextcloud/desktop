@@ -125,9 +125,13 @@ schema, so a policy can not enforce a setting the client did not declare.
 device default prefills every new account setup and stays editable, while a device
 policy or `--overrideserverurl` locks the server URL and starts the login flow. The
 wizard removes the user value after an account is added, so a command line override
-applies once and a device default applies again. Legacy account migration is skipped
-only for an override from the user config. The server cannot set these keys, because
-they are needed before an account exists.
+applies once and a device default applies again. Only a locked server URL restricts
+which servers `nc://login` links may open. An `overrideLocalDir` from device default
+or policy applies only to the first account, in the wizard and for an account set up
+from the command line, and a device default folder stays editable. `--overridelocaldir`
+applies to the account set up next. Legacy account migration is skipped only for an
+override from the user config. The server cannot set these keys, because they are
+needed before an account exists.
 - **`overrideServerUrl` is a URL or a JSON list of servers**: a single value starts
 with `http://` or `https://`. A list is a JSON array of `{"name": "...", "url": "..."}`
 objects, which the wizard offers as a choice of servers only when the server URL is
@@ -135,6 +139,7 @@ locked, so a list set as a device default leaves the server field empty.
 `--overrideserverurl` accepts a single URL only.
 - **`overrideLocalDir` is an absolute path**: environment variables such as
 `%USERPROFILE%` are not expanded, so such a value is not absolute.
+`--overridelocaldir` rejects a path that is not absolute.
 - **An empty or invalid override value is skipped**, from any source, so the next
 source applies. This includes an empty user value written by older clients.
 - **Proxy resolves through getConfig as well**, wrapped in

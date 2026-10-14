@@ -56,12 +56,12 @@ bool isValidOverrideServerUrl(const QVariant &value)
         return !serverObject.value("name"_L1).toString().isEmpty() && isValidServerUrl(serverObject.value("url"_L1).toString());
     });
 }
+}
 
 bool isValidOverrideLocalDir(const QVariant &value)
 {
     const auto localDir = value.toString();
     return !localDir.isEmpty() && QDir::isAbsolutePath(localDir);
-}
 }
 
 const QList<SettingDefinition> &all()
