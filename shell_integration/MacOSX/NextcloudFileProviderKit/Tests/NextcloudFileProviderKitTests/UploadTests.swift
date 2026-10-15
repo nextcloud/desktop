@@ -449,6 +449,22 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    func testCancellationDuringSuccessfulChunkAssemblyPreservesFileIdentity() async throws {
+        try await checkCancellationDuringChunkAssembly(
+            moveStatus: 201,
+            headers: ["OC-FileID": "assembled-id", "OC-ETag": "assembled-etag"],
+            expectedError: .success
+        )
+    }
+
+    func testCancellationAfterSuccessfulMovePreservesFailedReadbackError() async throws {
+        try await checkCancellationDuringChunkAssembly(
+            moveStatus: 201,
+            readbackAttempts: 3,
+            expectedError: .errorChunkMoveFile
+        )
+    }
+
     func testStandardUpload() async throws {
         let fileUrl =
             FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
