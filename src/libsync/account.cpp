@@ -1281,12 +1281,11 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
 
     QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [promise, remoteSyncRootPath, syncRootPath, journalForFolder, this](const QString &completeDavPath, const QMap<QString, QString> &properties) {
         if (!sender()->property("ignoredFirst").toBool()) {
-            qCDebug(lcAccount()) << "skip first item";
             sender()->setProperty("ignoredFirst", true);
             return;
         }
 
-        qCInfo(lcAccount()) << "ls col job" << syncRootPath << "new file" << completeDavPath << properties.count();
+        qCDebug(lcAccount()) << "ls col job" << syncRootPath << "new file" << completeDavPath << properties.count();
 
         const auto slash = completeDavPath.lastIndexOf('/');
         const auto itemFileName = completeDavPath.mid(slash + 1);
@@ -1294,7 +1293,7 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
 
         auto currentItemDbRecord = SyncJournalFileRecord{};
         if (journalForFolder->getFileRecord(absoluteItemPathName, &currentItemDbRecord) && currentItemDbRecord.isValid()) {
-            qCWarning(lcAccount()) << "skip existing item" << absoluteItemPathName;
+            qCCritical(lcAccount()) << "skip existing item" << absoluteItemPathName;
             return;
         }
 
