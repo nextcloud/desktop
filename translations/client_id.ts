@@ -7037,7 +7037,7 @@ Server membalas dengan kesalahan: %2</translation>
         <translation>Kesalahan saat menghapus file</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Jalur yang diawali karakter &apos;#&apos; tidak didukung dalam mode VFS.</translation>
     </message>

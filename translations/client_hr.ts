@@ -7037,7 +7037,7 @@ Poslužitelj je vratio pogrešku: %2</translation>
         <translation>Pogreška pri brisanju datoteke</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Putanje koje počinju znakom &apos;#&apos; nisu podržane u VFS načinu rada.</translation>
     </message>

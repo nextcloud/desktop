@@ -7036,7 +7036,7 @@ Server replied with error: %2</source>
         <translation>ھۆججەتنى ئۆچۈرۈشتە خاتالىق يۈز بەردى</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>VFS ھالەتتە &apos;#&apos; ھەرپتىن باشلانغان يوللارنى قوللىمايدۇ.</translation>
     </message>
