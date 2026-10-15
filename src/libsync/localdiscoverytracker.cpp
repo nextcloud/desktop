@@ -32,11 +32,14 @@ void LocalDiscoveryTracker::startSyncFullDiscovery()
 void LocalDiscoveryTracker::startSyncPartialDiscovery()
 {
     if (lcLocalDiscoveryTracker().isDebugEnabled()) {
-        QStringList paths;
+        auto counter = 0;
         for (auto &path : _localDiscoveryPaths) {
-            paths.append(path);
+            qCDebug(lcLocalDiscoveryTracker) << "partial discovery with paths: " << path;
+            if (++counter > 100) {
+                qCDebug(lcLocalDiscoveryTracker) << "partial discovery with paths: " << "truncated" << "number of items:" << _localDiscoveryPaths.size();
+                break;
+            }
         }
-        qCDebug(lcLocalDiscoveryTracker) << "partial discovery with paths: " << paths;
     }
 
     _previousLocalDiscoveryPaths = std::move(_localDiscoveryPaths);
