@@ -7,6 +7,7 @@ import Alamofire
 import NextcloudFileProviderKitMocks
 import NextcloudFileProviderXPC
 import NextcloudKit
+import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -213,6 +214,54 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
                 XCTAssertTrue(FileManager.default.fileExists(atPath: chunkDirectory.appendingPathComponent(chunk.fileName).path))
             }
         }
+    }
+
+    func testCancellationDuringSuccessfulChunkAssemblyPersistsCreatedItem() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let progress = Progress()
+        let chunksDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        remoteInterface.chunkUploadDirectory = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+        remoteInterface.chunkAssemblyHandler = {
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Assembly must receive cancellation")
+        }
+        let contents = Data(repeating: 1, count: 8)
+        let contentsURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".txt")
+        try contents.write(to: contentsURL)
+        defer { try? FileManager.default.removeItem(at: contentsURL) }
+        var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: contentsURL.lastPathComponent, account: Self.account)
+        metadata.classFile = NKTypeClassFile.document.rawValue
+        let template = Item(metadata: metadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager)
+
+        let (createdItem, error) = await Item.create(
+            basedOn: template,
+            contents: contentsURL,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            forcedChunkSize: 3,
+            progress: progress,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertTrue(progress.isCancelled)
+        XCTAssertNil(error)
+        let item = try XCTUnwrap(createdItem)
+        let remote = try XCTUnwrap(rootItem.children.first)
+        let stored = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remote.identifier))
+        XCTAssertEqual(item.itemIdentifier.rawValue, remote.identifier)
+        XCTAssertEqual(stored.etag, remote.versionIdentifier)
+        XCTAssertEqual(stored.size, Int64(contents.count))
+        XCTAssertTrue(stored.uploaded)
+        XCTAssertTrue(stored.downloaded)
+        XCTAssertEqual(stored.status, Status.normal.rawValue)
+        XCTAssertNil(stored.sessionError)
+        XCTAssertEqual(remote.data, contents)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertTrue(Self.dbManager.ncDatabase().objects(RemoteFileChunk.self).isEmpty)
     }
 
     func testCreateFile() async throws {

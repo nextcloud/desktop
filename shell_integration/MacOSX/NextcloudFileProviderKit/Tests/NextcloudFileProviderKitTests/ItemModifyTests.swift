@@ -244,6 +244,62 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2, cancelDuringUpload: true)
     }
 
+    func testCancellationDuringSuccessfulChunkAssemblyPersistsModifiedItem() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let progress = Progress()
+        let chunksDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        remoteInterface.chunkUploadDirectory = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+        remoteInterface.chunkAssemblyHandler = {
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Assembly must receive cancellation")
+        }
+        var metadata = remoteItem.toItemMetadata(account: Self.account)
+        metadata.uploaded = true
+        metadata.downloaded = true
+        Self.dbManager.addItemMetadata(metadata)
+        let originalETag = metadata.etag
+        let uploadedItemIdentifier = metadata.ocId
+        remoteInterface.uploadHandler = {
+            remoteInterface.rootItem?.children.first { $0.identifier == uploadedItemIdentifier }?.versionIdentifier = "assembled-etag"
+        }
+        let contents = Data("Updated content".utf8)
+        let contentsURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try contents.write(to: contentsURL)
+        defer { try? FileManager.default.removeItem(at: contentsURL) }
+        var targetMetadata = metadata
+        targetMetadata.size = Int64(contents.count)
+        let item = Item(metadata: metadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager)
+        let target = Item(metadata: targetMetadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager)
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: target,
+            changedFields: [.contents],
+            contents: contentsURL,
+            forcedChunkSize: 3,
+            progress: progress,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertTrue(progress.isCancelled)
+        XCTAssertNil(error)
+        let modified = try XCTUnwrap(modifiedItem)
+        let stored = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+        XCTAssertEqual(modified.itemIdentifier.rawValue, metadata.ocId)
+        XCTAssertEqual(stored.etag, remoteItem.versionIdentifier)
+        XCTAssertNotEqual(stored.etag, originalETag)
+        XCTAssertEqual(stored.size, Int64(contents.count))
+        XCTAssertTrue(stored.uploaded)
+        XCTAssertTrue(stored.downloaded)
+        XCTAssertEqual(stored.status, Status.normal.rawValue)
+        XCTAssertEqual(stored.sessionError, "")
+        XCTAssertEqual(remoteItem.data, contents)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertTrue(Self.dbManager.ncDatabase().objects(RemoteFileChunk.self).isEmpty)
+    }
+
     func testModifyFile() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -1219,8 +1275,10 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(rootItem.children.contains { $0.identifier == remoteFolder.identifier })
         XCTAssertTrue(rootTrashItem.children.contains { $0.identifier == folderMetadata.ocId + trashedItemIdSuffix })
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        // The async modify may resume on a different thread from the Realm opened above.
+        let updatedDatabase = Self.dbManager.ncDatabase()
         XCTAssertEqual(
-            db.objects(RemoteFileChunk.self)
+            updatedDatabase.objects(RemoteFileChunk.self)
                 .where { $0.remoteChunkStoreFolderName == chunkUploadId }
                 .count,
             0
