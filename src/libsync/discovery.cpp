@@ -746,7 +746,18 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_isShared = serverEntry.remotePerm.hasPermission(RemotePermissions::IsShared) || serverEntry.sharedByMe;
     item->_sharedByMe = serverEntry.sharedByMe;
     item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
-    item->_type = serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+    if (localEntry.isValid()) {
+        item->_type = serverEntry.isDirectory ? (localEntry.type == ItemTypeVirtualDirectory ? ItemTypeVirtualDirectory : ItemTypeDirectory)
+                                              : (localEntry.type == ItemTypeVirtualFile ? ItemTypeVirtualFile : ItemTypeFile);
+    } else if (dbEntry.isValid()) {
+        if (serverEntry.isDirectory) {
+            item->_type = dbEntry._type == ItemTypeVirtualDirectory ? ItemTypeVirtualDirectory : ItemTypeDirectory;
+        } else {
+            item->_type = dbEntry._type == ItemTypeVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
+        }
+    } else {
+        item->_type = serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+    }
     item->_etag = serverEntry.etag;
     item->_directDownloadUrl = serverEntry.directDownloadUrl;
     item->_directDownloadCookies = serverEntry.directDownloadCookies;
