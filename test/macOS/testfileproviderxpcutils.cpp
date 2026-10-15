@@ -17,6 +17,7 @@
 #include "macOS/fileproviderxpc_mac_utils.h"
 
 #import <FileProvider/FileProvider.h>
+#import <objc/runtime.h>
 
 using namespace Qt::StringLiterals;
 
@@ -24,6 +25,16 @@ namespace
 {
 
 constexpr auto backgroundThreadTimeoutMs = 5000;
+constexpr auto setupTimeoutUpperBoundMs = 7000;
+NSString *const communicationServiceName = @"com.nextcloud.desktopclient.ClientCommunicationService";
+
+NSArray<NSFileProviderDomain *> *discoveredDomains = nil;
+NSDictionary<NSString *, NSFileProviderManager *> *discoveredManagers = nil;
+NSError *domainDiscoveryError = nil;
+bool deferDomainDiscovery = false;
+bool suppressDomainDiscovery = false;
+auto domainManagerLookupCount = 0;
+void (^pendingDomainDiscovery)(NSArray<NSFileProviderDomain *> *, NSError *) = nil;
 
 bool waitForBackgroundThread(std::atomic_bool &completed)
 {
@@ -42,13 +53,56 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 
 @interface TestFileProviderService : NSObject
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, retain) NSXPCConnection *connection;
+@property (nonatomic, retain) NSError *connectionError;
+@property (nonatomic, assign) BOOL deferConnectionReply;
+@property (nonatomic, assign) BOOL suppressConnectionReply;
+@property (nonatomic, copy) void (^pendingConnectionReply)(NSXPCConnection *, NSError *);
+- (void)replyToConnectionRequest;
 @end
 
 @implementation TestFileProviderService
+
+- (void)getFileProviderConnectionWithCompletionHandler:(void (^)(NSXPCConnection *, NSError *))completionHandler
+{
+    if (self.suppressConnectionReply) {
+        return;
+    }
+
+    if (self.deferConnectionReply) {
+        self.pendingConnectionReply = completionHandler;
+        return;
+    }
+
+    completionHandler(self.connection, self.connectionError);
+}
+
+- (void)replyToConnectionRequest
+{
+    self.pendingConnectionReply(self.connection, self.connectionError);
+    self.pendingConnectionReply = nil;
+}
+
+- (void)dealloc
+{
+    [_name release];
+    [_connection release];
+    [_connectionError release];
+    [_pendingConnectionReply release];
+    [super dealloc];
+}
+
 @end
 
 @interface TestFileProviderManager : NSObject
 @property (nonatomic, retain) NSFileProviderService *service;
+@property (nonatomic, retain) NSError *serviceError;
+@property (nonatomic, assign) BOOL deferServiceReply;
+@property (nonatomic, assign) BOOL suppressServiceReply;
+@property (nonatomic, copy) void (^pendingServiceReply)(NSFileProviderService *, NSError *);
+- (void)replyToServiceRequest;
++ (void)getDomainsWithCompletionHandler:(void (^)(NSArray<NSFileProviderDomain *> *, NSError *))completionHandler;
++ (NSFileProviderManager *)managerForDomain:(NSFileProviderDomain *)domain;
 @end
 
 @implementation TestFileProviderManager
@@ -57,9 +111,50 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
              itemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
           completionHandler:(void (^)(NSFileProviderService *service, NSError *error))completionHandler
 {
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
-        completionHandler(self.service, nil);
-    });
+    if (self.suppressServiceReply) {
+        return;
+    }
+
+    if (self.deferServiceReply) {
+        self.pendingServiceReply = completionHandler;
+        return;
+    }
+
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{ completionHandler(self.service, self.serviceError); });
+}
+
+- (void)replyToServiceRequest
+{
+    self.pendingServiceReply(self.service, self.serviceError);
+    self.pendingServiceReply = nil;
+}
+
++ (void)getDomainsWithCompletionHandler:(void (^)(NSArray<NSFileProviderDomain *> *, NSError *))completionHandler
+{
+    if (suppressDomainDiscovery) {
+        return;
+    }
+
+    if (deferDomainDiscovery) {
+        pendingDomainDiscovery = [completionHandler copy];
+        return;
+    }
+
+    completionHandler(discoveredDomains, domainDiscoveryError);
+}
+
++ (NSFileProviderManager *)managerForDomain:(NSFileProviderDomain *)domain
+{
+    ++domainManagerLookupCount;
+    return discoveredManagers[domain.identifier];
+}
+
+- (void)dealloc
+{
+    [_service release];
+    [_serviceError release];
+    [_pendingServiceReply release];
+    [super dealloc];
 }
 
 @end
@@ -181,7 +276,315 @@ class TestFileProviderXPCUtils : public QObject
 {
     Q_OBJECT
 
+    bool domainLookupMocksInstalled = false;
+
+    void installDomainLookupMocks()
+    {
+        for (const auto selector : { @selector(getDomainsWithCompletionHandler:), @selector(managerForDomain:) }) {
+            method_exchangeImplementations(class_getClassMethod(NSFileProviderManager.class, selector),
+                                           class_getClassMethod(TestFileProviderManager.class, selector));
+        }
+        domainLookupMocksInstalled = true;
+    }
+
 private Q_SLOTS:
+    void cleanup()
+    {
+        if (domainLookupMocksInstalled) {
+            for (const auto selector : { @selector(getDomainsWithCompletionHandler:), @selector(managerForDomain:) }) {
+                method_exchangeImplementations(class_getClassMethod(NSFileProviderManager.class, selector),
+                                               class_getClassMethod(TestFileProviderManager.class, selector));
+            }
+            domainLookupMocksInstalled = false;
+        }
+
+        [pendingDomainDiscovery release];
+        pendingDomainDiscovery = nil;
+        [discoveredDomains release];
+        discoveredDomains = nil;
+        [discoveredManagers release];
+        discoveredManagers = nil;
+        [domainDiscoveryError release];
+        domainDiscoveryError = nil;
+        deferDomainDiscovery = false;
+        suppressDomainDiscovery = false;
+        domainManagerLookupCount = 0;
+    }
+
+    void domainDiscoveryCollectsAvailableManagers()
+    {
+        installDomainLookupMocks();
+        const auto availableDomain = [[NSFileProviderDomain alloc] initWithIdentifier:@"available-domain" displayName:@"Available domain"];
+        const auto unavailableDomain = [[NSFileProviderDomain alloc] initWithIdentifier:@"unavailable-domain" displayName:@"Unavailable domain"];
+        const auto manager = [TestFileProviderManager new];
+        discoveredDomains = [[NSArray alloc] initWithObjects:availableDomain, unavailableDomain, nil];
+        discoveredManagers = [[NSDictionary alloc] initWithObjectsAndKeys:(NSFileProviderManager *)manager, availableDomain.identifier, nil];
+
+        const auto managers = OCC::Mac::FileProviderXPCUtils::getDomainManagers();
+        QCOMPARE(managers.count, 1);
+        QVERIFY(managers.firstObject == (NSFileProviderManager *)manager);
+
+        [managers release];
+        [manager release];
+        [availableDomain release];
+        [unavailableDomain release];
+    }
+
+    void domainDiscoveryErrorAndEmptyResult_data()
+    {
+        QTest::addColumn<bool>("hasError");
+        QTest::newRow("empty domains") << false;
+        QTest::newRow("discovery error") << true;
+    }
+
+    void domainDiscoveryErrorAndEmptyResult()
+    {
+        QFETCH(bool, hasError);
+        installDomainLookupMocks();
+        discoveredDomains = [[NSArray alloc] init];
+        if (hasError) {
+            domainDiscoveryError = [[NSError alloc] initWithDomain:NSCocoaErrorDomain code:NSFileReadUnknownError userInfo:nil];
+        }
+
+        const auto managers = OCC::Mac::FileProviderXPCUtils::getDomainManagers();
+        QCOMPARE(managers.count, 0);
+        [managers release];
+    }
+
+    void domainDiscoveryTimesOutAndIgnoresLateReply_data()
+    {
+        QTest::addColumn<bool>("discardReply");
+        QTest::newRow("discarded reply") << true;
+        QTest::newRow("late reply") << false;
+    }
+
+    void domainDiscoveryTimesOutAndIgnoresLateReply()
+    {
+        QFETCH(bool, discardReply);
+        installDomainLookupMocks();
+        deferDomainDiscovery = true;
+        suppressDomainDiscovery = discardReply;
+
+        @autoreleasepool {
+            QElapsedTimer elapsed;
+            elapsed.start();
+            const auto managers = OCC::Mac::FileProviderXPCUtils::getDomainManagers();
+            QVERIFY2(elapsed.elapsed() < setupTimeoutUpperBoundMs, "Domain discovery did not return within the setup timeout bound.");
+            QCOMPARE(managers.count, 0);
+            [managers release];
+        }
+
+        if (discardReply) {
+            QVERIFY(pendingDomainDiscovery == nil);
+            return;
+        }
+
+        QVERIFY(pendingDomainDiscovery != nil);
+        const auto domain = [[NSFileProviderDomain alloc] initWithIdentifier:@"late-domain" displayName:@"Late domain"];
+        const auto manager = [TestFileProviderManager new];
+        discoveredManagers = [[NSDictionary alloc] initWithObjectsAndKeys:(NSFileProviderManager *)manager, domain.identifier, nil];
+        pendingDomainDiscovery(@[ domain ], nil);
+        QCOMPARE(domainManagerLookupCount, 0);
+        [pendingDomainDiscovery release];
+        pendingDomainDiscovery = nil;
+        [manager release];
+        [domain release];
+    }
+
+    void serviceLookupTimesOutWithStablePartialResults_data()
+    {
+        QTest::addColumn<bool>("includeImmediateReply");
+        QTest::addColumn<bool>("discardReplies");
+        QTest::newRow("discarded replies") << false << true;
+        QTest::newRow("late replies") << false << false;
+        QTest::newRow("partial replies") << true << false;
+    }
+
+    void serviceLookupTimesOutWithStablePartialResults()
+    {
+        QFETCH(bool, includeImmediateReply);
+        QFETCH(bool, discardReplies);
+        const auto service = [TestFileProviderService new];
+        service.name = communicationServiceName;
+        const auto immediateManager = [TestFileProviderManager new];
+        immediateManager.service = (NSFileProviderService *)service;
+        const auto lateManager = [TestFileProviderManager new];
+        lateManager.service = (NSFileProviderService *)service;
+        lateManager.deferServiceReply = YES;
+        lateManager.suppressServiceReply = discardReplies;
+        const auto laterManager = [TestFileProviderManager new];
+        laterManager.service = (NSFileProviderService *)service;
+        laterManager.deferServiceReply = YES;
+        laterManager.suppressServiceReply = discardReplies;
+
+        @autoreleasepool {
+            const auto managers = [NSMutableArray arrayWithObjects:(NSFileProviderManager *)lateManager, (NSFileProviderManager *)laterManager, nil];
+            if (includeImmediateReply) {
+                [managers addObject:(NSFileProviderManager *)immediateManager];
+            }
+
+            QElapsedTimer elapsed;
+            elapsed.start();
+            const auto services = OCC::Mac::FileProviderXPCUtils::getFileProviderServices(managers);
+            QVERIFY2(elapsed.elapsed() < setupTimeoutUpperBoundMs, "Service lookup did not return within the setup timeout bound.");
+            QVERIFY(services != nil);
+            QCOMPARE(services.count, includeImmediateReply ? 1 : 0);
+            if (!discardReplies) {
+                [lateManager replyToServiceRequest];
+            }
+            QCOMPARE(services.count, includeImmediateReply ? 1 : 0);
+            if (includeImmediateReply) {
+                QVERIFY(services.firstObject[communicationServiceName] == (NSFileProviderService *)service);
+            }
+            [services release];
+        }
+
+        if (!discardReplies) {
+            [laterManager replyToServiceRequest];
+        }
+        [immediateManager release];
+        [lateManager release];
+        [laterManager release];
+        [service release];
+    }
+
+    void connectionLookupTimesOutAndInvalidatesLateConnections_data()
+    {
+        QTest::addColumn<bool>("includeImmediateReply");
+        QTest::addColumn<bool>("discardReplies");
+        QTest::newRow("discarded replies") << false << true;
+        QTest::newRow("late replies") << false << false;
+        QTest::newRow("partial replies") << true << false;
+    }
+
+    void connectionLookupTimesOutAndInvalidatesLateConnections()
+    {
+        QFETCH(bool, includeImmediateReply);
+        QFETCH(bool, discardReplies);
+        const auto immediateConnection = [TestXPCConnection new];
+        const auto lateConnection = [TestXPCConnection new];
+        const auto laterConnection = [TestXPCConnection new];
+        const auto immediateService = [TestFileProviderService new];
+        immediateService.connection = (NSXPCConnection *)immediateConnection;
+        const auto lateService = [TestFileProviderService new];
+        lateService.connection = (NSXPCConnection *)lateConnection;
+        lateService.deferConnectionReply = YES;
+        lateService.suppressConnectionReply = discardReplies;
+        const auto laterService = [TestFileProviderService new];
+        laterService.connection = (NSXPCConnection *)laterConnection;
+        laterService.deferConnectionReply = YES;
+        laterService.suppressConnectionReply = discardReplies;
+
+        @autoreleasepool {
+            const auto services = [NSMutableArray arrayWithObjects:@{communicationServiceName : (NSFileProviderService *)lateService},
+                                                                   @{communicationServiceName : (NSFileProviderService *)laterService},
+                                                                   nil];
+            if (includeImmediateReply) {
+                [services addObject:@{communicationServiceName : (NSFileProviderService *)immediateService}];
+            }
+
+            QElapsedTimer elapsed;
+            elapsed.start();
+            const auto connections = OCC::Mac::FileProviderXPCUtils::connectToFileProviderServices(services);
+            QVERIFY2(elapsed.elapsed() < setupTimeoutUpperBoundMs, "Connection lookup did not return within the setup timeout bound.");
+            QVERIFY(connections != nil);
+            QCOMPARE(connections.count, includeImmediateReply ? 1 : 0);
+            if (!discardReplies) {
+                [lateService replyToConnectionRequest];
+                QVERIFY(lateConnection.invalidated);
+            }
+            QCOMPARE(connections.count, includeImmediateReply ? 1 : 0);
+            if (includeImmediateReply) {
+                QVERIFY(connections.firstObject == (NSXPCConnection *)immediateConnection);
+                QVERIFY(!immediateConnection.invalidated);
+            }
+            [connections release];
+        }
+
+        if (!discardReplies) {
+            [laterService replyToConnectionRequest];
+            QVERIFY(laterConnection.invalidated);
+        }
+        [immediateService release];
+        [lateService release];
+        [laterService release];
+        [immediateConnection release];
+        [lateConnection release];
+        [laterConnection release];
+    }
+
+    void emptySetupInputsReturnImmediately()
+    {
+        QElapsedTimer elapsed;
+        elapsed.start();
+        const auto services = OCC::Mac::FileProviderXPCUtils::getFileProviderServices(@[]);
+        const auto connections = OCC::Mac::FileProviderXPCUtils::connectToFileProviderServices(@[]);
+        QVERIFY(elapsed.elapsed() < backgroundThreadTimeoutMs);
+        QCOMPARE(services.count, 0);
+        QCOMPARE(connections.count, 0);
+        [services release];
+        [connections release];
+    }
+
+    void serviceLookupRejectsErrorsAndMissingServices_data()
+    {
+        QTest::addColumn<bool>("hasError");
+        QTest::newRow("missing service") << false;
+        QTest::newRow("lookup error") << true;
+    }
+
+    void serviceLookupRejectsErrorsAndMissingServices()
+    {
+        QFETCH(bool, hasError);
+        const auto manager = [TestFileProviderManager new];
+        const auto service = [TestFileProviderService new];
+        service.name = communicationServiceName;
+        if (hasError) {
+            manager.service = (NSFileProviderService *)service;
+            manager.serviceError = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFileReadUnknownError userInfo:nil];
+        }
+
+        const auto services = OCC::Mac::FileProviderXPCUtils::getFileProviderServices(@[ (NSFileProviderManager *)manager ]);
+        QCOMPARE(services.count, 0);
+        [services release];
+        [manager release];
+        [service release];
+    }
+
+    void connectionLookupCollectsOnlySuccessfulCommunicationServices()
+    {
+        const auto connection = [TestXPCConnection new];
+        const auto failedConnection = [TestXPCConnection new];
+        const auto successfulService = [TestFileProviderService new];
+        successfulService.connection = (NSXPCConnection *)connection;
+        const auto failedService = [TestFileProviderService new];
+        failedService.connection = (NSXPCConnection *)failedConnection;
+        failedService.connectionError = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFileReadUnknownError userInfo:nil];
+        const auto missingConnectionService = [TestFileProviderService new];
+        const auto unrelatedService = [TestFileProviderService new];
+        unrelatedService.deferConnectionReply = YES;
+
+        const auto connections = OCC::Mac::FileProviderXPCUtils::connectToFileProviderServices(@[
+            @{communicationServiceName : (NSFileProviderService *)successfulService},
+            @{communicationServiceName : (NSFileProviderService *)failedService},
+            @{communicationServiceName : (NSFileProviderService *)missingConnectionService},
+            @{@"unrelated-service" : (NSFileProviderService *)unrelatedService}
+        ]);
+
+        QCOMPARE(connections.count, 1);
+        QVERIFY(connections.firstObject == (NSXPCConnection *)connection);
+        QVERIFY(!connection.invalidated);
+        QVERIFY(failedConnection.invalidated);
+        QVERIFY(unrelatedService.pendingConnectionReply == nil);
+        [connections release];
+        [successfulService release];
+        [failedService release];
+        [missingConnectionService release];
+        [unrelatedService release];
+        [connection release];
+        [failedConnection release];
+    }
+
     void concurrentServiceLookupsCanBeCollected()
     {
         constexpr auto managerCount = 128;
