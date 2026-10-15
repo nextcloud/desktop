@@ -7037,7 +7037,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation>Hitilafu katika kufuta faili</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Njia zinazoanza na herufi &apos;#&apos; hazitumiki katika hali ya VFS.</translation>
     </message>

@@ -7044,7 +7044,7 @@ Server replied with error: %2</source>
         <translation>ファイル削除エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>&apos;#&apos;文字で始まるパスは、VFSモード(仮想ファイル)でサポートされていません。</translation>
     </message>

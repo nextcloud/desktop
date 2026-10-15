@@ -7045,7 +7045,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Erreur lors de la suppression du fichier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Les chemins commençant par le caractère « # » ne sont pas pris en charge dans le mode VFS.</translation>
     </message>

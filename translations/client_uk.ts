@@ -7042,7 +7042,7 @@ Server replied with error: %2</source>
         <translation>Помилка під час вилучення файлу</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Шлях, що починається із символу &apos;#&apos;, не підтримується віртуальною синхронізацією файлів.</translation>
     </message>

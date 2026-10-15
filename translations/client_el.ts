@@ -7040,7 +7040,7 @@ Server replied with error: %2</source>
         <translation>Σφάλμα διαγραφής του αρχείου</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Διαδρομές που ξεκινούν με τον χαρακτήρα &apos;#&apos; δεν υποστηρίζονται σε λειτουργία VFS.</translation>
     </message>

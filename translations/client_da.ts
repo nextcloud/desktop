@@ -7045,7 +7045,7 @@ Serveren svarede med fejl: %2</translation>
         <translation>Fejl ved sletning af filen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Stier, der begynder med tegnet &apos;#&apos;, understøttes ikke i VFS-tilstand.</translation>
     </message>
