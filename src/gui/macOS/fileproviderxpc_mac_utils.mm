@@ -15,6 +15,7 @@
 namespace {
 const char *const clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
 NSString *const nsClientCommunicationServiceName = [NSString stringWithUTF8String:clientCommunicationServiceName];
+constexpr auto fileProviderSetupTimeoutMs = 5000;
 constexpr int64_t fileProviderRequestWaitDelta = 1000000000; // 1 second
 }
 
@@ -22,36 +23,75 @@ namespace OCC::Mac::FileProviderXPCUtils {
 
 Q_LOGGING_CATEGORY(lcFileProviderXPCUtils, "nextcloud.gui.macos.fileprovider.xpc.utils", QtInfoMsg)
 
+using SetupReplyHandler = BOOL (^)(NSArray *);
+
+// Copied reply blocks retain the collector's objects until the framework releases them.
+static NSArray *collectSetupResults(const NSUInteger requestCount, const char *const operation, void (^startRequests)(SetupReplyHandler))
+{
+    if (requestCount == 0) {
+        return [NSArray new];
+    }
+
+    NSMutableArray *const results = NSMutableArray.array;
+    const auto semaphore = dispatch_semaphore_create(0);
+    __block auto remainingReplies = requestCount;
+    __block auto finished = false;
+
+    startRequests(^BOOL(NSArray *const replyResults) {
+        @synchronized(results) {
+            if (finished) {
+                return NO;
+            }
+
+            if (replyResults != nil) {
+                [results addObjectsFromArray:replyResults];
+            }
+
+            if (--remainingReplies == 0) {
+                finished = true;
+                dispatch_semaphore_signal(semaphore);
+            }
+            return YES;
+        }
+    });
+
+    const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, fileProviderSetupTimeoutMs * NSEC_PER_MSEC));
+    NSArray *snapshot = nil;
+    @synchronized(results) {
+        finished = true;
+        snapshot = results.copy;
+    }
+
+    if (waitResult != 0) {
+        qCWarning(lcFileProviderXPCUtils) << "Timed out while" << operation;
+    }
+    return snapshot;
+}
+
 NSArray<NSFileProviderManager *> *getDomainManagers()
 {
-    dispatch_group_t group = dispatch_group_create();
-    __block NSMutableArray<NSFileProviderManager *> *const managers = NSMutableArray.array;
-
-    dispatch_group_enter(group);
-
-    // Set up connections for each domain
-    [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
-        if (error != nil) {
-            qCWarning(lcFileProviderXPCUtils) << "Error getting file provider domains" << error;
-            dispatch_group_leave(group);
-            return;
-        }
-
-        for (NSFileProviderDomain *const domain in domains) {
-            qCInfo(lcFileProviderXPCUtils) << "Found file provider domain" << domain.identifier;
-
-            NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
-            if (manager) {
-                [managers addObject:manager];
-            } else {
-                qCWarning(lcFileProviderXPCUtils) << "Could not get manager for domain" << domain.identifier;
+    const auto domains = collectSetupResults(1, "getting file provider domains", ^(SetupReplyHandler complete) {
+        [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
+            if (error != nil) {
+                qCWarning(lcFileProviderXPCUtils) << "Error getting file provider domains" << error;
+                complete(nil);
+                return;
             }
+            complete(domains);
+        }];
+    });
+
+    NSMutableArray<NSFileProviderManager *> *const managers = NSMutableArray.array;
+    for (NSFileProviderDomain *const domain in domains) {
+        qCInfo(lcFileProviderXPCUtils) << "Found file provider domain" << domain.identifier;
+
+        NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+        if (manager) {
+            [managers addObject:manager];
+        } else {
+            qCWarning(lcFileProviderXPCUtils) << "Could not get manager for domain" << domain.identifier;
         }
-
-        dispatch_group_leave(group);
-    }];
-
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    }
 
     if (managers.count == 0) {
         qCWarning(lcFileProviderXPCUtils) << "No file provider domains found!";
@@ -63,59 +103,45 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
 // TODO: This should work for all service names, not just the communication service!
 NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServices(NSArray<NSFileProviderManager *> *managers)
 {
-    NSMutableArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *const fpServices = NSMutableArray.array;
-    dispatch_group_t group = dispatch_group_create();
+    return collectSetupResults(managers.count, "resolving file provider services", ^(SetupReplyHandler complete) {
+        for (NSFileProviderManager *const manager in managers) {
+            [manager getServiceWithName:nsClientCommunicationServiceName
+                         itemIdentifier:NSFileProviderRootContainerItemIdentifier
+                      completionHandler:^(NSFileProviderService *const service, NSError *const error) {
 
-    for (NSFileProviderManager *const manager in managers) {
-        dispatch_group_enter(group);
+                if (error != nil) {
+                    qCWarning(lcFileProviderXPCUtils) << "Failed to resolve service for file provider domain: " << error;
+                } else if (service == nil) {
+                    qCWarning(lcFileProviderXPCUtils) << "Service is nil!";
+                } else if (service.name == nil) {
+                    qCWarning(lcFileProviderXPCUtils) << "Service has no name";
+                } else {
+                    complete(@[@{service.name: service}]);
+                    return;
+                }
 
-        [manager getServiceWithName:nsClientCommunicationServiceName
-                     itemIdentifier:NSFileProviderRootContainerItemIdentifier
-                  completionHandler:^(NSFileProviderService *const service, NSError *const error) {
-
-            if (error != nil) {
-                qCWarning(lcFileProviderXPCUtils) << "Failed to resolve service for file provider domain: " << error;
-            } else if (service == nil) {
-                qCWarning(lcFileProviderXPCUtils) << "Service is nil!";
-            } else if (service.name == nil) {
-                qCWarning(lcFileProviderXPCUtils) << "Service has no name";
-            } else {
-                @synchronized (fpServices) {
-                [fpServices addObject:@{service.name: service}];
-            }
-            }
-
-            dispatch_group_leave(group);
-        }];
-    }
-
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    dispatch_release(group);
-    return fpServices.copy;
+                complete(nil);
+            }];
+        }
+    });
 }
 
 NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *fpServices)
 {
-    dispatch_group_t group = dispatch_group_create();
-    NSMutableArray<NSXPCConnection *> *const connections = NSMutableArray.array;
-
-    for (NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *const services in fpServices) {
-        NSArray<NSFileProviderServiceName> *const serviceNamesArray = services.allKeys;
-
-        for (NSFileProviderServiceName serviceName in serviceNamesArray) {
-            qCInfo(lcFileProviderXPCUtils) << "Got service" << serviceName;
-
-            if (![serviceName isEqualToString:nsClientCommunicationServiceName]) {
+    return collectSetupResults(fpServices.count, "getting file provider connections", ^(SetupReplyHandler complete) {
+        for (NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *const services in fpServices) {
+            NSFileProviderService *const service = services[nsClientCommunicationServiceName];
+            if (service == nil) {
+                complete(nil);
                 continue;
             }
 
-            NSFileProviderService *const service = services[serviceName];
-            dispatch_group_enter(group);
-
+            qCInfo(lcFileProviderXPCUtils) << "Got service" << nsClientCommunicationServiceName;
             [service getFileProviderConnectionWithCompletionHandler:^(NSXPCConnection *const connection, NSError *const error){
                 if (error != nil) {
                     qCWarning(lcFileProviderXPCUtils) << "Error getting file provider connection" << error;
-                    dispatch_group_leave(group);
+                    [connection invalidate];
+                    complete(nil);
                     return;
                 }
 
@@ -123,21 +149,16 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
 
                 if (connection == nil) {
                     qCWarning(lcFileProviderXPCUtils) << "Connection is nil";
-                    dispatch_group_leave(group);
+                    complete(nil);
                     return;
                 }
 
-                @synchronized (connections) {
-                [connections addObject:connection];
+                if (!complete(@[connection])) {
+                    [connection invalidate];
                 }
-                dispatch_group_leave(group);
             }];
         }
-    }
-
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    dispatch_release(group);
-    return connections.copy;
+    });
 }
 
 void configureFileProviderConnection(NSXPCConnection *const connection)
