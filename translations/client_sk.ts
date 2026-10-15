@@ -7045,7 +7045,7 @@ Server odpovedal chybou: %2</translation>
         <translation>Pri odstraňovaní súboru sa vyskytla chyba</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Cesty začínajúce znakom &apos;#&apos; nie sú podporované v móde VFS.</translation>
     </message>
