@@ -389,6 +389,8 @@ IF( APPLE )
         macOS/fileprovideritemmetadata_mac.mm
         macOS/fileprovidersettingscontroller_mac.mm
         macOS/fileproviderutils_mac.mm
+        macOS/fileproviderxpc_mac.mm
+        macOS/fileproviderxpc_mac_utils.mm
         macOS/progressobserver.m
         foregroundbackground_mac.mm
         foregroundbackground_cocoa.mm

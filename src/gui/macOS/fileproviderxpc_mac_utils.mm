@@ -52,7 +52,6 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
     }];
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    dispatch_release(group);
 
     if (managers.count == 0) {
         qCWarning(lcFileProviderXPCUtils) << "No file provider domains found!";
@@ -168,7 +167,6 @@ NSObject *getRemoteServiceObject(NSXPCConnection *const connection, Protocol *co
         return nil;
     }
 
-    [remoteServiceObject retain];
     return remoteServiceObject;
 }
 
@@ -198,8 +196,6 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
         qCWarning(lcFileProviderXPCUtils) << "Timed out while getting domain id from file provider service";
     }
 
-    dispatch_release(group);
-
     if (waitResult != 0 || !gotDomainIdentifier) {
         return nil;
     }
@@ -219,7 +215,7 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
         
         // Set the FileProviderService delegate as the exported object
         if (service) {
-            connection.exportedObject = (id<AppProtocol>)service->delegate();
+            connection.exportedObject = (__bridge id<AppProtocol>)service->delegate();
         } else {
             qCWarning(lcFileProviderXPCUtils) << "FileProviderService is null, cannot set exported object";
         }
@@ -239,7 +235,6 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
 
         if (domainIdentifier == nil) {
             qCWarning(lcFileProviderXPCUtils) << "Could not retrieve domain id from file provider service";
-            [clientCommService release];
             [connection invalidate];
             continue;
         }
@@ -250,21 +245,16 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
                                        << domainIdentifierString
                                        << "from file provider service";
 
-        [domainIdentifier release];
-
         if (clientCommConnections.contains(domainIdentifierString)) {
             qCWarning(lcFileProviderXPCUtils) << "Duplicate domain id from file provider service"
                                               << domainIdentifierString;
             [connection invalidate];
-            [clientCommService release];
             continue;
         }
 
-        [connection retain];
-
         ClientCommunicationConnection clientCommConnection;
-        clientCommConnection.clientCommunicationService = clientCommService;
-        clientCommConnection.xpcConnection = connection;
+        clientCommConnection.clientCommunicationService = (__bridge_retained void *)clientCommService;
+        clientCommConnection.xpcConnection = (__bridge_retained void *)connection;
         clientCommConnections.insert(domainIdentifierString, clientCommConnection);
     }
 
