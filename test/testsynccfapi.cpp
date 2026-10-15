@@ -1901,6 +1901,35 @@ private Q_SLOTS:
         QVERIFY(itemInstruction(completeSpy, "afileFromSubdir.txt", CSYNC_INSTRUCTION_RENAME));
     }
 
+    void testMultipleSyncWithServerChangesDoNotImplicitlyPopulateFolders()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("folder");
+        fakeFolder.remoteModifier().mkdir("folder/a");
+        fakeFolder.remoteModifier().mkdir("folder/a/b");
+        fakeFolder.remoteModifier().mkdir("folder/a/b/c");
+        fakeFolder.remoteModifier().insert("folder/a/b/c/file1.txt");
+        fakeFolder.remoteModifier().insert("folder/a/b/c/file2.txt");
+        fakeFolder.remoteModifier().insert("folder/a/b/c/file3.txt");
+        fakeFolder.remoteModifier().insert("folder/a/b/c/file4.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        auto rootFolder = fakeFolder.localModifier().find("folder");
+        QVERIFY(rootFolder.exists());
+        auto subFolder = fakeFolder.localModifier().find("folder/a");
+        QVERIFY(!subFolder.exists());
+
+        fakeFolder.remoteModifier().rename("folder/a", "folder/a rename");
+        QVERIFY(fakeFolder.syncOnce());
+        auto rootFolderStep2 = fakeFolder.localModifier().find("folder");
+        QVERIFY(rootFolderStep2.exists());
+        auto subFolderStep2 = fakeFolder.localModifier().find("folder/a");
+        QVERIFY(!subFolderStep2.exists());
+        auto subFolderNewName = fakeFolder.localModifier().find("folder/a rename");
+        QVERIFY(!subFolderNewName.exists());
+    }
 
     void testServer_caseClash_createConflict()
     {
