@@ -127,6 +127,7 @@ namespace FileSystem {
      *
      * Equivalent to QFile::remove(), except on Windows, where it will also
      * successfully remove read-only files.
+     * A symlink or junction is removed, not its target.
      */
     bool OCSYNC_EXPORT remove(const QString &fileName, QString *errorString = nullptr);
 

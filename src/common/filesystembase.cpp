@@ -593,6 +593,15 @@ QString FileSystem::fileSystemForPath(const QString &path)
 
 bool FileSystem::remove(const QString &fileName, QString *errorString)
 {
+    if (isSymLink(fileName)) {
+        auto error = std::error_code{};
+        std::filesystem::remove(toFilesystemPath(fileName), error);
+        if (error && errorString) {
+            *errorString = QString::fromStdString(error.message());
+        }
+        return !error;
+    }
+
     const auto &windowsSafeFileName = FileSystem::longWinPath(fileName);
 #ifdef Q_OS_WIN
     // You cannot delete a read-only file on windows, but we want to
