@@ -85,19 +85,28 @@ private Q_SLOTS:
         QCOMPARE(fakeFolder.syncEngine().syncOptions().minChunkSize(), minChunkSize);
 
         auto hasDestinationHeader = false;
-        fakeFolder.setServerOverride(
-            [&hasDestinationHeader](const QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *const) -> QNetworkReply * {
-                if (op == QNetworkAccessManager::PutOperation) {
-                    qDebug() << "Request headers:" << request.rawHeaderList();
-                    hasDestinationHeader |= request.hasRawHeader("Destination");
+        auto allPutsHaveOctetStream = true;
+        auto putCount = 0;
+        fakeFolder.setServerOverride([&hasDestinationHeader, &allPutsHaveOctetStream, &putCount](const QNetworkAccessManager::Operation op,
+                                                                                                 const QNetworkRequest &request,
+                                                                                                 QIODevice *const) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation) {
+                ++putCount;
+                qDebug() << "Request headers:" << request.rawHeaderList();
+                hasDestinationHeader |= request.hasRawHeader("Destination");
+                if (request.rawHeader("Content-Type") != "application/octet-stream") {
+                    allPutsHaveOctetStream = false;
                 }
-                return nullptr;
-            });
+            }
+            return nullptr;
+        });
 
         constexpr auto size = 1000 * 1000 * 1000; // 100 MB
         ::partialUpload(fakeFolder, "A/a0", size);
 
         QVERIFY(hasDestinationHeader);
+        QVERIFY(putCount > 0);
+        QVERIFY(allPutsHaveOctetStream);
 
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         const auto chunkingId = fakeFolder.uploadState().children.first().name;
