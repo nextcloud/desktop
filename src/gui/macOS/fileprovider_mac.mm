@@ -31,6 +31,8 @@ FileProvider::FileProvider(QObject * const parent)
     Q_ASSERT(!_instance);
     qCDebug(lcMacFileProvider) << "Initializing...";
 
+    // Keep the XPC interface available while domain discovery or migration is pending.
+    _xpc = std::make_unique<FileProviderXPC>();
     _domainManager = std::make_unique<FileProviderDomainManager>(this);
 
     if (_domainManager) {
