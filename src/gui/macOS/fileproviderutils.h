@@ -31,10 +31,6 @@ struct NSString;
  *
  * You should threfore try to avoid using this in C++ code wherever possible
  * and only use this in *_mac.mm implementation files.
- *
- * IMPORTANT: All Objective-C objects returned here need to be released!
- * They have been internally retained due to the async nature of the
- * FileProvider API.
  */
 
 namespace OCC {
@@ -82,20 +78,10 @@ QDir fileProviderDomainSupportDirectory(const QString domainIdentifier);
 /**
  * @brief Synchronously retrieves an NSFileProviderManager for the given domain identifier.
  *
- * This function first finds the NSFileProviderDomain using domainForIdentifier, then
- * creates and returns the corresponding NSFileProviderManager. The function handles
- * proper memory management by releasing the intermediate domain object.
- *
- * @param domainIdentifier The unique identifier of the domain to get the manager for
- * @return An NSFileProviderManager object for the domain if found, nil otherwise
- *
- * @warning This function blocks the calling thread due to its dependency on domainForIdentifier
- * @warning The caller does NOT need to release the returned NSFileProviderManager
- *          (it follows standard Objective-C memory management)
- *
- * @see domainForIdentifier for domain lookup implementation details
+ * Domain enumeration waits up to five seconds for a reply.
+ * @return The manager if found, or nil when enumeration fails, times out, or finds no matching domain.
+ * The returned manager follows standard Objective-C ownership; the caller does not release it.
  */
-// Synchronous function to get manager for a domain identifier
 NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifier);
 
 QString groupContainerPath();

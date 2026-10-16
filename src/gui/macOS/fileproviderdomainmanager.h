@@ -71,7 +71,10 @@ public:
 
     void start();
 
-    [[nodiscard]] QList<NSFileProviderDomain *> getDomains() const;
+    /**
+     * @brief Get registered domains, setting success to false on error or timeout when provided.
+     */
+    [[nodiscard]] QList<NSFileProviderDomain *> getDomains(bool *success = nullptr) const;
 
     NSFileProviderDomain *domainForAccount(const OCC::Account *account) const;
 
