@@ -35,20 +35,21 @@
 #include <chrono>
 
 #include <QCoreApplication>
-#include <QSslSocket>
 #include <QDir>
-#include <QLoggingCategory>
-#include <QMutexLocker>
-#include <QThread>
-#include <QStringList>
-#include <QTextStream>
-#include <QTime>
-#include <QUrl>
-#include <QSslCertificate>
-#include <QProcess>
 #include <QElapsedTimer>
 #include <QFileInfo>
+#include <QLoggingCategory>
+#include <QMutexLocker>
+#include <QPointer>
+#include <QProcess>
+#include <QSslCertificate>
+#include <QSslSocket>
 #include <QStorageInfo>
+#include <QStringList>
+#include <QTextStream>
+#include <QThread>
+#include <QTime>
+#include <QUrl>
 #include <qtextcodec.h>
 
 namespace OCC {
@@ -325,7 +326,15 @@ void SyncEngine::caseClashConflictRecordMaintenance()
 
 void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
+    const QPointer<DiscoveryPhase> discovery = _discoveryPhase.get();
+    if (!discovery || discovery->isStopped()) {
+        return;
+    }
     Q_EMIT itemDiscovered(item);
+    // A direct receiver may abort the run before we update the journal or totals.
+    if (!discovery || discovery.data() != _discoveryPhase.get() || discovery->isStopped()) {
+        return;
+    }
 
     if (Utility::isConflictFile(item->_file)) {
         _seenConflictFiles.insert(item->_file);
@@ -959,6 +968,8 @@ void SyncEngine::finalize(bool success)
     _stopWatch.stop();
 
     if (_discoveryPhase) {
+        _discoveryPhase->stop();
+        disconnect(_discoveryPhase.get(), nullptr, this, nullptr);
         _discoveryPhase.release()->deleteLater();
     }
     s_anySyncRunning = false;
@@ -1471,6 +1482,7 @@ void SyncEngine::abort()
     } else if (_discoveryPhase) {
         // Delete the discovery and all child jobs after ensuring
         // it can't finish and start the propagator
+        _discoveryPhase->stop();
         disconnect(_discoveryPhase.get(), nullptr, this, nullptr);
         _discoveryPhase.release()->deleteLater();
         qCInfo(lcEngine) << "Aborting sync in discovery...";
