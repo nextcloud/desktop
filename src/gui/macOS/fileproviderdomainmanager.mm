@@ -245,49 +245,15 @@ public:
     QString getUserVisibleUrlForDomain(NSFileProviderDomain *domain)
     {
         if (!domain) {
-            qCWarning(lcMacFileProviderDomainManager) << "Cannot get user-visible URL for nil domain";
+            return {};
+        }
+        NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+        if (!manager) {
             return {};
         }
 
-        qCInfo(lcMacFileProviderDomainManager) << "Getting user-visible URL for domain" << domain.identifier;
-        
-        NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
-        dispatch_group_t dispatchGroup = dispatch_group_create();
-        dispatch_group_enter(dispatchGroup);
-
-        __block NSURL *resultURL = nil;
-
-        [manager getUserVisibleURLForItemIdentifier:NSFileProviderRootContainerItemIdentifier completionHandler:^(NSURL * const url, NSError * const error) {
-            if (error) {
-                qCWarning(lcMacFileProviderDomainManager) << "Error getting user-visible URL for domain"
-                                                          << domain.identifier
-                                                          << ":"
-                                                          << error.code
-                                                          << error.localizedDescription;
-                dispatch_group_leave(dispatchGroup);
-                return;
-            }
-
-            if (url) {
-                resultURL = [url copy];
-                qCInfo(lcMacFileProviderDomainManager) << "Got user-visible URL for domain"
-                                                       << domain.identifier
-                                                       << ":"
-                                                       << url.path;
-            } else {
-                qCWarning(lcMacFileProviderDomainManager) << "No user-visible URL returned for domain" << domain.identifier;
-            }
-
-            dispatch_group_leave(dispatchGroup);
-        }];
-
-        dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
-
-        if (resultURL) {
-            return QString::fromNSString(resultURL.path);
-        }
-
-        return {};
+        const auto url = FileProviderUtils::userVisibleURLForItem(manager, NSFileProviderRootContainerItemIdentifier);
+        return QString::fromNSString(url.path);
     }
 
     // MARK: - Higher Level Domain Management
