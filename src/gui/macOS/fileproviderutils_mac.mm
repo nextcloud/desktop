@@ -5,6 +5,7 @@
 
 #include "configfile.h"
 #include "fileproviderutils.h"
+#include "fileproviderutils_mac.h"
 #include "account.h"
 
 #include <QCoreApplication>
@@ -15,7 +16,10 @@
 
 #import <FileProvider/FileProvider.h>
 
-static_assert(__has_feature(objc_arc), "fileproviderutils_mac requires ARC.");
+namespace
+{
+constexpr auto fileProviderRequestTimeoutMs = 5000;
+}
 
 namespace OCC {
 
@@ -25,6 +29,74 @@ namespace FileProviderUtils {
 
 Q_LOGGING_CATEGORY(lcMacFileProviderUtils, "nextcloud.gui.macfileproviderutils", QtInfoMsg)
 
+bool waitForFileProviderReplies(const NSUInteger requestCount, const char *operation, void (^startRequests)(RequestReplyHandler), NSArray **results)
+{
+    if (requestCount == 0) {
+        *results = @[];
+        return true;
+    }
+
+    const auto values = [NSMutableArray new];
+    const auto semaphore = dispatch_semaphore_create(0);
+    __block auto remaining = requestCount;
+    __block auto closed = false;
+    __block NSError *replyError = nil;
+
+    startRequests(^BOOL(id value, NSError *error) {
+        @synchronized(values) {
+            if (closed) {
+                return NO;
+            }
+
+            if (error != nil) {
+                if (replyError == nil) {
+                    replyError = error;
+                }
+            } else if (value != nil) {
+                [values addObject:value];
+            }
+            if (--remaining == 0) {
+                closed = true;
+                dispatch_semaphore_signal(semaphore);
+            }
+            return YES;
+        }
+    });
+
+    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, fileProviderRequestTimeoutMs * NSEC_PER_MSEC));
+    auto completed = false;
+    NSError *acceptedError = nil;
+    @synchronized(values) {
+        closed = true;
+        completed = remaining == 0;
+        *results = values.copy;
+        acceptedError = replyError;
+    }
+
+    if (!completed) {
+        qCWarning(lcMacFileProviderUtils) << "Timed out while" << operation;
+        return false;
+    }
+    if (acceptedError != nil) {
+        qCWarning(lcMacFileProviderUtils) << "Error while" << operation << acceptedError.code << acceptedError.localizedDescription;
+        return false;
+    }
+
+    return true;
+}
+
+bool waitForFileProviderRequest(const char *operation, void (^startRequest)(RequestReplyHandler), id *result)
+{
+    if (result != nullptr) {
+        *result = nil;
+    }
+    NSArray *values = nil;
+    const auto success = waitForFileProviderReplies(1, operation, startRequest, &values);
+    if (success && result != nullptr) {
+        *result = values.firstObject;
+    }
+    return success;
+}
 inline bool hasBundleExtension(const QString &domainId)
 {
     return std::any_of(bundleExtensions.begin(), bundleExtensions.end(), [&domainId](const auto &ext) {
