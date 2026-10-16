@@ -97,6 +97,22 @@ bool waitForFileProviderRequest(const char *operation, void (^startRequest)(Requ
     }
     return success;
 }
+
+NSArray<NSFileProviderDomain *> *fileProviderDomains(bool *success)
+{
+    id result = nil;
+    const auto received = waitForFileProviderRequest(
+        "getting file provider domains",
+        ^(RequestReplyHandler reply) {
+            [NSFileProviderManager
+                getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *domains, NSError *error) { reply([domains copy], error); }];
+        },
+        &result);
+    if (success != nullptr) {
+        *success = received;
+    }
+    return result;
+}
 inline bool hasBundleExtension(const QString &domainId)
 {
     return std::any_of(bundleExtensions.begin(), bundleExtensions.end(), [&domainId](const auto &ext) {
@@ -150,31 +166,18 @@ QDir fileProviderDomainSupportDirectory(const QString domainIdentifier)
 
 NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifier)
 {
-    dispatch_group_t dispatchGroup = dispatch_group_create();
-    dispatch_group_enter(dispatchGroup);
+    const auto domains = fileProviderDomains();
+    if (domains == nil) {
+        return nil;
+    }
 
-    __block NSFileProviderDomain *domain = nil;
-
-    [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
-        if (error != nil) {
-            qCWarning(lcMacFileProviderUtils) << "Could not get existing domains because of error:"
-                                              << error.code
-                                              << error.localizedDescription;
-            dispatch_group_leave(dispatchGroup);
-            return;
+    NSFileProviderDomain *domain = nil;
+    for (NSFileProviderDomain * const candidate in domains) {
+        if (domainIdentifier == QString::fromNSString(candidate.identifier)) {
+            domain = candidate;
+            break;
         }
-
-        for (NSFileProviderDomain * const candidate in domains) {
-            if (domainIdentifier == QString::fromNSString(candidate.identifier)) {
-                domain = candidate;
-                break;
-            }
-        }
-
-        dispatch_group_leave(dispatchGroup);
-    }];
-
-    dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
+    }
 
     if (domain == nil) {
         qCWarning(lcMacFileProviderUtils) << "Received null domain for identifier"

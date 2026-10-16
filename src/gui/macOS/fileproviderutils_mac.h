@@ -20,4 +20,7 @@ bool waitForFileProviderReplies(NSUInteger requestCount, const char *operation, 
 // Wait for one File Provider reply and ignore late or duplicate replies.
 // A timeout does not cancel the request; result is only assigned after success.
 bool waitForFileProviderRequest(const char *operation, void (^startRequest)(RequestReplyHandler), id *result = nullptr);
+
+NSArray<NSFileProviderDomain *> *fileProviderDomains(bool *success = nullptr);
+NSURL *userVisibleURLForItem(NSFileProviderManager *manager, NSFileProviderItemIdentifier itemIdentifier);
 }
