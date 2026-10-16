@@ -91,6 +91,36 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(itemWithoutToken.itemVersion.contentVersion, itemWithToken.itemVersion.contentVersion)
     }
 
+    func testSharedFileLockUsesCurrentAccountInsteadOfFileOwner() {
+        var metadata =
+            SendableItemMetadata(ocId: "shared-file-id", fileName: "shared.txt", account: Self.account)
+        metadata.ownerId = "another-user"
+        metadata.permissions = "GW"
+        metadata.lock = true
+        metadata.lockOwnerType = NKLockType.token.rawValue
+        metadata.lockTimeOut = Date().addingTimeInterval(3600)
+
+        for (lockOwner, lockToken, expectedWritable) in [
+            (Self.account.id, Optional("files_lock/local-token"), true),
+            (Self.account.id, nil, false),
+            (metadata.ownerId, Optional("files_lock/other-token"), false)
+        ] {
+            metadata.lockOwner = lockOwner
+            metadata.lockToken = lockToken
+
+            let item = Item(
+                metadata: metadata,
+                parentItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: MockRemoteInterface(account: Self.account),
+                dbManager: Self.dbManager
+            )
+
+            XCTAssertEqual(item.capabilities.contains(.allowsWriting), expectedWritable)
+            XCTAssertEqual(item.fileSystemFlags.contains(.userWritable), expectedWritable)
+        }
+    }
+
     func testMetadataExtensionContentType() {
         var metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.pdf", account: Self.account)
