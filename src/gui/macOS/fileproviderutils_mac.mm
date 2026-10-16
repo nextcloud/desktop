@@ -113,6 +113,23 @@ NSArray<NSFileProviderDomain *> *fileProviderDomains(bool *success)
     }
     return result;
 }
+
+NSURL *userVisibleURLForItem(NSFileProviderManager *manager, NSFileProviderItemIdentifier itemIdentifier)
+{
+    if (manager == nil) {
+        return nil;
+    }
+
+    id result = nil;
+    waitForFileProviderRequest(
+        "getting user-visible URL",
+        ^(RequestReplyHandler reply) {
+            [manager getUserVisibleURLForItemIdentifier:itemIdentifier completionHandler:^(NSURL *url, NSError *error) { reply(url, error); }];
+        },
+        &result);
+    return result;
+}
+
 inline bool hasBundleExtension(const QString &domainId)
 {
     return std::any_of(bundleExtensions.begin(), bundleExtensions.end(), [&domainId](const auto &ext) {
