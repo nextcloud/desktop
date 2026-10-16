@@ -5888,7 +5888,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation>Stol på dette certifikatet alligevel?</translation>
+        <translation>Stol på dette certifikat alligevel</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="79"/>
