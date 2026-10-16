@@ -4,6 +4,7 @@
  */
 
 #include "fileproviderxpc_mac_utils.h"
+#include "fileproviderutils_mac.h"
 
 #import "../../../shell_integration/MacOSX/NextcloudFileProviderKit/Sources/NextcloudFileProviderXPC/include/NextcloudFileProviderXPC.h"
 #import "fileprovider.h"
@@ -15,7 +16,6 @@
 namespace {
 const char *const clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
 NSString *const nsClientCommunicationServiceName = [NSString stringWithUTF8String:clientCommunicationServiceName];
-constexpr auto fileProviderSetupTimeoutMs = 5000;
 constexpr int64_t fileProviderRequestWaitDelta = 1000000000; // 1 second
 }
 
@@ -25,47 +25,20 @@ Q_LOGGING_CATEGORY(lcFileProviderXPCUtils, "nextcloud.gui.macos.fileprovider.xpc
 
 using SetupReplyHandler = BOOL (^)(NSArray *);
 
-// Copied reply blocks retain the collector's objects until the framework releases them.
 static NSArray *collectSetupResults(const NSUInteger requestCount, const char *const operation, void (^startRequests)(SetupReplyHandler))
 {
-    if (requestCount == 0) {
-        return [NSArray new];
-    }
+    NSArray *replyArrays = nil;
+    FileProviderUtils::waitForFileProviderReplies(
+        requestCount,
+        operation,
+        ^(FileProviderUtils::RequestReplyHandler reply) { startRequests(^BOOL(NSArray *const replyResults) { return reply(replyResults, nil); }); },
+        &replyArrays);
 
     NSMutableArray *const results = NSMutableArray.array;
-    const auto semaphore = dispatch_semaphore_create(0);
-    __block auto remainingReplies = requestCount;
-    __block auto finished = false;
-
-    startRequests(^BOOL(NSArray *const replyResults) {
-        @synchronized(results) {
-            if (finished) {
-                return NO;
-            }
-
-            if (replyResults != nil) {
-                [results addObjectsFromArray:replyResults];
-            }
-
-            if (--remainingReplies == 0) {
-                finished = true;
-                dispatch_semaphore_signal(semaphore);
-            }
-            return YES;
-        }
-    });
-
-    const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, fileProviderSetupTimeoutMs * NSEC_PER_MSEC));
-    NSArray *snapshot = nil;
-    @synchronized(results) {
-        finished = true;
-        snapshot = results.copy;
+    for (NSArray *const replyResults in replyArrays) {
+        [results addObjectsFromArray:replyResults];
     }
-
-    if (waitResult != 0) {
-        qCWarning(lcFileProviderXPCUtils) << "Timed out while" << operation;
-    }
-    return snapshot;
+    return results.copy;
 }
 
 NSArray<NSFileProviderManager *> *getDomainManagers()

@@ -418,6 +418,7 @@ IF( APPLE )
             macOS/fileprovidersettingscontroller.h
             macOS/fileprovidersettingscontroller_mac.mm
             macOS/fileproviderutils.h
+            macOS/fileproviderutils_mac.h
             macOS/fileproviderutils_mac.mm
             macOS/fileproviderxpc.h
             macOS/fileproviderxpcconnection.h
