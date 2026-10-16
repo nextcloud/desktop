@@ -2,18 +2,21 @@
  * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2018 ownCloud, Inc.
  * SPDX-License-Identifier: CC0-1.0
- * 
+ *
  * This software is in the public domain, furnished "as is", without technical
  * support, and with no warranty, express or implied, as to its usefulness for
  * any purpose.
  */
 
-#include <QtTest>
+#include "configfile.h"
 #include "syncenginetestutils.h"
-#include <syncengine.h>
+#include <QScopedValueRollback>
+#include <QtTest>
 #include <localdiscoverytracker.h>
+#include <syncengine.h>
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 struct FakeBrokenXmlPropfindReply : FakePropfindReply {
     FakeBrokenXmlPropfindReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op,
@@ -62,6 +65,8 @@ class TestRemoteDiscovery : public QObject
 {
     Q_OBJECT
 
+    QTemporaryDir _configDirectory;
+
 private Q_SLOTS:
     void initTestCase()
     {
@@ -71,6 +76,274 @@ private Q_SLOTS:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+        QVERIFY(_configDirectory.isValid());
+        QVERIFY(ConfigFile::setConfDir(_configDirectory.path()));
+    }
+
+    void testLargeDirectoryYields_data()
+    {
+        QTest::addColumn<int>("fileCount");
+        QTest::addColumn<bool>("virtualFiles");
+        QTest::newRow("empty") << 0 << false;
+        QTest::newRow("single") << 1 << false;
+        QTest::newRow("large") << 512 << false;
+        QTest::newRow("large-virtual") << 512 << true;
+    }
+
+    void testLargeDirectoryYields()
+    {
+        QFETCH(int, fileCount);
+        QFETCH(bool, virtualFiles);
+        FakeFolder folder{FileInfo::A12_B12_C12_S12()};
+        if (virtualFiles) {
+            auto vfs = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::WithSuffix).release());
+            QVERIFY(vfs);
+            folder.switchToVfs(vfs);
+            folder.syncJournal().internalPinStates().setForPath("", PinState::Unspecified);
+        }
+        folder.remoteModifier().mkdir("A/000-child");
+        folder.remoteModifier().insert("A/000-child/file");
+        for (auto i = 0; i < fileCount; ++i) {
+            folder.remoteModifier().insert(u"A/new-%1"_s.arg(i, 4, 10, QLatin1Char('0')));
+        }
+
+        QStringList discovered;
+        auto discoveredAtYield = -1;
+        auto discoveredAtTimer = -1;
+        auto discoveredAtPropagation = -1;
+        auto discoveredBeforeChild = -1;
+        auto discoveredAtHealthReply = -1;
+        auto healthRequestMatches = false;
+        auto healthReplyValid = false;
+        folder.setServerOverride([&](QNetworkAccessManager::Operation, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (request.rawHeader("Depth") == "0") {
+                healthRequestMatches = request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "PROPFIND"_L1
+                    && request.priority() == QNetworkRequest::HighPriority && request.url().path().endsWith("/dav/files/admin/"_L1);
+            }
+            return nullptr;
+        });
+        connect(&folder.syncEngine(), &SyncEngine::itemDiscovered, this, [&](const SyncFileItemPtr &item) {
+            if (item->_file.startsWith("A/000-child/file"_L1)) {
+                discoveredBeforeChild = discovered.size();
+            }
+            if (!item->_file.startsWith("A/new-"_L1)) {
+                return;
+            }
+            QCOMPARE(item->_instruction, CSYNC_INSTRUCTION_NEW);
+            QCOMPARE(item->_type, virtualFiles ? ItemTypeVirtualFile : ItemTypeFile);
+            discovered.append(item->_file);
+            if (discovered.size() == 1) {
+                QTimer::singleShot(0, &folder.syncEngine(), [&] {
+                    discoveredAtYield = discovered.size();
+                });
+                if (fileCount > 1) {
+                    QTimer::singleShot(1, Qt::PreciseTimer, &folder.syncEngine(), [&] {
+                        discoveredAtTimer = discovered.size();
+                    });
+                    // Exercise the same root request shape as ConnectionValidator.
+                    // The fake transport isolates delivery on the event loop.
+                    auto *health = new PropfindJob(folder.account(), u"/"_s, &folder.syncEngine());
+                    health->setProperties({"getlastmodified"_ba});
+                    connect(health, &PropfindJob::result, &folder.syncEngine(), [&](const QVariantMap &properties) {
+                        discoveredAtHealthReply = discovered.size();
+                        healthReplyValid = properties.contains(u"getlastmodified"_s);
+                    });
+                    health->start();
+                }
+            }
+        });
+        connect(&folder.syncEngine(), &SyncEngine::aboutToPropagate, this, [&](SyncFileItemVector &) {
+            discoveredAtPropagation = discovered.size();
+        });
+
+        QVERIFY(folder.syncOnce());
+        QCOMPARE(discovered.size(), fileCount);
+        QCOMPARE(discoveredAtPropagation, fileCount);
+        QCOMPARE(discoveredBeforeChild, fileCount);
+        if (fileCount > 1) {
+            QVERIFY(discoveredAtYield > 0);
+            QVERIFY2(discoveredAtYield < fileCount, "A queued callback must run before a large directory finishes reconciliation");
+            QVERIFY(discoveredAtTimer > 0);
+            QVERIFY2(discoveredAtTimer < fileCount, "A nonzero timer must also run between directory batches");
+            QVERIFY(healthRequestMatches);
+            QVERIFY(healthReplyValid);
+            QVERIFY(discoveredAtHealthReply > 0);
+            QVERIFY2(discoveredAtHealthReply < fileCount, "A root-health reply must be delivered before large-directory reconciliation finishes");
+        }
+        auto sorted = discovered;
+        sorted.sort();
+        QCOMPARE(discovered, sorted);
+        QCOMPARE(QSet<QString>(discovered.begin(), discovered.end()).size(), fileCount);
+
+        for (const auto &path : std::as_const(discovered)) {
+            SyncJournalFileRecord record;
+            QVERIFY(folder.syncJournal().getFileRecord(path, &record));
+            QVERIFY(record.isValid());
+            QCOMPARE(record._type, virtualFiles ? ItemTypeVirtualFile : ItemTypeFile);
+            QVERIFY(QFileInfo::exists(folder.localPath() + path));
+        }
+    }
+
+    void testDirectoryBatchTimerDoesNotReenter()
+    {
+        FakeFolder folder{FileInfo::A12_B12_C12_S12()};
+        constexpr auto fileCount = 512;
+        for (auto i = 0; i < fileCount; ++i) {
+            folder.remoteModifier().insert(u"A/new-%1"_s.arg(i, 4, 10, QLatin1Char('0')));
+        }
+        QStringList discovered;
+        auto inCallback = false;
+        auto reentered = false;
+        connect(&folder.syncEngine(), &SyncEngine::itemDiscovered, this, [&](const SyncFileItemPtr &item) {
+            if (!item->_file.startsWith("A/new-"_L1)) {
+                return;
+            }
+            reentered = reentered || inCallback;
+            const QScopedValueRollback callbackGuard(inCallback, true);
+            discovered.append(item->_file);
+            if (discovered.size() % 64 == 0) {
+                // Let nonzero timers become ready inside a discovery receiver.
+                QTest::qWait(2);
+            }
+        });
+        QVERIFY(folder.syncOnce());
+        QVERIFY(!reentered);
+        QCOMPARE(discovered.size(), fileCount);
+        auto sorted = discovered;
+        sorted.sort();
+        QCOMPARE(discovered, sorted);
+        QCOMPARE(QSet<QString>(discovered.begin(), discovered.end()).size(), fileCount);
+        QCOMPARE(folder.currentLocalState(), folder.currentRemoteState());
+    }
+
+    void testDirectoryBatchesAcrossSiblings_data()
+    {
+        QTest::addColumn<int>("parallelJobs");
+        QTest::newRow("serial") << 1;
+        QTest::newRow("parallel") << 2;
+        QTest::newRow("five-parallel") << 5;
+    }
+
+    void testDirectoryBatchesAcrossSiblings()
+    {
+        QFETCH(int, parallelJobs);
+        FakeFolder folder{FileInfo::A12_B12_C12_S12()};
+        auto options = folder.syncEngine().syncOptions();
+        options._parallelNetworkJobs = parallelJobs;
+        folder.syncEngine().setSyncOptions(options);
+        const QStringList directories{u"A"_s, u"B"_s, u"C"_s};
+        constexpr auto fileCount = 512;
+        for (const auto &directory : directories) {
+            for (auto i = 0; i < fileCount; ++i) {
+                folder.remoteModifier().insert(directory + u"/new-%1"_s.arg(i, 4, 10, QLatin1Char('0')));
+            }
+        }
+
+        QHash<QString, int> discovered;
+        QSet<QString> unfinished;
+        auto peakUnfinished = 0;
+        connect(&folder.syncEngine(), &SyncEngine::itemDiscovered, this, [&](const SyncFileItemPtr &item) {
+            if (!item->_file.contains("/new-"_L1)) {
+                return;
+            }
+            const auto directory = item->_file.section(QLatin1Char('/'), 0, 0);
+            unfinished.insert(directory);
+            peakUnfinished = qMax(peakUnfinished, static_cast<int>(unfinished.size()));
+            if (++discovered[directory] == fileCount) {
+                unfinished.remove(directory);
+            }
+        });
+
+        QVERIFY(folder.syncOnce());
+        QVERIFY(peakUnfinished <= parallelJobs);
+        QVERIFY(unfinished.isEmpty());
+        for (const auto &directory : directories) {
+            QCOMPARE(discovered.value(directory), fileCount);
+        }
+        QCOMPARE(folder.currentLocalState(), folder.currentRemoteState());
+    }
+
+    void testAbortBetweenDirectoryBatches_data()
+    {
+        QTest::addColumn<bool>("queuedAbort");
+        QTest::newRow("queued") << true;
+        QTest::newRow("synchronous") << false;
+    }
+
+    void testSingleItemDiscoveryAcrossBatches()
+    {
+        FakeFolder folder{FileInfo::A12_B12_C12_S12()};
+        constexpr auto fileCount = 512;
+        for (auto i = 0; i < fileCount; ++i) {
+            folder.remoteModifier().insert(u"new-%1"_s.arg(i, 4, 10, QLatin1Char('0')));
+        }
+        const auto selected = u"new-0511"_s;
+        SyncEngine::SingleItemDiscoveryOptions options;
+        options.discoveryPath = u"/"_s;
+        options.filePathRelative = selected;
+        folder.syncEngine().setSingleItemDiscoveryOptions(options);
+        QStringList discovered;
+        connect(&folder.syncEngine(), &SyncEngine::itemDiscovered, this, [&](const SyncFileItemPtr &item) {
+            discovered.append(item->_file);
+        });
+
+        QVERIFY(folder.syncOnce());
+        QCOMPARE(discovered, QStringList{selected});
+        QVERIFY(QFileInfo::exists(folder.localPath() + selected));
+        QVERIFY(!QFileInfo::exists(folder.localPath() + u"new-0000"_s));
+    }
+
+    void testAbortBetweenDirectoryBatches()
+    {
+        QFETCH(bool, queuedAbort);
+        FakeFolder folder{FileInfo::A12_B12_C12_S12()};
+        const auto originalLocalState = folder.currentLocalState();
+        constexpr auto fileCount = 512;
+        for (auto i = 0; i < fileCount; ++i) {
+            folder.remoteModifier().insert(u"A/new-%1"_s.arg(i, 4, 10, QLatin1Char('0')));
+        }
+
+        auto discovered = 0;
+        auto discoveredAtAbort = 0;
+        qint64 totalFilesAtAbort = -1;
+        auto abortQueued = false;
+        auto propagationStarted = false;
+        const auto discoveryConnection = connect(&folder.syncEngine(), &SyncEngine::itemDiscovered, this, [&](const SyncFileItemPtr &item) {
+            if (!item->_file.startsWith("A/new-"_L1)) {
+                return;
+            }
+            ++discovered;
+            if (!abortQueued) {
+                abortQueued = true;
+                const auto abort = [&] {
+                    discoveredAtAbort = discovered;
+                    folder.syncEngine().abort();
+                    totalFilesAtAbort = folder.syncEngine().progressInfo()->totalFiles();
+                };
+                if (queuedAbort) {
+                    QTimer::singleShot(0, &folder.syncEngine(), abort);
+                } else {
+                    abort();
+                }
+            }
+        });
+        const auto propagationConnection = connect(&folder.syncEngine(), &SyncEngine::aboutToPropagate, this, [&](SyncFileItemVector &) {
+            propagationStarted = true;
+        });
+
+        QVERIFY(!folder.syncOnce());
+        QVERIFY(discoveredAtAbort > 0);
+        QVERIFY(discoveredAtAbort < fileCount);
+        QCoreApplication::processEvents();
+        QCOMPARE(discovered, discoveredAtAbort);
+        QCOMPARE(folder.syncEngine().progressInfo()->totalFiles(), totalFilesAtAbort);
+        QVERIFY(!propagationStarted);
+        QCOMPARE(folder.currentLocalState(), originalLocalState);
+
+        disconnect(discoveryConnection);
+        disconnect(propagationConnection);
+        QVERIFY(folder.syncOnce());
+        QCOMPARE(folder.currentLocalState(), folder.currentRemoteState());
     }
 
     void testRemoteDiscoveryError_data()
