@@ -32,11 +32,6 @@ namespace {
 // NSUserDefaults entries
 constexpr auto enabledAccountsSettingsKey = "enabledAccounts";
 
-bool domainRestorationRequiresXpcReconfiguration(const QString &storedIdentifier, const QString &restoredIdentifier)
-{
-    return !storedIdentifier.isEmpty() && !restoredIdentifier.isEmpty() && storedIdentifier != restoredIdentifier;
-}
-
 } // namespace
 
 namespace OCC {
@@ -58,7 +53,9 @@ public:
     {
         q = parent;
 
-        migrateToAppSandbox();
+        if (!migrateToAppSandbox()) {
+            return;
+        }
         ensureModeFlagInitialized();
         removeOrphanedDomains();
 
@@ -106,6 +103,10 @@ public:
 
     [[nodiscard]] VfsAccountsAction setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled) const
     {
+        if (!ConfigFile().fileProviderDomainsAppSandboxMigrationCompleted() && !migrateToAppSandbox()) {
+            return VfsAccountsAction::VfsAccountsFailed;
+        }
+
         qCInfo(lcFileProviderSettingsController) << "Setting file provider enablement of account"
                                                  << userIdAtHost
                                                  << "to"
@@ -152,27 +153,27 @@ public:
                 qCWarning(lcFileProviderSettingsController) << "File provider domain" << existingDomainId << "has dirty user data.";
             }
 
-            if (!dirtyUserData.has_value() || *dirtyUserData) {
-                // Remove the domain and get the URL where preserved user data is located
-                const auto preservedDataUrl = Mac::FileProvider::instance()->domainManager()->removeDomainByAccount(accountState.data());
+            const auto preservedDataUrl = Mac::FileProvider::instance()->domainManager()->removeDomainByAccount(accountState.data());
 
-                if (!preservedDataUrl.isEmpty()) {
-                    // UI operations must be dispatched to main queue
-                    // Copy the URL to ensure it's valid in the block
-                    const QString capturedUrl = preservedDataUrl;
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        QMessageBox::warning(nullptr,
-                                           q->tr("Unsynchronized Content"),
-                                           q->tr("Some of your locally changed items were not uploaded yet but will be preserved."));
-                        NSURL *url = [NSURL fileURLWithPath:capturedUrl.toNSString() isDirectory:YES];
-                        qCDebug(lcFileProviderSettingsController) << "Opening directory in file viewer:" << url.path;
-                        [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[url]];
-                    });
-                } else {
-                    qCWarning(lcFileProviderSettingsController) << "Could not get preserved data URL for domain" << existingDomainId;
-                }
-            } else {
-                Mac::FileProvider::instance()->domainManager()->removeDomainByAccount(accountState.data());
+            if (!preservedDataUrl.has_value()) {
+                qCWarning(lcFileProviderSettingsController) << "Could not confirm removal of file provider domain" << existingDomainId;
+                return VfsAccountsAction::VfsAccountsFailed;
+            }
+
+            if (!preservedDataUrl->isEmpty()) {
+                // UI operations must be dispatched to main queue
+                // Copy the URL to ensure it's valid in the block
+                const QString capturedUrl = *preservedDataUrl;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    QMessageBox::warning(nullptr,
+                                       q->tr("Unsynchronized Content"),
+                                       q->tr("Some of your locally changed items were not uploaded yet but will be preserved."));
+                    NSURL *url = [NSURL fileURLWithPath:capturedUrl.toNSString() isDirectory:YES];
+                    qCDebug(lcFileProviderSettingsController) << "Opening directory in file viewer:" << url.path;
+                    [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[url]];
+                });
+            } else if (!dirtyUserData.has_value() || *dirtyUserData) {
+                qCWarning(lcFileProviderSettingsController) << "Could not get preserved data URL for domain" << existingDomainId;
             }
 
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, "");
@@ -183,23 +184,26 @@ public:
         return VfsAccountsAction::VfsAccountsEnabledChanged;
     }
 
-    void migrateToAppSandbox()
+    [[nodiscard]] bool migrateToAppSandbox() const
     {
         ConfigFile cfg;
 
         if (cfg.fileProviderDomainsAppSandboxMigrationCompleted()) {
             qCInfo(lcFileProviderSettingsController) << "Migration app sandbox was already completed earlier.";
-            return;
+            return true;
         }
 
         qCInfo(lcFileProviderSettingsController) << "Starting migration to app sandbox...";
+        qCInfo(lcFileProviderSettingsController) << "Removing all existing file provider domains...";
+
+        if (!Mac::FileProvider::instance()->domainManager()->removeAllDomains()) {
+            qCWarning(lcFileProviderSettingsController) << "Could not confirm removal of all file provider domains; postponing app sandbox migration.";
+            return false;
+        }
+
         qCInfo(lcFileProviderSettingsController) << "Removing file provider domain to account mappings from configuration file...";
 
         cfg.removeFileProviderDomainMapping();
-
-        qCInfo(lcFileProviderSettingsController) << "Removing all existing file provider domains...";
-
-        Mac::FileProvider::instance()->domainManager()->removeAllDomains();
 
         qCInfo(lcFileProviderSettingsController) << "Migrating user defaults...";
 
@@ -231,6 +235,7 @@ public:
         [userDefaults removeObjectForKey:accountsKey];
         cfg.setFileProviderDomainsAppSandboxMigrationCompleted(true);
         qCInfo(lcFileProviderSettingsController) << "App sandbox migration completed.";
+        return true;
     }
 
     void ensureModeFlagInitialized()
@@ -317,13 +322,13 @@ public:
 
                     if (newIdentifier.isEmpty() == false) {
                         AccountManager::instance()->setFileProviderDomainIdentifier(userIdAtHost, newIdentifier);
-                        restoredDomain |= domainRestorationRequiresXpcReconfiguration(identifier, newIdentifier);
+                        restoredDomain = true;
                     }
                 }
             }
 
             if (restoredDomain) {
-                // A changed identifier means addDomainForAccount() registered a new domain; rediscover its XPC service.
+                // Restored domains need their XPC service rediscovered even when their identifier is unchanged.
                 Mac::FileProvider::instance()->configureXPC();
             }
         } else {
@@ -539,9 +544,10 @@ void FileProviderSettingsController::resetVfsForAccount(const QString &userIdAtH
         // the stored identifier. NoAction if the account currently has no domain.
         const auto disableAction = controller->d->setVfsEnabledForAccount(capturedUserIdAtHost, false);
 
-        // Enable: the identifier was just cleared, so addFileProviderDomain mints a
-        // fresh UUID — a genuinely clean domain — and persists it.
-        const auto enableAction = controller->d->setVfsEnabledForAccount(capturedUserIdAtHost, true);
+        // Re-create the domain only after its removal was confirmed.
+        const auto enableAction = disableAction == MacImplementation::VfsAccountsAction::VfsAccountsFailed
+            ? MacImplementation::VfsAccountsAction::VfsAccountsNoAction
+            : controller->d->setVfsEnabledForAccount(capturedUserIdAtHost, true);
 
         const auto reAddFailed = enableAction == MacImplementation::VfsAccountsAction::VfsAccountsFailed;
 
@@ -549,8 +555,8 @@ void FileProviderSettingsController::resetVfsForAccount(const QString &userIdAtH
         dispatch_async(dispatch_get_main_queue(), ^{
             controller->setOperationInProgress(false, QString());
 
-            if (disableAction != MacImplementation::VfsAccountsAction::VfsAccountsNoAction
-                || enableAction != MacImplementation::VfsAccountsAction::VfsAccountsNoAction) {
+            if (disableAction == MacImplementation::VfsAccountsAction::VfsAccountsEnabledChanged
+                || enableAction == MacImplementation::VfsAccountsAction::VfsAccountsEnabledChanged) {
                 Q_EMIT controller->vfsEnabledForAccountChanged(capturedUserIdAtHost);
             }
 
@@ -741,6 +747,11 @@ void FileProviderSettingsController::performStartupReconciliation()
         qCWarning(lcFileProviderSettingsController) << "Operation already in progress, skipping reconciliation";
         return;
     }
+
+    if (!d->migrateToAppSandbox()) {
+        return;
+    }
+    d->ensureModeFlagInitialized();
 
     const auto folderMan = FolderMan::instance();
     const auto hasClassicFolders = folderMan && !folderMan->map().isEmpty();
