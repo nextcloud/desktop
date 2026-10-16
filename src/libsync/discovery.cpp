@@ -373,6 +373,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     }
 
     auto item = SyncFileItemPtr::create();
+    item->_type = isDirectory ? ItemTypeDirectory : ItemTypeFile;
     item->_file = path;
     item->_originalFile = path;
     item->_instruction = CSYNC_INSTRUCTION_IGNORE;
