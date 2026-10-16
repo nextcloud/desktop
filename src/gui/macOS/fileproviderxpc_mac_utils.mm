@@ -49,7 +49,7 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
 // TODO: This should work for all service names, not just the communication service!
 NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServices(NSArray<NSFileProviderManager *> *managers)
 {
-    return collectSetupResults(managers.count, "resolving file provider services", ^(SetupReplyHandler complete) {
+    const auto startRequests = ^(FileProviderUtils::RequestReplyHandler reply) {
         for (NSFileProviderManager *const manager in managers) {
             [manager getServiceWithName:nsClientCommunicationServiceName
                          itemIdentifier:NSFileProviderRootContainerItemIdentifier
@@ -62,23 +62,26 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
                 } else if (service.name == nil) {
                     qCWarning(lcFileProviderXPCUtils) << "Service has no name";
                 } else {
-                    complete(@[@{service.name: service}]);
+                    reply(@{service.name : service}, nil);
                     return;
                 }
 
-                complete(nil);
+                reply(nil, nil);
             }];
         }
-    });
+    };
+    NSArray *results = nil;
+    FileProviderUtils::waitForFileProviderReplies(managers.count, "resolving file provider services", startRequests, &results);
+    return results;
 }
 
 NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *fpServices)
 {
-    return collectSetupResults(fpServices.count, "getting file provider connections", ^(SetupReplyHandler complete) {
+    const auto startRequests = ^(FileProviderUtils::RequestReplyHandler reply) {
         for (NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *const services in fpServices) {
             NSFileProviderService *const service = services[nsClientCommunicationServiceName];
             if (service == nil) {
-                complete(nil);
+                reply(nil, nil);
                 continue;
             }
 
@@ -87,7 +90,7 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
                 if (error != nil) {
                     qCWarning(lcFileProviderXPCUtils) << "Error getting file provider connection" << error;
                     [connection invalidate];
-                    complete(nil);
+                    reply(nil, nil);
                     return;
                 }
 
@@ -95,16 +98,19 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
 
                 if (connection == nil) {
                     qCWarning(lcFileProviderXPCUtils) << "Connection is nil";
-                    complete(nil);
+                    reply(nil, nil);
                     return;
                 }
 
-                if (!complete(@[connection])) {
+                if (!reply(connection, nil)) {
                     [connection invalidate];
                 }
             }];
         }
-    });
+    };
+    NSArray *results = nil;
+    FileProviderUtils::waitForFileProviderReplies(fpServices.count, "getting file provider connections", startRequests, &results);
+    return results;
 }
 
 void configureFileProviderConnection(NSXPCConnection *const connection)
