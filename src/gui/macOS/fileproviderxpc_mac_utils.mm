@@ -25,36 +25,9 @@ namespace OCC::Mac::FileProviderXPCUtils {
 
 Q_LOGGING_CATEGORY(lcFileProviderXPCUtils, "nextcloud.gui.macos.fileprovider.xpc.utils", QtInfoMsg)
 
-using SetupReplyHandler = BOOL (^)(NSArray *);
-
-static NSArray *collectSetupResults(const NSUInteger requestCount, const char *const operation, void (^startRequests)(SetupReplyHandler))
-{
-    NSArray *replyArrays = nil;
-    FileProviderUtils::waitForFileProviderReplies(
-        requestCount,
-        operation,
-        ^(FileProviderUtils::RequestReplyHandler reply) { startRequests(^BOOL(NSArray *const replyResults) { return reply(replyResults, nil); }); },
-        &replyArrays);
-
-    NSMutableArray *const results = NSMutableArray.array;
-    for (NSArray *const replyResults in replyArrays) {
-        [results addObjectsFromArray:replyResults];
-    }
-    return results.copy;
-}
-
 NSArray<NSFileProviderManager *> *getDomainManagers()
 {
-    const auto domains = collectSetupResults(1, "getting file provider domains", ^(SetupReplyHandler complete) {
-        [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
-            if (error != nil) {
-                qCWarning(lcFileProviderXPCUtils) << "Error getting file provider domains" << error;
-                complete(nil);
-                return;
-            }
-            complete(domains);
-        }];
-    });
+    const auto domains = FileProviderUtils::fileProviderDomains();
 
     NSMutableArray<NSFileProviderManager *> *const managers = NSMutableArray.array;
     for (NSFileProviderDomain *const domain in domains) {

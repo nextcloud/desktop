@@ -280,7 +280,13 @@ public:
         const auto accountStates = AccountManager::instance()->accounts();
 
         if (modeEnabled) {
-            const auto domains = Mac::FileProvider::instance()->domainManager()->getDomains();
+            auto domainsAvailable = false;
+            const auto domains = Mac::FileProvider::instance()->domainManager()->getDomains(&domainsAvailable);
+
+            if (!domainsAvailable) {
+                qCWarning(lcFileProviderSettingsController) << "Could not list file provider domains; postponing domain reconciliation.";
+                return;
+            }
             QSet<QString> existingDomainIdentifiers;
             auto restoredDomain = false;
 
@@ -341,7 +347,13 @@ public:
     {
         qCInfo(lcFileProviderSettingsController) << "Removing orphaned domains...";
 
-        const auto domains = Mac::FileProvider::instance()->domainManager()->getDomains();
+        auto domainsAvailable = false;
+        const auto domains = Mac::FileProvider::instance()->domainManager()->getDomains(&domainsAvailable);
+
+        if (!domainsAvailable) {
+            qCWarning(lcFileProviderSettingsController) << "Could not list file provider domains; postponing orphan removal.";
+            return;
+        }
         QSet<QString> configuredDomainIdentifiers;
         const auto accountStates = AccountManager::instance()->accounts();
 
