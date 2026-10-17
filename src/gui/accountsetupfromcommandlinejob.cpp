@@ -66,7 +66,7 @@ bool AccountSetupFromCommandLineJob::localSyncFolderRequired() const
 
 QString AccountSetupFromCommandLineJob::defaultLocalDirPath() const
 {
-    const auto overrideLocalDir = ConfigFile().overrideLocalDir();
+    const auto overrideLocalDir = ConfigFile().overrideLocalDirForNewAccount(AccountManager::instance()->accounts().isEmpty());
     auto localDirPath = overrideLocalDir;
 
     if (localDirPath.isEmpty()) {

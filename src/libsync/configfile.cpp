@@ -54,8 +54,6 @@ static constexpr char notificationRefreshIntervalC[] = "notificationRefreshInter
 static constexpr char deleteFilesThresholdC[] = "deleteFilesThreshold";
 static constexpr char updateCheckIntervalC[] = "updateCheckInterval";
 static constexpr char updateSegmentC[] = "updateSegment";
-static constexpr char overrideServerUrlC[] = "overrideServerUrl";
-static constexpr char overrideLocalDirC[] = "overrideLocalDir";
 static constexpr char geometryC[] = "geometry";
 static constexpr char timeoutC[] = "timeout";
 static constexpr char chunkSizeC[] = "chunkSize";
@@ -726,6 +724,16 @@ bool ConfigFile::setConfig(const QString &name, const QVariant &value, const QSt
     return true;
 }
 
+void ConfigFile::clearConfig(const QString &name, const QString &connectionGroupName)
+{
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.remove(name);
+    settings.beginGroup(groupName);
+    settings.remove(name);
+    settings.sync();
+}
+
 bool ConfigFile::isEnforced(const QString &name, const QString &connectionGroupName) const
 {
     return getConfig(name, {}, connectionGroupName).isEnforced();
@@ -880,26 +888,57 @@ void ConfigFile::setUpdateChannel(const QString &channel)
 
 [[nodiscard]] QString ConfigFile::overrideServerUrl() const
 {
-    QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(overrideServerUrlC), {}).toString();
+    return getConfig<QString>(QLatin1String(overrideServerUrlC));
 }
 
-void ConfigFile::setOverrideServerUrl(const QString &url)
+[[nodiscard]] bool ConfigFile::hasUserOverrideServerUrl() const
 {
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(overrideServerUrlC), url);
+    const auto resolved = getConfig(QLatin1String(overrideServerUrlC));
+    return resolved.source == SettingSourceType::UserConfig && !resolved.value.toString().isEmpty();
+}
+
+[[nodiscard]] bool ConfigFile::isOverrideServerUrlLocked() const
+{
+    return isEnforced(QLatin1String(overrideServerUrlC)) || hasUserOverrideServerUrl();
+}
+
+bool ConfigFile::setOverrideServerUrl(const QString &url)
+{
+    return setConfig(QLatin1String(overrideServerUrlC), url);
+}
+
+void ConfigFile::clearOverrideServerUrl()
+{
+    clearConfig(QLatin1String(overrideServerUrlC));
 }
 
 [[nodiscard]] QString ConfigFile::overrideLocalDir() const
 {
-    QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(overrideLocalDirC), {}).toString();
+    return getConfig<QString>(QLatin1String(overrideLocalDirC));
 }
 
-void ConfigFile::setOverrideLocalDir(const QString &localDir)
+[[nodiscard]] bool ConfigFile::hasUserOverrideLocalDir() const
 {
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(overrideLocalDirC), localDir);
+    const auto resolved = getConfig(QLatin1String(overrideLocalDirC));
+    return resolved.source == SettingSourceType::UserConfig && !resolved.value.toString().isEmpty();
+}
+
+[[nodiscard]] QString ConfigFile::overrideLocalDirForNewAccount(bool firstAccount) const
+{
+    if (!firstAccount && !hasUserOverrideLocalDir()) {
+        return {};
+    }
+    return overrideLocalDir();
+}
+
+bool ConfigFile::setOverrideLocalDir(const QString &localDir)
+{
+    return setConfig(QLatin1String(overrideLocalDirC), localDir);
+}
+
+void ConfigFile::clearOverrideLocalDir()
+{
+    clearConfig(QLatin1String(overrideLocalDirC));
 }
 
 bool ConfigFile::isVfsEnabled() const

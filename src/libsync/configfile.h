@@ -225,10 +225,16 @@ public:
     void setUpdateChannel(const QString &channel);
 
     [[nodiscard]] QString overrideServerUrl() const;
-    void setOverrideServerUrl(const QString &url);
+    [[nodiscard]] bool hasUserOverrideServerUrl() const;
+    [[nodiscard]] bool isOverrideServerUrlLocked() const;
+    bool setOverrideServerUrl(const QString &url);
+    void clearOverrideServerUrl();
 
     [[nodiscard]] QString overrideLocalDir() const;
-    void setOverrideLocalDir(const QString &localDir);
+    [[nodiscard]] bool hasUserOverrideLocalDir() const;
+    [[nodiscard]] QString overrideLocalDirForNewAccount(bool firstAccount) const;
+    bool setOverrideLocalDir(const QString &localDir);
+    void clearOverrideLocalDir();
 
     [[nodiscard]] bool isVfsEnabled() const;
     void setVfsEnabled(bool enabled);
@@ -273,6 +279,8 @@ public:
     }
     // Writes the user config, unless the effective value is enforced; returns false then.
     bool setConfig(const QString &name, const QVariant &value, const QString &connectionGroupName = {});
+    // Removes the user config value, so the next source in the hierarchy applies again.
+    void clearConfig(const QString &name, const QString &connectionGroupName = {});
     [[nodiscard]] bool isEnforced(const QString &name, const QString &connectionGroupName = {}) const;
     [[nodiscard]] SettingSourceType sourceOf(const QString &name, const QString &connectionGroupName = {}) const;
     // The label shown next to an enforced control, chosen by where the value came from.
@@ -347,6 +355,8 @@ public:
     static constexpr char updateChannelC[] = "updateChannel";
     static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
     static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
+    static constexpr char overrideServerUrlC[] = "overrideServerUrl";
+    static constexpr char overrideLocalDirC[] = "overrideLocalDir";
     static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
     static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
     static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";

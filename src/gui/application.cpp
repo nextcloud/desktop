@@ -34,6 +34,7 @@
 #include "version.h"
 
 #include "config.h"
+#include "settings/managedsettingsschema.h"
 #include "settings/migration.h"
 
 #if defined(Q_OS_WIN)
@@ -361,12 +362,18 @@ Application::Application(int &argc, char **argv)
 
         // these config values will always be empty after the first client run
         if (!_overrideServerUrl.isEmpty()) {
-            cfg.setOverrideServerUrl(_overrideServerUrl);
+            if (!cfg.setOverrideServerUrl(_overrideServerUrl)) {
+                qCWarning(lcApplication) << "Ignoring --overrideserverurl because overrideServerUrl is enforced by a policy.";
+                showHint("--overrideserverurl cannot be used because overrideServerUrl is enforced by a policy");
+            }
             shouldExit = true;
         }
 
         if (!_overrideLocalDir.isEmpty()) {
-            cfg.setOverrideLocalDir(_overrideLocalDir);
+            if (!cfg.setOverrideLocalDir(_overrideLocalDir)) {
+                qCWarning(lcApplication) << "Ignoring --overridelocaldir because overrideLocalDir is enforced by a policy.";
+                showHint("--overridelocaldir cannot be used because overrideLocalDir is enforced by a policy");
+            }
             shouldExit = true;
         }
 
@@ -811,7 +818,7 @@ void Application::setupConfigFile()
 AccountManager::AccountsRestoreResult Application::restoreLegacyAccount()
 {
     ConfigFile cfg;
-    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
+    const auto tryMigrate = !cfg.hasUserOverrideServerUrl();
     auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
     if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
         accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
@@ -1091,7 +1098,12 @@ void Application::parseOptions(const QStringList &options)
             }
         } else if (option == QStringLiteral("--overridelocaldir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _overrideLocalDir = it.next();
+                const auto overrideLocalDir = it.next();
+                if (!ManagedSettingsSchema::isValidOverrideLocalDir(overrideLocalDir)) {
+                    showHint("Invalid path passed to --overridelocaldir, the path must be absolute");
+                } else {
+                    _overrideLocalDir = overrideLocalDir;
+                }
             } else {
                 showHint("Invalid URL passed to --overridelocaldir");
             }
