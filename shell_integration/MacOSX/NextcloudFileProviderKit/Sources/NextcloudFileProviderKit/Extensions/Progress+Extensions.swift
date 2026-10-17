@@ -1,16 +1,9 @@
 //  SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import Alamofire
 import Foundation
 
 extension Progress {
-    func setHandlersFromAfRequest(_ request: Request) {
-        cancellationHandler = { request.cancel() }
-        pausingHandler = { request.suspend() }
-        resumingHandler = { request.resume() }
-    }
-
     func copyCurrentStateToProgress(_ otherProgress: Progress, includeHandlers: Bool = false) {
         if includeHandlers {
             otherProgress.cancellationHandler = cancellationHandler
