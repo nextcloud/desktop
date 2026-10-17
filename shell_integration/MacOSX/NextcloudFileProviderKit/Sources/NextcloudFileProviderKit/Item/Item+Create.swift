@@ -148,6 +148,7 @@ public extension Item {
             inChunksSized: forcedChunkSize,
             forItemWithIdentifier: itemTemplate.itemIdentifier.rawValue,
             dbManager: dbManager,
+            domain: domain,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
             log: log,
