@@ -314,6 +314,297 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(parentDeleted, "Folder that 404ed should be reported as deleted")
     }
 
+    func testRootListingDeletionRemovesOldDatalessDescendants() async throws {
+        try await assertRemoteDirectoryDeletionRemovesOldDatalessDescendants(rootVisited: true)
+    }
+
+    func testParent404RemovesOldDatalessDescendants() async throws {
+        try await assertRemoteDirectoryDeletionRemovesOldDatalessDescendants(rootVisited: false)
+    }
+
+    func testRemoteDirectoryDeletionPreservesPendingAndLocalOnlyDescendants() async throws {
+        let fixture = seedMissingDirectory(rootVisited: true)
+        var protected = [SendableItemMetadata]()
+        for status in [Status.inUpload, .uploading, .uploadError] {
+            var metadata = SendableItemMetadata(
+                ocId: "upload-\(status.rawValue)", fileName: "upload-\(status.rawValue).txt", account: Self.account
+            )
+            metadata.serverUrl = fixture.parent.remotePath()
+            metadata.status = status.rawValue
+            metadata.uploaded = true
+            metadata.syncTime = Date()
+            protected.append(metadata)
+        }
+        var localOnly = SendableItemMetadata(
+            ocId: "local-only", fileName: "local-only.txt", account: Self.account
+        )
+        localOnly.serverUrl = fixture.parent.remotePath()
+        localOnly.uploaded = false
+        localOnly.syncTime = Date()
+        protected.append(localOnly)
+
+        var lockFile = SendableItemMetadata(
+            ocId: "local-lock", fileName: ".~lock.document.pdf#", account: Self.account
+        )
+        lockFile.serverUrl = fixture.parent.remotePath()
+        lockFile.uploaded = true
+        lockFile.isLockFileOfLocalOrigin = true
+        lockFile.syncTime = Date()
+        protected.append(lockFile)
+        protected.forEach(Self.dbManager.addItemMetadata)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: fixture.root)
+        let observer = try await runWorkingSetChanges(remoteInterface, anchorDate: fixture.anchorDate)
+        let expectedDeletedIds = Set(([fixture.parent] + fixture.descendants).map(\.ocId))
+        XCTAssertEqual(Set(observer.deletedItemIdentifiers.map(\.rawValue)), expectedDeletedIds)
+        try await assertMetadataRemoved(expectedDeletedIds)
+        for original in protected {
+            let remaining = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: original.ocId))
+            XCTAssertFalse(remaining.deleted)
+            XCTAssertEqual(remaining.status, original.status)
+            XCTAssertEqual(remaining.uploaded, original.uploaded)
+        }
+    }
+
+    func testRemoteDirectoryDeletionPreservesChildMovedToAnotherFolder() async throws {
+        let fixture = seedMissingDirectory(rootVisited: true)
+        var destinationMetadata = SendableItemMetadata(
+            ocId: "destination", fileName: "destination", account: Self.account
+        )
+        destinationMetadata.directory = true
+        destinationMetadata.visitedDirectory = true
+        destinationMetadata.uploaded = true
+        destinationMetadata.syncTime = fixture.anchorDate.addingTimeInterval(-300)
+        Self.dbManager.addItemMetadata(destinationMetadata)
+        let destination = remoteItem(from: destinationMetadata)
+        destination.parent = fixture.root
+        fixture.root.children = [destination]
+
+        var movedMetadata = try XCTUnwrap(fixture.descendants.first { !$0.directory })
+        movedMetadata.serverUrl = destination.remotePath
+        movedMetadata.etag = "moved"
+        let movedFile = remoteItem(from: movedMetadata)
+        movedFile.parent = destination
+        destination.children = [movedFile]
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: fixture.root)
+        let observer = try await runWorkingSetChanges(remoteInterface, anchorDate: fixture.anchorDate)
+        let expectedDeletedIds = Set(([fixture.parent] + fixture.descendants).map(\.ocId))
+            .subtracting([movedFile.identifier])
+        XCTAssertEqual(Set(observer.deletedItemIdentifiers.map(\.rawValue)), expectedDeletedIds)
+        try await assertMetadataRemoved(expectedDeletedIds)
+        XCTAssertTrue(observer.changedItems.contains { $0.itemIdentifier.rawValue == movedFile.identifier })
+        let remaining = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: movedFile.identifier))
+        XCTAssertFalse(remaining.deleted)
+        XCTAssertEqual(remaining.remotePath(), movedFile.remotePath)
+        XCTAssertEqual(Self.dbManager.parentItemIdentifierFromMetadata(remaining)?.rawValue, destination.identifier)
+    }
+
+    func testReplacementDirectoryAtSamePathPreservesItsChildren() async throws {
+        let fixture = seedMissingDirectory(rootVisited: true)
+        var replacementMetadata = fixture.parent
+        replacementMetadata.ocId = "replacement-parent"
+        replacementMetadata.etag = "replacement"
+        let replacement = remoteItem(from: replacementMetadata)
+        replacement.parent = fixture.root
+        fixture.root.children = [replacement]
+        let descendants = fixture.descendants.map { remoteItem(from: $0) }
+        for descendant in descendants {
+            let parent = ([replacement] + descendants).first {
+                $0.directory && descendant.remotePath == $0.remotePath + "/" + descendant.name
+            }
+            descendant.parent = parent
+            parent?.children.append(descendant)
+        }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: fixture.root)
+        let observer = try await runWorkingSetChanges(remoteInterface, anchorDate: fixture.anchorDate)
+        XCTAssertEqual(Set(observer.deletedItemIdentifiers.map(\.rawValue)), [fixture.parent.ocId])
+        try await assertMetadataRemoved([fixture.parent.ocId])
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: replacement.identifier))
+        for original in fixture.descendants {
+            let remaining = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: original.ocId))
+            XCTAssertFalse(remaining.deleted)
+            XCTAssertEqual(remaining.remotePath(), original.remotePath())
+            XCTAssertNotNil(Self.dbManager.parentItemIdentifierFromMetadata(remaining))
+        }
+    }
+
+    func testRemoteDirectoryDeletionPreservesMaterializedChildWhenItsReadFails() async throws {
+        let fixture = seedMissingDirectory(rootVisited: false)
+        var downloadedChild = try XCTUnwrap(fixture.descendants.first { !$0.directory })
+        downloadedChild.downloaded = true
+        Self.dbManager.addItemMetadata(downloadedChild)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: fixture.root)
+        remoteInterface.enumerateErrorBySuffix = [
+            "/" + downloadedChild.fileName: NKError(statusCode: 500, fallbackDescription: "Internal Server Error")
+        ]
+        let observer = try await runWorkingSetChanges(remoteInterface, anchorDate: fixture.anchorDate)
+        let expectedDeletedIds = Set(([fixture.parent] + fixture.descendants).map(\.ocId))
+            .subtracting([downloadedChild.ocId])
+        XCTAssertEqual(Set(observer.deletedItemIdentifiers.map(\.rawValue)), expectedDeletedIds)
+        try await assertMetadataRemoved(expectedDeletedIds)
+        let remaining = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: downloadedChild.ocId))
+        XCTAssertFalse(remaining.deleted)
+        XCTAssertTrue(remaining.downloaded)
+        XCTAssertEqual(observer.finishes.last?.anchor, Enumerator.syncAnchor(at: fixture.anchorDate))
+    }
+
+    func testRemoteDirectoryDeletionPreservesFailedMaterializedSubtreeUntilRetry() async throws {
+        let fixture = seedMissingDirectory(rootVisited: false)
+        var nestedFolder = try XCTUnwrap(fixture.descendants.first { $0.directory })
+        nestedFolder.visitedDirectory = true
+        Self.dbManager.addItemMetadata(nestedFolder)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: fixture.root)
+        remoteInterface.enumerateErrorBySuffix = [
+            "/" + nestedFolder.fileName: NKError(statusCode: 500, fallbackDescription: "Internal Server Error")
+        ]
+        let observer = try await runWorkingSetChanges(remoteInterface, anchorDate: fixture.anchorDate)
+        let preservedIds = Set(fixture.descendants.filter {
+            $0.ocId == nestedFolder.ocId || $0.isDescendant(of: nestedFolder.remotePath())
+        }.map(\.ocId))
+        let expectedDeletedIds = Set(([fixture.parent] + fixture.descendants).map(\.ocId))
+            .subtracting(preservedIds)
+        XCTAssertEqual(Set(observer.deletedItemIdentifiers.map(\.rawValue)), expectedDeletedIds)
+        try await assertMetadataRemoved(expectedDeletedIds)
+        for ocId in preservedIds {
+            let remaining = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: ocId))
+            XCTAssertFalse(remaining.deleted)
+        }
+        XCTAssertEqual(observer.finishes.last?.anchor, Enumerator.syncAnchor(at: fixture.anchorDate))
+
+        remoteInterface.enumerateErrorBySuffix = [:]
+        let retriedObserver = try await runWorkingSetChanges(remoteInterface, anchorDate: fixture.anchorDate)
+        XCTAssertEqual(Set(retriedObserver.deletedItemIdentifiers.map(\.rawValue)), preservedIds)
+        try await assertMetadataRemoved(preservedIds)
+    }
+
+    func testParent404PreservesDirectoryWithPendingUploadAndItsDescendants() async throws {
+        let fixture = seedMissingDirectory(rootVisited: false)
+        var uploadingParent = fixture.parent
+        uploadingParent.status = Status.inUpload.rawValue
+        Self.dbManager.addItemMetadata(uploadingParent)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: fixture.root)
+        let observer = try await runWorkingSetChanges(remoteInterface, anchorDate: fixture.anchorDate)
+        XCTAssertTrue(observer.deletedItemIdentifiers.isEmpty)
+        for original in [uploadingParent] + fixture.descendants {
+            let remaining = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: original.ocId))
+            XCTAssertFalse(remaining.deleted)
+            XCTAssertEqual(remaining.status, original.status)
+        }
+    }
+
+    private func assertRemoteDirectoryDeletionRemovesOldDatalessDescendants(
+        rootVisited: Bool,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async throws {
+        let fixture = seedMissingDirectory(rootVisited: rootVisited)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: fixture.root)
+        let observer = try await runWorkingSetChanges(remoteInterface, anchorDate: fixture.anchorDate)
+        let expectedDeletedIds = Set(([fixture.parent] + fixture.descendants).map(\.ocId))
+        XCTAssertEqual(
+            Set(observer.deletedItemIdentifiers.map(\.rawValue)), expectedDeletedIds,
+            "Remote folder deletion must include cached descendants older than the sync anchor.",
+            file: file, line: line
+        )
+        try await assertMetadataRemoved(expectedDeletedIds, file: file, line: line)
+    }
+
+    private func seedMissingDirectory(rootVisited: Bool) -> (
+        root: MockRemoteItem, parent: SendableItemMetadata,
+        descendants: [SendableItemMetadata], anchorDate: Date
+    ) {
+        let rootItem = MockRemoteItem.rootItem(account: Self.account)
+        let anchorDate = Date().addingTimeInterval(-300)
+        let oldSyncTime = anchorDate.addingTimeInterval(-300)
+        var rootMetadata = rootItem.toItemMetadata(account: Self.account)
+        rootMetadata.visitedDirectory = rootVisited
+        rootMetadata.syncTime = oldSyncTime
+        Self.dbManager.addItemMetadata(rootMetadata)
+
+        var parent = SendableItemMetadata(
+            ocId: "deleted-parent", fileName: "deleted-folder", account: Self.account
+        )
+        parent.directory = true
+        parent.visitedDirectory = true
+        parent.uploaded = true
+        parent.syncTime = oldSyncTime
+        Self.dbManager.addItemMetadata(parent)
+
+        var child = SendableItemMetadata(
+            ocId: "dataless-child", fileName: "document.pdf", account: Self.account
+        )
+        child.serverUrl = parent.remotePath()
+        child.uploaded = true
+        child.syncTime = oldSyncTime
+        Self.dbManager.addItemMetadata(child)
+
+        var nestedFolder = SendableItemMetadata(
+            ocId: "dataless-folder", fileName: "nested", account: Self.account
+        )
+        nestedFolder.serverUrl = parent.remotePath()
+        nestedFolder.directory = true
+        nestedFolder.uploaded = true
+        nestedFolder.syncTime = oldSyncTime
+        Self.dbManager.addItemMetadata(nestedFolder)
+
+        var grandchild = SendableItemMetadata(
+            ocId: "dataless-grandchild", fileName: "nested-document.pdf", account: Self.account
+        )
+        grandchild.serverUrl = nestedFolder.remotePath()
+        grandchild.uploaded = true
+        grandchild.syncTime = oldSyncTime
+        Self.dbManager.addItemMetadata(grandchild)
+
+        return (rootItem, parent, [child, nestedFolder, grandchild], anchorDate)
+    }
+
+    private func remoteItem(from metadata: SendableItemMetadata) -> MockRemoteItem {
+        MockRemoteItem(
+            identifier: metadata.ocId, versionIdentifier: metadata.etag,
+            name: metadata.fileName, remotePath: metadata.remotePath(), directory: metadata.directory,
+            account: Self.account.ncKitAccount, username: Self.account.username,
+            userId: Self.account.id, serverUrl: Self.account.serverUrl
+        )
+    }
+
+    private func runWorkingSetChanges(
+        _ remoteInterface: MockRemoteInterface, anchorDate: Date
+    ) async throws -> MockChangeObserver {
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate))
+        return observer
+    }
+
+    private func assertMetadataRemoved(
+        _ ocIds: Set<String>, file: StaticString = #filePath, line: UInt = #line
+    ) async throws {
+        let clock = ContinuousClock()
+        let acknowledgementTimeout = Duration.seconds(2)
+        let pollInterval = Duration.milliseconds(10)
+        let deadline = clock.now.advanced(by: acknowledgementTimeout)
+        while clock.now < deadline,
+              ocIds.contains(where: { Self.dbManager.itemMetadata(ocId: $0) != nil })
+        {
+            try await Task.sleep(for: pollInterval)
+        }
+        for ocId in ocIds {
+            XCTAssertNil(
+                Self.dbManager.itemMetadata(ocId: ocId),
+                "Acknowledged remote deletions must not leave orphan metadata for \(ocId).",
+                file: file, line: line
+            )
+        }
+    }
+
     /// When a folder rename and its children are both pending in the working-set change
     /// list, macOS processes items in the order the extension reports them. If a child
     /// arrives before its parent's rename, macOS creates the destination folder to house

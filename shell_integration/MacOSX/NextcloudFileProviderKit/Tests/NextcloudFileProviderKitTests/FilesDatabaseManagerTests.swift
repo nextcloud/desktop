@@ -1766,21 +1766,26 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         deletedDir.directory = true
         deletedDir.visitedDirectory = true // Materialised
         deletedDir.deleted = true
+        deletedDir.uploaded = true
         deletedDir.syncTime = recentSyncDate
         Self.dbManager.addItemMetadata(deletedDir)
 
-        // Child of deleted folder with OLD sync time - should NOT be included
+        // A tombstoned child must be replayed with its recently deleted parent, even with an old sync time.
         var childOfDeletedDirOld = SendableItemMetadata(ocId: "childOfDeletedOld", fileName: "childDelOld.txt", account: Self.account)
         childOfDeletedDirOld.serverUrl = Self.account.davFilesUrl + "/DeletedDir"
         childOfDeletedDirOld.syncTime = oldSyncDate // Old sync time
         childOfDeletedDirOld.downloaded = true
+        childOfDeletedDirOld.uploaded = true
+        childOfDeletedDirOld.deleted = true
         Self.dbManager.addItemMetadata(childOfDeletedDirOld)
 
-        // Child of deleted folder with RECENT sync time - should be included in deleted
+        // A recently tombstoned child is also replayed.
         var childOfDeletedDirRecent = SendableItemMetadata(ocId: "childOfDeletedRecent", fileName: "childDelRecent.txt", account: Self.account)
         childOfDeletedDirRecent.serverUrl = Self.account.davFilesUrl + "/DeletedDir"
         childOfDeletedDirRecent.syncTime = recentSyncDate
         childOfDeletedDirRecent.downloaded = false // Not materialised
+        childOfDeletedDirRecent.uploaded = true
+        childOfDeletedDirRecent.deleted = true
         Self.dbManager.addItemMetadata(childOfDeletedDirRecent)
 
         // Nested structure under deleted folder
@@ -1789,6 +1794,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         nestedFolderInDeleted.visitedDirectory = false
         nestedFolderInDeleted.serverUrl = Self.account.davFilesUrl + "/DeletedDir"
         nestedFolderInDeleted.syncTime = recentSyncDate
+        nestedFolderInDeleted.uploaded = true
+        nestedFolderInDeleted.deleted = true
         Self.dbManager.addItemMetadata(nestedFolderInDeleted)
 
         // Deep nested item under deleted structure
@@ -1796,7 +1803,34 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         deepNestedInDeleted.serverUrl = Self.account.davFilesUrl + "/DeletedDir/NestedFolder"
         deepNestedInDeleted.syncTime = recentSyncDate
         deepNestedInDeleted.downloaded = false
+        deepNestedInDeleted.uploaded = true
+        deepNestedInDeleted.deleted = true
         Self.dbManager.addItemMetadata(deepNestedInDeleted)
+
+        // A live descendant skipped by remote reconciliation must not become a deletion during replay.
+        var liveChildOfDeletedDir = SendableItemMetadata(ocId: "liveChildOfDeleted", fileName: "liveChild.txt", account: Self.account)
+        liveChildOfDeletedDir.serverUrl = Self.account.davFilesUrl + "/DeletedDir"
+        liveChildOfDeletedDir.syncTime = recentSyncDate
+        liveChildOfDeletedDir.uploaded = true
+        Self.dbManager.addItemMetadata(liveChildOfDeletedDir)
+
+        // Replay preserves upload state and local-only rows, even if they were previously tombstoned.
+        let protectedChildren = [
+            ("pendingUpload", true, Status.inUpload.rawValue, false),
+            ("failedUpload", true, Status.uploadError.rawValue, false),
+            ("localOnly", false, Status.normal.rawValue, false),
+            ("localLock", true, Status.normal.rawValue, true)
+        ]
+        for (ocId, uploaded, status, isLocalLock) in protectedChildren {
+            var child = SendableItemMetadata(ocId: ocId, fileName: ocId, account: Self.account)
+            child.serverUrl = Self.account.davFilesUrl + "/DeletedDir"
+            child.syncTime = recentSyncDate
+            child.uploaded = uploaded
+            child.status = status
+            child.isLockFileOfLocalOrigin = isLocalLock
+            child.deleted = true
+            Self.dbManager.addItemMetadata(child)
+        }
 
         // STANDALONE ITEMS: materialized file synced recently - should be returned
         var standaloneUpdatedFile = SendableItemMetadata(ocId: "standaloneUpdated", fileName: "standalone.txt", account: Self.account)
@@ -1859,17 +1893,22 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // Should include the deleted materialized directory
         XCTAssertTrue(deletedIds.contains("deletedDir"), "Deleted materialized directory should be included")
 
-        // Should include children/descendants with recent sync under deleted paths
+        // Only finalized descendant tombstones are replayed; their own timestamps do not limit replay.
+        XCTAssertTrue(deletedIds.contains("childOfDeletedOld"), "An old tombstone must be replayed with its recently deleted parent")
         XCTAssertTrue(deletedIds.contains("childOfDeletedRecent"), "Child of deleted dir with recent sync should be included")
         XCTAssertTrue(deletedIds.contains("nestedFolderInDeleted"), "Nested folder under deleted dir should be included")
         XCTAssertTrue(deletedIds.contains("deepNestedInDeleted"), "Deep nested item under deleted structure should be included")
 
-        // Should NOT include children with old sync times
-        XCTAssertFalse(deletedIds.contains("childOfDeletedOld"), "Child of deleted dir with old sync should NOT be included")
+        XCTAssertFalse(deletedIds.contains("liveChildOfDeleted"), "A recent live descendant must not be inferred deleted during replay")
+        XCTAssertFalse(updatedIds.contains("liveChildOfDeleted"), "A dataless descendant of a deleted folder is not an independent pending update")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: "liveChildOfDeleted")?.deleted, false)
+        for (ocId, _, _, _) in protectedChildren {
+            XCTAssertFalse(deletedIds.contains(ocId), "Protected descendant \(ocId) must not be replayed as deleted")
+        }
 
         // 5. Verify expected counts
         let expectedUpdatedCount = 6 // updatedDir, standaloneUpdated, anotherMatDir, childOfUpdatedRecent, childFolderOfUpdated, nonMatChildRecent
-        let expectedDeletedCount = 4 // deletedDir, childOfDeletedRecent, nestedFolderInDeleted, deepNestedInDeleted
+        let expectedDeletedCount = 5 // deletedDir, childOfDeletedOld, childOfDeletedRecent, nestedFolderInDeleted, deepNestedInDeleted
 
         XCTAssertEqual(updatedIds.count, expectedUpdatedCount, "Should have \(expectedUpdatedCount) updated items, got \(updatedIds.count): \(updatedIds)")
         XCTAssertEqual(deletedIds.count, expectedDeletedCount, "Should have \(expectedDeletedCount) deleted items, got \(deletedIds.count): \(deletedIds)")
