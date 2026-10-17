@@ -9,8 +9,10 @@
 
 #include "syncenginetestutils.h"
 
+#include "common/filesystembase.h"
 #include "common/vfs.h"
 #include "openfilemanager.h"
+#include "owncloudpropagator.h"
 #include "syncengine.h"
 #include "vfs/cfapi/cfapiwrapper.h"
 
@@ -1384,6 +1386,76 @@ private Q_SLOTS:
 
         const auto localFileLocked = QFileInfo{fakeFolder.localPath() + u"A/a1"};
         QVERIFY(!localFileLocked.isWritable());
+    }
+
+    void testPlaceholdersAreNotTreatedAsSymlinks_data()
+    {
+        QTest::addColumn<bool>("fullLocalDiscovery");
+
+        QTest::newRow("partial local discovery") << false;
+        QTest::newRow("full local discovery") << true;
+    }
+
+    void testPlaceholdersAreNotTreatedAsSymlinks()
+    {
+        QFETCH(bool, fullLocalDiscovery);
+
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        const auto syncOnce = [&] {
+            completeSpy.clear();
+            fakeFolder.syncEngine().setLocalDiscoveryOptions(fullLocalDiscovery ? LocalDiscoveryStyle::FilesystemOnly
+                                                                                : LocalDiscoveryStyle::DatabaseAndFilesystem);
+            return fakeFolder.syncOnce();
+        };
+        const auto verifyNotIgnoredAsSymlink = [&](const QString &path) {
+            QVERIFY(!FileSystem::isSymLink(fakeFolder.localPath() + path));
+            QVERIFY(!FileSystem::pathContainsSymlink(fakeFolder.localPath(), path));
+            QCOMPARE_NE(completeSpy.findItem(path)->_errorString, OwncloudPropagator::symlinkNotSupportedMessage(path));
+        };
+
+        fakeFolder.remoteModifier().mkdir(u"A"_s);
+        QVERIFY(syncOnce());
+        fakeFolder.remoteModifier().insert(u"file1"_s, 64);
+        fakeFolder.remoteModifier().insert(u"A/a1"_s, 64);
+        QVERIFY(syncOnce());
+
+        // The placeholders are reparse points, which is what could be mistaken for a link
+        CFVERIFY_VIRTUAL(fakeFolder, "file1");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
+        QVERIFY(FileSystem::hasCloudReparseTag(fakeFolder.localPath() + u"file1"_s));
+        QVERIFY(FileSystem::hasCloudReparseTag(fakeFolder.localPath() + u"A"_s));
+        QVERIFY(FileSystem::hasCloudReparseTag(fakeFolder.localPath() + u"A/a1"_s));
+        verifyNotIgnoredAsSymlink(u"file1"_s);
+        verifyNotIgnoredAsSymlink(u"A"_s);
+        verifyNotIgnoredAsSymlink(u"A/a1"_s);
+
+        // Remote changes below a placeholder folder still reach it
+        fakeFolder.remoteModifier().appendByte(u"A/a1"_s);
+        fakeFolder.remoteModifier().insert(u"A/a2"_s, 64);
+        QVERIFY(syncOnce());
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a2");
+        QCOMPARE(dbRecord(fakeFolder, u"A/a1"_s)._fileSize, 65);
+        verifyNotIgnoredAsSymlink(u"A/a1"_s);
+        verifyNotIgnoredAsSymlink(u"A/a2"_s);
+
+        // Hydrating a placeholder writes into it
+        triggerDownload(fakeFolder, "A/a1");
+        QVERIFY(syncOnce());
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a1");
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + u"A/a1"_s).size(), 65);
+        verifyNotIgnoredAsSymlink(u"A/a1"_s);
+
+        // Removing a placeholder folder on the server removes it locally
+        fakeFolder.remoteModifier().remove(u"A"_s);
+        QVERIFY(syncOnce());
+        CFVERIFY_GONE(fakeFolder, "A/a1");
+        CFVERIFY_GONE(fakeFolder, "A/a2");
+        CFVERIFY_GONE(fakeFolder, "A");
+        CFVERIFY_VIRTUAL(fakeFolder, "file1");
     }
 
     void testLinkFileDownload()
