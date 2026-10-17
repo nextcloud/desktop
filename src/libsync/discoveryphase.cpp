@@ -333,6 +333,7 @@ DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const Account
                                                                    const QString &localPath,
                                                                    OCC::Vfs *vfs,
                                                                    bool fileSystemReliablePermissions,
+                                                                   QHash<QString, RecordedFileState> recordedFileStates,
                                                                    QObject *parent)
     : QObject{parent}
     , QRunnable{}
@@ -340,8 +341,25 @@ DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const Account
     , _account{account}
     , _vfs{vfs}
     , _fileSystemReliablePermissions{fileSystemReliablePermissions}
+    , _recordedFileStates{std::move(recordedFileStates)}
 {
     qRegisterMetaType<QVector<OCC::LocalInfo> >("QVector<OCC::LocalInfo>");
+}
+
+bool DiscoverySingleLocalDirectoryJob::matchesRecordedState(const LocalInfo &entry) const
+{
+    const auto recorded = _recordedFileStates.constFind(entry.name);
+    if (recorded == _recordedFileStates.constEnd()) {
+        return false;
+    }
+
+    // Absent or unusable metadata makes the entry a candidate for a metadata update, so it
+    // counts as a difference even where size and modification time match.
+    return recorded->modtime == entry.modtime
+        && recorded->size == entry.size
+        && recorded->inode == entry.inode
+        && !entry.isMetadataMissing
+        && !entry.isPermissionsInvalid;
 }
 
 // Use as QRunnable
@@ -409,8 +427,10 @@ void DiscoverySingleLocalDirectoryJob::run() {
         i.isPermissionsInvalid = dirent->isPermissionsInvalid;
         i.type = dirent->type;
 
-        // Access lock state on the worker thread so a blocking open cannot freeze the GUI #10464
-        if (!i.isSymLink && !i.isVirtualFile && !i.isDirectory) {
+        // Access lock state on the worker thread so a blocking open cannot freeze the GUI #10464.
+        // Reading it opens the file, so an entry still in its recorded state is left alone: it
+        // resolves to no action, which its lock state cannot change #10580
+        if (!i.isSymLink && !i.isVirtualFile && !i.isDirectory && !matchesRecordedState(i)) {
             const QString absoluteLocalPath = localPath + QLatin1Char('/') + i.name;
             i.isLocked = FileSystem::isFileLocked(absoluteLocalPath, FileSystem::LockMode::SharedRead);
             qCDebug(lcDiscovery) << "File" << absoluteLocalPath << "isLocked" << i.isLocked;
