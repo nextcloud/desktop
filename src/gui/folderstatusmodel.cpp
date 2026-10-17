@@ -10,6 +10,7 @@
 #include "common/utility.h"
 #include "folderman.h"
 #include "folderstatusdelegate.h"
+#include "syncengine.h"
 #include <account.h>
 #include <theme.h>
 
@@ -1000,22 +1001,15 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         _isSyncRunningForAwhile = false;
     }
 
-    const QVector<int> roles{ FolderStatusDelegate::SyncProgressItemString, Qt::ToolTipRole };
+    const QVector<int> roles{FolderStatusDelegate::SyncProgressItemString,
+                             FolderStatusDelegate::SyncProgressOverallString,
+                             FolderStatusDelegate::SyncProgressOverallPercent,
+                             Qt::ToolTipRole};
 
-    if (progress.status() == ProgressInfo::Discovery) {
-        if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
-            subFolderProgress->_overallSyncString = tr("Checking for changes in remote \"%1\"").arg(progress._currentDiscoveredRemoteFolder);
-            Q_EMIT dataChanged(index(folderIndex), index(folderIndex), roles);
-            return;
-        } else if (!progress._currentDiscoveredLocalFolder.isEmpty()) {
-            subFolderProgress->_overallSyncString = tr("Checking for changes in local \"%1\"").arg(progress._currentDiscoveredLocalFolder);
-            Q_EMIT dataChanged(index(folderIndex), index(folderIndex), roles);
-            return;
-        }
-    }
-
-    if (progress.status() == ProgressInfo::Reconcile) {
-        subFolderProgress->_overallSyncString = tr("Syncing local and remote changes");
+    if (const auto statusText = progress.preparationStatusString(); !statusText.isEmpty()) {
+        subFolderProgress->_overallSyncString = statusText;
+        subFolderProgress->_progressString.clear();
+        subFolderProgress->_overallPercent = -1;
         Q_EMIT dataChanged(index(folderIndex), index(folderIndex), roles);
         return;
     }
@@ -1184,6 +1178,17 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *folder)
     if (!folder->canSync() || state == SyncResult::Problem || state == SyncResult::Success || state == SyncResult::Error) {
         // Reset progress info.
         pi = SubFolderInfo::Progress();
+        if (!folder->syncPaused()) {
+            const auto accountStatus = folder->accountState()->state();
+            if (accountStatus == AccountState::Disconnected) {
+                pi._overallSyncString = tr("Waiting for a connection…");
+            } else if (accountStatus == AccountState::NetworkError || accountStatus == AccountState::ServiceUnavailable) {
+                pi._overallSyncString = tr("Connection interrupted — waiting to retry…");
+            }
+            if (!pi._overallSyncString.isEmpty()) {
+                pi._overallPercent = -1;
+            }
+        }
     } else if (state == SyncResult::NotYetStarted) {
         const auto folderMan = FolderMan::instance();
         auto pos = folderMan->scheduleQueue().indexOf(folder);
@@ -1195,9 +1200,14 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *folder)
         const auto message = pos <= 0 ? tr("About to start syncing") : tr("Waiting for %n other folder(s) …", "", pos);
         pi = SubFolderInfo::Progress();
         pi._overallSyncString = message;
+        pi._overallPercent = -1;
     } else if (state == SyncResult::SyncPrepare) {
         pi = SubFolderInfo::Progress();
-        pi._overallSyncString = tr("Preparing to sync …");
+        pi._overallSyncString = folder->syncEngine().progressInfo()->preparationStatusString();
+        if (pi._overallSyncString.isEmpty()) {
+            pi._overallSyncString = tr("Starting sync…");
+        }
+        pi._overallPercent = -1;
     }
 
     // update the icon etc. now
