@@ -259,7 +259,8 @@ private Q_SLOTS:
                                 QStringLiteral("proxyHost"),
                                 QStringLiteral("proxyPort"),
                                 QStringLiteral("newBigFolderSizeLimit"),
-                                QStringLiteral("stopSyncingExistingFoldersOverLimit")}) {
+                                QStringLiteral("stopSyncingExistingFoldersOverLimit"),
+                                QStringLiteral("wizardSelectiveSyncDefaultNothing")}) {
             const auto spec = ManagedSettingsSchema::find(key);
             QVERIFY2(spec.has_value(), qPrintable(key));
             QVERIFY2(spec->enforceable, qPrintable(key));
@@ -341,15 +342,19 @@ private Q_SLOTS:
     void testSanitizeKeepsAcceptedKeysDropsUnknown()
     {
         ServerManagedSettings raw;
-        raw.defaults = QVariantMap{{QStringLiteral("autoUpdateCheck"), false}, {QStringLiteral("bogus"), 1}};
+        raw.defaults =
+            QVariantMap{{QStringLiteral("autoUpdateCheck"), false}, {QStringLiteral("wizardSelectiveSyncDefaultNothing"), true}, {QStringLiteral("bogus"), 1}};
         raw.enforced = QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("wincfapi")},
-            {QStringLiteral("secretKey"), QStringLiteral("x")}};
+                                   {QStringLiteral("wizardSelectiveSyncDefaultNothing"), true},
+                                   {QStringLiteral("secretKey"), QStringLiteral("x")}};
 
         const auto clean = sanitizeServerManagedSettings(raw);
 
         QVERIFY(clean.defaults.contains(QStringLiteral("autoUpdateCheck")));
+        QVERIFY(!clean.defaults.contains(QStringLiteral("wizardSelectiveSyncDefaultNothing")));
         QVERIFY(!clean.defaults.contains(QStringLiteral("bogus")));
         QVERIFY(clean.enforced.contains(QStringLiteral("virtualFilesMode")));
+        QVERIFY(!clean.enforced.contains(QStringLiteral("wizardSelectiveSyncDefaultNothing")));
         QVERIFY(!clean.enforced.contains(QStringLiteral("secretKey")));
     }
 
@@ -623,6 +628,30 @@ private Q_SLOTS:
         QVERIFY(!managedProxy.typeManaged);
         QVERIFY(!managedProxy.portManaged);
         QVERIFY(!managedProxy.portEnforced);
+    }
+
+    void testDevicePolicyControlsWizardSelectiveSyncDefault()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        {
+            QSettings settings(config.configFile(), QSettings::IniFormat);
+            settings.setValue(QString::fromLatin1(ConfigFile::wizardSelectiveSyncDefaultNothingC), false);
+            settings.sync();
+        }
+        ConfigFile::setDeviceSourcesFactory([] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                          EnforcementState::Enforced,
+                                                          200,
+                                                          QVariantMap{{QString::fromLatin1(ConfigFile::wizardSelectiveSyncDefaultNothingC), true}}));
+            return sources;
+        });
+
+        QVERIFY(config.wizardSelectiveSyncDefaultNothing());
+        QVERIFY(config.isEnforced(QString::fromLatin1(ConfigFile::wizardSelectiveSyncDefaultNothingC)));
     }
 
     // A server default must not reach the application proxy, which every account shares.
