@@ -1163,7 +1163,7 @@ Vent på en ny synkronisering, og krypter herefter mappen.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="718"/>
         <location filename="../src/gui/accountsettings.cpp" line="789"/>
         <source>Edit Ignored Files</source>
-        <translation>Redigér ignorerede filer</translation>
+        <translation>Rediger ignorerede filer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="721"/>
@@ -1181,7 +1181,7 @@ Vent på en ny synkronisering, og krypter herefter mappen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="797"/>
         <source>Choose what to sync</source>
-        <translation>Vælg hvad der skal synkroniseres</translation>
+        <translation>Vælg, hvad der skal synkroniseres</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="803"/>
@@ -1445,7 +1445,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="811"/>
         <source>Pause sync</source>
-        <translation>Sæt synk. på pause</translation>
+        <translation>Sæt synkronisering på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="944"/>
@@ -4314,7 +4314,7 @@ Du kan ikke straks gå tilbage til en ældre version: Skifter du fra stabil til 
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation>Juridisk notits</translation>
+        <translation>Juridiske oplysninger</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
@@ -5745,7 +5745,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1289"/>
         <source>Copy internal link</source>
-        <translation>Kopier internt link</translation>
+        <translation>Kopiér internt link</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
@@ -6172,13 +6172,13 @@ Serveren svarede med fejl: %2</translation>
         <location filename="../src/gui/systray.cpp" line="579"/>
         <location filename="../src/gui/systray.cpp" line="589"/>
         <source>Pause sync</source>
-        <translation>Pause sync</translation>
+        <translation>Sæt synkronisering på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="580"/>
         <location filename="../src/gui/systray.cpp" line="595"/>
         <source>Resume sync</source>
-        <translation>Genoptag sync</translation>
+        <translation>Genoptag synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="581"/>
