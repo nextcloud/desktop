@@ -721,7 +721,7 @@
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="29"/>
         <source>File details of %1 · %2</source>
         <extracomment>%1 is the file name. %2 is the application window title, for example &quot;Nextcloud&quot;.</extracomment>
-        <translation>Détails du fichier de %1 · %2</translation>
+        <translation>Détails du fichier %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -1176,7 +1176,7 @@ Attendez la prochaine synchronisation, puis chiffrez le dossier.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="819"/>
         <source>Availability</source>
         <extracomment>Name of the submenu containing virtual-file availability actions.</extracomment>
-        <translation>Disponibilités</translation>
+        <translation>Disponibilité</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="797"/>
@@ -1311,7 +1311,7 @@ Cette action interrompra toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1309"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation>Oublier le chiffrement de bout en bout supprimera les données sensibles et tous les fichiers chiffrés sur cet appareil. &lt;br&gt; Cependant, les fichiers chiffrés resteront sur le serveur et sur vos autres appareils, si le chiffrement est configuré.</translation>
+        <translation>La suppression de la configuration du chiffrement de bout en bout effacera les données sensibles et tous les fichiers chiffrés de cet appareil.&lt;br&gt;Les fichiers chiffrés resteront toutefois sur le serveur et sur vos autres appareils, s’ils sont configurés.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1414"/>
@@ -1389,7 +1389,7 @@ Cette action interrompra toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2019"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation>L&apos;extension Fournisseur de fichiers ne prend pas encore en charge le chiffrement de bout en bout.</translation>
+        <translation>L’extension File Provider ne prend pas encore en charge le chiffrement de bout en bout.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2026"/>
@@ -1573,7 +1573,7 @@ Cette action interrompra toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="175"/>
         <source>Need the user to accept the terms of service</source>
-        <translation>Besoin que l&apos;utilisateur accepte les conditions générales d&apos;utilisation</translation>
+        <translation>L’utilisateur doit accepter les conditions d’utilisation</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="177"/>
@@ -2142,7 +2142,7 @@ Cette action interrompra toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="371"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>Le fichier %1 présente une heure de modification invalide. Téléversement vers le serveur impossible.</translation>
+        <translation>Le fichier %1 présente une heure de modification invalide. Ne le téléversez pas sur le serveur.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="384"/>
@@ -2323,7 +2323,7 @@ Cette action interrompra toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="249"/>
         <source>Use invalid name</source>
-        <translation>Utiliser quand même ce nom</translation>
+        <translation>Utiliser ce nom non valide malgré tout</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="274"/>
@@ -2739,8 +2739,8 @@ Cette action interrompra toute synchronisation en cours.</translation>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="123"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>Impossible de générer les métadonnées pour le chiffrement, déverrouillage du dossier.
-Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
+        <translation>Impossible de générer les métadonnées nécessaires au chiffrement. Déverrouillage du dossier.
+Le problème peut provenir de vos bibliothèques OpenSSL.</translation>
     </message>
 </context>
 <context>
@@ -2809,7 +2809,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="372"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
-        <translation>L’opération %1 a échoué, veuillez réessayer plus tard. Pour obtenir de l’aide, contactez votre administrateur serveur.</translation>
+        <translation>L’opération %1 a échoué. Veuillez réessayer plus tard. Si vous avez besoin d’aide, contactez l’administrateur de votre serveur.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="388"/>
@@ -3068,7 +3068,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</source>
         <translation>Les modifications apportées aux dossiers synchronisés ne peuvent pas être suivies de manière fiable.
 
-Cela signifie que le client de bureau ne va pas téléverser immédiatement les modifications locales, mais va à la place rechercher et téléverser les modifications locales qu&apos;occasionnellement (toutes les deux heures par défaut).
+Le client de synchronisation risque donc de ne pas téléverser immédiatement les modifications locales. Il recherchera et téléversera périodiquement ces modifications, toutes les deux heures par défaut.
 
 %1</translation>
     </message>
@@ -3329,7 +3329,7 @@ Pour les utilisateurs avancés : ce problème peut être lié à la présence de
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
         <source>Could not decrypt!</source>
-        <translation>Déchiffrage impossible !</translation>
+        <translation>Déchiffrement impossible !</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="171"/>
@@ -3371,12 +3371,12 @@ Pour les utilisateurs avancés : ce problème peut être lié à la présence de
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1007"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Vérification des modifications dans &quot;%1&quot; distant</translation>
+        <translation>Vérification des modifications dans le dossier distant « %1 »</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1011"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Vérification des modifications dans &quot;%1&quot; local</translation>
+        <translation>Vérification des modifications dans le dossier local « %1 »</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1018"/>
@@ -3499,7 +3499,7 @@ Pour les utilisateurs avancés : ce problème peut être lié à la présence de
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="750"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Ajouter une connexion de synchronisation de dossiers</translation>
+        <translation>Ajouter une connexion de synchronisation de dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="752"/>
@@ -4273,7 +4273,7 @@ Il n&apos;est pas possible de revenir immédiatement à une version antérieure�
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="189"/>
         <source>Use invalid name</source>
-        <translation>Utiliser quand même ce nom</translation>
+        <translation>Utiliser ce nom non valide malgré tout</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="245"/>
@@ -4396,7 +4396,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="40"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Impossible de trouver un fichier à modifier localement. Assurez-vous que son chemin est valide et qu&apos;il est synchronisé localement.</translation>
+        <translation>Impossible de trouver le fichier pour l’édition locale. Assurez-vous que son chemin est valide et qu’il est synchronisé localement.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="69"/>
@@ -4609,7 +4609,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>L&apos;état du processus de mise à jour est inconnu. Impossible de vérifier la présence de mises à jour.</translation>
+        <translation>L’état des mises à jour est inconnu : aucune recherche de nouvelles mises à jour n’a été effectuée.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="173"/>
@@ -4774,7 +4774,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
         <location filename="../src/libsync/discovery.cpp" line="450"/>
         <location filename="../src/libsync/discovery.cpp" line="492"/>
         <source>Cannot be renamed or uploaded.</source>
-        <translation>Ne peut être renommé ou téléversé.</translation>
+        <translation>Impossible de renommer ou de téléverser cet élément.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="440"/>
@@ -5596,7 +5596,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
         <source>Context menu share</source>
-        <translation>Partage du menu contextuel</translation>
+        <translation>Partage depuis le menu contextuel</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1232"/>
@@ -6258,7 +6258,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="320"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="617"/>
         <source>Search is unavailable while this account is offline.</source>
-        <translation>La recherche n&apos;est pas disponible tant que ce compte est déconnecté.</translation>
+        <translation>La recherche n’est pas disponible tant que ce compte est hors ligne.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
@@ -6413,7 +6413,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="111"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation>Impossible d’ajouter ou de supprimer l’utilisateur %1 de l’accès au dossier %2</translation>
+        <translation>Impossible d’accorder ou de retirer à l’utilisateur %1 l’accès au dossier %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="231"/>
@@ -6547,7 +6547,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2298"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Êtes-vous certain de vouloir retirer la connexion au compte &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt; cette opération &lt;b&gt;ne supprimera aucun de vos fichiers&lt;/b&gt; et ne supprimera pas non plus votre compte du serveur.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Voulez-vous vraiment retirer la connexion au compte &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Remarque :&lt;/b&gt; cette opération ne supprimera &lt;b&gt;aucun fichier&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2302"/>
@@ -6804,12 +6804,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="591"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Vérification des modifications dans &quot;%1&quot; distant</translation>
+        <translation>Vérification des modifications dans le dossier distant « %1 »</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="594"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Vérification des modifications dans &quot;%1&quot; local</translation>
+        <translation>Vérification des modifications dans le dossier local « %1 »</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="845"/>
@@ -7208,7 +7208,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation>La création de partage n&apos;est pas disponible pour ce dossier</translation>
+        <translation>Le partage n’est pas disponible pour ce dossier</translation>
     </message>
 </context>
 <context>
@@ -7629,7 +7629,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/sharing/ShareRow.qml" line="74"/>
         <source>%n recipient(s)</source>
-        <translation><numerusform>%n destinataire(s)</numerusform><numerusform>%n destinataire(s)</numerusform><numerusform>%n destinataire(s)</numerusform></translation>
+        <translation><numerusform>%n destinataire</numerusform><numerusform>%n destinataires</numerusform><numerusform>%n destinataires</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="91"/>
@@ -7695,7 +7695,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Sharing is not available for this folder</source>
-        <translation>Le partage n&apos;est pas disponible pour ce dossier</translation>
+        <translation>Le partage n’est pas disponible pour ce dossier</translation>
     </message>
 </context>
 <context>
@@ -7708,7 +7708,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation>Fournisseur de fichiers</translation>
+        <translation>File Provider</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
@@ -8314,7 +8314,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
         <source>Downloaded</source>
-        <translation>Reçu</translation>
+        <translation>Téléchargé</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
@@ -8329,7 +8329,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation>La version du serveur est téléchargée, les changements locaux ont été copiés dans un fichier de conflit de casse.</translation>
+        <translation>La version du serveur a été téléchargée et le fichier local modifié a été copié dans un fichier de conflit lié à la casse.</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
