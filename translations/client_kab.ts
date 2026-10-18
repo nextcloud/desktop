@@ -5768,27 +5768,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="94"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Yeffeɣ-d sɣur&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="97"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Yeffeɣ-d sɣur: </translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="98"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Azmez n usuffeɣ: </translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="99"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Azmez n taggara-s:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="102"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Idsilen umḍinen&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="106"/>
@@ -5821,12 +5821,13 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sslbutton.cpp" line="170"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Tuqqna-agi tettwawgelhen s useqdec n %1 n yibit %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="187"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Lqem n uqeddac: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="201"/>
@@ -5836,18 +5837,19 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="211"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Talɣut n uselkin:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="241"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>Tuqqna mačči d taɣelsant</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="173"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Tuqqna-agi UR telli ara d taɣelsant am akken ur tettwawgelhen ara. 
+</translation>
     </message>
 </context>
 <context>
@@ -5855,7 +5857,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Amen aselkin-agi akken yebɣu yili</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="79"/>
@@ -5865,17 +5867,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="152"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Ur yezmir ara ad yeqqen s wudem aɣelsan ɣer &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
         <source>Additional errors:</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍiwin timernanin:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>with Certificate %1</source>
-        <translation type="unfinished"/>
+        <translation>s uselkin %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
@@ -5888,34 +5890,34 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sslerrordialog.cpp" line="214"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="239"/>
         <source>Organization: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuddsa: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="215"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="240"/>
         <source>Unit: %1</source>
-        <translation type="unfinished"/>
+        <translation>Aferdis: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="216"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="241"/>
         <source>Country: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tamurt: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="223"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Adsil umḍin (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="228"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Adsil umḍin (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="229"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Adsil umḍin (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="231"/>
