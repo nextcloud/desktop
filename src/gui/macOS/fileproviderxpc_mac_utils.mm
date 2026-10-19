@@ -90,7 +90,6 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
     }
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    dispatch_release(group);
     return fpServices.copy;
 }
 
@@ -136,7 +135,6 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
     }
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    dispatch_release(group);
     return connections.copy;
 }
 
