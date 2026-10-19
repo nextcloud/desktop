@@ -288,4 +288,32 @@ std::optional<bool> deletePassword(NSObject<ClientCommunicationProtocol> *const 
     return deleted;
 }
 
+std::optional<bool> deletePassword(NSFileProviderDomain *const domain, OCC::Mac::FileProviderService *const service)
+{
+    NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+
+    if (manager == nil) {
+        qCWarning(lcFileProviderXPCUtils) << "Cannot delete password without file provider manager for domain" << domain.identifier;
+        return std::nullopt;
+    }
+
+    const auto fpServices = getFileProviderServices(@[ manager ]);
+    const auto connections = connectToFileProviderServices(fpServices);
+    const auto clientCommConnections = processClientCommunicationConnections(connections, service);
+    [connections release];
+    [fpServices release];
+
+    std::optional<bool> deleted;
+
+    for (const auto &clientCommConnection : clientCommConnections) {
+        deleted = deletePassword((NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService,
+                                 std::chrono::nanoseconds{fileProviderRequestWaitDelta});
+        [(NSXPCConnection *)clientCommConnection.xpcConnection invalidate];
+        [(NSXPCConnection *)clientCommConnection.xpcConnection release];
+        [(NSObject *)clientCommConnection.clientCommunicationService release];
+    }
+
+    return deleted;
+}
+
 } // namespace OCC::Mac::FileProviderXPCUtils

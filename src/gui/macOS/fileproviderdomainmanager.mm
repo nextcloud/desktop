@@ -19,6 +19,7 @@
 #include "fileproviderdomainmanager.h"
 #include "fileprovidersettingscontroller.h"
 #include "fileproviderutils.h"
+#include "fileproviderxpc_mac_utils.h"
 
 #include "gui/accountmanager.h"
 #include "libsync/account.h"
@@ -188,7 +189,7 @@ public:
     {
         const auto domainIdentifier = QString::fromNSString(domain.identifier);
 
-        if (!FileProvider::instance()->deleteFileProviderDomainPassword(domainIdentifier).value_or(false)) {
+        if (!FileProviderXPCUtils::deletePassword(domain, FileProvider::instance()->service()).value_or(false)) {
             qCWarning(lcMacFileProviderDomainManager) << "Removing domain without confirmed password deletion" << domainIdentifier;
         }
     }

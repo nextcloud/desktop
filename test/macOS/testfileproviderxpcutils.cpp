@@ -465,26 +465,18 @@ private Q_SLOTS:
         QTRY_VERIFY_WITH_TIMEOUT(serviceDeallocated, backgroundThreadTimeoutMs);
     }
 
-    void passwordDeletionFromBackgroundThreadReturnsUnknownWhenDomainIsMissing()
+    void passwordDeletionForUnregisteredDomainReturnsUnknown()
     {
         if (!OCC::Mac::FileProvider::available()) {
             QSKIP("File Provider is unavailable on this macOS version.");
         }
 
-        auto *const fileProvider = OCC::Mac::FileProvider::instance();
-        std::optional<bool> deleted;
-        std::atomic_bool completed = false;
+        const auto domain = [[NSFileProviderDomain alloc] initWithIdentifier:@"unregistered-domain" displayName:@"Unregistered"];
 
-        std::thread backgroundThread([fileProvider, &deleted, &completed] {
-            deleted = fileProvider->deleteFileProviderDomainPassword("missing-domain"_L1);
-            completed.store(true, std::memory_order_release);
-        });
+        const auto deleted = OCC::Mac::FileProviderXPCUtils::deletePassword(domain, nullptr);
 
-        const auto completedInTime = waitForBackgroundThread(completed);
-        backgroundThread.join();
-
-        QVERIFY(completedInTime);
         QVERIFY(!deleted.has_value());
+        [domain release];
     }
 };
 

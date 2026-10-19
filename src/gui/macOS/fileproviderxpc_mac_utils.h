@@ -49,4 +49,12 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
  * @return The reply, or std::nullopt when there is no service or no reply arrived within the timeout.
  */
 std::optional<bool> deletePassword(NSObject<ClientCommunicationProtocol> *clientCommService, std::chrono::nanoseconds timeout);
+
+/**
+ * @brief Ask the extension of a domain to delete the password of its domain, through a connection of its own.
+ *
+ * This does not depend on configured or still valid XPC connections, which domain removal at startup cannot rely on.
+ * @return The reply, or std::nullopt when the extension could not be reached or did not reply in time.
+ */
+std::optional<bool> deletePassword(NSFileProviderDomain *domain, OCC::Mac::FileProviderService *service);
 }
