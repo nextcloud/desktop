@@ -139,6 +139,30 @@ final class KeychainLoginKeychainTests: Sendable {
         #expect(LoginKeychainFixture.password(service: decoyService, account: account) == "decoy-secret")
     }
 
+    @Test(arguments: [false, true])
+    func removalSupersedesSetupsStartedBeforeIt(signOut: Bool) {
+        let domain = NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier(service), displayName: LoginKeychainFixture.label)
+        let ext = FileProviderExtension(domain: domain)
+        let setupAccount = Account(user: account, id: account, serverUrl: "https://mock.nc.com", password: "x")
+        let staleGeneration = ext.setupGeneration
+
+        if signOut {
+            ext.removeAccountConfig()
+        } else {
+            ext.deletePassword(completionHandler: nil)
+        }
+
+        // A setup queued or authenticating before the removal neither stores nor publishes its account.
+        #expect(ext.storeAccount(setupAccount, generation: staleGeneration) == false)
+        #expect(ext.publishAccount(setupAccount, generation: staleGeneration) == false)
+        #expect(LoginKeychainFixture.count(service: service) == 0)
+        #expect(ext.ncAccount == nil)
+
+        // A setup started afterwards works as usual.
+        #expect(ext.storeAccount(setupAccount, generation: ext.setupGeneration))
+        #expect(LoginKeychainFixture.password(service: service, account: account) == "x")
+    }
+
     @Test func deletePasswordRequestRepliesAfterDeletion() throws {
         try plantDecoy()
         let domain = NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier(service), displayName: LoginKeychainFixture.label)
