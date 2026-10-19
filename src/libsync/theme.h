@@ -399,8 +399,9 @@ public:
     [[nodiscard]] QString updateCheckUrl() const;
 
     /**
-     * When true, the setup wizard will show the selective sync dialog by default and default
-     * to nothing selected
+     * @brief Whether the setup wizard shows the selective sync dialog with no folders selected.
+     *
+     * The value is read from the wizardSelectiveSyncDefaultNothing configuration parameter.
      */
     [[nodiscard]] bool wizardSelectiveSyncDefaultNothing() const;
 
