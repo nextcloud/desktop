@@ -11,5 +11,11 @@ nextcloud_add_test(MacSandboxUtility)
 
 if(BUILD_FILE_PROVIDER_MODULE)
     nextcloud_add_test(FileProviderXPCUtils)
-    set_source_files_properties(testfileproviderxpcutils.cpp PROPERTIES COMPILE_FLAGS "-x objective-c++")
+    target_sources(FileProviderXPCUtilsTest PRIVATE testfileprovideritem.mm)
+    # Keep NSUserDefaults writes out of the application's preferences domain.
+    set_target_properties(FileProviderXPCUtilsTest PROPERTIES
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_ROOT}/Modules/MacOSXBundleInfo.plist.in"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.nextcloud.desktopclient.tests.fileproviderxpcutils")
+    set_source_files_properties(testfileproviderxpcutils.cpp PROPERTIES COMPILE_FLAGS "-x objective-c++ -fobjc-arc")
+    set_property(SOURCE testfileprovideritem.mm APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc)
 endif()
