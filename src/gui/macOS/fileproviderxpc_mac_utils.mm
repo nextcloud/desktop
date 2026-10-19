@@ -200,7 +200,7 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
         return nil;
     }
 
-    return [[NSString alloc] initWithString:domainIdentifier.toNSString()];
+    return domainIdentifier.toNSString();
 }
 
 ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections,
