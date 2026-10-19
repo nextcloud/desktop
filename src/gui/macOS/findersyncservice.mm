@@ -11,6 +11,7 @@
 #include <QLoggingCategory>
 #include <QMetaObject>
 #include <QBuffer>
+#include <QPointer>
 
 // Note: SocketApi is NOT socket-specific - it's the core business logic class that handles
 // file status queries, menu commands, and sync operations across ALL platforms.
@@ -18,6 +19,8 @@
 #include "socketapi/socketapi.h"
 #include "socketapi/socketapi_p.h"
 #include "common/syncfilestatus.h"
+
+static_assert(__has_feature(objc_arc), "FinderSync service requires ARC.");
 
 namespace OCC {
 
@@ -69,28 +72,30 @@ public:
         return;
     }
 
-    // Under MRC, block arguments may be stack blocks. Copy to heap before capturing
-    // in the lambda, which executes asynchronously after this method returns.
-    // Do NOT autorelease: the autorelease pool drains on the XPC thread before the
-    // lambda fires on Qt's main thread, which would leave a dangling pointer.
+    // The queued lambda owns the copied reply until it runs or its context is destroyed.
     void (^copiedHandler)(NSString *, NSError *) = [completionHandler copy];
 
     // Use QMetaObject::invokeMethod to call on the correct thread
-    QMetaObject::invokeMethod(socketApi, [service = _service, qPath, copiedHandler]() {
+    QMetaObject::invokeMethod(socketApi, [service = QPointer<OCC::Mac::FinderSyncService>(_service), qPath, copiedHandler]() {
         auto handler = copiedHandler;
+        if (!service) {
+            handler(nil,
+                    [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+                                        code:1
+                                    userInfo:@{NSLocalizedDescriptionKey : @"Service not available"}]);
+            return;
+        }
         // Get file status via FinderSyncService helper (which has friend access to FileData)
         const auto [hasFolder, statusString] = service->getFileStatus(qPath);
 
         if (!hasFolder) {
             qCDebug(OCC::lcMacFinderSyncService) << "File not in any sync folder:" << qPath;
             handler(@"NOP", nil);
-            [copiedHandler release];
             return;
         }
 
         qCDebug(OCC::lcMacFinderSyncService) << "Returning file status:" << statusString << "for:" << qPath;
         handler(statusString.toNSString(), nil);
-        [copiedHandler release];
     }, Qt::QueuedConnection);
 }
 
@@ -123,7 +128,7 @@ public:
     }
 
     qCDebug(OCC::lcMacFinderSyncService) << "Returning" << strings.count << "localized strings";
-    completionHandler([[strings copy] autorelease], nil);
+    completionHandler([strings copy], nil);
 }
 
 - (void)getMenuItemsForPaths:(NSArray<NSString *> *)paths
@@ -155,15 +160,19 @@ public:
         qPaths << QString::fromNSString(path).normalized(QString::NormalizationForm_C);
     }
 
-    // Under MRC, block arguments may be stack blocks. Copy to heap before capturing
-    // in the lambda, which executes asynchronously after this method returns.
-    // Do NOT autorelease: the autorelease pool drains on the XPC thread before the
-    // lambda fires on Qt's main thread, which would leave a dangling pointer.
+    // The queued lambda owns the copied reply until it runs or its context is destroyed.
     void (^copiedHandler)(NSArray<NSDictionary *> *, NSError *) = [completionHandler copy];
 
     // Marshal to SocketApi's thread — command handlers touch core Qt/FolderMan state
-    QMetaObject::invokeMethod(socketApi, [service = _service, qPaths, copiedHandler]() {
+    QMetaObject::invokeMethod(socketApi, [service = QPointer<OCC::Mac::FinderSyncService>(_service), qPaths, copiedHandler]() {
         auto handler = copiedHandler;
+        if (!service) {
+            handler(nil,
+                    [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+                                        code:1
+                                    userInfo:@{NSLocalizedDescriptionKey : @"Service not available"}]);
+            return;
+        }
         // Get menu items from SocketApi via FinderSyncService helper
         const auto qMenuItems = service->getMenuItems(qPaths);
 
@@ -174,12 +183,11 @@ public:
             for (auto it = qItem.constBegin(); it != qItem.constEnd(); ++it) {
                 item[it.key().toNSString()] = it.value().toNSString();
             }
-            [menuItems addObject:[[item copy] autorelease]];
+            [menuItems addObject:[item copy]];
         }
 
         qCDebug(OCC::lcMacFinderSyncService) << "Returning" << menuItems.count << "menu items";
-        handler([[menuItems copy] autorelease], nil);
-        [copiedHandler release];
+        handler([menuItems copy], nil);
     }, Qt::QueuedConnection);
 }
 
@@ -244,10 +252,7 @@ public:
         return;
     }
 
-    // Under MRC, block arguments may be stack blocks. Copy to heap before capturing
-    // in the lambda, which executes asynchronously after this method returns.
-    // Do NOT autorelease: the autorelease pool drains on the XPC thread before the
-    // lambda fires on Qt's main thread, which would leave a dangling pointer.
+    // The queued lambda owns the copied reply until it runs or its context is destroyed.
     void (^copiedHandler)(NSError *) = [completionHandler copy];
 
     // Use QMetaObject::invokeMethod to execute the command on SocketApi's thread
@@ -281,7 +286,6 @@ public:
                                              userInfo:@{NSLocalizedDescriptionKey: @"Command method not found"}];
             handler(error);
         }
-        [copiedHandler release];
     }, Qt::QueuedConnection);
 }
 
@@ -315,7 +319,7 @@ public:
 
     ~MacImplementation()
     {
-        [delegate release];
+        delegate.service = nullptr;
         delegate = nil;
     }
 };
@@ -337,7 +341,7 @@ FinderSyncService::~FinderSyncService()
 
 void *FinderSyncService::delegate() const
 {
-    return d ? d->delegate : nullptr;
+    return d ? (__bridge void *)d->delegate : nullptr;
 }
 
 void FinderSyncService::setSocketApi(SocketApi *socketApi)

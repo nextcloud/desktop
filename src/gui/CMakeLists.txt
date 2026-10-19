@@ -361,6 +361,12 @@ IF( APPLE )
         nativetitlebar_mac.mm
         folderwatcher_mac.cpp)
     set_property(SOURCE
+        cocoainitializer_mac.mm
+        macOS/localnetworkpermission.mm
+        macOS/findersyncxpc_mac.mm
+        macOS/findersyncservice.mm
+        macOS/fileproviderservice.mm
+        updater/sparkleupdater_mac.mm
         macOS/trayaccountpopup/trayaccountpopupimageutils.mm
         macOS/trayaccountpopup/trayaccountpopupviewutils.mm
         macOS/trayaccountpopup/nchoverview.mm
