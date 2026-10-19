@@ -34,7 +34,7 @@
 - (void)removeAccountConfig;
 
 /**
- * @brief Delete the password the extension stored for this domain, then call the completion handler.
+ * @brief Forget the account and delete the password the extension stored for this domain, then call the completion handler.
  *
  * The main app calls this before it removes the domain.
  * deleted is YES when no item of this domain is left, including when there was none.
