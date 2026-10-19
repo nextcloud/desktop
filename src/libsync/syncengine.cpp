@@ -209,7 +209,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
     QSet<QString> download_file_paths;
     for (const SyncFileItemPtr &it : syncItems) {
         if (it->_direction == SyncFileItem::Down
-            && it->_type == ItemTypeFile
+            && (it->_type == ItemTypeFile || it->_type == ItemTypeVirtualFileDownload)
             && isFileTransferInstruction(it->_instruction)) {
             download_file_paths.insert(it->_file);
         }
