@@ -12,6 +12,8 @@
 
 #include "gui/accountmanager.h"
 
+static_assert(__has_feature(objc_arc), "File Provider XPC utilities require ARC.");
+
 namespace {
 const char *const clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
 NSString *const nsClientCommunicationServiceName = [NSString stringWithUTF8String:clientCommunicationServiceName];
