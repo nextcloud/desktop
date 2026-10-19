@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+static_assert(__has_feature(objc_arc), "File Provider XPC requires ARC.");
+
 namespace {
     constexpr int64_t semaphoreWaitDelta = 1000000000; // 1 seconds
     constexpr auto reachableRetryTimeout = 300; // seconds

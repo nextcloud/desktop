@@ -16,8 +16,6 @@
 #import "../../../shell_integration/MacOSX/NextcloudFileProviderKit/Sources/NextcloudFileProviderXPC/include/NextcloudFileProviderXPC.h"
 #import "fileproviderservice.h"
 
-static_assert(__has_feature(objc_arc), "File Provider XPC utilities require ARC.");
-
 namespace OCC::Mac::FileProviderXPCUtils {
 
 NSArray<NSFileProviderManager *> *getDomainManagers();
