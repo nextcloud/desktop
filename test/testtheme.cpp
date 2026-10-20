@@ -42,6 +42,15 @@ private Q_SLOTS:
         QCOMPARE(theme->property("wizardHideSelfHostButton").toBool(), hidden);
     }
 
+    void testWizardSignupMatchesBranding()
+    {
+        const auto theme = OCC::Theme::instance();
+        const auto hidden = static_cast<bool>(WIZARD_HIDE_SIGNUP_BUTTON);
+
+        QCOMPARE(theme->wizardHideSignupButton(), hidden);
+        QCOMPARE(theme->property("wizardHideSignupButton").toBool(), hidden);
+    }
+
     void testHidpiFileName_darkBackground_returnPathToWhiteIcon()
     {
         FakePaintDevice paintDevice;

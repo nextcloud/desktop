@@ -631,6 +631,11 @@ bool Theme::wizardHideSelfHostButton() const
     return WIZARD_HIDE_SELF_HOST_BUTTON;
 }
 
+bool Theme::wizardHideSignupButton() const
+{
+    return WIZARD_HIDE_SIGNUP_BUTTON;
+}
+
 QString Theme::gitSHA1() const
 {
     QString devString;
