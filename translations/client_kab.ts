@@ -5534,7 +5534,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
         <source>Could not find local folder for %1</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi tifin n ukaram adigan i %1</translation>
     </message>
 </context>
 <context>
@@ -5543,17 +5543,17 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="24"/>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="285"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Nadi s wudem amatu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="281"/>
         <source>No results found</source>
-        <translation type="unfinished"/>
+        <translation>Ulac igmaḍ yettwafen</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="281"/>
         <source>Global search results</source>
-        <translation type="unfinished"/>
+        <translation>Igmaḍ n unadi amatu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="297"/>
@@ -5567,33 +5567,33 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Beṭṭu seg wumuɣ asatal</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1232"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Bḍiɣ-d kra yid-k·m</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1285"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Iɣewwaṛen n beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Azen aseɣwen uslig s yimayl ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Nɣel aseɣwen uslig ɣer tecfawit</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Awgelhen n ukaram ur yeddi ara deg &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
@@ -5603,30 +5603,32 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="636"/>
         <source>Failed to encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Awgelhen n ukaram ur yeddi ara</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="637"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek awgelhen n ukaram-agi: &quot;%1&quot;.
+
+Aqeddac yerra-d s tuccḍa: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="644"/>
         <source>Folder encrypted successfully</source>
-        <translation type="unfinished"/>
+        <translation>Awgelhen n ukaram ur yeddi ara</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="645"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Akaram-agi yettwawgelhen akken iwata: &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1311"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Tigawin n ufaylu</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
@@ -5638,7 +5640,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1277"/>
         <source>Leave this share</source>
-        <translation type="unfinished"/>
+        <translation>Eǧǧ beṭṭu-agi</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
