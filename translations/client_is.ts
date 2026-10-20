@@ -2366,7 +2366,7 @@ gagnageymslur: </translation>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2262"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <extracomment>%2 is the account username. %3 is the account display name.</extracomment>
-        <translation>Settu inn lykilorð fyrir enda-í-enda dulritun:&lt;br&gt;&lt;br&gt;Notandi: &lt;br&gt;Aðgangur: %3&lt;br&gt;</translation>
+        <translation>Settu inn lykilorð fyrir enda-í-enda dulritun:&lt;br&gt;&lt;br&gt;Notandi: %2&lt;br&gt;Aðgangur: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2270"/>
@@ -3918,7 +3918,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="53"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Settu inn lykilorð %1:&lt;br&gt;&lt;br&gt;Notandanafn: &lt;br&gt;Aðgangur: %3&lt;br&gt;</translation>
+        <translation>Settu inn lykilorð %1:&lt;br&gt;&lt;br&gt;Notandanafn: %2&lt;br&gt;Aðgangur: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="67"/>
@@ -5195,7 +5195,7 @@ niðurhals. Uppsetta útgáfan er %3.&lt;/p&gt;</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="165"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation>Gat ekki endurnefnt skrána „$“ í „$%2“</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
