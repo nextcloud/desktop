@@ -5,6 +5,7 @@
 
 #include "account.h"
 #include "accountmanager.h"
+#include "config.h"
 #include "configfile.h"
 #include "folder.h"
 #include "gui/localnetworkpermission.h"
@@ -640,7 +641,7 @@ private Q_SLOTS:
         QVERIFY(controller.startLoginFlowAutomatically());
     }
 
-    void prefillsEditableServerUrlFromManagedDefault()
+    void prefillsServerUrlFromManagedDefault()
     {
         const auto restoreConfiguration = restoreOverrideState();
         setManagedOverrideServerUrl(SettingSourceType::PlatformDefault, EnforcementState::NotEnforced, 20);
@@ -648,9 +649,14 @@ private Q_SLOTS:
         AccountWizardController controller;
 
         QCOMPARE(controller.serverUrl(), u"https://cloud.example"_s);
+#if defined(APPLICATION_SERVER_URL) && defined(APPLICATION_SERVER_URL_ENFORCE)
+        QVERIFY(!controller.serverUrlEditable());
+        QVERIFY(Theme::instance()->forceOverrideServerUrl());
+#else
         QVERIFY(controller.serverUrlEditable());
-        QVERIFY(!controller.startLoginFlowAutomatically());
         QVERIFY(!Theme::instance()->forceOverrideServerUrl());
+#endif
+        QVERIFY(!controller.startLoginFlowAutomatically());
     }
 
     void locksServerUrlFromManagedPolicy()

@@ -125,7 +125,9 @@ schema, so a policy can not enforce a setting the client did not declare.
 device default prefills every new account setup and stays editable, while a device
 policy or `--overrideserverurl` locks the server URL and starts the login flow. The
 wizard removes the user value after an account is added, so a command line override
-applies once and a device default applies again. Only a locked server URL restricts
+applies once and a device default applies again. A build that sets
+`APPLICATION_SERVER_URL` with `APPLICATION_SERVER_URL_ENFORCE` also locks a device
+default. Only a locked server URL restricts
 which servers `nc://login` links may open. An `overrideLocalDir` from device default
 or policy applies only to the first account, in the wizard and for an account set up
 from the command line, and a device default folder stays editable. `--overridelocaldir`
