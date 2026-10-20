@@ -10,6 +10,7 @@
 #include "clientproxy.h"
 #include "common/utility.h"
 #include "common/vfs.h"
+#include "config.h"
 #include "configfile.h"
 #include "creds/credentialsfactory.h"
 #include "creds/httpcredentialsgui.h"
@@ -63,6 +64,12 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcAccountWizardController, "nextcloud.gui.accountwizardcontroller", QtInfoMsg)
 
 namespace {
+
+#if defined(APPLICATION_SERVER_URL) && defined(APPLICATION_SERVER_URL_ENFORCE)
+constexpr auto buildEnforcesServerUrl = true;
+#else
+constexpr auto buildEnforcesServerUrl = false;
+#endif
 
 bool localFolderContainsData(const QString &localSyncFolder)
 {
@@ -141,7 +148,7 @@ void AccountWizardController::initialiseAccount()
             Theme::instance()->setForceOverrideServerUrl(true);
             Theme::instance()->setStartLoginFlowAutomatically(true);
         } else {
-            Theme::instance()->setForceOverrideServerUrl(false);
+            Theme::instance()->setForceOverrideServerUrl(buildEnforcesServerUrl);
         }
     }
 
