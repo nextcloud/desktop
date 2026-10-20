@@ -626,6 +626,11 @@ bool Theme::wizardHideFolderSizeLimitCheckbox() const
     return false;
 }
 
+bool Theme::wizardHideSignupButton() const
+{
+    return WIZARD_HIDE_SIGNUP_BUTTON;
+}
+
 QString Theme::gitSHA1() const
 {
     QString devString;
