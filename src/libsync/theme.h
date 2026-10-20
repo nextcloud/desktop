@@ -426,6 +426,8 @@ public:
 
     [[nodiscard]] bool wizardHideSelfHostButton() const;
     [[nodiscard]] bool wizardHideSignupButton() const;
+    [[nodiscard]] QUrl wizardSignupUrl() const;
+    [[nodiscard]] static QUrl signupUrlForBranding(const QString &configuredUrl);
 
     /**
      * @brief Sharing options
