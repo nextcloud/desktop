@@ -5610,7 +5610,7 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
         <source>Send private link by email …</source>
-        <translation>Kişisel bağlantıyı e-posta ile paylaş …</translation>
+        <translation>Kişisel bağlantıyı e-posta ile paylaş…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
