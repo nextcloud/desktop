@@ -290,7 +290,9 @@ WizardStyledWindow {
             },
 
             WizardButton {
-                visible: root.controller && root.controller.currentStep === AccountWizardController.ServerStep
+                visible: root.controller
+                    && root.controller.currentStep === AccountWizardController.ServerStep
+                    && !Theme.wizardHideSelfHostButton
                 enabled: root.controller && !root.controller.busy
                 text: qsTr("Self-host")
                 textSuffix: "\u2197"
