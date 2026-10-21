@@ -1520,7 +1520,7 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="252"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>S-a primit un răspuns invalid la o cerere WebDAV autentificată</translation>
+        <translation>S-a primit un răspuns nevalid la o cerere WebDAV autentificată</translation>
     </message>
 </context>
 <context>
@@ -1622,7 +1622,7 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="927"/>
         <source>Invalid URL</source>
-        <translation>URL invalid</translation>
+        <translation>URL nevalid</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="929"/>
@@ -1661,7 +1661,7 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1127"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1157"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>S-a primit un răspuns invalid la o cerere WebDAV autentificată</translation>
+        <translation>S-a primit un răspuns nevalid la o cerere WebDAV autentificată</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1144"/>
@@ -2132,7 +2132,7 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="200"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation>Fișierul %1 are o oră de modificare invalidă. Nu va fi încărcat pe server.</translation>
+        <translation>Fișierul %1 are o oră de modificare nevalidă. Nu va fi încărcat pe server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="352"/>
@@ -2142,7 +2142,7 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="371"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>Fișierul %1 are o oră de modificare invalidă. Nu va fi încărcat pe server.</translation>
+        <translation>Fișierul %1 are o oră de modificare nevalidă. Nu va fi încărcat pe server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="384"/>
@@ -2323,7 +2323,7 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="249"/>
         <source>Use invalid name</source>
-        <translation>Folosește numele invalid</translation>
+        <translation>Folosește numele nevalid</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="274"/>
@@ -2355,12 +2355,12 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1185"/>
         <source>Invalid PIN. Login failed</source>
-        <translation>PIN invalid. Autentificarea a eșuat</translation>
+        <translation>PIN nevalid. Autentificarea a eșuat</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1186"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
-        <translation>Autentificarea în token a eșuat după introducerea PIN-ului. Este posibil să fie invalid sau greșit. Încearcă din nou!</translation>
+        <translation>Autentificarea în token a eșuat după introducerea PIN-ului. Este posibil să fie nevalid sau greșit. Încearcă din nou!</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2262"/>
@@ -2645,7 +2645,7 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="427"/>
         <source>Invalid local file path.</source>
-        <translation>Cale invalidă a fișierului local.</translation>
+        <translation>Cale nevalidă a fișierului local.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="437"/>
@@ -2703,7 +2703,7 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="83"/>
         <source>Invalid token received.</source>
-        <translation>S-a primit un token invalid.</translation>
+        <translation>S-a primit un token nevalid.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="83"/>
@@ -2715,7 +2715,7 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="90"/>
         <source>Invalid file path was provided.</source>
-        <translation>A fost furnizată o cale de fișier invalidă.</translation>
+        <translation>A fost furnizată o cale de fișier nevalidă.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="96"/>
@@ -3828,7 +3828,7 @@ Pentru utilizatorii avansați: problema poate fi legată de mai multe fișiere d
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
         <source>The server returned an invalid share.</source>
-        <translation>Serverul a returnat o partajare invalidă.</translation>
+        <translation>Serverul a returnat o partajare nevalidă.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
@@ -4178,7 +4178,7 @@ Revenirea la o versiune anterioară nu este posibilă imediat: trecerea de la st
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation>Nume de fișier invalid</translation>
+        <translation>Nume de fișier nevalid</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
@@ -4273,7 +4273,7 @@ Revenirea la o versiune anterioară nu este posibilă imediat: trecerea de la st
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="189"/>
         <source>Use invalid name</source>
-        <translation>Folosește numele invalid</translation>
+        <translation>Folosește numele nevalid</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="245"/>
@@ -4706,7 +4706,7 @@ Folosirea oricărei opțiuni de jurnalizare din linia de comandă va suprascrie 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="142"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>Răspuns JSON invalid de la URL-ul de interogare</translation>
+        <translation>Răspuns JSON nevalid de la URL-ul de interogare</translation>
     </message>
 </context>
 <context>
@@ -4746,12 +4746,12 @@ Folosirea oricărei opțiuni de jurnalizare din linia de comandă va suprascrie 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="422"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation>Numele dosarului conține cel puțin un caracter invalid</translation>
+        <translation>Numele dosarului conține cel puțin un caracter nepermis</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>File name contains at least one invalid character</source>
-        <translation>Numele fișierului conține cel puțin un caracter invalid</translation>
+        <translation>Numele fișierului conține cel puțin un caracter nepermis</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="426"/>
@@ -4861,7 +4861,7 @@ Folosirea oricărei opțiuni de jurnalizare din linia de comandă va suprascrie 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1248"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation>Nu se poate sincroniza din cauza unei ore de modificare invalide</translation>
+        <translation>Nu se poate sincroniza din cauza unei ore de modificare nevalide</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1264"/>
@@ -4887,7 +4887,7 @@ Folosirea oricărei opțiuni de jurnalizare din linia de comandă va suprascrie 
         <location filename="../src/libsync/discovery.cpp" line="1624"/>
         <location filename="../src/libsync/discovery.cpp" line="2122"/>
         <source>Moved to invalid target, restoring</source>
-        <translation>Mutat într-o destinație invalidă, se restaurează</translation>
+        <translation>Mutat într-o destinație nevalidă, se restaurează</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1973"/>
@@ -4935,7 +4935,7 @@ Folosirea oricărei opțiuni de jurnalizare din linia de comandă va suprascrie 
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1507"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Eroare la actualizarea metadatelor din cauza unei ore de modificare invalide</translation>
+        <translation>Eroare la actualizarea metadatelor din cauza unei ore de modificare nevalide</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1539"/>
@@ -5011,7 +5011,7 @@ Folosirea oricărei opțiuni de jurnalizare din linia de comandă va suprascrie 
         <location filename="../src/libsync/propagatedownload.cpp" line="1155"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1169"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation>Fișierul %1 are o oră de modificare invalidă raportată de server. Nu va fi salvat.</translation>
+        <translation>Fișierul %1 are o oră de modificare nevalidă raportată de server. Nu va fi salvat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1242"/>
@@ -5265,7 +5265,7 @@ Folosirea oricărei opțiuni de jurnalizare din linia de comandă va suprascrie 
         <location filename="../src/libsync/propagateupload.cpp" line="411"/>
         <location filename="../src/libsync/propagateupload.cpp" line="424"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>Fișierul %1 are o oră de modificare invalidă. Nu va fi încărcat pe server.</translation>
+        <translation>Fișierul %1 are o oră de modificare nevalidă. Nu va fi încărcat pe server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="434"/>
@@ -5285,7 +5285,7 @@ Folosirea oricărei opțiuni de jurnalizare din linia de comandă va suprascrie 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="759"/>
         <source>Unable to upload an item with invalid characters</source>
-        <translation>Nu se poate încărca un element cu caractere invalide</translation>
+        <translation>Nu se poate încărca un element cu caractere nepermise</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="853"/>
@@ -6718,7 +6718,7 @@ Serverul a răspuns cu eroarea: %2</translation>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="75"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="86"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Eroare la actualizarea metadatelor din cauza unei ore de modificare invalide</translation>
+        <translation>Eroare la actualizarea metadatelor din cauza unei ore de modificare nevalide</translation>
     </message>
 </context>
 <context>
@@ -6727,7 +6727,7 @@ Serverul a răspuns cu eroarea: %2</translation>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="68"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="79"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Eroare la actualizarea metadatelor din cauza unei ore de modificare invalide</translation>
+        <translation>Eroare la actualizarea metadatelor din cauza unei ore de modificare nevalide</translation>
     </message>
 </context>
 <context>
