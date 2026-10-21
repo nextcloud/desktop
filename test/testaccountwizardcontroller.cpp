@@ -15,6 +15,7 @@
 #include "gui/macOS/fileprovider.h"
 #endif
 
+#include <QDesktopServices>
 #include <QDialog>
 #include <QScopeGuard>
 #include <QSignalSpy>
@@ -89,6 +90,9 @@ public:
 class TestAccountWizardController : public QObject
 {
     Q_OBJECT
+
+Q_SIGNALS:
+    void signupUrlRequested(const QUrl &url);
 
 private Q_SLOTS:
     void initTestCase()
@@ -506,6 +510,24 @@ private Q_SLOTS:
         QCOMPARE(askLargeSpy.count(), 1);
         QCOMPARE(thresholdSpy.count(), 1);
         QCOMPARE(externalSpy.count(), 1);
+    }
+
+    void opensConfiguredSignupUrlInBrowser()
+    {
+        QDesktopServices::setUrlHandler(u"http"_s, this, "signupUrlRequested");
+        QDesktopServices::setUrlHandler(u"https"_s, this, "signupUrlRequested");
+        const auto resetUrlHandlers = qScopeGuard([] {
+            QDesktopServices::unsetUrlHandler(u"http"_s);
+            QDesktopServices::unsetUrlHandler(u"https"_s);
+        });
+        QSignalSpy browserSpy(this, &TestAccountWizardController::signupUrlRequested);
+        QVERIFY(browserSpy.isValid());
+
+        AccountWizardController controller;
+        controller.openSignup();
+
+        QCOMPARE(browserSpy.count(), 1);
+        QCOMPARE(browserSpy.constFirst().constFirst().toUrl(), Theme::instance()->wizardSignupUrl());
     }
 
     void exposesProxySettingsAvailability()
