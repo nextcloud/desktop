@@ -60,7 +60,7 @@ QPalette nativeMenuIconPalette(const QMenu *menu)
 
 namespace {
 
-constexpr auto fixedMenuWidth = 320;
+constexpr auto minimumMenuWidth = 320;
 // QMenu already reserves the icon/check column when painting; only reserve the
 // remaining native chrome and submenu indicator for manual eliding.
 constexpr auto menuTextReservedWidth = 40;
@@ -70,10 +70,11 @@ constexpr auto minimumElidedTextWidth = 32;
 static QPointer<QMenu> s_trayPopup;
 static QHash<QString, QIcon> s_remoteAppIconCache;
 
-void setFixedMenuWidth(QMenu *menu)
+void setMinimumMenuWidth(QMenu *menu)
 {
     if (menu) {
-        menu->setFixedWidth(fixedMenuWidth);
+        // A fixed width can be narrower than the layout Qt uses to position submenus.
+        menu->setMinimumWidth(minimumMenuWidth);
         menu->setToolTipsVisible(true);
     }
 }
@@ -356,7 +357,7 @@ QString timedMenuText(const QString &text, const QString &dateTime)
 
 int menuTextWidth(const bool hasSubmenu = false)
 {
-    auto textWidth = fixedMenuWidth - menuTextReservedWidth;
+    auto textWidth = minimumMenuWidth - menuTextReservedWidth;
     if (hasSubmenu) {
         textWidth -= submenuIndicatorReservedWidth;
     }
@@ -558,7 +559,7 @@ void openNotification(const int userId, const bool opensSettings)
 
 bool populateAppsMenu(QMenu *menu, const int userId)
 {
-    setFixedMenuWidth(menu);
+    setMinimumMenuWidth(menu);
     clearDynamicMenu(menu);
 
     const auto appsModel = TrayAccountAppsModel::instance();
@@ -655,7 +656,7 @@ void addNotifications(QMenu *menu, const int userId, const QVariantList &notific
         }
 
         const auto notificationMenu = addTimedSubMenu(menu, activityIcon(notificationData), displayTitle, dateTime);
-        setFixedMenuWidth(notificationMenu);
+        setMinimumMenuWidth(notificationMenu);
         const auto openAction = addMenuAction(notificationMenu, QIcon{}, QCoreApplication::translate("TrayAccountPopup", "Open"));
         QObject::connect(openAction, &QAction::triggered, openAction, [userId, opensSettings] {
             openNotification(userId, opensSettings);
@@ -703,7 +704,7 @@ void addRecentActivities(QMenu *menu, const int userId, const QVariantList &rece
 void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivityPreview = true)
 {
     if (!fetchActivityPreview) {
-        setFixedMenuWidth(menu);
+        setMinimumMenuWidth(menu);
         clearDynamicMenu(menu);
     }
 
@@ -811,7 +812,7 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
     const auto appsMenu = addSubMenu(menu,
         templateBlackThemeIcon(QStringLiteral("more-apps.svg"), menuIconSize, menuIconPalette),
         QCoreApplication::translate("TrayWindowHeader", "Apps"));
-    setFixedMenuWidth(appsMenu);
+    setMinimumMenuWidth(appsMenu);
     appsMenu->menuAction()->setEnabled(populateAppsMenu(appsMenu, userId));
 
     menu->addSeparator();
@@ -826,7 +827,7 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
         return;
     }
 
-    setFixedMenuWidth(menu);
+    setMinimumMenuWidth(menu);
     clearDynamicMenu(menu);
 
     const auto fontMetric = QFontMetricsF{qApp->font()};
@@ -847,7 +848,7 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
             }
 
             const auto accountMenu = addSubMenu(menu, accountIcon, accountText);
-            setFixedMenuWidth(accountMenu);
+            setMinimumMenuWidth(accountMenu);
             populateAccountMenu(accountMenu, userId, false);
             QObject::connect(accountMenu, &QMenu::aboutToShow, accountMenu, [accountMenu, userId] {
                 populateAccountMenu(accountMenu, userId, true);
