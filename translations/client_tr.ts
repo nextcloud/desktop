@@ -422,12 +422,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="170"/>
         <source>Talk notification caller avatar</source>
-        <translation>Konuş bildirimi çağrı yapan görseli</translation>
+        <translation>Konuş bildirimi arayan görseli</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="229"/>
         <source>Answer Talk call notification</source>
-        <translation>Konuş çağrı bildirimini yanıtla</translation>
+        <translation>Konuş aramasını yanıtlama bildirimi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="236"/>
@@ -437,7 +437,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline Talk call notification</source>
-        <translation>Konuş çağrı bildirimini reddet</translation>
+        <translation>Konuş aramasını reddetme bildirimi</translation>
     </message>
 </context>
 <context>
@@ -3631,7 +3631,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/generalsettings.ui" line="259"/>
         <source>Show Call Notifications</source>
-        <translation>Çağrı bildirimleri görüntülensin</translation>
+        <translation>Arama bildirimleri görüntülensin</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="110"/>
@@ -3686,7 +3686,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="50"/>
         <source>Show call notification dialogs.</source>
-        <translation>Çağrı bildirimi iletişim kutularını görüntüler.</translation>
+        <translation>Arama bildirimi iletişim kutularını görüntüler.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="53"/>

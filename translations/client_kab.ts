@@ -5454,7 +5454,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/settingsdialog.cpp" line="152"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>Iɣewwaṛen n %1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="186"/>
@@ -5465,13 +5465,13 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="186"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Talqayt</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="190"/>
         <source>Info</source>
         <extracomment>Name of the Info settings page.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Talɣut</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="383"/>
@@ -5485,7 +5485,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/sharemanager.cpp" line="697"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa</translation>
     </message>
 </context>
 <context>
@@ -5493,22 +5493,22 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="568"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 n wussan</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="570"/>
         <source>%1 day</source>
-        <translation type="unfinished"/>
+        <translation>%1 n wass</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Ass-a</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="746"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Aseɣwen n users ufaylu s wudem aɣelsan</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="749"/>
@@ -5519,7 +5519,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="758"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>Beṭṭu n useɣwen</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="760"/>
@@ -5529,7 +5529,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="762"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Asers n ufaylu s wudem aɣelsan</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
@@ -6624,7 +6624,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="512"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n wass</numerusform><numerusform>%n wussan</numerusform></translation>
+        <translation><numerusform>%n wass</numerusform><numerusform>%n n wussan</numerusform></translation>
     </message>
 </context>
 <context>
@@ -7307,7 +7307,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareAdvancedSettingsPage.qml" line="71"/>
         <source>No advanced settings are available for this share.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac iɣewwaren inaẓiyen i beṭṭu-agi.</translation>
     </message>
 </context>
 <context>
@@ -7323,7 +7323,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="115"/>
         <source>Changes to this share are applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>Ibeddilen n beṭṭu-agi ttwasnesen dindin.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
@@ -7595,12 +7595,12 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="69"/>
         <source>Not active — select to finish</source>
-        <translation type="unfinished"/>
+        <translation>Ur yermid ara — Fren akken ad tfakeḍ</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharing/ShareRow.qml" line="74"/>
         <source>%n recipient(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n n uɣerwaḍ(i-en)</numerusform><numerusform>%n n uɣerwaḍ(i-en)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="91"/>
@@ -8203,7 +8203,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n wass</numerusform><numerusform>%n wussan</numerusform></translation>
+        <translation><numerusform>%n wass</numerusform><numerusform>%n n wussan</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="292"/>
