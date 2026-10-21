@@ -5,10 +5,11 @@
 
 #include <QTest>
 
-#include "theme.h"
-#include "themeutils.h"
+#include "config.h"
 #include "iconutils.h"
 #include "logger.h"
+#include "theme.h"
+#include "themeutils.h"
 
 #include <QStandardPaths>
 
@@ -30,6 +31,15 @@ private Q_SLOTS:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    void testWizardHideSelfHostButtonMatchesBranding()
+    {
+        const auto theme = OCC::Theme::instance();
+        const auto hidden = static_cast<bool>(WIZARD_HIDE_SELF_HOST_BUTTON);
+
+        QCOMPARE(theme->wizardHideSelfHostButton(), hidden);
+        QCOMPARE(theme->property("wizardHideSelfHostButton").toBool(), hidden);
     }
 
     void testHidpiFileName_darkBackground_returnPathToWhiteIcon()

@@ -57,6 +57,7 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
 #ifndef TOKEN_AUTH_ONLY
     Q_PROPERTY(QColor wizardHeaderTitleColor READ wizardHeaderTitleColor CONSTANT)
     Q_PROPERTY(QColor wizardHeaderBackgroundColor READ wizardHeaderBackgroundColor CONSTANT)
+    Q_PROPERTY(bool wizardHideSelfHostButton READ wizardHideSelfHostButton CONSTANT)
 #endif
     Q_PROPERTY(QString updateCheckUrl READ updateCheckUrl CONSTANT)
 
@@ -421,6 +422,8 @@ public:
      * in the account wizard
      */
     [[nodiscard]] bool wizardHideExternalStorageConfirmationCheckbox() const;
+
+    [[nodiscard]] bool wizardHideSelfHostButton() const;
 
     /**
      * @brief Sharing options
