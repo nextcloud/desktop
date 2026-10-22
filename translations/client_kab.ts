@@ -5246,7 +5246,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="461"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwabeddel deg wakud n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="471"/>
@@ -5261,12 +5261,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="853"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg uleqqem n yiɣefisefka: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="856"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yettuseqdac akka tura</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="291"/>
@@ -5277,7 +5277,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="245"/>
         <source>Failed to upload encrypted file.</source>
-        <translation type="unfinished"/>
+        <translation>Asali n ufaylu awgelhan ur yeddi ara.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="408"/>
@@ -5301,7 +5301,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwabeddel deg wakud n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
@@ -5347,12 +5347,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="259"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwakkes deg umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="274"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwabeddel deg wakud n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="288"/>
@@ -5365,7 +5365,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Asesteb n upṛuksi yettwasra</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -5375,12 +5375,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation type="unfinished"/>
+        <translation>Apṛuksi:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>Aqeddac apṛuksi yesra isem n useqdac akked wawal uffir.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -5393,7 +5393,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="504"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Fren ayen ara temtawiḍ</translation>
     </message>
 </context>
 <context>
@@ -5401,12 +5401,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="65"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Asali ...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Kkes tafrayt n yikaramen inmeggagen ur tebɣiḍ ara ad temtawiḍ.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="87"/>
@@ -5422,12 +5422,12 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/selectivesyncdialog.cpp" line="226"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="305"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac akaram anaddaw akka tura ɣef uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="307"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Teḍra-d tuccḍa deg usali n tebdart n ikaramen inaddawen.</translation>
     </message>
 </context>
 <context>
