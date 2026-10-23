@@ -2146,31 +2146,35 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    func testWorkingSetContinuationFinishesWithAnErrorWhenStoredChangesCannotBeRead() async throws {
-        // After an intermediate batch was acknowledged, the next batch is read from the stored session. If
-        // that read fails, the enumeration must end with an error and keep the session, not finish on an
-        // empty batch and acknowledge the changes which were never delivered.
-        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
-        _ = seedMaterialisedWorkingSetFiles(count: 6, syncTime: Date())
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-
-        let firstEnumerator = try Enumerator(
+    /// Run one working-set change request on a fresh enumerator from `anchor` and wait until it finished or failed.
+    private func enumerateWorkingSetChanges(from anchor: NSFileProviderSyncAnchor, remoteInterface: MockRemoteInterface, batchSize: Int = 2) async throws -> MockChangeObserver {
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
         )
-        let firstObserver = MockChangeObserver(enumerator: firstEnumerator)
-        firstObserver.suggestedBatchSize = 2
-        firstEnumerator.enumerateChanges(for: firstObserver, from: anchor)
+        let observer = MockChangeObserver(enumerator: enumerator)
+        observer.suggestedBatchSize = batchSize
+        enumerator.enumerateChanges(for: observer, from: anchor)
 
         for _ in 0 ..< 5000 {
-            if !firstObserver.finishes.isEmpty || firstObserver.error != nil {
+            if !observer.finishes.isEmpty || observer.error != nil {
                 break
             }
             try await Task.sleep(nanoseconds: 1_000_000)
         }
+
+        return observer
+    }
+
+    /// Deliver the first of three working-set batches and wait for its acknowledgement, so the stored session waits at the returned continuation anchor.
+    private func deliverFirstWorkingSetBatch(remoteInterface: MockRemoteInterface) async throws -> (anchor: NSFileProviderSyncAnchor, key: String) {
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
+        _ = seedMaterialisedWorkingSetFiles(count: 6, syncTime: Date())
+
+        let firstObserver = try await enumerateWorkingSetChanges(from: anchor, remoteInterface: remoteInterface)
 
         XCTAssertNil(firstObserver.error)
         let firstFinish = try XCTUnwrap(firstObserver.finishes.first)
@@ -2179,40 +2183,70 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // The acknowledgement runs after the finish; wait until the session points at the continuation.
         let continuationKey = try XCTUnwrap(String(data: firstFinish.anchor.rawValue, encoding: .utf8))
         for _ in 0 ..< 5000 {
-            if Self.dbManager.changeDeliverySession(forAnchorKey: continuationKey, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue) != nil {
+            if try Self.dbManager.changeDeliverySession(forAnchorKey: continuationKey, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue) != nil {
                 break
             }
             try await Task.sleep(nanoseconds: 1_000_000)
         }
-        let session = try XCTUnwrap(Self.dbManager.changeDeliverySession(forAnchorKey: continuationKey, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue))
+        let session = try XCTUnwrap(try Self.dbManager.changeDeliverySession(forAnchorKey: continuationKey, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue))
         XCTAssertEqual(session.nextSequence, 2)
+
+        return (firstFinish.anchor, continuationKey)
+    }
+
+    func testWorkingSetContinuationFinishesWithAnErrorWhenStoredChangesCannotBeRead() async throws {
+        // After an intermediate batch was acknowledged, the next batch is read from the stored session. If
+        // that read fails, the enumeration must end with an error and keep the session, not finish on an
+        // empty batch and acknowledge the changes which were never delivered.
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let continuation = try await deliverFirstWorkingSetBatch(remoteInterface: remoteInterface)
 
         try Self.dbManager.breakTableForTesting(ChangeDeliveryItemRecord.databaseTableName)
         defer { Self.dbManager.recreateTablesForTesting() }
 
-        let nextEnumerator = try Enumerator(
-            enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager,
-            log: FileProviderLogMock()
-        )
-        let nextObserver = MockChangeObserver(enumerator: nextEnumerator)
-        nextObserver.suggestedBatchSize = 2
-        nextEnumerator.enumerateChanges(for: nextObserver, from: firstFinish.anchor)
-
-        for _ in 0 ..< 5000 {
-            if !nextObserver.finishes.isEmpty || nextObserver.error != nil {
-                break
-            }
-            try await Task.sleep(nanoseconds: 1_000_000)
-        }
+        let nextObserver = try await enumerateWorkingSetChanges(from: continuation.anchor, remoteInterface: remoteInterface)
 
         XCTAssertEqual((nextObserver.error as? NSError)?.code, NSFileProviderError.cannotSynchronize.rawValue)
         XCTAssertTrue(nextObserver.finishes.isEmpty, "An unreadable batch must not be reported as finished.")
         XCTAssertTrue(nextObserver.changedItems.isEmpty)
-        let keptSession = try XCTUnwrap(Self.dbManager.changeDeliverySession(forAnchorKey: continuationKey, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue))
+        let keptSession = try XCTUnwrap(try Self.dbManager.changeDeliverySession(forAnchorKey: continuation.key, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue))
         XCTAssertEqual(keptSession.nextSequence, 2, "The session still waits at the undelivered changes.")
+    }
+
+    func testWorkingSetContinuationFinishesWithAnErrorWhenTheStoredSessionCannotBeRead() async throws {
+        // A continuation anchor whose session cannot be read must not pass for an unknown anchor: the
+        // enumeration would then expire the anchor or derive the changes anew and drop the stored remainder.
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let continuation = try await deliverFirstWorkingSetBatch(remoteInterface: remoteInterface)
+        let readsBefore = remoteInterface.readOperationCount
+
+        try Self.dbManager.breakTableForTesting(ChangeDeliverySessionRecord.databaseTableName)
+        defer { Self.dbManager.recreateTablesForTesting() }
+
+        let nextObserver = try await enumerateWorkingSetChanges(from: continuation.anchor, remoteInterface: remoteInterface)
+
+        XCTAssertEqual((nextObserver.error as? NSError)?.code, NSFileProviderError.cannotSynchronize.rawValue)
+        XCTAssertTrue(nextObserver.finishes.isEmpty)
+        XCTAssertTrue(nextObserver.changedItems.isEmpty)
+        XCTAssertEqual(remoteInterface.readOperationCount, readsBefore, "Nothing is derived while the stored session cannot be read.")
+    }
+
+    func testWorkingSetChangesFinishWithAnErrorWhenTheStoredSessionCannotBeRead() async throws {
+        // A failed read of the stored session must not pass for "no session": the enumeration would then
+        // derive the changes anew and finish on the current anchor without ever delivering them.
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
+        _ = seedMaterialisedWorkingSetFiles(count: 6, syncTime: Date())
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        try Self.dbManager.breakTableForTesting(ChangeDeliverySessionRecord.databaseTableName)
+        defer { Self.dbManager.recreateTablesForTesting() }
+
+        let observer = try await enumerateWorkingSetChanges(from: anchor, remoteInterface: remoteInterface)
+
+        XCTAssertEqual((observer.error as? NSError)?.code, NSFileProviderError.cannotSynchronize.rawValue)
+        XCTAssertTrue(observer.finishes.isEmpty, "Finishing on the current anchor would lose the changes.")
+        XCTAssertTrue(observer.changedItems.isEmpty)
+        XCTAssertEqual(remoteInterface.readOperationCount, 0, "Nothing is derived while the stored session cannot be read.")
     }
 
     func testWorkingSetChangesResumeAcrossNewEnumeratorInstances() async throws {

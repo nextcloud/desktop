@@ -42,12 +42,15 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
     }
 
     /// Whether an active durable session is positioned at the given anchor.
-    func isPrimed(forKey key: String) -> Bool {
+    ///
+    /// Throws when the stored session could not be read. The caller must then finish the enumeration with an error instead of deriving the changes anew, which would discard the stored ones.
+    ///
+    func isPrimed(forKey key: String) throws -> Bool {
         lock.lock()
         defer { lock.unlock() }
 
         if let sessionId {
-            guard let session = dbManager.changeDeliverySession(sessionId: sessionId) else {
+            guard let session = try dbManager.changeDeliverySession(sessionId: sessionId) else {
                 self.sessionId = nil
                 return false
             }
@@ -72,14 +75,14 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
             return true
         }
 
-        if let session = dbManager.changeDeliverySession(forAnchorKey: key, containerKey: containerKey) {
+        if let session = try dbManager.changeDeliverySession(forAnchorKey: key, containerKey: containerKey) {
             sessionId = session.sessionId
             return true
         }
 
-        guard let session = dbManager.changeDeliverySession(forPendingAnchorKey: key, containerKey: containerKey) else {
+        guard let session = try dbManager.changeDeliverySession(forPendingAnchorKey: key, containerKey: containerKey) else {
             // The instance which reported the batch acknowledges it right after the observer's finish, and the framework can ask for the continuation through this fresh instance meanwhile. If that acknowledgement landed between the two lookups, the session sits at the key now.
-            guard let session = dbManager.changeDeliverySession(forAnchorKey: key, containerKey: containerKey) else {
+            guard let session = try dbManager.changeDeliverySession(forAnchorKey: key, containerKey: containerKey) else {
                 return false
             }
 
@@ -98,27 +101,25 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         return true
     }
 
-    /// Whether `key` is an active durable continuation anchor.
-    func isContinuation(forKey key: String) -> Bool {
+    /// Whether `key` is an active durable continuation anchor; throws like ``isPrimed(forKey:)``, and only for a continuation key.
+    func isContinuation(forKey key: String) throws -> Bool {
         guard key.hasPrefix(Self.continuationPrefix) else {
             return false
         }
 
-        return isPrimed(forKey: key)
+        return try isPrimed(forKey: key)
     }
 
-    /// Whether the currently active derivation was incomplete and must retain its incoming sync anchor.
-    func isPrimedIncomplete() -> Bool {
+    /// Whether the currently active derivation was incomplete and must retain its incoming sync anchor; throws like ``isPrimed(forKey:)``.
+    func isPrimedIncomplete() throws -> Bool {
         lock.lock()
         defer { lock.unlock() }
 
-        guard let sessionId,
-              let session = dbManager.changeDeliverySession(sessionId: sessionId)
-        else {
+        guard let sessionId else {
             return false
         }
 
-        return session.incomplete
+        return try dbManager.changeDeliverySession(sessionId: sessionId)?.incomplete ?? false
     }
 
     /// Persist the complete ordered change set for a new drain sequence.
@@ -157,7 +158,7 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
     /// Prepare the next update/delete batch without advancing the committed cursor.
     /// Returns a continuation anchor for intermediate batches and the session's final anchor for the last.
     ///
-    /// Returns `nil` when the stored items could not be read. The session is left as it is, so the batch can be prepared again; finishing on an empty batch instead would acknowledge changes which were never delivered.
+    /// Returns `nil` when the stored session or its items could not be read, and when the session could not be persisted when the changes were derived. The stored session, if any, is left as it is, so the batch can be prepared again; finishing on an empty batch instead would acknowledge changes which were never delivered.
     ///
     func prepareChangeDeliveryBatch(
         maxItems: Int
@@ -172,9 +173,20 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         defer { lock.unlock() }
 
         let budget = max(1, maxItems)
-        guard let sessionId,
-              let session = dbManager.changeDeliverySession(sessionId: sessionId)
-        else {
+        guard let sessionId else {
+            return nil
+        }
+
+        let session: FilesDatabaseManager.ChangeDeliverySessionState?
+        do {
+            session = try dbManager.changeDeliverySession(sessionId: sessionId)
+        } catch {
+            logger.error("Could not read the change delivery session; it is kept for a retry.", [.error: error])
+            return nil
+        }
+
+        // Another enumerator instance finished the session meanwhile.
+        guard let session else {
             return ([], [], false, nil, nil)
         }
 
@@ -251,8 +263,12 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
             return
         }
 
-        if dbManager.changeDeliverySession(sessionId: sessionId) == nil {
-            self.sessionId = nil
+        do {
+            if try dbManager.changeDeliverySession(sessionId: sessionId) == nil {
+                self.sessionId = nil
+            }
+        } catch {
+            logger.error("Could not read the change delivery session after the acknowledgement; it is kept.", [.error: error])
         }
     }
 

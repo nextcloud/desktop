@@ -49,7 +49,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             )
         )
 
-        XCTAssertNotNil(Self.dbManager.changeDeliverySession(sessionId: sessionId))
+        XCTAssertNotNil(try Self.dbManager.changeDeliverySession(sessionId: sessionId))
         XCTAssertEqual(
             Self.dbManager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: Int.max)?.count,
             1
@@ -70,7 +70,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             )
         )
 
-        XCTAssertNil(Self.dbManager.changeDeliverySession(sessionId: sessionId))
+        XCTAssertNil(try Self.dbManager.changeDeliverySession(sessionId: sessionId))
         XCTAssertTrue(
             try XCTUnwrap(Self.dbManager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: Int.max)?.isEmpty)
         )
@@ -121,7 +121,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         Self.dbManager.removeChangeDeliverySessions(containerKey: Self.changeDeliveryContainerKey)
 
-        XCTAssertNil(Self.dbManager.changeDeliverySession(sessionId: sessionId))
+        XCTAssertNil(try Self.dbManager.changeDeliverySession(sessionId: sessionId))
         XCTAssertEqual(Self.dbManager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: Int.max)?.isEmpty, true)
     }
 

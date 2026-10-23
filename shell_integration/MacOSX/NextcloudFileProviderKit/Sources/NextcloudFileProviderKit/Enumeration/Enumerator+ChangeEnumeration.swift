@@ -34,7 +34,15 @@ extension Enumerator {
 
             // Continuation of an in-progress drain: serve the next buffered batch without re-reading
             // the container (the depth-1 read is destructive, so re-deriving would lose the remainder).
-            if changeBuffer.isPrimed(forKey: anchorKey) {
+            let isPrimed = readDeliveryState(reportingTo: observer) {
+                try changeBuffer.isPrimed(forKey: anchorKey)
+            }
+
+            guard let isPrimed else {
+                return
+            }
+
+            if isPrimed {
                 logger.debug("Container change buffer primed for anchor \(anchorKey); draining next batch without re-reading.", [.url: serverUrl])
                 drainChangeBuffer(
                     for: observer,
