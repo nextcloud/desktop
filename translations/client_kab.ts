@@ -5161,22 +5161,22 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="220"/>
         <source>Failed to create encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek tukksa n usekkeṛ i ukaram awgelhen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="259"/>
         <source>Failed to encrypt a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Awgelhen n ukaram ur yeddi ara %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="282"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg tira n yiɣefisefka ɣer taffa n yisefka: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="285"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yettuseqdac akka tura</translation>
     </message>
 </context>
 <context>
@@ -5190,13 +5190,13 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="295"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg uleqqem n yiɣefisefka: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="226"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="298"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yettuseqdac akka tura</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="240"/>
@@ -5206,12 +5206,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="259"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Yegguma ad d-yawi afaylu %1 seg Taffa n Isefka tadigant</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="271"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi tukksa n ufaylu ukalas %1 seg Taffa n Isefka tadigant</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="304"/>
@@ -5221,7 +5221,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="311"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg tira n yiɣefisefka ɣer taffa n yisefka</translation>
     </message>
 </context>
 <context>
@@ -5229,19 +5229,19 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="280"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 ur yezmir ara ad yettwasali acku afaylu-nniḍen s yisem-a yella yakan, yemgarad kan deg tejṛut n usekkil</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="335"/>
         <location filename="../src/libsync/propagateupload.cpp" line="411"/>
         <location filename="../src/libsync/propagateupload.cpp" line="424"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yesɛa abeddil armeɣtu n wakud. Ur ssalay ara ɣer uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="434"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwabeddel deg wakud n umtawi. Ad ikemmel.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="461"/>
@@ -5251,12 +5251,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="471"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek tukksa n usekkeṛ i ukaram awgelhen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="759"/>
         <source>Unable to upload an item with invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi asali n uferdis s yisekkilen irmeɣta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="853"/>
@@ -5282,7 +5282,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="408"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu ittwakkes (senker asali) %1</translation>
     </message>
 </context>
 <context>
