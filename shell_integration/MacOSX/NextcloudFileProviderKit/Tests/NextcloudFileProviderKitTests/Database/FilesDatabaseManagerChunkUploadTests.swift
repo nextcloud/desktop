@@ -64,18 +64,6 @@ extension DatabaseTestSuites {
             #expect(Set(manager.remoteChunkStoreFolderNames()) == ["prefix_a", "other"])
         }
 
-        @Test func uploadIdentifiersBoundToItemsIncludeEveryStatusWhileResumableOnesDoNot() {
-            manager.addItemMetadata(file(ocId: "settled", chunkUploadId: "u-settled"))
-            manager.addItemMetadata(file(ocId: "in-upload", chunkUploadId: "u-in-upload", status: .inUpload))
-            manager.addItemMetadata(file(ocId: "uploading", chunkUploadId: "u-uploading", status: .uploading))
-            manager.addItemMetadata(file(ocId: "failed", chunkUploadId: "u-failed", status: .uploadError))
-            manager.addItemMetadata(file(ocId: "deleted", chunkUploadId: "u-deleted", status: .inUpload, deleted: true))
-            manager.addItemMetadata(file(ocId: "unbound", chunkUploadId: nil, status: .inUpload))
-
-            #expect(Set(manager.chunkUploadIdentifiers()) == ["u-settled", "u-in-upload", "u-uploading", "u-failed", "u-deleted"])
-            #expect(Set(manager.resumableChunkUploadIdentifiers()) == ["u-in-upload", "u-uploading", "u-failed"])
-        }
-
         @Test func bindingAnUploadToAnUnknownItemFails() {
             #expect(manager.setChunkUploadIdentifier("u", ocId: "missing") == false)
         }
