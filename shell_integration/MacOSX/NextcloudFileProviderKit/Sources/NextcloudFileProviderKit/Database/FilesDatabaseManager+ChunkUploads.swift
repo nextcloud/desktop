@@ -62,30 +62,6 @@ extension FilesDatabaseManager {
         } ?? []
     }
 
-    /// Upload identifiers bound to any item, including deleted items and items in every status.
-    func chunkUploadIdentifiers() -> [String] {
-        read("Could not fetch the upload identifiers bound to items.") { db in
-            try ItemMetadataRecord
-                .filter(ItemMetadataRecord.Columns.chunkUploadId != nil)
-                .select(ItemMetadataRecord.Columns.chunkUploadId, as: String.self)
-                .fetchAll(db)
-        } ?? []
-    }
-
-    /// Upload identifiers bound to a live item whose upload is still in progress or failed, i.e. uploads which may be resumed.
-    func resumableChunkUploadIdentifiers() -> [String] {
-        read("Could not fetch the resumable upload identifiers.") { db in
-            try ItemMetadataRecord
-                .filter(
-                    ItemMetadataRecord.Columns.chunkUploadId != nil
-                        && ItemMetadataRecord.Columns.deleted == false
-                        && [Status.inUpload.rawValue, Status.uploading.rawValue, Status.uploadError.rawValue].contains(ItemMetadataRecord.Columns.status)
-                )
-                .select(ItemMetadataRecord.Columns.chunkUploadId, as: String.self)
-                .fetchAll(db)
-        } ?? []
-    }
-
     /// Every known upload identifier which no live, unfinished item can resume, decided in one read so a partial failure cannot classify a resumable upload as abandoned. `nil` when the database could not be read.
     func abandonedChunkUploadIdentifiers() -> Set<String>? {
         read("Could not decide which chunk uploads are abandoned.") { db in
