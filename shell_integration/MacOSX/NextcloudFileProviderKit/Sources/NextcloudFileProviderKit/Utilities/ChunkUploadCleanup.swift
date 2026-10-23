@@ -24,13 +24,18 @@ func discardChunkUploads(
     let recordedUploadIdentifiers = dbManager.remoteChunkStoreFolderNames()
     var uploadIdentifiers = Set<String>()
 
+    if recordedUploadIdentifiers == nil {
+        // Nothing is discarded on a guess: the startup cleanup catches the stale uploads later.
+        logger.error("Could not read the recorded uploads. Discarding only the uploads bound to the items.")
+    }
+
     for itemIdentifier in itemIdentifiers {
         if let uploadIdentifier = dbManager.itemMetadata(ocId: itemIdentifier)?.chunkUploadId {
             uploadIdentifiers.insert(uploadIdentifier)
         }
 
         let itemPrefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
-        uploadIdentifiers.formUnion(recordedUploadIdentifiers.filter { $0.hasPrefix(itemPrefix) })
+        uploadIdentifiers.formUnion((recordedUploadIdentifiers ?? []).filter { $0.hasPrefix(itemPrefix) })
     }
 
     if let retainedChunkUploadIdentifier {

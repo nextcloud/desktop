@@ -66,6 +66,18 @@ extension DatabaseTestSuites {
             #expect(throws: (any Error).self) { try manager.changeDeliverySession(forPendingAnchorKey: "a1", containerKey: "c") }
         }
 
+        @Test func chunkListingsReportFailureAsNil() throws {
+            manager.addRemoteFileChunks([RemoteFileChunk(fileName: "1", size: 1, remoteChunkStoreFolderName: "u")])
+            #expect(manager.remoteFileChunks(uploadId: "u")?.count == 1)
+            #expect(manager.remoteFileChunks(uploadId: "other") == [])
+            #expect(manager.remoteChunkStoreFolderNames() == ["u"])
+
+            try manager.breakTableForTesting(RemoteFileChunkRecord.databaseTableName)
+
+            #expect(manager.remoteFileChunks(uploadId: "u") == nil, "An empty list would start the upload from scratch.")
+            #expect(manager.remoteChunkStoreFolderNames() == nil)
+        }
+
         @Test func theAbandonedUploadDecisionIsNilWhenAnyOfItsQueriesFails() throws {
             var resumable = DatabaseTestSuites.makeFile(ocId: "resumable", fileName: "r.bin")
             resumable.chunkUploadId = "u-resumable"

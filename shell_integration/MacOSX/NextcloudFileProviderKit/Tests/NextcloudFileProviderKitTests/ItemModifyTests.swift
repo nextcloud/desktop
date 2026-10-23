@@ -1151,7 +1151,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(rootTrashItem.children.contains { $0.identifier == folderMetadata.ocId + trashedItemIdSuffix })
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
         XCTAssertEqual(
-            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId).count,
+            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId)?.count,
             0
         )
     }

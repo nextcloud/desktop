@@ -97,7 +97,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(chunkDirectoryExistedDuringUpload)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path))
         XCTAssertEqual(
-            Self.dbManager.remoteChunkStoreFolderNames()
+            Self.dbManager.remoteChunkStoreFolderNames()?
                 .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)) }
                 .count,
             0
@@ -138,11 +138,42 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         let storedChunks = try FileManager.default.contentsOfDirectory(atPath: chunkDirectory.path)
         XCTAssertEqual(storedChunks.count, Int(ceil(Double(data.count) / Double(chunkSize))))
         XCTAssertEqual(
-            Self.dbManager.remoteChunkStoreFolderNames()
+            Self.dbManager.remoteChunkStoreFolderNames()?
                 .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)) }
                 .count,
             2
         )
+    }
+
+    func testChunkedUploadIsNotStartedWhenTheRecordedChunksCannotBeRead() async throws {
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
+        let chunkDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("mock-chunks-\(UUID().uuidString)", isDirectory: true)
+        remoteInterface.chunkUploadDirectory = chunkDirectory
+        defer { try? FileManager.default.removeItem(at: chunkDirectory) }
+
+        // Starting from scratch would overwrite the chunks recorded for a resumable upload.
+        try Self.dbManager.breakTableForTesting(RemoteFileChunkRecord.databaseTableName)
+        defer { Self.dbManager.recreateTablesForTesting() }
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: 3,
+            forItemWithIdentifier: "unreadable-chunks-\(UUID().uuidString)",
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.remoteError, .metadataDatabaseUnreadable)
+        XCTAssertNil(result.ocId)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path), "No chunk was uploaded.")
     }
 
     func testFailedChunkedUploadWithoutRemainingChunksRemovesTemporaryDirectory() async throws {
@@ -177,7 +208,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(result.remoteError.errorCode, 500)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path))
         XCTAssertEqual(
-            Self.dbManager.remoteChunkStoreFolderNames()
+            Self.dbManager.remoteChunkStoreFolderNames()?
                 .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)) }
                 .count,
             0
