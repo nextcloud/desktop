@@ -43,15 +43,16 @@ changes that are not represented by the local pending-change query alone.
 Normal anchors use this format:
 
 ```text
-<extension-version>|<ISO-8601-date>
+<extension-version>+store<store-version>+<store-identity>|<ISO-8601-date>
 ```
 
-`Enumerator.syncAnchor(at:)` creates them. The extension checks the format and
-the embedded version in `validatedSyncAnchorDate(_:reportingTo:)`.
+`Enumerator.syncAnchor(at:)` creates them for the enumerator's open database.
+The extension checks the format and the embedded tag in
+`validatedSyncAnchorDate(_:reportingTo:)`.
 
-An invalid or old-version anchor is reported as
-`NSFileProviderError(.syncAnchorExpired)`. File Provider can then discard its
-cached state and request a fresh item enumeration.
+An invalid anchor, or one from another build or another database file, is
+reported as `NSFileProviderError(.syncAnchorExpired)`. File Provider can then
+discard its cached state and request a fresh item enumeration.
 
 The final anchor is not necessarily the anchor passed to the request. A
 successful working-set scan advances to the enumerator's current anchor. A

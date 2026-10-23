@@ -152,7 +152,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
         let observer = MockChangeObserver(enumerator: enumerator)
-        try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate))
+        try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity))
         return observer
     }
 
@@ -262,7 +262,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         folder.children = []
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        let inputAnchor = Enumerator.syncAnchor(at: anchorDate)
+        let inputAnchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity)
         let firstEnumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
@@ -556,7 +556,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
             "/a": NKError(statusCode: 500, fallbackDescription: "Internal Server Error")
         ]
 
-        let inputAnchor = Enumerator.syncAnchor(at: anchorDate)
+        let inputAnchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,

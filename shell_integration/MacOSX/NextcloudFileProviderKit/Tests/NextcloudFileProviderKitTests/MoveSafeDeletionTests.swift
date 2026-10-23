@@ -240,7 +240,7 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
-        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300))
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
@@ -272,7 +272,7 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         parentMetadata.syncTime = Date()
         Self.dbManager.addItemMetadata(parentMetadata)
 
-        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300))
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,

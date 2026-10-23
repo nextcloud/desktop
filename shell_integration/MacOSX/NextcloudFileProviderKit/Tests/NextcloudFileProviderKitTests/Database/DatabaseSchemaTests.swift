@@ -21,7 +21,7 @@ extension DatabaseTestSuites {
             }
 
             #expect(!tables.contains(false))
-            #expect(DatabaseSchema.tableNames.count == 6)
+            #expect(DatabaseSchema.tableNames.count == 7)
         }
 
         @Test func reopeningAnExistingDatabaseKeepsItsRows() throws {
@@ -37,6 +37,7 @@ extension DatabaseTestSuites {
             )
 
             #expect(reopened.itemMetadata(ocId: "kept")?.fileName == "kept.txt")
+            #expect(reopened.storeIdentity == manager.storeIdentity)
             let version = try reopened.writer.read { db in try Int.fetchOne(db, sql: "PRAGMA user_version") }
             #expect(version == StoreVersion.current)
         }
@@ -58,6 +59,7 @@ extension DatabaseTestSuites {
             reopened.addItemMetadata(DatabaseTestSuites.makeFile(ocId: "fresh", fileName: "fresh.txt"))
             #expect(reopened.itemMetadata(ocId: "fresh") != nil)
             #expect(reopened.writer is DatabasePool, "The replacement is a file on disk, not an in-memory fallback.")
+            #expect(reopened.storeIdentity != manager.storeIdentity, "The replacement expires every anchor of the old file.")
             let setAside = try FileManager.default.contentsOfDirectory(atPath: directory.path).filter { $0.contains(".unreadable-") }
             #expect(!setAside.isEmpty)
         }
