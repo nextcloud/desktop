@@ -2183,12 +2183,12 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // The acknowledgement runs after the finish; wait until the session points at the continuation.
         let continuationKey = try XCTUnwrap(String(data: firstFinish.anchor.rawValue, encoding: .utf8))
         for _ in 0 ..< 5000 {
-            if try Self.dbManager.changeDeliverySession(forAnchorKey: continuationKey, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue) != nil {
+            if try Self.dbManager.changeDeliverySession(forContinuationKey: continuationKey, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue)?.currentAnchorKey == continuationKey {
                 break
             }
             try await Task.sleep(nanoseconds: 1_000_000)
         }
-        let session = try XCTUnwrap(try Self.dbManager.changeDeliverySession(forAnchorKey: continuationKey, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue))
+        let session = try XCTUnwrap(try Self.dbManager.changeDeliverySession(forContinuationKey: continuationKey, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue))
         XCTAssertEqual(session.nextSequence, 2)
 
         return (firstFinish.anchor, continuationKey)
@@ -2209,7 +2209,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual((nextObserver.error as? NSError)?.code, NSFileProviderError.cannotSynchronize.rawValue)
         XCTAssertTrue(nextObserver.finishes.isEmpty, "An unreadable batch must not be reported as finished.")
         XCTAssertTrue(nextObserver.changedItems.isEmpty)
-        let keptSession = try XCTUnwrap(try Self.dbManager.changeDeliverySession(forAnchorKey: continuation.key, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue))
+        let keptSession = try XCTUnwrap(try Self.dbManager.changeDeliverySession(forContinuationKey: continuation.key, containerKey: NSFileProviderItemIdentifier.workingSet.rawValue))
         XCTAssertEqual(keptSession.nextSequence, 2, "The session still waits at the undelivered changes.")
     }
 

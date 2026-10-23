@@ -94,9 +94,15 @@ limits it to 4,000.
 3. Uses the extra item to determine `moreComing`.
 4. Stores a pending acknowledgement boundary without advancing the committed cursor.
 
+These steps run in one database transaction. If a batch is already pending, the same batch is returned again instead.
+
 After `finishEnumeratingChanges(upTo:moreComing:)` returns, the enumerator acknowledges the batch and
 advances the committed cursor. If delivery is interrupted before that acknowledgement, the same batch is
 replayed from its original anchor.
+
+File Provider may request the next batch before that acknowledgement runs, also on a new enumerator. A request with the continuation anchor of a batch means that File Provider accepted that batch, so such a request acknowledges it first. Each acknowledgement names its batch by session and end position and is ignored when that batch is no longer pending, so a late acknowledgement never commits a later batch.
+
+The saved list is found by its committed anchor or by the anchor of its pending batch, read in one query so a concurrent acknowledgement cannot hide it.
 
 If the stored session or its items cannot be read, the enumeration finishes
 with `NSFileProviderError(.cannotSynchronize)`. Nothing is reset or
@@ -202,6 +208,8 @@ The change-enumeration tests are in
   and `testWorkingSetChangesFinishWithAnErrorWhenTheStoredSessionCannotBeRead`
   check that an unreadable item or session table ends the enumeration with an
   error instead of an empty batch.
+
+`Tests/NextcloudFileProviderKitTests/Database/ChangeDeliveryBufferTests.swift` checks that a late acknowledgement from another enumerator or an earlier session never commits a later batch. `ChangeDeliveryStoreTests.swift` next to it covers preparation, replay, acknowledgement by session and end position, and removal of sessions.
 
 These tests exercise the delivery logic in the package. A signed macOS build
 is still required to verify the interaction with the real `fileproviderd`.
