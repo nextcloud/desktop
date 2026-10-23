@@ -447,6 +447,13 @@ void PropagateDownloadFile::start()
     if (propagator()->_abortRequested) {
         return;
     }
+
+    if (propagator()->localPathContainsSymlink(_item->_file)) {
+        qCWarning(lcPropagateDownload) << "Not downloading through a symlink" << _item->_file;
+        done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(_item->_file), ErrorCategory::NoError);
+        return;
+    }
+
     _isEncrypted = false;
 
     qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
@@ -1149,6 +1156,13 @@ void PropagateDownloadFile::downloadFinished()
     const auto filename = propagator()->fullLocalPath(_item->_file);
     // A sibling download may have restored read-only permissions during checksum calculation.
     makeParentFolderModifiable(filename);
+
+    if (propagator()->localPathContainsSymlink(_item->_file)) {
+        qCWarning(lcPropagateDownload) << "Not moving the downloaded file through a symlink" << _item->_file;
+        FileSystem::remove(_tmpFile.fileName());
+        done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(_item->_file), ErrorCategory::NoError);
+        return;
+    }
 
     if (_item->_modtime <= 0) {
         FileSystem::remove(_tmpFile.fileName());

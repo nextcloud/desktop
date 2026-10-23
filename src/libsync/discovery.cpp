@@ -26,6 +26,8 @@
 #include "csync_exclude.h"
 #include "csync.h"
 
+#include "owncloudpropagator.h"
+
 namespace
 {
 constexpr const char *editorNamesForDelayedUpload[] = {"PowerPDF"};
@@ -387,7 +389,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     if (entries.localEntry.isSymLink) {
         /* Symbolic links are ignored. */
-        item->_errorString = tr("Symbolic links are not supported in syncing.");
+        item->_errorString = OwncloudPropagator::symlinkNotSupportedMessage(path);
     } else {
         switch (excluded) {
         case CSYNC_NOT_EXCLUDED:
@@ -607,6 +609,18 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_previousSize = dbEntry._fileSize;
     item->_previousModtime = dbEntry._modtime;
     item->_discoveryResult = std::move(processingLog);
+
+    if (_queryLocal == ParentNotChanged && FileSystem::isSymLink(_discoveryData->_localDir + path._local)) {
+        qCInfo(lcDisco) << "Local path is a symlink, ignoring" << path._local;
+        if (dbEntry.isValid() && !_discoveryData->_statedb->deleteFileRecord(dbEntry.path(), true)) {
+            qCWarning(lcDisco) << "Failed to drop stale record for symlinked path" << dbEntry.path();
+        }
+        item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+        item->_errorString = OwncloudPropagator::symlinkNotSupportedMessage(path._local);
+        _childIgnored = true;
+        Q_EMIT _discoveryData->itemDiscovered(item);
+        return;
+    }
 
     if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
         item->_type = ItemTypeFile;
@@ -1083,6 +1097,11 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         }
 
         const auto originalPathAdjusted = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Up);
+
+        if (FileSystem::pathContainsSymlink(_discoveryData->_localDir, originalPathAdjusted)) {
+            qCInfo(lcDisco) << "Local source is a symlink, not a rename." << originalPathAdjusted;
+            return;
+        }
 
         if (!base.isDirectory()) {
             csync_file_stat_t buf;

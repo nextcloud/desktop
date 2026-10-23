@@ -887,6 +887,17 @@ QString OwncloudPropagator::localPath() const
     return _localDir;
 }
 
+bool OwncloudPropagator::localPathContainsSymlink(const QString &relativePath) const
+{
+    return FileSystem::pathContainsSymlink(_localDir, relativePath);
+}
+
+QString OwncloudPropagator::symlinkNotSupportedMessage(const QString &path)
+{
+    //: %1 is the path of the item inside the sync folder, for example "Documents/Projects"
+    return tr("%1: symbolic links are not supported in syncing.").arg(QDir::toNativeSeparators(path));
+}
+
 void OwncloudPropagator::scheduleNextJob()
 {
     if (_jobScheduled) {
@@ -1498,7 +1509,12 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             }
         }
 
-        if (_item->_instruction == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {
+        const auto isDirSymlink = FileSystem::isSymLink(propagator()->fullLocalPath(_item->_file));
+        if (isDirSymlink) {
+            qCWarning(lcDirectory) << "Not applying mtime or permissions through a symlink" << _item->_file;
+        }
+
+        if (!isDirSymlink && _item->_instruction == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {
             // special case for local MKDIR, set local directory mtime
             // (it's not synced later at all, but can be nice to have it set initially)
 
@@ -1515,10 +1531,9 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         // For new directories we always want to update the etag once
         // the directory has been propagated. Otherwise the directory
         // could appear locally without being added to the database.
-        if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
-            || _item->_instruction == CSYNC_INSTRUCTION_NEW
-            || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
-
+        if (!isDirSymlink
+            && (_item->_instruction == CSYNC_INSTRUCTION_RENAME || _item->_instruction == CSYNC_INSTRUCTION_NEW
+                || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)) {
             if (!_item->_remotePerm.isNull() &&
                 !_item->_remotePerm.hasPermissionsForReadWrite()) {
                 try {
