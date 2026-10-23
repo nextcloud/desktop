@@ -264,6 +264,8 @@ void AbstractNetworkJob::slotFinished()
             qCWarning(lcNetworkJob) << this << "Redirect loop detected!";
         } else if (_requestBody && _requestBody->isSequential()) {
             qCWarning(lcNetworkJob) << this << "cannot redirect request with sequential body";
+        } else if (_requestBody && !(requestedUrl.host() == redirectUrl.host() && requestedUrl.port() == redirectUrl.port())) {
+            qCWarning(lcNetworkJob) << this << "cannot redirect request with body to different origin";
         } else if (verb.isEmpty()) {
             qCWarning(lcNetworkJob) << this << "cannot redirect request: could not detect original verb";
         } else {
