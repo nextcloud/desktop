@@ -515,6 +515,44 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    /// A rename landing while the scan's read of the old path is in flight must not turn that read's 404 into a deletion.
+    func testA404ForAPathTheItemHasMovedAwayFromIsNotADeletion() async throws {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let seeded = seed(folder, visitedDirectory: true)
+
+        // The server has already accepted the rename, so the path the scan holds 404s.
+        rootItem.children.removeAll { $0 === folder }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        // The rename reaches the database while the read of the old path is in flight.
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            guard remotePath.hasSuffix("/folder") else { return }
+
+            var renamed = seeded
+            renamed.fileName = "renamedFolder"
+            renamed.fileNameView = "renamedFolder"
+            Self.dbManager.addItemMetadata(renamed)
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+        let deletedIds = Set(observer.deletedItemIdentifiers.map(\.rawValue))
+
+        XCTAssertNil(observer.error)
+        XCTAssertFalse(
+            deletedIds.contains(folder.identifier),
+            "A 404 for a path the item has since been renamed away from must not be reported as a deletion."
+        )
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: folder.identifier)?.deleted, false,
+            "The stale 404 must not mark the moved item's row deleted."
+        )
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: folder.identifier)?.fileName, "renamedFolder",
+            "The stale 404 must not rewrite the row back to its pre-rename name."
+        )
+    }
+
     /// S4: the change-detection predicate `isInSameDatabaseStoreableRemoteState` keys on ETag (+ a
     /// fixed field set). If a file's content changes but its ETag is unchanged, the predicate treats
     /// it as unchanged and the update is skipped. Real servers bump the ETag on content change, so
