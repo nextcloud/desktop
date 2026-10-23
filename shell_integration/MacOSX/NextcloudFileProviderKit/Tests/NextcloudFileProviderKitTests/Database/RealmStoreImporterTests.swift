@@ -110,7 +110,7 @@ struct RealmStoreImporterTests {
         #expect(manager.isItemExcludedFromSync(ocId: "excluded"))
         #expect(manager.remoteFileChunks(uploadId: "upload-1").map(\.fileName) == ["1", "2"])
         #expect(manager.pendingChunkUploadCleanupIdentifiers() == ["cleanup-1"])
-        let session = try #require(manager.changeDeliverySession(sessionId: "session"))
+        let session = try #require(try manager.changeDeliverySession(sessionId: "session"))
         #expect(session.containerKey == "container")
         #expect(session.incomplete)
         #expect(session.hardRemoveDeleted)

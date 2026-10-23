@@ -98,6 +98,12 @@ After `finishEnumeratingChanges(upTo:moreComing:)` returns, the enumerator ackno
 advances the committed cursor. If delivery is interrupted before that acknowledgement, the same batch is
 replayed from its original anchor.
 
+If the stored session or its items cannot be read, the enumeration finishes
+with `NSFileProviderError(.cannotSynchronize)`. Nothing is reset or
+acknowledged, so the next request from the same anchor finds the session as it
+was. An absent session, which another instance finished meanwhile, yields an
+empty final batch.
+
 Updates and deletions share the same limit. For a limit of three, two updates
 and one deletion consume the whole batch.
 
@@ -191,6 +197,11 @@ The change-enumeration tests are in
   update/deletion budget.
 - `testContainerChangesDeliveredInBatches` checks regular-directory changes.
 - `testTrashChangesDeliveredInBatches` checks batched trash deletions.
+- `testWorkingSetContinuationFinishesWithAnErrorWhenStoredChangesCannotBeRead`,
+  `testWorkingSetContinuationFinishesWithAnErrorWhenTheStoredSessionCannotBeRead`
+  and `testWorkingSetChangesFinishWithAnErrorWhenTheStoredSessionCannotBeRead`
+  check that an unreadable item or session table ends the enumeration with an
+  error instead of an empty batch.
 
 These tests exercise the delivery logic in the package. A signed macOS build
 is still required to verify the interaction with the real `fileproviderd`.

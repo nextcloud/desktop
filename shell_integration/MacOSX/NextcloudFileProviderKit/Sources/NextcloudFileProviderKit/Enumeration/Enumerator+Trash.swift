@@ -99,7 +99,15 @@ extension Enumerator {
 
             // Continuation of an in-progress drain: serve the next buffered batch without re-listing the
             // remote trash (re-deriving after per-batch soft-deletes would re-report the wrong subset).
-            if changeBuffer.isPrimed(forKey: anchorKey) {
+            let isPrimed = readDeliveryState(reportingTo: observer) {
+                try changeBuffer.isPrimed(forKey: anchorKey)
+            }
+
+            guard let isPrimed else {
+                return
+            }
+
+            if isPrimed {
                 logger.debug("Trash change buffer primed for anchor \(anchorKey); draining next batch without re-listing.", [.account: account.ncKitAccount])
                 drainTrashDeletions(for: observer, anchor: anchor, suggested: observer.suggestedBatchSize)
                 return

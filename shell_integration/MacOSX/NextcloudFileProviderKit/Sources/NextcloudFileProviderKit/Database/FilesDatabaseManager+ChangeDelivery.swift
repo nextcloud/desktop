@@ -69,9 +69,12 @@ extension FilesDatabaseManager {
         } ?? false
     }
 
-    /// Return the active delivery session whose committed anchor matches `anchorKey`.
-    func changeDeliverySession(forAnchorKey anchorKey: String, containerKey: String) -> ChangeDeliverySessionState? {
-        read("Could not look up a change-delivery session by anchor.") { db in
+    /// Return the active delivery session whose committed anchor matches `anchorKey`, or `nil` when there is none.
+    ///
+    /// Throws when the database could not be read, which the caller must not take for an absent session: finishing on that would acknowledge and discard changes which were never delivered.
+    ///
+    func changeDeliverySession(forAnchorKey anchorKey: String, containerKey: String) throws -> ChangeDeliverySessionState? {
+        try writer.read { db in
             try ChangeDeliverySessionRecord
                 .filter(
                     ChangeDeliverySessionRecord.Columns.currentAnchorKey == anchorKey
@@ -81,12 +84,12 @@ extension FilesDatabaseManager {
                 .order(ChangeDeliverySessionRecord.Columns.sessionId)
                 .fetchOne(db)?
                 .asTuple
-        } ?? nil
+        }
     }
 
-    /// Return an active delivery session whose pending continuation anchor matches `anchorKey`.
-    func changeDeliverySession(forPendingAnchorKey anchorKey: String, containerKey: String) -> ChangeDeliverySessionState? {
-        read("Could not look up a change-delivery session by pending anchor.") { db in
+    /// Return an active delivery session whose pending continuation anchor matches `anchorKey`, or `nil` when there is none; throws like ``changeDeliverySession(forAnchorKey:containerKey:)``.
+    func changeDeliverySession(forPendingAnchorKey anchorKey: String, containerKey: String) throws -> ChangeDeliverySessionState? {
+        try writer.read { db in
             try ChangeDeliverySessionRecord
                 .filter(
                     ChangeDeliverySessionRecord.Columns.pendingAnchorKey == anchorKey
@@ -97,14 +100,14 @@ extension FilesDatabaseManager {
                 .order(ChangeDeliverySessionRecord.Columns.sessionId)
                 .fetchOne(db)?
                 .asTuple
-        } ?? nil
+        }
     }
 
-    /// Return an active delivery session by its durable identifier.
-    func changeDeliverySession(sessionId: String) -> ChangeDeliverySessionState? {
-        read("Could not look up a change-delivery session.") { db in
+    /// Return an active delivery session by its durable identifier, or `nil` when there is none; throws like ``changeDeliverySession(forAnchorKey:containerKey:)``.
+    func changeDeliverySession(sessionId: String) throws -> ChangeDeliverySessionState? {
+        try writer.read { db in
             try activeChangeDeliverySession(sessionId: sessionId, in: db)?.asTuple
-        } ?? nil
+        }
     }
 
     /// Return the next ordered range of an active change-delivery session, or `nil` when the database could not be read.

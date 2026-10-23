@@ -31,7 +31,15 @@ extension Enumerator {
             // discoveries to the database as it recurses — so on the framework's moreComing
             // re-invocations we must drain the buffer rather than re-derive, or every change beyond the
             // first batch is silently dropped.
-            if !changeBuffer.isPrimed(forKey: anchorKey) {
+            let isPrimed = readDeliveryState(reportingTo: observer) {
+                try changeBuffer.isPrimed(forKey: anchorKey)
+            }
+
+            guard let isPrimed else {
+                return
+            }
+
+            if !isPrimed {
                 // A re-invocation under a *different* anchor is a fresh enumeration; drop any stale
                 // remainder before deriving anew.
                 changeBuffer.reset()
@@ -68,7 +76,15 @@ extension Enumerator {
 
             // Intermediate batches use continuation anchors. If the scan was incomplete, keep the
             // incoming anchor for the final batch so missed changes are retried on the next signal.
-            let finalAnchor = changeBuffer.isPrimedIncomplete() ? anchor : currentAnchor
+            let incomplete = readDeliveryState(reportingTo: observer) {
+                try changeBuffer.isPrimedIncomplete()
+            }
+
+            guard let incomplete else {
+                return
+            }
+
+            let finalAnchor = incomplete ? anchor : currentAnchor
             drainChangeBuffer(
                 for: observer,
                 finalAnchor: finalAnchor,

@@ -31,11 +31,11 @@ extension DatabaseTestSuites {
             #expect(tail.first?.deleted == true)
             #expect(try JSONDecoder().decode(SendableItemMetadata.self, from: #require(tail.first?.metadataData)).ocId == "gone")
 
-            let session = try #require(manager.changeDeliverySession(forAnchorKey: "a0", containerKey: "c"))
+            let session = try #require(try manager.changeDeliverySession(forAnchorKey: "a0", containerKey: "c"))
             #expect(session.sessionId == "s")
             #expect(session.nextSequence == 0)
             #expect(session.hardRemoveDeleted)
-            #expect(manager.changeDeliverySession(forAnchorKey: "a0", containerKey: "other") == nil)
+            #expect(try manager.changeDeliverySession(forAnchorKey: "a0", containerKey: "other") == nil)
         }
 
         @Test func acknowledgingWithoutDeletionsLeavesItemMetadataAlone() throws {
@@ -46,7 +46,7 @@ extension DatabaseTestSuites {
             #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", deletedOcIds: []))
 
             #expect(manager.itemMetadata(ocId: "untouched")?.deleted == false)
-            #expect(manager.changeDeliverySession(sessionId: "s") == nil)
+            #expect(try manager.changeDeliverySession(sessionId: "s") == nil)
             #expect(try #require(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10)?.isEmpty))
         }
 
@@ -60,7 +60,7 @@ extension DatabaseTestSuites {
 
             #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", deletedOcIds: ["soft"]))
 
-            let session = try #require(manager.changeDeliverySession(forAnchorKey: "a1", containerKey: "c"))
+            let session = try #require(try manager.changeDeliverySession(forAnchorKey: "a1", containerKey: "c"))
             #expect(session.nextSequence == 2)
             #expect(session.pendingReported == false)
             #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10)?.map(\.sequence) == [2, 3, 4])
@@ -76,7 +76,7 @@ extension DatabaseTestSuites {
             // The reporting instance and a fresh one asked for the continuation both acknowledge the same batch.
             #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", deletedOcIds: ["soft"]))
 
-            let session = try #require(manager.changeDeliverySession(forAnchorKey: "a1", containerKey: "c"))
+            let session = try #require(try manager.changeDeliverySession(forAnchorKey: "a1", containerKey: "c"))
             #expect(session.nextSequence == 2)
             #expect(session.pendingReported == false)
             #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10)?.map(\.sequence) == [2, 3, 4], "The cursor moved once.")
@@ -99,9 +99,9 @@ extension DatabaseTestSuites {
 
             manager.removeChangeDeliverySessions(containerKey: "c")
 
-            #expect(manager.changeDeliverySession(sessionId: "s1") == nil)
+            #expect(try manager.changeDeliverySession(sessionId: "s1") == nil)
             #expect(try #require(manager.changeDeliveryItems(sessionId: "s1", fromSequence: 0, limit: 10)?.isEmpty))
-            #expect(manager.changeDeliverySession(sessionId: "s2") != nil)
+            #expect(try manager.changeDeliverySession(sessionId: "s2") != nil)
             #expect(manager.changeDeliveryItems(sessionId: "s2", fromSequence: 0, limit: 10)?.count == 1)
         }
     }

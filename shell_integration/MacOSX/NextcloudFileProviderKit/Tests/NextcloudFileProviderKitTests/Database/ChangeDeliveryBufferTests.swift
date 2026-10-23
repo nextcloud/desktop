@@ -42,7 +42,7 @@ extension DatabaseTestSuites {
             reporting.acknowledgeBatch(deletedOcIds: [])
             let fresh = makeBuffer()
 
-            #expect(fresh.isContinuation(forKey: continuation))
+            #expect(try fresh.isContinuation(forKey: continuation))
             let next = try #require(fresh.prepareChangeDeliveryBatch(maxItems: 2))
             #expect(next.updated.map(\.ocId) == ["row-2"], "The drain continues where the acknowledged batch ended.")
             #expect(next.moreComing == false)
@@ -51,14 +51,36 @@ extension DatabaseTestSuites {
         @Test func anUnreadableItemTableYieldsNoBatchAndKeepsTheSession() throws {
             let buffer = makeBuffer()
             buffer.prime(key: "anchor", finalAnchorRawValue: Data([9]), updated: rows, deleted: [])
-            #expect(buffer.isPrimed(forKey: "anchor"))
+            #expect(try buffer.isPrimed(forKey: "anchor"))
 
             try manager.breakTableForTesting(ChangeDeliveryItemRecord.databaseTableName)
 
             #expect(buffer.prepareChangeDeliveryBatch(maxItems: 2) == nil)
-            let session = try #require(manager.changeDeliverySession(forAnchorKey: "anchor", containerKey: "container"))
+            let session = try #require(try manager.changeDeliverySession(forAnchorKey: "anchor", containerKey: "container"))
             #expect(session.nextSequence == 0)
             #expect(session.pendingReported == false, "Nothing was prepared, so nothing can be acknowledged past the undelivered changes.")
+        }
+
+        @Test func anUnreadableSessionTableYieldsNoBatchAndThrowsFromThePredicates() throws {
+            let buffer = makeBuffer()
+            buffer.prime(key: "anchor", finalAnchorRawValue: Data([9]), updated: rows, deleted: [])
+
+            try manager.breakTableForTesting(ChangeDeliverySessionRecord.databaseTableName)
+
+            #expect(buffer.prepareChangeDeliveryBatch(maxItems: 2) == nil, "An empty final batch would acknowledge changes which were never delivered.")
+            #expect(throws: (any Error).self) { try buffer.isPrimed(forKey: "anchor") }
+            #expect(throws: (any Error).self) { try buffer.isPrimedIncomplete() }
+            let fresh = makeBuffer()
+            #expect(throws: (any Error).self) { try fresh.isContinuation(forKey: "fp-continuation|x|1") }
+            #expect(try fresh.isContinuation(forKey: "anchor") == false, "A plain anchor is answered without the database.")
+        }
+
+        @Test func aBufferWhosePrimeFailedYieldsNoBatch() throws {
+            try manager.breakTableForTesting(ChangeDeliverySessionRecord.databaseTableName)
+            let buffer = makeBuffer()
+            buffer.prime(key: "anchor", finalAnchorRawValue: Data([9]), updated: rows, deleted: [])
+
+            #expect(buffer.prepareChangeDeliveryBatch(maxItems: 2) == nil, "The changes were not stored; an empty final batch would drop them.")
         }
     }
 }

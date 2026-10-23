@@ -45,7 +45,25 @@ extension DatabaseTestSuites {
 
             #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10) == nil, "An empty array would be taken for the last batch.")
             #expect(manager.pendingChangeDeliveryDeletedOcIds(sessionId: "s") == nil)
-            #expect(manager.changeDeliverySession(sessionId: "s") != nil, "The session itself is still there.")
+            #expect(try manager.changeDeliverySession(sessionId: "s") != nil, "The session itself is still there.")
+        }
+
+        @Test func theSessionLookupsThrowInsteadOfAnsweringAbsent() throws {
+            let rows = [DatabaseTestSuites.makeFile(ocId: "a", fileName: "a.txt"), DatabaseTestSuites.makeFile(ocId: "b", fileName: "b.txt")]
+            #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: rows, deleted: [], incomplete: false, hardRemoveDeleted: false))
+            #expect(manager.prepareChangeDeliveryBatch(sessionId: "s", endSequence: 1, nextAnchorKey: "a1", moreComing: true))
+            #expect(try manager.changeDeliverySession(sessionId: "s") != nil)
+            #expect(try manager.changeDeliverySession(forAnchorKey: "a0", containerKey: "c") != nil)
+            #expect(try manager.changeDeliverySession(forPendingAnchorKey: "a1", containerKey: "c") != nil)
+            #expect(try manager.changeDeliverySession(sessionId: "absent") == nil)
+            #expect(try manager.changeDeliverySession(forAnchorKey: "absent", containerKey: "c") == nil)
+            #expect(try manager.changeDeliverySession(forPendingAnchorKey: "absent", containerKey: "c") == nil)
+
+            try manager.breakTableForTesting(ChangeDeliverySessionRecord.databaseTableName)
+
+            #expect(throws: (any Error).self) { try manager.changeDeliverySession(sessionId: "s") }
+            #expect(throws: (any Error).self) { try manager.changeDeliverySession(forAnchorKey: "a0", containerKey: "c") }
+            #expect(throws: (any Error).self) { try manager.changeDeliverySession(forPendingAnchorKey: "a1", containerKey: "c") }
         }
 
         @Test func theAbandonedUploadDecisionIsNilWhenAnyOfItsQueriesFails() throws {
