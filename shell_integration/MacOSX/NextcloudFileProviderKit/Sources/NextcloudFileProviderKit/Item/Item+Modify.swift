@@ -258,7 +258,7 @@ public extension Item {
         )
 
         // `metadata` is a value snapshot captured before `upload()`. A partial chunked-upload
-        // failure leaves the current resumable upload identifier in Realm, but the error paths
+        // failure leaves the current resumable upload identifier in the database, but the error paths
         // below write this snapshot back. Refresh the identifier so that write does not replace the
         // current identifier with its pre-upload value. Successful and non-resumable uploads clear it.
         metadata.chunkUploadId = dbManager.itemMetadata(ocId: ocId)?.chunkUploadId

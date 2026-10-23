@@ -44,14 +44,14 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let dbManager: FilesDatabaseManager
 
     // Internal (not private) so the change-enumeration extensions in sibling files can read these.
-    let currentAnchor = Enumerator.syncAnchor(at: Date())
+    let currentAnchor: NSFileProviderSyncAnchor
     let pageItemCount: Int
     let logger: FileProviderLogger
     let account: Account
     let remoteInterface: RemoteInterface
     let serverUrl: String
 
-    /// Stores pending changes between File Provider requests. The changes are stored in Realm so a new
+    /// Stores pending changes between File Provider requests. The changes are stored in the database so a new
     /// enumerator can resume the next batch.
     let changeBuffer: ChangeDeliveryBuffer
 
@@ -83,6 +83,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         self.remoteInterface = remoteInterface
         self.account = account
         self.dbManager = dbManager
+        currentAnchor = Self.syncAnchor(at: Date(), storeIdentity: dbManager.storeIdentity)
         self.domain = domain
         pageItemCount = pageSize
         logger = FileProviderLogger(category: "Enumerator", log: log)
@@ -153,7 +154,15 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         // list. Check for that saved list before parsing the anchor as a normal sync anchor. If the list is
         // found, deliver its next batch; otherwise continue with normal validation, which rejects an
         // unknown or stale anchor.
-        if changeBuffer.isContinuation(forKey: anchorKey) {
+        let isContinuation = readDeliveryState(reportingTo: observer) {
+            try changeBuffer.isContinuation(forKey: anchorKey)
+        }
+
+        guard let isContinuation else {
+            return
+        }
+
+        if isContinuation {
             if enumeratedItemIdentifier == .workingSet {
                 enumerateWorkingSetChanges(for: observer, since: Date(), anchor: anchor)
             } else if enumeratedItemIdentifier == .trashContainer {

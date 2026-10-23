@@ -10,6 +10,7 @@ enum FileProviderErrorCode: Int {
     case connection
     case invalidCredentials
     case missingAccountInformation
+    case databaseUnavailable
 
     var localizedDescription: String {
         switch self {
@@ -19,6 +20,8 @@ enum FileProviderErrorCode: Int {
                 String(localized: "Authentication failed due to invalid credentials.")
             case .missingAccountInformation:
                 String(localized: "The account information is not available.")
+            case .databaseUnavailable:
+                String(localized: "The local metadata database could not be opened.")
         }
     }
 }

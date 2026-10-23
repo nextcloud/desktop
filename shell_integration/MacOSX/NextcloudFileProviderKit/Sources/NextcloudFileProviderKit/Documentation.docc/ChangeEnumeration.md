@@ -43,15 +43,16 @@ changes that are not represented by the local pending-change query alone.
 Normal anchors use this format:
 
 ```text
-<extension-version>|<ISO-8601-date>
+<extension-version>+store<store-version>+<store-identity>|<ISO-8601-date>
 ```
 
-`Enumerator.syncAnchor(at:)` creates them. The extension checks the format and
-the embedded version in `validatedSyncAnchorDate(_:reportingTo:)`.
+`Enumerator.syncAnchor(at:)` creates them for the enumerator's open database.
+The extension checks the format and the embedded tag in
+`validatedSyncAnchorDate(_:reportingTo:)`.
 
-An invalid or old-version anchor is reported as
-`NSFileProviderError(.syncAnchorExpired)`. File Provider can then discard its
-cached state and request a fresh item enumeration.
+An invalid anchor, or one from another build or another database file, is
+reported as `NSFileProviderError(.syncAnchorExpired)`. File Provider can then
+discard its cached state and request a fresh item enumeration.
 
 The final anchor is not necessarily the anchor passed to the request. A
 successful working-set scan advances to the enumerator's current anchor. A
@@ -71,9 +72,9 @@ Each scan first creates one ordered change list:
 2. Deleted items follow the updates.
 3. The complete list is stored in the change-delivery buffer.
 
-The buffer stores the list in the File Provider domain's Realm database. A
-`RealmChangeDeliverySession` records the current anchor, cursor, final anchor,
-and incomplete-scan state. Each `RealmChangeDeliveryItem` stores one metadata
+The buffer stores the list in the File Provider domain's metadata database. A
+`ChangeDeliverySessionRecord` records the current anchor, cursor, final anchor,
+and incomplete-scan state. Each `ChangeDeliveryItemRecord` stores one metadata
 value, its sequence number, and whether it is a deletion.
 
 This state is separate from the live item metadata. It preserves the exact
@@ -100,6 +101,14 @@ advances the committed cursor. If delivery is interrupted before that acknowledg
 replayed from its original anchor.
 
 File Provider may request the next batch before that acknowledgement runs, also on a new enumerator. A request with the continuation anchor of a batch means that File Provider accepted that batch, so such a request acknowledges it first. Each acknowledgement names its batch by session and end position and is ignored when that batch is no longer pending, so a late acknowledgement never commits a later batch.
+
+The saved list is found by its committed anchor or by the anchor of its pending batch, read in one query so a concurrent acknowledgement cannot hide it.
+
+If the stored session or its items cannot be read, the enumeration finishes
+with `NSFileProviderError(.cannotSynchronize)`. Nothing is reset or
+acknowledged, so the next request from the same anchor finds the session as it
+was. An absent session, which another instance finished meanwhile, yields an
+empty final batch.
 
 Updates and deletions share the same limit. For a limit of three, two updates
 and one deletion consume the whole batch.
@@ -132,13 +141,11 @@ validation. When the saved list is found, the enumerator reads the next batch
 without contacting the server again. The final batch returns the container's
 final sync anchor instead of a continuation anchor.
 
-The saved list is found by its committed anchor or by the anchor of its pending batch, read in one query so a concurrent acknowledgement cannot hide it.
-
 The framework may invalidate the current `Enumerator` after an intermediate
 batch and create another one for the next request. The extension process may
 also be restarted. Pending changes must therefore be stored outside the
 enumerator instance or be exactly reconstructible from the anchor. This
-implementation uses the Realm-backed list for both cases.
+implementation uses the database-backed list for both cases.
 
 Do not assume that a process restart causes File Provider to provide the
 original anchor again. The last anchor returned for a batch may be the anchor
@@ -196,8 +203,13 @@ The change-enumeration tests are in
   update/deletion budget.
 - `testContainerChangesDeliveredInBatches` checks regular-directory changes.
 - `testTrashChangesDeliveredInBatches` checks batched trash deletions.
+- `testWorkingSetContinuationFinishesWithAnErrorWhenStoredChangesCannotBeRead`,
+  `testWorkingSetContinuationFinishesWithAnErrorWhenTheStoredSessionCannotBeRead`
+  and `testWorkingSetChangesFinishWithAnErrorWhenTheStoredSessionCannotBeRead`
+  check that an unreadable item or session table ends the enumeration with an
+  error instead of an empty batch.
 
-`Tests/NextcloudFileProviderKitTests/ChangeDeliveryBufferTests.swift` checks that a late acknowledgement from another enumerator or an earlier session never commits a later batch. The change-delivery cases in `FilesDatabaseManagerTests.swift` cover preparation, replay, acknowledgement by session and end position, and removal of sessions.
+`Tests/NextcloudFileProviderKitTests/Database/ChangeDeliveryBufferTests.swift` checks that a late acknowledgement from another enumerator or an earlier session never commits a later batch. `ChangeDeliveryStoreTests.swift` next to it covers preparation, replay, acknowledgement by session and end position, and removal of sessions.
 
 These tests exercise the delivery logic in the package. A signed macOS build
 is still required to verify the interaction with the real `fileproviderd`.

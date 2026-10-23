@@ -19,7 +19,7 @@ Use [`doc/terminology.md`](terminology.md) when naming recurring concepts. It de
 
 Prefer:
 
-> Persist the change-delivery session in Realm so a new enumerator can drain the remaining batch after the current enumerator is invalidated.
+> Persist the change-delivery session in the database so a new enumerator can drain the remaining batch after the current enumerator is invalidated.
 
 Avoid:
 
@@ -32,7 +32,7 @@ For a small implementation detail, shorter is better:
 ## Use plain, direct language
 
 - Start with the point. Put the important action or constraint first.
-- Prefer active voice: “Save the batch in Realm,” not “The batch is persisted by the session manager.”
+- Prefer active voice: “Save the batch in the database,” not “The batch is persisted by the session manager.”
 - Name the concrete object, operation, and boundary when they matter.
 - Prefer familiar verbs such as “save,” “read,” “send,” “remove,” and “keep.”
 - Avoid abstract noun chains such as “state transition handling behavior.”

@@ -5,7 +5,6 @@
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 @testable import TestInterface
 import XCTest
 
@@ -16,7 +15,7 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
-    static let dbManager = FilesDatabaseManager(
+    static let dbManager = try! FilesDatabaseManager(
         account: account,
         databaseDirectory: makeDatabaseDirectory(),
         fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
@@ -25,18 +24,17 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
     }
 
     func testRenameItemMetadataClearsLockToken() throws {
-        let metadata = RealmItemMetadata()
-        metadata.ocId = "lock-1"
+        var metadata = SendableItemMetadata.rawRow(ocId: "lock-1")
         metadata.account = "TestAccount"
-        metadata.updateLocation(serverUrl: "https://cloud.example.com/files/old", fileName: "doc.txt")
+        metadata.serverUrl = "https://cloud.example.com/files/old"
+        metadata.fileName = "doc.txt"
         metadata.lockToken = "opaquelocktoken:abc123"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write { realm.add(metadata) }
+        try Self.dbManager.insertForTesting(metadata)
 
         Self.dbManager.renameItemMetadata(
             ocId: "lock-1",
@@ -50,23 +48,20 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
     }
 
     func testRenameDirectoryClearsLockTokenOnChildren() throws {
-        let dir = RealmItemMetadata()
-        dir.ocId = "lock-dir"
+        var dir = SendableItemMetadata.rawRow(ocId: "lock-dir")
         dir.account = "TestAccount"
-        dir.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "folder")
+        dir.serverUrl = "https://cloud.example.com/files"
+        dir.fileName = "folder"
         dir.directory = true
 
-        let child = RealmItemMetadata()
-        child.ocId = "lock-child"
+        var child = SendableItemMetadata.rawRow(ocId: "lock-child")
         child.account = "TestAccount"
-        child.updateLocation(serverUrl: "https://cloud.example.com/files/folder", fileName: "important.docx")
+        child.serverUrl = "https://cloud.example.com/files/folder"
+        child.fileName = "important.docx"
         child.lockToken = "opaquelocktoken:xyz789"
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(dir)
-            realm.add(child)
-        }
+        try Self.dbManager.insertForTesting(dir)
+        try Self.dbManager.insertForTesting(child)
 
         _ = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: "lock-dir",
