@@ -11,8 +11,18 @@ struct ChangeDeliverySessionRecord: Codable, Sendable, FetchableRecord, Persista
     typealias Columns = CodingKeys
 
     enum CodingKeys: String, CodingKey, ColumnExpression {
-        case sessionId, containerKey, currentAnchorKey, nextSequence, finalAnchorRawValue, incomplete, completed
-        case pendingEndSequence, pendingAnchorKey, pendingMoreComing, pendingReported, hardRemoveDeleted
+        case completed
+        case containerKey
+        case currentAnchorKey
+        case finalAnchorRawValue
+        case hardRemoveDeleted
+        case incomplete
+        case nextSequence
+        case pendingAnchorKey
+        case pendingEndSequence
+        case pendingMoreComing
+        case pendingReported
+        case sessionId
     }
 
     var sessionId: String

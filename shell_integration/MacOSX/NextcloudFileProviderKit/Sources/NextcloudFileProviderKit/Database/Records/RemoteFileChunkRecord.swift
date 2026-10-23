@@ -10,7 +10,9 @@ struct RemoteFileChunkRecord: Codable, Sendable, FetchableRecord, PersistableRec
     typealias Columns = CodingKeys
 
     enum CodingKeys: String, CodingKey, ColumnExpression {
-        case remoteChunkStoreFolderName, fileName, size
+        case fileName
+        case remoteChunkStoreFolderName
+        case size
     }
 
     var remoteChunkStoreFolderName: String

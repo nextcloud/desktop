@@ -92,18 +92,75 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
     var unreadableColumns: [String] = []
 
     enum CodingKeys: String, CodingKey, ColumnExpression, CaseIterable {
-        case ocId, account, checksums, chunkUploadId, classFile, commentsUnread
-        case contentType, creationDate, dataFingerprint, date, syncTime, deleted
-        case directory, downloadURL, e2eEncrypted, etag, fileProviderContentVersion, favorite
-        case fileId, fileName, fileNameView, hasPreview, hidden, iconName
-        case iconUrl, isLockFileOfLocalOrigin, mountType, name, note, ownerId
-        case ownerDisplayName, livePhotoFile, lock, lockOwner, lockOwnerEditor, lockOwnerType
-        case lockOwnerDisplayName, lockTime, lockTimeOut, lockToken, path, permissions
-        case quotaUsedBytes, quotaAvailableBytes, resourceType, richWorkspace, serverUrl, session
-        case sessionError, sessionTaskIdentifier, sharePermissionsCollaborationServices, sharePermissionsCloudMesh, shareType, size
-        case status, tags, downloaded, uploaded, keepDownloaded, visitedDirectory
-        case trashbinFileName, trashbinOriginalLocation, trashbinDeletionTime, uploadDate, urlBase, user
-        case userId, normalizedServerUrl, normalizedFileName
+        case ocId
+        case account
+        case checksums
+        case chunkUploadId
+        case classFile
+        case commentsUnread
+        case contentType
+        case creationDate
+        case dataFingerprint
+        case date
+        case deleted
+        case directory
+        case downloaded
+        case downloadURL
+        case e2eEncrypted
+        case etag
+        case favorite
+        case fileId
+        case fileName
+        case fileNameView
+        case fileProviderContentVersion
+        case hasPreview
+        case hidden
+        case iconName
+        case iconUrl
+        case isLockFileOfLocalOrigin
+        case keepDownloaded
+        case livePhotoFile
+        case lock
+        case lockOwner
+        case lockOwnerDisplayName
+        case lockOwnerEditor
+        case lockOwnerType
+        case lockTime
+        case lockTimeOut
+        case lockToken
+        case mountType
+        case name
+        case normalizedFileName
+        case normalizedServerUrl
+        case note
+        case ownerDisplayName
+        case ownerId
+        case path
+        case permissions
+        case quotaAvailableBytes
+        case quotaUsedBytes
+        case resourceType
+        case richWorkspace
+        case serverUrl
+        case session
+        case sessionError
+        case sessionTaskIdentifier
+        case sharePermissionsCloudMesh
+        case sharePermissionsCollaborationServices
+        case shareType
+        case size
+        case status
+        case syncTime
+        case tags
+        case trashbinDeletionTime
+        case trashbinFileName
+        case trashbinOriginalLocation
+        case uploadDate
+        case uploaded
+        case urlBase
+        case user
+        case userId
+        case visitedDirectory
     }
 
     init(_ value: any ItemMetadata) {

@@ -9,8 +9,14 @@ struct ItemLogicalAddressRow: Codable, Sendable, FetchableRecord, TableRecord {
     static let databaseTableName = ItemMetadataRecord.databaseTableName
     static var databaseSelection: [any SQLSelectable] {
         [
-            Column("ocId"), Column("serverUrl"), Column("fileName"), Column("normalizedServerUrl"),
-            Column("normalizedFileName"), Column("deleted"), Column("isLockFileOfLocalOrigin"), Column("status"),
+            Column("deleted"),
+            Column("fileName"),
+            Column("isLockFileOfLocalOrigin"),
+            Column("normalizedFileName"),
+            Column("normalizedServerUrl"),
+            Column("ocId"),
+            Column("serverUrl"),
+            Column("status"),
             Column("syncTime")
         ]
     }

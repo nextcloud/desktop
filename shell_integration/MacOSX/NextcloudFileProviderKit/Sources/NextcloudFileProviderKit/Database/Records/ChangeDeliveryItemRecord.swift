@@ -11,7 +11,10 @@ struct ChangeDeliveryItemRecord: Codable, Sendable, FetchableRecord, Persistable
     typealias Columns = CodingKeys
 
     enum CodingKeys: String, CodingKey, ColumnExpression {
-        case sessionId, sequence, metadataData, deleted
+        case deleted
+        case metadataData
+        case sequence
+        case sessionId
     }
 
     var sessionId: String
