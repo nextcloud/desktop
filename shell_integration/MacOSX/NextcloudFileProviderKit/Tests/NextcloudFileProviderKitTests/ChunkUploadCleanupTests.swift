@@ -25,7 +25,7 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        let count = dbManager.remoteFileChunks(uploadId: uploadIdentifier).count
+        let count = dbManager.remoteFileChunks(uploadId: uploadIdentifier)?.count
         XCTAssertEqual(count, expectedCount, file: file, line: line)
     }
 
@@ -261,6 +261,22 @@ final class ChunkUploadCleanupTests: NextcloudFileProviderKitTestCase {
             dbManager.pendingChunkUploadCleanupIdentifiers().filter { $0 == uploadIdentifier }.count,
             0
         )
+    }
+
+    func testDiscardChunkUploadsWithUnreadableChunkRowsDiscardsOnlyTheBoundUpload() throws {
+        let boundUpload = try seedChunkUpload(uploadIdentifier: chunkUploadIdentifierPrefix(forItemWithIdentifier: "a") + "bound", itemIdentifier: "a", metadataStatus: .normal)
+        let staleUpload = try seedChunkUpload(uploadIdentifier: chunkUploadIdentifierPrefix(forItemWithIdentifier: "a") + "stale", itemIdentifier: "a", metadataStatus: nil)
+        try dbManager.breakTableForTesting(RemoteFileChunkRecord.databaseTableName)
+
+        discardChunkUploads(
+            forItemIdentifiers: ["a"],
+            usingRemoteInterface: remoteInterface,
+            dbManager: dbManager,
+            logger: makeLogger()
+        )
+
+        XCTAssertFalse(FileManager.default.fileExists(atPath: boundUpload.directory.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: staleUpload.directory.path), "Nothing is swept by prefix on a guess.")
     }
 
     func testDiscardChunkUploadsDoesNotMatchSimilarItemIdentifiers() throws {

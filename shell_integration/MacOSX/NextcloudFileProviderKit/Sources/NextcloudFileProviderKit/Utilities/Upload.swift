@@ -187,7 +187,11 @@ func upload(
         logger: uploadLogger
     )
 
-    let remainingChunks = dbManager.remoteFileChunks(uploadId: chunkUploadId)
+    // An empty list would start the upload from scratch and overwrite the recorded chunks; the identifier stays bound, so the next attempt resumes.
+    guard let remainingChunks = dbManager.remoteFileChunks(uploadId: chunkUploadId) else {
+        uploadLogger.error("Could not read the recorded chunks of the upload. The upload is retried later.", [.name: chunkUploadId])
+        return (nil, nil, nil, nil, .metadataDatabaseUnreadable)
+    }
 
     let (_, file, chunksDirectory, nkError) = await remoteInterface.chunkedUpload(
         localPath: localFilePath,

@@ -108,7 +108,7 @@ struct RealmStoreImporterTests {
         #expect(manager.normalizedLocationForTesting(ocId: "live")?.fileName == "résumé.pdf".precomposedStringWithCanonicalMapping)
         #expect(manager.itemMetadata(ocId: "gone")?.deleted == true)
         #expect(manager.isItemExcludedFromSync(ocId: "excluded"))
-        #expect(manager.remoteFileChunks(uploadId: "upload-1").map(\.fileName) == ["1", "2"])
+        #expect(manager.remoteFileChunks(uploadId: "upload-1")?.map(\.fileName) == ["1", "2"])
         #expect(manager.pendingChunkUploadCleanupIdentifiers() == ["cleanup-1"])
         let session = try #require(try manager.changeDeliverySession(sessionId: "session"))
         #expect(session.containerKey == "container")

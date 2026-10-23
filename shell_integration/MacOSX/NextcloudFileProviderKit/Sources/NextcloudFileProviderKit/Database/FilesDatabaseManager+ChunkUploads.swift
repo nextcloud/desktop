@@ -8,15 +8,15 @@ import GRDB
 /// Bookkeeping for chunked uploads: the chunks recorded per upload, the upload an item is currently bound to, and uploads whose local cleanup still has to be retried.
 ///
 extension FilesDatabaseManager {
-    /// The chunks recorded for the upload, in chunk order.
-    func remoteFileChunks(uploadId: String) -> [RemoteFileChunk] {
+    /// The chunks recorded for the upload, in chunk order, or `nil` when the database could not be read. An empty list means the upload starts from scratch, so a failed read must not pass for one.
+    func remoteFileChunks(uploadId: String) -> [RemoteFileChunk]? {
         read("Could not fetch the recorded upload chunks.", [.name: uploadId]) { db in
             try RemoteFileChunkRecord
                 .filter(RemoteFileChunkRecord.Columns.remoteChunkStoreFolderName == uploadId)
                 .order(sql: "CAST(fileName AS INTEGER)")
                 .fetchAll(db)
                 .map(\.chunk)
-        } ?? []
+        }
     }
 
     /// Record chunks for an upload. Returns `false` when nothing was written.
@@ -53,13 +53,13 @@ extension FilesDatabaseManager {
         } ?? true
     }
 
-    /// The upload identifier of every recorded chunk, one entry per chunk.
-    func remoteChunkStoreFolderNames() -> [String] {
+    /// The upload identifier of every recorded chunk, one entry per chunk, or `nil` when the database could not be read.
+    func remoteChunkStoreFolderNames() -> [String]? {
         read("Could not fetch the recorded upload identifiers.") { db in
             try RemoteFileChunkRecord
                 .select(RemoteFileChunkRecord.Columns.remoteChunkStoreFolderName, as: String.self)
                 .fetchAll(db)
-        } ?? []
+        }
     }
 
     /// Every known upload identifier which no live, unfinished item can resume, decided in one read so a partial failure cannot classify a resumable upload as abandoned. `nil` when the database could not be read.

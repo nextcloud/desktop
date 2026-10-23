@@ -383,7 +383,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(error)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
         XCTAssertEqual(
-            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId).count,
+            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId)?.count,
             0
         )
     }
@@ -540,7 +540,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(error)
         XCTAssertTrue(FileManager.default.fileExists(atPath: chunksDirectory.path))
         XCTAssertEqual(
-            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId).count,
+            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId)?.count,
             1
         )
     }
@@ -617,7 +617,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
         XCTAssertEqual(
-            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId).count,
+            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId)?.count,
             0
         )
     }
@@ -702,7 +702,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
             chunkUploadId
         )
         XCTAssertEqual(
-            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId).count,
+            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId)?.count,
             1
         )
     }
