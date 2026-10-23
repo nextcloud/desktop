@@ -36,7 +36,7 @@ A single damaged value does not take a query with it. A list column holding malf
 
 The change-delivery buffer treats a failed read of its stored items the same way: it finishes the enumeration with an error and keeps the session, instead of taking an empty read for the last batch and acknowledging changes which were never delivered. The startup cleanup of chunk uploads decides in one read and skips the cleanup when that read fails.
 
-On open, a file SQLite reports as corrupt is set aside with the suffix `.unreadable-<timestamp>` and replaced. Any other open failure, and a failed import, keep the files untouched and make the open throw; the extension then reports the setup as failed and the domain stays unavailable until a later setup succeeds. Nothing is served from a substitute database, because nothing written to one would survive.
+On open, a file SQLite reports as corrupt is set aside with the suffix `.unreadable-<timestamp>` and replaced. The replacement carries a new store identity, so every anchor the framework kept for the domain expires and the containers are enumerated afresh. Any other open failure, and a failed import, keep the files untouched and make the open throw; the extension then reports the setup as failed and the domain stays unavailable until a later setup succeeds. Nothing is served from a substitute database, because nothing written to one would survive.
 
 ## Store version
 
@@ -49,7 +49,11 @@ On open, the higher of the two recorded versions is compared with the running bu
 - Equal: nothing to do.
 - Higher: the database was written by a newer build. It is removed and set up from scratch, because an older build cannot tell which of its assumptions the newer format broke. The marker is lowered to the running version.
 
-The store version is part of every sync anchor, so after such a reset the framework re-enumerates every container and the database is repopulated from the server.
+The store version and the store identity are part of every sync anchor, so after such a reset the framework re-enumerates every container and the database is repopulated from the server.
+
+## Store identity
+
+Every database file carries a random identity in its `storeIdentity` table, minted the first time the file is opened and read once per `FilesDatabaseManager`. Together with the store version it is part of every sync anchor the enumerators hand to the framework. An anchor from another file, whether that file was set aside as corrupt, removed after a downgrade or deleted by hand, is answered with `syncAnchorExpired`, so the framework re-enumerates the container instead of taking an empty store for a store without changes. Nothing is reimported, because the item identifiers are the server's `ocId` values and survive the replacement.
 
 ## Import from Realm
 

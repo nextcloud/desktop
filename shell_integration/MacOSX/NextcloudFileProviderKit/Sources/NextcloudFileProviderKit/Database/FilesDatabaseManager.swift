@@ -71,6 +71,9 @@ public final class FilesDatabaseManager: Sendable {
     /// The open database: a pool on the domain's file, or an in-memory queue when no directory is available.
     let writer: any DatabaseWriter
 
+    /// Random identity of the open database file, minted on its first open. It is part of every sync anchor, so the anchors of a replaced file expire.
+    let storeIdentity: String
+
     /// Location of the database file, `nil` when the database lives in memory.
     let databaseURL: URL?
 
@@ -126,7 +129,7 @@ public final class FilesDatabaseManager: Sendable {
             throw OpenError.importFailed(realmLocation)
         }
 
-        writer = try Self.openDatabase(at: databaseLocation, label: fileProviderDomainIdentifier.rawValue, logger: logger)
+        (writer, storeIdentity) = try Self.openDatabase(at: databaseLocation, label: fileProviderDomainIdentifier.rawValue, logger: logger)
         logger.info("Opened metadata database.", [.url: databaseLocation.path])
         domainDefaults.latestSeenDatabaseVersion = StoreVersion.current
 
@@ -147,7 +150,7 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// A file SQLite reports as corrupt is set aside and replaced. Any other failure, such as a busy or full disk, keeps the file untouched and is thrown, so the next start can try again.
     ///
-    private static func openDatabase(at url: URL, label: String, logger: FileProviderLogger) throws -> any DatabaseWriter {
+    private static func openDatabase(at url: URL, label: String, logger: FileProviderLogger) throws -> (writer: any DatabaseWriter, storeIdentity: String) {
         do {
             return try openPool(at: url, label: label)
         } catch {
@@ -177,13 +180,14 @@ public final class FilesDatabaseManager: Sendable {
         return [ResultCode.SQLITE_CORRUPT, .SQLITE_NOTADB].contains(databaseError.resultCode.primaryResultCode)
     }
 
-    private static func openPool(at url: URL, label: String) throws -> any DatabaseWriter {
+    private static func openPool(at url: URL, label: String) throws -> (writer: any DatabaseWriter, storeIdentity: String) {
         let pool = try DatabasePool(path: url.path, configuration: configuration(label: label))
         try DatabaseSchema.migrator.migrate(pool)
-        try pool.write { db in
+        let storeIdentity = try pool.write { db in
             try db.execute(sql: "PRAGMA user_version = \(StoreVersion.current)")
+            return try StoreIdentityRecord.ensure(in: db)
         }
-        return pool
+        return (pool, storeIdentity)
     }
 
     /// Rename the database file and its journal files so the next open starts from scratch and the broken file stays available for support.

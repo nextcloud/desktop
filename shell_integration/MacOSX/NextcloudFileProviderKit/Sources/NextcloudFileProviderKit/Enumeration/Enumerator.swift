@@ -44,7 +44,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let dbManager: FilesDatabaseManager
 
     // Internal (not private) so the change-enumeration extensions in sibling files can read these.
-    let currentAnchor = Enumerator.syncAnchor(at: Date())
+    let currentAnchor: NSFileProviderSyncAnchor
     let pageItemCount: Int
     let logger: FileProviderLogger
     let account: Account
@@ -83,6 +83,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         self.remoteInterface = remoteInterface
         self.account = account
         self.dbManager = dbManager
+        currentAnchor = Self.syncAnchor(at: Date(), storeIdentity: dbManager.storeIdentity)
         self.domain = domain
         pageItemCount = pageSize
         logger = FileProviderLogger(category: "Enumerator", log: log)

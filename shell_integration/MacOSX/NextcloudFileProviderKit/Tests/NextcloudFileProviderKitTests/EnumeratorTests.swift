@@ -616,7 +616,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // Build a version-tagged sync anchor at the chosen date. The same helper is used by the
         // production code, so the anchor round-trips cleanly through `enumerateChanges` without
         // tripping the syncAnchorExpired branch added for nextcloud/desktop#10065.
-        let anchor = Enumerator.syncAnchor(at: anchorDate)
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity)
 
         // Setup remote interface with the items we're testing
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
@@ -737,7 +737,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // Create a sync anchor from before now using the production helper so it carries the
         // version prefix expected by the syncAnchorExpired check (nextcloud/desktop#10065).
         let anchorDate = Date().addingTimeInterval(-300) // 5 minutes ago
-        let anchor = Enumerator.syncAnchor(at: anchorDate)
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity)
 
         // Update sync times to be after the anchor (so they would be checked)
         let now = Date()
@@ -2091,7 +2091,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // destructive scan on the framework's moreComing re-invocations.
 
         let anchorDate = Date().addingTimeInterval(-300)
-        let anchor = Enumerator.syncAnchor(at: anchorDate)
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity)
         let itemCount = 10
         let batchSize = 3
 
@@ -2150,7 +2150,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // After an intermediate batch was acknowledged, the next batch is read from the stored session. If
         // that read fails, the enumeration must end with an error and keep the session, not finish on an
         // empty batch and acknowledge the changes which were never delivered.
-        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300))
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
         _ = seedMaterialisedWorkingSetFiles(count: 6, syncTime: Date())
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -2219,7 +2219,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // fileproviderd may invalidate the enumerator after an intermediate batch. The continuation must
         // therefore resume from durable state when the next request is handled by a new Enumerator.
 
-        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300))
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
         let itemCount = 10
         let batchSize = 3
         let expectedOcIds = seedMaterialisedWorkingSetFiles(count: itemCount, syncTime: Date())
@@ -2300,7 +2300,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // exactly one batch — preserving the pre-existing single-batch behaviour and the final anchor.
 
         let anchorDate = Date().addingTimeInterval(-300)
-        let anchor = Enumerator.syncAnchor(at: anchorDate)
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity)
         let expectedOcIds = seedMaterialisedWorkingSetFiles(count: 3, syncTime: Date())
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
@@ -2324,7 +2324,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
     func testWorkingSetChangesEmptyReportsSingleFinalBatch() async throws {
         // No materialised items, no changes: exactly one finish, moreComing == false, advancing the anchor.
 
-        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300))
+        let anchor = Enumerator.syncAnchor(at: Date().addingTimeInterval(-300), storeIdentity: Self.dbManager.storeIdentity)
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
@@ -2434,7 +2434,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // delivered deletions across batch boundaries.
 
         let anchorDate = Date().addingTimeInterval(-300)
-        let anchor = Enumerator.syncAnchor(at: anchorDate)
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity)
         let now = Date()
         let batchSize = 3
 

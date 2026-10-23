@@ -20,7 +20,8 @@ enum DatabaseSchema {
         RemoteFileChunkRecord.databaseTableName,
         PendingChunkUploadCleanupRecord.databaseTableName,
         ChangeDeliverySessionRecord.databaseTableName,
-        ChangeDeliveryItemRecord.databaseTableName
+        ChangeDeliveryItemRecord.databaseTableName,
+        StoreIdentityRecord.databaseTableName
     ]
 
     static var migrator: DatabaseMigrator {
@@ -129,6 +130,11 @@ enum DatabaseSchema {
                 table.column("metadataData", .blob).notNull()
                 table.column("deleted", .boolean).notNull().defaults(to: false)
                 table.primaryKey(["sessionId", "sequence"])
+            }
+
+            try db.create(table: StoreIdentityRecord.databaseTableName) { table in
+                table.primaryKey("id", .integer).check(sql: "id = 1")
+                table.column("identity", .text).notNull()
             }
         }
 

@@ -170,6 +170,7 @@ struct RealmStoreImporterTests {
 
         #expect(manager.itemMetadata(ocId: "stale") == nil)
         #expect(manager.itemMetadata(ocId: "live") != nil)
+        #expect(manager.storeIdentity != earlier.storeIdentity)
         #expect(fixture.exists() == false)
     }
 

@@ -72,6 +72,7 @@ struct StoreVersionGuardTests {
         let manager = openManager()
 
         #expect(manager.itemMetadata(ocId: "from-the-future") == nil)
+        #expect(manager.storeIdentity != earlier.storeIdentity)
         #expect(domainDefaults.latestSeenDatabaseVersion == StoreVersion.current)
         manager.addItemMetadata(DatabaseTestSuites.makeFile(ocId: "fresh", fileName: "fresh.txt"))
         #expect(manager.itemMetadata(ocId: "fresh") != nil)
