@@ -55,20 +55,10 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             1
         )
 
-        XCTAssertTrue(
-            Self.dbManager.prepareChangeDeliveryBatch(
-                sessionId: sessionId,
-                endSequence: 1,
-                nextAnchorKey: nil,
-                moreComing: false
-            )
-        )
-        XCTAssertTrue(
-            Self.dbManager.acknowledgeChangeDeliveryBatch(
-                sessionId: sessionId,
-                deletedOcIds: []
-            )
-        )
+        let batch = try XCTUnwrap(try Self.dbManager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: 1) { "continuation|\($0)" })
+        XCTAssertEqual(batch.endSequence, 1)
+        XCTAssertFalse(batch.moreComing)
+        XCTAssertTrue(Self.dbManager.acknowledgeChangeDeliveryBatch(sessionId: sessionId, endSequence: 1))
 
         XCTAssertNil(try Self.dbManager.changeDeliverySession(sessionId: sessionId))
         XCTAssertTrue(

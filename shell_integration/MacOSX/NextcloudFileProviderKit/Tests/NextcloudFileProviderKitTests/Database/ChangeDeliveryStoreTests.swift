@@ -17,6 +17,11 @@ extension DatabaseTestSuites {
             (0 ..< count).map { DatabaseTestSuites.makeFile(ocId: "row-\($0)", fileName: "row-\($0).txt") }
         }
 
+        /// Prepare the next batch with continuation keys of the form `a<end sequence>`, as the buffer does with its prefix.
+        private func prepare(_ sessionId: String, maxItems: Int) throws -> (items: [(metadataData: Data, deleted: Bool)], endSequence: Int, nextAnchorKey: String?, moreComing: Bool)? {
+            try manager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: maxItems) { "a\($0)" }
+        }
+
         @Test func itemsAreReturnedInSequenceOrderUpToTheLimit() throws {
             let updated = makeRows(count: 4)
             let deleted = [DatabaseTestSuites.makeFile(ocId: "gone", fileName: "gone.txt")]
@@ -31,19 +36,19 @@ extension DatabaseTestSuites {
             #expect(tail.first?.deleted == true)
             #expect(try JSONDecoder().decode(SendableItemMetadata.self, from: #require(tail.first?.metadataData)).ocId == "gone")
 
-            let session = try #require(try manager.changeDeliverySession(forAnchorKey: "a0", containerKey: "c"))
+            let session = try #require(try manager.changeDeliverySession(forContinuationKey: "a0", containerKey: "c"))
             #expect(session.sessionId == "s")
             #expect(session.nextSequence == 0)
             #expect(session.hardRemoveDeleted)
-            #expect(try manager.changeDeliverySession(forAnchorKey: "a0", containerKey: "other") == nil)
+            #expect(try manager.changeDeliverySession(forContinuationKey: "a0", containerKey: "other") == nil)
         }
 
         @Test func acknowledgingWithoutDeletionsLeavesItemMetadataAlone() throws {
             try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "untouched", fileName: "u.txt"))
             #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: makeRows(count: 2), deleted: [], incomplete: false, hardRemoveDeleted: true))
-            #expect(manager.prepareChangeDeliveryBatch(sessionId: "s", endSequence: 2, nextAnchorKey: nil, moreComing: false))
+            #expect(try prepare("s", maxItems: 2)?.endSequence == 2)
 
-            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", deletedOcIds: []))
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", endSequence: 2))
 
             #expect(manager.itemMetadata(ocId: "untouched")?.deleted == false)
             #expect(try manager.changeDeliverySession(sessionId: "s") == nil)
@@ -52,31 +57,30 @@ extension DatabaseTestSuites {
 
         @Test func acknowledgingAnIntermediateBatchAdvancesTheSessionAndDropsDeliveredItems() throws {
             try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "soft", fileName: "soft.txt"))
-            #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: makeRows(count: 5), deleted: [], incomplete: false, hardRemoveDeleted: false))
-            #expect(manager.prepareChangeDeliveryBatch(sessionId: "s", endSequence: 2, nextAnchorKey: "a1", moreComing: true))
-            // Preparing the same batch again is idempotent; a different one is refused.
-            #expect(manager.prepareChangeDeliveryBatch(sessionId: "s", endSequence: 2, nextAnchorKey: "a1", moreComing: true))
-            #expect(manager.prepareChangeDeliveryBatch(sessionId: "s", endSequence: 3, nextAnchorKey: "a1", moreComing: true) == false)
+            let deleted = ["soft", "later"].map { DatabaseTestSuites.makeFile(ocId: $0, fileName: "\($0).txt") }
+            #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: [], deleted: deleted, incomplete: false, hardRemoveDeleted: false))
+            let batch = try #require(try prepare("s", maxItems: 1))
+            #expect(batch.endSequence == 1)
+            #expect(batch.nextAnchorKey == "a1")
 
-            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", deletedOcIds: ["soft"]))
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", endSequence: 1))
 
-            let session = try #require(try manager.changeDeliverySession(forAnchorKey: "a1", containerKey: "c"))
-            #expect(session.nextSequence == 2)
+            let session = try #require(try manager.changeDeliverySession(forContinuationKey: "a1", containerKey: "c"))
+            #expect(session.nextSequence == 1)
             #expect(session.pendingReported == false)
-            #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10)?.map(\.sequence) == [2, 3, 4])
+            #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10)?.map(\.sequence) == [1])
             #expect(manager.itemMetadata(ocId: "soft")?.deleted == true, "Soft removal keeps the tombstone.")
         }
 
         @Test func acknowledgingAnAcknowledgedBatchAgainChangesNothing() throws {
-            try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "soft", fileName: "soft.txt"))
             #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: makeRows(count: 5), deleted: [], incomplete: false, hardRemoveDeleted: false))
-            #expect(manager.prepareChangeDeliveryBatch(sessionId: "s", endSequence: 2, nextAnchorKey: "a1", moreComing: true))
-            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", deletedOcIds: ["soft"]))
+            #expect(try prepare("s", maxItems: 2)?.endSequence == 2)
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", endSequence: 2))
 
             // The reporting instance and a fresh one asked for the continuation both acknowledge the same batch.
-            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", deletedOcIds: ["soft"]))
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", endSequence: 2))
 
-            let session = try #require(try manager.changeDeliverySession(forAnchorKey: "a1", containerKey: "c"))
+            let session = try #require(try manager.changeDeliverySession(forContinuationKey: "a2", containerKey: "c"))
             #expect(session.nextSequence == 2)
             #expect(session.pendingReported == false)
             #expect(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 10)?.map(\.sequence) == [2, 3, 4], "The cursor moved once.")
@@ -85,12 +89,57 @@ extension DatabaseTestSuites {
         @Test func acknowledgingWithHardRemovalDeletesTheRows() throws {
             try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "hard", fileName: "hard.txt"))
             #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: [], deleted: [DatabaseTestSuites.makeFile(ocId: "hard", fileName: "hard.txt")], incomplete: false, hardRemoveDeleted: true))
-            #expect(manager.prepareChangeDeliveryBatch(sessionId: "s", endSequence: 1, nextAnchorKey: nil, moreComing: false))
-            #expect(manager.pendingChangeDeliveryDeletedOcIds(sessionId: "s") == ["hard"])
+            let batch = try #require(try prepare("s", maxItems: 1))
+            #expect(batch.items.map(\.deleted) == [true])
 
-            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", deletedOcIds: ["hard"]))
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", endSequence: batch.endSequence))
 
             #expect(manager.itemMetadata(ocId: "hard") == nil)
+        }
+
+        @Test func theContinuationKeyFindsTheReportedAndThenTheAcknowledgedBatch() throws {
+            #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: makeRows(count: 3), deleted: [], incomplete: false, hardRemoveDeleted: true))
+            let batch = try #require(try prepare("s", maxItems: 1))
+            let anchorKey = try #require(batch.nextAnchorKey)
+
+            let reported = try #require(try manager.changeDeliverySession(forContinuationKey: anchorKey, containerKey: "c"))
+            #expect(reported.pendingAnchorKey == anchorKey)
+            #expect(reported.currentAnchorKey != anchorKey)
+
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", endSequence: batch.endSequence))
+
+            let acknowledged = try #require(try manager.changeDeliverySession(forContinuationKey: anchorKey, containerKey: "c"))
+            #expect(acknowledged.currentAnchorKey == anchorKey)
+            #expect(acknowledged.pendingReported == false)
+        }
+
+        @Test func aStaleAcknowledgementLeavesTheNewerBatchReported() throws {
+            try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "d0", fileName: "d0.txt"))
+            let deleted = ["d0", "d1"].map { DatabaseTestSuites.makeFile(ocId: $0, fileName: "\($0).txt") }
+            #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: makeRows(count: 1), deleted: deleted, incomplete: false, hardRemoveDeleted: true))
+            let first = try #require(try prepare("s", maxItems: 1))
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", endSequence: first.endSequence))
+            let second = try #require(try prepare("s", maxItems: 1))
+
+            // The enumerator which reported the first batch acknowledges it again, late.
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", endSequence: first.endSequence))
+
+            let session = try #require(try manager.changeDeliverySession(sessionId: "s"))
+            #expect(session.pendingReported)
+            #expect(session.pendingEndSequence == second.endSequence)
+            #expect(session.currentAnchorKey == first.nextAnchorKey)
+            #expect(manager.itemMetadata(ocId: "d0") != nil, "The deletion of the unacknowledged batch is kept.")
+        }
+
+        @Test func preparingAgainReplaysTheReportedBatch() throws {
+            #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: makeRows(count: 3), deleted: [], incomplete: false, hardRemoveDeleted: true))
+            let first = try #require(try prepare("s", maxItems: 2))
+
+            let replayed = try #require(try prepare("s", maxItems: 1))
+
+            #expect(replayed.endSequence == first.endSequence)
+            #expect(replayed.nextAnchorKey == first.nextAnchorKey)
+            #expect(replayed.items.map(\.metadataData) == first.items.map(\.metadataData))
         }
 
         @Test func removingTheSessionsOfAContainerRemovesTheirItems() throws {
