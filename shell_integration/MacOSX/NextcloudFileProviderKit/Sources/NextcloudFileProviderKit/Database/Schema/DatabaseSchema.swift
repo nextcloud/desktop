@@ -32,44 +32,102 @@ enum DatabaseSchema {
                 table.primaryKey("ocId", .text)
 
                 for name in [
-                    "account", "checksums", "classFile", "contentType", "dataFingerprint", "downloadURL", "etag",
-                    "fileId", "fileName", "fileNameView", "iconName", "iconUrl", "mountType", "name", "note",
-                    "ownerId", "ownerDisplayName", "path", "permissions", "resourceType", "serverUrl",
-                    "trashbinFileName", "trashbinOriginalLocation", "urlBase", "user", "userId",
-                    "normalizedServerUrl", "normalizedFileName"
+                    "account",
+                    "checksums",
+                    "classFile",
+                    "contentType",
+                    "dataFingerprint",
+                    "downloadURL",
+                    "etag",
+                    "fileId",
+                    "fileName",
+                    "fileNameView",
+                    "iconName",
+                    "iconUrl",
+                    "mountType",
+                    "name",
+                    "normalizedFileName",
+                    "normalizedServerUrl",
+                    "note",
+                    "ownerDisplayName",
+                    "ownerId",
+                    "path",
+                    "permissions",
+                    "resourceType",
+                    "serverUrl",
+                    "trashbinFileName",
+                    "trashbinOriginalLocation",
+                    "urlBase",
+                    "user",
+                    "userId"
                 ] {
                     table.column(name, .text).notNull().defaults(to: "")
                 }
 
                 for name in [
-                    "chunkUploadId", "fileProviderContentVersion", "livePhotoFile", "lockOwner", "lockOwnerEditor",
-                    "lockOwnerDisplayName", "lockToken", "richWorkspace", "session", "sessionError"
+                    "chunkUploadId",
+                    "fileProviderContentVersion",
+                    "livePhotoFile",
+                    "lockOwner",
+                    "lockOwnerDisplayName",
+                    "lockOwnerEditor",
+                    "lockToken",
+                    "richWorkspace",
+                    "session",
+                    "sessionError"
                 ] {
                     table.column(name, .text)
                 }
 
                 for name in [
-                    "commentsUnread", "deleted", "directory", "e2eEncrypted", "favorite", "hasPreview", "hidden",
-                    "isLockFileOfLocalOrigin", "lock", "downloaded", "uploaded", "keepDownloaded", "visitedDirectory"
+                    "commentsUnread",
+                    "deleted",
+                    "directory",
+                    "downloaded",
+                    "e2eEncrypted",
+                    "favorite",
+                    "hasPreview",
+                    "hidden",
+                    "isLockFileOfLocalOrigin",
+                    "keepDownloaded",
+                    "lock",
+                    "uploaded",
+                    "visitedDirectory"
                 ] {
                     table.column(name, .boolean).notNull().defaults(to: false)
                 }
 
-                for name in ["creationDate", "date", "syncTime", "trashbinDeletionTime", "uploadDate"] {
+                for name in [
+                    "creationDate",
+                    "date",
+                    "syncTime",
+                    "trashbinDeletionTime",
+                    "uploadDate"
+                ] {
                     table.column(name, .real).notNull()
                 }
 
                 table.column("lockTime", .real)
                 table.column("lockTimeOut", .real)
 
-                for name in ["sharePermissionsCollaborationServices", "status", "quotaUsedBytes", "quotaAvailableBytes", "size"] {
+                for name in [
+                    "quotaAvailableBytes",
+                    "quotaUsedBytes",
+                    "sharePermissionsCollaborationServices",
+                    "size",
+                    "status"
+                ] {
                     table.column(name, .integer).notNull().defaults(to: 0)
                 }
 
                 table.column("lockOwnerType", .integer)
                 table.column("sessionTaskIdentifier", .integer)
 
-                for name in ["shareType", "sharePermissionsCloudMesh", "tags"] {
+                for name in [
+                    "sharePermissionsCloudMesh",
+                    "shareType",
+                    "tags"
+                ] {
                     table.column(name, .text).notNull().defaults(to: "[]")
                 }
             }
