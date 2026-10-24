@@ -9,20 +9,8 @@ extension Item {
     ///
     /// Shared capability assertion before dispatching (un)lock requests to the server.
     ///
-    private static func assertRequiredCapabilities(domain: NSFileProviderDomain?, itemIdentifier: NSFileProviderItemIdentifier, account: Account, remoteInterface: RemoteInterface, logger: FileProviderLogger) async -> Bool {
-        let (_, capabilities, _, capabilitiesError) = await remoteInterface.currentCapabilities(
-            account: account,
-            options: .init(),
-            taskHandler: { task in
-                if let domain {
-                    NSFileProviderManager(for: domain)?.register(
-                        task,
-                        forItemWithIdentifier: itemIdentifier,
-                        completionHandler: { _ in }
-                    )
-                }
-            }
-        )
+    private static func assertRequiredCapabilities(account: Account, remoteInterface: RemoteInterface, logger: FileProviderLogger) async -> Bool {
+        let (_, capabilities, _, capabilitiesError) = await remoteInterface.currentCapabilities(account: account)
 
         guard capabilitiesError == .success else {
             logger.error("Request for capability assertion failed!")
@@ -72,7 +60,7 @@ extension Item {
         let logger = FileProviderLogger(category: "Item", log: log)
         progress.totalUnitCount = 1
 
-        guard await assertRequiredCapabilities(domain: domain, itemIdentifier: itemTemplate.itemIdentifier, account: account, remoteInterface: remoteInterface, logger: logger) else {
+        guard await assertRequiredCapabilities(account: account, remoteInterface: remoteInterface, logger: logger) else {
             logger.debug("Excluding lock file from synchronizing due to lack of server-side locking capability.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
             return (nil, NSFileProviderError(.excludedFromSync))
         }
@@ -256,7 +244,7 @@ extension Item {
         // server lacks the locking capability or the guarded document cannot be determined.
         dbManager.deleteItemMetadata(ocId: metadata.ocId)
 
-        guard await Self.assertRequiredCapabilities(domain: domain, itemIdentifier: itemIdentifier, account: account, remoteInterface: remoteInterface, logger: logger) else {
+        guard await Self.assertRequiredCapabilities(account: account, remoteInterface: remoteInterface, logger: logger) else {
             logger.info("Server does not support locking; removed local lock metadata without contacting the server.", [.name: metadata.fileName])
             return nil
         }

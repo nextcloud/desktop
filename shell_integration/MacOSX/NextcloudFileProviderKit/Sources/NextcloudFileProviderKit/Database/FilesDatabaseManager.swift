@@ -3,6 +3,7 @@
 
 @preconcurrency import FileProvider
 import Foundation
+import os
 import RealmSwift
 
 ///
@@ -34,6 +35,8 @@ public final class FilesDatabaseManager: Sendable {
     private static let schemaVersion = SchemaVersion.addedChangeDeliveryAcknowledgementState
     let logger: FileProviderLogger
     let account: Account
+    /// Share download ownership across FilesDatabaseManager instances accessing the same database.
+    static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: DownloadOperation]]())
 
     var itemMetadatas: Results<RealmItemMetadata> {
         ncDatabase().objects(RealmItemMetadata.self)
@@ -320,7 +323,10 @@ public final class FilesDatabaseManager: Sendable {
                     updatedMetadata.fileProviderContentVersion = existingMetadata.fileProviderContentVersion
                 }
 
-                if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
+                // Clear a stale deleted flag even when the server returns unchanged metadata.
+                if existingMetadata.status == Status.normal.rawValue,
+                   existingMetadata.deleted || !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
+                {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
@@ -461,8 +467,9 @@ public final class FilesDatabaseManager: Sendable {
                         visitToRecord = readTargetMetadata.ocId
                     }
 
+                    // Clear a stale deleted flag even when the server returns unchanged metadata.
                     if existing.status == Status.normal.rawValue,
-                       !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
+                       existing.deleted || !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
                         logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")
                         if keepExistingDownloadState {
@@ -812,8 +819,10 @@ public final class FilesDatabaseManager: Sendable {
     public func parentItemIdentifierWithRemoteFallback(
         fromMetadata metadata: SendableItemMetadata,
         remoteInterface: RemoteInterface,
-        account: Account
+        account: Account,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> NSFileProviderItemIdentifier? {
+        guard !Task.isCancelled else { return nil }
         if let parentItemIdentifier = parentItemIdentifierFromMetadata(metadata) {
             return parentItemIdentifier
         }
@@ -824,8 +833,11 @@ public final class FilesDatabaseManager: Sendable {
             remoteInterface: remoteInterface,
             dbManager: self,
             depth: .target,
+            taskHandler: taskHandler,
             log: logger.log
         )
+
+        guard !Task.isCancelled else { return nil }
 
         guard readResult.error == nil, let parentMetadata = readResult.metadatas?.first else {
             logger.error("Could not retrieve parent item identifier remotely.", [
