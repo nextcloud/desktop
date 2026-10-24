@@ -18,6 +18,9 @@ import OSLog
     ///
     let domain: NSFileProviderDomain
 
+    ///
+    /// The password of the account, cached for when the main app cannot hand it over.
+    ///
     let keychain: Keychain
     let log: any FileProviderLogging
     let logger: FileProviderLogger
@@ -73,6 +76,11 @@ import OSLog
     private var pendingAccount: Account?
     private var setupChain: Task<Void, Never> = Task {}
 
+    ///
+    /// Incremented by ``removeAccount()``, so setups queued or running before it neither store nor publish their account.
+    ///
+    private(set) var setupGeneration = 0
+
     // Waiters parked in `awaitAccount(…)` until `ncAccount` is published.
     private let accountReadyLock = NSLock()
     private var accountReadyWaiters = [UUID: CheckedContinuation<Void, Never>]()
@@ -113,7 +121,7 @@ import OSLog
         #endif
 
         logger.info("NextcloudKit logging configured.", [.url: NKLogFileManager.shared.currentLogFileURL()])
-        keychain = Keychain(log: log)
+        keychain = Keychain(domain: domain, log: log)
         super.init()
         observeBlockSync()
     }
@@ -755,6 +763,7 @@ import OSLog
 
         pendingAccount = account
         let previous = setupChain
+        let generation = setupGeneration
 
         let next = Task { [weak self] in
             _ = await previous.value
@@ -763,7 +772,7 @@ import OSLog
                 return
             }
 
-            await performSetup(account: account, userAgent: userAgent, completionHandler: completionHandler)
+            await performSetup(account: account, generation: generation, userAgent: userAgent, completionHandler: completionHandler)
             clearPendingAccount(matching: account)
         }
 
@@ -789,6 +798,58 @@ import OSLog
     }
 
     ///
+    /// Store the account for later access, unless ``removeAccount()`` superseded the setup started at `generation`.
+    ///
+    func storeAccount(_ account: Account, generation: Int) -> Bool {
+        setupLock.lock()
+        defer { setupLock.unlock() }
+
+        guard generation == setupGeneration else {
+            return false
+        }
+
+        config.serverUrl = account.serverUrl
+        config.user = account.username
+        config.userId = account.id
+        keychain.savePassword(account.password, for: account.username)
+
+        return true
+    }
+
+    ///
+    /// Publish the authenticated account, unless ``removeAccount()`` superseded the setup started at `generation`.
+    ///
+    func publishAccount(_ account: Account, generation: Int) -> Bool {
+        setupLock.lock()
+        defer { setupLock.unlock() }
+
+        guard generation == setupGeneration else {
+            return false
+        }
+
+        ncAccount = account
+
+        return true
+    }
+
+    ///
+    /// Forget the account and delete its stored password, superseding every setup queued or running until now.
+    ///
+    /// - Returns: `true` if no password of the domain is left in the keychain.
+    ///
+    @discardableResult
+    func removeAccount() -> Bool {
+        setupLock.lock()
+        defer { setupLock.unlock() }
+
+        setupGeneration += 1
+        pendingAccount = nil
+        ncAccount = nil
+
+        return keychain.deletePassword()
+    }
+
+    ///
     /// Runs the actual account setup work for one ``Account``.
     ///
     /// Must only be invoked from the ``setupChain`` serialization queue established by
@@ -796,14 +857,17 @@ import OSLog
     ///
     private func performSetup(
         account: Account,
+        generation: Int,
         userAgent: String,
         completionHandler: (@Sendable (NSError?) -> Void)?
     ) async {
         // Store account information independently from the main app for later access.
-        config.serverUrl = account.serverUrl
-        config.user = account.username
-        config.userId = account.id
-        keychain.savePassword(account.password, for: account.username, on: account.serverUrl)
+        guard storeAccount(account, generation: generation) else {
+            logger.info("Cancelling domain account setup because the account was removed meanwhile.")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
         NextcloudKit.clearAccountErrorState(for: account.ncKitAccount)
 
         ncKit.appendSession(
@@ -848,7 +912,12 @@ import OSLog
         }
 
         await MainActor.run {
-            ncAccount = account
+            guard publishAccount(account, generation: generation) else {
+                logger.info("Not publishing the authenticated account because it was removed meanwhile.")
+                completionHandler?(NSError(.missingAccountInformation))
+                return
+            }
+
             let databaseManager = FilesDatabaseManager(
                 account: account,
                 fileProviderDomainIdentifier: domain.identifier,
