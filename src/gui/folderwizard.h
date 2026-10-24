@@ -117,6 +117,7 @@ protected Q_SLOTS:
     void slotHandleLsColNetworkError(QNetworkReply *);
     void slotUpdateDirectories(const QStringList &);
     void slotGatherEncryptedPaths(const QString &, const QMap<QString, QString> &);
+    void slotGatherSyncDisabledPaths(const QString &, const QMap<QString, QString> &);
     void slotRefreshFolders();
     void slotItemExpanded(QTreeWidgetItem *);
     void slotCurrentItemChanged(QTreeWidgetItem *);
@@ -139,6 +140,11 @@ private:
     AccountPtr _account;
     QTimer _lscolTimer;
     QStringList _encryptedPaths;
+    // Paths whose external storage mount has server-side sync disabled
+    // (nc:sync-enabled == "false"). Excluded from the folder picker the
+    // same way encrypted paths are, since they are not meant to be
+    // auto-synced to begin with, only browsed/downloaded on demand.
+    QStringList _syncDisabledPaths;
 };
 
 /**
