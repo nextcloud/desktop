@@ -215,7 +215,7 @@ The following details are important and only relevant when working on the deskto
 - The PIMPL pattern is an established convention in the Objective-C++ source code files under `src/gui/macOS`.
 - To abstract macOS and Objective-C specific APIs, prefer to use Qt and C++ types in public identifiers declared in headers. Use and prefer Objective-C or native macOS features only internally in implementations. This rule applies only to the code in `src/gui/macOS`, though.
 - When writing code in Swift, respect strict concurrency rules and Swift 6 compatibility.
-- Follow the ownership mode configured for each source file in CMake. Files explicitly compiled with `-fobjc-arc` use ARC ownership; all other Objective-C and Objective-C++ files under `./src` require manual reference counting. Do not add ARC-only features such as `__weak` to files compiled without ARC.
+- All Objective-C (`.m`) and Objective-C++ (`.mm`) files must be compiled with Automatic Reference Counting (ARC). Ensure ARC is enabled for every such source file in the build configuration (`-fobjc-arc` in CMake or `CLANG_ENABLE_OBJC_ARC = YES` in Xcode), and follow ARC ownership rules.
 
 #### Code organization
 

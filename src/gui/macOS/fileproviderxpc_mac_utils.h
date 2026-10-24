@@ -35,8 +35,8 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
  * @param service The app-side service exported through each connection.
  * @return A map containing the retained remote proxy and XPC connection for each domain identifier.
  *
- * The caller owns both retained objects in the returned values and must invalidate and release them
- * when they are no longer needed.
+ * The opaque pointers carry ownership. The caller must invalidate the connection and transfer both
+ * pointers back to ARC when they are no longer needed.
  */
 ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections, OCC::Mac::FileProviderService *service);
 }

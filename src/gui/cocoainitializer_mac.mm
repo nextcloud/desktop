@@ -6,13 +6,18 @@
 
 #include "cocoainitializer.h"
 
-#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSThread.h>
 #import <AppKit/NSApplication.h>
 
 #include "application.h"
 
 #include <QTimer>
+
+#include <exception>
+
+static_assert(__has_feature(objc_arc), "CocoaInitializer requires ARC.");
 
 /* In theory, we should be able to just capture QFileOpenEvents
  * when we open our custom URLs in our Application class and be
@@ -26,9 +31,12 @@
  * client was closed when these events were sent. */
 
 @interface URLEventHandler : NSObject
+- (void)invalidate;
 @end
 
-@implementation URLEventHandler
+@implementation URLEventHandler {
+    BOOL _registered;
+}
 - (id)init {
     self = [super init];
 
@@ -47,6 +55,16 @@
                                                        andSelector:@selector(handleURLEvent:withReplyEvent:)
                                                      forEventClass:kInternetEventClass
                                                         andEventID:kAEGetURL];
+    _registered = YES;
+}
+
+- (void)invalidate
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (_registered) {
+        [[NSAppleEventManager sharedAppleEventManager] removeEventHandlerForEventClass:kInternetEventClass andEventID:kAEGetURL];
+        _registered = NO;
+    }
 }
 
 - (void)handleURLEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
@@ -77,16 +95,42 @@ namespace Mac {
 
 class CocoaInitializer::Private {
 public:
-    NSAutoreleasePool* autoReleasePool;
-    URLEventHandler* handler;
+    URLEventHandler* handler = nil;
     id<NSObject> appNapActivity = nil;
 };
+
+int CocoaInitializer::run(const std::function<int()> &mainFunction)
+{
+    Q_ASSERT([NSThread isMainThread]);
+    auto result = 0;
+    std::exception_ptr exception;
+    NSException *nativeException = nil;
+    // Leave the pool normally so it drains before either exception is rethrown.
+    @autoreleasepool {
+        try {
+            @try {
+                CocoaInitializer initializer;
+                result = mainFunction();
+            } @catch (NSException *caughtException) {
+                nativeException = caughtException;
+            }
+        } catch (...) {
+            exception = std::current_exception();
+        }
+    }
+    if (nativeException != nil) {
+        @throw nativeException;
+    }
+    if (exception) {
+        std::rethrow_exception(exception);
+    }
+    return result;
+}
 
 CocoaInitializer::CocoaInitializer() {
     d = new CocoaInitializer::Private();
     d->handler = [[URLEventHandler alloc] init];
     NSApplicationLoad();
-    d->autoReleasePool = [[NSAutoreleasePool alloc] init];
 
     // As an LSUIElement agent we usually have no visible window, which makes macOS
     // throttle us via App Nap and lets RunningBoard suspend (and later jetsam-reap)
@@ -94,16 +138,15 @@ CocoaInitializer::CocoaInitializer() {
     // assertion for our whole lifetime keeps the process out of App Nap so syncing
     // continues; it still allows normal idle system/display sleep.
     NSProcessInfo *const processInfo = [NSProcessInfo processInfo];
-    d->appNapActivity = [[processInfo beginActivityWithOptions:NSActivityBackground
-                                                        reason:@"Keep syncing while running in the background"] retain];
+    d->appNapActivity = [processInfo beginActivityWithOptions:NSActivityBackground
+                                                        reason:@"Keep syncing while running in the background"];
 }
 
 CocoaInitializer::~CocoaInitializer() {
+    [d->handler invalidate];
     if (d->appNapActivity) {
         [[NSProcessInfo processInfo] endActivity:d->appNapActivity];
-        [d->appNapActivity release];
     }
-    [d->autoReleasePool release];
     delete d;
 }
 
