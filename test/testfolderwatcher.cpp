@@ -131,7 +131,7 @@ public:
     int countFolders(const QString &path)
     {
         int n = 0;
-        const auto entryList = QDir(path).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+        const auto entryList = QDir(path).entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
         for (const auto &sub : entryList) {
             n += 1 + countFolders(path + '/' + sub);
         }
@@ -273,6 +273,54 @@ private Q_SLOTS:
         QString dir(_rootPath+"/bren/newfolder2");
         mkdir(dir);
         QVERIFY(waitForPathChanged(dir));
+    }
+
+    void testChangeDetected_movedInDirectoryWithSymlinkLoop_symlinkNotTraversed()
+    {
+#ifndef Q_OS_LINUX
+        QSKIP("Only the Linux watcher enumerates moved-in directories via changeDetected(QString)");
+#endif
+        // Build the tree outside of the watched folder and move it in, so the watcher
+        // receives a single event for the directory and enumerates its content.
+        const auto outside = QTemporaryDir{};
+        const auto source = outside.path() + "/withloop";
+        QVERIFY(QDir().mkpath(source + "/sub"));
+        Utility::writeRandomFile(source + "/sub/file.bin");
+        QVERIFY(QFile::link(QStringLiteral(".."), source + "/sub/loop"));
+
+        const auto moved = _rootPath + "/withloop";
+        mv(source, moved);
+        QVERIFY(QFileInfo(moved + "/sub/loop").isDir());
+
+        QVERIFY(waitForPathChanged(moved + "/sub/file.bin"));
+        QVERIFY(waitForPathChanged(moved + "/sub/loop"));
+        for (const auto &args : std::as_const(*_pathChangedSpy)) {
+            const auto path = args.first().toString();
+            QVERIFY2(!path.startsWith(moved + "/sub/loop/"), qPrintable(QStringLiteral("descended into symlink: %1").arg(path)));
+        }
+
+        _pathChangedSpy->clear();
+        QVERIFY(QDir(moved).removeRecursively());
+        QVERIFY(waitForPathChanged(moved));
+    }
+
+    void testChangeDetected_createdDirectorySymlink_notTraversedNorWatched()
+    {
+#ifndef Q_OS_LINUX
+        QSKIP("Directory symlinks are only created and watched this way on Linux");
+#endif
+        const auto target = QString{_rootPath + "/a2"};
+        const auto link = QString{_rootPath + "/a2link"};
+        QVERIFY(QFile::link(target, link));
+
+        QVERIFY(waitForPathChanged(link));
+        for (const auto &args : std::as_const(*_pathChangedSpy)) {
+            const auto path = args.first().toString();
+            QVERIFY2(!path.startsWith(link + "/"), qPrintable(QStringLiteral("descended into symlink: %1").arg(path)));
+        }
+        CHECK_WATCH_COUNT(countFolders(_rootPath) + 1);
+
+        QVERIFY(QFile::remove(link));
     }
 
     void testDetectLockFiles()
