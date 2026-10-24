@@ -50,10 +50,10 @@ An interrupted chunked upload has three related forms of local state:
 | `RemoteFileChunk` rows | The upload layer | The chunks that have not completed, grouped by upload identifier. |
 | `RealmItemMetadata.chunkUploadId` | The item database | Associates an existing file item with its current resumable upload. |
 
-The protocol deliberately does not require callers to know where an adapter
-stores chunk files. The NextcloudKit adapter currently creates a directory
-named with the upload identifier under `FileManager.default.temporaryDirectory`.
-Other adapters can use a different layout.
+The upload layer supplies the File Provider domain's temporary directory when one is
+available. The NextcloudKit adapter creates a directory named with the upload identifier
+under that base. This keeps chunks on the same volume as an external File Provider domain;
+non-File-Provider callers continue to use `FileManager.default.temporaryDirectory`.
 
 `RemoteInterface.chunkedUpload()` returns the concrete parent directory it
 used. The upload layer deletes that exact directory after the attempt when it

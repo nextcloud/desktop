@@ -263,4 +263,83 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             try Data(contentsOf: itemChildDirBChildFileUrl), remoteDirectoryChildDirBChildFile.data
         )
     }
+
+    func testFetchFileContentsWithDomainUsesDomainTemporaryDirectory() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.injectMock(Self.account)
+        let remoteItem = MockRemoteItem(
+            identifier: "domain-temp-item",
+            versionIdentifier: "0",
+            name: "domain-temp.txt",
+            remotePath: Self.account.davFilesUrl + "/domain-temp.txt",
+            data: Data("domain temp".utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteItem]
+        remoteItem.parent = rootItem
+        let metadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(metadata)
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let domain = NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier("domain-temp-test"), displayName: "Test")
+        let temporaryDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("domain-temp-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: temporaryDirectory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: temporaryDirectory) }
+
+        let (localURL, _, error) = await item.fetchContents(
+            domain: domain,
+            dbManager: Self.dbManager,
+            domainTemporaryDirectoryProvider: { _ in temporaryDirectory }
+        )
+
+        XCTAssertNil(error)
+        XCTAssertEqual(localURL?.deletingLastPathComponent(), temporaryDirectory)
+    }
+
+    func testFetchFileContentsWithInternalDomainFallsBackWhenDomainTemporaryDirectoryFails() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.injectMock(Self.account)
+        let remoteItem = MockRemoteItem(
+            identifier: "domain-temp-fallback-item",
+            versionIdentifier: "0",
+            name: "domain-temp-fallback.txt",
+            remotePath: Self.account.davFilesUrl + "/domain-temp-fallback.txt",
+            data: Data("fallback".utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteItem]
+        remoteItem.parent = rootItem
+        let metadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(metadata)
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let domain = NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier("domain-temp-fallback-test"), displayName: "Test")
+
+        let (localURL, _, error) = await item.fetchContents(
+            domain: domain,
+            dbManager: Self.dbManager,
+            domainTemporaryDirectoryProvider: { _ in throw CocoaError(.fileNoSuchFile) }
+        )
+
+        XCTAssertNil(error)
+        let fetchedURL = try XCTUnwrap(localURL)
+        XCTAssertTrue(fetchedURL.path.hasPrefix(FileManager.default.temporaryDirectory.path))
+    }
 }
