@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>ブラウザーが開けません。リンクをコピーしてブラウザーに貼り付けてください。</translation>
     </message>
 </context>
 <context>
@@ -216,22 +216,22 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="44"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>新しい会話</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="70"/>
         <source>Reload conversations</source>
-        <translation type="unfinished"/>
+        <translation>会話を再読み込み</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="100"/>
         <source>Assistant is thinking…</source>
-        <translation type="unfinished"/>
+        <translation>アシスタントが考えています...</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="110"/>
         <source>Retry response generation</source>
-        <translation type="unfinished"/>
+        <translation>応答の生成を再試行</translation>
     </message>
 </context>
 <context>
@@ -239,12 +239,12 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantConversationPicker.qml" line="24"/>
         <source>No conversation selected</source>
-        <translation type="unfinished"/>
+        <translation>選択された会話はありません</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantConversationPicker.qml" line="27"/>
         <source>Selected conversation</source>
-        <translation type="unfinished"/>
+        <translation>選択した会話</translation>
     </message>
 </context>
 <context>
@@ -253,22 +253,22 @@
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="37"/>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="40"/>
         <source>Delete assistant task?</source>
-        <translation type="unfinished"/>
+        <translation>アシスタントタスクを削除しますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="49"/>
         <source>This removes the task from the server.</source>
-        <translation type="unfinished"/>
+        <translation>これにより、サーバーからタスクが削除されます。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="66"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="73"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>削除</translation>
     </message>
 </context>
 <context>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantMessageList.qml" line="50"/>
         <source>Start a conversation with Nextcloud Assistant.</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud Assistantと会話を始めましょう。</translation>
     </message>
 </context>
 <context>
@@ -285,17 +285,17 @@
         <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="27"/>
         <source>%1 · %2</source>
         <extracomment>%1 is the assistant task status and %2 is the task's date and time in the locale's short format.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="60"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>再試行</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="67"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>削除</translation>
     </message>
 </context>
 <context>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskList.qml" line="52"/>
         <source>No assistant tasks for this type.</source>
-        <translation type="unfinished"/>
+        <translation>このタイプにはアシスタントタスクはありません。</translation>
     </message>
 </context>
 <context>
@@ -312,7 +312,7 @@
         <location filename="../src/gui/assistant/qml/AssistantTaskTypeDelegate.qml" line="101"/>
         <source>Select assistant task type %1</source>
         <extracomment>%1 is the name of an assistant task type, for example &quot;Chat&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>アシスタントタスクの種類 %1 を選択してください</translation>
     </message>
 </context>
 <context>
@@ -321,22 +321,22 @@
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="24"/>
         <location filename="../src/gui/accountsettings.cpp" line="185"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>アシスタント</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="65"/>
         <source>Type a message</source>
-        <translation type="unfinished"/>
+        <translation>メッセージを入力してください</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="66"/>
         <source>Describe the task</source>
-        <translation type="unfinished"/>
+        <translation>そのタスクについて説明してください</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="138"/>
         <source>AI can make mistakes. Review generated content before using it.</source>
-        <translation type="unfinished"/>
+        <translation>AIは誤りを犯すことがあります。生成されたコンテンツは、使用する前に確認してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="76"/>
@@ -576,13 +576,13 @@
         <location filename="../src/libsync/configfile.cpp" line="742"/>
         <source>Managed by your organization</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
-        <translation type="unfinished"/>
+        <translation>貴組織によって管理されています</translation>
     </message>
     <message>
         <location filename="../src/libsync/configfile.cpp" line="744"/>
         <source>Managed by your system administrator</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
-        <translation type="unfinished"/>
+        <translation>システム管理者によって管理されています</translation>
     </message>
 </context>
 <context>
@@ -603,22 +603,22 @@
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="17"/>
         <source>Delete share?</source>
-        <translation type="unfinished"/>
+        <translation>共有を削除しますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="21"/>
         <source>This removes the share and its access for all recipients.</source>
-        <translation type="unfinished"/>
+        <translation>これにより、共有設定が解除され、すべての受信者に対するアクセス権が削除されます。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>削除</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -668,28 +668,28 @@
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="25"/>
         <source>%1 (required)</source>
-        <translation type="unfinished"/>
+        <translation>%1（必須）</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="103"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>YYYY-MM-DD</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="133"/>
         <source>Enter a valid date within the allowed range.</source>
-        <translation type="unfinished"/>
+        <translation>指定された範囲内の有効な日付を入力してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="288"/>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="347"/>
         <source>This value is shorter than the minimum length.</source>
-        <translation type="unfinished"/>
+        <translation>この値は、最小長よりも短いです。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="363"/>
         <source>This setting is not supported by this version of the desktop client.</source>
-        <translation type="unfinished"/>
+        <translation>この設定は、このバージョンのデスクトップクライアントではサポートされていません。</translation>
     </message>
 </context>
 <context>
@@ -1984,39 +1984,39 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="219"/>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="337"/>
         <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"/>
+        <translation>このアカウントではアシスタントはご利用いただけません。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="342"/>
         <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"/>
+        <translation>アシスタントはすでにリクエストを処理中です。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="431"/>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="451"/>
         <source>No response yet. Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>まだ応答がありません。後ほどもう一度お試しください。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="480"/>
         <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"/>
+        <translation>サポートされているアシスタントタスクの種類は返されませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="557"/>
         <source>Assistant task scheduled.</source>
-        <translation type="unfinished"/>
+        <translation>アシスタントのタスクがスケジュールされました</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="770"/>
         <source>Scheduling assistant task…</source>
-        <translation type="unfinished"/>
+        <translation>アシスタントタスクのスケジュール設定中…</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="840"/>
         <source>Assistant request failed (%1).</source>
         <extracomment>%1 is the HTTP status code returned by the server.</extracomment>
-        <translation type="unfinished"/>
+        <translation>アシスタントへのリクエストに失敗しました (%1)。</translation>
     </message>
 </context>
 <context>
@@ -2024,27 +2024,27 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="106"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>不明</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="108"/>
         <source>Scheduled</source>
-        <translation type="unfinished"/>
+        <translation>スケジュール済</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="110"/>
         <source>In progress</source>
-        <translation type="unfinished"/>
+        <translation>進行中</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="112"/>
         <source>Completed</source>
-        <translation type="unfinished"/>
+        <translation>完了</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="114"/>
         <source>Failed</source>
-        <translation type="unfinished"/>
+        <translation>失敗しました</translation>
     </message>
 </context>
 <context>
@@ -2053,7 +2053,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="98"/>
         <source>Chat</source>
         <extracomment>Name of the Chat assistant task type.</extracomment>
-        <translation type="unfinished"/>
+        <translation>チャット</translation>
     </message>
 </context>
 <context>
@@ -2661,7 +2661,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="538"/>
         <source>Lock has no expiry. You can unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>ロックの有効期限はありません。編集が完了したら、手動でこのファイルのロックを解除できます。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="527"/>
@@ -3798,12 +3798,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="80"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>閲覧のみ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="83"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>編集可能</translation>
     </message>
 </context>
 <context>
@@ -3811,35 +3811,35 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
         <source>The server did not generate a valid public-link identifier.</source>
-        <translation type="unfinished"/>
+        <translation>サーバーは有効な公開リンク識別子を生成しませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="185"/>
         <source>Could not create the public link.</source>
-        <translation type="unfinished"/>
+        <translation>公開リンクを作成できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="223"/>
         <source>Could not retrieve the internal link.</source>
-        <translation type="unfinished"/>
+        <translation>内部リンクを取得できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
         <source>The server returned an invalid share.</source>
-        <translation type="unfinished"/>
+        <translation>サーバーから無効な共有が返されました。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="282"/>
         <source>Could not create the share.</source>
-        <translation type="unfinished"/>
+        <translation>共有を作成できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="327"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="331"/>
         <source>Could not delete the share.</source>
-        <translation type="unfinished"/>
+        <translation>共有を削除できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="360"/>
@@ -3847,30 +3847,30 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="770"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="773"/>
         <source>Could not add the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>受信者を追加できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="391"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="394"/>
         <source>Could not remove the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>受信者を削除できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
         <source>The server did not generate a valid sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>サーバーは有効な共有リンクを生成しませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="433"/>
         <source>Could not update the sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>共有リンクを更新できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="438"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="441"/>
         <source>Could not generate a sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>共有リンクを生成できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="471"/>
@@ -3878,19 +3878,19 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="578"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="586"/>
         <source>Could not update the permissions.</source>
-        <translation type="unfinished"/>
+        <translation>権限を更新できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="543"/>
         <source>Could not update the recipient permissions.</source>
-        <translation type="unfinished"/>
+        <translation>受信者の権限を更新できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="623"/>
         <source>Could not update the sharing setting.</source>
-        <translation type="unfinished"/>
+        <translation>共有設定を更新できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="673"/>
