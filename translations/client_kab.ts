@@ -2218,12 +2218,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation>Ccwal n tejṛut usekkil</translation>
+        <translation>Amgirred n tejṛut usekkil</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Afaylu ur yezmir ara ad yemtawi acku isirew-d umennuɣ n usekkil yellan akked ufaylu yellan deg unagraw-agi.</translation>
+        <translation>Afaylu ur yezmir ara ad yemtawi acku isirew-d amgirred n usekkil yellan akked ufaylu yellan deg unagraw-agi.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -2373,7 +2373,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation>Ccwal deg umtawi</translation>
+        <translation>Amgirred deg umtawi</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
@@ -2960,12 +2960,12 @@ Aya yezmer ad yili d ugur deg temkarḍiwin-ik·im OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="551"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 yesɛa akked %n ufaylu-nniḍen ccwal deg umtawi.</numerusform><numerusform>%1 yesɛa akked %n n ifuyla-nniḍen ccwal deg umtawi.</numerusform></translation>
+        <translation><numerusform>%1 yesɛa akked %n ufaylu-nniḍen amgirred deg umtawi.</numerusform><numerusform>%1 yesɛa akked %n n ifuyla-nniḍen amgirred deg umtawi.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="553"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 yesɛa ccwal deg umtawi. Ttxil-k·m senqed afaylu n ccwal-a!</translation>
+        <translation>%1 yesɛa amgirred deg umtawi. Ttxil-k·m senqed afaylu n ccwal-a!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="558"/>
@@ -5686,7 +5686,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1534"/>
         <source>Resolve conflict …</source>
-        <translation>Fru cwal ...</translation>
+        <translation>Fru amgirred ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1538"/>
@@ -5968,7 +5968,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="459"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Amgirred ur nefri.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="381"/>
@@ -6445,7 +6445,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1295"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="1457"/>
         <source>Resolve conflict</source>
-        <translation>Fru cwal</translation>
+        <translation>Fru amgirred</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1447"/>
@@ -6455,7 +6455,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1555"/>
         <source>Sync conflicts</source>
-        <translation>Ccwalat n umtawi</translation>
+        <translation>Imgarraden n umtawi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
@@ -7187,13 +7187,13 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="31"/>
         <source>Solve sync conflicts</source>
-        <translation>Fru ccwalat n umtawa</translation>
+        <translation>Fru imgarraden n umtawa</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="53"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation><numerusform>%1 n ufaylu di ccwal</numerusform><numerusform>%1 n ifuyla di ccwal</numerusform></translation>
+        <translation><numerusform>%1 n ufaylu deg umgirred</numerusform><numerusform>%1 n ifuyla deg umgirred</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="60"/>
@@ -7213,7 +7213,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="149"/>
         <source>Resolve conflicts</source>
-        <translation>Fru ccwalat</translation>
+        <translation>Fru imgarraden</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
@@ -7727,7 +7727,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/activity/qml/SyncStatus.qml" line="126"/>
         <source>Resolve conflicts</source>
-        <translation>Fru ccwalat</translation>
+        <translation>Fru imgarraden</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/SyncStatus.qml" line="141"/>
