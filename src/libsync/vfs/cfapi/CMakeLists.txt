@@ -52,5 +52,5 @@ if (WIN32)
       RUNTIME DESTINATION "${vfs_installdir}"
     )
 
-    install(FILES $<TARGET_PDB_FILE:nextcloudsync_vfs_cfapi> DESTINATION bin OPTIONAL)
+    install(FILES $<TARGET_PDB_FILE:nextcloudsync_vfs_cfapi> DESTINATION bin CONFIGURATIONS Debug OPTIONAL)
 endif()
