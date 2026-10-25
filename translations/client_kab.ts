@@ -5201,7 +5201,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="240"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Tangalt HTTP tarameɣtut tuɣal-d sɣur aqeddac. Yetturaǧu 204, acukan yettwarmes &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="259"/>
@@ -5291,12 +5291,12 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/propagateuploadng.cpp" line="365"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>Afaylu yettwasekkeṛ, ur yezmir ara ad yemtawi</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwakkes deg wakud n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
@@ -5316,19 +5316,19 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Asulay n ufaylu ixuṣṣ seg uqeddac</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Akaram ur yesɛi ara adduf ɣer ɣur-s deg uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Afaylu ur yesɛi ara adduf ɣer ɣur-s deg uqeddac.</translation>
     </message>
 </context>
 <context>
@@ -5948,12 +5948,12 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
         <location filename="../src/libsync/syncengine.cpp" line="561"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Ala %1 i yellan, ilaq-as ma drus %2 i wakken ad yebdu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="594"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek alday neɣ asnulfu n taffa n yisefka n umtawa tadigant. Wali ma yella tesɛiḍ adduf n tira ɣer ukaram n umtawi</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1494"/>
@@ -5963,7 +5963,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1501"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac ddeqs n tallunt iwejden ɣef uqeddac i kra n usali.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="459"/>
