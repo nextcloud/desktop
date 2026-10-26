@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <QByteArray>
 #include <QHash>
 #include <QObject>
 #include <QString>
@@ -74,6 +75,13 @@ public Q_SLOTS:
      * state. No-op when the app-level File Provider mode is off.
      */
     void resetVfsForAccount(const QString &userIdAtHost);
+
+    /**
+     * @brief Re-create this account's File Provider domain on the selected volume.
+     * @param volumeUuid Empty selects internal storage. Otherwise this is the UUID of
+     * a mounted volume already validated by FileProviderDomainManager.
+     */
+    void setStorageVolumeForAccount(const QString &userIdAtHost, const QString &volumeUuid, const QByteArray &volumeBookmark = {});
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);

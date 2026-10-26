@@ -8,18 +8,26 @@
 #import <AppKit/AppKit.h>
 #import <FileProvider/FileProvider.h>
 
+#include <algorithm>
+#include <memory>
+
 #include <QDir>
 #include <QLatin1StringView>
 #include <QList>
 #include <QLoggingCategory>
+#include <QPointer>
+#include <QTimer>
 #include <QUuid>
 
 #include "config.h"
 #include "fileprovider.h"
 #include "fileproviderdomainmanager.h"
+#include "fileproviderdomainmapping.h"
+#include "fileproviderexternalaccountregistry.h"
 #include "fileprovidersettingscontroller.h"
 #include "fileproviderutils.h"
 
+#include "common/utility_mac_sandbox.h"
 #include "gui/accountmanager.h"
 #include "libsync/account.h"
 
@@ -35,11 +43,236 @@ namespace OCC {
 
 namespace Mac {
 
+namespace
+{
+NSString *const fileProviderAccountIdentifierUserInfoKey = @"org.nextcloud.desktop.accountIdentifier";
+}
+
 class FileProviderDomainManager::MacImplementation
 {
 public:
     MacImplementation() = default;
-    ~MacImplementation() = default;
+
+    ~MacImplementation()
+    {
+        if (_domainDidChangeObserver) {
+            [[NSNotificationCenter defaultCenter] removeObserver:_domainDidChangeObserver];
+            _domainDidChangeObserver = nil;
+        }
+    }
+
+    void startObservingDomainChanges(FileProviderDomainManager *manager)
+    {
+        if (_domainDidChangeObserver) {
+            return;
+        }
+
+        _domainDidChangeObserver =
+            [[NSNotificationCenter defaultCenter] addObserverForName:NSFileProviderDomainDidChange
+                                                              object:nil
+                                                               queue:[NSOperationQueue mainQueue]
+                                                          usingBlock:^(__unused NSNotification *notification) { scheduleDomainChangeReconciliation(manager); }];
+    }
+
+    void scheduleDomainChangeReconciliation(FileProviderDomainManager *manager)
+    {
+        if (_domainChangeReconciliationScheduled) {
+            return;
+        }
+
+        _domainChangeReconciliationScheduled = true;
+        const QPointer<FileProviderDomainManager> managerGuard(manager);
+        QTimer::singleShot(100, manager, [this, managerGuard] {
+            if (!managerGuard) {
+                return;
+            }
+
+            if (FileProviderSettingsController::instance()->isOperationInProgress()) {
+                _domainChangeReconciliationScheduled = false;
+                scheduleDomainChangeReconciliation(managerGuard.data());
+                return;
+            }
+
+            [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
+                if (!managerGuard) {
+                    return;
+                }
+
+                if (error) {
+                    qCWarning(lcMacFileProviderDomainManager)
+                        << "Could not reconcile File Provider domain-list change because domain enumeration failed" << error.code << error.localizedDescription;
+                    QMetaObject::invokeMethod(
+                        managerGuard.data(),
+                        [this, managerGuard] {
+                            if (managerGuard) {
+                                _domainChangeReconciliationScheduled = false;
+                            }
+                        },
+                        Qt::QueuedConnection);
+                    return;
+                }
+
+                const auto retainedDomains = std::shared_ptr<NSArray<NSFileProviderDomain *>>([domains copy], [](NSArray<NSFileProviderDomain *> *const value) {
+                    [value release];
+                });
+                QMetaObject::invokeMethod(
+                    managerGuard.data(),
+                    [this, managerGuard, retainedDomains] {
+                        if (!managerGuard) {
+                            return;
+                        }
+
+                        _domainChangeReconciliationScheduled = false;
+
+                        if (FileProviderSettingsController::instance()->isOperationInProgress()) {
+                            scheduleDomainChangeReconciliation(managerGuard.data());
+                            return;
+                        }
+
+                        QList<NSFileProviderDomain *> domainList;
+                        QSet<QString> domainIdentifiers;
+                        domainList.reserve(retainedDomains.get().count);
+                        for (NSFileProviderDomain *const domain in retainedDomains.get()) {
+                            domainList.append(domain);
+                            domainIdentifiers.insert(QString::fromNSString(domain.identifier));
+                        }
+
+                        const auto domainIdentifiersChanged = domainIdentifiers != _observedDomainIdentifiers;
+                        _observedDomainIdentifiers = domainIdentifiers;
+
+                        qCInfo(lcMacFileProviderDomainManager) << "Reconciling File Provider domain-list change";
+                        (void)reconcileExternalDomainMappings(domainList);
+                        Q_EMIT managerGuard->domainsChanged();
+
+                        if (domainIdentifiersChanged) {
+                            FileProvider::instance()->configureXPC();
+                        }
+                    },
+                    Qt::QueuedConnection);
+            }];
+        });
+    }
+
+    [[nodiscard]] bool externalVolumeStorageAvailable() const
+    {
+        if (@available(macOS 15.0, *)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    [[nodiscard]] NSURL *mountedVolumeUrlForUuid(const QString &volumeUuid) const
+    {
+        if (volumeUuid.isEmpty()) {
+            return nil;
+        }
+
+        const auto volumeUrls =
+            [[NSFileManager defaultManager] mountedVolumeURLsIncludingResourceValuesForKeys:@[ NSURLVolumeUUIDStringKey, NSURLVolumeNameKey ]
+                                                                                    options:NSVolumeEnumerationSkipHiddenVolumes];
+
+        for (NSURL *const volumeUrl in volumeUrls) {
+            NSString *mountedVolumeUuid = nil;
+            NSError *resourceError = nil;
+
+            if (![volumeUrl getResourceValue:&mountedVolumeUuid forKey:NSURLVolumeUUIDStringKey error:&resourceError]) {
+                qCWarning(lcMacFileProviderDomainManager) << "Could not read mounted volume UUID" << resourceError.localizedDescription;
+                continue;
+            }
+
+            if (volumeUuid.compare(QString::fromNSString(mountedVolumeUuid), Qt::CaseInsensitive) == 0) {
+                return volumeUrl;
+            }
+        }
+
+        return nil;
+    }
+
+    [[nodiscard]] QString externalVolumeDisplayNameForUuid(const QString &volumeUuid) const
+    {
+        const auto volumeUrl = mountedVolumeUrlForUuid(volumeUuid);
+        if (!volumeUrl) {
+            return {};
+        }
+
+        NSString *volumeName = nil;
+        NSError *resourceError = nil;
+        if (![volumeUrl getResourceValue:&volumeName forKey:NSURLVolumeNameKey error:&resourceError]) {
+            qCWarning(lcMacFileProviderDomainManager) << "Could not read mounted volume name" << resourceError.localizedDescription;
+            return {};
+        }
+
+        return QString::fromNSString(volumeName);
+    }
+
+    [[nodiscard]] QString externalVolumeUuidForPath(const QString &path, QString *errorMessage, QString *displayName) const
+    {
+        if (!externalVolumeStorageAvailable()) {
+            if (errorMessage) {
+                *errorMessage = FileProviderDomainManager::tr("External File Provider storage requires macOS 15 or later.");
+            }
+            return {};
+        }
+
+        if (@available(macOS 15.0, *)) {
+            const auto selectedUrl = [NSURL fileURLWithPath:path.toNSString() isDirectory:YES];
+            BOOL eligible = NO;
+            NSFileProviderVolumeUnsupportedReason unsupportedReason = NSFileProviderVolumeUnsupportedReasonNone;
+            NSError *eligibilityError = nil;
+
+            const auto checkSucceeded = [NSFileProviderManager checkDomainsCanBeStored:&eligible
+                                                                         onVolumeAtURL:selectedUrl
+                                                                     unsupportedReason:&unsupportedReason
+                                                                                 error:&eligibilityError];
+            if (!checkSucceeded) {
+                qCWarning(lcMacFileProviderDomainManager) << "Could not check File Provider volume eligibility" << eligibilityError.localizedDescription;
+                if (errorMessage) {
+                    *errorMessage = eligibilityError ? QString::fromNSString(eligibilityError.localizedDescription)
+                                                     : FileProviderDomainManager::tr("macOS could not check the selected volume.");
+                }
+                return {};
+            }
+
+            if (!eligible) {
+                qCWarning(lcMacFileProviderDomainManager)
+                    << "Selected volume is not eligible for File Provider storage; reason flags:" << static_cast<qulonglong>(unsupportedReason);
+                if (errorMessage) {
+                    *errorMessage = FileProviderDomainManager::tr(
+                        "The selected volume cannot store File Provider data. Use an encrypted, writable APFS volume connected directly to this Mac.");
+                }
+                return {};
+            }
+
+            NSString *volumeUuid = nil;
+            NSString *volumeName = nil;
+            NSError *resourceError = nil;
+
+            if (![selectedUrl getResourceValue:&volumeUuid forKey:NSURLVolumeUUIDStringKey error:&resourceError] || volumeUuid.length == 0) {
+                qCWarning(lcMacFileProviderDomainManager) << "Could not read selected volume UUID" << resourceError.localizedDescription;
+                if (errorMessage) {
+                    *errorMessage = FileProviderDomainManager::tr("macOS did not return an identifier for the selected volume.");
+                }
+                return {};
+            }
+
+            resourceError = nil;
+            if (![selectedUrl getResourceValue:&volumeName forKey:NSURLVolumeNameKey error:&resourceError]) {
+                qCWarning(lcMacFileProviderDomainManager) << "Could not read selected volume name" << resourceError.localizedDescription;
+            }
+
+            if (displayName) {
+                *displayName = QString::fromNSString(volumeName);
+            }
+            if (errorMessage) {
+                errorMessage->clear();
+            }
+
+            return QString::fromNSString(volumeUuid);
+        }
+
+        return {};
+    }
 
     // MARK: - Synchronous NSFileProviderDomainManager Wrappers
 
@@ -186,15 +419,16 @@ public:
      * 
      * @return The path to the location where preserved dirty user data is stored, or an empty QString if none.
      */
-    QString removeDomain(NSFileProviderDomain *domain)
+    QString removeDomain(NSFileProviderDomain *domain, bool *success = nullptr)
     {
         qCInfo(lcMacFileProviderDomainManager) << "Removing domain"
                                                << domain.identifier;
 
         dispatch_group_t dispatchGroup = dispatch_group_create();
         dispatch_group_enter(dispatchGroup);
-        
+
         __block NSURL *preservedDataURL = nil;
+        __block bool removeSucceeded = false;
 
         [NSFileProviderManager removeDomain:domain mode:NSFileProviderDomainRemovalModePreserveDirtyUserData completionHandler:^(NSURL * const dataURL, NSError * const error) {
             if (error) {
@@ -213,17 +447,22 @@ public:
             }
 
             removeFileProviderDomainData(domain.identifier);
+            removeSucceeded = true;
             qCInfo(lcMacFileProviderDomainManager) << "Removed domain"
                                                    << domain.identifier;
             dispatch_group_leave(dispatchGroup);
         }];
 
         dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
-        
+
+        if (success) {
+            *success = removeSucceeded;
+        }
+
         if (preservedDataURL) {
             return QString::fromNSString(preservedDataURL.path);
         }
-        
+
         return {};
     }
 
@@ -348,6 +587,13 @@ public:
                 continue;
             }
 
+            if (@available(macOS 15.0, *)) {
+                if (domain.volumeUUID != nil) {
+                    qCInfo(lcMacFileProviderDomainManager) << "Skipping display-name re-registration for external-volume domain" << domainId;
+                    continue;
+                }
+            }
+
             qCInfo(lcMacFileProviderDomainManager) << "Updating display name for domain"
                                                    << domainId
                                                    << "from" << currentDisplayName
@@ -409,22 +655,155 @@ public:
             }
         }
 
-        const auto domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
-        NSFileProviderDomain * const domain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString() displayName:domainDisplayName.toNSString()];
+        NSFileProviderDomain *domain = nil;
+        auto domainId = QString{};
+        std::unique_ptr<Utility::MacSandboxPersistentAccess> volumeAccess;
+        const auto configuredVolumeUuid = account->fileProviderDomainVolumeUuid();
+
+        if (configuredVolumeUuid.isEmpty()) {
+            domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
+            domain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString() displayName:domainDisplayName.toNSString()];
+        } else if (@available(macOS 15.0, *)) {
+            const auto volumeUrl = mountedVolumeUrlForUuid(configuredVolumeUuid);
+            if (!volumeUrl) {
+                qCWarning(lcMacFileProviderDomainManager) << "Configured File Provider volume is not mounted for account" << accountId << configuredVolumeUuid;
+                return {};
+            }
+
+            volumeAccess = Utility::MacSandboxPersistentAccess::createFromBookmarkData(account->fileProviderDomainVolumeBookmark());
+            if (!volumeAccess || !volumeAccess->isValid()) {
+                qCWarning(lcMacFileProviderDomainManager) << "Could not access configured File Provider volume for account" << accountId;
+                return {};
+            }
+
+            QString validationError;
+            const auto verifiedVolumeUuid = externalVolumeUuidForPath(QString::fromNSString(volumeUrl.path), &validationError, nullptr);
+            if (verifiedVolumeUuid.isEmpty() || verifiedVolumeUuid.compare(configuredVolumeUuid, Qt::CaseInsensitive) != 0) {
+                qCWarning(lcMacFileProviderDomainManager)
+                    << "Configured File Provider volume is no longer eligible for account" << accountId << validationError;
+                return {};
+            }
+
+            if (volumeAccess->isStale()) {
+                const auto refreshedBookmark = Utility::createSecurityScopedBookmarkData(QString::fromNSString(volumeUrl.path));
+                if (refreshedBookmark.isEmpty()) {
+                    qCWarning(lcMacFileProviderDomainManager) << "Could not refresh stale File Provider volume bookmark for account" << accountId;
+                } else {
+                    AccountManager::instance()->setFileProviderDomainStorage(accountId, configuredVolumeUuid, refreshedBookmark);
+                    qCInfo(lcMacFileProviderDomainManager) << "Refreshed stale File Provider volume bookmark for account" << accountId;
+                }
+            }
+
+            const auto userInfo = @{fileProviderAccountIdentifierUserInfoKey : accountId.toNSString()};
+            domain = [[NSFileProviderDomain alloc] initWithDisplayName:domainDisplayName.toNSString() userInfo:userInfo volumeURL:volumeUrl];
+            domainId = QString::fromNSString(domain.identifier);
+        } else {
+            qCWarning(lcMacFileProviderDomainManager) << "External File Provider storage requires macOS 15 or later for account" << accountId;
+            return {};
+        }
         domain.supportsSyncingTrash = YES;
 
         if (!addDomain(domain)) {
             qCWarning(lcMacFileProviderDomainManager) << "Failed to add file provider domain for account"
                                                       << accountId
                                                       << "- not persisting domain identifier.";
+            [domain release];
             return {};
         }
 
+        [domain release];
         AccountManager::instance()->setFileProviderDomainIdentifier(accountId, domainId);
 
         return domainId;
     }
 
+    bool reconcileExternalDomainMappings()
+    {
+        return reconcileExternalDomainMappings(getDomains());
+    }
+
+    bool reconcileExternalDomainMappings(const QList<NSFileProviderDomain *> &domains)
+    {
+        if (!externalVolumeStorageAvailable() || !ConfigFile().macFileProviderModeEnabled()) {
+            return false;
+        }
+
+        if (@available(macOS 15.0, *)) {
+            const auto accountManager = AccountManager::instance();
+            QList<FileProviderDomainMapping::DomainDescriptor> descriptors;
+            descriptors.reserve(domains.size());
+
+            for (NSFileProviderDomain *const domain : domains) {
+                auto accountIdentifier = QString{};
+                if (domain.volumeUUID != nil) {
+                    NSObject *const accountIdentifierObject = domain.userInfo[fileProviderAccountIdentifierUserInfoKey];
+                    if ([accountIdentifierObject isKindOfClass:[NSString class]]) {
+                        accountIdentifier = QString::fromNSString((NSString *)accountIdentifierObject);
+                    }
+                }
+
+                descriptors.append({
+                    QString::fromNSString(domain.identifier),
+                    accountIdentifier,
+                    domain.volumeUUID == nil ? QString{} : QString::fromNSString(domain.volumeUUID.UUIDString),
+                    domain.disconnected,
+                });
+            }
+
+            auto requiresXpcReconfiguration = false;
+            for (const auto &accountState : accountManager->accounts()) {
+                const auto account = accountState->account();
+                if (!account || account->fileProviderDomainVolumeUuid().isEmpty()) {
+                    continue;
+                }
+
+                const auto accountIdentifier = account->userIdAtHostWithPort();
+                const auto domainIdentifier = FileProviderDomainMapping::domainIdentifierToAdopt(accountIdentifier,
+                                                                                                 account->fileProviderDomainVolumeUuid(),
+                                                                                                 account->fileProviderDomainIdentifier(),
+                                                                                                 descriptors);
+
+                auto effectiveDomainIdentifier = account->fileProviderDomainIdentifier();
+                if (!domainIdentifier.isEmpty()) {
+                    qCInfo(lcMacFileProviderDomainManager)
+                        << "Restoring external File Provider domain mapping for account" << accountIdentifier << domainIdentifier;
+                    accountManager->setFileProviderDomainIdentifier(accountIdentifier, domainIdentifier);
+                    effectiveDomainIdentifier = domainIdentifier;
+                    requiresXpcReconfiguration = true;
+                }
+
+                const auto reconnectIdentifier = FileProviderDomainMapping::domainIdentifierToReconnect(effectiveDomainIdentifier,
+                                                                                                        accountState->state() == AccountState::Connected,
+                                                                                                        descriptors);
+                if (reconnectIdentifier.isEmpty()) {
+                    continue;
+                }
+
+                const auto domainIt = std::find_if(domains.cbegin(), domains.cend(), [&](NSFileProviderDomain *domain) {
+                    return QString::fromNSString(domain.identifier) == reconnectIdentifier;
+                });
+                if (domainIt == domains.cend()) {
+                    continue;
+                }
+
+                qCInfo(lcMacFileProviderDomainManager)
+                    << "Reconnecting external File Provider domain for connected account" << accountIdentifier << reconnectIdentifier;
+                reconnect(*domainIt);
+                requiresXpcReconfiguration = true;
+            }
+
+            return requiresXpcReconfiguration;
+        }
+
+        return false;
+    }
+
+private:
+    id _domainDidChangeObserver = nil;
+    bool _domainChangeReconciliationScheduled = false;
+    QSet<QString> _observedDomainIdentifiers;
+
+public:
     void removeFileProviderDomainData(NSString * const domainIdentifier)
     {
         const auto qDomainIdentifier = QString::fromNSString(domainIdentifier);
@@ -496,18 +875,28 @@ void FileProviderDomainManager::start()
 {
     qCDebug(lcMacFileProviderDomainManager) << "Starting...";
 
+    updateExternalDomainConnectionEligibility();
+    d->startObservingDomainChanges(this);
+
     ConfigFile cfg;
 
     // If an account is deleted from the client, accountSyncConnectionRemoved will be
     // emitted first. So we treat accountRemoved as only being relevant to client
     // shutdowns.
-    connect(AccountManager::instance(), &AccountManager::accountSyncConnectionRemoved,
-            this, &FileProviderDomainManager::removeDomainByAccount);
+    connect(AccountManager::instance(), &AccountManager::accountSyncConnectionRemoved, this, [this](const AccountState *const accountState) {
+        removeDomainByAccount(accountState);
+        QTimer::singleShot(0, this, [this] {
+            updateExternalDomainConnectionEligibility();
+        });
+    });
 
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
             this, [this](const AccountState * const accountState) {
         const auto trReason = tr("%1 application has been closed. Reopen to reconnect.").arg(APPLICATION_NAME);
         disconnectFileProviderDomainForAccount(accountState, trReason);
+        QTimer::singleShot(0, this, [this] {
+            updateExternalDomainConnectionEligibility();
+        });
     });
 
     qCDebug(lcMacFileProviderDomainManager) << "Completed start.";
@@ -520,6 +909,51 @@ QList<NSFileProviderDomain *> FileProviderDomainManager::getDomains() const
     }
 
     return d->getDomains();
+}
+
+bool FileProviderDomainManager::externalVolumeStorageAvailable() const
+{
+    return d && d->externalVolumeStorageAvailable();
+}
+
+QString FileProviderDomainManager::externalVolumeUuidForPath(const QString &path, QString *errorMessage, QString *displayName) const
+{
+    if (!d) {
+        if (errorMessage) {
+            *errorMessage = tr("File Provider is unavailable.");
+        }
+        return {};
+    }
+
+    return d->externalVolumeUuidForPath(path, errorMessage, displayName);
+}
+
+QString FileProviderDomainManager::externalVolumeDisplayNameForUuid(const QString &volumeUuid) const
+{
+    return d ? d->externalVolumeDisplayNameForUuid(volumeUuid) : QString{};
+}
+
+void FileProviderDomainManager::updateExternalDomainConnectionEligibility()
+{
+    QList<QPair<QString, QString>> accountStorage;
+
+    if (ConfigFile().macFileProviderModeEnabled()) {
+        const auto accountStates = AccountManager::instance()->accounts();
+        accountStorage.reserve(accountStates.size());
+        for (const auto &accountState : accountStates) {
+            const auto account = accountState->account();
+            if (account) {
+                accountStorage.append({account->userIdAtHostWithPort(), account->fileProviderDomainVolumeUuid()});
+            }
+        }
+    }
+
+    FileProviderUtils::setExternalVolumeAccountIdentifiers(FileProviderExternalAccountRegistry::configuredAccountIdentifiers(accountStorage));
+}
+
+bool FileProviderDomainManager::reconcileExternalDomainMappings()
+{
+    return d && d->reconcileExternalDomainMappings();
 }
 
 void FileProviderDomainManager::removeAllDomains()
@@ -563,6 +997,8 @@ QString FileProviderDomainManager::addDomainForAccount(const AccountState * cons
     if (!d) {
         return {};
     }
+
+    updateExternalDomainConnectionEligibility();
 
     Q_ASSERT(accountState);
     const auto account = accountState->account();
@@ -722,24 +1158,31 @@ void FileProviderDomainManager::slotHandleFileIdsChanged(const OCC::Account * co
 
 QString FileProviderDomainManager::removeDomainByAccount(const AccountState * const accountState)
 {
-    if (!d) {
-        return {};
+    QString preservedDataPath;
+    tryRemoveDomainByAccount(accountState, &preservedDataPath);
+    return preservedDataPath;
+}
+
+bool FileProviderDomainManager::tryRemoveDomainByAccount(const AccountState *const accountState, QString *preservedDataPath)
+{
+    if (!d || !accountState || !accountState->account()) {
+        return false;
     }
 
-    Q_ASSERT(accountState);
-    const auto account = accountState->account();
-
-    if (!account) {
-        return {};
-    }
-
-    NSFileProviderDomain * const domain = domainForAccount(account.data());
-
+    NSFileProviderDomain *const domain = domainForAccount(accountState->account().data());
     if (!domain) {
-        return {};
+        if (preservedDataPath) {
+            preservedDataPath->clear();
+        }
+        return true;
     }
 
-    return d->removeDomain(domain);
+    auto removeSucceeded = false;
+    const auto preservedDataUrl = d->removeDomain(domain, &removeSucceeded);
+    if (preservedDataPath) {
+        *preservedDataPath = preservedDataUrl;
+    }
+    return removeSucceeded;
 }
 
 void FileProviderDomainManager::disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &reason)
