@@ -4063,7 +4063,7 @@ Elementer, hvor sletning er tilladt, bliver slettet, hvis de forhindrer, at en m
     <message>
         <location filename="../src/gui/infosettings.ui" line="81"/>
         <source>Legal Notice</source>
-        <translation>Juridisk meddelelse</translation>
+        <translation>Juridiske oplysninger</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="152"/>
