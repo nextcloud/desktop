@@ -10,6 +10,7 @@ nextcloud_add_test(SystraySyncControlMacOS)
 nextcloud_add_test(MacSandboxUtility)
 
 nextcloud_add_test(CocoaInitializerMacOS)
+nextcloud_add_test(FinderSyncServiceBranding)
 nextcloud_add_test(LocalNetworkPermissionMacOS)
 target_sources(LocalNetworkPermissionMacOSTest PRIVATE localnetworkpermissiontestconnection.mm)
 
@@ -21,6 +22,7 @@ endif()
 
 set_source_files_properties(
     testcocoainitializermacos.cpp
+    testfindersyncservicebranding.cpp
     testlocalnetworkpermissionmacos.cpp
     testsparkleupdatermacos.cpp
     testxpcservicelifecycle.cpp

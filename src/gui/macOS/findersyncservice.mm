@@ -4,6 +4,7 @@
  */
 
 #include "findersyncservice.h"
+#include "config.h"
 
 #import <Foundation/Foundation.h>
 #import "../../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncAppProtocol.h"
@@ -30,6 +31,8 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
 
 // SocketApi handlers require a listener and write output via sendMessage()
 namespace {
+NSString *const finderSyncServiceErrorDomain = @APPLICATION_REV_DOMAIN ".FinderSyncService";
+
 class ResponseCapturingListener : public OCC::SocketListener
 {
 public:
@@ -65,7 +68,7 @@ public:
     // Store socketApi pointer after null check to prevent TOCTOU race
     auto *socketApi = _service ? _service->socketApi() : nullptr;
     if (!socketApi) {
-        NSError *error = [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+        NSError *error = [NSError errorWithDomain:finderSyncServiceErrorDomain
                                              code:1
                                          userInfo:@{NSLocalizedDescriptionKey: @"SocketApi not available"}];
         completionHandler(nil, error);
@@ -80,7 +83,7 @@ public:
         auto handler = copiedHandler;
         if (!service) {
             handler(nil,
-                    [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+                    [NSError errorWithDomain:finderSyncServiceErrorDomain
                                         code:1
                                     userInfo:@{NSLocalizedDescriptionKey : @"Service not available"}]);
             return;
@@ -111,7 +114,7 @@ public:
     qCDebug(OCC::lcMacFinderSyncService) << "FinderSync requesting localized strings";
 
     if (!_service) {
-        NSError *error = [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+        NSError *error = [NSError errorWithDomain:finderSyncServiceErrorDomain
                                              code:1
                                          userInfo:@{NSLocalizedDescriptionKey: @"Service not available"}];
         completionHandler(nil, error);
@@ -135,7 +138,7 @@ public:
            completionHandler:(void(^)(NSArray<NSDictionary *> *menuItems, NSError *error))completionHandler
 {
     if (!paths || paths.count == 0) {
-        NSError *error = [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+        NSError *error = [NSError errorWithDomain:finderSyncServiceErrorDomain
                                              code:3
                                          userInfo:@{NSLocalizedDescriptionKey: @"No paths provided"}];
         completionHandler(nil, error);
@@ -147,7 +150,7 @@ public:
     // Store socketApi pointer after null check to prevent TOCTOU race
     auto *socketApi = _service ? _service->socketApi() : nullptr;
     if (!socketApi) {
-        NSError *error = [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+        NSError *error = [NSError errorWithDomain:finderSyncServiceErrorDomain
                                              code:1
                                          userInfo:@{NSLocalizedDescriptionKey: @"SocketApi not available"}];
         completionHandler(nil, error);
@@ -168,7 +171,7 @@ public:
         auto handler = copiedHandler;
         if (!service) {
             handler(nil,
-                    [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+                    [NSError errorWithDomain:finderSyncServiceErrorDomain
                                         code:1
                                     userInfo:@{NSLocalizedDescriptionKey : @"Service not available"}]);
             return;
@@ -208,7 +211,7 @@ public:
     // Store socketApi pointer after null check to prevent TOCTOU race
     auto *socketApi = _service ? _service->socketApi() : nullptr;
     if (!socketApi) {
-        NSError *error = [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+        NSError *error = [NSError errorWithDomain:finderSyncServiceErrorDomain
                                              code:1
                                          userInfo:@{NSLocalizedDescriptionKey: @"SocketApi not available"}];
         completionHandler(error);
@@ -245,7 +248,7 @@ public:
 
     if (!allowedCommands.contains(qCommand)) {
         qCWarning(OCC::lcMacFinderSyncService) << "Rejected disallowed command:" << qCommand;
-        NSError *error = [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+        NSError *error = [NSError errorWithDomain:finderSyncServiceErrorDomain
                                              code:5
                                          userInfo:@{NSLocalizedDescriptionKey: @"Command not allowed"}];
         completionHandler(error);
@@ -281,7 +284,7 @@ public:
             handler(nil);
         } else {
             qCWarning(OCC::lcMacFinderSyncService) << "Command execution failed (method not found):" << qCommand;
-            NSError *error = [NSError errorWithDomain:@"com.nextcloud.desktopclient.FinderSyncService"
+            NSError *error = [NSError errorWithDomain:finderSyncServiceErrorDomain
                                                  code:4
                                              userInfo:@{NSLocalizedDescriptionKey: @"Command method not found"}];
             handler(error);

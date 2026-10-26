@@ -9,6 +9,7 @@
 #include <QTemporaryDir>
 #include <QtTest>
 
+#include "config.h"
 #include "configfile.h"
 #include "macOS/fileproviderservice.h"
 #include "macOS/findersyncservice.h"
@@ -85,6 +86,7 @@ private Q_SLOTS:
                                   completed = true;
                                   QVERIFY(status == nil);
                                   QCOMPARE(error.code, 1);
+                                  QCOMPARE(QString::fromNSString(error.domain), QString::fromLatin1(APPLICATION_REV_DOMAIN ".FinderSyncService"));
                               }];
             QVERIFY(completed);
         }
@@ -161,6 +163,7 @@ private Q_SLOTS:
                      completionHandler:^(NSArray<NSDictionary *> *items, NSError *error) {
                          QVERIFY(items == nil);
                          QCOMPARE(error.code, 1);
+                         QCOMPARE(QString::fromNSString(error.domain), QString::fromLatin1(APPLICATION_REV_DOMAIN ".FinderSyncService"));
                          completed = true;
                      }];
         service.reset();
