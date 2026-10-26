@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+static_assert(__has_feature(objc_arc), "File Provider XPC requires ARC.");
+
 namespace {
     constexpr int64_t semaphoreWaitDelta = 1000000000; // 1 seconds
     constexpr auto reachableRetryTimeout = 300; // seconds
@@ -41,9 +43,8 @@ FileProviderXPC::~FileProviderXPC()
 void FileProviderXPC::disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier)
 {
     const auto clientCommConnection = _clientCommConnections.take(fileProviderDomainIdentifier);
-    [(NSXPCConnection *)clientCommConnection.xpcConnection invalidate];
-    [(NSXPCConnection *)clientCommConnection.xpcConnection release];
-    [(NSObject *)clientCommConnection.clientCommunicationService release];
+    [(__bridge_transfer NSXPCConnection *)clientCommConnection.xpcConnection invalidate];
+    (void)CFBridgingRelease(clientCommConnection.clientCommunicationService);
 }
 
 void FileProviderXPC::disconnectFromFileProviderDomains()
@@ -71,10 +72,6 @@ void FileProviderXPC::connectToFileProviderDomains()
         const auto clientCommConnection = clientCommConnections.value(domainIdentifier);
         _clientCommConnections.insert(domainIdentifier, clientCommConnection);
     }
-
-    [connections release];
-    [fpServices release];
-    [managers release];
 }
 
 void FileProviderXPC::authenticateFileProviderDomains()
@@ -107,7 +104,7 @@ void FileProviderXPC::authenticateFileProviderDomain(const QString &fileProvider
     NSString *const userAgent = QString::fromUtf8(Utility::userAgentString()).toNSString();
 
     const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
-    const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
+    const auto clientCommService = (__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
 
     qCInfo(lcFileProviderXPC) << "Authenticating file provider domain with identifier"
                               << fileProviderDomainIdentifier
@@ -129,7 +126,7 @@ void FileProviderXPC::unauthenticateFileProviderDomain(const QString &fileProvid
 {
     qCInfo(lcFileProviderXPC) << "Unauthenticating file provider domain with identifier" << fileProviderDomainIdentifier;
     const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
-    const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
+    const auto clientCommService = (__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
     [clientCommService removeAccountConfig];
 }
 
@@ -178,7 +175,7 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
     }
 
     const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
-    const auto service = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
+    const auto service = (__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
 
     if (service == nil) {
         qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
@@ -192,7 +189,6 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
         dispatch_semaphore_signal(semaphore);
     }];
     dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
-    dispatch_release(semaphore);
 
     if (response) {
         _unreachableFileProviderDomains.remove(fileProviderDomainIdentifier);
@@ -223,9 +219,6 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
                 disconnectFromFileProviderDomain(domainIdentifier);
                 _clientCommConnections.insert(domainIdentifier, clientCommConnection);
             }
-
-            [connections release];
-            [fpServices release];
         }
 
         if (retry) {
@@ -243,7 +236,7 @@ std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QS
     qCInfo(lcFileProviderXPC) << "Checking for dirty user data in file provider domain" << fileProviderDomainIdentifier;
 
     const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
-    const auto service = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
+    const auto service = (__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
 
     if (service == nil) {
         qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
@@ -259,7 +252,6 @@ std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QS
     }];
 
     const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
-    dispatch_release(semaphore);
 
     if (waitResult != 0) {
         qCWarning(lcFileProviderXPC) << "Timed out while checking for dirty user data in file provider domain" << fileProviderDomainIdentifier;
@@ -274,7 +266,7 @@ std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QS
 bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const
 {
     const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
-    const auto service = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
+    const auto service = (__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
 
     if (service == nil) {
         qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
@@ -295,7 +287,6 @@ bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIde
     }];
 
     const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
-    dispatch_release(semaphore);
 
     if (waitResult != 0) {
         qCWarning(lcFileProviderXPC) << "Timed out while forwarding file ID changes to file provider domain"
@@ -325,11 +316,9 @@ void FileProviderXPC::setIgnoreList() const
     for (const auto &fileProviderDomainIdentifier : _clientCommConnections.keys()) {
         qCInfo(lcFileProviderXPC) << "Updating ignore list of file provider domain" << fileProviderDomainIdentifier;
         const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
-        const auto service = (NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
+        const auto service = (__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
         [service setIgnoreList:nsPatterns];
     }
-
-    [nsPatterns release];
 }
 
 } // namespace OCC::Mac
