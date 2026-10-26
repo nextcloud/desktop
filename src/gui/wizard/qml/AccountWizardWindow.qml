@@ -277,7 +277,9 @@ WizardStyledWindow {
             },
 
             WizardButton {
-                visible: root.controller && root.controller.currentStep === AccountWizardController.ServerStep
+                visible: root.controller
+                    && root.controller.currentStep === AccountWizardController.ServerStep
+                    && !Theme.wizardHideSignupButton
                 enabled: root.controller && !root.controller.busy
                 text: qsTr("Sign up")
                 textSuffix: "\u2197"

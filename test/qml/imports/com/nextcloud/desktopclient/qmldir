@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 module com.nextcloud.desktopclient
+AccountWizardController 1.0 AccountWizardController.qml
 singleton Systray 1.0 Systray.qml
 singleton Theme 1.0 Theme.qml
 singleton UserModel 1.0 UserModel.qml
