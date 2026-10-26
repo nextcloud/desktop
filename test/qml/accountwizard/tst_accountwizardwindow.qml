@@ -51,6 +51,7 @@ Item {
                 wizard = null
                 wait(0)
             }
+            Theme.wizardHideSignupButton = false
         }
 
         function findVisibleButton(item, text) {
@@ -81,6 +82,25 @@ Item {
             verify(button, "no visible button labelled " + text)
             button.text = newText
             return button
+        }
+
+        function test_signupVisibility_data() {
+            return [
+                { tag: "default", hideSignup: false, step: AccountWizardController.ServerStep, signupVisible: true, selfHostVisible: true },
+                { tag: "hide signup", hideSignup: true, step: AccountWizardController.ServerStep, signupVisible: false, selfHostVisible: true },
+                { tag: "other step default", hideSignup: false, step: AccountWizardController.BasicAuthStep, signupVisible: false, selfHostVisible: false },
+                { tag: "other step hide signup", hideSignup: true, step: AccountWizardController.BasicAuthStep, signupVisible: false, selfHostVisible: false }
+            ]
+        }
+
+        function test_signupVisibility(data) {
+            Theme.wizardHideSignupButton = data.hideSignup
+            const wizard = createWizard(data.step)
+            compare(findVisibleButton(wizard.contentItem, "Sign up") !== null, data.signupVisible)
+            compare(findVisibleButton(wizard.contentItem, "Self-host") !== null, data.selfHostVisible)
+            if (data.step === AccountWizardController.ServerStep) {
+                verify(findVisibleButton(wizard.contentItem, "Log in"))
+            }
         }
 
         function test_widthIsConstantAcrossSteps() {
