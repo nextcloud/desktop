@@ -12,8 +12,11 @@
 #include "tray/usermodel.h"
 
 #include <QAction>
+#include <QApplication>
+#include <QFont>
 #include <QMenu>
 #include <QPointer>
+#include <QScreen>
 #include <QSignalSpy>
 #include <QStandardPaths>
 #include <QTemporaryDir>
@@ -47,6 +50,15 @@ class TestTrayAccountMenuQt : public QObject
 private Q_SLOTS:
     void initTestCase()
     {
+        QApplication::setStyle(u"Fusion"_s);
+        QApplication::setLayoutDirection(Qt::LeftToRight);
+        QApplication::setEffectEnabled(Qt::UI_AnimateMenu, false);
+        QApplication::setEffectEnabled(Qt::UI_FadeMenu, false);
+        constexpr auto testFontPixelSize = 12;
+        auto font = QApplication::font();
+        font.setPixelSize(testFontPixelSize);
+        QApplication::setFont(font);
+
         Q_INIT_RESOURCE(resources);
         Q_INIT_RESOURCE(theme);
         QStandardPaths::setTestModeEnabled(true);
@@ -147,6 +159,62 @@ private Q_SLOTS:
         QCOMPARE(destroyed.count(), 0);
         QCOMPARE(submenu->actions(), initialActions);
         QCOMPARE(_activityRequestCount, connected ? 1 : 0);
+    }
+
+    void submenusStayConnected_data()
+    {
+        QTest::addColumn<bool>("openToLeft");
+        QTest::addColumn<bool>("wideStyle");
+        QTest::newRow("compact-right") << false << false;
+        QTest::newRow("compact-left") << true << false;
+        QTest::newRow("wide-style-right") << false << true;
+        QTest::newRow("wide-style-left") << true << true;
+    }
+
+    void submenusStayConnected()
+    {
+        QFETCH(bool, openToLeft);
+        QFETCH(bool, wideStyle);
+
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        if (wideStyle) {
+            constexpr auto rootItemPadding = 80;
+            menu.setStyleSheet(u"QMenu::item { padding: 0px %1px; }"_s.arg(rootItemPadding));
+        }
+
+        constexpr auto screenEdgeMargin = 10;
+        constexpr auto popupTopMargin = 50;
+        const auto screen = QApplication::primaryScreen();
+        QVERIFY(screen);
+        const auto availableGeometry = screen->availableGeometry();
+        const auto popupX = openToLeft ? availableGeometry.right() - menu.sizeHint().width() - screenEdgeMargin : availableGeometry.left() + screenEdgeMargin;
+        menu.popup(QPoint{popupX, availableGeometry.top() + popupTopMargin});
+        QTRY_VERIFY(menu.isVisible());
+
+        const auto submenu = accountMenu(menu);
+        QVERIFY(submenu);
+        if (wideStyle) {
+            constexpr auto submenuItemPadding = 140;
+            submenu->setStyleSheet(u"QMenu::item { padding: 0px %1px; }"_s.arg(submenuItemPadding));
+        }
+        QVERIFY(menu.sizeHint().width() + submenu->sizeHint().width() + 2 * screenEdgeMargin < availableGeometry.width());
+        menu.setActiveAction(submenu->menuAction());
+        QTest::keyClick(&menu, Qt::Key_Right);
+        QTRY_VERIFY(submenu->isVisible());
+
+        const auto parentGeometry = menu.geometry();
+        const auto submenuGeometry = submenu->geometry();
+        const auto gap = openToLeft ? parentGeometry.left() - submenuGeometry.right() - 1 : submenuGeometry.left() - parentGeometry.right() - 1;
+        QVERIFY2(gap <= 0, qPrintable(u"Submenu is separated from its parent by %1 pixels."_s.arg(gap)));
+        QCOMPARE(submenuGeometry.center().x() < parentGeometry.center().x(), openToLeft);
+        QCOMPARE(menu.width(), menu.sizeHint().width());
+        QCOMPARE(submenu->width(), submenu->sizeHint().width());
+
+        QTest::keyClick(submenu, Qt::Key_Escape);
+        QTRY_VERIFY(!submenu->isVisible());
+        QTest::keyClick(&menu, Qt::Key_Escape);
+        QTRY_VERIFY(!menu.isVisible());
     }
 
     void connectionChangesRefreshOnlyVisibleSubmenus()
