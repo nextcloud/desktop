@@ -54,15 +54,16 @@ class ShareOptionsView: NSView {
                 return
             }
 
-            suggestionsTextFieldDelegate.suggestionsDataSource = ShareeSuggestionsDataSource(account: account, kit: kit, log: log)
+            suggestionsTextFieldDelegate.suggestionsDataSource = ShareeSuggestionsDataSource(account: account, kit: kit, log: log, shareType: pickedShareType())
 
             suggestionsTextFieldDelegate.confirmationHandler = { [weak self] suggestion in
                 Task { @MainActor in
-                    guard let sharee = suggestion?.data as? NKSharee else {
+                    guard let self, let sharee = suggestion?.data as? NKSharee,
+                          sharee.shareType == self.pickedShareType().rawValue else {
                         return
                     }
-                    self?.shareRecipientTextField.stringValue = sharee.shareWith
-                    self?.logger?.debug("Chose sharee \(sharee.shareWith)")
+                    self.shareRecipientTextField.stringValue = sharee.shareWith
+                    self.logger?.debug("Chose sharee \(sharee.shareWith)")
                 }
             }
 
@@ -188,6 +189,7 @@ class ShareOptionsView: NSView {
         setAllFields(enabled: true)
 
         let type = pickedShareType()
+        (suggestionsTextFieldDelegate.suggestionsDataSource as? ShareeSuggestionsDataSource)?.shareType = type
         shareRecipientTextField.isHidden = type == .publicLink
 
         if let caps = dataSource?.capabilities?.filesSharing {
@@ -262,6 +264,8 @@ class ShareOptionsView: NSView {
 
     @IBAction func shareTypePickerAction(_ sender: Any) {
         if createMode {
+            shareRecipientTextField.stringValue = ""
+            suggestionsTextFieldDelegate.suggestionsWindowController?.cancelSuggestions()
             setupCreateForm()
         }
     }
