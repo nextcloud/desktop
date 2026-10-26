@@ -50,11 +50,11 @@ class ShareOptionsView: NSView {
                 return
             }
 
-            guard let controller else {
+            guard let log = dataSource?.serviceResolver.log else {
                 return
             }
 
-            suggestionsTextFieldDelegate.suggestionsDataSource = ShareeSuggestionsDataSource(account: account, kit: kit, log: controller.log)
+            suggestionsTextFieldDelegate.suggestionsDataSource = ShareeSuggestionsDataSource(account: account, kit: kit, log: log)
 
             suggestionsTextFieldDelegate.confirmationHandler = { [weak self] suggestion in
                 Task { @MainActor in
@@ -149,7 +149,8 @@ class ShareOptionsView: NSView {
         reset()
 
         shareRecipientTextField.stringValue = share.shareWithDisplayname
-        labelTextField.stringValue = share.label
+        labelTextField.isHidden = !share.supportsLabel
+        labelTextField.stringValue = share.supportsLabel ? share.label : ""
         uploadEditPermissionCheckbox.state = share.shareesCanEdit ? .on : .off
         hideDownloadCheckbox.state = share.hideDownload ? .on : .off
         passwordProtectCheckbox.state = share.password.isEmpty ? .off : .on
@@ -160,7 +161,7 @@ class ShareOptionsView: NSView {
         expirationDatePicker.dateValue = share.expirationDate as? Date ?? Date()
         noteForRecipientCheckbox.state = share.note.isEmpty ? .off : .on
         noteTextField.isHidden = noteForRecipientCheckbox.state == .off
-        noteForRecipientCheckbox.stringValue = share.note
+        noteTextField.stringValue = share.note
     }
 
     private func reset() {
@@ -367,7 +368,7 @@ class ShareOptionsView: NSView {
                 expireDate: expireDate,
                 permissions: permissions,
                 note: note,
-                label: label,
+                label: share.supportsLabel ? label : nil,
                 hideDownload: hideDownload
             )
 

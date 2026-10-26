@@ -10,6 +10,10 @@ import AppKit
 import NextcloudKit
 
 extension NKShare {
+    var supportsLabel: Bool {
+        shareType == ShareType.publicLink.rawValue || shareType == ShareType.email.rawValue
+    }
+
     var typeImage: NSImage? {
         var image: NSImage?
         switch shareType {
