@@ -53,7 +53,7 @@ void warnSystray()
     );
 }
 
-int main(int argc, char **argv)
+static int runApplication(int argc, char **argv)
 {
 #ifdef Q_OS_WIN
     SetDllDirectory(L"");
@@ -65,10 +65,6 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(assistant);
 
     // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
-#ifdef Q_OS_MACOS
-    Mac::CocoaInitializer cocoaInit; // RIIA
-#endif
-
     auto surfaceFormat = QSurfaceFormat::defaultFormat();
     surfaceFormat.setOption(QSurfaceFormat::ResetNotification);
     QSurfaceFormat::setDefaultFormat(surfaceFormat);
@@ -213,4 +209,15 @@ int main(int argc, char **argv)
     }
 
     return app.exec();
+}
+
+int main(int argc, char **argv)
+{
+#ifdef Q_OS_MACOS
+    return Mac::CocoaInitializer::run([argc, argv] {
+        return runApplication(argc, argv);
+    });
+#else
+    return runApplication(argc, argv);
+#endif
 }

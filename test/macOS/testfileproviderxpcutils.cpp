@@ -18,6 +18,8 @@
 
 #import <FileProvider/FileProvider.h>
 
+static_assert(__has_feature(objc_arc), "File Provider XPC utility tests require ARC.");
+
 using namespace Qt::StringLiterals;
 
 namespace
@@ -48,7 +50,7 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 @end
 
 @interface TestFileProviderManager : NSObject
-@property (nonatomic, retain) NSFileProviderService *service;
+@property (nonatomic, strong) NSFileProviderService *service;
 @end
 
 @implementation TestFileProviderManager
@@ -66,7 +68,7 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 
 @interface TestClientCommunicationService : NSObject <ClientCommunicationProtocol>
 @property (nonatomic, copy) NSString *domainIdentifier;
-@property (nonatomic, retain) NSError *error;
+@property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL *deallocatedFlag;
 @property (nonatomic, assign) BOOL suppressDomainIdentifierReply;
 @end
@@ -113,16 +115,12 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
     if (self.deallocatedFlag != nullptr) {
         *self.deallocatedFlag = YES;
     }
-
-    [_domainIdentifier release];
-    [_error release];
-    [super dealloc];
 }
 
 @end
 
 @interface TestXPCConnection : NSObject
-@property (nonatomic, retain) NSObject<ClientCommunicationProtocol> *remoteService;
+@property (nonatomic, strong) NSObject<ClientCommunicationProtocol> *remoteService;
 @property (nonatomic, assign) BOOL *deallocatedFlag;
 @property (nonatomic, assign) BOOL invalidated;
 @property (nonatomic, assign) BOOL resumed;
@@ -170,9 +168,6 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
     if (self.deallocatedFlag != nullptr) {
         *self.deallocatedFlag = YES;
     }
-
-    [_remoteService release];
-    [super dealloc];
 }
 
 @end
@@ -194,13 +189,10 @@ private Q_SLOTS:
             const auto manager = [TestFileProviderManager new];
             manager.service = (NSFileProviderService *)service;
             [managers addObject:(NSFileProviderManager *)manager];
-            [service release];
-            [manager release];
         }
 
         const auto services = OCC::Mac::FileProviderXPCUtils::getFileProviderServices(managers);
         QCOMPARE(services.count, managerCount);
-        [services release];
     }
 
     void serviceWithoutNameIsIgnored()
@@ -211,22 +203,22 @@ private Q_SLOTS:
 
         const auto services = OCC::Mac::FileProviderXPCUtils::getFileProviderServices(@[(NSFileProviderManager *)manager]);
         QCOMPARE(services.count, 0);
-
-        [services release];
-        [service release];
-        [manager release];
     }
 
-    void clientCommunicationDomainIdentifierCanBeReleasedByCaller()
+    void clientCommunicationDomainIdentifierFollowsARCLifetime()
     {
-        const auto service = [TestClientCommunicationService new];
-        service.domainIdentifier = @"domain-id";
+        __weak NSString *weakDomainIdentifier = nil;
+        @autoreleasepool {
+            const auto service = [TestClientCommunicationService new];
+            const auto expectedIdentifier = u"domain-identifier-long-enough-for-ARC-lifetime"_s;
+            service.domainIdentifier = expectedIdentifier.toNSString();
 
-        const auto domainIdentifier = OCC::Mac::FileProviderXPCUtils::getFileProviderDomainIdentifier((NSObject<ClientCommunicationProtocol> *)service);
+            const auto domainIdentifier = OCC::Mac::FileProviderXPCUtils::getFileProviderDomainIdentifier((NSObject<ClientCommunicationProtocol> *)service);
+            weakDomainIdentifier = domainIdentifier;
 
-        QCOMPARE(QString::fromNSString(domainIdentifier), QStringLiteral("domain-id"));
-        [domainIdentifier release];
-        [service release];
+            QCOMPARE(QString::fromNSString(domainIdentifier), expectedIdentifier);
+        }
+        QVERIFY(weakDomainIdentifier == nil);
     }
 
     void domainIdentifierRequestTimesOut()
@@ -237,39 +229,36 @@ private Q_SLOTS:
         const auto domainIdentifier = OCC::Mac::FileProviderXPCUtils::getFileProviderDomainIdentifier((NSObject<ClientCommunicationProtocol> *)service);
 
         QVERIFY(domainIdentifier == nil);
-        [service release];
     }
 
     void clientCommunicationConnectionValuesHaveOneRetain()
     {
         BOOL serviceDeallocated = NO;
-        const auto service = [TestClientCommunicationService new];
-        service.domainIdentifier = @"domain-id";
-        service.deallocatedFlag = &serviceDeallocated;
-
         BOOL connectionDeallocated = NO;
-        const auto connection = [TestXPCConnection new];
-        connection.remoteService = service;
-        connection.deallocatedFlag = &connectionDeallocated;
+        @autoreleasepool {
+            auto clientCommConnections = OCC::Mac::FileProviderXPCUtils::ClientCommunicationConnections{};
+            @autoreleasepool {
+                const auto service = [TestClientCommunicationService new];
+                service.domainIdentifier = @"domain-id";
+                service.deallocatedFlag = &serviceDeallocated;
 
-        const auto connections = [[NSMutableArray alloc] initWithObjects:(NSXPCConnection *)connection, nil];
+                const auto connection = [TestXPCConnection new];
+                connection.remoteService = service;
+                connection.deallocatedFlag = &connectionDeallocated;
+                const auto connections = [[NSMutableArray alloc] initWithObjects:(NSXPCConnection *)connection, nil];
 
-        const auto clientCommConnections = OCC::Mac::FileProviderXPCUtils::processClientCommunicationConnections(connections, nullptr);
-
-        QCOMPARE(clientCommConnections.size(), 1);
-        const auto clientCommConnection = clientCommConnections.value(QStringLiteral("domain-id"));
-        const auto returnedService = (NSObject *)clientCommConnection.clientCommunicationService;
-        const auto returnedConnection = (TestXPCConnection *)clientCommConnection.xpcConnection;
-        QVERIFY(returnedService != nil);
-        QVERIFY(returnedConnection.resumed);
-
-        [returnedService release];
-        [returnedConnection invalidate];
-        [returnedConnection release];
-        [connections release];
-        [connection release];
-        [service release];
-
+                clientCommConnections = OCC::Mac::FileProviderXPCUtils::processClientCommunicationConnections(connections, nullptr);
+            }
+            QVERIFY(!serviceDeallocated);
+            QVERIFY(!connectionDeallocated);
+            QCOMPARE(clientCommConnections.size(), 1);
+            const auto clientCommConnection = clientCommConnections.value(QStringLiteral("domain-id"));
+            const auto returnedService = (__bridge_transfer NSObject *)clientCommConnection.clientCommunicationService;
+            const auto returnedConnection = (__bridge_transfer TestXPCConnection *)clientCommConnection.xpcConnection;
+            QVERIFY(returnedService != nil);
+            QVERIFY(returnedConnection.resumed);
+            [returnedConnection invalidate];
+        }
         QVERIFY(serviceDeallocated);
         QVERIFY(connectionDeallocated);
     }
@@ -277,26 +266,22 @@ private Q_SLOTS:
     void nilDomainIdentifierInvalidatesConnectionAndReleasesService()
     {
         BOOL serviceDeallocated = NO;
-        const auto service = [TestClientCommunicationService new];
-        service.domainIdentifier = nil;
-        service.deallocatedFlag = &serviceDeallocated;
-
         BOOL connectionDeallocated = NO;
-        const auto connection = [TestXPCConnection new];
-        connection.remoteService = service;
-        connection.deallocatedFlag = &connectionDeallocated;
+        @autoreleasepool {
+            const auto service = [TestClientCommunicationService new];
+            service.domainIdentifier = nil;
+            service.deallocatedFlag = &serviceDeallocated;
 
-        const auto connections = [[NSMutableArray alloc] initWithObjects:(NSXPCConnection *)connection, nil];
+            const auto connection = [TestXPCConnection new];
+            connection.remoteService = service;
+            connection.deallocatedFlag = &connectionDeallocated;
+            const auto connections = [[NSMutableArray alloc] initWithObjects:(NSXPCConnection *)connection, nil];
 
-        const auto clientCommConnections = OCC::Mac::FileProviderXPCUtils::processClientCommunicationConnections(connections, nullptr);
+            const auto clientCommConnections = OCC::Mac::FileProviderXPCUtils::processClientCommunicationConnections(connections, nullptr);
 
-        QCOMPARE(clientCommConnections.size(), 0);
-        QVERIFY(connection.invalidated);
-
-        [connections release];
-        [connection release];
-        [service release];
-
+            QCOMPARE(clientCommConnections.size(), 0);
+            QVERIFY(connection.invalidated);
+        }
         QVERIFY(serviceDeallocated);
         QVERIFY(connectionDeallocated);
     }
@@ -304,45 +289,37 @@ private Q_SLOTS:
     void duplicateDomainIdentifierInvalidatesDuplicateConnectionAndReleasesService()
     {
         BOOL firstServiceDeallocated = NO;
-        const auto firstService = [TestClientCommunicationService new];
-        firstService.domainIdentifier = @"domain-id";
-        firstService.deallocatedFlag = &firstServiceDeallocated;
-
         BOOL firstConnectionDeallocated = NO;
-        const auto firstConnection = [TestXPCConnection new];
-        firstConnection.remoteService = firstService;
-        firstConnection.deallocatedFlag = &firstConnectionDeallocated;
-
         BOOL duplicateServiceDeallocated = NO;
-        const auto duplicateService = [TestClientCommunicationService new];
-        duplicateService.domainIdentifier = @"domain-id";
-        duplicateService.deallocatedFlag = &duplicateServiceDeallocated;
-
         BOOL duplicateConnectionDeallocated = NO;
-        const auto duplicateConnection = [TestXPCConnection new];
-        duplicateConnection.remoteService = duplicateService;
-        duplicateConnection.deallocatedFlag = &duplicateConnectionDeallocated;
+        @autoreleasepool {
+            const auto firstService = [TestClientCommunicationService new];
+            firstService.domainIdentifier = @"domain-id";
+            firstService.deallocatedFlag = &firstServiceDeallocated;
 
-        const auto connections = [[NSMutableArray alloc] initWithObjects:(NSXPCConnection *)firstConnection, (NSXPCConnection *)duplicateConnection, nil];
+            const auto firstConnection = [TestXPCConnection new];
+            firstConnection.remoteService = firstService;
+            firstConnection.deallocatedFlag = &firstConnectionDeallocated;
 
-        const auto clientCommConnections = OCC::Mac::FileProviderXPCUtils::processClientCommunicationConnections(connections, nullptr);
+            const auto duplicateService = [TestClientCommunicationService new];
+            duplicateService.domainIdentifier = @"domain-id";
+            duplicateService.deallocatedFlag = &duplicateServiceDeallocated;
 
-        QCOMPARE(clientCommConnections.size(), 1);
-        QVERIFY(duplicateConnection.invalidated);
+            const auto duplicateConnection = [TestXPCConnection new];
+            duplicateConnection.remoteService = duplicateService;
+            duplicateConnection.deallocatedFlag = &duplicateConnectionDeallocated;
+            const auto connections = [[NSMutableArray alloc] initWithObjects:(NSXPCConnection *)firstConnection, (NSXPCConnection *)duplicateConnection, nil];
 
-        const auto clientCommConnection = clientCommConnections.value(QStringLiteral("domain-id"));
-        const auto returnedService = (NSObject *)clientCommConnection.clientCommunicationService;
-        const auto returnedConnection = (TestXPCConnection *)clientCommConnection.xpcConnection;
-        [returnedService release];
-        [returnedConnection invalidate];
-        [returnedConnection release];
+            const auto clientCommConnections = OCC::Mac::FileProviderXPCUtils::processClientCommunicationConnections(connections, nullptr);
 
-        [connections release];
-        [firstConnection release];
-        [duplicateConnection release];
-        [firstService release];
-        [duplicateService release];
-
+            QCOMPARE(clientCommConnections.size(), 1);
+            QVERIFY(duplicateConnection.invalidated);
+            const auto clientCommConnection = clientCommConnections.value(QStringLiteral("domain-id"));
+            const auto returnedService = (__bridge_transfer NSObject *)clientCommConnection.clientCommunicationService;
+            const auto returnedConnection = (__bridge_transfer TestXPCConnection *)clientCommConnection.xpcConnection;
+            QVERIFY(returnedService != nil);
+            [returnedConnection invalidate];
+        }
         QVERIFY(firstServiceDeallocated);
         QVERIFY(firstConnectionDeallocated);
         QVERIFY(duplicateServiceDeallocated);
