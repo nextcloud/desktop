@@ -234,6 +234,10 @@ void ProcessDirectoryJob::process()
 
         const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup;
 
+        if (_queryLocal == ParentNotChanged && FileSystem::isSymLink(_discoveryData->_localDir + path._local)) {
+            e.localEntry.isSymLink = true;
+        }
+
         const auto willBeExcluded = handleExcluded(path._target, e, entries, isHidden, isBlacklisted);
 
         if (willBeExcluded) {
@@ -390,6 +394,13 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     if (entries.localEntry.isSymLink) {
         /* Symbolic links are ignored. */
         item->_errorString = OwncloudPropagator::symlinkNotSupportedMessage();
+        if (entries.dbEntry.isValid() && !_discoveryData->_statedb->deleteFileRecord(entries.dbEntry.path(), true)) {
+            qCWarning(lcDisco) << "Failed to drop stale record for symlinked path" << entries.dbEntry.path();
+        }
+        // Keep the parent etags invalid, so the server folder behind the link is listed again.
+        if (entries.serverEntry.isValid() || entries.dbEntry.isValid()) {
+            _discoveryData->_statedb->schedulePathForRemoteDiscovery(path);
+        }
     } else {
         switch (excluded) {
         case CSYNC_NOT_EXCLUDED:
@@ -609,18 +620,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_previousSize = dbEntry._fileSize;
     item->_previousModtime = dbEntry._modtime;
     item->_discoveryResult = std::move(processingLog);
-
-    if (_queryLocal == ParentNotChanged && FileSystem::isSymLink(_discoveryData->_localDir + path._local)) {
-        qCInfo(lcDisco) << "Local path is a symlink, ignoring" << path._local;
-        if (dbEntry.isValid() && !_discoveryData->_statedb->deleteFileRecord(dbEntry.path(), true)) {
-            qCWarning(lcDisco) << "Failed to drop stale record for symlinked path" << dbEntry.path();
-        }
-        item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-        item->_errorString = OwncloudPropagator::symlinkNotSupportedMessage();
-        _childIgnored = true;
-        Q_EMIT _discoveryData->itemDiscovered(item);
-        return;
-    }
 
     if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
         item->_type = ItemTypeFile;

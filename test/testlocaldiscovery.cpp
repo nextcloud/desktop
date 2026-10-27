@@ -21,6 +21,7 @@
 #include <owncloudpropagator.h>
 
 #include <filesystem>
+#include <functional>
 #include <system_error>
 
 #ifdef Q_OS_WIN
@@ -32,6 +33,8 @@ using namespace Qt::StringLiterals;
 
 namespace
 {
+using RemoteChange = std::function<void(FileModifier &)>;
+
 bool createDirectorySymlink(const QString &target, const QString &link)
 {
     auto error = std::error_code{};
@@ -1167,8 +1170,15 @@ private Q_SLOTS:
         QVERIFY(fakeFolder.currentLocalState().find(u"new/file.txt"_s));
     }
 
+    void testStaleRecordForSymlinkIsDropped_data()
+    {
+        testSymlinksDoNotSync_data();
+    }
+
     void testStaleRecordForSymlinkIsDropped()
     {
+        QFETCH(bool, fullLocalDiscovery);
+
         FakeFolder fakeFolder{FileInfo{}};
         QTemporaryDir outside;
         if (!createDirectorySymlink(outside.path(), fakeFolder.localPath() + u"target"_s)) {
@@ -1184,11 +1194,132 @@ private Q_SLOTS:
 
         fakeFolder.remoteModifier().mkdir(u"target"_s);
         fakeFolder.remoteModifier().insert(u"target/file.txt"_s);
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(fullLocalDiscovery ? LocalDiscoveryStyle::FilesystemOnly : LocalDiscoveryStyle::DatabaseAndFilesystem);
         QVERIFY(fakeFolder.syncOnce());
 
         QVERIFY(QDir(outside.path()).isEmpty(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System));
         QVERIFY(!fakeFolder.dbState().find(u"target"_s));
+    }
+
+    void testStaleFolderPutBackKeepsNewerServerFile_data()
+    {
+        testSymlinksDoNotSync_data();
+    }
+
+    void testStaleFolderPutBackKeepsNewerServerFile()
+    {
+        QFETCH(bool, fullLocalDiscovery);
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.remoteModifier().mkdir(u"Docs"_s);
+        fakeFolder.remoteModifier().mkdir(u"Docs/Photos"_s);
+        fakeFolder.remoteModifier().insert(u"Docs/Photos/a.jpg"_s);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QTemporaryDir outside;
+        const auto localFolder = fakeFolder.localPath() + u"Docs/Photos"_s;
+        const auto movedFolder = outside.filePath(u"Photos"_s);
+        QVERIFY(QDir().rename(localFolder, movedFolder));
+        if (!createDirectorySymlink(movedFolder, localFolder)) {
+            QSKIP("Cannot create symlinks on this system");
+        }
+        const auto syncLocalChange = [&] {
+            fakeFolder.syncEngine().setLocalDiscoveryOptions(fullLocalDiscovery ? LocalDiscoveryStyle::FilesystemOnly
+                                                                                : LocalDiscoveryStyle::DatabaseAndFilesystem,
+                                                             {u"Docs/Photos"_s});
+            return fakeFolder.syncOnce();
+        };
+
+        fakeFolder.remoteModifier().appendByte(u"Docs/Photos/a.jpg"_s);
+        const auto newerSize = fakeFolder.currentRemoteState().find(u"Docs/Photos/a.jpg"_s)->size;
+        QVERIFY(syncLocalChange());
+
+        QVERIFY(FileSystem::remove(localFolder));
+        QVERIFY(QDir().rename(movedFolder, localFolder));
+        QVERIFY(syncLocalChange());
+
+        QCOMPARE(fakeFolder.currentRemoteState().find(u"Docs/Photos/a.jpg"_s)->size, newerSize);
+    }
+
+    void testRemovedSymlinkBringsBackServerFolder_data()
+    {
+        testSymlinksDoNotSync_data();
+    }
+
+    void testRemovedSymlinkBringsBackServerFolder()
+    {
+        QFETCH(bool, fullLocalDiscovery);
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.remoteModifier().mkdir(u"Docs"_s);
+        fakeFolder.remoteModifier().mkdir(u"Docs/Photos"_s);
+        fakeFolder.remoteModifier().insert(u"Docs/Photos/a.jpg"_s);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QTemporaryDir outside;
+        const auto localFolder = fakeFolder.localPath() + u"Docs/Photos"_s;
+        QVERIFY(QDir(localFolder).removeRecursively());
+        if (!createDirectorySymlink(outside.path(), localFolder)) {
+            QSKIP("Cannot create symlinks on this system");
+        }
+        const auto syncLocalChange = [&] {
+            fakeFolder.syncEngine().setLocalDiscoveryOptions(fullLocalDiscovery ? LocalDiscoveryStyle::FilesystemOnly
+                                                                                : LocalDiscoveryStyle::DatabaseAndFilesystem,
+                                                             {u"Docs/Photos"_s});
+            return fakeFolder.syncOnce();
+        };
+        QVERIFY(syncLocalChange());
+
+        QVERIFY(FileSystem::remove(localFolder));
+        QVERIFY(syncLocalChange());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testFolderReplacedBySymlinkBeforePropagation_data()
+    {
+        QTest::addColumn<RemoteChange>("remoteChange");
+        QTest::addColumn<QString>("changedPath");
+
+        QTest::newRow("remote mkdir") << RemoteChange{[](FileModifier &remote) {
+            remote.mkdir(u"A/sub"_s);
+        }} << u"A/sub"_s;
+        QTest::newRow("download") << RemoteChange{[](FileModifier &remote) {
+            remote.insert(u"A/new"_s);
+        }} << u"A/new"_s;
+        QTest::newRow("remote delete") << RemoteChange{[](FileModifier &remote) {
+            remote.remove(u"A/a1"_s);
+        }} << u"A/a1"_s;
+        QTest::newRow("remote move into folder") << RemoteChange{[](FileModifier &remote) {
+            remote.rename(u"B/b1"_s, u"A/b1"_s);
+        }} << u"A/b1"_s;
+    }
+
+    void testFolderReplacedBySymlinkBeforePropagation()
+    {
+        QFETCH(RemoteChange, remoteChange);
+        QFETCH(QString, changedPath);
+
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        QTemporaryDir outside;
+        QVERIFY(QFile(outside.filePath(u"a1"_s)).open(QIODevice::WriteOnly));
+        QTemporaryDir probe;
+        if (!createDirectorySymlink(outside.path(), probe.filePath(u"link"_s))) {
+            QSKIP("Cannot create symlinks on this system");
+        }
+
+        const auto localFolder = fakeFolder.localPath() + u"A"_s;
+        connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, this, [&] {
+            QVERIFY(QDir(localFolder).removeRecursively());
+            QVERIFY(createDirectorySymlink(outside.path(), localFolder));
+        });
+
+        remoteChange(fakeFolder.remoteModifier());
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(QDir(outside.path()).entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System), QStringList{u"a1"_s});
+        QCOMPARE(completeSpy.findItem(changedPath)->_status, SyncFileItem::FileIgnored);
     }
 
     void testFolderReplacedBySymlinkDuringDownload()

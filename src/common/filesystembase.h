@@ -179,12 +179,6 @@ namespace FileSystem {
     void OCSYNC_EXPORT setFilePermissionsWin(const QString &filename, const std::filesystem::perms &perms);
 
     bool OCSYNC_EXPORT setAclPermission(const QString &path, FileSystem::FolderPermissions permissions);
-
-    /**
-     * Returns whether the path itself is a reparse point with a cloud files tag, as used for
-     * Windows VFS placeholders.
-     */
-    bool OCSYNC_EXPORT hasCloudReparseTag(const QString &absolutePath);
 #endif
 
     enum class LockMode {

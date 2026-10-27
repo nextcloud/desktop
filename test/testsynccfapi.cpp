@@ -1424,9 +1424,9 @@ private Q_SLOTS:
         // The placeholders are reparse points, which is what could be mistaken for a link
         CFVERIFY_VIRTUAL(fakeFolder, "file1");
         CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
-        QVERIFY(FileSystem::hasCloudReparseTag(fakeFolder.localPath() + u"file1"_s));
-        QVERIFY(FileSystem::hasCloudReparseTag(fakeFolder.localPath() + u"A"_s));
-        QVERIFY(FileSystem::hasCloudReparseTag(fakeFolder.localPath() + u"A/a1"_s));
+        QVERIFY(cfapi::findPlaceholderInfo(fakeFolder.localPath() + u"file1"_s));
+        QVERIFY(cfapi::findPlaceholderInfo(fakeFolder.localPath() + u"A"_s));
+        QVERIFY(cfapi::findPlaceholderInfo(fakeFolder.localPath() + u"A/a1"_s));
         verifyNotIgnoredAsSymlink(u"file1"_s);
         verifyNotIgnoredAsSymlink(u"A"_s);
         verifyNotIgnoredAsSymlink(u"A/a1"_s);
