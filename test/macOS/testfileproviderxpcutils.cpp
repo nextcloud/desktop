@@ -414,7 +414,6 @@ private Q_SLOTS:
         QVERIFY(deleted.has_value());
         QVERIFY(*deleted);
         QCOMPARE(service.passwordDeletionRequestCount, NSUInteger{1});
-        [service release];
     }
 
     void passwordDeletionReturnsFailedReply()
@@ -427,7 +426,6 @@ private Q_SLOTS:
         QVERIFY(deleted.has_value());
         QVERIFY(!*deleted);
         QCOMPARE(service.passwordDeletionRequestCount, NSUInteger{1});
-        [service release];
     }
 
     void passwordDeletionWithoutServiceReturnsUnknown()
@@ -446,22 +444,22 @@ private Q_SLOTS:
 
         QVERIFY(!deleted.has_value());
         QCOMPARE(service.passwordDeletionRequestCount, NSUInteger{1});
-        [service release];
     }
 
     void latePasswordDeletionReplyAfterTimeoutIsIgnored()
     {
         BOOL serviceDeallocated = NO;
-        const auto service = [TestClientCommunicationService new];
-        service.passwordDeletionReply = YES;
-        service.passwordDeletionReplyDelay = std::chrono::duration<double>(latePasswordDeletionReplyDelay).count();
-        service.deallocatedFlag = &serviceDeallocated;
+        @autoreleasepool {
+            const auto service = [TestClientCommunicationService new];
+            service.passwordDeletionReply = YES;
+            service.passwordDeletionReplyDelay = std::chrono::duration<double>(latePasswordDeletionReplyDelay).count();
+            service.deallocatedFlag = &serviceDeallocated;
 
-        const auto deleted = OCC::Mac::FileProviderXPCUtils::deletePassword((NSObject<ClientCommunicationProtocol> *)service, passwordDeletionShortTimeout);
+            const auto deleted = OCC::Mac::FileProviderXPCUtils::deletePassword((NSObject<ClientCommunicationProtocol> *)service, passwordDeletionShortTimeout);
 
-        QVERIFY(!deleted.has_value());
-        QTRY_VERIFY_WITH_TIMEOUT(service.passwordDeletionReplied, backgroundThreadTimeoutMs);
-        [service release];
+            QVERIFY(!deleted.has_value());
+            QTRY_VERIFY_WITH_TIMEOUT(service.passwordDeletionReplied, backgroundThreadTimeoutMs);
+        }
         QTRY_VERIFY_WITH_TIMEOUT(serviceDeallocated, backgroundThreadTimeoutMs);
     }
 
@@ -476,7 +474,6 @@ private Q_SLOTS:
         const auto deleted = OCC::Mac::FileProviderXPCUtils::deletePassword(domain, nullptr);
 
         QVERIFY(!deleted.has_value());
-        [domain release];
     }
 };
 
