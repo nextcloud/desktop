@@ -732,6 +732,12 @@ inline const FileInfo *findConflict(FileInfo &dir, const QString &filename)
     return nullptr;
 }
 
+bool createDirectorySymlink(const QString &target, const QString &link);
+
+#ifdef Q_OS_WIN
+bool createDirectoryJunction(const QString &target, const QString &link);
+#endif
+
 struct ItemCompletedSpy : QSignalSpy {
     explicit ItemCompletedSpy(FakeFolder &folder)
         : QSignalSpy(&folder.syncEngine(), &OCC::SyncEngine::itemCompleted)
