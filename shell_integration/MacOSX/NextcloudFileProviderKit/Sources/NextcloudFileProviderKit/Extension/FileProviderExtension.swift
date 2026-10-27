@@ -868,17 +868,7 @@ import OSLog
             return
         }
 
-        NextcloudKit.clearAccountErrorState(for: account.ncKitAccount)
-
-        ncKit.appendSession(
-            account: account.ncKitAccount,
-            urlBase: account.serverUrl,
-            user: account.username,
-            userId: account.id,
-            password: account.password,
-            userAgent: userAgent,
-            groupIdentifier: ""
-        )
+        ncKit.appendSession(account: account, userAgent: userAgent)
 
         var authAttemptState = AuthenticationAttemptResultState.connectionError // default
 
