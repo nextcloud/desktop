@@ -43,6 +43,7 @@ class ShareOptionsView: NSView {
     let kit = NextcloudKit.shared
     var account: Account? {
         didSet {
+            selectedRecipient = nil
             logger?.info("Setting up account.")
 
             guard let account else {
@@ -58,16 +59,20 @@ class ShareOptionsView: NSView {
 
             suggestionsTextFieldDelegate.confirmationHandler = { [weak self] suggestion in
                 Task { @MainActor in
-                    guard let self, let sharee = suggestion?.data as? NKSharee,
+                    guard let self, let suggestion, let sharee = suggestion.data as? NKSharee,
                           sharee.shareType == self.pickedShareType().rawValue else {
                         return
                     }
-                    self.shareRecipientTextField.stringValue = sharee.shareWith
+                    self.selectedRecipient = (sharee, suggestion.displayText)
+                    self.shareRecipientTextField.stringValue = suggestion.displayText
                     self.logger?.debug("Chose sharee \(sharee.shareWith)")
                 }
             }
 
             suggestionsTextFieldDelegate.targetTextField = shareRecipientTextField
+            recipientTextCancellable = NotificationCenter.default
+                .publisher(for: NSControl.textDidChangeNotification, object: shareRecipientTextField)
+                .sink { [weak self] _ in self?.selectedRecipient = nil }
         }
     }
     var dataSource: ShareTableViewDataSource?
@@ -105,6 +110,8 @@ class ShareOptionsView: NSView {
         }
     }
     private var cancellable: AnyCancellable?
+    private var recipientTextCancellable: AnyCancellable?
+    private var selectedRecipient: (sharee: NKSharee, displayName: String)?
     private var suggestionsWindowController = SuggestionsWindowController()
     private var suggestionsTextFieldDelegate = SuggestionsTextFieldDelegate()
 
@@ -166,6 +173,7 @@ class ShareOptionsView: NSView {
     }
 
     private func reset() {
+        selectedRecipient = nil
         shareRecipientTextField.stringValue = ""
         labelTextField.stringValue = ""
         uploadEditPermissionCheckbox.state = .off
@@ -264,6 +272,7 @@ class ShareOptionsView: NSView {
 
     @IBAction func shareTypePickerAction(_ sender: Any) {
         if createMode {
+            selectedRecipient = nil
             shareRecipientTextField.stringValue = ""
             suggestionsTextFieldDelegate.suggestionsWindowController?.cancelSuggestions()
             setupCreateForm()
@@ -312,7 +321,15 @@ class ShareOptionsView: NSView {
                 }
 
                 let selectedShareType = pickedShareType()
-                let shareWith = shareRecipientTextField.stringValue
+                let recipientText = shareRecipientTextField.stringValue
+                let shareWith: String
+                if let selectedRecipient,
+                   selectedRecipient.sharee.shareType == selectedShareType.rawValue,
+                   selectedRecipient.displayName == recipientText {
+                    shareWith = selectedRecipient.sharee.shareWith
+                } else {
+                    shareWith = recipientText
+                }
 
                 var permissions = NKShare.Permission.defaultPermission(for: selectedShareType)
 
