@@ -74,6 +74,15 @@ class TestManagedSettings : public QObject
         return account;
     }
 
+    static void setDeviceSource(SettingSourceType type, EnforcementState enforcement, int priority, const QVariantMap &values)
+    {
+        ConfigFile::setDeviceSourcesFactory([=] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(type, enforcement, priority, values));
+            return sources;
+        });
+    }
+
 private Q_SLOTS:
     void initTestCase()
     {
@@ -321,6 +330,280 @@ private Q_SLOTS:
         QCOMPARE(config.skipUpdateCheck(), false);
         config.setSkipUpdateCheck(true, QString());
         QCOMPARE(config.skipUpdateCheck(), true);
+    }
+
+    void testOverrideServerUrlEmptyWithoutSources()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+
+        QVERIFY(config.overrideServerUrl().isEmpty());
+        QVERIFY(!config.hasUserOverrideServerUrl());
+    }
+
+    void testOverrideServerUrlFromDeviceDefault()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        setDeviceSource(SettingSourceType::PlatformDefault,
+                        EnforcementState::NotEnforced,
+                        20,
+                        QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example.com"_s}});
+
+        QCOMPARE(config.overrideServerUrl(), u"https://cloud.example.com"_s);
+        QCOMPARE(config.sourceOf(u"overrideServerUrl"_s), SettingSourceType::PlatformDefault);
+        QVERIFY(!config.isEnforced(u"overrideServerUrl"_s));
+        QVERIFY(!config.hasUserOverrideServerUrl());
+    }
+
+    void testClearedOverrideServerUrlFallsBackToDeviceDefault()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        setDeviceSource(SettingSourceType::PlatformDefault,
+                        EnforcementState::NotEnforced,
+                        20,
+                        QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example.com"_s}});
+        config.setOverrideServerUrl(u"https://user.example.com"_s);
+
+        config.clearOverrideServerUrl();
+
+        QCOMPARE(config.overrideServerUrl(), u"https://cloud.example.com"_s);
+        QCOMPARE(config.sourceOf(u"overrideServerUrl"_s), SettingSourceType::PlatformDefault);
+        QVERIFY(!config.hasUserOverrideServerUrl());
+    }
+
+    void testUserOverrideServerUrlBeatsDeviceDefault()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        setDeviceSource(SettingSourceType::PlatformDefault,
+                        EnforcementState::NotEnforced,
+                        20,
+                        QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example.com"_s}});
+
+        QVERIFY(config.setOverrideServerUrl(u"https://user.example.com"_s));
+
+        QCOMPARE(config.overrideServerUrl(), u"https://user.example.com"_s);
+        QVERIFY(config.hasUserOverrideServerUrl());
+    }
+
+    void testEnforcedOverrideServerUrlIgnoresUserValue()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        setDeviceSource(SettingSourceType::PlatformPolicy,
+                        EnforcementState::Enforced,
+                        200,
+                        QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example.com"_s}});
+
+        QVERIFY(!config.setOverrideServerUrl(u"https://user.example.com"_s));
+
+        QCOMPARE(config.overrideServerUrl(), u"https://cloud.example.com"_s);
+        QVERIFY(config.isEnforced(u"overrideServerUrl"_s));
+        QVERIFY(!config.hasUserOverrideServerUrl());
+
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
+        QVERIFY(config.overrideServerUrl().isEmpty());
+    }
+
+    void testOverrideLocalDirFromDevicePolicy()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        config.setOverrideLocalDir(u"/home/user/Personal"_s);
+        setDeviceSource(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200, QVariantMap{{u"overrideLocalDir"_s, u"/home/user/Nextcloud"_s}});
+
+        QCOMPARE(config.overrideLocalDir(), u"/home/user/Nextcloud"_s);
+        QVERIFY(config.isEnforced(u"overrideLocalDir"_s));
+        QVERIFY(!config.hasUserOverrideLocalDir());
+        QVERIFY(!config.setOverrideLocalDir(u"/home/user/Other"_s));
+    }
+
+    void testClearedOverrideLocalDirFallsBackToDeviceDefault()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        setDeviceSource(SettingSourceType::PlatformDefault, EnforcementState::NotEnforced, 20, QVariantMap{{u"overrideLocalDir"_s, u"/home/user/Nextcloud"_s}});
+        QVERIFY(config.setOverrideLocalDir(u"/home/user/Personal"_s));
+        QVERIFY(config.hasUserOverrideLocalDir());
+
+        config.clearOverrideLocalDir();
+
+        QCOMPARE(config.overrideLocalDir(), u"/home/user/Nextcloud"_s);
+        QCOMPARE(config.sourceOf(u"overrideLocalDir"_s), SettingSourceType::PlatformDefault);
+        QVERIFY(!config.hasUserOverrideLocalDir());
+    }
+
+    void testOverrideLocalDirForNewAccount_data()
+    {
+        QTest::addColumn<bool>("devicePolicy");
+        QTest::addColumn<bool>("userValue");
+        QTest::addColumn<bool>("firstAccount");
+        QTest::addColumn<QString>("expected");
+
+        QTest::newRow("device default, first account") << false << false << true << u"/home/user/Nextcloud"_s;
+        QTest::newRow("device default, additional account") << false << false << false << QString();
+        QTest::newRow("device policy, first account") << true << false << true << u"/home/user/Nextcloud"_s;
+        QTest::newRow("device policy, additional account") << true << false << false << QString();
+        QTest::newRow("user value, additional account") << false << true << false << u"/home/user/Personal"_s;
+    }
+
+    void testOverrideLocalDirForNewAccount()
+    {
+        QFETCH(bool, devicePolicy);
+        QFETCH(bool, userValue);
+        QFETCH(bool, firstAccount);
+        QFETCH(QString, expected);
+
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        const auto values = QVariantMap{{u"overrideLocalDir"_s, u"/home/user/Nextcloud"_s}};
+        if (devicePolicy) {
+            setDeviceSource(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200, values);
+        } else {
+            setDeviceSource(SettingSourceType::PlatformDefault, EnforcementState::NotEnforced, 20, values);
+        }
+        if (userValue) {
+            QVERIFY(config.setOverrideLocalDir(u"/home/user/Personal"_s));
+        }
+
+        QCOMPARE(config.overrideLocalDirForNewAccount(firstAccount), expected);
+    }
+
+    void testOverrideServerUrlLockedOnlyByPolicyOrUserValue_data()
+    {
+        QTest::addColumn<bool>("deviceDefault");
+        QTest::addColumn<bool>("devicePolicy");
+        QTest::addColumn<bool>("userValue");
+        QTest::addColumn<bool>("locked");
+
+        QTest::newRow("no value") << false << false << false << false;
+        QTest::newRow("device default") << true << false << false << false;
+        QTest::newRow("device policy") << false << true << false << true;
+        QTest::newRow("user value") << false << false << true << true;
+        QTest::newRow("user value over device default") << true << false << true << true;
+    }
+
+    void testOverrideServerUrlLockedOnlyByPolicyOrUserValue()
+    {
+        QFETCH(bool, deviceDefault);
+        QFETCH(bool, devicePolicy);
+        QFETCH(bool, userValue);
+        QFETCH(bool, locked);
+
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        const auto values = QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example.com"_s}};
+        if (deviceDefault) {
+            setDeviceSource(SettingSourceType::PlatformDefault, EnforcementState::NotEnforced, 20, values);
+        }
+        if (devicePolicy) {
+            setDeviceSource(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200, values);
+        }
+        if (userValue) {
+            QVERIFY(config.setOverrideServerUrl(u"https://user.example.com"_s));
+        }
+
+        QCOMPARE(config.isOverrideServerUrlLocked(), locked);
+    }
+
+    void testEmptyUserOverrideServerUrlFallsBackToDeviceDefault()
+    {
+        QTemporaryDir dir;
+        ConfigFile config;
+        config.setConfDir(dir.path());
+        setDeviceSource(SettingSourceType::PlatformDefault,
+                        EnforcementState::NotEnforced,
+                        20,
+                        QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example.com"_s}});
+        QSettings settings(config.configFile(), QSettings::IniFormat);
+        settings.setValue(u"overrideServerUrl"_s, QString());
+        settings.sync();
+
+        QCOMPARE(config.overrideServerUrl(), u"https://cloud.example.com"_s);
+        QCOMPARE(config.sourceOf(u"overrideServerUrl"_s), SettingSourceType::PlatformDefault);
+        QVERIFY(!config.hasUserOverrideServerUrl());
+    }
+
+    void testInvalidOverridePolicyValueFallsBackToDeviceDefault_data()
+    {
+        QTest::addColumn<QString>("key");
+        QTest::addColumn<QString>("policyValue");
+        QTest::addColumn<QString>("defaultValue");
+
+        const auto defaultServerUrl = u"https://cloud.example.com"_s;
+        const auto defaultLocalDir = QDir::tempPath() + u"/Nextcloud"_s;
+        QTest::newRow("server url without scheme") << u"overrideServerUrl"_s << u"cloud.example.com"_s << defaultServerUrl;
+        QTest::newRow("server url with other scheme") << u"overrideServerUrl"_s << u"ftp://cloud.example.com"_s << defaultServerUrl;
+        QTest::newRow("empty server url") << u"overrideServerUrl"_s << QString() << defaultServerUrl;
+        QTest::newRow("empty server list") << u"overrideServerUrl"_s << u"[]"_s << defaultServerUrl;
+        QTest::newRow("server list entry without name") << u"overrideServerUrl"_s << uR"([{"url": "https://primary.example.com"}])"_s << defaultServerUrl;
+        QTest::newRow("server list entry without scheme")
+            << u"overrideServerUrl"_s << uR"([{"name": "Primary", "url": "primary.example.com"}])"_s << defaultServerUrl;
+        QTest::newRow("relative local dir") << u"overrideLocalDir"_s << u"Nextcloud"_s << defaultLocalDir;
+        QTest::newRow("unexpanded environment variable") << u"overrideLocalDir"_s << u"%USERPROFILE%/Nextcloud"_s << defaultLocalDir;
+        QTest::newRow("empty local dir") << u"overrideLocalDir"_s << QString() << defaultLocalDir;
+    }
+
+    void testInvalidOverridePolicyValueFallsBackToDeviceDefault()
+    {
+        QFETCH(QString, key);
+        QFETCH(QString, policyValue);
+        QFETCH(QString, defaultValue);
+
+        ManagedSettings resolver;
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200, QVariantMap{{key, policyValue}}));
+        resolver.addSource(
+            std::make_unique<MapSource>(SettingSourceType::PlatformDefault, EnforcementState::NotEnforced, 20, QVariantMap{{key, defaultValue}}));
+
+        const auto definition = ManagedSettingsSchema::find(key);
+        QVERIFY(definition.has_value());
+        const auto resolved = resolver.resolve(*definition);
+
+        QCOMPARE(resolved.value.toString(), defaultValue);
+        QCOMPARE(resolved.source, SettingSourceType::PlatformDefault);
+        QVERIFY(!resolved.isEnforced());
+    }
+
+    void testValidOverridePolicyValueIsEnforced_data()
+    {
+        QTest::addColumn<QString>("key");
+        QTest::addColumn<QString>("policyValue");
+
+        QTest::newRow("https server url") << u"overrideServerUrl"_s << u"https://cloud.example.com"_s;
+        QTest::newRow("http server url") << u"overrideServerUrl"_s << u"http://cloud.example.com:8080/nextcloud"_s;
+        QTest::newRow("server list")
+            << u"overrideServerUrl"_s
+            << uR"([{"name": "Primary", "url": "https://primary.example.com"}, {"name": "Secondary", "url": "https://secondary.example.com"}])"_s;
+        QTest::newRow("absolute local dir") << u"overrideLocalDir"_s << QDir::tempPath() + u"/Nextcloud"_s;
+    }
+
+    void testValidOverridePolicyValueIsEnforced()
+    {
+        QFETCH(QString, key);
+        QFETCH(QString, policyValue);
+
+        ManagedSettings resolver;
+        resolver.addSource(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200, QVariantMap{{key, policyValue}}));
+
+        const auto definition = ManagedSettingsSchema::find(key);
+        QVERIFY(definition.has_value());
+        const auto resolved = resolver.resolve(*definition);
+
+        QCOMPARE(resolved.value.toString(), policyValue);
+        QVERIFY(resolved.isEnforced());
     }
 
     void testParseServerManagedSettingsReadsSchemaAndMaps()

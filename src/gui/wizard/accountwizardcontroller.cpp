@@ -10,6 +10,7 @@
 #include "clientproxy.h"
 #include "common/utility.h"
 #include "common/vfs.h"
+#include "config.h"
 #include "configfile.h"
 #include "creds/credentialsfactory.h"
 #include "creds/httpcredentialsgui.h"
@@ -63,6 +64,12 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcAccountWizardController, "nextcloud.gui.accountwizardcontroller", QtInfoMsg)
 
 namespace {
+
+#if defined(APPLICATION_SERVER_URL) && defined(APPLICATION_SERVER_URL_ENFORCE)
+constexpr auto buildEnforcesServerUrl = true;
+#else
+constexpr auto buildEnforcesServerUrl = false;
+#endif
 
 bool localFolderContainsData(const QString &localSyncFolder)
 {
@@ -136,9 +143,13 @@ void AccountWizardController::initialiseAccount()
     ConfigFile cfg;
     if (!cfg.overrideServerUrl().isEmpty()) {
         Theme::instance()->setOverrideServerUrl(cfg.overrideServerUrl());
-        Theme::instance()->setForceOverrideServerUrl(true);
         Theme::instance()->setVfsEnabled(cfg.isVfsEnabled());
-        Theme::instance()->setStartLoginFlowAutomatically(true);
+        if (cfg.isOverrideServerUrlLocked()) {
+            Theme::instance()->setForceOverrideServerUrl(true);
+            Theme::instance()->setStartLoginFlowAutomatically(true);
+        } else {
+            Theme::instance()->setForceOverrideServerUrl(buildEnforcesServerUrl);
+        }
     }
 
     initialiseOverrideServerChoices();
@@ -1212,7 +1223,8 @@ void AccountWizardController::chooseSyncModeAfterCapabilities()
 
     if (needsSyncOptions()) {
         ConfigFile cfg;
-        if (Theme::instance()->forceOverrideServerUrl() && !cfg.overrideLocalDir().isEmpty()) {
+        const auto localDirLocked = cfg.isEnforced(QLatin1String(ConfigFile::overrideLocalDirC)) || cfg.hasUserOverrideLocalDir();
+        if (Theme::instance()->forceOverrideServerUrl() && localDirLocked && !applicableOverrideLocalDir().isEmpty()) {
             QTimer::singleShot(0, this, &AccountWizardController::finish);
             return;
         }
@@ -1370,18 +1382,22 @@ AccountState *AccountWizardController::applyAccountChanges()
 void AccountWizardController::clearOneShotOverrides()
 {
     ConfigFile cfg;
-    cfg.setOverrideServerUrl({});
-    cfg.setOverrideLocalDir({});
+    cfg.clearOverrideServerUrl();
+    cfg.clearOverrideLocalDir();
+}
+
+QString AccountWizardController::applicableOverrideLocalDir() const
+{
+    return ConfigFile().overrideLocalDirForNewAccount(AccountManager::instance()->accounts().isEmpty());
 }
 
 void AccountWizardController::initialiseLocalSyncFolder()
 {
-    ConfigFile cfg;
-    const auto overrideLocalDir = !cfg.overrideLocalDir().isEmpty();
+    const auto overrideLocalDir = !applicableOverrideLocalDir().isEmpty();
     _localSyncFolderOverride = overrideLocalDir;
     QString localFolder;
     if (overrideLocalDir) {
-        localFolder = cfg.overrideLocalDir();
+        localFolder = applicableOverrideLocalDir();
     } else {
 #ifndef Q_OS_MACOS
         localFolder = Theme::instance()->defaultClientFolder();
