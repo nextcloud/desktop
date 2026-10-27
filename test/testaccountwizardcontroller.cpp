@@ -4,11 +4,14 @@
  */
 
 #include "account.h"
+#include "accountmanager.h"
+#include "config.h"
 #include "configfile.h"
 #include "folder.h"
 #include "gui/localnetworkpermission.h"
 #include "gui/wizard/accountwizardcontroller.h"
 #include "managedsettingstestutils.h"
+#include "syncenginetestutils.h"
 #include "theme.h"
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
@@ -83,6 +86,11 @@ public:
     {
         controller.setCurrentStep(step);
     }
+
+    static void initialiseLocalSyncFolder(AccountWizardController &controller)
+    {
+        controller.initialiseLocalSyncFolder();
+    }
 };
 
 }
@@ -93,6 +101,37 @@ class TestAccountWizardController : public QObject
 
 Q_SIGNALS:
     void signupUrlRequested(const QUrl &url);
+
+private:
+    [[nodiscard]] static auto restoreOverrideState()
+    {
+        ConfigFile().clearOverrideServerUrl();
+        ConfigFile().clearOverrideLocalDir();
+        auto theme = Theme::instance();
+        const auto previousOverrideServerUrl = theme->overrideServerUrl();
+        const auto previousForceOverrideServerUrl = theme->forceOverrideServerUrl();
+        const auto previousStartLoginFlowAutomatically = theme->startLoginFlowAutomatically();
+        theme->setOverrideServerUrl({});
+        // Builds enable APPLICATION_SERVER_URL_ENFORCE by default.
+        theme->setForceOverrideServerUrl(true);
+        theme->setStartLoginFlowAutomatically(false);
+        return qScopeGuard([theme, previousOverrideServerUrl, previousForceOverrideServerUrl, previousStartLoginFlowAutomatically] {
+            ConfigFile().clearOverrideServerUrl();
+            ConfigFile().clearOverrideLocalDir();
+            theme->setOverrideServerUrl(previousOverrideServerUrl);
+            theme->setForceOverrideServerUrl(previousForceOverrideServerUrl);
+            theme->setStartLoginFlowAutomatically(previousStartLoginFlowAutomatically);
+        });
+    }
+
+    static void setManagedOverrideServerUrl(SettingSourceType type, EnforcementState enforcement, int priority)
+    {
+        ConfigFile::setDeviceSourcesFactory([type, enforcement, priority] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(type, enforcement, priority, QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example"_s}}));
+            return sources;
+        });
+    }
 
 private Q_SLOTS:
     void initTestCase()
@@ -600,6 +639,107 @@ private Q_SLOTS:
         QCOMPARE(controller.serverUrl(), QStringLiteral("https://cloud.example"));
         QVERIFY(!controller.serverUrlEditable());
         QVERIFY(controller.startLoginFlowAutomatically());
+    }
+
+    void prefillsServerUrlFromManagedDefault()
+    {
+        const auto restoreConfiguration = restoreOverrideState();
+        setManagedOverrideServerUrl(SettingSourceType::PlatformDefault, EnforcementState::NotEnforced, 20);
+
+        AccountWizardController controller;
+
+        QCOMPARE(controller.serverUrl(), u"https://cloud.example"_s);
+#if defined(APPLICATION_SERVER_URL) && defined(APPLICATION_SERVER_URL_ENFORCE)
+        QVERIFY(!controller.serverUrlEditable());
+        QVERIFY(Theme::instance()->forceOverrideServerUrl());
+#else
+        QVERIFY(controller.serverUrlEditable());
+        QVERIFY(!Theme::instance()->forceOverrideServerUrl());
+#endif
+        QVERIFY(!controller.startLoginFlowAutomatically());
+    }
+
+    void locksServerUrlFromManagedPolicy()
+    {
+        const auto restoreConfiguration = restoreOverrideState();
+        setManagedOverrideServerUrl(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200);
+
+        AccountWizardController controller;
+
+        QCOMPARE(controller.serverUrl(), u"https://cloud.example"_s);
+        QVERIFY(!controller.serverUrlEditable());
+        QVERIFY(controller.startLoginFlowAutomatically());
+    }
+
+    void appliesOverrideLocalDirForNewAccount_data()
+    {
+        QTest::addColumn<QString>("source");
+        QTest::addColumn<bool>("existingAccount");
+        QTest::addColumn<bool>("applies");
+        QTest::addColumn<bool>("showsSyncOptions");
+
+        QTest::newRow("policy, first account") << u"policy"_s << false << true << false;
+        QTest::newRow("policy, additional account") << u"policy"_s << true << false << true;
+        QTest::newRow("device default, first account") << u"default"_s << false << true << true;
+        QTest::newRow("device default, additional account") << u"default"_s << true << false << true;
+        QTest::newRow("command line, additional account") << u"commandLine"_s << true << true << false;
+    }
+
+    void appliesOverrideLocalDirForNewAccount()
+    {
+        QFETCH(QString, source);
+        QFETCH(bool, existingAccount);
+        QFETCH(bool, applies);
+        QFETCH(bool, showsSyncOptions);
+
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const auto restoreConfiguration = restoreOverrideState();
+        ConfigFile::setDeviceSourcesFactory([source, localDir = dir.path()] {
+            auto policyValues = QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example"_s}};
+            if (source == u"policy"_s) {
+                policyValues.insert(u"overrideLocalDir"_s, localDir);
+            }
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200, policyValues));
+            if (source == u"default"_s) {
+                sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformDefault,
+                                                              EnforcementState::NotEnforced,
+                                                              20,
+                                                              QVariantMap{{u"overrideLocalDir"_s, localDir}}));
+            }
+            return sources;
+        });
+        if (source == u"commandLine"_s) {
+            QVERIFY(ConfigFile().setOverrideLocalDir(dir.path()));
+        }
+
+        AccountState *accountState = nullptr;
+        const auto removeAccount = qScopeGuard([&accountState] {
+            if (accountState) {
+                AccountManager::instance()->removeAccountState(accountState);
+            }
+        });
+        if (existingAccount) {
+            auto account = Account::create();
+            account->setUrl(QUrl(u"https://cloud.example"_s));
+            account->setDavUser(u"first"_s);
+            account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+            accountState = AccountManager::instance()->addAccount(account);
+        }
+
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setAccountUrl(controller, QUrl(u"https://cloud.example"_s));
+        AccountWizardControllerTestAccess::initialiseLocalSyncFolder(controller);
+
+        QCOMPARE(AccountWizardControllerTestAccess::localSyncFolderOverride(controller), applies);
+        QCOMPARE(controller.localSyncFolder() == QDir::fromNativeSeparators(dir.path()), applies);
+
+        AccountWizardControllerTestAccess::chooseSyncModeAfterCapabilities(controller);
+        if (!controller.needsSyncOptions()) {
+            QSKIP("This build chooses no sync options, so the wizard always finishes.");
+        }
+        QCOMPARE(controller.currentStep() == AccountWizardController::SyncOptionsStep, showsSyncOptions);
     }
 
 #ifdef Q_OS_LINUX

@@ -3,23 +3,35 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#pragma once
+
+#include <functional>
+
 namespace OCC {
 namespace Mac {
 
-    /**
- * @brief CocoaInitializer provides an AutoRelease Pool via RIIA for use in main()
+/**
+ * @brief Keeps native URL handling and the background activity alive while the application runs.
  * @ingroup gui
  */
-    class CocoaInitializer
-    {
-    public:
-        CocoaInitializer();
-        ~CocoaInitializer();
+class CocoaInitializer
+{
+public:
+    /**
+     * @brief Run the application on the main thread and drain its autorelease pool after cleanup.
+     *
+     * Exceptions are rethrown after native resources and the pool have been released.
+     */
+    static int run(const std::function<int()> &mainFunction);
 
-    private:
-        class Private;
-        Private *d;
-    };
+    // Native hooks and activity only; run() also owns the autorelease pool.
+    CocoaInitializer();
+    ~CocoaInitializer();
+
+private:
+    class Private;
+    Private *d;
+};
 
 } // namespace Mac
 } // namespace OCC

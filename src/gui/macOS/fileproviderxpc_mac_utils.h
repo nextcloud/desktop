@@ -8,6 +8,9 @@
 #include <QHash>
 #include <QLoggingCategory>
 
+#include <chrono>
+#include <optional>
+
 #include "fileproviderxpcconnection.h"
 
 #import <Foundation/Foundation.h>
@@ -35,8 +38,23 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
  * @param service The app-side service exported through each connection.
  * @return A map containing the retained remote proxy and XPC connection for each domain identifier.
  *
- * The caller owns both retained objects in the returned values and must invalidate and release them
- * when they are no longer needed.
+ * The opaque pointers carry ownership. The caller must invalidate the connection and transfer both
+ * pointers back to ARC when they are no longer needed.
  */
 ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections, OCC::Mac::FileProviderService *service);
+
+/**
+ * @brief Ask a client communication service to delete the password of its domain and wait for the reply.
+ * @param clientCommService The remote service of one domain. With nil, no request is sent.
+ * @return The reply, or std::nullopt when there is no service or no reply arrived within the timeout.
+ */
+std::optional<bool> deletePassword(NSObject<ClientCommunicationProtocol> *clientCommService, std::chrono::nanoseconds timeout);
+
+/**
+ * @brief Ask the extension of a domain to delete the password of its domain, through a connection of its own.
+ *
+ * This does not depend on configured or still valid XPC connections, which domain removal at startup cannot rely on.
+ * @return The reply, or std::nullopt when the extension could not be reached or did not reply in time.
+ */
+std::optional<bool> deletePassword(NSFileProviderDomain *domain, OCC::Mac::FileProviderService *service);
 }

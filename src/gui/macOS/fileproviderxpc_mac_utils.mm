@@ -12,6 +12,8 @@
 
 #include "gui/accountmanager.h"
 
+static_assert(__has_feature(objc_arc), "File Provider XPC utilities require ARC.");
+
 namespace {
 const char *const clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
 NSString *const nsClientCommunicationServiceName = [NSString stringWithUTF8String:clientCommunicationServiceName];
@@ -52,7 +54,6 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
     }];
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    dispatch_release(group);
 
     if (managers.count == 0) {
         qCWarning(lcFileProviderXPCUtils) << "No file provider domains found!";
@@ -91,7 +92,6 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
     }
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    dispatch_release(group);
     return fpServices.copy;
 }
 
@@ -137,7 +137,6 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
     }
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    dispatch_release(group);
     return connections.copy;
 }
 
@@ -168,7 +167,6 @@ NSObject *getRemoteServiceObject(NSXPCConnection *const connection, Protocol *co
         return nil;
     }
 
-    [remoteServiceObject retain];
     return remoteServiceObject;
 }
 
@@ -198,13 +196,11 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
         qCWarning(lcFileProviderXPCUtils) << "Timed out while getting domain id from file provider service";
     }
 
-    dispatch_release(group);
-
     if (waitResult != 0 || !gotDomainIdentifier) {
         return nil;
     }
 
-    return [[NSString alloc] initWithString:domainIdentifier.toNSString()];
+    return domainIdentifier.toNSString();
 }
 
 ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections,
@@ -219,7 +215,7 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
         
         // Set the FileProviderService delegate as the exported object
         if (service) {
-            connection.exportedObject = (id<AppProtocol>)service->delegate();
+            connection.exportedObject = (__bridge id<AppProtocol>)service->delegate();
         } else {
             qCWarning(lcFileProviderXPCUtils) << "FileProviderService is null, cannot set exported object";
         }
@@ -239,7 +235,6 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
 
         if (domainIdentifier == nil) {
             qCWarning(lcFileProviderXPCUtils) << "Could not retrieve domain id from file provider service";
-            [clientCommService release];
             [connection invalidate];
             continue;
         }
@@ -250,25 +245,75 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
                                        << domainIdentifierString
                                        << "from file provider service";
 
-        [domainIdentifier release];
-
         if (clientCommConnections.contains(domainIdentifierString)) {
             qCWarning(lcFileProviderXPCUtils) << "Duplicate domain id from file provider service"
                                               << domainIdentifierString;
             [connection invalidate];
-            [clientCommService release];
             continue;
         }
 
-        [connection retain];
-
         ClientCommunicationConnection clientCommConnection;
-        clientCommConnection.clientCommunicationService = clientCommService;
-        clientCommConnection.xpcConnection = connection;
+        clientCommConnection.clientCommunicationService = (__bridge_retained void *)clientCommService;
+        clientCommConnection.xpcConnection = (__bridge_retained void *)connection;
         clientCommConnections.insert(domainIdentifierString, clientCommConnection);
     }
 
     return clientCommConnections;
+}
+
+std::optional<bool> deletePassword(NSObject<ClientCommunicationProtocol> *const clientCommService, const std::chrono::nanoseconds timeout)
+{
+    if (clientCommService == nil) {
+        qCWarning(lcFileProviderXPCUtils) << "Cannot delete password without client communication service.";
+        return std::nullopt;
+    }
+
+    __block auto deleted = false;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    // The copied reply block retains the semaphore, so a reply after the timeout is safe.
+    [clientCommService deletePasswordWithCompletionHandler:^(const BOOL didDelete) {
+        deleted = didDelete;
+        dispatch_semaphore_signal(semaphore);
+    }];
+
+    const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, timeout.count()));
+    dispatch_release(semaphore);
+
+    if (waitResult != 0) {
+        qCWarning(lcFileProviderXPCUtils) << "Timed out while waiting for password deletion.";
+        return std::nullopt;
+    }
+
+    return deleted;
+}
+
+std::optional<bool> deletePassword(NSFileProviderDomain *const domain, OCC::Mac::FileProviderService *const service)
+{
+    NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+
+    if (manager == nil) {
+        qCWarning(lcFileProviderXPCUtils) << "Cannot delete password without file provider manager for domain" << domain.identifier;
+        return std::nullopt;
+    }
+
+    const auto fpServices = getFileProviderServices(@[ manager ]);
+    const auto connections = connectToFileProviderServices(fpServices);
+    const auto clientCommConnections = processClientCommunicationConnections(connections, service);
+    [connections release];
+    [fpServices release];
+
+    std::optional<bool> deleted;
+
+    for (const auto &clientCommConnection : clientCommConnections) {
+        deleted = deletePassword((NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService,
+                                 std::chrono::nanoseconds{fileProviderRequestWaitDelta});
+        [(NSXPCConnection *)clientCommConnection.xpcConnection invalidate];
+        [(NSXPCConnection *)clientCommConnection.xpcConnection release];
+        [(NSObject *)clientCommConnection.clientCommunicationService release];
+    }
+
+    return deleted;
 }
 
 } // namespace OCC::Mac::FileProviderXPCUtils

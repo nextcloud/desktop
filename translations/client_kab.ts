@@ -62,17 +62,17 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="283"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="285"/>
         <source>Sign up</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="293"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="295"/>
         <source>Self-host</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="308"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="310"/>
         <source>Proxy settings</source>
         <translation type="unfinished"/>
     </message>
@@ -87,17 +87,17 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="359"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
         <source>Connect</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
         <source>Done</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
         <source>Log in</source>
         <translation type="unfinished"/>
     </message>
@@ -2218,12 +2218,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation>Ccwal n tejṛut usekkil</translation>
+        <translation>Amgirred n tejṛut usekkil</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Afaylu ur yezmir ara ad yemtawi acku isirew-d umennuɣ n usekkil yellan akked ufaylu yellan deg unagraw-agi.</translation>
+        <translation>Afaylu ur yezmir ara ad yemtawi acku isirew-d amgirred n usekkil yellan akked ufaylu yellan deg unagraw-agi.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -2373,7 +2373,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation>Ccwal deg umtawi</translation>
+        <translation>Amgirred deg umtawi</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
@@ -2960,12 +2960,12 @@ Aya yezmer ad yili d ugur deg temkarḍiwin-ik·im OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="551"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 yesɛa akked %n ufaylu-nniḍen ccwal deg umtawi.</numerusform><numerusform>%1 yesɛa akked %n n ifuyla-nniḍen ccwal deg umtawi.</numerusform></translation>
+        <translation><numerusform>%1 yesɛa akked %n ufaylu-nniḍen amgirred deg umtawi.</numerusform><numerusform>%1 yesɛa akked %n n ifuyla-nniḍen amgirred deg umtawi.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="553"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 yesɛa ccwal deg umtawi. Ttxil-k·m senqed afaylu n ccwal-a!</translation>
+        <translation>%1 yesɛa amgirred deg umtawi. Ttxil-k·m senqed afaylu n ccwal-a!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="558"/>
@@ -5035,7 +5035,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="304"/>
         <source>Could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek asnulfu n ukaram %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
@@ -5047,17 +5047,17 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="328"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>tasureft tarussint</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="361"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg uleqqem n yiɣefisefka: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="364"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yettuseqdac akka tura</translation>
     </message>
 </context>
 <context>
@@ -5077,7 +5077,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="224"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi tukksa n ufaylu ukalas %1 seg Taffa n Isefka tadigant</translation>
     </message>
 </context>
 <context>
@@ -5096,7 +5096,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/propagatorjobs.cpp" line="533"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="622"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Yegguma ad d-yawi afaylu %1 seg Taffa n Isefka tadigant</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="546"/>
@@ -5107,12 +5107,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="559"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg uleqqem n yiɣefisefka: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="562"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yettuseqdac akka tura</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="599"/>
@@ -5122,12 +5122,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="604"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek abeddel n yisem n ufaylu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="627"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi tukksa n ufaylu ukalas %1 seg Taffa n Isefka tadigant</translation>
     </message>
 </context>
 <context>
@@ -5135,12 +5135,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Tangalt HTTP tarameɣtut tuɣal-d sɣur aqeddac. Yetturaǧu 204, acukan yettwarmes &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="126"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi tukksa n ufaylu ukalas %1 seg Taffa n Isefka tadigant</translation>
     </message>
 </context>
 <context>
@@ -5148,7 +5148,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="149"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Tangalt HTTP tarameɣtut tuɣal-d sɣur aqeddac. Yetturaǧu 204, acukan yettwarmes &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -5156,27 +5156,27 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="131"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Tangalt HTTP tarameɣtut tuɣal-d sɣur aqeddac. Yetturaǧu 201, acukan yettwarmes &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="220"/>
         <source>Failed to create encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek tukksa n usekkeṛ i ukaram awgelhen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="259"/>
         <source>Failed to encrypt a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Awgelhen n ukaram ur yeddi ara %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="282"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg tira n yiɣefisefka ɣer taffa n yisefka: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="285"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yettuseqdac akka tura</translation>
     </message>
 </context>
 <context>
@@ -5184,34 +5184,34 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="165"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Ur yezmir ara ad isnifel isem %1 ɣer %2, tuccḍa: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="295"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg uleqqem n yiɣefisefka: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="226"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="298"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yettuseqdac akka tura</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="240"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Tangalt HTTP tarameɣtut tuɣal-d sɣur aqeddac. Yetturaǧu 204, acukan yettwarmes &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="259"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Yegguma ad d-yawi afaylu %1 seg Taffa n Isefka tadigant</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="271"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi tukksa n ufaylu ukalas %1 seg Taffa n Isefka tadigant</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="304"/>
@@ -5221,7 +5221,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="311"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg tira n yiɣefisefka ɣer taffa n yisefka</translation>
     </message>
 </context>
 <context>
@@ -5229,44 +5229,44 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="280"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 ur yezmir ara ad yettwasali acku afaylu-nniḍen s yisem-a yella yakan, yemgarad kan deg tejṛut n usekkil</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="335"/>
         <location filename="../src/libsync/propagateupload.cpp" line="411"/>
         <location filename="../src/libsync/propagateupload.cpp" line="424"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yesɛa abeddil armeɣtu n wakud. Ur ssalay ara ɣer uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="434"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwabeddel deg wakud n umtawi. Ad ikemmel.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="461"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwabeddel deg wakud n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="471"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek tukksa n usekkeṛ i ukaram awgelhen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="759"/>
         <source>Unable to upload an item with invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi asali n uferdis s yisekkilen irmeɣta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="853"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg uleqqem n yiɣefisefka: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="856"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 yettuseqdac akka tura</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="291"/>
@@ -5277,12 +5277,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="245"/>
         <source>Failed to upload encrypted file.</source>
-        <translation type="unfinished"/>
+        <translation>Asali n ufaylu awgelhan ur yeddi ara.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="408"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu ittwakkes (senker asali) %1</translation>
     </message>
 </context>
 <context>
@@ -5291,17 +5291,17 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/propagateuploadng.cpp" line="365"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>Afaylu yettwasekkeṛ, ur yezmir ara ad yemtawi</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwakkes deg wakud n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwabeddel deg wakud n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
@@ -5316,19 +5316,19 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Asulay n ufaylu ixuṣṣ seg uqeddac</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Akaram ur yesɛi ara adduf ɣer ɣur-s deg uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Afaylu ur yesɛi ara adduf ɣer ɣur-s deg uqeddac.</translation>
     </message>
 </context>
 <context>
@@ -5347,12 +5347,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="259"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwakkes deg umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="274"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu adigan yettwabeddel deg wakud n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="288"/>
@@ -5365,7 +5365,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Asesteb n upṛuksi yettwasra</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -5375,12 +5375,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation type="unfinished"/>
+        <translation>Apṛuksi:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>Aqeddac apṛuksi yesra isem n useqdac akked wawal uffir.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -5393,7 +5393,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="504"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Fren ayen ara temtawiḍ</translation>
     </message>
 </context>
 <context>
@@ -5401,12 +5401,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="65"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Asali ...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Kkes tafrayt n yikaramen inmeggagen ur tebɣiḍ ara ad temtawiḍ.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="87"/>
@@ -5422,12 +5422,12 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/selectivesyncdialog.cpp" line="226"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="305"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac akaram anaddaw akka tura ɣef uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="307"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Teḍra-d tuccḍa deg usali n tebdart n ikaramen inaddawen.</translation>
     </message>
 </context>
 <context>
@@ -5686,7 +5686,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1534"/>
         <source>Resolve conflict …</source>
-        <translation>Fru cwal ...</translation>
+        <translation>Fru amgirred ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1538"/>
@@ -5948,12 +5948,12 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
         <location filename="../src/libsync/syncengine.cpp" line="561"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Ala %1 i yellan, ilaq-as ma drus %2 i wakken ad yebdu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="594"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek alday neɣ asnulfu n taffa n yisefka n umtawa tadigant. Wali ma yella tesɛiḍ adduf n tira ɣer ukaram n umtawi</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1494"/>
@@ -5963,12 +5963,12 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1501"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Ulac ddeqs n tallunt iwejden ɣef uqeddac i kra n usali.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="459"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Amgirred ur nefri.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="381"/>
@@ -6194,12 +6194,12 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
         <translation>%1 Lqem n umsaɣ n tnarit %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="657"/>
+        <location filename="../src/libsync/theme.cpp" line="683"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Aseqdec n uzegrir n yifuyla uhlisen:  %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="675"/>
+        <location filename="../src/libsync/theme.cpp" line="701"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Lqem-agi imudd-it-id %1.&lt;/p&gt;</translation>
     </message>
@@ -6445,7 +6445,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1295"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="1457"/>
         <source>Resolve conflict</source>
-        <translation>Fru cwal</translation>
+        <translation>Fru amgirred</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1447"/>
@@ -6455,7 +6455,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1555"/>
         <source>Sync conflicts</source>
-        <translation>Ccwalat n umtawi</translation>
+        <translation>Imgarraden n umtawi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
@@ -7187,13 +7187,13 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="31"/>
         <source>Solve sync conflicts</source>
-        <translation>Fru ccwalat n umtawa</translation>
+        <translation>Fru imgarraden n umtawa</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="53"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation><numerusform>%1 n ufaylu di ccwal</numerusform><numerusform>%1 n ifuyla di ccwal</numerusform></translation>
+        <translation><numerusform>%1 n ufaylu deg umgirred</numerusform><numerusform>%1 n ifuyla deg umgirred</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="60"/>
@@ -7213,7 +7213,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="149"/>
         <source>Resolve conflicts</source>
-        <translation>Fru ccwalat</translation>
+        <translation>Fru imgarraden</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
@@ -7727,7 +7727,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
     <message>
         <location filename="../src/gui/activity/qml/SyncStatus.qml" line="126"/>
         <source>Resolve conflicts</source>
-        <translation>Fru ccwalat</translation>
+        <translation>Fru imgarraden</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/SyncStatus.qml" line="141"/>
@@ -8264,7 +8264,7 @@ Aqeddac yerra-d s tuccḍa: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="638"/>
+        <location filename="../src/libsync/theme.cpp" line="664"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <extracomment>%1 is the full Git commit URL. %2 is the abbreviated Git revision. %3 is the build date. %4 is the build time. %5 is the Qt version. %6 is the TLS library version.</extracomment>
         <translation type="unfinished"/>

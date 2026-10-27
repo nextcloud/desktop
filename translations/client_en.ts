@@ -59,17 +59,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="283"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="285"/>
         <source>Sign up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="293"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="297"/>
         <source>Self-host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="308"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="312"/>
         <source>Proxy settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -84,17 +84,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="359"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="367"/>
         <source>Log in</source>
         <translation type="unfinished"></translation>
     </message>
@@ -810,7 +810,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="798"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="799"/>
         <source>Assistant</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1294,7 +1294,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1578"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="748"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Log in</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3467,7 +3467,7 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWatcher</name>
     <message>
-        <location filename="../src/gui/folderwatcher.cpp" line="171"/>
+        <location filename="../src/gui/folderwatcher.cpp" line="176"/>
         <source>The watcher did not receive a test notification.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6020,7 +6020,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="211"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="479"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="222"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="223"/>
         <source>Offline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6124,7 +6124,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
         <location filename="../src/gui/systray.cpp" line="574"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="877"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="878"/>
         <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6148,7 +6148,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="581"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="915"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="916"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6164,18 +6164,18 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="589"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="889"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="595"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="889"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="922"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="923"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6189,12 +6189,12 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="657"/>
+        <location filename="../src/libsync/theme.cpp" line="688"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="675"/>
+        <location filename="../src/libsync/theme.cpp" line="706"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7718,47 +7718,47 @@ Server replied with error: %2</source>
 <context>
     <name>TrayAccountPopup</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="595"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="596"/>
         <source>No apps available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="635"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="636"/>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="659"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="660"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="672"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="673"/>
         <source>Recent activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="679"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="680"/>
         <source>No recent activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="697"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="698"/>
         <source>More activity…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="766"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
         <source>Resolve: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="773"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="774"/>
         <source>User status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="806"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7766,8 +7766,8 @@ Server replied with error: %2</source>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="736"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="789"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="737"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="790"/>
         <source>Local folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7775,7 +7775,7 @@ Server replied with error: %2</source>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="813"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="814"/>
         <source>Apps</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8045,26 +8045,26 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="212"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="224"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="225"/>
         <source>Online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="214"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
         <source>Away</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="216"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
         <source>Busy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="218"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
         <source>Do not disturb</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8075,7 +8075,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="220"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="221"/>
         <source>Invisible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8244,7 +8244,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="638"/>
+        <location filename="../src/libsync/theme.cpp" line="669"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <extracomment>%1 is the full Git commit URL. %2 is the abbreviated Git revision. %3 is the build date. %4 is the build time. %5 is the Qt version. %6 is the TLS library version.</extracomment>
         <translation type="unfinished"></translation>

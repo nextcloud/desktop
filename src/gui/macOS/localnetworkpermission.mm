@@ -15,6 +15,8 @@
 #include <memory>
 #include <utility>
 
+static_assert(__has_feature(objc_arc), "Local network permission requires ARC.");
+
 namespace {
 
 void invokeCallback(const QPointer<QObject> &context, std::function<void(bool)> callback, bool denied)
@@ -61,7 +63,6 @@ struct ConnectionProbe
 
         completed = true;
         nw_connection_cancel(connection);
-        nw_release(connection);
         connection = nullptr;
         invokeCallback(context, std::move(callback), denied);
     }
@@ -95,19 +96,11 @@ void checkDeniedForConnection(const QUrl &url, QObject *context, std::function<v
         nw_parameters_set_prefer_no_proxy(parameters, true);
     }
     if (!endpoint || !parameters) {
-        if (endpoint) {
-            nw_release(endpoint);
-        }
-        if (parameters) {
-            nw_release(parameters);
-        }
         invokeCallback(context, std::move(callback), false);
         return;
     }
 
     const auto connection = nw_connection_create(endpoint, parameters);
-    nw_release(endpoint);
-    nw_release(parameters);
     if (!connection) {
         invokeCallback(context, std::move(callback), false);
         return;
@@ -136,11 +129,8 @@ void checkDeniedForConnection(const QUrl &url, QObject *context, std::function<v
                 break;
             }
 
-            const auto path = nw_connection_copy_current_path(connection);
+            const auto path = nw_connection_copy_current_path(probe->connection);
             const auto denied = isLocalNetworkDenied(path);
-            if (path) {
-                nw_release(path);
-            }
             if (denied) {
                 probe->finish(true);
             }
@@ -158,11 +148,8 @@ void checkDeniedForConnection(const QUrl &url, QObject *context, std::function<v
             return;
         }
 
-        const auto path = nw_connection_copy_current_path(connection);
+        const auto path = nw_connection_copy_current_path(probe->connection);
         const auto denied = isLocalNetworkDenied(path);
-        if (path) {
-            nw_release(path);
-        }
         probe->finish(denied);
     });
 }

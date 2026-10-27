@@ -62,17 +62,17 @@
         <translation>Avansat</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="283"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="285"/>
         <source>Sign up</source>
         <translation>Înregistrează-te</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="293"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="295"/>
         <source>Self-host</source>
         <translation>Găzduire proprie</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="308"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="310"/>
         <source>Proxy settings</source>
         <translation>Setări proxy</translation>
     </message>
@@ -87,17 +87,17 @@
         <translation>Deschide</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="359"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
         <source>Connect</source>
         <translation>Conectează</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
         <source>Done</source>
         <translation>Gata</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
         <source>Log in</source>
         <translation>Autentificare</translation>
     </message>
@@ -6223,12 +6223,12 @@ Serverul a răspuns cu eroarea: %2</translation>
         <translation>%1 Desktop Client versiunea %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="657"/>
+        <location filename="../src/libsync/theme.cpp" line="683"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Se folosește pluginul pentru fișiere virtuale: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="675"/>
+        <location filename="../src/libsync/theme.cpp" line="701"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Această versiune a fost furnizată de %1.&lt;/p&gt;</translation>
     </message>
@@ -8293,7 +8293,7 @@ Serverul a răspuns cu eroarea: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="638"/>
+        <location filename="../src/libsync/theme.cpp" line="664"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <extracomment>%1 is the full Git commit URL. %2 is the abbreviated Git revision. %3 is the build date. %4 is the build time. %5 is the Qt version. %6 is the TLS library version.</extracomment>
         <translation>&lt;p&gt;&lt;small&gt;Compilat din revizia Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; pe %3, %4 folosind Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
