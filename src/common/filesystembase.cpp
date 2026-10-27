@@ -14,8 +14,6 @@
 #include <QFile>
 #include <QCoreApplication>
 
-#include <optional>
-
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -799,39 +797,19 @@ bool FileSystem::isExcludeFile(const QString &filename)
         || filename.endsWith(QStringLiteral("/exclude.lst"), Qt::CaseInsensitive);
 }
 
-#ifdef Q_OS_WIN
-static std::optional<DWORD> reparseTagForPath(const QString &absolutePath)
-{
-    WIN32_FIND_DATA findData;
-    const auto handle = FindFirstFileEx(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(absolutePath).utf16()),
-                                        FindExInfoBasic,
-                                        &findData,
-                                        FindExSearchNameMatch,
-                                        nullptr,
-                                        0);
-    if (handle == INVALID_HANDLE_VALUE) {
-        return std::nullopt;
-    }
-    FindClose(handle);
-    if (!(findData.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT)) {
-        return std::nullopt;
-    }
-    return findData.dwReserved0;
-}
-
-bool FileSystem::hasCloudReparseTag(const QString &absolutePath)
-{
-    const auto reparseTag = reparseTagForPath(absolutePath);
-    return reparseTag && (*reparseTag & ~IO_REPARSE_TAG_CLOUD_MASK) == (IO_REPARSE_TAG_CLOUD & ~IO_REPARSE_TAG_CLOUD_MASK);
-}
-#endif
-
 bool FileSystem::isSymLink(const QString &absolutePath)
 {
 #ifdef Q_OS_WIN
+    WIN32_FIND_DATA findData;
+    const auto handle =
+        FindFirstFileEx(reinterpret_cast<const wchar_t *>(longWinPath(absolutePath).utf16()), FindExInfoBasic, &findData, FindExSearchNameMatch, nullptr, 0);
+    if (handle == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+    FindClose(handle);
     // Windows VFS placeholders carry cloud reparse tags, so they never match.
-    const auto reparseTag = reparseTagForPath(absolutePath);
-    return reparseTag == IO_REPARSE_TAG_SYMLINK || reparseTag == IO_REPARSE_TAG_MOUNT_POINT;
+    return findData.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT
+        && (findData.dwReserved0 == IO_REPARSE_TAG_SYMLINK || findData.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT);
 #else
     struct stat statBuffer;
     return lstat(QFile::encodeName(absolutePath).constData(), &statBuffer) == 0 && S_ISLNK(statBuffer.st_mode);
