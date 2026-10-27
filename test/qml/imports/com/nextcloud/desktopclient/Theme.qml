@@ -8,6 +8,7 @@ pragma Singleton
 import QtQuick
 
 QtObject {
+    property bool wizardHideSelfHostButton: false
     property bool wizardHideSignupButton: false
     readonly property bool darkMode: false
     readonly property color wizardHeaderBackgroundColor: "#0082c9"

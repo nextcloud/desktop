@@ -61,6 +61,7 @@ endif()
 
 option( APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG "Display legacy import dialog" ON )
 option( DISABLE_ACCOUNT_MIGRATION "Exclude legacy account migration and import" OFF )
+option( WIZARD_HIDE_SELF_HOST_BUTTON "Hide the Self-host button in the account setup wizard" OFF )
 option( WIZARD_HIDE_SIGNUP_BUTTON "Hide the Sign up button in the account setup wizard" OFF )
 if(NOT DEFINED APPLICATION_SIGNUP_URL)
     set(APPLICATION_SIGNUP_URL "" CACHE STRING "Custom URL for the Sign up button; empty uses the default signup page")
