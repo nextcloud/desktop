@@ -449,7 +449,7 @@ void PropagateDownloadFile::start()
     }
 
     if (propagator()->localPathContainsSymlink(_item->_file)) {
-        qCWarning(lcPropagateDownload) << "Not downloading through a symlink" << _item->_file;
+        qCWarning(lcPropagateDownload) << "Do not download through a symlink" << _item->_file;
         done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(), ErrorCategory::NoError);
         return;
     }
@@ -1156,7 +1156,7 @@ void PropagateDownloadFile::downloadFinished()
     const auto filename = propagator()->fullLocalPath(_item->_file);
 
     if (propagator()->localPathContainsSymlink(_item->_file.section(u'/', 0, -2))) {
-        qCWarning(lcPropagateDownload) << "Not moving the downloaded file through a symlink" << _item->_file;
+        qCWarning(lcPropagateDownload) << "Do not move the downloaded file through a symlink" << _item->_file;
         // The parent folder now leads outside the sync folder, so its permissions are not ours to restore.
         _needParentFolderRestorePermissions = false;
         done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(), ErrorCategory::NoError);
@@ -1167,7 +1167,7 @@ void PropagateDownloadFile::downloadFinished()
     makeParentFolderModifiable(filename);
 
     if (FileSystem::isSymLink(filename)) {
-        qCWarning(lcPropagateDownload) << "Not moving the downloaded file through a symlink" << _item->_file;
+        qCWarning(lcPropagateDownload) << "Do not move the downloaded file through a symlink" << _item->_file;
         FileSystem::remove(_tmpFile.fileName());
         done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(), ErrorCategory::NoError);
         return;

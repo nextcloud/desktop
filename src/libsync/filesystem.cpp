@@ -431,7 +431,7 @@ time_t FileSystem::getModTime(const QString &filename)
 bool FileSystem::setModTime(const QString &filename, time_t modTime)
 {
     if (FileSystem::isSymLink(filename)) {
-        qCWarning(lcFileSystem) << "Not setting mtime through a symlink" << filename;
+        qCWarning(lcFileSystem) << "Do not set mtime through a symlink" << filename;
         return false;
     }
 
@@ -617,7 +617,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
     }
 
     if (FileSystem::isSymLink(path)) {
-        qCWarning(lcFileSystem) << "Not changing permissions through a symlink" << path;
+        qCWarning(lcFileSystem) << "Do not change permissions through a symlink" << path;
         return false;
     }
 

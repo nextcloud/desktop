@@ -1457,6 +1457,31 @@ private Q_SLOTS:
         CFVERIFY_VIRTUAL(fakeFolder, "file1");
     }
 
+    void testFolderReplacedByJunctionBeforePropagation()
+    {
+        FakeFolder fakeFolder{FileInfo{QString{}, {FileInfo{u"A"_s}}}};
+        setupVfs(fakeFolder);
+
+        // cmd inside the sync root waits on a population callback that needs this blocked thread.
+        QTemporaryDir outside;
+        QTemporaryDir staging;
+        const auto junction = staging.filePath(u"A"_s);
+        QVERIFY(createDirectoryJunction(outside.path(), junction));
+
+        const auto localFolder = fakeFolder.localPath() + u"A"_s;
+        connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, this, [&] {
+            QVERIFY(QDir(localFolder).removeRecursively());
+            QVERIFY(QDir().rename(junction, localFolder));
+        });
+
+        fakeFolder.remoteModifier().insert(u"A/new"_s);
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(QDir(outside.path()).isEmpty(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System));
+        QCOMPARE(completeSpy.findItem(u"A/new"_s)->_status, SyncFileItem::FileIgnored);
+    }
+
     void testLinkFileDownload()
     {
         FakeFolder fakeFolder{FileInfo{}};

@@ -11,11 +11,11 @@
 #include <QTemporaryDir>
 #include <QTemporaryFile>
 
-#include <filesystem>
-#include <system_error>
+#include <functional>
 
 #include "common/filesystembase.h"
 #include "logger.h"
+#include "syncenginetestutils.h"
 
 #include "libsync/filesystem.h"
 
@@ -31,12 +31,7 @@ namespace std_fs = std::filesystem;
 
 namespace
 {
-bool createDirectorySymlink(const QString &target, const QString &link)
-{
-    auto error = std::error_code{};
-    std_fs::create_directory_symlink(FileSystem::toFilesystemPath(target), FileSystem::toFilesystemPath(link), error);
-    return !error;
-}
+using CreateLink = std::function<bool(const QString &, const QString &)>;
 }
 
 class TestFileSystem : public QObject
@@ -426,14 +421,20 @@ private Q_SLOTS:
 
     void testRemoveRecursivelyDoesNotFollowSymlinks_data()
     {
+        QTest::addColumn<CreateLink>("createLink");
         QTest::addColumn<QString>("pathToRemove");
 
-        QTest::newRow("link") << u"link"_s;
-        QTest::newRow("folder containing a link") << u"dir"_s;
+        QTest::newRow("link") << CreateLink{createDirectorySymlink} << u"link"_s;
+        QTest::newRow("folder containing a link") << CreateLink{createDirectorySymlink} << u"dir"_s;
+#ifdef Q_OS_WIN
+        QTest::newRow("junction") << CreateLink{createDirectoryJunction} << u"link"_s;
+        QTest::newRow("folder containing a junction") << CreateLink{createDirectoryJunction} << u"dir"_s;
+#endif
     }
 
     void testRemoveRecursivelyDoesNotFollowSymlinks()
     {
+        QFETCH(CreateLink, createLink);
         QFETCH(QString, pathToRemove);
 
         QTemporaryDir root;
@@ -441,14 +442,29 @@ private Q_SLOTS:
         const auto victim = outside.filePath(u"victim"_s);
         QVERIFY(QFile(victim).open(QIODevice::WriteOnly));
         QVERIFY(QDir(root.path()).mkdir(u"dir"_s));
-        if (!createDirectorySymlink(outside.path(), root.filePath(u"link"_s))) {
+        if (!createLink(outside.path(), root.filePath(u"link"_s))) {
             QSKIP("Cannot create symlinks on this system");
         }
-        QVERIFY(createDirectorySymlink(outside.path(), root.filePath(u"dir/link"_s)));
+        QVERIFY(createLink(outside.path(), root.filePath(u"dir/link"_s)));
 
         QVERIFY(FileSystem::removeRecursively(root.filePath(pathToRemove)));
         QVERIFY(!QFileInfo::exists(root.filePath(pathToRemove)));
         QVERIFY(QFileInfo::exists(victim));
+    }
+
+    void testSetModTimeDoesNotFollowSymlinks()
+    {
+        QTemporaryDir root;
+        QTemporaryDir outside;
+        const auto link = root.filePath(u"link"_s);
+        if (!createDirectorySymlink(outside.path(), link)) {
+            QSKIP("Cannot create symlinks on this system");
+        }
+        const auto targetModTime = FileSystem::getModTime(outside.path());
+        const auto newModTime = targetModTime - 1;
+
+        QVERIFY(!FileSystem::setModTime(link, newModTime));
+        QCOMPARE(FileSystem::getModTime(outside.path()), targetModTime);
     }
 };
 

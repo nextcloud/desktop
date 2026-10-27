@@ -153,7 +153,7 @@ void PropagateLocalRemove::start()
     qCInfo(lcPropagateLocalRemove) << "Going to delete:" << filename;
 
     if (propagator()->localPathContainsSymlink(_item->_file)) {
-        qCWarning(lcPropagateLocalRemove) << "Not deleting through a symlink, dropping the stale record" << _item->_file;
+        qCWarning(lcPropagateLocalRemove) << "Do not delete through a symlink, dropping the stale record" << _item->_file;
         if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
             qCWarning(lcPropagateLocalRemove) << "could not delete file record from local DB" << _item->_originalFile;
         }
@@ -255,7 +255,7 @@ void PropagateLocalMkdir::setDeleteExistingFile(bool enabled)
 void PropagateLocalMkdir::startLocalMkdir()
 {
     if (propagator()->localPathContainsSymlink(_item->_file)) {
-        qCWarning(lcPropagateLocalMkdir) << "Not creating a folder through a symlink" << _item->_file;
+        qCWarning(lcPropagateLocalMkdir) << "Do not create a folder through a symlink" << _item->_file;
         done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(), ErrorCategory::NoError);
         return;
     }
@@ -407,7 +407,7 @@ void PropagateLocalRename::start()
         if (!propagator()->localPathContainsSymlink(path)) {
             continue;
         }
-        qCWarning(lcPropagateLocalRename) << "Not renaming through a symlink" << path;
+        qCWarning(lcPropagateLocalRename) << "Do not rename through a symlink" << path;
         done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(), ErrorCategory::NoError);
         return;
     }

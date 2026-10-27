@@ -1512,7 +1512,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         const auto folderPathContainsSymlink = propagator()->localPathContainsSymlink(_item->_file)
             || (_item->_renameTarget != _item->_file && propagator()->localPathContainsSymlink(_item->_renameTarget));
         if (folderPathContainsSymlink) {
-            qCWarning(lcDirectory) << "Not updating folder metadata through a symlink" << _item->_file;
+            qCWarning(lcDirectory) << "Do not update folder metadata through a symlink" << _item->_file;
         }
 
         if (!folderPathContainsSymlink && _item->_instruction == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {
