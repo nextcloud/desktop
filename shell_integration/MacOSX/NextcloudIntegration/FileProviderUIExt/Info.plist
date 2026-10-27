@@ -12,6 +12,8 @@
 	</dict>
 	<key>CFBundleDisplayName</key>
 	<string>$(OC_APPLICATION_NAME) File Provider UI</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>$(OC_APPLICATION_NAME) File Provider UI needs access to your local network to connect to Nextcloud servers hosted there.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
