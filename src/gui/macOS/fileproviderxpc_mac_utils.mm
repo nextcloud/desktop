@@ -278,7 +278,6 @@ std::optional<bool> deletePassword(NSObject<ClientCommunicationProtocol> *const 
     }];
 
     const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, timeout.count()));
-    dispatch_release(semaphore);
 
     if (waitResult != 0) {
         qCWarning(lcFileProviderXPCUtils) << "Timed out while waiting for password deletion.";
@@ -300,17 +299,14 @@ std::optional<bool> deletePassword(NSFileProviderDomain *const domain, OCC::Mac:
     const auto fpServices = getFileProviderServices(@[ manager ]);
     const auto connections = connectToFileProviderServices(fpServices);
     const auto clientCommConnections = processClientCommunicationConnections(connections, service);
-    [connections release];
-    [fpServices release];
 
     std::optional<bool> deleted;
 
     for (const auto &clientCommConnection : clientCommConnections) {
-        deleted = deletePassword((NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService,
+        deleted = deletePassword((__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService,
                                  std::chrono::nanoseconds{fileProviderRequestWaitDelta});
-        [(NSXPCConnection *)clientCommConnection.xpcConnection invalidate];
-        [(NSXPCConnection *)clientCommConnection.xpcConnection release];
-        [(NSObject *)clientCommConnection.clientCommunicationService release];
+        [(__bridge_transfer NSXPCConnection *)clientCommConnection.xpcConnection invalidate];
+        (void)CFBridgingRelease(clientCommConnection.clientCommunicationService);
     }
 
     return deleted;
