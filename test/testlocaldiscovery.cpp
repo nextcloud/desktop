@@ -24,30 +24,12 @@
 #include <functional>
 #include <system_error>
 
-#ifdef Q_OS_WIN
-#include <QProcess>
-#endif
-
 using namespace OCC;
 using namespace Qt::StringLiterals;
 
 namespace
 {
-using RemoteChange = std::function<void(FileModifier &)>;
-
-bool createDirectorySymlink(const QString &target, const QString &link)
-{
-    auto error = std::error_code{};
-    std::filesystem::create_directory_symlink(FileSystem::toFilesystemPath(target), FileSystem::toFilesystemPath(link), error);
-    return !error;
-}
-
-#ifdef Q_OS_WIN
-bool createDirectoryJunction(const QString &target, const QString &link)
-{
-    return QProcess::execute(u"cmd"_s, {u"/c"_s, u"mklink"_s, u"/J"_s, QDir::toNativeSeparators(link), QDir::toNativeSeparators(target)}) == 0;
-}
-#endif
+using FolderChange = std::function<void(FakeFolder &)>;
 }
 
 class TestLocalDiscovery : public QObject
@@ -1278,31 +1260,34 @@ private Q_SLOTS:
 
     void testFolderReplacedBySymlinkBeforePropagation_data()
     {
-        QTest::addColumn<RemoteChange>("remoteChange");
+        QTest::addColumn<FolderChange>("change");
         QTest::addColumn<QString>("changedPath");
 
-        QTest::newRow("remote mkdir") << RemoteChange{[](FileModifier &remote) {
-            remote.mkdir(u"A/sub"_s);
+        QTest::newRow("remote mkdir") << FolderChange{[](FakeFolder &folder) {
+            folder.remoteModifier().mkdir(u"A/sub"_s);
         }} << u"A/sub"_s;
-        QTest::newRow("download") << RemoteChange{[](FileModifier &remote) {
-            remote.insert(u"A/new"_s);
+        QTest::newRow("download") << FolderChange{[](FakeFolder &folder) {
+            folder.remoteModifier().insert(u"A/new"_s);
         }} << u"A/new"_s;
-        QTest::newRow("remote delete") << RemoteChange{[](FileModifier &remote) {
-            remote.remove(u"A/a1"_s);
+        QTest::newRow("remote delete") << FolderChange{[](FakeFolder &folder) {
+            folder.remoteModifier().remove(u"A/a1"_s);
         }} << u"A/a1"_s;
-        QTest::newRow("remote move into folder") << RemoteChange{[](FileModifier &remote) {
-            remote.rename(u"B/b1"_s, u"A/b1"_s);
+        QTest::newRow("remote move into folder") << FolderChange{[](FakeFolder &folder) {
+            folder.remoteModifier().rename(u"B/b1"_s, u"A/b1"_s);
         }} << u"A/b1"_s;
+        QTest::newRow("upload") << FolderChange{[](FakeFolder &folder) {
+            folder.localModifier().appendByte(u"A/a1"_s);
+        }} << u"A/a1"_s;
     }
 
     void testFolderReplacedBySymlinkBeforePropagation()
     {
-        QFETCH(RemoteChange, remoteChange);
+        QFETCH(FolderChange, change);
         QFETCH(QString, changedPath);
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         QTemporaryDir outside;
-        QVERIFY(QFile(outside.filePath(u"a1"_s)).open(QIODevice::WriteOnly));
+        DiskFileModifier{outside.path()}.insert(u"a1"_s);
         QTemporaryDir probe;
         if (!createDirectorySymlink(outside.path(), probe.filePath(u"link"_s))) {
             QSKIP("Cannot create symlinks on this system");
@@ -1314,11 +1299,13 @@ private Q_SLOTS:
             QVERIFY(createDirectorySymlink(outside.path(), localFolder));
         });
 
-        remoteChange(fakeFolder.remoteModifier());
+        change(fakeFolder);
+        const auto remoteBefore = fakeFolder.currentRemoteState();
         ItemCompletedSpy completeSpy(fakeFolder);
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(QDir(outside.path()).entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System), QStringList{u"a1"_s});
+        QCOMPARE(fakeFolder.currentRemoteState(), remoteBefore);
         QCOMPARE(completeSpy.findItem(changedPath)->_status, SyncFileItem::FileIgnored);
     }
 

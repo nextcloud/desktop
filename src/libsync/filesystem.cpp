@@ -431,7 +431,7 @@ time_t FileSystem::getModTime(const QString &filename)
 bool FileSystem::setModTime(const QString &filename, time_t modTime)
 {
     if (FileSystem::isSymLink(filename)) {
-        qCWarning(lcFileSystem) << "Not setting mtime through a symlink" << filename;
+        qCWarning(lcFileSystem) << "Do not set mtime through a symlink" << filename;
         return false;
     }
 
@@ -617,7 +617,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
     }
 
     if (FileSystem::isSymLink(path)) {
-        qCWarning(lcFileSystem) << "Not changing permissions through a symlink" << path;
+        qCWarning(lcFileSystem) << "Do not change permissions through a symlink" << path;
         return false;
     }
 
@@ -905,6 +905,11 @@ std::filesystem::file_time_type FileSystem::time_tToFileTime(time_t fileTime)
 
 bool FileSystem::setModTime(const std::filesystem::path &filename, time_t modTime)
 {
+    if (const auto path = FileSystem::fromFilesystemPath(filename); FileSystem::isSymLink(path)) {
+        qCWarning(lcFileSystem) << "Do not set mtime through a symlink" << path;
+        return false;
+    }
+
 #ifdef Q_OS_WINDOWS
     // the access denied ACEs also prevents us from changing the modtime -> make it writable if needed
     FilePermissionsRestore restore(QString::fromStdWString(filename.wstring()), FileSystem::FolderPermissions::ReadWrite);
