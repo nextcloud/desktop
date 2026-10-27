@@ -812,6 +812,16 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
     if (true) {
         SqlQuery query(_db);
+        query.prepare("CREATE UNIQUE INDEX IF NOT EXISTS metadata_unique_inode ON metadata(inode);");
+        if (!query.exec()) {
+            sqlFail(QStringLiteral("updateMetadataTableStructure: create index unique inode"), query);
+            re = false;
+        }
+        commitInternal(QStringLiteral("update database structure: add unique inode index"));
+    }
+
+    if (true) {
+        SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_path ON metadata(path);");
         if (!query.exec()) {
             sqlFail(QStringLiteral("updateMetadataTableStructure: create index path"), query);
@@ -2497,27 +2507,6 @@ QStringList SyncJournalDb::removeSelectiveSyncLists(SelectiveSyncListType type, 
     qCInfo(lcSql()) << "remove" << path << "into" << type << blackList;
 
     return blackList;
-}
-
-void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
-{
-    QMutexLocker locker(&_mutex);
-
-    if (!checkConnect()) {
-        return;
-    }
-
-    SqlQuery query(_db);
-    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE " IS_PREFIX_PATH_OR_EQUAL("?1", "path"));
-    query.bindValue(1, path);
-
-    if (!query.exec()) {
-        sqlFail(QStringLiteral("avoidRenamesOnNextSync path: %1").arg(QString::fromUtf8(path)), query);
-    }
-
-    // We also need to remove the ETags so the update phase refreshes the directory paths
-    // on the next sync
-    schedulePathForRemoteDiscovery(path);
 }
 
 void SyncJournalDb::schedulePathForRemoteDiscovery(const QByteArray &fileName)
