@@ -261,4 +261,55 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
     return clientCommConnections;
 }
 
+std::optional<bool> deletePassword(NSObject<ClientCommunicationProtocol> *const clientCommService, const std::chrono::nanoseconds timeout)
+{
+    if (clientCommService == nil) {
+        qCWarning(lcFileProviderXPCUtils) << "Cannot delete password without client communication service.";
+        return std::nullopt;
+    }
+
+    __block auto deleted = false;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    // The copied reply block retains the semaphore, so a reply after the timeout is safe.
+    [clientCommService deletePasswordWithCompletionHandler:^(const BOOL didDelete) {
+        deleted = didDelete;
+        dispatch_semaphore_signal(semaphore);
+    }];
+
+    const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, timeout.count()));
+
+    if (waitResult != 0) {
+        qCWarning(lcFileProviderXPCUtils) << "Timed out while waiting for password deletion.";
+        return std::nullopt;
+    }
+
+    return deleted;
+}
+
+std::optional<bool> deletePassword(NSFileProviderDomain *const domain, OCC::Mac::FileProviderService *const service)
+{
+    NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+
+    if (manager == nil) {
+        qCWarning(lcFileProviderXPCUtils) << "Cannot delete password without file provider manager for domain" << domain.identifier;
+        return std::nullopt;
+    }
+
+    const auto fpServices = getFileProviderServices(@[ manager ]);
+    const auto connections = connectToFileProviderServices(fpServices);
+    const auto clientCommConnections = processClientCommunicationConnections(connections, service);
+
+    std::optional<bool> deleted;
+
+    for (const auto &clientCommConnection : clientCommConnections) {
+        deleted = deletePassword((__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService,
+                                 std::chrono::nanoseconds{fileProviderRequestWaitDelta});
+        [(__bridge_transfer NSXPCConnection *)clientCommConnection.xpcConnection invalidate];
+        (void)CFBridgingRelease(clientCommConnection.clientCommunicationService);
+    }
+
+    return deleted;
+}
+
 } // namespace OCC::Mac::FileProviderXPCUtils
