@@ -20,6 +20,9 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Test AppImage icon selection
+        run: python3 admin/linux/tests/test_appimage_icon.py
+
       - name: Configure, compile and package
         id: build-appimage
         env:
