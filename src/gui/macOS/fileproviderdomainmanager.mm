@@ -19,6 +19,7 @@
 #include "fileproviderdomainmanager.h"
 #include "fileprovidersettingscontroller.h"
 #include "fileproviderutils.h"
+#include "fileproviderxpc_mac_utils.h"
 
 #include "gui/accountmanager.h"
 #include "libsync/account.h"
@@ -178,6 +179,20 @@ public:
     }
 
     /**
+     * @brief Ask the extension of a domain to delete its stored password while it can still run.
+     *
+     * Removal goes ahead on failure because a leftover item is keyed by this domain only.
+     */
+    void deletePassword(NSFileProviderDomain *domain)
+    {
+        const auto domainIdentifier = QString::fromNSString(domain.identifier);
+
+        if (!FileProviderXPCUtils::deletePassword(domain, FileProvider::instance()->service()).value_or(false)) {
+            qCWarning(lcMacFileProviderDomainManager) << "Removing domain without confirmed password deletion" << domainIdentifier;
+        }
+    }
+
+    /**
      * @brief Synchronous and logging wrapper for `[NSFileProviderManager removeDomain:]`.
      *
      * Implicitly calls `removeFileProviderDomainData`, too.
@@ -188,6 +203,8 @@ public:
     {
         qCInfo(lcMacFileProviderDomainManager) << "Removing domain"
                                                << domain.identifier;
+
+        deletePassword(domain);
 
         dispatch_group_t dispatchGroup = dispatch_group_create();
         dispatch_group_enter(dispatchGroup);
