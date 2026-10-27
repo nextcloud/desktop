@@ -4,25 +4,21 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "owncloudsetupwizard.h"
 #include "accessmanager.h"
 #include "account.h"
 #include "accountmanager.h"
 #include "clientproxy.h"
 #include "common/utility.h"
-#ifdef Q_OS_MACOS
-#include "common/utility_mac_sandbox.h"
-#endif
 #include "configfile.h"
 #include "filesystem.h"
 #include "folderman.h"
 #include "networkjobs.h"
 #include "owncloudgui.h"
-#include "owncloudsetupwizard.h"
 #include "owncloudpropagator_p.h"
 #include "sslerrordialog.h"
 #include "wizard/owncloudwizard.h"
 #include "wizard/owncloudwizardcommon.h"
-#include "account.h"
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
@@ -118,17 +114,18 @@ void OwncloudSetupWizard::startWizard()
     // remoteFolder may be empty, which means /
     QString localFolder = Theme::instance()->defaultClientFolder();
 
-    // if its a relative path, prepend with users home dir, otherwise use as absolute path
-
-    if (!QDir(localFolder).isAbsolute()) {
-        const auto homeDirectory =
 #ifdef Q_OS_MACOS
-            Utility::getRealHomeDirectory();
+    // The sandbox home is not a suitable external location for classic sync.
+    // Require the user to choose a folder so macOS can grant access to it.
+    localFolder.clear();
 #else
-            QDir::homePath();
-#endif
+    // If it is a relative path, prepend the user's home directory; otherwise
+    // use it as an absolute path.
+    if (!QDir(localFolder).isAbsolute()) {
+        const auto homeDirectory = QDir::homePath();
         localFolder = QDir(homeDirectory).filePath(localFolder);
     }
+#endif
 
     _ocWizard->setProperty("localFolder", localFolder);
     {
