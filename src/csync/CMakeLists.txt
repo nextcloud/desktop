@@ -86,6 +86,11 @@ endif()
 
 target_link_libraries(nextcloud_csync PRIVATE SQLite::SQLite3)
 
+if(UNIX AND NOT APPLE)
+    find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS DBus)
+    target_link_libraries(nextcloud_csync PRIVATE Qt::DBus)
+endif()
+
 # For src/common/utility_mac.cpp
 if (APPLE)
     find_library(FOUNDATION_LIBRARY NAMES Foundation)

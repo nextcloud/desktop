@@ -61,6 +61,12 @@ if (NOT APPLE)
 endif()
 
 nextcloud_add_test(Utility)
+if (LINUX)
+    find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS DBus)
+    nextcloud_add_test(LaunchOnStartup)
+    target_sources(LaunchOnStartupTest PRIVATE fakesystemdmanager.cpp fakesystemdmanager.h systemdunitfilechange.h)
+    target_link_libraries(LaunchOnStartupTest PRIVATE Qt::DBus)
+endif()
 
 if (APPLE)
     add_subdirectory(macOS)
