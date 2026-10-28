@@ -179,17 +179,25 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
 
 final class NKErrorExtensionsTests: XCTestCase {
     func testCancellationErrorMapping() {
-        for code in [NSURLErrorCancelled, -5] {
-            let error = NKError(errorCode: code, errorDescription: "Cancelled")
-            XCTAssertTrue(error.isCancelledError)
-            let mappedError = error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file"))
-            XCTAssertEqual((mappedError as? CocoaError)?.code, .userCancelled)
-        }
+        let cancellationError = NKError(errorCode: NSURLErrorCancelled, errorDescription: "Cancelled")
+        XCTAssertTrue(cancellationError.isCancelledError)
+        let cancellation = cancellationError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file"))
+        XCTAssertEqual((cancellation as? CocoaError)?.code, .userCancelled)
         for error in [NKError.success, NKError(errorCode: -4, errorDescription: "Write failed"), .errorChunkMoveFile, NKError(errorCode: 507, errorDescription: "Insufficient quota")] {
             XCTAssertFalse(error.isCancelledError)
             let mappedError = error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file"))
             XCTAssertNotEqual((mappedError as? CocoaError)?.code, .userCancelled)
             XCTAssertEqual((mappedError as? NSFileProviderError)?.code, error.fileProviderError?.code)
+        }
+    }
+
+    func testChunkPreparationErrorsAreNotCancellationWithoutContext() {
+        for description in ["Files empty.", "Chunking was cancelled."] {
+            let error = NKError(errorCode: -5, errorDescription: description)
+            XCTAssertFalse(error.isCancelledError)
+            let mappedError = error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file"))
+            XCTAssertEqual((mappedError as? NSFileProviderError)?.code, .cannotSynchronize)
+            XCTAssertNotEqual((mappedError as? CocoaError)?.code, .userCancelled)
         }
     }
 

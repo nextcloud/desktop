@@ -301,7 +301,7 @@ private func performUpload(
     let hasRemainingChunks = dbManager.hasRemoteFileChunks(uploadId: chunkUploadId)
     shouldRemoveLocalChunkUpload = chunkUploadCompleted || !hasRemainingChunks
 
-    if nkError.isCancelledError,
+    if nkError.isCancelledError || nkError.hasChunkingCancellationCode,
        cancellation.isCancelled || Task.isCancelled
     {
         return (nil, nil, nil, nil, .cancelled)

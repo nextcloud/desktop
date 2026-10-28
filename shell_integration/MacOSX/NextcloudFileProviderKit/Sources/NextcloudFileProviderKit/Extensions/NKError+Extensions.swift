@@ -14,8 +14,12 @@ extension NKError {
     static let metadataDatabaseUnreadable = NKError(errorCode: -2000, errorDescription: "The metadata database could not be read.")
 
     var isCancelledError: Bool {
-        // NKCommon.chunkedFile uses -5 for cancellation during local chunk preparation.
-        errorCode == NSURLErrorCancelled || errorCode == -5
+        errorCode == NSURLErrorCancelled
+    }
+
+    var hasChunkingCancellationCode: Bool {
+        // NextcloudKit also uses this code for empty chunks; confirm cancellation from the operation.
+        errorCode == -5
     }
 
     var isCouldntConnectError: Bool {

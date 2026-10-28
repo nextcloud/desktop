@@ -145,16 +145,30 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
 
     func testCancellationErrorMappingForCollisions() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
-        for code in [NSURLErrorCancelled, -5] {
-            let error = NKError(errorCode: code, errorDescription: "Cancelled")
+        let error = NKError(errorCode: NSURLErrorCancelled, errorDescription: "Cancelled")
+        let mappedError = await error.fileProviderError(
+            handlingCollisionAgainstItemInRemotePath: Self.account.davFilesUrl + "/file.txt",
+            dbManager: Self.dbManager,
+            remoteInterface: remoteInterface,
+            log: FileProviderLogMock()
+        )
+        XCTAssertEqual((mappedError as? CocoaError)?.code, .userCancelled)
+    }
+
+    func testChunkPreparationErrorMappingForCollisionsWithoutCancellation() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
+        for description in ["Files empty.", "Chunking was cancelled."] {
+            let error = NKError(errorCode: -5, errorDescription: description)
             let mappedError = await error.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: Self.account.davFilesUrl + "/file.txt",
                 dbManager: Self.dbManager,
                 remoteInterface: remoteInterface,
                 log: FileProviderLogMock()
             )
-            XCTAssertEqual((mappedError as? CocoaError)?.code, .userCancelled)
+            XCTAssertEqual((mappedError as? NSFileProviderError)?.code, .cannotSynchronize)
+            XCTAssertNotEqual((mappedError as? CocoaError)?.code, .userCancelled)
         }
+        XCTAssertEqual(remoteInterface.readOperationCount, 0)
     }
 
     func testCancellationDuringChunkPreparationReturnsCancellation() async throws {
@@ -195,24 +209,39 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try Data(repeating: 1, count: 8).write(to: fileUrl)
         defer { try? FileManager.default.removeItem(at: fileUrl) }
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
-        let preparationError = NKError(errorCode: -4, errorDescription: "Could not write chunks.")
-        remoteInterface.chunkPreparationError = preparationError
+        let preparationErrors = [
+            NKError(errorCode: -4, errorDescription: "Could not write chunks."),
+            NKError(errorCode: -5, errorDescription: "Files empty."),
+            NKError(errorCode: -5, errorDescription: "Chunking was cancelled.")
+        ]
+        for preparationError in preparationErrors {
+            let root = MockRemoteItem.rootItem(account: Self.account)
+            let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+            remoteInterface.chunkPreparationError = preparationError
+            let progress = Progress()
 
-        let result = await NextcloudFileProviderKit.upload(
-            fileLocatedAt: fileUrl.path,
-            toRemotePath: Self.account.davFilesUrl + "/file.txt",
-            usingRemoteInterface: remoteInterface,
-            withAccount: Self.account,
-            inChunksSized: 3,
-            forItemWithIdentifier: UUID().uuidString,
-            dbManager: Self.dbManager,
-            log: FileProviderLogMock()
-        )
+            let result = await NextcloudFileProviderKit.upload(
+                fileLocatedAt: fileUrl.path,
+                toRemotePath: Self.account.davFilesUrl + "/file.txt",
+                usingRemoteInterface: remoteInterface,
+                withAccount: Self.account,
+                inChunksSized: 3,
+                forItemWithIdentifier: UUID().uuidString,
+                dbManager: Self.dbManager,
+                progress: progress,
+                log: FileProviderLogMock()
+            )
 
-        XCTAssertEqual(result.remoteError.errorCode, preparationError.errorCode)
-        XCTAssertEqual(result.remoteError.errorDescription, preparationError.errorDescription)
-        XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+            XCTAssertEqual(result.remoteError.errorCode, preparationError.errorCode)
+            XCTAssertEqual(result.remoteError.errorDescription, preparationError.errorDescription)
+            let mappedError = result.remoteError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file"))
+            XCTAssertEqual((mappedError as? NSFileProviderError)?.code, .cannotSynchronize)
+            XCTAssertNotEqual((mappedError as? CocoaError)?.code, .userCancelled)
+            XCTAssertFalse(progress.isCancelled)
+            XCTAssertNil(result.ocId)
+            XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+            XCTAssertTrue(root.children.isEmpty)
+        }
     }
 
     func testCancellationAfterChunkAssemblyPreservesResult() async throws {
