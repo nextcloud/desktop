@@ -1227,6 +1227,81 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
     }
 
+    func testDirectoryFetchRejectsChildDeletedByConcurrentEnumeration() async throws {
+        for childIsDirectory in [false, true] {
+            let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+            let removedChild = childIsDirectory ? makeDirectoryChild(of: directory) : directory.children[0]
+            let transferChild = childIsDirectory ? removedChild.children[0] : removedChild
+            let transferName = transferChild.name
+            let dbManager = Self.dbManager
+            let (transferred, transferredContinuation) = AsyncStream<Void>.makeStream()
+            let (release, releaseContinuation) = AsyncStream<Void>.makeStream()
+            remoteInterface.downloadCompletionHandler = {
+                guard remoteInterface.downloadDestinationURL?.lastPathComponent == transferName else { return }
+                transferredContinuation.yield(())
+                do {
+                    _ = try await nextTestValue(from: release)
+                } catch {
+                    XCTFail("Completed child download was not released: \(error)")
+                }
+            }
+            let task = Task { await item.fetchContents(dbManager: dbManager) }
+            defer {
+                releaseContinuation.finish()
+                transferredContinuation.finish()
+                task.cancel()
+                removeDownloadedDirectory(remoteInterface: remoteInterface)
+            }
+            let transferredValue: Void? = try await nextTestValue(from: transferred)
+            _ = try XCTUnwrap(transferredValue)
+            let localDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
+            let transferDestination = try XCTUnwrap(remoteInterface.downloadDestinationURL)
+            XCTAssertEqual(try Data(contentsOf: transferDestination), transferChild.data)
+            XCTAssertEqual(dbManager.itemMetadata(ocId: removedChild.identifier)?.status, Status.downloading.rawValue)
+            XCTAssertEqual(dbManager.itemMetadata(ocId: removedChild.identifier)?.deleted, false)
+            let completedTransferCount = remoteInterface.downloadOperationCount
+
+            directory.children.removeAll { $0.identifier == removedChild.identifier }
+            let read = await Enumerator.readServerUrl(
+                directory.remotePath,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager,
+                log: FileProviderLogMock()
+            )
+
+            XCTAssertNil(read.error)
+            XCTAssertTrue(try XCTUnwrap(read.changes).deleted.contains { $0.ocId == removedChild.identifier })
+            XCTAssertTrue(try XCTUnwrap(dbManager.itemMetadata(ocId: removedChild.identifier)).deleted)
+            XCTAssertFalse(try XCTUnwrap(dbManager.itemMetadata(ocId: directory.identifier)).deleted)
+            XCTAssertTrue(rootItem.children.contains { $0.identifier == directory.identifier })
+            releaseContinuation.finish()
+            let (url, fetchedItem, error) = try await testTaskValue(of: task)
+
+            XCTAssertNil(url)
+            XCTAssertNil(fetchedItem)
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+            XCTAssertEqual(remoteInterface.downloadOperationCount, completedTransferCount)
+            let deleted = try XCTUnwrap(dbManager.itemMetadata(ocId: removedChild.identifier))
+            XCTAssertTrue(deleted.deleted)
+            XCTAssertFalse(deleted.downloaded)
+            XCTAssertFalse(try XCTUnwrap(dbManager.itemMetadata(ocId: directory.identifier)).deleted)
+            XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.path))
+        }
+    }
+
+    func testDirectoryFetchReportsMissingRequestedFolder() async {
+        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+        rootItem.children.removeAll { $0.identifier == directory.identifier }
+
+        let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .noSuchItem)
+        XCTAssertEqual(remoteInterface.downloadOperationCount, 0)
+    }
+
     func testSupersededDirectoryChildStopsFetchingContents() async throws {
         let (directoryItem, directoryRemoteInterface, directory) = makeFetchItem(directory: true)
         let dbManager = Self.dbManager
