@@ -58,6 +58,15 @@ public extension Item {
             }
         }
 
+        // A missing child must not report the requested folder as missing.
+        func finishChildDownload(_ childOperation: DownloadOperation) throws {
+            do {
+                try dbManager.finishDownload(childOperation, status: .normal, downloaded: true)
+            } catch let error as NSFileProviderError where error.code == .noSuchItem {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+        }
+
         progress.totalUnitCount = 1 // Add 1 for final procedures
 
         var remoteDirectories = [(path: directoryRemotePath, operation: operation)]
@@ -151,7 +160,7 @@ public extension Item {
                             handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
                         ) ?? NSFileProviderError(.cannotSynchronize))
                     }
-                    try dbManager.finishDownload(childOperation, status: .normal, downloaded: true)
+                    try finishChildDownload(childOperation)
                     downloadedFileOcIds.append(metadata.ocId)
                 }
 
@@ -161,7 +170,7 @@ public extension Item {
 
         while let directoryOperation = pendingDirectoryOperations.last {
             try checkFetchCancellation()
-            try dbManager.finishDownload(directoryOperation, status: .normal, downloaded: true)
+            try finishChildDownload(directoryOperation)
             pendingDirectoryOperations.removeLast()
         }
         progress.completedUnitCount += 1 // Finish off
