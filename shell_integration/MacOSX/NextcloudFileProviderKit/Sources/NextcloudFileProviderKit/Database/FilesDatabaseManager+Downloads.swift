@@ -6,6 +6,24 @@ import Foundation
 import RealmSwift
 
 extension FilesDatabaseManager {
+    /// Restore listed file rows for an explicit folder download without rewriting live or in-flight state.
+    func restoreDirectoryDownloadMetadatas(_ metadatas: [SendableItemMetadata]) throws {
+        guard !metadatas.isEmpty else { return }
+        let database = ncDatabase()
+        try database.write {
+            for metadata in metadatas {
+                if let existing = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: metadata.ocId) {
+                    if existing.deleted, existing.status == Status.normal.rawValue {
+                        existing.deleted = false
+                    }
+                } else {
+                    evictLogicalDuplicates(of: metadata, in: database)
+                    database.add(RealmItemMetadata(value: metadata), update: .all)
+                }
+            }
+        }
+    }
+
     func beginDownload(_ operation: DownloadOperation) -> SendableItemMetadata? {
         let ocId = operation.ocId
         let (metadata, supersededOperation): (SendableItemMetadata?, DownloadOperation?) = Self.downloadOperations.withLock { operations in
