@@ -17,8 +17,12 @@ extension NKError {
     static let metadataDatabaseWriteFailed = NKError(errorCode: NSFileProviderError.cannotSynchronize.rawValue, errorDescription: "The metadata database could not be updated.")
 
     var isCancelledError: Bool {
-        // NKCommon.chunkedFile uses -5 for cancellation during local chunk preparation.
-        errorCode == NSURLErrorCancelled || errorCode == -5
+        errorCode == NSURLErrorCancelled
+    }
+
+    var isChunkingCancellationError: Bool {
+        // NextcloudKit uses -5 in the Cocoa domain for cancelled preparation and in the chunkedFile domain for empty chunks.
+        errorCode == -5 && (error as NSError).domain == NSCocoaErrorDomain
     }
 
     var isCouldntConnectError: Bool {

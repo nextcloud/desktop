@@ -965,7 +965,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
         if let chunkPreparationHandler {
             await chunkPreparationHandler()
-            if Task.isCancelled {
+            if Task.isCancelled, chunkPreparationError == nil {
                 // Match NKCommon.chunkedFile's cancellation error.
                 return (account.ncKitAccount, nil, nil, NKError(errorCode: -5, errorDescription: "Chunking was cancelled."))
             }
