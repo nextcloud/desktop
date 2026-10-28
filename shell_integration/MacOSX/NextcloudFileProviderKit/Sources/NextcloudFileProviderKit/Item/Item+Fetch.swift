@@ -52,18 +52,28 @@ public extension Item {
             }
         }
 
+        func checkDirectoryIsPresent(_ directoryOperation: DownloadOperation) throws {
+            guard let metadata = dbManager.itemMetadata(ocId: directoryOperation.ocId), !metadata.deleted else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+        }
+
         progress.totalUnitCount = 1 // Add 1 for final procedures
 
-        // Download *everything* within this directory. What we do:
-        // 1. Enumerate the contents of the directory
-        // 2. Download everything within this directory
-        // 3. Detect child directories
-        // 4. Repeat 1 -> 3 for each child directory
-        var remoteDirectoryPaths = [directoryRemotePath]
+        var remoteDirectories = [(path: directoryRemotePath, operation: operation)]
+        var pendingDirectoryOperations: [DownloadOperation] = []
+        defer {
+            // Release unfinished child directories; the root fetch reports the operation's error.
+            for directoryOperation in pendingDirectoryOperations {
+                try? dbManager.finishDownload(directoryOperation, status: .normal, downloaded: false)
+            }
+        }
         var downloadedFileOcIds: [String] = []
-        while !remoteDirectoryPaths.isEmpty {
+        while !remoteDirectories.isEmpty {
             try checkFetchCancellation()
-            let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
+            let directory = remoteDirectories.removeFirst()
+            try checkDirectoryIsPresent(directory.operation)
+            let remoteDirectoryPath = directory.path
             let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
                 account: account,
@@ -89,15 +99,15 @@ public extension Item {
                 throw NSFileProviderError(.cannotSynchronize)
             }
 
+            try checkDirectoryIsPresent(directory.operation)
             if !metadatas.isEmpty {
                 metadatas.removeFirst() // Remove the dir itself
             }
+            // Server listings can include children intentionally removed from the local view.
+            metadatas = try dbManager.directoryDownloadMetadatas(metadatas)
             progress.totalUnitCount += Int64(metadatas.count)
 
-            // Restore from this listing before any transfer, so later local deletions still stop the fetch.
-            try dbManager.restoreDirectoryDownloadMetadatas(metadatas.filter { !$0.directory })
-
-            for var metadata in metadatas {
+            for metadata in metadatas {
                 try checkFetchCancellation()
                 let remotePath = metadata.remotePath()
                 let relativePath =
@@ -105,8 +115,12 @@ public extension Item {
                 let childLocalPath = directoryLocalPath + relativePath
                 let childOperation = operation.childOperation(for: metadata.ocId)
 
+                guard dbManager.beginDownload(childOperation) != nil else {
+                    throw NSFileProviderError(.cannotSynchronize)
+                }
                 if metadata.directory {
-                    remoteDirectoryPaths.append(remotePath)
+                    pendingDirectoryOperations.append(childOperation)
+                    remoteDirectories.append((path: remotePath, operation: childOperation))
                     try FileManager.default.createDirectory(
                         at: URL(fileURLWithPath: childLocalPath),
                         withIntermediateDirectories: true,
@@ -115,10 +129,6 @@ public extension Item {
                 } else {
                     let identifier = NSFileProviderItemIdentifier(metadata.ocId)
 
-                    guard let downloadingMetadata = dbManager.beginDownload(childOperation) else {
-                        throw NSFileProviderError(.cannotSynchronize)
-                    }
-                    metadata = downloadingMetadata
                     let error = await downloadFileContents(
                         remotePath: remotePath,
                         localPath: childLocalPath,
@@ -141,22 +151,7 @@ public extension Item {
                             handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
                         ) ?? NSFileProviderError(.cannotSynchronize))
                     }
-                }
-
-                metadata.status = Status.normal.rawValue
-                metadata.downloaded = true
-                // HACK: We were previously failing to correctly set the uploaded state to true for
-                // enumerated items. Fix it now to ensure we do not show "waiting for upload" when
-                // having downloaded incorrectly enumerated files
-                metadata.uploaded = true
-                metadata.sessionError = ""
-                if metadata.directory {
-                    dbManager.addItemMetadata(metadata)
-                } else {
                     try dbManager.finishDownload(childOperation, status: .normal, downloaded: true)
-                }
-
-                if !metadata.directory {
                     downloadedFileOcIds.append(metadata.ocId)
                 }
 
@@ -164,6 +159,11 @@ public extension Item {
             }
         }
 
+        while let directoryOperation = pendingDirectoryOperations.last {
+            try checkFetchCancellation()
+            try dbManager.finishDownload(directoryOperation, status: .normal, downloaded: true)
+            pendingDirectoryOperations.removeLast()
+        }
         progress.completedUnitCount += 1 // Finish off
 
         // Downloading a folder materializes its descendant files without going
