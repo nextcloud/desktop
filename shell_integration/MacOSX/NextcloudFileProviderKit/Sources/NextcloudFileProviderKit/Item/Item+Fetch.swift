@@ -94,6 +94,9 @@ public extension Item {
             }
             progress.totalUnitCount += Int64(metadatas.count)
 
+            // Restore from this listing before any transfer, so later local deletions still stop the fetch.
+            try dbManager.restoreDirectoryDownloadMetadatas(metadatas.filter { !$0.directory })
+
             for var metadata in metadatas {
                 try checkFetchCancellation()
                 let remotePath = metadata.remotePath()

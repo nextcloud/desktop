@@ -850,7 +850,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.status, Status.normal.rawValue)
     }
 
-    func testDirectoryFetchDownloadsChildRestoredByEnumeration() async throws {
+    func testDirectoryFetchRestoresUnchangedDeletedChild() async throws {
         for downloadFails in [false, true] {
             let (item, remoteInterface, directory) = makeFetchItem(directory: true)
             let child = directory.children[0]
@@ -865,7 +865,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             let read = await Enumerator.readServerUrl(directory.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
             XCTAssertNil(read.error)
             XCTAssertTrue(try XCTUnwrap(read.metadatas).contains { $0.ocId == child.identifier })
-            XCTAssertFalse(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.identifier)).deleted)
+            XCTAssertTrue(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.identifier)).deleted)
             if downloadFails {
                 remoteInterface.downloadError = NKError(errorCode: 503, errorDescription: "Child download failed")
             }
