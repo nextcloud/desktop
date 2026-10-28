@@ -62,6 +62,15 @@ endif()
 
 nextcloud_add_test(Utility)
 
+if(LINUX)
+    add_executable(LinuxSingleApplicationTest testlinuxsingleapplication.cpp)
+    target_include_directories(LinuxSingleApplicationTest PRIVATE ${CMAKE_SOURCE_DIR}/src)
+    target_link_libraries(LinuxSingleApplicationTest PRIVATE Qt::Core Qt::Network Qt::Test KDAB::kdsingleapplication)
+    target_compile_definitions(LinuxSingleApplicationTest PRIVATE QT_NO_KEYWORDS)
+    set_target_properties(LinuxSingleApplicationTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY} FOLDER Tests)
+    add_test(NAME LinuxSingleApplicationTest COMMAND LinuxSingleApplicationTest)
+endif()
+
 if (APPLE)
     add_subdirectory(macOS)
 endif()
