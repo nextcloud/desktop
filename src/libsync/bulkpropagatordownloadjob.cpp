@@ -69,6 +69,21 @@ void BulkPropagatorDownloadJob::start()
         return;
     }
 
+    _filesToDownload.removeIf([this](const SyncFileItemPtr &fileToDownload) {
+        if (!propagator()->localPathContainsSymlink(fileToDownload->_file)) {
+            return false;
+        }
+        qCWarning(lcBulkPropagatorDownloadJob) << "Do not create a placeholder through a symlink" << fileToDownload->_file;
+        fileToDownload->_status = SyncFileItem::FileIgnored;
+        fileToDownload->_errorString = OwncloudPropagator::symlinkNotSupportedMessage();
+        propagator()->emitItemCompleted(fileToDownload, ErrorCategory::NoError);
+        return true;
+    });
+    if (_filesToDownload.isEmpty()) {
+        done(SyncFileItem::Success);
+        return;
+    }
+
     for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
         Q_ASSERT(fileToDownload->_type == ItemTypeVirtualFile);
 

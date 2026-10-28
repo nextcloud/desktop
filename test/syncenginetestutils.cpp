@@ -23,6 +23,12 @@
 #include <memory>
 #include <filesystem>
 
+#include <system_error>
+
+#ifdef Q_OS_WIN
+#include <QProcess>
+#endif
+
 using namespace Qt::StringLiterals;
 
 PathComponents::PathComponents(const char *path)
@@ -1704,3 +1710,17 @@ qint64 FakeJsonReply::bytesAvailable() const
 {
     return _body.size();
 }
+
+bool createDirectorySymlink(const QString &target, const QString &link)
+{
+    auto error = std::error_code{};
+    std::filesystem::create_directory_symlink(OCC::FileSystem::toFilesystemPath(target), OCC::FileSystem::toFilesystemPath(link), error);
+    return !error;
+}
+
+#ifdef Q_OS_WIN
+bool createDirectoryJunction(const QString &target, const QString &link)
+{
+    return QProcess::execute(u"cmd"_s, {u"/c"_s, u"mklink"_s, u"/J"_s, QDir::toNativeSeparators(link), QDir::toNativeSeparators(target)}) == 0;
+}
+#endif
