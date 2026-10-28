@@ -44,44 +44,23 @@ public extension Item {
         directoryRemotePath: String,
         domain: NSFileProviderDomain?,
         progress: Progress,
-        operation: DownloadOperation
-    ) async throws {
+        operation: DownloadOperation,
+        childOperations: inout [DownloadOperation]
+    ) async throws -> [String] {
         func checkFetchCancellation() throws {
             if progress.isCancelled || Task.isCancelled {
                 throw operation.error(for: CocoaError(.userCancelled))
             }
         }
 
-        func checkDirectoryIsPresent(_ directoryOperation: DownloadOperation) throws {
-            guard let metadata = dbManager.itemMetadata(ocId: directoryOperation.ocId), !metadata.deleted else {
-                throw NSFileProviderError(.cannotSynchronize)
-            }
-        }
-
-        // A missing child must not report the requested folder as missing.
-        func finishChildDownload(_ childOperation: DownloadOperation) throws {
-            do {
-                try dbManager.finishDownload(childOperation, status: .normal, downloaded: true)
-            } catch let error as NSFileProviderError where error.code == .noSuchItem {
-                throw NSFileProviderError(.cannotSynchronize)
-            }
-        }
-
         progress.totalUnitCount = 1 // Add 1 for final procedures
 
         var remoteDirectories = [(path: directoryRemotePath, operation: operation)]
-        var pendingDirectoryOperations: [DownloadOperation] = []
-        defer {
-            // Release unfinished child directories; the root fetch reports the operation's error.
-            for directoryOperation in pendingDirectoryOperations {
-                try? dbManager.finishDownload(directoryOperation, status: .normal, downloaded: false)
-            }
-        }
         var downloadedFileOcIds: [String] = []
         while !remoteDirectories.isEmpty {
             try checkFetchCancellation()
             let directory = remoteDirectories.removeFirst()
-            try checkDirectoryIsPresent(directory.operation)
+            try dbManager.validateDownload(directory.operation)
             let remoteDirectoryPath = directory.path
             let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
@@ -108,7 +87,7 @@ public extension Item {
                 throw NSFileProviderError(.cannotSynchronize)
             }
 
-            try checkDirectoryIsPresent(directory.operation)
+            try dbManager.validateDownload(directory.operation)
             if !metadatas.isEmpty {
                 metadatas.removeFirst() // Remove the dir itself
             }
@@ -127,8 +106,8 @@ public extension Item {
                 guard dbManager.beginDownload(childOperation) != nil else {
                     throw NSFileProviderError(.cannotSynchronize)
                 }
+                childOperations.append(childOperation)
                 if metadata.directory {
-                    pendingDirectoryOperations.append(childOperation)
                     remoteDirectories.append((path: remotePath, operation: childOperation))
                     try FileManager.default.createDirectory(
                         at: URL(fileURLWithPath: childLocalPath),
@@ -160,7 +139,7 @@ public extension Item {
                             handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
                         ) ?? NSFileProviderError(.cannotSynchronize))
                     }
-                    try finishChildDownload(childOperation)
+                    try dbManager.validateDownload(childOperation)
                     downloadedFileOcIds.append(metadata.ocId)
                 }
 
@@ -168,22 +147,7 @@ public extension Item {
             }
         }
 
-        while let directoryOperation = pendingDirectoryOperations.last {
-            try checkFetchCancellation()
-            try finishChildDownload(directoryOperation)
-            pendingDirectoryOperations.removeLast()
-        }
-        progress.completedUnitCount += 1 // Finish off
-
-        // Downloading a folder materializes its descendant files without going
-        // through the single-file `fetchContents` refresh below, and the
-        // materialized-set observer sees no DB discrepancy (the rows are already
-        // downloaded==true). Nudge the descendants' ancestor containers directly so
-        // "Remove downloaded items" appears on the folder, its subfolders, and up
-        // to the root (#10085).
-        if let domain, let manager = NSFileProviderManager(for: domain), !downloadedFileOcIds.isEmpty {
-            refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: Set(downloadedFileOcIds), manager: manager, dbManager: dbManager, logger: logger)
-        }
+        return downloadedFileOcIds
     }
 
     func fetchContents(
@@ -235,11 +199,16 @@ public extension Item {
             )
         }
 
+        var childOperations: [DownloadOperation] = []
+        var downloadedFileOcIds: [String] = []
         var contentsReturned = false
         var fetchErrorDescription: String?
         var fetchWasCancelled = false
         defer {
             if !contentsReturned {
+                for childOperation in childOperations {
+                    try? dbManager.finishDownload(childOperation, status: .normal, downloaded: false)
+                }
                 let cancelled = fetchWasCancelled || progress.isCancelled || Task.isCancelled
                 try? dbManager.finishDownload(
                     operation,
@@ -274,13 +243,14 @@ public extension Item {
             }
 
             do {
-                try await fetchDirectoryContents(
+                downloadedFileOcIds = try await fetchDirectoryContents(
                     itemIdentifier: itemIdentifier,
                     directoryLocalPath: localPath.path,
                     directoryRemotePath: serverUrlFileName,
                     domain: domain,
                     progress: progress,
-                    operation: operation
+                    operation: operation,
+                    childOperations: &childOperations
                 )
             } catch {
                 logger.error("Could not fetch directory contents.", [.item: ocId, .error: error])
@@ -363,14 +333,23 @@ public extension Item {
             return (nil, nil, operation.error(for: CocoaError(.userCancelled)))
         }
         do {
-            try dbManager.finishDownload(operation, status: .normal, downloaded: true, contentType: detectedContentType)
+            if isDirectory {
+                try dbManager.finishDirectoryDownload(operation, children: childOperations)
+                progress.completedUnitCount += 1
+            } else {
+                try dbManager.finishDownload(operation, status: .normal, downloaded: true, contentType: detectedContentType)
+            }
         } catch {
+            fetchErrorDescription = error.localizedDescription
             return (nil, nil, operation.error(for: error))
         }
 
         // Refresh ancestor actions after the successful download state has been saved (#10085).
-        if !isDirectory, let domain, let manager = NSFileProviderManager(for: domain) {
-            refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: [ocId], manager: manager, dbManager: dbManager, logger: logger)
+        if let domain, let manager = NSFileProviderManager(for: domain) {
+            let fileOcIds = isDirectory ? Set(downloadedFileOcIds) : [ocId]
+            if !fileOcIds.isEmpty {
+                refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: fileOcIds, manager: manager, dbManager: dbManager, logger: logger)
+            }
         }
         let fpItem = Item(
             metadata: updatedMetadata,

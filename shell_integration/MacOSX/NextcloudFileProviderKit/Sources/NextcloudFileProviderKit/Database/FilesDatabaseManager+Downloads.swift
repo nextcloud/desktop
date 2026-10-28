@@ -47,6 +47,62 @@ extension FilesDatabaseManager {
         return metadata
     }
 
+    /// Check a staged download without publishing or releasing its ownership.
+    func validateDownload(_ operation: DownloadOperation) throws {
+        try Self.downloadOperations.withLock { operations in
+            let database = ncDatabase()
+            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString,
+                  operations[databaseIdentifier]?[operation.ocId]?.identifier == operation.identifier,
+                  let item = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: operation.ocId),
+                  !item.deleted
+            else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+        }
+    }
+
+    /// Publish the folder and its children together only while every download still owns its item.
+    func finishDirectoryDownload(_ operation: DownloadOperation, children: [DownloadOperation]) throws {
+        try Self.downloadOperations.withLock { operations in
+            let database = ncDatabase()
+            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+            let downloads = [operation] + children
+            guard downloads.allSatisfy({ operations[databaseIdentifier]?[$0.ocId]?.identifier == $0.identifier }) else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+            do {
+                try database.write {
+                    let items = try downloads.map { download in
+                        guard let item = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: download.ocId), !item.deleted else {
+                            if download.identifier == operation.identifier {
+                                throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: NSFileProviderItemIdentifier(operation.ocId))
+                            }
+                            throw NSFileProviderError(.cannotSynchronize)
+                        }
+                        return item
+                    }
+                    for item in items {
+                        item.status = Status.normal.rawValue
+                        item.downloaded = true
+                        item.uploaded = true
+                        item.sessionError = ""
+                    }
+                }
+            } catch {
+                logger.error("Could not finish directory download in database.", [.item: operation.ocId, .error: error])
+                throw error
+            }
+            for download in downloads {
+                operations[databaseIdentifier]?.removeValue(forKey: download.ocId)
+            }
+            if operations[databaseIdentifier]?.isEmpty == true {
+                operations.removeValue(forKey: databaseIdentifier)
+            }
+        }
+    }
+
     /// Save the download state only while this operation owns the item.
     func finishDownload(
         _ operation: DownloadOperation,

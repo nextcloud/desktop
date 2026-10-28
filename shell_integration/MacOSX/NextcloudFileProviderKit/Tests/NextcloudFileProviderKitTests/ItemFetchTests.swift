@@ -922,7 +922,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             XCTAssertFalse(FileManager.default.fileExists(atPath: firstDirectory.path))
             let skippedChild = directory.children[0]
             var skippedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: skippedChild.identifier))
-            XCTAssertTrue(skippedMetadata.downloaded)
+            XCTAssertFalse(skippedMetadata.downloaded)
             skippedMetadata.deleted = true
             Self.dbManager.addItemMetadata(skippedMetadata)
             remoteInterface.downloadHandler = nil
@@ -1132,6 +1132,11 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual(finished.lockToken, "local-directory-lock")
             XCTAssertEqual(finished.fileProviderContentVersion, "previous-directory-version")
             XCTAssertEqual(finished.sessionError, "")
+            for child in directory.children where !child.directory {
+                let childMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+                XCTAssertEqual(childMetadata.downloaded, errorCode == nil)
+                XCTAssertEqual(childMetadata.status, Status.normal.rawValue)
+            }
         }
     }
 
@@ -1439,34 +1444,176 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
     }
 
-    func testCancelledFolderDownloadPreservesCompletedChildStateAndRemovesContents() async throws {
-        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
-        let progress = Progress()
-        remoteInterface.downloadHandler = {
-            if remoteInterface.downloadOperationCount == 2 {
-                progress.cancel()
-                let cancelled = await waitForCancellation()
-                XCTAssertTrue(cancelled, "Cancellation did not reach the operation.")
+    func testDiscardedFolderDownloadLeavesCompletedChildrenDataless() async throws {
+        for cancelProgress in [false, true] {
+            let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+            let progress = Progress()
+            remoteInterface.downloadHandler = {
+                guard remoteInterface.downloadOperationCount == 2 else { return }
+                if cancelProgress {
+                    progress.cancel()
+                    let cancelled = await waitForCancellation()
+                    XCTAssertTrue(cancelled, "Cancellation did not reach the operation.")
+                } else {
+                    remoteInterface.downloadError = NKError(errorCode: 503, errorDescription: "Second child failed")
+                }
             }
-        }
 
-        let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
-        let localDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
-        defer { try? FileManager.default.removeItem(at: localDirectory) }
+            let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
+            let localDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
+            defer { try? FileManager.default.removeItem(at: localDirectory) }
+
+            XCTAssertNil(url)
+            XCTAssertNil(fetchedItem)
+            if cancelProgress {
+                XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+            } else {
+                XCTAssertEqual((error as? NSFileProviderError)?.code, .serverUnreachable)
+            }
+            XCTAssertEqual(remoteInterface.downloadOperationCount, 2)
+            XCTAssertEqual(remoteInterface.readOperationCount, 1)
+            let parent = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: directory.identifier))
+            XCTAssertFalse(parent.downloaded)
+            XCTAssertEqual(parent.status, cancelProgress ? Status.normal.rawValue : Status.downloadError.rawValue)
+            for (index, child) in directory.children.enumerated() {
+                let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.identifier))
+                XCTAssertFalse(metadata.downloaded)
+                let failed = index == 1 && !cancelProgress
+                XCTAssertEqual(metadata.status, failed ? Status.downloadError.rawValue : Status.normal.rawValue)
+                XCTAssertEqual(metadata.sessionError ?? "", failed ? "Second child failed" : "")
+            }
+            XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.path))
+        }
+    }
+
+    func testCancellingFolderCapabilityLookupDiscardsAllChildState() async throws {
+        await RetrievedCapabilitiesActor.shared.reset()
+        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+        let childIdentifiers = directory.children.map(\.identifier)
+        let progress = Progress()
+        let dbManager = Self.dbManager
+        remoteInterface.capabilitiesHandler = { _, _ in
+            XCTAssertEqual(remoteInterface.downloadOperationCount, childIdentifiers.count)
+            for identifier in childIdentifiers {
+                let metadata = dbManager.itemMetadata(ocId: identifier)
+                XCTAssertEqual(metadata?.downloaded, false)
+                XCTAssertEqual(metadata?.status, Status.downloading.rawValue)
+            }
+            progress.cancel()
+        }
+        defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
+
+        let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: dbManager)
+
         XCTAssertNil(url)
         XCTAssertNil(fetchedItem)
         XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual(remoteInterface.downloadOperationCount, childIdentifiers.count)
+        for identifier in childIdentifiers {
+            let metadata = try XCTUnwrap(dbManager.itemMetadata(ocId: identifier))
+            XCTAssertFalse(metadata.downloaded)
+            XCTAssertEqual(metadata.status, Status.normal.rawValue)
+            XCTAssertEqual(metadata.sessionError, "")
+        }
+        let localDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.path))
+    }
+
+    func testFailedFolderParentLookupDiscardsCompletedChildState() async throws {
+        let (_, remoteInterface, parentDirectory) = makeFetchItem(directory: true)
+        let directory = makeDirectoryChild(of: parentDirectory)
+        let child = directory.children[0]
+        let dbManager = Self.dbManager
+        let metadata = directory.toNKFile().toItemMetadata()
+        dbManager.addItemMetadata(metadata)
+        dbManager.removeItemMetadata(ocId: parentDirectory.identifier)
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: NSFileProviderItemIdentifier(parentDirectory.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
+        )
+        let parentPath = parentDirectory.remotePath
+        let childIdentifier = child.identifier
+        remoteInterface.enumerateErrorBySuffix[parentDirectory.name] = NKError(errorCode: 503, errorDescription: "Parent lookup failed")
+        remoteInterface.enumerateCallHandler = { path, _, _, _, _, _, _, _ in
+            guard path == parentPath else { return }
+            XCTAssertEqual(remoteInterface.downloadOperationCount, 1)
+            XCTAssertEqual(dbManager.itemMetadata(ocId: childIdentifier)?.downloaded, false)
+            XCTAssertEqual(dbManager.itemMetadata(ocId: childIdentifier)?.status, Status.downloading.rawValue)
+        }
+        defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
+
+        let (url, fetchedItem, error) = await item.fetchContents(dbManager: dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertNotNil(error)
+        XCTAssertEqual(remoteInterface.downloadOperationCount, 1)
+        XCTAssertEqual(remoteInterface.readOperationCount, 2)
+        let childMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        XCTAssertFalse(childMetadata.downloaded)
+        XCTAssertEqual(childMetadata.status, Status.normal.rawValue)
+        XCTAssertEqual(childMetadata.sessionError, "")
+        let localDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.path))
+    }
+
+    func testDiscardedFolderPreservesNewerCompletedChildFetch() async throws {
+        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+        let dbManager = Self.dbManager
+        let child = directory.children[0]
+        let (started, continuation) = AsyncStream<CheckedContinuation<Void, Never>>.makeStream()
+        remoteInterface.downloadHandler = {
+            guard remoteInterface.downloadOperationCount == 2 else { return }
+            await withCheckedContinuation { continuation.yield($0) }
+        }
+        let task = Task { await item.fetchContents(dbManager: dbManager) }
+        var release: CheckedContinuation<Void, Never>?
+        defer {
+            release?.resume()
+            continuation.finish()
+            task.cancel()
+            removeDownloadedDirectory(remoteInterface: remoteInterface)
+        }
+        let startedValue = try await nextTestValue(from: started)
+        release = try XCTUnwrap(startedValue)
         XCTAssertEqual(remoteInterface.downloadOperationCount, 2)
-        XCTAssertEqual(remoteInterface.readOperationCount, 1)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.identifier)?.downloaded, false)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.identifier)?.status, Status.normal.rawValue)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.identifier)?.sessionError, "")
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[0].identifier)?.downloaded, true)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[1].identifier)?.downloaded, false)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[1].identifier)?.status, Status.normal.rawValue)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[1].identifier)?.sessionError, "")
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[0].identifier)?.status, Status.normal.rawValue)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[2].identifier)?.downloaded, false)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: child.identifier)?.downloaded, false)
+        let childRemoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        childRemoteInterface.injectMock(Self.account)
+        defer { removeDownloadedContents(remoteInterface: childRemoteInterface) }
+        let childItem = try Item(
+            metadata: XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier)),
+            parentItemIdentifier: NSFileProviderItemIdentifier(directory.identifier),
+            account: Self.account,
+            remoteInterface: childRemoteInterface,
+            dbManager: dbManager
+        )
+
+        let (childURL, fetchedChild, childError) = await childItem.fetchContents(dbManager: dbManager)
+
+        XCTAssertNil(childError)
+        XCTAssertTrue(try XCTUnwrap(fetchedChild).isDownloaded)
+        var newerMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        newerMetadata.favorite = true
+        dbManager.addItemMetadata(newerMetadata)
+        let expected = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        release?.resume()
+        release = nil
+        let (url, fetchedItem, error) = try await testTaskValue(of: task)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertEqual(remoteInterface.downloadOperationCount, 2)
+        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(childURL)), child.data)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: child.identifier), expected)
+        for child in directory.children.dropFirst() {
+            XCTAssertFalse(try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier)).downloaded)
+        }
+        let localDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
         XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.path))
     }
 

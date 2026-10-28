@@ -10,6 +10,28 @@ import TestInterface
 import XCTest
 
 final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
+    private func makeDirectoryDownloadOperations() throws -> (root: DownloadOperation, children: [DownloadOperation]) {
+        setUpDatabase(Self.dbManager)
+        let log = FileProviderLogMock()
+        let root = DownloadOperation(ocId: UUID().uuidString, cancellation: NetworkOperationCancellation(log: log), log: log)
+        let children = [root.childOperation(for: UUID().uuidString), root.childOperation(for: UUID().uuidString)]
+        for (index, operation) in ([root] + children).enumerated() {
+            var metadata = SendableItemMetadata(ocId: operation.ocId, fileName: operation.ocId, account: Self.account)
+            metadata.directory = index != 1
+            metadata.serverUrl = index == 0 ? Self.account.davFilesUrl : Self.account.davFilesUrl + "/" + root.ocId
+            metadata.keepDownloaded = true
+            metadata.visitedDirectory = true
+            metadata.favorite = true
+            metadata.lockToken = "local-lock"
+            metadata.fileProviderContentVersion = "local-version"
+            Self.dbManager.addItemMetadata(metadata)
+            let started = try XCTUnwrap(Self.dbManager.beginDownload(operation))
+            XCTAssertEqual(started.status, Status.downloading.rawValue)
+            XCTAssertFalse(started.downloaded)
+        }
+        return (root, children)
+    }
+
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
@@ -562,6 +584,122 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
         }
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+    }
+
+    func testDirectoryDownloadCompletionPublishesAllItemsAndPreservesLocalState() throws {
+        let (root, children) = try makeDirectoryDownloadOperations()
+        let operations = [root] + children
+        defer {
+            for operation in operations {
+                try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false)
+            }
+        }
+        let before = try operations.map { try XCTUnwrap(Self.dbManager.itemMetadata(ocId: $0.ocId)) }
+
+        try Self.dbManager.finishDirectoryDownload(root, children: children)
+
+        for var expected in before {
+            expected.status = Status.normal.rawValue
+            expected.downloaded = true
+            expected.uploaded = true
+            expected.sessionError = ""
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: expected.ocId), expected)
+        }
+    }
+
+    func testDirectoryDownloadCompletionRejectsMissingChildWithoutPublishingOtherItems() throws {
+        for removeRow in [false, true] {
+            let (root, children) = try makeDirectoryDownloadOperations()
+            let operations = [root] + children
+            defer {
+                for operation in operations {
+                    try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false)
+                }
+            }
+            let missingChild = try XCTUnwrap(children.last)
+            if removeRow {
+                Self.dbManager.removeItemMetadata(ocId: missingChild.ocId)
+            } else {
+                XCTAssertTrue(Self.dbManager.deleteItemMetadata(ocId: missingChild.ocId))
+            }
+            let before = operations.compactMap { Self.dbManager.itemMetadata(ocId: $0.ocId) }
+
+            XCTAssertThrowsError(try Self.dbManager.finishDirectoryDownload(root, children: children)) { error in
+                XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+            }
+
+            for metadata in before {
+                XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
+            }
+            for operation in [root] + Array(children.dropLast()) {
+                try Self.dbManager.finishDownload(operation, status: .normal, downloaded: false)
+                let discarded = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: operation.ocId))
+                XCTAssertEqual(discarded.status, Status.normal.rawValue)
+                XCTAssertFalse(discarded.downloaded)
+            }
+            if removeRow {
+                XCTAssertNil(Self.dbManager.itemMetadata(ocId: missingChild.ocId))
+            } else {
+                XCTAssertTrue(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: missingChild.ocId)).deleted)
+            }
+        }
+    }
+
+    func testDirectoryDownloadCompletionPreservesSupersedingChildState() throws {
+        for newerCompleted in [false, true] {
+            let (root, children) = try makeDirectoryDownloadOperations()
+            let child = children[0]
+            let log = FileProviderLogMock()
+            let newer = DownloadOperation(ocId: child.ocId, cancellation: NetworkOperationCancellation(log: log), log: log)
+            defer {
+                for operation in [root] + children + [newer] {
+                    try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false)
+                }
+            }
+            _ = try XCTUnwrap(Self.dbManager.beginDownload(newer))
+            if newerCompleted {
+                try Self.dbManager.finishDownload(newer, status: .normal, downloaded: true)
+            }
+            let expectedNewer = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.ocId))
+            let otherOperations = [root] + Array(children.dropFirst())
+            let before = try otherOperations.map { try XCTUnwrap(Self.dbManager.itemMetadata(ocId: $0.ocId)) }
+
+            XCTAssertThrowsError(try Self.dbManager.finishDirectoryDownload(root, children: children)) { error in
+                XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+            }
+
+            for metadata in before {
+                XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
+            }
+            for operation in [root] + children {
+                try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false)
+            }
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: child.ocId), expectedNewer)
+            if !newerCompleted {
+                try Self.dbManager.finishDownload(newer, status: .normal, downloaded: true)
+                XCTAssertTrue(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.ocId)).downloaded)
+            }
+        }
+    }
+
+    func testDirectoryDownloadCompletionReportsMissingRequestedRoot() throws {
+        let (root, children) = try makeDirectoryDownloadOperations()
+        defer {
+            for operation in [root] + children {
+                try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false)
+            }
+        }
+        Self.dbManager.removeItemMetadata(ocId: root.ocId)
+        let before = try children.map { try XCTUnwrap(Self.dbManager.itemMetadata(ocId: $0.ocId)) }
+
+        XCTAssertThrowsError(try Self.dbManager.finishDirectoryDownload(root, children: children)) { error in
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .noSuchItem)
+        }
+
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: root.ocId))
+        for metadata in before {
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
+        }
     }
 
     func testTransitItemIsNotUpdated() throws {
