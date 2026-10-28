@@ -34,19 +34,29 @@ struct AwaitAccountTests {
         }
     }
 
-    @Test func cancelledWaiterDoesNotWaitForAccountTimeout() async {
+    @Test func cancelledWaiterDoesNotWaitForAccountTimeout() async throws {
         let ext = makeExtension()
         let (waiting, continuation) = AsyncStream<Void>.makeStream()
-        defer { continuation.finish() }
-        let task = Task {
-            try await ext.awaitAccount(timeoutNanoseconds: UInt64.max) {
-                continuation.yield(())
+        let task = Task<Bool, Never> {
+            do {
+                _ = try await ext.awaitAccount(timeoutNanoseconds: UInt64.max) {
+                    continuation.yield(())
+                }
+                return false
+            } catch {
+                return error is CancellationError
             }
         }
-        var iterator = waiting.makeAsyncIterator()
-        _ = await iterator.next()
+        defer {
+            task.cancel()
+            ext.signalAccountReady()
+            ext.invalidate()
+            continuation.finish()
+        }
+        try #require(try await nextTestValue(from: waiting) != nil)
         task.cancel()
-        await #expect(throws: CancellationError.self) { try await task.value }
+        #expect(try await testTaskValue(of: task))
+        #expect(ext.accountReadyLock.withLock { ext.accountReadyWaiters.isEmpty })
     }
 
     @Test func cancelledContentFetchFinishesBeforeAccountSetup() async throws {
