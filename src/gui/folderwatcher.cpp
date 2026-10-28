@@ -37,7 +37,7 @@ constexpr auto lockChangeDebouncingTimerIntervalMs = 500;
 
 bool isTraversableDir(const QString &path, const QFileInfo &fileInfo)
 {
-    return OCC::FileSystem::isDir(path, fileInfo) && !OCC::FileSystem::isSymLink(path, fileInfo) && !fileInfo.isJunction();
+    return OCC::FileSystem::isDir(path, fileInfo) && !OCC::FileSystem::isSymLink(path);
 }
 }
 
