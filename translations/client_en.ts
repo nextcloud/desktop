@@ -538,13 +538,13 @@
 <context>
     <name>ConfigFile</name>
     <message>
-        <location filename="../src/libsync/configfile.cpp" line="742"/>
+        <location filename="../src/libsync/configfile.cpp" line="750"/>
         <source>Managed by your organization</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/configfile.cpp" line="744"/>
+        <location filename="../src/libsync/configfile.cpp" line="752"/>
         <source>Managed by your system administrator</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
         <translation type="unfinished"></translation>
@@ -1541,198 +1541,198 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="315"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="326"/>
         <source>Will require local storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="725"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="736"/>
         <source>Proxy settings are incomplete.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="732"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="743"/>
         <source>Server address does not seem to be valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="753"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="764"/>
         <source>Username must not be empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="759"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1081"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="770"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1092"/>
         <source>Checking account access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="837"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="848"/>
         <source>Checking server address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="906"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="917"/>
         <source>Preparing browser login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="927"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="938"/>
         <source>Invalid URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="929"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="940"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="945"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="956"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1032"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1043"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1057"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1062"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1068"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1073"/>
         <source>Waiting for authorization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1067"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1078"/>
         <source>Starting authorization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1083"/>
         <source>Link copied to clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1127"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1157"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1168"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1144"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1155"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1152"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1163"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1170"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1181"/>
         <source>Account connected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1278"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1290"/>
         <source>Will require %1 of storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1454"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1470"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1464"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1480"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
         <source>Please choose a local sync folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1486"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
         <source>Please choose an empty local sync folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1551"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1567"/>
         <source>Could not create local folder %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1565"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
         <source>Checking remote folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1611"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1620"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1636"/>
         <source>Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1625"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1641"/>
         <source>Creating remote folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1644"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1660"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1646"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1662"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1648"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1664"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1695"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1711"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1707"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1723"/>
         <source>Could not create the sync folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1813"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1829"/>
         <source>Local Sync Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2088"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2104"/>
         <source>Select a certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2090"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2106"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2098"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2118"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2114"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
         <source>Could not access the selected certificate file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2150"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1750,7 +1750,7 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/activitylistmodel.cpp" line="773"/>
+        <location filename="../src/gui/activity/activitylistmodel.cpp" line="783"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1851,84 +1851,84 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="185"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <extracomment>%1 is either &quot;newer&quot; or &quot;older&quot;. %2 is either &quot;ignoring&quot; or &quot;deleting&quot;. %3 is a list of configuration backup file paths.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="191"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="191"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="191"/>
+        <location filename="../src/gui/application.cpp" line="192"/>
         <source>ignoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="191"/>
+        <location filename="../src/gui/application.cpp" line="192"/>
         <source>deleting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="193"/>
+        <location filename="../src/gui/application.cpp" line="194"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="194"/>
+        <location filename="../src/gui/application.cpp" line="195"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="698"/>
+        <location filename="../src/gui/application.cpp" line="705"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="699"/>
+        <location filename="../src/gui/application.cpp" line="706"/>
         <source>1 account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="701"/>
+        <location filename="../src/gui/application.cpp" line="708"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="702"/>
+        <location filename="../src/gui/application.cpp" line="709"/>
         <source>1 folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="704"/>
+        <location filename="../src/gui/application.cpp" line="711"/>
         <source>Legacy import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="705"/>
+        <location filename="../src/gui/application.cpp" line="712"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="827"/>
+        <location filename="../src/gui/application.cpp" line="834"/>
         <source>Error accessing the configuration file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="828"/>
+        <location filename="../src/gui/application.cpp" line="835"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4856,43 +4856,43 @@ Note that using any logging command line options will override this setting.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1703"/>
-        <location filename="../src/libsync/discovery.cpp" line="2222"/>
+        <location filename="../src/libsync/discovery.cpp" line="1704"/>
+        <location filename="../src/libsync/discovery.cpp" line="2223"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2073"/>
+        <location filename="../src/libsync/discovery.cpp" line="2074"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2143"/>
+        <location filename="../src/libsync/discovery.cpp" line="2144"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2177"/>
+        <location filename="../src/libsync/discovery.cpp" line="2178"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2184"/>
+        <location filename="../src/libsync/discovery.cpp" line="2185"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2199"/>
+        <location filename="../src/libsync/discovery.cpp" line="2200"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2236"/>
+        <location filename="../src/libsync/discovery.cpp" line="2237"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2409"/>
+        <location filename="../src/libsync/discovery.cpp" line="2410"/>
         <source>Error while reading the database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6009,7 +6009,7 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1072"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="1082"/>
         <source>Failed to connect database.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6026,13 +6026,13 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1571"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1573"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1563"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1565"/>
         <source>Reauthorization required</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6050,7 +6050,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1582"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1584"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6076,7 +6076,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1583"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
         <source>Some files could not be synced!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6415,38 +6415,38 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="881"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1244"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1246"/>
         <source>Retry all uploads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1295"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1457"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1297"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1459"/>
         <source>Resolve conflict</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1447"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1449"/>
         <source>Rename file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1555"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1557"/>
         <source>Sync conflicts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1700"/>
         <source>Public Share Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1915"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1917"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1935"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6454,32 +6454,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2297"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2299"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2298"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2302"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2304"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2303"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2387"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2387"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6947,27 +6947,27 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1376"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1378"/>
         <source>You renamed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1378"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
         <source>You deleted %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1382"/>
         <source>You created %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1382"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
         <source>You changed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1406"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
         <source>Synced %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8025,12 +8025,12 @@ Server replied with error: %2</source>
 <context>
     <name>UriSchemeHandler</name>
     <message>
-        <location filename="../src/gui/urischemehandler.cpp" line="123"/>
+        <location filename="../src/gui/urischemehandler.cpp" line="124"/>
         <source>Could not handle link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/urischemehandler.cpp" line="191"/>
+        <location filename="../src/gui/urischemehandler.cpp" line="192"/>
         <source>Adding another account is not allowed in this client.</source>
         <translation type="unfinished"></translation>
     </message>
