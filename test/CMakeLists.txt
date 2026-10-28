@@ -269,6 +269,7 @@ endif()
 
 nextcloud_add_test(LongPath)
 nextcloud_add_benchmark(LargeSync)
+nextcloud_add_benchmark(Discovery)
 
 nextcloud_add_test(Account)
 nextcloud_add_test(AccountManager)

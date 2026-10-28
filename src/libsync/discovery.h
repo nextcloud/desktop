@@ -6,13 +6,14 @@
 
 #pragma once
 
-#include <QObject>
-#include <cstdint>
+#include "common/asserts.h"
+#include "common/syncjournaldb.h"
 #include "csync_exclude.h"
 #include "discoveryphase.h"
 #include "syncfileitem.h"
-#include "common/asserts.h"
-#include "common/syncjournaldb.h"
+#include <QObject>
+#include <QTimer>
+#include <cstdint>
 
 class ExcludedFiles;
 
@@ -139,6 +140,9 @@ private:
      */
     void process();
 
+    // Continue reconciling this directory without monopolizing the event loop.
+    void processEntries();
+
     // return true if the file is excluded.
     // path is the full relative path of the file. localName is the base name of the local entry.
     bool handleExcluded(const QString &path, const Entries &entries, const std::map<QString, Entries> &allEntries, bool isHidden, bool isBlacklisted);
@@ -262,6 +266,14 @@ private:
     // Holds entries that resulted from a NormalQuery
     QVector<RemoteInfo> _serverNormalQueryEntries;
     QVector<LocalInfo> _localNormalQueryEntries;
+
+    // Keep the complete lookup table for case-clash checks across continuations.
+    std::map<QString, Entries> _entriesToProcess;
+    std::map<QString, Entries>::iterator _nextEntry;
+    QStringList _exclusiveFiles;
+    bool _processingEntries = false;
+    bool _processingEntryTurn = false;
+    QTimer *_entryProcessingTimer = nullptr;
 
     // Whether the local/remote directory item queries are done. Will be set
     // even even for do-nothing (!= NormalQuery) queries.

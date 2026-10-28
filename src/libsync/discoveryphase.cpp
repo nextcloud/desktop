@@ -270,15 +270,24 @@ void DiscoveryPhase::markPermanentDeletionRequests()
 
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
+    if (_stopped) {
+        return;
+    }
     Q_ASSERT(!_currentRootJob);
     connect(this, &DiscoveryPhase::itemDiscovered, this, &DiscoveryPhase::slotItemDiscovered, Qt::UniqueConnection);
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
+        if (_stopped) {
+            return;
+        }
         Q_ASSERT(_currentRootJob == sender());
         _currentRootJob = nullptr;
         if (job->_dirItem) {
             Q_EMIT itemDiscovered(job->_dirItem);
         }
         job->deleteLater();
+        if (_stopped) {
+            return;
+        }
 
         // Once the main job has finished recurse here to execute the remaining
         // jobs for queued deleted directories.
@@ -313,6 +322,9 @@ bool DiscoveryPhase::isRenamed(const QString &p) const
 
 void DiscoveryPhase::scheduleMoreJobs()
 {
+    if (_stopped) {
+        return;
+    }
     auto limit = qMax(1, _syncOptions._parallelNetworkJobs);
     if (_currentRootJob && _currentlyActiveJobs < limit) {
         _currentRootJob->processSubJobs(limit - _currentlyActiveJobs);

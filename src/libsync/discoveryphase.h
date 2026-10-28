@@ -233,6 +233,7 @@ class DiscoveryPhase : public QObject
      */
     [[nodiscard]] bool isRenamed(const QString &p) const;
 
+    // Local/remote queries and directories that are reconciling their entries.
     int _currentlyActiveJobs = 0;
 
     // both must contain a sorted list
@@ -303,6 +304,16 @@ public:
 
     void startJob(ProcessDirectoryJob *);
 
+    // Stop continuations immediately, before deferred deletion of the phase.
+    void stop()
+    {
+        _stopped = true;
+    }
+    [[nodiscard]] bool isStopped() const
+    {
+        return _stopped;
+    }
+
     void setSelectiveSyncBlackList(const QStringList &list);
     void setSelectiveSyncWhiteList(const QStringList &list);
 
@@ -351,6 +362,9 @@ Q_SIGNALS:
     void seenLockedFile(const QString &fileName);
 private Q_SLOTS:
     void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
+
+private:
+    bool _stopped = false;
 };
 
 /// Implementation of DiscoveryPhase::adjustRenamedPath

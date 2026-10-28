@@ -4,27 +4,29 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "account.h"
 #include "discovery.h"
+#include "account.h"
 #include "common/filesystembase.h"
 #include "common/syncjournaldb.h"
+#include "csync.h"
+#include "csync_exclude.h"
 #include "filesystem.h"
-#include "syncfileitem.h"
 #include "progressdispatcher.h"
-#include <QDebug>
-#include <algorithm>
-#include <QEventLoop>
-#include <QDir>
-#include <set>
-#include <QTextCodec>
+#include "syncfileitem.h"
 #include "vio/csync_vio_local.h"
-#include <QFileInfo>
+#include <QDebug>
+#include <QDir>
+#include <QElapsedTimer>
+#include <QEventLoop>
 #include <QFile>
+#include <QFileInfo>
+#include <QScopedValueRollback>
+#include <QTextCodec>
 #include <QThreadPool>
+#include <algorithm>
 #include <common/checksums.h>
 #include <common/constants.h>
-#include "csync_exclude.h"
-#include "csync.h"
+#include <set>
 
 namespace
 {
@@ -76,6 +78,9 @@ ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinS
 
 void ProcessDirectoryJob::start()
 {
+    if (_discoveryData->isStopped()) {
+        return;
+    }
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
 
     _discoveryData->_noCaseConflictRecordsInDb = _discoveryData->_statedb->caseClashConflictRecordPaths().isEmpty();
@@ -109,7 +114,18 @@ void ProcessDirectoryJob::start()
 
 void ProcessDirectoryJob::process()
 {
+    if (_discoveryData->isStopped()) {
+        return;
+    }
     ASSERT(_localQueryDone && _serverQueryDone);
+    ASSERT(!_processingEntries);
+    _processingEntries = true;
+    // A yielding directory still occupies a scheduling slot and retains its map.
+    ++_discoveryData->_currentlyActiveJobs;
+
+    // This restriction belongs to the first directory of single-item discovery.
+    // Other directory callbacks may run while this one yields.
+    _exclusiveFiles.swap(_discoveryData->_listExclusiveFiles);
 
     // Build lookup tables for local, remote and db entries.
     // For suffix-virtual files, the key will normally be the base file name
@@ -117,7 +133,7 @@ void ProcessDirectoryJob::process()
     // However, if foo and foo.owncloud exists locally, there'll be "foo"
     // with local, db, server entries and "foo.owncloud" with only a local
     // entry.
-    std::map<QString, Entries> entries;
+    auto &entries = _entriesToProcess;
     for (auto &e : _serverNormalQueryEntries) {
         entries[e.name].serverEntry = std::move(e);
     }
@@ -174,16 +190,49 @@ void ProcessDirectoryJob::process()
     }
     _localNormalQueryEntries.clear();
 
-    //
-    // Iterate over entries and process them
-    //
-    for (auto &f : entries) {
+    _nextEntry = entries.begin();
+    processEntries();
+}
+
+void ProcessDirectoryJob::processEntries()
+{
+    // A signal receiver may pump events while an entry is being processed.
+    if (_processingEntryTurn) {
+        return;
+    }
+    const QScopedValueRollback processingGuard(_processingEntryTurn, true);
+    constexpr auto maxEntriesPerTurn = 128;
+    constexpr auto maxMillisecondsPerTurn = 8;
+    QElapsedTimer elapsed;
+    elapsed.start();
+    auto processed = 0;
+    while (_nextEntry != _entriesToProcess.end()) {
+        if (_discoveryData->isStopped()) {
+            if (_entryProcessingTimer) {
+                _entryProcessingTimer->stop();
+            }
+            return;
+        }
+        if (processed > 0 && (processed >= maxEntriesPerTurn || elapsed.elapsed() >= maxMillisecondsPerTurn)) {
+            if (!_entryProcessingTimer) {
+                // Reuse a nonzero timer rather than allocating and rearming a
+                // one-shot after every turn. Small directories need no timer.
+                _entryProcessingTimer = new QTimer(this);
+                _entryProcessingTimer->setTimerType(Qt::PreciseTimer);
+                _entryProcessingTimer->setInterval(1);
+                connect(_entryProcessingTimer, &QTimer::timeout, this, &ProcessDirectoryJob::processEntries);
+                _entryProcessingTimer->start();
+            }
+            return;
+        }
+        ++processed;
+        auto &f = *(_nextEntry++);
         auto &e = f.second;
 
         PathTuple path;
         path = _currentFolder.addName(e.nameOverride.isEmpty() ? f.first : e.nameOverride);
 
-        if (!_discoveryData->_listExclusiveFiles.isEmpty() && !_discoveryData->_listExclusiveFiles.contains(path._server)) {
+        if (!_exclusiveFiles.isEmpty() && !_exclusiveFiles.contains(path._server)) {
             qCInfo(lcDisco) << "Skipping a file:" << path._server << "as it is not listed in the _listExclusiveFiles";
             continue;
         }
@@ -232,7 +281,7 @@ void ProcessDirectoryJob::process()
 
         const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup;
 
-        const auto willBeExcluded = handleExcluded(path._target, e, entries, isHidden, isBlacklisted);
+        const auto willBeExcluded = handleExcluded(path._target, e, _entriesToProcess, isHidden, isBlacklisted);
 
         if (willBeExcluded) {
             continue;
@@ -251,7 +300,16 @@ void ProcessDirectoryJob::process()
 
         processFile(std::move(path), e.localEntry, e.serverEntry, e.dbEntry);
     }
-    _discoveryData->_listExclusiveFiles.clear();
+    if (_entryProcessingTimer) {
+        _entryProcessingTimer->stop();
+    }
+    if (_discoveryData->isStopped()) {
+        return;
+    }
+    _entriesToProcess.clear();
+    _exclusiveFiles.clear();
+    _processingEntries = false;
+    --_discoveryData->_currentlyActiveJobs;
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
@@ -2367,6 +2425,10 @@ void ProcessDirectoryJob::subJobFinished()
 
 int ProcessDirectoryJob::processSubJobs(int nbJobs)
 {
+    // Do not finish this job or start its children while entries are unprocessed.
+    if (_processingEntries || _discoveryData->isStopped()) {
+        return 0;
+    }
     if (_queuedJobs.empty() && _runningJobs.empty() && _pendingAsyncJobs == 0) {
         _pendingAsyncJobs = -1; // We're finished, we don't want to emit finished again
         if (_dirItem) {
@@ -2390,12 +2452,12 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
     int started = 0;
     for (const auto rj : std::as_const(_runningJobs)) {
         started += rj->processSubJobs(nbJobs - started);
-        if (started >= nbJobs) {
+        if (started >= nbJobs || _discoveryData->isStopped()) {
             return started;
         }
     }
 
-    while (started < nbJobs && !_queuedJobs.empty()) {
+    while (started < nbJobs && !_queuedJobs.empty() && !_discoveryData->isStopped()) {
         auto f = _queuedJobs.front();
         _queuedJobs.pop_front();
         _runningJobs.push_back(f);
