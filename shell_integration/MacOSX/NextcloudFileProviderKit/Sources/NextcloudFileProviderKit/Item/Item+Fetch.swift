@@ -213,8 +213,8 @@ public extension Item {
         logger.debug("Fetching item.", [.name: metadata.fileName, .url: serverUrlFileName])
 
         let isDirectory = contentType.conforms(to: .directory)
-        // Each file fetch owns its destination so cancellation cannot remove another fetch's result.
-        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(isDirectory ? metadata.ocId : UUID().uuidString)
+        // Give each fetch its own destination so cleanup cannot remove another fetch's contents.
+        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let operation = DownloadOperation(ocId: ocId, cancellation: cancellation, log: logger.log)
         guard var updatedMetadata = dbManager.beginDownload(operation) else {
             logger.error("Could not acquire updated metadata, unable to update item status to downloading.", [.item: itemIdentifier])
@@ -238,14 +238,12 @@ public extension Item {
                     downloaded: false,
                     error: cancelled ? nil : fetchErrorDescription
                 )
-                if !isDirectory {
-                    do {
-                        try FileManager.default.removeItem(at: localPath)
-                    } catch CocoaError.fileNoSuchFile {
-                        // Failure may precede creation of the temporary file.
-                    } catch {
-                        logger.error("Could not remove unreturned download contents.", [.item: ocId, .url: localPath, .error: error])
-                    }
+                do {
+                    try FileManager.default.removeItem(at: localPath)
+                } catch CocoaError.fileNoSuchFile {
+                    // Failure may precede creation of the temporary contents.
+                } catch {
+                    logger.error("Could not remove unreturned download contents.", [.item: ocId, .url: localPath, .error: error])
                 }
             }
         }

@@ -16,6 +16,21 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         try? FileManager.default.removeItem(at: localPath)
     }
 
+    private func directoryDownloadDestination(remoteInterface: MockRemoteInterface) -> URL? {
+        let temporaryDirectory = FileManager.default.temporaryDirectory
+        guard let destination = remoteInterface.downloadDestinationURL,
+              destination.path.hasPrefix(temporaryDirectory.path)
+        else { return nil }
+        let relativePath = destination.path.dropFirst(temporaryDirectory.path.count)
+        guard let directoryName = relativePath.split(separator: "/").first else { return nil }
+        return temporaryDirectory.appendingPathComponent(String(directoryName), isDirectory: true)
+    }
+
+    private func removeDownloadedDirectory(remoteInterface: MockRemoteInterface) {
+        guard let directory = directoryDownloadDestination(remoteInterface: remoteInterface) else { return }
+        try? FileManager.default.removeItem(at: directory)
+    }
+
     private func makeFetchItem(directory: Bool = false, preview: Bool = false) -> (Item, MockRemoteInterface, MockRemoteItem) {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.injectMock(Self.account)
@@ -272,7 +287,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
                 defer {
                     removeDownloadedContents(remoteInterface: remoteInterface)
                     if directory {
-                        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectory.appendingPathComponent(remoteItem.identifier))
+                        removeDownloadedDirectory(remoteInterface: remoteInterface)
                     }
                 }
                 if cancelProgress {
@@ -879,6 +894,97 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.status, Status.normal.rawValue)
     }
 
+    func testFolderRetryDoesNotReturnDeletedContentsFromPreviousAttempt() async throws {
+        for cancelProgress in [false, true] {
+            let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+            let progress = Progress()
+            remoteInterface.downloadHandler = {
+                guard remoteInterface.downloadOperationCount == 2 else { return }
+                if cancelProgress {
+                    progress.cancel()
+                } else {
+                    remoteInterface.downloadError = NKError(errorCode: 503, errorDescription: "Second child failed")
+                }
+            }
+            defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
+
+            let (firstURL, firstItem, firstError) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
+
+            XCTAssertNil(firstURL)
+            XCTAssertNil(firstItem)
+            if cancelProgress {
+                XCTAssertEqual((firstError as? CocoaError)?.code, .userCancelled)
+            } else {
+                XCTAssertEqual((firstError as? NSFileProviderError)?.code, .serverUnreachable)
+            }
+            let firstDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
+            defer { try? FileManager.default.removeItem(at: firstDirectory) }
+            XCTAssertFalse(FileManager.default.fileExists(atPath: firstDirectory.path))
+            let skippedChild = directory.children[0]
+            var skippedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: skippedChild.identifier))
+            XCTAssertTrue(skippedMetadata.downloaded)
+            skippedMetadata.deleted = true
+            Self.dbManager.addItemMetadata(skippedMetadata)
+            remoteInterface.downloadHandler = nil
+            remoteInterface.downloadError = nil
+
+            let (retryURL, retriedItem, retryError) = await item.fetchContents(dbManager: Self.dbManager)
+
+            XCTAssertNil(retryError)
+            XCTAssertTrue(try XCTUnwrap(retriedItem).isDownloaded)
+            let retryDirectory = try XCTUnwrap(retryURL)
+            XCTAssertNotEqual(firstDirectory.path, retryDirectory.path)
+            XCTAssertFalse(FileManager.default.fileExists(atPath: retryDirectory.appendingPathComponent(skippedChild.name).path))
+            for child in directory.children.dropFirst() {
+                XCTAssertEqual(try Data(contentsOf: retryDirectory.appendingPathComponent(child.name)), child.data)
+            }
+            XCTAssertTrue(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: skippedChild.identifier)).deleted)
+            XCTAssertEqual(remoteInterface.downloadOperationCount, 2 + directory.children.count - 1)
+        }
+    }
+
+    func testFolderFetchAttemptsPreservePreviouslyReturnedContents() async throws {
+        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+        let firstChild = directory.children[0]
+        let originalData = firstChild.data
+        let (firstURL, _, firstError) = await item.fetchContents(dbManager: Self.dbManager)
+        XCTAssertNil(firstError)
+        let firstDirectory = try XCTUnwrap(firstURL)
+        defer { try? FileManager.default.removeItem(at: firstDirectory) }
+        firstChild.data = Data("Second attempt contents".utf8)
+        firstChild.versionIdentifier = "second-attempt"
+
+        let (secondURL, _, secondError) = await item.fetchContents(dbManager: Self.dbManager)
+
+        XCTAssertNil(secondError)
+        let secondDirectory = try XCTUnwrap(secondURL)
+        defer { try? FileManager.default.removeItem(at: secondDirectory) }
+        XCTAssertNotEqual(firstDirectory.path, secondDirectory.path)
+        XCTAssertEqual(try Data(contentsOf: firstDirectory.appendingPathComponent(firstChild.name)), originalData)
+        XCTAssertEqual(try Data(contentsOf: secondDirectory.appendingPathComponent(firstChild.name)), firstChild.data)
+        let secondData = firstChild.data
+        firstChild.data = Data("Failed attempt contents".utf8)
+        firstChild.versionIdentifier = "failed-attempt"
+        let failAtOperation = remoteInterface.downloadOperationCount + 2
+        remoteInterface.downloadHandler = {
+            if remoteInterface.downloadOperationCount == failAtOperation {
+                remoteInterface.downloadError = NKError(errorCode: 503, errorDescription: "Later attempt failed")
+            }
+        }
+        defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
+
+        let (failedURL, _, failedError) = await item.fetchContents(dbManager: Self.dbManager)
+
+        XCTAssertNil(failedURL)
+        XCTAssertEqual((failedError as? NSFileProviderError)?.code, .serverUnreachable)
+        let failedDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
+        XCTAssertNotEqual(failedDirectory.path, firstDirectory.path)
+        XCTAssertNotEqual(failedDirectory.path, secondDirectory.path)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: failedDirectory.path))
+        XCTAssertEqual(try Data(contentsOf: firstDirectory.appendingPathComponent(firstChild.name)), originalData)
+        XCTAssertEqual(try Data(contentsOf: secondDirectory.appendingPathComponent(firstChild.name)), secondData)
+    }
+
     func testDirectoryFetchPreservesDeletedChild() async throws {
         for downloadFails in [false, true] {
             let (item, remoteInterface, directory) = makeFetchItem(directory: true)
@@ -891,13 +997,13 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             metadata.sessionError = "previous-error"
             Self.dbManager.addItemMetadata(metadata)
             let before = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.identifier))
-            let localDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(directory.identifier)
-            defer { try? FileManager.default.removeItem(at: localDirectory) }
+            defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
             if downloadFails {
                 remoteInterface.downloadError = NKError(errorCode: 503, errorDescription: "Child download failed")
             }
 
             let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+            let localDirectory = try XCTUnwrap(url ?? directoryDownloadDestination(remoteInterface: remoteInterface))
 
             if downloadFails {
                 XCTAssertNil(url)
@@ -933,8 +1039,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let before = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: deletedDirectory.identifier))
         let descendantBefore = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: descendant.identifier))
         remoteInterface.enumerateErrorBySuffix[deletedDirectory.name] = NKError(errorCode: 503, errorDescription: "Deleted directory must not be enumerated")
-        let localDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(directory.identifier)
-        defer { try? FileManager.default.removeItem(at: localDirectory) }
+        defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
 
         let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
 
@@ -961,14 +1066,13 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             try deletedMetadatas.append(XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.identifier)))
         }
         remoteInterface.downloadError = NKError(errorCode: 503, errorDescription: "Deleted children must not be downloaded")
-        let localDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(directory.identifier)
-        defer { try? FileManager.default.removeItem(at: localDirectory) }
 
         let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
 
         XCTAssertNil(error)
         XCTAssertTrue(try XCTUnwrap(fetchedItem).isDownloaded)
         let localPath = try XCTUnwrap(url)
+        defer { try? FileManager.default.removeItem(at: localPath) }
         XCTAssertTrue(try FileManager.default.contentsOfDirectory(atPath: localPath.path).isEmpty)
         XCTAssertEqual(remoteInterface.downloadOperationCount, 0)
         for metadata in deletedMetadatas {
@@ -1001,8 +1105,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
                     remoteInterface.downloadError = NKError(errorCode: errorCode, errorDescription: "Nested download failed")
                 }
             }
-            let localDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(directory.identifier)
-            defer { try? FileManager.default.removeItem(at: localDirectory) }
+            defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
 
             let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: dbManager)
 
@@ -1063,10 +1166,10 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
                     deleteDirectory()
                 }
             }
-            let localDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(directory.identifier)
-            defer { try? FileManager.default.removeItem(at: localDirectory) }
+            defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
 
             let (url, fetchedItem, error) = await item.fetchContents(dbManager: dbManager)
+            let localDirectory = try XCTUnwrap(url ?? directoryDownloadDestination(remoteInterface: remoteInterface))
 
             XCTAssertNil(url)
             XCTAssertNil(fetchedItem)
@@ -1090,8 +1193,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
                     directory.children.swapAt(1, directory.children.count - 1)
                 }
                 let childIdentifier = directory.children[1].identifier
-                let localDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(directory.identifier)
-                defer { try? FileManager.default.removeItem(at: localDirectory) }
+                defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
                 remoteInterface.downloadCompletionHandler = {
                     guard remoteInterface.downloadOperationCount == 1 else { return }
                     if removeRow {
@@ -1135,7 +1237,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let child = directory.children[0]
         let childRemoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         childRemoteInterface.injectMock(Self.account)
-        let localDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(directory.identifier)
+        let localDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: directoryRemoteInterface))
         defer {
             directoryTask.cancel()
             releaseDirectory.finish()
@@ -1262,7 +1364,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
     }
 
-    func testCancelledFolderDownloadPreservesCompletedChildrenAndStopsTraversal() async throws {
+    func testCancelledFolderDownloadPreservesCompletedChildStateAndRemovesContents() async throws {
         let (item, remoteInterface, directory) = makeFetchItem(directory: true)
         let progress = Progress()
         remoteInterface.downloadHandler = {
@@ -1274,7 +1376,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
 
         let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
-        let localDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(directory.identifier)
+        let localDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
         defer { try? FileManager.default.removeItem(at: localDirectory) }
         XCTAssertNil(url)
         XCTAssertNil(fetchedItem)
@@ -1290,9 +1392,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[1].identifier)?.sessionError, "")
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[0].identifier)?.status, Status.normal.rawValue)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.children[2].identifier)?.downloaded, false)
-        XCTAssertEqual(try Data(contentsOf: localDirectory.appendingPathComponent("first.txt")), directory.children[0].data)
-        XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.appendingPathComponent("second.txt").path))
-        XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.appendingPathComponent("third.txt").path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.path))
     }
 
     func testDownloadErrorsPreserveCancellationAndServerErrors() async throws {
@@ -1301,7 +1401,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
                 let (item, remoteInterface, remoteItem) = makeFetchItem(directory: directory)
                 defer {
                     if directory {
-                        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectory.appendingPathComponent(remoteItem.identifier))
+                        removeDownloadedDirectory(remoteInterface: remoteInterface)
                     }
                 }
                 remoteInterface.downloadError = NKError(errorCode: errorCode, errorDescription: "Download failed")
@@ -1875,6 +1975,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             await item.fetchContents(dbManager: Self.dbManager)
         XCTAssertNil(error)
         let localPath = try XCTUnwrap(localPathMaybe)
+        defer { try? FileManager.default.removeItem(at: localPath) }
         let fetchedItem = try XCTUnwrap(fetchedItemMaybe)
 
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: directoryMetadata.ocId))
