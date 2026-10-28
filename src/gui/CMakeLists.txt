@@ -72,6 +72,7 @@ set(client_SRCS
     accountsetupcommandlinemanager.cpp
     application.h
     application.cpp
+    linuxsingleapplication.h
     invalidfilenamedialog.h
     invalidfilenamedialog.cpp
     caseclashfilenamedialog.h

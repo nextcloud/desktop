@@ -46,6 +46,8 @@
 #include "macOS/findersyncxpc.h"
 #include "macOS/findersyncservice.h"
 #include "macOS/lowpowergpu_mac.h"
+#elif defined(Q_OS_LINUX)
+#include "linuxsingleapplication.h"
 #endif
 
 #include <QLocale>
@@ -233,6 +235,8 @@ Application::Application(int &argc, char **argv)
     , _gui(nullptr)
 #if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
     , _dbusService{KDBusService::StartupOption::Unique}
+#elif defined(Q_OS_LINUX)
+    , _singleApp{Utility::makeLinuxSingleApplication(QLatin1String(APPLICATION_EXECUTABLE))}
 #endif
     , _theme(Theme::instance())
 {
