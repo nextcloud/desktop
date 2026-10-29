@@ -6,6 +6,7 @@
 #include <QDBusConnection>
 #include <QDBusMetaType>
 #include <QProcess>
+#include <QProcessEnvironment>
 #include <QThread>
 #include <QtTest>
 
@@ -341,9 +342,14 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("failure");
         QTest::addColumn<bool>("enabled");
-        for (const auto failure : {"timeout", "error", "malformed", "extra-argument"}) {
-            QTest::newRow(qPrintable(QString::fromLatin1(failure) + u"-enable"_s)) << QString::fromLatin1(failure) << true;
-            QTest::newRow(qPrintable(QString::fromLatin1(failure) + u"-disable"_s)) << QString::fromLatin1(failure) << false;
+        QTest::addColumn<bool>("existingDesktop");
+        for (const auto failure : {"timeout", "error", "malformed", "extra-argument", "disconnected", "no-server"}) {
+            for (const auto enabled : {true, false}) {
+                for (const auto existing : {true, false}) {
+                    const auto name = QString::fromLatin1(failure) + (enabled ? u"-enable"_s : u"-disable"_s) + (existing ? u"-existing"_s : u"-absent"_s);
+                    QTest::newRow(qPrintable(name)) << QString::fromLatin1(failure) << enabled << existing;
+                }
+            }
         }
     }
 
@@ -351,26 +357,68 @@ private Q_SLOTS:
     {
         QFETCH(QString, failure);
         QFETCH(bool, enabled);
+        QFETCH(bool, existingDesktop);
         configureManager([&](auto &manager) {
             manager.queryTimeout = failure == u"timeout";
             manager.malformedQueryReply = failure == u"malformed";
             manager.extraQueryArgument = failure == u"extra-argument";
             if (failure == u"error") {
                 manager.queryError = u"org.freedesktop.DBus.Error.AccessDenied"_s;
+            } else if (failure == u"disconnected") {
+                manager.queryError = u"org.freedesktop.DBus.Error.Disconnected"_s;
+            } else if (failure == u"no-server") {
+                manager.queryError = u"org.freedesktop.DBus.Error.NoServer"_s;
             }
         });
-        QVERIFY(writeFile(desktopPath(), "legacy desktop entry"));
+        if (existingDesktop) {
+            QVERIFY(writeFile(desktopPath(), "legacy desktop entry"));
+        }
+        QVERIFY(OCC::Utility::hasLaunchOnStartup(QString::fromLatin1(APPLICATION_SHORTNAME)));
         auto timer = QElapsedTimer();
         timer.start();
         toggle(enabled);
         QVERIFY(timer.elapsed() < maxCommandDurationMs);
-        QCOMPARE(QFile::exists(desktopPath()), enabled);
-        if (enabled) {
+        QCOMPARE(QFile::exists(desktopPath()), existingDesktop && enabled);
+        if (existingDesktop && enabled) {
             QCOMPARE(readFile(desktopPath()), QByteArray("legacy desktop entry"));
         }
         QCOMPARE(state(), u"enabled"_s);
         QCOMPARE(methodCount(u"MaskUnitFiles"_s), 0);
+        QCOMPARE(methodCount(u"Reload"_s), 0);
         QVERIFY(OCC::Utility::hasLaunchOnStartup(QString::fromLatin1(APPLICATION_SHORTNAME)));
+    }
+
+    void initiallyDisconnectedBus_data()
+    {
+        QTest::addColumn<bool>("enabled");
+        QTest::addColumn<bool>("existingDesktop");
+        QTest::newRow("enable-existing") << true << true;
+        QTest::newRow("enable-absent") << true << false;
+        QTest::newRow("disable-existing") << false << true;
+        QTest::newRow("disable-absent") << false << false;
+    }
+
+    void initiallyDisconnectedBus()
+    {
+        QFETCH(bool, enabled);
+        QFETCH(bool, existingDesktop);
+        if (existingDesktop) {
+            QVERIFY(writeFile(desktopPath(), "legacy desktop entry"));
+        }
+        auto environment = QProcessEnvironment::systemEnvironment();
+        environment.insert(u"DBUS_SESSION_BUS_ADDRESS"_s, u"unix:path="_s + _directory->filePath(u"missing-bus"_s));
+        auto child = QProcess();
+        child.setProcessEnvironment(environment);
+        child.start(QCoreApplication::applicationFilePath(), {u"--disconnected-bus-child"_s, enabled ? u"enable"_s : u"disable"_s});
+        const auto finished = child.waitForFinished(maxCommandDurationMs);
+        if (!finished) {
+            child.kill();
+            child.waitForFinished(maxCommandDurationMs);
+        }
+        QVERIFY(finished);
+        QCOMPARE(child.exitStatus(), QProcess::NormalExit);
+        QCOMPARE(child.exitCode(), 0);
+        QVERIFY(requests().isEmpty());
     }
 
     void xdgFallback_data()
@@ -414,5 +462,33 @@ private Q_SLOTS:
     }
 };
 
-QTEST_GUILESS_MAIN(TestLaunchOnStartup)
+int main(int argc, char **argv)
+{
+    auto application = QCoreApplication(argc, argv);
+    const auto arguments = application.arguments();
+    if (arguments.size() == 3 && arguments.at(1) == u"--disconnected-bus-child") {
+        if (QDBusConnection::sessionBus().isConnected()) {
+            return 1;
+        }
+        const auto appName = QString::fromLatin1(APPLICATION_SHORTNAME);
+        const auto path = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + u"/autostart/"_s + appName + u".desktop"_s;
+        auto desktop = QFile(path);
+        const auto existed = desktop.exists();
+        const auto enabled = arguments.at(2) == u"enable";
+        if (!OCC::Utility::hasLaunchOnStartup(appName)) {
+            return 2;
+        }
+        OCC::Utility::setLaunchOnStartup(appName, appName, enabled);
+        if (desktop.exists() != (existed && enabled)) {
+            return 3;
+        }
+        if (existed && enabled && (!desktop.open(QIODevice::ReadOnly) || desktop.readAll() != "legacy desktop entry")) {
+            return 4;
+        }
+        return OCC::Utility::hasLaunchOnStartup(appName) ? 0 : 5;
+    }
+    auto test = TestLaunchOnStartup();
+    return QTest::qExec(&test, argc, argv);
+}
+
 #include "testlaunchonstartup.moc"
