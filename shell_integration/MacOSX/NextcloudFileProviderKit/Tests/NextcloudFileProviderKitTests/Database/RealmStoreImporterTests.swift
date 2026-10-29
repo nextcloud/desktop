@@ -92,6 +92,13 @@ struct RealmStoreImporterTests {
         #expect(LegacyRealmChangeDeliveryItem.className() == "RealmChangeDeliveryItem")
     }
 
+    @Test func aFullDiskAndAHeldFileAreRecoverableOpenFailures() {
+        #expect(RealmStoreImporter.isRecoverable(Realm.Error(.outOfDiskSpace)))
+        #expect(RealmStoreImporter.isRecoverable(Realm.Error(.incompatibleSession)))
+        #expect(RealmStoreImporter.isRecoverable(Realm.Error(.unsupportedFileFormatVersion)) == false)
+        #expect(RealmStoreImporter.isRecoverable(NSError(domain: "test", code: 1)) == false)
+    }
+
     @Test func everyTableIsImportedAndTheRealmFilesAreRemoved() throws {
         let fixture = Self.makeFixture()
         try Self.writeLegacyStore(at: fixture)

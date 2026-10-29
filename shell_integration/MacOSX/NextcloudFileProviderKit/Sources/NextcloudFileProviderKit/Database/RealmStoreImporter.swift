@@ -231,14 +231,14 @@ enum RealmStoreImporter {
         }
     }
 
-    /// Whether a Realm open error names a condition which can pass, such as file access, permissions or a held lock, rather than an unusable file.
-    private static func isRecoverable(_ error: Error) -> Bool {
+    /// Whether a Realm open error names a condition which can pass, such as file access, permissions, a held file or a full disk, rather than an unusable file. The open can write, because the legacy configuration upgrades an older file in place.
+    static func isRecoverable(_ error: Error) -> Bool {
         guard let code = (error as? Realm.Error)?.code else {
             return false
         }
 
         switch code {
-            case .fileAccess, .filePermissionDenied, .fileExists, .fileNotFound, .incompatibleLockFile, .addressSpaceExhausted, .alreadyOpen:
+            case .fileAccess, .filePermissionDenied, .fileExists, .fileNotFound, .incompatibleLockFile, .incompatibleSession, .addressSpaceExhausted, .alreadyOpen, .outOfDiskSpace:
                 return true
             default:
                 return false
