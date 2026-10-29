@@ -5,6 +5,7 @@
  */
 
 #include "config.h"
+#include "startupservicestate.h"
 #include "utility.h"
 
 #include <QCoreApplication>
@@ -19,8 +20,6 @@
 #include <QString>
 #include <QTextStream>
 #include <QtGlobal>
-
-#include <optional>
 
 namespace OCC
 {
@@ -53,30 +52,33 @@ bool changeStartupService(const QString &method, const QVariantList &arguments, 
     return true;
 }
 
-std::optional<QString> startupServiceState(const QString &appName)
+StartupServiceState startupServiceState(const QString &appName)
 {
-    if (appName != QLatin1String(APPLICATION_SHORTNAME) || runningInAppImage() || qEnvironmentVariableIsSet("FLATPAK_ID") || qEnvironmentVariableIsSet("SNAP")
-        || !QDBusConnection::sessionBus().isConnected()) {
-        return QString();
+    if (appName != QLatin1String(APPLICATION_SHORTNAME) || runningInAppImage() || qEnvironmentVariableIsSet("FLATPAK_ID")
+        || qEnvironmentVariableIsSet("SNAP")) {
+        return {StartupServiceState::Status::NotApplicable, {}};
+    }
+    if (!QDBusConnection::sessionBus().isConnected()) {
+        qCWarning(lcUtility) << "Could not determine startup service state: session bus is disconnected";
+        return {StartupServiceState::Status::QueryFailed, {}};
     }
 
     const auto response = callStartupManager(u"GetUnitFileState"_s, {QString(startupServiceName)});
     const auto reply = QDBusReply<QString>(response);
     if (!reply.isValid()) {
         const auto error = reply.error();
-        if (error.type() == QDBusError::ServiceUnknown || error.type() == QDBusError::Disconnected || error.type() == QDBusError::NoServer
-            || error.name() == u"org.freedesktop.DBus.Error.NameHasNoOwner" || error.name() == u"org.freedesktop.DBus.Error.FileNotFound"
-            || error.name() == u"org.freedesktop.systemd1.NoSuchUnit") {
-            return QString();
+        if (error.type() == QDBusError::ServiceUnknown || error.name() == u"org.freedesktop.DBus.Error.NameHasNoOwner"
+            || error.name() == u"org.freedesktop.DBus.Error.FileNotFound" || error.name() == u"org.freedesktop.systemd1.NoSuchUnit") {
+            return {StartupServiceState::Status::NotApplicable, {}};
         }
         qCWarning(lcUtility) << "Could not determine startup service state:" << error;
-        return std::nullopt;
+        return {StartupServiceState::Status::QueryFailed, {}};
     }
     if (response.signature() != u"s" || reply.value().isEmpty()) {
         qCWarning(lcUtility) << "Startup service returned an invalid unit state:" << response.signature();
-        return std::nullopt;
+        return {StartupServiceState::Status::QueryFailed, {}};
     }
-    return reply.value();
+    return {StartupServiceState::Status::Known, reply.value()};
 }
 }
 }
@@ -138,7 +140,9 @@ bool Utility::hasLaunchOnStartup(const QString &appName)
     const QString desktopFileLocation = getUserAutostartDir() + appName + QLatin1String(".desktop");
     const auto serviceState = startupServiceState(appName);
     // Do not report autostart disabled while the user service state is unknown.
-    return QFile::exists(desktopFileLocation) || !serviceState || *serviceState == u"enabled" || *serviceState == u"enabled-runtime";
+    return QFile::exists(desktopFileLocation) || serviceState.status == StartupServiceState::Status::QueryFailed
+        || (serviceState.status == StartupServiceState::Status::Known
+            && (serviceState.unitFileState == u"enabled" || serviceState.unitFileState == u"enabled-runtime"));
 }
 
 void Utility::migrateFavLink(const QString &folder)
@@ -162,16 +166,16 @@ QString Utility::syncFolderDisplayName(const QString &folder, const QString &dis
 void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
     const auto serviceState = startupServiceState(appName);
-    if (!serviceState && enable) {
+    if (serviceState.status == StartupServiceState::Status::QueryFailed && enable) {
         return;
     }
-    if (serviceState && !serviceState->isEmpty() && *serviceState != u"masked") {
+    if (serviceState.status == StartupServiceState::Status::Known && serviceState.unitFileState != u"masked") {
         // A user mask overrides package-wide enablement and leaves XDG autostart as the only launch path.
         const auto masked =
             changeStartupService(u"MaskUnitFiles"_s, {QStringList{startupServiceName}, false, false}, u"a(sss)"_s) && changeStartupService(u"Reload"_s, {}, {});
         if (!masked && enable) {
             const auto persistedState = startupServiceState(appName);
-            if (!persistedState || *persistedState != u"masked") {
+            if (persistedState.status != StartupServiceState::Status::Known || persistedState.unitFileState != u"masked") {
                 return;
             }
         }
