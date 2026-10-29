@@ -166,7 +166,7 @@ Q_SIGNALS:
     /** @brief Emitted when internalLinkError changes. */
     void internalLinkErrorChanged();
 
-    /** @brief Emitted with the internal link generated from the account capabilities. */
+    /// Emitted with the internal link generated from the account capabilities.
     void internalLinkResolved(const QString &url);
 
     /** @brief Emitted after a recipient was added and the Share was updated. */

@@ -1009,7 +1009,7 @@ public:
 #endif
 
 // Builds the internal link from the journal file ID and calls the target.
-void SocketApi::internalLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun)
+void SocketApi::internalLinkUrlHelper(const QString &localFile, void (*targetFun)(const QString &url)) const
 {
     auto fileData = FileData::get(localFile);
     if (!fileData.folder) {

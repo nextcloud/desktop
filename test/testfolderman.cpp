@@ -8,9 +8,11 @@
  * any purpose.
  */
 
-#include <qglobal.h>
+#include <QDesktopServices>
+#include <QScopeGuard>
 #include <QTemporaryDir>
 #include <QtTest>
+#include <qglobal.h>
 
 #include "QtTest/qtestcase.h"
 #include "common/utility.h"
@@ -47,6 +49,12 @@ class TestFolderMan: public QObject
     Q_OBJECT
 
     QPointer<FolderMan> _fm;
+    QList<QUrl> _openedInternalLinks;
+
+    Q_INVOKABLE void captureInternalLink(const QUrl &url)
+    {
+        _openedInternalLinks.append(url);
+    }
 
 Q_SIGNALS:
     void incomingShareDeleted();
@@ -71,6 +79,63 @@ private Q_SLOTS:
     void cleanup()
     {
         ConfigFile::setDeviceSourcesFactory({});
+    }
+
+    void internalLinkSocketAction()
+    {
+        QTemporaryDir configDir;
+        QVERIFY(configDir.isValid());
+        ConfigFile::setConfDir(configDir.path());
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
+        FakeFolder fakeFolder{FileInfo{}};
+        const auto cleanupFolders = qScopeGuard([this] {
+            _fm->unloadAndDeleteAllFolders();
+        });
+        const auto account = fakeFolder.account();
+        account->setUrl(QUrl{u"https://example.com/nextcloud"_s});
+        const auto folder = _fm->addFolder(&fakeFolder.accountState(), folderDefinition(fakeFolder.localPath()));
+        QVERIFY(folder);
+        folder->setSyncPaused(true);
+
+        SyncJournalFileRecord record;
+        record._path = "file.txt"_ba;
+        record._fileId = "42oc123xyz987e"_ba;
+        record._inode = 1;
+        record._modtime = QDateTime::currentSecsSinceEpoch();
+        record._type = ItemTypeFile;
+        record._etag = "etag"_ba;
+        QVERIFY(folder->journalDb()->setFileRecord(record));
+
+        _openedInternalLinks.clear();
+        QDesktopServices::setUrlHandler(u"https"_s, this, "captureInternalLink");
+        const auto cleanupHandler = qScopeGuard([] {
+            QDesktopServices::unsetUrlHandler(u"https"_s);
+        });
+        const auto openLink = [this](const QString &path) {
+            auto *listener = static_cast<OCC::SocketListener *>(nullptr);
+            return QMetaObject::invokeMethod(_fm->socketApi(),
+                                             "command_OPEN_PRIVATE_LINK",
+                                             Qt::DirectConnection,
+                                             QGenericArgument("QString", &path),
+                                             QGenericArgument("OCC::SocketListener*", &listener));
+        };
+        const auto localFile = fakeFolder.localPath() + u"file.txt"_s;
+        account->setCapabilities({});
+        QVERIFY(openLink(localFile));
+        QCOMPARE(_openedInternalLinks, QList<QUrl>{QUrl{u"https://example.com/nextcloud/index.php/f/42"_s}});
+
+        account->setCapabilities({{u"globalscale"_s, QVariantMap{{u"token"_s, u"abc123"_s}}}});
+        QVERIFY(openLink(localFile));
+        QCOMPARE(_openedInternalLinks.size(), 2);
+        QCOMPARE(_openedInternalLinks.last(), QUrl{u"https://example.com/nextcloud/index.php/gf/abc123/42"_s});
+
+        QVERIFY(openLink(configDir.path() + u"/outside.txt"_s));
+        QVERIFY(openLink(fakeFolder.localPath() + u"missing.txt"_s));
+        record._fileId.clear();
+        QVERIFY(folder->journalDb()->setFileRecord(record));
+        QVERIFY(openLink(localFile));
+        QCOMPARE(_openedInternalLinks.size(), 2);
     }
 
     void testDeleteEncryptedFiles()
