@@ -798,6 +798,83 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(rootItem.children.isEmpty)
     }
 
+    /// Patterns containing a slash are matched against the path relative to the root container, without a leading slash.
+    func testCreateDoesNotPropagateFileMatchingRootAnchoredPattern() async throws {
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["folder/*.tmp"], log: FileProviderLogMock())
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteFolder = MockRemoteItem(
+            identifier: "folder-id",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        var metadata = SendableItemMetadata(ocId: "anchored-ignored-id", fileName: "foo.tmp", account: Self.account)
+        metadata.serverUrl = Self.account.davFilesUrl + "/folder"
+        let itemTemplate = Item(
+            metadata: metadata,
+            parentItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let (createdItem, error) = await Item.create(
+            basedOn: itemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            ignoredFiles: ignoredMatcher,
+            progress: .init(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        XCTAssertEqual(createdItem?.isUploaded, false)
+        XCTAssertTrue(remoteFolder.children.isEmpty)
+    }
+
+    /// A pattern ending with a slash matches directories only.
+    func testCreateDoesNotPropagateFolderMatchingDirectoryOnlyPattern() async {
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["build/"], log: FileProviderLogMock())
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        var folderMetadata = SendableItemMetadata(ocId: "ignored-folder-id", fileName: "build", account: Self.account)
+        folderMetadata.directory = true
+        folderMetadata.classFile = NKTypeClassFile.directory.rawValue
+        let folderTemplate = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (createdItem, error) = await Item.create(
+            basedOn: folderTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            ignoredFiles: ignoredMatcher,
+            progress: .init(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        XCTAssertEqual(createdItem?.isUploaded, false)
+        XCTAssertTrue(rootItem.children.isEmpty)
+    }
+
     func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.lockUnlockResult = NKLock(

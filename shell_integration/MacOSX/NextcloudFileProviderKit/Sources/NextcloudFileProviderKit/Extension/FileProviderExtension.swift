@@ -65,6 +65,7 @@ import OSLog
     var ncAccount: Account?
     var dbManager: FilesDatabaseManager?
     var ignoredFiles: IgnoredFilesMatcher?
+    let rootContainerExcludeList: RootContainerExcludeList
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
 
     var syncActions = Set<UUID>()
@@ -122,6 +123,7 @@ import OSLog
 
         logger.info("NextcloudKit logging configured.", [.url: NKLogFileManager.shared.currentLogFileURL()])
         keychain = Keychain(domain: domain, log: log)
+        rootContainerExcludeList = RootContainerExcludeList(log: log)
         super.init()
         observeBlockSync()
     }
@@ -308,6 +310,17 @@ import OSLog
 
         let progress = Progress()
         Task {
+            let allIgnoredFiles: IgnoredFilesMatcher
+
+            do {
+                allIgnoredFiles = try await rootContainerExcludeList.matcher(extending: ignoredFiles, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager)
+            } catch {
+                logger.error("Not creating item because the exclude list in the root container could not be read.", [.item: itemTemplate.itemIdentifier, .error: error])
+                insertErrorAction(actionId)
+                completionHandler(itemTemplate, [], false, error)
+                return
+            }
+
             let (item, error) = await Item.create(
                 basedOn: itemTemplate,
                 fields: fields,
@@ -316,7 +329,7 @@ import OSLog
                 domain: self.domain,
                 account: ncAccount,
                 remoteInterface: ncKit,
-                ignoredFiles: ignoredFiles,
+                ignoredFiles: allIgnoredFiles,
                 progress: progress,
                 dbManager: dbManager,
                 appProxy: app,
@@ -324,6 +337,10 @@ import OSLog
             )
 
             if error == nil {
+                if let item {
+                    await rootContainerExcludeList.didUpload(item.metadata, contents: url, account: ncAccount)
+                }
+
                 removeSyncAction(actionId)
             } else {
                 if let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
@@ -414,6 +431,17 @@ import OSLog
                 return
             }
 
+            let allIgnoredFiles: IgnoredFilesMatcher
+
+            do {
+                allIgnoredFiles = try await rootContainerExcludeList.matcher(extending: ignoredFiles, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager)
+            } catch {
+                logger.error("Not modifying item because the exclude list in the root container could not be read.", [.item: identifier, .error: error])
+                insertErrorAction(actionId)
+                completionHandler(item, [], false, error)
+                return
+            }
+
             let (modifiedItem, error) = await existingItem.modify(
                 itemTarget: item,
                 baseVersion: baseVersion,
@@ -421,7 +449,7 @@ import OSLog
                 contents: newContents,
                 options: options,
                 request: request,
-                ignoredFiles: ignoredFiles,
+                ignoredFiles: allIgnoredFiles,
                 domain: domain,
                 progress: progress,
                 dbManager: dbManager,
@@ -432,6 +460,10 @@ import OSLog
                 insertErrorAction(actionId)
                 signalEnumerator(completionHandler: { _ in })
             } else {
+                if let modifiedItem, changedFields.contains(.contents) {
+                    await rootContainerExcludeList.didUpload(modifiedItem.metadata, contents: newContents, account: ncAccount)
+                }
+
                 removeSyncAction(actionId)
             }
 
@@ -498,7 +530,18 @@ import OSLog
             }
 
             logger.debug("Found item for identifier.", [.item: identifier, .name: item.filename])
-            let error = await item.delete(domain: domain, ignoredFiles: ignoredFiles, dbManager: dbManager)
+            let allIgnoredFiles: IgnoredFilesMatcher
+
+            do {
+                allIgnoredFiles = try await rootContainerExcludeList.matcher(extending: ignoredFiles, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager)
+            } catch {
+                logger.error("Not deleting item because the exclude list in the root container could not be read.", [.item: identifier, .error: error])
+                insertErrorAction(actionId)
+                completionHandler(error)
+                return
+            }
+
+            let error = await item.delete(domain: domain, ignoredFiles: allIgnoredFiles, dbManager: dbManager)
 
             if error != nil {
                 insertErrorAction(actionId)
