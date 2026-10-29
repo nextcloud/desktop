@@ -44,8 +44,11 @@ public:
     [[nodiscard]] FileTagModel *fileTagModel() const;
     [[nodiscard]] bool sharingAvailable() const;
 
+    Q_INVOKABLE QString fileManagerText() const;
+
 public Q_SLOTS:
     void setLocalPath(const QString &localPath);
+    bool openContainingFolder();
 
 Q_SIGNALS:
     void localPathChanged();
