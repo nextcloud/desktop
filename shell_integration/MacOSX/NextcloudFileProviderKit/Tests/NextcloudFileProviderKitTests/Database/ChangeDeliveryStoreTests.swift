@@ -43,6 +43,17 @@ extension DatabaseTestSuites {
             #expect(try manager.changeDeliverySession(forContinuationKey: "a0", containerKey: "other") == nil)
         }
 
+        @Test func creatingASessionCommitsWithFullDurability() throws {
+            #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: makeRows(count: 2), deleted: [], incomplete: false, hardRemoveDeleted: true))
+            #expect(try manager.synchronousLevelForTesting() == 2, "The rows a session describes are written before it, so its commit is synced.")
+
+            #expect(try prepare("s", maxItems: 1)?.endSequence == 1)
+            #expect(try manager.synchronousLevelForTesting() == 1, "Batch bookkeeping is repeated or expires the anchor when lost.")
+
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", endSequence: 1))
+            #expect(try manager.synchronousLevelForTesting() == 1)
+        }
+
         @Test func acknowledgingWithoutDeletionsLeavesItemMetadataAlone() throws {
             try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "untouched", fileName: "u.txt"))
             #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: makeRows(count: 2), deleted: [], incomplete: false, hardRemoveDeleted: true))

@@ -84,6 +84,13 @@ extension FilesDatabaseManager {
     }
 
     ///
+    /// The `PRAGMA synchronous` level left on the writer by the last write: `1` for ``WriteDurability/relaxed``, `2` for ``WriteDurability/full``.
+    ///
+    func synchronousLevelForTesting() throws -> Int? {
+        try writer.writeWithoutTransaction { db in try Int.fetchOne(db, sql: "PRAGMA synchronous") }
+    }
+
+    ///
     /// Remove every row of every table.
     ///
     func removeAllRowsForTesting() throws {

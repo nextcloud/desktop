@@ -45,8 +45,8 @@ extension FilesDatabaseManager {
             return false
         }
 
-        // Delivery sessions are replayable; losing one costs a repeated scan, not state.
-        return write("Could not persist a change-delivery session.", durability: .relaxed) { db in
+        // The item rows this session describes are already written; a lost session would leave them in place with nothing to deliver.
+        return write("Could not persist a change-delivery session.") { db in
             try ChangeDeliverySessionRecord(
                 sessionId: sessionId,
                 containerKey: containerKey,

@@ -99,19 +99,16 @@ extension DatabaseTestSuites {
         }
 
         @Test func writesSetTheRequestedDurabilityOnTheWriter() throws {
-            func synchronousLevel() throws -> Int? {
-                try manager.writer.writeWithoutTransaction { db in try Int.fetchOne(db, sql: "PRAGMA synchronous") }
-            }
             let row = DatabaseTestSuites.makeFile(ocId: "pinned", fileName: "pinned.txt")
 
             manager.addItemMetadata(row)
-            #expect(try synchronousLevel() == 2, "Local writes commit with FULL.")
+            #expect(try manager.synchronousLevelForTesting() == 2, "Local writes commit with FULL.")
 
             manager.addItemMetadataPreservingLocalState(row)
-            #expect(try synchronousLevel() == 1, "Server-derived bulk writes commit with NORMAL.")
+            #expect(try manager.synchronousLevelForTesting() == 1, "Server-derived bulk writes commit with NORMAL.")
 
             _ = try manager.set(keepDownloaded: true, for: row)
-            #expect(try synchronousLevel() == 2)
+            #expect(try manager.synchronousLevelForTesting() == 2)
             #expect(manager.itemMetadata(ocId: "pinned")?.keepDownloaded == true)
         }
 
