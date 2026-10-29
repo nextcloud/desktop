@@ -375,8 +375,11 @@ public extension Item {
             )
         }
 
-        let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
-        guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
+        let newServerUrlFileName = parentItemRemotePath + "/" + itemTemplate.filename
+        let relativePath = account.filesRootRelativePath(for: newServerUrlFileName)
+        let isExcluded = relativePath.map { ignoredFiles?.isExcluded($0, isDirectory: itemTemplateIsFolder) ?? false } ?? false
+
+        guard !isExcluded else {
             return await Item.createIgnored(
                 basedOn: itemTemplate,
                 parentItemRemotePath: parentItemRemotePath,
@@ -390,7 +393,6 @@ public extension Item {
         }
 
         let fileNameLocalPath = url?.path ?? ""
-        let newServerUrlFileName = parentItemRemotePath + "/" + itemTemplate.filename
 
         logger.debug(
             """

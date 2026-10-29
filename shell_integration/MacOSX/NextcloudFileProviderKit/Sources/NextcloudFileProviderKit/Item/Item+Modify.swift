@@ -469,7 +469,7 @@ public extension Item {
         }
 
         let sourceRelativePath = account.filesRootRelativePath(for: modifiedItem.metadata.remotePath())
-        let sourceIsExcluded = sourceRelativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
+        let sourceIsExcluded = sourceRelativePath.map { ignoredFiles?.isExcluded($0, isDirectory: modifiedItem.metadata.directory) ?? false } ?? false
         guard !sourceIsExcluded else {
             logger.info("File is in the ignore list. Any follow-up provider deletion will have no remote effect.", [.item: modifiedItem.itemIdentifier, .name: modifiedItem.filename])
 
@@ -532,7 +532,7 @@ public extension Item {
 
         let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
         let destinationRelativePath = account.filesRootRelativePath(for: newServerUrlFileName)
-        let destinationIsExcluded = destinationRelativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
+        let destinationIsExcluded = destinationRelativePath.map { ignoredFiles?.isExcluded($0, isDirectory: modifiedItem.metadata.directory) ?? false } ?? false
 
         logger.debug("About to modify item.", [.item: modifiedItem])
 

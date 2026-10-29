@@ -40,7 +40,7 @@ public extension Item {
 
         let ocId = itemIdentifier.rawValue
         let relativePath = account.filesRootRelativePath(for: metadata.remotePath())
-        let isExcluded = relativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
+        let isExcluded = relativePath.map { ignoredFiles?.isExcluded($0, isDirectory: metadata.directory) ?? false } ?? false
 
         guard metadata.isLockFileOfLocalOrigin == false else {
             return await deleteLockFile(domain: domain, dbManager: dbManager)

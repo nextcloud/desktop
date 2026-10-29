@@ -613,6 +613,20 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// The remote path supplied to the most recent delete call.
     public private(set) var lastDeleteRemotePath: String?
 
+    /// When set, every download call returns this error without touching the mock tree.
+    public var downloadError: NKError?
+
+    /// Awaited at the start of every download call, for example to keep a download in progress while other callers arrive.
+    public var downloadCallHandler: (@Sendable () async -> Void)?
+
+    private let downloadCountLock = NSLock()
+    private var unsafeDownloadCount = 0
+
+    /// The number of download calls, including those failing with ``downloadError``.
+    public var downloadCount: Int {
+        downloadCountLock.withLock { unsafeDownloadCount }
+    }
+
     /// When set, trash listings return this error without reading the mock trash tree.
     public var trashListingError: NKError?
 
@@ -1142,6 +1156,13 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         response: AFDownloadResponse<URL?>?,
         nkError: NKError
     ) {
+        downloadCountLock.withLock { unsafeDownloadCount += 1 }
+        await downloadCallHandler?()
+
+        if let downloadError {
+            return (account, nil, downloadError)
+        }
+
         guard let serverUrlFileName = serverUrlFileName as? String ?? (serverUrlFileName as? URL)?.absoluteString else {
             return (account, nil, .urlError)
         }
