@@ -55,15 +55,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 return
             }
 
-            kit.appendSession(
-                account: account.ncKitAccount,
-                urlBase: account.serverUrl,
-                user: account.username,
-                userId: account.id,
-                password: account.password,
-                userAgent: userAgent,
-                groupIdentifier: ""
-            )
+            kit.appendSession(account: account, userAgent: userAgent)
         }
     }
 
