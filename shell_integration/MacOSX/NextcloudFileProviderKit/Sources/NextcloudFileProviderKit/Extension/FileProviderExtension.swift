@@ -576,9 +576,7 @@ import OSLog
             }
             completionHandler()
         }
-        let startingPage = NSFileProviderPage(NSFileProviderPage.initialPageSortedByName as Data)
-
-        materialisedEnumerator.enumerateItems(for: materialisedObserver, startingAt: startingPage)
+        materialisedObserver.enumerateItems(using: materialisedEnumerator)
     }
 
     // MARK: - Helper functions
