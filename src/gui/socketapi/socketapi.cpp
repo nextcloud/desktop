@@ -1008,8 +1008,8 @@ public:
 
 #endif
 
-// Fetches the private link url asynchronously and then calls the target slot
-void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun)
+// Builds the internal link from the journal file ID and calls the target.
+void SocketApi::internalLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun)
 {
     auto fileData = FileData::get(localFile);
     if (!fileData.folder) {
@@ -1022,27 +1022,25 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::f
         return;
     }
 
-    fetchPrivateLinkUrl(
-        fileData.folder->accountState()->account(),
-        fileData.serverRelativePath,
-        record.numericFileId(),
-        this,
-        targetFun);
+    const auto url = fileData.folder->accountState()->account()->internalLinkUrl(record.numericFileId());
+    if (!url.isEmpty()) {
+        targetFun(url.toString(QUrl::FullyEncoded));
+    }
 }
 
 void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *)
 {
-    fetchPrivateLinkUrlHelper(localFile, &SocketApi::copyUrlToClipboard);
+    internalLinkUrlHelper(localFile, &SocketApi::copyUrlToClipboard);
 }
 
 void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *)
 {
-    fetchPrivateLinkUrlHelper(localFile, &SocketApi::emailPrivateLink);
+    internalLinkUrlHelper(localFile, &SocketApi::emailPrivateLink);
 }
 
 void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *)
 {
-    fetchPrivateLinkUrlHelper(localFile, &SocketApi::openPrivateLink);
+    internalLinkUrlHelper(localFile, &SocketApi::openPrivateLink);
 }
 
 void SocketApi::command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketListener *)

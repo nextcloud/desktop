@@ -151,9 +151,9 @@ ColumnLayout {
                         subtitle: qsTr("For people who already have access")
                         actionIcon: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
                         actionName: qsTr("Copy internal link")
-                        actionEnabled: root.sharingController && !root.sharingController.resolvingInternalLink && root.remotePath.length > 0
+                        actionEnabled: root.sharingController && root.fileId.length > 0
 
-                        onActionRequested: root.sharingController.requestInternalLink(root.remotePath, root.fileId)
+                        onActionRequested: root.sharingController.requestInternalLink(root.fileId)
                     }
                 }
 

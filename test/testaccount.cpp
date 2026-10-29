@@ -33,6 +33,47 @@ private Q_SLOTS:
         QStandardPaths::setTestModeEnabled(true);
     }
 
+    void internalLinkUrl_data()
+    {
+        QTest::addColumn<QString>("baseUrl");
+        QTest::addColumn<QVariantMap>("capabilities");
+        QTest::addColumn<QByteArray>("fileId");
+        QTest::addColumn<QString>("expectedUrl");
+
+        const auto globalScale = QVariantMap{{u"globalscale"_s, QVariantMap{{u"token"_s, u"abc123"_s}}}};
+        QTest::newRow("ordinary") << u"https://example.com"_s << QVariantMap{} << "42"_ba << u"https://example.com/index.php/f/42"_s;
+        QTest::newRow("older-gss") << u"https://example.com"_s << QVariantMap{{u"globalscale"_s, QVariantMap{{u"enabled"_s, true}}}} << "42"_ba
+                                   << u"https://example.com/index.php/f/42"_s;
+        QTest::newRow("gss-token") << u"https://example.com"_s << globalScale << "42"_ba << u"https://example.com/index.php/gf/abc123/42"_s;
+        QTest::newRow("subdirectory") << u"https://example.com/nextcloud/"_s << globalScale << "42"_ba
+                                      << u"https://example.com/nextcloud/index.php/gf/abc123/42"_s;
+        QTest::newRow("ordinary-subdirectory") << u"https://example.com/nextcloud"_s << QVariantMap{} << "42"_ba
+                                               << u"https://example.com/nextcloud/index.php/f/42"_s;
+        QTest::newRow("empty-token") << u"https://example.com"_s << QVariantMap{{u"globalscale"_s, QVariantMap{{u"token"_s, QString{}}}}} << "42"_ba
+                                     << u"https://example.com/index.php/f/42"_s;
+        QTest::newRow("malformed-token") << u"https://example.com"_s << QVariantMap{{u"globalscale"_s, QVariantMap{{u"token"_s, 123}}}} << "42"_ba
+                                         << u"https://example.com/index.php/f/42"_s;
+        QTest::newRow("encoded-token") << u"https://example.com"_s << QVariantMap{{u"globalscale"_s, QVariantMap{{u"token"_s, u"a/b?#%"_s}}}} << "42"_ba
+                                       << u"https://example.com/index.php/gf/a%2Fb%3F%23%25/42"_s;
+        QTest::newRow("encoded-base-path") << u"https://example.com/cloud%20files/"_s << globalScale << "42"_ba
+                                           << u"https://example.com/cloud%20files/index.php/gf/abc123/42"_s;
+        QTest::newRow("encoded-id") << u"https://example.com"_s << globalScale << "42/7?#%"_ba << u"https://example.com/index.php/gf/abc123/42%2F7%3F%23%25"_s;
+        QTest::newRow("empty-id") << u"https://example.com"_s << globalScale << QByteArray{} << QString{};
+        QTest::newRow("empty-id-without-gss") << u"https://example.com"_s << QVariantMap{} << QByteArray{} << QString{};
+    }
+
+    void internalLinkUrl()
+    {
+        QFETCH(QString, baseUrl);
+        QFETCH(QVariantMap, capabilities);
+        QFETCH(QByteArray, fileId);
+        QFETCH(QString, expectedUrl);
+        const auto account = Account::create();
+        account->setUrl(QUrl{baseUrl});
+        account->setCapabilities(capabilities);
+        QCOMPARE(account->internalLinkUrl(fileId).toString(QUrl::FullyEncoded), expectedUrl);
+    }
+
     void testAccountDavPath_unitialized_noCrash()
     {
         AccountPtr account = Account::create();
