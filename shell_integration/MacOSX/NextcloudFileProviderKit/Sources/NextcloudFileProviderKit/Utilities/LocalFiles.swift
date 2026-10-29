@@ -33,6 +33,16 @@ let autoCADLockFileExtensions: Set<String> = ["dwl", "dwl2"]
 /// The document extension guarded by AutoCAD lock files.
 let autoCADDocumentExtension = "dwg"
 
+/// The suffix used by Affinity by Canva lock files.
+///
+/// Affinity apps (Photo, Designer, Publisher) create lock files with the pattern `<base>~lock~`
+/// (e.g., `Screenshot.af~lock~`) when a document is opened. The guarded document name is
+/// recovered by stripping the trailing `~lock~` suffix.
+let affinityLockFileSuffix = "~lock~"
+
+/// Document extensions guarded by Affinity lock files.
+let affinityDocumentExtensions: Set<String> = ["afphoto", "afdesign", "afpub", "af"]
+
 ///
 /// Determine whether the given filename is a lock file as created by Adobe applications like InDesign or Premiere Pro.
 ///
@@ -58,7 +68,21 @@ public func isAutoCADLockFileName(_ filename: String) -> Bool {
 }
 
 ///
-/// Determine whether the given filename is a lock file as created by certain applications like Microsoft Office, LibreOffice, Adobe or AutoCAD.
+/// Determine whether the given filename is a lock file as created by Affinity by Canva.
+///
+/// Affinity lock files use a `~lock~` suffix (e.g., `Screenshot.af~lock~`).
+///
+/// - Parameters:
+///     - filename: The filename to check.
+///
+/// - Returns: `true` if the filename is an Affinity lock file, `false` otherwise.
+///
+public func isAffinityLockFileName(_ filename: String) -> Bool {
+    filename.hasSuffix(affinityLockFileSuffix)
+}
+
+///
+/// Determine whether the given filename is a lock file as created by certain applications like Microsoft Office, LibreOffice, Adobe, AutoCAD, or Affinity.
 ///
 /// - Parameters:
 ///     - filename: The filename to check.
@@ -73,7 +97,9 @@ public func isLockFileName(_ filename: String) -> Bool {
         // Adobe lock files
         isAdobeLockFileName(filename) ||
         // AutoCAD lock files
-        isAutoCADLockFileName(filename)
+        isAutoCADLockFileName(filename) ||
+        // Affinity lock files
+        isAffinityLockFileName(filename)
 }
 
 ///
@@ -255,6 +281,23 @@ func autoCADSiblingLockFileExists(lockFilename: String, parentServerUrl: String,
 }
 
 ///
+/// Resolve the document guarded by an Affinity lock file.
+///
+/// Affinity lock files use the pattern `<base>~lock~` (e.g., `Screenshot.af~lock~`).
+/// Strip the `~lock~` suffix to recover the guarded document name.
+///
+/// - Parameters:
+///     - lockFilename: The Affinity lock file name.
+///
+/// - Returns: The guarded document's file name, or `nil` if it is not an Affinity lock file.
+///
+func affinityLockFileTargetName(_ lockFilename: String) -> String? {
+    guard isAffinityLockFileName(lockFilename) else { return nil }
+    let base = String(lockFilename.dropLast(affinityLockFileSuffix.count))
+    return base.isEmpty ? nil : base
+}
+
+///
 /// Resolve the document guarded by a lock file, regardless of the application that created it.
 ///
 /// Office and LibreOffice lock file names fully encode the document name, so it is decoded
@@ -262,7 +305,8 @@ func autoCADSiblingLockFileExists(lockFilename: String, parentServerUrl: String,
 /// encode the base name, so the document is resolved by matching a sibling file via
 /// ``adobeLockFileTargetName(lockFilename:parentServerUrl:dbManager:)``. AutoCAD lock files
 /// share the document's base name, so the document is resolved by replacing the extension
-/// with `.dwg` via ``autoCADLockFileTargetName(_:)``.
+/// with `.dwg` via ``autoCADLockFileTargetName(_:)``. Affinity lock files use a `~lock~`
+/// suffix, so the document is resolved by stripping it via ``affinityLockFileTargetName(_:)``.
 ///
 /// - Parameters:
 ///     - lockFilename: The lock file name.
@@ -278,6 +322,10 @@ public func lockFileTargetName(forLockFileName lockFilename: String, parentServe
 
     if isAutoCADLockFileName(lockFilename) {
         return autoCADLockFileTargetName(lockFilename)
+    }
+
+    if isAffinityLockFileName(lockFilename) {
+        return affinityLockFileTargetName(lockFilename)
     }
 
     return originalFileName(fromLockFileName: lockFilename, dbManager: dbManager)
