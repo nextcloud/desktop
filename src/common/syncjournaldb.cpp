@@ -639,6 +639,7 @@ bool SyncJournalDb::checkConnect()
     bool rc = updateDatabaseStructure();
     if (!rc) {
         qCWarning(lcDb) << "Failed to update the database structure!";
+        return false;
     }
 
     /*
@@ -1090,7 +1091,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                                                                                                         "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, "
                                                                                                         "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, lock, lockType, lockOwnerDisplayName, lockOwnerId, "
                                                                                                         "lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe, isLivePhoto, livePhotoFile, quotaBytesUsed, quotaBytesAvailable) "
-                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32, ?33, ?34);"),
+                                                                                                        "VALUES (?1 , ?2, ?3 , NULLIF(?4, 0) , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32, ?33, ?34);"),
         _db);
     if (!query) {
         qCWarning(lcDb) << "database error:" << query->error();
@@ -1754,7 +1755,7 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     }
 
     const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordLocalMetadataQuery, QByteArrayLiteral("UPDATE metadata"
-                                                                                                                     " SET inode=?2, modtime=?3, filesize=?4, lock=?5, lockType=?6,"
+                                                                                                                     " SET inode=NULLIF(?2, 0), modtime=?3, filesize=?4, lock=?5, lockType=?6,"
                                                                                                                      " lockOwnerDisplayName=?7, lockOwnerId=?8, lockOwnerEditor = ?9,"
                                                                                                                      " lockTime=?10, lockTimeout=?11, lockToken=?12"
                                                                                                                      " WHERE phash == ?1;"),
