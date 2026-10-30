@@ -641,6 +641,8 @@ bool SyncJournalDb::checkConnect()
         }
     }
 
+    // Release the read lock before schema updates can drop indexes.
+    versionQuery.reset_and_clear_bindings();
     commitInternal(QStringLiteral("checkConnect"));
 
     bool rc = updateDatabaseStructure();
@@ -802,12 +804,16 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
     if (true) {
         SqlQuery query(_db);
+        query.prepare("DROP INDEX IF EXISTS metadata_unique_inode;");
+        if (!query.exec()) {
+            return sqlFail(u"updateMetadataTableStructure: drop unique inode index"_s, query);
+        }
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
         if (!query.exec()) {
             sqlFail(QStringLiteral("updateMetadataTableStructure: create index inode"), query);
             re = false;
         }
-        commitInternal(QStringLiteral("update database structure: add inode index"));
+        commitInternal(u"update database structure: update inode indexes"_s);
     }
 
     if (true) {
