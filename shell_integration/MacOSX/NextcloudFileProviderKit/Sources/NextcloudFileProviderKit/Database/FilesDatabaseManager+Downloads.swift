@@ -3,17 +3,18 @@
 
 @preconcurrency import FileProvider
 import Foundation
-import RealmSwift
+import GRDB
 
 extension FilesDatabaseManager {
     /// Use listed server metadata for live children without undoing local deletions.
     func directoryDownloadMetadatas(_ metadatas: [SendableItemMetadata]) throws -> [SendableItemMetadata] {
-        let database = ncDatabase()
-        return try metadatas.compactMap { metadata in
-            guard let existing = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: metadata.ocId) else {
-                throw NSFileProviderError(.cannotSynchronize)
+        try writer.read { db in
+            try metadatas.compactMap { metadata in
+                guard let existing = try itemMetadata(ocId: metadata.ocId, in: db) else {
+                    throw NSFileProviderError(.cannotSynchronize)
+                }
+                return existing.deleted ? nil : metadata
             }
-            return existing.deleted ? nil : metadata
         }
     }
 
@@ -21,30 +22,27 @@ extension FilesDatabaseManager {
     func restorePackageDownloadMetadatas(_ metadatas: [SendableItemMetadata], for operation: DownloadOperation) throws {
         guard !metadatas.isEmpty else { return }
         try Self.downloadOperations.withLock { operations in
-            let database = ncDatabase()
-            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString,
-                  operations[databaseIdentifier]?[operation.ocId]?.identifier == operation.identifier
-            else {
+            guard operations[storeIdentity]?[operation.ocId]?.identifier == operation.identifier else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
-            try database.write {
+            try write(durability: .full) { db in
                 guard !operation.cancellation.isCancelled else { throw CocoaError(.userCancelled) }
-                guard let directory = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: operation.ocId), !directory.deleted else {
+                guard let directory = try itemMetadata(ocId: operation.ocId, in: db), !directory.deleted else {
                     throw NSFileProviderError(.cannotSynchronize)
                 }
                 for metadata in metadatas {
-                    guard let existing = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: metadata.ocId) else {
-                        evictLogicalDuplicates(of: metadata, in: database)
-                        database.add(RealmItemMetadata(value: metadata), update: .all)
+                    guard var existing = try itemMetadata(ocId: metadata.ocId, in: db) else {
+                        try insertItemMetadata(metadata, in: db)
                         continue
                     }
                     if existing.deleted {
                         guard existing.status == Status.normal.rawValue || existing.status == Status.downloadError.rawValue,
-                              operations[databaseIdentifier]?[metadata.ocId] == nil
+                              operations[storeIdentity]?[metadata.ocId] == nil
                         else {
                             throw NSFileProviderError(.cannotSynchronize)
                         }
                         existing.deleted = false
+                        try existing.upsertRow(db)
                     }
                 }
             }
@@ -54,24 +52,17 @@ extension FilesDatabaseManager {
     func beginDownload(_ operation: DownloadOperation) -> SendableItemMetadata? {
         let ocId = operation.ocId
         let (metadata, supersededOperation): (SendableItemMetadata?, DownloadOperation?) = Self.downloadOperations.withLock { operations in
-            let database = ncDatabase()
-            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString else { return (nil, nil) }
-            var metadata: SendableItemMetadata?
-            do {
-                try database.write {
-                    guard let item = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: ocId), !item.deleted else { return }
-                    item.status = Status.downloading.rawValue
-                    item.downloaded = false
-                    item.sessionError = ""
-                    metadata = SendableItemMetadata(value: item)
-                }
-            } catch {
-                logger.error("Could not start download in database.", [.item: ocId, .error: error])
-                return (nil, nil)
-            }
+            let metadata: SendableItemMetadata? = write("Could not start download in database.", [.item: ocId]) { db -> SendableItemMetadata? in
+                guard var item = try itemMetadata(ocId: ocId, in: db), !item.deleted else { return nil }
+                item.status = Status.downloading.rawValue
+                item.downloaded = false
+                item.sessionError = ""
+                try item.upsertRow(db)
+                return item.metadata
+            } ?? nil
             guard let metadata else { return (nil, nil) }
-            let supersededOperation = operations[databaseIdentifier]?[ocId]
-            operations[databaseIdentifier, default: [:]][ocId] = operation
+            let supersededOperation = operations[storeIdentity]?[ocId]
+            operations[storeIdentity, default: [:]][ocId] = operation
             return (metadata, supersededOperation)
         }
         // Cancellation resumes the old fetch, which may need the ownership lock for cleanup.
@@ -84,13 +75,13 @@ extension FilesDatabaseManager {
     /// Check a staged download without publishing or releasing its ownership.
     func validateDownload(_ operation: DownloadOperation) throws {
         try Self.downloadOperations.withLock { operations in
-            let database = ncDatabase()
-            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString,
-                  operations[databaseIdentifier]?[operation.ocId]?.identifier == operation.identifier,
-                  let item = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: operation.ocId),
-                  !item.deleted
-            else {
+            guard operations[storeIdentity]?[operation.ocId]?.identifier == operation.identifier else {
                 throw NSFileProviderError(.cannotSynchronize)
+            }
+            try writer.read { db in
+                guard let item = try itemMetadata(ocId: operation.ocId, in: db), !item.deleted else {
+                    throw NSFileProviderError(.cannotSynchronize)
+                }
             }
         }
     }
@@ -98,18 +89,14 @@ extension FilesDatabaseManager {
     /// Publish the folder and its children together only while every download still owns its item.
     func finishDirectoryDownload(_ operation: DownloadOperation, children: [DownloadOperation]) throws {
         try Self.downloadOperations.withLock { operations in
-            let database = ncDatabase()
-            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString else {
-                throw NSFileProviderError(.cannotSynchronize)
-            }
             let downloads = [operation] + children
-            guard downloads.allSatisfy({ operations[databaseIdentifier]?[$0.ocId]?.identifier == $0.identifier }) else {
+            guard downloads.allSatisfy({ operations[storeIdentity]?[$0.ocId]?.identifier == $0.identifier }) else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             do {
-                try database.write {
+                try write(durability: .full) { db in
                     let items = try downloads.map { download in
-                        guard let item = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: download.ocId), !item.deleted else {
+                        guard let item = try itemMetadata(ocId: download.ocId, in: db), !item.deleted else {
                             if download.identifier == operation.identifier {
                                 throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: NSFileProviderItemIdentifier(operation.ocId))
                             }
@@ -117,11 +104,12 @@ extension FilesDatabaseManager {
                         }
                         return item
                     }
-                    for item in items {
+                    for var item in items {
                         item.status = Status.normal.rawValue
                         item.downloaded = true
                         item.uploaded = true
                         item.sessionError = ""
+                        try item.upsertRow(db)
                     }
                 }
             } catch {
@@ -129,10 +117,10 @@ extension FilesDatabaseManager {
                 throw error
             }
             for download in downloads {
-                operations[databaseIdentifier]?.removeValue(forKey: download.ocId)
+                operations[storeIdentity]?.removeValue(forKey: download.ocId)
             }
-            if operations[databaseIdentifier]?.isEmpty == true {
-                operations.removeValue(forKey: databaseIdentifier)
+            if operations[storeIdentity]?.isEmpty == true {
+                operations.removeValue(forKey: storeIdentity)
             }
         }
     }
@@ -148,19 +136,18 @@ extension FilesDatabaseManager {
         let ocId = operation.ocId
         let statusValue = status.rawValue
         try Self.downloadOperations.withLock { operations in
-            let database = ncDatabase()
-            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString, operations[databaseIdentifier]?[ocId]?.identifier == operation.identifier else {
+            guard operations[storeIdentity]?[ocId]?.identifier == operation.identifier else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             defer {
-                operations[databaseIdentifier]?.removeValue(forKey: ocId)
-                if operations[databaseIdentifier]?.isEmpty == true {
-                    operations.removeValue(forKey: databaseIdentifier)
+                operations[storeIdentity]?.removeValue(forKey: ocId)
+                if operations[storeIdentity]?.isEmpty == true {
+                    operations.removeValue(forKey: storeIdentity)
                 }
             }
             do {
-                try database.write {
-                    guard let item = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: ocId), !item.deleted else {
+                try write(durability: .full) { db in
+                    guard var item = try itemMetadata(ocId: ocId, in: db), !item.deleted else {
                         throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: NSFileProviderItemIdentifier(ocId))
                     }
                     item.status = statusValue
@@ -172,6 +159,7 @@ extension FilesDatabaseManager {
                             item.contentType = contentType
                         }
                     }
+                    try item.upsertRow(db)
                 }
             } catch {
                 logger.error("Could not finish download in database.", [.item: ocId, .error: error])

@@ -7,7 +7,6 @@ import Alamofire
 import NextcloudFileProviderKitMocks
 import NextcloudFileProviderXPC
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -206,9 +205,11 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
             XCTAssertTrue(rootItem.children.isEmpty)
             XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
-            let remainingChunks = Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
-                .where { $0.remoteChunkStoreFolderName.starts(with: chunkUploadIdentifierPrefix(forItemWithIdentifier: metadata.ocId)) }
-                .toUnmanagedResults()
+            let uploadIds = try XCTUnwrap(Self.dbManager.remoteChunkStoreFolderNames())
+                .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: metadata.ocId)) }
+            let remainingChunks = try Set(uploadIds).flatMap { uploadId in
+                try XCTUnwrap(Self.dbManager.remoteFileChunks(uploadId: uploadId))
+            }
             XCTAssertEqual(remainingChunks.map(\.fileName).sorted(), chunkSize < 8 ? ["2", "3"] : [])
             for chunk in remainingChunks {
                 XCTAssertTrue(FileManager.default.fileExists(atPath: chunkDirectory.appendingPathComponent(chunk.fileName).path))
@@ -261,7 +262,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remote.data, contents)
         XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
-        XCTAssertTrue(Self.dbManager.ncDatabase().objects(RemoteFileChunk.self).isEmpty)
+        XCTAssertTrue(try XCTUnwrap(Self.dbManager.remoteChunkStoreFolderNames()).isEmpty)
     }
 
     func testCreateFile() async throws {

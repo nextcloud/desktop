@@ -130,15 +130,15 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         return directory
     }
 
-    private func makeOverlappingFetchItems() -> (Item, MockRemoteInterface, Item, MockRemoteInterface, MockRemoteItem) {
+    private func makeOverlappingFetchItems() throws -> (Item, MockRemoteInterface, Item, MockRemoteInterface, MockRemoteItem) {
         let (firstItem, firstRemoteInterface, remoteItem) = makeFetchItem()
         let secondRemoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         secondRemoteInterface.injectMock(Self.account)
-        let secondDBManager = FilesDatabaseManager(
-            realmConfiguration: Self.dbManager.ncDatabase().configuration,
+        let databaseURL = try XCTUnwrap(Self.dbManager.databaseURL)
+        let secondDBManager = try FilesDatabaseManager(
             account: Self.account,
-            databaseDirectory: Self.makeDatabaseDirectory(),
-            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
+            databaseDirectory: databaseURL.deletingLastPathComponent(),
+            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier(databaseURL.deletingPathExtension().lastPathComponent),
             log: FileProviderLogMock()
         )
         let secondItem = Item(
@@ -460,7 +460,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testSupersededFetchPreservesNewerReturnedContents() async throws {
-        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = makeOverlappingFetchItems()
+        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = try makeOverlappingFetchItems()
         let dbManager = Self.dbManager
         let secondDBManager = secondItem.dbManager
         defer {
@@ -498,7 +498,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testSupersededFetchPreservesNewerDownloadInProgress() async throws {
-        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = makeOverlappingFetchItems()
+        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = try makeOverlappingFetchItems()
         let dbManager = Self.dbManager
         let secondDBManager = secondItem.dbManager
         defer {
@@ -548,7 +548,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testSupersededFetchPreservesNewerDownloadError() async throws {
-        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = makeOverlappingFetchItems()
+        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = try makeOverlappingFetchItems()
         let dbManager = Self.dbManager
         let secondDBManager = secondItem.dbManager
         defer {
@@ -599,7 +599,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testNewerFetchCancelsSupersededTransferBeforeCompletion() async throws {
-        let (firstItem, firstRemote, secondItem, secondRemote, remoteItem) = makeOverlappingFetchItems()
+        let (firstItem, firstRemote, secondItem, secondRemote, remoteItem) = try makeOverlappingFetchItems()
         let session = Session(startRequestsImmediately: false)
         let firstRequest = session.download("https://example.invalid/first")
         let secondRequest = session.download("https://example.invalid/second")
@@ -741,7 +741,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testExplicitCancellationBeforeSupersessionRemainsCancelled() async throws {
-        let (firstItem, firstRemote, secondItem, secondRemote, _) = makeOverlappingFetchItems()
+        let (firstItem, firstRemote, secondItem, secondRemote, _) = try makeOverlappingFetchItems()
         let progress = Progress()
         let (started, startedContinuation) = AsyncStream<Void>.makeStream()
         let (cancelled, cancelledContinuation) = AsyncStream<Void>.makeStream()
@@ -787,7 +787,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
     func testRejectedFetchDoesNotCancelActiveTransfer() async throws {
         for removeRow in [false, true] {
-            let (firstItem, firstRemote, secondItem, secondRemote, remoteItem) = makeOverlappingFetchItems()
+            let (firstItem, firstRemote, secondItem, secondRemote, remoteItem) = try makeOverlappingFetchItems()
             let session = Session(startRequestsImmediately: false)
             let request = session.download("https://example.invalid/first")
             firstRemote.downloadRequest = request
@@ -824,7 +824,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     func testSupersededTransferPreservesNewerCompletedFetch() async throws {
         let errorCodes: [Int?] = [nil, 503, NSURLErrorCancelled]
         for errorCode in errorCodes {
-            let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = makeOverlappingFetchItems()
+            let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = try makeOverlappingFetchItems()
             let dbManager = Self.dbManager
             let (firstTask, releaseFirst) = try await startSuspendedFetch(item: firstItem, remoteInterface: firstRemoteInterface)
             defer {
@@ -880,7 +880,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testSupersededTransferPreservesNewerDownloadInProgress() async throws {
-        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = makeOverlappingFetchItems()
+        let (firstItem, firstRemoteInterface, secondItem, secondRemoteInterface, remoteItem) = try makeOverlappingFetchItems()
         let dbManager = Self.dbManager
         let (firstTask, releaseFirst) = try await startSuspendedFetch(item: firstItem, remoteInterface: firstRemoteInterface)
         let (secondTask, releaseSecond) = try await startSuspendedFetch(item: secondItem, remoteInterface: secondRemoteInterface)
