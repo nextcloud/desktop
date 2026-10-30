@@ -11,8 +11,11 @@
 #include <QTemporaryDir>
 #include <QTemporaryFile>
 
+#include <functional>
+
 #include "common/filesystembase.h"
 #include "logger.h"
+#include "syncenginetestutils.h"
 
 #include "libsync/filesystem.h"
 
@@ -25,6 +28,11 @@
 using namespace OCC;
 using namespace Qt::StringLiterals;
 namespace std_fs = std::filesystem;
+
+namespace
+{
+using CreateLink = std::function<bool(const QString &, const QString &)>;
+}
 
 class TestFileSystem : public QObject
 {
@@ -374,6 +382,89 @@ private Q_SLOTS:
         tempQDir.mkpath("Folder 4 - short name");
 
         QVERIFY(FileSystem::removeRecursively(tempDir.path()));
+    }
+
+    void testPathContainsSymlink_data()
+    {
+        QTest::addColumn<QString>("relativePath");
+        QTest::addColumn<bool>("containsLink");
+        QTest::addColumn<bool>("isLink");
+
+        QTest::newRow("empty") << QString{} << false << false;
+        QTest::newRow("folder") << u"dir"_s << false << false;
+        QTest::newRow("file") << u"dir/file"_s << false << false;
+        QTest::newRow("missing") << u"dir/missing"_s << false << false;
+        QTest::newRow("link") << u"link"_s << true << true;
+        QTest::newRow("below link") << u"link/child/file"_s << true << false;
+        QTest::newRow("nested link") << u"dir/link"_s << true << true;
+        QTest::newRow("below nested link") << u"dir/link/child"_s << true << false;
+    }
+
+    void testPathContainsSymlink()
+    {
+        QFETCH(QString, relativePath);
+        QFETCH(bool, containsLink);
+        QFETCH(bool, isLink);
+
+        QTemporaryDir root;
+        QTemporaryDir outside;
+        QVERIFY(QDir(root.path()).mkdir(u"dir"_s));
+        QVERIFY(QFile(root.filePath(u"dir/file"_s)).open(QIODevice::WriteOnly));
+        if (!createDirectorySymlink(outside.path(), root.filePath(u"link"_s))) {
+            QSKIP("Cannot create symlinks on this system");
+        }
+        QVERIFY(createDirectorySymlink(outside.path(), root.filePath(u"dir/link"_s)));
+
+        QCOMPARE(FileSystem::pathContainsSymlink(root.path(), relativePath), containsLink);
+        QCOMPARE(FileSystem::isSymLink(root.filePath(relativePath)), isLink);
+    }
+
+    void testRemoveRecursivelyDoesNotFollowSymlinks_data()
+    {
+        QTest::addColumn<CreateLink>("createLink");
+        QTest::addColumn<QString>("pathToRemove");
+
+        QTest::newRow("link") << CreateLink{createDirectorySymlink} << u"link"_s;
+        QTest::newRow("folder containing a link") << CreateLink{createDirectorySymlink} << u"dir"_s;
+#ifdef Q_OS_WIN
+        QTest::newRow("junction") << CreateLink{createDirectoryJunction} << u"link"_s;
+        QTest::newRow("folder containing a junction") << CreateLink{createDirectoryJunction} << u"dir"_s;
+#endif
+    }
+
+    void testRemoveRecursivelyDoesNotFollowSymlinks()
+    {
+        QFETCH(CreateLink, createLink);
+        QFETCH(QString, pathToRemove);
+
+        QTemporaryDir root;
+        QTemporaryDir outside;
+        const auto victim = outside.filePath(u"victim"_s);
+        QVERIFY(QFile(victim).open(QIODevice::WriteOnly));
+        QVERIFY(QDir(root.path()).mkdir(u"dir"_s));
+        if (!createLink(outside.path(), root.filePath(u"link"_s))) {
+            QSKIP("Cannot create symlinks on this system");
+        }
+        QVERIFY(createLink(outside.path(), root.filePath(u"dir/link"_s)));
+
+        QVERIFY(FileSystem::removeRecursively(root.filePath(pathToRemove)));
+        QVERIFY(!QFileInfo::exists(root.filePath(pathToRemove)));
+        QVERIFY(QFileInfo::exists(victim));
+    }
+
+    void testSetModTimeDoesNotFollowSymlinks()
+    {
+        QTemporaryDir root;
+        QTemporaryDir outside;
+        const auto link = root.filePath(u"link"_s);
+        if (!createDirectorySymlink(outside.path(), link)) {
+            QSKIP("Cannot create symlinks on this system");
+        }
+        const auto targetModTime = FileSystem::getModTime(outside.path());
+        const auto newModTime = targetModTime - 1;
+
+        QVERIFY(!FileSystem::setModTime(link, newModTime));
+        QCOMPARE(FileSystem::getModTime(outside.path()), targetModTime);
     }
 };
 

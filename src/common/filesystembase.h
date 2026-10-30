@@ -37,6 +37,8 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcFileSystem)
 namespace FileSystem {
     OCSYNC_EXPORT Q_NAMESPACE;
 
+    OCSYNC_EXPORT std::filesystem::path toFilesystemPath(const QString &path);
+
     enum class FolderPermissions {
         ReadOnly,
         ReadWrite,
@@ -111,8 +113,6 @@ namespace FileSystem {
 
     bool OCSYNC_EXPORT isReadable(const QString &filename, const QFileInfo &fileInfo = QFileInfo());
 
-    bool OCSYNC_EXPORT isSymLink(const QString &filename, const QFileInfo &fileInfo = QFileInfo());
-
     /**
      * @brief Rename the file \a originFileName to \a destinationFileName.
      *
@@ -127,6 +127,7 @@ namespace FileSystem {
      *
      * Equivalent to QFile::remove(), except on Windows, where it will also
      * successfully remove read-only files.
+     * A symlink or junction is removed, not its target.
      */
     bool OCSYNC_EXPORT remove(const QString &fileName, QString *errorString = nullptr);
 
@@ -203,9 +204,17 @@ namespace FileSystem {
     bool OCSYNC_EXPORT isExcludeFile(const QString &filename);
 
     /**
-     * Returns whether the file is a junction (windows only)
+     * Returns whether the path itself is a symlink or a junction.
+     *
+     * On Windows, only the symlink and mount point reparse tags match.
+     * Other reparse points, such as Windows VFS placeholders are not reported.
      */
-    bool OCSYNC_EXPORT isJunction(const QString &filename);
+    bool OCSYNC_EXPORT isSymLink(const QString &absolutePath);
+
+    /**
+     * Returns whether relativePath or any of its parents below syncRootPath is a symlink or a junction.
+     */
+    bool OCSYNC_EXPORT pathContainsSymlink(const QString &syncRootPath, const QString &relativePath);
 }
 
 /** @} */
