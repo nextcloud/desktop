@@ -1318,41 +1318,44 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
     }
 
-    func testPackageFetchRetriesRenamedMemberUsingServerListing() async throws {
-        let (item, remoteInterface, directory) = makePackageFetchItem()
-        let child = directory.children[0]
-        let originalName = child.name
-        remoteInterface.downloadError = NKError(errorCode: 503, errorDescription: "First attempt failed")
-        defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
-        let (failedURL, _, failure) = await item.fetchContents(dbManager: Self.dbManager)
-        XCTAssertNil(failedURL)
-        XCTAssertEqual((failure as? NSFileProviderError)?.code, .serverUnreachable)
-        let failedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.identifier))
-        XCTAssertEqual(failedMetadata.status, Status.downloadError.rawValue)
-        XCTAssertEqual(failedMetadata.fileName, originalName)
-        child.name = "renamed.txt"
-        child.remotePath = directory.remotePath + "/" + child.name
-        child.versionIdentifier = "renamed-version"
-        child.data = Data("New remote contents".utf8)
-        let childIdentifier = child.identifier
-        let renamedName = child.name
-        remoteInterface.downloadError = nil
-        remoteInterface.downloadHandler = {
-            if remoteInterface.downloadOperationCount == 2 {
-                XCTAssertEqual(Self.dbManager.itemMetadata(ocId: childIdentifier)?.fileName, originalName)
-                XCTAssertEqual(remoteInterface.downloadDestinationURL?.lastPathComponent, renamedName)
+    func testDirectoryAndPackageFetchRetryRenamedMemberUsingServerListing() async throws {
+        for package in [false, true] {
+            let (item, remoteInterface, directory) = package ? makePackageFetchItem() : makeFetchItem(directory: true)
+            XCTAssertEqual(item.isBundleOrPackage, package)
+            let child = directory.children[0]
+            let originalName = child.name
+            remoteInterface.downloadError = NKError(errorCode: 503, errorDescription: "First attempt failed")
+            defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
+            let (failedURL, _, failure) = await item.fetchContents(dbManager: Self.dbManager)
+            XCTAssertNil(failedURL)
+            XCTAssertEqual((failure as? NSFileProviderError)?.code, .serverUnreachable)
+            let failedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.identifier))
+            XCTAssertEqual(failedMetadata.status, Status.downloadError.rawValue)
+            XCTAssertEqual(failedMetadata.fileName, originalName)
+            child.name = "renamed.txt"
+            child.remotePath = directory.remotePath + "/" + child.name
+            child.versionIdentifier = "renamed-version"
+            child.data = Data("New remote contents".utf8)
+            let childIdentifier = child.identifier
+            let renamedName = child.name
+            remoteInterface.downloadError = nil
+            remoteInterface.downloadHandler = {
+                if remoteInterface.downloadOperationCount == 2 {
+                    XCTAssertEqual(Self.dbManager.itemMetadata(ocId: childIdentifier)?.fileName, originalName)
+                    XCTAssertEqual(remoteInterface.downloadDestinationURL?.lastPathComponent, renamedName)
+                }
             }
-        }
 
-        let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+            let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
 
-        XCTAssertNil(error)
-        XCTAssertTrue(try XCTUnwrap(fetchedItem).isDownloaded)
-        let localPath = try XCTUnwrap(url)
-        XCTAssertFalse(FileManager.default.fileExists(atPath: localPath.appendingPathComponent(originalName).path))
-        XCTAssertEqual(remoteInterface.downloadOperationCount, 1 + directory.children.count)
-        for child in directory.children {
-            XCTAssertEqual(try Data(contentsOf: localPath.appendingPathComponent(child.name)), child.data)
+            XCTAssertNil(error)
+            XCTAssertTrue(try XCTUnwrap(fetchedItem).isDownloaded)
+            let localPath = try XCTUnwrap(url)
+            XCTAssertFalse(FileManager.default.fileExists(atPath: localPath.appendingPathComponent(originalName).path))
+            XCTAssertEqual(remoteInterface.downloadOperationCount, 1 + directory.children.count)
+            for child in directory.children {
+                XCTAssertEqual(try Data(contentsOf: localPath.appendingPathComponent(child.name)), child.data)
+            }
         }
     }
 

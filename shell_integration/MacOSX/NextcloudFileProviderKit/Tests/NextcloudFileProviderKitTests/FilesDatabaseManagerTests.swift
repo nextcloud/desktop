@@ -551,7 +551,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         }
     }
 
-    func testDirectoryDownloadSelectionPreservesExistingState() throws {
+    func testDirectoryDownloadSelectionUsesServerListingAndPreservesDatabaseState() throws {
         for directory in [false, true] {
             for deleted in [false, true] {
                 for status in [Status.normal, .inDownload, .downloading, .downloadError, .inUpload, .uploading, .uploadError] {
@@ -570,9 +570,16 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
                     Self.dbManager.addItemMetadata(metadata)
                     let before = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: metadata.ocId))
                     var received = metadata
+                    received.serverUrl += "/renamed-parent"
+                    received.fileName += "-renamed"
+                    received.fileNameView = received.fileName
+                    received.etag = "server-version"
+                    received.size = 128
                     received.deleted = false
                     received.downloaded = false
                     received.keepDownloaded = false
+                    received.visitedDirectory = false
+                    received.fileProviderContentVersion = nil
                     received.favorite = false
                     received.status = Status.normal.rawValue
                     received.sessionError = ""
@@ -580,7 +587,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
                     let selected = try Self.dbManager.directoryDownloadMetadatas([received])
 
-                    XCTAssertEqual(selected, deleted ? [] : [before])
+                    XCTAssertEqual(selected, deleted ? [] : [received])
                     XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), before)
                 }
             }

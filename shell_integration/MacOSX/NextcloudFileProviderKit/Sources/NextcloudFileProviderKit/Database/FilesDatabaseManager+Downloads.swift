@@ -6,14 +6,14 @@ import Foundation
 import RealmSwift
 
 extension FilesDatabaseManager {
-    /// Select live children from persisted state without undoing local deletions.
+    /// Use listed server metadata for live children without undoing local deletions.
     func directoryDownloadMetadatas(_ metadatas: [SendableItemMetadata]) throws -> [SendableItemMetadata] {
         let database = ncDatabase()
         return try metadatas.compactMap { metadata in
             guard let existing = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: metadata.ocId) else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
-            return existing.deleted ? nil : SendableItemMetadata(value: existing)
+            return existing.deleted ? nil : metadata
         }
     }
 
