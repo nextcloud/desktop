@@ -268,7 +268,7 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="73"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Избриши</translation>
     </message>
 </context>
 <context>
@@ -295,7 +295,7 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="67"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Избриши</translation>
     </message>
 </context>
 <context>
@@ -613,7 +613,7 @@
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Избриши</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="34"/>
@@ -729,7 +729,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="88"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Избриши</translation>
     </message>
 </context>
 <context>
@@ -880,7 +880,7 @@
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="52"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Избриши</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="60"/>
