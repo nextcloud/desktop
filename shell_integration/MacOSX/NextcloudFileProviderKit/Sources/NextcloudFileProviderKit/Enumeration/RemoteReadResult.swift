@@ -23,7 +23,7 @@ struct RemoteReadResult {
     ///
     /// `nil` for paginated reads — which only report the items discovered on the page and do not
     /// diff against the database — and `nil` when the database write that derives the change set
-    /// failed. Change enumeration treats a `nil` change set on a non-paginated read as an error.
+    /// failed. A failed depth-1 database update also sets ``error`` so callers can retain their sync point.
     ///
     var changes: ChangeSet?
 
