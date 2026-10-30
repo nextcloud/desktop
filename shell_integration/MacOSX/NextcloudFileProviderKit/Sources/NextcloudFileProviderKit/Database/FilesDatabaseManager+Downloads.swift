@@ -17,6 +17,40 @@ extension FilesDatabaseManager {
         }
     }
 
+    /// Restore listed package members while preserving local transfer state.
+    func restorePackageDownloadMetadatas(_ metadatas: [SendableItemMetadata], for operation: DownloadOperation) throws {
+        guard !metadatas.isEmpty else { return }
+        try Self.downloadOperations.withLock { operations in
+            let database = ncDatabase()
+            guard let databaseIdentifier = database.configuration.inMemoryIdentifier ?? database.configuration.fileURL?.absoluteString,
+                  operations[databaseIdentifier]?[operation.ocId]?.identifier == operation.identifier
+            else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+            try database.write {
+                guard !operation.cancellation.isCancelled else { throw CocoaError(.userCancelled) }
+                guard let directory = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: operation.ocId), !directory.deleted else {
+                    throw NSFileProviderError(.cannotSynchronize)
+                }
+                for metadata in metadatas {
+                    guard let existing = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: metadata.ocId) else {
+                        evictLogicalDuplicates(of: metadata, in: database)
+                        database.add(RealmItemMetadata(value: metadata), update: .all)
+                        continue
+                    }
+                    if existing.deleted {
+                        guard existing.status == Status.normal.rawValue || existing.status == Status.downloadError.rawValue,
+                              operations[databaseIdentifier]?[metadata.ocId] == nil
+                        else {
+                            throw NSFileProviderError(.cannotSynchronize)
+                        }
+                        existing.deleted = false
+                    }
+                }
+            }
+        }
+    }
+
     func beginDownload(_ operation: DownloadOperation) -> SendableItemMetadata? {
         let ocId = operation.ocId
         let (metadata, supersededOperation): (SendableItemMetadata?, DownloadOperation?) = Self.downloadOperations.withLock { operations in
