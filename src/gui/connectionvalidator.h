@@ -55,7 +55,7 @@ namespace OCC {
   |
   +-> checkServerCapabilities --------------v (in parallel)
         JsonApiJob (cloud/capabilities)
-        +-> slotCapabilitiesRecieved -+
+        +-> slotCapabilitiesReceived -+
                                       |
     +---------------------------------+
     |
@@ -153,7 +153,8 @@ protected Q_SLOTS:
     void slotAuthFailed(QNetworkReply *reply);
     void slotAuthSuccess();
 
-    void slotCapabilitiesRecieved(const QJsonDocument &);
+    void slotCapabilitiesReceived(const QJsonDocument &json, int statusCode = 0);
+    void slotCapabilitiesEtagReceived(const QByteArray &value, int statusCode);
     void slotUserFetched(OCC::UserInfo *userInfo);
 
     void termsOfServiceCheckDone();
