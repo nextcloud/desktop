@@ -3,67 +3,34 @@
 
 import Foundation
 import NextcloudKit
-import os
 
 extension NextcloudKit {
-    ///
-    /// Removes the given NextcloudKit accound identifier from the persisted list of accounts with certain errors managed by NextcloudKit.
-    ///
-    /// Copied from `removeServerErrorAccount(_:)` in the iOS Files app project as an interim solution.
-    /// This implementation should actually be part of NextcloudKit and not the consuming projects.
-    ///
-    /// - Parameters:
-    ///     - identifier: The composite account identifier string as typically used by NextcloudKit.
-    ///
-    static func clearAccountErrorState(for identifier: String) {
-        let nkCommon = NextcloudKit.shared.nkCommonInstance
-        let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "NextcloudKit+clearAccountErrorState")
+    /// Installs account credentials and removes persisted errors that would block new requests.
+    public func appendSession(account: Account, userAgent: String) {
+        clearAccountErrorState(for: account.ncKitAccount)
 
-        logger.debug("Attempt to clear account error state for account identifier: \"\(identifier)\"...")
+        appendSession(
+            account: account.ncKitAccount,
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id,
+            password: account.password,
+            userAgent: userAgent,
+            groupIdentifier: ""
+        )
+    }
 
-        // MARK: User defaults group lookup.
-
+    private func clearAccountErrorState(for identifier: String) {
+        let nkCommon = nkCommonInstance
         guard let groupDefaults = UserDefaults(suiteName: nkCommon.groupIdentifier) else {
-            logger.error("Failed to get user defaults for NextcloudKit group identifier: \(nkCommon.groupIdentifier ?? "nil")")
             return
         }
 
-        // MARK: Unauthorized state accounts.
-
-        var unauthorized = groupDefaults.array(forKey: nkCommon.groupDefaultsUnauthorized) as? [String] ?? []
-        logger.debug("Found list of accounts in unauthorized state:\n\(unauthorized.map { "\t- \($0)" }.joined(separator: "\n"))")
-
-        unauthorized.removeAll { item in
-            item == identifier
+        for key in [nkCommon.groupDefaultsUnauthorized, nkCommon.groupDefaultsUnavailable, nkCommon.groupDefaultsToS] {
+            let accounts = groupDefaults.array(forKey: key) as? [String] ?? []
+            groupDefaults.set(accounts.filter { $0 != identifier }, forKey: key)
         }
-
-        groupDefaults.set(unauthorized, forKey: nkCommon.groupDefaultsUnauthorized)
-
-        // MARK: Unavailable state accounts.
-
-        var unavailable = groupDefaults.array(forKey: nkCommon.groupDefaultsUnavailable) as? [String] ?? []
-        logger.debug("Found list of accounts in unavailable state:\n\(unavailable.map { "\t- \($0)" }.joined(separator: "\n"))")
-
-        unavailable.removeAll { item in
-            item == identifier
-        }
-
-        groupDefaults.set(unavailable, forKey: nkCommon.groupDefaultsUnavailable)
-
-        // MARK: Missing terms of service state accounts.
-
-        var termsOfService = groupDefaults.array(forKey: nkCommon.groupDefaultsToS) as? [String] ?? []
-        logger.debug("Found list of accounts in terms of service state:\n\(termsOfService.map { "\t- \($0)" }.joined(separator: "\n"))")
-
-        termsOfService.removeAll { item in
-            item == identifier
-        }
-
-        groupDefaults.set(termsOfService, forKey: nkCommon.groupDefaultsToS)
-
-        // MARK: Forced persistence.
 
         groupDefaults.synchronize()
-        logger.debug("Completed clearance of account error state call.")
     }
 }
