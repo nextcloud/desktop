@@ -646,6 +646,7 @@ bool SyncJournalDb::checkConnect()
     bool rc = updateDatabaseStructure();
     if (!rc) {
         qCWarning(lcDb) << "Failed to update the database structure!";
+        return false;
     }
 
     /*
@@ -812,10 +813,34 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
     if (true) {
         SqlQuery query(_db);
-        query.prepare("CREATE UNIQUE INDEX IF NOT EXISTS metadata_unique_inode ON metadata(inode);");
+        query.prepare("SELECT 1 FROM sqlite_master WHERE type='index' AND name='metadata_unique_inode';");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: create index unique inode"), query);
-            re = false;
+            return sqlFail(u"updateMetadataTableStructure: check unique inode index"_s, query);
+        }
+        const auto index = query.next();
+        if (!index.ok) {
+            return sqlFail(u"updateMetadataTableStructure: check unique inode index"_s, query);
+        }
+        if (!index.hasData) {
+            // Preserve sync metadata, but do not use ambiguous or unknown inodes for move detection.
+            query.prepare(
+                "UPDATE metadata SET inode=NULL WHERE inode=0 OR inode IN ("
+                "SELECT inode FROM metadata WHERE inode IS NOT NULL GROUP BY inode HAVING COUNT(*)>1);");
+            if (!query.exec()) {
+                return sqlFail(u"updateMetadataTableStructure: clear ambiguous inodes"_s, query);
+            }
+            const auto clearedInodes = query.numRowsAffected();
+
+            query.prepare("CREATE UNIQUE INDEX IF NOT EXISTS metadata_unique_inode ON metadata(inode);");
+            if (!query.exec()) {
+                return sqlFail(u"updateMetadataTableStructure: create index unique inode"_s, query);
+            }
+            if (clearedInodes > 0) {
+                forceRemoteDiscoveryNextSyncLocked();
+                if (!_db.isOpen()) {
+                    return false;
+                }
+            }
         }
         commitInternal(QStringLiteral("update database structure: add unique inode index"));
     }
@@ -1101,7 +1126,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                                                                                                         "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, "
                                                                                                         "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, lock, lockType, lockOwnerDisplayName, lockOwnerId, "
                                                                                                         "lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe, isLivePhoto, livePhotoFile, quotaBytesUsed, quotaBytesAvailable) "
-                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32, ?33, ?34);"),
+                                                                                                        "VALUES (?1 , ?2, ?3 , NULLIF(?4, 0) , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32, ?33, ?34);"),
         _db);
     if (!query) {
         qCWarning(lcDb) << "database error:" << query->error();
@@ -1772,7 +1797,7 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     }
 
     const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordLocalMetadataQuery, QByteArrayLiteral("UPDATE metadata"
-                                                                                                                     " SET inode=?2, modtime=?3, filesize=?4, lock=?5, lockType=?6,"
+                                                                                                                     " SET inode=NULLIF(?2, 0), modtime=?3, filesize=?4, lock=?5, lockType=?6,"
                                                                                                                      " lockOwnerDisplayName=?7, lockOwnerId=?8, lockOwnerEditor = ?9,"
                                                                                                                      " lockTime=?10, lockTimeout=?11, lockToken=?12"
                                                                                                                      " WHERE phash == ?1;"),
