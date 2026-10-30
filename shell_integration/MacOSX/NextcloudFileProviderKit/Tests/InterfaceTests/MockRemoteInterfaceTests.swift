@@ -777,7 +777,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertNil(itemA.trashbinOriginalLocation)
     }
 
-    func testNoDirectMoveFromTrash() async {
+    func testNoDirectMoveFromTrash() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         debugPrint(remoteInterface)
         let folder = MockRemoteItem(
@@ -816,7 +816,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertNotEqual(directMoveError, .success) // Should fail as we need to restore first
 
         let expectedRestoreRemotePath =
-            Self.account.davFilesUrl + "/" + itemA.trashbinOriginalLocation!
+            try Self.account.davFilesUrl + "/" + XCTUnwrap(itemA.trashbinOriginalLocation)
         let (_, _, restoreError) =
             await remoteInterface.restoreFromTrash(filename: itemA.name, account: Self.account)
         XCTAssertEqual(restoreError, .success)

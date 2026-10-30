@@ -318,7 +318,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
-        let newContents = "Hello, much bigger New World!".data(using: .utf8)!
+        let newContents = try XCTUnwrap("Hello, much bigger New World!".data(using: .utf8))
         let newContentsUrl = FileManager.default.temporaryDirectory
             .appendingPathComponent("quota-report-modify")
         try newContents.write(to: newContentsUrl)
@@ -376,7 +376,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(itemMetadata)
 
         let originalRemoteData = remoteItem.data
-        let newContents = "Hello, much bigger New World!".data(using: .utf8)!
+        let newContents = try XCTUnwrap("Hello, much bigger New World!".data(using: .utf8))
         let newContentsUrl = FileManager.default.temporaryDirectory
             .appendingPathComponent("quota-blocked-modify")
         try newContents.write(to: newContentsUrl)
@@ -1792,7 +1792,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
-        let newContents = "I've changed!".data(using: .utf8)!
+        let newContents = try XCTUnwrap("I've changed!".data(using: .utf8))
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 

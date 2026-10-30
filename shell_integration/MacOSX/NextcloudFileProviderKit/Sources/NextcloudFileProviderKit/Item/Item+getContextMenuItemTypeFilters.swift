@@ -14,12 +14,8 @@ extension Item {
     static func getContextMenuItemTypeFilters(account: Account, remoteInterface: RemoteInterface) async -> [String] {
         let (_, capabilities, _, capabilitiesError) = await remoteInterface.currentCapabilities(account: account, options: .init(), taskHandler: { _ in })
 
-        if capabilitiesError == .success {
-            if let capabilities {
-                if let apps = capabilities.clientIntegration?.apps {
-                    return apps.flatMap(\.contextMenuItems).flatMap(\.filters)
-                }
-            }
+        if capabilitiesError == .success, let capabilities, let apps = capabilities.clientIntegration?.apps {
+            return apps.flatMap(\.contextMenuItems).flatMap(\.filters)
         }
 
         return []

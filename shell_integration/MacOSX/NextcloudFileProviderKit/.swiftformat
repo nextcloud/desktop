@@ -1,2 +1,3 @@
 --indent-case true
 --trailing-commas never
+--disable repeatedGuard
