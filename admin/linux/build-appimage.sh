@@ -133,6 +133,8 @@ rm -rf ./squashfs-root
 APPIMAGE=$(ls *.AppImage)
 ./"${APPIMAGE}" --appimage-extract
 rm ./"${APPIMAGE}"
+chmod -R a+rX '/app/squashfs-root'
+chmod a+rx '/app/squashfs-root/AppRun'
 LD_LIBRARY_PATH="$PWD/appimagetool-squashfs-root/usr/lib":$LD_LIBRARY_PATH PATH="$PWD/appimagetool-squashfs-root/usr/bin":$PATH appimagetool -n ./squashfs-root "${APPIMAGE}"
 
 #move AppImage
