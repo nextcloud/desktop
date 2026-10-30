@@ -98,6 +98,15 @@ import OSLog
     /// enumeration if they want for safety.
     lazy var config = FileProviderDomainDefaults(identifier: domain.identifier, log: log)
 
+    /// NextcloudKit's logger is configured once per process. Its configuration is not thread-safe, and a process hosts one extension per domain, so instances created concurrently, as the tests do, must not configure it again. The static initialiser runs once, before the first instance logs through it.
+    private static let nextcloudKitLoggingConfiguration: Void = {
+        #if DEBUG
+            NKLogFileManager.configure(logLevel: .verbose)
+        #else
+            NKLogFileManager.configure(logLevel: .normal)
+        #endif
+    }()
+
     public required init(domain: NSFileProviderDomain) {
         // The containing application must create a domain using
         // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
@@ -113,13 +122,7 @@ import OSLog
 
         // Set up NextcloudKit.
         ncKit = NextcloudKit.shared
-
-        #if DEBUG
-            NKLogFileManager.configure(logLevel: .verbose)
-        #else
-            NKLogFileManager.configure(logLevel: .normal)
-        #endif
-
+        _ = Self.nextcloudKitLoggingConfiguration
         logger.info("NextcloudKit logging configured.", [.url: NKLogFileManager.shared.currentLogFileURL()])
         keychain = Keychain(domain: domain, log: log)
         super.init()
@@ -130,6 +133,7 @@ import OSLog
         logger.debug("File provider extension process is being invalidated.")
         blockSyncObservation?.invalidate()
         blockSyncObservation = nil
+        dbManager?.checkpointForShutdown()
     }
 
     func insertSyncAction(_ actionId: UUID) {
@@ -711,7 +715,7 @@ import OSLog
     /// setup is already in flight (tracked via ``pendingAccount``) or already completed (tracked
     /// via ``ncAccount``) are dropped silently. This prevents concurrent XPC callers from each
     /// opening their own NextcloudKit session and spinning up their own `FilesDatabaseManager`
-    /// (and hence their own Realm) for the same credentials.
+    /// (and hence their own database) for the same credentials.
     ///
     /// - Parameters:
     ///     - completionHandler: An optional completion handler which will be provided an error, if any occurred. Omitting this completion handler is fine, but you won't get notified of errors.
@@ -901,6 +905,22 @@ import OSLog
                 logger.info("Successfully authenticated.")
         }
 
+        // Opening the database may import or migrate it, so it happens off the main actor.
+        let databaseManager: FilesDatabaseManager
+
+        do {
+            databaseManager = try FilesDatabaseManager(
+                account: account,
+                fileProviderDomainIdentifier: domain.identifier,
+                log: log
+            )
+        } catch {
+            // Without its database the domain stays unavailable; every request keeps failing until a later setup succeeds.
+            logger.fault("Could not open the metadata database. The domain is not set up.", [.error: error])
+            completionHandler?(NSError(.databaseUnavailable))
+            return
+        }
+
         await MainActor.run {
             guard publishAccount(account, generation: generation) else {
                 logger.info("Not publishing the authenticated account because it was removed meanwhile.")
@@ -908,11 +928,6 @@ import OSLog
                 return
             }
 
-            let databaseManager = FilesDatabaseManager(
-                account: account,
-                fileProviderDomainIdentifier: domain.identifier,
-                log: log
-            )
             // TODO: Initial file creation does not persist item metadata until the upload succeeds.
             // If the extension restarts while that upload is still in progress, startup cleanup
             // cannot distinguish its chunks from an abandoned upload and may remove them.

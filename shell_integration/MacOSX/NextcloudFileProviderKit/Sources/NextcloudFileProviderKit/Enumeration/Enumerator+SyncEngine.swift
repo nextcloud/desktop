@@ -32,7 +32,7 @@ extension Enumerator {
         // carrying over any local-only state previously set on existing rows
         // (e.g. `keepDownloaded` from a recursive "Always keep downloaded"
         // enable). A plain `addItemMetadata` would clobber those flags via
-        // Realm's `update: .all`, which is the root cause of #9923.
+        // a full-row upsert, which is the root cause of #9923.
         //
         // Use the merged metadata returned by the helper for both the DB
         // write and the value reported back to the framework. Returning the
@@ -42,7 +42,7 @@ extension Enumerator {
         // out of sync with the local truth.
         //
         // Conversion and persistence are timed separately (convAccum / dbAccum) so the JSONL PERF
-        // line splits CPU spent building metadata from CPU spent in Realm. Today each item opens its
+        // line splits CPU spent building metadata from CPU spent in the database. Today each item opens its
         // own write transaction inside `addItemMetadataPreservingLocalState`; `db_items_per_s` is the
         // throughput number to watch, and the enclosing `ConvertAndPersistPage` signpost bounds the
         // whole page for Instruments. (Phase 2 batches these into one transaction per page.)
@@ -207,7 +207,7 @@ extension Enumerator {
 
         // Signpost + wall-clock the network read in isolation so a trace (or the JSONL PERF line) can
         // attribute enumeration latency to the paginated PROPFIND (server-bound) versus the local
-        // conversion + Realm persistence (CPU-bound). begin/end stay in this one function scope so the
+        // conversion + database persistence (CPU-bound). begin/end stay in this one function scope so the
         // non-Sendable interval state never crosses the `await`'s potential thread hop.
         let pageIndexForLog = pageSettings?.index ?? 0
         let signposter = EnumerationSignposter.signposter

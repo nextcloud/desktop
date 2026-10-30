@@ -76,6 +76,21 @@ extension Enumerator {
     }
 
     ///
+    /// Run a lookup of the stored change-delivery state.
+    ///
+    /// When the state cannot be read, the enumeration is finished with `cannotSynchronize` and `nil` is returned. Nothing is reset or acknowledged, so the framework asks again from the same anchor and the stored changes are neither re-derived nor discarded.
+    ///
+    func readDeliveryState<T>(reportingTo observer: NSFileProviderChangeObserver, _ lookup: () throws -> T) -> T? {
+        do {
+            return try lookup()
+        } catch {
+            logger.error("Could not read the stored change delivery session. Finishing the enumeration with an error.", [.item: enumeratedItemIdentifier, .error: error])
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return nil
+        }
+    }
+
+    ///
     /// Pop the next batch from ``changeBuffer`` and report it.
     ///
     /// Intermediate batches (`moreComing == true`) return a durable continuation anchor. Only the final
@@ -87,7 +102,13 @@ extension Enumerator {
         finalAnchor: NSFileProviderSyncAnchor,
         suggested: Int?
     ) {
-        let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested))
+        guard let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested)) else {
+            // The stored changes stay put; the framework asks again later with the same anchor.
+            logger.error("Could not prepare the next change batch. Finishing the enumeration with an error.", [.item: enumeratedItemIdentifier])
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return
+        }
+
         let reportedAnchor = if let continuationAnchorRawValue = batch.continuationAnchorRawValue {
             NSFileProviderSyncAnchor(rawValue: continuationAnchorRawValue)
         } else if let finalAnchorRawValue = batch.finalAnchorRawValue {

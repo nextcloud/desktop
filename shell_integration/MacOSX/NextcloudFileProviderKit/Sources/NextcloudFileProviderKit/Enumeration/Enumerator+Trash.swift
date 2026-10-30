@@ -19,7 +19,13 @@ extension Enumerator {
     private func drainTrashDeletions(
         for observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor, suggested: Int?
     ) {
-        let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested))
+        guard let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested)) else {
+            // The stored deletions stay put; the framework asks again later with the same anchor.
+            logger.error("Could not prepare the next trash deletion batch. Finishing the enumeration with an error.")
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return
+        }
+
         let orphanedIdentifiers = batch.deleted.map { NSFileProviderItemIdentifier($0.ocId) }
 
         if orphanedIdentifiers.isEmpty == false {
@@ -93,7 +99,15 @@ extension Enumerator {
 
             // Continuation of an in-progress drain: serve the next buffered batch without re-listing the
             // remote trash (re-deriving after per-batch soft-deletes would re-report the wrong subset).
-            if changeBuffer.isPrimed(forKey: anchorKey) {
+            let isPrimed = readDeliveryState(reportingTo: observer) {
+                try changeBuffer.isPrimed(forKey: anchorKey)
+            }
+
+            guard let isPrimed else {
+                return
+            }
+
+            if isPrimed {
                 logger.debug("Trash change buffer primed for anchor \(anchorKey); draining next batch without re-listing.", [.account: account.ncKitAccount])
                 drainTrashDeletions(for: observer, anchor: anchor, suggested: observer.suggestedBatchSize)
                 return

@@ -3,7 +3,6 @@
 
 import FileProvider
 import Foundation
-import RealmSwift
 
 ///
 /// The custom `NSFileProviderEnumerationObserver` implementation to process materialized items enumerated by the system.
@@ -46,7 +45,13 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     }
 
     func handleEnumeratedItems(_ identifiers: Set<NSFileProviderItemIdentifier>, account: Account, dbManager: FilesDatabaseManager, completionHandler: @escaping (_ materialized: Set<NSFileProviderItemIdentifier>, _ evicted: Set<NSFileProviderItemIdentifier>) -> Void) {
-        let metadataForMaterializedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
+        guard let metadataForMaterializedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount) else {
+            // Without the stored set nothing can be told apart; evicting on a guess would drop local state.
+            logger.error("Could not read the materialized items; not reconciling this enumeration.", [.account: account.ncKitAccount])
+            completionHandler([], [])
+            return
+        }
+
         var metadataForMaterializedItemsByIdentifier = [NSFileProviderItemIdentifier: SendableItemMetadata]()
         var evictionCandidates = Set<NSFileProviderItemIdentifier>()
         var evictedItems = Set<NSFileProviderItemIdentifier>()
@@ -87,7 +92,7 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                 }
 
                 logger.info("Updating state for item to materialized.", [.item: enumeratedIdentifier, .name: metadata.fileName])
-                dbManager.addItemMetadata(metadata)
+                dbManager.addItemMetadata(metadata, durability: .relaxed)
             }
         }
 
@@ -122,7 +127,7 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
 
             logger.info("Updating item state to dataless.", [.name: metadata.fileName, .item: candidateIdentifier])
 
-            dbManager.addItemMetadata(metadata)
+            dbManager.addItemMetadata(metadata, durability: .relaxed)
             evictedItems.insert(candidateIdentifier)
         }
 

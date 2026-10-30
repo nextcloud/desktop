@@ -4,11 +4,9 @@
 import Foundation
 
 ///
-/// Value type representation for `RealmItemMetadata`.
+/// Value type carrying the metadata of one file provider item.
 ///
-/// > Warning: Realm objects are inherently unsendable and not thread-safe.
-/// **Do not hand them across the boundaries of different concurrency domains!**
-/// Ensure that this representation is the only one passed around and always completely abstract Realm to upper layer calling code.
+/// This is the representation handed out by ``FilesDatabaseManager`` and passed between concurrency domains. Its `Codable` form is persisted inside change-delivery sessions, so its stored properties must not change shape.
 ///
 public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
     public var ocId: String
