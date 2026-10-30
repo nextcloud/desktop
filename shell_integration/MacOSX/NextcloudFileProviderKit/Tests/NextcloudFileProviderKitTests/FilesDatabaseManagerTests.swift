@@ -10,6 +10,16 @@ import TestInterface
 import XCTest
 
 final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
+    private func makeDirectoryDownloadOperation() throws -> DownloadOperation {
+        let log = FileProviderLogMock()
+        let operation = DownloadOperation(ocId: UUID().uuidString, cancellation: NetworkOperationCancellation(log: log), log: log)
+        var metadata = SendableItemMetadata(ocId: operation.ocId, fileName: operation.ocId, account: Self.account)
+        metadata.directory = true
+        Self.dbManager.addItemMetadata(metadata)
+        _ = try XCTUnwrap(Self.dbManager.beginDownload(operation))
+        return operation
+    }
+
     private func makeDirectoryDownloadOperations() throws -> (root: DownloadOperation, children: [DownloadOperation]) {
         setUpDatabase(Self.dbManager)
         let log = FileProviderLogMock()
@@ -544,7 +554,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testDirectoryDownloadSelectionPreservesExistingState() throws {
         for directory in [false, true] {
             for deleted in [false, true] {
-                for status in [Status.normal, .downloading, .uploading] {
+                for status in [Status.normal, .inDownload, .downloading, .downloadError, .inUpload, .uploading, .uploadError] {
                     var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: Self.account)
                     metadata.directory = directory
                     metadata.uploaded = true
@@ -584,6 +594,182 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
         }
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+    }
+
+    func testPackageDownloadRestorationPreservesLiveMetadata() throws {
+        let operation = try makeDirectoryDownloadOperation()
+        defer { try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false) }
+        for directory in [false, true] {
+            for status in [Status.normal, .inDownload, .downloading, .downloadError, .inUpload, .uploading, .uploadError] {
+                var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: Self.account)
+                metadata.directory = directory
+                metadata.uploaded = true
+                metadata.downloaded = true
+                metadata.keepDownloaded = true
+                metadata.visitedDirectory = true
+                metadata.favorite = true
+                metadata.lockToken = "local-lock"
+                metadata.fileProviderContentVersion = "local-version"
+                metadata.sessionError = "existing-error"
+                metadata.status = status.rawValue
+                Self.dbManager.addItemMetadata(metadata)
+                let before = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+                var received = metadata
+                received.fileName += "-server"
+                received.downloaded = false
+                received.keepDownloaded = false
+                received.favorite = false
+                received.status = Status.normal.rawValue
+                received.sessionError = ""
+                received.lockToken = nil
+
+                try Self.dbManager.restorePackageDownloadMetadatas([received], for: operation)
+
+                XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), before)
+            }
+        }
+    }
+
+    func testPackageDownloadRestorationPreservesDeletedMembersLocalState() throws {
+        let operation = try makeDirectoryDownloadOperation()
+        defer { try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false) }
+        for directory in [false, true] {
+            for status in [Status.normal, .downloadError] {
+                var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: Self.account)
+                metadata.directory = directory
+                metadata.status = status.rawValue
+                metadata.uploaded = true
+                metadata.downloaded = true
+                metadata.keepDownloaded = true
+                metadata.visitedDirectory = true
+                metadata.favorite = true
+                metadata.lockToken = "local-lock"
+                metadata.fileProviderContentVersion = "local-version"
+                metadata.sessionError = "existing-error"
+                metadata.deleted = true
+                Self.dbManager.addItemMetadata(metadata)
+                var expected = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+                expected.deleted = false
+                var received = metadata
+                received.deleted = false
+                received.downloaded = false
+                received.keepDownloaded = false
+                received.favorite = false
+                received.sessionError = ""
+                received.lockToken = nil
+
+                try Self.dbManager.restorePackageDownloadMetadatas([received], for: operation)
+
+                XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), expected)
+            }
+        }
+    }
+
+    func testPackageDownloadRestorationInsertsMissingMetadata() throws {
+        let operation = try makeDirectoryDownloadOperation()
+        defer { try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false) }
+        let metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: Self.account)
+
+        try Self.dbManager.restorePackageDownloadMetadatas([metadata], for: operation)
+
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
+    }
+
+    func testPackageDownloadRestorationRejectsDeletedTransferStateAtomically() throws {
+        let operation = try makeDirectoryDownloadOperation()
+        defer { try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false) }
+        for status in [Status.inDownload, .downloading, .inUpload, .uploading, .uploadError] {
+            let missing = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: Self.account)
+            var restorable = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: Self.account)
+            restorable.deleted = true
+            Self.dbManager.addItemMetadata(restorable)
+            let beforeRestorable = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: restorable.ocId))
+            var blocked = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: Self.account)
+            blocked.deleted = true
+            blocked.status = status.rawValue
+            blocked.sessionError = "existing-error"
+            Self.dbManager.addItemMetadata(blocked)
+            let beforeBlocked = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: blocked.ocId))
+            var receivedRestorable = restorable
+            receivedRestorable.deleted = false
+            var receivedBlocked = blocked
+            receivedBlocked.deleted = false
+            receivedBlocked.status = Status.normal.rawValue
+            receivedBlocked.sessionError = ""
+
+            XCTAssertThrowsError(try Self.dbManager.restorePackageDownloadMetadatas([receivedBlocked], for: operation)) { error in
+                XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+            }
+            XCTAssertThrowsError(try Self.dbManager.restorePackageDownloadMetadatas([missing, receivedRestorable, receivedBlocked], for: operation)) { error in
+                XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+            }
+
+            XCTAssertNil(Self.dbManager.itemMetadata(ocId: missing.ocId))
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: restorable.ocId), beforeRestorable)
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: blocked.ocId), beforeBlocked)
+        }
+    }
+
+    func testPackageDownloadRestorationRejectsDeletedParent() throws {
+        let operation = try makeDirectoryDownloadOperation()
+        defer { try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false) }
+        var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: Self.account)
+        metadata.deleted = true
+        Self.dbManager.addItemMetadata(metadata)
+        XCTAssertTrue(Self.dbManager.deleteItemMetadata(ocId: operation.ocId))
+
+        XCTAssertThrowsError(try Self.dbManager.restorePackageDownloadMetadatas([metadata], for: operation)) { error in
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        }
+
+        XCTAssertTrue(try XCTUnwrap(Self.dbManager.itemMetadata(ocId: metadata.ocId)).deleted)
+    }
+
+    func testPackageDownloadRestorationRejectsSupersededParent() throws {
+        let operation = try makeDirectoryDownloadOperation()
+        let log = FileProviderLogMock()
+        let newer = DownloadOperation(ocId: operation.ocId, cancellation: NetworkOperationCancellation(log: log), log: log)
+        _ = try XCTUnwrap(Self.dbManager.beginDownload(newer))
+        defer { try? Self.dbManager.finishDownload(newer, status: .normal, downloaded: false) }
+        let metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: Self.account)
+
+        XCTAssertThrowsError(try Self.dbManager.restorePackageDownloadMetadatas([metadata], for: operation)) { error in
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        }
+
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+    }
+
+    func testPackageDownloadRestorationRejectsCancelledParent() throws {
+        let operation = try makeDirectoryDownloadOperation()
+        defer { try? Self.dbManager.finishDownload(operation, status: .normal, downloaded: false) }
+        let metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: Self.account)
+        operation.cancellation.cancel()
+
+        XCTAssertThrowsError(try Self.dbManager.restorePackageDownloadMetadatas([metadata], for: operation)) { error in
+            XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        }
+
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+    }
+
+    func testPackageDownloadRestorationRejectsOwnedDeletedChild() throws {
+        let (operation, children) = try makeDirectoryDownloadOperations()
+        defer {
+            for download in [operation] + children {
+                try? Self.dbManager.finishDownload(download, status: .normal, downloaded: false)
+            }
+        }
+        var metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: children[0].ocId))
+        metadata.deleted = true
+        metadata.status = Status.normal.rawValue
+        Self.dbManager.addItemMetadata(metadata)
+
+        XCTAssertThrowsError(try Self.dbManager.restorePackageDownloadMetadatas([metadata], for: operation)) { error in
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        }
+
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
     }
 
     func testDirectoryDownloadCompletionPublishesAllItemsAndPreservesLocalState() throws {

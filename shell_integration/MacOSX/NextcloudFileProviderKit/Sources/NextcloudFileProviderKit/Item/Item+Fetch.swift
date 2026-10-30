@@ -55,7 +55,7 @@ public extension Item {
 
         progress.totalUnitCount = 1 // Add 1 for final procedures
 
-        var remoteDirectories = [(path: directoryRemotePath, operation: operation)]
+        var remoteDirectories = [(path: directoryRemotePath, operation: operation, packageContents: isBundleOrPackage)]
         var downloadedFileOcIds: [String] = []
         while !remoteDirectories.isEmpty {
             try checkFetchCancellation()
@@ -91,8 +91,11 @@ public extension Item {
             if !metadatas.isEmpty {
                 metadatas.removeFirst() // Remove the dir itself
             }
-            // Server listings can include children intentionally removed from the local view.
-            metadatas = try dbManager.directoryDownloadMetadatas(metadatas)
+            if directory.packageContents {
+                try dbManager.restorePackageDownloadMetadatas(metadatas, for: directory.operation)
+            } else {
+                metadatas = try dbManager.directoryDownloadMetadatas(metadatas)
+            }
             progress.totalUnitCount += Int64(metadatas.count)
 
             for metadata in metadatas {
@@ -108,7 +111,22 @@ public extension Item {
                 }
                 childOperations.append(childOperation)
                 if metadata.directory {
-                    remoteDirectories.append((path: remotePath, operation: childOperation))
+                    let childItem = Item(
+                        metadata: metadata,
+                        parentItemIdentifier: NSFileProviderItemIdentifier(directory.operation.ocId),
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager,
+                        displayFileActions: false,
+                        remoteSupportsTrash: false,
+                        log: logger.log
+                    )
+                    // Ordinary subfolders inside a package still contain package members.
+                    remoteDirectories.append((
+                        path: remotePath,
+                        operation: childOperation,
+                        packageContents: directory.packageContents || childItem.isBundleOrPackage
+                    ))
                     try FileManager.default.createDirectory(
                         at: URL(fileURLWithPath: childLocalPath),
                         withIntermediateDirectories: true,
