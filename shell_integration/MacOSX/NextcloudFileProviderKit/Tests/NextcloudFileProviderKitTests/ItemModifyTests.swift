@@ -126,9 +126,11 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             if chunkSize == nil {
                 XCTAssertTrue(try XCTUnwrap(request).isCancelled)
             }
-            let remainingChunks = Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
-                .where { $0.remoteChunkStoreFolderName.starts(with: chunkUploadIdentifierPrefix(forItemWithIdentifier: itemMetadata.ocId)) }
-                .toUnmanagedResults()
+            let uploadIds = try XCTUnwrap(Self.dbManager.remoteChunkStoreFolderNames())
+                .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: itemMetadata.ocId)) }
+            let remainingChunks = try Set(uploadIds).flatMap { uploadId in
+                try XCTUnwrap(Self.dbManager.remoteFileChunks(uploadId: uploadId))
+            }
             let expectedRemainingCount = chunkSize.map { max(0, Int(ceil(Double(newContents.count) / Double($0))) - 1) } ?? 0
             XCTAssertEqual(remainingChunks.count, expectedRemainingCount)
             for chunk in remainingChunks {
@@ -301,7 +303,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteItem.data, contents)
         XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
-        XCTAssertTrue(Self.dbManager.ncDatabase().objects(RemoteFileChunk.self).isEmpty)
+        XCTAssertTrue(try XCTUnwrap(Self.dbManager.remoteChunkStoreFolderNames()).isEmpty)
     }
 
     func testModifyFile() async throws {

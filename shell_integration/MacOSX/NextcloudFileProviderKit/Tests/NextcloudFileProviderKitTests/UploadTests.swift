@@ -6,7 +6,6 @@ import Alamofire
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 @testable import NextcloudKit
-import RealmSwift
 import TestInterface
 import XCTest
 
