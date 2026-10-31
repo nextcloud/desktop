@@ -81,6 +81,9 @@ import OSLog
     ///
     private(set) var setupGeneration = 0
 
+    /// Keep the external state directory security scope active while the database is in use.
+    private let stateDirectoryAccess = SecurityScopedResourceAccess()
+
     // Waiters parked in `awaitAccount(…)` until `ncAccount` is published.
     private let accountReadyLock = NSLock()
     private var accountReadyWaiters = [UUID: CheckedContinuation<Void, Never>]()
@@ -134,6 +137,7 @@ import OSLog
         blockSyncObservation?.invalidate()
         blockSyncObservation = nil
         dbManager?.checkpointForShutdown()
+        stateDirectoryAccess.invalidate()
     }
 
     func insertSyncAction(_ actionId: UUID) {
@@ -905,19 +909,74 @@ import OSLog
                 logger.info("Successfully authenticated.")
         }
 
-        // Opening the database may import or migrate it, so it happens off the main actor.
-        let databaseManager: FilesDatabaseManager
-
+        let databaseDirectory: URL?
         do {
-            databaseManager = try FilesDatabaseManager(
-                account: account,
-                fileProviderDomainIdentifier: domain.identifier,
-                log: log
+            if #available(macOS 15.0, *) {
+                databaseDirectory = try await FileProviderDomainStorage.databaseDirectory(
+                    volumeUUID: domain.volumeUUID,
+                    stateDirectory: {
+                        guard let manager else {
+                            throw NSError(
+                                domain: NSFileProviderErrorDomain,
+                                code: NSFileProviderError.Code.providerDomainNotFound.rawValue,
+                                userInfo: [NSLocalizedDescriptionKey: "Could not get a File Provider manager for the external-volume domain."]
+                            )
+                        }
+                        return try manager.stateDirectoryURL()
+                    }
+                )
+            } else {
+                databaseDirectory = nil
+            }
+        } catch {
+            logger.error("Could not obtain external-volume File Provider state directory.", [.error: error])
+            completionHandler?(error as NSError)
+            return
+        }
+
+        let chunksBaseDirectory: URL?
+        do {
+            let isExternalDomain: Bool = if #available(macOS 15.0, *) {
+                domain.volumeUUID != nil
+            } else {
+                false
+            }
+            let domainTemporaryDirectory: (() throws -> URL)? = manager.map { manager in
+                { try manager.temporaryDirectoryURL() }
+            }
+            chunksBaseDirectory = try FileProviderDomainStorage.temporaryDirectory(
+                isExternalDomain: isExternalDomain,
+                domainTemporaryDirectory: domainTemporaryDirectory,
+                fallbackDirectory: { FileManager.default.temporaryDirectory }
             )
         } catch {
-            // Without its database the domain stays unavailable; every request keeps failing until a later setup succeeds.
+            logger.error("Could not obtain File Provider temporary directory.", [.error: error])
+            completionHandler?(error as NSError)
+            return
+        }
+
+        let databaseManager: FilesDatabaseManager
+        do {
+            guard let manager = try stateDirectoryAccess.replacingAccess(with: databaseDirectory, perform: {
+                try FilesDatabaseManager(
+                    account: account,
+                    databaseDirectory: databaseDirectory,
+                    fileProviderDomainIdentifier: domain.identifier,
+                    log: log
+                )
+            }) else {
+                completionHandler?(NSFileProviderError(.cannotSynchronize) as NSError)
+                return
+            }
+            databaseManager = manager
+        } catch let error as FilesDatabaseManager.OpenError {
+            // A failed open must not fall back to an empty database on another volume.
             logger.fault("Could not open the metadata database. The domain is not set up.", [.error: error])
             completionHandler?(NSError(.databaseUnavailable))
+            return
+        } catch {
+            logger.error("Could not access external-volume File Provider state directory.", [.error: error])
+            completionHandler?(error as NSError)
             return
         }
 
@@ -932,6 +991,7 @@ import OSLog
             // If the extension restarts while that upload is still in progress, startup cleanup
             // cannot distinguish its chunks from an abandoned upload and may remove them.
             cleanupAbandonedChunkUploads(
+                chunksBaseDirectory: chunksBaseDirectory,
                 usingRemoteInterface: ncKit,
                 dbManager: databaseManager,
                 logger: logger
