@@ -4876,43 +4876,43 @@ Kumbuka kuwa kutumia chaguo zozote za mstari wa amri ya kukata miti kutabatilish
         <translation>Hitilafu wakati wa kufuta rekodi ya faili %1 kutoka kwa hifadhidata</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1722"/>
-        <location filename="../src/libsync/discovery.cpp" line="2241"/>
+        <location filename="../src/libsync/discovery.cpp" line="1721"/>
+        <location filename="../src/libsync/discovery.cpp" line="2240"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Imehamishwa hadi kwenye lengo batili, inarejesha</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2092"/>
+        <location filename="../src/libsync/discovery.cpp" line="2091"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Haiwezi kurekebisha kipengee kilichosimbwa kwa sababu cheti kilichochaguliwa si sahihi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2162"/>
+        <location filename="../src/libsync/discovery.cpp" line="2161"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Imepuuzwa kwa sababu ya orodha isiyoruhusiwa ya &quot;chagua cha kusawazisha&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2196"/>
+        <location filename="../src/libsync/discovery.cpp" line="2195"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Hairuhusiwi kwa sababu huna ruhusa ya kuongeza folda ndogo kwenye folda hiyo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2203"/>
+        <location filename="../src/libsync/discovery.cpp" line="2202"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Hairuhusiwi kwa sababu huna ruhusa ya kuongeza faili katika folda hiyo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2218"/>
+        <location filename="../src/libsync/discovery.cpp" line="2217"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Hairuhusiwi kupakia faili hii kwa sababu inasomwa tu kwenye seva, inarejeshwa</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2255"/>
+        <location filename="../src/libsync/discovery.cpp" line="2254"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Hairuhusiwi kuondoa, kurejesha</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2428"/>
+        <location filename="../src/libsync/discovery.cpp" line="2427"/>
         <source>Error while reading the database</source>
         <translation>Hitilafu wakati wa kusoma hifadhidata</translation>
     </message>
@@ -6035,7 +6035,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
 <context>
     <name>OCC::SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1082"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="1078"/>
         <source>Failed to connect database.</source>
         <translation type="unfinished"/>
     </message>

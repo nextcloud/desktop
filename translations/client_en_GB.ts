@@ -4884,43 +4884,43 @@ Note that using any logging command line options will override this setting.</tr
         <translation>Error while deleting file record %1 from the database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1722"/>
-        <location filename="../src/libsync/discovery.cpp" line="2241"/>
+        <location filename="../src/libsync/discovery.cpp" line="1721"/>
+        <location filename="../src/libsync/discovery.cpp" line="2240"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Moved to invalid target, restoring</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2092"/>
+        <location filename="../src/libsync/discovery.cpp" line="2091"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Cannot modify encrypted item because the selected certificate is not valid.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2162"/>
+        <location filename="../src/libsync/discovery.cpp" line="2161"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignored because of the &quot;choose what to sync&quot; blacklist</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2196"/>
+        <location filename="../src/libsync/discovery.cpp" line="2195"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Not allowed because you don&apos;t have permission to add subfolders to that folder</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2203"/>
+        <location filename="../src/libsync/discovery.cpp" line="2202"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Not allowed because you don&apos;t have permission to add files in that folder</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2218"/>
+        <location filename="../src/libsync/discovery.cpp" line="2217"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Not allowed to upload this file because it is read-only on the server, restoring</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2255"/>
+        <location filename="../src/libsync/discovery.cpp" line="2254"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Not allowed to remove, restoring</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2428"/>
+        <location filename="../src/libsync/discovery.cpp" line="2427"/>
         <source>Error while reading the database</source>
         <translation>Error while reading the database</translation>
     </message>
@@ -6043,7 +6043,7 @@ Server replied with error: %2</translation>
 <context>
     <name>OCC::SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1082"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="1078"/>
         <source>Failed to connect database.</source>
         <translation>Failed to connect database.</translation>
     </message>
