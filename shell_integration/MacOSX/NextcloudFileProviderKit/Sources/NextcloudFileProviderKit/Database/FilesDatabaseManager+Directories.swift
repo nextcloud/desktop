@@ -70,9 +70,28 @@ public extension FilesDatabaseManager {
     /// matching the directory `.../folder`.
     ///
     func hasEvictableDescendantFile(directoryMetadata: SendableItemMetadata) -> Bool {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        hasEvictableDescendantFile(ofDirectoryAtServerUrl: fullServerPathUrl(for: directoryMetadata))
+    }
 
-        return read("Could not look up evictable descendants of a directory.", [.url: directoryServerUrl]) { db in
+    ///
+    /// ``hasEvictableDescendantFile(directoryMetadata:)`` for a container known only by identifier,
+    /// resolving the root container to the account's files URL.
+    ///
+    /// - Returns: `nil` where no directory row with this identifier exists, which the caller must
+    ///   read as unknown rather than as no.
+    ///
+    func hasEvictableDescendantFile(containerIdentifier: NSFileProviderItemIdentifier) -> Bool? {
+        if containerIdentifier == .rootContainer {
+            return hasEvictableDescendantFile(ofDirectoryAtServerUrl: account.davFilesUrl)
+        }
+
+        guard let metadata = directoryMetadata(ocId: containerIdentifier.rawValue) else { return nil }
+
+        return hasEvictableDescendantFile(directoryMetadata: metadata)
+    }
+
+    private func hasEvictableDescendantFile(ofDirectoryAtServerUrl directoryServerUrl: String) -> Bool {
+        read("Could not look up evictable descendants of a directory.", [.url: directoryServerUrl]) { db in
             try !ItemMetadataRecord
                 .filter(
                     ItemMetadataRecord.isEvictableFile
